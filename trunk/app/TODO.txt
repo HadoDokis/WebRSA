@@ -1,0 +1,31 @@
+    * adresses_foyers
+        - à l'ajout d'une adresse, changer le rgadr et supprimer si besoin
+        - à l'jout / la modification d'une adresse, recalculer les rgadr suivant les dates
+    * personnes
+        - compléter les données si le jour ou le mois de la dtnaiss ne sont pas connus (voir avec typedtnaiss)
+        - validation du format du NIR
+        - personne isUnique SSI nom + prénom + ???
+        - rang de naissance obligatoire ?
+        - formattage NIR
+    * cohortes
+        - traitement réel + locks bd
+        - une ligne pour chaque personne soumise à d et d ?!
+    * dossier
+        - état du dossier
+        - formattage n° de dossier + validation
+    * dossiers/index + ...
+        - période entre deux dates à vérifier
+    * css
+        - cacher les cellules de l'infobulle
+    * formulaires
+        - vérifier les périodes (années) proposée pour les champs date
+    * js / ctp
+        - changer tooltips_oupas et vérifier si on n'a plus de tooltips simple, ou convertir
+    * adresses et les communes de naissance => Pays <> France => ?
+    * création de contrat d'insertion -> ?? (Bug rapporté par Michel le 12/05/09 à 16h30)
+    * DSP
+        - quand on ajoute ou qu'on édite sur une personne, on ne revient pas au résumé DSP
+    * Personnes uniques (nom/prenom/NIR) ?
+    * L'abbréviation de Monsieur c'est M et pas MR (Mr d'ailleurs <=> mister)
+    * Undefined index dans les view/index
+    * Formulaire infos financières -> corriger JS dépendants

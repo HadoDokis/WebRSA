@@ -1,0 +1,3 @@
+    * Flux échange instruction transmis le 04/05/2009 ( rSa_Echange_Instruction_Virs0101.xls )
+        - SituationProfessionnelle > DetailSituationProfessionnelle > ACCOEMPLOI 0,N => Pourquoi (ligne 199)
+        - nivetu => 0,N ?
