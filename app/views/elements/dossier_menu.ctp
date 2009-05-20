@@ -47,6 +47,13 @@
                                     );
                                 ?>
                              </li>
+                            <li>
+                                <?php
+                                    echo $html->link(
+                                        h( 'Orientation' ),
+                                        array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
+                                    );?>
+                            </li>
                         </ul>
                         <?php endif;?>
                     </li>

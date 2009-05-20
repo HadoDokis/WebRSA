@@ -32,10 +32,6 @@
         );
 
         var $hasMany = array(
-            'Personne' => array(
-                'classname' => 'Personne',
-                'foreignKey' => 'structurereferente_id'
-            ),
             'Referent' => array(
                 'classname' => 'Referent',
                 'foreignKey' => 'structurereferente_id'
@@ -43,7 +39,7 @@
             'Orientstruct' => array(
                 'classname' => 'Orientstruct',
                 'foreignKey' => 'structurereferente_id'
-            ),
+            )
         );
 
         var $validate = array(

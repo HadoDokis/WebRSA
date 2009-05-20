@@ -616,96 +616,105 @@ INSERT INTO grossesses VALUES
 );
 
 
-
-----------------------------------------
--- ------ Types orientations -----------
--- -------------------------------------
+-- ----------------------------------------
+-- -- ------ Types orientations -----------
+-- -- -------------------------------------
 INSERT INTO typesorients VALUES
    (
      1,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     'Orienté'   --     name varchar(30) null
+     null,   --            INTEGER,
+     'Emploi',
+     'Notifica 1'   
    );
 
 INSERT INTO typesorients VALUES
    (
      2,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     'Non orienté'   --     name varchar(30) null
+     1,   --                INTEGER,
+     'Pôle emploi',
+     'Notifica 2'
    );
 
 INSERT INTO typesorients VALUES
    (
      3,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     'En attente'   --     name varchar(30) null
+     1,   --                INTEGER,
+    'Exploitant agricole MSA',
+     'Notifica 3'
    );
 
-----------------------------------------
--- ------ Zones geograhiques -----------
--- -------------------------------------
-INSERT INTO zonesgeographiques VALUES
-(
-     1,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     '34090',   --     codeinsee           CHAR(5) NOT NULL,
-     'Pole Montpellier-Nord'   --     libelle             VARCHAR(50) NOT NULL
-);
-
-INSERT INTO zonesgeographiques VALUES
-(
-     2,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     '34070',   --     codeinsee           CHAR(5) NOT NULL,
-     'Pole Montpellier Sud-Est'   --     libelle             VARCHAR(50) NOT NULL
-);
-
-INSERT INTO zonesgeographiques VALUES
-(
-     3,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     '34080',   --     codeinsee           CHAR(5) NOT NULL,
-     'Pole Montpellier Ouest'   --     libelle             VARCHAR(50) NOT NULL
-);
-
-----------------------------------------
--- ------ Structures référentes -----------
--- -------------------------------------
-INSERT INTO structuresreferentes VALUES
+INSERT INTO typesorients VALUES
    (
-      1,  --     id                  SERIAL NOT NULL PRIMARY KEY,
-      1,  --     zonegeographique_id      INTEGER NOT NULL REFERENCES zonesgeographiques(id),
-      1,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
-      'Pole emploi',  --     lib_struc           VARCHAR(32) NOT NULL,
-      '125',  --     num_voie            VARCHAR(6) NOT NULL, 
-      'Avenue',  --     type_voie           VARCHAR(6) NOT NULL,
-      'Alco', --     nom_voie            VARCHAR(30) NOT NULL,
-      '34090',  --     code_postal         CHAR(5) NOT NULL,
-      'Montpellier',  --     ville               VARCHAR(45) NOT NULL,
-      '34095'  --     code_insee          CHAR(5) NOT NULL
+     4,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     null,   --                INTEGER,
+     'Préprofessionnelle',
+     'Notifica 1'
    );
 
-INSERT INTO structuresreferentes VALUES
+INSERT INTO typesorients VALUES
    (
-      2,  --     id                  SERIAL NOT NULL PRIMARY KEY,
-      1,  --     zonegeographique_id      INTEGER NOT NULL REFERENCES zonesgeographiques(id),
-      2,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
-      'Assedic',  --     lib_struc           VARCHAR(32) NOT NULL,
-      '10',  --     num_voie            VARCHAR(6) NOT NULL, 
-      'rue',  --     type_voie           VARCHAR(6) NOT NULL,
-      'Georges Freche', --     nom_voie            VARCHAR(30) NOT NULL,
-      '34000',  --     code_postal         CHAR(5) NOT NULL,
-      'Montpellier',  --     ville               VARCHAR(45) NOT NULL,
-      '34005'  --     code_insee          CHAR(5) NOT NULL
+     5,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     4,     --                INTEGER,
+    'Conseil Général',   --     name varchar(30) null
+     'Notifica 2'
    );
 
-INSERT INTO structuresreferentes VALUES
+INSERT INTO typesorients VALUES
    (
-      3,  --     id                  SERIAL NOT NULL PRIMARY KEY,
-      1,  --     zonegeographique_id      INTEGER NOT NULL REFERENCES zonesgeographiques(id),
-      3,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
-      'Assedic',  --     lib_struc           VARCHAR(32) NOT NULL,
-      '44',  --     num_voie            VARCHAR(6) NOT NULL, 
-      'chemin',  --     type_voie           VARCHAR(6) NOT NULL,
-      'Parrot', --     nom_voie            VARCHAR(30) NOT NULL,
-      '30000',  --     code_postal         CHAR(5) NOT NULL,
-      'Nimes',  --     ville               VARCHAR(45) NOT NULL,
-      '30009'  --     code_insee          CHAR(5) NOT NULL
+     6,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     null,  --                INTEGER,
+    'Social',
+     'Notifica 2'
    );
+
+INSERT INTO typesorients VALUES
+   (
+     7,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     6,  --                INTEGER,
+    'Conseil Général',
+     'Notifica 3'
+   );
+
+INSERT INTO typesorients VALUES
+   (
+     8,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     6,  --                INTEGER,
+    'MSA',
+     'Notifica 1'
+   );
+
+INSERT INTO typesorients VALUES
+   (
+     9,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     6,  --                INTEGER,
+    'Organisme agréés ACAL',
+     'Notifica 2'
+   );
+
+INSERT INTO typesorients VALUES
+   (
+     10,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     6,  --                INTEGER,
+    'ATR',
+     'Notifica 3'
+   );
+-- ----------------------------------------
+-- -- ------ Orient structs -----------
+-- -- -------------------------------------
+INSERT INTO orientsstructs VALUES
+   (
+      1,  --     id                      SERIAL NOT NULL PRIMARY KEY,
+      1,  --     personne_id             INTEGER NOT NULL REFERENCES personnes(id),
+      1,  --     structurereferente_id             INTEGER NOT NULL REFERENCES structurereferente(id),
+      1,      --     propo_algo                      INTEGER  REFERENCES typesorients(id),
+--       1,      --     propo_cg                        INTEGER  REFERENCES typesorients(id),
+      '1',  --     valid_cg                boolean null  ,
+      '2009-04-28',  --     date_propo              date null  ,
+      '2009-05-20',  --     date_valid              date null,
+      'Non orienté',  --     statut_orient           VARCHAR(15)
+      '2009-05-21'  
+   );
+
 ----------------------------------------
 -- ------Référents -----------
 -- -------------------------------------

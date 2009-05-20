@@ -123,8 +123,7 @@
                     'all',
                     array(
                         'conditions' => array(
-                            'Adresse.id' => $AdressesFoyer['adresse_id']
-                        )
+                            'Adresse.id' => $AdressesFoyer['adresse_id'] )
                     )
                 );
                 $dossier['Foyer']['AdressesFoyer'][$key] = array_merge( $dossier['Foyer']['AdressesFoyer'][$key], $adresses[0] );
@@ -145,6 +144,7 @@
                     'recursive' => 2
                 )
             );
+
 
             $this->assert( !empty( $dossier ), 'error404' );
 
