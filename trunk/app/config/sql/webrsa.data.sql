@@ -30,6 +30,29 @@ INSERT INTO users ( id, username, password ) VALUES
     '83a98ed2a57ad9734eb0a1694293d03c74ae8a57'
 );
 
+--------------------------
+-- ------ Zones geograhiques -----------
+-- -------------------------------------
+INSERT INTO zonesgeographiques VALUES
+(
+     1,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     '34090',   --     codeinsee           CHAR(5) NOT NULL,
+     'Pole Montpellier-Nord'   --     libelle             VARCHAR(50) NOT NULL
+);
+
+INSERT INTO zonesgeographiques VALUES
+(
+     2,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     '34070',   --     codeinsee           CHAR(5) NOT NULL,
+     'Pole Montpellier Sud-Est'   --     libelle             VARCHAR(50) NOT NULL
+);
+
+INSERT INTO zonesgeographiques VALUES
+(
+     3,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     '34080',   --     codeinsee           CHAR(5) NOT NULL,
+     'Pole Montpellier Ouest'   --     libelle             VARCHAR(50) NOT NULL
+);
 
 -- -----------------------------------------------------------------------------
 --       table Action: pour les prestations et aides
@@ -577,104 +600,92 @@ INSERT INTO natmobs VALUES(
     'Sur un autre département'
 );
 
-----------------------------------------
--- ------ Types orientations -----------
--- -------------------------------------
+-- ----------------------------------------
+-- -- ------ Types orientations -----------
+-- -- -------------------------------------
 INSERT INTO typesorients VALUES
    (
      1,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      null,   --            INTEGER,
-     'Emploi'
+     'Emploi',
+     'Notifica 1'   
    );
 
 INSERT INTO typesorients VALUES
    (
      2,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      1,   --                INTEGER,
-     'Pôle emploi'
+     'Pôle emploi',
+     'Notifica 2'
    );
 
 INSERT INTO typesorients VALUES
    (
      3,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      1,   --                INTEGER,
-    'Exploitant agricole MSA'
+    'Exploitant agricole MSA',
+     'Notifica 3'
    );
 
 INSERT INTO typesorients VALUES
    (
      4,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      null,   --                INTEGER,
-     'Préprofessionnelle'
+     'Préprofessionnelle',
+     'Notifica 1'
    );
 
 INSERT INTO typesorients VALUES
    (
      5,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      4,     --                INTEGER,
-    'Conseil Général'   --     name varchar(30) null
+    'Conseil Général',   --     name varchar(30) null
+     'Notifica 2'
    );
 
 INSERT INTO typesorients VALUES
    (
      6,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      null,  --                INTEGER,
-    'Social'
+    'Social',
+     'Notifica 2'
    );
 
 INSERT INTO typesorients VALUES
    (
      7,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      6,  --                INTEGER,
-    'Conseil Général'
+    'Conseil Général',
+     'Notifica 3'
    );
 
 INSERT INTO typesorients VALUES
    (
      8,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      6,  --                INTEGER,
-    'MSA'
+    'MSA',
+     'Notifica 1'
    );
 
 INSERT INTO typesorients VALUES
    (
      9,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      6,  --                INTEGER,
-    'Organisme agréés ACAL'
+    'Organisme agréés ACAL',
+     'Notifica 2'
    );
 
 INSERT INTO typesorients VALUES
    (
      10,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      6,  --                INTEGER,
-    'ATR'
+    'ATR',
+     'Notifica 3'
    );
+
 --------------
---------------------------
--- ------ Zones geograhiques -----------
--- -------------------------------------
-INSERT INTO zonesgeographiques VALUES
-(
-     1,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     '34090',   --     codeinsee           CHAR(5) NOT NULL,
-     'Pole Montpellier-Nord'   --     libelle             VARCHAR(50) NOT NULL
-);
 
-INSERT INTO zonesgeographiques VALUES
-(
-     2,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     '34070',   --     codeinsee           CHAR(5) NOT NULL,
-     'Pole Montpellier Sud-Est'   --     libelle             VARCHAR(50) NOT NULL
-);
-
-INSERT INTO zonesgeographiques VALUES
-(
-     3,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     '34080',   --     codeinsee           CHAR(5) NOT NULL,
-     'Pole Montpellier Ouest'   --     libelle             VARCHAR(50) NOT NULL
-);
-
-----------------------------------------
+--------------------------------------
 -- ------ Structures référentes -----------
 -- -------------------------------------
 INSERT INTO structuresreferentes VALUES
@@ -682,7 +693,7 @@ INSERT INTO structuresreferentes VALUES
       1,  --     id                  SERIAL NOT NULL PRIMARY KEY,
       1,  --     zonegeographique_id      INTEGER NOT NULL REFERENCES zonesgeographiques(id),
       1,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
-      'Pole emploi',  --     lib_struc           VARCHAR(32) NOT NULL,
+      'Pole emploi Mont Sud',  --     lib_struc           VARCHAR(32) NOT NULL,
       '125',  --     num_voie            VARCHAR(6) NOT NULL, 
       'Avenue',  --     type_voie           VARCHAR(6) NOT NULL,
       'Alco', --     nom_voie            VARCHAR(30) NOT NULL,
@@ -696,7 +707,7 @@ INSERT INTO structuresreferentes VALUES
       2,  --     id                  SERIAL NOT NULL PRIMARY KEY,
       1,  --     zonegeographique_id      INTEGER NOT NULL REFERENCES zonesgeographiques(id),
       2,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
-      'Assedic',  --     lib_struc           VARCHAR(32) NOT NULL,
+      'Assedic Montp Nord',  --     lib_struc           VARCHAR(32) NOT NULL,
       '10',  --     num_voie            VARCHAR(6) NOT NULL, 
       'rue',  --     type_voie           VARCHAR(6) NOT NULL,
       'Georges Freche', --     nom_voie            VARCHAR(30) NOT NULL,
@@ -710,114 +721,11 @@ INSERT INTO structuresreferentes VALUES
       3,  --     id                  SERIAL NOT NULL PRIMARY KEY,
       1,  --     zonegeographique_id      INTEGER NOT NULL REFERENCES zonesgeographiques(id),
       3,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
-      'Assedic',  --     lib_struc           VARCHAR(32) NOT NULL,
+      'Assedic Nimes',  --     lib_struc           VARCHAR(32) NOT NULL,
       '44',  --     num_voie            VARCHAR(6) NOT NULL, 
       'chemin',  --     type_voie           VARCHAR(6) NOT NULL,
       'Parrot', --     nom_voie            VARCHAR(30) NOT NULL,
       '30000',  --     code_postal         CHAR(5) NOT NULL,
       'Nimes',  --     ville               VARCHAR(45) NOT NULL,
       '30009'  --     code_insee          CHAR(5) NOT NULL
-   );
-----------------------------------------
--- ------Référents -----------
--- -------------------------------------
-INSERT INTO referents VALUES
-   (
-     1,   --     --id                  SERIAL NOT NULL PRIMARY KEY,
-     1,   --     servicereferent_id INTEGER NOT NULL REFERENCES servicesreferents(id),
-     'Structure',   --     nom varchar(28) null  ,
-     'N° 11',   --     prenom varchar(32) null  ,
-     '1111',   --     numero_poste char(4) null  ,
-     'struct11@fai.com'  --     email varchar(78) null
-   );
-
-INSERT INTO referents VALUES
-   (
-     2,   --     --id                  SERIAL NOT NULL PRIMARY KEY,
-     1,   --     servicereferent_id INTEGER NOT NULL REFERENCES servicesreferents(id),
-     'Structure',   --     nom varchar(28) null  ,
-     'N° 22',   --     prenom varchar(32) null  ,
-     '2222',   --     numero_poste char(4) null  ,
-     'boite_structure@fai.fr'  --     email varchar(78) null
-   );
-
-INSERT INTO referents VALUES
-   (
-     3,   --     --id                  SERIAL NOT NULL PRIMARY KEY,
-     1,   --     servicereferent_id INTEGER NOT NULL REFERENCES servicesreferents(id),
-     'Structure',   --     nom varchar(28) null  ,
-     'N° 33',   --     prenom varchar(32) null  ,
-     '3333',   --     numero_poste char(4) null  ,
-     ''  --     email varchar(78) null
-   );
-
-INSERT INTO referents VALUES
-   (
-     4,   --     --id                  SERIAL NOT NULL PRIMARY KEY,
-     2,   --     servicereferent_id INTEGER NOT NULL REFERENCES servicesreferents(id),
-     'Service social',   --     nom varchar(28) null  ,
-     'X',   --     prenom varchar(32) null  ,
-     '4444',   --     numero_poste char(4) null  ,
-     ''  --     email varchar(78) null
-   );
-
-INSERT INTO referents VALUES
-   (
-     5,   --     --id                  SERIAL NOT NULL PRIMARY KEY,
-     2,   --     servicereferent_id INTEGER NOT NULL REFERENCES servicesreferents(id),
-     'Plan de ville',   --     nom varchar(28) null  ,
-     'Y',   --     prenom varchar(32) null  ,
-     '5555',   --     numero_poste char(4) null  ,
-     'struct55@fai.com'  --     email varchar(78) null
-   );
-
-INSERT INTO referents VALUES
-   (
-     6,   --     --id                  SERIAL NOT NULL PRIMARY KEY,
-     2,   --     servicereferent_id INTEGER NOT NULL REFERENCES servicesreferents(id),
-     'Structure',   --     nom varchar(28) null  ,
-     'N° 99',   --     prenom varchar(32) null  ,
-     '6666',   --     numero_poste char(4) null  ,
-     'struct99@fai.com'  --     email varchar(78) null
-   );
-
-INSERT INTO referents VALUES
-   (
-     7,   --     --id                  SERIAL NOT NULL PRIMARY KEY,
-     3,   --     servicereferent_id INTEGER NOT NULL REFERENCES servicesreferents(id),
-     'Plan de ville',   --     nom varchar(28) null  ,
-     'Z',   --     prenom varchar(32) null  ,
-     '7777',   --     numero_poste char(4) null  ,
-     'pdv77@fai.com'  --     email varchar(78) null
-   );
-
-
-INSERT INTO referents VALUES
-   (
-     8,   --     --id                  SERIAL NOT NULL PRIMARY KEY,
-     3,   --     servicereferent_id INTEGER NOT NULL REFERENCES servicesreferents(id),
-     'Service social',   --     nom varchar(28) null  ,
-     'Y',   --     prenom varchar(32) null  ,
-     '8888',   --     numero_poste char(4) null  ,
-     'ssocY@fai.com'  --     email varchar(78) null
-   );
-
-INSERT INTO referents VALUES
-   (
-     9,   --     --id                  SERIAL NOT NULL PRIMARY KEY,
-     3,   --     servicereferent_id INTEGER NOT NULL REFERENCES servicesreferents(id),
-     'Structure sociale',   --     nom varchar(28) null  ,
-     'N° XY',   --     prenom varchar(32) null  ,
-     '9999',   --     numero_poste char(4) null  ,
-     'structXY@fai.com'  --     email varchar(78) null
-   );
-
-INSERT INTO referents VALUES
-   (
-     10,   --     --id                  SERIAL NOT NULL PRIMARY KEY,
-     3,   --     servicereferent_id INTEGER NOT NULL REFERENCES servicesreferents(id),
-     'Service social',   --     nom varchar(28) null  ,
-     'ZZ',   --     prenom varchar(32) null  ,
-     '1010',   --     numero_poste char(4) null  ,
-     'xcs@fai.com'  --     email varchar(78) null
    );

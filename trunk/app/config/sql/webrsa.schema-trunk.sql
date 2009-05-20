@@ -40,6 +40,10 @@ CREATE TABLE dossiers_rsa (
     id                      SERIAL NOT NULL PRIMARY KEY,
     numdemrsa               VARCHAR(11),
     dtdemrsa                DATE,
+--     etatdosrsa              CHAR(1),
+--     dtrefursa               DATE,
+--     motisusversrsa          VARCHAR(50),
+--     ddsusversrsa            DATE,
     dtdemrmi                DATE,
     numdepinsrmi            CHAR(3),
     typeinsrmi              CHAR(1),
@@ -65,8 +69,15 @@ CREATE TABLE dossiers_rsa (
     avis_pcg_id             INTEGER,
     organisme_id            INTEGER,
     acompte_rsa_id          INTEGER
+    --infofinancier_id        INTEGER NOT NULL REFERENCES infosfinancieres(id)
 );
-
+/*
+CREATE TABLE finsdroits (
+    id                      SERIAL NOT NULL PRIMARY KEY,
+    dossier_rsa_id          INT NOT NULL REFERENCES dossiers_rsa(id),
+    moticlorsa              CHAR(3),
+    dtclorsa                DATE
+);*/
 
 CREATE TABLE foyers (
     id                  SERIAL NOT NULL PRIMARY KEY,
@@ -138,11 +149,11 @@ CREATE TABLE personnes (
     nati                    CHAR(1),
     dtnati                  DATE,
     pieecpres               CHAR(1),
-    natprest                CHAR(3),
-    rolepers                CHAR(3),
+--     natprest                CHAR(3),
+    rolepers                CHAR(3)/*,
     topchapers              BOOLEAN, -- FIXME: pas dans l'édition de personne ?
     toppersdrodevorsa       BOOLEAN,
-    idassedic               VARCHAR(8)
+    idassedic               VARCHAR(8)*/
 );
 
 CREATE TABLE modes_contact (
@@ -253,7 +264,7 @@ CREATE TABLE activites (
     dfact           DATE,
     natcontrtra     CHAR(3),
     topcondadmeti   BOOLEAN,
-    hauremuscmic    CHAR(1) -- FIXME : hauremusmic cf flux instruction
+    hauremuscmic    BOOLEAN
 );
 
 CREATE TABLE dspfs (
@@ -365,8 +376,20 @@ CREATE TABLE dspps_difdisps (
     difdisp_id   INTEGER NOT NULL REFERENCES difdisps(id),
     dspp_id   INTEGER NOT NULL REFERENCES dspps(id)
 );
+-------------------------------
+-------------------------------
+-- CREATE TABLE nivetus (
+--     id      SERIAL NOT NULL PRIMARY KEY,
+--     code    CHAR(4),
+--     name    VARCHAR(100)
+-- );
 
-
+-- CREATE TABLE dspps_nivetus (
+--     nivetu_id   INTEGER NOT NULL REFERENCES nivetus(id),
+--     dspp_id   INTEGER NOT NULL REFERENCES dspps(id)
+-- );
+-------------------------------
+-------------------------------
 CREATE TABLE natmobs (
     id      SERIAL NOT NULL PRIMARY KEY,
     code    CHAR(4),
@@ -385,10 +408,8 @@ CREATE TABLE typesorients
    (
     id                 SERIAL NOT NULL PRIMARY KEY,
     parentid            INTEGER,
-    lib_type_orient     VARCHAR(30),
-    modele_notif        VARCHAR(20)
+    lib_type_orient     VARCHAR(30)
    );
-
 ---------------------------------
 ----------------------
 --       table : structures_referents
@@ -396,16 +417,16 @@ CREATE TABLE typesorients
 
 create table structuresreferentes
    (
-    id                      SERIAL NOT NULL PRIMARY KEY,
-    zonegeographique_id     INTEGER NOT NULL REFERENCES zonesgeographiques(id),
+    id                  SERIAL NOT NULL PRIMARY KEY,
+    zonegeographique_id      INTEGER NOT NULL REFERENCES zonesgeographiques(id),
     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
-    lib_struc               VARCHAR(32) NOT NULL,
-    num_voie                VARCHAR(6) NOT NULL, 
-    type_voie               VARCHAR(6) NOT NULL,
-    nom_voie                VARCHAR(30) NOT NULL,
-    code_postal             CHAR(5) NOT NULL,
-    ville                   VARCHAR(45) NOT NULL,
-    code_insee              CHAR(5) NOT NULL
+    lib_struc           VARCHAR(32) NOT NULL,
+    num_voie            VARCHAR(6) NOT NULL, 
+    type_voie           VARCHAR(6) NOT NULL,
+    nom_voie            VARCHAR(30) NOT NULL,
+    code_postal         CHAR(5) NOT NULL,
+    ville               VARCHAR(45) NOT NULL,
+    code_insee          CHAR(5) NOT NULL
    );
 
 -- -----------------------------------------------------------------------------
@@ -413,16 +434,16 @@ create table structuresreferentes
 -- -----------------------------------------------------------------------------
 create table orientsstructs
    (
-    id                              SERIAL NOT NULL PRIMARY KEY,
-    personne_id                     INTEGER NOT NULL REFERENCES personnes(id),
-    structurereferente_id           INTEGER NOT NULL REFERENCES structuresreferentes(id),
-    propo_algo                      INTEGER  REFERENCES typesorients(id),
---     propo_cg                        INTEGER  REFERENCES typesorients(id),
-    valid_cg                        boolean null  ,
-    date_propo                      date null  ,
-    date_valid                      date null,
-    statut_orient                   VARCHAR(15)
+    id                      SERIAL NOT NULL PRIMARY KEY,
+    structurereferente_id      INTEGER NOT NULL REFERENCES structuresreferentes(id),
+    propo_algo              varchar(100) null  ,
+    propo_cg                varchar(100) null  ,
+    valid_cg                boolean null  ,
+    date_propo              date null  ,
+    date_valid              date null,
+    statut_orient           VARCHAR(15)
    );
+
 
 -- -----------------------------------------------------------------------------
 --       table : referents
@@ -506,6 +527,7 @@ create table aidesdirectes
 create table refsprestas
    (
     id                  SERIAL NOT NULL PRIMARY KEY,
+    --prestform_id        INTEGER NOT NULL REFERENCES prestsform(id),
     nomrefpresta                 varchar(28) null  ,
     prenomrefpresta              varchar(32) null  ,
     emailrefpresta               varchar(78) null  ,
@@ -523,6 +545,28 @@ create table prestsform
     date_presta         date
    );
 
+
+-- -----------------------------------------------------------------------------
+--       table : presta_lies
+-- -----------------------------------------------------------------------------
+/*
+create table presta_lies
+   (
+    prestform_id INTEGER NOT NULL REFERENCES prestsform(id),
+    actioninsertion_id INTEGER NOT NULL REFERENCES actionsinsertion(id),
+    constraint pk_presta_lies primary key (prestform_id, actioninsertion_id)
+   );*/
+
+-- -----------------------------------------------------------------------------
+--       table : refsprestas_lies
+-- -----------------------------------------------------------------------------
+/*
+create table prestsform_refsprestas
+   (
+    prestform_id INTEGER NOT NULL REFERENCES prestsform(id),
+    refpresta_id INTEGER NOT NULL REFERENCES refsprestas(id),
+    constraint pk_prestsform_refsprestas primary key (prestform_id, refpresta_id)
+   );*/
 
 -- -----------------------------------------------------------------------------
 --       table Action: pour les prestations et aides
@@ -594,6 +638,18 @@ create table ressourcesmensuelles_detailsressourcesmensuelles
         detailressourcemensuelle_id                 INTEGER NOT NULL REFERENCES detailsressourcesmensuelles(id),
         ressourcemensuelle_id                       INTEGER NOT NULL REFERENCES ressourcesmensuelles(id)
    );
+-- -- -----------------------------------------------------------------------------
+-- --       table : ressources_trimestrielles
+-- -- -----------------------------------------------------------------------------
+-- create table ressourcestrimestrielles
+--    (
+--         id                                          SERIAL NOT NULL PRIMARY KEY,
+--         personne_id                                 INTEGER NOT NULL REFERENCES personnes(id),
+--         topressnul                                  boolean null  ,
+--         mtpersressmenrsa                            int4 null  ,
+--         ddress                                      date null  ,
+--         dfress                                      date null
+--    );
 
 -- -- -----------------------------------------------------------------------------
 -- --       table : infosfinancieres (Volet Allocation)

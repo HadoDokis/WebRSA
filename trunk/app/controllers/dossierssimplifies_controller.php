@@ -2,7 +2,7 @@
     class DossierssimplifiesController extends AppController
     {
         var $name = 'Dossierssimplifies';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient' );
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct' );
 
         function beforeFilter() {
             // FIXME
@@ -22,34 +22,34 @@
             //$this->set( 'lib_struc', $this->Option->lib_struc() ); ///FIXME
         }
 
-        function index() {
-
+        function view( $id = null ) {
+            // FIXME: assert
             $dossier = $this->Dossier->find(
                 'first',
                 array(
-                    'fields' => array(
-                        'Dossier.id',
-                        'Dossier.numdemrsa',
-
-                    ),
-                'recursive' => 1
-            )
+                    'recursive' => 2,
+                    'conditions' => array(
+                        'Dossier.id' => $id
+                    )
+                )
             );
 
+            foreach( $dossier['Foyer']['Personne'] as $key => $personne ) {
+                $orientsstructs = $this->Orientstruct->find(
+                    'first',
+                    array(
+                        'recursive' => 2,
+                        'conditions' => array(
+                            'Orientstruct.personne_id' => $personne['id']
+                        )
+                    )
+                );
+                $dossier['Foyer']['Personne'][$key]['Orientstruct'] = $orientsstructs['Orientstruct'];
+                $dossier['Foyer']['Personne'][$key]['Structurereferente'] = $orientsstructs['Structurereferente'];
+
+            }
             $this->set( 'dossier', $dossier );
 
-
-//             $this->Dossier->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array( 'Dossier.id' => $id ),
-//                     'recursive' => 2
-//                 )
-//             );
-
-//             $this->assert( !empty( $dossier ), 'error404' );
-// 
-//             $this->set( 'dossier', $dossier );
         }
 
 
@@ -62,6 +62,7 @@
                 $this->Foyer->set( $this->data );
                 $this->Adresse->set( $this->data );
                 $this->Adressefoyer->set( $this->data );
+                $this->Orientstruct->set( $this->data );
 
                 $validates = $this->Dossier->validates();
                 $validates = $this->Foyer->validates() && $validates;
@@ -75,15 +76,11 @@
                 }
                 $validates = $this->Personne->saveAll( $this->data['Personne'], array( 'validate' => 'only' ) ) & $validates;
 
-// debug( $validates);
-//                 foreach( $this->data['Personne'] as $personne ) {
-//                     $this->Personne->create();
-//                     $this->Personne->set( array( 'Personne' => $personne ) );
-//                     $validates = $this->Personne->validates() && $validates;
-//                 }
 
                 $validates = $this->Adresse->validates() && $validates;
                 $validates = $this->Adressefoyer->validates() && $validates;
+                $validates = $this->Orientstruct->validates() && $validates;
+                $validates = $this->Structurereferente->validates() && $validates;
 
 
 
@@ -93,30 +90,36 @@
                     $this->data['Foyer']['dossier_rsa_id'] = $this->Dossier->id;
                     $saved = $this->Foyer->save( $this->data ) && $saved;
 
-                    foreach( $this->data['Personne'] as $pData ) {
+                    foreach( $this->data['Personne'] as $key => $pData ) {
                         if( !empty( $pData ) ) {
+                            // Personne
                             $this->Personne->create();
                             $pData['foyer_id'] = $this->Foyer->id;
                             $this->Personne->set( $pData );
+                            $saved = $this->Personne->save() && $saved;
 
-                            $saved = $this->Personne->saveAll() && $saved;
+                            // Orientation
+                            $this->Orientstruct->create();
+                            $this->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
+                            $this->data['Orientstruct'][$key]['valid_cg'] = true;
+                            $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
+                            $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
+                            $this->data['Orientstruct'][$key]['statut_orient'] = 'Orienté';
+                            $saved = $this->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
                         }
                     }
 
                     $saved = $this->Adresse->save( $this->data ) && $saved;
-
                     $this->data['Adressefoyer']['adresse_id'] = $this->Adresse->id;
                     $this->data['Adressefoyer']['foyer_id'] = $this->Foyer->id;
                     $this->data['Adressefoyer']['rgadr'] = '01';
                     $this->data['Adressefoyer']['typeadr'] = 'D';
                     $saved = $this->Adressefoyer->save( $this->data ) && $saved;
-                    $saved = $this->Structurereferente->save( $this->data ) && $saved;
 
                     if( $saved ) {
                         $this->Dossier->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        //$this->redirect( array( 'controller' => 'dossiers', 'action' => 'index' ) );
-                        $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'index' ) );
+                        $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $this->Dossier->id ) );
                     }
                     else {
                         $this->Dossier->rollback();

@@ -1,3 +1,12 @@
+20/05/2009 17h52 aauzolat:
+    * Finalisation formualire simplifié CG66
+    * Modification du MCD
+    * Modifications tables:
+        - personnes, typesorients, orientsstructs -> fichier de patch dans dossier patch pour modif Schema SQL (orientstruct.sql)
+        - "orientstructs" -> modification du modèle après modification du MCD
+    * Ajout onglet "Orientation" pour le Dossier, lié à chaque Personne
+    * Ajout champ "modele_notif" pour les "typesorients"
+
 19/05/2009 18h26 aauzolat:
     * Création de plusieurs tables 
 	- Table "structuresreferentes" liée à la "Typeorient" et "Zonegeographique", 

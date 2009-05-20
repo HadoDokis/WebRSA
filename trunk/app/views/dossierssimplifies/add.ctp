@@ -17,7 +17,7 @@ l'organisme vers lequel il y aura orientation (si ouverture du droit).
 
     <h2>Demandeur</h2>
     <?php echo $form->input( 'Typeorient.0.lib_type_orient', array( 'label' => required( __( 'lib_type_orient', true ) ), 'type' => 'select', 'options' => $options, 'empty' => true ) );?>
-    <?php echo $form->input( 'Structurereferente.0.lib_struc', array( 'label' => required(__( 'lib_struc', true  )), 'type' => 'select', 'options' => $options2, 'empty' => true ) );?>
+    <?php echo $form->input( 'Orientstruct.0.structurereferente_id', array( 'label' => required(__( 'lib_struc', true  )), 'type' => 'select', 'options' => $options2, 'empty' => true ) );?>
     <div><?php echo $form->input( 'Personne.0.rolepers', array( 'label' => required( __( 'rolepers', true ) ), 'value' => 'DEM', 'type' => 'hidden') );?></div>
     <?php echo $form->input( 'Personne.0.qual', array( 'label' => required( __( 'qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
     <?php echo $form->input( 'Personne.0.nom', array( 'label' => required( __( 'nom', true ) ) ) );?>
@@ -29,7 +29,7 @@ l'organisme vers lequel il y aura orientation (si ouverture du droit).
 
     <h2>Conjoint</h2>
     <?php echo $form->input( 'Typeorient.1.lib_type_orient', array( 'label' =>  __( 'lib_type_orient', true  ), 'type' => 'select', 'options' => $options, 'empty' => true ) );?>
-    <?php echo $form->input( 'Structurereferente.1.lib_struc', array( 'label' => __( 'lib_struc', true  ), 'type' => 'select', 'options' => $options2, 'empty' => true ) );?>
+    <?php echo $form->input( 'Orientstruct.1.structurereferente_id', array( 'label' => __( 'lib_struc', true  ), 'type' => 'select', 'options' => $options2, 'empty' => true ) );?>
     <div> <?php echo $form->input( 'Personne.1.rolepers', array( 'label' =>  __( 'rolepers', true ) , 'value' => 'CJT', 'type' => 'hidden') );?></div>
     <?php echo $form->input( 'Personne.1.qual', array( 'label' =>  __( 'qual', true ) , 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
     <?php echo $form->input( 'Personne.1.nom', array( 'label' =>  __( 'nom', true )  ) );?>
