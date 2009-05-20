@@ -1,0 +1,33 @@
+<?php $this->pageTitle = 'Visualisation des situations du dossier';?>
+
+<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
+
+<div class="with_treemenu">
+    <h1><?php echo $this->pageTitle;?></h1>
+
+    <div id="ficheInfoFina">
+        <table>
+            <tbody>
+                <tr class="even">
+                    <th ><?php __( 'etatdosrsa' );?></th>
+                    <td><?php echo  h( $etatdosrsa[$situationdossierrsa['Situationdossierrsa']['etatdosrsa']] );?></td>
+                </tr>
+                <tr class="odd">
+                    <th ><?php __( 'dtrefursa' );?></th>
+                    <td><?php echo (date_short( $situationdossierrsa['Situationdossierrsa']['dtrefursa'] ) );?></td>
+                </tr>
+                <tr class="even">
+                    <th ><?php __( 'moticlorsa' );?></th>
+                    <td><?php echo ($moticlorsa[$situationdossierrsa['Situationdossierrsa']['moticlorsa']] );?></td>
+                </tr>
+                <tr class="odd">
+                    <th ><?php __( 'dtclorsa' );?></th>
+                    <td><?php echo (date_short( $situationdossierrsa['Situationdossierrsa']['dtclorsa'] ) );?></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div class="clearer"><hr /></div>

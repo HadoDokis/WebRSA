@@ -1,0 +1,640 @@
+/*****************************************************************************/
+
+p {
+    text-align: justify;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table th, table td {
+    border: 1px solid #235f7d!important;
+    padding: 0.125em 0.25em;
+}
+
+table th {
+    background: #dcdcdc;
+}
+
+/*****************************************************************************/
+
+/*.menu ul {
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    display: inline;
+    padding: 0 1em 0 0;
+    margin: 0;
+}*/
+
+/*****************************************************************************/
+
+body {
+    background: white url( ../img/header.png ) top left no-repeat;
+}
+
+table.cake-sql-log {
+    background: white;
+}
+
+#pageMenu {
+    margin: 1em 0;
+    border-top: 1px solid #235f7d;
+}
+
+#pageMenu ul, #pageContent, table.cake-sql-log {
+    /*max-width: 1000px;*/
+    margin: 0 auto;
+    padding: 0.5em;
+}
+
+#pageContent {
+    margin-top: 2em;
+}
+
+#pageFooter {
+    margin: 1em 0 0 0;
+    border-top: 1px solid #235f7d;
+    padding: 0.5em;
+    text-align: center;
+    color: silver;
+}
+
+/*****************************************************************************/
+
+#whois {
+    padding: 0.5em;
+    margin: 0;
+    font-size: 1.95em;
+    line-height: 1.2em;
+}
+
+#whois a {
+    margin-left: 150px;
+    text-decoration: none;
+}
+
+#whois a, #whois h1 {
+    color: transparent;
+}
+
+/*****************************************************************************/
+
+.menu a {
+    color: blue;
+}
+
+/*****************************************************************************/
+
+table thead, table tbody {
+    border: 2px solid #235f7d;
+}
+
+/*table th, table td {
+    border: 1px solid #235f7d;
+}*/
+
+table th {
+    background: #235f7d;
+    color: white;
+}
+tr.even {
+    background: #e6eef2;
+}
+
+tbody tr.even th {
+    background: #235f7d;
+}
+
+table.cake-sql-log caption {
+    color: black;
+}
+/* Affichage vue Dspp  */
+div#ficheDspp table {
+    width: 800px;
+    margin-bottom: 1em;
+}
+
+div#ficheDspp tbody th {
+    width: 600px;
+}
+
+div#ficheDspp tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheDspp tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheDspp tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheDspp tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+div#ficheDspp h2 {
+    font-size: 1.5em;
+}
+/* Affichage vue Données personne  */
+div#fichePers table {
+    width: 600px;
+    margin-bottom: 1em;
+}
+
+div#fichePers tbody th {
+    width: 300px;
+}
+div#fichePers tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#fichePers tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#fichePers tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#fichePers tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+div#fichePers h2 {
+    font-size: 1.5em;
+}
+
+/* Affichage vue Contrat Insertion */
+div#ficheCI table {
+    width: 800px;
+    margin-bottom: 1em;
+}
+
+div#ficheCI tbody th {
+    width: 600px;
+}
+div#ficheCI tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheCI tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheCI tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheCI tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+div#ficheCI h2 {
+    font-size: 1.5em;
+}
+
+/* Affichage vue Dspf */
+div#ficheDspf table {
+    width: 700px;
+    margin-bottom: 1em;
+}
+
+div#ficheDspf tbody th {
+    width: 400px;
+}
+div#ficheDspf tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheDspf tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheDspf tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheDspf tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+div#ficheDspf h2 {
+    font-size: 1.5em;
+}
+
+/* Affichage vue Adresses */
+div#ficheAdresse table {
+    width: 700px;
+    margin-bottom: 1em;
+}
+
+div#ficheAdresse tbody th {
+    width: 400px;
+}
+
+div#ficheAdresse tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheAdresse tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheAdresse tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheAdresse tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+div#ficheAdresse h2 {
+    font-size: 1.5em;
+}
+
+/* Affichage vue Dossier */
+div#ficheDossier table {
+    width: 350px;
+    margin-bottom: 1em;
+}
+
+div#ficheDossier tbody th {
+    width: 175px;
+}
+
+div#ficheDossier tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheDossier tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheDossier tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheDossier tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+
+
+/* Affichage vue Ressources */
+div#ficheRessTri table {
+    width: 750px;
+    margin-bottom: 1em;
+}
+
+div#ficheRessTri tbody th {
+    width: 500px;
+}
+
+div#ficheRessTri tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheRessTri tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheRessTri tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheRessTri tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+/*****************************************************************************/
+
+#flashMessage {
+    margin: 1em 0;
+    border: 1px solid #235f7d;
+    padding: 0.5em;
+}
+
+#flashMessage.message {
+    background: #fffee5;
+}
+
+#flashMessage.error {
+    background: #ffe5e5;
+    color: #cc0000;
+}
+
+#flashMessage.success {
+    background: #aed8ed;
+}
+
+/*****************************************************************************/
+
+p.error {
+    background: #ffe5e5;
+    color: #b20000;
+    margin: 1em 0;
+    border: 1px solid #235f7d;
+    padding: 0.5em;
+}
+
+p.notice {
+    background: #fffee5;
+    margin: 1em 0;
+    border: 1px solid #235f7d;
+    padding: 0.5em;
+}
+
+p.success {
+    background: #aed8ed;
+    margin: 1em 0;
+    border: 1px solid #235f7d;
+    padding: 0.5em;
+}
+
+.notice a {
+    color: blue;
+}
+
+/*****************************************************************************/
+
+table#searchResults a {
+    display: block;
+}
+
+/* FIXME ?? */
+ul.tabs {
+    display: block;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    margin: 1em 0 0 0;
+}
+
+ul.tabs li {
+    display: inline;
+    padding: 0 0.25em;
+    margin: 0;
+    border: 1px solid #235f7d;
+    background: #f0f0f0;
+}
+
+ul.tabs li.selected {
+    border-bottom: 1px solid white;
+    background: white;
+}
+
+/*****************************************************************************/
+
+table.tooltips tbody tr {
+    position: relative;
+}
+
+table.tooltips thead tr th.tooltip_table, table.tooltips tbody tr td.tooltip_table {
+    display: none;
+}
+
+table.tooltips tbody tr.hover td {
+    cursor: help;
+}
+
+table.tooltips tbody tr.hover td.tooltip_table {
+    position: absolute;
+    display: block;
+    border: 1px solid #235f7d;
+    background: white;
+    left: 0;
+    top: auto;
+    z-index: 5;
+    padding: 0;
+}
+
+table.tooltips td table {
+    padding: 0;
+    margin: 0;
+}
+
+/*****************************************************************************/
+
+div.clearer {
+    clear: both;
+}
+
+div.clearer hr {
+    display: none;
+}
+
+/*****************************************************************************/
+
+.with_treemenu {
+    margin-left: 18em;
+}
+
+.treemenu {
+    width: 17em;
+    border: 1px solid #235f7d;
+    float: left;
+}
+
+.treemenu ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: #e6eef2;
+}
+
+.treemenu li {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    padding-left: 1em;
+}
+
+.treemenu a, .treemenu span {
+    display: block;
+    padding: 0.125em 0;
+}
+
+.treemenu a.toggler {
+    display: block;
+    width: 1em;
+    height: 1.2em;
+    line-height: 1.2em;
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.treemenu li li {
+    display: block;
+}
+
+.treemenu h2 {
+    font-size: 1em;
+    background: #235f7d;
+    padding: 0.25em;
+    border-bottom: 1px solid #235f7d;
+}
+
+.treemenu h2 a {
+    color: white;
+}
+
+/*.treemenu li, .treemenu li ul { background: #f9ffe6; }
+.treemenu li li, .treemenu li li ul { background: white; }*/
+
+/*****************************************************************************/
+
+ul.actionMenu {
+    margin: 0.75em 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.actionMenu li {
+    margin: 0 0.5em 0 0;
+    padding: 0;
+    display: inline;
+}
+
+ul.actionMenu a {
+    padding: 0.33em 0.5em;
+    border: 1px solid #235f7d;
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+}
+
+table a {
+    display: inline-block;
+}
+
+/*****************************************************************************/
+
+#pageMenu * {
+    line-height: 1em;
+}
+
+#pageMenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    border-bottom: 1px solid silver;
+    height: 2em;
+}
+
+#pageMenu li {
+    padding: 0;
+    margin: 0;
+    float: left;
+    padding: 0.5em 0;
+}
+
+#pageMenu a {
+    border-right: 1px solid silver;
+    padding: 0.5em;
+}
+
+#pageMenu ul ul {
+    display: none;
+}
+
+#pageMenu li:hover ul {
+    display: block;
+    position: absolute;
+/*     left: 0; */
+    top: 2em;
+    margin-top: 2px;
+}
+
+#pageMenu li:hover a {
+    background: #9999ff;
+}
+
+#pageMenu li:hover ul a {
+    background: white;
+}
+
+#pageMenu li a {
+    border: 0;
+}
+
+
+/*#pageMenu * {
+    line-height: 1em;
+}
+
+#pageMenu ul {
+    display: block;
+    border-bottom: 1px solid silver;
+    padding: 0.5em 0;
+    margin: 0;
+    position: relative;
+    list-style: none;
+}
+
+#pageMenu li {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    margin-left: 0;
+    list-style: none;
+    padding: 0.5em 0;
+}
+
+#pageMenu a {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    border-right: 1px solid silver;
+    padding: 0.5em;
+}
+
+#pageMenu ul ul {
+    display: none;
+}
+
+#pageMenu li.selected ul {
+    display: block;
+    position: absolute
+}
+
+#pageMenu li.selected a {
+    background: #9999ff;
+}
+
+#pageMenu li.selected ul a {
+    background: white;
+}*/
