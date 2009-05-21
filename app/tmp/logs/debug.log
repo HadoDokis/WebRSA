@@ -11902,3 +11902,4 @@
 2009-05-19 16:24:05 Notice: Notice (8): Undefined offset:  0 in [APP/controllers/app_controller.php, line 21]
 2009-05-19 16:24:12 Notice: Notice (8): Undefined offset:  0 in [APP/controllers/app_controller.php, line 21]
 2009-05-19 16:24:37 Notice: Notice (8): Undefined offset:  0 in [APP/controllers/app_controller.php, line 21]
+2009-05-21 13:39:39 Notice: Notice (8): Undefined index:  User in [APP/controllers/app_controller.php, line 22]
