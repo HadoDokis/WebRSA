@@ -1,69 +1,12 @@
 <?php
-class ArrayToXML
-{
-    /**
-     * The main function for converting to an XML document.
-     * Pass in a multi dimensional array and this recrusively loops through and builds up an XML document.
-     *
-     * @param array $data
-     * @param string $rootNodeName - what you want the root node to be - defaultsto data.
-     * @param SimpleXMLElement $xml - should only be used recursively
-     * @return string XML
-     */
-    public static function toXml($data, $rootNodeName = 'data', $xml=null)
-    {
-        // turn off compatibility mode as simple xml throws a wobbly if you don't.
-        if (ini_get('zend.ze1_compatibility_mode') == 1)
-        {
-            ini_set ('zend.ze1_compatibility_mode', 0);
-        }
-
-        if ($xml == null)
-        {
-            $xml = simplexml_load_string("<?xml version='1.0' encoding='utf-8'?><$rootNodeName />");
-        }
-
-        // loop through the data passed in.
-        foreach($data as $key => $value)
-        {
-            // no numeric keys in our xml please!
-            if (is_numeric($key))
-            {
-                // make string key...
-                $key = "unknownNode_". (string) $key;
-            }
-
-            // replace anything not alpha numeric
-            $key = preg_replace('/[^a-z]/i', '', $key);
-
-            // if there is another array found recrusively call this function
-            if (is_array($value))
-            {
-                $node = $xml->addChild($key);
-                // recrusive call.
-                ArrayToXML::toXml($value, $rootNodeName, $node);
-            }
-            else
-            {
-                // add single node.
-                                $value = htmlentities($value);
-                $xml->addChild($key,$value);
-            }
-
-        }
-        // pass back as string. or simple xml object if you want!
-        return $xml->asXML();
-    }
-}
-
     class InstructionShell extends Shell
     {
         var $uses = array( 'Dossier', 'Foyer', 'Personne' );
         var $_xmlFile;
         var $_xmlParser;
-        var $_stack = array();
-        var $_cdataElements = array();
-        var $_tmp = array();
+//         var $_stack = array();
+//         var $_cdataElements = array();
+        var $_xmlString = '';
 
         //*********************************************************************
 
@@ -82,18 +25,95 @@ class ArrayToXML
 
         //*********************************************************************
 
+        function processDemandeRsa( $demandeXmlString ) {
+            $demandeXml = simplexml_load_string( '<?xml version="1.0" encoding="ISO-8859-1"?>'.$demandeXmlString );
+
+            /**
+                Dossier
+            */
+            $dossierXml = array( 'Dossier' => (array) $demandeXml->identificationrsa->demandersa );
+            $dossierDb = $this->Dossier->find(
+                'first',
+                array(
+                    'conditions' => array( 'Dossier.numdemrsa' => $dossierXml['Dossier']['numdemrsa'] ),
+                    'recursive' => -1
+                )
+            );
+            $dossier = Set::merge( $dossierDb, $dossierXml );
+
+            $this->Dossier->create();
+            assert( $this->Dossier->save( $dossier ) );
+
+            /**
+                Foyer
+            */
+            $foyerXml = array( 'Foyer' => (array) $demandeXml->donneesadministratives->logement );
+            $foyerXml['Foyer']['dossier_rsa_id'] = $this->Dossier->id;
+            $foyerDb = $this->Foyer->find(
+                'first',
+                array(
+                    'conditions' => array( 'Foyer.dossier_rsa_id' => $this->Dossier->id ),
+                    'recursive' => -1
+                )
+            );
+            $foyer = Set::merge( $foyerDb, $foyerXml );
+            $this->Foyer->create();
+            assert( $this->Foyer->save( $foyer ) );
+
+            /**
+                Personnes
+            */
+            foreach( $demandeXml->personne as $personne ) {
+                $personneXml = array(
+                    'Personne' => Set::merge(
+                        (array) $personne->identification,
+                        (array) $personne->nationalite,
+                        (array) $personne->prestations
+                    )
+                );
+                $personneXml['Personne']['foyer_id'] = $this->Foyer->id;
+                $personneDb = $this->Personne->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                        // FIXME: changement de foyer ?
+                            'Personne.foyer_id' => $this->Foyer->id,
+                            'Personne.nom'       => (array) $personneXml['Personne']['nom'],
+                            'Personne.nomnai'    => (array) $personneXml['Personne']['nomnai'],
+                            'Personne.prenom'    => (array) $personneXml['Personne']['prenom'],
+                            'Personne.dtnai'     => (array) $personneXml['Personne']['dtnai'],
+                            'Personne.typedtnai' => (array) $personneXml['Personne']['typedtnai'],
+                            'Personne.sexe'      => (array) $personneXml['Personne']['sexe']
+                        ),
+                        // FIXME: NIR ?
+                        'recursive' => -1
+                    )
+                );
+                $personne = Set::merge( $personneDb, $personneXml );
+                $this->Personne->create();
+                assert( $this->Personne->save( $personne ) );
+                // FIXME: assertion failed + pourquoi l'insertion fonctionne et pas la mise à jour ?
+                // debug( $personne );
+//                 debug( $this->Personne->validationErrors );
+            }
+        }
+
+        //*********************************************************************
+
         function startElement( $xmlParser, $currentTagName, $attrs ) {
-            array_push( $this->_stack, strtolower( $currentTagName ) );
+            $currentTagName = strtolower( $currentTagName );
+            if( $currentTagName == 'infodemandersa' ) {
+                $this->_xmlString = '';
+            }
+            $this->_xmlString .= '<'.$currentTagName.'>';
         }
 
         //-------------------------------------------------------------------------
 
         function cdataElement( $xmlParser, $data ) {
-            $currentTagName = $this->_stack[count( $this->_stack ) - 1];
             $data = trim( $data );
             if( !empty( $data ) ) {
-                $current = Set::insert( array(), implode( '.', $this->_stack ), $data );
-                $this->_cdataElements = Set::pushDiff( $current, $this->_cdataElements );
+                $this->_xmlString .= $data;
             }
         }
 
@@ -102,97 +122,17 @@ class ArrayToXML
         function endElement( $xmlParser, $currentTagName ) {
             $currentTagName = strtolower( $currentTagName );
 
+            $this->_xmlString .= '</'.$currentTagName.'>';
+
             switch( $currentTagName ) {
                 case 'infodemandersa':
                 /**
                     Fin d'un dossier RSA
                 */
-                    $infodemandersa = simplexml_load_string( ArrayToXML::toXml( $this->_cdataElements['racine']['infodemandersa'], 'infodemandersa' ) );
-                    debug( $infodemandersa );
-                    $this->_cdataElements['racine']['infodemandersa'] = array();
-                    $this->_dossier = null;
-                    $this->_foyer = null;
+                    $this->processDemandeRsa( $this->_xmlString );
+                    $this->_xmlString = '';
                     break;
-                /**
-
-                */
-//                 case 'demandersa':
-//                     $demandersa = $this->_cdataElements['racine']['infodemandersa']['identificationrsa']['demandersa'];
-//
-//                     $this->_dossier = $this->Dossier->find(
-//                         'first',
-//                         array(
-//                             'conditions' => array( 'numdemrsa' => $demandersa['numdemrsa'] ),
-//                             'recursive' => -1
-//                         )
-//                     );
-//
-//                     $this->_dossier['Dossier'] = Set::merge( $this->_dossier['Dossier'], $demandersa );
-//
-//                     $this->Dossier->create();
-//                     $this->Dossier->save( $this->_dossier['Dossier'] );
-//
-//                     $this->_dossier = $this->Dossier->find(
-//                         'first',
-//                         array(
-//                             'conditions' => array( 'numdemrsa' => $demandersa['numdemrsa'] ),
-//                             'recursive' => -1
-//                         )
-//                     );
-//
-//                     assert( !empty( $this->_dossier ) );
-//                     break;
-                /**
-                */
-//                 case 'logement':
-//                     $foyer = $this->_cdataElements['racine']['infodemandersa']['donneesadministratives']['logement'];
-//                     $foyer['dossier_rsa_id'] = $this->_dossier['Dossier']['id'];
-//
-//                     $this->_foyer = $this->Foyer->find(
-//                         'first',
-//                         array(
-//                             'conditions' => array( 'dossier_rsa_id' => $this->_dossier['Dossier']['id'] ),
-//                             'recursive' => -1
-//                         )
-//                     );
-//
-//                     $this->_foyer['Foyer'] = Set::merge( $this->_foyer['Foyer'], $foyer );
-//                     $this->Foyer->create();
-//                     $this->Foyer->save( $this->_foyer['Foyer'] );
-//
-//                     $this->_foyer = $this->Foyer->find(
-//                         'first',
-//                         array(
-//                             'conditions' => array( 'dossier_rsa_id' => $this->_dossier['Dossier']['id'] ),
-//                             'recursive' => -1
-//                         )
-//                     );
-//                     assert( !empty( $this->_foyer ) );
-//                     break;
-                /**
-                */
-//                 case 'personne':
-//                     debug( $this->_foyer );
-//                     break;
-//                     $personne = $this->_cdataElements['racine']['infodemandersa']['personne']['identification'];
-//                     $personne['foyer_id'] = $this->_foyer['Foyer']['id'];
-// //                     debug( $personne );
-//                     break;
             }
-
-            //-----------------------------------------------------------------
-
-//             else if( $currentTagName == 'personne' ) { // Personne/Identification
-//                 // FIXME: trouver si la personne  existe  pour faire les modifs
-//                 $personne = $this->_cdataElements['racine']['infodemandersa']['personne']['identification'];
-//                 $personne['foyer_id'] = $this->_foyer['Foyer']['id'];
-//                 debug( $personne );
-// //                 $this->Personne->create();
-// //                 $this->Personne->save( $personne );
-//
-//                 $this->_cdataElements['racine']['infodemandersa']['personne'] = array();
-//             }
-            array_pop( $this->_stack );
         }
 
         //*********************************************************************
@@ -209,11 +149,13 @@ class ArrayToXML
             //-----------------------------------------------------------------
 
             $this->_open( $this->Dispatch->args[0] );
+            $this->Dossier->begin(); // FIXME -> comment faire ?
             while( $data = fread( $this->_xmlFile, 4096 ) ) {
                 if( !xml_parse( $this->_xmlParser, $data, feof($this->_xmlFile ) ) ) {
                     die( sprintf( "XML error: %s at line %d", xml_error_string( xml_get_error_code( $this->_xmlParser ) ), xml_get_current_line_number( $this->_xmlParser ) ) );
                 }
             }
+            $this->Dossier->commit();
 
             //-----------------------------------------------------------------
 
