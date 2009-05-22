@@ -15,7 +15,7 @@
 
     class InstructionShell extends Shell
     {
-        var $uses = array( 'Dossier', 'Foyer', 'Personne' );
+        var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Ressource', 'Ressourcemensuelle' );
         var $_xmlFile;
         var $_xmlParser;
 //         var $_stack = array();
@@ -45,7 +45,13 @@
             /******************************************************************
                 Dossier
             ******************************************************************/
-            $dossierXml = array( 'Dossier' => (array) $demandeXml->identificationrsa->demandersa );
+            $dossierXml = array(
+                'Dossier' => Set::merge(
+                    (array) $demandeXml->identificationrsa->demandersa,
+                    (array) $demandeXml->identificationrsa->organisme,
+                    (array) $demandeXml->identificationrsa->partenaire
+                )
+            );
 
             $dossierDb = $this->Dossier->find(
                 'first',
@@ -55,9 +61,11 @@
                 )
             );
 
-            $dossier = array_filter_null_deep( Set::merge( $dossierDb, $dossierXml ) );
+            $dossierToDb = array_filter_null_deep( Set::merge( $dossierDb, $dossierXml ) );
             $this->Dossier->create();
-            assert( $this->Dossier->save( $dossier ) );
+            assert( $this->Dossier->save( $dossierToDb ) );
+
+            // TODO: suivisinstruction
 
             /******************************************************************
                 Foyer
@@ -73,9 +81,9 @@
                 )
             );
 
-            $foyer = array_filter_null_deep( Set::merge( $foyerDb, $foyerXml ) );
+            $foyerToDb = array_filter_null_deep( Set::merge( $foyerDb, $foyerXml ) );
             $this->Foyer->create();
-            assert( $this->Foyer->save( $foyer ) );
+            assert( $this->Foyer->save( $foyerToDb ) );
 
             /******************************************************************
                 Personnes
@@ -108,10 +116,69 @@
                     )
                 );
 
-                $personne = array_filter_null_deep( Set::merge( $personneDb, $personneXml ) );
+                $personneToDb = array_filter_null_deep( Set::merge( $personneDb, $personneXml ) );
                 $this->Personne->validate = array(); // INFO: ce qu'on reçoit du flux est toujours considéré comme correct
                 $this->Personne->create();
-                assert( $this->Personne->save( $personne ) );
+                assert( $this->Personne->save( $personneToDb ) );
+
+                /**************************************************************
+                    Ressource trimestrielle personne
+                **************************************************************/
+                $ressourceTrimestreXml = array(
+                    'Ressource' => Set::merge(
+                        (array) $personne->ressources->generaliteressourcestrimestre
+                    )
+                );
+                $ressourceTrimestreXml = array_filter_null_deep( $ressourceTrimestreXml );
+                if( !empty( $ressourceTrimestreXml ) ) {
+                    $ressourceTrimestreXml['Ressource']['personne_id'] = $this->Personne->id;
+
+                    $ressourceTrimestreDb = $this->Ressource->find(
+                        'first',
+                        array(
+                            'conditions' => array(
+                                'Ressource.personne_id' => $ressourceTrimestreXml['Ressource']['personne_id'],
+                                'Ressource.ddress'      => (array) $ressourceTrimestreXml['Ressource']['ddress'],
+                                'Ressource.dfress'      => (array) $ressourceTrimestreXml['Ressource']['dfress'],
+                            ),
+                            'recursive' => -1
+                        )
+                    );
+
+                    $ressourceTrimestreToDb = array_filter_null_deep( Set::merge( $ressourceTrimestreDb, $ressourceTrimestreXml ) );
+                    $this->Ressource->validate = array(); // INFO: ce qu'on reçoit du flux est toujours considéré comme correct
+                    $this->Ressource->create();
+                    assert( $this->Ressource->save( $ressourceTrimestreToDb ) );
+
+                    /**********************************************************
+                        Ressources mensuelles personne
+                    **********************************************************/
+                    foreach( $personne->ressources->ressourcesmensuelles as $ressourcemensuelle ) {
+                        $ressourceMoisXml = array(
+                            'Ressourcemensuelle'        => (array) $ressourcemensuelle->generaliteressourcesmensuelles,
+                            'Detailressourcemensuelle'  => (array) $ressourcemensuelle->detailressourcesmensuelles
+                        );
+                        $ressourceMoisXml['Ressourcemensuelle']['ressource_id'] = $this->Ressource->id;
+
+                        $ressourceMoisDb = $this->Ressourcemensuelle->find(
+                            'first',
+                            array(
+                                'conditions' => array(
+                                    'Ressourcemensuelle.ressource_id'  => $ressourceMoisXml['Ressourcemensuelle']['ressource_id'],
+                                    'Ressourcemensuelle.moisress'    => (array) $ressourceMoisXml['Ressourcemensuelle']['moisress']
+                                ),
+                                'recursive' => 2
+                            )
+                        );
+
+                        $ressourceMoisToDb = array_filter_null_deep( Set::merge( $ressourceMoisDb, $ressourceMoisXml ) );
+                        $this->Ressourcemensuelle->validate = array(); // INFO: ce qu'on reçoit du flux est toujours considéré comme correct
+                        $this->Ressourcemensuelle->create();
+                        assert( $this->Ressourcemensuelle->save( $ressourceMoisToDb ) );
+                        debug( $ressourceMoisDb );
+// debug( $ressourceMoisXml );
+                    }
+                }
             }
         }
 

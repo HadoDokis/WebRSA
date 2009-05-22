@@ -11,6 +11,7 @@
             echo $html->css( array( 'all.reset' ), 'stylesheet', array( 'media' => 'all' ) );
             echo $html->css( array( 'all.base' ), 'stylesheet', array( 'media' => 'all' ) );
             echo $html->css( array( 'screen.generic' ), 'stylesheet', array( 'media' => 'screen,presentation' ) );
+            echo $html->css( array( 'print.generic' ), 'stylesheet', array( 'media' => 'print' ) );
             echo $scripts_for_layout;
         ?>
         <?php
