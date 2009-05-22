@@ -1,4 +1,18 @@
 <?php
+    function array_filter_null_deep( $array ) {
+        foreach( $array as $key => $elem ) {
+            if( is_array( $elem ) ) {
+                $array[$key] = array_filter_null_deep( $elem );
+            }
+            if( empty( $array[$key] ) ) {
+                unset( $array[$key] );
+            }
+        }
+        return $array;
+    }
+
+    //*************************************************************************
+
     class InstructionShell extends Shell
     {
         var $uses = array( 'Dossier', 'Foyer', 'Personne' );
@@ -28,10 +42,11 @@
         function processDemandeRsa( $demandeXmlString ) {
             $demandeXml = simplexml_load_string( '<?xml version="1.0" encoding="ISO-8859-1"?>'.$demandeXmlString );
 
-            /**
+            /******************************************************************
                 Dossier
-            */
+            ******************************************************************/
             $dossierXml = array( 'Dossier' => (array) $demandeXml->identificationrsa->demandersa );
+
             $dossierDb = $this->Dossier->find(
                 'first',
                 array(
@@ -39,16 +54,17 @@
                     'recursive' => -1
                 )
             );
-            $dossier = Set::merge( $dossierDb, $dossierXml );
 
+            $dossier = array_filter_null_deep( Set::merge( $dossierDb, $dossierXml ) );
             $this->Dossier->create();
             assert( $this->Dossier->save( $dossier ) );
 
-            /**
+            /******************************************************************
                 Foyer
-            */
+            ******************************************************************/
             $foyerXml = array( 'Foyer' => (array) $demandeXml->donneesadministratives->logement );
             $foyerXml['Foyer']['dossier_rsa_id'] = $this->Dossier->id;
+
             $foyerDb = $this->Foyer->find(
                 'first',
                 array(
@@ -56,13 +72,14 @@
                     'recursive' => -1
                 )
             );
-            $foyer = Set::merge( $foyerDb, $foyerXml );
+
+            $foyer = array_filter_null_deep( Set::merge( $foyerDb, $foyerXml ) );
             $this->Foyer->create();
             assert( $this->Foyer->save( $foyer ) );
 
-            /**
+            /******************************************************************
                 Personnes
-            */
+            ******************************************************************/
             foreach( $demandeXml->personne as $personne ) {
                 $personneXml = array(
                     'Personne' => Set::merge(
@@ -72,6 +89,7 @@
                     )
                 );
                 $personneXml['Personne']['foyer_id'] = $this->Foyer->id;
+
                 $personneDb = $this->Personne->find(
                     'first',
                     array(
@@ -89,12 +107,11 @@
                         'recursive' => -1
                     )
                 );
-                $personne = Set::merge( $personneDb, $personneXml );
+
+                $personne = array_filter_null_deep( Set::merge( $personneDb, $personneXml ) );
+                $this->Personne->validate = array(); // INFO: ce qu'on reçoit du flux est toujours considéré comme correct
                 $this->Personne->create();
                 assert( $this->Personne->save( $personne ) );
-                // FIXME: assertion failed + pourquoi l'insertion fonctionne et pas la mise à jour ?
-                // debug( $personne );
-//                 debug( $this->Personne->validationErrors );
             }
         }
 
@@ -150,6 +167,8 @@
 
             $this->_open( $this->Dispatch->args[0] );
             $this->Dossier->begin(); // FIXME -> comment faire ?
+//             $this->Dossier->query( 'TRUNCATE TABLE dossiers_rsa CASCADE;' );
+
             while( $data = fread( $this->_xmlFile, 4096 ) ) {
                 if( !xml_parse( $this->_xmlParser, $data, feof($this->_xmlFile ) ) ) {
                     die( sprintf( "XML error: %s at line %d", xml_error_string( xml_get_error_code( $this->_xmlParser ) ), xml_get_current_line_number( $this->_xmlParser ) ) );
