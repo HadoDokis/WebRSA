@@ -38,18 +38,20 @@
             );
             $oMainPart = new GDO_PartType();
 
-$tmp = array();
+// $tmp = array();
             // Définition des variables pour les modèles de doc
             foreach( $datas as $group => $details ) {
-                foreach( $details as $key => $value ) {
-$tmp[strtolower( $group ).'_'.strtolower( $key )] = $value;
-                    $oMainPart->addElement(
-                        new GDO_FieldType(
-                            strtolower( $group ).'_'.strtolower( $key ),
-                            $value,
-                            'text'
-                        )
-                    );
+                if( !empty( $details ) ) {
+                    foreach( $details as $key => $value ) {
+// $tmp[strtolower( $group ).'_'.strtolower( $key )] = $value;
+                        $oMainPart->addElement(
+                            new GDO_FieldType(
+                                strtolower( $group ).'_'.strtolower( $key ),
+                                $value,
+                                'text'
+                            )
+                        );
+                    }
                 }
             }
 // debug( $tmp );

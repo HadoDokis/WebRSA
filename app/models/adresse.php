@@ -26,12 +26,12 @@
             Validation ... TODO
         */
         var $validate = array(
-            'numvoie' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+//             'numvoie' => array(
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
             'typevoie' => array(
                 array(
                     'rule' => 'notEmpty',

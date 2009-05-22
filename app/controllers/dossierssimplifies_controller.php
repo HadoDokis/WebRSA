@@ -2,7 +2,7 @@
     class DossierssimplifiesController extends AppController
     {
         var $name = 'Dossierssimplifies';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct' );
+        var $uses = array( 'Dossier', 'Foyer', /*'Adresse', 'Adressefoyer',*/ 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct' );
 
         function beforeFilter() {
             // FIXME
@@ -55,13 +55,40 @@
 
         function add() {
             $this->set( 'options', $this->Typeorient->listOptions() );
-            $this->set( 'options2', $this->Structurereferente->list1Options() );
+            $this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
+
+            $typesOrient = $this->Typeorient->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient'
+                    ),
+                    'conditions' => array(
+                        'Typeorient.parentid' => null
+                    )
+                )
+            );
+            $this->set( 'typesOrient', $typesOrient );
+            $typesStruct = $this->Typeorient->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient'
+                    ),
+                    'conditions' => array(
+                        'Typeorient.parentid NOT' => null
+                    )
+                )
+            );
+            $this->set( 'typesStruct', $typesStruct );
 
             if( !empty( $this->data ) ) {
                 $this->Dossier->set( $this->data );
                 $this->Foyer->set( $this->data );
-                $this->Adresse->set( $this->data );
-                $this->Adressefoyer->set( $this->data );
+//                 $this->Adresse->set( $this->data );
+//                 $this->Adressefoyer->set( $this->data );
                 $this->Orientstruct->set( $this->data );
 
                 $validates = $this->Dossier->validates();
@@ -77,8 +104,8 @@
                 $validates = $this->Personne->saveAll( $this->data['Personne'], array( 'validate' => 'only' ) ) & $validates;
 
 
-                $validates = $this->Adresse->validates() && $validates;
-                $validates = $this->Adressefoyer->validates() && $validates;
+//                 $validates = $this->Adresse->validates() && $validates;
+//                 $validates = $this->Adressefoyer->validates() && $validates;
                 $validates = $this->Orientstruct->validates() && $validates;
                 $validates = $this->Structurereferente->validates() && $validates;
 
@@ -109,12 +136,12 @@
                         }
                     }
 
-                    $saved = $this->Adresse->save( $this->data ) && $saved;
-                    $this->data['Adressefoyer']['adresse_id'] = $this->Adresse->id;
-                    $this->data['Adressefoyer']['foyer_id'] = $this->Foyer->id;
-                    $this->data['Adressefoyer']['rgadr'] = '01';
-                    $this->data['Adressefoyer']['typeadr'] = 'D';
-                    $saved = $this->Adressefoyer->save( $this->data ) && $saved;
+//                     $saved = $this->Adresse->save( $this->data ) && $saved;
+//                     $this->data['Adressefoyer']['adresse_id'] = $this->Adresse->id;
+//                     $this->data['Adressefoyer']['foyer_id'] = $this->Foyer->id;
+//                     $this->data['Adressefoyer']['rgadr'] = '01';
+//                     $this->data['Adressefoyer']['typeadr'] = 'D';
+//                     $saved = $this->Adressefoyer->save( $this->data ) && $saved;
 
                     if( $saved ) {
                         $this->Dossier->commit();

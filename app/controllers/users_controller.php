@@ -3,7 +3,7 @@
     {
 
         var $name = 'Users';
-        var $uses = array('Group');
+        var $uses = array('Group', 'Zonegeographique');
         var $aucunDroit = array('login', 'logout');
 
         /**
@@ -31,6 +31,77 @@
 
         function index() {
 
+            $users = $this->User->find(
+                'all',
+                array(
+                    'recursive' => -1
+                )
+
+            );
+
+            $this->set('users', $users);
+        }
+
+        function add() {
+
+            if( !empty( $this->data ) ) {
+                if( $this->User->saveAll( $this->data ) ) {
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
+                }
+            }
+
+            $zg = $this->Zonegeographique->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Zonegeographique.id',
+                        'Zonegeographique.libelle'
+                    )
+                )
+            );
+
+            $this->set( 'zglist', $zg );
+            $this->render( $this->action, null, 'add_edit' );
+        }
+
+        function edit( $user_id = null ) {
+            // TODO : vérif param
+            // Vérification du format de la variable
+            $this->assert( valid_int( $user_id ), 'error404' );
+
+            $zg = $this->Zonegeographique->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Zonegeographique.id',
+                        'Zonegeographique.libelle'
+                    )
+                )
+            );
+
+            $this->set( 'zglist', $zg );
+
+
+            if( !empty( $this->data ) ) {
+                if( $this->User->saveAll( $this->data ) ) {
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
+                }
+            }
+            else {
+               $user = $this->User->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'User.id' => $user_id,
+                        )
+                    )
+                );
+                $this->data = $user;
+            }
+
+            $this->render( $this->action, null, 'add_edit' );
         }
     }
 ?>
