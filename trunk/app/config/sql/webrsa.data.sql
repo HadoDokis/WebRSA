@@ -1,34 +1,34 @@
-INSERT INTO users ( id, username, password ) VALUES
-(
-    1,
-    'cg23',
-    'e711d517faf274f83262f0cdd616651e7590927e'
-),
-(
-    2,
-    'cg54',
-    '13bdf5c43c14722e3e2d62bfc0ff0102c9955cda'
-),
-(
-    3,
-    'cg58',
-    '5054b94efbf033a5fe624e0dfe14c8c0273fe320'
-),
-(
-    4,
-    'cg66',
-    'c41d80854d210d5f7512ab216b53b2f2b8e742dc'
-),
-(
-    5,
-    'cg93',
-    'ac860f0d3f51874b31260b406dc2dc549f4c6cde'
-),
-(
-    6,
-    'webrsa',
-    '83a98ed2a57ad9734eb0a1694293d03c74ae8a57'
-);
+-- INSERT INTO users ( id, username, password ) VALUES
+-- (
+--     1,
+--     'cg23',
+--     'e711d517faf274f83262f0cdd616651e7590927e'
+-- ),
+-- (
+--     2,
+--     'cg54',
+--     '13bdf5c43c14722e3e2d62bfc0ff0102c9955cda'
+-- ),
+-- (
+--     3,
+--     'cg58',
+--     '5054b94efbf033a5fe624e0dfe14c8c0273fe320'
+-- ),
+-- (
+--     4,
+--     'cg66',
+--     'c41d80854d210d5f7512ab216b53b2f2b8e742dc'
+-- ),
+-- (
+--     5,
+--     'cg93',
+--     'ac860f0d3f51874b31260b406dc2dc549f4c6cde'
+-- ),
+-- (
+--     6,
+--     'webrsa',
+--     '83a98ed2a57ad9734eb0a1694293d03c74ae8a57'
+-- );
 
 --------------------------
 -- ------ Zones geograhiques -----------
@@ -608,7 +608,7 @@ INSERT INTO typesorients VALUES
      1,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      null,   --            INTEGER,
      'Emploi',
-     'Notifica 1'   
+     'Notifica 1'
    );
 
 INSERT INTO typesorients VALUES
@@ -694,7 +694,7 @@ INSERT INTO structuresreferentes VALUES
       1,  --     zonegeographique_id      INTEGER NOT NULL REFERENCES zonesgeographiques(id),
       1,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
       'Pole emploi Mont Sud',  --     lib_struc           VARCHAR(32) NOT NULL,
-      '125',  --     num_voie            VARCHAR(6) NOT NULL, 
+      '125',  --     num_voie            VARCHAR(6) NOT NULL,
       'Avenue',  --     type_voie           VARCHAR(6) NOT NULL,
       'Alco', --     nom_voie            VARCHAR(30) NOT NULL,
       '34090',  --     code_postal         CHAR(5) NOT NULL,
@@ -708,7 +708,7 @@ INSERT INTO structuresreferentes VALUES
       1,  --     zonegeographique_id      INTEGER NOT NULL REFERENCES zonesgeographiques(id),
       2,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
       'Assedic Montp Nord',  --     lib_struc           VARCHAR(32) NOT NULL,
-      '10',  --     num_voie            VARCHAR(6) NOT NULL, 
+      '10',  --     num_voie            VARCHAR(6) NOT NULL,
       'rue',  --     type_voie           VARCHAR(6) NOT NULL,
       'Georges Freche', --     nom_voie            VARCHAR(30) NOT NULL,
       '34000',  --     code_postal         CHAR(5) NOT NULL,
@@ -722,7 +722,7 @@ INSERT INTO structuresreferentes VALUES
       1,  --     zonegeographique_id      INTEGER NOT NULL REFERENCES zonesgeographiques(id),
       3,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
       'Assedic Nimes',  --     lib_struc           VARCHAR(32) NOT NULL,
-      '44',  --     num_voie            VARCHAR(6) NOT NULL, 
+      '44',  --     num_voie            VARCHAR(6) NOT NULL,
       'chemin',  --     type_voie           VARCHAR(6) NOT NULL,
       'Parrot', --     nom_voie            VARCHAR(30) NOT NULL,
       '30000',  --     code_postal         CHAR(5) NOT NULL,
