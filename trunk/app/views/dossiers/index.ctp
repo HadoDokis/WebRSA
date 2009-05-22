@@ -9,7 +9,6 @@
             'Ajouter un dossier',
             array( 'controller' => 'tests', 'action' => 'wizard' )
         ).' </li>';
-
         if( $session->read( 'Auth.User.username' ) == 'cg66' ) { // FIXME
             echo '<li>'.$html->addSimpleLink(
                 'Ajouter une préconisation d\'orientation',

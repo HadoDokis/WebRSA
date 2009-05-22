@@ -37,6 +37,12 @@
                 'foreignKey' => 'dspp_id',
                 'associationForeignKey' => 'natmob_id',
                 //'unique' => true
+            ),
+            'Nivetu' => array(
+                'classname' => 'Nivetu',
+                'joinTable' => 'dspps_nivetus',
+                'foreignKey' => 'dspp_id',
+                'associationForeignKey' => 'nivetu_id'
             )
         );
 

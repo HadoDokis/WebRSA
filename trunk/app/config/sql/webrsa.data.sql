@@ -547,41 +547,41 @@ INSERT INTO difdisps VALUES(
 );
 --------------------------------------
 --------------------------------------
--- INSERT INTO nivetus VALUES(
---     1,
---     '1201',
---     'Niveau I/II: enseignement supérieur'
--- );
--- INSERT INTO nivetus VALUES(
---     2,
---     '1202',
---     'Niveau III: BAC + 2'
--- );
--- INSERT INTO nivetus VALUES(
---     3,
---     '1203',
---     'Niveau IV: BAC ou équivalent'
--- );
--- INSERT INTO nivetus VALUES(
---     4,
---     '1204',
---     'Niveau V: CAP/BEP'
--- );
--- INSERT INTO nivetus VALUES(
---     5,
---     '1205',
---     'Niveau Vbis: fin de scolarité obligatoire'
--- );
--- INSERT INTO nivetus VALUES(
---     6,
---     '1206',
---     'Niveau VI: pas de niveau'
--- );
--- INSERT INTO nivetus VALUES(
---     7,
---     '1207',
---     'Niveau VII: jamais scolarisé'
--- );
+INSERT INTO nivetus VALUES(
+    1,
+    '1201',
+    'Niveau I/II: enseignement supérieur'
+);
+INSERT INTO nivetus VALUES(
+    2,
+    '1202',
+    'Niveau III: BAC + 2'
+);
+INSERT INTO nivetus VALUES(
+    3,
+    '1203',
+    'Niveau IV: BAC ou équivalent'
+);
+INSERT INTO nivetus VALUES(
+    4,
+    '1204',
+    'Niveau V: CAP/BEP'
+);
+INSERT INTO nivetus VALUES(
+    5,
+    '1205',
+    'Niveau Vbis: fin de scolarité obligatoire'
+);
+INSERT INTO nivetus VALUES(
+    6,
+    '1206',
+    'Niveau VI: pas de niveau'
+);
+INSERT INTO nivetus VALUES(
+    7,
+    '1207',
+    'Niveau VII: jamais scolarisé'
+);
 --------------------------------------
 --------------------------------------
 INSERT INTO natmobs VALUES(

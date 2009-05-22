@@ -3,7 +3,7 @@
     {
 
         var $name = 'Dspps';
-        var $uses = array( 'Dspp', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Personne', 'Option');
+        var $uses = array( 'Dspp', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Nivetu', 'Personne', 'Option');
 
 
         function beforeFilter() {
@@ -11,12 +11,13 @@
             $this->set( 'accoemploi', $this->Option->accoemploi() );
             $this->set( 'hispro', $this->Option->hispro() );
             $this->set( 'duractdomi', $this->Option->duractdomi() );
-            $this->set( 'nivetu', $this->Option->nivetu() );
+            // $this->set( 'nivetu', $this->Option->nivetu() );
             // Données socioprofessionnelles personne
             $this->set( 'difsocs', $this->Difsoc->find( 'list' ) );
             $this->set( 'nataccosocindis', $this->Nataccosocindi->find( 'list' ) );
             $this->set('difdisps', $this->Difdisp->find( 'list' ) );
             $this->set( 'natmobs', $this->Natmob->find( 'list' ) );
+            $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
         }
 
         function view( $personne_id = null ){
@@ -85,7 +86,7 @@
                 if( $this->Dspp->saveAll( $this->data ) ) {
                    // debug( 'w00t' );
 
-                    $this->Session->setFlash( 'Enregistrement effectué' );
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'dspps', 'action' => 'view', $personne_id ) );
                 }
             }

@@ -48,7 +48,7 @@
                 <?php echo $form->input( 'Dspp.permicondub', array( 'label' => __( 'permicondub', true ), 'type' => 'checkbox' ) );?>
                 <?php echo $form->input( 'Dspp.libautrpermicondu', array( 'label' => __( 'libautrpermicondu', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libcompeextrapro', array( 'label' => __( 'libcompeextrapro', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Dspp.nivetu', array( 'label' => __( 'nivetu', true ), 'type' => 'select', 'options' => $nivetu, 'empty' => true ) );?>
+                <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
     </fieldset>
 
     <fieldset>

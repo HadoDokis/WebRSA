@@ -279,6 +279,7 @@ CREATE TABLE dspfs_nataccosocfams (
     dspf_id                 INTEGER NOT NULL REFERENCES dspfs(id)
 );
 
+
 CREATE TABLE diflogs (
     id                         SERIAL NOT NULL PRIMARY KEY,
     code                       CHAR(4),
@@ -366,7 +367,20 @@ CREATE TABLE dspps_difdisps (
     dspp_id   INTEGER NOT NULL REFERENCES dspps(id)
 );
 
+-------------------------------
+-------------------------------
+CREATE TABLE nivetus (
+    id                         SERIAL NOT NULL PRIMARY KEY,
+    code                       CHAR(4),
+    name                       VARCHAR(100) -- FIXME
+);
 
+CREATE TABLE dspps_nivetus (
+    nivetu_id        INTEGER NOT NULL REFERENCES nivetus(id),
+    dspp_id                 INTEGER NOT NULL REFERENCES dspps(id)
+);
+-------------------------------
+-------------------------------
 CREATE TABLE natmobs (
     id      SERIAL NOT NULL PRIMARY KEY,
     code    CHAR(4),
@@ -527,8 +541,6 @@ create table prestsform
 -- -----------------------------------------------------------------------------
 --       table Action: pour les prestations et aides
 -- -----------------------------------------------------------------------------
-
-
 create table typesactions
    (
         id                  SERIAL NOT NULL PRIMARY KEY,

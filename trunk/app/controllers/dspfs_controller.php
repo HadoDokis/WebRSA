@@ -3,7 +3,7 @@
     {
 
         var $name = 'Dspfs';
-        var $uses = array( 'Dspf', 'Nataccosocfam', 'Diflog', 'Personne', 'Option' , 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Foyer', 'Dspp');
+        var $uses = array( 'Dspf', 'Nataccosocfam', 'Diflog', 'Personne', 'Option' , 'Nivetu', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Foyer', 'Dspp');
 
 
         function beforeFilter() {
@@ -18,17 +18,17 @@
             $this->set( 'hispro', $this->Option->hispro() );
             $this->set( 'accoemploi', $this->Option->accoemploi() );
             $this->set( 'duractdomi', $this->Option->duractdomi() );
-            $this->set( 'nivetu', $this->Option->nivetu() );
+            //$this->set( 'nivetu', $this->Option->nivetu() );
 
             // DSP foyer
             $this->set( 'nataccosocfams', $this->Nataccosocfam->find( 'list' ) );
             $this->set( 'diflogs', $this->Diflog->find( 'list' ) );
             $this->set( 'difsocs', $this->Difsoc->find( 'list' ) );
             $this->set( 'nataccosocindis', $this->Nataccosocindi->find( 'list' ) );
-            $this->set( 'nivetu', $this->Option->nivetu() );
+            //$this->set( 'nivetu', $this->Option->nivetu() );
             $this->set( 'difdisps', $this->Difdisp->find( 'list' ) );
             $this->set( 'natmobs', $this->Natmob->find( 'list' ) );
-
+            $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
         }
 
 

@@ -32,7 +32,7 @@
             <tr>
                 <th>N° ressource</th>
                 <th>Percevez-vous des ressources ?</th>
-                <th>Montant</th>
+                <th>Montant DTR RSA</th>
                 <th>Date de début </th>
                 <th>Date de fin</th>
                 <th colspan="2" class="action">Actions</th>

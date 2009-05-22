@@ -17,7 +17,6 @@
         function index( $dossier_rsa_id = null ) {
             // Vérification du format de la variable
             $this->assert( valid_int( $dossier_rsa_id ), 'error404' );
-            //$this->assert( valid_int( $foyer_id ), 'error404' );
 
             // Recherche des adresses du foyer
             $infosfinancieres = $this->Infofinanciere->find(
@@ -31,7 +30,6 @@
             // Assignations à la vue
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
             $this->set( 'infosfinancieres', $infosfinancieres );
-//             $this->set( 'personne_id', $dossier_rsa_id);
         }
 
 

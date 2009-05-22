@@ -46,6 +46,7 @@
 
         function decision_ci() {
             return array(
+                '' => 'En attente',
                 'v' => 'Validation à compter du',
                 'a' => 'Ajournement',
                 'r' => 'Rejet'
@@ -344,17 +345,6 @@
             );
         }
 
-        function nivetu() {
-            return array(
-                '1201' => 'Niveau I/II : enseignement supérieur',
-                '1202' => 'Niveau III : BAC + 2',
-                '1203' => 'Niveau IV : BAC ou équivalent',
-                '1204' => 'Niveau V : CAP/BEP',
-                '1205' => 'Niveau Vbis : fin de scolarité obligatoire',
-                '1206' => 'Niveau VI : pas de niveau',
-                '1207' => 'Niveau VII : jamais scolarisé'
-            );
-        }
 
 
         function natfingro() {

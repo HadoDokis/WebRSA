@@ -169,7 +169,15 @@
             </tr>
             <tr class="even">
                 <th><?php __( 'nivetu' );?></th>
-                <td><?php echo $nivetu[$dspp['Dspp']['nivetu']];?></td>
+                <td>
+                    <?php if( !empty( $dspp['Nivetu'] ) ):?>
+                        <ul>
+                            <?php foreach( $dspp['Nivetu'] as $nivetu ):?>
+                                <li><?php echo h( $nivetu['name'] );?></li>
+                            <?php endforeach;?>
+                        </ul>
+                    <?php endif;?>
+                </td>
             </tr>
         </tbody>
 </table>

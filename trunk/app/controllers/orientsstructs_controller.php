@@ -49,29 +49,36 @@
                 $this->Orientstruct->set( $this->data );
                 $this->Typeorient->set( $this->data );
                 $this->Structurereferente->set( $this->data );
-                $this->Personne->set( $this->data );
+//                 $this->Personne->set( $this->data );
 
                 $validates = $this->Orientstruct->validates();
                 $validates = $this->Typeorient->validates() && $validates;
                 $validates = $this->Structurereferente->validates() && $validates;
-                $validates = $this->Personne->validates() && $validates ;
+                //$validates = $this->Personne->validates() && $validates ;
+//                 $validates = $this->Personne->saveAll( $this->data['Personne'], array( 'validate' => 'only' ) ) & $validates;
 
 
                 if( $validates ) {
                     $this->Personne->begin();
-                    $saved = $this->Orientstruct->save( $this->data );
+//                     $saved = $this->Orientstruct->save( $this->data );
 
-                    $saved = $this->Personne->save( $this->data ) && $saved;
-                    $this->data['Personne']['id'] = $this->Personne->id;
+                    // Orientation
+                    $this->Orientstruct->create();
+                    $this->data['Orientstruct']['personne_id'] = $personne_id;
+                    $this->data['Orientstruct']['valid_cg'] = true;
+                    $this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
+                    $this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
+                    $this->data['Orientstruct']['statut_orient'] = 'Orienté';
+                    $saved = $this->Orientstruct->save( $this->data['Orientstruct']);
 
-
-                    $saved = $this->Personne->save( $this->data ) && $saved;
+//                     $this->data['Personne']['id'] = $this->Personne->id;
+//                     $saved = $this->Personne->save( $this->data ) && $saved;
 
                  if( $saved ) {
 
                         $this->Personne->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'index', $personne_id ) );
+                        //$this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'index', $personne_id ) );
                     }
                     else {
                         $this->Personne->rollback();

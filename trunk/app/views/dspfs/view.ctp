@@ -355,8 +355,24 @@
                 </tr>
                 <tr class="even">
                     <th><?php __( 'nivetu' );?></th>
-                    <td><?php echo linkedValue( $nivetu, $dsp, 'DEM', 'Dspp', 'nivetu' );?></td>
-                    <td><?php echo linkedValue( $nivetu, $dsp, 'CJT', 'Dspp', 'nivetu' );?></td>
+                    <td>
+                        <?php if( !empty( $dsp['DEM']['Nivetu'] ) ):?>
+                            <ul>
+                                <?php foreach( $dsp['DEM']['Nivetu'] as $nivetu ):?>
+                                    <li><?php echo h( $nivetu['name'] );?></li>
+                                <?php endforeach;?>
+                            </ul>
+                        <?php endif;?>
+                    </td>
+                    <td>
+                        <?php if( !empty( $dsp['CJT']['Nivetu'] ) ):?>
+                            <ul>
+                                <?php foreach( $dsp['CJT']['Nivetu'] as $nivetu ):?>
+                                    <li><?php echo h( $nivetu['name'] );?></li>
+                                <?php endforeach;?>
+                            </ul>
+                        <?php endif;?>
+                    </td>
                 </tr>
             </tbody>
         </table>
