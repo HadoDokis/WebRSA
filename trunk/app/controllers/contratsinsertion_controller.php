@@ -71,6 +71,17 @@
                 $this->cakeError( 'error404' );
             }
 
+            $nivetu = $this->Nivetu->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Nivetu.id',
+                        'Nivetu.name'
+                    )
+                )
+            );
+            $this->set( 'nivetu', $nivetu );
+
             // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Contratinsertion->saveAll( $this->data ) ) {
                 $this->Session->setFlash( 'Enregistrement effectué' );
@@ -85,9 +96,20 @@
                         )
                     )
                 );
+
                 // FIXME -> chgment des rel. modèles
                 if( !empty( $dspp ) ) {
-                    $this->data['Contratinsertion']['niv_etude'] = $dspp['Dspp']['nivetu'];
+                    $maxId = null;
+                    $maxNiv = PHP_INT_MAX;
+                    foreach( $dspp['Nivetu'] as $nivetu ) {
+                        if( $nivetu['code'] < $maxNiv ) {
+                            $maxNiv = $nivetu['code'];
+                            $maxId = $nivetu['id'];
+                        }
+                    }
+                    if( !empty( $maxId ) ) {
+                        $this->data['Contratinsertion']['niv_etude'] = $maxId;
+                    }
                 }
             }
 
@@ -128,6 +150,18 @@
             if (empty($contratinsertion)){
                 $this->cakeError( 'error404' );
             }
+
+            $nivetu = $this->Nivetu->find(
+                'first',
+                array(
+                    'fields' => array(
+                        'Nivetu.id',
+                        'Nivetu.name'
+                    )
+                )
+            );
+
+            $this->set( 'nivetu', $nivetu );
 
             //debug ( $contratinsertion );
   

@@ -4,12 +4,12 @@
         var $name = 'Parametrages';
         var $uses = array( 'Dossier', 'Structurereferente', 'Zonegeographique' );
 
+
         function index() {
 
         }
 
         function view( $param = null ) {
-
 
             $zone = $this->Zonegeographique->find(
                 'first',
