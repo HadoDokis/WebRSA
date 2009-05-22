@@ -414,7 +414,7 @@ create table structuresreferentes
     zonegeographique_id     INTEGER NOT NULL REFERENCES zonesgeographiques(id),
     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
     lib_struc               VARCHAR(32) NOT NULL,
-    num_voie                VARCHAR(6) NOT NULL, 
+    num_voie                VARCHAR(6) NOT NULL,
     type_voie               VARCHAR(6) NOT NULL,
     nom_voie                VARCHAR(30) NOT NULL,
     code_postal             CHAR(5) NOT NULL,
@@ -581,11 +581,11 @@ create table ressourcesmensuelles
         mtabaneu                                    int4 null
    );
 
-CREATE TABLE ressources_ressourcesmensuelles
-  (
-    ressourcemensuelle_id   INTEGER NOT NULL REFERENCES ressourcesmensuelles(id),
-    ressource_id   INTEGER NOT NULL REFERENCES ressources(id)
- );
+-- CREATE TABLE ressources_ressourcesmensuelles
+--   (
+--     ressourcemensuelle_id   INTEGER NOT NULL REFERENCES ressourcesmensuelles(id),
+--     ressource_id   INTEGER NOT NULL REFERENCES ressources(id)
+--  );
 -- -----------------------------------------------------------------------------
 --       table ressources_mensuelles
 -- -----------------------------------------------------------------------------
@@ -601,11 +601,11 @@ create table detailsressourcesmensuelles
         topprevsubsress                             boolean
    );
 
-create table ressourcesmensuelles_detailsressourcesmensuelles
-   (
-        detailressourcemensuelle_id                 INTEGER NOT NULL REFERENCES detailsressourcesmensuelles(id),
-        ressourcemensuelle_id                       INTEGER NOT NULL REFERENCES ressourcesmensuelles(id)
-   );
+-- create table ressourcesmensuelles_detailsressourcesmensuelles
+--    (
+--         detailressourcemensuelle_id                 INTEGER NOT NULL REFERENCES detailsressourcesmensuelles(id),
+--         ressourcemensuelle_id                       INTEGER NOT NULL REFERENCES ressourcesmensuelles(id)
+--    );
 
 -- -- -----------------------------------------------------------------------------
 -- --       table : infosfinancieres (Volet Allocation)
@@ -628,7 +628,7 @@ create table infosfinancieres
    );
 
 -- -- -----------------------------------------------------------------------------
--- --       table : Identification Flux 
+-- --       table : Identification Flux
 -- -- -----------------------------------------------------------------------------
 create table identificationsflux
     (
@@ -639,7 +639,7 @@ create table identificationsflux
         natflux                                     char(1) null  ,
         dtcreaflux                                  date null  ,
         heucreaflux                                 date null  ,
-        dtref                                       date null  
+        dtref                                       date null
     );
 
 create table totalisationsacomptes
@@ -655,7 +655,7 @@ create table totalisationsacomptes
 
 
 /* Details des droit rsa liés au Dossie rsa  */
-CREATE TABLE detailsdroitsrsa 
+CREATE TABLE detailsdroitsrsa
 ( ---- l.176 - 205 Beneficiaires
     id                          SERIAL NOT NULL PRIMARY KEY,
     dossier_rsa_id              INTEGER NOT NULL REFERENCES dossiers_rsa(id),
@@ -681,7 +681,7 @@ CREATE TABLE detailsdroitsrsa
     mttotdrorsa                 FLOAT(9)
 );
 
-CREATE TABLE detailscalculsdroitsrsa 
+CREATE TABLE detailscalculsdroitsrsa
 (
     id                      SERIAL NOT NULL PRIMARY KEY,
     detaildroitrsa_id       INTEGER NOT NULL REFERENCES detailsdroitsrsa(id),
@@ -695,7 +695,7 @@ CREATE TABLE detailscalculsdroitsrsa
 
 
 /* Infos agricoles Liées à la Personne  */
-CREATE TABLE infosagricoles 
+CREATE TABLE infosagricoles
 ( --l.120 - 128 Instructions
     id                  SERIAL NOT NULL PRIMARY KEY,
     personne_id         INTEGER NOT NULL REFERENCES personnes(id),
@@ -704,7 +704,7 @@ CREATE TABLE infosagricoles
     regfisagri          CHAR(1)
 );
 
-CREATE TABLE aidesagricoles 
+CREATE TABLE aidesagricoles
 (
     id                  SERIAL NOT NULL PRIMARY KEY,
     infoagricole_id     INTEGER NOT NULL REFERENCES infosagricoles(id),
@@ -715,7 +715,7 @@ CREATE TABLE aidesagricoles
 
 /* Informations ETI Liées à la Personne */
 
-CREATE TABLE informationseti 
+CREATE TABLE informationseti
 ( --l.131 - 151 Instructions
     id                  SERIAL NOT NULL PRIMARY KEY,
     personne_id         INTEGER NOT NULL REFERENCES personnes(id),
@@ -740,12 +740,12 @@ CREATE TABLE informationseti
 );
 
 /* Grossesse liée à Personne */
-CREATE TABLE grossesses 
+CREATE TABLE grossesses
 ( --l.112 - 116 Beneficiaires
     id                  SERIAL NOT NULL PRIMARY KEY,
     personne_id         INTEGER NOT NULL REFERENCES personnes(id),
     ddgro               DATE,
     dfgro               DATE,
     dtdeclgro           DATE,
-    natfingro           CHAR(1)    
+    natfingro           CHAR(1)
 );
