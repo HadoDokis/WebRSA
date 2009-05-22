@@ -1,0 +1,36 @@
+CREATE TABLE acos (
+  id  SERIAL NOT NULL,
+  parent_id  INT NOT NULL,
+  model VARCHAR(255) DEFAULT '',
+  foreign_key INT DEFAULT NULL,
+  alias VARCHAR(255) DEFAULT '',
+  lft INT  DEFAULT NULL,
+  rght INT DEFAULT NULL,
+  PRIMARY KEY  (id)
+);
+
+CREATE TABLE aros_acos (
+  id  SERIAL NOT NULL,
+  aro_id INT NOT NULL,
+  aco_id INT NOT NULL,
+  _create CHAR(2) NOT NULL DEFAULT 0,
+  _read CHAR(2) NOT NULL DEFAULT 0,
+  _update CHAR(2) NOT NULL DEFAULT 0,
+  _delete CHAR(2) NOT NULL DEFAULT 0,
+ PRIMARY KEY(id)
+
+);
+
+CREATE TABLE aros (
+  id  SERIAL NOT NULL,
+  parent_id INT DEFAULT NULL,
+  model VARCHAR(255) DEFAULT '',
+  foreign_key INT DEFAULT NULL,
+  alias VARCHAR(255) DEFAULT '',
+  lft INT DEFAULT NULL,
+  rght INT DEFAULT NULL,
+  PRIMARY KEY(id)
+);
+
+ALTER TABLE groups ADD COLUMN parent_id INT ;
+ALTER TABLE users ADD COLUMN  group_id INT NOT NULL DEFAULT 0;
