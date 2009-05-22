@@ -17,9 +17,9 @@
             <li class="selected">
                 <?php echo $html->link( 'Administration', '#' );?>
                 <ul>
-                    <li><?php echo $html->link( 'Paramétrages', array( 'controller' => 'cohortes', 'action' => 'index' )  );?></li>
-                   <!--  <li><?php echo $html->link( 'Gestion des utilisateurs', '#' );?></li>
-                   <li><?php echo $html->link( 'Intégration flux', '#' );?></li>
+                    <li><?php echo $html->link( 'Droits', array( 'controller' => 'droits', 'action' => 'edit' )  );?></li>
+                    <li><?php echo $html->link( 'Paramétrage',  array( 'controller' => 'parametrages', 'action' => 'index'  ) );?></li>
+                  <!--  <li><?php echo $html->link( 'Intégration flux', '#' );?></li>
                     <li><?php echo $html->link( 'Gestion des logs', '#' );?></li>
                     <li><?php echo $html->link( 'Gestion des éditions', '#' );?></li>-->
                 </ul>

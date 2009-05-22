@@ -256,9 +256,21 @@
                             <th><?php __( 'libcompeextrapro' );?></th>
                             <td><?php echo $dsp[$pers]['Dspp']['libcompeextrapro'];?></td>
                         </tr>
-                        <tr class="even">
+                        <!-- <tr class="even">
                             <th><?php __( 'nivetu' );?></th>
                             <td><?php var_dump($dsp[$pers]['Dspp']['nivetu']);?><?php echo ( !empty( $dsp[$pers]['Dspp']['nivetu'] ) ? $nivetu[$dsp[$pers]['Dspp']['nivetu']] : null );?></td>
+                        </tr> -->
+                        <tr class="even">
+                            <th><?php __( 'nivetu' );?></th>
+                            <td>
+                                <?php if( !empty( $dsp[$pers]['Nivetu'] ) ):?>
+                                    <ul>
+                                        <?php foreach( $dsp[$pers]['Nivetu'] as $nivetu ):?>
+                                            <li><?php echo h( $nivetu['name'] );?></li>
+                                        <?php endforeach;?>
+                                    </ul>
+                                <?php endif;?>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

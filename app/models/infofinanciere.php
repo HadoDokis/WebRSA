@@ -8,7 +8,7 @@
         var $hasMany = array(
             'Dossier' => array(
                 'classname'     => 'Dossier',
-                'foreignKey'    => 'dossier_rsa_id'
+                'foreignKey'    => 'id'
             )
         );
 

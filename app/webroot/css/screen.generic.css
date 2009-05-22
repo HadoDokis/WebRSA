@@ -573,7 +573,7 @@ ul.actionMenu a {
     border-right: 1px solid silver;
     padding: 0.5em;
 }
-
+/* FIXME: on ne veut pas un sous-meun vertical mais un sous-menu horizontal */
 #pageMenu ul ul {
     display: none;
     position: absolute;

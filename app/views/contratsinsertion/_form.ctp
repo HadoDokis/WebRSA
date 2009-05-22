@@ -37,7 +37,7 @@ D'une part : le Président du Conseil Général
 
                 <!-- <?php echo $form->input( 'Contratinsertion.niv_etude', array( 'label' =>  __( 'niv_etude', true ) , 'type' => 'textarea', 'rows' => 3) );?> -->
 
-                <?php echo $form->input( 'Contratinsertion.niv_etude', array( 'label' => __( 'niv_etude', true ), 'div' => false,  'type' => 'select', 'options' => $nivetu, 'empty' => true ) );?>
+                <?php echo $form->input( 'Contratinsertion.niv_etude', array( 'label' => __( 'niv_etude', true ), 'div' => false,  'type' => 'select', 'options' => $nivetu, 'empty' => true ) );?> <!-- FIXME -->
                 <?php echo $form->input( 'Contratinsertion.diplomes', array( 'label' => __( 'diplomes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
                 <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __( 'expr_prof', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
                 <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' => __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
@@ -71,7 +71,7 @@ D'une part : le Président du Conseil Général
     </fieldset>
     <fieldset>
                 <?php echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __( 'observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
-                <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => required( __( 'decision_ci', true ) ),'type' => 'select', 'options' => $decision_ci, 'empty' => true ) ); ?>
+                <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => ( 'decision_ci', true ) ,'type' => 'select', 'options' => $decision_ci, 'empty' => true ) ); ?>
                 <?php echo $form->input( 'Contratinsertion.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true)  ); ?><br />
                 <?php echo $form->input( 'Fait à :', array( 'label' => 'Fait à : ', 'type' => 'text')  ); ?><br />
                 <?php echo $form->input( 'Le ', array( 'label' => 'Le : ', 'type' => 'text')  ); ?>

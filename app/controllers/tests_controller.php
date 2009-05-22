@@ -10,7 +10,7 @@
             $this->Wizard->steps = array( 'allocataire', 'conjoint', 'adresse', 'ressourcesallocataire', 'dossier' );
             $this->Wizard->completeUrl = '/tests/confirm';
             $this->Wizard->cancelUrl = '/tests/wizard';
-            parent::beforeFilter()
+            parent::beforeFilter();
         }
 
         /**

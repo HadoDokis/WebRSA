@@ -3,15 +3,16 @@
     {
 
         var $name = 'Contratsinsertion';
-        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Dspp');
+        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Nivetu', 'Dspp');
 
 
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'type_ci', $this->Option->type_ci() );
             $this->set( 'decision_ci', $this->Option->decision_ci() );
-            $this->set( 'nivetu', $this->Option->nivetu() );
+            //$this->set( 'nivetu', $this->Option->nivetu() );
             $this->set( 'referents', $this->Referent->find( 'list' ) );
+            $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
         }
 
         function index( $personne_id = null ){

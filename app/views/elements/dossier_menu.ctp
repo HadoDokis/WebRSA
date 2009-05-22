@@ -82,6 +82,30 @@
                         );
                     ?>
                 </li>
+<!--                <li>
+                    <?php
+                        echo $html->link(
+                            'Avis PCG droit rsa',
+                            array( 'controller' => 'avispcgdroitrsa', 'action' => 'index', $dossier['Foyer']['id'] )
+                        );
+                    ?>
+                </li>
+                <li>
+                    <?php
+                        echo $html->link(
+                            'Situation dossier rsa',
+                            array( 'controller' => 'situationsdossiersrsa', 'action' => 'index', $dossier['Foyer']['id'] )
+                        );
+                    ?>
+                </li>
+                <li>
+                    <?php
+                        echo $html->link(
+                            'Suivi d\'instruction',
+                            array( 'controller' => 'suivisinstructions', 'action' => 'index', $dossier['Foyer']['id'] )
+                        );
+                    ?>
+                </li>-->
             </ul>
         </li>
     <?php
