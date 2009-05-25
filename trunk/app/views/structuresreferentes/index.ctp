@@ -1,0 +1,54 @@
+<?php $this->pageTitle = 'Paramétrage des Structures référentes';?>
+
+<div>
+    <h1><?php echo 'Visualisation de la table  ';?></h1>
+
+    <ul class="actionMenu">
+        <?php
+            echo '<li>'.$html->addLink(
+                'Ajouter',
+                array( 'controller' => 'structuresreferentes', 'action' => 'add' )
+            ).' </li>';
+        ?>
+    </ul>
+    <div>
+        <h2>Table Structures référentes</h2>
+        <table>
+        <thead>
+            <tr>
+                <th>Nom de la structure</th>
+                <th>N° de voie</th>
+                <th>Type de voie</th>
+                <th>Nom de voie</th>
+		<th>Code postal</th>
+		<th>Ville</th>
+		<th>Code insee</th>
+                <th colspan="1" class="action">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach( $structuresreferentes as $structurereferente ):?>
+                <?php echo $html->tableCells(
+                            array(
+                                h( $structurereferente['Structurereferente']['lib_struc'] ),
+                                h( $structurereferente['Structurereferente']['num_voie'] ),
+                                h( $structurereferente['Structurereferente']['type_voie'] ),
+                                h( $structurereferente['Structurereferente']['nom_voie'] ),
+                                h( $structurereferente['Structurereferente']['code_postal'] ),
+                                h( $structurereferente['Structurereferente']['ville'] ),
+				h( $structurereferente['Structurereferente']['code_insee'] ),
+                                $html->editLink(
+                                    'Éditer le contrat d\'insertion ',
+                                    array( 'controller' => 'structuresreferentes', 'action' => 'edit', $structurereferente['Structurereferente']['id'] )
+                                ),
+                            ),
+                            array( 'class' => 'odd' ),
+                            array( 'class' => 'even' )
+                        );
+                ?>
+            <?php endforeach;?>
+            </tbody>
+        </table>
+</div>
+</div>
+<div class="clearer"><hr /></div>

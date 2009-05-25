@@ -561,3 +561,82 @@ msgstr "Type de structure"
 
 msgid "structure_referente"
 msgstr "Zone géographique"
+
+###############################################################################
+# Paramétrage des tables
+##############################################################################
+
+msgid "date_naissance"
+msgstr "Date de naissance"
+
+msgid "username"
+msgstr "Nom d'utilisateur"
+
+msgid "date_deb_hab"
+msgstr "Date de début d'habilitation"
+
+msgid "date_fin_hab"
+msgstr "Date de fin d'habilitation"
+
+msgid "codeinsee"
+msgstr "Code insee"
+
+msgid "libelle"
+msgstr "Libellé de la zone géographique"
+
+msgid "id"
+msgstr "ID"
+
+msgid "parentid"
+msgstr "ID parent"
+
+msgid "parent_id"
+msgstr "Parent"
+
+msgid "modele_notif"
+msgstr "Modèle de notification"
+
+msgid "numero_poste"
+msgstr "Numéro de poste"
+
+msgid "password"
+msgstr "Mot de passe"
+
+msgid "type_voie"
+msgstr "Type de voie"
+
+msgid "num_voie"
+msgstr "Numéro de voie"
+
+msgid "nom_voie"
+msgstr "Nom de voie"
+
+msgid "code_postal"
+msgstr "Code postal"
+
+msgid "ville"
+msgstr "Ville"
+
+msgid "code_insee"
+msgstr "Code INSEE"
+
+msgid "name"
+msgstr "Nom du groupe"
+
+msgid "lib_service"
+msgstr "Nom du service"
+
+msgid "num_rue"
+msgstr "Numéro de rue"
+
+msgid "nom_rue"
+msgstr "Nom de rue"
+
+msgid "complement_adr"
+msgstr "Complément d'adresse"
+
+msgid "email"
+msgstr "Email"
+
+msgid "lib_typo"
+msgstr "Type de contrat d'insertion"

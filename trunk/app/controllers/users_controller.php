@@ -3,7 +3,7 @@
     {
 
         var $name = 'Users';
-        var $uses = array('Group', 'Zonegeographique');
+        var $uses = array('Group', 'Zonegeographique', 'User', 'Serviceinstructeur');
         var $aucunDroit = array('login', 'logout');
 
         /**
@@ -34,7 +34,7 @@
             $users = $this->User->find(
                 'all',
                 array(
-                    'recursive' => -1
+                    'recursive' => 1
                 )
 
             );
@@ -43,13 +43,6 @@
         }
 
         function add() {
-
-            if( !empty( $this->data ) ) {
-                if( $this->User->saveAll( $this->data ) ) {
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
-                }
-            }
 
             $zg = $this->Zonegeographique->find(
                 'list',
@@ -60,8 +53,38 @@
                     )
                 )
             );
-
             $this->set( 'zglist', $zg );
+
+            $gp = $this->Group->find(
+                'list',
+                array(
+                    'fields' => array(
+                       // 'Group.id',
+                        'Group.name'
+                    )
+                )
+            );
+            $this->set( 'gp', $gp );
+	    
+            $si = $this->Serviceinstructeur->find(
+                'list',
+                array(
+                    'fields' => array(
+                        //'Serviceinstructeur.id',
+                        'Serviceinstructeur.lib_service'
+                    ),
+                )
+            );
+            $this->set( 'si', $si );
+
+
+            if( !empty( $this->data ) ) {
+                if( $this->User->saveAll( $this->data ) ) {
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
+                }
+            }
+	    
             $this->render( $this->action, null, 'add_edit' );
         }
 
@@ -79,10 +102,31 @@
                     )
                 )
             );
-
             $this->set( 'zglist', $zg );
 
-
+            $gp = $this->Group->find(
+                'list',
+                array(
+                    'fields' => array(
+                        //'Group.id',
+                        'Group.name'
+                    )
+                )
+            );
+            $this->set( 'gp', $gp );
+	    
+            $si = $this->Serviceinstructeur->find(
+                'list',
+                array(
+                    'fields' => array(
+                        //'Serviceinstructeur.id',
+                        'Serviceinstructeur.lib_service'
+                    )
+                )
+            );
+            $this->set( 'si', $si );
+	    
+	    
             if( !empty( $this->data ) ) {
                 if( $this->User->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -90,6 +134,7 @@
                 }
             }
             else {
+
                $user = $this->User->find(
                     'first',
                     array(

@@ -370,7 +370,7 @@
                 'RCB' => 'RSA Activité Local (Financement sur fonds Conseil général)'
             );
         }
-
+	
         function oridemrsa() {
             return array(
                 'RMI' => 'Le droit au rSa est issu de la conversion d\'un droit RMI',

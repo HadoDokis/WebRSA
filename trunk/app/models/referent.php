@@ -11,5 +11,27 @@
                 'foreignKey'    => 'structurereferente_id'
             )
         );
+	
+        var $validate = array(
+            'numero_poste' => array(
+                array(
+                    'rule' => 'isUnique',
+                    'message' => 'Ce N° de téléphone est déjà utilisé'
+                ),
+                array(
+                    'rule' => array( 'between', 4, 4 ),
+                    'message' => 'Le N° de poste est composé de 4 chiffres'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.',
+                    'allowEmpty' => true
+                ),
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+	    )
+	);
     }
 ?>
