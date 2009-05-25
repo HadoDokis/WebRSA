@@ -3,6 +3,10 @@
     {
         var $name = 'Foyer';
 
+        var $hasOne = array(
+            'Dspf'
+        );
+
         var $belongTo = array(
             'Dossier' => array(
                 'classname'     => 'Dossier',
@@ -11,6 +15,10 @@
         );
 
         var $hasMany = array(
+            'Adressefoyer' => array(
+                'classname'     => 'Adressefoyer',
+                'foreignKey'    => 'foyer_id'
+            ),
             'Personne' => array(
                 'classname'     => 'Personne',
                 'foreignKey'    => 'foyer_id'
