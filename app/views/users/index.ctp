@@ -22,6 +22,8 @@
                 <th>Date de naissance</th>
                 <th>Date début habilitation</th>
                 <th>Date fin habilitation</th>
+		<th>Groupe d'utilisateur</th>
+		<th>Service instructeur</th>
                 <th colspan="1" class="action">Actions</th>
             </tr>
         </thead>
@@ -35,6 +37,8 @@
                                 h( date_short( $user['User']['date_naissance'] ) ),
                                 h( date_short( $user['User']['date_deb_hab'] ) ),
                                 h( date_short( $user['User']['date_fin_hab'] ) ),
+				h( $user['Group']['name'] ) ,
+				h( $user['Serviceinstructeur']['lib_service'] ),
                                 $html->editLink(
                                     'Éditer le contrat d\'insertion ',
                                     array( 'controller' => 'users', 'action' => 'edit', $user['User']['id'] )

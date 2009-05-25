@@ -5,12 +5,19 @@
         var $name = 'User';
 
         var $belongsTo = array(
-            'Group'=>array(
+            'Group'=> array(
                 'className'  => 'Group',
                 'conditions' => '',
                 'order'      => '',
                 'dependent'  => false,
                 'foreignKey' => 'group_id'
+            ),
+            'Serviceinstructeur'=> array(
+                'className'  => 'Serviceinstructeur',
+                'conditions' => '',
+                'order'      => '',
+                'dependent'  => false,
+                'foreignKey' => 'serviceinstructeur_id'
             )
         );
 

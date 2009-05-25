@@ -78,7 +78,7 @@
 
                         $this->Personne->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        //$this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'index', $personne_id ) );
+                        $this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
                     }
                     else {
                         $this->Personne->rollback();

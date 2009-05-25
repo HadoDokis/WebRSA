@@ -13,7 +13,11 @@
             'Structurereferente' => array(
                 'classname' => 'Structurereferente',
                 'foreignKey' => 'structurereferente_id'
-            )
+            ),
+	    'Typocontrat' => array(
+		'classname' => 'Typocontrat',
+		'foreignKey' => 'typocontrat_id'
+	    )
         );
 
         var $hasOne = array(
