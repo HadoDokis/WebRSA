@@ -23,6 +23,10 @@
                 'classname' => 'Detaildroitrsa',
                 'foreignKey' => 'dossier_rsa_id'
             ),
+            'Suiviinstruction' => array(
+                'classname' => 'Suiviinstruction',
+                'foreignKey' => 'dossier_rsa_id'
+            ),
         );
 
 

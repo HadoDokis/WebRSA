@@ -86,7 +86,7 @@
         function etatirsa() {
             return array(
                 '03' => 'Instruction administrative confirmée',
-                '05' => ' Recueil des données socio-profesionnelles validé partiellement',
+                '05' => 'Recueil des données socio-profesionnelles validé partiellement',
                 '06' => 'Recueil des données socio-profesionnelles validé en totalité'
             );
         }
@@ -370,7 +370,7 @@
                 'RCB' => 'RSA Activité Local (Financement sur fonds Conseil général)'
             );
         }
-	
+
         function oridemrsa() {
             return array(
                 'RMI' => 'Le droit au rSa est issu de la conversion d\'un droit RMI',
@@ -538,21 +538,21 @@
                 '0' => 'Pas de ressources à évaluer'
             );
         }
- 
+
         function topsansdomfixe() {
             return array(
                 '0' => 'Domicile fixe',
                 '1' => 'Sans domicile fixe'
             );
         }
- 
+
         function topsansempl() {
             return array(
         '1' => 'Sans employés',
         '0' => 'Avec employés'
             );
         }
- 
+
         function topstag1ax() {
             return array(
         '1' => 'Emploie 1 ou plusieurs stagiaires',
@@ -598,7 +598,7 @@
                 'RTR' => 'Pour réajustement suite à transformation d\'avances ou d\'acomptes en indus',
 /*AllocCompta*/
 /*Indus constatés*/
-                'CIC' => 'Implantation de créance', 
+                'CIC' => 'Implantation de créance',
                 'CAI' => 'Implantation de créance suite à une opération comptable de réajustement. Une opération de type RAI a été effectuée sur un autre dossier allocataire.',
                 'CDC' => 'Implantation d\'un  débit complémentaire (augmentation de la créance)',
 /*Indus constatés*/

@@ -9,16 +9,12 @@
         /**
             Associations
         */
-//         var $belongTo = array(
-//             'Adresse' => array(
-//                 'className'     => 'Adresse',
-//                 'foreignKey'    => 'adresse_id'
-//             ),
-//             'Foyer' => array(
-//                 'className'     => 'Foyer',
-//                 'foreignKey'    => 'foyer_id'
-//             )
-//         );
+        var $hasOne = array(
+            'Adressefoyer' => array(
+                'className'     => 'Adressefoyer',
+                'foreignKey'    => 'adresse_id'
+            )
+        );
 
         //*********************************************************************
 
