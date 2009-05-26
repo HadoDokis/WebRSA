@@ -16,11 +16,11 @@
                         <th>Domicile fixe ?</th>
                         <th>Code origine de la demande</th>
                         <th>Date début calcul</th>
-			<th>Date de fin calcul</th>
-			<th>Montant revenu minimum</th>
-			<th>Montant revenu garanti</th>
-			<th>Montant ressources mensuelles</th>
-			<th>Montant total</th>
+                        <th>Date de fin calcul</th>
+                        <th>Montant revenu minimum</th>
+                        <th>Montant revenu garanti</th>
+                        <th>Montant ressources mensuelles</th>
+                        <th>Montant total</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -9,8 +9,9 @@
 </fieldset>
 <fieldset class="col2">
     <legend>Zones géographiques</legend>
-    <?php echo $form->input( 'Structurereferente.zonegeographique_id', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $zglist ) );?>
+    <?php echo $form->input( 'Structurereferente.zonegeographique_id', array( 'label' => false, 'div' => false, 'multiple' => 'checkbox' , 'options' => $zg ) );?>
 </fieldset>
+
 <fieldset class="col2">
     <legend>Types d'orientations</legend>
     <?php echo $form->input( 'Structurereferente.typeorient_id', array( 'label' => false, 'type' => 'select' , 'options' => $type, 'empty' => true ) );?>

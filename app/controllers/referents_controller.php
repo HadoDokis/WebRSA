@@ -19,19 +19,16 @@
         }
 
         function add() {
-    
             $sr = $this->Structurereferente->find(
                 'list',
                 array(
                     'fields' => array(
-/*			'Structurereferente.id',*/
                         'Structurereferente.lib_struc'
                     ),
                 )
             );
             $this->set( 'sr', $sr );
-	    
-	    
+
             if( !empty( $this->data ) ) {
                 if( $this->Referent->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -55,12 +52,10 @@
                     'fields' => array(
                         'Structurereferente.lib_struc'
                     )
-		    
                 )
             );
             $this->set( 'sr', $sr );
 
-	    
             if( !empty( $this->data ) ) {
                 if( $this->Referent->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );

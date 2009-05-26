@@ -41,6 +41,9 @@
 
 
         function add( $personne_id = null ) {
+
+            $this->assert( valid_int( $personne_id ), 'error404' );
+
             $this->set( 'options', $this->Typeorient->listOptions() );
             $this->set( 'options2', $this->Structurereferente->list1Options() );
 
@@ -90,5 +93,46 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
+        function edit( $orientstruct_id = null ) {
+            $this->assert( valid_int( $orientstruct_id ), 'error404' );
+
+            $this->set( 'options', $this->Typeorient->listOptions() );
+            $this->set( 'options2', $this->Structurereferente->list1Options() );
+	    
+	    $orientstruct = $this->Orientstruct->find(
+		'first',
+		array(
+		    'conditions' => array( 'Orientstruct.id' => $orientstruct_id ),
+		    'recursive' => 2
+		)
+	    );
+	    
+            // Essai de sauvegarde
+            if( !empty( $this->data ) ) {
+                if( $this->Orientstruct->save( $this->data ) ) {
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
+                }
+            }
+            // Afficage des données
+            else {
+                $orientstruct = $this->Orientstruct->find(
+                    'first',
+                    array(
+                        'conditions' => array( 'Orientstruct.id' => $orientstruct_id ),
+                        'recursive' => 2
+                    )
+                );
+
+                // Mauvais paramètre
+                $this->assert( !empty( $orientstruct ), 'error404' );
+
+                // Assignation au formulaire
+                $this->data = $orientstruct;
+            }
+
+            $this->set( 'personne_id', $orientstruct['Orientstruct']['personne_id'] );
+            $this->render( $this->action, null, 'add_edit' );
+        }
     }
 ?>

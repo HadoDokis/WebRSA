@@ -3,7 +3,12 @@
         <?php if( $session->check( 'Auth.User' ) ): ?>
             <!--<li><?php echo $html->link( 'Accueil', '/' );?></li>-->
 
-            <li><?php echo $html->link( 'Recherche dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?></li>
+            <li>
+                <?php echo $html->link( 'Recherche dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?>
+                <ul>
+                    <li><?php echo $html->link( 'Recherche multi-critères', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
+                </ul>
+            </li>
             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                 <?php echo $html->link( 'Gestion des cohortes', '#' );?>
                 <ul>

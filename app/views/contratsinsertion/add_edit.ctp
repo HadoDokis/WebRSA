@@ -63,14 +63,16 @@ $( document ).ready(
         if( $this->action == 'add' ) {
             echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ) /*array('type' => 'post', 'action' => 'add/'.$personne_id )*/ );
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
+            echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
+            echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden' ) );
+            echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden' ) );
         }
         else {
             echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );
-
-/*            echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden', 'value' => $typocontrat_id ) );*/
-/*            echo $form->input( 'Contratinsertion.referent_id', array( 'type' => 'hidden', 'value' => $referent_id ) );*/
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
+            echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden' ) );
+            echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden' ) );
         }
 
 

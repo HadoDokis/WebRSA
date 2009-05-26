@@ -28,7 +28,7 @@ CREATE TABLE servicesinstructeurs (
 
 CREATE TABLE users (
     id                      SERIAL NOT NULL PRIMARY KEY,
-    group_id            INTEGER NOT NULL REFERENCES groups(id)  DEFAULT 0,
+    group_id                INTEGER NOT NULL REFERENCES groups(id)  DEFAULT 0,
     serviceinstructeur_id   INTEGER NOT NULL REFERENCES servicesinstructeurs(id),
     username                VARCHAR(50) NOT NULL,
     password                VARCHAR(50) NOT NULL,

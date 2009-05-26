@@ -22,9 +22,8 @@ D'une part : le Président du Conseil Général
 
 <fieldset>
             <legend>Contrats d'insertion</legend>
-                <?php echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );?>
-                <?php echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );?>
-                <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden', 'value' => $personne_id ) );?>
+                <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __( 'lib_struc', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );?>
+                <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => __( 'lib_typo', true ), 'type' => 'select' , 'options' => $tc, 'empty' => true ) );?>
                 <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __( 'dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true)  );?>
                 <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+30, 'minYear'=>date('Y')-30 , 'empty' => true)  ) ;?>
     </fieldset>
@@ -36,13 +35,13 @@ D'une part : le Président du Conseil Général
             <legend> FORMATION ET EXPERIENCE </legend>
 
                 <!-- <?php echo $form->input( 'Contratinsertion.niv_etude', array( 'label' =>  __( 'niv_etude', true ) , 'type' => 'textarea', 'rows' => 3) );?> -->
+                <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
 
-                <?php echo $form->input( 'Contratinsertion.niv_etude', array( 'label' => __( 'niv_etude', true ), 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetu ) );?> <!-- FIXME -->
                 <?php echo $form->input( 'Contratinsertion.diplomes', array( 'label' => __( 'diplomes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
                 <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __( 'expr_prof', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
                 <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' => __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
     </fieldset>
-              <?php echo $form->input( 'Contratinsertion.type_ci', array( 'label' => required( __( 'type_ci', true ) ), 'type' => 'select', 'options' => $type_ci, 'empty' => true ) );?>
+                <?php echo $form->input( 'Contratinsertion.type_ci', array( 'label' => required( __( 'type_ci', true ) ), 'type' => 'select', 'options' => $type_ci, 'empty' => true ) );?>
     <fieldset>
             <legend> PARCOURS D'INSERTION ANTERIEUR </legend>
                 <?php echo $form->input( 'Contratinsertion.rg_ci', array( 'label' => __( 'rg_ci', true ), 'type' => 'text')  ); ?>

@@ -4,6 +4,14 @@
         var $name = 'Typeorient';
         var $useTable = 'typesorients';
 
+        var $hasMany = array(
+            'Structurereferente' => array(
+                'classname' => 'Structurereferente',
+                'foreignKey' => 'typeorient_id'
+            )
+        );
+	
+	
         function listOptions() {
             $options = $this->find( 
                 'list',
