@@ -12,6 +12,12 @@
                 'joinTable' => 'users_zonesgeographiques',
                 'foreignKey' => 'zonegeographique_id',
                 'associationForeignKey' => 'user_id'
+            ),
+            'Structurereferente' => array(
+                'classname' => 'Structurereferente',
+                'joinTable' => 'structuresreferentes_zonesgeographiques',
+                'foreignKey' => 'zonegeographique_id',
+                'associationForeignKey' => 'structurereferente_id'
             )
         );
 

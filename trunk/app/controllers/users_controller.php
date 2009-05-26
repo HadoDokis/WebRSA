@@ -84,7 +84,7 @@
                     $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
                 }
             }
-	    
+
             $this->render( $this->action, null, 'add_edit' );
         }
 
@@ -114,7 +114,7 @@
                 )
             );
             $this->set( 'gp', $gp );
-	    
+
             $si = $this->Serviceinstructeur->find(
                 'list',
                 array(
@@ -125,8 +125,7 @@
                 )
             );
             $this->set( 'si', $si );
-	    
-	    
+
             if( !empty( $this->data ) ) {
                 if( $this->User->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -145,7 +144,6 @@
                 );
                 $this->data = $user;
             }
-
             $this->render( $this->action, null, 'add_edit' );
         }
     }

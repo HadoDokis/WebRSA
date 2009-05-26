@@ -16,15 +16,18 @@
                 )
             );
             return $options;
-
         }
 
+        var $hasAndBelongsToMany = array(
+            'Zonegeographique' => array(
+                'classname'             => 'Zonegeographique',
+                'joinTable'             => 'structuresreferentes_zonesgeographiques',
+                'foreignKey'            => 'structurereferente_id',
+                'associationForeignKey' => 'zonegeographique_id'
+            )
+        );
 
         var $belongsTo = array(
-            'Zonegeographique' => array(
-                'classname' => 'Zonegeographique',
-                'foreignKey' => 'zonegeographique_id'
-            ),
             'Typeorient' => array(
                 'classname' => 'Typeorient',
                 'foreignKey' => 'typeorient_id'

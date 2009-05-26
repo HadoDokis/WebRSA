@@ -20,9 +20,39 @@
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
             //$this->set( 'lib_struc', $this->Option->lib_struc() ); ///FIXME
+
+            $this->set( 'options', $this->Typeorient->listOptions() );
+            $this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
         }
 
         function view( $id = null ) {
+            $typesOrient = $this->Typeorient->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient'
+                    ),
+                    'conditions' => array(
+                        'Typeorient.parentid' => null
+                    )
+                )
+            );
+            $this->set( 'typesOrient', $typesOrient );
+
+            $typesStruct = $this->Typeorient->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient'
+                    ),
+                    'conditions' => array(
+                        'Typeorient.parentid NOT' => null
+                    )
+                )
+            );
+            $this->set( 'typesStruct', $typesStruct );
             // FIXME: assert
             $dossier = $this->Dossier->find(
                 'first',
@@ -54,8 +84,6 @@
 
 
         function add() {
-            $this->set( 'options', $this->Typeorient->listOptions() );
-            $this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
 
             $typesOrient = $this->Typeorient->find(
                 'list',
@@ -70,6 +98,7 @@
                 )
             );
             $this->set( 'typesOrient', $typesOrient );
+
             $typesStruct = $this->Typeorient->find(
                 'list',
                 array(
@@ -84,12 +113,14 @@
             );
             $this->set( 'typesStruct', $typesStruct );
 
+
             if( !empty( $this->data ) ) {
                 $this->Dossier->set( $this->data );
                 $this->Foyer->set( $this->data );
 //                 $this->Adresse->set( $this->data );
 //                 $this->Adressefoyer->set( $this->data );
                 $this->Orientstruct->set( $this->data );
+                $this->Structurereferente->set( $this->data );
 
                 $validates = $this->Dossier->validates();
                 $validates = $this->Foyer->validates() && $validates;
@@ -133,6 +164,7 @@
                             $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
                             $this->data['Orientstruct'][$key]['statut_orient'] = 'Orienté';
                             $saved = $this->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
+
                         }
                     }
 

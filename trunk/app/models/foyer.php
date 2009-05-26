@@ -14,6 +14,15 @@
             )
         );
 
+        var $hasAndBelongsToMany = array(
+            'Creance' => array(
+                'classname' => 'Creance',
+                'joinTable' => 'foyers_creances',
+                'foreignKey' => 'foyer_id',
+                'associationForeignKey' => 'creance_id'
+            )
+        );
+
         var $hasMany = array(
             'Adressefoyer' => array(
                 'classname'     => 'Adressefoyer',
@@ -30,7 +39,11 @@
             'AdressesFoyer' => array(
                 'classname'     => 'AdressesFoyer',
                 'foreignKey'    => 'foyer_id'
-            )
+            )/*,
+            'Creance' => array(
+                'classname'     => 'Creance',
+                'foreignKey'    => 'foyer_id'
+            )*/
         );
     }
 ?>

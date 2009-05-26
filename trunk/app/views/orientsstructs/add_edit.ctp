@@ -23,9 +23,7 @@
             echo $form->create( 'Orientstruct', array(  'type' => 'post', 'url' => Router::url( null, true )  ));
             echo '<div>';
             echo $form->input( 'Orientstruct.id', array( 'type' => 'hidden', 'value' => '' ) );
-//             echo $form->input( 'Structurereferente.zonegeographique_id', array( 'type' => 'hidden', 'value' => '' ) );
-//             echo $form->input( 'Structurereferente.typeorient_id', array( 'type' => 'hidden', 'value' => '' ) );
-//             echo $form->input( 'Structurereferente.orientstruct_id', array( 'type' => 'hidden', 'value' => '' ) );
+
             echo '</div>';
         }
         else {

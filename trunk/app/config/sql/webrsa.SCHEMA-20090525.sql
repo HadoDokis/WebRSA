@@ -475,7 +475,7 @@ CREATE TABLE typesorients (
 
 create table structuresreferentes (
     id                      SERIAL NOT NULL PRIMARY KEY,
-    zonegeographique_id     INTEGER NOT NULL REFERENCES zonesgeographiques(id),
+    -- zonegeographique_id     INTEGER NOT NULL REFERENCES zonesgeographiques(id),
     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
     lib_struc               VARCHAR(32) NOT NULL,
     num_voie                VARCHAR(6) NOT NULL, 
