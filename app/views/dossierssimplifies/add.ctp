@@ -3,6 +3,7 @@
 
 <h1><?php echo $this->pageTitle;?></h1>
 
+
 <?php echo $form->create( 'Dossiersimplifie',array( 'url' => Router::url( null, true ) ) );?>
 <!--
 le NIR (N° Sécu) et le N° National de la demande d'instruction à 9
@@ -23,11 +24,11 @@ l'organisme vers lequel il y aura orientation (si ouverture du droit).
     <?php echo $form->input( 'Personne.0.nir', array( 'label' => required( __( 'nir', true ) ) ) );?>
     <?php echo $form->input( 'Personne.0.dtnai', array( 'label' => required( __( 'dtnai', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
     <?php echo $form->input( 'Personne.0.toppersdrodevorsa', array(  'label' =>  required( __( 'toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
+
     <h3>Orientation</h3>
     <?php echo $form->input( 'Typeorient.0.id', array( 'label' => required( __( 'lib_type_orient', true ) ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
     <?php echo $form->input( 'TypeStruct.0.id', array( 'label' => required(__( 'lib_struc', true  )), 'type' => 'select', 'options' => $typesStruct, 'empty' => true ) );?>
     <?php echo $form->input( 'Orientstruct.0.structurereferente_id', array( 'label' => required(__( 'structure_referente', true  )), 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );?>
-
 
     <h2>Conjoint</h2>
     <div> <?php echo $form->input( 'Personne.1.rolepers', array( 'label' =>  __( 'rolepers', true ) , 'value' => 'CJT', 'type' => 'hidden') );?></div>

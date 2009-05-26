@@ -85,7 +85,8 @@
         'detaildroitrsa' => 'detailsdroitsrsa',
         'detailcalculdroitrsa' => 'detailscalculsdroitsrsa',
         'zonegeographique' => 'zonesgeographiques',
-        'serviceinstructeur' => 'servicesinstructeurs'
+        'serviceinstructeur' => 'servicesinstructeurs',
+        'foyercreance' => 'foyerscreances'
      );
 /**
  * This is a key => value array of regex used to match words.

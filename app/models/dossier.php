@@ -27,6 +27,10 @@
                 'classname' => 'Suiviinstruction',
                 'foreignKey' => 'dossier_rsa_id'
             ),
+            'Infofinanciere' => array(
+                'classname' => 'Infofinanciere',
+                'foreignKey' => 'dossier_rsa_id'
+            )
         );
 
 

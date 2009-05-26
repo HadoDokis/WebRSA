@@ -25,6 +25,7 @@
         <tbody>
             <?php
                 foreach( $dossier['Foyer']['Personne'] as $personne ) {
+//debug( $personne );
                     echo $html->tableCells(
                         array(
                             h( $personne['rolepers'] ),
@@ -34,6 +35,7 @@
                             h( date_short( $personne['Orientstruct']['date_valid'] ) ),
                             h( $personne['Structurereferente']['Typeorient']['lib_type_orient'] ) ,
                             h( $personne['Structurereferente']['lib_struc']  ),
+
                             $html->editLink(
                                 'Editer l\'orientation',
                                 array( 'controller' => 'orientsstructs', 'action' => 'edit', $personne['Orientstruct']['id'])

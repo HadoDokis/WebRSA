@@ -11,6 +11,103 @@
             );
         }
 
+        function act() {
+            return array(
+                'AAP' => 'ACTIVITE EN ATELIER PROTEGE',
+                'ABA' => 'CHOMEUR-ALLOC DE BASE',
+                'ABS' => 'ABSENT DU FOYER',
+                'ADA' => 'CHOMEUR AUD OU PARE ABATTEMENT',
+                'ADN' => 'CHOMEUR AUD NEUTRALISATION',
+                'AFA' => 'AIDE FAMILIALE AGRICOLE',
+                'AFC' => 'CHO AFR - FIN STAGE - SCE.PUBLIC',
+                'AFD' => 'CHOMEUR-ALLOC FIN DROIT',
+                'AIN' => 'CHOMEUR-ALLOC INSERTION',
+                'AMA' => 'ASSISTANTE MATERNELLE AGREEE',
+                'AMT' => 'MI-TEMPS SUITE PLEIN TEMPS',
+                'ANI' => 'CHOM. NON INDEMNISE + ACTIV.',
+                'ANP' => 'INSCRIT A l\'ANPE',
+                'APP' => 'APPRENTI',
+                'ASP' => 'CHOMEUR-ALLOC SPECIALE',
+                'ASS' => 'CHOMEUR-ALLOC SOLIDARITE SPEC.',
+                'CAC' => 'CESSATION ACTIVITE POUR ENFANT',
+                'CAP' => 'CHOMEUR ET ACTIVITE > 55% DU SMIC',
+                'CAR' => 'DELAI DE CARENCE ASSEDIC',
+                'CAT' => 'ACTIVITE CENTRE AIDE TRAVAIL',
+                'CBS' => 'CAT: ABSENT DU FOYER',
+                'CCV' => 'CONGE CONVENTIONNEL',
+                'CDA' => 'CHOMEUR AUD ABAT. + ACTIVITE',
+                'CDN' => 'CHOMEUR AUD NEUT. + ACTIVITE',
+                'CEA' => 'CES MAINTIEN ABATTEMENT',
+                'CEN' => 'CES MAINTIEN NEUTRALISATION',
+                'CES' => 'CONTRAT EMPLOI SOLIDARITE',
+                'CGP' => 'CONGE PAYE',
+                'CHA' => 'CHOM. + ACTIVITE',
+                'CHO' => 'CHOMEUR SANS JUSTIFICATIF',
+                'CHR' => 'CHOMEUR',
+                'CIA' => 'CONTRAT INSERTION/ACTIVITE /DOM',
+                'CIS' => 'CONTRAT INSERT. + SALARIE/DOM',
+                'CJT' => 'CONJOINT COLLABORATEUR D\'ETI',
+                'CLD' => 'CAT: LONGUE MALADIE',
+                'CNI' => 'CHOMAGE NON INDEMNISE',
+                'CPL' => 'CHOMAGE PARTIEL',
+                'CSA' => 'CES ET SALARIE (E)',
+                'CSS' => 'CONGE SANS SOLDE',
+                'DEG' => 'DEGAGE OBLIGATION SCOLAIRE',
+                'DNL' => 'SAL. NON REM. DUREE LEGALE',
+                'DSF' => 'DECL SITUATION NON FOURNIE',
+                'EBO' => 'ETUDIANT BOURSIER RMI',
+                'ETI' => 'ETI REGIME GENERAL',
+                'ETS' => 'ETUDIANT SALARIE',
+                'ETU' => 'ETUDIANT',
+                'EXP' => 'ETI REGIME AGRICOLE',
+                'EXS' => 'EXPL. AGRICOLE EN CES/DOM',
+                'FDA' => 'FONCT. PUBL. CHOM. AUD-ABA',
+                'FDN' => 'FONCT. PUBL. CHOM. AUD-NEU',
+                'GSA' => 'GERANT SALARIE',
+                'HAN' => 'INFIRME/HANDICAPE',
+                'IAD' => 'INSTRUCTION A DOMICILE',
+                'INF' => 'MALADE/HANDICAP NON SCOLAIRE',
+                'INP' => 'INAPTE',
+                'INT' => 'TRAVAILLEUR INTERMITTENT',
+                'INV' => 'PENSION INVALIDITE',
+                'JNF' => 'JUST NON FOURNI POUR APPRENTI',
+                'MAL' => 'MALADE',
+                'MAR' => 'ETI MARIN PECHEUR',
+                'MAT' => 'CONGE MATERNITE OU PATERNITE CONGE MATER./PATER.',
+                'MLD' => 'MALADIE LONGUE DUREE',
+                'MMA' => 'ENFANT MAINTENU MATERNELLE',
+                'MMC' => 'MAL MATERN. ET CHOMAGE ABAT.',
+                'MMI' => 'MAL MATERN. ET CHOMAGE NEUT.',
+                'MNE' => 'MORT NE VIABLE OU NON VIABLE',
+                'MOA' => 'MEMBRE ORG COMM EN ACTIVITE',
+                'MOC' => 'MEMBRE ORG COMM SANS ACTIVITE',
+                'NAS' => 'INASSIDU',
+                'NCH' => 'PLUS DE DROIT / NON A CHARGE',
+                'NOB' => 'NON SOUMIS OBLIG. SCOLAIRE',
+                'PIL' => 'STAGIAIRE PROG INSERT. LOCALE',
+                'PRE' => 'PRE-RETRAITE',
+                'RAC' => 'REDUCTION ACTIVITE (CAT)',
+                'RAT' => 'RENTIER ACCIDENT DU TRAVAIL',
+                'RET' => 'RETRAITE(E)',
+                'RMA' => 'TITULAIRE CONTRAT CIRMA/CAV',
+                'RSA' => 'RETRAITE (E) MILITAIRE <60ANS',
+                'SAB' => 'CONGE SABBATIQUE',
+                'SAC' => 'CESSATION ACTIVITE BENEF AAH',
+                'SAL' => 'SALARIE(E)',
+                'SAV' => 'SANS ACTIVITE MOTIF CDAPH (ex-COTOREP)',
+                'SCI' => 'MALADE/HANDICAPE SCOLARISE',
+                'SCO' => 'SCOLAIRE',
+                'SFP' => 'STAGE FORM. PROFESSIONNELLE',
+                'SIN' => 'ACTIVITE INCONNUE',
+                'SNA' => 'SERVICE NATIONAL ACTIF',
+                'SNR' => 'STAGE NON REMUNERE ET RMI',
+                'SSA' => 'SANS ACTIVITE',
+                'SUR' => 'BENEF. RENTE DE SURVIVANT AT',
+                'TSA' => 'TRAVAILLEUR SAISONNIER',
+                'VRP' => 'VOYAGEUR REPRESENTANT PLACIER'
+            );
+        }
+
         function accoemploi() {
             return array(
                 '1801' => 'Pas d\'accompagnement',
@@ -25,6 +122,20 @@
                 'A' => 'Artisan',
                 'L' => 'Profession libérale',
                 'E' => 'Entrepreneur'
+            );
+        }
+
+        function applieme() {
+            return array(
+                'CRI' => 'Cristal Cnaf',
+                'AGO' => 'Agora Ccmsa',
+                'NRI' => '@IRMI Cnaf',
+                'NRS' => '@RSA Cnaf',
+                'IOD' => 'IODAS GFI',
+                'GEN' => 'GENESIS SIRUS-BULL',
+                'IAS' => 'IAS JVS implicit',
+                'PER' => 'Peceaveal INFODB',
+                '54' => ' Logiciel du CG 54'
             );
         }
 
@@ -371,6 +482,137 @@
             );
         }
 
+        function numorg() {
+            return array(
+               '011' => 'CAF DE BOURG EN BRESSE',
+               '021' => 'CAF DE SAINT QUENTIN',
+               '022' => 'CAF DE SOISSONS',
+               '031' => 'CAF DE MOULINS',
+               '041' => 'CAF DE DIGNE-LES-BAINS',
+               '051' => 'CAF DE GAP',
+               '061' => 'CAF DE NICE',
+               '071' => 'CAF D\'ANNONAY',
+               '072' => 'CAF D\'AUBENAS',
+               '081' => 'CAF DE CHARLEVILLE MEZIERES',
+               '091' => 'CAF DE FOIX',
+               '101' => 'CAF DE TROYES',
+               '111' => 'CAF DE CARCASSONNE',
+               '121' => 'CAF DE RODEZ',
+               '131' => 'CAF DE MARSEILLE',
+               '141' => 'CAF DE CAEN',
+               '151' => 'CAF D\'AURILLAC',
+               '161' => 'CAF D\'ANGOULEME',
+               '171' => 'CAF DE LA ROCHELLE',
+               '172' => 'CAISSE MARITIME D\'AF PECHE MARITIME',
+               '181' => 'CAF DE BOURGES',
+               '191' => 'CAF DE BRIVE',
+               '201' => 'CAF D\'AJACCIO',
+               '202' => 'CAF DE BASTIA',
+               '211' => 'CAF DE DIJON',
+               '221' => 'CAF DE SAINT BRIEUC',
+               '231' => 'CAF DE GUERET',
+               '241' => 'CAF DE PERIGUEUX',
+               '251' => 'CAF DE BESANCON',
+               '252' => 'CAF DE MONTBELIARD',
+               '261' => 'CAF DE VALENCE',
+               '271' => 'CAF D\'EVREUX',
+               '281' => 'CAF DE CHARTRES',
+               '291' => 'CAF DE BREST',
+               '292' => 'CAF DE QUIMPER',
+               '301' => 'CAF DE NIMES',
+               '311' => 'CAF DE TOULOUSE',
+               '321' => 'CAF D\'AUCH',
+               '331' => 'CAF DE BORDEAUX',
+               '341' => 'CAF DE BEZIERS',
+               '342' => 'CAF DE MONTPELLIER',
+               '351' => 'CAF DE RENNES',
+               '361' => 'CAF DE CHATEAUROUX',
+               '371' => 'CAF DE TOURS',
+               '381' => 'CAF DE GRENOBLE',
+               '382' => 'CAF DE VIENNE',
+               '391' => 'CAF DE SAINT CLAUDE',
+               '401' => 'CAF DE MONT DE MARSAN',
+               '411' => 'CAF DE BLOIS',
+               '421' => 'CAF DE ROANNE',
+               '422' => 'CAF DE SAINT ETIENNE',
+               '431' => 'CAF DU PUY',
+               '441' => 'CAF DE NANTES',
+               '451' => 'CAF D\'ORLEANS',
+               '461' => 'CAF DE CAHORS',
+               '471' => 'CAF D\'AGEN',
+               '481' => 'CAF DE MENDE',
+               '491' => 'CAF D\'ANGERS',
+               '492' => 'CAF DE CHOLET',
+               '501' => 'CAF D\'AVRANCHES',
+               '511' => 'CAF DE REIMS',
+               '521' => 'CAF DE CHAUMONT',
+               '531' => 'CAF DE LAVAL',
+               '541' => 'CAF DE NANCY',
+               '551' => 'CAF DE BAR LE DUC',
+               '561' => 'CAF DE VANNES',
+               '571' => 'CAF DE METZ',
+               '581' => 'CAF DE NEVERS',
+               '591' => 'CAF D\'ARMENTIERES',
+               '592' => 'CAF DE CAMBRAI',
+               '593' => 'CAF DE DOUAI',
+               '594' => 'CAF DE DUNKERQUE',
+               '595' => 'CAF DE LILLE',
+               '596' => 'CAF DE MAUBEUGE',
+               '597' => 'CAF DE ROUBAIX',
+               '599' => 'CAF DE VALENCIENNES',
+               '601' => 'CAF DE BEAUVAIS',
+               '602' => 'CAF DE CREIL',
+               '611' => 'CAF D\'ALENCON',
+               '621' => 'CAF D\'ARRAS',
+               '622' => 'CAF DE CALAIS',
+               '631' => 'CAF DE CLERMONT FERRAND',
+               '641' => 'CAF DE BAYONNE',
+               '642' => 'CAF DE PAU',
+               '651' => 'CAF DE TARBES',
+               '661' => 'CAF DE PERPIGNAN',
+               '671' => 'CAF DE STRASBOURG',
+               '681' => 'CAF DE MULHOUSE',
+               '691' => 'CAF DE LYON',
+               '692' => 'CAF DE VILLEFRANCHE SUR SAONE',
+               '701' => 'CAF DE VESOUL',
+               '711' => 'CAF DE MACON',
+               '721' => 'CAF DU MANS',
+               '731' => 'CAF DE CHAMBERY',
+               '741' => 'CAF D\'ANNECY',
+               '751' => 'CAF DE PARIS',
+               '752' => 'CAF de PARIS - NAVIG. INTERIEURE',
+               '754' => 'CAF de PARIS - MARINS DU COMMERCE',
+               '761' => 'CAF DE DIEPPE',
+               '762' => 'CAF D\'ELBEUF',
+               '763' => 'CAF DU HAVRE',
+               '764' => 'CAF DE ROUEN',
+               '771' => 'CAF DE MELUN',
+               '781' => 'CAF DE ST QUENTIN EN YVELINES',
+               '791' => 'CAF DE NIORT',
+               '801' => 'CAF D\'AMIENS',
+               '811' => 'CAF D\'ALBI',
+               '821' => 'CAF DE MONTAUBAN',
+               '831' => 'CAF DE TOULON',
+               '841' => 'CAF D\'AVIGNON',
+               '851' => 'CAF DE LA ROCHE SUR YON',
+               '861' => 'CAF DE POITIERS',
+               '871' => 'CAF DE LIMOGES',
+               '881' => 'CAF D\'EPINAL',
+               '891' => 'CAF D\'AUXERRE',
+               '901' => 'CAF DE BELFORT',
+               '911' => 'CAF D\'EVRY',
+               '921' => 'CAF DE NANTERRE',
+               '931' => 'CAF DE ROSNY SOUS BOIS',
+               '941' => 'CAF DE CRETEIL',
+               '951' => 'CAF DE CERGY PONTOISE',
+               '971' => 'CAF DE POINTE A PITRE',
+               '972' => 'CAF DU LAMENTIN',
+               '973' => 'CAF DE CAYENNE',
+               '974' => 'CAF DE SAINT DENIS-DE-LA-REUNION',
+               '976' => 'MAYOTTE'
+            );
+        }
+
         function oridemrsa() {
             return array(
                 'RMI' => 'Le droit au rSa est issu de la conversion d\'un droit RMI',
@@ -481,38 +723,47 @@
             );
         }
 
+        function statut_orient() {
+            return array(
+                '1' => 'Non orienté',
+                '2' => 'Validé',
+                '3' => 'En attente'
+            );
+        }
+
+
         function topaccre() {
             return array(
-        '1' => 'Bénéficiaire de l`ACCRE',
-        '0' => 'Non bénéficiaire de l`ACCRE'
+                '1' => 'Bénéficiaire de l`ACCRE',
+                '0' => 'Non bénéficiaire de l`ACCRE'
             );
         }
 
         function topbeneti() {
             return array(
-        '1' => 'Présence d\'un bénéfice',
-        '0' => 'Pas de bénéfices'
+                '1' => 'Présence d\'un bénéfice',
+                '0' => 'Pas de bénéfices'
             );
         }
 
         function topcreaentre() {
             return array(
-        '1' => 'Créateur d\'entreprise',
-        '0' => 'Non créateur d\'entreprise'
+                '1' => 'Créateur d\'entreprise',
+                '0' => 'Non créateur d\'entreprise'
             );
         }
 
         function topempl1ax() {
             return array(
-        '1' => 'Emploie 1 ou plusieurs salariés',
-        '0' => 'N\'emploie pas 1 ou plusieurs salariés'
+                '1' => 'Emploie 1 ou plusieurs salariés',
+                '0' => 'N\'emploie pas 1 ou plusieurs salariés'
             );
         }
 
         function topevoreveti() {
             return array(
-        '1' => 'Evolution des revenus',
-        '0' => 'Pas d\'évolution des revenus'
+                '1' => 'Evolution des revenus',
+                '0' => 'Pas d\'évolution des revenus'
             );
         }
 
@@ -548,26 +799,17 @@
 
         function topsansempl() {
             return array(
-        '1' => 'Sans employés',
-        '0' => 'Avec employés'
+                '1' => 'Sans employés',
+                '0' => 'Avec employés'
             );
         }
 
         function topstag1ax() {
             return array(
-        '1' => 'Emploie 1 ou plusieurs stagiaires',
-        '0' => 'N\'emploie pas 1 ou plusieurs stagiaires'
+                '1' => 'Emploie 1 ou plusieurs stagiaires',
+                '0' => 'N\'emploie pas 1 ou plusieurs stagiaires'
             );
         }
-
-
-        function typeadr() {
-            return array(
-                'D' => 'Définitive',
-                'P' => 'Provisoire'
-            );
-        }
-
 
         function type_allocation() {
             return array(
@@ -585,6 +827,22 @@
                 'pre' => 'Premier contrat',
                 'ren' => 'Renouvellement',
                 'red' => 'Redéfinition'
+            );
+        }
+
+        function typeadr() {
+            return array(
+                'D' => 'Définitive',
+                'P' => 'Provisoire'
+            );
+        }
+
+
+        function typedtnai() {
+            return array(
+                'J' => 'Jour inconnu',
+                'N' => 'Jour et mois connus',
+                'O' => 'Jour et mois inconnus'
             );
         }
 
@@ -621,13 +879,17 @@
             );
         }
 
-        function typedtnai() {
+
+        function typeparte() {
             return array(
-                'J' => 'Jour inconnu',
-                'N' => 'Jour et mois connus',
-                'O' => 'Jour et mois inconnus'
+                'CG' => 'Conseil Général', // Code identification partenaire = n° de département sur 3 positions
+                'CCAS' => 'Centre Communal d\'Action Sociale', // Code identification partenaire = N° de commune Insee sur 5 positions
+                'CIAS' => 'Centre Intercommunal d\'Action Sociale', // Code identification partenaire = N° de commune Insee du siège de l'intercommunalité sur 5 positions
+                'PE' => 'Pole Emploi', // Code identification partenaire = a préciser avec PE
+                'MDPH' => 'Maison Départemental Pour le Handicap' //  Code identification partenaire = n° de département sur 3 positions
             );
         }
+
 
         function typeperstie() {
             return array(

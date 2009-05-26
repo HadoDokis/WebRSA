@@ -10,7 +10,7 @@
         /**
             Associations
         */
-        var $belongTo = array(
+        var $belongsTo = array(
             'Adresse' => array(
                 'className'     => 'Adresse',
                 'foreignKey'    => 'adresse_id'

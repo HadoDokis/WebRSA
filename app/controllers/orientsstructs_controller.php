@@ -52,18 +52,14 @@
                 $this->Orientstruct->set( $this->data );
                 $this->Typeorient->set( $this->data );
                 $this->Structurereferente->set( $this->data );
-//                 $this->Personne->set( $this->data );
 
                 $validates = $this->Orientstruct->validates();
                 $validates = $this->Typeorient->validates() && $validates;
                 $validates = $this->Structurereferente->validates() && $validates;
-                //$validates = $this->Personne->validates() && $validates ;
-//                 $validates = $this->Personne->saveAll( $this->data['Personne'], array( 'validate' => 'only' ) ) & $validates;
 
 
                 if( $validates ) {
                     $this->Personne->begin();
-//                     $saved = $this->Orientstruct->save( $this->data );
 
                     // Orientation
                     $this->Orientstruct->create();
@@ -73,9 +69,6 @@
                     $this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
                     $this->data['Orientstruct']['statut_orient'] = 'Orienté';
                     $saved = $this->Orientstruct->save( $this->data['Orientstruct']);
-
-//                     $this->data['Personne']['id'] = $this->Personne->id;
-//                     $saved = $this->Personne->save( $this->data ) && $saved;
 
                  if( $saved ) {
 
@@ -98,15 +91,14 @@
 
             $this->set( 'options', $this->Typeorient->listOptions() );
             $this->set( 'options2', $this->Structurereferente->list1Options() );
-	    
-	    $orientstruct = $this->Orientstruct->find(
-		'first',
-		array(
-		    'conditions' => array( 'Orientstruct.id' => $orientstruct_id ),
-		    'recursive' => 2
-		)
-	    );
-	    
+
+            $orientstruct = $this->Orientstruct->find(
+            'first',
+            array(
+                'conditions' => array( 'Orientstruct.id' => $orientstruct_id ),
+                'recursive' => 2
+            )
+            );
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
                 if( $this->Orientstruct->save( $this->data ) ) {
