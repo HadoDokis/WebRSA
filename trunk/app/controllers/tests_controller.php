@@ -180,16 +180,16 @@
             $valid = $this->Ressourcemensuelle->validates() && $valid;
             $valid = $this->Detailressourcemensuelle->validates() && $valid;
 
-            if( count( array_filter( $data['conjoint']['Personne'] ) ) != 3 ) { // FIXME
-                $this->Ressource->create();
-                $this->Ressource->set( $data['ressourcesconjoint'] );
-                $this->Ressourcemensuelle->set( $data['ressourcesconjoint'] );
-                $this->Detailressourcemensuelle->set( $data['ressourcesconjoint'] );
-
-                $valid = $this->Ressource->validates();
-                $valid = $this->Ressourcemensuelle->validates() && $valid;
-                $valid = $this->Detailressourcemensuelle->validates() && $valid;
-            }
+//             if( count( array_filter( $data['conjoint']['Personne'] ) ) != 3 ) { // FIXME
+//                 $this->Ressource->create();
+//                 $this->Ressource->set( $data['ressourcesconjoint'] );
+//                 $this->Ressourcemensuelle->set( $data['ressourcesconjoint'] );
+//                 $this->Detailressourcemensuelle->set( $data['ressourcesconjoint'] );
+//
+//                 $valid = $this->Ressource->validates();
+//                 $valid = $this->Ressourcemensuelle->validates() && $valid;
+//                 $valid = $this->Detailressourcemensuelle->validates() && $valid;
+//             }
 /**
     TODO
         *

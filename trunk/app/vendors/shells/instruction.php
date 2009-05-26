@@ -233,7 +233,10 @@
             //-----------------------------------------------------------------
 
             $this->_open( $this->Dispatch->args[0] );
-            $this->Dossier->begin(); // FIXME -> comment faire ?
+            // FIXME -> comment faire => traiter les transactions sur chaque dossier
+            //          Si erreur -> créer un fichier à retraiter juste avec les erreurs,
+            //          mais au même format
+            $this->Dossier->begin();
 //             $this->Dossier->query( 'TRUNCATE TABLE dossiers_rsa CASCADE;' );
 
             while( $data = fread( $this->_xmlFile, 4096 ) ) {

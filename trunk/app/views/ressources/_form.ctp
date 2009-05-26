@@ -14,9 +14,11 @@
         <legend>Généralités des ressources du trimestre</legend>
         <?php echo $form->input( 'Ressource.ddress', array( 'label' => required( __( 'ddress', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-20, 'empty' => true));?>
         <?php echo $form->input( 'Ressource.dfress', array( 'label' => required( __( 'dfress', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-20, 'empty' => true));?>
-        <?php echo $form->input( 'Ressource.topressnul', array( 'label' => __( 'topressnul', true ), 'type' => 'checkbox' ) );?>
-        <?php echo $form->input( 'Ressource.mtpersressmenrsa', array( 'label' => required( __( 'mtpersressmenrsa', true ) ), 'type' => 'text' ) );?>
+        <!--<?php echo $form->input( 'Ressource.mtpersressmenrsa', array( 'label' => required( __( 'mtpersressmenrsa', true ) ), 'type' => 'text' ) );?>-->
     </fieldset>
+
+    <div><?php echo $form->input( 'Ressource.topressnul', array( 'label' => __( 'topressnul', true ), 'type' => 'checkbox' ) );?></div>
+
     <?php for( $i = 0 ; $i < 3 ; $i++ ):?>
         <fieldset>
             <legend>Ressources mensuelles</legend>

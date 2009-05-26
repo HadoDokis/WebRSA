@@ -8,7 +8,7 @@
         function beforeFilter(){
             $this->Auth->autoRedirect = false;
            // $this->Auth->loginRedirect = array('controller' => 'pages', 'action' => 'home');
-	    parent::beforeFilter();
+	       parent::beforeFilter();
 
             if((substr($_SERVER['REQUEST_URI'], strlen($this->base)) != '/users/login')) {
                 if (!$this->Session->Check('Auth')) {
@@ -18,12 +18,16 @@
                 }
                 else {
                     $user  = $this->Session->read('Auth');
+                    if( empty( $user['User'] ) ) {
+                        $this->redirect("/users/login");
+                    }
+
                     $controllerAction = $this->name . ':' . ($this->name == 'Pages' ? $this->params['pass'][0] : $this->action);
-                    if (!$this->Droits->check($user['User']['aroAlias'], $controllerAction)) 
-                        die("Vous n'avez pas les droits suffisants -> ".$controllerAction);                  
+                    if( !$this->Droits->check( $user['User']['aroAlias'], $controllerAction ) )
+                        die( "Vous n'avez pas les droits suffisants -> ".$controllerAction );
                 }
             }
-        }          
+        }
 
         function assert( $condition, $error = 'error500' ) {
             if( $condition !== true )
