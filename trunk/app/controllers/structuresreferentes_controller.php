@@ -5,6 +5,17 @@
         var $name = 'Structuresreferentes';
         var $uses = array( 'Structurereferente', 'Referent', 'Orientstruct', 'Typeorient', 'Zonegeographique');
 
+
+//         function beforeFilter() {
+//             parent::beforeFilter();
+//             $this->set( 'zonegeographiques', $this->Zonegeographique->find( 'list', array(
+//                     'fields' => array(
+//                         'Zonegeographique.id',
+//                         'Zonegeographique.libelle'
+//                     ) ) ) );
+//         }
+
+
         function index() {
 
             $structuresreferentes = $this->Structurereferente->find(
@@ -19,34 +30,33 @@
         }
 
         function add() {
-    
             $zg = $this->Zonegeographique->find(
                 'list',
                 array(
                     'fields' => array(
-                        'Zonegeographique.id',
                         'Zonegeographique.libelle'
-                    )
+                    ),
                 )
             );
-            $this->set( 'zglist', $zg );
+            $this->set( 'zg', $zg );
 
-	    $type = $this->Typeorient->find(
+            $type = $this->Typeorient->find(
                 'list',
                 array(
                     'fields' => array(
-			'Typeorient.id',
+                        'Typeorient.id',
                         'Typeorient.lib_type_orient'
                     )
                 )
             );
             $this->set( 'type', $type );
-	
+
+
 
             if( !empty( $this->data ) ) {
                 if( $this->Structurereferente->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'structuresreferentes', 'action' => 'index' ) );
+                    //$this->redirect( array( 'controller' => 'structuresreferentes', 'action' => 'index' ) );
                 }
             }
             $this->render( $this->action, null, 'add_edit' );
@@ -67,9 +77,8 @@
                 )
             );
             $this->set( 'zglist', $zg );
-	    
-	    
-	    $type = $this->Typeorient->find(
+
+            $type = $this->Typeorient->find(
                 'list',
                 array(
                     'fields' => array(
@@ -78,7 +87,7 @@
                 )
             );
             $this->set( 'type', $type );
-	    
+
             if( !empty( $this->data ) ) {
                 if( $this->Structurereferente->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );

@@ -4,8 +4,14 @@
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne' );
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Creance' );
 
+
+        function beforeFilter() {
+            parent::beforeFilter();
+            $this->set( 'natpf', $this->Option->natpf() );
+            $this->set( 'decision_ci', $this->Option->decision_ci() );
+        }
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
         */
@@ -73,6 +79,8 @@
 
                 $this->set( 'dossiers', $dossiers );
                 $this->data['Search'] = $params;
+
+
             }
         }
 
@@ -145,10 +153,109 @@
                 )
             );
 
+            $adresse = $this->Adresse->find(
+                'first',
+                array(
+                    'conditions' => array( 'Adresse.id' => $id ),
+                    'recursive' => 2
+                )
+            );
+            $this->set( 'adresse', $adresse );
+
+            $orient = $this->Orientstruct->find(
+                'first',
+                array(
+                    'conditions' => array( 'Orientstruct.id' => $id ),
+                    'recursive' => 2
+                )
+            );
+            $this->set( 'orient', $orient );
+
+            $contrat = $this->Contratinsertion->find(
+                'first',
+                array(
+                    'conditions' => array( 'Contratinsertion.id' => $id ),
+                    'recursive' => 2
+                )
+            );
+            $this->set( 'contrat', $contrat );
+
+
+            $detaildroitrsa = $this->Detaildroitrsa->find(
+                'first',
+                array(
+                    'conditions' => array( 'Detaildroitrsa.id' => $id ),
+                    'recursive' => 2
+                )
+            );
+            $this->set( 'detaildroitrsa', $detaildroitrsa );
+
+            $infofinance = $this->Infofinanciere->find(
+                'first',
+                array(
+                    'conditions' => array( 'Infofinanciere.id' => $id ),
+                    'recursive' => 2
+                )
+            );
+            $this->set( 'infofinance', $infofinance );
+
+            $creance = $this->Creance->find(
+                'first',
+                array(
+                    'conditions' => array( 'Creance.id' => $id ),
+                    'recursive' => 2
+                )
+            );
+            $this->set( 'creance', $creance );
 
             $this->assert( !empty( $dossier ), 'error404' );
-
             $this->set( 'dossier', $dossier );
+
+//////////////////////////////////////
+            $dataDos = array();
+
+            // DSP foyer
+            $dataDos['foyer'] = $this->Dspf->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dspf.foyer_id' => $id
+                    )
+                )
+            ) ;
+
+            // Ajout des DSP demandeur et conjoint
+            foreach( array( 'DEM', 'CJT' ) as $rolepers ) {
+                $dataDos[$rolepers] = array();
+                $personne = $this->Personne->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Personne.foyer_id' => $id,
+                            'Personne.rolepers' => $rolepers,
+                        ),
+                        'recursive' => -1
+                    )
+                ) ;
+                if( !empty( $personne ) ) {
+                    $dataDos[$rolepers] = $personne;
+                    $dataDos_personne = $this->Dspp->find(
+                        'first',
+                        array(
+                            'conditions' => array(
+                                'Dspp.personne_id' => $personne['Personne']['id']
+                            ),
+                            'recursive' => 2
+                        )
+                    ) ;
+                    if( !empty( $dataDos_personne ) ) {
+                        $dataDos[$rolepers] = array_merge( $dataDos[$rolepers], $dataDos_personne );
+                    }
+                }
+            }
+
+            $this->set( 'dataDos', $dataDos );
+            $this->set( 'foyer_id', $id );
         }
     }
 ?>

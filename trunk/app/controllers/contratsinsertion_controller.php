@@ -3,14 +3,13 @@
     {
 
         var $name = 'Contratsinsertion';
-        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Nivetu', 'Dspp');
+        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient');
 
 
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'type_ci', $this->Option->type_ci() );
             $this->set( 'decision_ci', $this->Option->decision_ci() );
-            //$this->set( 'nivetu', $this->Option->nivetu() );
             $this->set( 'referents', $this->Referent->find( 'list' ) );
             $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
         }
@@ -22,7 +21,7 @@
                 $this->cakeError( 'error404' );
             }
 
-            $this->Contratinsertion->recursive = -1;
+            //$this->Contratinsertion->recursive = -1;
             $contratsinsertion = $this->Contratinsertion->find(
                 'all',
                 array(
@@ -71,20 +70,29 @@
                 $this->cakeError( 'error404' );
             }
 
-            $nivetu = $this->Nivetu->find(
+
+            $sr = $this->Structurereferente->find(
                 'list',
                 array(
                     'fields' => array(
-                        'Nivetu.id',
-                        'Nivetu.name'
-                    )
+                        'Structurereferente.lib_struc'
+                    ),
                 )
             );
-            $this->set( 'nivetu', $nivetu );
+            $this->set( 'sr', $sr );
 
+            $tc = $this->Typocontrat->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typocontrat.lib_typo'
+                    ),
+                )
+            );
+            $this->set( 'tc', $tc );
             // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Contratinsertion->saveAll( $this->data ) ) {
-                $this->Session->setFlash( 'Enregistrement effectué' );
+                $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                 $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
             }
             else{
@@ -97,20 +105,6 @@
                     )
                 );
 
-                // FIXME -> chgment des rel. modèles
-                if( !empty( $dspp ) ) {
-                    $maxId = null;
-                    $maxNiv = PHP_INT_MAX;
-                    foreach( $dspp['Nivetu'] as $nivetu ) {
-                        if( $nivetu['code'] < $maxNiv ) {
-                            $maxNiv = $nivetu['code'];
-                            $maxId = $nivetu['id'];
-                        }
-                    }
-                    if( !empty( $maxId ) ) {
-                        $this->data['Contratinsertion']['niv_etude'] = $maxId;
-                    }
-                }
             }
 
 
@@ -138,40 +132,46 @@
                 $this->cakeError( 'error404' );
             }
 
+            $sr = $this->Structurereferente->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Structurereferente.lib_struc'
+                    ),
+                )
+            );
+            $this->set( 'sr', $sr );
+
+            $tc = $this->Typocontrat->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typocontrat.lib_typo'
+                    ),
+                )
+            );
+            $this->set( 'tc', $tc );
             // TODO -> 404
-                $contratinsertion = $this->Contratinsertion->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Contratinsertion.id' => $contratinsertion_id
-                        )
-                    )
-                );
+	      $contratinsertion = $this->Contratinsertion->find(
+		  'first',
+		  array(
+		      'conditions' => array(
+			  'Contratinsertion.id' => $contratinsertion_id
+		      )
+		  )
+	      );
+	      
             if (empty($contratinsertion)){
                 $this->cakeError( 'error404' );
             }
 
-            $nivetu = $this->Nivetu->find(
-                'first',
-                array(
-                    'fields' => array(
-                        'Nivetu.id',
-                        'Nivetu.name'
-                    )
-                )
-            );
-
-            $this->set( 'nivetu', $nivetu );
-
-            //debug ( $contratinsertion );
-  
               $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
 
             if( !empty( $this->data ) ) {
 
                 if( $this->Contratinsertion->saveAll( $this->data ) ) {
 
-                    $this->Session->setFlash( 'Enregistrement effectué' );
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']) );
                 }
             }

@@ -2,9 +2,9 @@
     class Contratinsertion extends AppModel
     {
         var $name = 'Contratinsertion';
-        
+
         var $useTable = 'contratsinsertion';
-        
+
         var $belongsTo = array(
             'Personne' => array(
                 'classname'     => 'Personne',
@@ -14,10 +14,10 @@
                 'classname' => 'Structurereferente',
                 'foreignKey' => 'structurereferente_id'
             ),
-	    'Typocontrat' => array(
-		'classname' => 'Typocontrat',
-		'foreignKey' => 'typocontrat_id'
-	    )
+            'Typocontrat' => array(
+                'classname' => 'Typocontrat',
+                'foreignKey' => 'typocontrat_id'
+                )
         );
 
         var $hasOne = array(

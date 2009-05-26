@@ -7,14 +7,16 @@
     if( $this->action == 'add' ) {
         echo $form->create( 'Structurereferente', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
         echo $form->input( 'Structurereferente.id', array( 'type' => 'hidden' ) );
-        echo $form->input( 'Structurereferente.typeorient_id', array( 'type' => 'hidden', 'value' => '' ) );
         echo $form->input( 'Zonegeographique.id', array( 'type' => 'hidden' ) );
+        echo $form->input( 'Structurereferente.typeorient_id', array( 'type' => 'hidden', 'value' => '' ) );
+        echo $form->input( 'Structurereferente.zonegeographique_id', array( 'type' => 'hidden' ) );
+
     }
     else {
         echo $form->create( 'Structurereferente', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
         echo $form->input( 'Structurereferente.id', array( 'type' => 'hidden' ) );
         echo $form->input( 'Structurereferente.typeorient_id', array( 'type' => 'hidden' ) );
-        echo $form->input( 'Zonegeographique.id', array( 'type' => 'hidden' ) );
+        echo $form->input( 'Structurereferente.zonegeographique_id', array( 'type' => 'hidden' ) );
     }
 ?>
 

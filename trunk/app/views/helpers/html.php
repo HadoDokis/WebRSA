@@ -667,7 +667,7 @@ class HtmlHelper extends AppHelper {
             $this->image(
                 'icons/pencil.png',
                 array( 'alt' => '' )
-            ).' Éditer',
+            ).' Modifier',
             $url,
             array( 'escape' => false, 'title' => $title )
         );
