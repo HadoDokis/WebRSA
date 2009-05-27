@@ -6,6 +6,13 @@
         var $name = 'Dossiers';
         var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'ModeContact',/*'Foyercreance',*/ 'Creance', 'Adressefoyer' );
 
+        var $paginate = array(
+            // FIXME
+            'limit' => 500/*,
+            'order' => array(
+                'Post.title' => 'asc'
+            )*/
+        );
 
         function beforeFilter() {
             parent::beforeFilter();
@@ -18,7 +25,7 @@
         */
         function index() {
             $params = $this->data;
-
+// debug( $this->params['url'] );
             if( count( $params ) > 0 ) {
                 $filters = array();
 
