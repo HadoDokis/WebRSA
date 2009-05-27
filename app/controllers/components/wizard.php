@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Wizard component by jaredhoyt.
  *
@@ -13,12 +13,12 @@
  * @writtenby		jaredhoyt
  * @lastmodified	Date: March 7, 2009
  * @license		http://www.opensource.org/licenses/mit-license.php The MIT License
- */ 
+ */
 class WizardComponent extends Object {
 /**
  * The Component will redirect to the "expected step" after a step has been successfully
- * completed if autoAdvance is true. If false, the Component will redirect to 
- * the next step in the $steps array. (This is helpful for returning a user to 
+ * completed if autoAdvance is true. If false, the Component will redirect to
+ * the next step in the $steps array. (This is helpful for returning a user to
  * the expected step after editing a previous step w/o them having to navigate through
  * each step in between.)
  *
@@ -47,20 +47,20 @@ class WizardComponent extends Object {
 /**
  * List of steps, in order, that are to be included in the wizard.
  *		basic example: $steps = array('contact', 'payment', 'confirm');
- * 
+ *
  * The $steps array can also contain nested steps arrays of the same format but must be wrapped by a branch group.
  * 		plot-branched example: $steps = array('job_application', array('degree' => array('college', 'degree_type'), 'nodegree' => 'experience'), 'confirm');
  *
  * The 'branchnames' (ie 'degree', 'nodegree') are arbitrary but used as selectors for the branch() and unbranch() methods. Branches
  * can point to either another steps array or a single step. The first branch in a group that hasn't been skipped (see branch())
- * is included by default (if $defaultBranch = true). 
+ * is included by default (if $defaultBranch = true).
  *
  * @var array
  * @access public
  */
 	var $steps = array();
 /**
- * Controller action that processes your step. 
+ * Controller action that processes your step.
  *
  * @var string
  * @access public
@@ -95,7 +95,7 @@ class WizardComponent extends Object {
  *
  * @var boolean
  * @access public
- */	
+ */
 	var $lockdown = false;
 /**
  * Internal step tracking.
@@ -134,24 +134,24 @@ class WizardComponent extends Object {
  */
 	function initialize(&$controller) {
 		$this->controller =& $controller;
-		
+
 		$this->_sessionKey	= $this->Session->check('Wizard.complete') ? 'Wizard.complete' : 'Wizard.' . $controller->name;
 		$this->_configKey 	= 'Wizard.config';
-		$this->_branchKey	= 'Wizard.branches.' . $controller->name;	
+		$this->_branchKey	= 'Wizard.branches.' . $controller->name;
 	}
 /**
  * Component startup method.
  *
  * @param object $controller A reference to the instantiating controller object
  * @access public
- */	
+ */
 	function startup(&$controller) {
 		if (!empty($this->wizardAction)) {
 			$this->wizardAction .= '/';
 		}
-		
+
 		$this->steps = $this->_parseSteps($this->steps);
-		
+
 		$this->config('wizardAction', $this->wizardAction);
 		$this->config('steps', $this->steps);
 	}
@@ -160,7 +160,7 @@ class WizardComponent extends Object {
  *
  * @param string $step Name of step associated in $this->steps to be processed.
  * @access public
- */		
+ */
 	function process($step) {
 		if (isset($this->controller->params['form']['Cancel'])) {
 			if (method_exists($this->controller, '_beforeCancel')) {
@@ -169,16 +169,16 @@ class WizardComponent extends Object {
 			$this->resetWizard();
 			$this->controller->redirect($this->cancelUrl);
 		}
-		
+
 		if (empty($step)) {
-			if ($this->Session->check('Wizard.complete')) { 
+			if ($this->Session->check('Wizard.complete')) {
 				if (method_exists($this->controller, '_afterComplete')) {
 					$this->controller->_afterComplete();
 				}
 				$this->resetWizard();
 				$this->controller->redirect($this->completeUrl);
 			}
-			
+
 			$this->autoReset = false;
 		} elseif ($step == 'reset') {
 			if (!$this->lockdown) {
@@ -187,10 +187,10 @@ class WizardComponent extends Object {
 		} else {
 			if ($this->_validStep($step)) {
 				$this->_setCurrentStep($step);
-												
-				if (!empty($this->controller->data) && !isset($this->controller->params['form']['Previous'])) { 
+
+				if (!empty($this->controller->data) && !isset($this->controller->params['form']['Previous'])) {
 					$proceed = false;
-					
+
 					$processCallback = '_' . Inflector::variable('process_' . $this->_currentStep);
 					if (method_exists($this->controller, $processCallback)) {
 						$proceed = $this->controller->$processCallback();
@@ -199,40 +199,40 @@ class WizardComponent extends Object {
 					} else {
 						trigger_error(__('Process Callback not found. Please create Controller::' . $processCallback, true), E_USER_WARNING);
 					}
-					
+
 					if ($proceed) {
 						$this->save();
-					
+
 						if (next($this->steps)) {
 							if ($this->autoAdvance) {
 								$this->redirect();
 							}
 							$this->redirect(current($this->steps));
 						} else {
-							$this->Session->write('Wizard.complete', $this->read());		
+							$this->Session->write('Wizard.complete', $this->read());
 							$this->resetWizard();
-							
+
 							$this->controller->redirect($this->wizardAction);
 						}
 					}
-				} elseif (isset($this->controller->params['form']['Previous']) && prev($this->steps)) { 
+				} elseif (isset($this->controller->params['form']['Previous']) && prev($this->steps)) {
 					$this->redirect(current($this->steps));
 				} elseif ($this->Session->check("$this->_sessionKey.$this->_currentStep")) {
 					$this->controller->data = $this->read($this->_currentStep);
 				}
-			
+
 				$prepareCallback = '_' . Inflector::variable('prepare_' . $this->_currentStep);
 				if (method_exists($this->controller, $prepareCallback)) {
 					$this->controller->$prepareCallback();
 				}
-				
-				$this->config('activeStep', $this->_currentStep);	
+
+				$this->config('activeStep', $this->_currentStep);
 				return $this->controller->render($this->_currentStep);
 			} else {
 				trigger_error(__('Step validation: ' . $step . ' is not a valid step.', true), E_USER_WARNING);
 			}
 		}
-	
+
 		if ($step != 'reset' && $this->autoReset) {
 			$this->resetWizard();
 		}
@@ -245,32 +245,32 @@ class WizardComponent extends Object {
  * @param string $name Branch name to be included in steps.
  * @param boolean $skip Branch will be skipped instead of included if true.
  * @access public
- */	
-	function branch($name, $skip = false) {	
+ */
+	function branch($name, $skip = false) {
 		$branches = array();
-		
+
 		if ($this->Session->check($this->_branchKey)) {
 			$branches = $this->Session->read($this->_branchKey);
 		}
-		
+
 		if (isset($branches[$name])) {
 			unset($branches[$name]);
 		}
-		
+
 		$value = $skip ? 'skip' : 'branch';
 		$branches[$name] = $value;
-		
+
 		$this->Session->write($this->_branchKey, $branches);
 	}
 /**
- * Saves configuration details for use in WizardHelper or returns a config value. 
+ * Saves configuration details for use in WizardHelper or returns a config value.
  * This is method usually handled only by the component.
  *
  * @param string $name Name of configuration variable.
  * @param mixed $value Value to be stored.
- * @return mixed 
+ * @return mixed
  * @access public
- */	
+ */
 	function config($name, $value = null) {
 		if ($value == null) {
 			return $this->Session->read("$this->_configKey.$name");
@@ -308,14 +308,14 @@ class WizardComponent extends Object {
 		}
 
 		$url = $this->wizardAction . $step;
-		
+
 		$this->controller->redirect($url, $status, $exit);
 	}
 /**
  * Resets the wizard by deleting the wizard session.
  *
  * @access public
- */	
+ */
 	function resetWizard() {
 		$this->Session->del($this->_branchKey);
 		$this->Session->del($this->_sessionKey);
@@ -323,11 +323,11 @@ class WizardComponent extends Object {
 /**
  * Saves the data from the current step into the Session.
  *
- * Please note: This is normally called automatically by the component after 
+ * Please note: This is normally called automatically by the component after
  * a successful processCallback, but can be called directly for advanced navigation purposes.
  *
  * @access public
- */		
+ */
 	function save() {
 		$this->Session->write("$this->_sessionKey.$this->_currentStep", $this->controller->data);
 	}
@@ -336,7 +336,7 @@ class WizardComponent extends Object {
  *
  * @param string $branch Name of branch to be removed from steps array.
  * @access public
- */	
+ */
 	function unbranch($branch) {
 		$this->Session->del("$this->_branchKey.$branch");
 	}
@@ -345,11 +345,11 @@ class WizardComponent extends Object {
  *
  * @return string $step or false if complete
  * @access protected
- */	
+ */
 	function _getExpectedStep() {
 		foreach ($this->steps as $step) {
 			if (!$this->Session->check("$this->_sessionKey.$step")) {
-				$this->config('expectedStep', $step);	
+				$this->config('expectedStep', $step);
 				return $step;
 			}
 		}
@@ -360,7 +360,7 @@ class WizardComponent extends Object {
  *
  * @return mixed
  * @access protected
- */		
+ */
 	function _branchType($branch) {
 		if ($this->Session->check("$this->_branchKey.$branch")) {
 			return $this->Session->read("$this->_branchKey.$branch");
@@ -369,17 +369,17 @@ class WizardComponent extends Object {
 	}
 /**
  * Parses the steps array by stripping off nested arrays not included in the branches
- * and returns a simple array with the correct steps. 
+ * and returns a simple array with the correct steps.
  *
  * @param array $steps Array to be parsed for nested arrays and returned as simple array.
  * @return array
  * @access protected
- */	
+ */
 	function _parseSteps($steps) {
 		$parsed = array();
 
 		foreach ($steps as $key => $name) {
-			if (is_array($name)) { 
+			if (is_array($name)) {
 				foreach ($name as $branchName => $step) {
 					$branchType = $this->_branchType($branchName);
 
@@ -391,7 +391,7 @@ class WizardComponent extends Object {
 						$branch = $branchName;
 					}
 				}
-				
+
 				if (!empty($branch)) {
 					if (is_array($name[$branch])) {
 						$parsed = array_merge($parsed, $this->_parseSteps($name[$branch]));
@@ -410,10 +410,10 @@ class WizardComponent extends Object {
  *
  * @param $step Step to point to.
  * @access protected
- */		
+ */
 	function _setCurrentStep($step) {
 		$this->_currentStep = reset($this->steps);
-		
+
 		while(current($this->steps) != $step) {
 			$this->_currentStep = next($this->steps);
 		}
@@ -425,14 +425,14 @@ class WizardComponent extends Object {
  *
  * @return boolean
  * @access protected
- */	
+ */
 	function _validateData() {
 		$controller =& $this->controller;
-		
+
 		foreach ($controller->data as $model => $data) {
 			if (in_array($model, $controller->uses)) {
 				$controller->{$model}->set($data);
-				
+
 				if (!$controller->{$model}->validates()) {
 					return false;
 				}
@@ -448,7 +448,7 @@ class WizardComponent extends Object {
  * @param $step Step to validate.
  * @return mixed
  * @access protected
- */		
+ */
 	function _validStep($step) {
 		if (in_array($step, $this->steps)) {
 			if ($this->lockdown) {

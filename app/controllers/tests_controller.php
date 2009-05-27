@@ -1,5 +1,18 @@
 <?php
+    // INFO: pour les tests
+//     function rand_nir() {
+//         $str = '';
+//         for( $i = 1 ; $i <= 15 ; $i++ )
+//             $str .= rand( 0, 9 );
+//         return $str;
+//     }
+
+    function hasConjoint( $data ) { // FIXME
+        return ( count( array_filter( $data ) ) > 3 );
+    }
+
     class TestsController extends AppController {
+        // INFO: http://bakery.cakephp.org/articles/view/wizard-component-1-2-1
         var $components = array( 'Wizard' );
         var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Option', 'Ressource', 'Ressourcemensuelle',  'Detailressourcemensuelle' );
 
@@ -7,10 +20,73 @@
         *
         */
         function beforeFilter() {
-            $this->Wizard->steps = array( 'allocataire', 'conjoint', 'adresse', 'ressourcesallocataire', 'dossier' );
+            // INFO: Supprimer la session, et donc les données du wizard
+            // $this->Session->destroy();
+            $this->Wizard->steps = array( 'allocataire', 'conjoint', 'adresse', 'ressourcesallocataire', array( 'withConjoint' => array( 'ressourcesconjoint', 'dossier' ), 'noConjoint' => array( 'dossier' ) ) );
             $this->Wizard->completeUrl = '/tests/confirm';
             $this->Wizard->cancelUrl = '/tests/wizard';
-            parent::beforeFilter();
+
+            // INFO: on peut préremplir le wizard pour les tests
+//             $this->Session->write(
+//                 'Wizard.Tests.allocataire',
+//                 array(
+//                     'Personne' => array(
+//                         'rolepers'  => 'DEM',
+//                         'qual'      => 'MR',
+//                         'nom'       => 'Buffin',
+//                         'prenom'    => 'Christian',
+//                         'dtnai'   => array(
+//                             'day'   => 01,
+//                             'month' => 01,
+//                             'year'  => 2009
+//                         ),
+//                         'rgnai' => 1,
+//                         'nir' => rand_nir(),
+//                         'topvalec' => 0,
+//                         'nati' => 'C',
+//                         'pieecpres' => 'E'
+//                     )
+//                 )
+//             );
+//             $this->Session->write(
+//                 'Wizard.Tests.conjoint',
+//                 array(
+//                     'Personne' => array(
+//                         'rolepers'  => 'CJT',
+//                         'qual'      => 'MME',
+//                         'nom'       => 'Buffin',
+//                         'prenom'    => 'Simone',
+//                         'dtnai'   => array(
+//                             'day'   => 01,
+//                             'month' => 01,
+//                             'year'  => 2009
+//                         ),
+//                         'rgnai' => 1,
+//                         'nir' => rand_nir(),
+//                         'topvalec' => 0,
+//                         'nati' => 'C',
+//                         'pieecpres' => 'E'
+//                     )
+//                 )
+//             );
+//             $this->Session->write(
+//                 'Wizard.Tests.adresse',
+//                 array(
+//                     'Adressefoyer' => array(
+//                         'rgadr'     => '01',
+//                         'typeadr'   => 'D'
+//                     ),
+//                     'Adresse' => array(
+//                         'numvoie' => 8,
+//                         'typevoie' => 'rue',
+//                         'nomvoie' => 'des rosiers',
+//                         'codepos' => '34000',
+//                         'locaadr' => 'Montpellier',
+//                         'pays' => 'FRA'
+//                     ),
+//                 )
+//             );
+            return parent::beforeFilter();
         }
 
         /**
@@ -38,6 +114,7 @@
                     $this->set( 'typeadr', $this->Option->typeadr() );
                     break;
                 case 'dossier':
+                    // FIXME: aller les chercher
                     $services = array(
                         1 => 'Association agrée',
                         2 => 'Pôle Emploi',
@@ -46,6 +123,14 @@
                     $this->set( 'services', $services );
                     break;
                 case 'ressourcesallocataire':
+                    $wizardData = $this->Wizard->read();
+                    if( hasConjoint( $wizardData['conjoint']['Personne'] ) ) { // FIXME
+                        $this->Wizard->branch( 'withConjoint' );
+                    }
+                    else {
+                        $this->Wizard->branch( 'noConjoint' );
+                    }
+                case 'ressourcesconjoint':
                     $this->set( 'natress', $this->Option->natress() );
                     $this->set( 'abaneu', $this->Option->abaneu() );
                     break;
@@ -70,7 +155,7 @@
         *
         */
         function _processConjoint() {
-            if( count( array_filter( $this->data['Personne'] ) ) > 3 ) { // FIXME
+            if( hasConjoint( $this->data['Personne'] ) ) { // FIXME
                 $this->Personne->set( $this->data );
 
                 if( $this->Personne->validates() ) {
@@ -102,13 +187,15 @@
         *
         */
         function _processRessourcesallocataire() {
+            $this->Ressource->create();
+            $this->Ressourcemensuelle->create();
+            $this->Detailressourcemensuelle->create();
+
             $this->Ressource->set( $this->data );
-            $this->Ressourcemensuelle->set( $this->data );
-            $this->Detailressourcemensuelle->set( $this->data );
 
             $valid = $this->Ressource->validates();
-            $valid = $this->Ressourcemensuelle->validates() && $valid;
-            $valid = $this->Detailressourcemensuelle->validates() && $valid;
+            $valid = $this->Ressourcemensuelle->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
+            $valid = $this->Detailressourcemensuelle->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
             if( $valid ) {
                 return true;
             }
@@ -119,14 +206,17 @@
         *
         */
         function _processRessourcesconjoint() {
-            if( count( array_filter( $this->data['Personne'] ) ) > 3 ) { // FIXME
+            $wizardData = $this->Wizard->read();
+            if( hasConjoint( $wizardData['conjoint']['Personne'] ) ) { // FIXME
+                $this->Ressource->create();
+                $this->Ressourcemensuelle->create();
+                $this->Detailressourcemensuelle->create();
+
                 $this->Ressource->set( $this->data );
-                $this->Ressourcemensuelle->set( $this->data );
-                $this->Detailressourcemensuelle->set( $this->data );
 
                 $valid = $this->Ressource->validates();
-                $valid = $this->Ressourcemensuelle->validates() && $valid;
-                $valid = $this->Detailressourcemensuelle->validates() && $valid;
+                $valid = $this->Ressourcemensuelle->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
+                $valid = $this->Detailressourcemensuelle->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
                 if( $valid ) {
                     return true;
                 }
@@ -160,43 +250,45 @@
 
             // Revalidation
             $this->Personne->set( $data['allocataire']['Personne'] );
-            $validates = $this->Personne->validates();
+            $valid = $this->Personne->validates();
 
-            if( count( array_filter( $data['conjoint']['Personne'] ) ) != 3 ) { // FIXME
+            if( hasConjoint( $data['conjoint']['Personne'] ) ) { // FIXME
                 $this->Personne->set( $data['conjoint']['Personne'] );
-                $validates = $this->Personne->validates() && $validates;
+                $valid = $this->Personne->validates() && $valid;
             }
 
             $this->Adresse->set( $data['adresse']['Adresse'] );
             $this->Adressefoyer->set( $data['adresse']['Adressefoyer'] );
-            $validates = $this->Adresse->validates() && $validates;
-            $validates = $this->Adressefoyer->validates() && $validates;
+            $valid = $this->Adresse->validates() && $valid;
+            $valid = $this->Adressefoyer->validates() && $valid;
+
+            // Ressources allocataire
+            $this->Ressource->create();
+            $this->Ressourcemensuelle->create();
+            $this->Detailressourcemensuelle->create();
 
             $this->Ressource->set( $data['ressourcesallocataire'] );
-            $this->Ressourcemensuelle->set( $data['ressourcesallocataire'] );
-            $this->Detailressourcemensuelle->set( $data['ressourcesallocataire'] );
-
             $valid = $this->Ressource->validates();
-            $valid = $this->Ressourcemensuelle->validates() && $valid;
-            $valid = $this->Detailressourcemensuelle->validates() && $valid;
+            $valid = $this->Ressourcemensuelle->saveAll( $data['ressourcesallocataire'], array( 'validate' => 'only' ) ) && $valid;
+            $valid = $this->Detailressourcemensuelle->saveAll( $data['ressourcesallocataire'], array( 'validate' => 'only' ) ) && $valid;
 
-//             if( count( array_filter( $data['conjoint']['Personne'] ) ) != 3 ) { // FIXME
-//                 $this->Ressource->create();
-//                 $this->Ressource->set( $data['ressourcesconjoint'] );
-//                 $this->Ressourcemensuelle->set( $data['ressourcesconjoint'] );
-//                 $this->Detailressourcemensuelle->set( $data['ressourcesconjoint'] );
-//
-//                 $valid = $this->Ressource->validates();
-//                 $valid = $this->Ressourcemensuelle->validates() && $valid;
-//                 $valid = $this->Detailressourcemensuelle->validates() && $valid;
-//             }
+            // Ressources conjoint
+            if( hasConjoint( $data['conjoint']['Personne'] ) ) { // FIXME
+                $this->Ressource->create();
+                $this->Ressourcemensuelle->create();
+                $this->Detailressourcemensuelle->create();
+
+                $this->Ressource->set( $data['ressourcesconjoint'] );
+                $valid = $this->Ressource->validates();
+                $valid = $this->Ressourcemensuelle->saveAll( $data['ressourcesconjoint'], array( 'validate' => 'only' ) ) && $valid;
+                $valid = $this->Detailressourcemensuelle->saveAll( $data['ressourcesconjoint'], array( 'validate' => 'only' ) ) && $valid;
+            }
 /**
     TODO
         *
 */
-//             debug( $data );  // FIXME!!!
             // Sauvegarde
-            if( $validates ) {
+            if( $valid ) {
                 // Début de la transaction
                 $this->Dossier->begin();
 
@@ -222,27 +314,39 @@
                     $conjoint_id = $this->Personne->id;
                 }
                 // Ressources demandeur
+                $this->Ressource->create();
                 $data['ressourcesallocataire']['Ressource']['personne_id'] = $demandeur_id;
                 $saved = $this->Ressource->save( $data['ressourcesallocataire'] ) && $saved;
+
                 if( !empty( $data['ressourcesallocataire']['Ressourcemensuelle'] ) ) {
-                    $data['ressourcesallocataire']['Ressourcemensuelle']['ressource_id'] = $this->Ressource->id;
-                    $saved = $this->Ressourcemensuelle->save( $data['ressourcesallocataire'] ) && $saved;
-                    if( !empty( $data['ressourcesallocataire']['Detailressourcemensuelle'] ) ) {
-                        $data['ressourcesallocataire']['Detailressourcemensuelle']['ressourcemensuelle_id'] = $this->Ressourcemensuelle->id;
-                        $saved = $this->Detailressourcemensuelle->save( $data['ressourcesallocataire'] ) && $saved;
+                    foreach( $data['ressourcesallocataire']['Ressourcemensuelle'] as $key => $ressourcemensuelle ) {
+                        $ressourcemensuelle['ressource_id'] = $this->Ressource->id;
+                        $this->Ressourcemensuelle->create();
+                        $saved = $this->Ressourcemensuelle->save( $ressourcemensuelle ) && $saved;
+                        if( !empty( $data['ressourcesallocataire']['Detailressourcemensuelle'] ) && !empty( $data['ressourcesallocataire']['Detailressourcemensuelle'][$key] ) ) {
+                            $this->Detailressourcemensuelle->create();
+                            $data['ressourcesallocataire']['Detailressourcemensuelle'][$key]['ressourcemensuelle_id'] = $this->Ressourcemensuelle->id;
+                            $saved = $this->Detailressourcemensuelle->save( $data['ressourcesallocataire']['Detailressourcemensuelle'][$key] ) && $saved;
+                        }
                     }
                 }
 
-                // Conjoint
-                if( count( array_filter( $data['conjoint']['Personne'] ) ) != 3 ) { // FIXME
+                // Ressources conjoint
+                if( hasConjoint( $data['conjoint']['Personne'] ) ) { // FIXME
+                    $this->Ressource->create();
                     $data['ressourcesconjoint']['Ressource']['personne_id'] = $conjoint_id;
                     $saved = $this->Ressource->save( $data['ressourcesconjoint'] ) && $saved;
+
                     if( !empty( $data['ressourcesconjoint']['Ressourcemensuelle'] ) ) {
-                        $data['ressourcesconjoint']['Ressourcemensuelle']['ressource_id'] = $this->Ressource->id;
-                        $saved = $this->Ressourcemensuelle->save( $data['ressourcesconjoint'] ) && $saved;
-                        if( !empty( $data['ressourcesconjoint']['Detailressourcemensuelle'] ) ) {
-                            $data['ressourcesconjoint']['Detailressourcemensuelle']['ressourcemensuelle_id'] = $this->Ressourcemensuelle->id;
-                            $saved = $this->Detailressourcemensuelle->save( $data['ressourcesconjoint'] ) && $saved;
+                        foreach( $data['ressourcesconjoint']['Ressourcemensuelle'] as $key => $ressourcemensuelle ) {
+                            $ressourcemensuelle['ressource_id'] = $this->Ressource->id;
+                            $this->Ressourcemensuelle->create();
+                            $saved = $this->Ressourcemensuelle->save( $ressourcemensuelle ) && $saved;
+                            if( !empty( $data['ressourcesconjoint']['Detailressourcemensuelle'] ) && !empty( $data['ressourcesconjoint']['Detailressourcemensuelle'][$key] ) ) {
+                                $this->Detailressourcemensuelle->create();
+                                $data['ressourcesconjoint']['Detailressourcemensuelle'][$key]['ressourcemensuelle_id'] = $this->Ressourcemensuelle->id;
+                                $saved = $this->Detailressourcemensuelle->save( $data['ressourcesconjoint']['Detailressourcemensuelle'][$key] ) && $saved;
+                            }
                         }
                     }
                 }
