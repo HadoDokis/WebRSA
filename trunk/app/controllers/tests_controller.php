@@ -1,11 +1,11 @@
 <?php
     // INFO: pour les tests
-//     function rand_nir() {
-//         $str = '';
-//         for( $i = 1 ; $i <= 15 ; $i++ )
-//             $str .= rand( 0, 9 );
-//         return $str;
-//     }
+    function rand_nir() {
+        $str = '';
+        for( $i = 1 ; $i <= 15 ; $i++ )
+            $str .= rand( 0, 9 );
+        return $str;
+    }
 
     function hasConjoint( $data ) { // FIXME
         return ( count( array_filter( $data ) ) > 3 );
@@ -191,11 +191,11 @@
             $this->Ressourcemensuelle->create();
             $this->Detailressourcemensuelle->create();
 
-            $this->Ressource->set( $this->data );
+            $this->Ressource->set( $this->data['Ressource'] );
 
             $valid = $this->Ressource->validates();
-            $valid = $this->Ressourcemensuelle->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
-            $valid = $this->Detailressourcemensuelle->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
+            $valid = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+            $valid = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
             if( $valid ) {
                 return true;
             }
@@ -212,11 +212,11 @@
                 $this->Ressourcemensuelle->create();
                 $this->Detailressourcemensuelle->create();
 
-                $this->Ressource->set( $this->data );
+                $this->Ressource->set( $this->data['Ressource'] );
 
                 $valid = $this->Ressource->validates();
-                $valid = $this->Ressourcemensuelle->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
-                $valid = $this->Detailressourcemensuelle->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
+                $valid = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+                $valid = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
                 if( $valid ) {
                     return true;
                 }
