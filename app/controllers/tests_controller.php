@@ -113,15 +113,15 @@
                     $this->set( 'rgadr', $this->Option->rgadr() );
                     $this->set( 'typeadr', $this->Option->typeadr() );
                     break;
-                case 'dossier':
-                    // FIXME: aller les chercher
-                    $services = array(
-                        1 => 'Association agrée',
-                        2 => 'Pôle Emploi',
-                        3 => 'Service Social du Département',
-                    );
-                    $this->set( 'services', $services );
-                    break;
+//                 case 'dossier':
+//                     // FIXME: aller les chercher
+//                     $services = array(
+//                         1 => 'Association agrée',
+//                         2 => 'Pôle Emploi',
+//                         3 => 'Service Social du Département',
+//                     );
+//                     $this->set( 'services', $services );
+//                     break;
                 case 'ressourcesallocataire':
                     $wizardData = $this->Wizard->read();
                     if( hasConjoint( $wizardData['conjoint']['Personne'] ) ) { // FIXME
@@ -194,8 +194,12 @@
             $this->Ressource->set( $this->data['Ressource'] );
 
             $valid = $this->Ressource->validates();
-            $valid = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
-            $valid = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+            if( !empty( $this->data['Ressourcemensuelle'] ) ) {
+                $valid = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+                if( !empty( $this->data['Detailressourcemensuelle'] ) ) {
+                    $valid = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+                }
+            }
             if( $valid ) {
                 return true;
             }
@@ -215,8 +219,12 @@
                 $this->Ressource->set( $this->data['Ressource'] );
 
                 $valid = $this->Ressource->validates();
-                $valid = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
-                $valid = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+                if( !empty( $this->data['Ressourcemensuelle'] ) ) {
+                    $valid = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+                    if( !empty( $this->data['Detailressourcemensuelle'] ) ) {
+                        $valid = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+                    }
+                }
                 if( $valid ) {
                     return true;
                 }
@@ -269,8 +277,12 @@
 
             $this->Ressource->set( $data['ressourcesallocataire'] );
             $valid = $this->Ressource->validates();
-            $valid = $this->Ressourcemensuelle->saveAll( $data['ressourcesallocataire'], array( 'validate' => 'only' ) ) && $valid;
-            $valid = $this->Detailressourcemensuelle->saveAll( $data['ressourcesallocataire'], array( 'validate' => 'only' ) ) && $valid;
+            if( !empty( $data['ressourcesallocataire']['Ressourcemensuelle'] ) ) {
+                $valid = $this->Ressourcemensuelle->saveAll( $data['ressourcesallocataire'], array( 'validate' => 'only' ) ) && $valid;
+                if( !empty( $data['ressourcesallocataire']['Detailressourcemensuelle'] ) ) {
+                    $valid = $this->Detailressourcemensuelle->saveAll( $data['ressourcesallocataire'], array( 'validate' => 'only' ) ) && $valid;
+                }
+            }
 
             // Ressources conjoint
             if( hasConjoint( $data['conjoint']['Personne'] ) ) { // FIXME
@@ -280,8 +292,12 @@
 
                 $this->Ressource->set( $data['ressourcesconjoint'] );
                 $valid = $this->Ressource->validates();
-                $valid = $this->Ressourcemensuelle->saveAll( $data['ressourcesconjoint'], array( 'validate' => 'only' ) ) && $valid;
-                $valid = $this->Detailressourcemensuelle->saveAll( $data['ressourcesconjoint'], array( 'validate' => 'only' ) ) && $valid;
+                if( !empty( $data['ressourcesconjoint']['Ressourcemensuelle'] ) ) {
+                    $valid = $this->Ressourcemensuelle->saveAll( $data['ressourcesconjoint'], array( 'validate' => 'only' ) ) && $valid;
+                    if( !empty( $data['ressourcesconjoint']['Detailressourcemensuelle'] ) ) {
+                        $valid = $this->Detailressourcemensuelle->saveAll( $data['ressourcesconjoint'], array( 'validate' => 'only' ) ) && $valid;
+                    }
+                }
             }
 /**
     TODO
