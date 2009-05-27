@@ -4,6 +4,6 @@ CREATE TABLE structuresreferentes_zonesgeographiques (
     PRIMARY KEY( structurereferente_id, zonegeographique_id )
 );
 
-ALTER TABLE structuresreferentes DROP COLUMN zonegeographique_id;
+-- ALTER TABLE structuresreferentes DROP COLUMN zonegeographique_id;
 
 ALTER TABLE orientsstructs ADD COLUMN typeorient_id INT;
