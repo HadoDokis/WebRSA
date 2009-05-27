@@ -51,7 +51,7 @@
         function beforeValidate( $options = array() ) {
             $return = parent::beforeValidate( $options );
             $this->data['Ressource']['mtpersressmenrsa'] = 0;
-            if( $this->data['Ressource']['topressnul'] != 0 ) {
+            if( ( !empty( $this->data['Ressource']['topressnul'] ) ) && ( $this->data['Ressource']['topressnul'] != 0 ) ) {
                 $this->data['Ressource']['mtpersressmenrsa'] = number_format( array_sum( Set::extract( $this->data['Detailressourcemensuelle'], '{n}.mtnatressmen' ) ) / 3, 2 );
             }
             return $return;
