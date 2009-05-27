@@ -186,7 +186,15 @@
         <tbody>
             <tr class="odd">
                 <th><?php __( 'accoemploi' );?></th>
-                <td><?php echo $accoemploi[$dspp['Dspp']['accoemploi']];?></td>
+                <td>
+                    <?php if( !empty( $dspp['Accoemploi'] ) ):?>
+                        <ul>
+                            <?php foreach( $dspp['Accoemploi'] as $accoemploi ):?>
+                                <li><?php echo h( $accoemploi['name'] );?></li>
+                            <?php endforeach;?>
+                        </ul>
+                    <?php endif;?>
+                </td>
             </tr>
             <tr class="even">
                 <th><?php __( 'libcooraccoemploi' );?></th>
@@ -222,7 +230,7 @@
             </tr>
             <tr class="even">
                 <th><?php __( 'duractdomi' );?></th>
-                <td><?php echo $duractdomi[$dspp['Dspp']['duractdomi']];?></td>
+                <td><?php echo isset( $duractdomi[$dspp['Dspp']['duractdomi']] ) ? $duractdomi[$dspp['Dspp']['duractdomi']] : null ;?></td>
             </tr>
             <tr class="odd">
                 <th><?php __( 'libemploirech' );?></th>

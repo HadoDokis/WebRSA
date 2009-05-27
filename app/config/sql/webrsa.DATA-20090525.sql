@@ -652,29 +652,35 @@ INSERT INTO difsocs VALUES(
 --------------------------------------
 INSERT INTO nataccosocindis VALUES(
     1,
+    '0415',
+    'Pas d\'accompagnement individuel'
+);
+INSERT INTO nataccosocindis VALUES(
+    2,
     '0416',
     'Santé'
 );
 INSERT INTO nataccosocindis VALUES(
-    2,
+    3,
     '0417',
     'Emploi'
 );
 INSERT INTO nataccosocindis VALUES(
-    3,
+    4,
     '0418',
     'Insertion professionnelle'
 );
 INSERT INTO nataccosocindis VALUES(
-    4,
+    5,
     '0419',
     'Formation'
 );
 INSERT INTO nataccosocindis VALUES(
-    5,
+    6,
     '0420',
     'Autres'
 );
+
 --------------------------------------
 --------------------------------------
 INSERT INTO difdisps VALUES(
@@ -755,6 +761,23 @@ INSERT INTO natmobs VALUES(
     'Sur un autre département'
 );
 
+------------------------------------
+------------------------------------
+INSERT INTO accoemplois VALUES(
+    1,
+    '1801',
+    'Pas d\'accompagnement'
+);
+INSERT INTO accoemplois VALUES(
+    2,
+    '1802',
+    'Pole emploi'
+);
+INSERT INTO accoemplois VALUES(
+    3,
+    '1803',
+    'Autres'
+);
 -- ----------------------------------------
 -- -- ------ Types orientations -----------
 -- -- -------------------------------------
@@ -763,7 +786,7 @@ INSERT INTO typesorients VALUES
      1,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      null,   --            INTEGER,
      'Emploi',
-     'Notifica 1'
+     'notif_orientation_cg66_mod3'
    );
 
 INSERT INTO typesorients VALUES
@@ -771,7 +794,7 @@ INSERT INTO typesorients VALUES
      2,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      1,   --                INTEGER,
      'Pôle emploi',
-     'Notifica 2'
+     'notif_orientation_cg66_mod3'
    );
 
 INSERT INTO typesorients VALUES
@@ -779,7 +802,7 @@ INSERT INTO typesorients VALUES
      3,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      1,   --                INTEGER,
     'Exploitant agricole MSA',
-     'Notifica 3'
+     'notif_orientation_cg66_mod3'
    );
 
 INSERT INTO typesorients VALUES
@@ -787,7 +810,7 @@ INSERT INTO typesorients VALUES
      4,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      null,   --                INTEGER,
      'Préprofessionnelle',
-     'Notifica 1'
+     'notif_orientation_cg66_mod1'
    );
 
 INSERT INTO typesorients VALUES
@@ -795,7 +818,7 @@ INSERT INTO typesorients VALUES
      5,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      4,     --                INTEGER,
     'Conseil Général',   --     name varchar(30) null
-     'Notifica 2'
+     'notif_orientation_cg66_mod1'
    );
 
 INSERT INTO typesorients VALUES
@@ -803,7 +826,7 @@ INSERT INTO typesorients VALUES
      6,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      null,  --                INTEGER,
     'Social',
-     'Notifica 2'
+     'notif_orientation_cg66_mod2'
    );
 
 INSERT INTO typesorients VALUES
@@ -811,7 +834,7 @@ INSERT INTO typesorients VALUES
      7,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      6,  --                INTEGER,
     'Conseil Général',
-     'Notifica 3'
+     'notif_orientation_cg66_mod2'
    );
 
 INSERT INTO typesorients VALUES
@@ -819,7 +842,7 @@ INSERT INTO typesorients VALUES
      8,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      6,  --                INTEGER,
     'MSA',
-     'Notifica 1'
+     'notif_orientation_cg66_mod2'
    );
 
 INSERT INTO typesorients VALUES
@@ -827,7 +850,7 @@ INSERT INTO typesorients VALUES
      9,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      6,  --                INTEGER,
     'Organisme agréés ACAL',
-     'Notifica 2'
+     'notif_orientation_cg66_mod2'
    );
 
 INSERT INTO typesorients VALUES
@@ -835,11 +858,22 @@ INSERT INTO typesorients VALUES
      10,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      6,  --                INTEGER,
     'ATR',
-     'Notifica 3'
+     'notif_orientation_cg66_mod2'
    );
 
---------------
+----------------------------
+----------------------------
+INSERT INTO typoscontrats VALUES
+   (
+     1,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+    'Suivi d\'insertion'
+   );
 
+INSERT INTO typoscontrats VALUES
+   (
+     2,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+    'CI en alternance'
+   );
 --------------------------------------
 -- ------ Structures référentes -----------
 -- -------------------------------------

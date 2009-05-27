@@ -256,8 +256,7 @@ function disableFieldsOnValue( selectId, fieldsIds, value, condition ) {
         }
     } );
 }
-
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 
 function observeDisableFieldsOnValue( selectId, fieldsIds, value, condition ) {
     disableFieldsOnValue( selectId, fieldsIds, value, condition );

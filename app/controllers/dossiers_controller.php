@@ -19,6 +19,7 @@
             $this->set( 'type_ci', $this->Option->type_ci() );
             $this->set( 'natpf', $this->Option->natpf() );
             $this->set( 'decision_ci', $this->Option->decision_ci() );
+            $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
         }
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL

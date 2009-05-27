@@ -382,9 +382,24 @@
             <tbody>
                 <tr class="odd">
                     <th><?php __( 'accoemploi' );?></th>
-                    <td><?php echo linkedValue( $accoemploi, $dsp, 'DEM', 'Dspp', 'accoemploi' );?></td>
-                    <td><?php echo linkedValue( $accoemploi, $dsp, 'CJT', 'Dspp', 'accoemploi' );?></td>
-
+                    <td>
+                        <?php if( !empty( $dsp['DEM']['Accoemploi'] ) ):?>
+                            <ul>
+                                <?php foreach( $dsp['DEM']['Accoemploi'] as $accoemploi ):?>
+                                    <li><?php echo h( $accoemploi['name'] );?></li>
+                                <?php endforeach;?>
+                            </ul>
+                        <?php endif;?>
+                    </td>
+                    <td>
+                        <?php if( !empty( $dsp['CJT']['Accoemploi'] ) ):?>
+                            <ul>
+                                <?php foreach( $dsp['CJT']['Accoemploi'] as $accoemploi ):?>
+                                    <li><?php echo h( $accoemploi['name'] );?></li>
+                                <?php endforeach;?>
+                            </ul>
+                        <?php endif;?>
+                    </td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'libcooraccoemploi' );?></th>

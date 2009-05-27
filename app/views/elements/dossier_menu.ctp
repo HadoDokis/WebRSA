@@ -82,14 +82,6 @@
                         );
                     ?>
                 </li>
-<!--                <li>
-                    <?php
-                        echo $html->link(
-                            'Avis PCG droit rsa',
-                            array( 'controller' => 'avispcgdroitrsa', 'action' => 'index', $dossier['Foyer']['id'] )
-                        );
-                    ?>
-                </li>
                 <li>
                     <?php
                         echo $html->link(
@@ -97,8 +89,17 @@
                             array( 'controller' => 'situationsdossiersrsa', 'action' => 'index', $dossier['Foyer']['id'] )
                         );
                     ?>
+
                 </li>
-                <li>
+                 <li>
+                     <?php
+                        echo $html->link(
+                            'Avis PCG droit rsa',
+                            array( 'controller' => 'avispcgdroitrsa', 'action' => 'index', $dossier['Foyer']['id'] )
+                        );
+                    ?>
+                </li>
+    <!--            <li>
                     <?php
                         echo $html->link(
                             'Suivi d\'instruction',

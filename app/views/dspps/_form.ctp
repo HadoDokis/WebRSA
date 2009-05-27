@@ -4,8 +4,9 @@
             observeDisableFieldsOnCheckbox( 'DifsocDifsoc7', [ 'DsppLibautrdifsoc' ], false );
             observeDisableFieldsOnCheckbox( 'NataccosocindiNataccosocindi5', [ 'DsppLibautraccosocindi' ], false );
             observeDisableFieldsOnCheckbox( 'DsppElopersdifdisp', [ 'DsppObstemploidifdisp' ], false );
+            observeDisableFieldsOnCheckbox( 'AccoemploiAccoemploi1', [ 'DsppLibcooraccoemploi', 'AccoemploiAccoemploi2', 'AccoemploiAccoemploi3' ], true );
 
-            observeDisableFieldsOnValue( 'DsppAccoemploi', [ 'DsppLibcooraccoemploi' ], '1801', true );
+            observeDisableFieldsOnValue( 'AccoemploiAccoemploi1', [ 'DsppLibcooraccoemploi'], '1801', true );
             observeDisableFieldsOnValue( 'DsppHispro', [ 'DsppLibderact', 'DsppLibsecactderact', 'DsppDfderactDay', 'DsppDfderactMonth', 'DsppDfderactYear', 'DsppDomideract', 'DsppLibactdomi', 'DsppLibsecactdomi', 'DsppDuractdomi', 'DsppLibemploirech', 'DsppLibsecactrech' ], '1904', true );
         });
     </script>
@@ -48,12 +49,12 @@
                 <?php echo $form->input( 'Dspp.permicondub', array( 'label' => __( 'permicondub', true ), 'type' => 'checkbox' ) );?>
                 <?php echo $form->input( 'Dspp.libautrpermicondu', array( 'label' => __( 'libautrpermicondu', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libcompeextrapro', array( 'label' => __( 'libcompeextrapro', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
+                <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => __( 'nivetu', true ), 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
     </fieldset>
 
     <fieldset>
             <legend>Situation professionnelle</legend>
-                <?php echo $form->input( 'Dspp.accoemploi', array( 'label' => required( __( 'accoemploi', true ) ), 'type' => 'select', 'options' => $accoemploi, 'empty' => true) );?>
+                <?php echo $form->input( 'Accoemploi.Accoemploi', array( 'label' => __( 'accoemploi', true ), 'div' => false, 'multiple' => 'checkbox', 'options' => $accoemplois ) );?>
                 <?php echo $form->input( 'Dspp.libcooraccoemploi', array( 'label' => __( 'libcooraccoemploi', true ), 'type' => 'textarea', 'rows' =>3 ) );?>
                 <?php echo $form->input( 'Dspp.hispro', array( 'label' => required( __( 'hispro', true ) ), 'type' => 'select', 'options' => $hispro, 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.libderact', array( 'label' => __( 'libderact', true ), 'type' => 'text' ) );?>
