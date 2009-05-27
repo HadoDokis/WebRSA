@@ -5,10 +5,8 @@
 
             <li>
                 <?php echo $html->link( 'Recherche dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?>
-                <ul>
-                    <li><?php echo $html->link( 'Recherche multi-critères', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
-                </ul>
             </li>
+            <li><?php echo $html->link( 'Recherche multi-critères', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                 <?php echo $html->link( 'Gestion des cohortes', '#' );?>
                 <ul>
@@ -27,6 +25,13 @@
                   <!--  <li><?php echo $html->link( 'Intégration flux', '#' );?></li>
                     <li><?php echo $html->link( 'Gestion des logs', '#' );?></li>
                     <li><?php echo $html->link( 'Gestion des éditions', '#' );?></li>-->
+                </ul>
+            </li>
+            <li class="selected">
+                <?php echo $html->link( '  Test    party   ', '#' );?>
+                <ul>
+                    <li><a href="../webrsa/app/webroot/files/demotestparty.ppt"> Demo </a></li>
+                    <li><a href="../webrsa/app/webroot/files/rapport_anomalies.xls"> Rapport </a></li>
                 </ul>
             </li>
            <!-- <li>

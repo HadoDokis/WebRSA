@@ -3,12 +3,12 @@
     {
 
         var $name = 'Dspps';
-        var $uses = array( 'Dspp', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Nivetu', 'Personne', 'Option');
+        var $uses = array( 'Dspp', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Nivetu', 'Accoemploi', 'Personne', 'Option');
 
 
         function beforeFilter() {
             parent::beforeFilter();
-            $this->set( 'accoemploi', $this->Option->accoemploi() );
+            //$this->set( 'accoemploi', $this->Option->accoemploi() );
             $this->set( 'hispro', $this->Option->hispro() );
             $this->set( 'duractdomi', $this->Option->duractdomi() );
             // $this->set( 'nivetu', $this->Option->nivetu() );
@@ -18,6 +18,7 @@
             $this->set('difdisps', $this->Difdisp->find( 'list' ) );
             $this->set( 'natmobs', $this->Natmob->find( 'list' ) );
             $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
+            $this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );
         }
 
         function view( $personne_id = null ){
@@ -54,7 +55,7 @@
 
             // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Dspp->save( $this->data ) ) {
-                $this->Session->setFlash( 'Enregistrement effectué' );
+                $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                 $this->redirect( array( 'controller' => 'dspps', 'action' => 'view', $personne_id ) );
             }
             $personne = $this->Personne->find( 'first', array( 'conditions'=> array( 'Personne.id' => $personne_id ) ));

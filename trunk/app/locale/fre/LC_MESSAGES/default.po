@@ -640,3 +640,6 @@ msgstr "Email"
 
 msgid "lib_typo"
 msgstr "Type de contrat d'insertion"
+
+msgid "adresse"
+msgstr "Adresse"

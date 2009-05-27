@@ -43,6 +43,12 @@
                 'joinTable' => 'dspps_nivetus',
                 'foreignKey' => 'dspp_id',
                 'associationForeignKey' => 'nivetu_id'
+            ),
+            'Accoemploi' => array(
+                'classname' => 'Accoemploi',
+                'joinTable' => 'dspps_accoemplois',
+                'foreignKey' => 'dspp_id',
+                'associationForeignKey' => 'accoemploi_id'
             )
         );
 
@@ -89,16 +95,16 @@
                 ),
             ),
             'duractdomi' => array(
-                'notEmpty' => array(
+//                 'notEmpty' => array(
                     'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
+//                     'message' => 'Champ obligatoire'
+//                 ),
             ),
             'dfderact' => array(
-                'notEmpty' => array(
+//                 'notEmpty' => array(
                     'rule' => 'date',
                     'message' => 'Veuillez entrer une date valide'
-                ),
+//                 ),
             ),
             'annderdipobt' => array(
                 'notEmpty' => array(

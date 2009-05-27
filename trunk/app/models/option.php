@@ -108,13 +108,13 @@
             );
         }
 
-        function accoemploi() {
-            return array(
-                '1801' => 'Pas d\'accompagnement',
-                '1802' => 'Pôle-emploi',
-                '1803' => 'Autres'
-            );
-        }
+//         function accoemploi() {
+//             return array(
+//                 '1801' => 'Pas d\'accompagnement',
+//                 '1802' => 'Pôle-emploi',
+//                 '1803' => 'Autres'
+//             );
+//         }
 
         function acteti() {
             return array(
@@ -286,12 +286,12 @@
         function motisusversrsa() {
             return array(
                 '01' => 'Ressources trop élévées',
-                '02' => 'MOINS DE 25 ANS ET PERSONNE A CHARGE',
-                '03' => 'ACTIVITE NON CONFORME',
-                '04' => 'TITRE DE SEJOUR NON VALIDE',
+                '02' => 'Moins de 25 ans et personne à charge',
+                '03' => 'Activité non conforme',
+                '04' => 'Titre de sejour non valide',
                 '05' => 'RSA inférieur au seuil',
                 '06' => 'Déclaration Trimestrielle Ressources non fournie',
-                '09' => 'RESIDENCE NON CONFORME',
+                '09' => 'Résidence non conforme',
                 '31' => 'Prestation exclue affil partielle',
                 '34' => 'Régime non conforme',
                 '35' => 'Demande avantage vielliesse absent ou tardif',

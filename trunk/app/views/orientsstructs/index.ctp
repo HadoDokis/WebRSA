@@ -38,7 +38,7 @@
                         h( $orientstruct['Personne']['prenom'] ),
                         h( date_short( $orientstruct['Orientstruct']['date_propo'] ) ),
                         h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
-                        h( $orientstruct['Structurereferente']['Typeorient']['lib_type_orient'] ) ,
+                        h( isset( $orientstruct['Structurereferente']['Typeorient']['lib_type_orient'] ) ? $orientstruct['Structurereferente']['Typeorient']['lib_type_orient'] : null ) ,
                         h( $orientstruct['Structurereferente']['lib_struc']  ),
                         $html->editLink(
                             'Editer l\'orientation',
@@ -46,7 +46,7 @@
                         ),
                         $html->printLink(
                             'Imprimer la notification',
-                            array( 'controller' => 'gedooos', 'action' => 'notification_structure', $orientstruct['Orientstruct']['id']) 
+                            array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id']) 
                         ),
                     ),
                     array( 'class' => 'odd' ),

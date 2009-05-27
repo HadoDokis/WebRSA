@@ -74,7 +74,7 @@
             </tr>
             <tr class="even">
                 <th><?php __( 'typedtnai' );?></th>
-                <td><?php echo $typedtnai[$personne['Personne']['typedtnai']];?></td>
+                <td><?php echo isset( $typedtnai[$personne['Personne']['typedtnai']] ) ? $typedtnai[$personne['Personne']['typedtnai']] : null;?></td>
             </tr>
             <tr class="odd">
                 <th><?php __( 'nir' );?></th>
@@ -95,15 +95,15 @@
         <tbody>
             <tr class="even">
                 <th><?php __( 'nati' );?></th>
-                <td><?php echo $nationalite[$personne['Personne']['nati']];?></td>
+                <td><?php echo isset( $nationalite[$personne['Personne']['nati']] ) ? $nationalite[$personne['Personne']['nati']] : null;?></td>
             </tr>
             <tr class="odd">
                 <th><?php __( 'dtnati' );?></th>
-                <td><?php echo date_short( $personne['Personne']['dtnati'] );?></td>
+                <td><?php echo date_short( isset( $personne['Personne']['dtnati'] ) ) ? date_short( $personne['Personne']['dtnati'] ) : null;?></td>
             </tr>
             <tr class="even">
                 <th><?php __( 'pieecpres' );?></th>
-                <td><?php echo $pieecpres[$personne['Personne']['pieecpres']];?></td>
+                <td><?php echo isset( $pieecpres[$personne['Personne']['pieecpres']] ) ? $pieecpres[$personne['Personne']['pieecpres']] : null;?></td>
             </tr>
         </tbody>
     </table>

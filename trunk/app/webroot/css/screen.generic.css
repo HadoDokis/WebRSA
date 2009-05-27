@@ -270,32 +270,35 @@ div#ficheAdresse h2 {
     font-size: 1.5em;
 }
 
+table#ficheDossier tbody, table#ficheDossier td { border-width: 0; background: transparent; }
+table#ficheDossier table td { border-width: 1px; }
+
 /* Affichage vue Dossier */
-div#ficheDossier table {
+#ficheDossier table {
     width: 350px;
     margin-bottom: 1em;
 }
 
-div#ficheDossier tbody th {
+#ficheDossier tbody th {
     width: 175px;
 }
 
-div#ficheDossier tbody tr.even td {
+#ficheDossier table tbody tr.even td {
     background: white;
     color: black;
 }
 
-div#ficheDossier tbody tr.odd td {
+#ficheDossier tbody tr.odd td {
     background: white;
     color: black;
 }
 
-div#ficheDossier tbody tr.even th {
+#ficheDossier tbody tr.even th {
     background: #83c2e2;
     color: black;
 }
 
-div#ficheDossier tbody tr.odd th {
+#ficheDossier tbody tr.odd th {
     background: #a8dbef;
     color: black;
 }
@@ -638,5 +641,6 @@ table.smallHeader tbody th { width: 25%; }
 table.mediumHeader tbody th { width: 50%; }
 table.wideHeader tbody th { width: 75%; }
 table.widerHeader tbody th { width: 90%; }
+
 
 /*****************************************************************************/

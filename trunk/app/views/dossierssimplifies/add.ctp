@@ -3,6 +3,13 @@
 
 <h1><?php echo $this->pageTitle;?></h1>
 
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsOnValue( 'Personne0Toppersdrodevorsa', [ 'Typeorient0Id', 'TypeStruct0Id', 'Orientstruct0StructurereferenteId' ], 0, true );
+        observeDisableFieldsOnValue( 'Personne1Toppersdrodevorsa', [ 'Typeorient1Id', 'TypeStruct1Id', 'Orientstruct1StructurereferenteId' ], 0, true );
+    });
+</script>
+
 
 <?php echo $form->create( 'Dossiersimplifie',array( 'url' => Router::url( null, true ) ) );?>
 <!--
@@ -12,6 +19,7 @@ déterminer le territoire et donc l'adresse de la structure en charge du
 suivi), la date de naissance ainsi que le type d'orientation et
 l'organisme vers lequel il y aura orientation (si ouverture du droit).
 -->
+
     <h2>Dossier RSA</h2>
     <?php echo $form->input( 'Dossier.numdemrsa', array( 'label' => required( 'Numéro de demande RSA' ) ) );?>
     <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => required( 'Date de demande' ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1 ) );?>
@@ -26,9 +34,10 @@ l'organisme vers lequel il y aura orientation (si ouverture du droit).
     <?php echo $form->input( 'Personne.0.toppersdrodevorsa', array(  'label' =>  required( __( 'toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
 
     <h3>Orientation</h3>
-    <?php echo $form->input( 'Typeorient.0.id', array( 'label' => required( __( 'lib_type_orient', true ) ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
-    <?php echo $form->input( 'TypeStruct.0.id', array( 'label' => required(__( 'lib_struc', true  )), 'type' => 'select', 'options' => $typesStruct, 'empty' => true ) );?>
-    <?php echo $form->input( 'Orientstruct.0.structurereferente_id', array( 'label' => required(__( 'structure_referente', true  )), 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );?>
+    <?php echo $form->input( 'Typeorient.0.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
+    <?php echo $form->input( 'TypeStruct.0.id', array( 'label' => __( 'lib_struc', true ), 'type' => 'select', 'options' => $typesStruct, 'empty' => true ) );?>
+    <?php echo $form->input( 'Orientstruct.0.structurereferente_id', array( 'label' => __( 'structure_referente', true ), 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );?>
+
 
     <h2>Conjoint</h2>
     <div> <?php echo $form->input( 'Personne.1.rolepers', array( 'label' =>  __( 'rolepers', true ) , 'value' => 'CJT', 'type' => 'hidden') );?></div>
@@ -39,9 +48,9 @@ l'organisme vers lequel il y aura orientation (si ouverture du droit).
     <?php echo $form->input( 'Personne.1.dtnai', array( 'label' =>  __( 'dtnai', true  ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
     <?php echo $form->input( 'Personne.1.toppersdrodevorsa', array(  'label' =>   __( 'toppersdrodevorsa', true ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?> 
     <h3>Orientation</h3>
-    <?php echo $form->input( 'Typeorient.1.id', array( 'label' => required( __( 'lib_type_orient', true ) ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
-    <?php echo $form->input( 'TypeStruct.1.id', array( 'label' => required(__( 'lib_struc', true  )), 'type' => 'select', 'options' => $typesStruct, 'empty' => true ) );?>
-    <?php echo $form->input( 'Orientstruct.1.structurereferente_id', array( 'label' => required(__( 'structure_referente', true  )), 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );?>
+    <?php echo $form->input( 'Typeorient.1.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
+    <?php echo $form->input( 'TypeStruct.1.id', array( 'label' => __( 'lib_struc', true ), 'type' => 'select', 'options' => $typesStruct, 'empty' => true ) );?>
+    <?php echo $form->input( 'Orientstruct.1.structurereferente_id', array( 'label' => __( 'structure_referente', true ), 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );?>
      <!--<h2>Adresse</h2>
     <?php echo $form->input( 'Adresse.numvoie', array( 'label' =>   __( 'numvoie', true ) ) );?>
     <?php echo $form->input( 'Adresse.typevoie', array( 'label' =>  required( __( 'typevoie', true ) ) ) );?>
