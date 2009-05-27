@@ -4,33 +4,31 @@
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
-        var $uses = array( /*'Critere',*/ 'Dossier', 'Foyer', 'Adresse', 'Typeorient', 'Structurereferente' );
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Typeorient', 'Structurereferente', 'Option');
+        var $aucunDroit = array('index', 'menu', 'constReq');
 
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
         */
+        function constReq ($requete, $champ, $valeur) {
+            if (empty($requete))
+                return "($champ = $valeur)";
+            else
+                return $requete." AND ($champ = $valeur) ";
+        }  
+
         function index() {
 
-            $type = $this->Typeorient->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Typeorient.id',
-                        'Typeorient.lib_type_orient'
-                    )
-                )
-            );
-            $this->set( 'type', $type );
+            $this->set( 'typeorient', $this->Typeorient->listOptions() );
+            $this->set( 'typestruct', $this->Structurereferente->list1Options() );
+            $this->set( 'statuts', $this->Option->statut_orient() );
 
             $params = $this->data;
 
             if( count( $params ) > 0 ) {
                 $filters = array();
-
-                // Critères sur le dossier - numéro de dossier
-                if( isset( $params['Dossier']['numdemrsa'] ) && !empty( $params['Dossier']['numdemrsa'] ) ) {
-                    $filters[] = "Dossier.numdemrsa ILIKE '%".Sanitize::paranoid( $params['Dossier']['numdemrsa'] )."%'";
-                }
+                $requete = '';
+                $select  = "SELECT * FROM personnes WHERE id IN ( SELECT personne_id FROM orientsstructs WHERE ";
 
                 // Critères sur le dossier - date de demande
                 if( isset( $params['Dossier']['dtdemrsa'] ) && !empty( $params['Dossier']['dtdemrsa'] ) ) {
@@ -40,33 +38,31 @@
                         $filters[] = 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $params['Dossier']['dtdemrsa_from']['year'], $params['Dossier']['dtdemrsa_from']['month'], $params['Dossier']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $params['Dossier']['dtdemrsa_to']['year'], $params['Dossier']['dtdemrsa_to']['month'], $params['Dossier']['dtdemrsa_to']['day'] ) ).'\'';
                     }
                 }
-
+ 
                 // Critères sur un type d'orientation - libelle, parentid, modèle de notification
-                $filtersTypeorient = array();
-                foreach( array( 'lib_type_orient', 'parentid', 'modele_notif' ) as $critereTypeorient ) {
-                    if( isset( $params['Typeorient'][$critereTypeorient] ) && !empty( $params['Typeorient'][$critereTypeorient] ) ) {
-                        $filtersTypeorient['Typeorient.'.$critereTypeorient.' ILIKE'] = '%'.$params['Typeorient'][$critereTypeorient].'%';
-                    }
-                }
+                if( isset( $params['Typeorient']['id'] ) && !empty( $params['Typeorient']['id'] ) )
+                    $requete = $this->constReq($requete, 'Orientsstructs.typeorient_id', $params['Typeorient']['id']);
 
                 // Critères sur une structure référente - libelle, nom_voie, ville, code_insee
-                $filtersStruct = array();
-                foreach( array( 'lib_struc', 'nom_voie', 'ville', 'code_insee' ) as $critereStruct ) {
-                    if( isset( $params['Structurereferente'][$critereStruct] ) && !empty( $params['Typeorient'][$critereStruct] ) ) {
-                        $filtersStruct['Structurereferente.'.$critereStruct.' ILIKE'] = '%'.$params['Structurereferente'][$critereStruct].'%';
-                    }
-                }
+                if( isset( $params['Structurereferente']['id'] ) && !empty( $params['Structurereferente']['id'] ))
+                    $requete = $this->constReq($requete, 'Orientsstructs.structurereferente_id', $params['Structurereferente']['id']);
 
-
+                // Critères sur une statut d'orientation
+                if( isset( $params['Orientstructs']['statut_orient']  ) && !empty( $params['Orientstructs']['statut_orient'] ))
+                    $requete = $this->constReq($requete, 'Orientsstructs.statut_orient', "'".$params['Orientstructs']['statut_orient']."'");
+           
+                $requete = $select. $requete .')'; 
+                $criteres = $this->Personne->query($requete);
                 // Recherche
-                $this->Dossier->recursive = 2;
-                $criteres = $this->paginate( 'Dossier', array( $filters ) );
-
+                for ($i = 0; $i < count ($criteres); $i++ ){
+                    $criteres[$i]['Foyer'] = $this->Foyer->read(null, $criteres[$i][0]['foyer_id']);
+                    $criteres[$i]['Dossier'] = $this->Dossier->read(null, $criteres[$i]['Foyer']['Foyer']['dossier_rsa_id']);
+ 
+                }
                 $this->set( 'criteres', $criteres );
                 $this->data['Search'] = $params;
             }
         }
-
 
         function menu() {
             // Ce n'est pas un appel par une URL
