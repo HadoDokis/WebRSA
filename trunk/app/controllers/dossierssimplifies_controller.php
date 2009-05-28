@@ -8,13 +8,6 @@
             // FIXME
             $this->assert( ( $this->Session->read( 'Auth.User.username' ) == 'cg66' ), 'error404' );
 
-            // FIXME
-            $services = array(
-                1 => 'Association agréée',
-                2 => 'Pôle Emploi',
-                3 => 'Service Social du Département',
-            );
-
             $this->set( 'pays', $this->Option->pays() );
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'rolepers', $this->Option->rolepers() );
