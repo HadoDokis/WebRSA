@@ -13,6 +13,7 @@
             <th>Structure</th>
             <th>Décision</th>
             <th>Date proposition</th>
+            <th>Date dernier CI</th>
             <th class="innerTableHeader">Informations complémentaires</th>
         </tr>
     </thead>
@@ -70,6 +71,7 @@
                         h( $personne['Orientstruct']['Structurereferente']['lib_struc'] ),
                         h( $personne['Orientstruct']['statut_orient'] ),
                         h( date_short( $personne['Orientstruct']['date_propo'] ) ),
+                        h( date_short( $personne['Contratinsertion']['dd_ci'] ) ),
                         $innerTable
                     ),
                     array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),

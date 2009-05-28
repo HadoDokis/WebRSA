@@ -2,7 +2,7 @@
     class CohortesController extends AppController
     {
         var $name = 'Cohortes';
-        var $uses = array( 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente' );
+        var $uses = array( 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion' );
 
         /**
         */
@@ -52,7 +52,7 @@
             return $propo_algo;
         }
 
-        function  orientees() {
+        function orientees() {
             $typesOrient = $this->Typeorient->find(
                 'list',
                 array(
@@ -108,6 +108,18 @@
                             'recursive' => 2
                         )
                     );
+
+                    $contratinsertion = $this->Contratinsertion->find(
+                        'first',
+                        array(
+                            'conditions' => array(
+                                'Contratinsertion.personne_id' => $element['Personne']['id']
+                            ),
+                            'recursive' => -1,
+                            'order' => array( 'Contratinsertion.dd_ci DESC' )
+                        )
+                    );
+                    $cohorte[$key]['Contratinsertion'] = $contratinsertion['Contratinsertion'];
 
                     unset( $cohorte[$key]['Foyer']['Adressefoyer'] );
                     unset( $cohorte[$key]['Foyer']['AdressesFoyer'] ); // FIXME
