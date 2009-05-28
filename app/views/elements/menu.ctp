@@ -31,7 +31,7 @@
             <li class="selected">
                 <?php echo $html->link( '  Test    party   ', '#' );?>
                 <ul>
-                    <li><a href="../webrsa/app/webroot/files/demotestparty.ppt"> Demo </a></li>
+                    <li><a href="../webrsa/app/webroot/files/demotestparty.pdf"> Demo </a></li>
                     <li><a href="../webrsa/app/webroot/files/rapport_anomalies.xls"> Rapport </a></li>
                 </ul>
             </li>

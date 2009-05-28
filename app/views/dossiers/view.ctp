@@ -5,7 +5,7 @@
 <div class="with_treemenu">
     <h1>Dossier RSA <?php echo h( $dossier['Dossier']['numdemrsa'] );?></h1>
 
-<div id="ficheDossier">
+<div id="resumeDossier">
     <table>
         <tbody>
             <tr class="odd">
@@ -22,7 +22,7 @@
             </tr>
         </tbody>
     </table>
-</div>
+
     <table id="ficheDossier">
         <tbody>
             <tr>
@@ -43,7 +43,7 @@
                                 <td><?php echo $dossier['Adresse']['numvoie'].' '.$dossier['Adresse']['typevoie'].' '.$dossier['Adresse']['nomvoie'];?></td>
                             </tr>
                             <tr class="even">
-                                <th><?php __( 'numero_poste' );?></th>
+                                <th><?php __( 'numtel' );?></th>
                                 <td><?php echo isset( $dossier['ModeContact']['numtel'] ) ? $dossier['ModeContact']['numtel'] : null;?></td>
                             </tr>
                         </tbody>
@@ -55,11 +55,11 @@
                         <tbody>
                             <tr class="odd">
                                 <th>Type d'orientation</th>
-                                <td><?php echo h( isset( $dossier['Typeorient']['lib_type_orient'] ) ? $dossier['Typeorient']['lib_type_orient'] : null );?></td>
+                                <td><?php echo h( isset( $dossier['Personne']['Structurereferente']['Typeorient']['lib_type_orient'] ) ? $dossier['Personne']['Structurereferente']['Typeorient']['lib_type_orient'] : null );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Type de structure</th>
-                                <td><?php echo h( isset( $dossier['Structurereferente']['lib_struc'] ) ? $dossier['Structurereferente']['lib_struc'] : null);?></td>
+                                <td><?php echo h( isset( $dossier['Personne']['Structurereferente']['lib_struc'] ) ? $dossier['Personne']['Structurereferente']['lib_struc'] : null);?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date de l'orientation</th>
@@ -147,5 +147,6 @@
             </tr>
         </tbody>
     </table>
+</div>
 </div>
 <div class="clearer"><hr /></div>

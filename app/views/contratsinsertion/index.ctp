@@ -41,10 +41,10 @@
                     echo $html->tableCells(
                         array(
                             h( $contratinsertion['Contratinsertion']['id'] ),
-                            h( $type_ci[$contratinsertion['Contratinsertion']['type_ci']] ),
-                            h( date_short( $contratinsertion['Contratinsertion']['dd_ci'] ) ),
-                            h( date_short( $contratinsertion['Contratinsertion']['df_ci'] ) ),
-                            h( $decision_ci[$contratinsertion['Contratinsertion']['decision_ci']].date_short( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) ),
+                            h( $contratinsertion['Typocontrat']['lib_typo'] ),
+                            h( date_short( isset( $contratinsertion['Contratinsertion']['dd_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['dd_ci']  ) : null ),
+                            h( date_short( isset( $contratinsertion['Contratinsertion']['df_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['df_ci'] ) : null ),
+                            //h( $decision_ci[$contratinsertion['Contratinsertion']['decision_ci']].date_short( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) ),
                             $html->actionsLink(
                                 'Actions pour le contrat d\'insertion',
                                 array( 'controller' => 'actionsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['id'])

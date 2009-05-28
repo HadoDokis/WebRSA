@@ -5,8 +5,8 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        observeDisableFieldsOnValue( 'Personne0Toppersdrodevorsa', [ 'Typeorient0Id', 'TypeStruct0Id', 'Orientstruct0StructurereferenteId' ], 0, true );
-        observeDisableFieldsOnValue( 'Personne1Toppersdrodevorsa', [ 'Typeorient1Id', 'TypeStruct1Id', 'Orientstruct1StructurereferenteId' ], 0, true );
+        observeDisableFieldsOnValue( 'Personne0Toppersdrodevorsa', [ 'Typeorient0ParentId', 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId' ], 0, true );
+        observeDisableFieldsOnValue( 'Personne1Toppersdrodevorsa', [ 'Typeorient1ParentId', 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId' ], 0, true );
     });
 </script>
 
@@ -47,6 +47,7 @@ l'organisme vers lequel il y aura orientation (si ouverture du droit).
     <?php echo $form->input( 'Personne.1.nir', array( 'label' =>  __( 'nir', true ) ) );?>
     <?php echo $form->input( 'Personne.1.dtnai', array( 'label' =>  __( 'dtnai', true  ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
     <?php echo $form->input( 'Personne.1.toppersdrodevorsa', array(  'label' =>   __( 'toppersdrodevorsa', true ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?> 
+
     <h3>Orientation</h3>
     <?php echo $form->input( 'Typeorient.1.parent_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
     <?php echo $form->input( 'Orientstruct.1.typeorient_id', array( 'label' => __( 'lib_struc', true ), 'type' => 'select', 'options' => $typesStruct, 'empty' => true ) );?>
