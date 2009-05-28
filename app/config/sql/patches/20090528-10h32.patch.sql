@@ -1,0 +1,1 @@
+ALTER TABLE rattachements ALTER COLUMN typepar TYPE CHAR(3);
