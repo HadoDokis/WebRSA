@@ -5,7 +5,8 @@
             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                 <?php echo $html->link( 'Gestion des cohortes', '#' );?>
                 <ul>
-                    <li><?php echo $html->link( 'Nouvelles demandes', array( 'controller' => 'cohortes', 'action' => 'index' ) );?></li>
+                    <li><?php echo $html->link( 'Nouvelles demandes', array( 'controller' => 'cohortes', 'action' => 'nouvelles' ) );?></li>
+                    <li><?php echo $html->link( 'Demandes orientées', array( 'controller' => 'cohortes', 'action' => 'orientees' ) );?></li>
                     <!--<li><?php echo $html->link( 'Gestion des PDO', '#' );?></li>
                     <li><?php echo $html->link( 'Liste suivant critères', '#' );?></li>
                     <li><?php echo $html->link( 'Gestion des éditions', '#' );?></li>-->

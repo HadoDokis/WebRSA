@@ -5,7 +5,6 @@
     <h2>Étape 4: Dossier RSA</h2>
 
     <?php echo $form->input( 'Dossier.numdemrsa', array( 'label' => required( 'Numéro de dossier' ) ) );?>
-    <!-- <?php echo $form->input( 'Dossier.organisme_id', array( 'label' => 'Orientation du département', 'options' => $services, 'empty' => true ) );?> -->
     <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => required( 'Date de demande' ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1 ) );?>
 
     <div class="submit">
