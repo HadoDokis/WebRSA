@@ -274,31 +274,31 @@ table#ficheDossier tbody, table#ficheDossier td { border-width: 0; background: t
 table#ficheDossier table td { border-width: 1px; }
 
 /* Affichage vue Dossier */
-#ficheDossier table {
+#resumeDossier table {
     width: 350px;
     margin-bottom: 1em;
 }
 
-#ficheDossier tbody th {
+#resumeDossier tbody th {
     width: 175px;
 }
 
-#ficheDossier table tbody tr.even td {
+#resumeDossier table tbody tr.even td {
     background: white;
     color: black;
 }
 
-#ficheDossier tbody tr.odd td {
+#resumeDossier tbody tr.odd td {
     background: white;
     color: black;
 }
 
-#ficheDossier tbody tr.even th {
+#resumeDossier tbody tr.even th {
     background: #83c2e2;
     color: black;
 }
 
-#ficheDossier tbody tr.odd th {
+#resumeDossier tbody tr.odd th {
     background: #a8dbef;
     color: black;
 }

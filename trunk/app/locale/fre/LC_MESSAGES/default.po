@@ -373,7 +373,7 @@ msgid "observ_ci"
 msgstr "Observations"
 
 msgid "decision_ci"
-msgstr "Décisions"
+msgstr "Décisions du Président du Conseil Général"
 
 msgid "typocontrat"
 msgstr "Typologie du contrat"
@@ -643,3 +643,6 @@ msgstr "Type de contrat d'insertion"
 
 msgid "adresse"
 msgstr "Adresse"
+
+msgid "numtel"
+msgstr "Numéro de téléphone"

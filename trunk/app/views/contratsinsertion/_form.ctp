@@ -40,9 +40,6 @@ D'une part : le Président du Conseil Général
                 <?php echo $form->input( 'Contratinsertion.diplomes', array( 'label' => __( 'diplomes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
                 <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __( 'expr_prof', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
                 <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' => __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
-    </fieldset>
-                <?php echo $form->input( 'Contratinsertion.type_ci', array( 'label' => required( __( 'type_ci', true ) ), 'type' => 'select', 'options' => $type_ci, 'empty' => true ) );?>
-    <fieldset>
             <legend> PARCOURS D'INSERTION ANTERIEUR </legend>
                 <?php echo $form->input( 'Contratinsertion.rg_ci', array( 'label' => __( 'rg_ci', true ), 'type' => 'text')  ); ?>
                 <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>

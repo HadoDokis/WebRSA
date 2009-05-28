@@ -20,6 +20,7 @@
             $this->set( 'natpf', $this->Option->natpf() );
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+            //$this->set( 'statut_orient', $this->Option->statut_orient() );
         }
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
@@ -183,7 +184,7 @@
                 'first',
                 array(
                     'conditions' => array( 'Orientstruct.personne_id' => $personne['Personne']['id'] ),
-                    'recursive' => -1
+                    'recursive' => 2
                 )
             );
             //$this->assert( !empty( $orientStruct ), 'error500' );
@@ -202,6 +203,8 @@
             //-----------------------------------------------------------------
 
             $personne['Personne']['Orientstruct'] = $orientStruct['Orientstruct'];
+            $personne['Personne']['Typeorient'] = $orientStruct['Typeorient'];
+            $personne['Personne']['Structurereferente'] = $orientStruct['Structurereferente'];
             $personne['Personne']['Contratinsertion'] = $contratinsertion['Contratinsertion'];
             $dossier = Set::merge( $dossier, $personne );
 

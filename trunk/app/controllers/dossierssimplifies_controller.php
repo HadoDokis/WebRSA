@@ -13,7 +13,7 @@
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
             //$this->set( 'lib_struc', $this->Option->lib_struc() ); ///FIXME
-
+            $this->set( 'statut_orient', $this->Option->statut_orient() );
             $this->set( 'options', $this->Typeorient->listOptions() );
             $this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
         }

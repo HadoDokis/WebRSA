@@ -508,7 +508,7 @@ CREATE TABLE structuresreferentes_zonesgeographiques (
 create table orientsstructs (
     id                              SERIAL NOT NULL PRIMARY KEY,
     personne_id                     INTEGER NOT NULL REFERENCES personnes(id),
-    typeorient_id                   INTEGER NOT NULL REFERENCES typesorients(id),
+    typeorient_id                   INTEGER REFERENCES typesorients(id),
     structurereferente_id           INTEGER REFERENCES structuresreferentes(id),
     propo_algo                      INTEGER  REFERENCES typesorients(id),
 --     propo_cg                        INTEGER  REFERENCES typesorients(id),
