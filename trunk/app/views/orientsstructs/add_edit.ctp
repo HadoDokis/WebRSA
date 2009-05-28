@@ -23,6 +23,7 @@
             echo $form->create( 'Orientstruct', array(  'type' => 'post', 'url' => Router::url( null, true )  ));
             echo '<div>';
             echo $form->input( 'Orientstruct.id', array( 'type' => 'hidden', 'value' => '' ) );
+            echo $form->input( 'Orientstruct.typeorient_id', array( 'type' => 'hidden' ) );
 
             echo '</div>';
         }
@@ -30,6 +31,8 @@
             echo $form->create( 'Orientstruct', array( 'type' => 'post', 'url' => Router::url( null, true )  ));
             echo '<div>';
             echo $form->input( 'Orientstruct.id', array( 'type' => 'hidden' ) );
+            echo $form->input( 'Orientstruct.typeorient_id', array( 'type' => 'hidden' ) );
+
             echo '</div>';
         }
     ?>

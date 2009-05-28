@@ -85,7 +85,6 @@ CREATE TABLE users_zonesgeographiques (
 );
 
 
-
 CREATE TABLE dossiers_rsa (
     id                      SERIAL NOT NULL PRIMARY KEY,
     numdemrsa               VARCHAR(11),
@@ -367,7 +366,7 @@ CREATE TABLE dspps (
     libautrpermicondu   VARCHAR(100),
     libcompeextrapro    VARCHAR(100),
     persisogrorechemploi    BOOLEAN,
-    accoemploi          CHAR(4),
+   -- accoemploi          CHAR(4),
     libcooraccoemploi   VARCHAR(100),
     hispro              CHAR(4),
     libderact           VARCHAR(100),
@@ -390,6 +389,18 @@ CREATE TABLE dspps (
 --    id        SERIAL NOT NULL PRIMARY KEY,
 --    nivetu    CHAR(4)
 --);
+
+CREATE TABLE accoemplois (
+    id      SERIAL NOT NULL PRIMARY KEY,
+    code    CHAR(4),
+    name    VARCHAR(100)
+);
+
+
+CREATE TABLE dspps_accoemplois (
+    accoemploi_id   INTEGER NOT NULL REFERENCES accoemplois(id),
+    dspp_id     INTEGER NOT NULL REFERENCES dspps(id)
+);
 
 CREATE TABLE nivetus (
     id                         SERIAL NOT NULL PRIMARY KEY,
@@ -466,7 +477,7 @@ CREATE TABLE typesorients (
     id                  SERIAL NOT NULL PRIMARY KEY,
     parentid            INTEGER,
     lib_type_orient     VARCHAR(30),
-    modele_notif        VARCHAR(20)
+    modele_notif        VARCHAR(40)
 );
 
 -- -----------------------------------------------------------------------------
@@ -475,7 +486,6 @@ CREATE TABLE typesorients (
 
 create table structuresreferentes (
     id                      SERIAL NOT NULL PRIMARY KEY,
-    -- zonegeographique_id     INTEGER NOT NULL REFERENCES zonesgeographiques(id),
     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
     lib_struc               VARCHAR(32) NOT NULL,
     num_voie                VARCHAR(6) NOT NULL, 
@@ -486,13 +496,20 @@ create table structuresreferentes (
     code_insee              CHAR(5)
 );
 
+CREATE TABLE structuresreferentes_zonesgeographiques (
+    structurereferente_id               INT NOT NULL REFERENCES structuresreferentes (id),
+    zonegeographique_id                 INT NOT NULL REFERENCES zonesgeographiques (id),
+    PRIMARY KEY( structurereferente_id, zonegeographique_id )
+);
+
 -- -----------------------------------------------------------------------------
 --       table : orientsstructs
 -- -----------------------------------------------------------------------------
 create table orientsstructs (
     id                              SERIAL NOT NULL PRIMARY KEY,
     personne_id                     INTEGER NOT NULL REFERENCES personnes(id),
-    structurereferente_id           INTEGER NOT NULL REFERENCES structuresreferentes(id),
+    typeorient_id                   INTEGER NOT NULL REFERENCES typesorients(id),
+    structurereferente_id           INTEGER REFERENCES structuresreferentes(id),
     propo_algo                      INTEGER  REFERENCES typesorients(id),
 --     propo_cg                        INTEGER  REFERENCES typesorients(id),
     valid_cg                        BOOLEAN,
@@ -868,7 +885,11 @@ CREATE TABLE creancesalimentaires (
     orioblalim      CHAR(3),
     motidiscrealim  CHAR(3),
     commcrealim     VARCHAR(50),
-    mtsancrealim    NUMERIC(9,2)
+    mtsancrealim    NUMERIC(9,2),
+    topdemdisproccrealim BOOLEAN,
+    engproccrealim CHAR(1),
+    verspa CHAR(1),
+    topjugpa BOOLEAN
 );
 
 -- -----------------------------------------------------------------------------
