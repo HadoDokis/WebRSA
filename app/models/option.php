@@ -722,6 +722,17 @@
                 'RCBN3' => 'RSA Activité Local + 25 ans'
             );
         }
+       
+       function statut_contrat_insertion() {
+            return array(
+                '1' => 'Validé',
+                '2' => 'En attente',
+                '3' => 'A valider',
+                '4' => 'Rejeté',
+                '5' => 'Afficher tout'
+            );
+        }
+
 
         function statut_orient() {
             return array(
