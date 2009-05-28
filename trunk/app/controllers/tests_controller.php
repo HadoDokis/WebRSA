@@ -14,7 +14,7 @@
     class TestsController extends AppController {
         // INFO: http://bakery.cakephp.org/articles/view/wizard-component-1-2-1
         var $components = array( 'Wizard' );
-        var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Option', 'Ressource', 'Ressourcemensuelle',  'Detailressourcemensuelle' );
+        var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Option', 'Ressource', 'Ressourcemensuelle',  'Detailressourcemensuelle', 'Orientstruct' );
 
         /**
         *
@@ -113,15 +113,6 @@
                     $this->set( 'rgadr', $this->Option->rgadr() );
                     $this->set( 'typeadr', $this->Option->typeadr() );
                     break;
-//                 case 'dossier':
-//                     // FIXME: aller les chercher
-//                     $services = array(
-//                         1 => 'Association agrée',
-//                         2 => 'Pôle Emploi',
-//                         3 => 'Service Social du Département',
-//                     );
-//                     $this->set( 'services', $services );
-//                     break;
                 case 'ressourcesallocataire':
                     $wizardData = $this->Wizard->read();
                     if( hasConjoint( $wizardData['conjoint']['Personne'] ) ) { // FIXME
@@ -322,12 +313,19 @@
                 $data['allocataire']['Personne']['foyer_id'] = $this->Foyer->id;
                 $saved = $this->Personne->save( $data['allocataire']['Personne'] );
                 $demandeur_id = $this->Personne->id;
+                // Type orientation demandeur
+                $this->Orientstruct->create();
+                $saved = $this->Orientstruct->save( array( 'Orientstruct' => array( 'personne_id' => $demandeur_id, 'statut_orient' => 'Non orienté' ) ) );
                 // Conjoint
                 if( count( array_filter( $data['conjoint']['Personne'] ) ) != 3 ) { // FIXME
                     $this->Personne->create();
                     $data['conjoint']['Personne']['foyer_id'] = $this->Foyer->id;
                     $saved = $this->Personne->save( $data['conjoint']['Personne'] );
                     $conjoint_id = $this->Personne->id;
+
+                    // Type orientation conjoint
+                    $this->Orientstruct->create();
+                    $saved = $this->Orientstruct->save( array( 'Orientstruct' => array( 'personne_id' => $conjoint_id, 'statut_orient' => 'Non orienté' ) ) );
                 }
                 // Ressources demandeur
                 $this->Ressource->create();

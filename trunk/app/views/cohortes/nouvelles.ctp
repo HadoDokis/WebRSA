@@ -11,6 +11,7 @@
                 <th>Service instructeur</th>
                 <th>PréOrientation</th>
                 <th class="action">Orientation</th>
+                <th class="action">Structure</th>
                 <th class="action">Décision</th>
                 <th>Statut</th>
                 <th class="innerTableHeader">Informations complémentaires</th>
@@ -65,19 +66,14 @@
                                     )
                                 )
                             ),
-                            h( $personne['Orientstruct']['propo_algo'] ),
-                            $form->input( 'Orientation.'.$index.'.id', array( 'label' => false, 'type' => 'select', 'options' => $services, 'value' => $personne['Dossier']['preorientation_id'] ) ),
-                            $form->input( 'Orientation.'.$index.'.decision', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => array( 'valider' => 'Valider', 'attente' => 'En attente' ), 'value' => 'valider' ) ),
+                            h( $personne['Orientstruct']['propo_algo_texte'] ).
+                                $form->input( 'Orientstruct.'.$index.'.propo_algo', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['propo_algo'] ) ).
+                                $form->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['id'] ) ),
+                            $form->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient, 'value' => $personne['Orientstruct']['propo_algo'] ) ),
+                            $form->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structuresReferentes, 'empty' => true ) ),
+                            $form->input( 'Orientstruct.'.$index.'.statut_orient', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => array( 'Orienté' => 'Valider', 'attente' => 'En attente' ), 'value' => 'Orienté' ) ),
                             h( $personne['Dossier']['statut'] ),
                             $innerTable
-//                             $html->editLink(
-//                                 'Éditer le dossier',
-//                                 array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] )
-//                             ),
-//                             $html->printLink(
-//                                 'Imprimer le dossier',
-//                                 array( 'controller' => 'gedooos', 'action' => 'notification_structure', $dossier['Contratinsertion']['id'] )
-//                             )
                         ),
                         array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
                         array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )

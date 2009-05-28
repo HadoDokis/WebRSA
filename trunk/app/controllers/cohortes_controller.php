@@ -2,7 +2,7 @@
     class CohortesController extends AppController
     {
         var $name = 'Cohortes';
-        var $uses = array( 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse' );
+        var $uses = array( 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente' );
 
         /**
         */
@@ -52,28 +52,41 @@
             return $propo_algo;
         }
 
-        /**
-
-        */
-        function index() {
-            $this->set( 'options2', $this->Structurereferente->list1Options() );
-            $services = array( // FIXME
-                1 => 'Emploi',
-                4 => 'Préprofessionnelle',
-                6 => 'Social',
-            );
-            $this->set( 'services', $services );
-
-            // INFO: 190509 - grille test web-rsa.doc
-            $cohorte = $this->Dossier->Foyer->Personne->find(
-                'all',
+        function  orientees() {
+            $typesOrient = $this->Typeorient->find(
+                'list',
                 array(
-                    'recursive' => 2
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient'
+                    )
+                )
+            );
+            $this->set( 'typesOrient', $typesOrient );
+
+            $orientes = $this->Dossier->Foyer->Personne->Orientstruct->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Orientstruct.personne_id',
+                        'Orientstruct.personne_id'
+                    ),
+                    'conditions' => array( 'Orientstruct.statut_orient' => 'Orienté' ),
                 )
             );
 
-            foreach( $cohorte as $key => $element ) {
-                if( empty( $cohorte[$key]['Orientstruct']['statut_orient'] ) ) { // FIXME: bonne condition ?
+            $cohorte = array();
+            // INFO: 190509 - grille test web-rsa.doc
+            if( !empty( $orientes ) ) {
+                $cohorte = $this->Dossier->Foyer->Personne->find(
+                    'all',
+                    array(
+                    'conditions' => array( 'Personne.id' => array_values( $orientes ) ),
+                        'recursive' => 2
+                    )
+                );
+
+                foreach( $cohorte as $key => $element ) {
                     // Dossier
                     $dossier = $this->Dossier->find(
                         'first',
@@ -99,11 +112,6 @@
                     unset( $cohorte[$key]['Foyer']['Adressefoyer'] );
                     unset( $cohorte[$key]['Foyer']['AdressesFoyer'] ); // FIXME
                     $cohorte[$key]['Foyer']['Adresse'] = $adresse['Adresse'];
-                    $cohorte[$key]['Orientstruct']['propo_algo'] = $this->_preOrientation( $element );
-                    // FIXME
-                    $tmp = array_flip( $services );
-                    $cohorte[$key]['Dossier']['preorientation_id'] = $tmp[$cohorte[$key]['Orientstruct']['propo_algo']];
-                    $cohorte[$key]['Orientstruct']['date_propo'] = date( 'Y-m-d' );
 
                     // Statut suivant ressource
                     $ressource = $this->Ressource->find(
@@ -116,7 +124,7 @@
                         )
                     );
                     $cohorte[$key]['Dossier']['statut'] = 'Diminution des ressource';
-// debug( $ressource );
+
                     if( !empty( $ressource ) ) {
                         list( $year, $month, $day ) = explode( '-', $cohorte[$key]['Dossier']['dtdemrsa'] );
                         $dateOk = ( mktime( 0, 0, 0, $month, $day, $year ) > mktime( 0, 0, 0, 6, 1, 2009 ) );
@@ -126,132 +134,147 @@
                             // FIXME: à réparer
                             //debug( Set::extract( $ressource, 'Ressourcemensuelle.{n}.Detailressourcemensuelle.{n}.mtnatressmen' ) );
                             $mtpersressmenrsa = number_format( array_sum( Set::extract( $ressource, '{n}.Ressourcemensuelle.{n}.Detailressourcemensuelle.{n}.mtnatressmen' ) ) / 3, 2 );
-// debug( $mtpersressmenrsa );
+
                         }
                         if( $mtpersressmenrsa < 500 && $dateOk ) {
                             $dossiers[$key]['Dossier']['statut'] = 'Nouvelle demande';
                         }
                     }
                 }
+
+            }
+            $this->set( 'cohorte', $cohorte );
+        }
+
+        /**
+
+        */
+        function nouvelles() {
+            $typesOrient = $this->Typeorient->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient'
+                    ),
+                    'conditions' => array(
+                        'Typeorient.parentid' => null
+                    )
+                )
+            );
+            $this->set( 'typesOrient', $typesOrient );
+
+            $structuresReferentes = $this->Structurereferente->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Structurereferente.id',
+                        'Structurereferente.lib_struc'
+                    )
+                )
+            );
+            $this->set( 'structuresReferentes', $structuresReferentes );
+
+            if( !empty( $this->data ) ) {
+                $this->Dossier->begin();
+                $saved = true;
+                foreach( $this->data['Orientstruct'] as $key => $value ) {
+                    $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
+                    $saved = $this->Dossier->Foyer->Personne->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
+                }
+                if( $saved ) {
+                    $this->Dossier->commit();
+                }
+                else {
+                    $this->Dossier->rollback();
+                }
+            }
+
+            $nonOrientes = $this->Dossier->Foyer->Personne->Orientstruct->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Orientstruct.personne_id',
+                        'Orientstruct.personne_id'
+                    ),
+                    'conditions' => array( 'Orientstruct.statut_orient' => 'Non orienté' ),
+                )
+            );
+
+            $cohorte = array();
+            // INFO: 190509 - grille test web-rsa.doc
+            if( !empty( $nonOrientes ) ) {
+                $cohorte = $this->Dossier->Foyer->Personne->find(
+                    'all',
+                    array(
+                    'conditions' => array( 'Personne.id' => array_values( $nonOrientes ) ),
+                        'recursive' => 2
+                    )
+                );
+            }
+
+            foreach( $cohorte as $key => $element ) {
+                // Dossier
+                $dossier = $this->Dossier->find(
+                    'first',
+                    array(
+                        'conditions' => array( 'Dossier.id' => $element['Foyer']['dossier_rsa_id'] ),
+                        'recursive' => 1
+                    )
+                );
+                $cohorte[$key] = Set::merge( $cohorte[$key], $dossier );
+
+                // Adresse -> FIXME ?
+                $adresses = Set::combine( $cohorte[$key]['Foyer']['Adressefoyer'], '{n}.rgadr', '{n}.adresse_id' );
+                $adresse = $this->Adresse->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Adresse.id' => $adresses['01']
+                        ),
+                        'recursive' => 2
+                    )
+                );
+
+                unset( $cohorte[$key]['Foyer']['Adressefoyer'] );
+                unset( $cohorte[$key]['Foyer']['AdressesFoyer'] ); // FIXME
+                $cohorte[$key]['Foyer']['Adresse'] = $adresse['Adresse'];
+                $cohorte[$key]['Orientstruct']['propo_algo_texte'] = $this->_preOrientation( $element );
+                // FIXME
+                $tmp = array_flip( $typesOrient );
+                $cohorte[$key]['Orientstruct']['propo_algo'] = $tmp[$cohorte[$key]['Orientstruct']['propo_algo_texte']];
+                $cohorte[$key]['Orientstruct']['date_propo'] = date( 'Y-m-d' );
+
+                // Statut suivant ressource
+                $ressource = $this->Ressource->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Ressource.personne_id' => $element['Personne']['id']
+                        ),
+                        'recursive' => 2
+                    )
+                );
+                $cohorte[$key]['Dossier']['statut'] = 'Diminution des ressource';
+
+                if( !empty( $ressource ) ) {
+                    list( $year, $month, $day ) = explode( '-', $cohorte[$key]['Dossier']['dtdemrsa'] );
+                    $dateOk = ( mktime( 0, 0, 0, $month, $day, $year ) > mktime( 0, 0, 0, 6, 1, 2009 ) );
+
+                    $mtpersressmenrsa = 0;
+                    if( $ressource['Ressource']['topressnul'] != 0 && !empty( $ressource['Ressourcemensuelle'] ) ) {
+                        // FIXME: à réparer
+                        //debug( Set::extract( $ressource, 'Ressourcemensuelle.{n}.Detailressourcemensuelle.{n}.mtnatressmen' ) );
+                        $mtpersressmenrsa = number_format( array_sum( Set::extract( $ressource, '{n}.Ressourcemensuelle.{n}.Detailressourcemensuelle.{n}.mtnatressmen' ) ) / 3, 2 );
+
+                    }
+                    if( $mtpersressmenrsa < 500 && $dateOk ) {
+                        $dossiers[$key]['Dossier']['statut'] = 'Nouvelle demande';
+                    }
+                }
             }
 
             $this->set( 'cohorte', $cohorte );
         }
-
-//         function xxx() {
-//             // TODO: par 15
-//             $services = array(
-//                 1 => 'Association agréée',
-//                 2 => 'Pôle Emploi',
-//                 3 => 'Service Social du Département',
-//             );
-//
-//             $this->set( 'options2', $this->Structurereferente->list1Options() );
-//
-//             $dossiers = $this->Dossier->find(
-//                 'all',
-//                 array(
-//                     'fields' => array(
-//                         'Dossier.id',
-//                         'Dossier.numdemrsa',
-//                         'Personne.dtnai',
-//                         'Personne.nir',
-//                         'Dossier.dtdemrsa',
-//                         'Dossier.matricule',
-//                         'Adresse.codepos',
-//                         'Adresse.locaadr',
-//                         'Adresse.canton',
-//                         'Personne.id',
-//                         'Personne.nom',
-//                         'Personne.prenom',
-//                         'Contratinsertion.id',
-//                         'Structurereferente.id',
-//                         'Structurereferente.lib_struc',
-//                         // FIXME
-//                         'Suiviinstruction.etatirsa',
-//                         'Suiviinstruction.date_etat_instruction',
-//                         'Suiviinstruction.nomins',
-//                         'Suiviinstruction.prenomins',
-//                         'Suiviinstruction.numdepins',
-//                         'Suiviinstruction.typeserins',
-//                         'Suiviinstruction.numcomins',
-//                         'Suiviinstruction.numagrins'
-//                     ),
-//                     'joins' => array(
-//                         array(
-//                             'table' => 'foyers',
-//                             'alias' => 'Foyer',
-//                             'type'  => 'LEFT OUTER',
-//                             'conditions'=> array( 'Dossier.id = Foyer.dossier_rsa_id' )
-//                         ),
-//                         array(
-//                             'table' => 'suivisinstruction',
-//                             'alias' => 'Suiviinstruction',
-//                             'type'  => 'LEFT OUTER',
-//                             'conditions'=> array( 'Dossier.id = Suiviinstruction.dossier_rsa_id' )
-//                         ),
-//                         array(
-//                             'table' => 'adresses_foyers',
-//                             'alias' => 'AdresseFoyer',
-//                             'type'  => 'LEFT OUTER',
-//                             'conditions'=> array( 'AdresseFoyer.foyer_id = Foyer.id', 'AdresseFoyer.rgadr = \'01\'' )
-//                         ),
-//                         array(
-//                             'table' => 'adresses',
-//                             'alias' => 'Adresse',
-//                             'type'  => 'LEFT OUTER',
-//                             'conditions'=> array( 'AdresseFoyer.adresse_id = Adresse.id' )
-//                         ),
-//                         array(
-//                             'table' => 'personnes',
-//                             'alias' => 'Personne',
-//                             'type'  => 'LEFT OUTER',
-//                             'conditions'=> array( 'Personne.foyer_id = Foyer.id', 'or' => array( 'Personne.rolepers = \'DEM\'', 'Personne.rolepers = \'CJT\'' ) )
-//                         ),
-//                         array(
-//                             'table' => 'contratsinsertion',
-//                             'alias' => 'Contratinsertion',
-//                             'type'  => 'LEFT OUTER',
-//                             'conditions'=> array( 'Contratinsertion.personne_id = Personne.id' )
-//                         ),
-//                         array(
-//                             'table' => 'structuresreferentes',
-//                             'alias' => 'Structurereferente',
-//                             'type'  => 'LEFT OUTER',
-//                             'conditions' => array( 'Personne.id = Structurereferente.id' )
-//                         ),
-//                     ),
-//                     'recursive' => -1
-//                 )
-//             );
-//
-//             foreach( $dossiers as $key => $dossier ) {
-//                 $ressource = $this->Ressource->find(
-//                     'first',
-//                     array(
-//                         'conditions' => array(
-//                             'Ressource.personne_id' => $dossier['Personne']['id']
-//                         ),
-//                         'recursive' => -1
-//                     )
-//                 );
-//                 // FIXME!
-//                 $dossiers[$key]['Dossier']['statut'] = 'Diminution des ressource';
-//                 if( !empty( $ressource ) ) {
-//                     list( $year, $month, $day ) = explode( '-', $dossier['Dossier']['dtdemrsa'] );
-//                     $dateOk = ( mktime( 0, 0, 0, $month, $day, $year ) > mktime( 0, 0, 0, 6, 1, 2009 ) );
-//                     if( ( $ressource['Ressource']['mtpersressmenrsa'] / 3 ) < 500 && $dateOk ) {
-//                         $dossiers[$key]['Dossier']['statut'] = 'Nouvelle demande';
-//                     }
-//                 }
-//
-//                 $i = rand( 1, count( $services ) );
-//                 $dossiers[$key]['Dossier']['preorientation'] = $services[$i];
-//                 $dossiers[$key]['Dossier']['preorientation_id'] = $i;
-//             }
-// debug( $dossiers );
-//             $this->set( 'services', $services );
-//             $this->set( 'dossiers', $dossiers );
-//         }
     }
 ?>
