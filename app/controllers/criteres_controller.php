@@ -4,7 +4,7 @@
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Typeorient', 'Structurereferente', 'Option');
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Typeorient', 'Structurereferente', 'Option', 'Serviceinstructeur');
         var $aucunDroit = array('index', 'menu', 'constReq');
 
         /**
@@ -22,6 +22,8 @@
             $this->set( 'typeorient', $this->Typeorient->listOptions() );
             $this->set( 'typestruct', $this->Structurereferente->list1Options() );
             $this->set( 'statuts', $this->Option->statut_orient() );
+            $this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
+            $this->set( 'services_instructeur', $this->Serviceinstructeur->listOptions()); 
 
             $params = $this->data;
 
