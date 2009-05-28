@@ -18,7 +18,7 @@
             </tr>
             <tr class="odd">
                 <th>État du dossier</th>
-                <td><?php echo h( $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] );?></td>
+                <td><?php echo h( isset( $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null );?></td>
             </tr>
         </tbody>
     </table>
@@ -64,6 +64,10 @@
                             <tr class="odd">
                                 <th>Date de l'orientation</th>
                                 <td><?php echo h(  date_short( isset( $dossier['Personne']['Orientstruct']['date_valid'] ) ) ? date_short( $dossier['Personne']['Orientstruct']['date_valid'] ) : null );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Statut de l'orientation</th>
+                                <td><?php echo h( isset( $dossier['Personne']['Orientstruct']['statut_orient'] ) ? $dossier['Personne']['Orientstruct']['statut_orient'] : null);?></td>
                             </tr>
                         </tbody>
                     </table>

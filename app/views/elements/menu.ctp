@@ -2,11 +2,6 @@
     <ul>
         <?php if( $session->check( 'Auth.User' ) ): ?>
             <!--<li><?php echo $html->link( 'Accueil', '/' );?></li>-->
-
-            <li>
-                <?php echo $html->link( 'Recherche dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?>
-            </li>
-            <li><?php echo $html->link( 'Recherche multi-critères', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                 <?php echo $html->link( 'Gestion des cohortes', '#' );?>
                 <ul>
@@ -16,6 +11,11 @@
                     <li><?php echo $html->link( 'Gestion des éditions', '#' );?></li>-->
                 </ul>
             </li>
+            <li>
+                <?php echo $html->link( 'Recherche dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?>
+            </li>
+            <li><?php echo $html->link( 'Recherche multi-critères', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
+
             <!--<li><?php echo $html->link( 'Préorientation / orientation', '#' );?></li>-->
             <li class="selected">
                 <?php echo $html->link( 'Administration', '#' );?>

@@ -726,7 +726,7 @@
         function statut_orient() {
             return array(
                 '1' => 'Non orienté',
-                '2' => 'Validé',
+                '2' => 'Orienté',
                 '3' => 'En attente'
             );
         }

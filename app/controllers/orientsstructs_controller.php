@@ -64,6 +64,7 @@
                     // Orientation
                     $this->Orientstruct->create();
                     $this->data['Orientstruct']['personne_id'] = $personne_id;
+
                     $this->data['Orientstruct']['valid_cg'] = true;
                     $this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
                     $this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );

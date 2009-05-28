@@ -42,7 +42,7 @@
                             ),
                             $html->printLink(
                                 'Imprimer la notification',
-                                array( 'controller' => 'gedooos', 'action' => 'notification_structure', $personne['Orientstruct']['id']) 
+                                array( 'controller' => 'gedooos', 'action' => 'orientstruct', $personne['Orientstruct']['id']) 
                             ),
                         ),
                         array( 'class' => 'odd' ),
