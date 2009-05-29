@@ -11,15 +11,26 @@
 	       parent::beforeFilter();
 
             if((substr($_SERVER['REQUEST_URI'], strlen($this->base)) != '/users/login')) {
-                if (!$this->Session->Check('Auth')) {
+                if( !$this->Session->Check( 'Auth' ) ) {
                     //le forcer a se connecter
                     $this->redirect("/users/login");
                     exit();
                 }
                 else {
-                    $user  = $this->Session->read('Auth');
+                    $user = $this->Session->read( 'Auth' );
                     if( empty( $user['User'] ) ) {
                         $this->redirect("/users/login");
+                    }
+
+                    // FIXME: ailleurs pour ne le faire qu'une fois
+                    $sql = 'SELECT users_zonesgeographiques.zonegeographique_id FROM users_zonesgeographiques WHERE users_zonesgeographiques.user_id='.$user['User']['id'].';';
+                    $results = $this->Dossier->query( $sql ); // FIXME: c'est sale
+                    if( count( $results ) > 0 ) {
+                        $zones = array();
+                        foreach( $results as $result ) {
+                            $zones[] = $result[0]['zonegeographique_id'];
+                        }
+                        $this->Session->write( 'Auth.User.Zonegeographique', $zones );
                     }
 
                     $controllerAction = $this->name . ':' . ($this->name == 'Pages' ? $this->params['pass'][0] : $this->action);

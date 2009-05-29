@@ -7,6 +7,8 @@
     <?php echo $form->input( 'Dossier.numdemrsa', array( 'label' => required( 'Numéro de dossier' ) ) );?>
     <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => required( 'Date de demande' ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1 ) );?>
 
+    <?php echo $form->input( 'Detaildroitrsa.oridemrsa', array( 'label' => required( 'Code origine demande Rsa' ), 'type' => 'select', 'options' => $oridemrsa ) );?>
+
     <div class="submit">
         <?php echo $form->submit( '< Précédent', array( 'name' => 'Previous', 'div'=>false ) );?>
         <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>

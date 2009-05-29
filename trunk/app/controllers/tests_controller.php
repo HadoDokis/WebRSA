@@ -14,7 +14,7 @@
     class TestsController extends AppController {
         // INFO: http://bakery.cakephp.org/articles/view/wizard-component-1-2-1
         var $components = array( 'Wizard' );
-        var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Option', 'Ressource', 'Ressourcemensuelle',  'Detailressourcemensuelle', 'Orientstruct' );
+        var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Option', 'Ressource', 'Ressourcemensuelle',  'Detailressourcemensuelle', 'Orientstruct', 'Detaildroitrsa' );
 
         /**
         *
@@ -125,6 +125,8 @@
                     $this->set( 'natress', $this->Option->natress() );
                     $this->set( 'abaneu', $this->Option->abaneu() );
                     break;
+                case 'dossier':
+                    $this->set( 'oridemrsa', $this->Option->oridemrsa() );
             }
 
             $this->Wizard->process( $step );
@@ -301,6 +303,9 @@
 
                 // Tentatives de sauvegarde
                 $saved = $this->Dossier->save( $data['dossier']['Dossier'] );
+                // Détails du droit
+                $data['dossier']['Detaildroitrsa']['dossier_rsa_id'] = $this->Dossier->id;
+                $saved = $this->Detaildroitrsa->save( $data['dossier']['Detaildroitrsa'] ) && $saved;
                 // Foyer
                 $saved = $this->Foyer->save( array( 'dossier_rsa_id' => $this->Dossier->id ) ) && $saved;
                 // Adresse

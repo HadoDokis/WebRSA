@@ -615,9 +615,9 @@
 
         function oridemrsa() {
             return array(
+                'DEM' => 'Le droit au Rsa fait suite à une demande de RSA',
                 'RMI' => 'Le droit au rSa est issu de la conversion d\'un droit RMI',
-                'API' => 'Le droit au rSa est issu de la conversion d\'un droit API',
-                'DEM' => 'Le droit au Rsa fait suite à une demande de RSA'
+                'API' => 'Le droit au rSa est issu de la conversion d\'un droit API'
             );
         }
 
