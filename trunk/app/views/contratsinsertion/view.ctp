@@ -15,13 +15,12 @@
 
 
 <div id="ficheCI">
-
         <table>
             <tbody>
                 <tr class="odd">
-                        <th><?php __( 'type_ci' );?></th>
-                        <td><?php echo ( $type_ci[$contratinsertion['Contratinsertion']['type_ci']] );?></td>
-                    </tr>
+                    <th><?php __( 'lib_typo_contrat' );?></th>
+                    <td><?php echo ( $tc[$contratinsertion['Contratinsertion']['typocontrat_id']] );?></td>
+                </tr>
                 <tr class="even">
                         <th><?php __( 'dd_ci' );?></th>
                         <td><?php echo date_short( $contratinsertion['Contratinsertion']['dd_ci'] );?></td>

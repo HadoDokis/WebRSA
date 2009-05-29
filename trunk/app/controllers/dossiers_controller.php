@@ -4,7 +4,7 @@
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'ModeContact',/*'Foyercreance',*/ 'Creance', 'Adressefoyer' );
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'ModeContact','Typocontrat', 'Creance', 'Adressefoyer' );
 
         var $paginate = array(
             // FIXME
@@ -16,11 +16,9 @@
 
         function beforeFilter() {
             parent::beforeFilter();
-            $this->set( 'type_ci', $this->Option->type_ci() );
             $this->set( 'natpf', $this->Option->natpf() );
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-            //$this->set( 'statut_orient', $this->Option->statut_orient() );
         }
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
@@ -155,6 +153,17 @@
         function view( $id = null ) {
             $this->assert( valid_int( $id ), 'error404' );
 
+            $tc = $this->Typocontrat->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typocontrat.lib_typo'
+                    ),
+                )
+            );
+            $this->set( 'tc', $tc );
+
+
             $dossier = $this->Dossier->find(
                 'first',
                 array(
@@ -203,7 +212,7 @@
             //-----------------------------------------------------------------
 
             $personne['Personne']['Orientstruct'] = $orientStruct['Orientstruct'];
-            $personne['Personne']['Typeorient'] = $orientStruct['Typeorient'];
+            //$personne['Personne']['Typeorient'] = $orientStruct['Typeorient'];
             $personne['Personne']['Structurereferente'] = $orientStruct['Structurereferente'];
             $personne['Personne']['Contratinsertion'] = $contratinsertion['Contratinsertion'];
             $dossier = Set::merge( $dossier, $personne );

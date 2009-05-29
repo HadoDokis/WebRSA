@@ -25,7 +25,6 @@
         <tbody>
             <?php
                 foreach( $dossier['Foyer']['Personne'] as $personne ) {
-//debug( $personne );
                     echo $html->tableCells(
                         array(
                             h( $personne['rolepers'] ),

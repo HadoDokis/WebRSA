@@ -18,19 +18,21 @@
  <?php 
         if( $this->action == 'add' ) {
             echo $form->create( 'Prestform',array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+            echo '<div>';
             echo $form->input( 'Prestform.id', array( 'type' => 'hidden') );
             echo $form->input( 'Prestform.actioninsertion_id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Prestform.refpresta_id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Refpresta.id', array( 'type' => 'hidden' ) );
-
+            echo '</div>';
         }
          else {
             echo $form->create( 'Prestform',array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+            echo '<div>';
             echo $form->input( 'Prestform.id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Prestform.actioninsertion_id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Prestform.refpresta_id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Refpresta.id', array( 'type' => 'hidden' ) );
-
+            echo '</div>';
          }
 
     ?>

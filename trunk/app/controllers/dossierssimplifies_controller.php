@@ -2,7 +2,7 @@
     class DossierssimplifiesController extends AppController
     {
         var $name = 'Dossierssimplifies';
-        var $uses = array( 'Dossier', 'Foyer', /*'Adresse', 'Adressefoyer',*/ 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct' );
+        var $uses = array( 'Dossier', 'Foyer', /*'Adresse', 'Adressefoyer',*/ 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct', 'Typocontrat' );
 
         function beforeFilter() {
             // FIXME
@@ -19,6 +19,7 @@
         }
 
         function view( $id = null ) {
+
             $typesOrient = $this->Typeorient->find(
                 'list',
                 array(
@@ -110,8 +111,6 @@
             if( !empty( $this->data ) ) {
                 $this->Dossier->set( $this->data );
                 $this->Foyer->set( $this->data );
-//                 $this->Adresse->set( $this->data );
-//                 $this->Adressefoyer->set( $this->data );
                 $this->Orientstruct->set( $this->data );
                 $this->Structurereferente->set( $this->data );
 
@@ -128,8 +127,6 @@
                 $validates = $this->Personne->saveAll( $this->data['Personne'], array( 'validate' => 'only' ) ) & $validates;
 
 
-//                 $validates = $this->Adresse->validates() && $validates;
-//                 $validates = $this->Adressefoyer->validates() && $validates;
                 $validates = $this->Orientstruct->validates() && $validates;
                 $validates = $this->Structurereferente->validates() && $validates;
 
@@ -161,13 +158,6 @@
                         }
                     }
 
-//                     $saved = $this->Adresse->save( $this->data ) && $saved;
-//                     $this->data['Adressefoyer']['adresse_id'] = $this->Adresse->id;
-//                     $this->data['Adressefoyer']['foyer_id'] = $this->Foyer->id;
-//                     $this->data['Adressefoyer']['rgadr'] = '01';
-//                     $this->data['Adressefoyer']['typeadr'] = 'D';
-//                     $saved = $this->Adressefoyer->save( $this->data ) && $saved;
-
                     if( $saved ) {
                         $this->Dossier->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -178,6 +168,86 @@
                     }
                 }
             }
+           $this->render( $this->action, null, 'add_edit' );
         }
-    }
+
+        function edit( $dossimple_id = null ){
+            $this->assert( valid_int( $dossimple_id ), 'error404' );
+
+            $typesOrient = $this->Typeorient->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient'
+                    ),
+                    'conditions' => array(
+                        'Typeorient.parentid' => null
+                    )
+                )
+            );
+            $this->set( 'typesOrient', $typesOrient );
+
+            $typesStruct = $this->Typeorient->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient'
+                    ),
+                    'conditions' => array(
+                        'Typeorient.parentid NOT' => null
+                    )
+                )
+            );
+            $this->set( 'typesStruct', $typesStruct );
+
+            $dossimple = $this->Dossier->find(
+                'first',
+                array(
+                    'conditions'=> array(
+                        'Dossier.id' => $dossimple_id
+                    )
+                )
+            );
+
+            $personne = $this->Personne->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Personne.foyer_id' => $dossimple['Foyer']['id'],
+                        'Personne.rolepers' => 'DEM' // FIXME ?
+                    ),
+                    'recursive' => -1
+                )
+            );
+            $this->assert( !empty( $personne ), 'error500' );
+
+            $dossimple = Set::merge( $dossimple, array( 'Personne' => $personne['Personne'] ) );
+
+
+
+            if( !empty( $this->data ) ) {
+                if( $this->Dossier->saveAll( $this->data ) ) {
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $foyer_id ) );
+                }
+            }
+            else {
+                $dossimple = $this->Dossier->find(
+                    'first',
+                    array(
+                        'conditions'=> array(
+                            'Dossier.id' => $dossimple_id
+                        )
+                    )
+                );
+                $this->assert( !empty( $dossimple ), 'error404' );
+                $this->data = $dossimple;
+            }
+
+            $this->set( 'foyer_id', $dossimple['Foyer']['id'] );
+            $this->render( $this->action, null, 'add_edit' );
+        }
+}
 ?>

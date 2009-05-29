@@ -78,22 +78,26 @@ $( document ).ready(
     <?php 
         if( $this->action == 'add' ) {
             echo $form->create( 'Actioninsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ));
+            echo '<div>';
             echo $form->input( 'Actioninsertion.id', array( 'type' => 'hidden' ) );
+
             echo $form->input( 'Aidedirecte.id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Aidedirecte.actioninsertion_id', array( 'type' => 'hidden'));//, 'value' => $actioninsertion_id ) );
             echo $form->input( 'Prestform.id', array( 'type' => 'hidden') );
             echo $form->input( 'Prestform.actioninsertion_id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Refpresta.id', array( 'type' => 'hidden' ) );
+            echo '</div>';
         }
         else {
             echo $form->create( 'Actioninsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ));
+            echo '<div>';
             echo $form->input( 'Actioninsertion.id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Aidedirecte.id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Prestform.id', array( 'type' => 'hidden') );
             echo $form->input( 'Prestform.actioninsertion_id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Refpresta.id', array( 'type' => 'hidden' ) );
-
             echo $form->input( 'Actioninsertion.personne_id', array( 'type' => 'hidden' ) );
+            echo '</div>';
         }
 
 

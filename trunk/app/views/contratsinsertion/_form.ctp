@@ -1,18 +1,3 @@
-<?php
-//     $title = implode(
-//         ' ',
-//         array(
-//             $this->data['Personne']['qual'],
-//             $this->data['Personne']['nom'],
-//             ( !empty( $this->data['Personne']['nomnaiss'] ) ? '( née '.$this->data['Personne']['nomnaiss'].' )' : null ),
-//             $this->data['Personne']['prenom'],
-//             $this->data['Personne']['prenom2'],
-//             $this->data['Personne']['prenom3']
-//         )
-//     );
-// 
-//     $this->pageTitle = 'Visualisation d\'une personne « '.$title.' »';
-?>
 <p><i>Le présent contrat d'insertion est établi en application de l'article L262-37 du code de l'action sociale </i></p><!-- et des familles entre,</i> 
 <br /> <br /> 
 D'une part : le Président du Conseil Général  
@@ -24,8 +9,8 @@ D'une part : le Président du Conseil Général
             <legend>Contrats d'insertion</legend>
                 <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __( 'lib_struc', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );?>
                 <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => __( 'lib_typo', true ), 'type' => 'select' , 'options' => $tc, 'empty' => true ) );?>
-                <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __( 'dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-20 , 'empty' => true)  );?>
-                <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-5 , 'empty' => true)  ) ;?>
+                <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __( 'dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );?>
+                <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ) ;?>
     </fieldset>
 <!--    <fieldset>
             <?php echo $form->input( '0', array( 'label' => 'Conditions de logement : ')  ); ?>
@@ -68,7 +53,7 @@ D'une part : le Président du Conseil Général
     <fieldset>
                 <?php echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __( 'observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
                 <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __( 'decision_ci', true ), 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) ); ?>
-                <?php echo $form->input( 'Contratinsertion.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-20 , 'empty' => true)  ); ?><br />
+                <?php echo $form->input( 'Contratinsertion.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?><br />
                 <?php echo $form->input( 'Fait à :', array( 'label' => 'Fait à : ', 'type' => 'text')  ); ?><br />
                 <?php echo $form->input( 'Le ', array( 'label' => 'Le : ', 'type' => 'text')  ); ?>
                 <?php echo $form->input( 'Le Président du Conseil Général : ', array( 'label' => 'Le Président du Conseil Général : ', 'type' => 'text')  ); ?>
