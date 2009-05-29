@@ -5,7 +5,7 @@
         <?php echo $form->input( 'Adresse.compladr', array( 'label' =>  __( 'compladr', true ) ) );?>
         <?php echo $form->input( 'Adresse.lieudist', array( 'label' =>  __( 'lieudist', true ) ) );?>
         <?php echo $form->input( 'Adresse.numcomrat', array( 'label' =>  __( 'numcomrat', true ) ) );?>
-        <?php echo $form->input( 'Adresse.numcomptt', array( 'label' =>  __( 'numcomptt', true ) ) );?>
+        <?php echo $form->input( 'Adresse.numcomptt', array( 'label' =>  required( __( 'numcomptt', true ) ) ) );?>
         <?php echo $form->input( 'Adresse.codepos', array( 'label' =>  required( __( 'codepos', true ) ) ) );?>
         <?php echo $form->input( 'Adresse.locaadr', array( 'label' =>  required( __( 'locaadr', true ) ) ) );?>
         <?php echo $form->input( 'Adresse.pays', array( 'label' =>  required( __( 'pays', true ) ), 'type' => 'select', 'options' => $pays, 'empty' => true ) );?>

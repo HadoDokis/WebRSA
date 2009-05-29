@@ -40,6 +40,13 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
+            // FIXME: validation format code
+            'numcomptt' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
             'codepos' => array(
                 array(
                     'rule' => 'notEmpty',

@@ -37,4 +37,8 @@
  * ...and connect the rest of 'Pages' controller's urls.
  */
 	/*Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));*/
+
+    Router::connect( '/cohortes/nouvelles/', array( 'controller' => 'cohortes', 'action' => 'index', 'Non orienté' ) );
+    Router::connect( '/cohortes/orientees/', array( 'controller' => 'cohortes', 'action' => 'index', 'Orienté' ) );
+    Router::connect( '/cohortes/enattente/', array( 'controller' => 'cohortes', 'action' => 'index', 'En attente' ) );
 ?>

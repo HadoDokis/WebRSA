@@ -33,6 +33,11 @@ div.text input, div.password input, div.select select {
     width: 48%; /* Grrrr */
 }
 
+td div.text input, td div.password input, td div.select select {
+    display: block;
+    width: auto;
+}
+
 div.submit {
     text-align: center;
     padding: 0.5em;
