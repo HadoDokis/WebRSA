@@ -114,6 +114,13 @@
             'Données socio-professionnelles',
             array( 'controller' => 'dspfs', 'action' => 'view', $dossier['Foyer']['id'] )
         ).'</li>';
+
+    ?>
+   <?php
+        echo '<li>'.$html->link(
+            'Préconisation d\'orientation',
+            array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $dossier['Foyer']['id'] )
+        ).'</li>';
     echo '</ul>';
     ?>
 </div>

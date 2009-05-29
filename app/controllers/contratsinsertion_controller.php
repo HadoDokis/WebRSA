@@ -8,7 +8,6 @@
 
         function beforeFilter() {
             parent::beforeFilter();
-            $this->set( 'type_ci', $this->Option->type_ci() );
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $this->set( 'referents', $this->Referent->find( 'list' ) );
             $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
@@ -44,6 +43,16 @@
             if( !valid_int( $contratinsertion_id ) ) {
                 $this->cakeError( 'error404' );
             }
+
+            $tc = $this->Typocontrat->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typocontrat.lib_typo'
+                    ),
+                )
+            );
+            $this->set( 'tc', $tc );
 
             $contratinsertion = $this->Contratinsertion->find(
                 'first',
@@ -151,16 +160,17 @@
                 )
             );
             $this->set( 'tc', $tc );
+
             // TODO -> 404
-	      $contratinsertion = $this->Contratinsertion->find(
-		  'first',
-		  array(
-		      'conditions' => array(
-			  'Contratinsertion.id' => $contratinsertion_id
-		      )
-		  )
-	      );
-	      
+            $contratinsertion = $this->Contratinsertion->find(
+            'first',
+            array(
+                'conditions' => array(
+                'Contratinsertion.id' => $contratinsertion_id
+                )
+            )
+            );
+
             if (empty($contratinsertion)){
                 $this->cakeError( 'error404' );
             }

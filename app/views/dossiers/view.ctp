@@ -123,7 +123,7 @@
                         <tbody>
                             <tr class="odd">
                                 <th>Type de contrat</th>
-                                <td><?php echo h( isset( $type_ci[$dossier['Personne']['Contratinsertion']['type_ci']] ) ? $type_ci[$dossier['Personne']['Contratinsertion']['type_ci']] : null );?></td>
+                                <td><?php echo h( isset( $tc[$dossier['Personne']['Contratinsertion']['typocontrat_id']] ) ? $tc[$dossier['Personne']['Contratinsertion']['typocontrat_id']] : null );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Date de début</th>

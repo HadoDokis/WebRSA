@@ -28,7 +28,7 @@
             <?php
                 echo '<li>'.$html->editLink(
                     'Éditer un dossier pour le Foyer',
-                    array( 'controller' => 'dspfs', 'action' => 'edit', $dsp['foyer']['Dspf']['id'] )
+                    array( 'controller' => 'dspfs', 'action' => 'edit', $foyer_id )
                 ).' </li>';
             ?>
         </ul>

@@ -722,7 +722,7 @@
                 'RCBN3' => 'RSA Activité Local + 25 ans'
             );
         }
-       
+
        function statut_contrat_insertion() {
             return array(
                 '1' => 'Validé',
@@ -736,9 +736,9 @@
 
         function statut_orient() {
             return array(
-                '1' => 'Non orienté',
-                '2' => 'Orienté',
-                '3' => 'En attente'
+                'Non orienté' => 'Non orienté',
+                'Orienté' => 'Orienté',
+                'En attente' => 'En attente'
             );
         }
 
@@ -833,13 +833,13 @@
             );
         }
 
-        function type_ci() {
-            return array(
-                'pre' => 'Premier contrat',
-                'ren' => 'Renouvellement',
-                'red' => 'Redéfinition'
-            );
-        }
+//         function type_ci() {
+//             return array(
+//                 'pre' => 'Premier contrat',
+//                 'ren' => 'Renouvellement',
+//                 'red' => 'Redéfinition'
+//             );
+//         }
 
         function typeadr() {
             return array(

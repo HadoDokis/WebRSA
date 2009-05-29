@@ -26,12 +26,6 @@
 
 
         var $validate = array(
-            'type_ci' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
             'dd_ci' => array(
                 'notEmpty' => array(
                     'rule' => 'date',

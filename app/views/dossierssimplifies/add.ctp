@@ -39,7 +39,7 @@ l'organisme vers lequel il y aura orientation (si ouverture du droit).
     <?php echo $form->input( 'Orientstruct.0.structurereferente_id', array( 'label' => __( 'structure_referente', true ), 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );?>
 
 
-    <h2>Conjoint</h2>
+    <h2>Demandeur 2</h2>
     <div> <?php echo $form->input( 'Personne.1.rolepers', array( 'label' =>  __( 'rolepers', true ) , 'value' => 'CJT', 'type' => 'hidden') );?></div>
     <?php echo $form->input( 'Personne.1.qual', array( 'label' =>  __( 'qual', true ) , 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
     <?php echo $form->input( 'Personne.1.nom', array( 'label' =>  __( 'nom', true )  ) );?>

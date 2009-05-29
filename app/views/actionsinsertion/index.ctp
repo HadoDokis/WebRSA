@@ -18,16 +18,16 @@
     <h1><?php echo 'Actions d\'insertion pour le contrat ';?></h1>
 
     <?php if( empty( $actionsinsertion ) ):?>
-        <p><b>Aides</b></p>
+        <b>Aides</b>
             <?php 
                 echo $html->addLink(
-                                'Ajouter une aide',
-                                array( 'controller' => 'aidesdirectes', 'action' => 'add', $contratinsertion_id )
-                            );
-            ?>
-        <p class="notice">Ce contrat ne possède pas d'aides d'insertion.</p>
+                    'Ajouter une aide',
+                    array( 'controller' => 'aidesdirectes', 'action' => 'add', $contratinsertion_id )
+                );
+           ?>
+            <p class="notice">Ce contrat ne possède pas d'aides d'insertion.</p>
 
-        <p><b>Prestations</b></p>
+       <b>Prestations</b>
             <?php       echo $html->addLink(
                                 'Ajouter une prestation',
                                 array( 'controller' => 'prestsform', 'action' => 'add', $contratinsertion_id )
@@ -36,20 +36,20 @@
         <p class="notice">Ce contrat ne possède pas de prestations d'insertion.</p>
 
     <?php else: ?>
+<br />
+        <h2>Aides</h2>
+        <?php 
+            echo $html->addLink(
+                'Ajouter une aide',
+                array( 'controller' => 'aidesdirectes', 'action' => 'add', $contratinsertion_id )
+            );
+        ?>
         <table class="tooltips">
             <thead>
                 <tr>
-                    <p><b>Aides</b></p>
-                    <?php 
-                        echo $html->addLink(
-                                        'Ajouter une aide',
-                                        array( 'controller' => 'aidesdirectes', 'action' => 'add', $contratinsertion_id )
-                                    );
-                    ?>
-                    <th width="220">Type d'aide</th>
-                    <th width="220">Libellé de l'aide</th>
-                    <th width="220">Date de l'aide</th>
-
+                    <th >Type d'aide</th>
+                    <th >Libellé de l'aide</th>
+                    <th >Date de l'aide</th>
                     <th colspan="2" class="action">Actions</th>
                 </tr>
             </thead>
@@ -62,7 +62,7 @@
                             array(
                                 h( $typo_aide[$aidedirecte['typo_aide']] ),
                                 h( $actions[$aidedirecte['lib_aide']] ),
-                                h( $aidedirecte['date_aide'] ),
+                                h( date_short( $aidedirecte['date_aide'] ) ),
                                 $html->editLink(
                                     'Éditer l\'aide ',
                                     array( 'controller' => 'aidesdirectes', 'action' => 'edit', $aidedirecte['id'] )
@@ -74,19 +74,20 @@
                 <?php endforeach;?>
             </tbody>
         </table>
+<br />
+        <h2>Prestations</h2>
+        <?php
+            echo $html->addLink(
+                'Ajouter une prestation',
+                array( 'controller' => 'prestsform', 'action' => 'add', $contratinsertion_id)
+            );
+        ?>
         <table class="tooltips" title="Prestations">
             <thead>
                 <tr>
-                    <p><b>Prestations</b></p>
-                     <?php       echo $html->addLink(
-                                        'Ajouter une prestation',
-                                        array( 'controller' => 'prestsform', 'action' => 'add', $contratinsertion_id)
-                                    );
-                    ?>
-                    <th width="220">Libellé de la prestation</th>
-                    <th width="220">Référent de la prestation</th>
-                    <th width="220">Date de la prestation</th>
-
+                    <th>Libellé de la prestation</th>
+                    <th>Référent de la prestation</th>
+                    <th>Date de la prestation</th>
                     <th colspan="2" class="action">Actions</th>
 
                 </tr>
@@ -95,17 +96,11 @@
                 <?php foreach( $actionsinsertion as $actioninsertion ):?>
                     <?php foreach( $actioninsertion['Prestform'] as $prestform ):?>
                         <?php
-                            //foreach( $prestform['Refpresta'] as $refpresta ):
                             echo $html->tableCells(
                                 array(
                                     h( $actions[$prestform['lib_presta']] ),
                                     h( $prestform['Refpresta']['nomrefpresta'].' '.$prestform['Refpresta']['prenomrefpresta']),
-                                    h( $prestform['date_presta']),
-                                    //h( $actioninsertion['Refpresta']['nom']),
-//                                     $html->viewLink(
-//                                         'Voir la prestation',
-//                                         array( 'controller' => 'prestsform', 'action' => 'view', $actioninsertion['id'])
-//                                     ),
+                                    h( date_short( $prestform['date_presta'] ) ),
                                     $html->editLink(
                                         'Éditer la prestation ',
                                         array( 'controller' => 'prestsform', 'action' => 'edit', $prestform['id'] )
