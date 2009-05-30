@@ -3,20 +3,20 @@
 
 <h1><?php echo $this->pageTitle;?></h1>
 
-<?php 
+<?php
     if( $this->action == 'add' ) {
         echo $form->create( 'User', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
-        echo $form->input( 'User.id', array( 'type' => 'hidden' ) );
-        echo $form->input( 'Zonegeographique.id', array( 'type' => 'hidden' ) );
-        echo $form->input( 'User.group_id', array( 'type' => 'hidden' ) );
-        echo $form->input( 'User.serviceinstructeur_id', array( 'type' => 'hidden' ) );
+        echo $form->input( 'User.id', array( 'type' => 'hidden', 'value' => null ) );
+//         echo $form->input( 'Zonegeographique.id', array( 'type' => 'hidden' ) );
+//         echo $form->input( 'User.group_id', array( 'type' => 'hidden' ) );
+//         echo $form->input( 'User.serviceinstructeur_id', array( 'type' => 'hidden' ) );
     }
     else {
         echo $form->create( 'User', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
         echo $form->input( 'User.id', array( 'type' => 'hidden' ) );
-        echo $form->input( 'Zonegeographique.id', array( 'type' => 'hidden' ) );
-        echo $form->input( 'User.group_id', array( 'type' => 'hidden' ) );
-        echo $form->input( 'User.serviceinstructeur_id', array( 'type' => 'hidden' ) );    
+//         echo $form->input( 'Zonegeographique.id', array( 'type' => 'hidden' ) );
+//         echo $form->input( 'User.group_id', array( 'type' => 'hidden' ) );
+//         echo $form->input( 'User.serviceinstructeur_id', array( 'type' => 'hidden' ) );
 	}
 ?>
 
