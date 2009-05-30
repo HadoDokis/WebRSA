@@ -40,7 +40,7 @@
 
             $this->set('users', $users);
         }
-
+        // FIXME: à l'ajout, on n'obtient pas toutes les acl de son groupe
         function add() {
             $zg = $this->Zonegeographique->find(
                 'list',
