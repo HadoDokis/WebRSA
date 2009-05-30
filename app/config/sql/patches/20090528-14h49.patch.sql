@@ -16,7 +16,7 @@ ALTER TABLE contratsinsertion ADD COLUMN nature_projet TEXT;
 ALTER TABLE contratsinsertion DROP COLUMN observ_ci;
 ALTER TABLE contratsinsertion ADD COLUMN observ_ci TEXT;
 
-ALTER TABLE contratsinsertion DROP COLUMN type_ci;
+-- ALTER TABLE contratsinsertion DROP COLUMN type_ci;
 ALTER TABLE orientsstructs ALTER COLUMN typeorient_id DROP NOT NULL;
 ALTER TABLE orientsstructs ALTER COLUMN structurereferente_id DROP NOT NULL;
 
