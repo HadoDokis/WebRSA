@@ -81,21 +81,24 @@
                 // Tentative de sauvegarde des orientations
                 // FIXME: la structure est obligatoire pour les dossiers validés, sinon afficher une erreur
                 if( !empty( $this->data['Orientstruct'] ) ) {
-                    $this->Dossier->begin();
-                    $saved = true;
-                    foreach( $this->data['Orientstruct'] as $key => $value ) {
-                        // FIXME: date_valid et pas date_propo ?
-                        if( $statutOrientation == 'Non orienté' ) {
-                            $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
+                    $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only' ) );
+                    if( $valid ) {
+                        $this->Dossier->begin();
+                        $saved = true;
+                        foreach( $this->data['Orientstruct'] as $key => $value ) {
+                            // FIXME: date_valid et pas date_propo ?
+                            if( $statutOrientation == 'Non orienté' ) {
+                                $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
+                            }
+                            $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
+                            $saved = $this->Dossier->Foyer->Personne->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
                         }
-                        $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
-                        $saved = $this->Dossier->Foyer->Personne->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
-                    }
-                    if( $saved ) {
-                        $this->Dossier->commit();
-                    }
-                    else {
-                        $this->Dossier->rollback();
+                        if( $saved ) {
+                            $this->Dossier->commit();
+                        }
+                        else {
+                            $this->Dossier->rollback();
+                        }
                     }
                 }
                 // Recherche suivant les critères de filtre

@@ -15,5 +15,15 @@
                 'foreignKey'    => 'structurereferente_id'
             )
         );
+
+        var $validate = array(
+            // Role personne
+            'structurereferente_id' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            )
+        );
     }
 ?>
