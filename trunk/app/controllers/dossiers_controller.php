@@ -25,8 +25,7 @@
         */
         function index() {
             $params = $this->data;
-// debug( $this->params['url'] );
-            if( count( $params ) > 0 ) {
+            if( !empty( $params ) ) {
                 $filters = array();
 
                 // Critères sur le dossier - numéro de dossier
