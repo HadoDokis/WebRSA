@@ -20,8 +20,8 @@
                 //$authUser['aroAlias'] = $group['Group']['name'].':'. $authUser['User']['username'];
                 $authUser['User']['aroAlias'] = 'Utilisateur:'. $authUser['User']['username'];
                 /* lecture de la collectivite de l'utilisateur authentifié */
-                $this->Session->write( 'Auth', $authUser);
-                $this->redirect($this->Auth->redirect());
+                $this->Session->write( 'Auth', $authUser );
+                $this->redirect( $this->Auth->redirect() );
     	    }
         }
 
@@ -30,7 +30,6 @@
         }
 
         function index() {
-
             $users = $this->User->find(
                 'all',
                 array(
@@ -43,7 +42,6 @@
         }
 
         function add() {
-
             $zg = $this->Zonegeographique->find(
                 'list',
                 array(
@@ -133,7 +131,6 @@
                 }
             }
             else {
-
                $user = $this->User->find(
                     'first',
                     array(
