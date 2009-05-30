@@ -27,65 +27,65 @@
             $this->Wizard->cancelUrl = '/tests/wizard';
 
             // INFO: on peut préremplir le wizard pour les tests
-//             $this->Session->write(
-//                 'Wizard.Tests.allocataire',
-//                 array(
-//                     'Personne' => array(
-//                         'rolepers'  => 'DEM',
-//                         'qual'      => 'MR',
-//                         'nom'       => 'Buffin',
-//                         'prenom'    => 'Christian',
-//                         'dtnai'   => array(
-//                             'day'   => 01,
-//                             'month' => 01,
-//                             'year'  => 2009
-//                         ),
-//                         'rgnai' => 1,
-//                         'nir' => rand_nir(),
-//                         'topvalec' => 0,
-//                         'nati' => 'C',
-//                         'pieecpres' => 'E'
-//                     )
-//                 )
-//             );
-//             $this->Session->write(
-//                 'Wizard.Tests.conjoint',
-//                 array(
-//                     'Personne' => array(
-//                         'rolepers'  => 'CJT',
-//                         'qual'      => 'MME',
-//                         'nom'       => 'Buffin',
-//                         'prenom'    => 'Simone',
-//                         'dtnai'   => array(
-//                             'day'   => 01,
-//                             'month' => 01,
-//                             'year'  => 2009
-//                         ),
-//                         'rgnai' => 1,
-//                         'nir' => rand_nir(),
-//                         'topvalec' => 0,
-//                         'nati' => 'C',
-//                         'pieecpres' => 'E'
-//                     )
-//                 )
-//             );
-//             $this->Session->write(
-//                 'Wizard.Tests.adresse',
-//                 array(
-//                     'Adressefoyer' => array(
-//                         'rgadr'     => '01',
-//                         'typeadr'   => 'D'
-//                     ),
-//                     'Adresse' => array(
-//                         'numvoie' => 8,
-//                         'typevoie' => 'rue',
-//                         'nomvoie' => 'des rosiers',
-//                         'codepos' => '34000',
-//                         'locaadr' => 'Montpellier',
-//                         'pays' => 'FRA'
-//                     ),
-//                 )
-//             );
+            $this->Session->write(
+                'Wizard.Tests.allocataire',
+                array(
+                    'Personne' => array(
+                        'rolepers'  => 'DEM',
+                        'qual'      => 'MR',
+                        'nom'       => 'Buffin',
+                        'prenom'    => 'Christian',
+                        'dtnai'   => array(
+                            'day'   => 01,
+                            'month' => 01,
+                            'year'  => 2009
+                        ),
+                        'rgnai' => 1,
+                        'nir' => rand_nir(),
+                        'topvalec' => 0,
+                        'nati' => 'C',
+                        'pieecpres' => 'E'
+                    )
+                )
+            );
+            $this->Session->write(
+                'Wizard.Tests.conjoint',
+                array(
+                    'Personne' => array(
+                        'rolepers'  => 'CJT',
+                        'qual'      => 'MME',
+                        'nom'       => 'Buffin',
+                        'prenom'    => 'Simone',
+                        'dtnai'   => array(
+                            'day'   => 01,
+                            'month' => 01,
+                            'year'  => 2009
+                        ),
+                        'rgnai' => 1,
+                        'nir' => rand_nir(),
+                        'topvalec' => 0,
+                        'nati' => 'C',
+                        'pieecpres' => 'E'
+                    )
+                )
+            );
+            $this->Session->write(
+                'Wizard.Tests.adresse',
+                array(
+                    'Adressefoyer' => array(
+                        'rgadr'     => '01',
+                        'typeadr'   => 'D'
+                    ),
+                    'Adresse' => array(
+                        'numvoie' => 8,
+                        'typevoie' => 'rue',
+                        'nomvoie' => 'des rosiers',
+                        'codepos' => '34000',
+                        'locaadr' => 'Montpellier',
+                        'pays' => 'FRA'
+                    ),
+                )
+            );
             return parent::beforeFilter();
         }
 

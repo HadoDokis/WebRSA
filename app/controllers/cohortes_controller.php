@@ -167,7 +167,7 @@
                         'Adressefoyer.foyer_id'
                     ),
                     'conditions' => array(
-                        'Adresse.numcomptt'  => $mesCodesInsee,
+                        'Adresse.numcomptt'  => ( !empty( $mesCodesInsee ) ? $mesCodesInsee : null ),
                         'Adressefoyer.rgadr' => '01'
                     ),
                     'recursive' => 2
@@ -251,8 +251,8 @@
             // INFO: 190509 - grille test web-rsa.doc
             if( !empty( $personnesIds ) ) {
                 $conditions = array(
-                    'Personne.id' => array_values( $personnesIds ),
-                    'Personne.foyer_id' => array_values( $xFoyers )
+                    'Personne.id' => ( !empty( $personnesIds ) ? array_values( $personnesIds ) : null ),
+                    'Personne.foyer_id' => ( !empty( $xFoyers ) ? array_values( $xFoyers ) : null )
                 );
 
                 $cohorte = $this->Dossier->Foyer->Personne->find(
