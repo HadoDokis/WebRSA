@@ -66,6 +66,11 @@
         /**
         */
         function startup( &$controller ) {
+            $controller->data = Set::merge(
+                $controller->data,
+                ( !empty( $controller->params['form'] ) ? $controller->params['form'] : array() )
+            );
+
             if( in_array( '*', $this->prgActions ) || in_array( $controller->action, $this->prgActions ) ) {
                 if( !empty( $controller->data ) ) {
                     $params = $this->_unisize( $controller->data );
