@@ -1,7 +1,7 @@
 <?php
     class AdressesFoyersController extends AppController
     {
-        var $name = 'AdressesFoyers';
+        var $name = 'Adressesfoyers';
         var $uses = array( 'Adressefoyer', 'Option' );
 
         /**
