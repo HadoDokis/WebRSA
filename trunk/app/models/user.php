@@ -21,6 +21,8 @@
             )
         );
 
+        //*********************************************************************
+
         var $hasAndBelongsToMany = array(
             'Zonegeographique' => array(
                 'classname'             => 'Zonegeographique',
@@ -29,5 +31,16 @@
                 'associationForeignKey' => 'zonegeographique_id'
             )
         );
+
+        //*********************************************************************
+
+        function beforeSave() {
+            if( !empty( $this->data['User']['passwd'] ) ) {
+                $this->data['User']['password'] = Security::hash( $this->data['User']['passwd'], null, true );
+            }
+
+            parent::beforeSave();
+            return true;
+        }
     }
 ?>
