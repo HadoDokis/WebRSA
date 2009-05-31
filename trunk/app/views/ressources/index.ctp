@@ -8,24 +8,29 @@
     <?php if( empty( $ressources ) ):?>
         <p class="notice">Cette personne ne possède pas encore de ressources.</p>
 
-        <ul class="actionMenu">
-            <?php
-                echo '<li>'.$html->addLink(
-                    'Déclarer une ressource',
-                    array( 'controller' => 'ressources', 'action' => 'add', $personne_id )
-                ).' </li>';
-            ?>
-        </ul>
+        <?php if( $permissions->check( 'ressources', 'add' ) ) :?>
+            <ul class="actionMenu">
+                <?php
+                    echo '<li>'.$html->addLink(
+                        'Déclarer une ressource',
+                        array( 'controller' => 'ressources', 'action' => 'add', $personne_id )
+                    ).' </li>';
+                ?>
+            </ul>
+        <?php endif;?>
+
     <?php  else:?>
 
-    <ul class="actionMenu">
-        <?php
-            echo '<li>'.$html->addLink(
-                'Déclarer une ressource',
-                array( 'controller' => 'ressources', 'action' => 'add', $personne_id )
-            ).' </li>';
-        ?>
-    </ul>
+        <?php if( $permissions->check( 'ressources', 'add' ) ) :?>
+            <ul class="actionMenu">
+                <?php
+                    echo '<li>'.$html->addLink(
+                        'Déclarer une ressource',
+                        array( 'controller' => 'ressources', 'action' => 'add', $personne_id )
+                    ).' </li>';
+                ?>
+            </ul>
+        <?php endif;?>
 
     <table class="tooltips">
         <thead>
@@ -58,13 +63,14 @@
                             h( date_short( $ressource['Ressource']['dfress'] ) ),
                             $html->viewLink(
                                 'Voir la ressource',
-                                array( 'controller' => 'ressources', 'action' => 'view', $ressource['Ressource']['id'])
+                                array( 'controller' => 'ressources', 'action' => 'view', $ressource['Ressource']['id'] ),
+                                $permissions->check( 'ressources', 'view' )
                             ),
                             $html->editLink(
                                 'Éditer la ressource ',
-                                array( 'controller' => 'ressources', 'action' => 'edit', $ressource['Ressource']['id'] )
+                                array( 'controller' => 'ressources', 'action' => 'edit', $ressource['Ressource']['id'] ),
+                                $permissions->check( 'ressources', 'edit' )
                             )
-
                         ),
                         array( 'class' => 'odd' ),
                         array( 'class' => 'even' )

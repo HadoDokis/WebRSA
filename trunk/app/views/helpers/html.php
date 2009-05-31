@@ -640,15 +640,22 @@ class HtmlHelper extends AppHelper {
     /**************************************************************************
         FIXME: ailleurs
     **************************************************************************/
-    function addLink( $title, $url ) {
-        return $this->link(
-            $this->image(
+    function addLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
                 'icons/add.png',
                 array( 'alt' => '' )
-            ).' Ajouter',
-            $url,
-            array( 'escape' => false, 'title' => $title )
-        );
+            ).' Ajouter';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
     }
 
     function addSimpleLink( $title, $url ) {
@@ -662,49 +669,70 @@ class HtmlHelper extends AppHelper {
         );
     }
 
-    function editLink( $title, $url ) {
-        return $this->link(
-            $this->image(
-                'icons/pencil.png',
-                array( 'alt' => '' )
-            ).' Modifier',
-            $url,
-            array( 'escape' => false, 'title' => $title )
-        );
+    function editLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/pencil.png',
+            array( 'alt' => '' )
+        ).' Modifier';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
     }
 
-    function deleteLink( $title, $url ) {
-        return $this->link(
-            $this->image(
-                'icons/delete.png',
-                array( 'alt' => '' )
-            ).' Supprimer',
-            $url,
-            array( 'escape' => false, 'title' => $title ),
-            $title.' ?'
-        );
+//     function deleteLink( $title, $url ) {
+//         return $this->link(
+//             $this->image(
+//                 'icons/delete.png',
+//                 array( 'alt' => '' )
+//             ).' Supprimer',
+//             $url,
+//             array( 'escape' => false, 'title' => $title ),
+//             $title.' ?'
+//         );
+//     }
+
+    function viewLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/zoom.png',
+            array( 'alt' => '' )
+        ).' Voir';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
     }
 
-    function viewLink( $title, $url ) {
-        return $this->link(
-            $this->image(
-                'icons/zoom.png',
-                array( 'alt' => '' )
-            ).' Voir',
-            $url,
-            array( 'escape' => false, 'title' => $title )
-        );
-    }
+    function actionsLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/lightning.png',
+            array( 'alt' => '' )
+        ).' Actions';
 
-    function actionsLink( $title, $url ) {
-        return $this->link(
-            $this->image(
-                'icons/lightning.png',
-                array( 'alt' => '' )
-            ).' Actions',
-            $url,
-            array( 'escape' => false, 'title' => $title )
-        );
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
     }
 
     function aidesLink( $title, $url ) {
@@ -718,15 +746,22 @@ class HtmlHelper extends AppHelper {
         );
     }
 
-    function printLink( $title, $url ) {
-        return $this->link(
-            $this->image(
-                'icons/printer.png',
-                array( 'alt' => '' )
-            ).' Imprimer',
-            $url,
-            array( 'escape' => false, 'title' => $title )
-        );
+    function printLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/printer.png',
+            array( 'alt' => '' )
+        ).' Imprimer';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
     }
 
     //*************************************************************************

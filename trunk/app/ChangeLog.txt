@@ -1,3 +1,6 @@
+20090531 03h40 cbuffin:
+    * Ajout d'un Helper Permissions, qui stockera les permiisions dans la Session + modification AppController + vues
+
 20/05/2009 17h52 aauzolat:
     * Finalisation formualire simplifié CG66
     * Modification du MCD
@@ -8,8 +11,8 @@
     * Ajout champ "modele_notif" pour les "typesorients"
 
 19/05/2009 18h26 aauzolat:
-    * Création de plusieurs tables 
-	- Table "structuresreferentes" liée à la "Typeorient" et "Zonegeographique", 
+    * Création de plusieurs tables
+	- Table "structuresreferentes" liée à la "Typeorient" et "Zonegeographique",
 	- Table "typesorients" liée à "Structurereferente"
 	- Table "orientstruct" liée à "Structurereferente"
     * Mise en place Model pour "Structurereferente" et "Typeorient"
@@ -22,7 +25,7 @@
     * Modification de la table "Dossier_rsa", ajout des différents attributs de la table, du coup :
 	- modification au niveau du modèle de "dossier.php" sur l'attribut "etatdosrsa"
 	- modification au niveau du modèle de "referent.php" sur la table liée "structure referente" au lieu de "service referent"
-	- modification au niveau du modèle de "contratinsertion.php" sur l'attribut "structurereferent_id" au lieu de "servicereferent_id" 	
+	- modification au niveau du modèle de "contratinsertion.php" sur l'attribut "structurereferent_id" au lieu de "servicereferent_id"
 
 18/05/2009 17h58 aauzolat:
     * Modification table "adresses", ajout de l'attribut "canton CHAR(5)"
@@ -53,8 +56,8 @@
 	   - Dans la table 'totalisationsacomptes', modifications de la récupération des données Type_totalisation (ajout dans option.php et totalisationsacomptes_controller.php)
        - Dans la table 'informationsfinancieres', modifications de la récupération des données Type_allocation (ajout dans option.php et informationsfinancieres_controller.php)
 	   - Suppression dans "contratinsertion.php" du champ obligatoire "decision_ci" (non nécessaire), par volonté du CG93.
-	   - Ajout "if( isset( $this->data['Detailressourcemensuelle'] ) ){}" dans fonction "add" de "ressources_controller.php"	
-	   - Mise en place de l'affichage pour la Totalisation d'acompte (création table + remplissage de table pour test affichage).		
+	   - Ajout "if( isset( $this->data['Detailressourcemensuelle'] ) ){}" dans fonction "add" de "ressources_controller.php"
+	   - Mise en place de l'affichage pour la Totalisation d'acompte (création table + remplissage de table pour test affichage).
 
 13/05/2009 17h45 cbuffin, aauzolat:
     * Limitation des select sur select parent dans formulaire informations financières

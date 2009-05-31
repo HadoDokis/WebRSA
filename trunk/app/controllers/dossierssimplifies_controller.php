@@ -5,9 +5,7 @@
         var $uses = array( 'Dossier', 'Foyer', /*'Adresse', 'Adressefoyer',*/ 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct', 'Typocontrat' );
 
         function beforeFilter() {
-            // FIXME
-            $this->assert( ( $this->Session->read( 'Auth.User.username' ) == 'cg66' ), 'error404' );
-
+            parent::beforeFilter();
             $this->set( 'pays', $this->Option->pays() );
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'rolepers', $this->Option->rolepers() );
@@ -19,7 +17,6 @@
         }
 
         function view( $id = null ) {
-
             $typesOrient = $this->Typeorient->find(
                 'list',
                 array(
@@ -73,12 +70,10 @@
 
             }
             $this->set( 'dossier', $dossier );
-
         }
 
 
         function add() {
-
             $typesOrient = $this->Typeorient->find(
                 'list',
                 array(
@@ -212,7 +207,7 @@
             }
             else {
                 $this->Dossier->recursive = 2;
-                $dossimple = $this->Dossier->read(null,$dossimple_id ); 
+                $dossimple = $this->Dossier->read(null,$dossimple_id );
                 $this->assert( !empty( $dossimple ), 'error404' );
                 $this->data = $dossimple;
                 $num_personne = 0;

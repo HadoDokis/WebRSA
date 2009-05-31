@@ -26,7 +26,8 @@
         }
 
         function logout() {
-            $this->redirect($this->Auth->logout());
+            $this->Session->delete( 'Auth' );
+            $this->redirect( $this->Auth->logout() );
         }
 
         function index() {

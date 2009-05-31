@@ -8,6 +8,7 @@
             Commun à toutes les fonctions
         */
         function beforeFilter() {
+            parent::beforeFilter();
             // FIXME: pourquoi ? à priori parce que notre table a des underscore dans son nom!
             // INFO: http://book.cakephp.org/view/24/Model-and-Database-Conventions pour corriger mes erreurs
             $this->Adressefoyer->bindModel(

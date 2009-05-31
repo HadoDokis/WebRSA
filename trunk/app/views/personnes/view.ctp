@@ -21,10 +21,12 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->editLink(
-                'Éditer la personne « '.$title.' »',
-                array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] )
-            ).' </li>';
+            if( $permissions->check( 'personnes', 'edit' ) ) {
+                echo '<li>'.$html->editLink(
+                    'Éditer la personne « '.$title.' »',
+                    array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] )
+                ).' </li>';
+            }
 
 //             echo '<li>'.$html->deleteLink(
 //                 'Supprimer la personne « '.$title.' »',

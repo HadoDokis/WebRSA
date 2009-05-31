@@ -5,14 +5,16 @@
 <div class="with_treemenu">
     <h1>Personnes du foyer</h1>
 
-    <ul class="actionMenu">
-        <?php
-            echo '<li>'.$html->addLink(
-                'Ajouter une personne au foyer',
-                array( 'controller' => 'personnes', 'action' => 'add', $foyer_id )
-            ).' </li>';
-        ?>
-    </ul>
+    <?php if( $permissions->check( 'personnes', 'add' ) ) :?>
+        <ul class="actionMenu">
+            <?php
+                echo '<li>'.$html->addLink(
+                    'Ajouter une personne au foyer',
+                    array( 'controller' => 'personnes', 'action' => 'add', $foyer_id )
+                ).' </li>';
+            ?>
+        </ul>
+    <?php endif;?>
 
 <?php if( !empty( $personnes ) ):?>
     <table class="tooltips_oupas">
@@ -52,11 +54,13 @@
                             h( strftime( '%d/%m/%Y', strtotime( $personne['Personne']['dtnai'] ) ) ),
                             $html->viewLink(
                                 'Voir la personne « '.$title.' »',
-                                array( 'controller' => 'personnes', 'action' => 'view', $personne['Personne']['id'] )
+                                array( 'controller' => 'personnes', 'action' => 'view', $personne['Personne']['id'] ),
+                                $permissions->check( 'personnes', 'view' )
                             ),
                             $html->editLink(
                                 'Éditer la personne « '.$title.' »',
-                                array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] )
+                                array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] ),
+                                $permissions->check( 'personnes', 'edit' )
                             ),
 //                             $html->deleteLink(
 //                                 'Supprimer la personne « '.$title.' »',

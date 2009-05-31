@@ -18,15 +18,17 @@
     <?php if( empty( $ressource ) ):?>
         <p class="notice">Cette personne ne possède pas encore de ressources.</p>
 
+        <?php if( $permissions->check( 'ressources', 'add' ) ):?>
+            <ul class="actionMenu">
+                <?php
+                    echo '<li>'.$html->addLink(
+                        'Déclarer des ressources',
+                        array( 'controller' => 'ressources', 'action' => 'add', $personne_id )
+                    ).' </li>';
+                ?>
+            </ul>
+        <?php endif;?>
 
-        <ul class="actionMenu">
-            <?php
-                echo '<li>'.$html->addLink(
-                    'Déclarer des ressources',
-                    array( 'controller' => 'ressources', 'action' => 'add', $personne_id )
-                ).' </li>';
-            ?>
-        </ul>
     <?php else:?>
 <!--        <ul class="actionMenu">
             <?php
@@ -34,7 +36,7 @@
                     'Éditer des ressources',
                     array( 'controller' => 'ressources', 'action' => 'edit', $personne_id )
                 ).' </li>';
-            ?> 
+            ?>
         </ul>-->
 
 <div id="ficheDspp">

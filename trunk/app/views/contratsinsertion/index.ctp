@@ -15,14 +15,18 @@
     <?php if( empty( $contratsinsertion ) ):?>
         <p class="notice">Cette personne ne possède pas encore de contrat d'insertion.</p>
     <?php  endif;?>
-    <ul class="actionMenu">
-        <?php
-            echo '<li>'.$html->addLink(
-                'Ajouter un contrat d\'insertion',
-                array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id )
-            ).' </li>';
-        ?>
-    </ul>
+
+    <?php if( $permissions->check( 'contratsinsertion', 'add' ) ):?>
+        <ul class="actionMenu">
+            <?php
+                echo '<li>'.$html->addLink(
+                    'Ajouter un contrat d\'insertion',
+                    array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id )
+                ).' </li>';
+            ?>
+        </ul>
+    <?php endif;?>
+
 <?php if( !empty( $contratsinsertion ) ):?>
     <table class="tooltips">
         <thead>
@@ -47,19 +51,23 @@
                             //h( $decision_ci[$contratinsertion['Contratinsertion']['decision_ci']].date_short( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) ),
                             $html->actionsLink(
                                 'Actions pour le contrat d\'insertion',
-                                array( 'controller' => 'actionsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['id'])
+                                array( 'controller' => 'actionsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['id'] ),
+                                $permissions->check( 'actionsinsertion', 'index' )
                             ),
                             $html->viewLink(
                                 'Voir le contrat d\'insertion',
-                                array( 'controller' => 'contratsinsertion', 'action' => 'view', $contratinsertion['Contratinsertion']['id'])
+                                array( 'controller' => 'contratsinsertion', 'action' => 'view', $contratinsertion['Contratinsertion']['id']),
+                                $permissions->check( 'contratsinsertion', 'view' )
                             ),
                             $html->editLink(
                                 'Éditer le contrat d\'insertion ',
-                                array( 'controller' => 'contratsinsertion', 'action' => 'edit', $contratinsertion['Contratinsertion']['id'] )
+                                array( 'controller' => 'contratsinsertion', 'action' => 'edit', $contratinsertion['Contratinsertion']['id'] ),
+                                $permissions->check( 'contratsinsertion', 'edit' )
                             ),
                             $html->printLink(
                                 'Imprimer le contrat d\'insertion',
-                                array( 'controller' => 'gedooos', 'action' => 'contratinsertion', $contratinsertion['Contratinsertion']['id'] )
+                                array( 'controller' => 'gedooos', 'action' => 'contratinsertion', $contratinsertion['Contratinsertion']['id'] ),
+                                $permissions->check( 'gedooos', 'contratinsertion' )
                             )/*,
                             $html->deleteLink(
                                 'Éditer le contrat d\'insertion ',
