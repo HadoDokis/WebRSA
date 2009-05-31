@@ -16,7 +16,7 @@
                 </li>
             <?php endif;?>
 
-            <?php if( $permissions->check( 'dossiers', 'index' ) ) :?>
+            <?php if( $permissions->check( 'dossiers', 'index' ) || true ) : //FIXME ?>
                 <li>
                     <?php echo $html->link( 'Recherche dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?>
                 </li>

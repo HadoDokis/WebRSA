@@ -50,7 +50,7 @@
                 <?php echo $content_for_layout;?>
             </div>
             <?php echo $this->element( 'footer' );?>
-<?php debug( $session->read( 'Auth' ) );?>
+<?php /*debug( $session->read( 'Auth' ) );*/?>
         </div>
     </body>
 </html>
