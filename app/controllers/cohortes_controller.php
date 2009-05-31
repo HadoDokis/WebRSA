@@ -68,7 +68,7 @@
                         'Zonegeographique.id',
                         'Zonegeographique.codeinsee'
                     ),
-                    'conditions' => array( 'Zonegeographique.id' => $this->Session->read( 'Auth.User.Zonegeographique' ) )
+                    'conditions' => array( 'Zonegeographique.id' => $this->Session->read( 'Auth.Zonegeographique' ) )
                 )
             );
 

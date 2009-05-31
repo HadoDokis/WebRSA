@@ -5,15 +5,20 @@
 
 <ul class="actionMenu">
     <?php
-        echo '<li>'.$html->addLink(
-            'Ajouter un dossier',
-            array( 'controller' => 'tests', 'action' => 'wizard' )
-        ).' </li>';
-        if( $session->read( 'Auth.User.username' ) == 'cg66' ) { // FIXME
+        if( $permissions->check( 'tests', 'wizard' ) ) {
+            echo '<li>'.$html->addLink(
+                'Ajouter un dossier',
+                array( 'controller' => 'tests', 'action' => 'wizard' )
+            ).' </li>';
+        }
+
+        if( $permissions->check( 'dossierssimplifies', 'add' ) ) {
+//        if( $session->read( 'Auth.User.username' ) == 'cg66' ) { // FIXME
             echo '<li>'.$html->addSimpleLink(
                 'Ajouter une préconisation d\'orientation',
                 array( 'controller' => 'dossierssimplifies', 'action' => 'add' )
             ).' </li>';
+//        }
         }
 
         if( is_array( $this->data ) ) {

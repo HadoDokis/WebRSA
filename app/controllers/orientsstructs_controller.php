@@ -8,10 +8,10 @@
 
         function beforeFilter() {
             parent::beforeFilter();
-                $this->set( 'pays', $this->Option->pays() );
-                $this->set( 'qual', $this->Option->qual() );
-                $this->set( 'rolepers', $this->Option->rolepers() );
-                $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
+            $this->set( 'pays', $this->Option->pays() );
+            $this->set( 'qual', $this->Option->qual() );
+            $this->set( 'rolepers', $this->Option->rolepers() );
+            $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
         }
 
 

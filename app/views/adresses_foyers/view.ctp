@@ -18,10 +18,12 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->editLink(
-                'Éditer l\'adresse « '.$title.' »',
-                array( 'controller' => 'adressesfoyers', 'action' => 'edit', $adresse['Adressefoyer']['id'] )
-            ).' </li>';
+            if( $permissions->check( 'adressesfoyers', 'edit' ) ) {
+                echo '<li>'.$html->editLink(
+                    'Éditer l\'adresse « '.$title.' »',
+                    array( 'controller' => 'adressesfoyers', 'action' => 'edit', $adresse['Adressefoyer']['id'] )
+                ).' </li>';
+            }
 
 //             echo '<li>'.$html->deleteLink(
 //                 'Supprimer l\'adresse « '.$title.' »',

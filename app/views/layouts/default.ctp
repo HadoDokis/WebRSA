@@ -36,18 +36,6 @@
                 .treemenu, .treemenu *, #pageMenu, #pageWrapper { zoom: 1; }
             </style>
         <![endif]-->
-            <!--[if IEX]>
-            <style type="text/css" media="screen, presentation">
-                * { zoom: 1; }
-                .treemenu { position: relative; zoom: 1; }
-                .treemenu * { zoom: 1; }
-                .with_treemenu { clear: right; }
-                /* FIXME!!!! */
-                #pageMenu * { zoom: 1; }
-                .innerTable { zoom: 1; z-index: 5; }
-                select { z-index: 2; position: relative; }
-            </style>
-        <![endif]-->
     </head>
     <?php if( $this->base.'/' == $this->here ): ?>
         <body class="home">
@@ -62,6 +50,7 @@
                 <?php echo $content_for_layout;?>
             </div>
             <?php echo $this->element( 'footer' );?>
+<?php debug( $session->read( 'Auth' ) );?>
         </div>
     </body>
 </html>

@@ -583,7 +583,23 @@ ul.actionMenu a {
     position: absolute;
     top: 2em;
     left: 0;
+/*    width: 18em;
+    background: white;
+    padding: 0.5em 0;*/
 }
+
+/*#pageMenu ul ul li, #pageMenu ul ul li a {
+    clear: both;
+    display: block;
+    background: white;
+    width: 18em;
+    padding: 0; margin: 0;
+}
+
+#pageMenu ul ul li {
+    margin: 0 0.5em;
+    padding: 0.25em 0;
+}*/
 
 #pageMenu li:hover ul, #pageMenu li.hover ul {
     display: block;
@@ -645,3 +661,7 @@ table.widerHeader tbody th { width: 90%; }
 
 
 /*****************************************************************************/
+
+span.disabled {
+    color: silver;
+}

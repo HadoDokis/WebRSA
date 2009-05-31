@@ -35,7 +35,7 @@ class DroitsController extends AppController
 		$nbMenuControllers = $this->_chargeMenuControllers($menuControllersTree, $this->Menu->load('menu'));
 		// Chargement des controleurs/Action qui ne sont pas dans le menu
 		$nbMenuControllers += $this->_chargeControllersActions($menuControllersTree);
- 
+
 		ProgressBar(100, 'Chargement de chaque profil');
 
 		if (empty($this->data))
@@ -56,6 +56,8 @@ class DroitsController extends AppController
 			$this->set('filtreProfils', $filtreProfils);
 			$this->set('profilsUsersTree', $profilsUsersTree);
 			$this->set('nbProfilsUsers', $nbProfilsUsers);
+			// Menu trié sur la valeur (chaine de caractères) en gardant la correspondance clé/valeur
+			uasort( $filtreMenu, 'strcmp');
 			$this->set('filtreMenu', $filtreMenu);
 			$this->set('menuControllersTree', $menuControllersTree);
 			$this->set('nbMenuControllers', $nbMenuControllers);
@@ -307,7 +309,7 @@ class DroitsController extends AppController
                             $parent_id = $aco->getLastInsertId();
                         }
 			// Traitement des sous-menus
-                        if (is_array($menuController)) 
+                        if (is_array($menuController))
 			    if (array_key_exists('subMenu', $menuController) and !empty($menuController['subMenu']))
 				$this->_majAcos($menuController['subMenu'],  $parent_id);
 
@@ -329,7 +331,7 @@ class DroitsController extends AppController
 		$aro = new Aro();
 		// Parcours des profils et des utilisateurs
 		foreach($profilsUsersTree as $profilUsers) {
-                          
+
 			if (!$aro->findByAlias($profilUsers['arosAlias'])) {
                                 $aro->create();
                                 $sav = array('foreign_key'=>0, 'parent_id'=>$parent, 'alias'=>$profilUsers['arosAlias']);
@@ -478,7 +480,7 @@ class DroitsController extends AppController
 			if ($indice != null)
 			    ProgressBar($indice, 'Lecture des droits '. $menuController['title']. ' pour '.$user);
 			// Traitement des sous-menus
-                        if (is_array($menuController)) 
+                        if (is_array($menuController))
 			    if (array_key_exists('subMenu', $menuController) and !empty($menuController['subMenu']))
 				$this->_chargeDroitsMenuControllers($aro, $menuController['subMenu']);
 

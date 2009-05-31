@@ -10,14 +10,16 @@
         <p class="notice">Ce foyer ne possède pas encore d'informations financières.</p>
     <?php endif;?>
 
-<!--    <ul class="actionMenu">
-        <?php
-            echo '<li>'.$html->addLink(
-                'Ajouter une information financière',
-                array( 'controller' => 'infosfinancieres', 'action' => 'add', $personne_id )
-            ).' </li>';
-        ?>
-    </ul>-->
+    <!--<?php if( $permissions->check( 'infosfinancieres', 'add' ) ):?>
+        <ul class="actionMenu">
+            <?php
+                echo '<li>'.$html->addLink(
+                    'Ajouter une information financière',
+                    array( 'controller' => 'infosfinancieres', 'action' => 'add', $dossier_rsa_id )
+                ).' </li>';
+            ?>
+        </ul>
+    <?php endif;?>-->
 
     <?php if( !empty( $infosfinancieres ) ):?>
         <table class="tooltips">
@@ -51,11 +53,13 @@
 //                                 h( date_short( $infofinanciere['Infofinanciere']['dttraimoucompta'] ) ),
                                 $html->viewLink(
                                     'Voir les informations financières',
-                                    array( 'controller' => 'infosfinancieres', 'action' => 'view', $infofinanciere['Infofinanciere']['id'])
+                                    array( 'controller' => 'infosfinancieres', 'action' => 'view', $infofinanciere['Infofinanciere']['id']),
+                                    $permissions->check( 'infosfinancieres', 'view' )
                                 ),
 //                                 $html->editLink(
 //                                     'Éditer les informations financières ',
-//                                     array( 'controller' => 'infosfinancieres', 'action' => 'edit', $infofinanciere['Infofinanciere']['id'] )
+//                                     array( 'controller' => 'infosfinancieres', 'action' => 'edit', $infofinanciere['Infofinanciere']['id'] ),
+//                                     $permissions->check( 'infosfinancieres', 'edit' )
 //                                 )
 
                             ),

@@ -18,23 +18,29 @@
     <?php if( empty( $dspp ) ):?>
         <p class="notice">Cette personne ne possède pas encore de questionnaire socio-professionnel.</p>
 
-        <ul class="actionMenu">
-            <?php
-                echo '<li>'.$html->addLink(
-                    'Ajouter un dossier',
-                    array( 'controller' => 'dspps', 'action' => 'add', $personne_id )
-                ).' </li>';
-            ?>
-        </ul>
+        <?php if( $permissions->check( 'dspps', 'add' ) ):?>
+            <ul class="actionMenu">
+                <?php
+                    echo '<li>'.$html->addLink(
+                        'Ajouter un dossier',
+                        array( 'controller' => 'dspps', 'action' => 'add', $personne_id )
+                    ).' </li>';
+                ?>
+            </ul>
+        <?php endif;?>
+
     <?php else:?>
-        <ul class="actionMenu">
-            <?php
-                echo '<li>'.$html->editLink(
-                    'Éditer un dossier',
-                    array( 'controller' => 'dspps', 'action' => 'edit', $personne_id )
-                ).' </li>';
-            ?>
-        </ul>
+
+        <?php if( $permissions->check( 'dspps', 'edit' ) ):?>
+            <ul class="actionMenu">
+                <?php
+                    echo '<li>'.$html->editLink(
+                        'Éditer un dossier',
+                        array( 'controller' => 'dspps', 'action' => 'edit', $personne_id )
+                    ).' </li>';
+                ?>
+            </ul>
+        <?php endif;?>
 
 <div id="ficheDspp">
             <h2>Généralités DSPP</h2>

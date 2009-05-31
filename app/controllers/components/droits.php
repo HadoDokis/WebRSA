@@ -42,7 +42,6 @@ class DroitsComponent extends Object
 /* vérifie si l'utilisateur $userAlias est autorisée à exécuter l'action $controllerAction */
 /* vérifie les droits si l'action est dans la liste des actions soumises aux droits */
 	function check($userAlias, $controllerAction) {
-
 		// Initialisations
 		$listeActions = array();
 		$listeActionsComme = array();

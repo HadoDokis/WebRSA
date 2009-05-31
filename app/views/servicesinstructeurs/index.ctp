@@ -3,14 +3,17 @@
 <div>
     <h1><?php echo 'Visualisation de la table  ';?></h1>
 
-    <ul class="actionMenu">
-        <?php
-            echo '<li>'.$html->addLink(
-                'Ajouter',
-                array( 'controller' => 'servicesinstructeurs', 'action' => 'add' )
-            ).' </li>';
-        ?>
-    </ul>
+    <?php if( $permissions->check( 'servicesinstructeurs', 'add' ) ):?>
+        <ul class="actionMenu">
+            <?php
+                echo '<li>'.$html->addLink(
+                    'Ajouter',
+                    array( 'controller' => 'servicesinstructeurs', 'action' => 'add' )
+                ).' </li>';
+            ?>
+        </ul>
+    <?php endif;?>
+
     <div>
         <h2>Table Serviceinstructeures d'utilisateurs</h2>
         <table>
@@ -39,7 +42,8 @@
                                 h( $serviceinstructeur['Serviceinstructeur']['ville'] ),
                                 $html->editLink(
                                     'Éditer le contrat d\'insertion ',
-                                    array( 'controller' => 'servicesinstructeurs', 'action' => 'edit', $serviceinstructeur['Serviceinstructeur']['id'] )
+                                    array( 'controller' => 'servicesinstructeurs', 'action' => 'edit', $serviceinstructeur['Serviceinstructeur']['id'] ),
+                                    $permissions->check( 'servicesinstructeurs', 'edit' )
                                 ),
                             ),
                             array( 'class' => 'odd' ),

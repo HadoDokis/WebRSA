@@ -31,6 +31,9 @@
             if ($method !== 'error') {
                 if( Configure::read( 'debug' ) == 0 ) {
                     switch( $method ) {
+                        case 'error403':
+                            $method = 'error403';
+                        break;
                         case 'missingController':
                         case 'missingAction':
                         case 'missingView':
@@ -47,6 +50,23 @@
 
             $this->dispatchMethod($method, $messages);
             $this->_stop();
+        }
+
+        function error403( $params ) {
+            extract($params, EXTR_OVERWRITE);
+
+            if (!isset($url)) {
+                $url = $this->controller->here;
+            }
+            $url = Router::normalize($url);
+            header("HTTP/1.0 403 Forbidden");
+            $this->controller->set(array(
+                'code' => '403',
+                'name' => __('Forbidden', true),
+                'message' => $url,
+                'base' => $this->controller->base
+            ));
+            $this->_outputMessage('error403');
         }
 
         function error500( $params ) {

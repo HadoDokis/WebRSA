@@ -5,7 +5,8 @@
     {
         var $name = 'Criteres';
         var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Typeorient', 'Structurereferente', 'Option', 'Serviceinstructeur');
-        var $aucunDroit = array('index', 'menu', 'constReq');
+        //var $aucunDroit = array('index', 'menu', 'constReq');
+        var $aucunDroit = array( 'constReq' );
 
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
@@ -15,7 +16,7 @@
                 return "($champ = $valeur)";
             else
                 return $requete." AND ($champ = $valeur) ";
-        }  
+        }
 
         function index() {
 
@@ -23,7 +24,7 @@
             $this->set( 'typestruct', $this->Structurereferente->list1Options() );
             $this->set( 'statuts', $this->Option->statut_orient() );
             $this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
-            $this->set( 'services_instructeur', $this->Serviceinstructeur->listOptions()); 
+            $this->set( 'services_instructeur', $this->Serviceinstructeur->listOptions());
 
             $params = $this->data;
 
@@ -40,7 +41,7 @@
                         $filters[] = 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $params['Dossier']['dtdemrsa_from']['year'], $params['Dossier']['dtdemrsa_from']['month'], $params['Dossier']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $params['Dossier']['dtdemrsa_to']['year'], $params['Dossier']['dtdemrsa_to']['month'], $params['Dossier']['dtdemrsa_to']['day'] ) ).'\'';
                     }
                 }
- 
+
                 // Critères sur un type d'orientation - libelle, parentid, modèle de notification
                 if( isset( $params['Typeorient']['id'] ) && !empty( $params['Typeorient']['id'] ) )
                     $requete = $this->constReq($requete, 'Orientsstructs.typeorient_id', $params['Typeorient']['id']);
@@ -52,14 +53,14 @@
                 // Critères sur une statut d'orientation
                 if( isset( $params['Orientstructs']['statut_orient']  ) && !empty( $params['Orientstructs']['statut_orient'] ))
                     $requete = $this->constReq($requete, 'Orientsstructs.statut_orient', "'".$params['Orientstructs']['statut_orient']."'");
-           
-                $requete = $select. $requete .')'; 
+
+                $requete = $select. $requete .')';
                 $criteres = $this->Personne->query($requete);
                 // Recherche
                 for ($i = 0; $i < count ($criteres); $i++ ){
                     $criteres[$i]['Foyer'] = $this->Foyer->read(null, $criteres[$i][0]['foyer_id']);
                     $criteres[$i]['Dossier'] = $this->Dossier->read(null, $criteres[$i]['Foyer']['Foyer']['dossier_rsa_id']);
- 
+
                 }
                 $this->set( 'criteres', $criteres );
                 $this->data['Search'] = $params;

@@ -8,15 +8,18 @@
     <?php if( empty( $orientstruct ) ):?>
         <p class="notice">Cette personne ne possède pas encore d'orientation.</p>
 
-        <ul class="actionMenu">
-            <?php
-                echo '<li>'.$html->addLink(
-                    'Préconiser une orientation',
-                    array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id )
-                ).' </li>';
-            ?>
-        </ul>
-    <?php  else:?>
+        <?php if( $permissions->check( 'orientsstructs', 'add' ) ):?>
+            <ul class="actionMenu">
+                <?php
+                    echo '<li>'.$html->addLink(
+                        'Préconiser une orientation',
+                        array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id )
+                    ).' </li>';
+                ?>
+            </ul>
+        <?php endif;?>
+
+    <?php else:?>
 
     <table class="tooltips">
         <thead>
@@ -42,11 +45,13 @@
                         h( $orientstruct['Structurereferente']['lib_struc']  ),
                         $html->editLink(
                             'Editer l\'orientation',
-                            array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'])
+                            array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
+                            $permissions->check( 'orientsstructs', 'edit' )
                         ),
                         $html->printLink(
                             'Imprimer la notification',
-                            array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id']) 
+                            array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
+                            $permissions->check( 'gedooos', 'orientstruct' )
                         ),
                     ),
                     array( 'class' => 'odd' ),

@@ -5,7 +5,8 @@
     {
         var $name = 'Dossiers';
         var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'ModeContact','Typocontrat', 'Creance', 'Adressefoyer' );
-        var $components = array( 'Prg' );
+        var $components = array( 'Prg' ); // FIXME: infinite redirect loop when not logged
+        var $aucunDroit = array( 'menu' );
 
         var $paginate = array(
             // FIXME

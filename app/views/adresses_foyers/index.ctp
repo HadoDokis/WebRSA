@@ -5,14 +5,16 @@
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 
-    <ul class="actionMenu">
-        <?php
-            echo '<li>'.$html->addLink(
-                'Ajouter une adresse au foyer',
-                array( 'controller' => 'adressesfoyers', 'action' => 'add', $foyer_id )
-            ).' </li>';
-        ?>
-    </ul>
+    <?php if( $permissions->check( 'adressesfoyers', 'add' ) ):?>
+        <ul class="actionMenu">
+            <?php
+                echo '<li>'.$html->addLink(
+                    'Ajouter une adresse au foyer',
+                    array( 'controller' => 'adressesfoyers', 'action' => 'add', $foyer_id )
+                ).' </li>';
+            ?>
+        </ul>
+    <?php endif;?>
 
     <?php if( !empty( $adresses ) ):?>
         <table class="tooltips_oupas">
@@ -53,11 +55,13 @@
                                 h( implode( ' ', array( $adresse['Adresse']['codepos'], $adresse['Adresse']['locaadr'] ) ) ),
                                 $html->viewLink(
                                     'Voir l\'adresse « '.$title.' »',
-                                    array( 'controller' => 'adressesfoyers', 'action' => 'view', $adresse['Adressefoyer']['id'] )
+                                    array( 'controller' => 'adressesfoyers', 'action' => 'view', $adresse['Adressefoyer']['id'] ),
+                                    $permissions->check( 'adressesfoyers', 'view' )
                                 ),
                                 $html->editLink(
                                     'Éditer l\'adresse « '.$title.' »',
-                                    array( 'controller' => 'adressesfoyers', 'action' => 'edit', $adresse['Adressefoyer']['id'] )
+                                    array( 'controller' => 'adressesfoyers', 'action' => 'edit', $adresse['Adressefoyer']['id'] ),
+                                    $permissions->check( 'adressesfoyers', 'edit' )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),
