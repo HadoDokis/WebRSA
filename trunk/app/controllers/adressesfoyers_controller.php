@@ -114,7 +114,7 @@
             // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Adressefoyer->saveAll( $this->data ) ) {
                 $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                $this->redirect( array( 'controller' => 'adressesfoyers', 'action' => 'index', $id ) );
+                //$this->redirect( array( 'controller' => 'adressesfoyers', 'action' => 'index', $id ) );
             }
 
             // Assignation à la vue
