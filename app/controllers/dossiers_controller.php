@@ -1,11 +1,11 @@
 <?php
-    App::import('Sanitize');
+    App::import( 'Sanitize' );
 
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
         var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'ModeContact','Typocontrat', 'Creance', 'Adressefoyer' );
-        var $components = array( 'Prg' ); // FIXME: infinite redirect loop when not logged
+        var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Prg' => array( 'actions' => array( 'index' ) ) );
         var $aucunDroit = array( 'menu' );
 
         var $paginate = array(
@@ -18,7 +18,6 @@
             $this->set( 'natpf', $this->Option->natpf() );
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-            $this->Prg->actions( 'index' );
             return $return;
         }
         /**

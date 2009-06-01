@@ -4,7 +4,7 @@
 
 f="`dirname "$0"`"
 cd "$f"
-
+# FIXME: ne fonctionne pas quand il y a plusieurs lignes !?!
 
 
 # http://snipt.net/nick/svn-delete-all-files-marked-for-deletion/
