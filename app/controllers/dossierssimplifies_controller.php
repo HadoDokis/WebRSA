@@ -17,6 +17,10 @@
         }
 
         function view( $id = null ) {
+
+//             $this->set( 'typesOrient',   $this->Typeorient->listOptions()  );
+//             $this->set( 'structures',   $this->Structurereferente->list1Options()  );
+
             $typesOrient = $this->Typeorient->find(
                 'list',
                 array(
@@ -30,7 +34,7 @@
                 )
             );
             $this->set( 'typesOrient', $typesOrient );
-
+// debug( $typesOrient );
             $typesStruct = $this->Typeorient->find(
                 'list',
                 array(
@@ -44,6 +48,7 @@
                 )
             );
             $this->set( 'typesStruct', $typesStruct );
+// debug( $typesStruct );
             // FIXME: assert
             $dossier = $this->Dossier->find(
                 'first',
@@ -74,6 +79,10 @@
 
 
         function add() {
+
+            $this->set( 'typesOrient',   $this->Typeorient->listOptions()  );
+            $this->set( 'structures',   $this->Structurereferente->list1Options()  );
+
             $typesOrient = $this->Typeorient->find(
                 'list',
                 array(
