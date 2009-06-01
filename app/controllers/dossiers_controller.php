@@ -5,7 +5,6 @@
     {
         var $name = 'Dossiers';
         var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'ModeContact','Typocontrat', 'Creance', 'Adressefoyer' );
-        var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Prg' => array( 'actions' => array( 'index' ) ) );
         var $aucunDroit = array( 'menu' );
 
         var $paginate = array(
@@ -13,6 +12,15 @@
             'limit' => 20
         );
 
+        /**
+        */
+        function __construct() {
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+            parent::__construct();
+        }
+
+        /**
+        */
         function beforeFilter() {
             $return = parent::beforeFilter();
             $this->set( 'natpf', $this->Option->natpf() );
@@ -20,6 +28,7 @@
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
             return $return;
         }
+
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
         */
