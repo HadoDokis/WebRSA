@@ -8,7 +8,7 @@
 
 <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ) ) );?>
     <fieldset>
-        <legend><?php echo required( 'Code origine demande Rsa' );?></legend>
+        <legend>Code origine demande Rsa</legend>
         <?php echo $form->input( 'Filtre.oridemrsa', array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $oridemrsa, 'empty' => '' ) );?>
     </fieldset>
 

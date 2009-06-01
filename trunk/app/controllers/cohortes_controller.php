@@ -6,6 +6,20 @@
 
         //*********************************************************************
 
+//         var $paginate = array(
+//             // FIXME
+//             'limit' => 20
+//         );
+//
+//         /**
+//         */
+//         function __construct() {
+//             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+//             parent::__construct();
+//         }
+
+        //*********************************************************************
+
         /**
         */
         function _preOrientation( $element ) {
@@ -59,81 +73,123 @@
 
         //*********************************************************************
 
-        // FIXME: performances, nommage
-        function index( $statutOrientation = null ) {
-            $mesCodesInsee = $this->Zonegeographique->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Zonegeographique.id',
-                        'Zonegeographique.codeinsee'
-                    ),
-                    'conditions' => array( 'Zonegeographique.id' => $this->Session->read( 'Auth.Zonegeographique' ) )
-                )
-            );
+        function nouvelles() {
+            $this->_index( 'Non orienté' );
+        }
+
+        //---------------------------------------------------------------------
+
+        function orientees() {
+            $this->_index( 'Orienté' );
+        }
+
+        //---------------------------------------------------------------------
+
+        function enattente() {
+            $this->_index( 'En attente' );
+        }
+
+        //*********************************************************************
 
 
+        /**
+        */
+        function _index( $statutOrientation = null ) {
             $this->assert( !empty( $statutOrientation ), 'error404' );
             $this->set( 'oridemrsa', $this->Option->oridemrsa() );
 
-            $filtreFoyers = array();
+            // Un des formulaires a été renvoyé
             if( !empty( $this->data ) ) {
-                // Tentative de sauvegarde des orientations
-                // FIXME: la structure est obligatoire pour les dossiers validés, sinon afficher une erreur
-                if( !empty( $this->data['Orientstruct'] ) ) {
-                    $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only' ) );
-                    if( $valid ) {
-                        $this->Dossier->begin();
-                        $saved = true;
-                        foreach( $this->data['Orientstruct'] as $key => $value ) {
-                            // FIXME: date_valid et pas date_propo ?
-                            if( $statutOrientation == 'Non orienté' ) {
-                                $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
+
+                //-------------------------------------------------------------
+
+                $typesOrient = $this->Typeorient->find(
+                    'list',
+                    array(
+                        'fields' => array(
+                            'Typeorient.id',
+                            'Typeorient.lib_type_orient'
+                        )
+                    )
+                );
+                $this->set( 'typesOrient', $typesOrient );
+
+                //-------------------------------------------------------------
+
+                $mesCodesInsee = $this->Zonegeographique->find(
+                    'list',
+                    array(
+                        'fields' => array(
+                            'Zonegeographique.id',
+                            'Zonegeographique.codeinsee'
+                        ),
+                        'conditions' => array( 'Zonegeographique.id' => $this->Session->read( 'Auth.Zonegeographique' ) )
+                    )
+                );
+
+                // --------------------------------------------------------
+
+                if( !empty( $this->data ) ) {
+                    if( !empty( $this->data['Orientstruct'] ) ) {
+                        $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only' ) );
+                        if( $valid ) {
+                            $this->Dossier->begin();
+                            $saved = true;
+                            foreach( $this->data['Orientstruct'] as $key => $value ) {
+                                // FIXME: date_valid et pas date_propo ?
+                                if( $statutOrientation == 'Non orienté' ) {
+                                    $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
+                                }
+                                $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
+                                $saved = $this->Dossier->Foyer->Personne->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
                             }
-                            $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
-                            $saved = $this->Dossier->Foyer->Personne->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
-                        }
-                        if( $saved ) {
-                            $this->Dossier->commit();
-                        }
-                        else {
-                            $this->Dossier->rollback();
+                            if( $saved ) {
+                                $this->Dossier->commit();
+                            }
+                            else {
+                                $this->Dossier->rollback();
+                            }
                         }
                     }
-                }
-                // Recherche suivant les critères de filtre
-                else {
-                    $filters = array();
+
+                    // Moteur de recherche
+                    $filtres = array();
                     // Critères sur le dossier - date de demande
                     if( isset( $this->data['Filtre']['dtdemrsa'] ) && !empty( $this->data['Filtre']['dtdemrsa'] ) ) {
                         $valid_from = ( valid_int( $this->data['Filtre']['dtdemrsa_from']['year'] ) && valid_int( $this->data['Filtre']['dtdemrsa_from']['month'] ) && valid_int( $this->data['Filtre']['dtdemrsa_from']['day'] ) );
                         $valid_to = ( valid_int( $this->data['Filtre']['dtdemrsa_to']['year'] ) && valid_int( $this->data['Filtre']['dtdemrsa_to']['month'] ) && valid_int( $this->data['Filtre']['dtdemrsa_to']['day'] ) );
                         if( $valid_from && $valid_to ) {
-                            $filters[] = 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $this->data['Filtre']['dtdemrsa_from']['year'], $this->data['Filtre']['dtdemrsa_from']['month'], $this->data['Filtre']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $this->data['Filtre']['dtdemrsa_to']['year'], $this->data['Filtre']['dtdemrsa_to']['month'], $this->data['Filtre']['dtdemrsa_to']['day'] ) ).'\'';
+                            $filtres['Dossier.id'] = $this->Dossier->find(
+                                'list',
+                                array(
+                                    'fields' => array(
+                                        'Dossier.id',
+                                        'Dossier.id'
+                                    ),
+                                    'conditions' => 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $this->data['Filtre']['dtdemrsa_from']['year'], $this->data['Filtre']['dtdemrsa_from']['month'], $this->data['Filtre']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $this->data['Filtre']['dtdemrsa_to']['year'], $this->data['Filtre']['dtdemrsa_to']['month'], $this->data['Filtre']['dtdemrsa_to']['day'] ) ).'\''
+                                )
+                            );
                         }
                     }
-                    // FIXME: seulement si limitation plus haut
-                    $filtreDossiersIds = $this->Dossier->find(
-                        'list',
-                        array(
-                            'fields' => array(
-                                'Dossier.id',
-                                'Dossier.id'
-                            ),
-                            'conditions' => $filters
-                        )
-                    );
+
+                    // --------------------------------------------------------
+
+                    // Critères sur le code origine demande Rsa
+                    if( empty( $this->data['Filtre']['oridemrsa'] ) ) {
+                        // Si rien n'est sélectionné, on sélectionne tout
+                        $this->data['Filtre']['oridemrsa'] = array_keys( $this->Option->oridemrsa() );
+                    }
 
                     if( isset( $this->data['Filtre']['oridemrsa'] ) ) {
                         $conditions = array();
-                        if( !empty( $filtreDossiersIds ) ) {
-                            $conditions['Detaildroitrsa.dossier_rsa_id'] = $filtreDossiersIds;
+                        if( array_key_exists( 'Dossier.id', $filtres ) ) {
+                            $conditions['Detaildroitrsa.dossier_rsa_id'] = ( !empty( $filtres['Dossier.id'] ) ? $filtres['Dossier.id'] : null );
                         }
                         if( !empty( $this->data['Filtre']['oridemrsa'] ) ) {
                             $conditions['Detaildroitrsa.oridemrsa'] = array_values( $this->data['Filtre']['oridemrsa'] );
                         }
 
-                        $filtreDossiersIds = $this->Detaildroitrsa->find(
+                        $filtres['Dossier.id'] = $this->Detaildroitrsa->find(
                             'list',
                             array(
                                 'fields' => array(
@@ -144,10 +200,11 @@
                             )
                         );
                     }
-                }
 
-                if( !empty( $filtreDossiersIds ) ) {
-                    $filtreFoyers = $this->Foyer->find(
+                    // --------------------------------------------------------
+
+                    // Recherche des foyers associés à ces dossiers
+                    $filtres['Foyer.id'] = $this->Foyer->find(
                         'list',
                         array(
                             'fields' => array(
@@ -155,353 +212,208 @@
                                 'Foyer.dossier_rsa_id'
                             ),
                             'conditions' => array(
-                                'Foyer.dossier_rsa_id' => $filtreDossiersIds
+                                'Foyer.dossier_rsa_id' => ( !empty( $filtres['Dossier.id'] ) ? $filtres['Dossier.id'] : null )
                             )
                         )
                     );
-                }
-            }
+                    unset( $filtres['Dossier.id'] );
 
-//             $conditions = array( 'Adressefoyer.rgadr' => '01' );
-//             if( !empty( $mesCodesInsee ) ) {
-//                 $conditions['Adresse.numcomptt'] = $mesCodesInsee;
-//             }
+                    // --------------------------------------------------------
 
-            $xFoyers = $this->Adressefoyer->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Adressefoyer.id',
-                        'Adressefoyer.foyer_id'
-                    ),
-                    'conditions' => array(
-                        'Adresse.numcomptt'  => ( !empty( $mesCodesInsee ) ? $mesCodesInsee : null ),
-                        'Adressefoyer.rgadr' => '01'
-                    ),
-                    'recursive' => 2
-                )
-            );
 
-            //-----------------------------------------------------------------
-
-            $typesOrient = $this->Typeorient->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Typeorient.id',
-                        'Typeorient.lib_type_orient'
-                    )
-                )
-            );
-            $this->set( 'typesOrient', $typesOrient );
-
-            //-----------------------------------------------------------------
-
-            $personnesIds = array();
-            if( !empty( $filtreFoyers ) ) {
-                $personnesIds = $this->Dossier->Foyer->Personne->find(
-                    'list',
-                    array(
-                        'fields' => array(
-                            'Personne.id',
-                            'Personne.id'
-                        ),
-                        'conditions'    => array(
-                            'Personne.foyer_id' => $filtreFoyers
-                        ),
-                        'recursive'     => -1
-                    )
-                );
-            }
-
-            //-----------------------------------------------------------------
-
-            $conditions = array( 'Orientstruct.statut_orient' => $statutOrientation );
-
-            if( !empty( $personnesIds ) ) { // FIXME: si c'est vide -> rien!?!
-                $conditions['Orientstruct.personne_id'] = $personnesIds;
-            }
-
-            $personnesIds = $this->Dossier->Foyer->Personne->Orientstruct->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Orientstruct.personne_id',
-                        'Orientstruct.personne_id'
-                    ),
-                    'conditions'    => $conditions,
-                    'recursive'     => -1
-                )
-            );
-
-            // Ces personnes sont-elles soumises à droits et devoirs ?
-            if( !empty( $personnesIds ) ) {
-                // FIXME -> est-ce que mtpersressmenrsa existe bien -> à l'importation des données, faire la moyenne ?
-                $personnesIds = $this->Ressource->find(
-                    'list',
-                    array(
-                        'fields' => array(
-                            'Ressource.personne_id',
-                            'Ressource.personne_id'
-                        ),
-                        'conditions' => array(
-                            '"Ressource.mtpersressmenrsa" <' => 500,
-                            'Ressource.personne_id' => array_values( $personnesIds ),
-                        ),
-                        'recursive' => -1
-                    )
-                );
-            }
-
-            //-----------------------------------------------------------------
-
-            $cohorte = array();
-            // INFO: 190509 - grille test web-rsa.doc
-            if( !empty( $personnesIds ) ) {
-                $conditions = array(
-                    'Personne.id' => ( !empty( $personnesIds ) ? array_values( $personnesIds ) : null ),
-                    'Personne.foyer_id' => ( !empty( $xFoyers ) ? array_values( $xFoyers ) : null )
-                );
-
-                $cohorte = $this->Dossier->Foyer->Personne->find(
-                    'all',
-                    array(
-                    'conditions' => $conditions,
-                        'recursive' => 2
-                    )
-                );
-
-                foreach( $cohorte as $key => $element ) {
-                    // Dossier
-                    $dossier = $this->Dossier->find(
-                        'first',
+                    $filtres['Foyer.id'] = $this->Adressefoyer->find(
+                        'list',
                         array(
-                            'conditions' => array( 'Dossier.id' => $element['Foyer']['dossier_rsa_id'] ),
-                            'recursive' => 1
+                            'fields' => array(
+                                'Adressefoyer.id',
+                                'Adressefoyer.foyer_id'
+                            ),
+                            'conditions' => array(
+                                'Adressefoyer.foyer_id' => ( !empty( $filtres['Foyer.id'] ) ? $filtres['Foyer.id'] : null ),
+                                'Adressefoyer.rgadr' => '01',
+                                'Adresse.numcomptt'  => ( !empty( $mesCodesInsee ) ? $mesCodesInsee : null )
+                            ),
+                            'recursive' => 0
                         )
                     );
-                    $cohorte[$key] = Set::merge( $cohorte[$key], $dossier );
 
-                    // Adresse -> FIXME ?
-                    $adresses = Set::combine( $cohorte[$key]['Foyer']['Adressefoyer'], '{n}.rgadr', '{n}.adresse_id' );
-                    $adresse = $this->Adresse->find(
-                        'first',
+                    // --------------------------------------------------------
+
+                    $filtres['Personne.id'] = $this->Dossier->Foyer->Personne->find(
+                        'list',
+                        array(
+                            'fields' => array(
+                                'Personne.id',
+                                'Personne.id'
+                            ),
+                            'conditions'    => array(
+                                'Personne.foyer_id' => ( !empty( $filtres['Foyer.id'] ) ? $filtres['Foyer.id'] : null )
+                            ),
+                            'recursive'     => -1
+                        )
+                    );
+
+                    // --------------------------------------------------------
+
+                    $filtres['Personne.id'] = $this->Dossier->Foyer->Personne->Orientstruct->find(
+                        'list',
+                        array(
+                            'fields' => array(
+                                'Orientstruct.personne_id',
+                                'Orientstruct.personne_id'
+                            ),
+                            'conditions'    => array(
+                                'Orientstruct.statut_orient' => $statutOrientation,
+                                'Orientstruct.personne_id'   => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null )
+                            ),
+                            'recursive'     => -1
+                        )
+                    );
+
+                    // Ces personnes sont-elles soumises à droits et devoirs ?
+                    // FIXME -> est-ce que mtpersressmenrsa existe bien -> à l'importation des données, faire la moyenne ?
+                    $filtres['Personne.id'] = $this->Ressource->find(
+                        'list',
+                        array(
+                            'fields' => array(
+                                'Ressource.personne_id',
+                                'Ressource.personne_id'
+                            ),
+                            'conditions' => array(
+                                '"Ressource.mtpersressmenrsa" <' => 500,
+                                'Ressource.personne_id' => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null ),
+                            ),
+                            'recursive' => -1
+                        )
+                    );
+
+                    // --------------------------------------------------------
+
+                    // INFO: 190509 - grille test web-rsa.doc
+                    // FIXME: optimiser
+                    $cohorte = $this->Dossier->Foyer->Personne->find(
+                        'all',
                         array(
                             'conditions' => array(
-                                'Adresse.id' => $adresses['01']
+                                'Personne.id' => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null ),
+                                'Personne.foyer_id' => ( !empty( $filtres['Foyer.id'] ) ? $filtres['Foyer.id'] : null ),
                             ),
-                            'recursive' => 2
+                            'recursive' => 0
                         )
                     );
 
-                    if( $statutOrientation == 'Orienté' ) {
-                        $contratinsertion = $this->Contratinsertion->find(
+                    // --------------------------------------------------------
+
+                    foreach( $cohorte as $key => $element ) {
+                        // Dossier
+                        $dossier = $this->Dossier->find(
+                            'first',
+                            array(
+                                'conditions' => array( 'Dossier.id' => $element['Foyer']['dossier_rsa_id'] ),
+                                'recursive' => 1
+                            )
+                        );
+                        $cohorte[$key] = Set::merge( $cohorte[$key], $dossier );
+
+                        // ----------------------------------------------------
+
+                        // Adresse foyer
+                        $adresseFoyer = $this->Adressefoyer->find(
                             'first',
                             array(
                                 'conditions' => array(
-                                    'Contratinsertion.personne_id' => $element['Personne']['id']
+                                    'Adressefoyer.foyer_id' => $element['Foyer']['id'],
+                                    'Adressefoyer.rgadr'    => '01'
                                 ),
-                                'recursive' => -1,
-                                'order' => array( 'Contratinsertion.dd_ci DESC' )
+                                'recursive' => 1
                             )
                         );
-                        $cohorte[$key]['Contratinsertion'] = $contratinsertion['Contratinsertion'];
-                    }
+                        $cohorte[$key] = Set::merge( $cohorte[$key], array( 'Adresse' => $adresseFoyer['Adresse'] ) );
 
-                    unset( $cohorte[$key]['Foyer']['Adressefoyer'] );
-                    unset( $cohorte[$key]['Foyer']['AdressesFoyer'] ); // FIXME
-                    $cohorte[$key]['Foyer']['Adresse'] = $adresse['Adresse'];
-
-                    if( $statutOrientation !== 'Orienté' ) {
-                        $structuresReferentes = $this->Structurereferente->find(
-                            'list',
-                            array(
-                                'fields' => array(
-                                    'Structurereferente.id',
-                                    'Structurereferente.lib_struc'
+                        // ----------------------------------------------------
+                        // TODO: continuer le nettoyage à partir d'ici
+                        if( $statutOrientation == 'Orienté' ) {
+                            $contratinsertion = $this->Contratinsertion->find(
+                                'first',
+                                array(
+                                    'conditions' => array(
+                                        'Contratinsertion.personne_id' => $element['Personne']['id']
+                                    ),
+                                    'recursive' => -1,
+                                    'order' => array( 'Contratinsertion.dd_ci DESC' )
                                 )
-                            )
-                        );
-                        $this->set( 'structuresReferentes', $structuresReferentes );
+                            );
+                            $cohorte[$key]['Contratinsertion'] = $contratinsertion['Contratinsertion'];
 
-                        $cohorte[$key]['Orientstruct']['propo_algo_texte'] = $this->_preOrientation( $element );
-                        $tmp = array_flip( $typesOrient );
-                        $cohorte[$key]['Orientstruct']['propo_algo'] = $tmp[$cohorte[$key]['Orientstruct']['propo_algo_texte']];
-                        $cohorte[$key]['Orientstruct']['date_propo'] = date( 'Y-m-d' );
+                            $Structurereferente = $this->Structurereferente->find(
+                                'first',
+                                array(
+                                    'conditions' => array(
+                                        'Structurereferente.id' => $cohorte[$key]['Orientstruct']['structurereferente_id']
+                                    )
+                                )
+                            );
+                            $cohorte[$key]['Orientstruct']['Structurereferente'] = $Structurereferente['Structurereferente'];
+                        }
 
-                        // Statut suivant ressource
-                        $ressource = $this->Ressource->find(
-                            'first',
-                            array(
-                                'conditions' => array(
-                                    'Ressource.personne_id' => $element['Personne']['id']
-                                ),
-                                'recursive' => 2
-                            )
-                        );
-                        $cohorte[$key]['Dossier']['statut'] = 'Diminution des ressource';
-                        if( !empty( $ressource ) ) {
-                            list( $year, $month, $day ) = explode( '-', $cohorte[$key]['Dossier']['dtdemrsa'] );
-                            $dateOk = ( mktime( 0, 0, 0, $month, $day, $year ) >= mktime( 0, 0, 0, 6, 1, 2009 ) );
+                        if( $statutOrientation !== 'Orienté' ) {
+                            $structuresReferentes = $this->Structurereferente->find(
+                                'list',
+                                array(
+                                    'fields' => array(
+                                        'Structurereferente.id',
+                                        'Structurereferente.lib_struc'
+                                    )
+                                )
+                            );
+                            $this->set( 'structuresReferentes', $structuresReferentes );
 
-                            if( $dateOk ) {
-                                $cohorte[$key]['Dossier']['statut'] = 'Nouvelle demande';
+                            $cohorte[$key]['Orientstruct']['propo_algo_texte'] = $this->_preOrientation( $element );
+                            $tmp = array_flip( $typesOrient );
+                            $cohorte[$key]['Orientstruct']['propo_algo'] = $tmp[$cohorte[$key]['Orientstruct']['propo_algo_texte']];
+                            $cohorte[$key]['Orientstruct']['date_propo'] = date( 'Y-m-d' );
+
+                            // Statut suivant ressource
+                            $ressource = $this->Ressource->find(
+                                'first',
+                                array(
+                                    'conditions' => array(
+                                        'Ressource.personne_id' => $element['Personne']['id']
+                                    ),
+                                    'recursive' => 2
+                                )
+                            );
+                            $cohorte[$key]['Dossier']['statut'] = 'Diminution des ressource';
+                            if( !empty( $ressource ) ) {
+                                list( $year, $month, $day ) = explode( '-', $cohorte[$key]['Dossier']['dtdemrsa'] );
+                                $dateOk = ( mktime( 0, 0, 0, $month, $day, $year ) >= mktime( 0, 0, 0, 6, 1, 2009 ) );
+
+                                if( $dateOk ) {
+                                    $cohorte[$key]['Dossier']['statut'] = 'Nouvelle demande';
+                                }
                             }
                         }
                     }
+                    $this->set( 'cohorte', $cohorte );
                 }
-
             }
-
-            $this->set( 'cohorte', $cohorte );
 
             //-----------------------------------------------------------------
 
             switch( $statutOrientation ) {
                 case 'En attente':
                     $this->set( 'pageTitle', 'Nouvelles demandes à orienter' );
-                    $this->render( $this->action, null, 'nouvelles' );
+                    $this->render( $this->action, null, 'formulaire' );
                     break;
                 case 'Non orienté':
                     $this->set( 'pageTitle', 'Demandes non orientées' );
-                    $this->render( $this->action, null, 'nouvelles' );
+                    $this->render( $this->action, null, 'formulaire' );
                     break;
                 case 'Orienté':
                     $this->set( 'pageTitle', 'Demandes orientées' );
-                    $this->render( $this->action, null, 'orientees' );
+                    $this->render( $this->action, null, 'visualisation' );
                     break;
             }
         }
-
-        /**
-
-        */
-        /*function nouvelles() {
-            $typesOrient = $this->Typeorient->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Typeorient.id',
-                        'Typeorient.lib_type_orient'
-                    ),
-                    'conditions' => array(
-                        'Typeorient.parentid' => null
-                    )
-                )
-            );
-            $this->set( 'typesOrient', $typesOrient );
-
-            $structuresReferentes = $this->Structurereferente->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Structurereferente.id',
-                        'Structurereferente.lib_struc'
-                    )
-                )
-            );
-            $this->set( 'structuresReferentes', $structuresReferentes );
-
-            if( !empty( $this->data ) ) {
-                $this->Dossier->begin();
-                $saved = true;
-                foreach( $this->data['Orientstruct'] as $key => $value ) {
-                    $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
-                    $saved = $this->Dossier->Foyer->Personne->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
-                }
-                if( $saved ) {
-                    $this->Dossier->commit();
-                }
-                else {
-                    $this->Dossier->rollback();
-                }
-            }
-
-            $nonOrientes = $this->Dossier->Foyer->Personne->Orientstruct->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Orientstruct.personne_id',
-                        'Orientstruct.personne_id'
-                    ),
-                    'conditions' => array( 'Orientstruct.statut_orient' => 'Non orienté' ),
-                )
-            );
-
-            $cohorte = array();
-            // INFO: 190509 - grille test web-rsa.doc
-            if( !empty( $nonOrientes ) ) {
-                $cohorte = $this->Dossier->Foyer->Personne->find(
-                    'all',
-                    array(
-                    'conditions' => array( 'Personne.id' => array_values( $nonOrientes ) ),
-                        'recursive' => 2
-                    )
-                );
-            }
-
-            foreach( $cohorte as $key => $element ) {
-                // Dossier
-                $dossier = $this->Dossier->find(
-                    'first',
-                    array(
-                        'conditions' => array( 'Dossier.id' => $element['Foyer']['dossier_rsa_id'] ),
-                        'recursive' => 1
-                    )
-                );
-                $cohorte[$key] = Set::merge( $cohorte[$key], $dossier );
-
-                // Adresse -> FIXME ?
-                $adresses = Set::combine( $cohorte[$key]['Foyer']['Adressefoyer'], '{n}.rgadr', '{n}.adresse_id' );
-                $adresse = $this->Adresse->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Adresse.id' => $adresses['01']
-                        ),
-                        'recursive' => 2
-                    )
-                );
-
-                unset( $cohorte[$key]['Foyer']['Adressefoyer'] );
-                unset( $cohorte[$key]['Foyer']['AdressesFoyer'] ); // FIXME
-                $cohorte[$key]['Foyer']['Adresse'] = $adresse['Adresse'];
-                $cohorte[$key]['Orientstruct']['propo_algo_texte'] = $this->_preOrientation( $element );
-                // FIXME
-                $tmp = array_flip( $typesOrient );
-                $cohorte[$key]['Orientstruct']['propo_algo'] = $tmp[$cohorte[$key]['Orientstruct']['propo_algo_texte']];
-                $cohorte[$key]['Orientstruct']['date_propo'] = date( 'Y-m-d' );
-
-                // Statut suivant ressource
-                $ressource = $this->Ressource->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Ressource.personne_id' => $element['Personne']['id']
-                        ),
-                        'recursive' => 2
-                    )
-                );
-                $cohorte[$key]['Dossier']['statut'] = 'Diminution des ressource';
-
-                if( !empty( $ressource ) ) {
-                    list( $year, $month, $day ) = explode( '-', $cohorte[$key]['Dossier']['dtdemrsa'] );
-                    $dateOk = ( mktime( 0, 0, 0, $month, $day, $year ) > mktime( 0, 0, 0, 6, 1, 2009 ) );
-
-                    $mtpersressmenrsa = 0;
-                    if( $ressource['Ressource']['topressnul'] != 0 && !empty( $ressource['Ressourcemensuelle'] ) ) {
-                        // FIXME: à réparer
-                        //debug( Set::extract( $ressource, 'Ressourcemensuelle.{n}.Detailressourcemensuelle.{n}.mtnatressmen' ) );
-                        $mtpersressmenrsa = number_format( array_sum( Set::extract( $ressource, '{n}.Ressourcemensuelle.{n}.Detailressourcemensuelle.{n}.mtnatressmen' ) ) / 3, 2 );
-
-                    }
-                    if( $mtpersressmenrsa < 500 && $dateOk ) {
-                        $dossiers[$key]['Dossier']['statut'] = 'Nouvelle demande';
-                    }
-                }
-            }
-
-            $this->set( 'cohorte', $cohorte );
-        }*/
     }
 ?>
