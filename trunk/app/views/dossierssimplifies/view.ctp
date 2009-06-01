@@ -12,7 +12,7 @@
 <table class="tooltips">
         <thead>
             <tr>
-                <th>Role personne</th>
+               <!-- <th>Role personne</th> -->
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Date de la demande</th>
@@ -27,7 +27,7 @@
                 foreach( $dossier['Foyer']['Personne'] as $personne ) {
                     echo $html->tableCells(
                         array(
-                            h( $personne['rolepers'] ),
+//                             h( $personne['rolepers'] ),
                             h( $personne['nom'] ),
                             h( $personne['prenom'] ),
                             h( date_short( $dossier['Dossier']['dtdemrsa'] ) ),
@@ -37,7 +37,7 @@
 
                             $html->editLink(
                                 'Editer l\'orientation',
-                                array( 'controller' => 'orientsstructs', 'action' => 'edit', $personne['Orientstruct']['id'])
+                                array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personne['id'])
                             ),
                             $html->printLink(
                                 'Imprimer la notification',

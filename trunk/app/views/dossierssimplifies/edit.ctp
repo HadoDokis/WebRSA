@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        observeDisableFieldsOnValue( 'PersonneToppersdrodevorsa', [ 'TypeorientParentId', 'OrientstructTypeorientId', 'OrientstructStructurereferenteId' ], 0, true );
+        observeDisableFieldsOnValue( 'PersonneToppersdrodevorsa', [ /*'TypeorientParentId', */'OrientstructTypeorientId', 'OrientstructStructurereferenteId' ], 0, true );
 
     });
 </script>
@@ -17,7 +17,7 @@
             <?php echo $form->label("Date de demande du dossier : $datdemdossrsa<br /><br />");?>
         </fieldset>
         <fieldset>
-            <h2>Demandeur N°1</h2>
+            <h2>Personne à orienter</h2>
             <div><?php echo $form->input( 'Personne.rolepers', array( 'label' => required( __( 'rolepers', true ) ), 'value' => 'DEM', 'type' => 'hidden') );?></div>
             <div><?php echo $form->input( 'Personne.id', array( 'label' => required( __( 'id', true ) ), 'value' =>$id , 'type' => 'hidden') );?></div>
             <?php echo $form->input( 'Personne.qual', array( 'label' => required( __( 'qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
