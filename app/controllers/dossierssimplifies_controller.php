@@ -166,59 +166,34 @@
            $this->render( $this->action, null, 'add_edit' );
         }
 
-        function edit( $dossimple_id = null ){
-            $this->assert( valid_int( $dossimple_id ), 'error404' );
-            $this->set( 'typesOrient',  $this->Typeorient->listOptions() );
-            $typesStruct = $this->Typeorient->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Typeorient.id',
-                        'Typeorient.lib_type_orient'
-                    ),
-                    'conditions' => array(
-                        'Typeorient.parentid NOT' => null
-                    )
-                )
-            );
-            $this->set( 'typesStruct', $typesStruct );
-            $dossimple = $this->Dossier->read(null, $dossimple_id);
+        function edit( $personne_id = null, $orient_id=null ){
+            $this->assert( valid_int( $personne_id ), 'error404' );
+ 
+            $personne   = $this->Personne->read(null, $personne_id);
+            $dossier_id =  $personne['Foyer']['dossier_rsa_id'] ;
+            $dossimple  = $this->Dossier->read(null,$dossier_id );
+ 
+            $this->set( 'id', $personne_id);
+            $this->set( 'dossiersimple_id', $dossier_id);
+            $this->set( 'foyer_id', $personne['Foyer']['id']);
+            $this->set( 'typesOrient',   $this->Typeorient->listOptions()  );
+            $this->set( 'structures',   $this->Structurereferente->list1Options()  );
+            $this->set( 'numdossierrsa',  $dossimple['Dossier']['numdemrsa']  );
+            $this->set( 'datdemdossrsa',  $dossimple['Dossier']['dtdemrsa'] );
+            $this->set( 'orient_id', $personne['Orientstruct']['typeorient_id']);
+            $this->set( 'structure_id', $personne['Orientstruct']['structurereferente_id']);
 
             if( !empty( $this->data ) ) {
-
-                foreach ($this->data['Personne'] as $personne) {
-                   $this->Personne->save($personne);
-                   $orient= $this->Personne->read(null, $personne['id']);
-                   if (isset( $orient['Orientstruct']['id'])) {
-                       $orient['Orientstruct']['id']= $orient['Orientstruct']['id'];
-                       $orient['Orientstruct']['personne_id']= $personne['id'];
-                       $orient['Orientstruct']['structurereferente_id']= $this->data['Orientstruct'][0]['structurereferente_id'];
-                       $orient['Orientstruct']['typeorient_id']= $this->data['Orientstruct'][0]['typeorient_id'];
-                       $orient['Orientstruct']['typeorient_id']= $this->data['Typeorient'][0]['parent_id'];
-                       $this->Orientstruct->save($orient);
-                   }
-                }
-
-                $this->data['Dossier']['id'] = $dossimple_id;
-                if( $this->Dossier->saveAll( $this->data ) ) {
+                if (isset($personne['Orientstruct']['id']))
+                    $this->data['Orientstruct']['id'] = $personne['Orientstruct']['id'];
+                if( $this->Personne->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view',   $this->data['Foyer']['id'] ) );
+                    $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view',   $personne['Foyer']['id'] ) );
                 }
             }
             else {
-                $this->Dossier->recursive = 2;
-                $dossimple = $this->Dossier->read(null,$dossimple_id );
-                $this->assert( !empty( $dossimple ), 'error404' );
-                $this->data = $dossimple;
-                $num_personne = 0;
-                foreach ($dossimple['Foyer']['Personne'] as $personne) {
-                    $orient= $this->Personne->read(null, $personne['id']);
-                    $this->data['Orientstruct'][$num_personne]= $orient['Orientstruct'];
-                    $this->data["Personne"][$num_personne++] =  $personne;
-                }
-
+                $this->data = $personne;
             }
-            $this->set( 'foyer_id', $dossimple['Foyer']['id'] );
 
             $this->render( $this->action, null, 'add_edit' );
         }
