@@ -35,8 +35,8 @@
                 <th>Type contrat</th>
                 <th>Date début</th>
                 <th>Date fin</th>
-                <th>Décision</th>
-                <th colspan="5" class="action">Actions</th>
+                <!--<th>Décision</th> -->
+                <th colspan="4" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>

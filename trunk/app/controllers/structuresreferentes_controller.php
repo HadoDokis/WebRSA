@@ -19,6 +19,7 @@
         }
 
         function add() {
+            $this->set( 'options', $this->Typeorient->listOptions() );
 
             $zg = $this->Zonegeographique->find(
                 'list',
@@ -35,8 +36,9 @@
                 'list',
                 array(
                     'fields' => array(
+//                         'Typeorient.parentid',
                         'Typeorient.id',
-                        'Typeorient.lib_type_orient'
+                        'Typeorient.lib_type_orient',
                     )
                 )
             );
@@ -58,6 +60,7 @@
             // TODO : vérif param
             // Vérification du format de la variable
             $this->assert( valid_int( $structurereferente_id ), 'error404' );
+            $this->set( 'options', $this->Typeorient->listOptions() );
 
             $zg = $this->Zonegeographique->find(
                 'list',

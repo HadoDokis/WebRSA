@@ -38,7 +38,7 @@
             <tbody>
                 <tr class="odd">
                     <th><?php __( 'rgadr' );?></th>
-                    <td><?php echo $rgadr[$adresse['Adressefoyer']['rgadr']];?></td>
+                    <td><?php echo isset( $rgadr[$adresse['Adressefoyer']['rgadr']] ) ? $rgadr[$adresse['Adressefoyer']['rgadr']] : null ;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'dtemm' );?></th>

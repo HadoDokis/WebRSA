@@ -156,7 +156,7 @@
                 'first',
                 array(
                     'conditions' => array(
-                        'Typeorient.id' => $orientstruct['Orientstruct']['structurereferente_id']
+                        'Typeorient.id' => $orientstruct['Orientstruct']['structurereferente_id'] // FIXME structurereferente_id
                     )
                 )
             );

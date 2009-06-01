@@ -13,5 +13,5 @@
 </fieldset>
 <fieldset class="col2">
     <legend>Types d'orientations</legend>
-    <?php echo $form->input( 'Structurereferente.typeorient_id', array( 'label' => false, 'type' => 'select' , 'options' => $type, 'empty' => true ) );?>
+    <?php echo $form->input( 'Structurereferente.typeorient_id', array( 'label' => false, 'type' => 'select' , 'options' => $options, 'empty' => true ) );?>
 </fieldset>

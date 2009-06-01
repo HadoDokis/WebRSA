@@ -134,12 +134,12 @@
                                 <td><?php echo h( date_short( isset( $dossier['Personne']['Contratinsertion']['df_ci'] ) ) ? date_short( $dossier['Personne']['Contratinsertion']['df_ci'] ) : null );?></td>
                             </tr>
                             <tr class="even">
-                                <th>Date de décision</th>
-                                <td><?php echo h( date_short( isset( $dossier['Personne']['Contratinsertion']['datevalidation_ci'] ) ) ? date_short( $dossier['Personne']['Contratinsertion']['datevalidation_ci'] ) : null );?></td>
+                                <th>Décision</th>
+                                <td><?php echo h( isset( $decision_ci[$dossier['Personne']['Contratinsertion']['decision_ci']] ) ? $decision_ci[$dossier['Personne']['Contratinsertion']['decision_ci']]  : null ) ;?></td>
                             </tr>
                             <tr class="odd">
-                                <th>Décision</th>
-                                <td><?php echo h( $decision_ci[$dossier['Personne']['Contratinsertion']['decision_ci']].' '.date_short( $dossier['Personne']['Contratinsertion']['datevalidation_ci'] ) ) ;?></td>
+                                <th>Date de décision</th>
+                                <td><?php echo h( date_short( isset( $dossier['Personne']['Contratinsertion']['datevalidation_ci'] ) ) ? date_short( $dossier['Personne']['Contratinsertion']['datevalidation_ci'] ) : null );?></td>
                             </tr>
                         </tbody>
                     </table>

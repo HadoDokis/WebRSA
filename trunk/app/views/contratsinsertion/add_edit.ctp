@@ -11,61 +11,27 @@
         $this->pageTitle = 'Édition d\'un contrat d\'insertion';
     }
 ?>
-<script type="text/javascript">
-function cbDpdt( master, slave ) {
-    if( !$( master ).attr( 'checked' ) ) {
-        $( slave ).attr( 'disabled', true );
-        $( slave ).parents( 'div.input' ).addClass( 'disabled' );
-    }
-    else {
-        $( slave ).attr( 'disabled', false );
-        $( slave ).parents( 'div.input' ).removeClass( 'disabled' );
-    }
-}
 
-function selDpdt( master, slave, enabled ) {
-    if( !enabled ) {
-        $( slave ).attr( 'disabled', true );
-        $( slave ).parents( 'div.input' ).addClass( 'disabled' );
-    }
-    else {
-        $( slave ).attr( 'disabled', false );
-        $( slave ).parents( 'div.input' ).removeClass( 'disabled' );
-    }
-}
+<!--<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsOnValue( 'ContratinsertionRgCi', [ 'ContratinsertionTypocontratId' ], 1, true );
+    });
+</script>-->
 
-$( document ).ready(
-    function() {
-        // Au chargement
-        selDpdt( $( '#ContratinsertionTypeCi' ), $( '#ContratinsertionRgCi' ) );
-        selDpdt( $( '#ContratinsertionTypeCi' ), $( '#ContratinsertionActionsPrev' ) );
-        selDpdt( $( '#ContratinsertionTypeCi' ), $( '#ContratinsertionObstaRenc' ) );
-        selDpdt( $( '#ContratinsertionDecisionCi' ), $( '#ContratinsertionDatevalidationCiDay' ) );
-        selDpdt( $( '#ContratinsertionDecisionCi' ), $( '#ContratinsertionDatevalidationCiMonth' ) );
-        selDpdt( $( '#ContratinsertionDecisionCi' ), $( '#ContratinsertionDatevalidationCiYear' ) );
-
-        $( '#ContratinsertionTypeCi' ).change( function( i ) {
-                selDpdt( $( this ), $( '#ContratinsertionRgCi' ), ( $( '#ContratinsertionTypeCi' ).val() != 'pre' ) );
-                selDpdt( $( this ), $( '#ContratinsertionActionsPrev' ), ( $( '#ContratinsertionTypeCi' ).val() != 'pre' ) );
-                selDpdt( $( this ), $( '#ContratinsertionObstaRenc' ), ( $( '#ContratinsertionTypeCi' ).val() != 'pre' ) );
-        } );
-        $( '#ContratinsertionDecisionCi' ).change( function( i ) {
-                selDpdt( $( this ), $( '#ContratinsertionDatevalidationCiDay' ), ( $( '#ContratinsertionDecisionCi' ).val() == 'v' ) );
-                selDpdt( $( this ), $( '#ContratinsertionDatevalidationCiMonth' ), ( $( '#ContratinsertionDecisionCi' ).val() == 'v' ) );
-                selDpdt( $( this ), $( '#ContratinsertionDatevalidationCiYear' ), ( $( '#ContratinsertionDecisionCi' ).val() == 'v' ) );
-        } );
-} );
-</script>
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 
     <?php 
         if( $this->action == 'add' ) {
-            echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ) /*array('type' => 'post', 'action' => 'add/'.$personne_id )*/ );
+
+            echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
             echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden' ) );
+
+            echo $form->input( 'Contratinsertion.rg_ci', array( 'type' => 'hidden', 'value' => '' ) );
+
         }
         else {
             echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );

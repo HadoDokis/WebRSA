@@ -224,4 +224,6 @@
  *
  */
 	Cache::config('default', array('engine' => 'File'));
+
+    require_once( 'webrsa.inc' );
 ?>

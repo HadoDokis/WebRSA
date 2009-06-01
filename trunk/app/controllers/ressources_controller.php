@@ -70,13 +70,13 @@
             }
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
-                $this->Ressource->set( $this->data );
-                $this->Ressourcemensuelle->set( $this->data );
-                $this->Detailressourcemensuelle->set( $this->data );
+                $this->Ressource->set( $this->data['Ressource'] );
 
                 $validates = $this->Ressource->validates();
-                $validates = $this->Ressourcemensuelle->validates() && $validates;
-                $validates = $this->Detailressourcemensuelle->validates() && $validates;
+                if( isset( $this->data['Ressourcemensuelle'] ) && isset( $this->data['Detailressourcemensuelle'] ) ) {
+                    $validates = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only' ) ) && $validates;
+                    $validates = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $validates;
+                }
 
                 if( $validates ) {
                     $this->Ressource->begin();
