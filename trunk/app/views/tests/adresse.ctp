@@ -5,7 +5,7 @@
     <h2>Étape 2: adresse complète</h2>
 
     <?php echo $form->input( 'Adressefoyer.rgadr', array( 'type' => 'hidden', 'value' => '01' ) );?>
-    <?php include( $this->__paths[0].'adresses_foyers/_form.ctp' ); /* FIXME */?>
+    <?php include( $this->__paths[0].'adressesfoyers/_form.ctp' ); /* FIXME */?>
 
     <div class="submit">
         <?php echo $form->submit( '< Précédent', array( 'name' => 'Previous', 'div'=>false ) );?>

@@ -162,6 +162,11 @@
                 }
             }
 
+//             $conditions = array( 'Adressefoyer.rgadr' => '01' );
+//             if( !empty( $mesCodesInsee ) ) {
+//                 $conditions['Adresse.numcomptt'] = $mesCodesInsee;
+//             }
+
             $xFoyers = $this->Adressefoyer->find(
                 'list',
                 array(

@@ -170,22 +170,22 @@
                     array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $dossier['Foyer']['id'] )
                 ).'</li>';
             ?> -->
-        <li><span>Préconisation d'orientation</span>
-        <ul>
-        <?php if( !empty( $dossier['Foyer']['Personne'] ) ):?>  
-            <li>
-            <?php foreach( $dossier['Foyer']['Personne'] as $personnes ):?>
-                <?php
-                echo $html->link(
-                    $personnes['qual'].' '.$personnes['nom'].' '.$personnes['prenom'],
-                    array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personnes['id'] )
-                );
-                ?>
-            <?php endforeach?>
+            <li><span>Préconisation d'orientation</span>
+                <ul>
+                    <?php if( !empty( $dossier['Foyer']['Personne'] ) ):?>
+                        <li>
+                            <?php foreach( $dossier['Foyer']['Personne'] as $personnes ):?>
+                                <?php
+                                echo $html->link(
+                                    $personnes['qual'].' '.$personnes['nom'].' '.$personnes['prenom'],
+                                    array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personnes['id'] )
+                                );
+                                ?>
+                            <?php endforeach?>
+                        </li>
+                    <?php endif?>
+                </ul>
             </li>
-        <?php endif?>
-        </ul>
-    </li>
         <?php endif;?>
     </ul>
 </div>

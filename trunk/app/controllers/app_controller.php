@@ -3,7 +3,7 @@
     {
         var $components = array( 'Session', 'Auth', 'Acl', 'Droits' );
         var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions' );
-        var $uses     = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User' );
+        var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User' );
 
         //*********************************************************************
 
