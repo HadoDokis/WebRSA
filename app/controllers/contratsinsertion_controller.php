@@ -106,9 +106,8 @@
             // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Contratinsertion->saveAll( $this->data ) ) {
 
-debug( $this->data );
                 $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                //$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
+                $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
             }
             else{
                 $dspp = $this->Dspp->find(
