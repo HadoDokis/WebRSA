@@ -20,23 +20,14 @@
 
         function add() {
             $this->set( 'options', $this->Typeorient->listOptions() );
-	    
+ 
             if( !empty( $this->data ) ) {
                 if( $this->Typeorient->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'typesorients', 'action' => 'index' ) );
                 }
             }
-	    
-// 	    $notif = $this->Typeorient->find(
-//                 'list',
-//                 array(
-//                     'fields' => array(
-//                         'Typeorient.modele_notif'
-//                     )
-//                 )
-//             );
-//             $this->set( 'notif', $notif );
+
 
 	    $this->render( $this->action, null, 'add_edit' );
         }
@@ -46,7 +37,7 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $typeorient_id ), 'error404' );
 
-	    $notif = $this->Typeorient->find(
+            $notif = $this->Typeorient->find(
                 'list',
                 array(
                     'fields' => array(
@@ -56,7 +47,7 @@
             );
 
             $this->set( 'notif', $notif );
-	    
+
             if( !empty( $this->data ) ) {
                 if( $this->Typeorient->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );

@@ -20,12 +20,12 @@
     <?php
         if( $this->action == 'add' ) {
             echo $form->create( 'Ressource', array(  'type' => 'post', 'url' => Router::url( null, true )  ));
-            echo '<div>';
-            echo $form->input( 'Ressource.id', array( 'type' => 'hidden', 'value' => '' ) );
-            echo $form->input( 'Ressourcemensuelle.0.ressource_id', array( 'type' => 'hidden', 'value' => '' ) );
-            echo $form->input( 'Ressourcemensuelle.1.ressource_id', array( 'type' => 'hidden', 'value' => '' ) );
-            echo $form->input( 'Ressourcemensuelle.2.ressource_id', array( 'type' => 'hidden', 'value' => '' ) );
-            echo '</div>';
+//             echo '<div>';
+//             echo $form->input( 'Ressource.id', array( 'type' => 'hidden', 'value' => '' ) );
+//             echo $form->input( 'Ressourcemensuelle.0.ressource_id', array( 'type' => 'hidden', 'value' => '' ) );
+//             echo $form->input( 'Ressourcemensuelle.1.ressource_id', array( 'type' => 'hidden', 'value' => '' ) );
+//             echo $form->input( 'Ressourcemensuelle.2.ressource_id', array( 'type' => 'hidden', 'value' => '' ) );
+//             echo '</div>';
         }
         else {
             echo $form->create( 'Ressource', array( 'type' => 'post', 'url' => Router::url( null, true )  ));

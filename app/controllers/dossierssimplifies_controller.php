@@ -163,10 +163,10 @@
                     }
                 }
             }
-           $this->render( $this->action, null, 'add_edit' );
+//            $this->render( $this->action, null, 'add_edit' );
         }
 
-        function edit( $personne_id = null, $orient_id=null ){
+        function edit( $personne_id = null, $orient_id = null ){
             $this->assert( valid_int( $personne_id ), 'error404' );
  
             $personne   = $this->Personne->read(null, $personne_id);
@@ -183,7 +183,9 @@
             $this->set( 'orient_id', $personne['Orientstruct']['typeorient_id']);
             $this->set( 'structure_id', $personne['Orientstruct']['structurereferente_id']);
 
+
             if( !empty( $this->data ) ) {
+
                 if (isset($personne['Orientstruct']['id']))
                     $this->data['Orientstruct']['id'] = $personne['Orientstruct']['id'];
                 if( $this->Personne->saveAll( $this->data ) ) {
@@ -194,8 +196,7 @@
             else {
                 $this->data = $personne;
             }
-
-            $this->render( $this->action, null, 'add_edit' );
-        }
+//            $this->render( $this->action, null, 'add_edit' );
+    }
 }
 ?>

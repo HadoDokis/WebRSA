@@ -158,18 +158,13 @@
             <?php
                 echo '<li>'.$html->link(
                     'Données socio-professionnelles',
-                    array( 'controller' => 'dspfs', 'action' => 'edit', $dossier['Foyer']['id'] )
+                    array( 'controller' => 'dspfs', 'action' => 'view', $dossier['Foyer']['id'] )
                 ).'</li>';
             ?>
         <?php endif;?>
 
         <?php if( $permissions->check( 'dossierssimplifies', 'edit' ) ):?>
-           <!-- <?php
-            echo '<li>'.$html->link(
-                    'Préconisation d\'orientation',
-                    array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $dossier['Foyer']['id'] )
-                ).'</li>';
-            ?> -->
+
             <li><span>Préconisation d'orientation</span>
                 <ul>
                     <?php if( !empty( $dossier['Foyer']['Personne'] ) ):?>

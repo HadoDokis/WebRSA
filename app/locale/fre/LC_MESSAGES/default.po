@@ -255,7 +255,7 @@ msgid "typedtnai"
 msgstr "Type date de naissance"
 
 msgid "nir"
-msgstr "N° national d'identification"
+msgstr "N° national d'identification (SECU)"
 
 msgid "topvalec"
 msgstr "Certification de l'état civil de la personne"

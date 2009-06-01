@@ -157,10 +157,10 @@
 
         function decision_ci() {
             return array(
-                '' => 'En attente',
-                'v' => 'Validation à compter du',
-                'a' => 'Ajournement',
-                'r' => 'Rejet'
+                'E' => 'En attente de décision',
+                'V' => 'Validation à compter du',
+                'A' => 'Ajournement',
+                'R' => 'Rejet'
             );
         }
 
@@ -824,12 +824,12 @@
 
         function type_allocation() {
             return array(
-                'AllocationComptabilisee' => 'Allocation comptabilisée',
-                'IndusConstates' => 'Indus constatés',
-                'IndusTransferesCG' => 'Indus transférés au CG',
-                'RemisesIndus' => 'Remises des indus',
-                'AnnulationsFaibleMontant' => 'Annulations pour faible montant',
-                'AutresAnnulations' => 'Autres annulations'
+                'AllocationsComptabilisees' => 'Allocation comptabilisée',
+                'IndusConstates' => 'Indu constaté',
+                'IndusTransferesCG' => 'Indu transféré au CG',
+                'RemisesIndus' => 'Remise d\'indu',
+                'AnnulationsFaibleMontant' => 'Annulation pour faible montant',
+                'AutresAnnulations' => 'Autre annulation'
             );
         }
 

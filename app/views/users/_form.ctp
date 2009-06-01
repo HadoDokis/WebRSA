@@ -13,9 +13,9 @@
 </fieldset>
 <fieldset class="col2">
     <legend>Groupe d'utilisateur</legend>
-    <?php echo $form->input( 'User.group_id', array( 'label' => false, 'type' => 'select' , 'options' => $gp ) );?>
+    <?php echo $form->input( 'User.group_id', array( 'label' => false, 'type' => 'select' , 'options' => $gp, 'empty' => true ) );?>
 </fieldset>
 <fieldset class="col2">
     <legend>Service instructeur</legend>
-    <?php echo $form->input( 'User.serviceinstructeur_id', array( 'label' => false, 'type' => 'select' , 'options' => $si ) );?>
+    <?php echo $form->input( 'User.serviceinstructeur_id', array( 'label' => false, 'type' => 'select' , 'options' => $si, 'empty' => true ) );?>
 </fieldset>

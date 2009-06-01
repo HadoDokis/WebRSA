@@ -79,7 +79,6 @@
                 $this->cakeError( 'error404' );
             }
 
-
             $sr = $this->Structurereferente->find(
                 'list',
                 array(
@@ -94,19 +93,26 @@
                 'list',
                 array(
                     'fields' => array(
+                        'Typocontrat.id',
                         'Typocontrat.lib_typo'
                     ),
+                    'order'  => array( 'Typocontrat.id ASC' )
+
                 )
             );
             $this->set( 'tc', $tc );
+
+
             // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Contratinsertion->saveAll( $this->data ) ) {
+
+debug( $this->data );
                 $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
+                //$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
             }
             else{
                 $dspp = $this->Dspp->find(
-                    'first', 
+                    'first',
                     array(
                         'conditions' => array(
                             'Dspp.personne_id' => $personne_id
@@ -131,6 +137,7 @@
             $this->set( 'personne', $personne );
            // $this->data = array_merge( $this->data, $personne );
             $this->set( 'personne_id', $personne_id );
+
             $this->render( $this->action, null, 'add_edit' );
         }
 
