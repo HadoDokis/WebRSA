@@ -1,16 +1,16 @@
 <?php
-	class Dspp extends AppModel
-	{
-		var $name = 'Dspp';
-		
-		var $useTable = 'dspps';
-		
-		var $belongsTo = array(
-			'Personne' => array(
-			 'classname'     => 'Personne',
-			 'foreignKey'    => 'personne_id'
-			)
-		);
+    class Dspp extends AppModel
+    {
+        var $name = 'Dspp';
+
+        var $useTable = 'dspps';
+
+        var $belongsTo = array(
+            'Personne' => array(
+                'classname'     => 'Personne',
+                'foreignKey'    => 'personne_id'
+            )
+        );
 
         var $hasAndBelongsToMany = array(
             'Difsoc' => array(
@@ -76,24 +76,24 @@
                     'message' => 'Champ obligatoire'
                 ),
             ),
-            'accoemploi' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-            ),
+//             'accoemploi' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 ),
+//             ),
             'hispro' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 ),
             ),
-            'libcooraccosocindi' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-            ),
+//             'libcooraccosocindi' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 ),
+//             ),
             'duractdomi' => array(
 //                 'notEmpty' => array(
                     'rule' => 'notEmpty',
