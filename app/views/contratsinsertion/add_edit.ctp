@@ -12,11 +12,11 @@
     }
 ?>
 
-<!--<script type="text/javascript">
+<script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsOnValue( 'ContratinsertionRgCi', [ 'ContratinsertionTypocontratId' ], 1, true );
     });
-</script>-->
+</script>
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
@@ -25,20 +25,24 @@
         if( $this->action == 'add' ) {
 
             echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+            echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
             echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden' ) );
 
             echo $form->input( 'Contratinsertion.rg_ci', array( 'type' => 'hidden', 'value' => '' ) );
-
+            echo '</div>';
         }
         else {
             echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+            echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );
+
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
             echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden' ) );
+            echo '</div>';
         }
 
 
