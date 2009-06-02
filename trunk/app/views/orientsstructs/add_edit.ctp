@@ -12,7 +12,12 @@
     }
 ?>
 
-
+<?php echo $javascript->link( 'dependantselect.js' ); ?>
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        dependantSelect( 'OrientstructStructurereferenteId', 'OrientstructTypeorientId' );
+    });
+</script>
 
 
 <div class="with_treemenu">

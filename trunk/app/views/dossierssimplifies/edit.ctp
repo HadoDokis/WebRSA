@@ -8,6 +8,14 @@
 
     });
 </script>
+
+<?php echo $javascript->link( 'dependantselect.js' ); ?>
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        dependantSelect( 'OrientstructStructurereferenteId', 'OrientstructTypeorientId' );
+    });
+</script>
+
 <div class="with_treemenu">
    <h1><?php echo $this->pageTitle = 'Edition d\'une préconisation d\'orientation'; ?></h1>
 
@@ -17,7 +25,7 @@
             <?php echo $form->label("Date de demande du dossier : $datdemdossrsa<br /><br />");?>
         </fieldset>
         <fieldset>
-            <h2>Personne à orienter</h2>
+            <h2>Personne orientée</h2>
             <div><?php echo $form->input( 'Personne.rolepers', array( 'label' => required( __( 'rolepers', true ) ), 'value' => 'DEM', 'type' => 'hidden') );?></div>
             <div><?php echo $form->input( 'Personne.id', array( 'label' => required( __( 'id', true ) ), 'value' =>$id , 'type' => 'hidden') );?></div>
             <?php echo $form->input( 'Personne.qual', array( 'label' => required( __( 'qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
@@ -30,7 +38,8 @@
         <fieldset>
             <h3>Orientation</h3>
             <?php echo $form->input( 'Orientstruct.typeorient_id', array( 'label' => "Type d'orientation / Type de structure",'type' => 'select', 'selected'=> $orient_id, 'options' => $typesOrient, 'empty'=>true));?>
-            <?php echo $form->input( 'Orientstruct.structurereferente_id', array( 'label' => __( 'structure_referente', true ), 'type' => 'select', 'selected' => $structure_id, 'options' => $structures, 'empty' => true ) );?>
+            <?php $this->data['Orientstruct']['structurereferente_id'] = $this->data['Orientstruct']['typeorient_id'].'_'.$this->data['Orientstruct']['structurereferente_id'];?>
+            <?php echo $form->input( 'Orientstruct.structurereferente_id', array( 'label' => __( 'structure_referente', true ), 'type' => 'select', 'selected' => $this->data['Orientstruct']['structurereferente_id'], 'options' => $structures, 'empty' => true ) );?>
         </fieldset>
 
         <?php echo $form->submit( 'Enregistrer' );?>

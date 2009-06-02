@@ -8,6 +8,15 @@
         observeDisableFieldsOnValue( 'Personne1Toppersdrodevorsa', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId' ], 0, true );
     });
 </script>
+
+<?php echo $javascript->link( 'dependantselect.js' ); ?>
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        dependantSelect( 'Orientstruct0StructurereferenteId', 'Orientstruct0TypeorientId' );
+        dependantSelect( 'Orientstruct1StructurereferenteId', 'Orientstruct1TypeorientId' );
+    });
+</script>
+
    <h1><?php echo $this->pageTitle = 'Ajout d\'une préconisation d\'orientation'; ?></h1>
 
         <fieldset>
