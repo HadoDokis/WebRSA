@@ -38,13 +38,13 @@
         <legend>Recherche par Statut</legend>
         <?php echo $form->input( 'Orientstructs.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
     </fieldset>
-    <fieldset>
+   <!-- <fieldset>
         <legend>Recherche par Contrat d'insertion</legend>
         <?php echo $form->input( 'Contratsinsertions.ddci', array( 'label' => 'Date de début du contrat ', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ) );?>
         <?php echo $form->input( 'Contratsinsertions.statut', array( 'label' => "Statut du contrat d'insertion", 'type' => 'select', 'options' => $statuts_contrat, 'empty' => true ) );?>
         <?php echo $form->input( 'Servicesinstructeurs.lib_service', array( 'label' => 'Service instructeur', 'type' => 'select', 'options' => $services_instructeur, 'empty' => true ) );?>
         <?php echo $form->input( 'Servicesinstructeurs.lib_service', array( 'label' => 'Envoyé par', 'type' => 'select', 'options' => $services_instructeur, 'empty' => true ) );?>
-    </fieldset>
+    </fieldset> -->
 
     <?php echo $form->submit( 'Rechercher' );?>
 <?php echo $form->end();?>
