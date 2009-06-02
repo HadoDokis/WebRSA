@@ -5,7 +5,26 @@
         var $useTable = 'structuresreferentes';
 
         function list1Options() {
-            $options = $this->find( 
+            $tmp = $this->find( 
+                'all',
+                array (
+                    'fields' => array(
+                        'Structurereferente.id',
+                        'Structurereferente.typeorient_id',
+                        'Structurereferente.lib_struc'
+                    ),
+                    'order'  => array( 'Structurereferente.lib_struc ASC' ),
+                    'recursive' => -1
+                )
+            );
+
+            $return = array();
+            foreach( $tmp as $key => $value ) {
+                $return[$value['Structurereferente']['typeorient_id'].'_'.$value['Structurereferente']['id']] = $value['Structurereferente']['lib_struc'];
+            }
+            return $return;
+
+            /*$options = $this->find( 
                 'list',
                 array (
                     'fields' => array(
@@ -15,7 +34,7 @@
                     'order'  => array( 'Structurereferente.lib_struc ASC' )
                 )
             );
-            return $options;
+            return $options;*/
         }
 
         var $hasAndBelongsToMany = array(

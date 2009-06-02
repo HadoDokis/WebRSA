@@ -402,6 +402,9 @@ msgstr "Type d'aide"
 
 msgid "date_presta"
 msgstr "A partir de quelle date cette prestation prend-elle effet"
+
+msgid "nomrefpresta"
+msgstr "Nom du référent de la prestation"
 ###############################################################################
 # Ressources
 ###############################################################################

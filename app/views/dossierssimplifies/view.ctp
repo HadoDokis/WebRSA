@@ -33,7 +33,7 @@
                             h( date_short( $dossier['Dossier']['dtdemrsa'] ) ),
                             h( date_short( $personne['Orientstruct']['date_valid'] ) ),
                             h( isset( $personne['Structurereferente']['Typeorient']['lib_type_orient'] ) ? $personne['Structurereferente']['Typeorient']['lib_type_orient']  : null ) ,
-                            h( $personne['Structurereferente']['lib_struc']  ),
+                            h( isset( $personne['Structurereferente']['lib_struc'] ) ? $personne['Structurereferente']['lib_struc'] : null ),
 
                             $html->editLink(
                                 'Editer l\'orientation',

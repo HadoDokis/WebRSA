@@ -16,7 +16,6 @@
     // var selects = new Array(); // TODO dependantselects
     function dependantSelect( select2Id, select1Id ) {
 	// selects[select2Id] = new Array();
-
 	// Nettoyage du texte des options
 	$$('#' + select2Id + ' option').each( function ( option ) {
 	    var data = $(option).innerHTML;
@@ -52,7 +51,7 @@
 	    var opt = $$('#' + select2Id + ' option');
 	    opt[0].selected = 'selected';
 	    try {
-		// INFO -> fonctionne quand même, mais génère une erreur
+		// INFO -> fonctionne quand mï¿½me, mais gï¿½nï¿½re une erreur
 		$( select2Id ).onchange();
 	    }
 	    catch(id) {

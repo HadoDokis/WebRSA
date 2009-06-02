@@ -20,7 +20,29 @@
 
         function add() {
             $this->set( 'options', $this->Typeorient->listOptions() );
- 
+
+            $typesorients = $this->Typeorient->find(
+                'all',
+                array(
+                    'recursive' => -1
+                )
+
+            );
+            $this->set('typesorients', $typesorients);
+
+            $parentid = $this->Typeorient->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient',
+                    ),
+                    'conditions' => array( 'Typeorient.parentid' => null )
+                )
+            );
+            $this->set( 'parentid', $parentid );
+
+
             if( !empty( $this->data ) ) {
                 if( $this->Typeorient->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -36,6 +58,27 @@
             // TODO : vérif param
             // Vérification du format de la variable
             $this->assert( valid_int( $typeorient_id ), 'error404' );
+
+            $typesorients = $this->Typeorient->find(
+                'all',
+                array(
+                    'recursive' => -1
+                )
+
+            );
+            $this->set('typesorients', $typesorients);
+
+            $parentid = $this->Typeorient->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient',
+                    ),
+                    'conditions' => array( 'Typeorient.parentid' => null )
+                )
+            );
+            $this->set( 'parentid', $parentid );
 
             $notif = $this->Typeorient->find(
                 'list',
