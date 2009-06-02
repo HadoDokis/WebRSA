@@ -43,16 +43,21 @@
 
         function beforeSave( $options = array() ) {
             $return = parent::beforeSave( $options );
-// debug( $this->data );
-            if( array_key_exists( 'typeorient_id', $this->data['Orientstruct'] ) ) { // INFO: 1 seul enregistrement
-                $this->data['Orientstruct']['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct']['structurereferente_id'] );
+            $hasMany = ( !array_key_exists( 'personne_id', $this->data['Orientstruct'] ) ); // FIXME
+
+            if( !$hasMany ) { // INFO: 1 seul enregistrement
+                if( array_key_exists( 'structurereferente_id', $this->data['Orientstruct'] ) ) {
+                    $this->data['Orientstruct']['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct']['structurereferente_id'] );
+                }
             }
             else { // INFO: plusieurs enregistrements
                 foreach( $this->data['Orientstruct'] as $key => $value ) {
-                    $this->data['Orientstruct'][$key]['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $value['structurereferente_id'] );
+                    if( array_key_exists( 'structurereferente_id', $value ) ) {
+                        $this->data['Orientstruct'][$key]['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $value['structurereferente_id'] );
+                    }
                 }
             }
-// debug( $this->data );
+
             return $return;
         }
     }

@@ -37,11 +37,12 @@
 
                             $html->editLink(
                                 'Editer l\'orientation',
-                                array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personne['id'])
+                                array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personne['id'] )
                             ),
                             $html->printLink(
                                 'Imprimer la notification',
-                                array( 'controller' => 'gedooos', 'action' => 'orientstruct', $personne['Orientstruct']['id']) 
+                                array( 'controller' => 'gedooos', 'action' => 'orientstruct', $personne['Orientstruct']['id'] ),
+                                !empty( $personne['Orientstruct']['typeorient_id'] )
                             ),
                         ),
                         array( 'class' => 'odd' ),

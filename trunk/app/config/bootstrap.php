@@ -72,12 +72,17 @@
         return implode( '.', $version );
     }
 
-//     foreach( array( 'cg23', 'cg54', 'cg58', 'cg66', 'cg93' ) as $i => $cg ) {
-//         echo "INSERT INTO users VALUES (
-//     ".( $i + 1 ).",
-//     '".$cg."',
-//     '".sha1( 'AYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi'.$cg )."'
-// );\n";
-//     }
+    /**
+        Get real timeout (in seconds) based on core.php configuretion
+    */
+    function readTimeout() {
+        $timeout = Configure::read( 'Session.timeout' );
+        switch( Configure::read( 'Security.level' ) ) {
+            case 'high':    return ( $timeout * 10 );
+            case 'medium':  return ( $timeout * 100 );
+            case 'low':     return ( $timeout * 300 );
+        }
+    }
+
 //EOF
 ?>
