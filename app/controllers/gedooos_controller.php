@@ -9,7 +9,6 @@
         function _ged( $datas, $model ) {
             // Définition des variables & maccros
             // FIXME: chemins
-            define ('GEDOOO_WSDL',  'http://gedooo.services.adullact.org:8080/axis2/services/OfficeService?wsdl');
             $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo';
             $sMimeType  = "application/pdf";
             $path_model = $phpGedooDir.'/../'.$model;
@@ -156,7 +155,7 @@
                 'first',
                 array(
                     'conditions' => array(
-                        'Typeorient.id' => $orientstruct['Orientstruct']['structurereferente_id'] // FIXME structurereferente_id
+                        'Typeorient.id' => $orientstruct['Orientstruct']['typeorient_id'] // FIXME structurereferente_id
                     )
                 )
             );

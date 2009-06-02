@@ -1,5 +1,5 @@
     //
-    // INFO: 
+    // INFO:
     // * si on veut avoir les valeurs exactes des select, on peut voir
     //   pour les enlever / remettre avec des classes
     // * les textes qu'on met dans la BDD pour les selects ne peuvent
@@ -15,46 +15,46 @@
 
     // var selects = new Array(); // TODO dependantselects
     function dependantSelect( select2Id, select1Id ) {
-	// selects[select2Id] = new Array();
-	// Nettoyage du texte des options
-	$$('#' + select2Id + ' option').each( function ( option ) {
-	    var data = $(option).innerHTML;
-	    $(option).update( data.replace( new RegExp( '^.* - ', 'gi' ), '' ) );
-	} );
+        // selects[select2Id] = new Array();
+        // Nettoyage du texte des options
+        $$('#' + select2Id + ' option').each( function ( option ) {
+            var data = $(option).innerHTML;
+            $(option).update( data.replace( new RegExp( '^.* - ', 'gi' ), '' ) );
+        } );
 
-	// Sauvegarde
-	var select2Values = new Array();
-	var select2Options = new Array();
-	$$('#' + select2Id + ' option').each( function ( option ) {
-	    select2Values.push( option.value );
-	    select2Options.push( option.innerHTML );
-	} );
+        // Sauvegarde
+        var select2Values = new Array();
+        var select2Options = new Array();
+        $$('#' + select2Id + ' option').each( function ( option ) {
+            select2Values.push( option.value );
+            select2Options.push( option.innerHTML );
+        } );
 
-	// Vidage de la liste
-	$$('#' + select2Id + ' option').each( function ( option ) {
-	    if( ( $(option).value != '' ) && ( ( $(option).value != '' ) && ( $(option).value.match( new RegExp( '^' + $F( select1Id ) + '_', 'gi' ) ) == null ) ) )
-		$(option).remove();
-	} );
+        // Vidage de la liste
+        $$('#' + select2Id + ' option').each( function ( option ) {
+            if( ( $(option).value != '' ) && ( ( $(option).value != '' ) && ( $(option).value.match( new RegExp( '^' + $F( select1Id ) + '_', 'gi' ) ) == null ) ) )
+            $(option).remove();
+        } );
 
-	// Onchage event - Partie dynamique
-	$(select1Id).onchange = function() {
-	    $$('#' + select2Id + ' option').each( function ( option ) {
-		$(option).remove();
-	    } );
+        // Onchage event - Partie dynamique
+        $(select1Id).onchange = function() {
+            $$('#' + select2Id + ' option').each( function ( option ) {
+                $(option).remove();
+            } );
 
-	    for( var i = 0 ; i < select2Values.length ; i++ ) {
-		if( select2Values[i] == '' || select2Values[i].match( new RegExp( '^' + $(select1Id).value + '_' ), "g" ) ) {
-		    $(select2Id).insert( new Element( 'option', { 'value': select2Values[i] } ).update( select2Options[i] ) );
-		}
-	    }
+            for( var i = 0 ; i < select2Values.length ; i++ ) {
+                if( select2Values[i] == '' || select2Values[i].match( new RegExp( '^' + $(select1Id).value + '_' ), "g" ) ) {
+                    $(select2Id).insert( new Element( 'option', { 'value': select2Values[i] } ).update( select2Options[i] ) );
+                }
+            }
 
-	    var opt = $$('#' + select2Id + ' option');
-	    opt[0].selected = 'selected';
-	    try {
-		// INFO -> fonctionne quand m�me, mais g�n�re une erreur
-		$( select2Id ).onchange();
-	    }
-	    catch(id) {
-	    }
-	};
+            var opt = $$('#' + select2Id + ' option');
+            opt[0].selected = 'selected';
+            try {
+                // INFO -> fonctionne quand m�me, mais g�n�re une erreur
+                $( select2Id ).onchange();
+            }
+            catch(id) {
+            }
+        };
     }

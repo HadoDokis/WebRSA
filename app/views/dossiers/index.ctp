@@ -5,13 +5,6 @@
 
 <ul class="actionMenu">
     <?php
-// <<<<<<< .mine
-//         echo '<li>'.$html->addLink(
-//             'Ajouter un dossier',
-//             array( 'controller' => 'tests', 'action' => 'wizard' )
-//         ).' </li>';
-//         if( TYPE_CG == 'cg66' ) { // FIXME
-// =======
         if( $permissions->check( 'tests', 'wizard' ) ) {
             echo '<li>'.$html->addLink(
                 'Ajouter un dossier',

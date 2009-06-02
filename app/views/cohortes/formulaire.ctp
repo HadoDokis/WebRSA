@@ -1,4 +1,4 @@
-<h1><?php echo $this->pageTitle;?></h1>
+<h1><?php echo $this->pageTitle = $pageTitle;?></h1>
 
 <?php require_once( 'filtre.ctp' );?>
 
