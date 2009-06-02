@@ -42,7 +42,6 @@
                     'recursive' => 2
                 )
             );
-
             // Assignations à la vue
             $this->set( 'foyer_id', $foyer_id );
             $this->set( 'adresses', $adresses );
@@ -78,8 +77,9 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $id ), 'error404' );
 
-            // Essai de sauvegarde
+       // Essai de sauvegarde
             if( !empty( $this->data ) ) {
+
                 if( $this->Adressefoyer->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'adressesfoyers', 'action' => 'index', $this->data['Adressefoyer']['foyer_id'] ) );
@@ -111,10 +111,11 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $id ), 'error404' );
 
+
             // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Adressefoyer->saveAll( $this->data ) ) {
                 $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                //$this->redirect( array( 'controller' => 'adressesfoyers', 'action' => 'index', $id ) );
+                $this->redirect( array( 'controller' => 'adressesfoyers', 'action' => 'index', $id ) );
             }
 
             // Assignation à la vue
