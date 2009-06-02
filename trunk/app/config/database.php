@@ -84,7 +84,7 @@ class DATABASE_CONFIG {
 		'host'        => 'localhost',
 		'login'       => 'webrsa',
 		'password'    => 'webrsa',
-		'database'    => 'webrsa_cg66',
+		'database'    => 'webrsa',
 		'prefix'      => ''
 	);
 

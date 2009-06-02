@@ -547,7 +547,7 @@ create table contratsinsertion (
     typocontrat_id                  INTEGER NOT NULL REFERENCES typoscontrats(id), -- Ajout du 25052009
     dd_ci                           DATE,
     df_ci                           DATE,
-    niv_etude                       VARCHAR(30),
+    --  niv_etude                       VARCHAR(30),
     diplomes                        TEXT,
     form_compl                      VARCHAR(60),
     expr_prof                       TEXT,

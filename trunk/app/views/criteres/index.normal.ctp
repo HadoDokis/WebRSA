@@ -28,7 +28,7 @@
 
     <fieldset>
         <legend>Recherche par types d'orientations</legend>
-        <?php echo $form->input( 'Typeorient.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
+	    <?php echo $form->input( 'Typeorient.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
         <legend>Recherche par Structures référentes</legend>
@@ -38,14 +38,13 @@
         <legend>Recherche par Statut</legend>
         <?php echo $form->input( 'Orientstructs.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
     </fieldset>
-  <!--  <fieldset>
+   <!-- <fieldset>
         <legend>Recherche par Contrat d'insertion</legend>
         <?php echo $form->input( 'Contratsinsertions.ddci', array( 'label' => 'Date de début du contrat ', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ) );?>
         <?php echo $form->input( 'Contratsinsertions.statut', array( 'label' => "Statut du contrat d'insertion", 'type' => 'select', 'options' => $statuts_contrat, 'empty' => true ) );?>
         <?php echo $form->input( 'Servicesinstructeurs.lib_service', array( 'label' => 'Service instructeur', 'type' => 'select', 'options' => $services_instructeur, 'empty' => true ) );?>
         <?php echo $form->input( 'Servicesinstructeurs.lib_service', array( 'label' => 'Envoyé par', 'type' => 'select', 'options' => $services_instructeur, 'empty' => true ) );?>
     </fieldset> -->
-
 
     <?php echo $form->submit( 'Rechercher' );?>
 <?php echo $form->end();?>
@@ -59,15 +58,13 @@
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <th>Nom/Prénom</th>
-                    <th>Commune</th>
-                    <th>Contrat envoyé par</th>
-                    <th>N° CAF</th>
-                    <th>Date début du contrat</th>
-                    <th>Durée</th>
-                    <th>Décision</th>
+                    <th>Numéro dossier</th>
+                    <th>Date de demande</th>
+                    <th>NIR</th>
+                    <th>Allocataire</th>
+                    <th>État du dossier</th>
                     <th class="action">Actions</th>
-                   <!-- <th class="innerTableHeader">Informations complémentaires</th> -->
+                    <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
             </thead>
             <tbody>
@@ -88,20 +85,17 @@
 
                         echo $html->tableCells(
                             array(
-                                h( $critere[0]['nom'].' '.$critere[0]['prenom'] ),
-                                h( isset( $critere[0]['nomcomnai'] ) ? $critere[0]['nomcomnai'] : null),
-                                h( isset( $critere['Contratinsertion']['statut'] ) ? $critere['Contratinsertion']['statut'] : null ),
-                                h( isset( $critere[0]['Dossiercaf']['numdemrsaprece'] ) ? $critere[0]['Dossiercaf']['numdemrsaprece'] : null),
-                                h( date_short( isset( $critere['Contratinsertion']['dd_ci'] ) ) ? date_short( $critere['Contratinsertion']['dd_ci'] ) : null ), // FIXME: 0
-                                h( isset( $critere['Contratinsertion']['decision_ci'] ) ? $critere['Contratinsertion']['decision_ci'] : null ), // FIXME: 0
-//                                 implode(
-//                                     ' ',
-//                                     array(
-//                                         $critere[0]['qual'],
-//                                         $critere[0]['nom'],
-//                                         implode( ' ', array( $critere[0]['prenom'], $critere[0]['prenom2'], $critere[0]['prenom3'] ) )
-//                                     )
-//                                 ),
+                                h($critere['Dossier']['Dossier']['numdemrsa']),
+                                h($critere['Dossier']['Dossier']['dtdemrsa']),
+                                h( $critere[0]['nir'] ), // FIXME: 0
+                                implode(
+                                    ' ',
+                                    array(
+                                        $critere[0]['qual'],
+                                        $critere[0]['nom'],
+                                        implode( ' ', array( $critere[0]['prenom'], $critere[0]['prenom2'], $critere[0]['prenom3'] ) )
+                                    )
+                                ),
                                 h(' '),
                                 $html->viewLink(
                                     'Voir le dossier « '.$critere['Dossier']['Dossier']['numdemrsa'].' »',

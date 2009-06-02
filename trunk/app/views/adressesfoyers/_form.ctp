@@ -1,4 +1,4 @@
-        <?php echo $form->input( 'Adresse.numvoie', array( 'label' =>   required(__( 'numvoie', true ) ) ) );?>
+        <?php echo $form->input( 'Adresse.numvoie', array( 'label' =>   __( 'numvoie', true ) ) );?>
         <?php echo $form->input( 'Adresse.typevoie', array( 'label' =>  required( __( 'typevoie', true ) ) ) );?>
         <?php echo $form->input( 'Adresse.nomvoie', array( 'label' =>  required( __( 'nomvoie', true ) ) ) );?>
         <?php echo $form->input( 'Adresse.complideadr', array( 'label' =>  __( 'complideadr', true ) ) );?>

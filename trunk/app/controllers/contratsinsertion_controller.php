@@ -79,6 +79,9 @@
                 $this->cakeError( 'error404' );
             }
 
+            // Calcul du numéro du contrat d'insertion
+            //$nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
+
             $sr = $this->Structurereferente->find(
                 'list',
                 array(
@@ -102,12 +105,11 @@
             );
             $this->set( 'tc', $tc );
 
-
             // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Contratinsertion->saveAll( $this->data ) ) {
-
+               // $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
                 $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
+//                 $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
             }
             else{
                 $dspp = $this->Dspp->find(

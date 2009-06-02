@@ -2,12 +2,16 @@
         document.observe("dom:loaded", function() {
             observeDisableFieldsOnCheckbox( 'DsppDrorsarmiant', [ 'DsppDrorsarmianta2' ], false );
             observeDisableFieldsOnCheckbox( 'DifsocDifsoc7', [ 'DsppLibautrdifsoc' ], false );
-            observeDisableFieldsOnCheckbox( 'NataccosocindiNataccosocindi5', [ 'DsppLibautraccosocindi' ], false );
+            observeDisableFieldsOnCheckbox( 'NataccosocindiNataccosocindi6', [ 'DsppLibautraccosocindi' ], false );
             observeDisableFieldsOnCheckbox( 'DsppElopersdifdisp', [ 'DsppObstemploidifdisp' ], false );
-            observeDisableFieldsOnCheckbox( 'AccoemploiAccoemploi1', [ 'DsppLibcooraccoemploi', 'AccoemploiAccoemploi2', 'AccoemploiAccoemploi3' ], true );
+            observeDisableFieldsOnCheckbox( 'AccoemploiAccoemploi1', [ 'DsppLibcooraccoemploi', 'AccoemploiAccoemploi2', 'AccoemploiAccoemploi3', 'DsppLibcooraccoemploi' ], true );
 
-            observeDisableFieldsOnValue( 'AccoemploiAccoemploi1', [ 'DsppLibcooraccoemploi'], '1801', true );
+            //observeDisableFieldsOnValue( 'AccoemploiAccoemploi1', [ 'DsppLibcooraccoemploi', ], '1801', true );
             observeDisableFieldsOnValue( 'DsppHispro', [ 'DsppLibderact', 'DsppLibsecactderact', 'DsppDfderactDay', 'DsppDfderactMonth', 'DsppDfderactYear', 'DsppDomideract', 'DsppLibactdomi', 'DsppLibsecactdomi', 'DsppDuractdomi', 'DsppLibemploirech', 'DsppLibsecactrech' ], '1904', true );
+            observeDisableFieldsOnCheckbox( 'DifsocDifsoc1', [ 'DifsocDifsoc2', 'DifsocDifsoc3', 'DifsocDifsoc4', 'DifsocDifsoc5', 'DifsocDifsoc6', 'DifsocDifsoc7' ], true );
+
+            observeDisableFieldsOnCheckbox( 'NataccosocindiNataccosocindi1', [ 'NataccosocindiNataccosocindi2', 'NataccosocindiNataccosocindi3', 'NataccosocindiNataccosocindi4', 'NataccosocindiNataccosocindi5', 'NataccosocindiNataccosocindi6' ], true );
+
         });
     </script>
 
@@ -22,7 +26,7 @@
                 <?php echo $form->input( 'Dspp.elopersdifdisp', array( 'label' => __( 'elopersdifdisp', true ), 'type' => 'checkbox' ) );?>
                 <?php echo $form->input( 'Dspp.obstemploidifdisp', array( 'label' => __( 'obstemploidifdisp', true ), 'type' => 'checkbox' ) );?>
                 <?php echo $form->input( 'Dspp.soutdemarsoc', array( 'label' => __( 'soutdemarsoc', true ), 'type' => 'checkbox' ) );?>
-                <?php echo $form->input( 'Dspp.libcooraccosocindi', array( 'label' => required( __( 'libcooraccosocindi', true ) ), 'type' => 'textarea', 'rows' =>3 ) );?>
+                <?php echo $form->input( 'Dspp.libcooraccosocindi', array( 'label' => __( 'libcooraccosocindi', true ), 'type' => 'textarea', 'rows' =>3 ) );?>
     </fieldset>
 
 
@@ -59,11 +63,11 @@
                 <?php echo $form->input( 'Dspp.hispro', array( 'label' => required( __( 'hispro', true ) ), 'type' => 'select', 'options' => $hispro, 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.libderact', array( 'label' => __( 'libderact', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactderact', array( 'label' => __( 'libsecactderact', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Dspp.dfderact', array( 'label' => required( __( 'dfderact', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true ) );?>
+                <?php echo $form->input( 'Dspp.dfderact', array( 'label' => __( 'dfderact', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.domideract', array( 'label' => __( 'domideract', true ), 'type' => 'checkbox' ) );?>
                 <?php echo $form->input( 'Dspp.libactdomi', array( 'label' => __( 'libactdomi', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactdomi', array( 'label' => __( 'libsecactdomi', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Dspp.duractdomi', array( 'label' => required( __( 'duractdomi', true ) ), 'type' => 'select', 'options' => $duractdomi, 'empty' => true ) );?>
+                <?php echo $form->input( 'Dspp.duractdomi', array( 'label' =>  __( 'duractdomi', true ), 'type' => 'select', 'options' => $duractdomi, 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.libemploirech', array( 'label' => __( 'libemploirech', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactrech', array( 'label' => __( 'libsecactrech', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.creareprisentrrech', array( 'label' => __( 'creareprisentrrech', true ), 'type' => 'checkbox' ) );?>
