@@ -32,7 +32,7 @@
 
         function choixStructure( $field = array(), $compare_field = null ) {
             foreach( $field as $key => $value ) {
-                if( ( $this->data[$this->name][ $compare_field ] != 'En attente' ) && empty( $value ) ) {
+                if( !empty( $this->data[$this->name][$compare_field] ) && ( $this->data[$this->name][$compare_field] != 'En attente' ) && empty( $value ) ) {
                     return false;
                 }
             }

@@ -25,23 +25,7 @@
     ?>
 </ul>
 <?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
-<!--  
-    <script type="text/javascript">
-        document.observe("dom:loaded", function() {
-            observeDisableFieldsetOnCheckbox( 'DossierDtdemrsa', $( 'DossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
-        });
-    </script>
 
-    <fieldset>
-        <legend>Recherche par dossier</legend>
-        <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => 'Filtrer par date de demande', 'type' => 'checkbox' ) );?>
-        <fieldset>
-            <legend>Date de demande RSA</legend>
-            <?php echo $form->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => strtotime( '-1 week' ) ) );?>
-            <?php echo $form->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ) );?>
-        </fieldset>
--->
-    </fieldset>
     <fieldset>
         <legend>Recherche par types d'orientations</legend>
 	    <?php echo $form->input( 'Typeorient.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
@@ -50,28 +34,17 @@
         <legend>Recherche par Structures référentes</legend>
             <?php echo $form->input( 'Structurereferente.id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $typestruct, 'empty' => true  ) );?>
     </fieldset>
-<!--  
-    <fieldset>
-        <legend>Recherche par adresse </legend>
-            <?php echo $form->input( 'Adresse.id', array( 'label' =>  __( 'locaadr', true ), 'type' => 'select' , 'options' => $communesAlloc, 'empty' => true  ) );?>
-    </fieldset>
--->
     <fieldset>
         <legend>Recherche par Statut</legend>
         <?php echo $form->input( 'Orientstructs.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
     </fieldset>
-    
     <fieldset>
         <legend>Recherche par Contrat d'insertion</legend>
         <?php echo $form->input( 'Contratsinsertions.ddci', array( 'label' => 'Date de début du contrat ', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ) );?>
         <?php echo $form->input( 'Contratsinsertions.statut', array( 'label' => "Statut du contrat d'insertion", 'type' => 'select', 'options' => $statuts_contrat, 'empty' => true ) );?>
         <?php echo $form->input( 'Servicesinstructeurs.lib_service', array( 'label' => 'Service instructeur', 'type' => 'select', 'options' => $services_instructeur, 'empty' => true ) );?>
         <?php echo $form->input( 'Servicesinstructeurs.lib_service', array( 'label' => 'Envoyé par', 'type' => 'select', 'options' => $services_instructeur, 'empty' => true ) );?>
-
-
-
     </fieldset>
-
 
     <?php echo $form->submit( 'Rechercher' );?>
 <?php echo $form->end();?>

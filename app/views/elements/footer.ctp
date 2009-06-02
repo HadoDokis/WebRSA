@@ -2,7 +2,7 @@
     2009 Adullact.
     <?php echo sprintf( "Page construite en %s secondes.", number_format( getMicrotime() - $GLOBALS['TIME_START'] , 2, ',', ' ' ) );?>
 
-    $LastChangedDate: 2009-06-01 17:44:08 +0200 (lun, 01 jun 2009)$
+    $LastChangedDate: 2009-06-02 09:59:46 +0200 (mar, 02 jun 2009)$
 
     CakePHP v. <?php echo cake_version();?>
 </div>
