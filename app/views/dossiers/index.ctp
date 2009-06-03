@@ -75,6 +75,7 @@
                     <th>Date de demande</th>
                     <th>NIR</th>
                     <th>Allocataire</th>
+                    <th>Commune de l'Allocataire</th>
                     <th>État du dossier</th>
                     <th class="action">Actions</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
@@ -87,17 +88,16 @@
 
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
-                                <tr>
+                               <!-- <tr>
                                     <th>Commune de naissance</th>
                                     <td>'.$dossier['Foyer']['Personne'][0]['nomcomnai'].'</td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <th>Date de naissance</th>
                                     <td>'.date_short( $dossier['Foyer']['Personne'][0]['dtnai'] ).'</td>
                                 </tr>
                             </tbody>
                         </table>';
-
                         echo $html->tableCells(
                             array(
                                 h( $dossier['Dossier']['numdemrsa'] ),
@@ -111,6 +111,7 @@
                                         implode( ' ', array( $dossier['Foyer']['Personne'][0]['prenom'], $dossier['Foyer']['Personne'][0]['prenom2'], $dossier['Foyer']['Personne'][0]['prenom3'] ) )
                                     )
                                 ),
+                                h(Set::extract(  $dossier, 'Derniereadresse.Adresse.locaadr' ) ),
                                 h( $dossier['Situationdossierrsa']['etatdosrsa'] ),
 
                                 $html->viewLink(

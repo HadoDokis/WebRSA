@@ -93,10 +93,28 @@
                 $this->Dossier->recursive = 2;
                 $dossiers = $this->paginate( 'Dossier', array( $filters ) );
 
+                foreach( $dossiers as $key => $dossier ) {
+                    $derniereadresse = array();
+                    foreach( $dossier['Foyer']['Adressefoyer'] as $adressefoyer ) {
+                        if( $adressefoyer['rgadr'] == '01' ) {
+                            $adresse = $this->Adresse->find(
+                                'first',
+                                array(
+                                    'conditions' => array(
+                                        'Adresse.id' => $adressefoyer['adresse_id']
+                                    ),
+                                    'recursive' => -1
+                                )
+                            );
+                            $derniereadresse['Adressefoyer'] = $adressefoyer;
+                            $derniereadresse['Adresse'] = $adresse['Adresse'];
+                        }
+                    }
+                    $dossiers[$key]['Derniereadresse'] = $derniereadresse;
+                }
+
                 $this->set( 'dossiers', $dossiers );
                 $this->data['Search'] = $params;
-
-
             }
         }
 

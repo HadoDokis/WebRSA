@@ -52,6 +52,14 @@
                                     <th>Canton</th>
                                     <td>'.h( $personne['Adresse']['canton'] ).'</td>
                                 </tr>
+                                <tr>
+                                    <th>Date de fin de droit</th>
+                                    <td>'.h( $personne['Situationdossierrsa']['dtclorsa'] ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Motif de fin de droit</th>
+                                    <td>'.h( $personne['Situationdossierrsa']['moticlorsa'] ).'</td>
+                                </tr>
                             </tbody>
                         </table>';
 

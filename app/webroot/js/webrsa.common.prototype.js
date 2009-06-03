@@ -308,3 +308,4 @@ function observeDisableFieldsetOnCheckbox( cbId, fieldsetId, condition ) {
 }
 
 //*****************************************************************************
+

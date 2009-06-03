@@ -2,14 +2,13 @@
 <fieldset>
     <legend>Contrats d'insertion</legend>
         <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => __( 'lib_typo', true ), 'type' => 'select' , 'options' => $tc, 'empty' => true ) );?>
+        <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => __( 'lib_typo', true ), 'type' => 'text', 'value' => 'Renouvellement' ) );?>
         <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __( 'lib_struc', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );?>
         <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __( 'dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );?>
         <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ) ;?>
 </fieldset>
-
 <fieldset>
     <legend> FORMATION ET EXPERIENCE </legend>
-
         <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
         <?php echo $form->input( 'Contratinsertion.diplomes', array( 'label' => __( 'diplomes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __( 'expr_prof', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
