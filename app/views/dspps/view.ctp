@@ -208,7 +208,7 @@
             </tr>
             <tr class="odd">
                 <th><?php __( 'hispro' );?></th>
-                <td><?php echo $hispro[$dspp['Dspp']['hispro']];?></td>
+                <td><?php echo isset( $hispro[$dspp['Dspp']['hispro']] ) ? $hispro[$dspp['Dspp']['hispro']] : null ;?></td>
             </tr>
             <tr class="even">
                 <th><?php __( 'libderact' );?></th>
