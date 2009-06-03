@@ -54,65 +54,20 @@
 
 
         var $validate = array(
-            'libautrdifsoc' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'elopersdifdisp' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'obstemploidifdisp' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'soutdemarsoc' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'libautraccosocindi' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-            ),
-//             'accoemploi' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 ),
-//             ),
-            'hispro' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-            ),
-//             'libcooraccosocindi' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 ),
-//             ),
-            'duractdomi' => array(
-//                 'notEmpty' => array(
-                    'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 ),
-            ),
             'dfderact' => array(
-//                 'notEmpty' => array(
-                    'rule' => 'date',
-                    'message' => 'Veuillez entrer une date valide'
-//                 ),
+                'notEmpty' => array(
+                    'rule'          => 'date',
+                    'message'       => 'Veuillez entrer une date valide',
+                    'allowEmpty'    => true
+                )
             ),
             'annderdipobt' => array(
                 'notEmpty' => array(
-                    'rule' => 'date',
-                    'message' => 'Veuillez entrer une date valide'
-                ),
+                    'rule'          => 'date',
+                    'message'       => 'Veuillez entrer une date valide',
+                    'allowEmpty'    => true
+                )
             )
-
         );
     }
 ?>

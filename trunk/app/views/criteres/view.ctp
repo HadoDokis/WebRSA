@@ -117,7 +117,7 @@
                                 h( $critere[0]['nom'].' '.$critere[0]['prenom'] ),
                                 h( isset( $critere['Dossier']['Foyer']['id'] ) ? $critere['Dossier']['Foyer']['id'] : null),
                                 h( isset( $critere['Contratinsertion']['statut'] ) ? $critere['Contratinsertion']['statut'] : null ),
-                                h( isset( $critere[0]['Dossiercaf']['numdemrsaprece'] ) ? $critere[0]['Dossiercaf']['numdemrsaprece'] : null),
+                                h( isset( $critere['Dossier']['Dossier']['matricule'] ) ? $critere['Dossier']['Dossier']['matricule'] : null),
                                 h( date_short( isset( $critere['Contratinsertion']['dd_ci'] ) ) ? date_short( $critere['Contratinsertion']['dd_ci'] ) : null ), // FIXME: 0
                                 h( isset( $critere['Contratinsertion']['decision_ci'] ) ? $critere['Contratinsertion']['decision_ci'] : null ), // FIXME: 0
 //                                 implode(

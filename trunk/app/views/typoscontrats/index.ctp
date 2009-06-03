@@ -16,7 +16,8 @@
         <table>
         <thead>
             <tr>
-                 <th>Libellé du type de contrat d'insertion</th>
+                <th>Libellé du type de contrat d'insertion</th>
+                <th>Rang du contrat d'insertion</th>
                 <th colspan="1" class="action">Actions</th>
             </tr>
         </thead>
@@ -25,6 +26,7 @@
                 <?php echo $html->tableCells(
                             array(
                                 h( $typocontrat['Typocontrat']['lib_typo'] ),
+                                h( $typocontrat['Typocontrat']['rang'] ),
                                 $html->editLink(
                                     'Éditer le contrat d\'insertion ',
                                     array( 'controller' => 'typoscontrats', 'action' => 'edit', $typocontrat['Typocontrat']['id'] )

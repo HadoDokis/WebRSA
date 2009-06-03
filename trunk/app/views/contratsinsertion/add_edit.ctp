@@ -32,6 +32,10 @@
             echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden' ) );
 
             echo $form->input( 'Contratinsertion.rg_ci', array( 'type' => 'hidden'/*, 'value' => '' */) );
+
+            /*********************************************************/
+
+            /************************************************************/
             echo '</div>';
         }
         else {

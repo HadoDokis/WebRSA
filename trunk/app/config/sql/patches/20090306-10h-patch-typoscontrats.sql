@@ -1,0 +1,2 @@
+CREATE TYPE RANG_TYPECONTRAT AS ENUM( 'premier', 'autre' );
+ALTER TABLE typoscontrats ADD COLUMN rang RANG_TYPECONTRAT DEFAULT 'autre';
