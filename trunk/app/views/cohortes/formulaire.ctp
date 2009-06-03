@@ -13,6 +13,7 @@
                         <th>Commune</th>
                         <th>Date demande</th>
                         <th>Date ouverture de droit</th>
+                        <!-- <th>Date fin de droit</th> -->
                         <th>Nom prenom</th>
                         <th>Service instructeur</th>
                         <th>PréOrientation</th>
@@ -20,7 +21,7 @@
                         <th class="action">Structure</th>
                         <th class="action">Décision</th>
                         <th>Statut</th>
-                        <th class="innerTableHeader">Informations complémentaires</th>
+                         <th class="innerTableHeader">Informations complémentaires</th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -52,6 +53,14 @@
                                         <th>Canton</th>
                                         <td>'.h( $personne['Adresse']['canton'] ).'</td>
                                     </tr>
+                                    <tr>
+                                        <th>Date de fin de droit</th>
+                                        <td>'.h( $personne['Situationdossierrsa']['dtclorsa'] ).'</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Motif de fin de droit</th>
+                                        <td>'.h( $personne['Situationdossierrsa']['moticlorsa'] ).'</td>
+                                    </tr>
                                 </tbody>
                             </table>';
 
@@ -62,6 +71,7 @@
                                     h( $personne['Adresse']['locaadr'] ),
                                     h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
                                     h( date_short( $personne['Dossier']['dtdemrsa'] ) ), // FIXME: voir flux instruction
+//                                     h( date_short( $personne['Dossier']['Situationdossierrsa']['dtclorsa'] ) ),
                                     h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
                                     h(
                                         implode(
@@ -79,7 +89,7 @@
                                         $form->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['id'] ) ),
                                     $form->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient, 'value' => $personne['Orientstruct']['propo_algo'] ) ),
                                     $form->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structuresReferentes, 'empty' => true ) ),
-                                    $form->input( 'Orientstruct.'.$index.'.statut_orient', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => array( 'Orienté' => 'Valider', 'En attente' => 'En attente' ), 'value' => ( !empty( $statut_orient ) ? $statut_orient : 'Orienté' ) ) ),
+                                    $form->input( 'Orientstruct.'.$index.'.statut_orient', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => array( 'Orienté' => 'A valider', 'En attente' => 'En attente' ), 'value' => ( !empty( $statut_orient ) ? $statut_orient : 'Orienté' ) ) ),
                                     h( $personne['Dossier']['statut'] ),
                                     $innerTable
                                 ),

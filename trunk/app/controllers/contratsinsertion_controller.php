@@ -101,7 +101,6 @@
                         'Typocontrat.lib_typo'
                     ),
                     'order'  => array( 'Typocontrat.id ASC' )
-
                 )
             );
             $this->set( 'tc', $tc );
@@ -109,6 +108,8 @@
         // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Contratinsertion->saveAll( $this->data ) ) {
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
+
+
                 $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                 $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
             }
