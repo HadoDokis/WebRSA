@@ -4,7 +4,7 @@
 
 <div class="with_treemenu">
     <h1>Dossier RSA <?php echo h( $dossier['Dossier']['numdemrsa'] );?></h1>
-
+<!-- <?php debug( $dossier );?> -->
 <div id="resumeDossier">
     <table>
         <tbody>
@@ -46,6 +46,10 @@
                                 <th><?php __( 'numtel' );?></th>
                                 <td><?php echo isset( $dossier['ModeContact']['numtel'] ) ? $dossier['ModeContact']['numtel'] : null;?></td>
                             </tr>
+                            <tr class="odd">
+                                <th><?php __( 'locaadr' );?></th>
+                                <td><?php echo ( isset( $dossier['Adresse']['locaadr'] ) ? $dossier['Adresse']['locaadr'] : null );?></td>
+                            </tr>
                         </tbody>
                     </table>
                 </td>
@@ -58,7 +62,7 @@
                                 <td><?php echo h( isset( $dossier['Personne']['Structurereferente']['Typeorient']['lib_type_orient'] ) ? $dossier['Personne']['Structurereferente']['Typeorient']['lib_type_orient'] : null );?></td>
                             </tr>
                             <tr class="even">
-                                <th>Type de structure</th>
+                                <th>Structure référente<!--Type de structure--></th>
                                 <td><?php echo h( isset( $dossier['Personne']['Structurereferente']['lib_struc'] ) ? $dossier['Personne']['Structurereferente']['lib_struc'] : null);?></td>
                             </tr>
                             <tr class="odd">
@@ -69,6 +73,10 @@
                                 <th>Statut de l'orientation</th>
                                 <td><?php echo h( isset( $dossier['Personne']['Orientstruct']['statut_orient'] ) ? $dossier['Personne']['Orientstruct']['statut_orient'] : null);?></td>
                             </tr>
+                            <tr class="odd">
+                                <th>Référent en cours</th>
+                                <td><?php echo h( isset( $dossier['Personne']['Structurereferente']['lib_struc'] ) ? $dossier['Personne']['Structurereferente']['lib_struc'] : null);?></td>
+                            </tr>
                         </tbody>
                     </table>
                 </td>
@@ -78,9 +86,13 @@
                     <h2>Informations CAF</h2>
                     <table >
                         <tbody>
+                            <tr class="odd">
+                                <th>Date d'ouverture des droits</th>
+                                <td><?php echo h( date_short( $dossier['Dossier']['dtdemrsa'] ) );?></td>
+                            </tr>
                             <tr class="even">
-                                <th>Date de demande RSA</th>
-                                <td><?php echo h( date_short( isset( $dossier['Dossier']['dtdemrsa'] ) ? $dossier['Dossier']['dtdemrsa'] : null ) );?></td>
+                                <th>Date de fin de droits</th>
+                                <td><?php echo h( date_short( $dossier['Situationdossierrsa']['dtclorsa'] ) );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Numéro de demande RSA</th>
@@ -88,7 +100,7 @@
                             </tr>
                             <tr class="even">
                                 <th>DSP</th>
-                                <td><?php echo h( isset( $dossier['Dossier'] ) ? 'Oui' : 'Non');?></td>
+                                <td><?php echo h( isset( $dossier['Dspp']['id'] ) ? 'Oui' : 'Non');?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Montant RSA</th>
@@ -112,6 +124,14 @@
                             </tr>
                             <tr class="even">
                                 <th>Motif</th>
+                                <td><?php echo h( isset( $dossier['Creance']['motiindu'] ) ? $dossier['Creance']['motiindu'] : null );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Début du traitement CAF</th>
+                                <td><?php echo h(  date_short( isset( $dossier['Dossiercaf']['ddratdos'] ) ) ? date_short( $dossier['Dossiercaf']['ddratdos'] ) : null  );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Fin du traitement CAF</th>
                                 <td><?php echo h( isset( $dossier['Creance']['motiindu'] ) ? $dossier['Creance']['motiindu'] : null );?></td>
                             </tr>
                         </tbody>

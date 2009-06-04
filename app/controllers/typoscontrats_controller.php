@@ -27,7 +27,6 @@
                 }
             }
 
-            $this->set( 'rangs', array( 'premier' => 'Premier' ,'autre' => 'Autre' ) );
             $this->render( $this->action, null, 'add_edit' );
         }
 
@@ -57,7 +56,6 @@
                 debug( $this->data );
             }
 
-            $this->set( 'rangs', array( 'premier' => 'Premier' ,'autre' => 'Autre' ) );
             $this->render( $this->action, null, 'add_edit' );
         }
 

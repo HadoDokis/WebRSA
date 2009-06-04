@@ -3,7 +3,7 @@
     {
 
         var $name = 'Contratsinsertion';
-        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient');
+        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct' );
 
 
         function beforeFilter() {
@@ -105,11 +105,36 @@
             );
             $this->set( 'tc', $tc );
 
+
+
+            $personne = $this->Personne->find( 
+                'first', 
+                array( 
+                    'conditions'=> array( 
+                        'Personne.id' => $personne_id 
+                    ),
+                    'recursive' => 2
+                )
+            );
+
+//             debug( $personne );
+            $this->set(
+                'foyer_id',
+                $personne['Personne']['foyer_id']
+            );
+
+
+            $conditions = array( 'Personne.id' => $personne_id );
+            $personne = $this->Personne->find( 'first', array( 'conditions' => $conditions ) );
+
+            // Assignation à la vue
+            $this->set( 'personne', $personne );
+            $this->set( 'personne_id', $personne_id );
+
+
         // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Contratinsertion->saveAll( $this->data ) ) {
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
-
-
                 $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                 $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
             }
@@ -122,24 +147,8 @@
                         )
                     )
                 );
-
             }
 
-
-            $personne = $this->Personne->find( 'first', array( 'conditions'=> array( 'Personne.id' => $personne_id ) ));
-            $this->set(
-                'foyer_id',
-                $personne['Personne']['foyer_id']
-            );
-
-
-            $conditions = array( 'Personne.id' => $personne_id );
-            $personne = $this->Personne->find( 'first', array( 'conditions' => $conditions ) );
-
-            // Assignation à la vue
-            $this->set( 'personne', $personne );
-           // $this->data = array_merge( $this->data, $personne );
-            $this->set( 'personne_id', $personne_id );
 
             $this->render( $this->action, null, 'add_edit' );
         }
@@ -181,16 +190,14 @@
             )
             );
 
-            if (empty($contratinsertion)){
+            if ( empty( $contratinsertion )){
                 $this->cakeError( 'error404' );
             }
 
               $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
 
             if( !empty( $this->data ) ) {
-
                 if( $this->Contratinsertion->saveAll( $this->data ) ) {
-
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']) );
                 }
