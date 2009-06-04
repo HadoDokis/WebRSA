@@ -50,6 +50,10 @@
                                 <th><?php __( 'locaadr' );?></th>
                                 <td><?php echo ( isset( $dossier['Adresse']['locaadr'] ) ? $dossier['Adresse']['locaadr'] : null );?></td>
                             </tr>
+                            <tr class="even">
+                                <th>Soumis à droits et devoirs</th>
+                                <td><?php echo h( $dossier['Personne']['toppersdrodevorsa'] ? 'Oui' : 'Non' );?></td>
+                            </tr>
                         </tbody>
                     </table>
                 </td>
@@ -86,6 +90,10 @@
                     <h2>Informations CAF</h2>
                     <table >
                         <tbody>
+                            <tr class="even">
+                                <th>Numéro CAF</th>
+                                <td><?php echo h( $dossier['Dossier']['matricule'] );?></td>
+                            </tr>
                             <tr class="odd">
                                 <th>Date d'ouverture des droits</th>
                                 <td><?php echo h( date_short( $dossier['Dossier']['dtdemrsa'] ) );?></td>
@@ -115,22 +123,18 @@
                                 <td><?php echo h( isset( $natpf[$dossier['Detaildroitrsa']['Detailcalculdroitrsa']['natpf']] ) ? $natpf[$dossier['Detaildroitrsa']['Detailcalculdroitrsa']['natpf']] : null );?></td>
                             </tr>
                             <tr class="even">
-                                <th>Soumis à droit et devoir</th>
-                                <td><?php echo h( $dossier['Personne']['toppersdrodevorsa'] ? 'Oui' : 'Non' );?></td>
-                            </tr>
-                            <tr class="odd">
                                 <th>Montant INDUS</th>
                                 <td><?php echo h( isset( $dossier['Infofinanciere']['mtmoucompta'] ) ? $dossier['Infofinanciere']['mtmoucompta'] : null  );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Motif</th>
                                 <td><?php echo h( isset( $dossier['Creance']['motiindu'] ) ? $dossier['Creance']['motiindu'] : null );?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Début du traitement CAF</th>
                                 <td><?php echo h(  date_short( isset( $dossier['Dossiercaf']['ddratdos'] ) ) ? date_short( $dossier['Dossiercaf']['ddratdos'] ) : null  );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Fin du traitement CAF</th>
                                 <td><?php echo h( isset( $dossier['Creance']['motiindu'] ) ? $dossier['Creance']['motiindu'] : null );?></td>
                             </tr>
@@ -141,23 +145,23 @@
                     <h2>Contrat d'insertion</h2>
                     <table>
                         <tbody>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Type de contrat</th>
                                 <td><?php echo h( isset( $tc[$dossier['Personne']['Contratinsertion']['typocontrat_id']] ) ? $tc[$dossier['Personne']['Contratinsertion']['typocontrat_id']] : null );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Date de début</th>
                                 <td><?php echo h( date_short( isset( $dossier['Personne']['Contratinsertion']['dd_ci'] ) ) ? date_short( $dossier['Personne']['Contratinsertion']['dd_ci'] ) : null );?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Date de fin</th>
                                 <td><?php echo h( date_short( isset( $dossier['Personne']['Contratinsertion']['df_ci'] ) ) ? date_short( $dossier['Personne']['Contratinsertion']['df_ci'] ) : null );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Décision</th>
                                 <td><?php echo h( isset( $decision_ci[$dossier['Personne']['Contratinsertion']['decision_ci']] ) ? $decision_ci[$dossier['Personne']['Contratinsertion']['decision_ci']]  : null ) ;?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Date de décision</th>
                                 <td><?php echo h( date_short( isset( $dossier['Personne']['Contratinsertion']['datevalidation_ci'] ) ) ? date_short( $dossier['Personne']['Contratinsertion']['datevalidation_ci'] ) : null );?></td>
                             </tr>

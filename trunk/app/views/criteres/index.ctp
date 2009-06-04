@@ -91,7 +91,7 @@
                                 h( $critere[0]['nom'].' '.$critere[0]['prenom'] ),
                                 h( isset( $critere[0]['nomcomnai'] ) ? $critere[0]['nomcomnai'] : null),
                                 h( isset( $critere['Contratinsertion']['statut'] ) ? $critere['Contratinsertion']['statut'] : null ),
-                                h( isset( $critere[0]['Dossiercaf']['numdemrsaprece'] ) ? $critere[0]['Dossiercaf']['numdemrsaprece'] : null),
+                                h( isset( $critere['Dossier']['Dossier']['matricule'] ) ? $critere['Dossier']['Dossier']['matricule'] : null), //FIXME : N° CAF identique pr demandeur et conjoint !!!
                                 h( date_short( isset( $critere['Contratinsertion']['dd_ci'] ) ) ? date_short( $critere['Contratinsertion']['dd_ci'] ) : null ), // FIXME: 0
                                 h( isset( $critere['Contratinsertion']['decision_ci'] ) ? $critere['Contratinsertion']['decision_ci'] : null ), // FIXME: 0
 //                                 implode(

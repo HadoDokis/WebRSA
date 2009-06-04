@@ -181,6 +181,56 @@
             );
         }
 
+        function duree_cdd(){
+            return array(
+                'DT1' => 'Temps plein',
+                'DT2' => 'Temps partiel',
+                'DT3' => 'Mi-temps'
+            );
+        }
+
+        function duree_hebdo_emp(){
+            return array(
+                'DHT1' => 'Moins de 35h',
+                'DHT2' => '35h',
+                'DHT3' => 'Entre 35h et 48h'
+            );
+        }
+
+        function emp_occupe(){
+            return array(
+                '10' => 'Agriculteurs (salariés de leur exploitation)',
+                '21' => 'Artisans (salariés de leur entreprise)',
+                '22' => 'Commerçants et assimilés (salariés de leur entreprise)',
+                '23' => 'Chefs d\'entreprise de 10 salariés ou plus (salariés de leur entreprise)',
+                '31' => 'Professions libérales (exercées sous statut de salarié)',
+                '33' => 'Cadres de la fonction publique',
+                '34' => 'Professeurs, professions scientifiques',
+                '35' => 'Professions de l\'information, des arts et des spectacles',
+                '37' => 'Cadres administratifs et commerciaux d\'entreprises',
+                '38' => 'Ingénieurs et cadres techniques d\'entreprises',
+                '42' => 'Professeurs des écoles, instituteurs et professions assimilées',
+                '43' => 'Professions intermédiaires de la santé et du travail social',
+                '44' => 'Clergé, religieux',
+                '45' => 'Professions intermédiaires administratives de la fonction publique',
+                '46' => 'Professions intermédiaires administratives et commerciales des entreprises',
+                '47' => 'Techniciens (sauf techniciens tertiaires)',
+                '48' => 'Contremaîtres, agents de maîtrise (maîtrise administrative exclue)',
+                '52' => 'Employés civils et agents de service de la fonction publique',
+                '53' => 'Agents de surveillance',
+                '54' => 'Employés administratifs d\'entreprise',
+                '55' => 'Employés de commerce',
+                '56' => 'Personnels des services directs aux particuliers',
+                '62' => 'Ouvriers qualifiés de type industriel',
+                '63' => 'Ouvriers qualifiés de type artisanal',
+                '64' => 'Chauffeurs',
+                '65' => 'Ouvriers qualifiés de la manutention, du magasinage et du transport',
+                '67' => 'Ouvriers non qualifiés de type industriel',
+                '68' => 'Ouvriers non qualifiés de type artisanal',
+                '69' => 'Ouvriers agricoles et assimilés'
+            );
+        }
+
         function etatdosrsa() {
             return array(
                 '0' => 'Nouvelle demande en attente de décision CG pour ouverture du droit',
@@ -304,6 +354,19 @@
             );
         }
 
+        function nat_cont_trav(){
+            return array(
+                'TCT1' => 'Travailleur indépendant',
+                'TCT2' => 'CDI',
+                'TCT3' => 'CDD',
+                'TCT4' => 'Contrat de travail temporaire (Intérim)',
+                'TCT5' => 'Contrat de professionnalisation',
+                'TCT6' => 'Contrat d\'apprentissage',
+                'TCT7' => 'Contrat Initiative Emploi (CIE)',
+                'TCT8' => 'Contrat d\'Accompagnement dans l\'Emploi (CAE)',
+                'TCT9' => 'Chèque Emploi Service Universel (CESU)'
+            );
+        }
 /*
         function motisusdrorsa*/
         function nationalite() {
@@ -686,6 +749,32 @@
             );
         }
 
+        function sect_acti_emp() {
+            return array(
+                'A' => 'Agriculture, sylviculture et pêche',
+                'B' => 'Industries extractives',
+                'C' => 'Industrie manufacturière',
+                'D' => 'Production et distribution d\'électricité, de gaz, de vapeur et d\'air conditionné',
+                'E' => 'Production et distribution d\'eau ; assainissement, gestion des déchets et dépollution',
+                'F' => 'Construction',
+                'G' => 'Commerce ; réparation d\'automobiles et de motocycles',
+                'H' => 'Transports et entreposage',
+                'I' => 'Hébergement et restauration',
+                'J' => 'Information et communication',
+                'K' => 'Activités financières et d\'assurance',
+                'L' => 'Activités immobilières',
+                'M' => 'Activités spécialisées, scientifiques et techniques',
+                'N' => 'Activités de services administratifs et de soutien',
+                'O' => 'Administration publique',
+                'P' => 'Enseignement',
+                'Q' => 'Santé humaine et action sociale',
+                'R' => 'Arts, spectacles et activités récréatives',
+                'S' => 'Autres activités de services',
+                'T' => 'Activités des ménages en tant qu\'employeurs ; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre',
+                'U' => 'Activités extra-territoriales'
+            );
+        }
+
         function sensopecompta() {
             return array(
                 'AJ' => 'Ajout du montant dans l\'acompte',
@@ -848,6 +937,16 @@
             );
         }
 
+	/*function typecontrat() {
+	    return array(
+		'1' => 'Contrat à durée déterminée (CDD)',
+		'2' => 'Contrat à durée indéterminée (CDI)', 
+		'3' => 'Contrat temporaire ou d\'intérim',
+		'4' => 'Contrat à temps partiel',
+		'5' => 'Contrats jeunes (contrat d\'apprentissage, contrat de professionnalisation)',
+		'6' => 'Contrat initiative emploi (CIE)'
+	    );
+	}*/
 
         function typedtnai() {
             return array(
