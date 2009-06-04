@@ -4,7 +4,7 @@
 
 <?php if( !empty( $this->data ) ):?>
     <?php if( empty( $cohorte ) ):?>
-        <p class="notice">Aucune demande dans la cohorte.</p>
+        <p class="notice">Tous les allocataires ont été orientés.</p>
     <?php else:?>
         <table class="tooltips_oupas">
             <thead>

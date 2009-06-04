@@ -3,7 +3,12 @@
     {
 
         var $name = 'Servicesinstructeurs';
-        var $uses = array( 'Serviceinstructeur' );
+        var $uses = array( 'Serviceinstructeur', 'Option' );
+
+         function beforeFilter() {
+            parent::beforeFilter();
+                $this->set( 'typeserins', $this->Option->typeserins() );
+        }
 
         function index() {
 
@@ -14,7 +19,6 @@
                 )
 
             );
-
             $this->set('servicesinstructeurs', $servicesinstructeurs);
         }
 
@@ -35,7 +39,7 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $serviceinstructeur_id ), 'error404' );
 
-   
+
             if( !empty( $this->data ) ) {
                 if( $this->Serviceinstructeur->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );

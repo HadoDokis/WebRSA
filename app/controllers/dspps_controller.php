@@ -3,7 +3,7 @@
     {
 
         var $name = 'Dspps';
-        var $uses = array( 'Dspp', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Nivetu', 'Accoemploi', 'Personne', 'Option');
+        var $uses = array( 'Dspp', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Nivetu', 'Accoemploi', 'Personne', 'Option', 'Serviceinstructeur');
 
 
         function beforeFilter() {
@@ -11,7 +11,6 @@
             //$this->set( 'accoemploi', $this->Option->accoemploi() );
             $this->set( 'hispro', $this->Option->hispro() );
             $this->set( 'duractdomi', $this->Option->duractdomi() );
-            // $this->set( 'nivetu', $this->Option->nivetu() );
             // Données socioprofessionnelles personne
             $this->set( 'difsocs', $this->Difsoc->find( 'list' ) );
             $this->set( 'nataccosocindis', $this->Nataccosocindi->find( 'list' ) );
@@ -28,6 +27,17 @@
                 $this->cakeError( 'error404' );
             }
 
+            $typeservices = $this->Serviceinstructeur->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Serviceinstructeur.lib_service'
+                    )
+                )
+            );
+            $this->set( 'typeservices', $typeservices );
+
+
             $dspp = $this->Dspp->find(
                 'first',
                 array(
@@ -40,6 +50,8 @@
             // TODO: si personne n'existe pas -> 404
             $this->set( 'dspp', $dspp );
 
+
+// debug ($dspp);
             $this->set( 'personne_id', $personne_id );
         }
 
@@ -52,6 +64,16 @@
             if( !valid_int( $personne_id ) ) {
                 $this->cakeError( 'error404' );
             }
+
+            $typeservices = $this->Serviceinstructeur->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Serviceinstructeur.lib_service'
+                    )
+                )
+            );
+            $this->set( 'typeservices', $typeservices );
 
             // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Dspp->save( $this->data ) ) {
@@ -74,6 +96,17 @@
             if( !valid_int( $personne_id ) ) {
                 $this->cakeError( 'error404' );
             }
+
+
+            $typeservices = $this->Serviceinstructeur->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Serviceinstructeur.lib_service'
+                    )
+                )
+            );
+            $this->set( 'typeservices', $typeservices );
 
             // FOYER
             $personne = $this->Personne->find(

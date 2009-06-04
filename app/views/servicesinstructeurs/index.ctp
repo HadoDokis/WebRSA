@@ -20,6 +20,7 @@
         <thead>
             <tr>
                 <th>Nom du service</th>
+                <!-- <th>Type de service</th> -->
                 <th>N° de rue</th>
                 <th>Nom de rue</th>
                 <th>Complément d'adresse</th>
@@ -34,6 +35,7 @@
                 <?php echo $html->tableCells(
                             array(
                                 h( $serviceinstructeur['Serviceinstructeur']['lib_service'] ),
+                                //h( $typeserins['Suiviinstruction']['typeserins'] ),
                                 h( $serviceinstructeur['Serviceinstructeur']['num_rue'] ),
                                 h( $serviceinstructeur['Serviceinstructeur']['nom_rue'] ),
                                 h( $serviceinstructeur['Serviceinstructeur']['complement_adr'] ),
