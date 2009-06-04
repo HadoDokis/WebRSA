@@ -54,7 +54,7 @@
                                 </tr>
                                 <tr>
                                     <th>Date de fin de droit</th>
-                                    <td>'.h( $personne['Situationdossierrsa']['dtclorsa'] ).'</td>
+                                    <td>'.h( date_short( $personne['Situationdossierrsa']['dtclorsa'] ) ).'</td>
                                 </tr>
                                 <tr>
                                     <th>Motif de fin de droit</th>

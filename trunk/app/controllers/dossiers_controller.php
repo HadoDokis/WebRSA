@@ -4,7 +4,7 @@
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'ModeContact','Typocontrat', 'Creance', 'Adressefoyer' );
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'ModeContact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf' );
         var $aucunDroit = array( 'menu' );
 
         var $paginate = array(
@@ -321,8 +321,31 @@
 
             $dossier['Detaildroitrsa']['Detailcalculdroitrsa'] = $detail['Detailcalculdroitrsa']; // FIXME: vérifier avec plusieurs
 
+            //-----------------------------------------------------------------
 
+            $dsp = $this->Dspp->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dspp.personne_id' => $personne['Personne']['id'],
+                    ),
+                    'recursive' => 0
+                )
+            );
+            $dossier = Set::merge( $dossier, array( 'Dspp' => $dsp['Dspp'] ) );
 
+            //-----------------------------------------------------------------
+            $caf = $this->Dossiercaf->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossiercaf.personne_id' => $personne['Personne']['id'],
+                    ),
+                    'recursive' => 0
+                )
+            );
+            $dossier = Set::merge( $dossier, array( 'Dossiercaf' => $caf['Dossiercaf'] ) );
+// debug( $dossier );
             $this->assert( !empty( $dossier ), 'error404' );
             $this->set( 'dossier', $dossier );
 

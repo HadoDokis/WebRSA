@@ -6,7 +6,7 @@
     <h1>Ressources</h1>
 
     <?php if( empty( $ressources ) ):?>
-        <p class="notice">Cette personne ne possède pas encore de ressources.</p>
+        <p class="notice">aucune information relative aux ressources de cette personne.</p>
 
         <?php if( $permissions->check( 'ressources', 'add' ) ) :?>
             <ul class="actionMenu">

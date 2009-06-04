@@ -20,7 +20,7 @@
                 )
         );
 
-        var $hasOne = array(
+        var $hasMany = array(
             'Actioninsertion'
         );
 
