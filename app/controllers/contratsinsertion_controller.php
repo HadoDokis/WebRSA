@@ -9,6 +9,11 @@
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'decision_ci', $this->Option->decision_ci() );
+            $this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
+            $this->set( 'emp_occupe', $this->Option->emp_occupe() );
+            $this->set( 'duree_hebdo_emp', $this->Option->duree_hebdo_emp() );
+            $this->set( 'nat_cont_trav', $this->Option->nat_cont_trav() );
+            $this->set( 'duree_cdd', $this->Option->duree_cdd() );
             $this->set( 'referents', $this->Referent->find( 'list' ) );
             $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
         }
@@ -82,6 +87,9 @@
             // Calcul du numéro du contrat d'insertion
             $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
+            // Calcul de fin du contrat d'insertion = debut contrat + duree contrat
+            //$finCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
+
 
             $sr = $this->Structurereferente->find(
                 'list',
@@ -134,7 +142,10 @@
 
         // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Contratinsertion->saveAll( $this->data ) ) {
+
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
+		//$this->data['Contratinsertion']['df_ci'] = $finCi + $this->data['Contratinsertion']['df_ci'];
+//debug($this->data['Contratinsertion']['df_ci'] );
                 $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                 $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
             }
@@ -190,11 +201,25 @@
             )
             );
 
+            $personne = $this->Personne->find( 
+                'first', 
+                array( 
+                    'conditions'=> array( 
+                        'Personne.id' => $contratinsertion['Personne']['id']
+                    ),
+                    'recursive' => 2
+                )
+            );
+
+
+            // Assignation à la vue
+            $this->set( 'personne', $personne );
+
             if ( empty( $contratinsertion )){
                 $this->cakeError( 'error404' );
             }
 
-              $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
+            $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
 
             if( !empty( $this->data ) ) {
                 if( $this->Contratinsertion->saveAll( $this->data ) ) {

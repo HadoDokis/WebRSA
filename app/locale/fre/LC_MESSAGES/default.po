@@ -319,7 +319,7 @@ msgid "diplomes"
 msgstr "Diplômes (scolaires, universitaires et/ou professionnels)"
 
 msgid "expr_prof"
-msgstr "Quelles expériences professionnelles avez-vous (secteur d\'activité, emploi occupé, dates, ...) ?"
+msgstr "Quelles expériences professionnelles avez-vous ( emploi occupé, dates, ...) ?"
 
 msgid "form_compl"
 msgstr "Autres expériences, savoir, connaissances"
