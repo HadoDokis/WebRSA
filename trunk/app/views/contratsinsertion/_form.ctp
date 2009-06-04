@@ -1,3 +1,35 @@
+<script type="text/javascript">
+    function ecart_mois(date_max, date_min)
+    {
+        var explode_date_min;
+        var explode_date_max;
+        var mois_min;
+        var annee_min;
+        var mois_max;
+        var annee_max;
+        var ecart;
+
+        explode_date_min = date_min.split('/');
+        explode_date_max = date_max.split('/');
+
+        mois_min = parseInt(explode_date_min[0]);
+        annee_min = parseInt(explode_date_min[1]);
+
+        mois_max = parseInt(explode_date_max[0]);
+        annee_max = parseInt(explode_date_max[1]);
+
+        ecart = ((annee_max - annee_min)*12) - (mois_min) + (mois_max);
+
+        return ecart;
+
+
+        document.observe("dom:loaded", function() {
+            Event.observe( 'ecart', 'click', ecart() );
+        });
+    }
+</script>
+
+
 <p><i>Le présent contrat d'insertion est établi en application de l'article L262-37 du code de l'action sociale </i></p>
 <fieldset>
     <legend>Contrats d'insertion</legend>
@@ -31,7 +63,7 @@
         <?php echo $form->input( 'Contratinsertion.duree_cdd', array( 'label' => __( 'duree_cdd', true ), 'type' => 'select', 'options' => $duree_cdd, 'empty' => true )  ); ?>
 </fieldset>
 <fieldset>
-        <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => __( 'duree_engag', true ), 'size' => 3)  ); ?>
+        <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => __( 'duree_engag', true ), 'size' => 3 )  ); ?>
         <?php echo $form->input( 'Contratinsertion.nature_projet', array( 'label' => __( 'nature_projet', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
         <?php echo $form->input( 'Fait à :', array( 'label' => 'Fait à : ', 'type' => 'text')  ); ?><br />
         <?php echo $form->input( 'Le ', array( 'label' => 'Le : ', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>

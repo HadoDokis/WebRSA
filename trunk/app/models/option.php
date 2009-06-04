@@ -1008,6 +1008,14 @@
             );
         }
 
+        function typeserins() {
+            return array(
+                'A' => 'Organisme agréé',
+                'S' => 'Service social', //FIXME
+                'C' => 'Centre Communal d\'Action Social'
+            );
+        }
+
         function type_totalisation() {
             return array(
                 'TotalAllocationsComptabilisees' => 'Total des allocations comptabilisees',

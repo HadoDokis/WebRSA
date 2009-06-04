@@ -627,7 +627,7 @@ msgid "name"
 msgstr "Nom du groupe"
 
 msgid "lib_service"
-msgstr "Nom du service"
+msgstr "Nom du service instructeur"
 
 msgid "num_rue"
 msgstr "Numéro de rue"

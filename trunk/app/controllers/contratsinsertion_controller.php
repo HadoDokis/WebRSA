@@ -87,8 +87,6 @@
             // Calcul du numéro du contrat d'insertion
             $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
-            // Calcul de fin du contrat d'insertion = debut contrat + duree contrat
-            //$finCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
 
             $sr = $this->Structurereferente->find(
@@ -144,8 +142,7 @@
             if( !empty( $this->data ) && $this->Contratinsertion->saveAll( $this->data ) ) {
 
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
-		//$this->data['Contratinsertion']['df_ci'] = $finCi + $this->data['Contratinsertion']['df_ci'];
-//debug($this->data['Contratinsertion']['df_ci'] );
+
                 $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                 $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
             }

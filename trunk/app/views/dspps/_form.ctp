@@ -17,6 +17,7 @@
 
     <fieldset>
             <legend>Généralités DSPP</legend>
+                <!-- <?php /*echo $form->input( 'Serviceinstructeur.lib_service', array( 'label' => __( 'lib_service' ,true), 'type' => 'select', 'options' => $typeservices, 'empty' => true ) );*/?> -->
                 <?php echo $form->input( 'Dspp.drorsarmiant', array( 'label' => __( 'drorsarmiant', true ), 'type' => 'checkbox' ) );?>
                 <?php echo $form->input( 'Dspp.drorsarmianta2', array( 'label' => __( 'drorsarmianta2', true ), 'type' => 'checkbox' ) );?>
                 <?php echo $form->input( 'Dspp.couvsoc', array( 'label' => __( 'couvsoc', true )));?>

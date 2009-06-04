@@ -76,7 +76,7 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-		echo $html->tableCells(
+                echo $html->tableCells(
                     array(
                         h( 'Groupes d\'utilisateurs' ),
                         $html->viewLink(
@@ -87,9 +87,9 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-		echo $html->tableCells(
+                echo $html->tableCells(
                     array(
-                        h( 'Services' ),
+                        h( 'Services instructeurs' ),
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'servicesinstructeurs', 'action' => 'index' )
