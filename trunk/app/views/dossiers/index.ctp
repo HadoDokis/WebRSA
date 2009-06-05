@@ -41,6 +41,8 @@
 </script>
 <!-- FIXME le repasser en post ? -->
 <?php echo $form->create( 'Dossier', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+    <center><?php echo $form->button('Réinitialiser', array('type'=>'reset')); ?></center>
+
     <fieldset>
         <legend>Recherche par dossier</legend>
         <?php echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA' ) );?>

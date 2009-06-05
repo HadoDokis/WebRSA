@@ -68,7 +68,7 @@
                     $this->data['Orientstruct']['valid_cg'] = true;
                     $this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
                     $this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
-                    $this->data['Orientstruct']['statut_orient'] = 'Orienté';
+                    $this->data['Orientstruct']['statut_orient'] = 'En attente'; //FIXME: Voir si on le met en attente ou bien Non orienté (ici l'orientation n'est pas encore validé
                     $saved = $this->Orientstruct->save( $this->data['Orientstruct']);
 
                  if( $saved ) {
