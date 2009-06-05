@@ -43,7 +43,7 @@
 
         function beforeSave( $options = array() ) {
             $return = parent::beforeSave( $options );
-            $hasMany = ( !array_key_exists( 'personne_id', $this->data['Orientstruct'] ) ); // FIXME
+            $hasMany = ( array_depth( $this->data ) > 2 );
 
             if( !$hasMany ) { // INFO: 1 seul enregistrement
                 if( array_key_exists( 'structurereferente_id', $this->data['Orientstruct'] ) ) {
@@ -52,7 +52,7 @@
             }
             else { // INFO: plusieurs enregistrements
                 foreach( $this->data['Orientstruct'] as $key => $value ) {
-                    if( array_key_exists( 'structurereferente_id', $value ) ) {
+                    if( is_array( $value ) && array_key_exists( 'structurereferente_id', $value ) ) {
                         $this->data['Orientstruct'][$key]['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $value['structurereferente_id'] );
                     }
                 }

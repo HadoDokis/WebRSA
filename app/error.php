@@ -31,6 +31,9 @@
             if ($method !== 'error') {
                 if( Configure::read( 'debug' ) == 0 ) {
                     switch( $method ) {
+                        case 'lockedDossier':
+                            $method = 'lockedDossier';
+                        break;
                         case 'error403':
                             $method = 'error403';
                         break;
@@ -50,6 +53,24 @@
 
             $this->dispatchMethod($method, $messages);
             $this->_stop();
+        }
+
+        function lockedDossier( $params ) {
+            extract( $params, EXTR_OVERWRITE );
+
+            if (!isset($url)) {
+                $url = $this->controller->here;
+            }
+            $url = Router::normalize($url);
+            header("HTTP/1.0 401 Unauthorized");
+            $this->controller->set(array(
+                'code' => '401',
+                'name' => __('Unauthorized', true),
+                'message' => $url,
+                'base' => $this->controller->base,
+                'params' => $params
+            ));
+            $this->_outputMessage( 'locked_dossier' );
         }
 
         function error403( $params ) {

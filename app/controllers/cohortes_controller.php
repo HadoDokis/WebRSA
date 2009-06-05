@@ -20,6 +20,11 @@
 
         //*********************************************************************
 
+        function __construct() {
+            parent::__construct();
+            $this->components[] = 'Jetons';
+        }
+
         /**
         */
         function _preOrientation( $element ) {
@@ -116,20 +121,21 @@
 
                 //-------------------------------------------------------------
 
-                $mesCodesInsee = $this->Zonegeographique->find(
+                /*$mesCodesInsee = $this->Zonegeographique->find( // FIXME -> voir Auth.zonegeographique
                     'list',
                     array(
                         'fields' => array(
                             'Zonegeographique.id',
                             'Zonegeographique.codeinsee'
                         ),
-                        'conditions' => array( 'Zonegeographique.id' => $this->Session->read( 'Auth.Zonegeographique' ) )
+                        'conditions' => array( 'Zonegeographique.id' => array_keys( $this->Session->read( 'Auth.Zonegeographique' ) ) )
                     )
-                );
+                );*/
+                $mesCodesInsee = array_values( $this->Session->read( 'Auth.Zonegeographique' ) );
 
                 // --------------------------------------------------------
 
-                if( !empty( $this->data ) ) {
+                if( !empty( $this->data ) ) { // FIXME: déjà fait plus haut ?
                     if( !empty( $this->data['Orientstruct'] ) ) {
                         $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only' ) );
                         if( $valid ) {
@@ -144,6 +150,10 @@
                                 $saved = $this->Dossier->Foyer->Personne->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
                             }
                             if( $saved ) {
+                                // FIXME ?
+                                foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
+                                    $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
+                                }
                                 $this->Dossier->commit();
                             }
                             else {
@@ -152,6 +162,7 @@
                         }
                     }
 
+                    $this->Dossier->begin(); // Pour les jetons
                     // Moteur de recherche
                     $filtres = array();
                     // Critères sur le dossier - date de demande
@@ -203,6 +214,18 @@
 
                     // --------------------------------------------------------
 
+                    $lockedDossiers = $this->Jetons->ids();
+                    if( !empty( $lockedDossiers ) ) {
+                        $conditions =  array(
+                            'Foyer.dossier_rsa_id' => ( !empty( $filtres['Dossier.id'] ) ? $filtres['Dossier.id'] : null ),
+                            'NOT' => array( '"Foyer"."dossier_rsa_id"' => $lockedDossiers )
+                        );
+                    }
+                    else {
+                        $conditions =  array(
+                            'Foyer.dossier_rsa_id' => ( !empty( $filtres['Dossier.id'] ) ? $filtres['Dossier.id'] : null )
+                        );
+                    }
                     // Recherche des foyers associés à ces dossiers
                     $filtres['Foyer.id'] = $this->Foyer->find(
                         'list',
@@ -211,9 +234,7 @@
                                 'Foyer.dossier_rsa_id',
                                 'Foyer.dossier_rsa_id'
                             ),
-                            'conditions' => array(
-                                'Foyer.dossier_rsa_id' => ( !empty( $filtres['Dossier.id'] ) ? $filtres['Dossier.id'] : null )
-                            )
+                            'conditions' => $conditions
                         )
                     );
                     unset( $filtres['Dossier.id'] );
@@ -298,7 +319,8 @@
                                 'Personne.id' => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null ),
                                 'Personne.foyer_id' => ( !empty( $filtres['Foyer.id'] ) ? $filtres['Foyer.id'] : null ),
                             ),
-                            'recursive' => 0
+                            'recursive' => 0,
+                            'limit' => 10
                         )
                     );
 
@@ -396,9 +418,19 @@
                     }
                     $this->set( 'cohorte', $cohorte );
                 }
+                $this->Dossier->commit(); // Pour les jetons + FIXME: bloquer maintenant les ids dont on s'occupe
             }
 
             //-----------------------------------------------------------------
+
+            if( ( $statutOrientation == 'En attente' ) || ( $statutOrientation == 'Non orienté' ) ) {
+                // FIXME ?
+                if( !empty( $cohorte ) && is_array( $cohorte ) ) {
+                    foreach( array_unique( Set::extract( $cohorte, '{n}.Dossier.id' ) ) as $dossier_id ) {
+                        $this->Jetons->get( array( 'Dossier.id' => $dossier_id ) );
+                    }
+                }
+            }
 
             switch( $statutOrientation ) {
                 case 'En attente':

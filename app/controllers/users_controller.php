@@ -1,7 +1,6 @@
 <?php
     class UsersController extends AppController
     {
-
         var $name = 'Users';
         var $uses = array('Group', 'Zonegeographique', 'User', 'Serviceinstructeur');
         var $aucunDroit = array('login', 'logout');
@@ -26,6 +25,16 @@
         }
 
         function logout() {
+            if( $user_id = $this->Session->read( 'Auth.User.id' ) ) {
+                if( valid_int( $user_id ) ) {
+                    $this->Jeton = ClassRegistry::init( 'Jeton' ); // FIXME: dans Jetons
+                    $this->Jeton->deleteAll(
+                        array(
+                            '"Jeton"."user_id"' => $user_id
+                        )
+                    );
+                }
+            }
             $this->Session->delete( 'Auth' );
             $this->redirect( $this->Auth->logout() );
         }

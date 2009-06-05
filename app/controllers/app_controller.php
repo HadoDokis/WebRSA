@@ -1,9 +1,9 @@
 <?php
     class AppController extends Controller
     {
-        var $components = array( 'Session', 'Auth', 'Acl', 'Droits' );
+        var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie' );
         var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions' );
-        var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User' );
+        var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User', 'Zonegeographique' );
 
         //*********************************************************************
 
@@ -46,14 +46,16 @@
         function _loadZonesgeographiques() {
             $Auth = $this->Session->read( 'Auth' );
             if( !empty( $Auth ) && !empty( $Auth['User'] ) && !$this->Session->check( 'Auth.Zonegeographique' ) ) {
-                $sql = 'SELECT users_zonesgeographiques.zonegeographique_id
+                $sql = 'SELECT users_zonesgeographiques.zonegeographique_id, zonesgeographiques.codeinsee
                             FROM users_zonesgeographiques
+                                LEFT JOIN zonesgeographiques
+                                    ON users_zonesgeographiques.zonegeographique_id = zonesgeographiques.id
                             WHERE users_zonesgeographiques.user_id='.$Auth['User']['id'].';';
                 $results = $this->Dossier->query( $sql ); // FIXME: c'est sale ?
                 if( count( $results ) > 0 ) {
                     $zones = array();
                     foreach( $results as $result ) {
-                        $zones[] = $result[0]['zonegeographique_id'];
+                        $zones[$result[0]['zonegeographique_id']] = $result[0]['codeinsee'];
                     }
                     $this->Session->write( 'Auth.Zonegeographique', $zones ); // FIXME: vide -> rééxécute ?
                 }
@@ -63,6 +65,8 @@
         //*********************************************************************
 
         function beforeFilter(){
+            //$this->Cookie->time = 0;  // http://book.cakephp.org/fr/view/179/Controller-Setup -> pb Citrix
+
             $this->Auth->autoRedirect = false;
            // $this->Auth->loginRedirect = array('controller' => 'pages', 'action' => 'home');
             parent::beforeFilter();
@@ -89,9 +93,9 @@
 
         //*********************************************************************
 
-        function assert( $condition, $error = 'error500' ) {
+        function assert( $condition, $error = 'error500', $parameters = array() ) {
             if( $condition !== true )
-                $this->cakeError( $error );
+                $this->cakeError( $error, $parameters );
         }
     }
 ?>

@@ -98,5 +98,45 @@
 
             return parent::beforeSave();
         }
+
+        //*********************************************************************
+
+        function findByZones( $zonesGeographiques = array() ) {
+            $this->Foyer->unbindModelAll();
+
+            $this->Foyer->bindModel(
+                array(
+                    'hasOne'=>array(
+                        'Adressefoyer' => array(
+                            'foreignKey'    => false,
+                            'type'          => 'LEFT',
+                            'conditions'    => array(
+                                '"Adressefoyer"."foyer_id" = "Foyer"."id"',
+                                '"Adressefoyer"."rgadr" = \'01\''
+                            )
+                        ),
+                        'Adresse' => array(
+                            'foreignKey'    => false,
+                            'type'          => 'LEFT',
+                            'conditions'    => array(
+                                '"Adressefoyer"."adresse_id" = "Adresse"."id"'
+                            )
+                        )
+                    )
+                )
+            );
+
+            $foyers = $this->Foyer->find(
+                'all',
+                array (
+                    'conditions' => array(
+                        'Adresse.numcomptt' => array_values( $zonesGeographiques )
+                    )
+                )
+            );
+
+            $return = Set::extract( $foyers, '{n}.Foyer.dossier_rsa_id' );
+            return ( !empty( $return ) ? $return : null );
+        }
     }
 ?>

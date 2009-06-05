@@ -1,11 +1,11 @@
-<?php 
+<?php
     class structurereferente extends AppModel
     {
         var $name = 'Structurereferente';
         var $useTable = 'structuresreferentes';
 
         function list1Options() {
-            $tmp = $this->find( 
+            $tmp = $this->find(
                 'all',
                 array (
                     'fields' => array(
@@ -23,18 +23,6 @@
                 $return[$value['Structurereferente']['typeorient_id'].'_'.$value['Structurereferente']['id']] = $value['Structurereferente']['lib_struc'];
             }
             return $return;
-
-            /*$options = $this->find( 
-                'list',
-                array (
-                    'fields' => array(
-                        'Structurereferente.id',
-                        'Structurereferente.lib_struc'
-                    ),
-                    'order'  => array( 'Structurereferente.lib_struc ASC' )
-                )
-            );
-            return $options;*/
         }
 	
 

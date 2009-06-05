@@ -76,13 +76,31 @@
         Get real timeout (in seconds) based on core.php configuretion
     */
     function readTimeout() {
-        $timeout = Configure::read( 'Session.timeout' );
+        return ini_get( 'session.gc_maxlifetime' );
+        /*$timeout = Configure::read( 'Session.timeout' );
         switch( Configure::read( 'Security.level' ) ) {
             case 'high':    return ( $timeout * 10 );
             case 'medium':  return ( $timeout * 100 );
             case 'low':     return ( $timeout * 300 );
-        }
+        }*/
     }
 
+    function suffix( $value, $separator = '_' ) { // FIXME: preg_escape separator + erreur si plus d'un caractère
+        return preg_replace( '/^(.*'.$separator.')([^'.$separator.']+)$/', '\2', $value );
+    }
+
+    function array_depth( $array ) {
+        $max_depth = 1;
+        foreach ($array as $value) {
+            if (is_array($value)) {
+                $depth = array_depth($value) + 1;
+
+                if ($depth > $max_depth) {
+                    $max_depth = $depth;
+                }
+            }
+        }
+        return $max_depth;
+    }
 //EOF
 ?>

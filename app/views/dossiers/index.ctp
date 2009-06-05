@@ -41,7 +41,6 @@
 </script>
 <!-- FIXME le repasser en post ? -->
 <?php echo $form->create( 'Dossier', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
-    <center><?php echo $form->button('Réinitialiser', array('type'=>'reset')); ?></center>
 
     <fieldset>
         <legend>Recherche par dossier</legend>
@@ -61,7 +60,11 @@
         <?php echo $form->input( 'Personne.nomnai', array( 'label' => 'Nom de jeune fille' ) );?>
         <?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom' ) );?>
     </fieldset>
-    <?php echo $form->submit( 'Rechercher' );?>
+
+    <div class="submit">
+        <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+        <?php echo $form->button( 'Réinitialiser', array( 'type'=>'reset' ) );?>
+    </div>
 <?php echo $form->end();?>
 
 <!-- Résultats -->

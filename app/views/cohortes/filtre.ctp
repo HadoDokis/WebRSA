@@ -19,5 +19,8 @@
         <?php echo $form->input( 'Filtre.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ) );?>
     </fieldset>
 
-    <?php echo $form->submit( 'Filtrer' );?>
+    <div class="submit">
+        <?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
+        <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+    </div>
 <?php echo $form->end();?>
