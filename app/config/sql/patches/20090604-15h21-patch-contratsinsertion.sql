@@ -1,5 +1,3 @@
-ALTER TABLE contratsinsertion DROP COLUMN nat_cont_trav;
-ALTER TABLE contratsinsertion ADD COLUMN nat_cont_trav CHAR(4);
+ALTER TABLE contratsinsertion ALTER COLUMN nat_cont_trav TYPE CHAR(4);
 
-ALTER TABLE servicesinstructeurs DROP COLUMN lib_service;
-ALTER TABLE servicesinstructeurs ADD COLUMN lib_service VARCHAR(100);
+ALTER TABLE servicesinstructeurs ALTER COLUMN lib_service TYPE VARCHAR(100);

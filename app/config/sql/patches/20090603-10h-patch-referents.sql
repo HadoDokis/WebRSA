@@ -1,2 +1,1 @@
-ALTER TABLE referents DROP COLUMN numero_poste;
-ALTER TABLE referents ADD COLUMN numero_poste VARCHAR(14);
+ALTER TABLE referents ALTER COLUMN numero_poste TYPE VARCHAR(14);
