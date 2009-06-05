@@ -4,7 +4,7 @@
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Typeorient', 'Structurereferente', 'Option', 'Serviceinstructeur');
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur');
         //var $aucunDroit = array('index', 'menu', 'constReq');
         var $aucunDroit = array( 'constReq' );
 
@@ -20,8 +20,18 @@
 
         function index() {
 
+	    $sr = $this->Structurereferente->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Structurereferente.lib_struc'
+                    ),
+                )
+            );
+            $this->set( 'sr', $sr );
+		
             $this->set( 'typeorient', $this->Typeorient->listOptions() );
-            $this->set( 'typestruct', $this->Structurereferente->list1Options() );
+//             $this->set( 'typestruct', $this->Structurereferente->list1Options() );
             $this->set( 'statuts', $this->Option->statut_orient() );
             $this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
             $this->set( 'services_instructeur', $this->Serviceinstructeur->listOptions());
@@ -33,7 +43,7 @@
                 $requete = '';
                 $select  = "SELECT * FROM personnes WHERE id IN ( SELECT personne_id FROM orientsstructs WHERE ";
 
-                // Critères sur le dossier - date de demande
+                //Critères sur le dossier - date de demande
                 if( isset( $params['Dossier']['dtdemrsa'] ) && !empty( $params['Dossier']['dtdemrsa'] ) ) {
                     $valid_from = ( valid_int( $params['Dossier']['dtdemrsa_from']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['day'] ) );
                     $valid_to = ( valid_int( $params['Dossier']['dtdemrsa_to']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_to']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_to']['day'] ) );
@@ -42,27 +52,57 @@
                     }
                 }
 
-                // Critères sur un type d'orientation - libelle, parentid, modèle de notification
+                //Critères sur un type d'orientation - libelle, parentid, modèle de notification
                 if( isset( $params['Typeorient']['id'] ) && !empty( $params['Typeorient']['id'] ) )
                     $requete = $this->constReq($requete, 'Orientsstructs.typeorient_id', $params['Typeorient']['id']);
 
-                // Critères sur une structure référente - libelle, nom_voie, ville, code_insee
+                //Critères sur une structure référente - libelle, nom_voie, ville, code_insee
                 if( isset( $params['Structurereferente']['id'] ) && !empty( $params['Structurereferente']['id'] ))
                     $requete = $this->constReq($requete, 'Orientsstructs.structurereferente_id', $params['Structurereferente']['id']);
 
-                // Critères sur une statut d'orientation
+		    	    
+                //Critères sur une statut d'orientation
                 if( isset( $params['Orientstructs']['statut_orient']  ) && !empty( $params['Orientstructs']['statut_orient'] ))
                     $requete = $this->constReq($requete, 'Orientsstructs.statut_orient', "'".$params['Orientstructs']['statut_orient']."'");
 
+
+
                 $requete = $select. $requete .')';
                 $criteres = $this->Personne->query($requete);
-                // Recherche
+
+
+
+	    /************************************** Debut Requête pour rechercher par Contrat insertion  ****************************************/		
+                // Critères sur un contrat insertion - date de debut
+                /*$filtersContrat = array();
+                foreach( array( 'dd_ci' ) as $critereContrat ) {
+                    if( isset( $params['Contratinsertion'][$critereContrat] ) && !empty( $params['Contratinsertion'][$critereContrat] ) ) {
+                        $filtersContrat['Contratinsertion.'.$critereContrat.' ILIKE'] = '%'.$params['Contratinsertion'][$critereContrat].'%';
+                    }
+                }
+
+                // Critères sur un contrat insertion - date de debut
+                if( isset( $params['Contratinsertion']['dd_ci'] ) && !empty( $params['Contratinsertion']['dd_ci'] ) ) {
+                    if( valid_int( $params['Contratinsertion']['dd_ci']['year'] ) ) {
+                        $filtersContrat['EXTRACT(YEAR FROM Contratinsertion.dd_ci) ='] = $params['Contratinsertion']['dd_ci']['year'];
+                    }
+                    if( valid_int( $params['Contratinsertion']['dd_ci']['month'] ) ) {
+                        $filtersContrat['EXTRACT(MONTH FROM Contratinsertion.dd_ci) ='] = $params['Contratinsertion']['dd_ci']['month'];
+                    }
+                    if( valid_int( $params['Contratinsertion']['dd_ci']['day'] ) ) {
+                        $filtersContrat['EXTRACT(DAY FROM Contratinsertion.dd_ci) ='] = $params['Contratinsertion']['dd_ci']['day'];
+                    }
+                }*/	
+	    /************************************** Fin de la Requête pour rechercher par Contrat insertion  ****************************************/		
+    
+                //Recherche
+	
                 for ($i = 0; $i < count ($criteres); $i++ ){
                     $criteres[$i]['Foyer'] = $this->Foyer->read(null, $criteres[$i][0]['foyer_id']);
                     $criteres[$i]['Dossier'] = $this->Dossier->read(null, $criteres[$i]['Foyer']['Foyer']['dossier_rsa_id']);
-
                 }
                 $this->set( 'criteres', $criteres );
+		
                 $this->data['Search'] = $params;
             }
         }
@@ -79,11 +119,11 @@
             else if( !empty( $this->params['foyer_id'] ) && is_numeric( $this->params['foyer_id'] ) ) {
                 $conditions['"Foyer"."id"'] = $this->params['foyer_id'];
             }
-            else if( !empty( $this->params['structurereferente_id'] ) && is_numeric( $this->params['structurereferente_id'] ) ) {
-                $struct = $this->Dossier->Foyer->Personne->Orientstruct->Structurereferente->find(
+            else if( !empty( $this->params['Orientstruct']['structurereferente_id'] ) && is_numeric( $this->params['Orientstruct']['structurereferente_id'] ) ) {
+                $struct = $this->Dossier->Foyer->Personne->Orientstruct/*->Structurereferente*/->find(
                     'first', array(
                         'conditions' => array(
-                            'Structurereferente.id' => $this->params['structurereferente_id']
+                            'Structurereferente.id' => $this->params['Orientstruct']['structurereferente_id']
                         )
                     )
                 );
