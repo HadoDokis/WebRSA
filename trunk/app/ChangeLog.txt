@@ -1,3 +1,13 @@
+20090605 15h00 cbuffin:
+    * Lock/Jeton:
+        - OK pour cohortes (LIMIT 10), recherche dossier, multi-critères
+        - OK en modif pour personnes (-> lock)
+            --> TODO les autres contrôleurs et actions
+        - OK à la déconnexion
+    * Accès aux dossiers suivant zones User
+        - OK cohortes, recherche dossier, multi-critères
+        - TODO: si on change les id dans l'URL
+
 20090531 03h40 cbuffin:
     * Ajout d'un Helper Permissions, qui stockera les permiisions dans la Session + modification AppController + vues
 

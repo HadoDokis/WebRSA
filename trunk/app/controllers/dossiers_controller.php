@@ -89,6 +89,9 @@
                     $filters[] = ( count( $foyers ) > 0 ) ? 'Foyer.id IN ( '.implode( ',', $foyers ).' )' : 'FALSE';
                 }
 
+                // INFO: seulement les dossiers qui sont dans ma zone géographique
+                $filters['Dossier.id'] =  $this->Dossier->findByZones( $this->Session->read( 'Auth.Zonegeographique' ) );
+
                 // Recherche
                 $this->Dossier->recursive = 2;
                 $dossiers = $this->paginate( 'Dossier', array( $filters ) );

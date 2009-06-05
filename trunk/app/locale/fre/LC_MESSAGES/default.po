@@ -652,3 +652,9 @@ msgstr "Adresse"
 
 msgid "numtel"
 msgstr "Numéro de téléphone"
+
+###############################################################################
+# Auth
+###############################################################################
+msgid "Login failed. Invalid username or password."
+msgstr "Échec de la connexion. Identifiant ou mot de passe invalide."

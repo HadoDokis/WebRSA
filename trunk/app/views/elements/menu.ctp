@@ -47,7 +47,7 @@
                 </ul>
             </li>-->
 
-            <li><?php echo $html->link( 'Déconnexion', array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
+            <li><?php echo $html->link( 'Déconnexion '.$session->read( 'Auth.User.username' ), array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
         <?php else: ?>
             <li><?php echo $html->link( 'Connexion', array( 'controller' => 'users', 'action' => 'login' ) );?></li>
         <?php endif; ?>

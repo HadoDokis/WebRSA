@@ -366,17 +366,21 @@ div#ficheInfoFina tbody tr.odd th {
 
 /*****************************************************************************/
 
-#flashMessage {
+#flashMessage, #authMessage {
     margin: 1em 0;
     border: 1px solid #235f7d;
     padding: 0.5em;
+}
+
+#authMessage {
+    border-color: silver;
 }
 
 #flashMessage.message {
     background: #fffee5;
 }
 
-#flashMessage.error {
+#flashMessage.error, #authMessage.message /* FIXME */ {
     background: #ffe5e5;
     color: #cc0000;
 }

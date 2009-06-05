@@ -46,7 +46,14 @@
             <?php echo $this->element( 'header' );?>
             <?php echo $this->element( 'menu' );?>
             <div id="pageContent">
-                <?php $session->flash();?>
+                <?php
+                    if ($session->check( 'Message.flash' ) ) {
+                        $session->flash();
+                    }
+                    if ($session->check( 'Message.auth' ) ) {
+                        $session->flash( 'auth' );
+                    }
+                ?>
                 <?php echo $content_for_layout;?>
             </div>
             <?php echo $this->element( 'footer' );?>

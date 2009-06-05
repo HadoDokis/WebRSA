@@ -115,5 +115,45 @@
 
             return true;
         }
+
+        //*********************************************************************
+
+        function findByZones( $zonesGeographiques = array() ) { // TODO
+            $this->unbindModelAll();
+
+            $this->bindModel(
+                array(
+                    'hasOne'=>array(
+                        'Adressefoyer' => array(
+                            'foreignKey'    => false,
+                            'type'          => 'LEFT',
+                            'conditions'    => array(
+                                '"Adressefoyer"."foyer_id" = "Personne"."foyer_id"',
+                                '"Adressefoyer"."rgadr" = \'01\''
+                            )
+                        ),
+                        'Adresse' => array(
+                            'foreignKey'    => false,
+                            'type'          => 'LEFT',
+                            'conditions'    => array(
+                                '"Adressefoyer"."adresse_id" = "Adresse"."id"'
+                            )
+                        )
+                    )
+                )
+            );
+
+            $personnes = $this->find(
+                'all',
+                array (
+                    'conditions' => array(
+                        'Adresse.numcomptt' => array_values( $zonesGeographiques )
+                    )
+                )
+            );
+
+            $return = Set::extract( $personnes, '{n}.Personne.id' );
+            return ( !empty( $return ) ? $return : null );
+        }
     }
 ?>

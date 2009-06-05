@@ -4,6 +4,11 @@
         var $name = 'Personnes';
         var $uses = array( 'Personne', 'Option' );
 
+        function __construct() {
+            parent::__construct();
+            $this->components[] = 'Jetons';
+        }
+
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'rolepers', $this->Option->rolepers() );
@@ -108,9 +113,19 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $id ), 'error404' );
 
+            $this->Personne->begin();
+            if( !$this->Jetons->check( array( 'Personne.id' => $id ) ) ) {
+                $this->Personne->rollback();
+            }
+
+            $this->assert( $this->Jetons->get( array( 'Personne.id' => $id ) ), 'error500' );
+
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
+                $this->Jetons->has( array( 'Personne.id' => $id ) );
                 if( $this->Personne->save( $this->data ) ) {
+                    $this->Jetons->release( array( 'Personne.id' => $id ) );
+                    $this->Personne->commit();
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $this->data['Personne']['foyer_id'] ) );
                 }
@@ -124,13 +139,13 @@
                         'recursive' => 2
                     )
                 );
-
-                // Mauvais paramètre
                 $this->assert( !empty( $personne ), 'error404' );
 
                 // Assignation au formulaire
                 $this->data = $personne;
             }
+
+            $this->Personne->commit();
             $this->render( $this->action, null, 'add_edit' );
         }
 
