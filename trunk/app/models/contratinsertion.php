@@ -20,6 +20,16 @@
                 )
         );
 
+        var $hasAndBelongsToMany = array(
+            'User' => array(
+                'classname' => 'User',
+                'joinTable' => 'users_contratsinsertion',
+                'foreignKey' => 'contratinsertion_id',
+                'associationForeignKey' => 'user_id'
+            )
+        );
+
+
         var $hasMany = array(
             'Actioninsertion'
         );

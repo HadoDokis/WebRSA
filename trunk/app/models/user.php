@@ -29,6 +29,12 @@
                 'joinTable'             => 'users_zonesgeographiques',
                 'foreignKey'            => 'user_id',
                 'associationForeignKey' => 'zonegeographique_id'
+            ),
+            'Contratinsertion' => array(
+                'classname'             => 'Contratinsertion',
+                'joinTable'             => 'users_contratsinsertion',
+                'foreignKey'            => 'user_id',
+                'associationForeignKey' => 'contratinsertion_id'
             )
         );
 

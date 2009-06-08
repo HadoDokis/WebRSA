@@ -1,0 +1,105 @@
+<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php $this->pageTitle = 'Recherche par contrats d\'insertion';?>
+
+<h1>Recherche par Contrat d'insertion</h1>
+
+<ul class="actionMenu">
+    <?php
+        if( $session->read( 'Auth.User.username' ) == 'cg66' ) { // FIXME
+            echo '<li>'.$html->addSimpleLink(
+                'Ajouter une préconisation d\'orientation',
+                array( 'controller' => 'dossierssimplifies', 'action' => 'add' )
+            ).' </li>';
+        }
+
+        if( is_array( $this->data ) ) {
+            echo '<li>'.$html->link(
+                $html->image(
+                    'icons/application_form_magnify.png',
+                    array( 'alt' => '' )
+                ).' Formulaire',
+                '#',
+                array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+            ).'</li>';
+        }
+    ?>
+</ul>
+<?php echo $form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+    <fieldset>
+        <legend>Recherche par Contrat d'insertion</legend>
+            <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => 'Date de début du contrat', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );?>
+            <?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+            <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __( 'decision_ci', true ), 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) ); ?>
+           <!-- <?php echo $form->input( 'Contratinsertion.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?> -->
+            <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
+    </fieldset>
+
+    <div class="submit">
+        <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+        <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+    </div>
+<?php echo $form->end();?>
+
+<!-- Résultats -->
+<?php if( isset( $contrats ) ):?>
+    <h2>Résultats de la recherche</h2>
+
+    <?php if( is_array( $contrats ) && count( $contrats ) > 0 ):?>
+        <?php /*require( 'index.pagination.ctp' )*/?>
+        <table id="searchResults" class="tooltips_oupas">
+            <thead>
+                <tr>
+                    <th>Commune de l'allocataire</th>
+                    <th>Contrat envoyé par</th>
+                    <th>N° CAF</th>
+                    <th>Date de début du contrat</th>
+                    <th>Durée</th>
+                    <th>Décision</th>
+                    <th class="action">Actions</th>
+                    <th class="innerTableHeader">Informations complémentaires</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach( $contrats as $index => $contrat ):?>
+                    <?php
+                        $title = $contrat['Dossier']['numdemrsa'];
+
+                        $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+                            <tbody>
+                               <!-- <tr>
+                                    <th>Commune de naissance</th>
+                                    <td>'.$contrat['Personne']['nomcomnai'].'</td>
+                                </tr> -->
+                                <tr>
+                                    <th>Date de naissance</th>
+                                    <td>'.date_short( $contrat['Personne']['dtnai'] ).'</td>
+                                </tr>
+                            </tbody>
+                        </table>';
+                        echo $html->tableCells(
+                            array(
+                                h( $contrat['Adresse']['locaadr'] ),
+                                h( $contrat['Dossier']['matriculeorgcedmut'] ),
+                                h( $contrat['Dossier']['matricule'] ),
+                                h( $contrat['Contratinsertion']['dd_ci'] ),
+                                h( $contrat['Contratinsertion']['duree_engag'] ),
+                                h( isset( $decision_ci[$contrat['Contratinsertion']['decision_ci']] ) ? $decision_ci[$contrat['Contratinsertion']['decision_ci']] : null),
+                                $html->viewLink(
+                                    'Voir le dossier « '.$title.' »',
+                                    array( 'controller' => 'dossiers', 'action' => 'view', $contrat['Dossier']['id'] )
+                                ),
+                                array( $innerTable, array( 'class' => 'innerTableCell' ) ),
+                            ),
+                            array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+                            array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+                        );
+                    ?>
+                <?php endforeach;?>
+            </tbody>
+        </table>
+
+        <?php /*require( 'index.pagination.ctp' )*/;?>
+    <?php else:?>
+        <p>Vos critères n'ont retourné aucun dossier.</p>
+    <?php endif?>
+<?php endif?>

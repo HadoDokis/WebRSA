@@ -3,7 +3,7 @@
     {
 
         var $name = 'Contratsinsertion';
-        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct' );
+        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur' );
 
 
         function beforeFilter() {
@@ -88,6 +88,16 @@
             $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
 
+            $typeservice = $this->Serviceinstructeur->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Serviceinstructeur.lib_service'
+                    ),
+                )
+            );
+            $this->set( 'typeservice', $typeservice );
+
 
             $sr = $this->Structurereferente->find(
                 'list',
@@ -123,7 +133,7 @@
                 )
             );
 
-//             debug( $personne );
+
             $this->set(
                 'foyer_id',
                 $personne['Personne']['foyer_id']
@@ -138,13 +148,16 @@
             $this->set( 'personne_id', $personne_id );
 
 
-        // Essai de sauvegarde
-            if( !empty( $this->data ) && $this->Contratinsertion->saveAll( $this->data ) ) {
-
-                $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
-
-                $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
+            // Essai de sauvegarde
+            if( !empty( $this->data ) ) {
+                if( $this->Contratinsertion->saveAll( $this->data ) ) {
+                    $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index/', $personne_id ) );
+                }
+                else {
+                    $this->Session->setFlash( 'Impossible d\'enregistrer.', 'flash/error' );
+                }
             }
             else{
                 $dspp = $this->Dspp->find(
@@ -155,6 +168,46 @@
                         )
                     )
                 );
+
+                // Récupération du services instructeur lié au contrat
+                $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ) ) );
+                $this->data['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
+
+                // Récupération de la dernière structure referente liée au contrat
+                $orientstruct = $this->Orientstruct->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Orientstruct.personne_id' => $personne_id
+                        ),
+                        'order' => 'Orientstruct.date_propo DESC',
+                        'recursive' => -1
+                    )
+                );
+                if( !empty( $orientstruct ) ) {
+                    $this->data['Structurereferente']['id'] = $orientstruct['Orientstruct']['structurereferente_id'];
+                }
+
+                // Si on est en présence d'un deuxième contrat -> Alors renouvellement
+                $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
+
+
+                $tc = $this->Typocontrat->find(
+                    'list',
+                    array(
+                        'fields' => array(
+                            'Typocontrat.id',
+                            'Typocontrat.lib_typo'
+                        )
+                    )
+                );
+
+                if( $this->data['Contratinsertion']['rg_ci'] > 1 ){
+                     $this->data['Contratinsertion']['typocontrat_id'] = 2/*$tc['Typocontrat']['id']*/;
+                }
+                else {
+                    $this->data['Contratinsertion']['typocontrat_id'] = 1;
+                }
             }
 
 
@@ -167,6 +220,18 @@
             if( !valid_int( $contratinsertion_id ) ) {
                 $this->cakeError( 'error404' );
             }
+
+
+            $typeservice = $this->Serviceinstructeur->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Serviceinstructeur.lib_service'
+                    ),
+                )
+            );
+            $this->set( 'typeservice', $typeservice );
+
 
             $sr = $this->Structurereferente->find(
                 'list',
@@ -225,7 +290,6 @@
                 }
             }
             else {
-
                 $this->data = $contratinsertion;
             }
             $this->render( $this->action, null, 'add_edit' );
