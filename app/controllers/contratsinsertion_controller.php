@@ -191,7 +191,6 @@
                 // Si on est en présence d'un deuxième contrat -> Alors renouvellement
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
 
-
                 $tc = $this->Typocontrat->find(
                     'list',
                     array(

@@ -364,10 +364,10 @@ msgid "duree_cdd"
 msgstr "S\'il s\'agit d\'un CDD, sa durée"
 
 msgid "duree_engag"
-msgstr "Je m'engage dans la réalisation du projet décrit ci-dessus pour une durée de"
+msgstr "Engagement sur une durée de  (en mois)"
 
 msgid "nature_projet"
-msgstr " "
+msgstr "Nature du projet "
 
 msgid "observ_ci"
 msgstr "Observations"
