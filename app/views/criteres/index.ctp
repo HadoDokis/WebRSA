@@ -1,7 +1,7 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche par critères';?>
+<?php $this->pageTitle = 'Recherche par Orientation';?>
 
-<h1>Recherche par critères</h1>
+<h1>Recherche par Orientation</h1>
 
 <script type="text/javascript">
     function toutCocher() {
@@ -80,16 +80,14 @@
         <?php //require( 'index.pagination.ctp' )?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
-                <tr>
-                    <th>Nom/Prénom</th>
-                    <th>Commune</th>
-                    <th>Contrat envoyé par</th>
-                    <th>N° CAF</th>
-                    <th>Date début du contrat</th>
-                    <th>Durée</th>
-                    <th>Décision</th>
+                 <tr>
+                    <th>Numéro dossier</th>
+                    <th>Date de demande</th>
+                    <th>NIR</th>
+                    <th>Allocataire</th>
+                    <th>État du dossier</th>
                     <th class="action">Actions</th>
-                   <!-- <th class="innerTableHeader">Informations complémentaires</th> -->
+                    <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
             </thead>
             <tbody>
@@ -99,32 +97,29 @@
                             <tbody>
                                 <tr>
                                     <th>Commune de naissance</th>
-                                    <td>'. isset( $critere[0]['nomcomnai'] ) ? $critere[0]['nomcomnai'] : null.'</td>
+                                    <td>'. $critere[0]['nomcomnai'].'</td>
                                 </tr>
                                 <tr>
                                     <th>Date de naissance</th>
-                                    <td>'.date_short( isset( $critere[0]['dtnai'] ) ? $critere[0]['dtnai'] : null ).'</td>
+                                    <td>'.date_short( $critere[0]['dtnai']).'</td>
                                 </tr>
                             </tbody>
                         </table>';
 
                         echo $html->tableCells(
                             array(
-                                h( ( isset( $critere[0]['nom'] ) ? $critere[0]['nom'] : null ).' '.( isset( $critere[0]['prenom'] ) ? $critere[0]['prenom'] : null ) ),
-                                h( isset( $critere[0]['nomcomnai'] ) ? $critere[0]['nomcomnai'] : null),
-                                h( isset( $critere['Contratinsertion']['statut'] ) ? $critere['Contratinsertion']['statut'] : null ),
-                                h( isset( $critere['Dossier']['Dossier']['matricule'] ) ? $critere['Dossier']['Dossier']['matricule'] : null), //FIXME : N° CAF identique pr demandeur et conjoint !!!
-                                h( date_short( isset( $critere['Foyer']['Personne']['Contratinsertion']['dd_ci'] ) ) ? date_short( $critere['Dossier']['Dossier'][0]['Contratinsertion']['dd_ci'] ) : null ), // FIXME: 0
-                                h( isset( $critere['Contratinsertion']['decision_ci'] ) ? $critere['Contratinsertion']['decision_ci'] : null ), // FIXME: 0
-//                                 implode(
-//                                     ' ',
-//                                     array(
-//                                         $critere[0]['qual'],
-//                                         $critere[0]['nom'],
-//                                         implode( ' ', array( $critere[0]['prenom'], $critere[0]['prenom2'], $critere[0]['prenom3'] ) )
-//                                     )
-//                                 ),
-                                h(' '),
+                                h($critere['Dossier']['Dossier']['numdemrsa']),
+                                h($critere['Dossier']['Dossier']['dtdemrsa']),
+                                h( $critere[0]['nir'] ), // FIXME: 0
+                                implode(
+                                    ' ',
+                                    array(
+                                        $critere[0]['qual'],
+                                        $critere[0]['nom'],
+                                        implode( ' ', array( $critere[0]['prenom'], $critere[0]['prenom2'], $critere[0]['prenom3'] ) )
+                                    )
+                                ),
+                                h($critere['Dossier']['Situationdossierrsa']['etatdosrsa']),
                                 $html->viewLink(
                                     'Voir le dossier « '.$critere['Dossier']['Dossier']['numdemrsa'].' »',
                                     array( 'controller' => 'personnes', 'action' => 'view', $critere[0]['id'] )
@@ -136,7 +131,7 @@
                             array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
                         );
                     ?>
-		<?php endforeach;?>
+            <?php endforeach;?>
             </tbody>
         </table>
 

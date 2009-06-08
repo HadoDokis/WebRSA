@@ -1,7 +1,7 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche par critères';?>
+<?php $this->pageTitle = 'Recherche par Orientation';?>
 
-<h1>Recherche par critères</h1>
+<h1>Recherche par Orientation</h1>
 
 <ul class="actionMenu">
     <?php

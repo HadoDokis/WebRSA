@@ -92,7 +92,7 @@
                     $criteres[$i]['Dossier'] = $this->Dossier->read(null, $criteres[$i]['Foyer']['Foyer']['dossier_rsa_id']);
                 }
                 $this->set( 'criteres', $criteres );
-
+// debug(  $criteres );
                 $this->data['Search'] = $params;
             }
         }
