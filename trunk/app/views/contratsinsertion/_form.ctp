@@ -21,12 +21,12 @@
         ecart = ((annee_max - annee_min)*12) - (mois_min) + (mois_max);
 
         return ecart;
-
+    }
 
         document.observe("dom:loaded", function() {
-            Event.observe( 'ecart', 'click', ecart() );
+            Event.observe( 'ecart', 'click', ecart_mois( 'ContratinsertionDfCiMonth', 'ContratinsertionDfCiMonth' ) );
         });
-    }
+
 </script>
 
 
@@ -37,6 +37,7 @@
         <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => __( 'lib_typo', true ), 'type' => 'select' , 'options' => $tc, 'empty' => true ) );?>
         <?php echo $form->input( 'Structurereferente.id', array( 'label' => __( 'Structure référente', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );?>
         <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __( 'dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );?>
+        <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => __( 'duree_engag', true ), 'typ' => 'text', 'size' => 3 )  ); ?>
         <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ) ;?>
 </fieldset>
 <fieldset>
@@ -64,7 +65,6 @@
         <?php echo $form->input( 'Contratinsertion.duree_cdd', array( 'label' => __( 'duree_cdd', true ), 'type' => 'select', 'options' => $duree_cdd, 'empty' => true )  ); ?>
 </fieldset>
 <fieldset>
-        <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => __( 'duree_engag', true ), 'size' => 3 )  ); ?>
         <?php echo $form->input( 'Contratinsertion.nature_projet', array( 'label' => __( 'nature_projet', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
         <?php echo $form->input( 'Fait à :', array( 'label' => 'Fait à : ', 'type' => 'text')  ); ?><br />
         <?php echo $form->input( 'Le ', array( 'label' => 'Le : ', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
