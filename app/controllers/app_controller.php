@@ -89,6 +89,8 @@
                     $this->assert( $this->Droits->check( $user['User']['aroAlias'], $controllerAction ), 'error403' );
                 }
             }
+
+            $this->disableCache(); // Disable browser
         }
 
         //*********************************************************************
