@@ -20,6 +20,7 @@
                     <th>Décision</th>
                     <th>Date proposition</th>
                     <th>Date dernier CI</th>
+                    <th class="action">Action</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
             </thead>
@@ -86,6 +87,11 @@
                                 h( $personne['Orientstruct']['statut_orient'] ),
                                 h( date_short( $personne['Orientstruct']['date_propo'] ) ),
                                 h( date_short( $personne['Contratinsertion']['dd_ci'] ) ),
+                                $html->printLink(
+                                    'Imprimer la notification',
+                                    array( 'controller' => 'gedooos', 'action' => 'orientstruct', $personne['Orientstruct']['id'] ),
+                                    $permissions->check( 'gedooos', 'orientstruct' )
+                                ),
                                 $innerTable
                             ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),

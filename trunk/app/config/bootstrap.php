@@ -40,7 +40,6 @@
  * $controllerPaths = array('this path to controllers', 'second full path to controllers', 'etc...');
  *
  */
-
     define( 'REQUIRED_MARK', '<abbr class="required" title="Champ obligatoire">*</abbr>' );
 
     // Messages en français
@@ -102,5 +101,7 @@
         }
         return $max_depth;
     }
+
+    require_once( 'webrsa.inc' );
 //EOF
 ?>

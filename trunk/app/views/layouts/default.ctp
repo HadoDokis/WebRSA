@@ -57,7 +57,9 @@
                 <?php echo $content_for_layout;?>
             </div>
             <?php echo $this->element( 'footer' );?>
-<?php /*debug( $session->read( 'Auth' ) );*/?>
+<?php /*echo session_id();*/?>
+<?php /*debug( $session->id() );*/?>
+<?php /*debug( session_get_cookie_params() );*/?>
         </div>
     </body>
 </html>
