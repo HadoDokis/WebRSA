@@ -6,6 +6,10 @@ f="`dirname "$0"`"
 cd "$f"
 # FIXME: ne fonctionne pas quand il y a plusieurs lignes !?!
 
+rm tmp/logs/debug.log.*
+rm tmp/logs/error.log.*
+echo "" > tmp/logs/debug.log
+echo "" > tmp/logs/error.log
 
 # http://snipt.net/nick/svn-delete-all-files-marked-for-deletion/
 svn status |grep '^!' |sed 's/^!      /svn delete "/g' |sed 's/$/"/g' |sh
