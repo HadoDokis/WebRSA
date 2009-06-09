@@ -2,7 +2,7 @@
     class SuivisinstructionController  extends AppController
     {
         var $name = 'Suivisinstruction';
-        var $uses = array( 'Suiviinstruction', 'Option', 'Dossier' );
+        var $uses = array( 'Suiviinstruction', 'Option', 'Dossier', 'Serviceinstructeur' );
 
 
         function beforeFilter() {
@@ -15,6 +15,8 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $dossier_rsa_id ), 'error404' );
             //$this->assert( valid_int( $foyer_id ), 'error404' );
+
+            $this->set( 'typeserins', $this->Option->typeserins() );
 
             // Recherche des adresses du foyer
             $suivisinstruction = $this->Suiviinstruction->find(
@@ -35,6 +37,8 @@
         function view( $suiviinstruction_id = null ) {
             // Vérification du format de la variable
             $this->assert( valid_int( $suiviinstruction_id ), 'error404' );
+
+            $this->set( 'typeserins', $this->Option->typeserins() );
 
             $suiviinstruction = $this->Suiviinstruction->find(
                 'first',

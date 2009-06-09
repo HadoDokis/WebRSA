@@ -30,7 +30,7 @@
                 </tr>
                 <tr class="odd">
                     <th ><?php __( 'typeserins' );?></th>
-                    <td><?php echo ($suiviinstruction['Suiviinstruction']['typeserins']);?></td>
+                    <td><?php echo ( isset( $typeserins[$suiviinstruction['Suiviinstruction']['typeserins']] ) ? $typeserins[$suiviinstruction['Suiviinstruction']['typeserins']] : null );?></td>
                 </tr>
                 <tr class="even">
                     <th ><?php __( 'numcomins' );?></th>

@@ -381,6 +381,11 @@ msgstr "Typologie du contrat"
 msgid "referent"
 msgstr "Référent du contrat"
 
+msgid "date_propo"
+msgstr "Date de la demande"
+
+msgid "date_valid"
+msgstr "Date de l'orientation"
 ###############################################################################
 # Actions d'insertion
 ###############################################################################

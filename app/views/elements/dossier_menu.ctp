@@ -107,6 +107,17 @@
                     </li>
                 <?php endif;?>
 
+                <?php if( $permissions->check( 'avispcgdroitrsa', 'index' ) ):?>
+                    <li>
+                        <?php
+                            echo $html->link(
+                                'Avis PCG droit rsa',
+                                array( 'controller' => 'avispcgdroitrsa', 'action' => 'index', $dossier['Foyer']['id'] )
+                            );
+                        ?>
+                    </li>
+                <?php endif;?>
+
                 <?php if( $permissions->check( 'infosfinancieres', 'index' ) ):?>
                     <li>
                         <?php
@@ -129,12 +140,12 @@
                     </li>
                 <?php endif;?>
 
-                <?php if( $permissions->check( 'avispcgdroitrsa', 'index' ) ):?>
+               <?php if( $permissions->check( 'suivisinstruction', 'index' ) ):?>
                     <li>
                         <?php
                             echo $html->link(
-                                'Avis PCG droit rsa',
-                                array( 'controller' => 'avispcgdroitrsa', 'action' => 'index', $dossier['Foyer']['id'] )
+                                'Suivi instruction du dossier',
+                                array( 'controller' => 'suivisinstruction', 'action' => 'index', $dossier['Foyer']['id'] )
                             );
                         ?>
                     </li>

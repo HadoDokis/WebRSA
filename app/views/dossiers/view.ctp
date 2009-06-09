@@ -20,6 +20,10 @@
                 <th>État du dossier</th>
                 <td><?php echo h( isset( $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null );?></td>
             </tr>
+            <tr class="even">
+                <th>Service instructeur</th>
+                <td><?php echo h( isset( $typeserins[$dossier['Suiviinstruction']['typeserins']] ) ? $typeserins[$dossier['Suiviinstruction']['typeserins']] : null );?></td>
+            </tr>
         </tbody>
     </table>
 

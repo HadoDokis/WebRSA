@@ -60,7 +60,7 @@
                     'message' => 'Veuillez entrer une date valide'
                 )
             ),
-            /*'diplomes' => array(
+            'diplomes' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
@@ -174,7 +174,7 @@
                     'message' => 'Veuillez entrer une date valide',
 		    'allowEmpty'    => true
                 )
-            )*/
+            )
 
         );
 

@@ -35,7 +35,7 @@
 
 <fieldset>
     <legend>Généralités DSPF</legend>
-    <?php echo $form->input( 'Dspf.motidemrsa', array( 'label' => required( __( 'motidemrsa', true ) ), 'type' => 'select', 'options' => $motidemrsa, 'empty' => true ) );?>
+    <?php echo $form->input( 'Dspf.motidemrsa', array( 'label' =>  __( 'motidemrsa', true ), 'type' => 'select', 'options' => $motidemrsa, 'empty' => true ) );?>
 </fieldset>
 
 <fieldset>
@@ -46,12 +46,12 @@
     <fieldset>
         <legend><?php echo __( 'nataccosocfam', true ) ?></legend>
         <?php echo $form->input( 'Nataccosocfam.Nataccosocfam', array( 'label' => false, 'div' => false, 'multiple' => 'checkbox', 'options' => $nataccosocfams ) );?>
-        <?php echo $form->input( 'Dspf.libautraccosocfam', array( 'label' => required( __( 'libautraccosocfam', true ) ), 'type' => 'textarea', 'rows' => 3 ) );?>
+        <?php echo $form->input( 'Dspf.libautraccosocfam', array( 'label' =>  __( 'libautraccosocfam', true ), 'type' => 'textarea', 'rows' => 3 ) );?>
     </fieldset>
 
     <fieldset class="col2">
         <legend>Difficultés de logement</legend>
-        <?php echo $form->input( 'Dspf.natlog', array( 'label' => required( __( 'natlog', true ) ), 'type' => 'select', 'options' => $natlog, 'empty' => true ) );?>
+        <?php echo $form->input( 'Dspf.natlog', array( 'label' =>  __( 'natlog', true ), 'type' => 'select', 'options' => $natlog, 'empty' => true ) );?>
         <?php echo $form->input( 'Dspf.demarlog', array( 'label' => __( 'demarlog', true ), 'type' => 'select', 'options' => $demarlog, 'empty' => true ) );?>
         <?php echo $form->input( 'Diflog.Diflog', array( 'label' => false, 'div' => false, 'multiple' => 'checkbox', 'options' => $diflogs ) );?>
         <div class="clearer"><br /></div>

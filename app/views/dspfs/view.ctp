@@ -38,7 +38,7 @@
             <tbody>
                 <tr class="odd">
                     <th><?php __( 'motidemrsa' );?></th>
-                    <td><?php echo ( $motidemrsa[$dsp['foyer']['Dspf']['motidemrsa']] );?></td>
+                    <td><?php echo ( isset( $motidemrsa[$dsp['foyer']['Dspf']['motidemrsa']] ) ? $motidemrsa[$dsp['foyer']['Dspf']['motidemrsa']] : null);?></td>
                 </tr>
             </tbody>
         </table>
@@ -76,7 +76,7 @@
             <tbody>
                 <tr class="even">
                     <th><?php __( 'natlog' );?></th>
-                    <td><?php echo ( $natlog[$dsp['foyer']['Dspf']['natlog']] );?></td>
+                    <td><?php echo ( isset( $natlog[$dsp['foyer']['Dspf']['natlog']] ) ? $natlog[$dsp['foyer']['Dspf']['natlog']] : null );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'libautrdiflog' );?></th>
@@ -84,7 +84,7 @@
                 </tr>
                 <tr class="even">
                     <th><?php __( 'demarlog' );?></th>
-                    <td><?php echo $demarlog[$dsp['foyer']['Dspf']['demarlog']];?></td>
+                    <td><?php echo ( isset( $demarlog[$dsp['foyer']['Dspf']['demarlog']] ) ? $demarlog[$dsp['foyer']['Dspf']['demarlog']] : null );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'diflog');?></th>

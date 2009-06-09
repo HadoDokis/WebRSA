@@ -9,6 +9,8 @@
 
     <?php echo $form->input( 'Detaildroitrsa.oridemrsa', array( 'label' => required( 'Code origine demande Rsa' ), 'type' => 'select', 'options' => $oridemrsa ) );?>
 
+    <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
+
     <div class="submit">
         <?php echo $form->submit( '< Précédent', array( 'name' => 'Previous', 'div'=>false ) );?>
         <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>

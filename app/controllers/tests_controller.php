@@ -14,14 +14,14 @@
     class TestsController extends AppController {
         // INFO: http://bakery.cakephp.org/articles/view/wizard-component-1-2-1
         var $components = array( 'Wizard' );
-        var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Option', 'Ressource', 'Ressourcemensuelle',  'Detailressourcemensuelle', 'Orientstruct', 'Detaildroitrsa' );
+        var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Option', 'Ressource', 'Ressourcemensuelle',  'Detailressourcemensuelle', 'Orientstruct', 'Detaildroitrsa', 'Serviceinstructeur', 'Suiviinstruction' );
 
         /**
         *
         */
         function beforeFilter() {
             // INFO: Supprimer la session, et donc les données du wizard
-            // $this->Session->destroy();
+//             $this->Session->destroy();
             $this->Wizard->steps = array( 'allocataire', 'conjoint', 'adresse', 'ressourcesallocataire', array( 'withConjoint' => array( 'ressourcesconjoint', 'dossier' ), 'noConjoint' => array( 'dossier' ) ) );
             $this->Wizard->completeUrl = '/tests/confirm';
             $this->Wizard->cancelUrl = '/tests/wizard';
@@ -81,11 +81,49 @@
 //                         'typevoie' => 'rue',
 //                         'nomvoie' => 'des rosiers',
 //                         'codepos' => '34000', // FIXME: + code insée
+//                         'numcomptt' => '34080',
 //                         'locaadr' => 'Montpellier',
 //                         'pays' => 'FRA'
 //                     ),
 //                 )
 //             );
+//             $this->Session->write(
+//                 'Wizard.Tests.ressourcesallocataire',
+//                 array(
+//                     'Ressource' => array(
+//                         'ddress' => array(
+//                             'day' => '01',
+//                             'month' => '01',
+//                             'year' => '2009'
+//                         ),
+//                         'dfress' => array(
+//                             'day' => '01',
+//                             'month' => '01',
+//                             'year' => '2009'
+//                         ),
+//                         'topressnul' => 0
+//                     )
+//                 )
+//             );
+//             $this->Session->write(
+//                 'Wizard.Tests.ressourcesconjoint',
+//                 array(
+//                     'Ressource' => array(
+//                         'ddress' => array(
+//                             'day' => '01',
+//                             'month' => '01',
+//                             'year' => '2009'
+//                         ),
+//                         'dfress' => array(
+//                             'day' => '01',
+//                             'month' => '01',
+//                             'year' => '2009'
+//                         ),
+//                         'topressnul' => 0
+//                     )
+//                 )
+//             );
+
             return parent::beforeFilter();
         }
 
@@ -128,6 +166,8 @@
                 case 'dossier':
                     $this->set( 'oridemrsa', $this->Option->oridemrsa() );
             }
+
+            $this->set( 'typeservice', $this->Serviceinstructeur->listOptions() );
 
             $this->Wizard->process( $step );
         }
@@ -292,6 +332,7 @@
                     }
                 }
             }
+
 /**
     TODO
         *
@@ -370,9 +411,54 @@
                     }
                 }
 
+                // Service instructeur
+                $service = $this->Serviceinstructeur->find(
+                        'first',
+                        array(
+                            'conditions' => array(
+                                'Serviceinstructeur.id' => $data['dossier']['Serviceinstructeur']['id']
+                            ),
+                            'recursive' => -1
+                        )
+                );
+                $this->assert( !empty( $service ), 'error500' );
+
+                // Utilisateur
+                $user = $this->User->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'User.id' => $this->Session->read( 'Auth.User.id' )
+                        ),
+                        'recursive' => -1
+                    )
+                );
+                $this->assert( !empty( $user ), 'error500' );
+
+                $suiviinstruction = array(
+                    'Suiviinstruction' => array(
+                        'dossier_rsa_id'           => $this->Dossier->id,
+                        'etatirsa'                 => '03',
+                        'date_etat_instruction'    => strftime( '%Y-%m-%d' ),
+                        'nomins'                   => $user['User']['nom'],
+                        'prenomins'                => $user['User']['prenom'],
+                        'numdepins'                => $service['Serviceinstructeur']['numdepins'],
+                        'typeserins'               => $service['Serviceinstructeur']['typeserins'],
+                        'numcomins'                => $service['Serviceinstructeur']['numcomins'],
+                        'numagrins'                => $service['Serviceinstructeur']['numagrins']
+                    )
+                );
+                $this->Suiviinstruction->set( $suiviinstruction );
+                if( $this->Suiviinstruction->validates( $suiviinstruction ) ) { // FIXME -> plus haut
+                    $saved = $this->Suiviinstruction->save( $suiviinstruction ) && $saved;
+                }
+                else {
+                    $saved = false;
+                }
+
                 // Fin de la transaction
                 if( $saved ) {
-                    $this->Dossier->commit();
+                   $this->Dossier->commit();
                 }
                 // Annulation de la transaction
                 else {

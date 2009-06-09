@@ -31,12 +31,12 @@
     <table class="tooltips">
         <thead>
             <tr>
-                <th>N° Contrat</th>
+                <!-- <th>N° Contrat</th> -->
                 <th>Type contrat</th>
                 <th>Date début</th>
                 <th>Date fin</th>
-                <!--<th>Décision</th> -->
-                <th colspan="4" class="action">Actions</th>
+                <th>Décision</th>
+                <th colspan="5" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -44,11 +44,15 @@
                 <?php
                     echo $html->tableCells(
                         array(
-                            h( $contratinsertion['Contratinsertion']['id'] ),
+                            //h( $contratinsertion['Contratinsertion']['id'] ),
                             h( $contratinsertion['Typocontrat']['lib_typo'] ),
                             h( date_short( isset( $contratinsertion['Contratinsertion']['dd_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['dd_ci']  ) : null ),
                             h( date_short( isset( $contratinsertion['Contratinsertion']['df_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['df_ci'] ) : null ),
-                            //h( $decision_ci[$contratinsertion['Contratinsertion']['decision_ci']].date_short( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) ),
+                            h( /*isset( */$decision_ci[$contratinsertion['Contratinsertion']['decision_ci']]/* ) ? $decision_ci[$contratinsertion['Contratinsertion']['decision_ci']] : null ).' '*/.' '.date_short( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) ),
+                            $html->validateLink(
+                                'Valider le contrat d\'insertion ',
+                                array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] )
+                            ),
                             $html->actionsLink(
                                 'Actions pour le contrat d\'insertion',
                                 array( 'controller' => 'actionsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['id'] ),
