@@ -3,7 +3,7 @@
     {
         var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie' );
         var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions' );
-        var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User', 'Zonegeographique' );
+        var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User', 'Zonegeographique', 'Connection' );
 
         //*********************************************************************
 
@@ -65,8 +65,8 @@
         //*********************************************************************
 
         function beforeFilter(){
-            //$this->Cookie->time = 0;  // http://book.cakephp.org/fr/view/179/Controller-Setup -> pb Citrix
-
+            // $this->Cookie->time = 0;  // ? http://book.cakephp.org/fr/view/179/Controller-Setup -> pb Citrix
+            $this->disableCache(); // Disable browser
             $this->Auth->autoRedirect = false;
            // $this->Auth->loginRedirect = array('controller' => 'pages', 'action' => 'home');
             parent::beforeFilter();
@@ -84,13 +84,19 @@
                     if( empty( $user['User'] ) ) {
                         $this->redirect("/users/login");
                     }
+                    // Utilisateurs concurrents
+                    if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
+                        if( $connection = $this->Connection->find( 'first', array( 'conditions' => array( 'Connection.user_id' => $user['User']['id'] ) ) ) ) {
+                            unset( $connection['Connection']['modified'] );
+                            $this->Connection->set( $connection );
+                            $this->Connection->save( $connection );
+                        }
+                    }
+                    // Fin utilisateurs concurrents
                     $controllerAction = $this->name . ':' . ($this->name == 'Pages' ? $this->params['pass'][0] : $this->action);
-
                     $this->assert( $this->Droits->check( $user['User']['aroAlias'], $controllerAction ), 'error403' );
                 }
             }
-
-            $this->disableCache(); // Disable browser
         }
 
         //*********************************************************************

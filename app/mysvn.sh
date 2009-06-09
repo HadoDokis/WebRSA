@@ -6,6 +6,7 @@ f="`dirname "$0"`"
 cd "$f"
 # FIXME: ne fonctionne pas quand il y a plusieurs lignes !?!
 
+# TODO: nettoyer /home/cbuffin/www/webrsa/app/tmp/cache (sauf les empty)
 rm tmp/logs/debug.log.*
 rm tmp/logs/error.log.*
 echo "" > tmp/logs/debug.log

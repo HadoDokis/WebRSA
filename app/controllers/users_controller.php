@@ -2,7 +2,7 @@
     class UsersController extends AppController
     {
         var $name = 'Users';
-        var $uses = array('Group', 'Zonegeographique', 'User', 'Serviceinstructeur');
+        var $uses = array( 'Group', 'Zonegeographique', 'User', 'Serviceinstructeur', 'Connection' );
         var $aucunDroit = array('login', 'logout');
 
         /**
@@ -13,6 +13,40 @@
            if( $this->Auth->user() ) {
                 /* Lecture de l'utilisateur authentifié */
                 $authUser = $this->Auth->user();
+
+                // Utilisateurs concurrents
+                if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
+                    $this->Connection->begin();
+                    // Suppression des connections dépassées
+                    $this->Connection->deleteAll(
+                        array(
+                            '"Connection"."modified" <' => strftime( '%Y-%m-%d %H:%M:%S', strtotime( '-'.readTimeout().' seconds' ) )
+                        )
+                    );
+                    if( $this->Connection->find( 'count', array( 'conditions' => array( 'Connection.user_id' => $authUser['User']['id'] ) ) ) == 0 ) {
+                        $connection = array(
+                            'Connection' => array(
+                                'user_id' => $authUser['User']['id'],
+                                'php_sid' => session_id()
+                            )
+                        );
+
+                        $this->Connection->set( $connection );
+                        if( $this->Connection->save( $connection ) ) {
+                            $this->Connection->commit();
+                        }
+                        else {
+                            $this->Connection->rollback();
+                        }
+                    }
+                    else {
+                        $this->Session->delete( 'Auth' );
+                        $this->Session->setFlash( 'Utilisateur déjà connecté', 'flash/error' );
+                        $this->redirect( $this->Auth->logout() );
+                    }
+                }
+                // Fin utilisateurs concurrents
+
                 /* lecture du service de l'utilisateur authentifié */
                 $this->Utilisateur->Service->recursive=-1;
                 $group =  $this->Group->findById($authUser['User']['group_id']);
@@ -33,6 +67,11 @@
                             '"Jeton"."user_id"' => $user_id
                         )
                     );
+                    // Utilisateurs concurrents
+                    if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
+                        $this->Connection->deleteAll( array( 'Connection.user_id' => $user_id ) );
+                    }
+                    // Fin utilisateurs concurrents
                 }
             }
             $this->Session->delete( 'Auth' );
@@ -78,13 +117,12 @@
                 'list',
                 array(
                     'fields' => array(
-                        //'Serviceinstructeur.id',
+                        'Serviceinstructeur.id',
                         'Serviceinstructeur.lib_service'
                     ),
                 )
             );
             $this->set( 'si', $si );
-
 
             if( !empty( $this->data ) ) {
                 if( $this->User->saveAll( $this->data ) ) {

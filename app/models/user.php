@@ -40,6 +40,35 @@
 
         //*********************************************************************
 
+        // FIXME:SQL Error: ERREUR:  une valeur NULL viole la contrainte NOT NULL de la colonne « password » [CORE/cake/libs/model/datasources/dbo_source.php, line 525]
+
+        var $validate = array(
+            'username' => array(
+                array(
+                    'rule' => 'isUnique',
+                    'message' => 'Cet identifiant est déjà utilisé'
+                ),
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'group_id' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'serviceinstructeur_id' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+        );
+
+        //*********************************************************************
+
         function beforeSave() {
             if( !empty( $this->data['User']['passwd'] ) ) {
                 $this->data['User']['password'] = Security::hash( $this->data['User']['passwd'], null, true );

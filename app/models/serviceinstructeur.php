@@ -6,18 +6,36 @@
 
         function listOptions() {
             return  $this->find(
-                'list', 
+                'list',
                 array (
                     'fields' => array(
-                        'id',
-                        'lib_service'
+                        'Serviceinstructeur.id',
+                        'Serviceinstructeur.lib_service'
                     ),
-                    'order'  => array( 'lib_service ASC' )
+                    'order'  => array( 'Serviceinstructeur.lib_service ASC' )
                 )
             );
         }
 
+
         var $validate = array(
+            'lib_service' => array(
+                array(
+                    'rule' => 'isUnique',
+                    'message' => 'Ce libellé est déjà utilisé'
+                ),
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'code_insee' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                    // FIXME: format
+                )
+            ),
             'numdepins' => array(
                 array(
                     'rule' => 'alphaNumeric',
@@ -52,8 +70,6 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-//             'numagrins'
         );
     }
-
 ?>
