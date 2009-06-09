@@ -10,8 +10,6 @@ ALTER TABLE contratsinsertion ALTER COLUMN nature_projet TYPE TEXT;
 
 ALTER TABLE contratsinsertion ALTER COLUMN observ_ci TYPE TEXT;
 
-ALTER TABLE contratsinsertion DROP COLUMN type_ci;
-
 -- ALTER TABLE contratsinsertion DROP COLUMN type_ci;
 ALTER TABLE orientsstructs ALTER COLUMN typeorient_id DROP NOT NULL;
 
