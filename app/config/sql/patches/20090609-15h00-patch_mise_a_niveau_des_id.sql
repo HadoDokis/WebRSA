@@ -1,9 +1,3 @@
-SELECT pg_catalog.setval('users_id_seq', ( SELECT max(users.id) + 1 FROM users ), false);
-SELECT pg_catalog.setval('zonesgeographiques_id_seq', ( SELECT max(zonesgeographiques.id) + 1 FROM zonesgeographiques ), false);
-SELECT pg_catalog.setval('typesorients_id_seq', ( SELECT max(typesorients.id) + 1 FROM typesorients ), false);
-SELECT pg_catalog.setval('structuresreferentes_id_seq', ( SELECT max(structuresreferentes.id) + 1 FROM structuresreferentes ), false);
-SELECT pg_catalog.setval('typoscontrats_id_seq', ( SELECT max(typoscontrats.id) + 1 FROM typoscontrats ), false);
-
 SELECT pg_catalog.setval('accoemplois_id_seq', ( SELECT max(accoemplois.id) + 1 FROM accoemplois ), false);
 SELECT pg_catalog.setval('acos_id_seq', ( SELECT max(acos.id) + 1 FROM acos ), false);
 SELECT pg_catalog.setval('actions_id_seq', ( SELECT max(actions.id) + 1 FROM actions ), false);
@@ -52,3 +46,21 @@ SELECT pg_catalog.setval('orientsstructs_id_seq', ( SELECT max(orientsstructs.id
 SELECT pg_catalog.setval('paiementsfoyers_id_seq', ( SELECT max(paiementsfoyers.id) + 1 FROM paiementsfoyers ), false);
 SELECT pg_catalog.setval('personnes_id_seq', ( SELECT max(personnes.id) + 1 FROM personnes ), false);
 SELECT pg_catalog.setval('prestsform_id_seq', ( SELECT max(prestsform.id) + 1 FROM prestsform ), false);
+SELECT pg_catalog.setval('reducsrsa_id_seq', ( SELECT max(reducsrsa.id) + 1 FROM reducsrsa ), false);
+SELECT pg_catalog.setval('referents_id_seq', ( SELECT max(referents.id) + 1 FROM referents ), false);
+SELECT pg_catalog.setval('refsprestas_id_seq', ( SELECT max(refsprestas.id) + 1 FROM refsprestas ), false);
+SELECT pg_catalog.setval('ressources_id_seq', ( SELECT max(ressources.id) + 1 FROM ressources ), false);
+SELECT pg_catalog.setval('ressourcesmensuelles_id_seq', ( SELECT max(ressourcesmensuelles.id) + 1 FROM ressourcesmensuelles ), false);
+SELECT pg_catalog.setval('servicesinstructeurs_id_seq', ( SELECT max(servicesinstructeurs.id) + 1 FROM servicesinstructeurs ), false);
+SELECT pg_catalog.setval('situationsdossiersrsa_id_seq', ( SELECT max(situationsdossiersrsa.id) + 1 FROM situationsdossiersrsa ), false);
+SELECT pg_catalog.setval('structuresreferentes_id_seq', ( SELECT max(structuresreferentes.id) + 1 FROM structuresreferentes ), false);
+SELECT pg_catalog.setval('suivisinstruction_id_seq', ( SELECT max(suivisinstruction.id) + 1 FROM suivisinstruction ), false);
+SELECT pg_catalog.setval('suspensionsdroits_id_seq', ( SELECT max(suspensionsdroits.id) + 1 FROM suspensionsdroits ), false);
+SELECT pg_catalog.setval('suspensionsversements_id_seq', ( SELECT max(suspensionsversements.id) + 1 FROM suspensionsversements ), false);
+SELECT pg_catalog.setval('titres_sejour_id_seq', ( SELECT max(titres_sejour.id) + 1 FROM titres_sejour ), false);
+SELECT pg_catalog.setval('totalisationsacomptes_id_seq', ( SELECT max(totalisationsacomptes.id) + 1 FROM totalisationsacomptes ), false);
+SELECT pg_catalog.setval('typesactions_id_seq', ( SELECT max(typesactions.id) + 1 FROM typesactions ), false);
+SELECT pg_catalog.setval('typesorients_id_seq', ( SELECT max(typesorients.id) + 1 FROM typesorients ), false);
+SELECT pg_catalog.setval('typoscontrats_id_seq', ( SELECT max(typoscontrats.id) + 1 FROM typoscontrats ), false);
+SELECT pg_catalog.setval('users_id_seq', ( SELECT max(users.id) + 1 FROM users ), false);
+SELECT pg_catalog.setval('zonesgeographiques_id_seq', ( SELECT max(zonesgeographiques.id) + 1 FROM zonesgeographiques ), false);
