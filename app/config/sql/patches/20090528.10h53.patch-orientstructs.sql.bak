@@ -1,1 +1,0 @@
-ALTER TABLE orientsstructs ALTER COLUMN typeorient_id TYPE INTEGER NOT NULL REFERENCES typesorients(id);
