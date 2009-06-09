@@ -12,6 +12,7 @@ SELECT pg_catalog.setval('aros_acos_id_seq', ( SELECT max(aros_acos.id) + 1 FROM
 SELECT pg_catalog.setval('avispcgdroitrsa_id_seq', ( SELECT max(avispcgdroitrsa.id) + 1 FROM avispcgdroitrsa ), false);
 SELECT pg_catalog.setval('avispcgpersonnes_id_seq', ( SELECT max(avispcgpersonnes.id) + 1 FROM avispcgpersonnes ), false);
 SELECT pg_catalog.setval('condsadmins_id_seq', ( SELECT max(condsadmins.id) + 1 FROM condsadmins ), false);
+SELECT pg_catalog.setval('connections_id_seq', ( SELECT max(connections.id) + 1 FROM connections ), false);
 SELECT pg_catalog.setval('contratsinsertion_id_seq', ( SELECT max(contratsinsertion.id) + 1 FROM contratsinsertion ), false);
 SELECT pg_catalog.setval('creances_id_seq', ( SELECT max(creances.id) + 1 FROM creances ), false);
 SELECT pg_catalog.setval('creancesalimentaires_id_seq', ( SELECT max(creancesalimentaires.id) + 1 FROM creancesalimentaires ), false);
