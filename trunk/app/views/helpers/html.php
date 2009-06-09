@@ -687,6 +687,23 @@ class HtmlHelper extends AppHelper {
         }
     }
 
+    function validateLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/tick.png',
+            array( 'alt' => '' )
+        ).' Valider';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
 //     function deleteLink( $title, $url ) {
 //         return $this->link(
 //             $this->image(

@@ -4,7 +4,7 @@
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'ModeContact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf' );
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'ModeContact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur' );
         var $aucunDroit = array( 'menu' );
 
         var $paginate = array(
@@ -26,6 +26,7 @@
             $this->set( 'natpf', $this->Option->natpf() );
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+            $this->set( 'typeserins', $this->Option->typeserins() );
             return $return;
         }
 
@@ -348,6 +349,9 @@
                 )
             );
             $dossier = Set::merge( $dossier, array( 'Dossiercaf' => $caf['Dossiercaf'] ) );
+
+            //----------------------------------------------------------------- 
+
 // debug( $dossier );
             $this->assert( !empty( $dossier ), 'error404' );
             $this->set( 'dossier', $dossier );

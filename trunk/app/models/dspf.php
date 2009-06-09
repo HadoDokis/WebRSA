@@ -29,34 +29,34 @@
 
 
         var $validate = array(
-            'motidemrsa' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'accosocfam' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'nataccosocfam' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'natlog' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'demarlog' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-            ),
-            'Diflog' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-            )
+//             'motidemrsa' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//             ),
+//             'accosocfam' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//             ),
+//             'nataccosocfam' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//             ),
+//             'natlog' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//             ),
+//             'demarlog' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 ),
+//             ),
+//             'Diflog' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 ),
+//             )
 
         );
     }

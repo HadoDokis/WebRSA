@@ -43,7 +43,7 @@
                                 h( date_short($suiviinstruction['Suiviinstruction']['date_etat_instruction'] ) ) ,
                                 h( $suiviinstruction['Suiviinstruction']['nomins']),
                                 h( $suiviinstruction['Suiviinstruction']['numdepins']),
-                                h( $suiviinstruction['Suiviinstruction']['typeserins'] ),
+                                h( isset( $typeserins[$suiviinstruction['Suiviinstruction']['typeserins']] ) ? $typeserins[$suiviinstruction['Suiviinstruction']['typeserins']] : null ),
                                 $html->viewLink(
                                     'Voir les informations financières',
                                     array( 'controller' => 'suivisinstruction', 'action' => 'view', $suiviinstruction['Suiviinstruction']['id'])

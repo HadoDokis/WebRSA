@@ -53,7 +53,7 @@
                     <th>Contrat envoyé par</th>
                     <th>N° CAF</th>
                     <th>Date de début du contrat</th>
-                    <th>Durée</th>
+                    <th>Durée (en mois)</th>
                     <th>Décision</th>
                     <th class="action">Actions</th>
                     <th class="innerTableHeader">Informations complémentaires</th>

@@ -294,7 +294,7 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
-
+/*
         function delete( $contratinsertion_id = null ) {
             // Vérification du format de la variable
             if( !valid_int( $contratinsertion_id ) ) {
@@ -316,8 +316,62 @@
             // Tentative de suppression ... FIXME
             if( $this->Contratinsertion->delete( array( 'Contratinsertion.id' => $contratinsertion_id ) ) ) {
                 $this->Session->setFlash( 'Suppression effectuée' );
-                //$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
+                $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
             }
+        }*/
+
+        function valider( $contratinsertion_id = null ) {
+            // Vérification du format de la variable
+            if( !valid_int( $contratinsertion_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+//             $data = array(
+//                 'Contratinsertion' => array(
+//                     'id'            => $contratinsertion_id,
+//                     'decision_ci'   => ''
+//                 )
+//             );
+
+            $contratinsertion = $this->Contratinsertion->find(
+                'first',
+                array(
+                    'conditions' => array(
+                    'Contratinsertion.id' => $contratinsertion_id
+                    )
+                )
+            );
+
+            $personne = $this->Personne->find( 
+                'first', 
+                array( 
+                    'conditions'=> array( 
+                        'Personne.id' => $contratinsertion['Personne']['id']
+                    ),
+                    'recursive' => 2
+                )
+            );
+
+            // Assignation à la vue
+            $this->set( 'personne', $personne );
+
+            if ( empty( $contratinsertion )){
+                $this->cakeError( 'error404' );
+            }
+
+            $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
+
+            if( !empty( $this->data ) ) {
+                if( $this->Contratinsertion->saveAll( $this->data ) ) {
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                   $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']) );
+                }
+            }
+            else {
+                $this->data = $contratinsertion;
+            }
+
         }
+
 }
 ?>

@@ -1,4 +1,4 @@
-<?php $this->pageTitle = 'Dossier de la personne';?>
+<?php $this->pageTitle = 'Contrat d\'insertion';?>
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
 <?php
@@ -18,7 +18,7 @@
         <table>
             <tbody>
                 <tr class="odd">
-                    <th><?php __( 'lib_typo_contrat' );?></th>
+                    <th><?php __( 'lib_typo' );?></th>
                     <td><?php echo ( $tc[$contratinsertion['Contratinsertion']['typocontrat_id']] );?></td>
                 </tr>
                 <tr class="even">
@@ -98,23 +98,23 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'sect_acti_emp' );?></th>
-                    <td><?php echo $contratinsertion['Contratinsertion']['sect_acti_emp'];?></td>
+                    <td><?php echo $sect_acti_emp[$contratinsertion['Contratinsertion']['sect_acti_emp']];?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'emp_occupe' );?></th>
-                    <td><?php echo $contratinsertion['Contratinsertion']['emp_occupe'];?></td>
+                    <td><?php echo $emp_occupe[$contratinsertion['Contratinsertion']['emp_occupe']];?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'duree_hebdo_emp' );?></th>
-                    <td><?php echo $contratinsertion['Contratinsertion']['duree_hebdo_emp'];?></td>
+                    <td><?php echo $duree_hebdo_emp[$contratinsertion['Contratinsertion']['duree_hebdo_emp']];?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'nat_cont_trav' );?></th>
-                    <td><?php echo $contratinsertion['Contratinsertion']['nat_cont_trav'];?></td>
+                    <td><?php echo $nat_cont_trav[$contratinsertion['Contratinsertion']['nat_cont_trav']];?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'duree_cdd' );?></th>
-                    <td><?php echo $contratinsertion['Contratinsertion']['duree_cdd'];?></td>
+                    <td><?php echo $duree_cdd[$contratinsertion['Contratinsertion']['duree_cdd']];?></td>
                 </tr>
             </tbody>
         </table>
