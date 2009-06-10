@@ -32,13 +32,18 @@
             echo '<div>';
             echo $form->input( 'Ressource.id', array( 'type' => 'hidden' ) );
             echo '</div>';
+
             for( $i = 0 ; $i < 3 ; $i ++ ) {
-                echo '<div>';
-                echo $form->input( 'Ressourcemensuelle.'.$i.'.id', array( 'type' => 'hidden' ) );
-                echo '</div>';
-                echo $form->input( 'Ressourcemensuelle.'.$i.'.ressource_id', array( 'type' => 'hidden' ) );
-                echo $form->input( 'Detailressourcemensuelle.'.$i.'.id', array( 'type' => 'hidden' ) );
-                echo $form->input( 'Detailressourcemensuelle.'.$i.'.ressource_id', array( 'type' => 'hidden' ) );
+                if( Set::extract( $this->data, 'Ressourcemensuelle.'.$i.'.id' ) !== null ) {
+                    echo '<div>';
+                    echo $form->input( 'Ressourcemensuelle.'.$i.'.id', array( 'type' => 'hidden' ) );
+                    echo '</div>';
+                    echo $form->input( 'Ressourcemensuelle.'.$i.'.ressource_id', array( 'type' => 'hidden' ) );
+                    if( Set::extract( $this->data, 'Detailressourcemensuelle.'.$i.'.id' ) !== null ) {
+                        echo $form->input( 'Detailressourcemensuelle.'.$i.'.id', array( 'type' => 'hidden' ) );
+                        echo $form->input( 'Detailressourcemensuelle.'.$i.'.ressource_id', array( 'type' => 'hidden' ) );
+                    }
+                }
             }
         }
         echo '<div>';

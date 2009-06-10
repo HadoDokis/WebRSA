@@ -449,11 +449,14 @@
                     )
                 );
                 $this->Suiviinstruction->set( $suiviinstruction );
-                if( $this->Suiviinstruction->validates( $suiviinstruction ) ) { // FIXME -> plus haut
+                if( $this->Suiviinstruction->validates() ) { // FIXME -> plus haut
                     $saved = $this->Suiviinstruction->save( $suiviinstruction ) && $saved;
                 }
                 else {
-                    $saved = false;
+                    // FIXME
+//                     $saved = false;
+// debug( $suiviinstruction );
+// debug( $this->Suiviinstruction->validationErrors );
                 }
 
                 // Fin de la transaction

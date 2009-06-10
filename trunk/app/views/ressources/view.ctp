@@ -81,13 +81,14 @@
                         <?php foreach( $ressource['Ressourcemensuelle'] as $ressourcemensuelle ):?>
                             <?php foreach( $ressourcemensuelle['Detailressourcemensuelle'] as $detailressourcemensuelle):?>
                                 <?php
+                                $indexNatress = trim( $detailressourcemensuelle['natress'] );
                                 //echo '<h4>'.strftime( '%B %Y', strtotime( $ressourcemensuelle['moisress'] ) ).'</h4>';
                                 echo $html->tableCells(
                                     array(
                                         h( strftime( '%B %Y', strtotime( $ressourcemensuelle['moisress'] ) ) ),
                                         h( $ressourcemensuelle['nbheumentra'] ),
                                         h( $ressourcemensuelle['mtabaneu'] ),
-                                        h( $natress[$detailressourcemensuelle['natress']] ),
+                                        h( ( !empty( $indexNatress ) ) ? $natress[$indexNatress] : null ),
                                         h( $detailressourcemensuelle['mtnatressmen'] ),
                                         h( $detailressourcemensuelle['abaneu'] ),
                                         h( $detailressourcemensuelle['dfpercress'] ),
