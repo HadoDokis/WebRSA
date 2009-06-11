@@ -21,8 +21,9 @@
             <tr>
                 <th>Nom du service</th>
                 <th>N° de rue</th>
+                <th>Type de voie</th>
                 <th>Nom de rue</th>
-                <th>Complément d'adresse</th>
+                <!-- <th>Complément d'adresse</th> -->
                 <th>Code INSEE</th>
                 <th>Code postal</th>
                 <th>Ville</th>
@@ -39,8 +40,9 @@
                             array(
                                 h( $serviceinstructeur['Serviceinstructeur']['lib_service'] ),
                                 h( $serviceinstructeur['Serviceinstructeur']['num_rue'] ),
+                                h( $serviceinstructeur['Serviceinstructeur']['type_voie'] ),
                                 h( $serviceinstructeur['Serviceinstructeur']['nom_rue'] ),
-                                h( $serviceinstructeur['Serviceinstructeur']['complement_adr'] ),
+                                //h( $serviceinstructeur['Serviceinstructeur']['complement_adr'] ),
                                 h( $serviceinstructeur['Serviceinstructeur']['code_insee'] ),
                                 h( $serviceinstructeur['Serviceinstructeur']['code_postal'] ),
                                 h( $serviceinstructeur['Serviceinstructeur']['ville'] ),

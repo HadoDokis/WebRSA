@@ -21,7 +21,11 @@
         Event.observe( 'toutDecocher', 'click', toutDecocher );
     });
 </script>
-
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsetOnCheckbox( 'DossierDtdemrsa', $( 'DossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
+    });
+</script>
 <ul class="actionMenu">
     <?php
         if( $session->read( 'Auth.User.username' ) == 'cg66' ) { // FIXME
@@ -46,21 +50,13 @@
 <?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 
     <fieldset>
-        <legend>Recherche par types d'orientations</legend>
+        <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => __( 'dtdemrsa', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );?>
         <?php echo $form->input( 'Typeorient.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
-    </fieldset>
-    <fieldset>
-        <legend>Recherche par Structures référentes</legend>
-            <?php echo $form->input( 'Structurereferente.id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
-    </fieldset>
-    <fieldset>
-        <legend>Recherche par Statut</legend>
+        <?php echo $form->input( 'Structurereferente.id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
         <?php echo $form->input( 'Orientstructs.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
-    </fieldset>
-  <!--  <fieldset>
-        <legend>Recherche par Service instructeur</legend>
-            <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
-    </fieldset> -->
+         <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?> 
+    </fieldset> 
+
     <div class="submit">
         <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>

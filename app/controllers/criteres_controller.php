@@ -1,6 +1,20 @@
 <?php
     App::import('Sanitize');
-
+        function dateComplete( $data, $key ) {
+            $dateComplete = Set::extract( $data, $key );
+            if( !array( $dateComplete ) ) {
+                return empty( $dateComplete );
+            }
+            else {
+                $empty = true;
+                foreach( $dateComplete as $tmp ) {
+                    if( !empty( $tmp ) ) {
+                        $empty = false;
+                    }
+                }
+                return $empty;
+            }
+        }
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
@@ -17,6 +31,8 @@
             else
                 return $requete." AND ($champ = $valeur) ";
         }
+
+
 
         function index() {
             $sr = $this->Structurereferente->find(
@@ -42,6 +58,12 @@
                 $requete = ( !empty( $mesZones ) ? 'personne_id IN ('.implode( ',', array_values( $mesZones ) ).') ' : 'personne_id IS NULL' );
                 $select  = "SELECT * FROM personnes WHERE id IN ( SELECT personne_id FROM orientsstructs WHERE ";
 
+                //Critères sur la date d'ouverture d'orientation
+                if( !dateComplete( $this->data, 'Dossier.dtdemrsa' ) ) {
+                    $dtdemrsa = $this->data['Dossier']['dtdemrsa'];
+                    $conditions['Dossier.dtdemrsa'] = $dtdemrsa['year'].'-'.$dtdemrsa['month'].'-'.$dtdemrsa['day'];
+                }
+
                 //Critères sur un type d'orientation - libelle, parentid, modèle de notification
                 if( isset( $params['Typeorient']['id'] ) && !empty( $params['Typeorient']['id'] ) )
                     $requete = $this->constReq($requete, 'Orientsstructs.typeorient_id', suffix( $params['Typeorient']['id'] ) );
@@ -63,30 +85,6 @@
                 $requete = $select. $requete .')';
                 $criteres = $this->Personne->query($requete);
 
-
-
-	    /************************************** Debut Requête pour rechercher par Contrat insertion  ****************************************/
-                // Critères sur un contrat insertion - date de debut
-                /*$filtersContrat = array();
-                foreach( array( 'dd_ci' ) as $critereContrat ) {
-                    if( isset( $params['Contratinsertion'][$critereContrat] ) && !empty( $params['Contratinsertion'][$critereContrat] ) ) {
-                        $filtersContrat['Contratinsertion.'.$critereContrat.' ILIKE'] = '%'.$params['Contratinsertion'][$critereContrat].'%';
-                    }
-                }
-
-                // Critères sur un contrat insertion - date de debut
-                if( isset( $params['Contratinsertion']['dd_ci'] ) && !empty( $params['Contratinsertion']['dd_ci'] ) ) {
-                    if( valid_int( $params['Contratinsertion']['dd_ci']['year'] ) ) {
-                        $filtersContrat['EXTRACT(YEAR FROM Contratinsertion.dd_ci) ='] = $params['Contratinsertion']['dd_ci']['year'];
-                    }
-                    if( valid_int( $params['Contratinsertion']['dd_ci']['month'] ) ) {
-                        $filtersContrat['EXTRACT(MONTH FROM Contratinsertion.dd_ci) ='] = $params['Contratinsertion']['dd_ci']['month'];
-                    }
-                    if( valid_int( $params['Contratinsertion']['dd_ci']['day'] ) ) {
-                        $filtersContrat['EXTRACT(DAY FROM Contratinsertion.dd_ci) ='] = $params['Contratinsertion']['dd_ci']['day'];
-                    }
-                }*/
-	    /************************************** Fin de la Requête pour rechercher par Contrat insertion  ****************************************/
 
                 //Recherche
 
