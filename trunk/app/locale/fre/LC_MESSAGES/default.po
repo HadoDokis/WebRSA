@@ -460,6 +460,8 @@ msgstr "Date d\'emménagement"
 ###############################################################################
 # Informations financières
 ##############################################################################
+msgid "dtdemrsa"
+msgstr "Date d'ouverture des droits"
 
 msgid "moismoucompta"
 msgstr "Mois du mouvement comptable"

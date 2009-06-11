@@ -1,0 +1,1 @@
+ALTER TABLE servicesinstructeurs ADD COLUMN type_voie VARCHAR(6);

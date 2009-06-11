@@ -1,14 +1,14 @@
 <?php
     App::import('Sanitize');
 
-    function freu( $data, $key ) {
-        $freu = Set::extract( $data, $key );
-        if( !array( $freu ) ) {
-            return empty( $freu );
+    function dateComplete( $data, $key ) {
+        $dateComplete = Set::extract( $data, $key );
+        if( !is_array( $dateComplete ) || empty( $dateComplete ) ) {
+            return empty( $dateComplete );
         }
         else {
             $empty = true;
-            foreach( $freu as $tmp ) {
+            foreach( $dateComplete as $tmp ) {
                 if( !empty( $tmp ) ) {
                     $empty = false;
                 }
@@ -59,20 +59,29 @@
                 // INFO: seulement les personnes qui sont dans ma zone géographique
                 $conditions['Contratinsertion.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ) );
 
-
-                if( !freu( $this->data, 'Contratinsertion.dd_ci' ) ) {
+                //Critère recherche par Contrat insertion: date de création contrat
+                if( !dateComplete( $this->data, 'Contratinsertion.dd_ci' ) ) {
                     $dd_ci = $this->data['Contratinsertion']['dd_ci'];
                     $conditions['Contratinsertion.dd_ci'] = $dd_ci['year'].'-'.$dd_ci['month'].'-'.$dd_ci['day'];
                 }
 
+                //Critère recherche par Contrat insertion: localisation de la personne rattachée au contrat
                 if( isset( $params['Adresse']['locaadr'] ) && !empty( $params['Adresse']['locaadr'] ) ){
                     $conditions[] = "Adresse.locaadr ILIKE '%".Sanitize::paranoid( $params['Adresse']['locaadr'] )."%'";
                 }
 
+                //Critère recherche par Contrat insertion: par décision du CG
                 if( isset( $params['Contratinsertion']['decision_ci'] ) && !empty( $params['Contratinsertion']['decision_ci'] ) ){
                     $conditions[] = "Contratinsertion.decision_ci ILIKE '%".Sanitize::paranoid( $params['Contratinsertion']['decision_ci'] )."%'";
                 }
 
+                //Critère recherche par Contrat insertion: date de validation du contrat
+                if( !dateComplete( $this->data, 'Contratinsertion.datevalidation_ci' ) ) {
+                    $datevalidation_ci = $this->data['Contratinsertion']['datevalidation_ci'];
+                    $conditions['Contratinsertion.datevalidation_ci'] = $datevalidation_ci['year'].'-'.$datevalidation_ci['month'].'-'.$datevalidation_ci['day'];
+                }
+
+                //Critère recherche par Contrat insertion: par service instructeur
                 if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) ){
                     $conditions['Serviceinstructeur.id'] = $params['Serviceinstructeur']['id'];
                 }

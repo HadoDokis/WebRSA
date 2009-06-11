@@ -42,13 +42,13 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-	    'structurereferente_id' => array(
+            'structurereferente_id' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
             ),
-	    'dd_ci' => array(
+            'dd_ci' => array(
                 'notEmpty' => array(
                     'rule' => 'date',
                     'message' => 'Veuillez entrer une date valide'
@@ -90,12 +90,12 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'obsta_renc' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+//             'obsta_renc' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
             'service_soutien' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
