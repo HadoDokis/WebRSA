@@ -23,20 +23,22 @@
                     )
                 );
 
-                // FIXME: trié par parent / fils ? .. un seul niveau
-                $sql = 'SELECT acos.alias AS aco, aros_acos._create, aros.alias AS aro
-                            FROM aros_acos
-                                LEFT OUTER JOIN acos ON ( aros_acos.aco_id = acos.id )
-                                LEFT OUTER JOIN aros ON ( aros_acos.aro_id = aros.id )
-                            WHERE aros_acos.aro_id IN ( '.$Aro['Aro']['id'].','.$Aro['Aro']['parent_id'].' )
-                            ORDER BY aco, aro ASC';
-                $data = $this->User->query( $sql ); // FIXME: c'est sale ?
+                if( !empty( $Aro ) ) {
+                    // FIXME: trié par parent / fils ? .. un seul niveau
+                    $sql = 'SELECT acos.alias AS aco, aros_acos._create, aros.alias AS aro
+                                FROM aros_acos
+                                    LEFT OUTER JOIN acos ON ( aros_acos.aco_id = acos.id )
+                                    LEFT OUTER JOIN aros ON ( aros_acos.aro_id = aros.id )
+                                WHERE aros_acos.aro_id IN ( '.$Aro['Aro']['id'].','.$Aro['Aro']['parent_id'].' )
+                                ORDER BY aco, aro ASC';
+                    $data = $this->User->query( $sql ); // FIXME: c'est sale ?
 
-                $permissions = Set::combine( $data, '{n}.0.aco', '{n}.0._create' );
-                foreach( $permissions as $key => $permission ) {
-                    $permissions[$key] = ( $permission != -1 );
+                    $permissions = Set::combine( $data, '{n}.0.aco', '{n}.0._create' );
+                    foreach( $permissions as $key => $permission ) {
+                        $permissions[$key] = ( $permission != -1 );
+                    }
+                    $this->Session->write( 'Auth.Permissions', $permissions );
                 }
-                $this->Session->write( 'Auth.Permissions', $permissions );
             }
         }
 
@@ -73,7 +75,7 @@
             $this->_loadPermissions();
             $this->_loadZonesgeographiques();
 
-            if((substr($_SERVER['REQUEST_URI'], strlen($this->base)) != '/users/login')) {
+            if( ( substr( $_SERVER['REQUEST_URI'], strlen( $this->base ) ) != '/users/login' ) ) {
                 if( !$this->Session->check( 'Auth' ) ) {
                     //le forcer a se connecter
                     $this->redirect("/users/login");
@@ -84,6 +86,7 @@
                     if( empty( $user['User'] ) ) {
                         $this->redirect("/users/login");
                     }
+
                     // Utilisateurs concurrents
                     if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
                         if( $connection = $this->Connection->find( 'first', array( 'conditions' => array( 'Connection.user_id' => $user['User']['id'] ) ) ) ) {
@@ -92,26 +95,25 @@
                             $this->Connection->save( $connection );
                         }
                     }
-                    // Fin utilisateurs concurrents
+
+                    // Données utilisateur et service instructeur correctement remplies
+                    $name = Inflector::underscore( $this->name );
+                    if( ( $name != 'droits' ) && ( $name != 'parametrages' ) && ( $name != 'servicesinstructeurs' ) && ( $name != 'users' ) ) {
+                        if( empty( $user['User']['nom'] ) || empty( $user['User']['prenom'] ) || empty( $user['User']['serviceinstructeur_id'] ) ) {
+                            $this->cakeError( 'incompleteUser' );
+                        }
+                        else {
+                            $service = $this->Serviceinstructeur->findById( $user['User']['serviceinstructeur_id'] );
+                            if( empty( $service ) || empty( $service['Serviceinstructeur']['lib_service'] ) || empty( $service['Serviceinstructeur']['numdepins'] ) || empty( $service['Serviceinstructeur']['typeserins'] ) || empty( $service['Serviceinstructeur']['numcomins'] ) || empty( $service['Serviceinstructeur']['numagrins'] ) ) {
+                            $this->cakeError( 'incompleteUser' );
+                            }
+                        }
+                    }
+
                     $controllerAction = $this->name . ':' . ($this->name == 'Pages' ? $this->params['pass'][0] : $this->action);
                     $this->assert( $this->Droits->check( $user['User']['aroAlias'], $controllerAction ), 'error403' );
                 }
             }
-
-//             for( $i = 0 ; $i < 26 ; $i++ ) {
-//                 $this->User->create();
-//                 $char = chr( ord( 'a' ) + $i );
-//                 $user = array(
-//                     'User' => array(
-//                         'username' => $char.$char,
-//                         'password' => $char.$char,
-//                         'group_id' => 2,
-//                         'serviceinstructeur_id' => 1
-//                     )
-//                 );
-//                 $this->User->set( $user );
-//                 $this->User->save( $user );
-//             }
         }
 
         //*********************************************************************
