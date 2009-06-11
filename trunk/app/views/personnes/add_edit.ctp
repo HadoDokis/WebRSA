@@ -26,7 +26,6 @@
     <?php
         if( $this->action == 'add' ) {
             echo $form->create( 'Personne', array( 'type' => 'post', 'url' => Router::url( null, true ) ));
-            echo $form->input( 'Personne.id', array( 'type' => 'hidden', 'value' => '' ) );
         }
         else {
             echo $form->create( 'Personne', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );

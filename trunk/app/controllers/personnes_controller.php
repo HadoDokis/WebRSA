@@ -9,14 +9,16 @@
             $this->components[] = 'Jetons';
         }
 
+
         function beforeFilter() {
-            parent::beforeFilter();
+            $return = parent::beforeFilter();
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'nationalite', $this->Option->nationalite() );
             $this->set( 'typedtnai', $this->Option->typedtnai() );
             $this->set( 'pieecpres', $this->Option->pieecpres() );
             $this->set( 'sexe', $this->Option->sexe() );
+            return $return;
         }
 
         /**
@@ -66,48 +68,54 @@
         /**
             Ajout d'une personne au foyer
         */
-        function add( $id = null ) {
+
+            function add( $foyer_id = null ){
             // Vérification du format de la variable
-            $this->assert( valid_int( $id ), 'error404' );
+            $this->assert( valid_int( $foyer_id ), 'error404' );
 
-            // Essai de sauvegarde
-            if( !empty( $this->data ) && $this->Personne->save( $this->data ) ) {
-                $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                $this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $id ) );
-            }
-
-            $roles = $this->Personne->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Personne.id',
-                        'Personne.rolepers',
-                    ),
-                    'conditions' => array(
-                        'Personne.foyer_id' => $id,
-                        'Personne.rolepers' => array( 'DEM', 'CJT' )
-                    ),
-                )
-            );
-
-            // Assignation à la vue
-            $this->set( 'foyer_id', $id );
-            $this->data['Personne']['foyer_id'] = $id;
-            // One ne fait apparaître les roles de demandeur et de conjoint que
-            // si ceux-ci n'existent pas encore dans le foyer
-            $rolepersPermis = $this->Option->rolepers();
-            foreach( $rolepersPermis as $key => $rPP ) {
-                if( in_array( $key, $roles ) ) {
-                    unset( $rolepersPermis[$key] );
+                if( !empty( $this->data ) ){
+                    if( $this->Personne->save( $this->data ) ){
+                        $this->Session->setFlash( 'Enregistrement réussi', 'flash/success' );
+                        $this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $foyer_id ) );
+                    }
                 }
+                else {
+                    $roles = $this->Personne->find(
+                        'list',
+                        array(
+                            'fields' => array(
+                                'Personne.id',
+                                'Personne.rolepers',
+                            ),
+                            'conditions' => array(
+                                'Personne.foyer_id' => $foyer_id,
+                                'Personne.rolepers' => array( 'DEM', 'CJT' )
+                            ),
+                        )
+                    );
+                    // One ne fait apparaître les roles de demandeur et de conjoint que
+                    // si ceux-ci n'existent pas encore dans le foyer
+                    $rolepersPermis = $this->Option->rolepers();
+                    foreach( $rolepersPermis as $key => $rPP ) {
+                        if( in_array( $key, $roles ) ) {
+                            unset( $rolepersPermis[$key] );
+                        }
+                    }
+
+                    $this->set( 'rolepers', $rolepersPermis );
+
+                }
+
+                $this->set( 'foyer_id', $foyer_id );
+                $this->data['Personne']['foyer_id'] = $foyer_id;
+
+                $this->render( $this->action, null, 'add_edit' );
+
             }
 
-            $this->set( 'rolepers', $rolepersPermis );
-            $this->render( $this->action, null, 'add_edit' );
-        }
 
         /**
-            Éditer une adresse spécifique d'un foyer
+            Éditer une personne spécifique d'un foyer
         */
         function edit( $id = null ) {
             // Vérification du format de la variable
@@ -127,7 +135,7 @@
                     $this->Jetons->release( array( 'Personne.id' => $id ) );
                     $this->Personne->commit();
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $this->data['Personne']['foyer_id'] ) );
+                    $this->redirect( array(  'controller' => 'personnes','action' => 'index', $this->data['Personne']['foyer_id'] ) );
                 }
             }
             // Afficage des données

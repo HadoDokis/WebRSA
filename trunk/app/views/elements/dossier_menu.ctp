@@ -82,8 +82,8 @@
                                     <?php endif;?>
                                 </ul>
                             <?php endif;?>
-                        </li>
-                    <?php endif;?>
+                        <?php endif;?>
+                    </li>
                 <?php endforeach;?>
             </ul>
         </li>
@@ -150,18 +150,6 @@
                         ?>
                     </li>
                 <?php endif;?>
-
-                <!--<?php if( $permissions->check( 'suivisinstructions', 'index' ) ):?>
-                    <li>
-                        <?php
-                            echo $html->link(
-                                'Suivi d\'instruction',
-                                array( 'controller' => 'suivisinstructions', 'action' => 'index', $dossier['Foyer']['id'] )
-                            );
-                        ?>
-                    </li>
-                <?php endif;?>-->
-
             </ul>
         </li>
 

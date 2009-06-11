@@ -38,6 +38,10 @@
 <div id="fichePers">
     <table>
         <tbody>
+            <tr class="even">
+                <th><?php __( 'rolepers' );?></th>
+                <td><?php echo $rolepers[$personne['Personne']['rolepers']];?></td>
+            </tr>
             <tr class="odd">
                 <th><?php __( 'qual' );?></th>
                 <td><?php echo $qual[$personne['Personne']['qual']];?></td>

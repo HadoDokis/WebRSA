@@ -233,8 +233,9 @@
             controller will not continue on to redirect the request.
             The $url, $status and $exit variables have same meaning as for the controller's method.
         ******************************************************************** */
-//         function beforeRedirect( &$controller, $url, $status = null, $exit = true ) {
-//             parent::beforeRedirect( &$controller, $url, $status , $exit );
-//         }
+        function beforeRedirect( &$controller, $url, $status = null, $exit = true ) {
+            parent::beforeRedirect( $controller, $url, $status , $exit );
+            return $url;
+        }
     }
 ?>

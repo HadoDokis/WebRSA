@@ -20,6 +20,7 @@
     <table class="tooltips_oupas">
         <thead>
             <tr>
+                <th>Rôle</th>
                 <th>Qualité</th>
                 <th>Nom</th>
                 <th>Prénom</th>
@@ -48,6 +49,7 @@
 
                     echo $html->tableCells(
                         array(
+                            h( $rolepers[$personne['Personne']['rolepers']] ),
                             h( $qual[$personne['Personne']['qual']] ),
                             h( $personne['Personne']['nom'] ),
                             h( $personne['Personne']['prenom'] ),
