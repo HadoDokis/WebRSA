@@ -3,7 +3,7 @@
     {
         var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie' );
         var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions' );
-        var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User', 'Zonegeographique', 'Connection' );
+        var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User', 'Zonegeographique', 'Connection', 'User' );
 
         //*********************************************************************
 
@@ -97,6 +97,21 @@
                     $this->assert( $this->Droits->check( $user['User']['aroAlias'], $controllerAction ), 'error403' );
                 }
             }
+
+//             for( $i = 0 ; $i < 26 ; $i++ ) {
+//                 $this->User->create();
+//                 $char = chr( ord( 'a' ) + $i );
+//                 $user = array(
+//                     'User' => array(
+//                         'username' => $char.$char,
+//                         'password' => $char.$char,
+//                         'group_id' => 2,
+//                         'serviceinstructeur_id' => 1
+//                     )
+//                 );
+//                 $this->User->set( $user );
+//                 $this->User->save( $user );
+//             }
         }
 
         //*********************************************************************
