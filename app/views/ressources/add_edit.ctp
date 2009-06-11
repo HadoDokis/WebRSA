@@ -19,13 +19,18 @@
 
     <?php
         if( $this->action == 'add' ) {
-            echo $form->create( 'Ressource', array(  'type' => 'post', 'url' => Router::url( null, true )  ));
+            echo $form->create( 'Ressource', array( 'type' => 'post', 'url' => Router::url( null, true )  ));
 //             echo '<div>';
-//             echo $form->input( 'Ressource.id', array( 'type' => 'hidden', 'value' => '' ) );
-//             echo $form->input( 'Ressourcemensuelle.0.ressource_id', array( 'type' => 'hidden', 'value' => '' ) );
-//             echo $form->input( 'Ressourcemensuelle.1.ressource_id', array( 'type' => 'hidden', 'value' => '' ) );
-//             echo $form->input( 'Ressourcemensuelle.2.ressource_id', array( 'type' => 'hidden', 'value' => '' ) );
+//             echo $form->input( 'Ressource.id', array( 'type' => 'hidden' ) );
 //             echo '</div>';
+//             for( $i = 0 ; $i < 3 ; $i ++ ) {
+//                 echo '<div>';
+//                 echo $form->input( 'Ressourcemensuelle.'.$i.'.id', array( 'type' => 'hidden' ) );
+//                 echo '</div>';
+//                 echo $form->input( 'Ressourcemensuelle.'.$i.'.ressource_id', array( 'type' => 'hidden' ) );
+//                 echo $form->input( 'Detailressourcemensuelle.'.$i.'.id', array( 'type' => 'hidden' ) );
+//                 echo $form->input( 'Detailressourcemensuelle.'.$i.'.ressource_id', array( 'type' => 'hidden' ) );
+//                 }
         }
         else {
             echo $form->create( 'Ressource', array( 'type' => 'post', 'url' => Router::url( null, true )  ));

@@ -77,6 +77,30 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
+        function delete( $referent_id = null ) {
+            // Vérification du format de la variable
+            if( !valid_int( $referent_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Recherche de la personne
+            $referent = $this->Referent->find(
+                'first',
+                array( 'conditions' => array( 'Referent.id' => $referent_id )
+                )
+            );
+
+            // Mauvais paramètre
+            if( empty( $referent_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Tentative de suppression ... FIXME
+            if( $this->Referent->delete( array( 'Referent.id' => $referent_id ) ) ) {
+                $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+                $this->redirect( array( 'controller' => 'referents', 'action' => 'index' ) );
+            }
+        }
     }
 
 ?>

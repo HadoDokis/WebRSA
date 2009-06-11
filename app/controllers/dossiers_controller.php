@@ -27,6 +27,8 @@
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
             $this->set( 'typeserins', $this->Option->typeserins() );
+            $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
+
             return $return;
         }
 
@@ -183,6 +185,53 @@
         function view( $id = null ) {
             $this->assert( valid_int( $id ), 'error404' );
 
+
+/*****************************************************************************/
+            $dsp = array();
+
+            // DSP foyer
+            $dsp['foyer'] = $this->Dspf->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dspf.foyer_id' => $id
+                    )
+                )
+            ) ;
+
+            // Ajout des DSP demandeur et conjoint
+            foreach( array( 'DEM', 'CJT' ) as $rolepers ) {
+                $dsp[$rolepers] = array();
+                $personne = $this->Personne->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Personne.foyer_id' => $id,
+                            'Personne.rolepers' => $rolepers,
+                        ),
+                        'recursive' => -1
+                    )
+                ) ;
+                if( !empty( $personne ) ) {
+                    $dsp[$rolepers] = $personne;
+                    $dsp_personne = $this->Dspp->find(
+                        'first',
+                        array(
+                            'conditions' => array(
+                                'Dspp.personne_id' => $personne['Personne']['id']
+                            ),
+                            'recursive' => 2
+                        )
+                    ) ;
+                    if( !empty( $dsp_personne ) ) {
+                        $dsp[$rolepers] = array_merge( $dsp[$rolepers], $dsp_personne );
+                    }
+                }
+            }
+
+            $this->set( 'dsp', $dsp );
+            //debug($dsp);
+/*-*************************************************************************/
             $tc = $this->Typocontrat->find(
                 'list',
                 array(

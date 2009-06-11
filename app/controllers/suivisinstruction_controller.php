@@ -8,15 +8,14 @@
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'etatirsa', $this->Option->etatirsa() );
+            $this->set( 'typeserins', $this->Option->typeserins() );
+
         }
 
 
         function index( $dossier_rsa_id = null ) {
             // Vérification du format de la variable
             $this->assert( valid_int( $dossier_rsa_id ), 'error404' );
-            //$this->assert( valid_int( $foyer_id ), 'error404' );
-
-            $this->set( 'typeserins', $this->Option->typeserins() );
 
             // Recherche des adresses du foyer
             $suivisinstruction = $this->Suiviinstruction->find(
@@ -30,15 +29,13 @@
             // Assignations à la vue
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
             $this->set( 'suivisinstruction', $suivisinstruction );
-            $this->set( 'personne_id', $dossier_rsa_id);
+            $this->set( 'id', $dossier_rsa_id);
         }
 
 
         function view( $suiviinstruction_id = null ) {
             // Vérification du format de la variable
             $this->assert( valid_int( $suiviinstruction_id ), 'error404' );
-
-            $this->set( 'typeserins', $this->Option->typeserins() );
 
             $suiviinstruction = $this->Suiviinstruction->find(
                 'first',

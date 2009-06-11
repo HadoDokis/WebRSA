@@ -61,6 +61,30 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
+        function delete( $serviceinstructeur_id = null ) {
+            // Vérification du format de la variable
+            if( !valid_int( $serviceinstructeur_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Recherche de la personne
+            $serviceinstructeur = $this->Serviceinstructeur->find(
+                'first',
+                array( 'conditions' => array( 'Serviceinstructeur.id' => $serviceinstructeur_id )
+                )
+            );
+
+            // Mauvais paramètre
+            if( empty( $serviceinstructeur_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Tentative de suppression ... FIXME
+            if( $this->Serviceinstructeur->delete( array( 'Serviceinstructeur.id' => $serviceinstructeur_id ) ) ) {
+                $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+                $this->redirect( array( 'controller' => 'servicesinstructeurs', 'action' => 'index' ) );
+            }
+        }
     }
 
 ?>

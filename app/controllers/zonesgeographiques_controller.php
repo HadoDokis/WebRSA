@@ -55,6 +55,30 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
+        function delete( $zone_id = null ) {
+            // Vérification du format de la variable
+            if( !valid_int( $zone_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Recherche de la personne
+            $zone = $this->Zonegeographique->find(
+                'first',
+                array( 'conditions' => array( 'Zonegeographique.id' => $zone_id )
+                )
+            );
+
+            // Mauvais paramètre
+            if( empty( $zone_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Tentative de suppression ... FIXME
+            if( $this->Zonegeographique->delete( array( 'Zonegeographique.id' => $zone_id ) ) ) {
+                $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+                $this->redirect( array( 'controller' => 'zonesgeographiques', 'action' => 'index' ) );
+            }
+        }
     }
 
 ?>

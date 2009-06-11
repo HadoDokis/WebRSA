@@ -18,7 +18,7 @@
             <tr>
                 <th>Libellé</th>
                 <th>Code insee</th>
-                <th colspan="5" class="action">Actions</th>
+                <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -28,9 +28,13 @@
                                 h( $zone['Zonegeographique']['libelle'] ),
                                 h( $zone['Zonegeographique']['codeinsee'] ),
                                 $html->editLink(
-                                    'Éditer le contrat d\'insertion ',
+                                    'Éditer la zone géographique ',
                                     array( 'controller' => 'zonesgeographiques', 'action' => 'edit', $zone['Zonegeographique']['id'] )
                                 ),
+                                $html->deleteLink(
+                                    'Supprimer la zone géographique ',
+                                    array( 'controller' => 'zonesgeographiques', 'action' => 'delete', $zone['Zonegeographique']['id'] )
+                                )
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )

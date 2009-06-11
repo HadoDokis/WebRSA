@@ -6,7 +6,15 @@
         var $uses = array( 'Structurereferente', 'Referent', 'Orientstruct', 'Typeorient', 'Zonegeographique');
 
         function index() {
-
+            $type = $this->Typeorient->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typeorient.lib_type_orient'
+                    )
+                )
+            );
+            $this->set( 'type', $type );
             $structuresreferentes = $this->Structurereferente->find(
                 'all',
                 array(
@@ -104,6 +112,30 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
+        function delete( $structurereferente_id = null ) {
+            // Vérification du format de la variable
+            if( !valid_int( $structurereferente_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Recherche de la personne
+            $structurereferente = $this->Structurereferente->find(
+                'first',
+                array( 'conditions' => array( 'Structurereferente.id' => $structurereferente_id )
+                )
+            );
+
+            // Mauvais paramètre
+            if( empty( $structurereferente_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Tentative de suppression ... FIXME
+            if( $this->Structurereferente->delete( array( 'Structurereferente.id' => $structurereferente_id ) ) ) {
+                $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+                $this->redirect( array( 'controller' => 'structuresreferentes', 'action' => 'index' ) );
+            }
+        }
     }
 
 ?>

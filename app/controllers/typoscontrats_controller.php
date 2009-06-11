@@ -53,12 +53,35 @@
                     )
                 );
                 $this->data = $typocontrat;
-                debug( $this->data );
             }
 
             $this->render( $this->action, null, 'add_edit' );
         }
 
+        function delete( $typocontrat_id = null ) {
+            // Vérification du format de la variable
+            if( !valid_int( $typocontrat_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Recherche de la personne
+            $typocontrat = $this->Typocontrat->find(
+                'first',
+                array( 'conditions' => array( 'Typocontrat.id' => $typocontrat_id )
+                )
+            );
+
+            // Mauvais paramètre
+            if( empty( $typocontrat_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Tentative de suppression ... FIXME
+            if( $this->Typocontrat->delete( array( 'Typocontrat.id' => $typocontrat_id ) ) ) {
+                $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+                $this->redirect( array( 'controller' => 'typoscontrats', 'action' => 'index' ) );
+            }
+        }
     }
 
 ?>

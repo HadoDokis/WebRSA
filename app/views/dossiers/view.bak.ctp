@@ -4,8 +4,8 @@
 
 <div class="with_treemenu">
     <h1>Dossier RSA <?php echo h( $dossier['Dossier']['numdemrsa'] );?></h1>
-
-<div id="ficheDossier">
+<!-- <?php debug( $dossier );?> -->
+<div id="resumeDossier">
     <table>
         <tbody>
             <tr class="odd">
@@ -18,134 +18,164 @@
             </tr>
             <tr class="odd">
                 <th>État du dossier</th>
-                <td><?php echo h( $dossier['Situationdossierrsa']['etatdosrsa'] );?></td>
+                <td><?php echo h( isset( $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null );?></td>
+            </tr>
+            <tr class="even">
+                <th>Service instructeur</th>
+                <td><?php echo h( isset( $typeserins[$dossier['Suiviinstruction']['typeserins']] ) ? $typeserins[$dossier['Suiviinstruction']['typeserins']] : null );?></td>
             </tr>
         </tbody>
     </table>
-    <table>
+
+    <table id="ficheDossier">
         <tbody>
-            <tr class="odd">
-                <th>Nom</th>
-                <td><?php echo h( $dossier['Foyer']['Personne'][0]['nom'] );?></td>
+            <tr>
+                <td>
+                    <h2>Personne</h2>
+                    <table>
+                        <tbody>
+                            <tr class="odd">
+                                <th><?php __( 'nom' );?></th>
+                                <td><?php echo $dossier['Personne']['nom'];?></td>
+                            </tr>
+                            <tr class="even">
+                                <th><?php __( 'prenom' );?></th>
+                                <td><?php echo $dossier['Personne']['prenom'];?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th><?php __( 'adresse' );?></th>
+                                <td><?php echo $dossier['Adresse']['numvoie'].' '.$dossier['Adresse']['typevoie'].' '.$dossier['Adresse']['nomvoie'];?></td>
+                            </tr>
+                            <tr class="even">
+                                <th><?php __( 'numtel' );?></th>
+                                <td><?php echo isset( $dossier['ModeContact']['numtel'] ) ? $dossier['ModeContact']['numtel'] : null;?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th><?php __( 'locaadr' );?></th>
+                                <td><?php echo ( isset( $dossier['Adresse']['locaadr'] ) ? $dossier['Adresse']['locaadr'] : null );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Soumis à droits et devoirs</th>
+                                <td><?php echo h( isset( $toppersdrodevorsa[$dossier['Personne']['toppersdrodevorsa']] ) ? $toppersdrodevorsa[$dossier['Personne']['toppersdrodevorsa']] : null );?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <h2>Orientation</h2>
+                    <table>
+                        <tbody>
+                            <tr class="odd">
+                                <th>Type d'orientation</th>
+                                <td><?php echo h( isset( $dossier['Personne']['Structurereferente']['Typeorient']['lib_type_orient'] ) ? $dossier['Personne']['Structurereferente']['Typeorient']['lib_type_orient'] : null );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Structure référente<!--Type de structure--></th>
+                                <td><?php echo h( isset( $dossier['Personne']['Structurereferente']['lib_struc'] ) ? $dossier['Personne']['Structurereferente']['lib_struc'] : null);?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Date de l'orientation</th>
+                                <td><?php echo h(  date_short( isset( $dossier['Personne']['Orientstruct']['date_valid'] ) ) ? date_short( $dossier['Personne']['Orientstruct']['date_valid'] ) : null );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Statut de l'orientation</th>
+                                <td><?php echo h( isset( $dossier['Personne']['Orientstruct']['statut_orient'] ) ? $dossier['Personne']['Orientstruct']['statut_orient'] : null);?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Référent en cours</th>
+                                <td><?php echo h( isset( $dossier['Personne']['Structurereferente']['lib_struc'] ) ? $dossier['Personne']['Structurereferente']['lib_struc'] : null);?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
             </tr>
-            <tr class="even">
-                <th>Prénom</th>
-                <td><?php echo h( $dossier['Foyer']['Personne'][0]['prenom'] );?></td>
-            </tr>
-            <tr class="odd">
-                <th>Adresse</th>
-                <td><?php echo h( $dossier['Foyer']['Adressefoyer']['numvoie'] ).' '.h( $adresse['Adresse']['typevoie'].' '.$adresse['Adresse']['nomvoie'] );?></td>
-            </tr>
-            <tr class="even">
-                <th>N° de téléphone</th>
-                <td><?php echo h( isset( $dossier['Foyer']['ModeContact'][0]['numtel'] ) ? $dossier['Foyer']['ModeContact'][0]['numtel'] : null );?></td>
-            </tr> 
-            <tr class="odd">
-                <th>N° CAF</th>
-                <td><?php echo h( $dossier['Dossier']['matricule'] );?></td>
-            </tr>
-        </tbody>
-    </table>
-    <h2>Orientation</h2>
-    <table>
-        <tbody>
-            <tr class="odd">
-                <th>Type d'orientation</th>
-                <td><?php echo h( $orient['Structurereferente']['Typeorient']['lib_type_orient'] );?></td>
-            </tr>
-            <tr class="even">
-                <th>Type de structure</th>
-                <td><?php echo h( $orient['Structurereferente']['lib_struc'] );?></td>
-            </tr>
-            <tr class="odd">
-                <th>Date de l'orientation</th>
-                <td><?php echo h( date_short( $orient['Orientstruct']['date_valid'] ) );?></td>
-            </tr>
-        </tbody>
-    </table>
-    <h2>Contrat d'insertion</h2>
-    <table>
-        <tbody>
-            <tr class="odd">
-                <th>Type de contrat</th>
-                <td><?php echo h( $type_ci[$contrat['Contratinsertion']['type_ci']] );?></td>
-            </tr>
-            <tr class="even">
-                <th>Date de début</th>
-                <td><?php echo h( date_short( $contrat['Contratinsertion']['dd_ci'] ) );?></td>
-            </tr>
-            <tr class="odd">
-                <th>Date de fin</th>
-                <td><?php echo h( date_short( $contrat['Contratinsertion']['df_ci'] ) );?></td>
-            </tr>
-            <tr class="even">
-                <th>Date de décision</th>
-                <td><?php echo h( date_short( $contrat['Contratinsertion']['datevalidation_ci'] ) );?></td>
-            </tr>
-            <tr class="odd">
-                <th>Décision</th>
-                <td><?php echo h( $decision_ci[$contrat['Contratinsertion']['decision_ci']].' '.date_short( $contrat['Contratinsertion']['datevalidation_ci'] ) );?></td>
-            </tr>
-        </tbody>
-    </table>
-    <h2>Informations CAF</h2>
-    <table>
-        <tbody>
-           <!-- <tr class="odd">
-                <th>Date de mise à jour</th>
-                <td><?php echo h( $contrat['Typocontrat']['lib_typo'] );?></td>
-            </tr> -->
-            <tr class="even">
-                <th>Date de demande RSA</th>
-                <td><?php echo h( date_short( $dossier['Dossier']['dtdemrsa'] ) );?></td>
-            </tr>
-            <tr class="odd">
-                <th>Numéro de demande RSA</th>
-                <td><?php echo h( $dossier['Dossier']['numdemrsa'] );?></td>
-            </tr>
-            <tr class="even">
-                <th>DSP</th>
-                <td><?php echo h( $dossier['Dossier'] ? 'Oui' : 'Non');?></td>
-            </tr>
-            <tr class="odd">
-                <th>Montant RSA</th>
-                <td><?php echo h( $detaildroitrsa['Detailcalculdroitrsa'][0]['mtrsavers'] );?></td>
-            </tr>
-            <tr class="even">
-                <th>Date dernier montant</th>
-                <td><?php echo h( date_short( $detaildroitrsa['Detailcalculdroitrsa'][0]['dtderrsavers'] ));?></td>
-            </tr>
-            <tr class="odd">
-                <th>Motif</th>
-                <td><?php echo h( isset($natpf[$detaildroitrsa['Detailcalculdroitrsa'][0]['natpf']] ) ? $natpf[$detaildroitrsa['Detailcalculdroitrsa'][0]['natpf']] : null );?></td>
-            </tr>
-            <tr class="even">
-                <th>Soumis à droit et devoir</th>
-                <td><?php echo h( $dossier['Foyer']['Personne'][0]['toppersdrodevorsa'] ? 'Oui' : 'Non' );?></td>
-            </tr>
-            <tr class="odd">
-                <th>Montant INDUS</th>
-                <td><?php echo h( $infofinance['Infofinanciere']['mtmoucompta']  );?></td>
-            </tr>
-            <tr class="even">
-                <th>Motif</th>
-                <td><?php echo h( $creance['Creance']['motiindu']  );?></td>
-            </tr>
-            <tr class="odd">
-                <th>Dossier PDO</th>
-                <td><?php echo h( $contrat['Contratinsertion']['decision_ci']  );?></td>
-            </tr>
-            <tr class="even">
-                <th>Motif</th>
-                <td><?php echo h( $contrat['Structurereferente']['lib_struc']  );?></td>
-            </tr>
-            <tr class="odd">
-                <th>Date de décision</th>
-                <td><?php echo h( $contrat['Contratinsertion']['decision_ci']  );?></td>
-            </tr>
-            <tr class="even">
-                <th>Décision</th>
-                <td><?php echo h( date_short( $contrat['Structurereferente']['lib_struc'] ) );?></td>
+            <tr>
+                <td>
+                    <h2>Informations CAF</h2>
+                    <table >
+                        <tbody>
+                            <tr class="even">
+                                <th>Numéro CAF</th>
+                                <td><?php echo h( $dossier['Dossier']['matricule'] );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Date d'ouverture des droits</th>
+                                <td><?php echo h( date_short( $dossier['Dossier']['dtdemrsa'] ) );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Date de fin de droits</th>
+                                <td><?php echo h( date_short( $dossier['Situationdossierrsa']['dtclorsa'] ) );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Motif de fin de droits</th>
+                                <td><?php echo h( $dossier['Situationdossierrsa']['moticlorsa'] );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Numéro de demande RSA</th>
+                                <td><?php echo h( isset( $dossier['Dossier']['numdemrsa'] ) ? $dossier['Dossier']['numdemrsa'] : null );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>DSP</th>
+                                <td><?php echo h( isset( $dossier['Dspp']['id'] ) ? 'Oui' : 'Non');?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Montant RSA</th>
+                                <td><?php echo h( isset( $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['mtrsavers'] ) ? $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['mtrsavers'] : null );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Date dernier montant</th>
+                                <td><?php echo h( date_short( isset( $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['dtderrsavers'] ) ) ? date_short( $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['dtderrsavers'] ) : null);?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Motif</th>
+                                <td><?php echo h( isset( $natpf[$dossier['Detaildroitrsa']['Detailcalculdroitrsa']['natpf']] ) ? $natpf[$dossier['Detaildroitrsa']['Detailcalculdroitrsa']['natpf']] : null );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Montant INDUS</th>
+                                <td><?php echo h( isset( $dossier['Infofinanciere']['mtmoucompta'] ) ? $dossier['Infofinanciere']['mtmoucompta'] : null  );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Motif</th>
+                                <td><?php echo h( isset( $dossier['Creance']['motiindu'] ) ? $dossier['Creance']['motiindu'] : null );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Début du traitement CAF</th>
+                                <td><?php echo h(  date_short( isset( $dossier['Dossiercaf']['ddratdos'] ) ) ? date_short( $dossier['Dossiercaf']['ddratdos'] ) : null  );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Fin du traitement CAF</th>
+                                <td><?php echo h( isset( $dossier['Creance']['motiindu'] ) ? $dossier['Creance']['motiindu'] : null );?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <h2>Contrat d'insertion</h2>
+                    <table>
+                        <tbody>
+                            <tr class="even">
+                                <th>Type de contrat</th>
+                                <td><?php echo h( isset( $tc[$dossier['Personne']['Contratinsertion']['typocontrat_id']] ) ? $tc[$dossier['Personne']['Contratinsertion']['typocontrat_id']] : null );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Date de début</th>
+                                <td><?php echo h( date_short( isset( $dossier['Personne']['Contratinsertion']['dd_ci'] ) ) ? date_short( $dossier['Personne']['Contratinsertion']['dd_ci'] ) : null );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Date de fin</th>
+                                <td><?php echo h( date_short( isset( $dossier['Personne']['Contratinsertion']['df_ci'] ) ) ? date_short( $dossier['Personne']['Contratinsertion']['df_ci'] ) : null );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Décision</th>
+                                <td><?php echo h( isset( $decision_ci[$dossier['Personne']['Contratinsertion']['decision_ci']] ) ? $decision_ci[$dossier['Personne']['Contratinsertion']['decision_ci']]  : null ) ;?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Date de décision</th>
+                                <td><?php echo h( date_short( isset( $dossier['Personne']['Contratinsertion']['datevalidation_ci'] ) ) ? date_short( $dossier['Personne']['Contratinsertion']['datevalidation_ci'] ) : null );?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
             </tr>
         </tbody>
     </table>

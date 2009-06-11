@@ -17,7 +17,7 @@
         <thead>
             <tr>
                 <th>Libellé du type de contrat d'insertion</th>
-                <th colspan="1" class="action">Actions</th>
+                <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -26,9 +26,13 @@
                             array(
                                 h( $typocontrat['Typocontrat']['lib_typo'] ),
                                 $html->editLink(
-                                    'Éditer le contrat d\'insertion ',
+                                    'Éditer le type de contrat d\'insertion ',
                                     array( 'controller' => 'typoscontrats', 'action' => 'edit', $typocontrat['Typocontrat']['id'] )
                                 ),
+                                $html->deleteLink(
+                                    'Supprimer le type de contrat d\'insertion ',
+                                    array( 'controller' => 'typoscontrats', 'action' => 'delete', $typocontrat['Typocontrat']['id'] )
+                                )
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )

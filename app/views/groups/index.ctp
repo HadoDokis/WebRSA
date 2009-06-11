@@ -16,9 +16,9 @@
         <table>
         <thead>
             <tr>
-                 <th>Nom du groupe</th>
-		 <th>Parent</th>
-                <th colspan="1" class="action">Actions</th>
+                <th>Nom du groupe</th>
+                <th>Parent</th>
+                <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -26,11 +26,15 @@
                 <?php echo $html->tableCells(
                             array(
                                 h( $group['Group']['name'] ),
-				h( $group['Group']['parent_id'] ),
+                                h( $group['Group']['parent_id'] ),
                                 $html->editLink(
-                                    'Éditer le contrat d\'insertion ',
+                                    'Éditer le groupe',
                                     array( 'controller' => 'groups', 'action' => 'edit', $group['Group']['id'] )
                                 ),
+                                $html->deleteLink(
+                                    'Supprimer le groupe',
+                                    array( 'controller' => 'groups', 'action' => 'delete', $group['Group']['id'] )
+                                )
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )

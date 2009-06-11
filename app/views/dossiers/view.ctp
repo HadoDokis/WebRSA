@@ -1,3 +1,23 @@
+<?php
+    function thead( $pct = 10 ) {
+        return '<thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th style="width: '.$pct.'%;">Demandeur</th>
+                    <th style="width: '.$pct.'%;">Conjoint</th>
+                </tr>
+            </thead>';
+    }
+
+    function value( $dsp, $personne, $table, $field ) {
+        return ( ( isset( $dsp[$personne][$table] ) && isset( $dsp[$personne][$table][$field] ) ) ? ( $dsp[$personne][$table][$field] ) : null );
+    }
+
+    function linkedValue( $links, $dossier, $personne, $table, $field ) {
+        $value = ( ( isset( $dossier[$personne][$table] ) && isset( $dossier[$personne][$table][$field] ) ) ? ( $dossier[$personne][$table][$field] ) : null );
+        return ( isset( $links[$value] ) ? $links[$value] : null );
+    }
+?>
 <?php $this->pageTitle = 'Dossier RSA '.$dossier['Dossier']['numdemrsa'];?>
 
 <?php echo $this->element( 'dossier_menu', array( 'id' => $dossier['Dossier']['id'] ) );?>
@@ -36,27 +56,31 @@
                         <tbody>
                             <tr class="odd">
                                 <th><?php __( 'nom' );?></th>
-                                <td><?php echo $dossier['Personne']['nom'];?></td>
+                                <td><?php echo value( $dsp, 'DEM', 'Personne', 'nom' ) ;?></td>
+                                <td><?php echo value( $dsp, 'CJT', 'Personne', 'nom' ) ;?></td>
                             </tr>
                             <tr class="even">
                                 <th><?php __( 'prenom' );?></th>
-                                <td><?php echo $dossier['Personne']['prenom'];?></td>
+                                <td><?php echo value( $dsp, 'DEM', 'Personne', 'prenom' ) ;?></td>
+                                <td><?php echo value( $dsp, 'CJT', 'Personne', 'prenom' ) ;?></td>
                             </tr>
                             <tr class="odd">
                                 <th><?php __( 'adresse' );?></th>
-                                <td><?php echo $dossier['Adresse']['numvoie'].' '.$dossier['Adresse']['typevoie'].' '.$dossier['Adresse']['nomvoie'];?></td>
+                                <td colspan="2"><?php echo $dossier['Adresse']['numvoie'].' '.$dossier['Adresse']['typevoie'].' '.$dossier['Adresse']['nomvoie'];?></td>
                             </tr>
                             <tr class="even">
                                 <th><?php __( 'numtel' );?></th>
                                 <td><?php echo isset( $dossier['ModeContact']['numtel'] ) ? $dossier['ModeContact']['numtel'] : null;?></td>
+                                <td><?php echo isset( $dossier['ModeContact']['numtel'] ) ? $dossier['ModeContact']['numtel'] : null;?></td>
                             </tr>
                             <tr class="odd">
                                 <th><?php __( 'locaadr' );?></th>
-                                <td><?php echo ( isset( $dossier['Adresse']['locaadr'] ) ? $dossier['Adresse']['locaadr'] : null );?></td>
+                                <td colspan="2"><?php echo ( isset( $dossier['Adresse']['locaadr'] ) ? $dossier['Adresse']['locaadr'] : null );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Soumis à droits et devoirs</th>
-                                <td><?php echo h( $dossier['Personne']['toppersdrodevorsa'] ? 'Oui' : 'Non' );?></td>
+                                <td><?php echo linkedValue( $toppersdrodevorsa, $dsp, 'DEM', 'Personne', 'toppersdrodevorsa' );?></td>
+                                <td><?php echo linkedValue( $toppersdrodevorsa, $dsp, 'CJT', 'Personne', 'toppersdrodevorsa' );?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -107,38 +131,42 @@
                                 <td><?php echo h( date_short( $dossier['Situationdossierrsa']['dtclorsa'] ) );?></td>
                             </tr>
                             <tr class="odd">
+                                <th>Motif de fin de droits</th>
+                                <td><?php echo h( $dossier['Situationdossierrsa']['moticlorsa'] );?></td>
+                            </tr>
+                            <tr class="even">
                                 <th>Numéro de demande RSA</th>
                                 <td><?php echo h( isset( $dossier['Dossier']['numdemrsa'] ) ? $dossier['Dossier']['numdemrsa'] : null );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>DSP</th>
                                 <td><?php echo h( isset( $dossier['Dspp']['id'] ) ? 'Oui' : 'Non');?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Montant RSA</th>
                                 <td><?php echo h( isset( $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['mtrsavers'] ) ? $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['mtrsavers'] : null );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Date dernier montant</th>
                                 <td><?php echo h( date_short( isset( $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['dtderrsavers'] ) ) ? date_short( $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['dtderrsavers'] ) : null);?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Motif</th>
                                 <td><?php echo h( isset( $natpf[$dossier['Detaildroitrsa']['Detailcalculdroitrsa']['natpf']] ) ? $natpf[$dossier['Detaildroitrsa']['Detailcalculdroitrsa']['natpf']] : null );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Montant INDUS</th>
                                 <td><?php echo h( isset( $dossier['Infofinanciere']['mtmoucompta'] ) ? $dossier['Infofinanciere']['mtmoucompta'] : null  );?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Motif</th>
                                 <td><?php echo h( isset( $dossier['Creance']['motiindu'] ) ? $dossier['Creance']['motiindu'] : null );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Début du traitement CAF</th>
                                 <td><?php echo h(  date_short( isset( $dossier['Dossiercaf']['ddratdos'] ) ) ? date_short( $dossier['Dossiercaf']['ddratdos'] ) : null  );?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Fin du traitement CAF</th>
                                 <td><?php echo h( isset( $dossier['Creance']['motiindu'] ) ? $dossier['Creance']['motiindu'] : null );?></td>
                             </tr>
