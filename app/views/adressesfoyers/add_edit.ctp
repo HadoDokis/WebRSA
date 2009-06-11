@@ -23,12 +23,6 @@
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 
-<?php
-//     debug( h( $form->create( 'Adressefoyer', array( 'url' => array( 'controller' => 'adressesfoyers' ,'action' => 'edit', 1 ) ) ) ) );
-//     debug( h( $form->create( 'Adressefoyer', array( 'url' => Router::url( array( 'controller' => 'adressesfoyers' ,'action' => 'edit', 1 ), true ) ) ) ) );
-//     die();
-?>
-
     <?php
         if( $this->action == 'add' ) {
             echo $form->create( 'Adressefoyer', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
