@@ -102,6 +102,22 @@
         return $max_depth;
     }
 
+    function dateComplete( $data, $key ) {
+        $dateComplete = Set::extract( $data, $key );
+        if( !is_array( $dateComplete ) || empty( $dateComplete ) ) {
+            return empty( $dateComplete );
+        }
+        else {
+            $empty = true;
+            foreach( $dateComplete as $tmp ) {
+                if( !empty( $tmp ) ) {
+                    $empty = false;
+                }
+            }
+            return $empty;
+        }
+    }
+
     require_once( 'webrsa.inc' );
 //EOF
 ?>

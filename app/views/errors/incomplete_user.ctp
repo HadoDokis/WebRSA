@@ -1,0 +1,2 @@
+<h1><?php echo $this->pageTitle = 'Erreur:  Données de l\'utilisateur incomplètes';?></h1>
+<p>Veuillez contacter votre administrateur réseau afin qu'il complète vos données (nom et prénom), ainsi que celles de votre service instructeur (lib_service, numdepins, typeserins, numcomins, numagrins).</p>

@@ -1,20 +1,6 @@
 <?php
     App::import('Sanitize');
-        function dateComplete( $data, $key ) {
-            $dateComplete = Set::extract( $data, $key );
-            if( !array( $dateComplete ) ) {
-                return empty( $dateComplete );
-            }
-            else {
-                $empty = true;
-                foreach( $dateComplete as $tmp ) {
-                    if( !empty( $tmp ) ) {
-                        $empty = false;
-                    }
-                }
-                return $empty;
-            }
-        }
+
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
