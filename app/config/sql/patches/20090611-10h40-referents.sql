@@ -1,0 +1,1 @@
+ALTER TABLE referents ADD COLUMN qual VARCHAR(3);

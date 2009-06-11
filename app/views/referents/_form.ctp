@@ -1,4 +1,5 @@
 <fieldset>
+    <?php echo $form->input( 'Referent.qual', array( 'label' =>  __( 'qual', true ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
     <?php echo $form->input( 'Referent.nom', array( 'label' =>  __( 'nom', true ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'Referent.prenom', array( 'label' =>  __( 'prenom', true ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'Referent.numero_poste', array( 'label' =>  __( 'numero_poste', true ), 'type' => 'text' ) );?>

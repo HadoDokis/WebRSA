@@ -16,10 +16,12 @@
         <table>
         <thead>
             <tr>
+                <th>Civilité</th>
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>N° téléphone</th>
                 <th>Email</th>
+                <th>Structure référente liée</th>
                 <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
@@ -27,10 +29,12 @@
             <?php foreach( $referents as $referent ):?>
                 <?php echo $html->tableCells(
                             array(
+                                h( $qual[$referent['Referent']['qual']] ),
                                 h( $referent['Referent']['nom'] ),
                                 h( $referent['Referent']['prenom'] ),
                                 h( $referent['Referent']['numero_poste'] ),
                                 h( $referent['Referent']['email'] ),
+                                h( $sr[$referent['Referent']['structurereferente_id']] ),
                                 $html->editLink(
                                     'Éditer le référent',
                                     array( 'controller' => 'referents', 'action' => 'edit', $referent['Referent']['id'] )
