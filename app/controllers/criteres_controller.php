@@ -21,6 +21,9 @@
 
 
         function index() {
+
+            $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+
             $sr = $this->Structurereferente->find(
                 'list',
                 array(
@@ -64,9 +67,34 @@
                     $requete = $this->constReq($requete, 'Orientsstructs.statut_orient', "'".$params['Orientstructs']['statut_orient']."'");
 
                 //Critères sur un service instructeur
-//                 if( isset( $params['Serviceinstructeur']['id']  ) && !empty( $params['Serviceinstructeur']['id'] ))
+//                 if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) )
 //                     $requete = $this->constReq($requete, 'Orientsstructs.serviceinstructeur_id', "'".$params['Serviceinstructeur']['id']."'");
 
+                /****************************************************************/
+//                 $this->Orientstruct->unbindModelAll();
+//                 $this->Orientstruct->bindModel(
+//                     array(
+//                         'belongsTo' => array(
+//                             'Serviceinstructeur' => array(
+//                                 'foreignKey' => false,
+//                                 'conditions' => array( 'Serviceinstructeur.id' => $this->Session->read( 'Auth.User.serviceinstructeur_id' ) )
+//                             ),
+//                         )
+//                     )
+//                 );
+//                 $orients = $this->Orientstruct->find( 
+//                     'all',
+//                     array(
+//                         'conditions' => array(
+//                             $requete
+//                         ),
+//                         'recursive' => 0
+//                     )
+//                 );
+// 
+//                 $this->set( 'orients', $orients );
+//                 debug( $orients );
+                /****************************************************************/
 
                 $requete = $select. $requete .')';
                 $criteres = $this->Personne->query($requete);

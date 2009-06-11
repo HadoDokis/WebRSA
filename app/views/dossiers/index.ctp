@@ -81,7 +81,7 @@
                     <th>NIR</th>
                     <th>Allocataire</th>
                     <th>Commune de l'Allocataire</th>
-                    <th>État du dossier</th>
+                    <!--<th>État du dossier</th>-->
                     <th class="action">Actions</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
@@ -101,6 +101,10 @@
                                     <th>Date de naissance</th>
                                     <td>'.date_short( $dossier['Foyer']['Personne'][0]['dtnai'] ).'</td>
                                 </tr>
+                                <tr>
+                                    <th>Etat du dossier</th>
+                                    <td>'.(array_key_exists( $dossier['Situationdossierrsa']['etatdosrsa'] ,$etatdosrsa ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null ).'</td>
+                                </tr>
                             </tbody>
                         </table>';
                         echo $html->tableCells(
@@ -117,7 +121,7 @@
                                     )
                                 ),
                                 h(Set::extract(  $dossier, 'Derniereadresse.Adresse.locaadr' ) ),
-                                h( $dossier['Situationdossierrsa']['etatdosrsa'] ),
+                                //h( isset( $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null ),
 
                                 $html->viewLink(
                                     'Voir le dossier « '.$title.' »',

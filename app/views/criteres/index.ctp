@@ -54,7 +54,7 @@
         <?php echo $form->input( 'Typeorient.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
         <?php echo $form->input( 'Structurereferente.id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
         <?php echo $form->input( 'Orientstructs.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
-         <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?> 
+        <!-- <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?> -->
     </fieldset> 
 
     <div class="submit">
@@ -75,16 +75,18 @@
             <thead>
                  <tr>
                     <th>Numéro dossier</th>
-                    <th>Date de demande</th>
-                    <th>NIR</th>
+                    <th>Date d'ouverture droits</th>
+                    <!--<th>NIR</th>-->
                     <th>Allocataire</th>
                     <th>État du dossier</th>
+                    <!--<th>Statut de l'orientation</th>-->
                     <th class="action">Actions</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach( $criteres as $index => $critere ):?>
+
                     <?php
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
@@ -103,7 +105,7 @@
                             array(
                                 h($critere['Dossier']['Dossier']['numdemrsa']),
                                 h($critere['Dossier']['Dossier']['dtdemrsa']),
-                                h( $critere[0]['nir'] ), // FIXME: 0
+                                //h( $critere[0]['nir'] ), // FIXME: 0
                                 implode(
                                     ' ',
                                     array(
@@ -112,7 +114,10 @@
                                         implode( ' ', array( $critere[0]['prenom'], $critere[0]['prenom2'], $critere[0]['prenom3'] ) )
                                     )
                                 ),
-                                h($critere['Dossier']['Situationdossierrsa']['etatdosrsa']),
+                                h( array_key_exists( $critere['Dossier']['Situationdossierrsa']['etatdosrsa'] ,$etatdosrsa ) ? $etatdosrsa[$critere['Dossier']['Situationdossierrsa']['etatdosrsa']] : null ),
+
+                                //h( $orients[0]['Orientstruct']['statut_orient']  ),
+
                                 $html->viewLink(
                                     'Voir le dossier « '.$critere['Dossier']['Dossier']['numdemrsa'].' »',
                                     array( 'controller' => 'personnes', 'action' => 'view', $critere[0]['id'] )
@@ -124,6 +129,7 @@
                             array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
                         );
                     ?>
+
             <?php endforeach;?>
             </tbody>
         </table>

@@ -14,7 +14,11 @@
             'Structurereferente' => array(
                 'classname'     => 'Structurereferente',
                 'foreignKey'    => 'structurereferente_id'
-            )
+            )/*,///FIXMRE: test avant confirmation !!!!!!!
+            'Serviceinstructeur' => array(
+                'classname' => 'Serviceinstructeur',
+                'foreignKey' => 'serviceinstructeur_id'
+            )*/
         );
 
         // ********************************************************************
