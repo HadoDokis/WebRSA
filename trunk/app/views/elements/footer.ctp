@@ -1,6 +1,6 @@
 <div id="pageFooter">
     2009 Adullact.
     <?php echo sprintf( "Page construite en %s secondes.", number_format( getMicrotime() - $GLOBALS['TIME_START'] , 2, ',', ' ' ) );?>
-   $LastChangedDate: 2009-06-11 18:00:06 +0200 (jeu., 11 juin 2009)$
+   $LastChangedDate: 2009-06-12 00:03:15 +0200 (ven., 12 juin 2009)$
     CakePHP v. <?php echo cake_version();?>
 </div>
