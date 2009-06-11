@@ -53,6 +53,7 @@
                 <td>
                     <h2>Personne</h2>
                     <table>
+                        <?php echo thead( 10 );?>
                         <tbody>
                             <tr class="odd">
                                 <th><?php __( 'nom' );?></th>
