@@ -11,7 +11,7 @@
                 'foreignKey'    => 'structurereferente_id'
             )
         );
-	
+
         var $validate = array(
             'numero_poste' => array(
                 array(
@@ -31,7 +31,7 @@
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
-	    )
-	);
+            )
+        );
     }
 ?>

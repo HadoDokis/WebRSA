@@ -3,10 +3,26 @@
     {
 
         var $name = 'Referents';
-        var $uses = array( 'Referent', 'Structurereferente' );
+        var $uses = array( 'Referent', 'Structurereferente', 'Option' );
+
+
+        function beforeFilter() {
+            $return = parent::beforeFilter();
+            $this->set( 'qual', $this->Option->qual() );
+            return $return;
+        }
+
 
         function index() {
-
+            $sr = $this->Structurereferente->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Structurereferente.lib_struc'
+                    ),
+                )
+            );
+            $this->set( 'sr', $sr );
             $referents = $this->Referent->find(
                 'all',
                 array(
