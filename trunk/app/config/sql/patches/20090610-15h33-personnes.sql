@@ -1,0 +1,1 @@
+ALTER TABLE personnes ALTER COLUMN toppersdrodevorsa TYPE CHAR(1);

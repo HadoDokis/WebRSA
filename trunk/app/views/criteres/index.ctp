@@ -44,6 +44,7 @@
     ?>
 </ul>
 <?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+
     <fieldset>
         <legend>Recherche par types d'orientations</legend>
         <?php echo $form->input( 'Typeorient.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
@@ -56,14 +57,10 @@
         <legend>Recherche par Statut</legend>
         <?php echo $form->input( 'Orientstructs.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
     </fieldset>
-   <!-- <fieldset>
-        <legend>Recherche par Contrat d'insertion</legend>
-        <?php echo $form->input( 'Contratsinsertions.dd_ci', array( 'label' => 'Date de début du contrat ', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );?>
-         <?php echo $form->input( 'Contratsinsertions.statut', array( 'label' => "Statut du contrat d'insertion", 'type' => 'select', 'options' => $statuts_contrat, 'empty' => true ) );?>
-        <?php echo $form->input( 'Servicesinstructeurs.lib_service', array( 'label' => 'Service instructeur', 'type' => 'select', 'options' => $services_instructeur, 'empty' => true ) );?>
-        <?php echo $form->input( 'Servicesinstructeurs.lib_service', array( 'label' => 'Envoyé par', 'type' => 'select', 'options' => $services_instructeur, 'empty' => true ) );?>
+  <!--  <fieldset>
+        <legend>Recherche par Service instructeur</legend>
+            <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
     </fieldset> -->
-
     <div class="submit">
         <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>

@@ -20,7 +20,7 @@
                 <th>Prénom</th>
                 <th>N° téléphone</th>
                 <th>Email</th>
-                <th colspan="1" class="action">Actions</th>
+                <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -32,9 +32,13 @@
                                 h( $referent['Referent']['numero_poste'] ),
                                 h( $referent['Referent']['email'] ),
                                 $html->editLink(
-                                    'Éditer le contrat d\'insertion ',
+                                    'Éditer le référent',
                                     array( 'controller' => 'referents', 'action' => 'edit', $referent['Referent']['id'] )
                                 ),
+                                $html->deleteLink(
+                                    'Supprimer le référent',
+                                    array( 'controller' => 'referents', 'action' => 'delete', $referent['Referent']['id'] )
+                                )
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )

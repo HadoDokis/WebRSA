@@ -20,10 +20,11 @@
                 <th>N° de voie</th>
                 <th>Type de voie</th>
                 <th>Nom de voie</th>
-		<th>Code postal</th>
-		<th>Ville</th>
-		<th>Code insee</th>
-                <th colspan="1" class="action">Actions</th>
+                <th>Code postal</th>
+                <th>Ville</th>
+                <th>Code insee</th>
+                <th>Type d'orientation</th>
+                <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -36,11 +37,16 @@
                                 h( $structurereferente['Structurereferente']['nom_voie'] ),
                                 h( $structurereferente['Structurereferente']['code_postal'] ),
                                 h( $structurereferente['Structurereferente']['ville'] ),
-				h( $structurereferente['Structurereferente']['code_insee'] ),
+                                h( $structurereferente['Structurereferente']['code_insee'] ),
+                                h( $type[$structurereferente['Structurereferente']['typeorient_id']] ),
                                 $html->editLink(
-                                    'Éditer le contrat d\'insertion ',
+                                    'Éditer la structure référente ',
                                     array( 'controller' => 'structuresreferentes', 'action' => 'edit', $structurereferente['Structurereferente']['id'] )
                                 ),
+                                $html->deleteLink(
+                                    'Supprimer la structure référente ',
+                                    array( 'controller' => 'structuresreferentes', 'action' => 'delete', $structurereferente['Structurereferente']['id'] )
+                                )
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )

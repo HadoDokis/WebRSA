@@ -20,7 +20,7 @@
                 <th>Type d'orientation</th>
                 <th>Parent</th>
                 <th>Modèle de notification</th>
-                <th colspan="1" class="action">Actions</th>
+                <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -32,9 +32,13 @@
                                 h( $typeorient['Typeorient']['parentid'] ),
                                 h( $typeorient['Typeorient']['modele_notif'] ),
                                 $html->editLink(
-                                    'Éditer le contrat d\'insertion ',
+                                    'Éditer le type d\'orientation',
                                     array( 'controller' => 'typesorients', 'action' => 'edit', $typeorient['Typeorient']['id'] )
                                 ),
+                                $html->deleteLink(
+                                    'Supprimer le type d\'orientation',
+                                    array( 'controller' => 'typesorients', 'action' => 'delete', $typeorient['Typeorient']['id'] )
+                                )
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )

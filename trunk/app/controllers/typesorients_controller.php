@@ -112,6 +112,30 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
+        function delete( $typeorient_id = null ) {
+            // Vérification du format de la variable
+            if( !valid_int( $typeorient_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Recherche de la personne
+            $typeorient = $this->Typeorient->find(
+                'first',
+                array( 'conditions' => array( 'Typeorient.id' => $typeorient_id )
+                )
+            );
+
+            // Mauvais paramètre
+            if( empty( $typeorient_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Tentative de suppression ... FIXME
+            if( $this->Typeorient->delete( array( 'Typeorient.id' => $typeorient_id ) ) ) {
+                $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+                $this->redirect( array( 'controller' => 'typesorients', 'action' => 'index' ) );
+            }
+        }
     }
 
 ?>

@@ -866,14 +866,20 @@ INSERT INTO typesorients VALUES
 INSERT INTO typoscontrats VALUES
    (
      1,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-    'Suivi d\'insertion'
+    'Premier contrat'
    );
 
 INSERT INTO typoscontrats VALUES
    (
      2,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-    'CI en alternance'
+    'Renouvellement'
    );
+
+INSERT INTO typoscontrats VALUES
+(
+    3,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+    'Redéfinition'
+);
 --------------------------------------
 -- ------ Structures référentes -----------
 -- -------------------------------------

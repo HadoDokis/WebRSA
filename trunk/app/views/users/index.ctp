@@ -24,7 +24,7 @@
                 <th>Date fin habilitation</th>
                 <th>Groupe d'utilisateur</th>
                 <th>Service instructeur</th>
-                <th colspan="1" class="action">Actions</th>
+                <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -40,9 +40,13 @@
                                 h( $user['Group']['name'] ) ,
                                 h( $user['Serviceinstructeur']['lib_service'] ),
                                 $html->editLink(
-                                    'Éditer le contrat d\'insertion ',
+                                    'Éditer l\'utilisateur',
                                     array( 'controller' => 'users', 'action' => 'edit', $user['User']['id'] )
                                 ),
+                                $html->deleteLink(
+                                    'Supprimer l\'utilisateur',
+                                    array( 'controller' => 'users', 'action' => 'delete', $user['User']['id'] )
+                                )
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )

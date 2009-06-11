@@ -191,5 +191,31 @@
             }
             $this->render( $this->action, null, 'add_edit' );
         }
+
+
+        function delete( $user_id = null ) {
+            // Vérification du format de la variable
+            if( !valid_int( $user_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Recherche de la personne
+            $user = $this->User->find(
+                'first',
+                array( 'conditions' => array( 'User.id' => $user_id )
+                )
+            );
+
+            // Mauvais paramètre
+            if( empty( $user_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Tentative de suppression ... FIXME
+            if( $this->User->delete( array( 'User.id' => $user_id ) ) ) {
+                $this->Session->setFlash( 'Suppression effectuée' );
+                $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
+            }
+        }
     }
 ?>

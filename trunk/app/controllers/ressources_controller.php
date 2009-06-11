@@ -87,7 +87,6 @@
                             $dataRm['ressource_id'] = $this->Ressource->id;
                             $this->Ressourcemensuelle->create();
                             $saved = $this->Ressourcemensuelle->save( $dataRm ) && $saved;
-
                             if( isset( $this->data['Detailressourcemensuelle'] ) ){
                                 $dataDrm = $this->data['Detailressourcemensuelle'][$index];
                                 $dataDrm['ressourcemensuelle_id'] = $this->Ressourcemensuelle->id;

@@ -4,7 +4,7 @@
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur');
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Orientstruct' );
         //var $aucunDroit = array('index', 'menu', 'constReq');
         var $aucunDroit = array( 'constReq' );
 
@@ -19,7 +19,7 @@
         }
 
         function index() {
-	       $sr = $this->Structurereferente->find(
+            $sr = $this->Structurereferente->find(
                 'list',
                 array(
                     'fields' => array(
@@ -29,11 +29,11 @@
             );
             $this->set( 'sr', $sr );
 
+
             $this->set( 'typeorient', $this->Typeorient->listOptions() );
-//             $this->set( 'typestruct', $this->Structurereferente->list1Options() );
             $this->set( 'statuts', $this->Option->statut_orient() );
             $this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
-            $this->set( 'services_instructeur', $this->Serviceinstructeur->listOptions());
+            $this->set( 'typeservice', $this->Serviceinstructeur->listOptions());
 
             $params = $this->data;
             if( count( $params ) > 0 ) {
@@ -55,6 +55,9 @@
                 if( isset( $params['Orientstructs']['statut_orient']  ) && !empty( $params['Orientstructs']['statut_orient'] ))
                     $requete = $this->constReq($requete, 'Orientsstructs.statut_orient', "'".$params['Orientstructs']['statut_orient']."'");
 
+                //Critères sur un service instructeur
+//                 if( isset( $params['Serviceinstructeur']['id']  ) && !empty( $params['Serviceinstructeur']['id'] ))
+//                     $requete = $this->constReq($requete, 'Orientsstructs.serviceinstructeur_id', "'".$params['Serviceinstructeur']['id']."'");
 
 
                 $requete = $select. $requete .')';

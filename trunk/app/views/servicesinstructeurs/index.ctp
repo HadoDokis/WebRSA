@@ -29,8 +29,8 @@
                 <th>N° dépt</th>
                 <th>Type service</th>
                 <th>N° commune</th>
-                <!-- <th>N° agréement</th> -->
-                <th colspan="1" class="action">Actions</th>
+                <th>N° agréement</th>
+                <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -47,12 +47,17 @@
                                 h( $serviceinstructeur['Serviceinstructeur']['numdepins'] ),
                                 h( isset( $typeserins[$serviceinstructeur['Serviceinstructeur']['typeserins']] ) ? $typeserins[$serviceinstructeur['Serviceinstructeur']['typeserins']] : null ),
                                 h( $serviceinstructeur['Serviceinstructeur']['numcomins'] ),
-                                //h( $serviceinstructeur['Serviceinstructeur']['numagrins'] ),
+                                h( $serviceinstructeur['Serviceinstructeur']['numagrins'] ),
                                 $html->editLink(
-                                    'Éditer le contrat d\'insertion ',
+                                    'Éditer le service instructeur ',
                                     array( 'controller' => 'servicesinstructeurs', 'action' => 'edit', $serviceinstructeur['Serviceinstructeur']['id'] ),
                                     $permissions->check( 'servicesinstructeurs', 'edit' )
                                 ),
+                                $html->deleteLink(
+                                    'Supprimer le service instructeur ',
+                                    array( 'controller' => 'servicesinstructeurs', 'action' => 'delete', $serviceinstructeur['Serviceinstructeur']['id'] ),
+                                    $permissions->check( 'servicesinstructeurs', 'delete' )
+                                )
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )

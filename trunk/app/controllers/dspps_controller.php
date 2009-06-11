@@ -75,6 +75,31 @@
             );
             $this->set( 'typeservices', $typeservices );
 
+          /*  if( !empty( $this->data ) ) {
+                $this->data['Dspf']['foyer_id'] = $foyerId;
+
+                // Essai de sauvegarde
+                $this->Dspf->begin();
+                $this->Dspf->set( $this->data['Dspf'] );
+                $valid = $this->Dspf->validates();
+
+                if( $valid ) {
+                    $saved = $this->Dspf->save( $this->data['Dspf'] );
+
+                    if( $saved ) {
+                        $this->Dspf->commit();
+                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    }
+                    else {
+                        $this->Dspf->rollback();
+                        $this->Session->setFlash( 'Impossible d\'enregistrer', 'flash/error' );
+                    }
+                }
+                else {
+                    $this->Dspf->rollback();
+                    $this->Session->setFlash( 'Impossible d\'enregistrer', 'flash/error' );
+                }
+            }*/
             // Essai de sauvegarde
             if( !empty( $this->data ) && $this->Dspp->save( $this->data ) ) {
                 $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );

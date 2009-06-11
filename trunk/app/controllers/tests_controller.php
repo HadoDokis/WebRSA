@@ -26,103 +26,103 @@
             $this->Wizard->completeUrl = '/tests/confirm';
             $this->Wizard->cancelUrl = '/tests/wizard';
 
-            // INFO: on peut préremplir le wizard pour les tests
-//             $this->Session->write(
-//                 'Wizard.Tests.allocataire',
-//                 array(
-//                     'Personne' => array(
-//                         'rolepers'  => 'DEM',
-//                         'qual'      => 'MR',
-//                         'nom'       => 'Buffin',
-//                         'prenom'    => 'Christian',
-//                         'dtnai'   => array(
-//                             'day'   => 01,
-//                             'month' => 01,
-//                             'year'  => 2009
-//                         ),
-//                         'rgnai' => 1,
-//                         'nir' => rand_nir(),
-//                         'topvalec' => 0,
-//                         'nati' => 'C',
-//                         'pieecpres' => 'E'
-//                     )
-//                 )
-//             );
-//             $this->Session->write(
-//                 'Wizard.Tests.conjoint',
-//                 array(
-//                     'Personne' => array(
-//                         'rolepers'  => 'CJT',
-//                         'qual'      => 'MME',
-//                         'nom'       => 'Buffin',
-//                         'prenom'    => 'Simone',
-//                         'dtnai'   => array(
-//                             'day'   => 01,
-//                             'month' => 01,
-//                             'year'  => 2009
-//                         ),
-//                         'rgnai' => 1,
-//                         'nir' => rand_nir(),
-//                         'topvalec' => 0,
-//                         'nati' => 'C',
-//                         'pieecpres' => 'E'
-//                     )
-//                 )
-//             );
-//             $this->Session->write(
-//                 'Wizard.Tests.adresse',
-//                 array(
-//                     'Adressefoyer' => array(
-//                         'rgadr'     => '01',
-//                         'typeadr'   => 'D'
-//                     ),
-//                     'Adresse' => array(
-//                         'numvoie' => 8,
-//                         'typevoie' => 'rue',
-//                         'nomvoie' => 'des rosiers',
-//                         'codepos' => '34000', // FIXME: + code insée
-//                         'numcomptt' => '34080',
-//                         'locaadr' => 'Montpellier',
-//                         'pays' => 'FRA'
-//                     ),
-//                 )
-//             );
-//             $this->Session->write(
-//                 'Wizard.Tests.ressourcesallocataire',
-//                 array(
-//                     'Ressource' => array(
-//                         'ddress' => array(
-//                             'day' => '01',
-//                             'month' => '01',
-//                             'year' => '2009'
-//                         ),
-//                         'dfress' => array(
-//                             'day' => '01',
-//                             'month' => '01',
-//                             'year' => '2009'
-//                         ),
-//                         'topressnul' => 0
-//                     )
-//                 )
-//             );
-//             $this->Session->write(
-//                 'Wizard.Tests.ressourcesconjoint',
-//                 array(
-//                     'Ressource' => array(
-//                         'ddress' => array(
-//                             'day' => '01',
-//                             'month' => '01',
-//                             'year' => '2009'
-//                         ),
-//                         'dfress' => array(
-//                             'day' => '01',
-//                             'month' => '01',
-//                             'year' => '2009'
-//                         ),
-//                         'topressnul' => 0
-//                     )
-//                 )
-//             );
+            //INFO: on peut préremplir le wizard pour les tests
+            $this->Session->write(
+                'Wizard.Tests.allocataire',
+                array(
+                    'Personne' => array(
+                        'rolepers'  => 'DEM',
+                        'qual'      => 'MR',
+                        'nom'       => 'Buffin',
+                        'prenom'    => 'Christian',
+                        'dtnai'   => array(
+                            'day'   => 01,
+                            'month' => 01,
+                            'year'  => 2009
+                        ),
+                        'rgnai' => 1,
+                        'nir' => rand_nir(),
+                        'topvalec' => 0,
+                        'nati' => 'C',
+                        'pieecpres' => 'E'
+                    )
+                )
+            );
+            $this->Session->write(
+                'Wizard.Tests.conjoint',
+                array(
+                    'Personne' => array(
+                        'rolepers'  => 'CJT',
+                        'qual'      => 'MME',
+                        'nom'       => 'Buffin',
+                        'prenom'    => 'Simone',
+                        'dtnai'   => array(
+                            'day'   => 01,
+                            'month' => 01,
+                            'year'  => 2009
+                        ),
+                        'rgnai' => 1,
+                        'nir' => rand_nir(),
+                        'topvalec' => 0,
+                        'nati' => 'C',
+                        'pieecpres' => 'E'
+                    )
+                )
+            );
+            $this->Session->write(
+                'Wizard.Tests.adresse',
+                array(
+                    'Adressefoyer' => array(
+                        'rgadr'     => '01',
+                        'typeadr'   => 'D'
+                    ),
+                    'Adresse' => array(
+                        'numvoie' => 8,
+                        'typevoie' => 'rue',
+                        'nomvoie' => 'des rosiers',
+                        'codepos' => '34000', // FIXME: + code insée
+                        'numcomptt' => '34080',
+                        'locaadr' => 'Montpellier',
+                        'pays' => 'FRA'
+                    ),
+                )
+            );
+            $this->Session->write(
+                'Wizard.Tests.ressourcesallocataire',
+                array(
+                    'Ressource' => array(
+                        'ddress' => array(
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2009'
+                        ),
+                        'dfress' => array(
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2009'
+                        ),
+                        'topressnul' => 0
+                    )
+                )
+            );
+            $this->Session->write(
+                'Wizard.Tests.ressourcesconjoint',
+                array(
+                    'Ressource' => array(
+                        'ddress' => array(
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2009'
+                        ),
+                        'dfress' => array(
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2009'
+                        ),
+                        'topressnul' => 0
+                    )
+                )
+            );
 
             return parent::beforeFilter();
         }
@@ -449,6 +449,7 @@
                     )
                 );
                 $this->Suiviinstruction->set( $suiviinstruction );
+
                 if( $this->Suiviinstruction->validates() ) { // FIXME -> plus haut
                     $saved = $this->Suiviinstruction->save( $suiviinstruction ) && $saved;
                 }
