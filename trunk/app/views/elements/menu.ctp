@@ -16,21 +16,21 @@
                 </li>
             <?php endif;?>
 
-            <?php if( $permissions->check( 'dossiers', 'index' ) || true ) : //FIXME ?>
+           <!-- <?php if( $permissions->check( 'dossiers', 'index' ) || true ) : //FIXME ?>
                 <li>
                     <?php echo $html->link( 'Recherche dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?>
                 </li>
-            <?php endif;?>
+            <?php endif;?> -->
 
-            <?php if( $permissions->check( 'criteres', 'index' ) || $permissions->check( 'criteresci', 'index' ) ) :?> <!-- FIXME: ajout arnaud -->
-                <!-- <li><?php echo $html->link( 'Recherche multi-critères', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li> -->
-		 <li>
-                    <?php echo $html->link( 'Recherche multi-critères', '#' );?>
-                    <ul>
-                        <li><?php echo $html->link( 'Par Orientations', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
-                        <li><?php echo $html->link( 'Par Contrat insertion',  array( 'controller' => 'criteresci', 'action' => 'index'  ) );?></li>
-		    </ul>
-		</li>
+            <?php if( $permissions->check( 'dossiers', 'index' ) || $permissions->check( 'criteres', 'index' ) || $permissions->check( 'criteresci', 'index' ) ) :?>
+            <li>
+                <?php echo $html->link( 'Recherche multi-critères', '#' );?>
+                <ul>
+                    <li><?php echo $html->link( 'Par dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?></li>
+                    <li><?php echo $html->link( 'Par Orientation', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
+                    <li><?php echo $html->link( 'Par Contrat insertion',  array( 'controller' => 'criteresci', 'action' => 'index'  ) );?></li>
+                </ul>
+            </li>
             <?php endif;?>
 <!-- FIXME: n'apparaît pas avec IE 6 -->
             <?php if( $permissions->check( 'droits', 'edit' ) || $permissions->check( 'parametrages', 'index' ) ) : ?>

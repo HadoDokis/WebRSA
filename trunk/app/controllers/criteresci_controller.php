@@ -100,14 +100,14 @@
                             'Serviceinstructeur' => array(
                                 'foreignKey' => false,
                                 'conditions' => array( 'Serviceinstructeur.id' => $this->Session->read( 'Auth.User.serviceinstructeur_id' ) )
-                            ),
+                            )
                         )
                     )
                 );
                 $contrats = $this->Contratinsertion->find( 'all', array( 'conditions' => array( $conditions ), 'recursive' => 0 ) );
 
                 $this->set( 'contrats', $contrats );
-
+// debug($contrats);
                 $this->data['Search'] = $params;
             }
         }

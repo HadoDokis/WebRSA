@@ -1,1 +1,0 @@
-ALTER TABLE typesorients ALTER COLUMN modele_notif TYPE VARCHAR(40);
