@@ -51,7 +51,7 @@
         <tbody>
             <tr>
                 <td>
-                    <h2>Personne</h2>
+                    <h2>Personnes</h2>
                     <table>
                         <?php echo thead( 10 );?>
                         <tbody>

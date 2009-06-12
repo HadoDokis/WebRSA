@@ -32,10 +32,7 @@ ALTER TABLE contratsinsertion ALTER COLUMN objectifs_fixes TYPE TEXT;
 ALTER TABLE contratsinsertion ALTER COLUMN engag_object TYPE TEXT;
 ALTER TABLE contratsinsertion ALTER COLUMN nature_projet TYPE TEXT;
 ALTER TABLE contratsinsertion ALTER COLUMN observ_ci TYPE TEXT;
-ALTER TABLE contratsinsertion ADD COLUMN date_saisie_ci DATE;
-ALTER TABLE contratsinsertion ADD COLUMN lieu_saisie_ci VARCHAR(30);
 ALTER TABLE contratsinsertion ALTER COLUMN nat_cont_trav TYPE CHAR(4);
-
 ALTER TABLE orientsstructs ALTER COLUMN typeorient_id DROP NOT NULL;
 ALTER TABLE orientsstructs ALTER COLUMN structurereferente_id DROP NOT NULL;
 
