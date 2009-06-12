@@ -42,8 +42,7 @@
     </fieldset>
 
     <div class="submit">
-        <?php echo $form->button( 'Validation de la liste', array( 'type' => 'submit' ) );?>
-       <!-- <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?> -->
+        <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
 <?php echo $form->end();?>
@@ -87,7 +86,7 @@
                         echo $html->tableCells(
                             array(
                                 h( $contrat['Adresse']['locaadr'] ),
-                                h( $contrat['Dossier']['matriculeorgcedmut'] ),
+                                h( $contrat['Contratinsertion']['pers_charg_suivi'] ),
                                 h( $contrat['Dossier']['matricule'] ),
                                 h( $contrat['Contratinsertion']['dd_ci'] ),
                                 h( $contrat['Contratinsertion']['duree_engag'] ),
@@ -105,7 +104,9 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-
+<!--        <div class="submit">
+        <?php echo $form->button( 'Validation de la liste', array( 'type' => 'submit' ) );?>
+        </div>-->
         <?php /*require( 'index.pagination.ctp' )*/;?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>

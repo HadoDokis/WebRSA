@@ -1,7 +1,7 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche de dossiers';?>
+<?php $this->pageTitle = 'Recherche par dossier/allocataire';?>
 
-<h1>Recherche de dossiers</h1>
+<h1>Recherche par dossier / allocataire</h1>
 
 <ul class="actionMenu">
     <?php

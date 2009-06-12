@@ -55,7 +55,7 @@
                 /* lecture de la collectivite de l'utilisateur authentifié */
                 $this->Session->write( 'Auth', $authUser );
                 $this->redirect( $this->Auth->redirect() );
-    	    }
+            }
         }
 
         function logout() {

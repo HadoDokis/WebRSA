@@ -172,14 +172,21 @@
                 'notEmpty' => array(
                     'rule' => 'date',
                     'message' => 'Veuillez entrer une date valide',
-		    'allowEmpty'    => true
+                    'allowEmpty'    => true
+                )
+            ),
+            'lieu_saisie_ci' => array(
+                'notEmpty' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'date_saisie_ci' => array(
+                'notEmpty' => array(
+                    'rule' => 'date',
+                    'message' => 'Veuillez entrer une date valide'
                 )
             )
-
         );
-
-
-
-
     }
 ?>

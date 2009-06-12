@@ -386,6 +386,12 @@ msgstr "Date de la demande"
 
 msgid "date_valid"
 msgstr "Date de l'orientation"
+
+msgid "lieu_saisie_ci"
+msgstr "Fait à "
+
+msgid "date_saisie_ci"
+msgstr "Le "
 ###############################################################################
 # Actions d'insertion
 ###############################################################################

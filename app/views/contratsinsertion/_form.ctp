@@ -66,8 +66,8 @@
 </fieldset>
 <fieldset>
         <?php echo $form->input( 'Contratinsertion.nature_projet', array( 'label' => __( 'nature_projet', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
-        <?php echo $form->input( 'Fait à :', array( 'label' => 'Fait à : ', 'type' => 'text')  ); ?><br />
-        <?php echo $form->input( 'Le ', array( 'label' => 'Le : ', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
+        <?php echo $form->input( 'Contratinsertion.lieu_saisie_ci', array( 'label' => __( 'lieu_saisie_ci', true ), 'type' => 'text')  ); ?><br />
+        <?php echo $form->input( 'Contratinsertion.date_saisie_ci', array( 'label' => __( 'date_saisie_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
         <?php echo $form->input( 'Le bénéficiaire : ', array( 'label' => 'Le bénéficiaire : ', 'type' => 'text', 'value' => $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] )  ); ?>
 </fieldset>
 

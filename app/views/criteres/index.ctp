@@ -50,11 +50,11 @@
 <?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 
     <fieldset>
-        <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => __( 'dtdemrsa', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );?>
+        <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => __( 'dtdemrsa', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => date( 'Y' ) - 10, 'empty' => true ) );?>
         <?php echo $form->input( 'Typeorient.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
         <?php echo $form->input( 'Structurereferente.id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
-        <?php echo $form->input( 'Orientstructs.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
-        <!-- <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?> -->
+        <?php echo $form->input( 'Orientstruct.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
+         <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?> 
     </fieldset> 
 
     <div class="submit">
@@ -64,12 +64,11 @@
 <?php echo $form->end();?>
 
 <!-- Résultats -->
-<?php if( isset( $criteres ) ):?>
+<?php if( isset( $orients ) ):?>
     <h2>Résultats de la recherche</h2>
 
-    <?php if( is_array( $criteres ) && count( $criteres ) > 0  ):?>
+    <?php if( is_array( $orients ) && count( $orients ) > 0  ):?>
 
-    <?php /*debug( $criteres ) */ ?>
         <?php //require( 'index.pagination.ctp' )?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
@@ -78,58 +77,56 @@
                     <th>Date d'ouverture droits</th>
                     <!--<th>NIR</th>-->
                     <th>Allocataire</th>
-                    <th>État du dossier</th>
-                    <!--<th>Statut de l'orientation</th>-->
+                    <!--<th>État du dossier</th>-->
+                    <th>Statut de l'orientation</th>
                     <th class="action">Actions</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach( $criteres as $index => $critere ):?>
-
+                <?php foreach( $orients as $index => $orient ):?>
                     <?php
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
                                 <tr>
                                     <th>Commune de naissance</th>
-                                    <td>'. $critere[0]['nomcomnai'].'</td>
+                                    <td>'. $orient['Personne']['nomcomnai'].'</td>
                                 </tr>
                                 <tr>
                                     <th>Date de naissance</th>
-                                    <td>'.date_short( $critere[0]['dtnai']).'</td>
+                                    <td>'.date_short( $orient['Personne']['dtnai']).'</td>
                                 </tr>
                             </tbody>
                         </table>';
 
                         echo $html->tableCells(
                             array(
-                                h($critere['Dossier']['Dossier']['numdemrsa']),
-                                h($critere['Dossier']['Dossier']['dtdemrsa']),
+                                h( $orient['Dossier']['numdemrsa'] ),
+                                h( $orient['Dossier']['dtdemrsa'] ),
                                 //h( $critere[0]['nir'] ), // FIXME: 0
                                 implode(
                                     ' ',
                                     array(
-                                        $critere[0]['qual'],
-                                        $critere[0]['nom'],
-                                        implode( ' ', array( $critere[0]['prenom'], $critere[0]['prenom2'], $critere[0]['prenom3'] ) )
+                                        $orient['Personne']['qual'],
+                                        $orient['Personne']['nom'],
+                                        implode( ' ', array( $orient['Personne']['prenom'], $orient['Personne']['prenom2'], $orient['Personne']['prenom3'] ) )
                                     )
                                 ),
-                                h( array_key_exists( $critere['Dossier']['Situationdossierrsa']['etatdosrsa'] ,$etatdosrsa ) ? $etatdosrsa[$critere['Dossier']['Situationdossierrsa']['etatdosrsa']] : null ),
+                                //h( array_key_exists( $critere['Dossier']['Situationdossierrsa']['etatdosrsa'] ,$etatdosrsa ) ? $etatdosrsa[$critere['Dossier']['Situationdossierrsa']['etatdosrsa']] : null ),
 
-                                //h( $orients[0]['Orientstruct']['statut_orient']  ),
+                                h( $orient['Orientstruct']['statut_orient']  ),
 
                                 $html->viewLink(
-                                    'Voir le dossier « '.$critere['Dossier']['Dossier']['numdemrsa'].' »',
-                                    array( 'controller' => 'personnes', 'action' => 'view', $critere[0]['id'] )
+                                    'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
+                                    array( 'controller' => 'personnes', 'action' => 'view', $orient['Personne']['id'] )
                                 ),
 
-                                array( $innerTable, array( 'class' => 'innerTableCell' ) ),
+                                //array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
                             array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
                         );
                     ?>
-
             <?php endforeach;?>
             </tbody>
         </table>
