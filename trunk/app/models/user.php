@@ -53,6 +53,12 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
+	    'password' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
             'group_id' => array(
                 array(
                     'rule' => 'notEmpty',
@@ -60,6 +66,18 @@
                 )
             ),
             'serviceinstructeur_id' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+	    'nom' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+	    'prenom' => array(
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'

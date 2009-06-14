@@ -1,7 +1,3 @@
-ALTER TABLE servicesinstructeurs ADD COLUMN type_voie VARCHAR(6);
-
-/* mise à jour table referents */
-ALTER TABLE referents ADD COLUMN qual VARCHAR(3);
 
 /* création de la table de relation orientsstructs_servicesinstructeurs */
 CREATE TABLE orientsstructs_servicesinstructeurs (

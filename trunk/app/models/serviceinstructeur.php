@@ -36,40 +36,54 @@
                     // FIXME: format
                 )
             ),
-//             'numdepins' => array(
-//                 array(
-//                     'rule' => 'alphaNumeric',
-//                     'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
-//                 ),
-//                 array(
-//                     'rule' => array( 'between', 3, 3 ),
-//                     'message' => 'Le n° de département est composé de 3 caractères'
-//                 ),
-//                 array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
+            'numdepins' => array(
+                array(
+                    'rule' => 'alphaNumeric',
+                    'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
+                ),
+                array(
+                    'rule' => array( 'between', 3, 3 ),
+                    'message' => 'Le n° de département est composé de 3 caractères'
+                ),
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
             'typeserins' => array(
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
             ),
-//             'numcomins' => array(
-//                 array(
-//                     'rule' => 'alphaNumeric',
-//                     'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
-//                 ),
-//                 array(
-//                     'rule' => array( 'between', 3, 3 ),
-//                     'message' => 'Le n° de commune est composé de 3 caractères'
-//                 ),
-//                 array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
+            'numcomins' => array(
+                array(
+                    'rule' => 'alphaNumeric',
+                    'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
+                ),
+                array(
+                    'rule' => array( 'between', 3, 3 ),
+                    'message' => 'Le n° de commune est composé de 3 caractères'
+                ),
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+	    'numagrins' => array(
+                array(
+                    'rule' => 'alphaNumeric',
+                    'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
+                ),
+                array(
+                    'rule' => array( 'between', 1, 3 ),
+                    'message' => 'Le n° de commune est composé de 3 caractères'
+                ),
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            )
         );
     }
 ?>
