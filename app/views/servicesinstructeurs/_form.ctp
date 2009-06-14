@@ -9,8 +9,8 @@
     <?php echo $form->input( 'Serviceinstructeur.ville', array( 'label' =>  __( 'ville', true ), 'type' => 'text' ) );?>
 </fieldset>
 <fieldset>
-    <?php echo $form->input( 'Serviceinstructeur.numdepins', array( 'label' =>  __( 'numdepins', true ), 'type' => 'text' ) );?>
-    <?php echo $form->input( 'Serviceinstructeur.typeserins', array( 'label' =>  __( 'typeserins', true ), 'type' => 'select', 'empty' => true ) );?>
-    <?php echo $form->input( 'Serviceinstructeur.numcomins', array( 'label' =>  __( 'numcomins', true ), 'type' => 'text' ) );?>
-    <?php echo $form->input( 'Serviceinstructeur.numagrins', array( 'label' =>  __( 'numagrins', true ), 'type' => 'text' ) );?>
+    <?php echo $form->input( 'Serviceinstructeur.numdepins', array( 'label' =>  required( __( 'numdepins', true ) ), 'type' => 'text' ) );?>
+    <?php echo $form->input( 'Serviceinstructeur.typeserins', array( 'label' => required( __( 'typeserins', true ) ), 'type' => 'select', 'empty' => true ) );?>
+    <?php echo $form->input( 'Serviceinstructeur.numcomins', array( 'label' =>  required( __( 'numcomins', true ) ), 'type' => 'text' ) );?>
+    <?php echo $form->input( 'Serviceinstructeur.numagrins', array( 'label' => required( __( 'numagrins', true ) ), 'type' => 'text' ) );?>
 </fieldset>
