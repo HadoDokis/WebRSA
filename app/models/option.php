@@ -922,13 +922,6 @@
             );
         }
 
-//         function type_ci() {
-//             return array(
-//                 'pre' => 'Premier contrat',
-//                 'ren' => 'Renouvellement',
-//                 'red' => 'Redéfinition'
-//             );
-//         }
 
         function typeadr() {
             return array(
@@ -937,16 +930,6 @@
             );
         }
 
-	/*function typecontrat() {
-	    return array(
-		'1' => 'Contrat à durée déterminée (CDD)',
-		'2' => 'Contrat à durée indéterminée (CDI)', 
-		'3' => 'Contrat temporaire ou d\'intérim',
-		'4' => 'Contrat à temps partiel',
-		'5' => 'Contrats jeunes (contrat d\'apprentissage, contrat de professionnalisation)',
-		'6' => 'Contrat initiative emploi (CIE)'
-	    );
-	}*/
 
         function typedtnai() {
             return array(
@@ -1010,6 +993,7 @@
 
         function typeserins() {
             return array(
+                '' => 'Hors département',
                 'A' => 'Organisme agréé',
                 'S' => 'Service social', //FIXME
                 'C' => 'Centre Communal d\'Action Social'

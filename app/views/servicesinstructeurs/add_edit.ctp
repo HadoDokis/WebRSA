@@ -6,7 +6,9 @@
 <?php 
     if( $this->action == 'add' ) {
         echo $form->create( 'Serviceinstructeur', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+        echo '<div>';
         echo $form->input( 'Serviceinstructeur.id', array( 'type' => 'hidden' ) );
+        echo '</div>';
     }
     else {
         echo $form->create( 'Serviceinstructeur', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );

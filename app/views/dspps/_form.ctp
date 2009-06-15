@@ -122,7 +122,7 @@
             <legend>Situation professionnelle</legend>
                 <?php echo $form->input( 'Accoemploi.Accoemploi', array( 'label' => __( 'accoemploi', true ), 'div' => false, 'multiple' => 'checkbox', 'options' => $accoemplois ) );?>
                 <?php echo $form->input( 'Dspp.libcooraccoemploi', array( 'label' => __( 'libcooraccoemploi', true ), 'type' => 'textarea', 'rows' =>3 ) );?>
-                <?php echo $form->input( 'Dspp.hispro', array( 'label' =>  __( 'hispro', true ), 'type' => 'select', 'options' => $hispro, 'empty' => true ) );?>
+                <?php echo $form->input( 'Dspp.hispro', array( 'label' =>  required( __( 'hispro', true ) ), 'type' => 'select', 'options' => $hispro, 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.libderact', array( 'label' => __( 'libderact', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactderact', array( 'label' => __( 'libsecactderact', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.dfderact', array( 'label' => __( 'dfderact', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true ) );?>

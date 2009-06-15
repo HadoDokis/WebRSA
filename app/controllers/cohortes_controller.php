@@ -2,7 +2,7 @@
     class CohortesController extends AppController
     {
         var $name = 'Cohortes';
-        var $uses = array( 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer' );
+        var $uses = array( 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi' );
 
         //*********************************************************************
 
@@ -102,6 +102,8 @@
         function _index( $statutOrientation = null ) {
             $this->assert( !empty( $statutOrientation ), 'error404' );
             $this->set( 'oridemrsa', $this->Option->oridemrsa() );
+            $this->set( 'typeserins', $this->Option->typeserins() );
+            $this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );
 
             // Un des formulaires a été renvoyé
             if( !empty( $this->data ) ) {

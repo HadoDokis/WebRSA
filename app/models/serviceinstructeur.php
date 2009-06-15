@@ -21,10 +21,6 @@
         var $validate = array(
             'lib_service' => array(
                 array(
-                    'rule' => 'isUnique',
-                    'message' => 'Ce libellé est déjà utilisé'
-                ),
-                array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )

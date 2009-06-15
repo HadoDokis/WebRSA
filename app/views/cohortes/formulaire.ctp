@@ -71,7 +71,8 @@
                                     h( date_short( $personne['Dossier']['dtdemrsa'] ) ), // FIXME: voir flux instruction
 //                                     h( date_short( $personne['Dossier']['Situationdossierrsa']['dtclorsa'] ) ),
                                     h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
-                                    h(
+                                    h( $typeserins[$personne['Suiviinstruction']['typeserins']] ),
+                                    /*h(
                                         implode(
                                             ' ',
                                             array(
@@ -81,7 +82,7 @@
                                                 $personne['Suiviinstruction']['numagrins']
                                             )
                                         )
-                                    ),
+                                    ),*/
                                     h( $personne['Orientstruct']['propo_algo_texte'] ).
                                         $form->input( 'Orientstruct.'.$index.'.propo_algo', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['propo_algo'] ) ).
                                         $form->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['id'] ) ).

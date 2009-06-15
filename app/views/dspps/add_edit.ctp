@@ -18,14 +18,19 @@
     <?php
         if( $this->action == 'add' ) {
             echo $form->create( 'Dspp', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+            echo '<div>';
             echo $form->input( 'Dspp.id', array( 'type' => 'hidden', 'value' => '' ) );
+            echo '</div>';
         }
         else {
             echo $form->create( 'Dspp', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+            echo '<div>';
             echo $form->input( 'Dspp.id', array( 'type' => 'hidden' ) );
+            echo '</div>';
         }
-
+        echo '<div>';
         echo $form->input( 'Dspp.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
+        echo '</div>';
     ?>
 
 <?php include( '_form.ctp' ); ?>
