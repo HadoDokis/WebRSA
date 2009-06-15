@@ -134,10 +134,7 @@
             );
 
 
-            $this->set(
-                'foyer_id',
-                $personne['Personne']['foyer_id']
-            );
+            $this->set( 'foyer_id', $personne['Personne']['foyer_id'] );
 
 
             $conditions = array( 'Personne.id' => $personne_id );
@@ -160,6 +157,7 @@
                 }
             }
             else{
+             // Récupération des données socio pro (notamment Niveau etude) lié au contrat
                 $dspp = $this->Dspp->find(
                     'first',
                     array(
@@ -168,6 +166,7 @@
                         )
                     )
                 );
+                $this->data['Nivetu'] = $dspp['Nivetu'];
 
                 // Récupération du services instructeur lié au contrat
                 $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ) ) );
@@ -254,12 +253,12 @@
 
             // TODO -> 404
             $contratinsertion = $this->Contratinsertion->find(
-            'first',
-            array(
-                'conditions' => array(
-                'Contratinsertion.id' => $contratinsertion_id
+                'first',
+                array(
+                    'conditions' => array(
+                    'Contratinsertion.id' => $contratinsertion_id
+                    )
                 )
-            )
             );
 
             $personne = $this->Personne->find( 
@@ -280,6 +279,7 @@
                 $this->cakeError( 'error404' );
             }
 
+
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
 
             if( !empty( $this->data ) ) {
@@ -289,7 +289,12 @@
                 }
             }
             else {
+                // Récupération du services instructeur lié au contrat
+                $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => 0 ) );
+
                 $this->data = $contratinsertion;
+
+                $this->data['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
             }
             $this->render( $this->action, null, 'add_edit' );
         }
@@ -325,13 +330,6 @@
             if( !valid_int( $contratinsertion_id ) ) {
                 $this->cakeError( 'error404' );
             }
-
-//             $data = array(
-//                 'Contratinsertion' => array(
-//                     'id'            => $contratinsertion_id,
-//                     'decision_ci'   => ''
-//                 )
-//             );
 
             $contratinsertion = $this->Contratinsertion->find(
                 'first',

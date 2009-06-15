@@ -50,8 +50,6 @@
             // TODO: si personne n'existe pas -> 404
             $this->set( 'dspp', $dspp );
 
-
-// debug ($dspp);
             $this->set( 'personne_id', $personne_id );
         }
 
