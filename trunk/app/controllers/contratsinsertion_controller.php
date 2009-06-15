@@ -172,6 +172,12 @@
                 $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ) ) );
                 $this->data['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
 
+
+                // Récupération des données utilisateurs lié au contrat
+                $this->data['Contratinsertion']['pers_charg_suivi'] = $user['User']['nom'].' '.$user['User']['prenom'];
+                $this->data['Contratinsertion']['service_soutien'] = $user['Serviceinstructeur']['lib_service'].', '.$user['Serviceinstructeur']['num_rue'].' '.$user['Serviceinstructeur']['type_voie'].' '.$user['Serviceinstructeur']['nom_rue'].', '.$user['User']['numtel'];
+
+
                 // Récupération de la dernière structure referente liée au contrat
                 $orientstruct = $this->Orientstruct->find(
                     'first',
@@ -294,6 +300,16 @@
 
                 $this->data = $contratinsertion;
 
+                $dspp = $this->Dspp->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Dspp.personne_id' => $contratinsertion['Personne']['id']
+                        )
+                    )
+                );
+
+                $this->data['Nivetu'] = $dspp['Nivetu'];
                 $this->data['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
             }
             $this->render( $this->action, null, 'add_edit' );
