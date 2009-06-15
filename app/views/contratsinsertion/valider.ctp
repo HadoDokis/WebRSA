@@ -4,7 +4,11 @@
 <?php  echo $form->create( 'Contratinsertion',array( 'url' => Router::url( null, true ) ) ); ?>
 
 <?php /*echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );*/?>
-
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsOnValue( 'ContratinsertionDecisionCi', [ 'ContratinsertionDatevalidationCiDay', 'ContratinsertionDatevalidationCiMonth', 'ContratinsertionDatevalidationCiYear' ], 'V', false );
+    });
+</script>
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 
