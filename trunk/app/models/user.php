@@ -53,7 +53,7 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-	    'password' => array(
+            'password' => array(
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
@@ -71,16 +71,30 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-	    'nom' => array(
+            'nom' => array(
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
             ),
-	    'prenom' => array(
+            'prenom' => array(
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                )
+            ),
+            'numtel' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'isUnique',
+                    'message' => 'Ce numéro est déjà utilisé'
+                ),
+                array(
+                    'rule' => array( 'between', 10, 14 ),
+                    'message' => 'Le numéro de téléphone est composé de 10 chiffres'
                 )
             ),
         );

@@ -20,6 +20,7 @@
                 <th>Prénom</th>
                 <th>Login</th>
                 <th>Date de naissance</th>
+                <th>N° téléphone</th>
                 <th>Date début habilitation</th>
                 <th>Date fin habilitation</th>
                 <th>Groupe d'utilisateur</th>
@@ -35,6 +36,7 @@
                                 h( $user['User']['prenom'] ),
                                 h( $user['User']['username'] ),
                                 h( date_short( $user['User']['date_naissance'] ) ),
+                                h( $user['User']['numtel'] ),
                                 h( date_short( $user['User']['date_deb_hab'] ) ),
                                 h( date_short( $user['User']['date_fin_hab'] ) ),
                                 h( $user['Group']['name'] ) ,

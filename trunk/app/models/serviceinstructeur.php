@@ -70,7 +70,7 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-	    'numagrins' => array(
+            'numagrins' => array(
                 array(
                     'rule' => 'alphaNumeric',
                     'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
