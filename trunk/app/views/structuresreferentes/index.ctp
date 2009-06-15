@@ -3,14 +3,16 @@
 <div>
     <h1><?php echo 'Visualisation de la table  ';?></h1>
 
-    <ul class="actionMenu">
-        <?php
-            echo '<li>'.$html->addLink(
-                'Ajouter',
-                array( 'controller' => 'structuresreferentes', 'action' => 'add' )
-            ).' </li>';
-        ?>
-    </ul>
+    <?php if( $permissions->check( 'structuresreferentes', 'add' ) ):?>
+        <ul class="actionMenu">
+            <?php
+                echo '<li>'.$html->addLink(
+                    'Ajouter',
+                    array( 'controller' => 'structuresreferentes', 'action' => 'add' )
+                ).' </li>';
+            ?>
+        </ul>
+    <?php endif;?>
     <div>
         <h2>Table Structures référentes</h2>
         <table>

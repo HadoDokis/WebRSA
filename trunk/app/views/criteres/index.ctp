@@ -26,27 +26,20 @@
         observeDisableFieldsetOnCheckbox( 'DossierDtdemrsa', $( 'DossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
     });
 </script>
-<ul class="actionMenu">
-    <?php
-        if( $session->read( 'Auth.User.username' ) == 'cg66' ) { // FIXME
-            echo '<li>'.$html->addSimpleLink(
-                'Ajouter une préconisation d\'orientation',
-                array( 'controller' => 'dossierssimplifies', 'action' => 'add' )
-            ).' </li>';
-        }
 
-        if( is_array( $this->data ) ) {
-            echo '<li>'.$html->link(
-                $html->image(
-                    'icons/application_form_magnify.png',
-                    array( 'alt' => '' )
-                ).' Formulaire',
-                '#',
-                array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
-            ).'</li>';
-        }
-    ?>
-</ul>
+<?php
+    if( is_array( $this->data ) ) {
+        echo '<ul class="actionMenu"><li>'.$html->link(
+            $html->image(
+                'icons/application_form_magnify.png',
+                array( 'alt' => '' )
+            ).' Formulaire',
+            '#',
+            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+        ).'</li></ul>';
+    }
+?>
+
 <?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 
     <fieldset>

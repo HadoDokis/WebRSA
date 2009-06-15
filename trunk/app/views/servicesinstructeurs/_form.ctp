@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsOnValue( 'ServiceinstructeurNumdepins', [ 'ServiceinstructeurTypeserins' ], 093, false ); ///FIXME: voir avec Michel pour n° dep -> Type de service
+    });
+</script>
+
 <fieldset>
     <?php echo $form->input( 'Serviceinstructeur.lib_service', array( 'label' =>  required( __( 'lib_service', true ) ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'Serviceinstructeur.num_rue', array( 'label' =>  __( 'num_rue', true ), 'type' => 'text' ) );?>

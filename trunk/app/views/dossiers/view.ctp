@@ -69,11 +69,11 @@
                                 <th><?php __( 'adresse' );?></th>
                                 <td colspan="2"><?php echo $dossier['Adresse']['numvoie'].' '.$dossier['Adresse']['typevoie'].' '.$dossier['Adresse']['nomvoie'];?></td>
                             </tr>
-                            <tr class="even">
+<!--                            <tr class="even">
                                 <th><?php __( 'numtel' );?></th>
                                 <td><?php echo isset( $dossier['ModeContact']['numtel'] ) ? $dossier['ModeContact']['numtel'] : null;?></td>
                                 <td><?php echo isset( $dossier['ModeContact']['numtel'] ) ? $dossier['ModeContact']['numtel'] : null;?></td>
-                            </tr>
+                            </tr>-->
                             <tr class="odd">
                                 <th><?php __( 'locaadr' );?></th>
                                 <td colspan="2"><?php echo ( isset( $dossier['Adresse']['locaadr'] ) ? $dossier['Adresse']['locaadr'] : null );?></td>
