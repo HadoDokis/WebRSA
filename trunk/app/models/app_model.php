@@ -39,7 +39,7 @@
             foreach ($this->hasAndBelongsToMany as $model=>$info) {
                 $unbind['hasAndBelongsToMany'][] = $model;
             }
-            parent::unbindModel($unbind);
+            parent::unbindModel( $unbind );
         }
     }
 ?>

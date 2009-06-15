@@ -118,6 +118,20 @@
 
         //*********************************************************************
 
+        function dossierId( $personne_id ) {
+            $this->unbindModelAll();
+            $this->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) );
+            $personne = $this->findById( $personne_id, null, null, 0 );
+            if( !empty( $personne ) ) {
+                return $personne['Foyer']['dossier_rsa_id'];
+            }
+            else {
+                return null;
+            }
+        }
+
+        //*********************************************************************
+
         function findByZones( $zonesGeographiques = array() ) { // TODO
             $this->unbindModelAll();
 

@@ -4,11 +4,22 @@
         var $name = 'Personnes';
         var $uses = array( 'Personne', 'Option' );
 
+        /**
+        *
+        *
+        *
+        */
+
         function __construct() {
             parent::__construct();
             $this->components[] = 'Jetons';
         }
 
+        /**
+        *
+        *
+        *
+        */
 
         function beforeFilter() {
             $return = parent::beforeFilter();
@@ -22,11 +33,14 @@
         }
 
         /**
-            Voir les personnes d'un foyer
+        *
+        *   Voir les personnes d'un foyer
+        *
         */
+
         function index( $foyer_id = null ) {
             // Vérification du format de la variable
-            $this->assert( valid_int( $foyer_id ), 'error404' );
+            $this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
             // Recherche des personnes du foyer
             $personnes = $this->Personne->find(
@@ -43,11 +57,14 @@
         }
 
         /**
-            Voir une personne en particulier
+        *
+        *   Voir une personne en particulier
+        *
         */
+
         function view( $id = null ) {
             // Vérification du format de la variable
-            $this->assert( valid_int( $id ), 'error404' );
+            $this->assert( valid_int( $id ), 'invalidParameter' );
 
             // Recherche de la personne
             $personne = $this->Personne->find(
@@ -59,83 +76,111 @@
             );
 
             // Mauvais paramètre
-            $this->assert( !empty( $personne ), 'error404' );
+            $this->assert( !empty( $personne ), 'invalidParameter' );
 
             // Assignation à la vue
             $this->set( 'personne', $personne );
         }
 
         /**
-            Ajout d'une personne au foyer
+        *
+        *   Ajout d'une personne au foyer
+        *
         */
 
-            function add( $foyer_id = null ){
+        function add( $foyer_id = null ){
             // Vérification du format de la variable
-            $this->assert( valid_int( $foyer_id ), 'error404' );
+            $this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
-                if( !empty( $this->data ) ){
-                    if( $this->Personne->save( $this->data ) ){
+            $dossier_id = $this->Foyer->dossierId( $foyer_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+            $this->Personne->begin();
+
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Personne->rollback();
+            }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+            if( !empty( $this->data ) ) {
+                $this->Personne->set( $this->data );
+                if( $this->Personne->validates() ) {
+                    if( $this->Personne->save( $this->data ) ) {
+                        $this->Jetons->release( $dossier_id );
+                        $this->Personne->commit();
                         $this->Session->setFlash( 'Enregistrement réussi', 'flash/success' );
                         $this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $foyer_id ) );
                     }
-                }
-                else {
-                    $roles = $this->Personne->find(
-                        'list',
-                        array(
-                            'fields' => array(
-                                'Personne.id',
-                                'Personne.rolepers',
-                            ),
-                            'conditions' => array(
-                                'Personne.foyer_id' => $foyer_id,
-                                'Personne.rolepers' => array( 'DEM', 'CJT' )
-                            ),
-                        )
-                    );
-                    // One ne fait apparaître les roles de demandeur et de conjoint que
-                    // si ceux-ci n'existent pas encore dans le foyer
-                    $rolepersPermis = $this->Option->rolepers();
-                    foreach( $rolepersPermis as $key => $rPP ) {
-                        if( in_array( $key, $roles ) ) {
-                            unset( $rolepersPermis[$key] );
-                        }
+                    else {
+                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                     }
-
-                    $this->set( 'rolepers', $rolepersPermis );
-
                 }
-
-                $this->set( 'foyer_id', $foyer_id );
-                $this->data['Personne']['foyer_id'] = $foyer_id;
-
-                $this->render( $this->action, null, 'add_edit' );
-
+            }
+            else {
+                $roles = $this->Personne->find(
+                    'list',
+                    array(
+                        'fields' => array(
+                            'Personne.id',
+                            'Personne.rolepers',
+                        ),
+                        'conditions' => array(
+                            'Personne.foyer_id' => $foyer_id,
+                            'Personne.rolepers' => array( 'DEM', 'CJT' )
+                        ),
+                    )
+                );
+                // On ne fait apparaître les roles de demandeur et de conjoint que
+                // si ceux-ci n'existent pas encore dans le foyer
+                $rolepersPermis = $this->Option->rolepers();
+                foreach( $rolepersPermis as $key => $rPP ) {
+                    if( in_array( $key, $roles ) ) {
+                        unset( $rolepersPermis[$key] );
+                    }
+                }
+                $this->set( 'rolepers', $rolepersPermis );
             }
 
+            $this->set( 'foyer_id', $foyer_id );
+            $this->data['Personne']['foyer_id'] = $foyer_id;
+
+            $this->Personne->commit();
+            $this->render( $this->action, null, 'add_edit' );
+        }
 
         /**
-            Éditer une personne spécifique d'un foyer
+        *
+        *   Éditer une personne spécifique d'un foyer
+        *
         */
+
         function edit( $id = null ) {
             // Vérification du format de la variable
-            $this->assert( valid_int( $id ), 'error404' );
+            $this->assert( valid_int( $id ), 'invalidParameter' );
+
+            $dossier_id = $this->Personne->dossierId( $id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
             $this->Personne->begin();
-            if( !$this->Jetons->check( array( 'Personne.id' => $id ) ) ) {
+
+            if( !$this->Jetons->check( $dossier_id ) ) {
                 $this->Personne->rollback();
             }
-
-            $this->assert( $this->Jetons->get( array( 'Personne.id' => $id ) ), 'error500' );
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
-                $this->Jetons->has( array( 'Personne.id' => $id ) );
-                if( $this->Personne->save( $this->data ) ) {
-                    $this->Jetons->release( array( 'Personne.id' => $id ) );
-                    $this->Personne->commit();
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array(  'controller' => 'personnes','action' => 'index', $this->data['Personne']['foyer_id'] ) );
+                $this->Personne->set( $this->data );
+                if( $this->Personne->validates() ) {
+                    if( $this->Personne->save( $this->data ) ) {
+                        $this->Jetons->release( $dossier_id );
+                        $this->Personne->commit();
+                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                        $this->redirect( array(  'controller' => 'personnes','action' => 'index', $this->data['Personne']['foyer_id'] ) );
+                    }
+                    else {
+                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                    }
                 }
             }
             // Afficage des données
@@ -147,7 +192,7 @@
                         'recursive' => 2
                     )
                 );
-                $this->assert( !empty( $personne ), 'error404' );
+                $this->assert( !empty( $personne ), 'invalidParameter' );
 
                 // Assignation au formulaire
                 $this->data = $personne;
@@ -156,30 +201,5 @@
             $this->Personne->commit();
             $this->render( $this->action, null, 'add_edit' );
         }
-
-//         function delete( $id = null ) {
-//             // Vérification du format de la variable
-//             if( !valid_int( $id ) ) {
-//                 $this->cakeError( 'error404' );
-//             }
-//
-//             // Recherche de la personne
-//             $personne = $this->Personne->find(
-//                 'first',
-//                 array( 'conditions' => array( 'Personne.id' => $id )
-//                 )
-//             );
-//
-//             // Mauvais paramètre
-//             if( empty( $personne ) ) {
-//                 $this->cakeError( 'error404' );
-//             }
-//
-//             // Tentative de suppression ... FIXME
-//             if( $this->Personne->delete( array( 'Personne.id' => $id ) ) ) {
-//                 $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
-//                 $this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $personne['Personne']['foyer_id'] ) );
-//             }
-//         }
     }
 ?>

@@ -40,8 +40,9 @@
                         }
                     }
                     else {
+                        $otherConnection = $this->Connection->findByUserId( $authUser['User']['id'] );
                         $this->Session->delete( 'Auth' );
-                        $this->Session->setFlash( 'Utilisateur déjà connecté', 'flash/error' );
+                        $this->Session->setFlash( 'Utilisateur déjà connecté jusqu\'au '.strftime( '%d/%m/%Y à %H:%M:%S', ( strtotime( $otherConnection['Connection']['modified'] ) + readTimeout() ) ), 'flash/error' );
                         $this->redirect( $this->Auth->logout() );
                     }
                 }
