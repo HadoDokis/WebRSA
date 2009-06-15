@@ -3,6 +3,7 @@
     <?php echo $form->input( 'User.prenom', array( 'label' =>  required( __( 'prenom', true ) ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'User.username', array( 'label' =>  required( __( 'username', true ) ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'User.passwd', array( 'label' =>  required( __( 'password', true ) ), 'type' => 'password', 'value' => '' ) );?>
+    <?php echo $form->input( 'User.numtel', array( 'label' =>  required( __( 'numtel', true ) ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'User.date_naissance', array( 'label' =>  __( 'date_naissance', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y') - 80 , 'empty' => true ) ) ;?>
     <?php echo $form->input( 'User.date_deb_hab', array( 'label' =>  __( 'date_deb_hab', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y') + 10, 'minYear'=>date('Y') - 10 , 'empty' => true ) );?>
     <?php echo $form->input( 'User.date_fin_hab', array( 'label' =>  __( 'date_fin_hab', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y') + 10, 'minYear'=>date('Y') - 10, 'empty' => true ) ) ;?>
