@@ -92,7 +92,7 @@
                                     array( 'controller' => 'gedooos', 'action' => 'orientstruct', $personne['Orientstruct']['id'] ),
                                     $permissions->check( 'gedooos', 'orientstruct' )
                                 ),
-                                $innerTable
+                                array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
                             array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )

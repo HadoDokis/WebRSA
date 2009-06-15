@@ -13,7 +13,6 @@
                         <th>Commune</th>
                         <th>Date demande</th>
                         <th>Date ouverture de droit</th>
-                        <!-- <th>Date fin de droit</th> -->
                         <th>Nom prenom</th>
                         <th>Service instructeur</th>
                         <th>PréOrientation</th>
@@ -91,7 +90,7 @@
                                     $form->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structuresReferentes, 'empty' => true ) ),
                                     $form->input( 'Orientstruct.'.$index.'.statut_orient', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => array( 'Orienté' => 'A valider', 'En attente' => 'En attente' ), 'value' => ( !empty( $statut_orient ) ? $statut_orient : 'Orienté' ) ) ),
                                     h( $personne['Dossier']['statut'] ),
-                                    $innerTable
+                                    array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                                 ),
                                 array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
                                 array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
