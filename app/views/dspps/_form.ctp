@@ -115,21 +115,23 @@
                 <?php echo $form->input( 'Dspp.permicondub', array( 'label' => __( 'permicondub', true ), 'type' => 'checkbox' ) );?>
                 <?php echo $form->input( 'Dspp.libautrpermicondu', array( 'label' => __( 'libautrpermicondu', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libcompeextrapro', array( 'label' => __( 'libcompeextrapro', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => __( 'nivetu', true ), 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
+                <legend><?php echo __( 'nivetu', true ) ?></legend>
+                <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
     </fieldset>
 
     <fieldset>
             <legend>Situation professionnelle</legend>
-                <?php echo $form->input( 'Accoemploi.Accoemploi', array( 'label' => __( 'accoemploi', true ), 'div' => false, 'multiple' => 'checkbox', 'options' => $accoemplois ) );?>
+                <legend><?php echo __( 'accoemploi', true ) ?></legend>
+                <?php echo $form->input( 'Accoemploi.Accoemploi', array( 'label' => false, 'div' => false, 'multiple' => 'checkbox', 'options' => $accoemplois ) );?>
                 <?php echo $form->input( 'Dspp.libcooraccoemploi', array( 'label' => __( 'libcooraccoemploi', true ), 'type' => 'textarea', 'rows' =>3 ) );?>
                 <?php echo $form->input( 'Dspp.hispro', array( 'label' =>  required( __( 'hispro', true ) ), 'type' => 'select', 'options' => $hispro, 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.libderact', array( 'label' => __( 'libderact', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactderact', array( 'label' => __( 'libsecactderact', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Dspp.dfderact', array( 'label' => __( 'dfderact', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true ) );?>
+                <?php echo $form->input( 'Dspp.dfderact', array( 'label' => required( __( 'dfderact', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.domideract', array( 'label' => __( 'domideract', true ), 'type' => 'checkbox' ) );?>
                 <?php echo $form->input( 'Dspp.libactdomi', array( 'label' => __( 'libactdomi', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactdomi', array( 'label' => __( 'libsecactdomi', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Dspp.duractdomi', array( 'label' =>  __( 'duractdomi', true ), 'type' => 'select', 'options' => $duractdomi, 'empty' => true ) );?>
+                <?php echo $form->input( 'Dspp.duractdomi', array( 'label' => required( __( 'duractdomi', true ) ), 'type' => 'select', 'options' => $duractdomi, 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.libemploirech', array( 'label' => __( 'libemploirech', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactrech', array( 'label' => __( 'libsecactrech', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.creareprisentrrech', array( 'label' => __( 'creareprisentrrech', true ), 'type' => 'checkbox' ) );?>
