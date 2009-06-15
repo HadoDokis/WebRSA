@@ -36,5 +36,19 @@
                 'message' => 'Champ obligatoire'
             ),
         );
+
+        //*********************************************************************
+
+        function dossierId( $adressefoyer_id ) {
+            $adressefoyer = $this->findById( $adressefoyer_id, null, null, 0 );
+            if( !empty( $adressefoyer ) ) {
+                return $adressefoyer['Foyer']['dossier_rsa_id'];
+            }
+            else {
+                return null;
+            }
+        }
+
+        //*********************************************************************
     }
 ?>

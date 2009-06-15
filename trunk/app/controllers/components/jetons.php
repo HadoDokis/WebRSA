@@ -10,8 +10,9 @@
         function initialize( &$controller, $settings = array() ) {
             $this->controller = &$controller;
             // FIXME
-            $this->_userId = $this->Session->read( 'Auth.User.id' );
-            $this->controller->assert( valid_int( $this->_userId ), 'error500' );
+            if( $this->_userId = $this->Session->read( 'Auth.User.id' ) ) {
+                $this->controller->assert( valid_int( $this->_userId ), 'error500' ); // FIXME
+            }
 
             $this->User = ClassRegistry::init( 'User' );
             $this->Dossier = ClassRegistry::init( 'Dossier' );

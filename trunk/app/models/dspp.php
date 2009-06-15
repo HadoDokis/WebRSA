@@ -55,14 +55,14 @@
 
         var $validate = array(
             'dfderact' => array(
-                'notEmpty' => array(
+                array(
                     'rule'          => 'date',
                     'message'       => 'Veuillez entrer une date valide',
                     'allowEmpty'    => true
                 )
             ),
             'annderdipobt' => array(
-                'notEmpty' => array(
+                array(
                     'rule'          => 'date',
                     'message'       => 'Veuillez entrer une date valide',
                     'allowEmpty'    => true
