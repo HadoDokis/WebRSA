@@ -163,18 +163,19 @@
         <?php endif;?>
 
         <?php if( $permissions->check( 'dossierssimplifies', 'edit' ) ):?>
-
             <li><span>Préconisation d'orientation</span>
                 <ul>
                     <?php if( !empty( $dossier['Foyer']['Personne'] ) ):?>
                         <li>
                             <?php foreach( $dossier['Foyer']['Personne'] as $personnes ):?>
-                                <?php
-                                echo $html->link(
-                                    $personnes['qual'].' '.$personnes['nom'].' '.$personnes['prenom'],
-                                    array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personnes['id'] )
-                                );
-                                ?>
+                                <?php if( $personnes['rolepers'] == 'DEM' || $personnes['rolepers'] == 'CJT' ):?>
+                                    <?php
+                                        echo $html->link(
+                                            $personnes['qual'].' '.$personnes['nom'].' '.$personnes['prenom'],
+                                            array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personnes['id'] )
+                                        );
+                                    ?>
+                                <?php endif ?>
                             <?php endforeach?>
                         </li>
                     <?php endif?>
