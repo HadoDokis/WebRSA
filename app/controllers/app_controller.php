@@ -1,7 +1,7 @@
 <?php
     class AppController extends Controller
     {
-        var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie' );
+        var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons' );
         var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions' );
         var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User', 'Zonegeographique', 'Connection', 'User', 'Serviceinstructeur' );
 
@@ -110,7 +110,7 @@
                         }
                         else {
                             $service = $this->Serviceinstructeur->findById( $user['User']['serviceinstructeur_id'] );
-                            if( empty( $service ) || empty( $service['Serviceinstructeur']['lib_service'] ) || empty( $service['Serviceinstructeur']['numdepins'] ) || empty( $service['Serviceinstructeur']['typeserins'] ) || empty( $service['Serviceinstructeur']['numcomins'] ) || empty( $service['Serviceinstructeur']['numagrins'] ) ) {
+                            if( empty( $service ) || empty( $service['Serviceinstructeur']['lib_service'] ) || empty( $service['Serviceinstructeur']['numdepins'] ) /*|| empty( $service['Serviceinstructeur']['typeserins'] )*/ || empty( $service['Serviceinstructeur']['numcomins'] ) || empty( $service['Serviceinstructeur']['numagrins'] ) ) {
                             $this->cakeError( 'incompleteUser' );
                             }
                         }

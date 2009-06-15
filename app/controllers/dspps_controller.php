@@ -5,9 +5,14 @@
         var $name = 'Dspps';
         var $uses = array( 'Dspp', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Nivetu', 'Accoemploi', 'Personne', 'Option', 'Serviceinstructeur');
 
+        /**
+        *
+        *
+        *
+        */
 
         function beforeFilter() {
-            parent::beforeFilter();
+            $return = parent::beforeFilter();
             //$this->set( 'accoemploi', $this->Option->accoemploi() );
             $this->set( 'hispro', $this->Option->hispro() );
             $this->set( 'duractdomi', $this->Option->duractdomi() );
@@ -18,14 +23,6 @@
             $this->set( 'natmobs', $this->Natmob->find( 'list' ) );
             $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
             $this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );
-        }
-
-        function view( $personne_id = null ){
-            // TODO : vérif param
-            // Vérification du format de la variable
-            if( !valid_int( $personne_id ) ) {
-                $this->cakeError( 'error404' );
-            }
 
             $typeservices = $this->Serviceinstructeur->find(
                 'list',
@@ -36,115 +33,107 @@
                 )
             );
             $this->set( 'typeservices', $typeservices );
+            return $return;
+        }
 
+        /**
+        *
+        *
+        *
+        */
 
-            $dspp = $this->Dspp->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dspp.personne_id' => $personne_id
-                    )
-                )
-            ) ;
+        function view( $personne_id = null ){
+            // Vérification du format de la variable
+            $this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
-            // TODO: si personne n'existe pas -> 404
+            $personne = $this->Personne->findById( $personne_id, null, null, -1 );
+            $this->assert( !empty( $personne ), 'invalidParameter' );
+
+            $dspp = $this->Dspp->findByPersonneId( $personne_id, null, null, 2 );
+
             $this->set( 'dspp', $dspp );
-
             $this->set( 'personne_id', $personne_id );
         }
 
-
         /**
-            Ajout/création d'un dossier socio-professionnel pour la personne
+        *
+        * Ajout/création d'un dossier socio-professionnel pour la personne
+        *
         */
+
         function add( $personne_id = null ) {
             // Vérification du format de la variable
-            if( !valid_int( $personne_id ) ) {
-                $this->cakeError( 'error404' );
+            $this->assert( valid_int( $personne_id ), 'invalidParameter' );
+
+            $dossier_id = $this->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+            $this->Dspp->begin();
+
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Dspp->rollback();
             }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-            $typeservices = $this->Serviceinstructeur->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Serviceinstructeur.lib_service'
-                    )
-                )
-            );
-            $this->set( 'typeservices', $typeservices );
-
-          /*  if( !empty( $this->data ) ) {
-                $this->data['Dspf']['foyer_id'] = $foyerId;
-
-                // Essai de sauvegarde
-                $this->Dspf->begin();
-                $this->Dspf->set( $this->data['Dspf'] );
-                $valid = $this->Dspf->validates();
-
-                if( $valid ) {
-                    $saved = $this->Dspf->save( $this->data['Dspf'] );
-
-                    if( $saved ) {
-                        $this->Dspf->commit();
+            // Essai de sauvegarde
+            if( !empty( $this->data ) ) {
+                if( $this->Dspp->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
+                    if( $this->Dspp->saveAll( $this->data ) ) {
+                        $this->Jetons->release( $dossier_id );
+                        $this->Dspp->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                        $this->redirect( array( 'controller' => 'dspps', 'action' => 'view', $personne_id ) );
                     }
                     else {
-                        $this->Dspf->rollback();
-                        $this->Session->setFlash( 'Impossible d\'enregistrer', 'flash/error' );
+                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                     }
                 }
-                else {
-                    $this->Dspf->rollback();
-                    $this->Session->setFlash( 'Impossible d\'enregistrer', 'flash/error' );
-                }
-            }*/
-            // Essai de sauvegarde
-            if( !empty( $this->data ) && $this->Dspp->save( $this->data ) ) {
-                $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                $this->redirect( array( 'controller' => 'dspps', 'action' => 'view', $personne_id ) );
             }
+
             $personne = $this->Personne->find( 'first', array( 'conditions'=> array( 'Personne.id' => $personne_id ) ));
             $this->set(
                 'foyer_id',
                 $personne['Personne']['foyer_id']
             );
+
+            $this->Dspp->commit();
+
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, 'add_edit' );
         }
 
-
+        /**
+        *
+        *
+        *
+        */
 
         function edit( $personne_id = null ) {
             // Vérification du format de la variable
-            if( !valid_int( $personne_id ) ) {
-                $this->cakeError( 'error404' );
+            $this->assert( valid_int( $personne_id ), 'invalidParameter' );
+
+            $dossier_id = $this->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+            $this->Dspp->begin();
+
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Dspp->rollback();
             }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-
-            $typeservices = $this->Serviceinstructeur->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Serviceinstructeur.lib_service'
-                    )
-                )
-            );
-            $this->set( 'typeservices', $typeservices );
-
-            // FOYER
-            $personne = $this->Personne->find(
-                'first', array(
-                        'conditions'=> array( 'Personne.id' => $personne_id ) ));
-
-
-            // TODO -> 404
+            // Essai de sauvegarde
             if( !empty( $this->data ) ) {
-
-                if( $this->Dspp->saveAll( $this->data ) ) {
-                   // debug( 'w00t' );
-
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'dspps', 'action' => 'view', $personne_id ) );
+                if( $this->Dspp->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
+                    if( $this->Dspp->saveAll( $this->data ) ) {
+                        $this->Jetons->release( $dossier_id );
+                        $this->Dspp->commit();
+                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                        $this->redirect( array( 'controller' => 'dspps', 'action' => 'view', $personne_id ) );
+                    }
+                    else {
+                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                    }
                 }
             }
             else {
@@ -155,12 +144,10 @@
                     )
                 );
                 $this->data = $dspp;
-//debug( $dspp );
             }
-//             $this->set(
-//                 'foyer_id',
-//                 $personne['Personne']['foyer_id']
-//             );
+
+            $this->Dspp->commit();
+
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, 'add_edit' );
         }

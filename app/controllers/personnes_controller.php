@@ -10,17 +10,6 @@
         *
         */
 
-        function __construct() {
-            parent::__construct();
-            $this->components[] = 'Jetons';
-        }
-
-        /**
-        *
-        *
-        *
-        */
-
         function beforeFilter() {
             $return = parent::beforeFilter();
             $this->set( 'rolepers', $this->Option->rolepers() );
