@@ -45,5 +45,19 @@
                 'foreignKey'    => 'foyer_id'
             )*/
         );
+
+        //*********************************************************************
+
+        function dossierId( $foyer_id ) {
+            $foyer = $this->findById( $foyer_id, null, null, -1 );
+            if( !empty( $foyer ) ) {
+                return $foyer['Foyer']['dossier_rsa_id'];
+            }
+            else {
+                return null;
+            }
+        }
+
+        //*********************************************************************
     }
 ?>

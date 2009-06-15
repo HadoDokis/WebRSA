@@ -66,12 +66,18 @@
 
         //*********************************************************************
 
-        function beforeFilter(){
+        /**
+        *
+        *
+        *
+        */
+
+        function beforeFilter() {
             // $this->Cookie->time = 0;  // ? http://book.cakephp.org/fr/view/179/Controller-Setup -> pb Citrix
             $this->disableCache(); // Disable browser
             $this->Auth->autoRedirect = false;
            // $this->Auth->loginRedirect = array('controller' => 'pages', 'action' => 'home');
-            parent::beforeFilter();
+            $return = parent::beforeFilter();
             $this->_loadPermissions();
             $this->_loadZonesgeographiques();
 
@@ -89,7 +95,7 @@
 
                     // Utilisateurs concurrents
                     if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
-                        if( $connection = $this->Connection->find( 'first', array( 'conditions' => array( 'Connection.user_id' => $user['User']['id'] ) ) ) ) {
+                        if( $connection = $this->Connection->findById( $user['User']['id'] ) ) {
                             unset( $connection['Connection']['modified'] );
                             $this->Connection->set( $connection );
                             $this->Connection->save( $connection );
@@ -114,13 +120,43 @@
                     $this->assert( $this->Droits->check( $user['User']['aroAlias'], $controllerAction ), 'error403' );
                 }
             }
+            return $return;
         }
 
         //*********************************************************************
 
+        /**
+        *
+        * INFO:
+        *   cake/libs/error.php
+        *   cake/libs/view/errors/
+        *
+        */
+
         function assert( $condition, $error = 'error500', $parameters = array() ) {
-            if( $condition !== true )
-                $this->cakeError( $error, $parameters );
+            if( $condition !== true ) {
+                $calledFrom = debug_backtrace();
+                $calledFromFile = substr( str_replace( ROOT, '', $calledFrom[0]['file'] ), 1 );
+                $calledFromLine = $calledFrom[0]['line'];
+
+                $this->log( 'Assertion failed: '.$error.' in '.$calledFromFile.' line '.$calledFromLine.' for url '.$this->here );
+
+                $this->cakeError(
+                    $error,
+                    array_merge(
+                        array(
+                            'className' => Inflector::camelize( $this->params['controller'] ),
+                            'action'    => $this->action,
+                            'url'       => $this->params['url']['url'], // ? FIXME
+                            'file'      => $calledFromFile,
+                            'line'      => $calledFromLine
+                        ),
+                        $parameters
+                    )
+                );
+
+                exit();
+            }
         }
     }
 ?>

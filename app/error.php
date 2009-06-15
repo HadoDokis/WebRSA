@@ -40,6 +40,7 @@
                         case 'error403':
                             $method = 'error403';
                         break;
+                        case 'invalidParameter':
                         case 'missingController':
                         case 'missingAction':
                         case 'missingView':
@@ -53,6 +54,20 @@
                     }
                 }
             }
+
+            if( !isset( $url ) ) {
+                $url = $this->controller->here;
+            }
+            else {
+                $url = $messages['url'];
+            }
+            $url = Router::normalize( $url );
+            $this->controller->set(
+                array(
+                    'url'   => $url,
+                    'base'  => $this->controller->base
+                )
+            );
 
             $this->dispatchMethod($method, $messages);
             $this->_stop();
@@ -126,6 +141,28 @@
                 'base' => $this->controller->base
             ));
             $this->_outputMessage('error500');
+        }
+
+        /**
+        *
+        *
+        *
+        */
+
+        function invalidParameter( $params ) {
+            extract( $params, EXTR_OVERWRITE );
+
+            $this->controller->set(
+                array(
+                    'controller'    => $className,
+                    'action'        => $action,
+                    'file'          => $file,
+                    'line'          => $line,
+                    'title'         => __( 'Invalid Parameter', true )
+                )
+            );
+
+            $this->_outputMessage( 'invalidParameter' );
         }
     }
 ?>

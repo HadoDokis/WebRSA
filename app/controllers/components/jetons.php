@@ -28,9 +28,11 @@
                     array(
                         'conditions' => array(
                             'Personne.id' => $params['Personne.id']
-                        )
+                        ),
+                        'recursive' => 2
                     )
                 );
+// debug( $personne );
                 $this->controller->assert( !empty( $personne ), 'error500' );
                 return $personne['Foyer']['dossier_rsa_id'];
             }
@@ -111,7 +113,13 @@
         // ********************************************************************
 
         function check( $params ) {
-            $dossier_id = $this->_dossierId( $params );
+            if( is_array( $params ) ) { // FIXME
+                $dossier_id = $this->_dossierId( $params );
+            }
+            else {
+                $dossier_id = $params;
+            }
+
             $this->controller->assert( $this->_dossierExists( $dossier_id ) );
             $this->_clean();
 
@@ -153,31 +161,41 @@
 
         // ********************************************************************
 
-        function has( $params ) {
-            $dossier_id = $this->_dossierId( $params );
-            $this->controller->assert( $this->_dossierExists( $dossier_id ) );
-            $this->_clean();
-
-            $nJetons = $this->Jeton->find(
-                'count',
-                array(
-                    'conditions' => array(
-                        '"Jeton"."dossier_id"'  => $dossier_id,
-                        '"Jeton"."php_sid"'     => session_id(), // FIXME: ou pas -> config
-                        '"Jeton"."user_id"'     => $this->_userId
-                    )
-                )
-            );
-
-            $this->controller->assert( ( $nJetons != 0 ), 'error401', array( 'type' => 'locked' ) ); // FIXME: pas 401
-            // FIXME: si on n'a plus la main, mais qu'on  peut la reprendre, on le fait
-            return ( $nJetons != 0 );
-        }
+//         function has( $params ) {
+//             if( is_array( $params ) ) { // FIXME
+//                 $dossier_id = $this->_dossierId( $params );
+//             }
+//             else {
+//                 $dossier_id = $params;
+//             }
+//             $this->controller->assert( $this->_dossierExists( $dossier_id ) );
+//             $this->_clean();
+//
+//             $nJetons = $this->Jeton->find(
+//                 'count',
+//                 array(
+//                     'conditions' => array(
+//                         '"Jeton"."dossier_id"'  => $dossier_id,
+//                         '"Jeton"."php_sid"'     => session_id(), // FIXME: ou pas -> config
+//                         '"Jeton"."user_id"'     => $this->_userId
+//                     )
+//                 )
+//             );
+//
+//             $this->controller->assert( ( $nJetons != 0 ), 'error401', array( 'type' => 'locked' ) ); // FIXME: pas 401
+//             // FIXME: si on n'a plus la main, mais qu'on  peut la reprendre, on le fait
+//             return ( $nJetons != 0 );
+//         }
 
         // ********************************************************************
 
         function get( $params ) {
-            $dossier_id = $this->_dossierId( $params );
+            if( is_array( $params ) ) { // FIXME
+                $dossier_id = $this->_dossierId( $params );
+            }
+            else {
+                $dossier_id = $params;
+            }
             $this->controller->assert( $this->_dossierExists( $dossier_id ) );
 
             if( $this->check( $params ) ) {
@@ -215,7 +233,13 @@
         // ********************************************************************
 
         function release( $params ) {
-            $dossier_id = $this->_dossierId( $params );
+            if( is_array( $params ) ) { // FIXME
+                $dossier_id = $this->_dossierId( $params );
+            }
+            else {
+                $dossier_id = $params;
+            }
+
             $this->controller->assert( $this->_dossierExists( $dossier_id ) );
 
             return $this->Jeton->deleteAll(
