@@ -10,9 +10,9 @@
             <thead>
                 <tr>
                     <th>Commune</th>
+                    <th>Nom prenom</th>
                     <th>Date demande</th>
                     <th>Date ouverture de droit</th>
-                    <th>Nom prenom</th>
                     <th>Service instructeur</th>
                     <th>PréOrientation</th>
                     <th>Orientation</th>
@@ -67,9 +67,9 @@
                         echo $html->tableCells(
                             array(
                                 h( $personne['Adresse']['locaadr'] ),
+                                h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
                                 h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
                                 h( date_short( $personne['Dossier']['dtdemrsa'] ) ), // FIXME: voir flux instruction
-                                h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
                                 h( $typeserins[$personne['Suiviinstruction']['typeserins']] ),
                                 /*h(
                                     implode(
@@ -82,7 +82,7 @@
                                         )
                                     )
                                 ),*/
-                                h( isset( $typesOrient[$personne['Orientstruct']['propo_algo']] ) ),
+                                h( isset( $typesOrient[$personne['Orientstruct']['propo_algo']] ) ? $typesOrient[$personne['Orientstruct']['propo_algo']] : null),
                                 h( $typesOrient[$personne['Orientstruct']['typeorient_id']] ),
                                 h( $personne['Orientstruct']['Structurereferente']['lib_struc'] ),
                                 h( $personne['Orientstruct']['statut_orient'] ),
@@ -90,8 +90,9 @@
                                 h( date_short( $personne['Contratinsertion']['dd_ci'] ) ),
                                 $html->printLink(
                                     'Imprimer la notification',
-                                    array( 'controller' => 'gedooos', 'action' => 'orientstruct', $personne['Orientstruct']['id'] ),
-                                    $permissions->check( 'gedooos', 'orientstruct' )
+                                    array( 'controller' => 'gedooos', 'action' => 'notification_structure', $personne['Personne']['id'] ),
+//                                     !empty( $personne['Orientstruct']['personne_id'] ),
+                                    $permissions->check( 'gedooos', 'notification_structure' )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),

@@ -4,7 +4,8 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Contratinsertion', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier' );
+        var $uses = array( 'Contratinsertion', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option' );
+
 
         function _ged( $datas, $model ) {
             // Définition des variables & maccros
@@ -37,12 +38,11 @@
             );
             $oMainPart = new GDO_PartType();
 
-// $tmp = array();
             // Définition des variables pour les modèles de doc
             foreach( $datas as $group => $details ) {
                 if( !empty( $details ) ) {
                     foreach( $details as $key => $value ) {
-// $tmp[strtolower( $group ).'_'.strtolower( $key )] = $value;
+
                         $oMainPart->addElement(
                             new GDO_FieldType(
                                 strtolower( $group ).'_'.strtolower( $key ),
@@ -53,8 +53,7 @@
                     }
                 }
             }
-// debug( $tmp );
-// die();
+
             // fusion des documents
             $oFusion = new GDO_FusionType($oTemplate, $sMimeType, $oMainPart);
             $oFusion->process();
@@ -95,6 +94,20 @@
                 )
             );
 
+            // Récupération du services instructeur lié au contrat
+            $user = $this->User->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'User.id' => $this->Session->read( 'Auth.User.id' )
+                    )
+                )
+            );
+
+            $contratinsertion['User'] = $user['User'];
+//             debug( $contratinsertion);
+
+
             unset( $contratinsertion['Actioninsertion'] );
             $contratinsertion['Adresse'] = $adresse['Adresse'];
             $this->_ged( $contratinsertion, 'notification_structure.odt' );
@@ -102,6 +115,20 @@
 
         function contratinsertion( $contratinsertion_id = null ) {
             // TODO: error404/error500 si on ne trouve pas les données
+
+            $this->set( 'decision_ci', $this->Option->decision_ci() );
+            $sect = $this->Option->sect_acti_emp();
+            $this->set( 'sect_acti_emp', $sect );
+            $emp_occupe = $this->Option->emp_occupe();
+            $this->set( 'emp_occupe', $emp_occupe );
+            $duree_hebdo = $this->Option->duree_hebdo_emp();
+            $this->set( 'duree_hebdo_emp', $duree_hebdo );
+            $nature = $this->Option->nat_cont_trav();
+            $this->set( 'nat_cont_trav', $nature );
+            $duree_cdd = $this->Option->duree_cdd();
+            $this->set( 'duree_cdd', $duree_cdd );
+
+
             $contratinsertion = $this->Contratinsertion->find(
                 'first',
                 array(
@@ -133,6 +160,15 @@
 
             unset( $contratinsertion['Actioninsertion'] );
             $contratinsertion['Adresse'] = $adresse['Adresse'];
+
+            $contratinsertion['Contratinsertion']['emp_occupe'] = $emp_occupe[$contratinsertion['Contratinsertion']['emp_occupe']];
+            $contratinsertion['Contratinsertion']['duree_hebdo_emp'] = $duree_hebdo[$contratinsertion['Contratinsertion']['duree_hebdo_emp']];
+            $contratinsertion['Contratinsertion']['nat_cont_trav'] = $nature[$contratinsertion['Contratinsertion']['nat_cont_trav']];
+            $contratinsertion['Contratinsertion']['duree_cdd'] = $duree_cdd[$contratinsertion['Contratinsertion']['duree_cdd']];
+            $contratinsertion['Contratinsertion']['sect_acti_emp'] = $sect[$contratinsertion['Contratinsertion']['sect_acti_emp']];
+
+            $contratinsertion['Contratinsertion']['datevalidation_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) );
+            $contratinsertion['Contratinsertion']['date_saisi_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['date_saisi_ci'] ) );
             // FIXME
             $contratinsertion['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Personne']['dtnai'] ) );
 // debug( $contratinsertion['Personne']['dtnai'] );
@@ -142,6 +178,7 @@
 
         function orientstruct( $orientstruct_id = null ) {
             // TODO: error404/error500 si on ne trouve pas les données
+
             $orientstruct = $this->Orientstruct->find(
                 'first',
                 array(

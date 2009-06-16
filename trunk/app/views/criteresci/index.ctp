@@ -25,7 +25,7 @@
 <?php echo $form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
         <legend>Recherche par Contrat d'insertion</legend>
-            <?php echo $form->input( 'Contratinsertion.date_saisie_ci', array( 'label' => 'Date de saisie du contrat', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => date( 'Y' ) - 10, 'empty' => true ) );?>
+            <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => 'Date de saisie du contrat', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => date( 'Y' ) - 10, 'empty' => true ) );?>
             <?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
             <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => 'Contrat envoyé par ', 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
             <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) ); ?>
@@ -82,7 +82,7 @@
                                 h( $contrat['Adresse']['locaadr'] ),
                                 h( $contrat['Contratinsertion']['pers_charg_suivi'] ),
                                 h( $contrat['Dossier']['matricule'] ),
-                                h( $contrat['Contratinsertion']['date_saisie_ci'] ),
+                                h( $contrat['Contratinsertion']['date_saisi_ci'] ),
                                 h( $contrat['Contratinsertion']['duree_engag'] ),
                                 h( $decision_ci[$contrat['Contratinsertion']['decision_ci']].' '.$contrat['Contratinsertion']['datevalidation_ci']),
                                 $html->viewLink(
