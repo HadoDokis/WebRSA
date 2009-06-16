@@ -3,7 +3,7 @@
     {
 
         var $name = 'Contratsinsertion';
-        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur' );
+        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Actioninsertion' );
 
 
         function beforeFilter() {
@@ -16,6 +16,13 @@
             $this->set( 'duree_cdd', $this->Option->duree_cdd() );
             $this->set( 'referents', $this->Referent->find( 'list' ) );
             $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
+
+//             $this->set( 'actions_prev', $this->Option->actions_prev() );
+
+            $this->set( 'lib_action', $this->Option->lib_action() );
+            $this->set( 'actions', $this->Action->grouplist( 'aide' ) );
+            $this->set( 'actions', $this->Action->grouplist( 'prest' ) );
+            $this->set( 'typo_aide', $this->Option->typo_aide() );
         }
 
         function index( $personne_id = null ){
@@ -87,7 +94,18 @@
             // Calcul du numéro du contrat d'insertion
             $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
+            $contrat = $this->Contratinsertion->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Contratinsertion.id' => $personne_id
+                    ),
+                    'recursive' => 1
+                )
+            );
+            $this->set( 'contrat', $contrat );
 
+// debug( $contrat );
             $typeservice = $this->Serviceinstructeur->find(
                 'list',
                 array(
@@ -132,9 +150,9 @@
                     'recursive' => 2
                 )
             );
-
-
             $this->set( 'foyer_id', $personne['Personne']['foyer_id'] );
+
+// debug( $this->data);
 
 
             $conditions = array( 'Personne.id' => $personne_id );
@@ -167,6 +185,7 @@
                     )
                 );
                 $this->data['Nivetu'] = $dspp['Nivetu'];
+
 
                 // Récupération du services instructeur lié au contrat
                 $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ) ) );

@@ -84,12 +84,12 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'actions_prev' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+//             'actions_prev' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
 //             'obsta_renc' => array(
 //                 'notEmpty' => array(
 //                     'rule' => 'notEmpty',
