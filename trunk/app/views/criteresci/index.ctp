@@ -87,7 +87,7 @@
                                 h( $decision_ci[$contrat['Contratinsertion']['decision_ci']].' '.$contrat['Contratinsertion']['datevalidation_ci']),
                                 $html->viewLink(
                                     'Voir le dossier « '.$title.' »',
-                                    array( 'controller' => 'dossiers', 'action' => 'view', $contrat['Dossier']['id'] )
+                                    array( 'controller' => 'contratsinsertion', 'action' => 'index', $contrat['Contratinsertion']['personne_id'] )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),

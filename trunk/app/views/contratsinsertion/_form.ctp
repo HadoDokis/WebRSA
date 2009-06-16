@@ -49,7 +49,9 @@
         <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __( 'expr_prof', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' => __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
     <legend> PARCOURS D'INSERTION ANTERIEUR </legend>
-        <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
+
+        <!-- <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'div' => false,  'multiple' => 'checkbox', 'options' => $actions )  ); ?> -->
+       <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'type' => 'textarea', 'rows' => 3)  ); ?> 
        <!-- <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'multiple' => 'checkbox')  ); ?> -->
         <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => __( 'obsta_renc', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 </fieldset>
