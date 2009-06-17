@@ -5,20 +5,26 @@
         var $name = 'Ressources';
         var $uses = array( 'Ressource',  'Option' , 'Personne', 'Ressourcemensuelle',  'Detailressourcemensuelle',);
 
+        /**
+        *
+        *
+        *
+        */
 
         function beforeFilter() {
-            parent::beforeFilter();
+            $return = parent::beforeFilter();
             $this->set( 'natress', $this->Option->natress() );
             $this->set( 'abaneu', $this->Option->abaneu() );
+            return $return;
         }
 
 
         function index( $personne_id = null ) {
-            // TODO : vérif param
             // Vérification du format de la variable
-            if( !valid_int( $personne_id ) ) {
-                $this->cakeError( 'error404' );
-            }
+            $this->assert( valid_int( $personne_id ), 'invalidParameter' );
+
+            $nPersonnes = $this->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
+            $this->assert( ( $nPersonnes == 1 ), 'invalidParameter' );
 
             $ressources = $this->Ressource->find(
                 'all',
@@ -29,45 +35,36 @@
                 )
             ) ;
 
-
-            // TODO: si personne n'existe pas -> 404
             $this->set( 'ressources', $ressources );
-            //$this->set( 'ressourcemensuelle_id', $ressourcemensuelle_id );
             $this->set( 'personne_id', $personne_id );
         }
 
-
-
         function view( $ressource_id = null ){
-            // TODO : vérif param
             // Vérification du format de la variable
-            if( !valid_int( $ressource_id ) ) {
-                $this->cakeError( 'error404' );
-            }
+            $this->assert( valid_int( $ressource_id ), 'invalidParameter' );
 
-            $ressource = $this->Ressource->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Ressource.id' => $ressource_id
-                    ),
-                    'recursive' => 2
-                )
-            ) ;
-               // $this->data = $ressource;
+            $ressource = $this->Ressource->findById( $ressource_id, null, null, 2 );
+            $this->assert( !empty( $ressource ), 'invalidParameter' );
 
-        // TODO: si personne n'existe pas -> 404
             $this->set( 'ressource', $ressource );
             $this->set( 'personne_id', $ressource['Ressource']['personne_id'] );
         }
 
-
-
         function add( $personne_id = null ) {
             // Vérification du format de la variable
-            if( !valid_int( $personne_id ) ) {
-                $this->cakeError( 'error404' );
+            $this->assert( valid_int( $personne_id ), 'invalidParameter' );
+
+            $personne = $this->Personne->findById( $personne_id, null, null, -1 );
+            $this->assert( !empty( $personne ), 'invalidParameter' );
+
+            $dossier_id = $this->Personne->dossierId( $personne_id );
+
+            $this->Ressource->begin();
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Ressource->rollback();
             }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
                 $this->Ressource->set( $this->data['Ressource'] );
@@ -82,20 +79,18 @@
                     $this->Ressource->begin();
                     $saved = $this->Ressource->save( $this->data );
                     foreach( $this->data['Ressourcemensuelle'] as $index => $dataRm ) {
-                        // FIXME: new Ressourcemensuelle et new Detailressourcemensuelle
-//                         if( isset( $this->data['Ressourcemensuelle'] ) ){
-                            $dataRm['ressource_id'] = $this->Ressource->id;
-                            $this->Ressourcemensuelle->create();
-                            $saved = $this->Ressourcemensuelle->save( $dataRm ) && $saved;
-                            if( isset( $this->data['Detailressourcemensuelle'] ) ){
-                                $dataDrm = $this->data['Detailressourcemensuelle'][$index];
-                                $dataDrm['ressourcemensuelle_id'] = $this->Ressourcemensuelle->id;
-                                $this->Detailressourcemensuelle->create();
-                                $saved = $this->Detailressourcemensuelle->save( $dataDrm ) && $saved;
-                            }
-//                         }
+                        $dataRm['ressource_id'] = $this->Ressource->id;
+                        $this->Ressourcemensuelle->create();
+                        $saved = $this->Ressourcemensuelle->save( $dataRm ) && $saved;
+                        if( isset( $this->data['Detailressourcemensuelle'] ) ){
+                            $dataDrm = $this->data['Detailressourcemensuelle'][$index];
+                            $dataDrm['ressourcemensuelle_id'] = $this->Ressourcemensuelle->id;
+                            $this->Detailressourcemensuelle->create();
+                            $saved = $this->Detailressourcemensuelle->save( $dataDrm ) && $saved;
+                        }
                     }
                     if( $saved ) {
+                        $this->Jetons->release( $dossier_id );
                         $this->Ressource->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array( 'controller' => 'ressources', 'action' => 'index', $personne_id ) );
@@ -103,18 +98,14 @@
                     }
                     else {
                         $this->Ressource->rollback();
-                        // FIXME: error 500 ?
+                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                     }
                 }
             }
 
-            $ressource = $this->Ressource->find(
-                'first',
-                array(
-                    'conditions'=> array( 'Ressource.personne_id' => $personne_id )
-                )
-            );
+            $ressource = $this->Ressource->findByPersonneId( $personne_id, null, null, -1 );
 
+            $this->Ressource->commit();
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, 'add_edit' );
         }
@@ -123,23 +114,19 @@
 
         function edit( $ressource_id = null ) {
             // Vérification du format de la variable
-            if( !valid_int( $ressource_id ) ) {
-                $this->cakeError( 'error404' );
+            $this->assert( valid_int( $ressource_id ), 'invalidParameter' );
+
+            $ressource = $this->Ressource->findById( $ressource_id, null, null, 2 );
+            $this->assert( !empty( $ressource ), 'invalidParameter' );
+
+            $dossier_id = $this->Ressource->dossierId( $ressource_id );
+
+            $this->Ressource->begin();
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Ressource->rollback();
             }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-            $ressource = $this->Ressource->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Ressource.id' => $ressource_id
-                        ),
-                        'recursive' => 2
-
-                    )
-                );
-
-            $this->set( 'personne_id', $ressource['Ressource']['personne_id'] );
-            // TODO -> 404
             if( !empty( $this->data ) ) {
                 $this->Ressource->set( $this->data );
 //                 $this->Ressourcemensuelle->set( $this->data );
@@ -196,6 +183,7 @@
                     }
 
                     if( $saved ) {
+                        $this->Jetons->release( $dossier_id );
                         $this->Ressource->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array( 'controller' => 'ressources', 'action' => 'index', $ressource['Ressource']['personne_id'] ) );
@@ -219,6 +207,9 @@
                 $this->data = $ressource;
             }
             // TODO: toppersdrodevorsa
+
+            $this->Ressource->commit();
+            $this->set( 'personne_id', $ressource['Ressource']['personne_id'] );
             $this->render( $this->action, null, 'add_edit' );
         }
     }
