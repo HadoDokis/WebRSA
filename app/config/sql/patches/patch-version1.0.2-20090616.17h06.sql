@@ -18,4 +18,5 @@ ALTER TABLE users ADD COLUMN numtel VARCHAR(15);
 
 --------------- Ajout du 17 06 09 ------------------
 ALTER TABLE contratsinsertion ADD COLUMN emp_trouv BOOLEAN;
+ALTER TABLE contratsinsertion ALTER COLUMN actions_prev TYPE CHAR(1);
 ------------------------------------------------------------

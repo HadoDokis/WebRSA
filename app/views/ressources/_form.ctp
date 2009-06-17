@@ -12,8 +12,8 @@
 
     <fieldset>
         <legend>Généralités des ressources du trimestre</legend>
-        <?php echo $form->input( 'Ressource.ddress', array( 'label' => required( __( 'ddress', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-20, 'empty' => true));?>
-        <?php echo $form->input( 'Ressource.dfress', array( 'label' => required( __( 'dfress', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-20, 'empty' => true));?>
+        <?php echo $form->input( 'Ressource.ddress', array( 'label' => required( __( 'ddress', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-20, 'empty' => true));?>
+        <?php echo $form->input( 'Ressource.dfress', array( 'label' => required( __( 'dfress', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-20, 'empty' => true));?>
         <!--<?php echo $form->input( 'Ressource.mtpersressmenrsa', array( 'label' => required( __( 'mtpersressmenrsa', true ) ), 'type' => 'text' ) );?>-->
     </fieldset>
 

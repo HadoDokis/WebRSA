@@ -1,38 +1,8 @@
 <script type="text/javascript">
-    function ecart_mois(date_max, date_min)
-    {
-        var explode_date_min;
-        var explode_date_max;
-        var mois_min;
-        var annee_min;
-        var mois_max;
-        var annee_max;
-        var ecart;
-
-        explode_date_min = date_min.split('/');
-        explode_date_max = date_max.split('/');
-
-        mois_min = parseInt(explode_date_min[0]);
-        annee_min = parseInt(explode_date_min[1]);
-
-        mois_max = parseInt(explode_date_max[0]);
-        annee_max = parseInt(explode_date_max[1]);
-
-        ecart = ((annee_max - annee_min)*12) - (mois_min) + (mois_max);
-
-        return ecart;
-    }
-
-        document.observe("dom:loaded", function() {
-            Event.observe( 'ecart', 'click', ecart_mois( 'ContratinsertionDfCiMonth', 'ContratinsertionDfCiMonth' ) );
-        });
-
-</script>
-
-<script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], false );
         observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
+        observeDisableFieldsOnValue( 'ContratinsertionActionsPrev', [ 'ContratinsertionObstaRenc' ], '1', true );
 
     });
 </script>
@@ -58,9 +28,10 @@
         <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' => __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
     <legend> PARCOURS D'INSERTION ANTERIEUR </legend>
 
-        <!-- <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'div' => false,  'multiple' => 'checkbox', 'options' => $actions )  ); ?> -->
-       <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'type' => 'textarea', 'rows' => 3)  ); ?> 
-       <!-- <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'multiple' => 'checkbox')  ); ?> -->
+        <!-- <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'div' => false,  'multiple' => 'checkbox', 'options' => $actions )  ); ?> 
+        <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'type' => 'textarea', 'rows' => 3)  ); ?> -->
+        <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'type' => 'checkbox')  ); ?> 
+        <br />
         <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => __( 'obsta_renc', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 </fieldset>
         <?php echo $form->input( 'Contratinsertion.serviceinstructeur_id', array( 'label' => __( 'Nom du service d\'accompagnement', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
