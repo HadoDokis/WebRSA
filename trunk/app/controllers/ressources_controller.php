@@ -18,6 +18,11 @@
             return $return;
         }
 
+        /**
+        *
+        *
+        *
+        */
 
         function index( $personne_id = null ) {
             // Vérification du format de la variable
@@ -39,6 +44,12 @@
             $this->set( 'personne_id', $personne_id );
         }
 
+        /**
+        *
+        *
+        *
+        */
+
         function view( $ressource_id = null ){
             // Vérification du format de la variable
             $this->assert( valid_int( $ressource_id ), 'invalidParameter' );
@@ -49,6 +60,12 @@
             $this->set( 'ressource', $ressource );
             $this->set( 'personne_id', $ressource['Ressource']['personne_id'] );
         }
+
+        /**
+        *
+        *
+        *
+        */
 
         function add( $personne_id = null ) {
             // Vérification du format de la variable
@@ -110,7 +127,11 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
-
+        /**
+        *
+        *
+        *
+        */
 
         function edit( $ressource_id = null ) {
             // Vérification du format de la variable

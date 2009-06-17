@@ -64,5 +64,33 @@
 
             return $return;
         }
+
+        //*********************************************************************
+
+        function dossierId( $ressource_id ) {
+            $this->unbindModelAll();
+            $this->bindModel(
+                array(
+                    'hasOne' => array(
+                        'Personne' => array(
+                            'foreignKey' => false,
+                            'conditions' => array( 'Personne.id = Orientstruct.personne_id' )
+                        ),
+                        'Foyer' => array(
+                            'foreignKey' => false,
+                            'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+                        )
+                    )
+                )
+            );
+            $ressource = $this->findById( $ressource_id, null, null, 1 );
+
+            if( !empty( $ressource ) ) {
+                return $ressource['Foyer']['dossier_rsa_id'];
+            }
+            else {
+                return null;
+            }
+        }
     }
 ?>
