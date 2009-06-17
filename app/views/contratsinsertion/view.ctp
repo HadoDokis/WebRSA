@@ -37,9 +37,9 @@
                 <tr class="even">
                     <th><?php __( 'niv_etude');?></th>
                     <td>
-                        <?php if( !empty( $dsp['Nivetu']['Nivetu'] ) ):?>
+                        <?php if( !empty( $contratinsertion['Nivetu']['Nivetu'] ) ):?>
                             <ul>
-                                <?php foreach( $dsp['Nivetu']['Nivetu'] as $nivetus ):?>
+                                <?php foreach( $contratinsertion['Nivetu']['Nivetu'] as $nivetus ):?>
                                     <li><?php echo h( $nivetus['name'] );?></li>
                                 <?php endforeach;?>
                             </ul>
@@ -98,23 +98,23 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'sect_acti_emp' );?></th>
-                    <td><?php echo $sect_acti_emp[$contratinsertion['Contratinsertion']['sect_acti_emp']];?></td>
+                    <td><?php echo isset( $sect_acti_emp[$contratinsertion['Contratinsertion'] ['sect_acti_emp']] );?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'emp_occupe' );?></th>
-                    <td><?php echo $emp_occupe[$contratinsertion['Contratinsertion']['emp_occupe']];?></td>
+                    <td><?php echo isset( $emp_occupe[$contratinsertion['Contratinsertion']['emp_occupe']] );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'duree_hebdo_emp' );?></th>
-                    <td><?php echo $duree_hebdo_emp[$contratinsertion['Contratinsertion']['duree_hebdo_emp']];?></td>
+                    <td><?php echo isset( $duree_hebdo_emp[$contratinsertion['Contratinsertion']['duree_hebdo_emp']] );?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'nat_cont_trav' );?></th>
-                    <td><?php echo $nat_cont_trav[$contratinsertion['Contratinsertion']['nat_cont_trav']];?></td>
+                    <td><?php echo isset( $nat_cont_trav[$contratinsertion['Contratinsertion']['nat_cont_trav']] );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'duree_cdd' );?></th>
-                    <td><?php echo $duree_cdd[$contratinsertion['Contratinsertion']['duree_cdd']];?></td>
+                    <td><?php echo isset( $duree_cdd[$contratinsertion['Contratinsertion']['duree_cdd']] );?></td>
                 </tr>
             </tbody>
         </table>

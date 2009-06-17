@@ -120,6 +120,12 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
+            'emp_trouv' => array(
+                'notEmpty' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
             'sect_acti_emp' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
@@ -184,9 +190,20 @@
             'date_saisie_ci' => array(
                 'notEmpty' => array(
                     'rule' => 'date',
-                    'message' => 'Veuillez entrer une date valide'
+                    'message' => 'Veuillez entrer une date valide',
+                    'allowEmpty'    => false
                 )
             )
         );
+
+        function beforeSave( $options = array() ) {
+            $return = parent::beforeSave( $options );
+
+            if( array_key_exists( $this->name, $this->data ) && array_key_exists( 'structurereferente_id', $this->data[$this->name] ) ) {
+                $this->data[$this->name]['structurereferente_id'] = suffix( $this->data[$this->name]['structurereferente_id'] ) ;
+            }
+
+            return $return;
+        }
     }
 ?>
