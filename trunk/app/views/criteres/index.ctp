@@ -44,6 +44,7 @@
 
     <fieldset>
         <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => __( 'dtdemrsa', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => date( 'Y' ) - 10, 'empty' => true ) );?>
+        <?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Typeorient.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
         <?php echo $form->input( 'Structurereferente.id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
         <?php echo $form->input( 'Orientstruct.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
@@ -67,8 +68,8 @@
             <thead>
                  <tr>
                     <th>Numéro dossier</th>
+                    <th>Commune</th>
                     <th>Date d'ouverture droits</th>
-                    <!--<th>NIR</th>-->
                     <th>Allocataire</th>
                     <!--<th>État du dossier</th>-->
                     <th>Statut de l'orientation</th>
@@ -95,6 +96,7 @@
                         echo $html->tableCells(
                             array(
                                 h( $orient['Dossier']['numdemrsa'] ),
+                                h( $orient['Adresse']['locaadr'] ),
                                 h( $orient['Dossier']['dtdemrsa'] ),
                                 //h( $critere[0]['nir'] ), // FIXME: 0
                                 implode(

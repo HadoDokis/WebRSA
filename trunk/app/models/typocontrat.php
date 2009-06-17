@@ -3,6 +3,8 @@
     {
         var $name = 'Typocontrat';
         var $useTable = 'typoscontrats';
+        var $displayField = 'lib_typo';
+        var $order = 'Typocontrat.id ASC';
 
         var $hasMany = array(
             'Contratinsertion' => array(

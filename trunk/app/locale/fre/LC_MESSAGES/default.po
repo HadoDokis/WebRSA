@@ -348,6 +348,9 @@ msgstr "Quels objectifs vous fixez-vous pour les mois à venir"
 msgid "engag_object"
 msgstr "Que prévoyez-vous de faire pour atteindre ces objectifs (démarches d\'insertion dans les domaines de la santé, du logement et de la vie sociale et quotidienne, de la formation, de la recherche d\'emploi,...)"
 
+msgid "emp_trouv"
+msgstr "Avez-vous trouvé un emploi "
+
 msgid "sect_acti_emp"
 msgstr "Le secteur d\'activité"
 
