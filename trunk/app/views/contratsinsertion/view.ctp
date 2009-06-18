@@ -69,7 +69,7 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'actions_prev' );?></th>
-                    <td><?php echo $contratinsertion['Contratinsertion']['actions_prev'];?></td>
+                    <td><?php echo isset( $contratinsertion['Contratinsertion']['actions_prev'] ) ? 'Oui' : 'Non';?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'obsta_renc' );?></th>

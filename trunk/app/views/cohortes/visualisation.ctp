@@ -71,17 +71,6 @@
                                 h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
                                 h( date_short( $personne['Dossier']['dtdemrsa'] ) ), // FIXME: voir flux instruction
                                 h( $typeserins[$personne['Suiviinstruction']['typeserins']] ),
-                                /*h(
-                                    implode(
-                                        ' ',
-                                        array(
-                                            $personne['Suiviinstruction']['numdepins'],
-                                            $personne['Suiviinstruction']['typeserins'],
-                                            $personne['Suiviinstruction']['numcomins'],
-                                            $personne['Suiviinstruction']['numagrins']
-                                        )
-                                    )
-                                ),*/
                                 h( isset( $typesOrient[$personne['Orientstruct']['propo_algo']] ) ? $typesOrient[$personne['Orientstruct']['propo_algo']] : null),
                                 h( $typesOrient[$personne['Orientstruct']['typeorient_id']] ),
                                 h( $personne['Orientstruct']['Structurereferente']['lib_struc'] ),

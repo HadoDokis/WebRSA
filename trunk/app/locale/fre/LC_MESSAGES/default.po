@@ -72,7 +72,7 @@ msgid "libautrdifsoc"
 msgstr "Difficultés sociales autres, précision ?"
 
 msgid "elopersdifdisp"
-msgstr "Avez-vous des difficultés de disponibilité du fait de l'éloignement d'enfant, de parent ou de conjoint (hospitalisation, incarcération) ?"
+msgstr "Avez-vous des difficultés de disponibilité du fait de l'éloignement d'enfant,<br /> de parent ou de conjoint (hospitalisation, incarcération) ?"
 
 msgid "obstemploidifdisp"
 msgstr "Ces différentes difficultés constituent-elles un obstacle insurmontable à votre accès à l'emploi ?"
@@ -153,7 +153,7 @@ msgid "duractdomi"
 msgstr "Quelle est la durée de votre activité dominante ?"
 
 msgid "libemploirech"
-msgstr "Précisez le métier ?"
+msgstr "Précisez le métier recherché ?"
 
 msgid "libsecactrech"
 msgstr "Précisez le secteur d'activité ?"
@@ -349,7 +349,7 @@ msgid "engag_object"
 msgstr "Que prévoyez-vous de faire pour atteindre ces objectifs (démarches d\'insertion dans les domaines de la santé, du logement et de la vie sociale et quotidienne, de la formation, de la recherche d\'emploi,...)"
 
 msgid "emp_trouv"
-msgstr "Avez-vous trouvé un emploi "
+msgstr "Avez-vous trouvé un emploi ? "
 
 msgid "sect_acti_emp"
 msgstr "Le secteur d\'activité"

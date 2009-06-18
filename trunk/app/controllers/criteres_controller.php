@@ -11,12 +11,6 @@
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
         */
-//         function constReq ($requete, $champ, $valeur) {
-//             if (empty($requete))
-//                 return "($champ = $valeur)";
-//             else
-//                 return $requete." AND ($champ = $valeur) ";
-//         }
 
         function index() {
             $typeservice = $this->Serviceinstructeur->find(
@@ -101,6 +95,10 @@
                                     'Adressefoyer.rgadr = \'01\''
                                 )
                             ),
+                            'ModeContact' => array(
+                                'foreignKey' => false,
+                                'conditions' => array( 'ModeContact.id = Personne.foyer_id' )
+                            ),
                             'Adresse' => array(
                                 'foreignKey' => false,
                                 'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
@@ -131,9 +129,65 @@
                     )
                 );
                 $this->set( 'orients', $orients );
+
+//             debug($params);
                 $this->data['Search'] = $params;
             }
         }
 
+        /*function view($orientstruct_id = null){
+            $sr = $this->Structurereferente->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Structurereferente.lib_struc'
+                    ),
+                )
+            );
+            $this->set( 'sr', $sr );
+
+            $this->Orientstruct->unbindModelAll();
+            $this->Orientstruct->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Personne' => array(
+                            'foreignKey' => false,
+                            'conditions' => array( 'Orientstruct.personne_id = Personne.id' )
+                        ),
+                        'Adressefoyer' => array(
+                            'foreignKey' => false,
+                            'conditions' => array(
+                                'Adressefoyer.foyer_id = Personne.foyer_id',
+                                'Adressefoyer.rgadr = \'01\''
+                            )
+                        ),
+                        'ModeContact' => array(
+                            'foreignKey' => false,
+                            'conditions' => array( 'ModeContact.id = Personne.foyer_id' )
+                        ),
+                        'Adresse' => array(
+                            'foreignKey' => false,
+                            'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                        ),
+                        'Foyer' => array(
+                            'foreignKey' => false,
+                            'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+                        ),
+                        'Dossier' => array(
+                            'foreignKey' => false,
+                            'conditions' => array( 'Dossier.id = Foyer.dossier_rsa_id' )
+                        ),
+                        'Serviceinstructeur' => array(
+                            'foreignKey' => false,
+                            'conditions' => array( 'Serviceinstructeur.id' => $this->Session->read( 'Auth.User.serviceinstructeur_id' ) )
+                        ),
+                    )
+                )
+            );
+            //$orients = $this->Orientstruct->findById( $orientstruct_id, null, null, 2 );
+
+$orients = $this->Orientstruct->find( 'all' );
+            $this->set( 'orients', $orients);
+        }*/
     }
 ?>
