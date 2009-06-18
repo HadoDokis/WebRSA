@@ -28,6 +28,13 @@
 //                 make_table_tooltips();
                 make_folded_forms();
                 mkTooltipTables();
+
+                // External links
+                $$('a.external').each( function ( link ) {
+                    $( link ).onclick = function() {
+                        window.open( $( link ).href, 'external' ); return false;
+                    };
+                } );
             });
         </script>
         <!--[if IE]>
