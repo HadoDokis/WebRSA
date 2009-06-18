@@ -88,7 +88,8 @@
         'serviceinstructeur' => 'servicesinstructeurs',
         'foyercreance' => 'foyerscreances',
         'dossiercaf' => 'dossierscaf',
-        'critereci' => 'criteresci'
+        'critereci' => 'criteresci',
+        'regroupementzonegeo' => 'regroupementszonesgeo'
      );
 /**
  * This is a key => value array of regex used to match words.
