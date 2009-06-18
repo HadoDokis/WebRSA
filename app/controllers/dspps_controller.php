@@ -63,6 +63,7 @@
 
         function add( $personne_id = null ) {
             // Vérification du format de la variable
+
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
             $dossier_id = $this->Personne->dossierId( $personne_id );

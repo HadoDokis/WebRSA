@@ -18,9 +18,7 @@
         function index( $contratinsertion_id = null ){
             // TODO : vérif param
             // Vérification du format de la variable
-            if( !valid_int( $contratinsertion_id ) ) {
-                $this->cakeError( 'error404' );
-            }
+            $this->assert( valid_int( $contratinsertion_id ), 'invalidParameter' );
 
             $contratinsertion = $this->Contratinsertion->find(
                 'first',
@@ -69,9 +67,7 @@
         function edit( $contratinsertion_id = null ){
             // TODO : vérif param
             // Vérification du format de la variable
-            if( !valid_int( $contratinsertion_id ) ) {
-                $this->cakeError( 'error404' );
-            }
+            $this->assert( valid_int( $contratinsertion_id ), 'invalidParameter' );
 
             $contratinsertion = $this->Actioninsertion->Contratinsertion->find(
                 'first',

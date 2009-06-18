@@ -1,4 +1,14 @@
 <script type="text/javascript">
+
+//         var newdate = date("d/M/Y", mktime(0, 0, 0, $mois + 1, $jour, $annee));
+// 
+//         document.observe("dom:loaded", function() {
+//             date( 'ContratinsertionDdCiDay', 'ContratinsertionDdCiMonth', 'ContratinsertionDdCiYear', ['ContratinsertionDureeEngag'], 'ContratinsertionDfCiDay', 'ContratinsertionDfCiMonth', 'ContratinsertionDfCiYear' )
+//         });
+
+</script>
+
+<script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], false );
         observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
@@ -17,7 +27,8 @@
         <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __( 'Structure référente', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );?>
         <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __( 'dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );?>
         <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => __( 'duree_engag', true ), 'typ' => 'text', 'size' => 3 )  ); ?>
-        <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ) ;?>
+        <!-- <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ) ;?> -->
+        <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true/*, 'value' => $new_date*/ ) ) ;?>
 </fieldset>
 <fieldset>
     <legend> FORMATION ET EXPERIENCE </legend>

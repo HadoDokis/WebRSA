@@ -32,7 +32,7 @@
         function edit( $zone_id = null ) {
             // TODO : vérif param
             // Vérification du format de la variable
-            $this->assert( valid_int( $zone_id ), 'error404' );
+            $this->assert( valid_int( $zone_id ), 'invalidParameter' );
 
             if( !empty( $this->data ) ) {
                 if( $this->Zonegeographique->saveAll( $this->data ) ) {

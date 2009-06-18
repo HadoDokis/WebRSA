@@ -88,13 +88,33 @@
         */
         function add( $foyer_id = null ) {
             // Vérification du format de la variable
-            $this->assert( valid_int( $foyer_id ), 'error404' );
+            $this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+
+            $dossier_id = $this->Foyer->dossierId( $foyer_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+            $this->Dspf->begin();
+
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Dspf->rollback();
+            }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             // Essai de sauvegarde
-            if( !empty( $this->data ) && $this->Dspf->save( $this->data ) ) {
-                $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                $this->redirect( array( 'controller' => 'dspfs', 'action' => 'view', $foyer_id ) );
+            if( !empty( $this->data ) ) {
+                if( $this->Dspf->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
+                    if( $this->Dspf->saveAll( $this->data ) ) {
+                        $this->Jetons->release( $dossier_id );
+                        $this->Dspf->commit();
+                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                        $this->redirect( array( 'controller' => 'dspfs', 'action' => 'view', $foyer_id ) );
+                    }
+                    else {
+                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                    }
+                }
             }
+            $this->Dspf->commit();
 
             $this->set( 'foyer_id', $foyer_id );
             $this->render( $this->action, null, 'add_edit' );
@@ -105,12 +125,30 @@
         */
         function edit( $foyer_id = null ) {
             // Vérification du format de la variable
-            $this->assert( valid_int( $foyer_id ), 'error404' );
+            $this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
+            $dossier_id = $this->Foyer->dossierId( $foyer_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+            $this->Dspf->begin();
+
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Dspf->rollback();
+            }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+            // Essai de sauvegarde
             if( !empty( $this->data ) ) {
-                if( $this->Dspf->saveAll( $this->data ) ) {
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'dspfs', 'action' => 'view', $foyer_id ) );
+                if( $this->Dspf->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
+                    if( $this->Dspf->saveAll( $this->data ) ) {
+                        $this->Jetons->release( $dossier_id );
+                        $this->Dspf->commit();
+                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                        $this->redirect( array( 'controller' => 'dspfs', 'action' => 'view', $foyer_id ) );
+                    }
+                    else {
+                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                    }
                 }
             }
             else {
@@ -125,6 +163,8 @@
                 $this->assert( !empty( $dspf ), 'error404' );
                 $this->data = $dspf;
             }
+
+            $this->Dspf->commit();
 
             $this->set( 'foyer_id', $foyer_id );
             $this->render( $this->action, null, 'add_edit' );
