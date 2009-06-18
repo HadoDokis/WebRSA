@@ -29,7 +29,6 @@
             // Assignations à la vue
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
             $this->set( 'suivisinstruction', $suivisinstruction );
-            $this->set( 'id', $dossier_rsa_id);
         }
 
 

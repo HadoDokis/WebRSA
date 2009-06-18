@@ -1,1 +1,0 @@
-ALTER TABLE contratsinsertion ALTER COLUMN actions_prev TYPE CHAR(2);

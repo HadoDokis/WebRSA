@@ -181,13 +181,13 @@
                     'allowEmpty'    => true
                 )
             ),
-            'lieu_saisie_ci' => array(
+            'lieu_saisi_ci' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'date_saisie_ci' => array(
+            'date_saisi_ci' => array(
                 'notEmpty' => array(
                     'rule' => 'date',
                     'message' => 'Veuillez entrer une date valide',

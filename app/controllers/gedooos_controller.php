@@ -63,17 +63,18 @@
             // $oFusion->SendContentToFile($path.$nomFichier);
         }
 
-        function notification_structure( $contratinsertion_id = null ) {
+        function notification_structure( $personne_id = null ) {
             // TODO: error404/error500 si on ne trouve pas les données
-            $contratinsertion = $this->Contratinsertion->find(
+            $personne = $this->Personne->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Contratinsertion.id' => $contratinsertion_id
+                        'Personne.id' => $personne_id
                     )
                 )
             );
 
+            // Récupération de l'adresse lié à la personne
             $this->Adressefoyer->bindModel(
                 array(
                     'belongsTo' => array(
@@ -88,13 +89,14 @@
                 'first',
                 array(
                     'conditions' => array(
-                        'Adressefoyer.foyer_id' => $contratinsertion['Personne']['foyer_id'],
+                        'Adressefoyer.foyer_id' => $personne['Personne']['foyer_id'],
                         'Adressefoyer.rgadr' => '01',
                     )
                 )
             );
+            $personne['Adresse'] = $adresse['Adresse'];
 
-            // Récupération du services instructeur lié au contrat
+            // Récupération de l'utilisateur
             $user = $this->User->find(
                 'first',
                 array(
@@ -103,15 +105,71 @@
                     )
                 )
             );
+            $personne['User'] = $user['User'];
 
-            $contratinsertion['User'] = $user['User'];
-//             debug( $contratinsertion);
+            // Récupération de la structure referente liée à la personne
+            $orientstruct = $this->Orientstruct->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.id' => $personne['Orientstruct']['id']
+                    )
+                )
+            );
+            $personne['Orientstruct'] = $orientstruct['Orientstruct'];
+            $personne['Structurereferente'] = $orientstruct['Structurereferente'];
 
-
-            unset( $contratinsertion['Actioninsertion'] );
-            $contratinsertion['Adresse'] = $adresse['Adresse'];
-            $this->_ged( $contratinsertion, 'notification_structure.odt' );
+            $this->_ged( $personne, 'notification_structure.odt' );
         }
+//         function notification_structure( $contratinsertion_id = null ) {
+//             // TODO: error404/error500 si on ne trouve pas les données
+//             $contratinsertion = $this->Contratinsertion->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Contratinsertion.id' => $contratinsertion_id
+//                     )
+//                 )
+//             );
+// 
+//             $this->Adressefoyer->bindModel(
+//                 array(
+//                     'belongsTo' => array(
+//                         'Adresse' => array(
+//                             'className'     => 'Adresse',
+//                             'foreignKey'    => 'adresse_id'
+//                         )
+//                     )
+//                 )
+//             );
+//             $adresse = $this->Adressefoyer->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Adressefoyer.foyer_id' => $contratinsertion['Personne']['foyer_id'],
+//                         'Adressefoyer.rgadr' => '01',
+//                     )
+//                 )
+//             );
+// 
+//             // Récupération du services instructeur lié au contrat
+//             $user = $this->User->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'User.id' => $this->Session->read( 'Auth.User.id' )
+//                     )
+//                 )
+//             );
+// 
+//             $contratinsertion['User'] = $user['User'];
+
+// 
+// 
+//             unset( $contratinsertion['Actioninsertion'] );
+//             $contratinsertion['Adresse'] = $adresse['Adresse'];
+//             $this->_ged( $contratinsertion, 'notification_structure.odt' );
+//         }
 
         function contratinsertion( $contratinsertion_id = null ) {
             // TODO: error404/error500 si on ne trouve pas les données
@@ -171,8 +229,7 @@
             $contratinsertion['Contratinsertion']['date_saisi_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['date_saisi_ci'] ) );
             // FIXME
             $contratinsertion['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Personne']['dtnai'] ) );
-// debug( $contratinsertion['Personne']['dtnai'] );
-//             debug( $contratinsertion );
+
             $this->_ged( $contratinsertion, 'contratinsertion.odt' );
         }
 
@@ -235,7 +292,7 @@
             // FIXME
 
             $orientstruct['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $orientstruct['Personne']['dtnai'] ) );
-// debug($orientstruct );
+
             $this->_ged( $orientstruct, 'cg66/'.$modele.'.odt' );
         }
     }
