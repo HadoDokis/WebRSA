@@ -157,10 +157,14 @@
                 )
             ),
             'duree_engag' => array(
-                'notEmpty' => array(
+                array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
-                )
+                ),
+		array(                   
+		    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.'
+		)
             ),
             'nature_projet' => array(
                 'notEmpty' => array(
