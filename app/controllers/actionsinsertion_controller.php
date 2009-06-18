@@ -87,7 +87,6 @@
             if( !empty( $this->data ) ) {
 
                 if( $this->Actioninsertion->saveAll( $this->data ) ) {
-
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'actionsinsertion', 'action' => 'index', $contratinsertion['Actioninsertion']['personne_id']) );
                 }

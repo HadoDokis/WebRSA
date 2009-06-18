@@ -798,6 +798,23 @@ class HtmlHelper extends AppHelper {
         }
     }
 
+    function printListLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/printer.png',
+            array( 'alt' => '' )
+        ).' Version imprimable';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title , 'class' => 'external' )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
     //*************************************************************************
 
     function boolean( $boolean ) {

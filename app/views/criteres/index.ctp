@@ -68,11 +68,13 @@
             <thead>
                  <tr>
                     <th>Numéro dossier</th>
+                    <th>Allocataire</th>
+                    <th>N° Téléphone</th>
                     <th>Commune</th>
                     <th>Date d'ouverture droits</th>
-                    <th>Allocataire</th>
-                    <!--<th>État du dossier</th>-->
-                    <th>Statut de l'orientation</th>
+                    <th>Date d'orientation</th>
+                    <th>Structure référente</th>
+                    <th>Statut orientation</th>
                     <th class="action">Actions</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
@@ -96,21 +98,13 @@
                         echo $html->tableCells(
                             array(
                                 h( $orient['Dossier']['numdemrsa'] ),
+                                h( $orient['Personne']['qual'].' '.$orient['Personne']['nom'].' '.$orient['Personne']['prenom'] ),
+                                h( $orient['ModeContact']['numtel'] ),
                                 h( $orient['Adresse']['locaadr'] ),
                                 h( $orient['Dossier']['dtdemrsa'] ),
-                                //h( $critere[0]['nir'] ), // FIXME: 0
-                                implode(
-                                    ' ',
-                                    array(
-                                        $orient['Personne']['qual'],
-                                        $orient['Personne']['nom'],
-                                        implode( ' ', array( $orient['Personne']['prenom'], $orient['Personne']['prenom2'], $orient['Personne']['prenom3'] ) )
-                                    )
-                                ),
-                                //h( array_key_exists( $critere['Dossier']['Situationdossierrsa']['etatdosrsa'] ,$etatdosrsa ) ? $etatdosrsa[$critere['Dossier']['Situationdossierrsa']['etatdosrsa']] : null ),
-
-                                h( $orient['Orientstruct']['statut_orient']  ),
-
+                                h( $orient['Orientstruct']['date_propo'] ),
+                                h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
+                                h( $orient['Orientstruct']['statut_orient'] ),
                                 $html->viewLink(
                                     'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
                                     array( 'controller' => 'personnes', 'action' => 'view', $orient['Personne']['id'] )
@@ -125,8 +119,10 @@
             <?php endforeach;?>
             </tbody>
         </table>
+        <!-- <div class="submit">
+            <?php echo $html->printListLink( 'Version imprimable', array( 'type' => 'print' ) );?>
+        </div> -->
 
-        <?php //require( 'index.pagination.ctp' )?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>

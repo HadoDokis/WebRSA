@@ -1,13 +1,16 @@
     <script type="text/javascript">
         document.observe("dom:loaded", function() {
-            observeDisableFieldsOnCheckbox( 'DsppDrorsarmiant', [ 'DsppDrorsarmianta2' ], false );
+            observeDisableFieldsOnCheckbox( 'DsppDrorsarmiant1', [ 'DsppDrorsarmianta20', 'DsppDrorsarmianta21' ], false );
+            observeDisableFieldsOnCheckbox( 'DsppDrorsarmiant0', [ 'DsppDrorsarmianta20', 'DsppDrorsarmianta21' ], true );
             observeDisableFieldsOnCheckbox( 'DifsocDifsoc7', [ 'DsppLibautrdifsoc' ], false );
             observeDisableFieldsOnCheckbox( 'NataccosocindiNataccosocindi6', [ 'DsppLibautraccosocindi' ], false );
-            observeDisableFieldsOnCheckbox( 'DsppElopersdifdisp', [ 'DsppObstemploidifdisp' ], false );
+            observeDisableFieldsOnCheckbox( 'DsppElopersdifdisp1', [ 'DsppObstemploidifdisp1', 'DsppObstemploidifdisp0' ], false );
+            observeDisableFieldsOnCheckbox( 'DsppElopersdifdisp0', [ 'DsppObstemploidifdisp1', 'DsppObstemploidifdisp0' ], true );
+
             observeDisableFieldsOnCheckbox( 'AccoemploiAccoemploi1', [ 'DsppLibcooraccoemploi', 'AccoemploiAccoemploi2', 'AccoemploiAccoemploi3', 'DsppLibcooraccoemploi' ], true );
 
             //observeDisableFieldsOnValue( 'AccoemploiAccoemploi1', [ 'DsppLibcooraccoemploi', ], '1801', true );
-            observeDisableFieldsOnValue( 'DsppHispro', [ 'DsppLibderact', 'DsppLibsecactderact', 'DsppDfderactDay', 'DsppDfderactMonth', 'DsppDfderactYear', 'DsppDomideract', 'DsppLibactdomi', 'DsppLibsecactdomi', 'DsppDuractdomi', 'DsppLibemploirech', 'DsppLibsecactrech' ], '1904', true );
+            observeDisableFieldsOnValue( 'DsppHispro', [ 'DsppLibderact', 'DsppLibsecactderact', 'DsppDfderactDay', 'DsppDfderactMonth', 'DsppDfderactYear', 'DsppDomideract1','DsppDomideract0', 'DsppLibactdomi', 'DsppLibsecactdomi', 'DsppDuractdomi' ], '1904', true );
             observeDisableFieldsOnCheckbox( 'DifsocDifsoc1', [ 'DifsocDifsoc2', 'DifsocDifsoc3', 'DifsocDifsoc4', 'DifsocDifsoc5', 'DifsocDifsoc6', 'DifsocDifsoc7' ], true );
 
             observeDisableFieldsOnCheckbox( 'NataccosocindiNataccosocindi1', [ 'NataccosocindiNataccosocindi2', 'NataccosocindiNataccosocindi3', 'NataccosocindiNataccosocindi4', 'NataccosocindiNataccosocindi5', 'NataccosocindiNataccosocindi6' ], true );
@@ -79,15 +82,39 @@
     <fieldset>
             <legend>Généralités DSPP</legend>
                 <!-- <?php /*echo $form->input( 'Serviceinstructeur.lib_service', array( 'label' => __( 'lib_service' ,true), 'type' => 'select', 'options' => $typeservices, 'empty' => true ) );*/?> -->
-                <?php echo $form->input( 'Dspp.drorsarmiant', array( 'label' => __( 'drorsarmiant', true ), 'type' => 'checkbox' ) );?>
-                <?php echo $form->input( 'Dspp.drorsarmianta2', array( 'label' => __( 'drorsarmianta2', true ), 'type' => 'checkbox' ) );?>
-                <?php echo $form->input( 'Dspp.couvsoc', array( 'label' => __( 'couvsoc', true )));?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'drorsarmiant', true ) ); 
+                    echo $form->radio( 'Dspp.drorsarmiant', $options, $attributes );
+                ?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'drorsarmianta2', true )); 
+                    echo $form->radio( 'Dspp.drorsarmianta2', $options, $attributes );
+                ?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'couvsoc', true ) ); 
+                    echo $form->radio( 'Dspp.couvsoc', $options, $attributes );
+                ?>
     </fieldset>
     <fieldset>
             <legend>Situation sociale</legend>
-                <?php echo $form->input( 'Dspp.elopersdifdisp', array( 'label' => __( 'elopersdifdisp', true ), 'type' => 'checkbox' ) );?>
-                <?php echo $form->input( 'Dspp.obstemploidifdisp', array( 'label' => __( 'obstemploidifdisp', true ), 'type' => 'checkbox' ) );?>
-                <?php echo $form->input( 'Dspp.soutdemarsoc', array( 'label' => __( 'soutdemarsoc', true ), 'type' => 'checkbox' ) );?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'elopersdifdisp', true ) ); 
+                    echo $form->radio( 'Dspp.elopersdifdisp', $options, $attributes );
+                ?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'obstemploidifdisp', true ) ); 
+                    echo $form->radio( 'Dspp.obstemploidifdisp', $options, $attributes );
+                ?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'soutdemarsoc', true ) ); 
+                    echo $form->radio( 'Dspp.soutdemarsoc', $options, $attributes );
+                ?>
                 <?php echo $form->input( 'Dspp.libcooraccosocindi', array( 'label' => __( 'libcooraccosocindi', true ), 'type' => 'textarea', 'rows' =>3 ) );?>
     </fieldset>
 
@@ -109,10 +136,22 @@
     <fieldset>
             <legend>Niveau d'étude</legend>
                 <?php echo $form->input( 'Dspp.annderdipobt', array( 'label' =>  __( 'annderdipobt', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80, 'empty' => true ) );?>
-                <?php echo $form->input( 'Dspp.rappemploiquali', array( 'label' => __( 'rappemploiquali', true ), 'type' => 'checkbox' ) );?>
-                <?php echo $form->input( 'Dspp.rappemploiform', array( 'label' => __( 'rappemploiform', true ), 'type' => 'checkbox' ) );?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'rappemploiquali', true ), 'label' => false ); 
+                    echo $form->radio( 'Dspp.rappemploiquali', $options, $attributes );
+                ?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'rappemploiform', true ), 'label' => false ); 
+                    echo $form->radio( 'Dspp.rappemploiform', $options, $attributes );
+                ?>
                 <?php echo $form->input( 'Dspp.libautrqualipro', array( 'label' => __( 'libautrqualipro', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Dspp.permicondub', array( 'label' => __( 'permicondub', true ), 'type' => 'checkbox' ) );?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'permicondub', true ), 'label' => false ); 
+                    echo $form->radio( 'Dspp.permicondub', $options, $attributes );
+                ?>
                 <?php echo $form->input( 'Dspp.libautrpermicondu', array( 'label' => __( 'libautrpermicondu', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libcompeextrapro', array( 'label' => __( 'libcompeextrapro', true ), 'type' => 'text' ) );?>
                 <legend><?php echo __( 'nivetu', true ) ?></legend>
@@ -128,15 +167,34 @@
                 <?php echo $form->input( 'Dspp.libderact', array( 'label' => __( 'libderact', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactderact', array( 'label' => __( 'libsecactderact', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.dfderact', array( 'label' => required( __( 'dfderact', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true ) );?>
-                <?php echo $form->input( 'Dspp.domideract', array( 'label' => __( 'domideract', true ), 'type' => 'checkbox' ) );?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'domideract', true ) ); 
+                    echo $form->radio( 'Dspp.domideract', $options, $attributes );
+                ?>
                 <?php echo $form->input( 'Dspp.libactdomi', array( 'label' => __( 'libactdomi', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactdomi', array( 'label' => __( 'libsecactdomi', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.duractdomi', array( 'label' => required( __( 'duractdomi', true ) ), 'type' => 'select', 'options' => $duractdomi, 'empty' => true ) );?>
+    </fieldset>
+    <fieldset>
+            <legend>Métier recherché</legend>
                 <?php echo $form->input( 'Dspp.libemploirech', array( 'label' => __( 'libemploirech', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactrech', array( 'label' => __( 'libsecactrech', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Dspp.creareprisentrrech', array( 'label' => __( 'creareprisentrrech', true ), 'type' => 'checkbox' ) );?>
-                <?php echo $form->input( 'Dspp.moyloco', array( 'label' => __( 'moyloco', true ), 'type' => 'checkbox' ) );?>
-                <?php echo $form->input( 'Dspp.persisogrorechemploi', array( 'label' => __( 'persisogrorechemploi', true ), 'type' => 'checkbox' ) );?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'creareprisentrrech', true ) ); 
+                    echo $form->radio( 'Dspp.creareprisentrrech', $options, $attributes );
+                ?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'moyloco', true ) ); 
+                    echo $form->radio( 'Dspp.moyloco', $options, $attributes );
+                ?>
+                <?php
+                    $options = array( '1' => 'Oui','0' => 'Non'); 
+                    $attributes = array( 'legend' => __( 'persisogrorechemploi', true ), 'label' => false ); 
+                    echo $form->radio( 'Dspp.persisogrorechemploi', $options, $attributes );
+                ?>
     </fieldset>
     <fieldset>
         <legend><?php echo __( 'natmob', true ) ?> </legend>

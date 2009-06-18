@@ -10,9 +10,13 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], false );
+
+        observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv1', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], false );
+        observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv0', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], true );
         observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
-        observeDisableFieldsOnValue( 'ContratinsertionActionsPrev', [ 'ContratinsertionObstaRenc' ], '1', true );
+        observeDisableFieldsOnCheckbox( 'ContratinsertionActionsPrev2', [ 'ContratinsertionObstaRenc' ],  false );
+        observeDisableFieldsOnCheckbox( 'ContratinsertionActionsPrev1', [ 'ContratinsertionObstaRenc' ],  true );
+
 
     });
 </script>
@@ -38,11 +42,11 @@
         <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __( 'expr_prof', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' => __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
     <legend> PARCOURS D'INSERTION ANTERIEUR </legend>
-
-        <!-- <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'div' => false,  'multiple' => 'checkbox', 'options' => $actions )  ); ?> 
-        <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'type' => 'textarea', 'rows' => 3)  ); ?> -->
-        <?php echo $form->input( 'Contratinsertion.actions_prev', array( 'label' => __( 'actions_prev', true ), 'type' => 'checkbox')  ); ?> 
-        <br />
+        <?php
+            $options = array( '1' => 'Oui','2' => 'Non'); 
+            $attributes = array( 'legend' => __( 'actions_prev', true ) ); 
+            echo $form->radio( 'Contratinsertion.actions_prev', $options, $attributes );
+        ?>
         <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => __( 'obsta_renc', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 </fieldset>
         <?php echo $form->input( 'Contratinsertion.serviceinstructeur_id', array( 'label' => __( 'Nom du service d\'accompagnement', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
@@ -52,7 +56,12 @@
     <legend> PROJET ET ACTIONS D'INSERTION </legend>
         <?php echo $form->input( 'Contratinsertion.objectifs_fixes', array( 'label' => __( 'objectifs_fixes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __( 'engag_object', true ), 'type' => 'textarea', 'rows' => 4)  ); ?>
-        <?php echo $form->input( 'Contratinsertion.emp_trouv', array( 'label' => __( 'emp_trouv', true ), 'type' => 'checkbox', 'empty' => true) );?>  
+       <!-- <?php echo $form->input( 'Contratinsertion.emp_trouv', array( 'label' => __( 'emp_trouv', true ), 'type' => 'checkbox', 'empty' => true) );?> -->
+        <?php
+            $options = array( '1' => 'Oui','0' => 'Non'); 
+            $attributes = array( 'legend' => __( 'emp_trouv', true ) ); 
+            echo $form->radio( 'Contratinsertion.emp_trouv', $options, $attributes );
+        ?>
         <br />Si oui, veuilez préciser :
         <?php echo $form->input( 'Contratinsertion.sect_acti_emp', array( 'label' => __( 'sect_acti_emp', true ), 'type' => 'select', 'options' => $sect_acti_emp, 'empty' => true )  ); ?>
         <?php echo $form->input( 'Contratinsertion.emp_occupe', array( 'label' => __( 'emp_occupe', true ), 'type' => 'select', 'options' => $emp_occupe, 'empty' => true )  ); ?>

@@ -99,7 +99,7 @@
             </tbody>
         </table>
 <!--        <div class="submit">
-        <?php echo $form->button( 'Validation de la liste', array( 'type' => 'submit' ) );?>
+        <?php echo $form->button( 'Impression de la liste', array( 'type' => 'submit' ) );?>
         </div>-->
         <?php /*require( 'index.pagination.ctp' )*/;?>
     <?php else:?>
