@@ -177,11 +177,11 @@
 
         function edit( $personne_id = null, $orient_id = null ){
             $this->assert( valid_int( $personne_id ), 'error404' );
- 
+
             $personne   = $this->Personne->read(null, $personne_id);
             $dossier_id =  $personne['Foyer']['dossier_rsa_id'] ;
             $dossimple  = $this->Dossier->read(null,$dossier_id );
- 
+
             $this->set( 'id', $personne_id);
             $this->set( 'dossiersimple_id', $dossier_id);
             $this->set( 'foyer_id', $personne['Foyer']['id']);
@@ -205,7 +205,6 @@
             else {
                 $this->data = $personne;
             }
-//            $this->render( $this->action, null, 'add_edit' );
     }
 }
 ?>

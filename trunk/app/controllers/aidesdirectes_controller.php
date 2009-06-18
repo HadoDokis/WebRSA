@@ -17,9 +17,8 @@
         function add( $contratinsertion_id = null ){
             // TODO : vérif param
             // Vérification du format de la variable
-            if( !valid_int( $contratinsertion_id ) ) {
-                $this->cakeError( 'error404' );
-            }
+            $this->assert( valid_int( $contratinsertion_id ), 'invalidParameter' );
+
 
              $contratinsertion = $this->Contratinsertion->find(
                 'first',
@@ -78,9 +77,8 @@
         function edit( $aidedirecte_id = null ){
              // TODO : vérif param
              // Vérification du format de la variable
-            if( !valid_int( $aidedirecte_id ) ) {
-                $this->cakeError( 'error404' );
-            }
+            $this->assert( valid_int( $aidedirecte_id ), 'invalidParameter' );
+
 
             $aidedirecte = $this->Aidedirecte->find(
                 'first',

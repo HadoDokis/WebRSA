@@ -8,8 +8,8 @@
 
         function beforeFilter() {
             parent::beforeFilter();
-	      $this->set( 'regfisagri', $this->Option->regfisagri() );
-    
+                $this->set( 'regfisagri', $this->Option->regfisagri() );
+
         }
 
 

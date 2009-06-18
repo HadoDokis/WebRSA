@@ -50,9 +50,8 @@
         function view( $contratinsertion_id = null ){
             // TODO : vérif param
             // Vérification du format de la variable
-            if( !valid_int( $contratinsertion_id ) ) {
-                $this->cakeError( 'error404' );
-            }
+            $this->assert( valid_int( $contratinsertion_id ), 'invalidParameter' );
+
 
             $tc = $this->Typocontrat->find(
                 'list',
@@ -84,6 +83,7 @@
         function add( $personne_id = null ) {
             // Vérification du format de la variable
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
+
 
             $personne = $this->Personne->findById( $personne_id, null, null, -1 );
             $this->assert( !empty( $personne ), 'invalidParameter' );
