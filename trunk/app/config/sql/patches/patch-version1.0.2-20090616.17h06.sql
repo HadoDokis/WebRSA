@@ -1,4 +1,3 @@
-
 /* création de la table de relation orientsstructs_servicesinstructeurs */
 CREATE TABLE orientsstructs_servicesinstructeurs (
     orientstruct_id             INT NOT NULL REFERENCES orientsstructs (id),
@@ -20,3 +19,17 @@ ALTER TABLE users ADD COLUMN numtel VARCHAR(15);
 ALTER TABLE contratsinsertion ADD COLUMN emp_trouv BOOLEAN;
 ALTER TABLE contratsinsertion ALTER COLUMN actions_prev TYPE CHAR(1); ---FIXME: normalement BOOLEAN mais problème lors du patch
 ------------------------------------------------------------
+
+/* création de la table regroupementszonesgeo */
+--------------- Ajout du 18 06 09 - 10h00 ------------------
+
+CREATE TABLE regroupementszonesgeo (
+    id          SERIAL NOT NULL PRIMARY KEY,
+    lib_rgpt    VARCHAR(50)
+);
+
+CREATE TABLE zonesgeographiques_regroupementszonesgeo (
+    zonegeographique_id             	INT NOT NULL REFERENCES zonesgeographiques(id),
+    regroupementzonegeo_id 		INT NOT NULL REFERENCES regroupementszonesgeo(id),
+    PRIMARY KEY( zonegeographique_id, regroupementzonegeo_id )
+);
