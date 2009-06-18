@@ -9,9 +9,23 @@
     *       - l'ensemble
     *       - chaque "composant"
     *   * on n'a pas les behaviours, helpers, et components
+    *   * continuer la conversion dates fr / dates en ou trouver un autre système
+    *
     */
 
     function datetime_short( $date ) {
+        $date = strtolower( $date );
+        $date = str_replace(
+            array(
+                'avr',
+                'mai',
+            ),
+            array(
+                'apr',
+                'may',
+            ),
+            $date
+        );
         return strftime( '%d/%m/%Y %H:%M', strtotime( $date ) );
     }
 
