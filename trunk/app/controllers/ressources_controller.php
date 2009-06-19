@@ -157,17 +157,20 @@
 //                 $this->Detailressourcemensuelle->set( $this->data );
 
                 $validates = $this->Ressource->validates();
+// debug( $this->Ressource->validationErrors );
+// debug( $this->data['Ressource'] ); // FIXME: pourquoi ne validates pas ?
+// debug( $validates );
                 if( array_key_exists( 'Ressourcemensuelle', $this->data ) ) {
                     $validates = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only' ) ) && $validates;
                     if( array_key_exists( 'Detailressourcemensuelle', $this->data ) ) {
                         $validates = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $validates;
                     }
                 }
-
+// debug( $validates );
                 if( $validates ) {
                     $this->Ressource->begin();
                     $saved = $this->Ressource->save( $this->data );
-                    if( !$this->data['Ressource']['topressnul'] ) { // FIXME ? ->  la signification, ce ne serait pas le contraire ?
+                    if( !$this->data['Ressource']['topressnul'] ) {
                         if( array_key_exists( 'Ressourcemensuelle', $this->data ) ) {
                             foreach( $this->data['Ressourcemensuelle'] as $index => $dataRm ) {
                                 $this->Ressourcemensuelle->create();
@@ -205,7 +208,7 @@
                             ) && $saved;
                         }
                     }
-
+// debug( $saved );
                     if( $saved ) {
                         $this->Jetons->release( $dossier_id );
                         $this->Ressource->commit();
