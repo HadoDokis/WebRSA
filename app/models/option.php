@@ -1037,8 +1037,13 @@
             return array(
                 '' => 'Hors département',
                 'A' => 'Organisme agréé',
-                'S' => 'Service social', ///FIXME
-                'C' => 'Centre Communal d\'Action Social'
+                'C' => 'Centre Communal d\'Action Sociale',
+                'F' => 'Caisse d\'Allocation Familiale',
+                'G' => 'Mutualité Sociale Agricole',
+                'I' => 'Internaute',
+                'P' => 'Pôle emploi',
+                'S' => 'Service Social Départemental',
+                'T' => 'Centre Intercommunal d\'Action Sociale'
             );
         }
 
