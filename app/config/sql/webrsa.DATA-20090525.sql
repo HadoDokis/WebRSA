@@ -1,5 +1,6 @@
 
-INSERT INTO servicesinstructeurs VALUES ( 1, 'Service 1', '16', 'chemin', 'collines', '30900', '30000', 'Nimes' );
+INSERT INTO servicesinstructeurs VALUES ( 1, 'Service 1', '16', 'collines', null, '30900', '30000', 'Nimes');
+INSERT INTO servicesinstructeurs VALUES ( 2, 'Service 2', '775', 'moulin',  null, '34080', '34000', 'Lattes' );
 
 INSERT INTO groups VALUES (1, 'Administrateurs', 0);
 INSERT INTO groups VALUES (2, 'Utilisateurs', 0);
@@ -11,7 +12,7 @@ INSERT INTO users VALUES (4, '1', '1', 'cg66', 'c41d80854d210d5f7512ab216b53b2f2
 INSERT INTO users VALUES (3, '3', '1', 'cg58', '5054b94efbf033a5fe624e0dfe14c8c0273fe320', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO users VALUES (1, '2', '1', 'cg23', 'e711d517faf274f83262f0cdd616651e7590927e', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO users VALUES (2, '2', '1', 'cg54', '13bdf5c43c14722e3e2d62bfc0ff0102c9955cda', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO users VALUES (6, '1', '1', 'webrsa', '83a98ed2a57ad9734eb0a1694293d03c74ae8a57', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO users VALUES (6, '1', '1', 'webrsa', '83a98ed2a57ad9734eb0a1694293d03c74ae8a57', 'auzolat', 'arnaud', NULL, NULL, NULL);
 
 
 INSERT INTO acos VALUES (4790, 0, '', 0, 'Dossiers:index', 1, 2);

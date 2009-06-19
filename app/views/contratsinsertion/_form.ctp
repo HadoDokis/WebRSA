@@ -10,10 +10,10 @@
 
 <script type="text/javascript">
     document.observe( "dom:loaded", function() {
-//         observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv1', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], false );
-//         observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv0', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], true );
-//         observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
-//         observeDisableFieldsOnCheckbox( 'ContratinsertionActionsPrev2', [ 'ContratinsertionObstaRenc' ],  false );
+
+        observeDisableFieldsOnBoolean( 'ContratinsertionEmpTrouv', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], false );
+
+        observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
 
         observeDisableFieldsOnBoolean( 'ContratinsertionActionsPrev', [ 'ContratinsertionObstaRenc' ], true );
     } );
@@ -41,8 +41,8 @@
         <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' => __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
     <legend> PARCOURS D'INSERTION ANTERIEUR </legend>
         <?php
-	    echo $widget->booleanRadio( 'Contratinsertion.actions_prev', array( 'legend' => __( 'actions_prev', true )) );
-	?>
+            echo $widget->booleanRadio( 'Contratinsertion.actions_prev', array( 'legend' => __( 'actions_prev', true )) );
+        ?>
         <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => __( 'obsta_renc', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 </fieldset>
         <?php echo $form->input( 'Contratinsertion.serviceinstructeur_id', array( 'label' => __( 'Nom du service d\'accompagnement', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
@@ -52,11 +52,10 @@
     <legend> PROJET ET ACTIONS D'INSERTION </legend>
         <?php echo $form->input( 'Contratinsertion.objectifs_fixes', array( 'label' => __( 'objectifs_fixes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __( 'engag_object', true ), 'type' => 'textarea', 'rows' => 4)  ); ?>
-       <!-- <?php echo $form->input( 'Contratinsertion.emp_trouv', array( 'label' => __( 'emp_trouv', true ), 'type' => 'checkbox', 'empty' => true) );?> -->
         <?php
-	    echo $widget->booleanRadio( 'Contratinsertion.emp_trouv', array( 'legend' => __( 'emp_trouv', true )) );
+            echo $widget->booleanRadio( 'Contratinsertion.emp_trouv', array( 'legend' => __( 'emp_trouv', true )) );
         ?>
-        <br />Si oui, veuilez préciser :
+        Si oui, veuilez préciser :
         <?php echo $form->input( 'Contratinsertion.sect_acti_emp', array( 'label' => __( 'sect_acti_emp', true ), 'type' => 'select', 'options' => $sect_acti_emp, 'empty' => true )  ); ?>
         <?php echo $form->input( 'Contratinsertion.emp_occupe', array( 'label' => __( 'emp_occupe', true ), 'type' => 'select', 'options' => $emp_occupe, 'empty' => true )  ); ?>
         <?php echo $form->input( 'Contratinsertion.duree_hebdo_emp', array( 'label' => __( 'duree_hebdo_emp', true ), 'type' => 'select', 'options' => $duree_hebdo_emp, 'empty' => true )  ); ?>

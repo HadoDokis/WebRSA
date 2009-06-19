@@ -41,6 +41,9 @@
 
 <!-- Résultats -->
 <?php if( isset( $contrats ) ):?>
+    <div class="submit">
+        <?php echo $form->button( 'Imprimer cette page', array( 'onclick' => 'printit();' ) );?>
+    </div>
     <h2>Résultats de la recherche</h2>
 
     <?php if( is_array( $contrats ) && count( $contrats ) > 0 ):?>

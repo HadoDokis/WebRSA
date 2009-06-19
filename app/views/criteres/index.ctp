@@ -27,6 +27,8 @@
     });
 </script>
 
+
+
 <?php
     if( is_array( $this->data ) ) {
         echo '<ul class="actionMenu"><li>'.$html->link(
@@ -59,6 +61,9 @@
 
 <!-- Résultats -->
 <?php if( isset( $orients ) ):?>
+    <div class="submit">
+        <?php echo $form->button( 'Imprimer cette page', array( 'onclick' => 'printit();' ) );?>
+    </div>
     <h2>Résultats de la recherche</h2>
 
     <?php if( is_array( $orients ) && count( $orients ) > 0  ):?>
@@ -119,10 +124,6 @@
             <?php endforeach;?>
             </tbody>
         </table>
-        <!-- <div class="submit">
-            <?php echo $html->printListLink( 'Version imprimable', array( 'type' => 'print' ) );?>
-        </div> -->
-
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>
