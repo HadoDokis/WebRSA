@@ -1,6 +1,6 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        observeDisableFieldsOnValue( 'ServiceinstructeurNumdepins', [ 'ServiceinstructeurTypeserins' ], 093, false ); ///FIXME: voir avec Michel pour n° dep -> Type de service
+        //observeDisableFieldsOnValue( 'ServiceinstructeurNumdepins', [ 'ServiceinstructeurTypeserins' ], 093, false ); ///FIXME: voir avec Michel pour n° dep -> Type de service
     });
 </script>
 

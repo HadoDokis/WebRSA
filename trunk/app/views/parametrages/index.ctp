@@ -98,6 +98,17 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
+                /*echo $html->tableCells(
+                    array(
+                        h( 'Regroupement par région' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'regroupementszonesgeo', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );*/
             ?>
         </tbody>
     </table>

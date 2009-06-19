@@ -18,7 +18,7 @@
             $this->set( 'hispro', $this->Option->hispro() );
 
             $this->set( 'duractdomi', $this->Option->duractdomi() );
-            //$this->set( 'nivetu', $this->Option->nivetu() );
+            $this->set( 'accosocfam', $this->Option->accosocfam() );
 
             // DSP foyer
             $this->set( 'nataccosocfams', $this->Nataccosocfam->find( 'list' ) );

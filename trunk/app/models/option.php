@@ -11,6 +11,14 @@
             );
         }
 
+        function accosocfam() {
+            return array(
+                'O' => 'Oui',
+                'N' => 'Non',
+                'P' => 'Pas de réponse'
+            );
+        }
+
         function act() {
             return array(
                 'AAP' => 'ACTIVITE EN ATELIER PROTEGE',
@@ -141,6 +149,22 @@
             );
         }
 
+        function autorutiadrelec() {
+            return array(
+                'A' => 'Accord d\'utilisation',
+                'I' => 'Inconnu',
+                'R' => 'Refus d\'utilisation'
+            );
+        }
+
+        function autorutitel() {
+            return array(
+                'A' => 'Accord d\'utilisation',
+                'I' => 'Inconnu',
+                'R' => 'Refus d\'utilisation'
+            );
+        }
+
         function aviscondadmrsa() {
             return array(
                 'D' => 'Avis demandé au CG',
@@ -154,6 +178,22 @@
                 'D' => 'Avis demandé au CG',
                 'A' => 'Accord du CG',
                 'R' => 'refus du CG'
+            );
+        }
+
+        function couvsoc() {
+            return array(
+                'O' => 'Oui',
+                'N' => 'Non',
+                'P' => 'Pas de réponse'
+            );
+        }
+
+        function creareprisentrrech() {
+            return array(
+                'O' => 'Oui',
+                'N' => 'Non',
+                'P' => 'Pas de réponse'
             );
         }
 
@@ -485,7 +525,7 @@
                 '088' => 'eti 1er renouvellement (profess. non salariee)',
                 '200' => 'revenus d\'activite d\'insertion (hors cre, ces)',
                 '201' => 'remuneration stage formation',
-                '203' =>'secours ou aides financieres reguliers',
+                '203' => 'secours ou aides financieres reguliers',
                 '204' => 'indemnites representatives de frais',
                 '205' => 'revenu eti/marin pecheur/exploit agricole-rmi',
                 '206' => 'pf versees par un autre organisme',
@@ -997,7 +1037,7 @@
             return array(
                 '' => 'Hors département',
                 'A' => 'Organisme agréé',
-                'S' => 'Service social', //FIXME
+                'S' => 'Service social', ///FIXME
                 'C' => 'Centre Communal d\'Action Social'
             );
         }

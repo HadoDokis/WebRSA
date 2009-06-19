@@ -40,7 +40,7 @@
 
 <fieldset>
     <legend>Accompagnement social familial</legend>
-    <?php echo $form->input( 'Dspf.accosocfam', array( 'label' => __( 'accosocfam', true ), 'type' => 'checkbox' ) );?>
+    <?php echo $form->input( 'Dspf.accosocfam', array( 'label' => __( 'accosocfam', true ), 'type' => 'select', 'options' => $accosocfam, 'empty' => true ) );?>
     <?php echo $form->input( 'Dspf.libcooraccosocfam', array( 'label' => __( 'libcooraccosocfam', true ), 'type' => 'textarea', 'rows' =>3) );?>
 
     <fieldset>

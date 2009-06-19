@@ -677,3 +677,9 @@ msgstr "Numéro de téléphone"
 ###############################################################################
 msgid "Login failed. Invalid username or password."
 msgstr "Échec de la connexion. Identifiant ou mot de passe invalide."
+
+###############################################################################
+# Paramétrage région (regroupementzonegeo)
+###############################################################################
+msgid "lib_rgpt"
+msgstr "Libellé de la région"

@@ -13,8 +13,10 @@
 
         function beforeFilter() {
             $return = parent::beforeFilter();
-            //$this->set( 'accoemploi', $this->Option->accoemploi() );
+            $this->set( 'couvsoc', $this->Option->couvsoc() );
             $this->set( 'hispro', $this->Option->hispro() );
+            $this->set( 'creareprisentrrech', $this->Option->creareprisentrrech() );
+
             $this->set( 'duractdomi', $this->Option->duractdomi() );
             // Données socioprofessionnelles personne
             $this->set( 'difsocs', $this->Difsoc->find( 'list' ) );
