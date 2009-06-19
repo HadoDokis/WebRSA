@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
 //         var newdate = date("d/M/Y", mktime(0, 0, 0, $mois + 1, $jour, $annee));
-// 
+//
 //         document.observe("dom:loaded", function() {
 //             date( 'ContratinsertionDdCiDay', 'ContratinsertionDdCiMonth', 'ContratinsertionDdCiYear', ['ContratinsertionDureeEngag'], 'ContratinsertionDfCiDay', 'ContratinsertionDfCiMonth', 'ContratinsertionDfCiYear' )
 //         });
@@ -9,13 +9,14 @@
 </script>
 
 <script type="text/javascript">
-    document.observe("dom:loaded", function() {
+    document.observe( "dom:loaded", function() {
+//         observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv1', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], false );
+//         observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv0', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], true );
+//         observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
+//         observeDisableFieldsOnCheckbox( 'ContratinsertionActionsPrev2', [ 'ContratinsertionObstaRenc' ],  false );
 
-        observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv1', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], false );
-        observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv0', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], true );
-        observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
-        observeDisableFieldsOnCheckbox( 'ContratinsertionActionsPrev2', [ 'ContratinsertionObstaRenc' ],  false );
-    });
+        observeDisableFieldsOnBoolean( 'ContratinsertionActionsPrev', [ 'ContratinsertionObstaRenc' ], true );
+    } );
 </script>
 
 <p><i>Le présent contrat d'insertion est établi en application de l'article L262-37 du code de l'action sociale </i></p>
@@ -45,7 +46,7 @@
         <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => __( 'obsta_renc', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 </fieldset>
         <?php echo $form->input( 'Contratinsertion.serviceinstructeur_id', array( 'label' => __( 'Nom du service d\'accompagnement', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
-        <?php echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => __( 'service_soutien', true ), 'type' => 'textarea', 'rows' => 3 )  ); ?> 
+        <?php echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => __( 'service_soutien', true ), 'type' => 'textarea', 'rows' => 3 )  ); ?>
         <?php echo $form->input( 'Contratinsertion.pers_charg_suivi', array( 'label' => __( 'pers_charg_suivi', true ), 'type' => 'textarea', 'rows' => 1 )  ); ?>
 <fieldset>
     <legend> PROJET ET ACTIONS D'INSERTION </legend>
