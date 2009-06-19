@@ -318,7 +318,7 @@
             // FIXME: chemins
             $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo'; // FIXME: chemin
             $sMimeType  = "application/pdf";
-            $sModele = $phpGedooDir.'/../test_section.odt';
+            $sModele = $phpGedooDir.'/../notifications_cohorte.odt';
 
             // Inclusion des fichiers nécessaires à GEDOOo
             // FIXME
