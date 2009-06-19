@@ -4,7 +4,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Contratinsertion', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option' );
 
 
         function _ged( $datas, $model ) {
@@ -121,55 +121,6 @@
 
             $this->_ged( $personne, 'notification_structure.odt' );
         }
-//         function notification_structure( $contratinsertion_id = null ) {
-//             // TODO: error404/error500 si on ne trouve pas les données
-//             $contratinsertion = $this->Contratinsertion->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array(
-//                         'Contratinsertion.id' => $contratinsertion_id
-//                     )
-//                 )
-//             );
-// 
-//             $this->Adressefoyer->bindModel(
-//                 array(
-//                     'belongsTo' => array(
-//                         'Adresse' => array(
-//                             'className'     => 'Adresse',
-//                             'foreignKey'    => 'adresse_id'
-//                         )
-//                     )
-//                 )
-//             );
-//             $adresse = $this->Adressefoyer->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array(
-//                         'Adressefoyer.foyer_id' => $contratinsertion['Personne']['foyer_id'],
-//                         'Adressefoyer.rgadr' => '01',
-//                     )
-//                 )
-//             );
-// 
-//             // Récupération du services instructeur lié au contrat
-//             $user = $this->User->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array(
-//                         'User.id' => $this->Session->read( 'Auth.User.id' )
-//                     )
-//                 )
-//             );
-// 
-//             $contratinsertion['User'] = $user['User'];
-
-// 
-// 
-//             unset( $contratinsertion['Actioninsertion'] );
-//             $contratinsertion['Adresse'] = $adresse['Adresse'];
-//             $this->_ged( $contratinsertion, 'notification_structure.odt' );
-//         }
 
         function contratinsertion( $contratinsertion_id = null ) {
             // TODO: error404/error500 si on ne trouve pas les données
@@ -294,6 +245,135 @@
             $orientstruct['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $orientstruct['Personne']['dtnai'] ) );
 
             $this->_ged( $orientstruct, 'cg66/'.$modele.'.odt' );
+        }
+
+        function _get( $personne_id ) {
+            $personne = $this->Personne->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Personne.id' => $personne_id
+                    )
+                )
+            );
+
+            // Récupération de l'adresse lié à la personne
+            $this->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+            $adresse = $this->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => $personne['Personne']['foyer_id'],
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $personne['Adresse'] = $adresse['Adresse'];
+
+            // Récupération de l'utilisateur
+            $user = $this->User->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'User.id' => $this->Session->read( 'Auth.User.id' )
+                    )
+                )
+            );
+            $personne['User'] = $user['User'];
+
+            // Récupération de la structure referente liée à la personne
+            $orientstruct = $this->Orientstruct->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.id' => $personne['Orientstruct']['id']
+                    )
+                )
+            );
+            $personne['Orientstruct'] = $orientstruct['Orientstruct'];
+            $personne['Structurereferente'] = $orientstruct['Structurereferente'];
+
+            return $personne;
+        }
+
+        /**
+        *
+        *
+        *
+        */
+
+        function notifications_cohortes() {
+            $cohorte = $this->Cohorte->search( 'Orienté', array_values( $this->Session->read( 'Auth.Zonegeographique' ) ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+
+            // Définition des variables & maccros
+            // FIXME: chemins
+            $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo'; // FIXME: chemin
+            $sMimeType  = "application/pdf";
+            $sModele = $phpGedooDir.'/../test_section.odt';
+
+            // Inclusion des fichiers nécessaires à GEDOOo
+            // FIXME
+            $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo';
+            require_once( $phpGedooDir.DS.'GDO_Utility.class' );
+            require_once( $phpGedooDir.DS.'GDO_FieldType.class' );
+            require_once( $phpGedooDir.DS.'GDO_ContentType.class' );
+            require_once( $phpGedooDir.DS.'GDO_IterationType.class' );
+            require_once( $phpGedooDir.DS.'GDO_PartType.class' );
+            require_once( $phpGedooDir.DS.'GDO_FusionType.class' );
+            require_once( $phpGedooDir.DS.'GDO_MatrixType.class' );
+            require_once( $phpGedooDir.DS.'GDO_MatrixRowType.class' );
+            require_once( $phpGedooDir.DS.'GDO_AxisTitleType.class' );
+
+            //
+            // Organisation des données
+            //
+            $u = new GDO_Utility();
+
+            $oMainPart = new GDO_PartType();
+
+            $oIteration = new GDO_IterationType( "notification" );
+
+            foreach( $cohorte as $personne_id ) {
+                $oDevPart = new GDO_PartType();
+
+                $datas = $this->_get( $personne_id );
+                foreach( $datas as $group => $details ) {
+                    if( !empty( $details ) ) {
+                        foreach( $details as $key => $value ) {
+                            $oDevPart->addElement(
+                                new GDO_FieldType(
+                                    strtolower( $group ).'_'.strtolower( $key ),
+                                    $value,
+                                    'text'
+                                )
+                            );
+                        }
+                    }
+                }
+
+                $oIteration->addPart($oDevPart);
+            }
+            $oMainPart->addElement($oIteration);
+
+            $bTemplate = $u->ReadFile($sModele);
+            $oTemplate = new GDO_ContentType("",
+                            "modele.ott",
+                            $u->getMimeType($sModele),
+                            "binary",
+                            $bTemplate);
+
+            $oFusion = new GDO_FusionType($oTemplate, $sMimeType, $oMainPart);
+            $oFusion->process();
+            $oFusion->SendContentToClient();
         }
     }
 ?>

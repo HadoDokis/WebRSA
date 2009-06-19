@@ -92,5 +92,20 @@
                 <?php endforeach;?>
             </tbody>
         </table>
+
+        <p>
+            <?php
+                echo $html->link(
+                    'Imprimer la cohorte',
+                    Set::merge(
+                        array(
+                            'controller' => 'gedooos',
+                            'action'     => 'notifications_cohortes'
+                        ),
+                        array_unisize( $this->data )
+                    )
+                );
+            ?>
+        </p>
     <?php endif;?>
 <?php endif;?>

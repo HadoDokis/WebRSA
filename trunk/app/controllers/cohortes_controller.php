@@ -2,7 +2,7 @@
     class CohortesController extends AppController
     {
         var $name = 'Cohortes';
-        var $uses = array( 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne' );
+        var $uses = array( 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne' );
 
         //*********************************************************************
 
@@ -25,16 +25,23 @@
             $this->components[] = 'Jetons';
         }
 
+        function _soumisADroitsEtDevoirs( $personne_id ) {
+        }
+
         /**
+        *
+        * INFO: Préprofessionnelle => Socioprofessionnelle --> mette un type dans la table ?
+        *
         */
         function _preOrientation( $element ) {
-            $propo_algo = 'Préprofessionnelle';
+            $propo_algo = 'Socioprofessionnelle';
 
             $dspp = array_filter( $element['Dspp'] );
-            if( !empty( $dspp ) ) { // FIXME
+
+            if( !empty( $dspp ) && isset( $element['Dspp']['dfderact'] ) ) { // FIXME
                 list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
                 $dfderact = mktime( 0, 0, 0, $month, $day, $year );
-                // Préprofessionnelle, Social
+                // Socioprofessionnelle, Social
                 // 1°) Passé professionnel ? -> Emploi
                 //     1901 : Vous avez toujours travaillé
                 //     1902 : Vous travaillez par intermittence
@@ -68,7 +75,7 @@
                         $propo_algo = 'Social';
                     }
                     else {
-                        $propo_algo = 'Préprofessionnelle';
+                        $propo_algo = 'Socioprofessionnelle';
                     }
                 }
             }
@@ -164,165 +171,20 @@
                         }
                     }
 
+                    // --------------------------------------------------------
+
                     $this->Dossier->begin(); // Pour les jetons
-                    // Moteur de recherche
-                    $filtres = array();
-                    // Critères sur le dossier - date de demande
-                    if( isset( $this->data['Filtre']['dtdemrsa'] ) && !empty( $this->data['Filtre']['dtdemrsa'] ) ) {
-                        $valid_from = ( valid_int( $this->data['Filtre']['dtdemrsa_from']['year'] ) && valid_int( $this->data['Filtre']['dtdemrsa_from']['month'] ) && valid_int( $this->data['Filtre']['dtdemrsa_from']['day'] ) );
-                        $valid_to = ( valid_int( $this->data['Filtre']['dtdemrsa_to']['year'] ) && valid_int( $this->data['Filtre']['dtdemrsa_to']['month'] ) && valid_int( $this->data['Filtre']['dtdemrsa_to']['day'] ) );
-                        if( $valid_from && $valid_to ) {
-                            $filtres['Dossier.id'] = $this->Dossier->find(
-                                'list',
-                                array(
-                                    'fields' => array(
-                                        'Dossier.id',
-                                        'Dossier.id'
-                                    ),
-                                    'conditions' => 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $this->data['Filtre']['dtdemrsa_from']['year'], $this->data['Filtre']['dtdemrsa_from']['month'], $this->data['Filtre']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $this->data['Filtre']['dtdemrsa_to']['year'], $this->data['Filtre']['dtdemrsa_to']['month'], $this->data['Filtre']['dtdemrsa_to']['day'] ) ).'\''
-                                )
-                            );
-                        }
-                    }
+// FIXME limit
+                    $cohorte = $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->data, $this->Jetons->ids(), 10 );
 
-                    // --------------------------------------------------------
-
-                    // Critères sur le code origine demande Rsa
-                    if( empty( $this->data['Filtre']['oridemrsa'] ) ) {
-                        // Si rien n'est sélectionné, on sélectionne tout
-                        $this->data['Filtre']['oridemrsa'] = array_keys( $this->Option->oridemrsa() );
-                    }
-
-                    if( isset( $this->data['Filtre']['oridemrsa'] ) ) {
-                        $conditions = array();
-                        if( array_key_exists( 'Dossier.id', $filtres ) ) {
-                            $conditions['Detaildroitrsa.dossier_rsa_id'] = ( !empty( $filtres['Dossier.id'] ) ? $filtres['Dossier.id'] : null );
-                        }
-                        if( !empty( $this->data['Filtre']['oridemrsa'] ) ) {
-                            $conditions['Detaildroitrsa.oridemrsa'] = array_values( $this->data['Filtre']['oridemrsa'] );
-                        }
-
-                        $filtres['Dossier.id'] = $this->Detaildroitrsa->find(
-                            'list',
-                            array(
-                                'fields' => array(
-                                    'Detaildroitrsa.dossier_rsa_id',
-                                    'Detaildroitrsa.dossier_rsa_id'
-                                ),
-                                'conditions' => $conditions
-                            )
-                        );
-                    }
-
-                    // --------------------------------------------------------
-
-                    $lockedDossiers = $this->Jetons->ids();
-                    if( !empty( $lockedDossiers ) ) {
-                        $conditions =  array(
-                            'Foyer.dossier_rsa_id' => ( !empty( $filtres['Dossier.id'] ) ? $filtres['Dossier.id'] : null ),
-                            'NOT' => array( '"Foyer"."dossier_rsa_id"' => $lockedDossiers )
-                        );
-                    }
-                    else {
-                        $conditions =  array(
-                            'Foyer.dossier_rsa_id' => ( !empty( $filtres['Dossier.id'] ) ? $filtres['Dossier.id'] : null )
-                        );
-                    }
-                    // Recherche des foyers associés à ces dossiers
-                    $filtres['Foyer.id'] = $this->Foyer->find(
-                        'list',
-                        array(
-                            'fields' => array(
-                                'Foyer.dossier_rsa_id',
-                                'Foyer.dossier_rsa_id'
-                            ),
-                            'conditions' => $conditions
-                        )
-                    );
-                    unset( $filtres['Dossier.id'] );
-
-                    // --------------------------------------------------------
-
-
-                    $filtres['Foyer.id'] = $this->Adressefoyer->find(
-                        'list',
-                        array(
-                            'fields' => array(
-                                'Adressefoyer.id',
-                                'Adressefoyer.foyer_id'
-                            ),
-                            'conditions' => array(
-                                'Adressefoyer.foyer_id' => ( !empty( $filtres['Foyer.id'] ) ? $filtres['Foyer.id'] : null ),
-                                'Adressefoyer.rgadr' => '01',
-                                'Adresse.numcomptt'  => ( !empty( $mesCodesInsee ) ? $mesCodesInsee : null )
-                            ),
-                            'recursive' => 0
-                        )
-                    );
-
-                    // --------------------------------------------------------
-
-                    $filtres['Personne.id'] = $this->Dossier->Foyer->Personne->find(
-                        'list',
-                        array(
-                            'fields' => array(
-                                'Personne.id',
-                                'Personne.id'
-                            ),
-                            'conditions'    => array(
-                                'Personne.foyer_id' => ( !empty( $filtres['Foyer.id'] ) ? $filtres['Foyer.id'] : null )
-                            ),
-                            'recursive'     => -1
-                        )
-                    );
-
-                    // --------------------------------------------------------
-
-                    $filtres['Personne.id'] = $this->Dossier->Foyer->Personne->Orientstruct->find(
-                        'list',
-                        array(
-                            'fields' => array(
-                                'Orientstruct.personne_id',
-                                'Orientstruct.personne_id'
-                            ),
-                            'conditions'    => array(
-                                'Orientstruct.statut_orient' => $statutOrientation,
-                                'Orientstruct.personne_id'   => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null )
-                            ),
-                            'recursive'     => -1
-                        )
-                    );
-
-                    // Ces personnes sont-elles soumises à droits et devoirs ?
-                    // FIXME -> est-ce que mtpersressmenrsa existe bien -> à l'importation des données, faire la moyenne ?
-                    $filtres['Personne.id'] = $this->Ressource->find(
-                        'list',
-                        array(
-                            'fields' => array(
-                                'Ressource.personne_id',
-                                'Ressource.personne_id'
-                            ),
-                            'conditions' => array(
-                                '"Ressource.mtpersressmenrsa" <' => 500,
-                                'Ressource.personne_id' => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null ),
-                            ),
-                            'recursive' => -1
-                        )
-                    );
-
-                    // --------------------------------------------------------
-
-                    // INFO: 190509 - grille test web-rsa.doc
-                    // FIXME: optimiser
                     $cohorte = $this->Dossier->Foyer->Personne->find(
                         'all',
                         array(
                             'conditions' => array(
-                                'Personne.id' => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null ),
-                                'Personne.foyer_id' => ( !empty( $filtres['Foyer.id'] ) ? $filtres['Foyer.id'] : null ),
+                                'Personne.id' => ( !empty( $cohorte ) ? $cohorte : null )
                             ),
                             'recursive' => 0,
-                            'limit' => 10
+                            'limit'     => 10
                         )
                     );
 
@@ -443,7 +305,7 @@
                     $this->set( 'pageTitle', 'Demandes non orientées' );
                     $this->render( $this->action, null, 'formulaire' );
                     break;
-                case 'Orienté':
+                case 'Orienté': // FIXME: pas besoin de locker
                     $this->set( 'pageTitle', 'Demandes orientées' );
                     $this->render( $this->action, null, 'visualisation' );
                     break;
