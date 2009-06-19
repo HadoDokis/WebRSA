@@ -101,7 +101,7 @@
 //                             'month' => '01',
 //                             'year' => '2009'
 //                         ),
-//                         'topressnul' => 0
+//                         'topressnotnul' => 0
 //                     )
 //                 )
 //             );
@@ -308,7 +308,7 @@
             $this->Ressourcemensuelle->create();
             $this->Detailressourcemensuelle->create();
 
-            $data['ressourcesallocataire']['topressnul'] = !$data['ressourcesallocataire']['topressnotnul'];
+            $data['ressourcesallocataire']['Ressource']['topressnul'] = !$data['ressourcesallocataire']['Ressource']['topressnotnul'];
 
             $this->Ressource->set( $data['ressourcesallocataire'] );
             $valid = $this->Ressource->validates();
@@ -325,7 +325,7 @@
                 $this->Ressourcemensuelle->create();
                 $this->Detailressourcemensuelle->create();
 
-                $data['ressourcesconjoint']['topressnul'] = !$data['ressourcesconjoint']['topressnotnul'];
+                $data['ressourcesconjoint']['Ressource']['topressnul'] = !$data['ressourcesconjoint']['Ressource']['topressnotnul'];
 
                 $this->Ressource->set( $data['ressourcesconjoint'] );
                 $valid = $this->Ressource->validates();
@@ -363,6 +363,7 @@
                 $data['allocataire']['Personne']['foyer_id'] = $this->Foyer->id;
                 $saved = $this->Personne->save( $data['allocataire']['Personne'] );
                 $demandeur_id = $this->Personne->id;
+
                 // Type orientation demandeur
                 $this->Orientstruct->create();
                 $saved = $this->Orientstruct->save( array( 'Orientstruct' => array( 'personne_id' => $demandeur_id, 'statut_orient' => 'Non orienté' ) ) );

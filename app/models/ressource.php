@@ -23,10 +23,14 @@
         );
 
         var $validate = array(
-            'topressnul' => array(
+            'topressnotnul' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
+//             'topressnul' => array(
+//                 'rule' => 'notEmpty',
+//                 'message' => 'Champ obligatoire'
+//             ),
             'mtpersressmenrsa' => array(
                 array(
                     // FIXME INFO ailleurs aussi => 123,25 ne passe pas
