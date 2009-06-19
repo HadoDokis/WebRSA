@@ -118,6 +118,51 @@
         }
     }
 
+    /**
+        @input  multisized array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
+        @output unisized array (eg. array( 'Foo__Bar' => 'value' ) )
+    */
+    function array_unisize( array $array, $prefix = null ) {
+        $newArray = array();
+        foreach( $array as $key => $value ) {
+            $newKey = ( !empty( $prefix ) ? $prefix.'__'.$key : $key );
+            if( is_array( $value ) ) {
+                $newArray = Set::merge( $newArray, array_unisize( $value, $newKey ) );
+            }
+            else {
+                $newArray[$newKey] = $value;
+            }
+        }
+        return $newArray;
+    }
+
+    /**
+        @output multisized array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
+        @input  unisized array (eg. array( 'Foo__Bar' => 'value' ) )
+    */
+    function array_multisize( array $array, $prefix = null ) {
+        $newArray = array();
+        foreach( $array as $key => $value ) {
+            $newArray = Set::insert( $newArray, implode( '.', explode( '__', $key ) ), $value );
+        }
+        return $newArray;
+    }
+
+    function implode_assoc( $outer_glue, $inner_glue, $array, $allowempty = true ) {
+        $ret = array();
+        foreach( $array as $key => $value ) {
+            if( !empty( $value ) || $allowempty ) {
+                if( is_array( $value ) ) {
+                    $ret[] = $key.'[]'.$inner_glue.implode( $outer_glue.$key.'[]'.$inner_glue, $value );
+                }
+                else {
+                    $ret[] = $key.$inner_glue.$value;
+                }
+            }
+        }
+        return implode( $outer_glue, $ret );
+    }
+
     require_once( 'webrsa.inc' );
 //EOF
 ?>

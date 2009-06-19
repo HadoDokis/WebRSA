@@ -810,7 +810,7 @@ INSERT INTO typesorients VALUES
    (
      4,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      null,   --                INTEGER,
-     'Préprofessionnelle',
+     'Socioprofessionnelle',
      'notif_orientation_cg66_mod1'
    );
 
