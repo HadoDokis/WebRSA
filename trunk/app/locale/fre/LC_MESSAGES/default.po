@@ -426,6 +426,9 @@ msgstr "Nom du référent de la prestation"
 msgid "topressnul"
 msgstr "Percevez-vous des ressources ? "
 
+msgid "topressnotnul"
+msgstr "Percevez-vous des ressources ? "
+
 msgid "mtpersressmenrsa"
 msgstr "Montant des ressources mensuelles prises en compte pour le RSA "
 
