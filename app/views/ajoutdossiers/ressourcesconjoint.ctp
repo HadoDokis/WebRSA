@@ -1,8 +1,8 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php echo $form->create( 'Tests', array( 'id' => 'SignupForm', 'url'=> Router::url( null, true ) ) );?>
+<?php echo $form->create( 'Ajoutdossiers', array( 'id' => 'SignupForm', 'url'=> Router::url( null, true ) ) );?>
     <h1>Insertion d'une nouvelle demande de RSA</h1>
-    <h2>Étape 3: ressources allocataire</h2>
+    <h2>Étape 3bis: ressources conjoint</h2>
 
     <?php include( $this->__paths[0].'ressources/_form.ctp' ); /* FIXME */?>
 

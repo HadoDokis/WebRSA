@@ -5,10 +5,10 @@
 
 <ul class="actionMenu">
     <?php
-        if( $permissions->check( 'tests', 'wizard' ) ) {
+        if( $permissions->check( 'ajoutdossiers', 'wizard' ) ) {
             echo '<li>'.$html->addLink(
                 'Ajouter un dossier',
-                array( 'controller' => 'tests', 'action' => 'wizard' )
+                array( 'controller' => 'ajoutdossiers', 'action' => 'wizard' )
             ).' </li>';
         }
 
