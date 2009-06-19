@@ -2,7 +2,7 @@
     class AppController extends Controller
     {
         var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons' );
-        var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions' );
+        var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions', 'Widget' );
         var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User', 'Zonegeographique', 'Connection', 'User', 'Serviceinstructeur' );
 
         //*********************************************************************
