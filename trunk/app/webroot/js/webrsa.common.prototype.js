@@ -309,3 +309,38 @@ function observeDisableFieldsetOnCheckbox( cbId, fieldsetId, condition ) {
 
 //*****************************************************************************
 
+function disableFieldsOnBoolean( field, fieldsIds, condition ) {
+    var checked = ( ( $F( field ) == '1' ) ? false : true );
+    fieldsIds.each( function ( fieldId ) {
+        var field = $( fieldId );
+        if( checked == condition ) {
+            field.enable();
+            if( input = field.up( 'div.input' ) )
+                input.removeClassName( 'disabled' );
+            else if( input = field.up( 'div.checkbox' ) )
+                input.removeClassName( 'disabled' );
+        }
+        else {
+            field.disable();
+            if( input = field.up( 'div.input' ) )
+                input.addClassName( 'disabled' );
+            else if( input = field.up( 'div.checkbox' ) )
+                input.addClassName( 'disabled' );
+        }
+    } );
+}
+
+//-----------------------------------------------------------------------------
+
+function observeDisableFieldsOnBoolean( prefix, fieldsIds, condition ) {
+    disableFieldsOnBoolean( prefix + '1', fieldsIds, condition );
+    disableFieldsOnBoolean( prefix + '0', fieldsIds, condition );
+
+    $( prefix + '0' ).observe( 'click', function( event ) {
+        disableFieldsOnBoolean( prefix + '0', fieldsIds, condition )
+    } );
+
+    $( prefix + '1' ).observe( 'click', function( event ) {
+        disableFieldsOnBoolean( prefix + '1', fieldsIds, condition )
+    } );
+}
