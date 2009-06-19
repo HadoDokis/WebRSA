@@ -50,12 +50,53 @@
 
         //*********************************************************************
 
+        function afterFind( $results, $primary = false ) {
+            $return = parent::afterFind( $results, $primary );
+
+            foreach( $results as $key => $result ) {
+                if( isset( $result['Ressource'] ) ) {
+                    if( isset( $result['Ressource']['topressnul'] ) ) {
+                        $result['Ressource']['topressnotnul'] = !$result['Ressource']['topressnul'];
+                    }
+                }
+                $results[$key] = $result;
+            }
+
+            return $results;
+        }
+
+        //*********************************************************************
+
         function beforeValidate( $options = array() ) {
             $return = parent::beforeValidate( $options );
+
+            if( !empty( $this->data['Ressource']['topressnotnul'] ) ) {
+                $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
+            }
+
             $this->data['Ressource']['mtpersressmenrsa'] = 0;
             if( ( !empty( $this->data['Ressource']['topressnul'] ) ) && ( $this->data['Ressource']['topressnul'] != 0 ) && !empty( $this->data['Detailressourcemensuelle'] ) ) {
                 $this->data['Ressource']['mtpersressmenrsa'] = number_format( array_sum( Set::extract( $this->data['Detailressourcemensuelle'], '{n}.mtnatressmen' ) ) / 3, 2 );
             }
+
+            return $return;
+        }
+
+
+        //*********************************************************************
+
+        function beforeSave( $options = array() ) {
+            $return = parent::beforeSave( $options );
+
+            if( !empty( $this->data['Ressource']['topressnotnul'] ) ) {
+                $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
+            }
+
+            $this->data['Ressource']['mtpersressmenrsa'] = 0;
+            if( ( !empty( $this->data['Ressource']['topressnul'] ) ) && ( $this->data['Ressource']['topressnul'] != 0 ) && !empty( $this->data['Detailressourcemensuelle'] ) ) {
+                $this->data['Ressource']['mtpersressmenrsa'] = number_format( array_sum( Set::extract( $this->data['Detailressourcemensuelle'], '{n}.mtnatressmen' ) ) / 3, 2 );
+            }
+
             return $return;
         }
 

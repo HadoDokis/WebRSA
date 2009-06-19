@@ -48,7 +48,7 @@
                 <?php
                     $title = implode( ' ', array(
                         $ressource['Ressource']['id'] ,
-                        $ressource['Ressource']['topressnul'] ,
+                        $ressource['Ressource']['topressnotnul'] ,
                         $ressource['Ressource']['mtpersressmenrsa'] ,
                         $ressource['Ressource']['ddress'] ,
                         $ressource['Ressource']['dfress'] ,
@@ -57,7 +57,7 @@
                     echo $html->tableCells(
                         array(
                             h( $ressource['Ressource']['id']),
-                            h( $ressource['Ressource']['topressnul']  ? 'Oui' : 'Non'),
+                            h( $ressource['Ressource']['topressnotnul']  ? 'Oui' : 'Non'),
                             h( $ressource['Ressource']['mtpersressmenrsa'] ),
                             h( date_short( $ressource['Ressource']['ddress'] ) ),
                             h( date_short( $ressource['Ressource']['dfress'] ) ),

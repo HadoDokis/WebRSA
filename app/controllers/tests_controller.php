@@ -308,6 +308,8 @@
             $this->Ressourcemensuelle->create();
             $this->Detailressourcemensuelle->create();
 
+            $data['ressourcesallocataire']['topressnul'] = !$data['ressourcesallocataire']['topressnotnul'];
+
             $this->Ressource->set( $data['ressourcesallocataire'] );
             $valid = $this->Ressource->validates();
             if( !empty( $data['ressourcesallocataire']['Ressourcemensuelle'] ) ) {
@@ -322,6 +324,8 @@
                 $this->Ressource->create();
                 $this->Ressourcemensuelle->create();
                 $this->Detailressourcemensuelle->create();
+
+                $data['ressourcesconjoint']['topressnul'] = !$data['ressourcesconjoint']['topressnotnul'];
 
                 $this->Ressource->set( $data['ressourcesconjoint'] );
                 $valid = $this->Ressource->validates();

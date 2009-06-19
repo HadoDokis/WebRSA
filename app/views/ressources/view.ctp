@@ -13,8 +13,6 @@
 <div class="with_treemenu">
     <h1><?php echo 'Visualisation des ressources  ';?></h1>
 
-
-
     <?php if( empty( $ressource ) ):?>
         <p class="notice">Cette personne ne possède pas encore de ressources.</p>
 
@@ -45,8 +43,8 @@
 <table>
         <tbody>
             <tr class="odd">
-                <th ><?php __( 'topressnul' );?></th>
-                <td><?php echo ($ressource['Ressource']['topressnul']? 'Oui' : 'Non' );?></td>
+                <th ><?php __( 'topressnotnul' );?></th>
+                <td><?php echo ($ressource['Ressource']['topressnotnul']? 'Oui' : 'Non' );?></td>
             </tr>
             <tr class="even">
                 <th><?php __( 'mtpersressmenrsa' );?></th>

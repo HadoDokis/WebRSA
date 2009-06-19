@@ -2,7 +2,7 @@
         document.observe("dom:loaded", function() {
             for( var i = 0 ; i < 3 ; i++ ) {
                 observeDisableFieldsetOnCheckbox(
-                    'RessourceTopressnul',
+                    'RessourceTopressnotnul',
                     $( 'Ressourcemensuelle' + i + 'MoisressMonth' ).up( 'fieldset' ),
                     false
                 );
@@ -17,7 +17,7 @@
         <!--<?php echo $form->input( 'Ressource.mtpersressmenrsa', array( 'label' => required( __( 'mtpersressmenrsa', true ) ), 'type' => 'text' ) );?>-->
     </fieldset>
 
-    <div><?php echo $form->input( 'Ressource.topressnul', array( 'label' => __( 'topressnul', true ), 'type' => 'checkbox' ) );?></div>
+    <div><?php echo $form->input( 'Ressource.topressnotnul', array( 'label' => __( 'topressnotnul', true ), 'type' => 'checkbox' ) );?></div>
 
     <?php for( $i = 0 ; $i < 3 ; $i++ ):?>
         <fieldset>

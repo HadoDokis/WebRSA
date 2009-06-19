@@ -84,6 +84,7 @@
 
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
+                $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
                 $this->Ressource->set( $this->data['Ressource'] );
 
                 $validates = $this->Ressource->validates();
@@ -149,6 +150,8 @@
             $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             if( !empty( $this->data ) ) {
+                $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
+
                 $this->Ressource->set( $this->data );
 //                 $this->Ressourcemensuelle->set( $this->data );
 //                 $this->Detailressourcemensuelle->set( $this->data );
@@ -164,7 +167,7 @@
                 if( $validates ) {
                     $this->Ressource->begin();
                     $saved = $this->Ressource->save( $this->data );
-                    if( $this->data['Ressource']['topressnul'] ) { // FIXME ? ->  la signification, ce ne serait pas le contraire ?
+                    if( !$this->data['Ressource']['topressnul'] ) { // FIXME ? ->  la signification, ce ne serait pas le contraire ?
                         if( array_key_exists( 'Ressourcemensuelle', $this->data ) ) {
                             foreach( $this->data['Ressourcemensuelle'] as $index => $dataRm ) {
                                 $this->Ressourcemensuelle->create();
