@@ -15,9 +15,6 @@
         observeDisableFieldsOnCheckbox( 'ContratinsertionEmpTrouv0', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], true );
         observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
         observeDisableFieldsOnCheckbox( 'ContratinsertionActionsPrev2', [ 'ContratinsertionObstaRenc' ],  false );
-        observeDisableFieldsOnCheckbox( 'ContratinsertionActionsPrev1', [ 'ContratinsertionObstaRenc' ],  true );
-
-
     });
 </script>
 
@@ -43,10 +40,8 @@
         <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' => __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
     <legend> PARCOURS D'INSERTION ANTERIEUR </legend>
         <?php
-            $options = array( '1' => 'Oui','2' => 'Non'); 
-            $attributes = array( 'legend' => __( 'actions_prev', true ) ); 
-            echo $form->radio( 'Contratinsertion.actions_prev', $options, $attributes );
-        ?>
+	    echo $widget->booleanRadio( 'Contratinsertion.actions_prev', array( 'legend' => __( 'actions_prev', true )) );
+	?>
         <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => __( 'obsta_renc', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 </fieldset>
         <?php echo $form->input( 'Contratinsertion.serviceinstructeur_id', array( 'label' => __( 'Nom du service d\'accompagnement', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
@@ -58,9 +53,7 @@
         <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __( 'engag_object', true ), 'type' => 'textarea', 'rows' => 4)  ); ?>
        <!-- <?php echo $form->input( 'Contratinsertion.emp_trouv', array( 'label' => __( 'emp_trouv', true ), 'type' => 'checkbox', 'empty' => true) );?> -->
         <?php
-            $options = array( '1' => 'Oui','0' => 'Non'); 
-            $attributes = array( 'legend' => __( 'emp_trouv', true ) ); 
-            echo $form->radio( 'Contratinsertion.emp_trouv', $options, $attributes );
+	    echo $widget->booleanRadio( 'Contratinsertion.emp_trouv', array( 'legend' => __( 'emp_trouv', true )) );
         ?>
         <br />Si oui, veuilez préciser :
         <?php echo $form->input( 'Contratinsertion.sect_acti_emp', array( 'label' => __( 'sect_acti_emp', true ), 'type' => 'select', 'options' => $sect_acti_emp, 'empty' => true )  ); ?>
