@@ -684,27 +684,34 @@ INSERT INTO nataccosocindis VALUES(
 
 --------------------------------------
 --------------------------------------
+
 INSERT INTO difdisps VALUES(
     1,
     '0501',
-    'La garde d\'enfant de moins de 6 ans'
+    'Aucune difficulté'
 );
 
 INSERT INTO difdisps VALUES(
     2,
     '0502',
-    'La garde d\'enfant de plus de 6 ans'
+    'La garde d'enfant de moins de 6 ans'
 );
 
 INSERT INTO difdisps VALUES(
     3,
     '0503',
-    'La garde d\'enfant(s) ou de proche(s) invalide(s)'
+    'La garde d'enfant(s) de plus de 6 ans'
 );
 
 INSERT INTO difdisps VALUES(
     4,
     '0504',
+    'La garde d'enfant(s) ou de proche(s) invalide(s)'
+);
+
+INSERT INTO difdisps VALUES(
+    5,
+    '0505',
     'La charge de proche(s) dépendant(s)'
 );
 --------------------------------------

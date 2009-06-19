@@ -17,7 +17,7 @@ ALTER TABLE users ADD COLUMN numtel VARCHAR(15);
 
 --------------- Ajout du 17 06 09 ------------------
 ALTER TABLE contratsinsertion ADD COLUMN emp_trouv BOOLEAN;
-ALTER TABLE contratsinsertion ALTER COLUMN actions_prev TYPE CHAR(1); ---FIXME: normalement BOOLEAN mais problème lors du patch
+ALTER TABLE contratsinsertion ALTER COLUMN actions_prev TYPE CHAR(1) USING CASE WHEN actions_prev IS TRUE THEN '1' ELSE '0' END; 
 ------------------------------------------------------------
 
 /* création de la table regroupementszonesgeo */
@@ -29,7 +29,13 @@ CREATE TABLE regroupementszonesgeo (
 );
 
 CREATE TABLE zonesgeographiques_regroupementszonesgeo (
-    zonegeographique_id             	INT NOT NULL REFERENCES zonesgeographiques(id),
-    regroupementzonegeo_id 		INT NOT NULL REFERENCES regroupementszonesgeo(id),
+    zonegeographique_id             INT NOT NULL REFERENCES zonesgeographiques(id),
+    regroupementzonegeo_id          INT NOT NULL REFERENCES regroupementszonesgeo(id),
     PRIMARY KEY( zonegeographique_id, regroupementzonegeo_id )
 );
+
+--------------- Ajout du 19 06 09 - 14h10 ------------------
+ALTER TABLE dspps ALTER COLUMN couvsoc TYPE CHAR(1) USING CASE WHEN couvsoc IS TRUE THEN '1' ELSE '0' END;
+ALTER TABLE dspps ALTER COLUMN creareprisentrrech TYPE CHAR(1) USING CASE WHEN creareprisentrrech IS TRUE THEN '1' ELSE '0' END;
+
+ALTER TABLE dspfs ALTER COLUMN accosocfam TYPE CHAR(1) USING CASE WHEN accosocfam IS TRUE THEN '1' ELSE '0' END;

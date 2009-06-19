@@ -33,7 +33,7 @@
 
     </fieldset>
 
-    <div class="submit">
+    <div class="submit noprint">
         <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
@@ -41,10 +41,10 @@
 
 <!-- Résultats -->
 <?php if( isset( $contrats ) ):?>
-    <div class="submit">
+    <div class="submit noprint">
         <?php echo $form->button( 'Imprimer cette page', array( 'onclick' => 'printit();' ) );?>
     </div>
-    <h2>Résultats de la recherche</h2>
+    <h2 class="noprint">Résultats de la recherche</h2>
 
     <?php if( is_array( $contrats ) && count( $contrats ) > 0 ):?>
         <?php /*require( 'index.pagination.ctp' )*/?>
@@ -58,8 +58,8 @@
                     <th>Date de saisie du contrat</th>
                     <th>Durée (en mois)</th>
                     <th>Décision</th>
-                    <th class="action">Actions</th>
-                    <th class="innerTableHeader">Informations complémentaires</th>
+                    <th class="action noprint">Actions</th>
+                    <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
             <tbody>
@@ -88,11 +88,14 @@
                                 h( $contrat['Contratinsertion']['date_saisi_ci'] ),
                                 h( $contrat['Contratinsertion']['duree_engag'] ),
                                 h( $decision_ci[$contrat['Contratinsertion']['decision_ci']].' '.$contrat['Contratinsertion']['datevalidation_ci']),
-                                $html->viewLink(
-                                    'Voir le dossier « '.$title.' »',
-                                    array( 'controller' => 'contratsinsertion', 'action' => 'index', $contrat['Contratinsertion']['personne_id'] )
+                                array(
+                                    $html->viewLink(
+                                        'Voir le dossier « '.$title.' »',
+                                        array( 'controller' => 'contratsinsertion', 'action' => 'index', $contrat['Contratinsertion']['personne_id'] )
+                                    ),
+                                    array( 'class' => 'noprint' )
                                 ),
-                                array( $innerTable, array( 'class' => 'innerTableCell' ) ),
+                                array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
                             ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
                             array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
@@ -101,10 +104,6 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-<!--        <div class="submit">
-        <?php echo $form->button( 'Impression de la liste', array( 'type' => 'submit' ) );?>
-        </div>-->
-        <?php /*require( 'index.pagination.ctp' )*/;?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>

@@ -47,7 +47,7 @@
             <tbody>
                 <tr class="even">
                     <th><?php __( 'accosocfam' );?></th>
-                    <td><?php echo $html->boolean( $dsp['foyer']['Dspf']['accosocfam'] );?></td>
+                    <td><?php echo ( isset( $accosocfam[$dsp['foyer']['Dspf']['accosocfam']] ) ? $accosocfam[$dsp['foyer']['Dspf']['accosocfam']] : null );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'libautraccosocfam' );?></th>

@@ -24,9 +24,7 @@
                 <?php
                     echo $widget->booleanRadio( 'Dspp.drorsarmianta2', array( 'legend' => __( 'drorsarmianta2', true )) );
                 ?>
-                <?php
-                    echo $widget->booleanRadio( 'Dspp.couvsoc', array( 'legend' => __( 'couvsoc', true )) );
-                ?>
+                <?php echo $form->input( 'Dspp.couvsoc', array( 'label' =>  ( __( 'couvsoc', true ) ), 'type' => 'select', 'options' => $couvsoc, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
             <legend>Situation sociale</legend>
@@ -46,7 +44,7 @@
     <fieldset class="col2">
         <legend><?php echo __( 'difsoc', true ) ?></legend>
             <?php echo $form->input( 'Difsoc.Difsoc', array( 'label' => false, 'div' => false, 'multiple' => 'checkbox', 'options' => $difsocs ) );?>
-                <?php echo $form->input( 'Dspp.libautrdifsoc', array( 'label' => __( 'libautrdifsoc', true ), 'type' => 'text') );?>
+            <?php echo $form->input( 'Dspp.libautrdifsoc', array( 'label' => __( 'libautrdifsoc', true ), 'type' => 'text') );?>
     </fieldset>
     <fieldset class="col2">
         <legend><?php echo __( 'nataccosocindi', true ) ?></legend>
@@ -96,9 +94,7 @@
             <legend>Métier recherché</legend>
                 <?php echo $form->input( 'Dspp.libemploirech', array( 'label' => __( 'libemploirech', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactrech', array( 'label' => __( 'libsecactrech', true ), 'type' => 'text' ) );?>
-                <?php
-                    echo $widget->booleanRadio( 'Dspp.creareprisentrrech', array( 'legend' => __( 'creareprisentrrech', true )) );
-                ?>
+                <?php echo $form->input( 'Dspp.creareprisentrrech', array( 'label' =>  ( __( 'creareprisentrrech', true ) ), 'type' => 'select', 'options' => $creareprisentrrech, 'empty' => true ) );?>
                 <?php
                     echo $widget->booleanRadio( 'Dspp.moyloco', array( 'legend' => __( 'moyloco', true )) );
                 ?>

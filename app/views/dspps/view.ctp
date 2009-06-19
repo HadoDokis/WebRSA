@@ -61,7 +61,7 @@
             </tr>
             <tr class="odd">
                 <th><?php __( 'couvsoc' );?></th>
-                <td><?php echo ( $dspp['Dspp']['couvsoc']? 'Oui' : 'Non' );?></td>
+                <td><?php echo ( isset( $couvsoc[$dspp['Dspp']['couvsoc']] ) ? $couvsoc[$dspp['Dspp']['couvsoc']] : null );?></td>
             </tr>
         </tbody>
 </table>
@@ -252,7 +252,7 @@
             </tr>
             <tr class="odd">
                 <th><?php __( 'creareprisentrrech' );?></th>
-                <td><?php echo ( $dspp['Dspp']['creareprisentrrech'] ? 'Oui' : 'Non' );?></td>
+                <td><?php echo ( isset( $creareprisentrrech[$dspp['Dspp']['creareprisentrrech']] ) ? $creareprisentrrech[$dspp['Dspp']['creareprisentrrech']] : null );?></td>
             </tr>
             <tr class="even">
                 <th><?php __( 'moyloco' );?></th>

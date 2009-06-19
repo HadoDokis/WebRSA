@@ -53,7 +53,7 @@
          <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?> 
     </fieldset> 
 
-    <div class="submit">
+    <div class="submit noprint">
         <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
@@ -61,9 +61,11 @@
 
 <!-- Résultats -->
 <?php if( isset( $orients ) ):?>
-    <div class="submit">
+    <div class="submit noprint">
         <?php echo $form->button( 'Imprimer cette page', array( 'onclick' => 'printit();' ) );?>
     </div>
+    <h2 class="noprint">Résultats de la recherche</h2>
+
     <h2>Résultats de la recherche</h2>
 
     <?php if( is_array( $orients ) && count( $orients ) > 0  ):?>
@@ -80,8 +82,8 @@
                     <th>Date d'orientation</th>
                     <th>Structure référente</th>
                     <th>Statut orientation</th>
-                    <th class="action">Actions</th>
-                    <th class="innerTableHeader">Informations complémentaires</th>
+                    <th class="action noprint">Actions</th>
+                    <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
             <tbody>
@@ -110,12 +112,14 @@
                                 h( $orient['Orientstruct']['date_propo'] ),
                                 h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
                                 h( $orient['Orientstruct']['statut_orient'] ),
-                                $html->viewLink(
-                                    'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
-                                    array( 'controller' => 'personnes', 'action' => 'view', $orient['Personne']['id'] )
+                                array( 
+                                    $html->viewLink(
+                                        'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
+                                        array( 'controller' => 'personnes', 'action' => 'view', $orient['Personne']['id'] )
+                                    ),
+                                    array( 'class' => 'noprint' )
                                 ),
-
-                                //array( $innerTable, array( 'class' => 'innerTableCell' ) ),
+                                array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
                             ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
                             array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
