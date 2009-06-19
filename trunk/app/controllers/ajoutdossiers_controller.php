@@ -11,7 +11,7 @@
         return ( count( array_filter( $data ) ) > 3 );
     }
 
-    class TestsController extends AppController {
+    class AjoutdossiersController extends AppController {
         // INFO: http://bakery.cakephp.org/articles/view/wizard-component-1-2-1
         var $components = array( 'Wizard' );
         var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Option', 'Ressource', 'Ressourcemensuelle',  'Detailressourcemensuelle', 'Orientstruct', 'Detaildroitrsa', 'Serviceinstructeur', 'Suiviinstruction' );
@@ -23,12 +23,12 @@
             // INFO: Supprimer la session, et donc les données du wizard
 //             $this->Session->destroy();
             $this->Wizard->steps = array( 'allocataire', 'conjoint', 'adresse', 'ressourcesallocataire', array( 'withConjoint' => array( 'ressourcesconjoint', 'dossier' ), 'noConjoint' => array( 'dossier' ) ) );
-            $this->Wizard->completeUrl = '/tests/confirm';
-            $this->Wizard->cancelUrl = '/tests/wizard';
+            $this->Wizard->completeUrl = '/ajoutdossiers/confirm';
+            $this->Wizard->cancelUrl = '/ajoutdossiers/wizard';
 
             //INFO: on peut préremplir le wizard pour les tests
 //             $this->Session->write(
-//                 'Wizard.Tests.allocataire',
+//                 'Wizard.Ajoutdossiers.allocataire',
 //                 array(
 //                     'Personne' => array(
 //                         'rolepers'  => 'DEM',
@@ -49,7 +49,7 @@
 //                 )
 //             );
 //             $this->Session->write(
-//                 'Wizard.Tests.conjoint',
+//                 'Wizard.Ajoutdossiers.conjoint',
 //                 array(
 //                     'Personne' => array(
 //                         'rolepers'  => 'CJT',
@@ -70,7 +70,7 @@
 //                 )
 //             );
 //             $this->Session->write(
-//                 'Wizard.Tests.adresse',
+//                 'Wizard.Ajoutdossiers.adresse',
 //                 array(
 //                     'Adressefoyer' => array(
 //                         'rgadr'     => '01',
@@ -88,7 +88,7 @@
 //                 )
 //             );
 //             $this->Session->write(
-//                 'Wizard.Tests.ressourcesallocataire',
+//                 'Wizard.Ajoutdossiers.ressourcesallocataire',
 //                 array(
 //                     'Ressource' => array(
 //                         'ddress' => array(
@@ -106,7 +106,7 @@
 //                 )
 //             );
 //             $this->Session->write(
-//                 'Wizard.Tests.ressourcesconjoint',
+//                 'Wizard.Ajoutdossiers.ressourcesconjoint',
 //                 array(
 //                     'Ressource' => array(
 //                         'ddress' => array(
