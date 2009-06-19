@@ -79,3 +79,13 @@ fieldset.col3 div.checkbox, fieldset.col3 div.radio {
 div.input.disabled, div.checkbox.disabled {
     color: silver;
 }
+
+fieldset.boolean {
+    border: 0;
+    padding: 0;
+    margin: 1em 0;
+}
+
+fieldset.boolean label {
+    margin-right: 1em;
+}
