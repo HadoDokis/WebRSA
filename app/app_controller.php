@@ -105,17 +105,28 @@
                     // Données utilisateur et service instructeur correctement remplies
                     $name = Inflector::underscore( $this->name );
                     if( ( $name != 'droits' ) && ( $name != 'parametrages' ) && ( $name != 'servicesinstructeurs' ) && ( $name != 'users' ) ) {
-                        if( empty( $user['User']['nom'] ) || empty( $user['User']['prenom'] ) || empty( $user['User']['serviceinstructeur_id'] ) ) {
-                            $this->cakeError( 'incompleteUser' );
-                        }
-                        else {
-                            $service = $this->Serviceinstructeur->findById( $user['User']['serviceinstructeur_id'] );
-                            if( empty( $service ) || empty( $service['Serviceinstructeur']['lib_service'] ) || empty( $service['Serviceinstructeur']['numdepins'] ) /*|| empty( $service['Serviceinstructeur']['typeserins'] )*/ || empty( $service['Serviceinstructeur']['numcomins'] ) || empty( $service['Serviceinstructeur']['numagrins'] ) ) {
-                            $this->cakeError( 'incompleteUser' );
-                            }
+                        $service = $this->Serviceinstructeur->findById( $user['User']['serviceinstructeur_id'] );
+                        $missing = array(
+                            'user' => array(
+                                __( 'nom', true )                   => empty( $user['User']['nom'] ),
+                                __( 'prenom', true )                => empty( $user['User']['prenom'] ),
+                                __( 'service instructeur', true )   => empty( $user['User']['serviceinstructeur_id'] )
+                            ),
+                            'serviceinstructeur' => array(
+                                __( 'lib_service', true )           => empty( $service['Serviceinstructeur']['lib_service'] ),
+                                __( 'numdepins', true )             => empty( $service['Serviceinstructeur']['numdepins'] ),
+                                __( 'typeserins', true )            => empty( $service['Serviceinstructeur']['typeserins'] ),
+                                __( 'numcomins', true )             => empty( $service['Serviceinstructeur']['numcomins'] ),
+                                __( 'numagrins', true )             => empty( $service['Serviceinstructeur']['numagrins'] ),
+                            )
+                        );
+
+                        if( ( array_search( true, $missing['user'] ) !== false ) || ( array_search( true, $missing['serviceinstructeur'] ) !== false ) ) {
+                            $this->cakeError( 'incompleteUser', array( 'missing' => $missing ) );
                         }
                     }
 
+                    // Vérification des droits d'accès à la page
                     $controllerAction = $this->name . ':' . ($this->name == 'Pages' ? $this->params['pass'][0] : $this->action);
                     $this->assert( $this->Droits->check( $user['User']['aroAlias'], $controllerAction ), 'error403' );
                 }
