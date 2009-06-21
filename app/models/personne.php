@@ -131,6 +131,55 @@
         }
 
         //*********************************************************************
+        /**
+            FIXME:
+                ressources -> Warning (2): pg_query() [function.pg-query]: Query failed: ERROR:  invalid input syntax for type numeric: "10,000.00" [CORE/cake/libs/model/datasources/dbo/dbo_postgres.php, line 148]
+                $sql    =   "INSERT INTO "ressources" ("personne_id", "ddress", "dfress", "topressnul", "mtpersressmenrsa") VALUES ('2', '2009-01-01', '2009-03-30', FALSE, '10,000.00')"
+        */
+        function soumisDroitsEtDevoirs( $personne_id ) {
+            $this->unbindModelAll();
+            $this->bindModel(
+                array(
+                    'hasMany' => array(
+                        'Ressource' => array(
+                            'order' => array( 'dfress DESC' )
+                        )
+                    ),
+                    'hasOne' => array(
+                        'Dspp'
+                    )
+                )
+            );
+
+            $personne = $this->findById( $personne_id, null, null, 1 );
+
+            $montantForfaitaire = $this->Foyer->montantForfaitaire( $personne['Personne']['foyer_id'] );
+            if( $montantForfaitaire ) {
+                return $montantForfaitaire;
+            }
+            else {
+                if( isset( $personne['Ressource'] ) && isset( $personne['Ressource'][0] ) && isset( $personne['Ressource'][0]['mtpersressmenrsa'] ) ) {
+                    $montant = $personne['Ressource'][0]['mtpersressmenrsa'];
+                }
+                else {
+                    $montant = 0;
+                }
+                if( $montant < 500 ) {
+                    return true;
+                }
+            }
+
+            // FIXME: sans emploi actuellement ?
+            $dspp = array_filter( $personne['Dspp'] );
+//             debug( $dspp );
+            if( !empty( $dspp ) ) {
+            }
+            // ELSE -> FIXME
+
+            return false;
+        }
+
+        //*********************************************************************
 
         function findByZones( $zonesGeographiques = array() ) { // TODO
             $this->unbindModelAll();
