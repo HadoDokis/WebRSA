@@ -214,6 +214,30 @@
             );
         }
 
+        function domideract(){
+            return array(
+                'O' => 'Oui',
+                'N' => 'Non',
+                'P' => 'Pas de réponse'
+            );
+        }
+
+        function drorsarmiant(){
+            return array(
+                'O' => 'Oui',
+                'N' => 'Non',
+                'P' => 'Pas de réponse'
+            );
+        }
+
+        function drorsarmianta2(){
+            return array(
+                'O' => 'Oui',
+                'N' => 'Non',
+                'P' => 'Pas de réponse'
+            );
+        }
+
         function duractdomi() {
             return array(
                 '2104' => 'Moins d\'un an',
@@ -236,6 +260,22 @@
                 'DHT1' => 'Moins de 35h',
                 'DHT2' => '35h',
                 'DHT3' => 'Entre 35h et 48h'
+            );
+        }
+
+        function elopersdifdisp(){
+            return array(
+                'O' => 'Oui',
+                'N' => 'Non',
+                'P' => 'Pas de réponse'
+            );
+        }
+
+        function engproccrealim(){
+            return array(
+                'O' => 'Procédure engagée',
+                'N' => 'Pas de procédure engagée',
+                'R' => 'Refus d\'engagement de procédure'
             );
         }
 
@@ -270,6 +310,26 @@
                 '67' => 'Ouvriers non qualifiés de type industriel',
                 '68' => 'Ouvriers non qualifiés de type artisanal',
                 '69' => 'Ouvriers agricoles et assimilés'
+            );
+        }
+
+        function etatcrealim() {
+            return array(
+                'SA' => 'Sanction appliquée',
+                'DD' => 'Dispense demande',
+                'AT' => 'Attente décision allocataire',
+                'DS' => 'Dispense avec sanction',
+                'SF' => 'Présence d\'ASF',
+                'PS' => 'Pas de sanction',
+                'DA' => 'Dispense accord',
+                'PE' => 'Procédure engagée',
+                'DR' => 'Dispense refus',
+                'RM' => 'Ex-RMI',
+                'MS' => 'Maintien sanction',
+                'SI' => 'Sanction immédiate',
+                'RE' => 'Refus engagement',
+                'TR' => 'Tiers recueillant',
+                'AA' => 'Aucune décision allocataire'
             );
         }
 
@@ -718,6 +778,14 @@
             );
         }
 
+        function obstemploidifdisp(){
+            return array(
+                'O' => 'Oui',
+                'N' => 'Non',
+                'P' => 'Pas de réponse'
+            );
+        }
+
         function oridemrsa() {
             return array(
                 'DEM' => 'Le droit au Rsa fait suite à une demande de RSA',
@@ -851,6 +919,14 @@
                 'RCBN1' => 'RSA Activité Local majoré',
                 'RCBN2' => 'RSA Activité Local -25 ans',
                 'RCBN3' => 'RSA Activité Local + 25 ans'
+            );
+        }
+
+        function soutdemarsoc() {
+            return array(
+                'O' => 'Oui',
+                'N' => 'Non',
+                'P' => 'Pas de réponse'
             );
         }
 

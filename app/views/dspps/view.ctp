@@ -53,11 +53,11 @@
             </tr> -->
             <tr class="odd">
                 <th ><?php __( 'drorsarmiant' );?></th>
-                <td><?php echo ($dspp['Dspp']['drorsarmiant']? 'Oui' : 'Non' );?></td>
+                <td><?php echo (isset( $drorsarmiant[$dspp['Dspp']['drorsarmiant']] ) ? $drorsarmiant[$dspp['Dspp']['drorsarmiant']] : null );?></td>
             </tr>
             <tr class="even">
                 <th><?php __( 'drorsarmianta2' );?></th>
-                <td><?php echo ( $dspp['Dspp']['drorsarmianta2'] ? 'Oui' : 'Non' );?></td>
+                <td><?php echo ( isset( $drorsarmianta2[$dspp['Dspp']['drorsarmianta2']] ) ? $drorsarmianta2[$dspp['Dspp']['drorsarmianta2']] : null );?></td>
             </tr>
             <tr class="odd">
                 <th><?php __( 'couvsoc' );?></th>
@@ -71,15 +71,15 @@
 
             <tr class="even">
                 <th><?php __( 'elopersdifdisp' );?></th>
-                <td><?php echo ( $dspp['Dspp']['elopersdifdisp'] ? 'Oui' : 'Non' );?></td>
+                <td><?php echo ( isset( $elopersdifdisp[$dspp['Dspp']['elopersdifdisp']] ) ? $elopersdifdisp[$dspp['Dspp']['elopersdifdisp']] : null );?></td>
             </tr>
             <tr class="odd">
                 <th><?php __( 'obstemploidifdisp' );?></th>
-                <td><?php echo ( $dspp['Dspp']['obstemploidifdisp'] ? 'Oui' : 'Non' );?></td>
+                <td><?php echo ( isset( $obstemploidifdisp[$dspp['Dspp']['obstemploidifdisp']] ) ? $obstemploidifdisp[$dspp['Dspp']['obstemploidifdisp']] : null );?></td>
             </tr>
             <tr class="even">
                 <th><?php __( 'soutdemarsoc' );?></th>
-                <td><?php echo ( $dspp['Dspp']['soutdemarsoc'] ? 'Oui' : 'Non' );?></td>
+                <td><?php echo ( isset( $soutdemarsoc[$dspp['Dspp']['soutdemarsoc']] ) ? $soutdemarsoc[$dspp['Dspp']['soutdemarsoc']] : null );?></td>
             </tr>
             <tr class="odd">
                 <th><?php __( 'libcooraccosocindi' );?></th>
@@ -228,7 +228,7 @@
             </tr>
             <tr class="odd">
                 <th><?php __( 'domideract' );?></th>
-                <td><?php echo ( $dspp['Dspp']['domideract']? 'Oui' : 'Non' );?></td>
+                <td><?php echo ( isset( $domideract[$dspp['Dspp']['domideract']] ) ? $domideract[$dspp['Dspp']['domideract']] : null ) ;?></td>
             </tr>
             <tr class="even">
                 <th><?php __( 'libactdomi' );?></th>
