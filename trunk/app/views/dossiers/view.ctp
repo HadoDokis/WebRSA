@@ -67,7 +67,9 @@
                             </tr>
                             <tr class="odd">
                                 <th><?php __( 'adresse' );?></th>
-                                <td colspan="2"><?php echo $dossier['Adresse']['numvoie'].' '.$dossier['Adresse']['typevoie'].' '.$dossier['Adresse']['nomvoie'];?></td>
+                                <td colspan="2">
+                                    <?php echo $dossier['Adresse']['numvoie'].' '.( isset( $typevoie[$dossier['Adresse']['typevoie']] ) ? $typevoie[$dossier['Adresse']['typevoie']] : null ).' '. $dossier['Adresse']['nomvoie'];?>
+                                </td>
                             </tr>
 <!--                            <tr class="even">
                                 <th><?php __( 'numtel' );?></th>

@@ -247,6 +247,17 @@
             );
         }
 
+        function duree_engag() {
+            return array(
+                '1' => '3 mois',
+                '2' => '6 mois',
+                '3' => '9 mois',
+                '4' => '12 mois',
+                '5' => '18 mois',
+                '6' => '24 mois'
+            );
+        }
+
         function duree_cdd(){
             return array(
                 'DT1' => 'Temps plein',
@@ -1044,7 +1055,8 @@
         function typeadr() {
             return array(
                 'D' => 'Définitive',
-                'P' => 'Provisoire'
+                'P' => 'Provisoire',
+                'R' => 'Retour foyer principal'
             );
         }
 
@@ -1054,6 +1066,23 @@
                 'J' => 'Jour inconnu',
                 'N' => 'Jour et mois connus',
                 'O' => 'Jour et mois inconnus'
+            );
+        }
+
+        function typeocclog() {
+            return array(
+                'ACC' => 'Proprietaire avec charges de remboursement',
+                'BAL' => 'Forfait logement a appliquer',
+                'HCG' => 'Hébergement collectif a titre gratuit',
+                'HCO' => 'Hébergement collectif a titre onereux',
+                'HGP' => 'Hébergement a titre gratuit par des particulier',
+                'HOP' => 'Hébergement onereux par des particuliers',
+                'HOT' => 'Hotel',
+                'LOC' => 'Locataire ou sous locataire',
+                'OLI' => 'Occupation logement inconnue',
+                'PRO' => 'Proprietaire sans charges de remboursement',
+                'SRG' => 'Sans resid. stable avec forfait logement',
+                'SRO' => 'Sans resid. stable sans forfait logement'
             );
         }
 
@@ -1090,6 +1119,23 @@
             );
         }
 
+        function typepar(){
+            return array(
+                'ADP' => 'Adoption simple',
+                'ASC' => 'Ascendant',
+                'AUT' => 'Autre',
+                'BFI' => 'Gendre ou bru',
+                'COL' => 'Coll degré 4',
+                'DES' => 'Descendant',
+                'FRE' => 'Frère ou soeur',
+                'LEG' => 'Légitime',
+                'NAT' => 'Naturel',
+                'NEV' => 'Neveu ou nièce',
+                'ONC' => 'Oncle ou tante',
+                'REA' => 'Recueilli en vue adoption',
+                'REC' => 'Recueilli'
+            );
+        }
 
         function typeparte() {
             return array(
@@ -1106,6 +1152,13 @@
             return array(
                 'P' => 'S\'il s\'agit d\'un tiers personne physique',
                 'M' => 'S\'il s\'agit d\'un tiers personne morale'
+            );
+        }
+
+        function typeres() {
+            return array(
+                'E' => 'Election de domicile',
+                'S' => 'Stable'
             );
         }
 
@@ -1134,11 +1187,202 @@
             );
         }
 
+        function typevoie(){
+            return array(
+                'ABE' => 'Abbaye',
+                'ACH' => 'Ancien chemin',
+                'AGL' => 'Agglomération',
+                'AIRE' => 'Aire',
+                'ALL' => 'Allée',
+                'ANSE' => 'Anse',
+                'ARC' => 'Arcade',
+                'ART' => 'Ancienne route',
+                'AUT' => 'Autoroute',
+                'AV' => 'Avenue',
+                'BAST' => 'Bastion',
+                'BCH' => 'Bas chemin',
+                'BCLE' => 'Boucle',
+                'BD' => 'Boulevard',
+                'BEGI' => 'Béguinage',
+                'BER' => 'Berge',
+                'BOIS' => 'Bois',
+                'BRE' => 'Barriere',
+                'BRG' => 'Bourg',
+                'BSTD' => 'Bastide',
+                'BUT' => 'Butte',
+                'CALE' => 'Cale',
+                'CAMP' => 'Camp',
+                'CAR' => 'Carrefour',
+                'CARE' => 'Carriere',
+                'CARR' => 'Carre',
+                'CAU' => 'Carreau',
+                'CAV' => 'Cavée',
+                'CGNE' => 'Campagne',
+                'CHE' => 'Chemin',
+                'CHEM' => 'Cheminement',
+                'CHEZ' => 'Chez',
+                'CHI' => 'Charmille',
+                'CHL' => 'Chalet',
+                'CHP' => 'Chapelle',
+                'CHS' => 'Chaussée',
+                'CHT' => 'Château',
+                'CHV' => 'Chemin vicinal',
+                'CITE' => 'Cité',
+                'CLOI' => 'Cloître',
+                'CLOS' => 'Clos',
+                'COL' => 'Col',
+                'COLI' => 'Colline',
+                'COR' => 'Corniche',
+                'COTE' => 'Côte(au)',
+                'COTT' => 'Cottage',
+                'COUR' => 'Cour',
+                'CPG' => 'Camping',
+                'CRS' => 'Cours',
+                'CST' => 'Castel',
+                'CTR' => 'Contour',
+                'CTRE' => 'Centre',
+                'DARS' => 'Darse',
+                'DEG' => 'Degré',
+                'DIG' => 'Digue',
+                'DOM' => 'Domaine',
+                'DSC' => 'Descente',
+                'ECL' => 'Ecluse',
+                'EGL' => 'Eglise',
+                'EN' => 'Enceinte',
+                'ENC' => 'Enclos',
+                'ENV' => 'Enclave',
+                'ESC' => 'Escalier',
+                'ESP' => 'Esplanade',
+                'ESPA' => 'Espace',
+                'ETNG' => 'Etang',
+                'FG' => 'Faubourg',
+                'FON' => 'Fontaine',
+                'FORM' => 'Forum',
+                'FORT' => 'Fort',
+                'FOS' => 'Fosse',
+                'FOYR' => 'Foyer',
+                'FRM' => 'Ferme',
+                'GAL' => 'Galerie',
+                'GARE' => 'Gare',
+                'GARN' => 'Garenne',
+                'GBD' => 'Grand boulevard',
+                'GDEN' => 'Grand ensemble',
+                'GPE' => 'Groupe',
+                'GPT' => 'Groupement',
+                'GR' => 'Grand(e) rue',
+                'GRI' => 'Grille',
+                'GRIM' => 'Grimpette',
+                'HAM' => 'Hameau',
+                'HCH' => 'Haut chemin',
+                'HIP' => 'Hippodrome',
+                'HLE' => 'Halle',
+                'HLM' => 'HLM',
+                'ILE' => 'Ile',
+                'IMM' => 'Immeuble',
+                'IMP' => 'Impasse',
+                'JARD' => 'Jardin',
+                'JTE' => 'Jetée',
+                'LD' => 'Lieu dit',
+                'LEVE' => 'Levée',
+                'LOT' => 'Lotissement',
+                'MAIL' => 'Mail',
+                'MAN' => 'Manoir',
+                'MAR' => 'Marche',
+                'MAS' => 'Mas',
+                'MET' => 'Métro',
+                'MF' => 'Maison forestiere',
+                'MLN' => 'Moulin',
+                'MTE' => 'Montée',
+                'MUS' => 'Musée',
+                'NTE' => 'Nouvelle route',
+                'PAE' => 'Petite avenue',
+                'PAL' => 'Palais',
+                'PARC' => 'Parc',
+                'PAS' => 'Passage',
+                'PASS' => 'Passe',
+                'PAT' => 'Patio',
+                'PAV' => 'Pavillon',
+                'PCH' => 'Porche - petit chemin',
+                'PERI' => 'Périphérique',
+                'PIM' => 'Petite impasse',
+                'PKG' => 'Parking',
+                'PL' => 'Place',
+                'PLAG' => 'Plage',
+                'PLAN' => 'Plan',
+                'PLCI' => 'Placis',
+                'PLE' => 'Passerelle',
+                'PLN' => 'Plaine',
+                'PLT' => 'Plateau(x)',
+                'PN' => 'Passage à niveau',
+                'PNT' => 'Pointe',
+                'PONT' => 'Pont(s)',
+                'PORQ' => 'Portique',
+                'PORT' => 'Port',
+                'POT' => 'Poterne',
+                'POUR' => 'Pourtour',
+                'PRE' => 'Pré',
+                'PROM' => 'Promenade',
+                'PRQ' => 'Presqu\'île',
+                'PRT' => 'Petite route',
+                'PRV' => 'Parvis',
+                'PSTY' => 'Peristyle',
+                'PTA' => 'Petite allée',
+                'PTE' => 'Porte',
+                'PTR' => 'Petite rue',
+                'QU' => 'Quai',
+                'QUA' => 'Quartier',
+                'R' => 'Rue(s)',
+                'RAC' => 'Raccourci',
+                'RAID' => 'Raidillon',
+                'REM' => 'Rempart',
+                'RES' => 'Résidence(s)',
+                'RLE' => 'Ruelle(s)',
+                'ROC' => 'Roc(ade)',
+                'ROQT' => 'Roquet',
+                'RPE' => 'Rampe',
+                'RPT' => 'Rond point',
+                'RTD' => 'Rotonde',
+                'RTE' => 'Route(s)',
+                'SEN' => 'Sent(ier)(s)',
+                'SQ' => 'Square',
+                'STA' => 'Station',
+                'STDE' => 'Stade',
+                'TOUR' => 'Tour',
+                'TPL' => 'Terre plein',
+                'TRA' => 'Traverse',
+                'TRN' => 'Terrain',
+                'TRT' => 'Tertre(s)',
+                'TSSE' => 'Terrasse(s)',
+                'VAL' => 'Val(lée)(lon)',
+                'VCHE' => 'Vieux chemin',
+                'VEN' => 'Venelle(s)',
+                'VGE' => 'Village(s)',
+                'VIA' => 'Via',
+                'VLA' => 'Villa(s)',
+                'VOI' => 'Voie(s)',
+                'VTE' => 'Vieille route',
+                'ZA' => 'Zone artisanale',
+                'ZAC' => 'Zone d\'aménagement concerte',
+                'ZAD' => 'Zone d\'aménagement différé',
+                'ZI' => 'Zone industrielle',
+                'ZONE' => 'Zone',
+                'ZUP' => 'Zone à urbaniser en priorité'
+            );
+        }
+
         function typo_aide() {
             return array(
                 '1' => 'Insertion sociale',
                 '2' => 'Insertion professionnelle',
                 '3' => 'Reprise d\'activités'
+            );
+        }
+
+        function verspa() {
+            return array(
+                'N' => 'Pas de versement d\'une PA',
+                'O' => 'Versement d\'une PA',
+                'P' => 'Versement partiel d\'une PA'
             );
         }
     }

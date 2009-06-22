@@ -40,7 +40,7 @@
                             array(
                                 h( $serviceinstructeur['Serviceinstructeur']['lib_service'] ),
                                 h( $serviceinstructeur['Serviceinstructeur']['num_rue'] ),
-                                h( $serviceinstructeur['Serviceinstructeur']['type_voie'] ),
+                                h( isset( $typevoie[$serviceinstructeur['Serviceinstructeur']['type_voie']] ) ? $typevoie[$serviceinstructeur['Serviceinstructeur']['type_voie']] : null ),
                                 h( $serviceinstructeur['Serviceinstructeur']['nom_rue'] ),
                                 //h( $serviceinstructeur['Serviceinstructeur']['complement_adr'] ),
                                 h( $serviceinstructeur['Serviceinstructeur']['code_insee'] ),

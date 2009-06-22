@@ -3,7 +3,13 @@
     {
 
         var $name = 'Structuresreferentes';
-        var $uses = array( 'Structurereferente', 'Referent', 'Orientstruct', 'Typeorient', 'Zonegeographique');
+        var $uses = array( 'Structurereferente', 'Referent', 'Orientstruct', 'Typeorient', 'Zonegeographique', 'Option' );
+
+         function beforeFilter() {
+            parent::beforeFilter();
+                $this->set( 'typevoie', $this->Option->typevoie() );
+        }
+
 
         function index() {
             $type = $this->Typeorient->find(

@@ -35,7 +35,7 @@
                             array(
                                 h( $structurereferente['Structurereferente']['lib_struc'] ),
                                 h( $structurereferente['Structurereferente']['num_voie'] ),
-                                h( $structurereferente['Structurereferente']['type_voie'] ),
+                                h( isset( $typevoie[$structurereferente['Structurereferente']['type_voie']] ) ? $typevoie[$structurereferente['Structurereferente']['type_voie']] : null ),
                                 h( $structurereferente['Structurereferente']['nom_voie'] ),
                                 h( $structurereferente['Structurereferente']['code_postal'] ),
                                 h( $structurereferente['Structurereferente']['ville'] ),

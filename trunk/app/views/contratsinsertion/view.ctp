@@ -123,7 +123,7 @@
             <tbody>
                 <tr class="even">
                     <th><?php __( 'duree_engag' );?></th>
-                    <td><?php echo $contratinsertion['Contratinsertion']['duree_engag'];?></td>
+                    <td><?php echo isset( $duree_engag[$contratinsertion['Contratinsertion']['duree_engag']] ) ? $duree_engag[$contratinsertion['Contratinsertion']['duree_engag']] : null ;?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'nature_projet' );?></th>

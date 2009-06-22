@@ -14,6 +14,8 @@
             $this->set( 'duree_hebdo_emp', $this->Option->duree_hebdo_emp() );
             $this->set( 'nat_cont_trav', $this->Option->nat_cont_trav() );
             $this->set( 'duree_cdd', $this->Option->duree_cdd() );
+            $this->set( 'duree_engag', $this->Option->duree_engag() );
+
             $this->set( 'referents', $this->Referent->find( 'list' ) );
             $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
 

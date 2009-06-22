@@ -66,8 +66,6 @@
     </div>
     <h2 class="noprint">Résultats de la recherche</h2>
 
-    <h2>Résultats de la recherche</h2>
-
     <?php if( is_array( $orients ) && count( $orients ) > 0  ):?>
 
         <?php //require( 'index.pagination.ctp' )?>
