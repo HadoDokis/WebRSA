@@ -39,3 +39,12 @@ ALTER TABLE dspps ALTER COLUMN couvsoc TYPE CHAR(1) USING CASE WHEN couvsoc IS T
 ALTER TABLE dspps ALTER COLUMN creareprisentrrech TYPE CHAR(1) USING CASE WHEN creareprisentrrech IS TRUE THEN '1' ELSE '0' END;
 
 ALTER TABLE dspfs ALTER COLUMN accosocfam TYPE CHAR(1) USING CASE WHEN accosocfam IS TRUE THEN '1' ELSE '0' END;
+
+--------------- Ajout du 22 06 09 - 9h00 ------------------
+ALTER TABLE dspps ALTER COLUMN domideract TYPE CHAR(1) USING CASE WHEN domideract IS TRUE THEN '1' ELSE '0' END;
+ALTER TABLE dspps ALTER COLUMN drorsarmiant TYPE CHAR(1) USING CASE WHEN drorsarmiant IS TRUE THEN '1' ELSE '0' END;
+ALTER TABLE dspps ALTER COLUMN drorsarmianta2 TYPE CHAR(1) USING CASE WHEN drorsarmianta2 IS TRUE THEN '1' ELSE '0' END;
+ALTER TABLE dspps ALTER COLUMN elopersdifdisp TYPE CHAR(1) USING CASE WHEN elopersdifdisp IS TRUE THEN '1' ELSE '0' END;
+ALTER TABLE dspps ALTER COLUMN obstemploidifdisp TYPE CHAR(1) USING CASE WHEN obstemploidifdisp IS TRUE THEN '1' ELSE '0' END;
+ALTER TABLE dspps ALTER COLUMN soutdemarsoc TYPE CHAR(1) USING CASE WHEN soutdemarsoc IS TRUE THEN '1' ELSE '0' END;
+

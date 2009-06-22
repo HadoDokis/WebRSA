@@ -16,6 +16,12 @@
             $this->set( 'couvsoc', $this->Option->couvsoc() );
             $this->set( 'hispro', $this->Option->hispro() );
             $this->set( 'creareprisentrrech', $this->Option->creareprisentrrech() );
+            $this->set( 'domideract', $this->Option->domideract() );
+            $this->set( 'drorsarmiant', $this->Option->drorsarmiant() );
+            $this->set( 'drorsarmianta2', $this->Option->drorsarmianta2() );
+            $this->set( 'elopersdifdisp', $this->Option->elopersdifdisp() );
+            $this->set( 'obstemploidifdisp', $this->Option->obstemploidifdisp() );
+            $this->set( 'soutdemarsoc', $this->Option->soutdemarsoc() );
 
             $this->set( 'duractdomi', $this->Option->duractdomi() );
             // Données socioprofessionnelles personne

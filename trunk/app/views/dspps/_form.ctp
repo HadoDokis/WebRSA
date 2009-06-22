@@ -6,37 +6,27 @@
 
             observeDisableFieldsOnCheckbox( 'AccoemploiAccoemploi1', [ 'DsppLibcooraccoemploi', 'AccoemploiAccoemploi2', 'AccoemploiAccoemploi3', 'DsppLibcooraccoemploi' ], true );
 
-            observeDisableFieldsOnValue( 'DsppHispro', [ 'DsppLibderact', 'DsppLibsecactderact', 'DsppDfderactDay', 'DsppDfderactMonth', 'DsppDfderactYear', 'DsppDomideract1','DsppDomideract0', 'DsppLibactdomi', 'DsppLibsecactdomi', 'DsppDuractdomi' ], '1904', true );
+            observeDisableFieldsOnValue( 'DsppHispro', [ 'DsppLibderact', 'DsppLibsecactderact', 'DsppDfderactDay', 'DsppDfderactMonth', 'DsppDfderactYear', 'DsppDomideract', 'DsppLibactdomi', 'DsppLibsecactdomi', 'DsppDuractdomi' ], '1904', true );
             observeDisableFieldsOnCheckbox( 'DifsocDifsoc1', [ 'DifsocDifsoc2', 'DifsocDifsoc3', 'DifsocDifsoc4', 'DifsocDifsoc5', 'DifsocDifsoc6', 'DifsocDifsoc7' ], true );
 
             observeDisableFieldsOnCheckbox( 'NataccosocindiNataccosocindi1', [ 'NataccosocindiNataccosocindi2', 'NataccosocindiNataccosocindi3', 'NataccosocindiNataccosocindi4', 'NataccosocindiNataccosocindi5', 'NataccosocindiNataccosocindi6' ], true );
 
-            observeDisableFieldsOnBoolean( 'DsppDrorsarmiant', [ 'DsppDrorsarmianta21', 'DsppDrorsarmianta20' ], false );
-            observeDisableFieldsOnBoolean( 'DsppElopersdifdisp', [ 'DsppObstemploidifdisp1', 'DsppObstemploidifdisp0' ], false );
+            observeDisableFieldsOnValue( 'DsppDrorsarmiant', [ 'DsppDrorsarmianta2' ], 'O', false );
+            observeDisableFieldsOnValue( 'DsppElopersdifdisp', [ 'DsppObstemploidifdisp' ], 'O', false );
         });
     </script>
 
     <fieldset>
             <legend>Généralités DSPP</legend>
-                <?php
-                    echo $widget->booleanRadio( 'Dspp.drorsarmiant', array( 'legend' => __( 'drorsarmiant', true )) );
-                ?>
-                <?php
-                    echo $widget->booleanRadio( 'Dspp.drorsarmianta2', array( 'legend' => __( 'drorsarmianta2', true )) );
-                ?>
+                <?php echo $form->input( 'Dspp.drorsarmiant', array( 'label' =>  ( __( 'drorsarmiant', true ) ), 'type' => 'select', 'options' => $drorsarmiant, 'empty' => true ) );?>
+                <?php echo $form->input( 'Dspp.drorsarmianta2', array( 'label' =>  ( __( 'drorsarmianta2', true ) ), 'type' => 'select', 'options' => $drorsarmianta2, 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.couvsoc', array( 'label' =>  ( __( 'couvsoc', true ) ), 'type' => 'select', 'options' => $couvsoc, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
             <legend>Situation sociale</legend>
-                <?php
-                    echo $widget->booleanRadio( 'Dspp.elopersdifdisp', array( 'legend' => __( 'elopersdifdisp', true )) );
-                ?>
-                <?php
-                    echo $widget->booleanRadio( 'Dspp.obstemploidifdisp', array( 'legend' => __( 'obstemploidifdisp', true )) );
-                ?>
-                <?php
-                    echo $widget->booleanRadio( 'Dspp.soutdemarsoc', array( 'legend' => __( 'soutdemarsoc', true )) );
-                ?>
+                <?php echo $form->input( 'Dspp.elopersdifdisp', array( 'label' =>  ( __( 'elopersdifdisp', true ) ), 'type' => 'select', 'options' => $elopersdifdisp, 'empty' => true ) );?>
+                <?php echo $form->input( 'Dspp.obstemploidifdisp', array( 'label' =>  ( __( 'obstemploidifdisp', true ) ), 'type' => 'select', 'options' => $obstemploidifdisp, 'empty' => true ) );?>
+                <?php echo $form->input( 'Dspp.soutdemarsoc', array( 'label' =>  ( __( 'soutdemarsoc', true ) ), 'type' => 'select', 'options' => $soutdemarsoc, 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.libcooraccosocindi', array( 'label' => __( 'libcooraccosocindi', true ), 'type' => 'textarea', 'rows' =>3 ) );?>
     </fieldset>
 
@@ -83,9 +73,7 @@
                 <?php echo $form->input( 'Dspp.libderact', array( 'label' => __( 'libderact', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactderact', array( 'label' => __( 'libsecactderact', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.dfderact', array( 'label' => required( __( 'dfderact', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true ) );?>
-                <?php
-                    echo $widget->booleanRadio( 'Dspp.domideract', array( 'legend' => __( 'domideract', true )) );
-                ?>
+                <?php echo $form->input( 'Dspp.domideract', array( 'label' => required( __( 'domideract', true ) ), 'type' => 'select', 'options' => $domideract, 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.libactdomi', array( 'label' => __( 'libactdomi', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactdomi', array( 'label' => __( 'libsecactdomi', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.duractdomi', array( 'label' => required( __( 'duractdomi', true ) ), 'type' => 'select', 'options' => $duractdomi, 'empty' => true ) );?>
