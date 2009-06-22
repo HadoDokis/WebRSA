@@ -131,11 +131,7 @@
         }
 
         //*********************************************************************
-        /**
-            FIXME:
-                ressources -> Warning (2): pg_query() [function.pg-query]: Query failed: ERROR:  invalid input syntax for type numeric: "10,000.00" [CORE/cake/libs/model/datasources/dbo/dbo_postgres.php, line 148]
-                $sql    =   "INSERT INTO "ressources" ("personne_id", "ddress", "dfress", "topressnul", "mtpersressmenrsa") VALUES ('2', '2009-01-01', '2009-03-30', FALSE, '10,000.00')"
-        */
+
         function soumisDroitsEtDevoirs( $personne_id ) {
             $this->unbindModelAll();
             $this->bindModel(
@@ -169,12 +165,18 @@
                 }
             }
 
-            // FIXME: sans emploi actuellement ?
-            $dspp = array_filter( $personne['Dspp'] );
-//             debug( $dspp );
+            $dspp = array_filter( array( 'Dspp' => $personne['Dspp'] ) );
             if( !empty( $dspp ) ) {
+                // Passé professionnel ? -> Emploi
+                //     1901 : Vous avez toujours travaillé
+                //     1902 : Vous travaillez par intermittence
+                if( $dspp['Dspp']['hispro'] == '1901' || $dspp['Dspp']['hispro'] == '1902' ) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
             }
-            // ELSE -> FIXME
 
             return false;
         }

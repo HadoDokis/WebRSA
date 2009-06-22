@@ -66,7 +66,7 @@
 
             // Mauvais paramètre
             $this->assert( !empty( $personne ), 'invalidParameter' );
-//debug( $this->Personne->soumisDroitsEtDevoirs( $personne['Personne']['id'] ) );
+
             // Assignation à la vue
             $this->set( 'personne', $personne );
         }
