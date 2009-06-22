@@ -98,7 +98,7 @@
 
             $this->data['Ressource']['mtpersressmenrsa'] = 0;
             if( ( $this->data['Ressource']['topressnul'] == false ) && !empty( $this->data['Detailressourcemensuelle'] ) ) {
-                $this->data['Ressource']['mtpersressmenrsa'] = number_format( array_sum( Set::extract( $this->data['Detailressourcemensuelle'], '{n}.mtnatressmen' ) ) / 3, 2 );
+                $this->data['Ressource']['mtpersressmenrsa'] = number_format( array_sum( Set::extract( $this->data['Detailressourcemensuelle'], '{n}.mtnatressmen' ) ) / 3, 2, '.', '' );
             }
 
             return $return;
