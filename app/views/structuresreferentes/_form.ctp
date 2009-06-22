@@ -1,7 +1,7 @@
 <fieldset>
     <?php echo $form->input( 'Structurereferente.lib_struc', array( 'label' =>  __( 'lib_struc', true ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'Structurereferente.num_voie', array( 'label' =>  __( 'num_voie', true ), 'type' => 'text' ) );?>
-    <?php echo $form->input( 'Structurereferente.type_voie', array( 'label' =>  __( 'type_voie', true ), 'type' => 'text' ) );?>
+    <?php echo $form->input( 'Structurereferente.type_voie', array( 'label' =>  __( 'type_voie', true ), 'type' => 'select', 'options' => $typevoie, 'empty' => true ) );?>
     <?php echo $form->input( 'Structurereferente.nom_voie', array( 'label' =>  __( 'nom_voie', true ), 'type' => 'text' ) );?> 
     <?php echo $form->input( 'Structurereferente.code_postal', array( 'label' =>  __( 'code_postal', true ), 'type' => 'text' ) );?> 
     <?php echo $form->input( 'Structurereferente.ville', array( 'label' =>  __( 'ville', true ), 'type' => 'text' ) );?> 

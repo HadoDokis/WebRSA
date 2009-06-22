@@ -28,6 +28,7 @@
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
+            $this->set( 'typevoie', $this->Option->typevoie() );
 
             return $return;
         }

@@ -59,7 +59,7 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'typevoie' );?></th>
-                    <td><?php echo $adresse['Adresse']['typevoie'];?></td>
+                    <td><?php echo isset( $typevoie[$adresse['Adresse']['typevoie']] ) ? $typevoie[$adresse['Adresse']['typevoie']] : null;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'nomvoie' );?></th>

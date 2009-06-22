@@ -25,6 +25,7 @@
             $this->set( 'pays', $this->Option->pays() );
             $this->set( 'rgadr', $this->Option->rgadr() );
             $this->set( 'typeadr', $this->Option->typeadr() );
+            $this->set( 'typevoie', $this->Option->typevoie() );
 
             return $return;
         }

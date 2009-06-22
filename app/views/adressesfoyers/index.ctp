@@ -51,7 +51,7 @@
                         echo $html->tableCells(
                             array(
                                 h( !empty( $adresse['Adressefoyer']['rgadr'] ) ? $rgadr[$adresse['Adressefoyer']['rgadr']] : null ),
-                                h( implode( ' ', array( $adresse['Adresse']['numvoie'], $adresse['Adresse']['typevoie'], $adresse['Adresse']['nomvoie'] ) ) ),
+                                h( implode( ' ', array( $adresse['Adresse']['numvoie'], isset( $typevoie[$adresse['Adresse']['typevoie']] ) ? $typevoie[$adresse['Adresse']['typevoie']] : null, $adresse['Adresse']['nomvoie'] ) ) ),
                                 h( implode( ' ', array( $adresse['Adresse']['codepos'], $adresse['Adresse']['locaadr'] ) ) ),
                                 $html->viewLink(
                                     'Voir l\'adresse « '.$title.' »',

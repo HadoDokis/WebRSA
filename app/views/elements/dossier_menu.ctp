@@ -97,7 +97,7 @@
                                 <ul>
                                     <?php foreach( $dossier['Foyer']['AdressesFoyer'] as $AdressesFoyer ):?>
                                         <li><?php echo $html->link(
-                                                h( implode( ' ', array( $AdressesFoyer['Adresse']['numvoie'], $AdressesFoyer['Adresse']['typevoie'], $AdressesFoyer['Adresse']['nomvoie'] ) ) ),
+                                                h( implode( ' ', array( $AdressesFoyer['Adresse']['numvoie'], isset( $typevoie[$AdressesFoyer['Adresse']['typevoie']] ) ? $typevoie[$AdressesFoyer['Adresse']['typevoie']] : null, $AdressesFoyer['Adresse']['nomvoie'] ) ) ),
                                                 array( 'controller' => 'adressesfoyers', 'action' => 'view', $AdressesFoyer['id'] ) );
                                             ;?></li>
                                     <?php endforeach;?>

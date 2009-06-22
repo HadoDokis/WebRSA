@@ -7,7 +7,7 @@
 <fieldset>
     <?php echo $form->input( 'Serviceinstructeur.lib_service', array( 'label' =>  required( __( 'lib_service', true ) ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'Serviceinstructeur.num_rue', array( 'label' =>  __( 'num_rue', true ), 'type' => 'text' ) );?>
-    <?php echo $form->input( 'Serviceinstructeur.type_voie', array( 'label' =>  __( 'type_voie', true ), 'type' => 'text' ) );?>
+    <?php echo $form->input( 'Serviceinstructeur.type_voie', array( 'label' =>  __( 'type_voie', true ), 'type' => 'select', 'options' => $typevoie, 'empty' => true ) );?>
     <?php echo $form->input( 'Serviceinstructeur.nom_rue', array( 'label' =>  __( 'nom_rue', true ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'Serviceinstructeur.complement_adr', array( 'label' =>  __( 'complement_adr', true ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'Serviceinstructeur.code_insee', array( 'label' =>  required( __( 'code_insee', true ) ), 'type' => 'text' ) );?>

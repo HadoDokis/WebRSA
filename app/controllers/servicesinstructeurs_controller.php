@@ -8,6 +8,7 @@
          function beforeFilter() {
             parent::beforeFilter();
                 $this->set( 'typeserins', $this->Option->typeserins() );
+                $this->set( 'typevoie', $this->Option->typevoie() );
         }
 
         function index() {
