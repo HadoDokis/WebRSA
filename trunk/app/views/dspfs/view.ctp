@@ -159,18 +159,18 @@
             <tbody>
                 <tr class="odd">
                     <th ><?php __( 'drorsarmiant' );?></th>
-                    <td><?php echo $html->boolean( value( $dsp, 'DEM', 'Dspp', 'drorsarmiant' ) );?></td>
-                    <td><?php echo $html->boolean( value( $dsp, 'CJT', 'Dspp', 'drorsarmiant' ) );?></td>
+                    <td><?php echo linkedValue( $drorsarmiant, $dsp, 'DEM', 'Dspp', 'drorsarmiant' );?></td>
+                    <td><?php echo linkedValue( $drorsarmiant, $dsp, 'CJT', 'Dspp', 'drorsarmiant' );?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'drorsarmianta2' );?></th>
-                    <td><?php echo $html->boolean( value( $dsp, 'DEM', 'Dspp', 'drorsarmiant2' ) );?></td>
-                    <td><?php echo $html->boolean( value( $dsp, 'CJT', 'Dspp', 'drorsarmiant2' ) );?></td>
+                    <td><?php echo linkedValue( $drorsarmianta2, $dsp, 'DEM', 'Dspp', 'drorsarmianta2' );?></td>
+                    <td><?php echo linkedValue( $drorsarmianta2, $dsp, 'CJT', 'Dspp', 'drorsarmianta2' );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'couvsoc' );?></th>
-                    <td><?php echo $html->boolean( value( $dsp, 'DEM', 'Dspp', 'couvsoc' ) );?></td>
-                    <td><?php echo $html->boolean( value( $dsp, 'CJT', 'Dspp', 'couvsoc' ) );?></td>
+                    <td><?php echo linkedValue( $couvsoc, $dsp, 'DEM', 'Dspp', 'couvsoc' );?></td>
+                    <td><?php echo linkedValue( $couvsoc, $dsp, 'CJT', 'Dspp', 'couvsoc' );?></td>
                 </tr>
             </tbody>
         </table>
@@ -181,18 +181,18 @@
             <tbody>
                 <tr class="even">
                     <th><?php __( 'elopersdifdisp' );?></th>
-                    <td><?php echo $html->boolean( value( $dsp, 'DEM', 'Dspp', 'elopersdifdisp' ) );?></td>
-                    <td><?php echo $html->boolean( value( $dsp, 'CJT', 'Dspp', 'elopersdifdisp' ) );?></td>
+                    <td><?php echo linkedValue( $elopersdifdisp, $dsp, 'DEM', 'Dspp', 'elopersdifdisp' );?></td>
+                    <td><?php echo linkedValue( $elopersdifdisp, $dsp, 'CJT', 'Dspp', 'elopersdifdisp' );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'obstemploidifdisp' );?></th>
-                    <td><?php echo $html->boolean( value( $dsp, 'DEM', 'Dspp', 'obstemploidifdisp' ) );?></td>
-                    <td><?php echo $html->boolean( value( $dsp, 'CJT', 'Dspp', 'obstemploidifdisp' ) );?></td>
+                    <td><?php echo linkedValue( $obstemploidifdisp, $dsp, 'DEM', 'Dspp', 'obstemploidifdisp' );?></td>
+                    <td><?php echo linkedValue( $obstemploidifdisp, $dsp, 'CJT', 'Dspp', 'obstemploidifdisp' );?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'soutdemarsoc' );?></th>
-                    <td><?php echo $html->boolean( value( $dsp, 'DEM', 'Dspp', 'soutdemarsoc' ) );?></td>
-                    <td><?php echo $html->boolean( value( $dsp, 'CJT', 'Dspp', 'soutdemarsoc' ) );?></td>
+                    <td><?php echo linkedValue( $soutdemarsoc, $dsp, 'DEM', 'Dspp', 'soutdemarsoc' );?></td>
+                    <td><?php echo linkedValue( $soutdemarsoc, $dsp, 'CJT', 'Dspp', 'soutdemarsoc' );?></td>
                 </tr>
             </tbody>
         </table>
@@ -428,8 +428,8 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'domideract' );?></th>
-                    <td><?php echo $html->boolean( value( $dsp, 'DEM', 'Dspp', 'domideract' ) );?></td>
-                    <td><?php echo $html->boolean( value( $dsp, 'CJT', 'Dspp', 'domideract' ) );?></td>
+                    <td><?php echo linkedValue( $domideract, $dsp, 'DEM', 'Dspp', 'domideract' );?></td>
+                    <td><?php echo linkedValue( $domideract, $dsp, 'CJT', 'Dspp', 'domideract' );?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'libactdomi' );?></th>
@@ -458,8 +458,8 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'creareprisentrrech' );?></th>
-                    <td><?php echo $html->boolean( value( $dsp, 'DEM', 'Dspp', 'creareprisentrrech' ) ) ;?></td>
-                    <td><?php echo $html->boolean( value( $dsp, 'CJT', 'Dspp', 'creareprisentrrech' ) );?></td>
+                    <td><?php echo linkedValue( $creareprisentrrech, $dsp, 'CJT', 'Dspp', 'creareprisentrrech' ) ;?></td>
+                    <td><?php echo linkedValue( $creareprisentrrech, $dsp, 'CJT', 'Dspp', 'creareprisentrrech' );?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'moyloco' );?></th>

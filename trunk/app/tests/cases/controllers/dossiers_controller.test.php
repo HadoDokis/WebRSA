@@ -21,7 +21,7 @@ class DossiersControllerTest extends CakeTestCase {
 
         $this->assertTrue($this->Controller->viewVars['dossier']['Dossier']);
         $this->assertEqual(3, $this->Controller->viewVars['dossier']['Dossier']['id']);
-        $this->assertEqual(12345678901, $this->Controller->viewVars['dossier']['Dossier']['numdemrsa']);
+        $this->assertEqual(33333333333, $this->Controller->viewVars['dossier']['Dossier']['numdemrsa']);
     }
 }
 
