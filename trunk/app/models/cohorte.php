@@ -165,6 +165,16 @@
 
             // --------------------------------------------------------
 
+            foreach( $filtres['Personne.id'] as $personne_id ) {
+                if( !$this->Dossier->Foyer->Personne->soumisDroitsEtDevoirs( $personne_id ) ) {
+                    unset( $filtres['Personne.id'][$personne_id] );
+                }
+            }
+
+            //;
+
+            // --------------------------------------------------------
+
             // INFO: 190509 - grille test web-rsa.doc
             // FIXME: optimiser
             $cohorte = $this->Dossier->Foyer->Personne->find(

@@ -25,57 +25,55 @@
             $this->components[] = 'Jetons';
         }
 
-        function _soumisADroitsEtDevoirs( $personne_id ) {
-        }
-
         /**
         *
         * INFO: Préprofessionnelle => Socioprofessionnelle --> mette un type dans la table ?
         *
         */
         function _preOrientation( $element ) {
-            $propo_algo = 'Socioprofessionnelle';
-
-            $dspp = array_filter( $element['Dspp'] );
-
-            if( !empty( $dspp ) && isset( $element['Dspp']['dfderact'] ) ) { // FIXME
-                list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
-                $dfderact = mktime( 0, 0, 0, $month, $day, $year );
-                // Socioprofessionnelle, Social
-                // 1°) Passé professionnel ? -> Emploi
-                //     1901 : Vous avez toujours travaillé
-                //     1902 : Vous travaillez par intermittence
-                if( $element['Dspp']['hispro'] == '1901' || $element['Dspp']['hispro'] == '1902' ) {
-                    $propo_algo = 'Emploi';
-                }
-                // 2°) Etes-vous accompagné dans votre recherche d'emploi ?
-                //     1802 : Pôle Emploi
-                else if( $element['Dspp']['accoemploi'] == '1802' ) {
-                    $propo_algo = 'Emploi';
-                }
-                // 3°) Êtes-vous sans activité depuis moins de 24 mois ?
-                //     Date éventuelle de cessation d’activité ?
-                else if( ( !empty( $element['Dspp']['dfderact'] ) ) && ( $dfderact < strtotime( '-24 months' ) ) ) {
-                    $propo_algo = 'Emploi';
-                }
-                // Votre famille fait-elle l’objet d’un accompagnement ?
-                //     0410: Logement
-                //     0411: Endettement
-                //     FIXME: Santé
-                else {
-                    $dspf = $this->Dossier->Foyer->Dspf->find(
-                        'first',
-                        array(
-                            'conditions' => array( 'Dspf.id' => $element['Foyer']['Dspf']['id'] )
-                        )
-                    );
-                    // FIXME: grosse requête pour pas grand-chose
-//                     $codes = Set::extract( $dspf, 'Nataccosocfam.{n}.code' );
-                    if( $element['Foyer']['Dspf']['accosocfam'] == true ) {
-                        $propo_algo = 'Social';
+            $propo_algo = 'Emploi';
+            if( isset( $element['Dspp'] ) ) {
+                $dspp = array_filter( $element['Dspp'] );
+                if( !empty( $dspp ) && isset( $element['Dspp']['dfderact'] ) ) { // FIXME
+                    $propo_algo = 'Socioprofessionnelle';
+                    list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
+                    $dfderact = mktime( 0, 0, 0, $month, $day, $year );
+                    // Socioprofessionnelle, Social
+                    // 1°) Passé professionnel ? -> Emploi
+                    //     1901 : Vous avez toujours travaillé
+                    //     1902 : Vous travaillez par intermittence
+                    if( $element['Dspp']['hispro'] == '1901' || $element['Dspp']['hispro'] == '1902' ) {
+                        $propo_algo = 'Emploi';
                     }
+                    // 2°) Etes-vous accompagné dans votre recherche d'emploi ?
+                    //     1802 : Pôle Emploi
+                    else if( $element['Dspp']['accoemploi'] == '1802' ) {
+                        $propo_algo = 'Emploi';
+                    }
+                    // 3°) Êtes-vous sans activité depuis moins de 24 mois ?
+                    //     Date éventuelle de cessation d’activité ?
+                    else if( ( !empty( $element['Dspp']['dfderact'] ) ) && ( $dfderact < strtotime( '-24 months' ) ) ) {
+                        $propo_algo = 'Emploi';
+                    }
+                    // Votre famille fait-elle l’objet d’un accompagnement ?
+                    //     0410: Logement
+                    //     0411: Endettement
+                    //     FIXME: Santé
                     else {
-                        $propo_algo = 'Socioprofessionnelle';
+                        $dspf = $this->Dossier->Foyer->Dspf->find(
+                            'first',
+                            array(
+                                'conditions' => array( 'Dspf.id' => $element['Foyer']['Dspf']['id'] )
+                            )
+                        );
+                        // FIXME: grosse requête pour pas grand-chose
+    //                     $codes = Set::extract( $dspf, 'Nataccosocfam.{n}.code' );
+                        if( $element['Foyer']['Dspf']['accosocfam'] == true ) {
+                            $propo_algo = 'Social';
+                        }
+                        else {
+                            $propo_algo = 'Socioprofessionnelle';
+                        }
                     }
                 }
             }
@@ -174,9 +172,9 @@
                     // --------------------------------------------------------
 
                     $this->Dossier->begin(); // Pour les jetons
-// FIXME limit
-                    $cohorte = $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->data, $this->Jetons->ids(), 10 );
 
+                    $_limit = 10;
+                    $cohorte = $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->data, $this->Jetons->ids(), $_limit );
                     $cohorte = $this->Dossier->Foyer->Personne->find(
                         'all',
                         array(
@@ -184,10 +182,12 @@
                                 'Personne.id' => ( !empty( $cohorte ) ? $cohorte : null )
                             ),
                             'recursive' => 0,
-                            'limit'     => 10
+                            'limit'     => $_limit
                         )
                     );
-
+// echo '<pre>';
+// var_dump( $cohorte );
+// echo '</pre>';
                     // --------------------------------------------------------
 
                     foreach( $cohorte as $key => $element ) {
