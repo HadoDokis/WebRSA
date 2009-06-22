@@ -16,7 +16,14 @@
             $this->set( 'motidemrsa', $this->Option->motidemrsa() );
             $this->set( 'natlog', $this->Option->natlog() );
             $this->set( 'hispro', $this->Option->hispro() );
-
+            $this->set( 'couvsoc', $this->Option->couvsoc() );
+            $this->set( 'creareprisentrrech', $this->Option->creareprisentrrech() );
+            $this->set( 'domideract', $this->Option->domideract() );
+            $this->set( 'drorsarmiant', $this->Option->drorsarmiant() );
+            $this->set( 'drorsarmianta2', $this->Option->drorsarmianta2() );
+            $this->set( 'elopersdifdisp', $this->Option->elopersdifdisp() );
+            $this->set( 'obstemploidifdisp', $this->Option->obstemploidifdisp() );
+            $this->set( 'soutdemarsoc', $this->Option->soutdemarsoc() );
             $this->set( 'duractdomi', $this->Option->duractdomi() );
             $this->set( 'accosocfam', $this->Option->accosocfam() );
 
@@ -25,7 +32,6 @@
             $this->set( 'diflogs', $this->Diflog->find( 'list' ) );
             $this->set( 'difsocs', $this->Difsoc->find( 'list' ) );
             $this->set( 'nataccosocindis', $this->Nataccosocindi->find( 'list' ) );
-            //$this->set( 'nivetu', $this->Option->nivetu() );
             $this->set( 'difdisps', $this->Difdisp->find( 'list' ) );
             $this->set( 'natmobs', $this->Natmob->find( 'list' ) );
             $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );  
