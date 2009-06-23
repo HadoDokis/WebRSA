@@ -105,8 +105,8 @@
 
         //*********************************************************************
 
-        function beforeSave() {
-            parent::beforeSave();
+        function beforeSave( $options = array() ) {
+            parent::beforeSave( $options );
 
             // Champs déduits
             if( !empty( $this->data['Personne']['qual'] ) ) {
@@ -154,12 +154,14 @@
                 return $montantForfaitaire;
             }
             else {
+// debug( $personne );
                 if( isset( $personne['Ressource'] ) && isset( $personne['Ressource'][0] ) && isset( $personne['Ressource'][0]['mtpersressmenrsa'] ) ) {
                     $montant = $personne['Ressource'][0]['mtpersressmenrsa'];
                 }
                 else {
                     $montant = 0;
                 }
+// debug( $montant );
                 if( $montant < 500 ) {
                     return true;
                 }
