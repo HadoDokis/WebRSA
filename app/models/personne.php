@@ -154,21 +154,20 @@
                 return $montantForfaitaire;
             }
             else {
-// debug( $personne );
                 if( isset( $personne['Ressource'] ) && isset( $personne['Ressource'][0] ) && isset( $personne['Ressource'][0]['mtpersressmenrsa'] ) ) {
                     $montant = $personne['Ressource'][0]['mtpersressmenrsa'];
                 }
                 else {
                     $montant = 0;
                 }
-// debug( $montant );
                 if( $montant < 500 ) {
                     return true;
                 }
             }
 
             $dspp = array_filter( array( 'Dspp' => $personne['Dspp'] ) );
-            if( !empty( $dspp ) ) {
+            $hispro = Set::extract( $dspp, 'Dspp.hispro' );
+            if( $hispro !== NULL ) {
                 // Passé professionnel ? -> Emploi
                 //     1901 : Vous avez toujours travaillé
                 //     1902 : Vous travaillez par intermittence
@@ -179,7 +178,6 @@
                     return true;
                 }
             }
-
             return false;
         }
 
