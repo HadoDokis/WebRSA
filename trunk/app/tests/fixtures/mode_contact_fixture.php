@@ -8,6 +8,7 @@ class ModeContactFixture extends CakeTestFixture {
 
     var $table = 'modes_contact';
 
+    var $fixtures = 'Modecontact';
 }
 
 ?>

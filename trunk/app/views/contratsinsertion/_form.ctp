@@ -19,7 +19,7 @@
     } );
 </script>
 
-<p><i>Le présent contrat d'insertion est établi en application de l'article L262-37 du code de l'action sociale </i></p>
+<p><i>Le présent contrat d'insertion est établi en application de l'article L262-37 du code de l'action sociale </i>, entre le Président du Conseil Général </p>
 <fieldset>
     <legend>Contrats d'insertion</legend>
         <?php if( $this->data['Contratinsertion']['typocontrat_id'] == 1 ):?>
@@ -65,7 +65,7 @@
 <fieldset>
         <?php echo $form->input( 'Contratinsertion.nature_projet', array( 'label' => __( 'nature_projet', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
         <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => __( 'lieu_saisi_ci', true ), 'type' => 'text')  ); ?><br />
-        <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __( 'date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
+        <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __( 'date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 /*, 'empty' => true*/)  ); ?>
         <?php echo $form->input( 'Le bénéficiaire : ', array( 'label' => 'Le bénéficiaire : ', 'type' => 'text', 'value' => $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] )  ); ?>
 </fieldset>
 
