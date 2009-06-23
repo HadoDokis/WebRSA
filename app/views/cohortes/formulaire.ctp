@@ -73,7 +73,7 @@
                                     </tr>
                                 </tbody>
                             </table>';
-
+// debug( $personne );
                             $statut_orient = Set::extract( $this->data, 'Orientstruct.'.$index.'.statut_orient' );
                             echo $html->tableCells(
                                 array(
@@ -97,7 +97,7 @@
                                     h( $personne['Orientstruct']['propo_algo_texte'] ).
                                         $form->input( 'Orientstruct.'.$index.'.propo_algo', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['propo_algo'] ) ).
                                         /* FIXME -> id unset ? */
-                                        $form->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => ( isset( $personne['Orientstruct']['id'] ) ? $personne['Orientstruct']['id'] : null ) ) ).
+                                        $form->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['id'] ) ).
                                         $form->input( 'Orientstruct.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Foyer']['dossier_rsa_id'] ) ).
                                         $form->input( 'Orientstruct.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Personne']['id'] ) ),
                                     $form->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient, 'value' => $personne['Orientstruct']['propo_algo'] ) ),
