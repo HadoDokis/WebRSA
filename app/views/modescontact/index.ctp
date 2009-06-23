@@ -26,7 +26,7 @@
                         <th>Autorisation utilisation téléphone</th>
                         <th>Adresse électronique</th>
                         <th>Autorisation utilisation email</th>
-                        <th class="action">Action</th>
+                        <th colspan="2" class="action">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,10 +41,15 @@
                                 h( isset( $autorutitel[$modecontact['Modecontact']['autorutitel']] ) ?  $autorutitel[$modecontact['Modecontact']['autorutitel']] : null ),
                                 h( $modecontact['Modecontact']['adrelec']),
                                 h( isset( $autorutiadrelec[$modecontact['Modecontact']['autorutiadrelec']] ) ? $autorutiadrelec[$modecontact['Modecontact']['autorutiadrelec']] : null ),
+                                $html->viewlink(
+                                    'Voir le mode de contact',
+                                    array( 'controller' => 'modescontact', 'action' => 'view', $modecontact['Modecontact']['id'] ),
+                                    $permissions->check( 'modescontact', 'view' )
+                                ),
                                 $html->editlink(
                                     'Modifier le mode de contact',
                                     array( 'controller' => 'modescontact', 'action' => 'edit', $modecontact['Modecontact']['id'] ),
-                                $permissions->check( 'modescontact', 'edit' )
+                                    $permissions->check( 'modescontact', 'edit' )
                                 )
                             ),
                             array( 'class' => 'odd' ),
