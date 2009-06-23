@@ -127,7 +127,7 @@
                     'conditions' => array(
                         'Modecontact.id' => $modecontact_id
                     ),
-                'recursive' => -1
+                    'recursive' => -1
                 )
 
             );
@@ -135,7 +135,7 @@
             $this->assert( !empty( $modecontact ), 'error404' );
 
             // Assignations à la vue
-            $this->set( 'dossier_id', $modecontact['Modecontact']['dossier_rsa_id'] );
+            $this->set( 'foyer_id', $modecontact['Modecontact']['foyer_id'] );
             $this->set( 'modecontact', $modecontact );
 
         }
