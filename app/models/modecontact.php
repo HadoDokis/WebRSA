@@ -10,5 +10,19 @@
                 'foreignKey'    => 'foyer_id'
             )
         );
+
+        //*********************************************************************
+
+        function dossierId( $modecontact_id ) {
+            $modecontact = $this->findById( $modecontact_id, null, null, 0 );
+            if( !empty( $modecontact ) ) {
+                return $modecontact['Foyer']['dossier_rsa_id'];
+            }
+            else {
+                return null;
+            }
+        }
+
+        //*********************************************************************
     }
 ?>
