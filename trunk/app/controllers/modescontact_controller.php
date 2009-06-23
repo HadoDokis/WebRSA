@@ -72,7 +72,7 @@
         function edit( $id = null ){
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
-            $dossier_id = $this->Foyer->dossierId( $id );
+            $dossier_id = $this->Modecontact->dossierId( $id );
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
             $this->Modecontact->begin();
