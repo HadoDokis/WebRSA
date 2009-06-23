@@ -143,6 +143,7 @@
                 // --------------------------------------------------------
 
                 if( !empty( $this->data ) ) { // FIXME: déjà fait plus haut ?
+// debug( $this->data );
                     if( !empty( $this->data['Orientstruct'] ) ) {
                         $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only' ) );
                         if( $valid ) {
@@ -155,15 +156,16 @@
                                 $this->data['Orientstruct'][$key]['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct'][$key]['structurereferente_id'] );
                                 $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
                             }
+// debug( $this->data['Orientstruct'] );
                             $saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first' ) );
                             if( $saved ) {
-                                // FIXME ?
-                                foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
-                                    $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
-                                }
-                                $this->Dossier->commit();
-                            }
-                            else {
+//                                 // FIXME ?
+//                                 foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
+//                                     $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
+//                                 }
+//                                 $this->Dossier->commit();
+//                             }
+//                             else {
                                 $this->Dossier->rollback();
                             }
                         }
@@ -175,6 +177,7 @@
 
                     $_limit = 10;
                     $cohorte = $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->data, $this->Jetons->ids(), $_limit );
+                    $this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Orientstruct' ) ) ); // FIXME
                     $cohorte = $this->Dossier->Foyer->Personne->find(
                         'all',
                         array(
@@ -254,12 +257,11 @@
 //                             );
 //                             $this->set( 'structuresReferentes', $structuresReferentes );
                             $this->set( 'structuresReferentes', $this->Structurereferente->list1Options() );
-
+//debug( $cohorte );
                             $cohorte[$key]['Orientstruct']['propo_algo_texte'] = $this->_preOrientation( $element );
                             $tmp = array_flip( $typesOrient );
                             $cohorte[$key]['Orientstruct']['propo_algo'] = $tmp[$cohorte[$key]['Orientstruct']['propo_algo_texte']];
                             $cohorte[$key]['Orientstruct']['date_propo'] = date( 'Y-m-d' );
-
                             // Statut suivant ressource
                             $ressource = $this->Ressource->find(
                                 'first',
