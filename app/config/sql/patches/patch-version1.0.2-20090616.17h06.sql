@@ -53,4 +53,15 @@ ALTER TABLE dspps ALTER COLUMN obstemploidifdisp TYPE CHAR(1) USING CASE WHEN ob
 ALTER TABLE dspps ALTER COLUMN soutdemarsoc TYPE CHAR(1) USING CASE WHEN soutdemarsoc IS TRUE THEN '1' ELSE '0' END;
 
 --------------- Ajout du 23 06 09 - 9h13 ------------------
-ALTER TABLE modes_contact RENAME TO modescontact;
+DROP TABLE modes_contact;
+CREATE TABLE modescontact (
+    id              SERIAL NOT NULL PRIMARY KEY,
+    foyer_id        INTEGER NOT NULL REFERENCES foyers(id),
+    numtel          VARCHAR(11),
+    numposte        INTEGER,
+    nattel          CHAR(1),
+    matetel         CHAR(3),
+    autorutitel     CHAR(1),
+    adrelec         VARCHAR(78),
+    autorutiadrelec CHAR(1)
+);

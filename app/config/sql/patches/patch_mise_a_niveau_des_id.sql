@@ -38,7 +38,7 @@ SELECT pg_catalog.setval('infosagricoles_id_seq', ( SELECT max(infosagricoles.id
 SELECT pg_catalog.setval('infosfinancieres_id_seq', ( SELECT max(infosfinancieres.id) + 1 FROM infosfinancieres ), false);
 SELECT pg_catalog.setval('jetons_id_seq', ( SELECT max(jetons.id) + 1 FROM jetons ), false);
 SELECT pg_catalog.setval('liberalites_id_seq', ( SELECT max(liberalites.id) + 1 FROM liberalites ), false);
-SELECT pg_catalog.setval('modes_contact_id_seq', ( SELECT max(modes_contact.id) + 1 FROM modes_contact ), false);
+SELECT pg_catalog.setval('modescontact_id_seq', ( SELECT max(modescontact.id) + 1 FROM modescontact ), false);
 SELECT pg_catalog.setval('nataccosocfams_id_seq', ( SELECT max(nataccosocfams.id) + 1 FROM nataccosocfams ), false);
 SELECT pg_catalog.setval('nataccosocindis_id_seq', ( SELECT max(nataccosocindis.id) + 1 FROM nataccosocindis ), false);
 SELECT pg_catalog.setval('natmobs_id_seq', ( SELECT max(natmobs.id) + 1 FROM natmobs ), false);
