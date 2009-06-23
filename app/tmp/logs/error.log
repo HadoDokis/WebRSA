@@ -1,9 +1,1 @@
 
-2009-06-23 10:44:01 Warning: Warning (2): Cannot modify header information - headers already sent by (output started at /home/cbuffin/www/webrsa/cake/basics.php:108) in [CORE/cake/libs/controller/controller.php, line 640]
-2009-06-23 10:44:29 Warning: Warning (2): Cannot modify header information - headers already sent by (output started at /home/cbuffin/www/webrsa/cake/basics.php:108) in [CORE/cake/libs/controller/controller.php, line 640]
-2009-06-23 10:44:51 Warning: Warning (2): Cannot modify header information - headers already sent by (output started at /home/cbuffin/www/webrsa/cake/basics.php:108) in [CORE/cake/libs/controller/controller.php, line 640]
-2009-06-23 10:46:50 Warning: Warning (2): Cannot modify header information - headers already sent by (output started at /home/cbuffin/www/webrsa/cake/basics.php:108) in [CORE/cake/libs/controller/controller.php, line 640]
-2009-06-23 10:47:07 Warning: Warning (2): Cannot modify header information - headers already sent by (output started at /home/cbuffin/www/webrsa/cake/basics.php:108) in [CORE/cake/libs/controller/controller.php, line 640]
-2009-06-23 10:48:47 Warning: Warning (2): Cannot modify header information - headers already sent by (output started at /home/cbuffin/www/webrsa/cake/basics.php:108) in [CORE/cake/libs/controller/controller.php, line 640]
-2009-06-23 10:49:20 Warning: Warning (2): Cannot modify header information - headers already sent by (output started at /home/cbuffin/www/webrsa/cake/basics.php:108) in [CORE/cake/libs/controller/controller.php, line 640]
-2009-06-23 10:49:37 Warning: Warning (2): Cannot modify header information - headers already sent by (output started at /home/cbuffin/www/webrsa/cake/basics.php:108) in [CORE/cake/libs/controller/controller.php, line 640]
