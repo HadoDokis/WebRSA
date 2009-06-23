@@ -69,7 +69,7 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
-        function edit( $id ){
+        function edit( $id = null ){
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
             $dossier_id = $this->Foyer->dossierId( $id );
