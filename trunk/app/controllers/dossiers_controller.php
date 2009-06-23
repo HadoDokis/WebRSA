@@ -4,7 +4,7 @@
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'ModeContact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur' );
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur' );
         var $aucunDroit = array( 'menu' );
 
         var $paginate = array(
@@ -326,16 +326,16 @@
             $dossier = Set::merge( $dossier, array( 'Creance' => $creance['Creance'] ) );
 
 
-            $modes = $this->ModeContact->find(
+            $modes = $this->Modecontact->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'ModeContact.id' => $dossier['Foyer']['id'],
+                        'Modecontact.id' => $dossier['Foyer']['id'],
                     ),
                     'recursive' => 2
                 )
             );
-            $dossier = Set::merge( $dossier, array( 'ModeContact' => $modes['ModeContact'] ) );
+            $dossier = Set::merge( $dossier, array( 'Modecontact' => $modes['Modecontact'] ) );
 
             //-----------------------------------------------------------------
             $struct = $this->Structurereferente->find(

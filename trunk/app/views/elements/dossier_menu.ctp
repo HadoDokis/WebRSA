@@ -107,6 +107,17 @@
                     </li>
                 <?php endif;?>
 
+                <?php if( $permissions->check( 'modescontact', 'index' ) ):?>
+                    <li>
+                        <?php
+                            echo $html->link(
+                                'Modes de contact',
+                                array( 'controller' => 'modescontact', 'action' => 'index', $dossier['Foyer']['id'] )
+                            );
+                        ?>
+                    </li>
+                <?php endif;?>
+
                 <?php if( $permissions->check( 'avispcgdroitrsa', 'index' ) ):?>
                     <li>
                         <?php
@@ -150,6 +161,7 @@
                         ?>
                     </li>
                 <?php endif;?>
+
             </ul>
         </li>
 

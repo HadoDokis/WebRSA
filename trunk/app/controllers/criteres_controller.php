@@ -95,9 +95,9 @@
                                     'Adressefoyer.rgadr = \'01\''
                                 )
                             ),
-                            'ModeContact' => array(
+                            'Modecontact' => array(
                                 'foreignKey' => false,
-                                'conditions' => array( 'ModeContact.id = Personne.foyer_id' )
+                                'conditions' => array( 'Modecontact.id = Personne.foyer_id' )
                             ),
                             'Adresse' => array(
                                 'foreignKey' => false,
@@ -129,7 +129,7 @@
                     )
                 );
                 $this->set( 'orients', $orients );
-
+// debug( $orients );
 //             debug($params);
                 $this->data['Search'] = $params;
             }
@@ -161,9 +161,9 @@
                                 'Adressefoyer.rgadr = \'01\''
                             )
                         ),
-                        'ModeContact' => array(
+                        'Modecontact' => array(
                             'foreignKey' => false,
-                            'conditions' => array( 'ModeContact.id = Personne.foyer_id' )
+                            'conditions' => array( 'Modecontact.id = Personne.foyer_id' )
                         ),
                         'Adresse' => array(
                             'foreignKey' => false,

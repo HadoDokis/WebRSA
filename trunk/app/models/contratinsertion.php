@@ -66,12 +66,12 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'form_compl' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+//             'form_compl' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
             'expr_prof' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
