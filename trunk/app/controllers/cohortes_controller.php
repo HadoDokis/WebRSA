@@ -147,15 +147,15 @@
                         $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only' ) );
                         if( $valid ) {
                             $this->Dossier->begin();
-                            $saved = true;
                             foreach( $this->data['Orientstruct'] as $key => $value ) {
                                 // FIXME: date_valid et pas date_propo ?
                                 if( $statutOrientation == 'Non orienté' ) {
                                     $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
                                 }
+                                $this->data['Orientstruct'][$key]['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct'][$key]['structurereferente_id'] );
                                 $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
-                                $saved = $this->Dossier->Foyer->Personne->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
                             }
+                            $saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first' ) );
                             if( $saved ) {
                                 // FIXME ?
                                 foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
@@ -243,16 +243,17 @@
                         }
 
                         if( $statutOrientation !== 'Orienté' ) {
-                            $structuresReferentes = $this->Structurereferente->find(
-                                'list',
-                                array(
-                                    'fields' => array(
-                                        'Structurereferente.id',
-                                        'Structurereferente.lib_struc'
-                                    )
-                                )
-                            );
-                            $this->set( 'structuresReferentes', $structuresReferentes );
+//                             $structuresReferentes = $this->Structurereferente->find(
+//                                 'list',
+//                                 array(
+//                                     'fields' => array(
+//                                         'Structurereferente.id',
+//                                         'Structurereferente.lib_struc'
+//                                     )
+//                                 )
+//                             );
+//                             $this->set( 'structuresReferentes', $structuresReferentes );
+                            $this->set( 'structuresReferentes', $this->Structurereferente->list1Options() );
 
                             $cohorte[$key]['Orientstruct']['propo_algo_texte'] = $this->_preOrientation( $element );
                             $tmp = array_flip( $typesOrient );

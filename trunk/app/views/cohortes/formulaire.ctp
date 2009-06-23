@@ -1,5 +1,16 @@
 <h1><?php echo $this->pageTitle = $pageTitle;?></h1>
 
+<?php if( isset( $cohorte ) ):?>
+    <?php echo $javascript->link( 'dependantselect.js' ); ?>
+    <script type="text/javascript">
+        document.observe("dom:loaded", function() {
+            <?php foreach( $cohorte as $index => $personne ):?>
+                dependantSelect( 'Orientstruct<?php echo $index;?>StructurereferenteId', 'Orientstruct<?php echo $index;?>TypeorientId' );
+            <?php endforeach;?>
+        });
+    </script>
+<?php endif;?>
+
 <?php require_once( 'filtre.ctp' );?>
 
 <?php if( !empty( $this->data ) ):?>
@@ -85,8 +96,10 @@
                                     ),*/
                                     h( $personne['Orientstruct']['propo_algo_texte'] ).
                                         $form->input( 'Orientstruct.'.$index.'.propo_algo', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['propo_algo'] ) ).
-                                        $form->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['id'] ) ).
-                                        $form->input( 'Orientstruct.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Foyer']['dossier_rsa_id'] ) ),
+                                        /* FIXME -> id unset ? */
+                                        $form->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => ( isset( $personne['Orientstruct']['id'] ) ? $personne['Orientstruct']['id'] : null ) ) ).
+                                        $form->input( 'Orientstruct.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Foyer']['dossier_rsa_id'] ) ).
+                                        $form->input( 'Orientstruct.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Personne']['id'] ) ),
                                     $form->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient, 'value' => $personne['Orientstruct']['propo_algo'] ) ),
                                     $form->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structuresReferentes, 'empty' => true ) ),
                                     $form->input( 'Orientstruct.'.$index.'.statut_orient', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => array( 'Orienté' => 'A valider', 'En attente' => 'En attente' ), 'value' => ( !empty( $statut_orient ) ? $statut_orient : 'Orienté' ) ) ),
