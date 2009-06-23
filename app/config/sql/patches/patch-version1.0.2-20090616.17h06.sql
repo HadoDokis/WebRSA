@@ -51,3 +51,6 @@ ALTER TABLE dspps ALTER COLUMN drorsarmianta2 TYPE CHAR(1) USING CASE WHEN drors
 ALTER TABLE dspps ALTER COLUMN elopersdifdisp TYPE CHAR(1) USING CASE WHEN elopersdifdisp IS TRUE THEN '1' ELSE '0' END;
 ALTER TABLE dspps ALTER COLUMN obstemploidifdisp TYPE CHAR(1) USING CASE WHEN obstemploidifdisp IS TRUE THEN '1' ELSE '0' END;
 ALTER TABLE dspps ALTER COLUMN soutdemarsoc TYPE CHAR(1) USING CASE WHEN soutdemarsoc IS TRUE THEN '1' ELSE '0' END;
+
+--------------- Ajout du 23 06 09 - 9h13 ------------------
+ALTER TABLE modes_contact RENAME TO modescontact;

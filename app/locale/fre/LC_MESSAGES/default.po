@@ -683,3 +683,24 @@ msgstr "Échec de la connexion. Identifiant ou mot de passe invalide."
 ###############################################################################
 msgid "lib_rgpt"
 msgstr "Libellé de la région"
+
+###############################################################################
+# Modes de contact
+###############################################################################
+msgid "numposte"
+msgstr "Numéro de poste"
+
+msgid "nattel"
+msgstr "Nature du téléphone"
+
+msgid "matetel"
+msgstr "Type de téléphone"
+
+msgid "autorutitel"
+msgstr "Autorisation d'utiliser le numéro de téléphone pour contacter le demandeur"
+
+msgid "adrelec"
+msgstr "Adresse électronique"
+
+msgid "autorutiadrelec"
+msgstr "Autorisation d'utiliser l'adresse électronique pour contacter le demandeur"

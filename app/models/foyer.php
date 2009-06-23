@@ -32,8 +32,8 @@
                 'classname'     => 'Personne',
                 'foreignKey'    => 'foyer_id'
             ),
-            'ModeContact' => array(
-                'classname'     => 'ModeContact',
+            'Modecontact' => array(
+                'classname'     => 'Modecontact',
                 'foreignKey'    => 'foyer_id'
             ),
             'AdressesFoyer' => array(

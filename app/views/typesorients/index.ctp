@@ -37,7 +37,8 @@
                                 ),
                                 $html->deleteLink(
                                     'Supprimer le type d\'orientation',
-                                    array( 'controller' => 'typesorients', 'action' => 'delete', $typeorient['Typeorient']['id'] )
+                                    array( 'controller' => 'typesorients', 'action' => 'delete', $typeorient['Typeorient']['id'] ),
+                                    $permissions->check( 'orientstructs', 'typesorients' ) ///FIXME: modifier pour avoir bouton grisé qd typeorient utilisé !!!
                                 )
                             ),
                             array( 'class' => 'odd' ),

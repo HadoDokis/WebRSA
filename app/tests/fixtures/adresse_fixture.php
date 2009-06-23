@@ -6,6 +6,7 @@ class AdresseFixture extends CakeTestFixture {
 
     var $import = 'Adresse';
 
+   var $import = array('table' => 'articles', 'connection' => 'other'); 
 }
 
 ?>

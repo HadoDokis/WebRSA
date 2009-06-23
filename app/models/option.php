@@ -389,6 +389,14 @@
             );
         }
 
+        function matetel() {
+            return array(
+                'FAX' => 'Fax seul',
+                'TEL' => 'Téléphone seul',
+                'TFA' => 'Téléphone/Fax'
+            );
+        }
+
         function moticlorsa() {
             return array(
                 'PCG' => 'Cloture suite décision du Président du Conseil général',
@@ -655,6 +663,13 @@
                 'RCI' => 'RSA Activité majoré (Financement sur fonds Etat)',
                 'RCU' => 'RSA Activité Etat Contrat aidé (Financement sur fonds Etat)',
                 'RCB' => 'RSA Activité Local (Financement sur fonds Conseil général)'
+            );
+        }
+
+        function nattel(){
+            return array(
+                'D' => 'Domicile',
+                'T' => 'Travail'
             );
         }
 
@@ -1331,19 +1346,19 @@
                 'PTR' => 'Petite rue',
                 'QU' => 'Quai',
                 'QUA' => 'Quartier',
-                'R' => 'Rue(s)',
+                'R' => 'Rue',
                 'RAC' => 'Raccourci',
                 'RAID' => 'Raidillon',
                 'REM' => 'Rempart',
-                'RES' => 'Résidence(s)',
-                'RLE' => 'Ruelle(s)',
-                'ROC' => 'Roc(ade)',
+                'RES' => 'Résidence',
+                'RLE' => 'Ruelle',
+                'ROC' => 'Rocade',
                 'ROQT' => 'Roquet',
                 'RPE' => 'Rampe',
                 'RPT' => 'Rond point',
                 'RTD' => 'Rotonde',
-                'RTE' => 'Route(s)',
-                'SEN' => 'Sent(ier)(s)',
+                'RTE' => 'Route',
+                'SEN' => 'Sentier',
                 'SQ' => 'Square',
                 'STA' => 'Station',
                 'STDE' => 'Stade',
@@ -1355,11 +1370,11 @@
                 'TSSE' => 'Terrasse(s)',
                 'VAL' => 'Val(lée)(lon)',
                 'VCHE' => 'Vieux chemin',
-                'VEN' => 'Venelle(s)',
-                'VGE' => 'Village(s)',
+                'VEN' => 'Venelle',
+                'VGE' => 'Village',
                 'VIA' => 'Via',
-                'VLA' => 'Villa(s)',
-                'VOI' => 'Voie(s)',
+                'VLA' => 'Villa',
+                'VOI' => 'Voie',
                 'VTE' => 'Vieille route',
                 'ZA' => 'Zone artisanale',
                 'ZAC' => 'Zone d\'aménagement concerte',

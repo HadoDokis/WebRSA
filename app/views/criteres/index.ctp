@@ -104,7 +104,7 @@
                             array(
                                 h( $orient['Dossier']['numdemrsa'] ),
                                 h( $orient['Personne']['qual'].' '.$orient['Personne']['nom'].' '.$orient['Personne']['prenom'] ),
-                                h( $orient['ModeContact']['numtel'] ),
+                                h( $orient['Modecontact']['numtel'] ),
                                 h( $orient['Adresse']['locaadr'] ),
                                 h( $orient['Dossier']['dtdemrsa'] ),
                                 h( $orient['Orientstruct']['date_propo'] ),

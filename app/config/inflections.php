@@ -48,7 +48,7 @@
  *  $irregularPlural = array('atlas' => 'atlases', 'beef' => 'beefs', 'brother' => 'brothers')
  */
     $irregularPlural = array(
-        'mode_contact'  => 'modes_contact',
+        'modecontact'  => 'modescontact',
         'adressefoyer' => 'adressesfoyers',
         'adresse_foyer' => 'adresses_foyers',
         'titre_sejour' => 'titres_sejour',
