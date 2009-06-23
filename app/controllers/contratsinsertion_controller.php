@@ -3,7 +3,7 @@
     {
 
         var $name = 'Contratsinsertion';
-        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Actioninsertion' );
+        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion' );
 
 
         function beforeFilter() {
@@ -85,7 +85,6 @@
         function add( $personne_id = null ) {
             // Vérification du format de la variable
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
-
 
             $personne = $this->Personne->findById( $personne_id, null, null, -1 );
             $this->assert( !empty( $personne ), 'invalidParameter' );
@@ -175,7 +174,6 @@
                 $this->data['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
                 $this->data['Contratinsertion']['pers_charg_suivi'] = $user['User']['nom'].' '.$user['User']['prenom'];
                 $this->data['Contratinsertion']['service_soutien'] = $user['Serviceinstructeur']['lib_service'].', '.$user['Serviceinstructeur']['num_rue'].' '.$user['Serviceinstructeur']['type_voie'].' '.$user['Serviceinstructeur']['nom_rue'].' '.$user['Serviceinstructeur']['code_insee'].' '.$user['Serviceinstructeur']['ville'].', '.$user['User']['numtel'];
-
 
                 // Récupération de la dernière structure referente liée au contrat
                 $orientstruct = $this->Orientstruct->find(
