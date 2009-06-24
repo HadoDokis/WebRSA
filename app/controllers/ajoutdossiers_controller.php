@@ -14,7 +14,7 @@
     class AjoutdossiersController extends AppController {
         // INFO: http://bakery.cakephp.org/articles/view/wizard-component-1-2-1
         var $components = array( 'Wizard' );
-        var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Option', 'Ressource', 'Ressourcemensuelle',  'Detailressourcemensuelle', 'Orientstruct', 'Detaildroitrsa', 'Serviceinstructeur', 'Suiviinstruction' );
+        var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Option', 'Ressource', 'Ressourcemensuelle',  'Detailressourcemensuelle', 'Orientstruct', 'Detaildroitrsa', 'Serviceinstructeur', 'Suiviinstruction', 'Ajoutdossier' );
 
         /**
         *
@@ -275,9 +275,12 @@
         function _processDossier() {
             $this->Dossier->set( $this->data );
             $this->Foyer->set( $this->data );
+            $this->Ajoutdossier->set( $this->data );
 
             $valid = $this->Dossier->validates();
             $valid = $this->Foyer->validates() && $valid;
+            $valid = $this->Ajoutdossier->validates() && $valid;
+
             if( $valid ) {
                 return true;
             }
@@ -303,6 +306,9 @@
             $this->Adressefoyer->set( $data['adresse']['Adressefoyer'] );
             $valid = $this->Adresse->validates() && $valid;
             $valid = $this->Adressefoyer->validates() && $valid;
+
+            $this->Ajoutdossier->set( $data['dossier']['Ajoutdossier'] );
+            $valid = $this->Ajoutdossier->validates() && $valid;
 
             // Ressources allocataire
             $this->Ressource->create();
@@ -337,7 +343,6 @@
                     }
                 }
             }
-
 /**
     TODO
         *
@@ -419,13 +424,13 @@
 
                 // Service instructeur
                 $service = $this->Serviceinstructeur->find(
-                        'first',
-                        array(
-                            'conditions' => array(
-                                'Serviceinstructeur.id' => $data['dossier']['Serviceinstructeur']['id']
-                            ),
-                            'recursive' => -1
-                        )
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Serviceinstructeur.id' => $data['dossier']['Ajoutdossier']['serviceinstructeur_id']
+                        ),
+                        'recursive' => -1
+                    )
                 );
                 $this->assert( !empty( $service ), 'error500' );
 
