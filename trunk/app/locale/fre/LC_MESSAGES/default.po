@@ -217,6 +217,12 @@ msgstr "Code nature adresse"
 
 msgid "canton"
 msgstr "Code Canton"
+
+msgid "sitfam"
+msgstr "Situation de famille"
+
+msgid "typeocclog"
+msgstr "Conditions de logement"
 ###############################################################################
 # Personne
 ###############################################################################

@@ -66,6 +66,10 @@
                                 <td><?php echo value( $dsp, 'CJT', 'Personne', 'prenom' ) ;?></td>
                             </tr>
                             <tr class="odd">
+                                <th><?php __( 'sitfam' );?></th>
+                                <td colspan="2"><?php echo ( isset( $sitfam[$dossier['Foyer']['sitfam']] ) ?  $sitfam[$dossier['Foyer']['sitfam']] : null );?></td>
+                            </tr>
+                            <tr class="even">
                                 <th><?php __( 'adresse' );?></th>
                                 <td colspan="2">
                                     <?php echo $dossier['Adresse']['numvoie'].' '.( isset( $typevoie[$dossier['Adresse']['typevoie']] ) ? $typevoie[$dossier['Adresse']['typevoie']] : null ).' '. $dossier['Adresse']['nomvoie'];?>

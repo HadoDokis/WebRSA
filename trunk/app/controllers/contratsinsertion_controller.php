@@ -3,7 +3,7 @@
     {
 
         var $name = 'Contratsinsertion';
-        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion' );
+        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer' );
 
 
         function beforeFilter() {
@@ -15,6 +15,10 @@
             $this->set( 'nat_cont_trav', $this->Option->nat_cont_trav() );
             $this->set( 'duree_cdd', $this->Option->duree_cdd() );
             $this->set( 'duree_engag', $this->Option->duree_engag() );
+            $this->set( 'legend_sitfam', $this->Option->sitfam() );
+            $this->set( 'legend_typeocclog', $this->Option->typeocclog() );
+            $this->set( 'legend_couvsoc', $this->Option->couvsoc() );
+            $this->set( 'legend_oridemrsa', $this->Option->oridemrsa() );
 
             $this->set( 'referents', $this->Referent->find( 'list' ) );
             $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
@@ -86,7 +90,7 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
-            $personne = $this->Personne->findById( $personne_id, null, null, -1 );
+            $personne = $this->Personne->findById( $personne_id, null, null, 2 );
             $this->assert( !empty( $personne ), 'invalidParameter' );
 
             // Peut-on prendre le jeton ?
@@ -96,6 +100,27 @@
                 $this->Contratinsertion->rollback();
             }
             $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+            $this->set( 'qual', $personne['Personne']['qual'] );
+            $this->set( 'dtnai', $personne['Personne']['dtnai'] );
+            $this->set( 'nom', $personne['Personne']['nom'] );
+            $this->set( 'prenom', $personne['Personne']['prenom'] );
+// debug($personne);
+
+            $dspp_id =  $personne['Dspp']['id'] ;
+            $dspp = $this->Dspp->read( null, $dspp_id );
+            $this->set( 'couvsoc', $dspp['Dspp']['couvsoc'] );
+
+            $foyer_id =  $personne['Personne']['foyer_id'] ;
+            $foyer  = $this->Foyer->read( null, $foyer_id );
+            $this->set( 'sitfam',  $foyer['Foyer']['sitfam'] );
+            $this->set( 'typeocclog',  $foyer['Foyer']['typeocclog'] );
+
+            $dossier_id =  $personne['Foyer']['dossier_rsa_id'] ;
+            $dossier = $this->Dossier->read( null, $dossier_id );
+            $this->set( 'oridemrsa', $dossier['Detaildroitrsa']['oridemrsa'] );
+            $this->set( 'dtdemrsa', $dossier['Dossier']['dtdemrsa'] );
+            $this->set( 'matricule', $dossier['Dossier']['matricule'] );
 
             // Calcul du numéro du contrat d'insertion
             $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
@@ -208,6 +233,7 @@
 
 
         function edit( $contratinsertion_id = null ) {
+
             // Vérification du format de la variable
             if( !valid_int( $contratinsertion_id ) ) {
                 $this->cakeError( 'error404' );
@@ -263,6 +289,28 @@
                 $this->cakeError( 'error404' );
             }
 
+            $personne_id = $contratinsertion['Personne']['id'];
+            $personne = $this->Personne->read( null, $personne_id );
+            $this->set( 'qual', $personne['Personne']['qual'] );
+            $this->set( 'dtnai', $personne['Personne']['dtnai'] );
+            $this->set( 'nom', $personne['Personne']['nom'] );
+            $this->set( 'prenom', $personne['Personne']['prenom'] );
+// debug($personne);
+
+            $dspp_id =  $personne['Dspp']['id'] ;
+            $dspp = $this->Dspp->read( null, $dspp_id );
+            $this->set( 'couvsoc', $dspp['Dspp']['couvsoc'] );
+
+            $foyer_id =  $personne['Personne']['foyer_id'] ;
+            $foyer  = $this->Foyer->read( null, $foyer_id );
+            $this->set( 'sitfam',  $foyer['Foyer']['sitfam'] );
+            $this->set( 'typeocclog',  $foyer['Foyer']['typeocclog'] );
+
+            $dossier_id =  $personne['Foyer']['dossier_rsa_id'] ;
+            $dossier = $this->Dossier->read( null, $dossier_id );
+            $this->set( 'oridemrsa', $dossier['Detaildroitrsa']['oridemrsa'] );
+            $this->set( 'dtdemrsa', $dossier['Dossier']['dtdemrsa'] );
+            $this->set( 'matricule', $dossier['Dossier']['matricule'] );
 
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
 

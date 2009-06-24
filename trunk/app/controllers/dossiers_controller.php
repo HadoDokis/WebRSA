@@ -29,7 +29,8 @@
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
             $this->set( 'typevoie', $this->Option->typevoie() );
-
+            $this->set( 'sitfam', $this->Option->sitfam() );
+            $this->set( 'couvsoc', $this->Option->couvsoc() );
             return $return;
         }
 
