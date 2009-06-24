@@ -19,6 +19,7 @@
             echo '<div>';
             echo $form->input( 'Dspf.id', array( 'type' => 'hidden', 'value' => '' ) );
             echo $form->input( 'Dspf.foyer_id', array( 'type' => 'hidden', 'value' => $foyer_id ) );
+            echo $form->input( 'Foyer.id', array( 'type' => 'hidden', 'value' => $foyer_id ) );
             echo '</div>';
         }
         else {
@@ -26,6 +27,7 @@
             echo '<div>';
             echo $form->input( 'Dspf.id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Dspf.foyer_id', array( 'type' => 'hidden', 'value' => $foyer_id ) );
+            echo $form->input( 'Foyer.id', array( 'type' => 'hidden', 'value' => $foyer_id ) );
             echo '</div>';
         }
     ?>

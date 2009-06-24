@@ -20,6 +20,52 @@
 </script>
 
 <p><i>Le présent contrat d'insertion est établi en application de l'article L262-37 du code de l'action sociale </i>, entre le Président du Conseil Général </p>
+<p>et d'autre part</p>
+
+<fieldset>
+    <table>
+        <tbody>
+            <tr>
+                <th>Nom / Prénom</th>
+                <td> <?php echo  $qual.' '.$nom.' '.$prenom ;?> </td>
+            </tr>
+            <tr>
+                <th>Situation de famille</th>
+                <td> <?php echo ( isset( $sitfam ) ? $legend_sitfam[$sitfam] : null );?> </td>
+            </tr>
+            <tr>
+                <th>Date de naissance</th>
+                <td> <?php echo  date_short( $dtnai );?> </td>
+            </tr>
+            <tr>
+                <th>Couverture sociale</th>
+                <td> <?php echo ( isset( $couvsoc ) ? $legend_couvsoc[$couvsoc] : null );?> </td>
+            </tr>
+            <tr>
+                <th>Conditions de logement</th>
+                <td> <?php echo ( isset( $typeocclog ) ? $legend_typeocclog[$typeocclog] : null );?> </td>
+            </tr>
+            <tr>
+                <th>Origine de la demande</th>
+                <td> <?php echo ( isset( $oridemrsa ) ? $legend_oridemrsa[$oridemrsa] : null );?> </td>
+            </tr>
+            <tr>
+                <th>Depuis le</th>
+                <td> <?php echo  date_short( $dtdemrsa ) ;?> </td>
+            </tr>
+            <tr>
+                <th>N° allocataire</th>
+                <td> <?php echo $matricule ;?> </td>
+            </tr>
+            <!--<tr>
+                <th>N° service instructeur</th>
+                <td> <?php echo isset( $numagrins ) ? $numagrins : null ;?> </td>
+            </tr>-->
+        </tbody>
+    </table>
+</fieldset>
+
+
 <fieldset>
     <legend>Contrats d'insertion</legend>
         <?php if( $this->data['Contratinsertion']['typocontrat_id'] == 1 ):?>

@@ -925,6 +925,24 @@
             );
         }
 
+        function sitfam(){
+            return array(
+                'ABA' => 'Disparu (jugement d\'absence)',
+                'CEL' => 'Célibataire',
+                'DIV' => 'Divorcé(e)',
+                'ISO' => 'Isolement après vie maritale ou PACS',
+                'MAR' => 'Mariage',
+                'PAC' => 'PACS',
+                'RPA' => 'Reprise vie commune sur PACS',
+                'RVC' => 'Reprise vie maritale',
+                'RVM' => 'Reprise mariage',
+                'SEF' => 'Séparation de fait',
+                'SEL' => 'Séparation légale',
+                'VEU' => 'Veuvage',
+                'VIM' => 'Vie maritale'
+            );
+       }
+
         function sousnatpf() {
             return array(
                 'RSDN1' => 'RSA Socle -25 avec enfants à charge ou grossesse',

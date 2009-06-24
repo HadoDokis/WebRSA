@@ -40,6 +40,14 @@
                     <th><?php __( 'motidemrsa' );?></th>
                     <td><?php echo ( isset( $motidemrsa[$dsp['foyer']['Dspf']['motidemrsa']] ) ? $motidemrsa[$dsp['foyer']['Dspf']['motidemrsa']] : null);?></td>
                 </tr>
+                <tr class="even">
+                    <th><?php __( 'sitfam' );?></th>
+                    <td><?php echo ( isset( $sitfam[$dsp['foyer']['Foyer']['sitfam']] ) ? $sitfam[$dsp['foyer']['Foyer']['sitfam']] : null );?></td>
+                </tr>
+                <tr class="odd">
+                    <th><?php __( 'typeocclog' );?></th>
+                    <td><?php echo ( isset( $typeocclog[$dsp['foyer']['Foyer']['typeocclog']] ) ? $typeocclog[$dsp['foyer']['Foyer']['typeocclog']] : null    );?></td>
+                </tr>
             </tbody>
         </table>
         <h2>Accompagnement social familial</h2>

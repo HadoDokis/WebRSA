@@ -26,6 +26,8 @@
             $this->set( 'soutdemarsoc', $this->Option->soutdemarsoc() );
             $this->set( 'duractdomi', $this->Option->duractdomi() );
             $this->set( 'accosocfam', $this->Option->accosocfam() );
+            $this->set( 'sitfam', $this->Option->sitfam() );
+            $this->set( 'typeocclog', $this->Option->typeocclog() );
 
             // DSP foyer
             $this->set( 'nataccosocfams', $this->Nataccosocfam->find( 'list' ) );
@@ -120,9 +122,23 @@
                     }
                 }
             }
+
+            $foyer = $this->Foyer->find(
+                'first',
+                array(
+                    'conditions'=> array(
+                        'Foyer.id' => $foyer_id
+                    )
+                )
+            );
+            $this->set( 'foyer', $foyer );
+
+            $this->set( 'dossier_rsa_id', $foyer['Foyer']['dossier_rsa_id'] );
+
             $this->Dspf->commit();
 
             $this->set( 'foyer_id', $foyer_id );
+
             $this->render( $this->action, null, 'add_edit' );
         }
 
