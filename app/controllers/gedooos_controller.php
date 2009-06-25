@@ -4,7 +4,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa' );
 
 
         function _ged( $datas, $model ) {
@@ -42,7 +42,10 @@
             foreach( $datas as $group => $details ) {
                 if( !empty( $details ) ) {
                     foreach( $details as $key => $value ) {
-
+// if( is_array( $value ) ) {
+//     debug( $key );
+//     debug( $value );
+// }
                         $oMainPart->addElement(
                             new GDO_FieldType(
                                 strtolower( $group ).'_'.strtolower( $key ),
@@ -124,18 +127,35 @@
 
         function contratinsertion( $contratinsertion_id = null ) {
             // TODO: error404/error500 si on ne trouve pas les données
-
-            $this->set( 'decision_ci', $this->Option->decision_ci() );
-            $sect = $this->Option->sect_acti_emp();
-            $this->set( 'sect_acti_emp', $sect );
+            $tc = $this->Typocontrat->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Typocontrat.lib_typo'
+                    ),
+                )
+            );
+            $this->set( 'tc', $tc );
+            $sect_acti_emp = $this->Option->sect_acti_emp();
+            $this->set( 'sect_acti_emp', $sect_acti_emp );
             $emp_occupe = $this->Option->emp_occupe();
             $this->set( 'emp_occupe', $emp_occupe );
-            $duree_hebdo = $this->Option->duree_hebdo_emp();
-            $this->set( 'duree_hebdo_emp', $duree_hebdo );
-            $nature = $this->Option->nat_cont_trav();
-            $this->set( 'nat_cont_trav', $nature );
+            $duree_hebdo_emp = $this->Option->duree_hebdo_emp();
+            $this->set( 'duree_hebdo_emp', $duree_hebdo_emp );
+            $nat_cont_trav = $this->Option->nat_cont_trav();
+            $this->set( 'nat_cont_trav', $nat_cont_trav );
             $duree_cdd = $this->Option->duree_cdd();
             $this->set( 'duree_cdd', $duree_cdd );
+            $decision_ci = $this->Option->decision_ci();
+            $this->set( 'decision_ci', $decision_ci );
+
+            $sitfam = $this->Option->sitfam();
+            $this->set( 'sitfam', $sitfam );
+            $typeocclog = $this->Option->typeocclog();
+            $this->set( 'typeocclog', $typeocclog );
+            $oridemrsa = $this->Option->oridemrsa();
+            $this->set( 'oridemrsa', $oridemrsa );
+
 
 
             $contratinsertion = $this->Contratinsertion->find(
@@ -146,7 +166,7 @@
                     )
                 )
             );
-
+            //////////////////////////////////////////////////////////////////////////
             $this->Adressefoyer->bindModel(
                 array(
                     'belongsTo' => array(
@@ -170,16 +190,83 @@
             unset( $contratinsertion['Actioninsertion'] );
             $contratinsertion['Adresse'] = $adresse['Adresse'];
 
-            $contratinsertion['Contratinsertion']['emp_occupe'] = $emp_occupe[$contratinsertion['Contratinsertion']['emp_occupe']];
-            $contratinsertion['Contratinsertion']['duree_hebdo_emp'] = $duree_hebdo[$contratinsertion['Contratinsertion']['duree_hebdo_emp']];
-            $contratinsertion['Contratinsertion']['nat_cont_trav'] = $nature[$contratinsertion['Contratinsertion']['nat_cont_trav']];
-            $contratinsertion['Contratinsertion']['duree_cdd'] = $duree_cdd[$contratinsertion['Contratinsertion']['duree_cdd']];
-            $contratinsertion['Contratinsertion']['sect_acti_emp'] = $sect[$contratinsertion['Contratinsertion']['sect_acti_emp']];
+            //////////////////////////////////////////////////////////////////////////
+            $foyer = $this->Foyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Foyer.id' => $contratinsertion['Personne']['foyer_id']
+                    )
+                )
+            );
+            $contratinsertion['Foyer'] = $foyer['Foyer'];
+            //////////////////////////////////////////////////////////////////////////
+            $dossier = $this->Dossier->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossier.id' => $contratinsertion['Foyer']['dossier_rsa_id']
+                    )
+                )
+            );
+            $contratinsertion['Foyer']['dossier_rsa_id'] = $dossier['Dossier']['id'];
+            //////////////////////////////////////////////////////////////////////////
+            $dspp = $this->Dspp->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dspp.personne_id' => $contratinsertion['Personne']['id']
+                    )
+                )
+            );
+            $contratinsertion['Dspp']['personne_id'] = $dspp['Personne']['id'];
+            //////////////////////////////////////////////////////////////////////////
+            $ddrsa = $this->Detaildroitrsa->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Detaildroitrsa.dossier_rsa_id' => $dossier['Dossier']['id']
+                    )
+                )
+            );
+            $dossier['Dossier']['id'] = $ddrsa['Detaildroitrsa']['dossier_rsa_id'];
+//             debug($ddrsa['Detaildroitrsa']);
+            //////////////////////////////////////////////////////////////////////////
+            // Affichage des données réelles et non leurs variables
+            foreach( array( 'tc', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd', 'sect_acti_emp' ) as $varName ) {
+                $contratinsertion['Contratinsertion'][$varName] = ( isset( $contratinsertion['Contratinsertion'][$varName] ) ? ${$varName}[$contratinsertion['Contratinsertion'][$varName]] : null );
+            }
 
             $contratinsertion['Contratinsertion']['datevalidation_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) );
             $contratinsertion['Contratinsertion']['date_saisi_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['date_saisi_ci'] ) );
-            // FIXME
+            $contratinsertion['Contratinsertion']['typocontrat_id'] = $tc[$contratinsertion['Contratinsertion']['typocontrat_id']];
+            $contratinsertion['Contratinsertion']['actions_prev'] = ( $contratinsertion['Contratinsertion']['actions_prev']  ? 'Oui' : 'Non' );
+            $contratinsertion['Contratinsertion']['emp_trouv'] = ( $contratinsertion['Contratinsertion']['emp_trouv']  ? 'Oui' : 'Non' );
+
+            // Affichage de la date seulement en cas de " Validation à compter de "
+            if( $contratinsertion['Contratinsertion']['decision_ci'] == 'V' ){
+                $contratinsertion['Contratinsertion']['decision_ci'] = $decision_ci[$contratinsertion['Contratinsertion']['decision_ci']].' '.$contratinsertion['Contratinsertion']['datevalidation_ci'];
+            }
+            else{
+                $contratinsertion['Contratinsertion']['decision_ci'] = $decision_ci[$contratinsertion['Contratinsertion']['decision_ci']];
+            }
+
+            // Données Personne récupérées
             $contratinsertion['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Personne']['dtnai'] ) );
+
+            // Données Foyer récupérées
+            $contratinsertion['Foyer']['sitfam'] = ( isset( $sitfam[$foyer['Foyer']['sitfam']] ) ? $sitfam[$foyer['Foyer']['sitfam']] : null );
+            $contratinsertion['Foyer']['typeocclog'] = ( isset( $typeocclog[$foyer['Foyer']['typeocclog']] ) ? $typeocclog[$foyer['Foyer']['typeocclog']] : null );
+
+            // Données Dossier récupérées
+            $contratinsertion['Dossier']['matricule'] = ( isset( $dossier['Dossier']['matricule'] ) ? $dossier['Dossier']['matricule'] : null );
+            $contratinsertion['Dossier']['dtdemrsa'] = strftime( '%d/%m/%Y', strtotime( $dossier['Dossier']['dtdemrsa'] ) );
+
+            $contratinsertion['Detaildroitrsa']['oridemrsa'] = isset( $oridemrsa[$ddrsa['Detaildroitrsa']['oridemrsa']] ) ? $oridemrsa[$ddrsa['Detaildroitrsa']['oridemrsa']] : null ;
+
+            // Données Dspp récupérées
+            $contratinsertion['Dspp']['couvsoc'] = ( isset( $dspp['Dspp']['couvsoc'] ) ? 'Oui' : 'Non' );
+
 
             $this->_ged( $contratinsertion, 'contratinsertion.odt' );
         }

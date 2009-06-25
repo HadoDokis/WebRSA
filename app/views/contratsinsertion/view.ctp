@@ -98,23 +98,23 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'sect_acti_emp' );?></th>
-                    <td><?php echo isset( $sect_acti_emp[$contratinsertion['Contratinsertion'] ['sect_acti_emp']] );?></td>
+                    <td><?php echo isset( $sect_acti_emp[$contratinsertion['Contratinsertion']['sect_acti_emp']] ) ? $sect_acti_emp[$contratinsertion['Contratinsertion']['sect_acti_emp']] : null ;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'emp_occupe' );?></th>
-                    <td><?php echo isset( $emp_occupe[$contratinsertion['Contratinsertion']['emp_occupe']] );?></td>
+                    <td><?php echo isset( $emp_occupe[$contratinsertion['Contratinsertion']['emp_occupe']] ) ? $emp_occupe[$contratinsertion['Contratinsertion']['emp_occupe']] : null ;?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'duree_hebdo_emp' );?></th>
-                    <td><?php echo isset( $duree_hebdo_emp[$contratinsertion['Contratinsertion']['duree_hebdo_emp']] );?></td>
+                    <td><?php echo isset( $duree_hebdo_emp[$contratinsertion['Contratinsertion']['duree_hebdo_emp']] ) ? $duree_hebdo_emp[$contratinsertion['Contratinsertion']['duree_hebdo_emp']] : null ;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'nat_cont_trav' );?></th>
-                    <td><?php echo isset( $nat_cont_trav[$contratinsertion['Contratinsertion']['nat_cont_trav']] );?></td>
+                    <td><?php echo isset( $nat_cont_trav[$contratinsertion['Contratinsertion']['nat_cont_trav']] ) ? $nat_cont_trav[$contratinsertion['Contratinsertion']['nat_cont_trav']] : null ;?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'duree_cdd' );?></th>
-                    <td><?php echo isset( $duree_cdd[$contratinsertion['Contratinsertion']['duree_cdd']] );?></td>
+                    <td><?php echo isset( $duree_cdd[$contratinsertion['Contratinsertion']['duree_cdd']] ) ? $duree_cdd[$contratinsertion['Contratinsertion']['duree_cdd']] : null ;?></td>
                 </tr>
             </tbody>
         </table>
