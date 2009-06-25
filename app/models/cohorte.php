@@ -9,7 +9,7 @@
         var $name = 'Cohorte';
         var $useTable = false;
 
-        function search( $statutOrientation, $mesCodesInsee, $criteres, $lockedDossiers, $limit = PHP_INT_SIZE ) {
+        function search( $statutOrientation, $mesCodesInsee, $criteres, $lockedDossiers, $limit = PHP_INT_MAX ) {
             $conditions = array();
 
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
