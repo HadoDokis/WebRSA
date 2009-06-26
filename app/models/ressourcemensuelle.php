@@ -22,7 +22,37 @@
             'moisress' => array(
                 'rule' => 'date',
                 'message' => 'Veuillez entrer une date valide'
-            )
+            ),
+            'nbheumentra' => array(
+                array(
+                    'rule'          => array( 'comparison', '<=', 744 ),
+                    'message'       => 'Veuillez entrer un nombre de 744 au maximum ',
+                    'allowEmpty'    => true
+                ),
+                array(
+                    'rule'          => 'numeric',
+                    'message'       => 'Veuillez entrer un nombre valide',
+                    'allowEmpty'    => true
+                )
+            ),
+            // Montant d'abattement / neutralisation
+            'mtabaneu' => array(
+                array(
+                    'rule'          => array( 'range', 0, 33333332 ),
+                    'message'       => 'Veuillez entrer un montant compris entre 0 et 33 333 332',
+                    'allowEmpty'    => true
+                ),
+                array(
+                    'rule'          => array( 'between', 0, 11 ),
+                    'message'       => 'Veuillez entrer au maximum 11 caractères',
+                    'allowEmpty'    => true
+                ),
+                array(
+                    'rule'          => 'numeric',
+                    'message'       => 'Veuillez entrer un nombre valide',
+                    'allowEmpty'    => true
+                )
+            ),
         );
     }
 ?>
