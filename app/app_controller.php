@@ -126,6 +126,16 @@
                         }
                     }
 
+                    // Groupe de l'utilisateur
+                    $group = $this->User->Group->findById( $user['User']['group_id'], null, null, -1 );
+                    $this->assert( !empty( $group ), 'error500' ); // FIXME: erreur de boulet -> en créer un nouveau type
+                    $this->Session->write( 'Auth.Group', $group['Group'] );
+
+                    // Service instructeur de l'utilisateur
+                    $service = $this->User->Serviceinstructeur->findById( $user['User']['serviceinstructeur_id'], null, null, -1 );
+                    $this->assert( !empty( $service ), 'error500' ); // FIXME: erreur de boulet -> en créer un nouveau type
+                    $this->Session->write( 'Auth.Serviceinstructeur', $service['Serviceinstructeur'] );
+
                     // Vérification des droits d'accès à la page
                     $controllerAction = $this->name . ':' . ($this->name == 'Pages' ? $this->params['pass'][0] : $this->action);
                     $this->assert( $this->Droits->check( $user['User']['aroAlias'], $controllerAction ), 'error403' );

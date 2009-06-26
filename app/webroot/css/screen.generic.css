@@ -4,7 +4,7 @@
     background: white url( ../img/header.png ) top left no-repeat;
 }
 
-#pageMenu, #pageContent, table.cake-sql-log {
+#pageMenu, #pageContent, #pageCartouche, table.cake-sql-log {
     width: 1024px;
     margin: auto;
 }
@@ -79,7 +79,7 @@ table.cake-sql-log caption {
 
 /*---------------------------------------------------------------------------*/
 
-#pageMenu ul, #pageContent, table.cake-sql-log {
+#pageMenu ul, #pageContent, #pageCartouche, table.cake-sql-log {
     /*max-width: 1000px;*/
     margin: 0 auto;
     padding: 0.5em;
@@ -558,8 +558,6 @@ ul.actionMenu a {
 /*table a {
     display: inline-block;
 }*/
-
-/*****************************************************************************/
 
 #pageMenu * {
     line-height: 1em;

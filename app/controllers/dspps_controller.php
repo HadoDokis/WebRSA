@@ -106,7 +106,6 @@
             );
 
 
-
             $this->Dspp->commit();
 
             $this->set( 'personne_id', $personne_id );
@@ -125,19 +124,6 @@
 
             $dossier_id = $this->Personne->dossierId( $personne_id );
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
-            $contrat = $this->Contratinsertion->find( 
-                'first', 
-                array( 
-                    'conditions'=> array( 
-                        'Contratinsertion.personne_id' => $personne_id 
-                    ) 
-                )
-            );
-
-            $ci_id = $contrat['Contratinsertion']['id'] ;
-            $ci = $this->Contratinsertion->read( null, $ci_id );
-            $this->set['Dspp']['diplomes'] = $ci['Contratinsertion']['diplomes'];
-
 
             $this->Dspp->begin();
 
@@ -170,6 +156,18 @@
                 $this->data = $dspp;
 
 
+            $contrat = $this->Contratinsertion->find(
+                'first',
+                array(
+                    'conditions'=> array(
+                        'Contratinsertion.personne_id' => $personne_id
+                    )
+                )
+            );
+
+            $personne = $this->Personne->find( 'first', array( 'conditions'=> array( 'Personne.id' => $personne_id ), 'recursive' => 1 ));
+// debug( $contrat );
+            $this->data['Dspp']['diplomes'] = $contrat['Contratinsertion']['diplomes'];
             }
 
             $this->Dspp->commit();

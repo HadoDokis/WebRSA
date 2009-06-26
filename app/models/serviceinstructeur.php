@@ -70,12 +70,12 @@
             ),
             'numagrins' => array(
                 array(
-                    'rule' => 'alphaNumeric',
+                    'rule' => 'numeric',
                     'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
                 ),
                 array(
-                    'rule' => array( 'between', 1, 3 ),
-                    'message' => 'Le n° de commune est composé de 3 caractères'
+                    'rule' => array( 'between', 1, 2 ),
+                    'message' => 'Le n° d\'agrément est composé de 2 caractères'
                 ),
                 array(
                     'rule' => 'notEmpty',

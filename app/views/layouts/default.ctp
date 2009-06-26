@@ -66,6 +66,7 @@
         <div id="pageWrapper">
             <?php echo $this->element( 'header' );?>
             <?php echo $this->element( 'menu' );?>
+            <?php echo $this->element( 'cartouche' );?>
             <div id="pageContent">
                 <?php
                     if ($session->check( 'Message.flash' ) ) {
