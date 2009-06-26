@@ -164,5 +164,23 @@
     }
 
     require_once( 'webrsa.inc' );
+
+    /** ************************************************************************
+    *
+    * Versioning
+    *
+    ** ************************************************************************/
+
+    function core_version() {
+        $versionData = explode( "\n", file_get_contents( ROOT.DS.'cake'.DS.'VERSION.txt' ) );
+        $version = explode( '.', $versionData[count( $versionData) - 1] );
+        return implode( '.', $version );
+    }
+
+    function app_version() {
+        $versionData = explode( "\n", file_get_contents( ROOT.DS.'app'.DS.'VERSION.txt' ) );
+        $version = explode( '.', $versionData[count( $versionData) - 1] );
+        return implode( '.', $version );
+    }
 //EOF
 ?>
