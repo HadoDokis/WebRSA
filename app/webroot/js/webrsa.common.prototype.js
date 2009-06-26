@@ -309,11 +309,11 @@ function observeDisableFieldsetOnCheckbox( cbId, fieldsetId, condition ) {
 
 //*****************************************************************************
 
-function disableFieldsOnBoolean( field, fieldsIds, condition ) {
-    var checked = ( ( $F( field ) == '1' ) ? false : true );
+function disableFieldsOnBoolean( field, fieldsIds, value, condition ) {
+    var disabled = !condition;
     fieldsIds.each( function ( fieldId ) {
         var field = $( fieldId );
-        if( checked == condition ) {
+        if( !disabled ) {
             field.enable();
             if( input = field.up( 'div.input' ) )
                 input.removeClassName( 'disabled' );
@@ -332,15 +332,21 @@ function disableFieldsOnBoolean( field, fieldsIds, condition ) {
 
 //-----------------------------------------------------------------------------
 
-function observeDisableFieldsOnBoolean( prefix, fieldsIds, condition ) {
-    disableFieldsOnBoolean( prefix + '1', fieldsIds, condition );
-    disableFieldsOnBoolean( prefix + '0', fieldsIds, condition );
+function observeDisableFieldsOnBoolean( prefix, fieldsIds, value, condition ) {
+    if( value == '1' ) {
+        var otherValue = '0';
+        disableFieldsOnBoolean( prefix + otherValue, fieldsIds, otherValue, !condition );
+    }
+    else {
+        var otherValue = '1';
+        disableFieldsOnBoolean( prefix + value, fieldsIds, value, condition );
+    }
 
-    $( prefix + '0' ).observe( 'click', function( event ) {
-        disableFieldsOnBoolean( prefix + '0', fieldsIds, condition )
+    $( prefix + value ).observe( 'click', function( event ) {
+        disableFieldsOnBoolean( prefix + value, fieldsIds, value, condition );
     } );
 
-    $( prefix + '1' ).observe( 'click', function( event ) {
-        disableFieldsOnBoolean( prefix + '1', fieldsIds, condition )
+    $( prefix + otherValue ).observe( 'click', function( event ) {
+        disableFieldsOnBoolean( prefix + otherValue, fieldsIds, otherValue, !condition );
     } );
 }
