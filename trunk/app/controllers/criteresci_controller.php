@@ -44,9 +44,9 @@
                 $conditions['Contratinsertion.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ) );
 
                 //Critère recherche par Contrat insertion: date de création contrat
-                if( !dateComplete( $this->data, 'Contratinsertion.date_saisie_ci' ) ) {
-                    $date_saisie_ci = $this->data['Contratinsertion']['date_saisie_ci'];
-                    $conditions['Contratinsertion.date_saisie_ci'] = $date_saisie_ci['year'].'-'.$date_saisie_ci['month'].'-'.$date_saisie_ci['day'];
+                if( !dateComplete( $this->data, 'Contratinsertion.date_saisi_ci' ) ) {
+                    $date_saisi_ci = $this->data['Contratinsertion']['date_saisi_ci'];
+                    $conditions['Contratinsertion.date_saisi_ci'] = $date_saisi_ci['year'].'-'.$date_saisi_ci['month'].'-'.$date_saisi_ci['day'];
                 }
 
                 //Critère recherche par Contrat insertion: localisation de la personne rattachée au contrat
