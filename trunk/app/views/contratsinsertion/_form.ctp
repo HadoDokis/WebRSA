@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <th>Couverture sociale</th>
-                <td> <?php echo ( isset( $couvsoc ) ? $legend_couvsoc[$couvsoc] : null );?> </td>
+                <td> <?php echo ( !empty( $couvsoc ) ? $legend_couvsoc[$couvsoc] : null );?> </td>
             </tr>
             <tr>
                 <th>Conditions de logement</th>

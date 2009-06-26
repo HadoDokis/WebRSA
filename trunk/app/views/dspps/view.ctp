@@ -189,6 +189,10 @@
                     <?php endif;?>
                 </td>
             </tr>
+            <tr class="odd">
+                <th><?php __( 'diplomes' );?></th>
+                <td><?php echo $dspp['Dspp']['diplomes'];?></td>
+            </tr>
         </tbody>
 </table>
             <h2>Situation professionelle</h2>
