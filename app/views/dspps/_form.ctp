@@ -62,7 +62,9 @@
                 <?php echo $form->input( 'Dspp.libcompeextrapro', array( 'label' => __( 'libcompeextrapro', true ), 'type' => 'text' ) );?>
                 <legend><?php echo __( 'nivetu', true ) ?></legend>
                 <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
-    </fieldset>
+                <br />
+                <?php echo $form->input( 'Dspp.diplomes', array( 'label' => __( 'diplomes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
+        </fieldset>
 
     <fieldset>
             <legend>Situation professionnelle</legend>

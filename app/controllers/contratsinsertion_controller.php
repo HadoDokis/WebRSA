@@ -110,6 +110,7 @@
             $dspp_id =  $personne['Dspp']['id'] ;
             $dspp = $this->Dspp->read( null, $dspp_id );
             $this->set( 'couvsoc', $dspp['Dspp']['couvsoc'] );
+            $this->set( 'diplomes', $dspp['Dspp']['diplomes'] );
 
             $foyer_id =  $personne['Personne']['foyer_id'] ;
             $foyer  = $this->Foyer->read( null, $foyer_id );
@@ -195,6 +196,7 @@
                 $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
                 $this->assert( !empty( $user ), 'error500' ); // FIXME
 
+                $this->data['Contratinsertion']['diplomes'] = $dspp['Dspp']['diplomes'];
                 // Récupération des données utilisateurs lié au contrat
                 $this->data['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
                 $this->data['Contratinsertion']['pers_charg_suivi'] = $user['User']['nom'].' '.$user['User']['prenom'];

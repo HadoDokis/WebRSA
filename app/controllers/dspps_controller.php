@@ -3,7 +3,7 @@
     {
 
         var $name = 'Dspps';
-        var $uses = array( 'Dspp', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Nivetu', 'Accoemploi', 'Personne', 'Option', 'Serviceinstructeur');
+        var $uses = array( 'Dspp', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Nivetu', 'Accoemploi', 'Personne', 'Option', 'Serviceinstructeur', 'Contratinsertion' );
 
         /**
         *
@@ -105,6 +105,8 @@
                 $personne['Personne']['foyer_id']
             );
 
+
+
             $this->Dspp->commit();
 
             $this->set( 'personne_id', $personne_id );
@@ -123,6 +125,19 @@
 
             $dossier_id = $this->Personne->dossierId( $personne_id );
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+            $contrat = $this->Contratinsertion->find( 
+                'first', 
+                array( 
+                    'conditions'=> array( 
+                        'Contratinsertion.personne_id' => $personne_id 
+                    ) 
+                )
+            );
+
+            $ci_id = $contrat['Contratinsertion']['id'] ;
+            $ci = $this->Contratinsertion->read( null, $ci_id );
+            $this->set['Dspp']['diplomes'] = $ci['Contratinsertion']['diplomes'];
+
 
             $this->Dspp->begin();
 
@@ -153,6 +168,8 @@
                     )
                 );
                 $this->data = $dspp;
+
+
             }
 
             $this->Dspp->commit();

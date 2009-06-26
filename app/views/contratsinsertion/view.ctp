@@ -36,10 +36,10 @@
             <tbody>
                 <tr class="even">
                     <th><?php __( 'niv_etude');?></th>
-                    <td>
-                        <?php if( !empty( $contratinsertion['Nivetu']['Nivetu'] ) ):?>
+                    <td><?php debug($dspp['Nivetu']);?>
+                        <?php if( !empty( $contratinsertion['Nivetu'] ) ):?>
                             <ul>
-                                <?php foreach( $contratinsertion['Nivetu']['Nivetu'] as $nivetus ):?>
+                                <?php foreach( $contratinsertion['Nivetu'] as $nivetus ):?>
                                     <li><?php echo h( $nivetus['name'] );?></li>
                                 <?php endforeach;?>
                             </ul>
