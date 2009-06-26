@@ -1,0 +1,3 @@
+ * Transactions
+    - http://bakery.cakephp.org/articles/view/transaction-behavior
+    - http://www.postgresql.org/docs/8.1/static/sql-select.html#SQL-FOR-UPDATE-SHARE
