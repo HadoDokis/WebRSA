@@ -1,4 +1,7 @@
 <?php
+    @set_time_limit( 0 );
+    @ini_set( 'memory_limit', '128M' );
+
     App::import('Sanitize');
 
     class GedooosController extends AppController
@@ -382,7 +385,8 @@
                 'first',
                 array(
                     'conditions' => array(
-                        'Orientstruct.id' => $personne['Orientstruct']['id']
+                        // 'Orientstruct.id' => $personne['Orientstruct']['id']
+                        'Orientstruct.personne_id' => $personne['Personne']['id'] // FIXME
                     )
                 )
             );
@@ -452,13 +456,15 @@
             $oMainPart->addElement($oIteration);
 
             $bTemplate = $u->ReadFile($sModele);
-            $oTemplate = new GDO_ContentType("",
-                            "modele.ott",
-                            $u->getMimeType($sModele),
-                            "binary",
-                            $bTemplate);
+            $oTemplate = new GDO_ContentType(
+                "",
+                "modele.ott",
+                $u->getMimeType($sModele),
+                "binary",
+                $bTemplate
+            );
 
-            $oFusion = new GDO_FusionType($oTemplate, $sMimeType, $oMainPart);
+            $oFusion = new GDO_FusionType( $oTemplate, $sMimeType, $oMainPart );
             $oFusion->process();
             $oFusion->SendContentToClient();
         }
