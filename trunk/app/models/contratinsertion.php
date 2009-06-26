@@ -90,6 +90,12 @@
 //                     'message' => 'Champ obligatoire'
 //                 )
 //             ),
+//             'lib_presta' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
 //             'obsta_renc' => array(
 //                 'notEmpty' => array(
 //                     'rule' => 'notEmpty',
@@ -161,10 +167,10 @@
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 ),
-		array(                   
-		    'rule' => 'numeric',
-                    'message' => 'Veuillez entrer une valeur numérique.'
-		)
+                array(
+                    'rule' => 'numeric',
+                            'message' => 'Veuillez entrer une valeur numérique.'
+                )
             ),
             'nature_projet' => array(
                 'notEmpty' => array(
@@ -189,7 +195,12 @@
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => array( 'maxLength' ,5 ),
+                    'message' => 'XXXXXXXXXXXX'
                 )
+
             ),
             'date_saisi_ci' => array(
                 'notEmpty' => array(

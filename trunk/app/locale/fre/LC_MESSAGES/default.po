@@ -343,10 +343,10 @@ msgid "obsta_renc"
 msgstr "Si vous n\'avez pas pu les réaliser, quels obstacles avez-vous rencontrés ? "
 
 msgid "service_soutien"
-msgstr "<i>Le présent contrat a été établi avec le soutien du service: (désignation, adresse, téléphone)</i>"
+msgstr "Le présent contrat a été établi avec le soutien du service: (désignation, adresse, téléphone)"
 
 msgid "pers_charg_suivi"
-msgstr "<i>Personne chargée du suivi</i>"
+msgstr "Personne chargée du suivi"
 
 msgid "objectifs_fixes"
 msgstr "Quels objectifs vous fixez-vous pour les mois à venir"
