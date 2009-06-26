@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
     document.observe( "dom:loaded", function() {
-        observeDisableFieldsOnBoolean( 'ContratinsertionActionsPrev', [ 'ContratinsertionObstaRenc' ], '1', false );
+        observeDisableFieldsOnBoolean( 'ContratinsertionActionsPrev', [ 'ContratinsertionObstaRenc'/*, 'PrestformLibPresta', 'RefprestaNomrefpresta', 'PrestformDatePrestaDay', 'PrestformDatePrestaMonth', 'PrestformDatePrestaYear' */], '1', false );
         observeDisableFieldsOnBoolean( 'ContratinsertionEmpTrouv', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], '0', false );
         observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
     } );
@@ -75,22 +75,30 @@
         <!-- <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ) ;?> -->
         <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true/*, 'value' => $new_date*/ ) ) ;?>
 </fieldset>
-<fieldset>
+<fieldset >
     <legend> FORMATION ET EXPERIENCE </legend>
         <?php echo $form->input( 'Dspp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
         <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
         <?php echo $form->input( 'Contratinsertion.diplomes', array( 'label' => required( __( 'diplomes', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => required( __( 'expr_prof', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
-        <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' => required( __( 'form_compl', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
+        <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' =>  __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
+</fieldset>
+<fieldset class="col2">
     <legend> PARCOURS D'INSERTION ANTERIEUR </legend>
+
+       <!-- <?php echo $form->input( 'Prestform.lib_presta', array( 'label' => required( __( 'Libellé de l\'action', true ) ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
+        <?php echo $form->input( 'Refpresta.nomrefpresta', array( 'label' => required( __( 'Nom du référent de l\'action', true ) ), 'type' => 'text')); ?>
+        <?php echo $form->input( 'Prestform.date_presta', array( 'label' => required( __( 'Date de l\'action', true ) ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  ); ?> -->
+
         <?php
-            echo $widget->booleanRadio( 'Contratinsertion.actions_prev', array( 'legend' =>required( __( 'actions_prev', true ) ) ) );
+            echo $widget->booleanRadio( 'Contratinsertion.actions_prev', array( 'legend' => required( __( 'actions_prev', true ) ) ) );
         ?>
+
         <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => required( __( 'obsta_renc', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 </fieldset>
         <?php echo $form->input( 'Contratinsertion.serviceinstructeur_id', array( 'label' => required( __( 'Nom du service d\'accompagnement', true ) ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
-        <?php echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => required( __( 'service_soutien', true ) ), 'type' => 'textarea', 'rows' => 3 )  ); ?>
-        <?php echo $form->input( 'Contratinsertion.pers_charg_suivi', array( 'label' => required( __( 'pers_charg_suivi', true ) ), 'type' => 'textarea', 'rows' => 1 )  ); ?>
+        <?php echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => '<em>'.required( __( 'service_soutien', true ) ).'</em>', 'type' => 'textarea', 'rows' => 3 )  ); ?>
+        <?php echo $form->input( 'Contratinsertion.pers_charg_suivi', array( 'label' => '<em>'.required( __( 'pers_charg_suivi', true ) ).'</em>', 'type' => 'textarea', 'rows' => 1 )  ); ?>
 <fieldset>
     <legend> PROJET ET ACTIONS D'INSERTION </legend>
         <?php echo $form->input( 'Contratinsertion.objectifs_fixes', array( 'label' => required( __( 'objectifs_fixes', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
