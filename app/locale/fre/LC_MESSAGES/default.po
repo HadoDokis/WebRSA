@@ -425,6 +425,10 @@ msgstr "A partir de quelle date cette prestation prend-elle effet"
 
 msgid "nomrefpresta"
 msgstr "Nom du référent de la prestation"
+
+msgid "prenomrefpresta"
+msgstr "Prénom du référent de la prestation"
+
 ###############################################################################
 # Ressources
 ###############################################################################

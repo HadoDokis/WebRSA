@@ -36,7 +36,7 @@
             <tbody>
                 <tr class="even">
                     <th><?php __( 'niv_etude');?></th>
-                    <td><?php debug($dspp['Nivetu']);?>
+                    <td>
                         <?php if( !empty( $contratinsertion['Nivetu'] ) ):?>
                             <ul>
                                 <?php foreach( $contratinsertion['Nivetu'] as $nivetus ):?>

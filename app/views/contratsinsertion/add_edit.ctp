@@ -28,7 +28,6 @@
             echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
-            //echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Contratinsertion.rg_ci', array( 'type' => 'hidden'/*, 'value' => '' */) );
             echo '</div>';
 
@@ -39,8 +38,9 @@
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );
 
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
-            //echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden' ) );
+            echo $form->input( 'Actioninsertion.0.id', array( 'type' => 'hidden' ) );
+            echo $form->input( 'Actioninsertion.0.contratinsertion_id', array( 'type' => 'hidden' ) );
             echo '</div>';
         }
 

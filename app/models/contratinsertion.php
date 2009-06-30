@@ -31,7 +31,10 @@
 
 
         var $hasMany = array(
-            'Actioninsertion'
+            'Actioninsertion' => array(
+                'classname' => 'Actioninsertion',
+                'foreignKey' => 'contratinsertion_id',
+            )
         );
 
 

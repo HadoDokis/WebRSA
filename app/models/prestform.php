@@ -18,6 +18,12 @@
 
 
         var $validate = array(
+            'nomrefpresta' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
             'lib_presta' => array(
                 array(
                     'rule' => 'notEmpty',
