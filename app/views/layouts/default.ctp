@@ -23,6 +23,8 @@
         <script type="text/javascript">
             // prototype
             document.observe("dom:loaded", function() {
+                window.history.forward();
+
                 var baseUrl = '<?php echo Router::url( '/', true );?>';
                 make_treemenus( baseUrl );
 //                 make_table_tooltips();
