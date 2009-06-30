@@ -376,8 +376,8 @@
 
         function lib_action() {
             return array(
-                'aide' => 'Aide',
-                'prest' => 'Prestation'
+                'A' => 'Aide',
+                'P' => 'Prestation'
             );
         }
 
