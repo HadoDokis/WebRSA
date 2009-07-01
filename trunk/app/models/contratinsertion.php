@@ -198,12 +198,7 @@
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
-                ),
-                array(
-                    'rule' => array( 'maxLength' ,5 ),
-                    'message' => 'XXXXXXXXXXXX'
                 )
-
             ),
             'date_saisi_ci' => array(
                 'notEmpty' => array(

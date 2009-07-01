@@ -14,8 +14,8 @@
         observeDisableFieldsOnBoolean( 'ContratinsertionEmpTrouv', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], '0', false );
         observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
 
-        observeDisableFieldsOnValue( 'Actioninsertion0LibAction', [ 'Aidedirecte0TypoAide', 'Aidedirecte0LibAide', 'Aidedirecte0DateAideDay', 'Aidedirecte0DateAideMonth', 'Aidedirecte0DateAideYear' ], 'A', false );
-        observeDisableFieldsOnValue( 'Actioninsertion0LibAction', [ 'Prestform0LibPresta', 'RefprestaNomrefpresta', 'RefprestaPrenomrefpresta', 'Prestform0DatePrestaDay', 'Prestform0DatePrestaMonth', 'Prestform0DatePrestaYear' ], 'P', false );
+        observeDisableFieldsOnValue( 'ActioninsertionLibAction', [ 'Aidedirecte0TypoAide', 'Aidedirecte0LibAide', 'Aidedirecte0DateAideDay', 'Aidedirecte0DateAideMonth', 'Aidedirecte0DateAideYear' ], 'A', false );
+        observeDisableFieldsOnValue( 'ActioninsertionLibAction', [ 'Prestform0LibPresta', 'RefprestaNomrefpresta', 'RefprestaPrenomrefpresta', 'Prestform0DatePrestaDay', 'Prestform0DatePrestaMonth', 'Prestform0DatePrestaYear' ], 'P', false );
     } );
 </script>
 
@@ -94,7 +94,9 @@
 
         <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => required( __( 'obsta_renc', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 
-        <?php echo $form->input( 'Actioninsertion.0.lib_action', array( 'label' => required( __( 'lib_action', true ) ), 'type' => 'select', 'options' => $lib_action, 'empty' => true /*array(  'A' => 'Aides', 'P' => 'Prestations' )*/ ) ); ?>
+        <?php echo $form->input( 'Actioninsertion.lib_action', array( 'label' => required( __( 'lib_action', true ) ), 'type' => 'select', 'options' => $lib_action, 'empty' => true ) ); ?>
+        <?php echo $form->input( 'Actioninsertion.dd_action', array( 'label' => required( __( 'dd_action', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
+        <?php echo $form->input( 'Actioninsertion.df_action', array( 'label' => required( __( 'df_action', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
 
         <?php echo $form->input( 'Aidedirecte.0.typo_aide', array( 'label' => required( __( 'typo_aide', true ) ), 'type' => 'select', 'options' => $typo_aide, 'empty' => true )  ); ?>
         <?php echo $form->input( 'Aidedirecte.0.lib_aide', array( 'label' => required( __( 'lib_aide', true ) ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
