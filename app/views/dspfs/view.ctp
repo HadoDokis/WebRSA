@@ -217,7 +217,7 @@
                     <td>
                         <?php if( !empty( $dsp['CJT']['Dspp']['libcooraccosocindi'] ) ):?>
                             <?php echo nl2br( h( $dsp['CJT']['Dspp']['libcooraccosocindi'] ) );?>
-                        <?php endif;?> 
+                        <?php endif;?>
                     </td>
                 </tr>
             </tbody>
@@ -262,7 +262,7 @@
                 </tr>
             </tbody>
         </table>
-  
+
         <h2>Accompagnement individuel</h2>
         <table class="wide bodyHeaders mediumHeader">
             <?php echo thead( 25 );?>

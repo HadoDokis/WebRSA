@@ -40,7 +40,7 @@
         <tbody>
             <tr class="even">
                 <th><?php __( 'rolepers' );?></th>
-                <td><?php echo $rolepers[$personne['Personne']['rolepers']];?></td>
+                <td><?php echo $rolepers[$personne['Prestation']['rolepers']];?></td>
             </tr>
             <tr class="odd">
                 <th><?php __( 'qual' );?></th>

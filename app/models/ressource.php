@@ -112,6 +112,7 @@
             $thisPersonne = $this->Personne->findById( $this->data['Ressource']['personne_id'], null, null, -1 );
             return $this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
 
+            // FIXME -> quel rôles ?
 //             $personnesFoyer = $this->Personne->find(
 //                 'all',
 //                 array(

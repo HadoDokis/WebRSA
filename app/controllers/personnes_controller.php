@@ -92,9 +92,8 @@
             $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             if( !empty( $this->data ) ) {
-                $this->Personne->set( $this->data );
-                if( $this->Personne->validates() ) {
-                    if( $this->Personne->save( $this->data ) ) {
+                if( $this->Personne->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
+                    if( $this->Personne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
                         $this->Jetons->release( $dossier_id );
                         $this->Personne->commit();
                         $this->Session->setFlash( 'Enregistrement réussi', 'flash/success' );
@@ -107,18 +106,20 @@
             }
             else {
                 $roles = $this->Personne->find(
-                    'list',
+                    'all',
                     array(
                         'fields' => array(
                             'Personne.id',
-                            'Personne.rolepers',
+                            'Prestation.rolepers',
                         ),
                         'conditions' => array(
                             'Personne.foyer_id' => $foyer_id,
-                            'Personne.rolepers' => array( 'DEM', 'CJT' )
+                            'Prestation.rolepers' => array( 'DEM', 'CJT' )
                         ),
                     )
                 );
+                $roles = Set::extract( '/Prestation/rolepers', $roles );
+
                 // On ne fait apparaître les roles de demandeur et de conjoint que
                 // si ceux-ci n'existent pas encore dans le foyer
                 $rolepersPermis = $this->Option->rolepers();
@@ -159,9 +160,8 @@
 
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
-                $this->Personne->set( $this->data );
-                if( $this->Personne->validates() ) {
-                    if( $this->Personne->save( $this->data ) ) {
+                if( $this->Personne->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
+                    if( $this->Personne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
                         $this->Jetons->release( $dossier_id );
                         $this->Personne->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );

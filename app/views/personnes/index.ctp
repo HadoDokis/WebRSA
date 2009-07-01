@@ -49,7 +49,7 @@
 
                     echo $html->tableCells(
                         array(
-                            h( $rolepers[$personne['Personne']['rolepers']] ),
+                            h( $rolepers[$personne['Prestation']['rolepers']] ),
                             h( $qual[$personne['Personne']['qual']] ),
                             h( $personne['Personne']['nom'] ),
                             h( $personne['Personne']['prenom'] ),

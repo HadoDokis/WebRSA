@@ -1,4 +1,5 @@
 <?php
+    // TODO: avec Prestation
     // INFO: pour les tests
     function rand_nir() {
         $str = '';
@@ -27,102 +28,108 @@
             $this->Wizard->cancelUrl = '/ajoutdossiers/wizard';
 
             //INFO: on peut préremplir le wizard pour les tests
-//             $this->Session->write(
-//                 'Wizard.Ajoutdossiers.allocataire',
-//                 array(
-//                     'Personne' => array(
-//                         'rolepers'  => 'DEM',
-//                         'qual'      => 'MR',
-//                         'nom'       => 'Auzolat',
-//                         'prenom'    => 'Arnaud',
-//                         'dtnai'   => array(
-//                             'day'   => 11,
-//                             'month' => 09,
-//                             'year'  => 1981
-//                         ),
-//                         'rgnai' => 1,
-//                         'nir' => rand_nir(),
-//                         'topvalec' => 0,
-//                         'nati' => 'C',
-//                         'pieecpres' => 'E'
-//                     )
-//                 )
-//             );
-//             $this->Session->write(
-//                 'Wizard.Ajoutdossiers.conjoint',
-//                 array(
-//                     'Personne' => array(
-//                         'rolepers'  => 'CJT',
-//                         'qual'      => 'MME',
-//                         'nom'       => 'Buffin',
-//                         'prenom'    => 'Simone',
-//                         'dtnai'   => array(
-//                             'day'   => 01,
-//                             'month' => 01,
-//                             'year'  => 2009
-//                         ),
-//                         'rgnai' => 1,
-//                         'nir' => rand_nir(),
-//                         'topvalec' => 0,
-//                         'nati' => 'C',
-//                         'pieecpres' => 'E'
-//                     )
-//                 )
-//             );
-//             $this->Session->write(
-//                 'Wizard.Ajoutdossiers.adresse',
-//                 array(
-//                     'Adressefoyer' => array(
-//                         'rgadr'     => '01',
-//                         'typeadr'   => 'D'
-//                     ),
-//                     'Adresse' => array(
-//                         'numvoie' => 8,
-//                         'typevoie' => 'rue',
-//                         'nomvoie' => 'des rosiers',
-//                         'codepos' => '34000', // FIXME: + code insée
-//                         'numcomptt' => '34080',
-//                         'locaadr' => 'Montpellier',
-//                         'pays' => 'FRA'
-//                     ),
-//                 )
-//             );
-//             $this->Session->write(
-//                 'Wizard.Ajoutdossiers.ressourcesallocataire',
-//                 array(
-//                     'Ressource' => array(
-//                         'ddress' => array(
-//                             'day' => '01',
-//                             'month' => '01',
-//                             'year' => '2009'
-//                         ),
-//                         'dfress' => array(
-//                             'day' => '01',
-//                             'month' => '01',
-//                             'year' => '2009'
-//                         ),
-//                         'topressnotnul' => 0
-//                     )
-//                 )
-//             );
-//             $this->Session->write(
-//                 'Wizard.Ajoutdossiers.ressourcesconjoint',
-//                 array(
-//                     'Ressource' => array(
-//                         'ddress' => array(
-//                             'day' => '01',
-//                             'month' => '01',
-//                             'year' => '2009'
-//                         ),
-//                         'dfress' => array(
-//                             'day' => '01',
-//                             'month' => '01',
-//                             'year' => '2009'
-//                         ),
-//                         'topressnul' => 0
-//                     )
-//                 )
-//             );
+            $this->Session->write(
+                'Wizard.Ajoutdossiers.allocataire',
+                array(
+                    'Personne' => array(
+                        'qual'      => 'MR',
+                        'nom'       => 'Auzolat',
+                        'prenom'    => 'Arnaud',
+                        'dtnai'   => array(
+                            'day'   => '11',
+                            'month' => '09',
+                            'year'  => '1981'
+                        ),
+                        'rgnai' => 1,
+                        'nir' => rand_nir(),
+                        'topvalec' => 0,
+                        'nati' => 'C',
+                        'pieecpres' => 'E'
+                    ),
+                    'Prestation' => array(
+                        'natprest'  => 'RSA',
+                        'rolepers'  => 'DEM',
+                    )
+                )
+            );
+            $this->Session->write(
+                'Wizard.Ajoutdossiers.conjoint',
+                array(
+                    'Personne' => array(
+                        'qual'      => 'MME',
+                        'nom'       => 'Buffin',
+                        'prenom'    => 'Simone',
+                        'dtnai'   => array(
+                            'day'   => '01',
+                            'month' => '01',
+                            'year'  => '2009'
+                        ),
+                        'rgnai' => 1,
+                        'nir' => rand_nir(),
+                        'topvalec' => 0,
+                        'nati' => 'C',
+                        'pieecpres' => 'E'
+                    ),
+                    'Prestation' => array(
+                        'natprest'  => 'RSA',
+                        'rolepers'  => 'CJT',
+                    )
+                )
+            );
+            $this->Session->write(
+                'Wizard.Ajoutdossiers.adresse',
+                array(
+                    'Adressefoyer' => array(
+                        'rgadr'     => '01',
+                        'typeadr'   => 'D'
+                    ),
+                    'Adresse' => array(
+                        'numvoie' => 8,
+                        'typevoie' => 'rue',
+                        'nomvoie' => 'des rosiers',
+                        'codepos' => '34000', // FIXME: + code insée
+                        'numcomptt' => '34080',
+                        'locaadr' => 'Montpellier',
+                        'pays' => 'FRA'
+                    ),
+                )
+            );
+            $this->Session->write(
+                'Wizard.Ajoutdossiers.ressourcesallocataire',
+                array(
+                    'Ressource' => array(
+                        'ddress' => array(
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2009'
+                        ),
+                        'dfress' => array(
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2009'
+                        ),
+                        'topressnotnul' => 0
+                    )
+                )
+            );
+            $this->Session->write(
+                'Wizard.Ajoutdossiers.ressourcesconjoint',
+                array(
+                    'Ressource' => array(
+                        'ddress' => array(
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2009'
+                        ),
+                        'dfress' => array(
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2009'
+                        ),
+                        'topressnul' => 0
+                    )
+                )
+            );
 
             return parent::beforeFilter();
         }
@@ -229,9 +236,9 @@
 
             $valid = $this->Ressource->validates();
             if( !empty( $this->data['Ressourcemensuelle'] ) ) {
-                $valid = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+                $valid = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
                 if( !empty( $this->data['Detailressourcemensuelle'] ) ) {
-                    $valid = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+                    $valid = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
                 }
             }
             if( $valid ) {
@@ -254,9 +261,9 @@
 
                 $valid = $this->Ressource->validates();
                 if( !empty( $this->data['Ressourcemensuelle'] ) ) {
-                    $valid = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+                    $valid = $this->Ressourcemensuelle->saveAll( $this->data['Ressourcemensuelle'], array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
                     if( !empty( $this->data['Detailressourcemensuelle'] ) ) {
-                        $valid = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $valid;
+                        $valid = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
                     }
                 }
                 if( $valid ) {
@@ -320,9 +327,9 @@
             $this->Ressource->set( $data['ressourcesallocataire'] );
             $valid = $this->Ressource->validates();
             if( !empty( $data['ressourcesallocataire']['Ressourcemensuelle'] ) ) {
-                $valid = $this->Ressourcemensuelle->saveAll( $data['ressourcesallocataire'], array( 'validate' => 'only' ) ) && $valid;
+                $valid = $this->Ressourcemensuelle->saveAll( $data['ressourcesallocataire'], array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
                 if( !empty( $data['ressourcesallocataire']['Detailressourcemensuelle'] ) ) {
-                    $valid = $this->Detailressourcemensuelle->saveAll( $data['ressourcesallocataire'], array( 'validate' => 'only' ) ) && $valid;
+                    $valid = $this->Detailressourcemensuelle->saveAll( $data['ressourcesallocataire'], array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
                 }
             }
 
@@ -332,14 +339,17 @@
                 $this->Ressourcemensuelle->create();
                 $this->Detailressourcemensuelle->create();
 
-                $data['ressourcesconjoint']['Ressource']['topressnul'] = !$data['ressourcesconjoint']['Ressource']['topressnotnul'];
+                // FIXME ?
+                if( isset( $data['ressourcesconjoint']['Ressource']['topressnotnul'] ) ) {
+                    $data['ressourcesconjoint']['Ressource']['topressnul'] = !$data['ressourcesconjoint']['Ressource']['topressnotnul'];
+                }
 
                 $this->Ressource->set( $data['ressourcesconjoint'] );
                 $valid = $this->Ressource->validates();
                 if( !empty( $data['ressourcesconjoint']['Ressourcemensuelle'] ) ) {
-                    $valid = $this->Ressourcemensuelle->saveAll( $data['ressourcesconjoint'], array( 'validate' => 'only' ) ) && $valid;
+                    $valid = $this->Ressourcemensuelle->saveAll( $data['ressourcesconjoint'], array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
                     if( !empty( $data['ressourcesconjoint']['Detailressourcemensuelle'] ) ) {
-                        $valid = $this->Detailressourcemensuelle->saveAll( $data['ressourcesconjoint'], array( 'validate' => 'only' ) ) && $valid;
+                        $valid = $this->Detailressourcemensuelle->saveAll( $data['ressourcesconjoint'], array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
                     }
                 }
             }
@@ -354,25 +364,34 @@
 
                 // Tentatives de sauvegarde
                 $saved = $this->Dossier->save( $data['dossier']['Dossier'] );
+
                 // Détails du droit
                 $data['dossier']['Detaildroitrsa']['dossier_rsa_id'] = $this->Dossier->id;
                 $saved = $this->Detaildroitrsa->save( $data['dossier']['Detaildroitrsa'] ) && $saved;
+
                 // Foyer
                 $saved = $this->Foyer->save( array( 'dossier_rsa_id' => $this->Dossier->id ) ) && $saved;
+
                 // Adresse
                 $saved = $this->Adresse->save( $data['adresse']['Adresse'] ) && $saved;
+
                 // Adresse foyer
                 $data['adresse']['Adressefoyer']['foyer_id'] = $this->Foyer->id;
                 $data['adresse']['Adressefoyer']['adresse_id'] = $this->Adresse->id;
                 $saved = $this->Adressefoyer->save( $data['adresse']['Adressefoyer'] ) && $saved;
+
                 // Demandeur
+                $this->Personne->create();
                 $data['allocataire']['Personne']['foyer_id'] = $this->Foyer->id;
-                $saved = $this->Personne->save( $data['allocataire']['Personne'] );
+                $this->Personne->set( $data['allocataire'] );
+// debug( $data['allocataire'] );
+                $saved = $this->Personne->save( $data['allocataire'] ) && $saved;
                 $demandeur_id = $this->Personne->id;
 
                 // Type orientation demandeur
                 $this->Orientstruct->create();
                 $saved = $this->Orientstruct->save( array( 'Orientstruct' => array( 'personne_id' => $demandeur_id, 'statut_orient' => 'Non orienté' ) ) );
+
                 // Conjoint
                 if( count( array_filter( $data['conjoint']['Personne'] ) ) != 3 ) { // FIXME
                     $this->Personne->create();
@@ -470,7 +489,8 @@
 // debug( $suiviinstruction );
 // debug( $this->Suiviinstruction->validationErrors );
                 }
-
+// $this->Dossier->rollback();
+// die();
                 // Fin de la transaction
                 if( $saved ) {
                    $this->Dossier->commit();
