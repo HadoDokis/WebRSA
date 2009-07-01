@@ -22,7 +22,7 @@
                                 array( 'controller' => 'personnes', 'action' => 'view', $personne['id'] )
                             );
                         ?>
-                        <?php if( $personne['rolepers'] == 'DEM' || $personne['rolepers'] == 'CJT' ):?>
+                        <?php if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ):?>
                             <?php
                                 // FIXME: plusieurs niveaux
                                 $affichage = array();
@@ -180,7 +180,7 @@
                     <?php if( !empty( $dossier['Foyer']['Personne'] ) ):?>
                         <li>
                             <?php foreach( $dossier['Foyer']['Personne'] as $personnes ):?>
-                                <?php if( $personnes['rolepers'] == 'DEM' || $personnes['rolepers'] == 'CJT' ):?>
+                                <?php if( $personnes['Prestation']['rolepers'] == 'DEM' || $personnes['Prestation']['rolepers'] == 'CJT' ):?>
                                     <?php
                                         echo $html->link(
                                             $personnes['qual'].' '.$personnes['nom'].' '.$personnes['prenom'],

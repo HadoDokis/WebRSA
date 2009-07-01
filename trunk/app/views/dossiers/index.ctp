@@ -107,6 +107,7 @@
                                 </tr>
                             </tbody>
                         </table>';
+// debug( $dossier['Foyer']['Personne'] );
                         echo $html->tableCells(
                             array(
                                 h( $dossier['Dossier']['numdemrsa'] ),

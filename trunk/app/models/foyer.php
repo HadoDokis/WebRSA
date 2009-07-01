@@ -60,6 +60,7 @@
 
         //*********************************************************************
 
+        // FIXME
         function refreshSoumisADroitsEtDevoirs( $foyer_id ) {
             $personnesFoyer = $this->Personne->find(
                 'all',
@@ -73,16 +74,16 @@
 
             $saved = true;
             foreach( $personnesFoyer as $personneFoyer ) {
-                // FIXME -> changement de table
-                $this->Personne->create();
-                $personneUpdate = array(
-                    'Personne' => array(
-                        'id'                => $personneFoyer['Personne']['id'],
+                $this->Personne->Prestation->create();
+                $prestationUpdate = array(
+                    'Prestation' => array(
+                        'personne_id'       => $personneFoyer['Personne']['id'],
+                        'natprest'          => 'RSA',
                         'toppersdrodevorsa' => $this->Personne->soumisDroitsEtDevoirs( $personneFoyer['Personne']['id'] )
                     )
                 );
-                $this->Personne->set( $personneUpdate );
-                $saved =  $this->Personne->save() && $saved;
+                $this->Personne->Prestation->set( $prestationUpdate );
+                $saved =  $this->Personne->Prestation->save( $prestationUpdate ) && $saved;
             }
 
             return $saved;

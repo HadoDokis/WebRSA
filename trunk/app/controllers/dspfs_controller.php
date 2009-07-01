@@ -36,7 +36,7 @@
             $this->set( 'nataccosocindis', $this->Nataccosocindi->find( 'list' ) );
             $this->set( 'difdisps', $this->Difdisp->find( 'list' ) );
             $this->set( 'natmobs', $this->Natmob->find( 'list' ) );
-            $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );  
+            $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
             $this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );
         }
 
@@ -58,32 +58,25 @@
             ) ;
 
             // Ajout des DSP demandeur et conjoint
-            foreach( array( 'DEM', 'CJT' ) as $rolepers ) {
-                $dsp[$rolepers] = array();
-                $personne = $this->Personne->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Personne.foyer_id' => $foyer_id,
-                            'Personne.rolepers' => $rolepers,
-                        ),
-                        'recursive' => -1
-                    )
-                ) ;
-                if( !empty( $personne ) ) {
-                    $dsp[$rolepers] = $personne;
-                    $dsp_personne = $this->Dspp->find(
-                        'first',
-                        array(
-                            'conditions' => array(
-                                'Dspp.personne_id' => $personne['Personne']['id']
-                            ),
-                            'recursive' => 2
-                        )
-                    ) ;
-                    if( !empty( $dsp_personne ) ) {
-                        $dsp[$rolepers] = array_merge( $dsp[$rolepers], $dsp_personne );
-                    }
+            $personnesFoyer = $this->Personne->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Personne.foyer_id' => $foyer_id,
+                        'Prestation.rolepers' => array( 'DEM', 'CJT' )
+                    ),
+                    'recursive' => 0
+                )
+            );
+
+            foreach( $personnesFoyer as $personneFoyer ) {
+                $dsp[$personneFoyer['Prestation']['rolepers']] = $personneFoyer;
+                $dsp_personne = $this->Dspp->findByPersonneId( $personneFoyer['Personne']['id'], null, null, 2 );
+                if( !empty( $dsp_personne ) ) {
+                    $dsp[$personneFoyer['Prestation']['rolepers']] = array_merge( $dsp[$personneFoyer['Prestation']['rolepers']], $dsp_personne );
+                }
+                else {
+                    unset( $dsp[$personneFoyer['Prestation']['rolepers']]['Dspp'] );
                 }
             }
 

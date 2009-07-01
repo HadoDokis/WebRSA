@@ -4,7 +4,8 @@
     <h1>Insertion d'une nouvelle demande de RSA</h1>
     <h2>Étape 1bis: conjoint demandeur RSA</h2>
 
-    <?php echo $form->input( 'Personne.rolepers', array( 'type' => 'hidden', 'value' => 'CJT' ) );?>
+    <?php echo $form->input( 'Prestation.natprest', array( 'type' => 'hidden', 'value' => 'RSA' ) );?>
+    <?php echo $form->input( 'Prestation.rolepers', array( 'type' => 'hidden', 'value' => 'CJT' ) );?>
     <?php include( $this->__paths[0].'personnes/_form.ctp' ); /* FIXME */?>
 
     <div class="submit">

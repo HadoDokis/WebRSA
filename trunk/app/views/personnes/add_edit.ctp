@@ -31,11 +31,13 @@
             echo $form->create( 'Personne', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $form->input( 'Personne.id', array( 'type' => 'hidden' ) );
+            echo $form->input( 'Prestation.id', array( 'type' => 'hidden', 'div' => 'div' ) );
             echo '</div>';
         }
     ?>
     <?php echo $form->input( 'Personne.foyer_id', array( 'type' => 'hidden', 'div' => 'div', 'value' => $foyer_id ) );?>
-    <?php echo $form->input( 'Personne.rolepers', array( 'label' => __( 'rolepers', true ), 'type' => 'select', 'empty' => true ) );?>
+    <?php echo $form->input( 'Prestation.natprest', array( 'type' => 'hidden', 'value' => 'RSA' ) );?>
+    <?php echo $form->input( 'Prestation.rolepers', array( 'label' => __( 'rolepers', true ), 'type' => 'select', 'empty' => true ) );?>
 
     <?php include( '_form.ctp' );?>
 

@@ -102,6 +102,15 @@
                 $dossiers = $this->paginate( 'Dossier', array( $filters ) );
 
                 foreach( $dossiers as $key => $dossier ) {
+                    // Personnes
+                    foreach( $dossier['Foyer']['Personne'] as $iPersonne => $personne ) {
+                        $dossier['Foyer']['Personne'][$iPersonne] = Set::merge( $dossier['Foyer']['Personne'][$iPersonne], $this->Personne->Prestation->findByPersonneId( $personne['id'], null, null, -1 ) );
+                    }
+// 'return strcmp( $a["Prestation"]["rolepers"], $b["Prestation"]["rolepers"] );'
+                    usort( $dossier['Foyer']['Personne'], create_function( '$a,$b', 'if( $a["Prestation"]["rolepers"] == "DEM" ) return -1; else if( $b["Prestation"]["rolepers"] == "DEM" ) return 1; else return strcmp( $a["Prestation"]["rolepers"], $b["Prestation"]["rolepers"] );' ) );
+// debug( $dossier['Foyer'] );
+
+                    // Dernière adresse
                     $derniereadresse = array();
                     foreach( $dossier['Foyer']['Adressefoyer'] as $adressefoyer ) {
                         if( $adressefoyer['rgadr'] == '01' ) {
@@ -179,18 +188,22 @@
                 $dossier['Foyer']['AdressesFoyer'][$key] = array_merge( $dossier['Foyer']['AdressesFoyer'][$key], $adresses[0] );
             }
 
+            foreach( $dossier['Foyer']['Personne'] as $iPersonne => $personne ) {
+                $this->Dossier->Foyer->Personne->unbindModelAll();
+                $this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Prestation' ) ));
+                $prestation = $this->Dossier->Foyer->Personne->findById( $personne['id'] );
+                $dossier['Foyer']['Personne'][$iPersonne]['Prestation'] = $prestation['Prestation'];
+            }
+
             return $dossier;
         }
 
         /**
         */
         function view( $id = null ) {
-            $this->assert( valid_int( $id ), 'error404' );
+            $this->assert( valid_int( $id ), 'invalidParameter' );
 
-
-/*****************************************************************************/
             $dsp = array();
-
             // DSP foyer
             $dsp['foyer'] = $this->Dspf->find(
                 'first',
@@ -202,37 +215,30 @@
             ) ;
 
             // Ajout des DSP demandeur et conjoint
-            foreach( array( 'DEM', 'CJT' ) as $rolepers ) {
-                $dsp[$rolepers] = array();
-                $personne = $this->Personne->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Personne.foyer_id' => $id,
-                            'Personne.rolepers' => $rolepers,
-                        ),
-                        'recursive' => -1
-                    )
-                ) ;
-                if( !empty( $personne ) ) {
-                    $dsp[$rolepers] = $personne;
-                    $dsp_personne = $this->Dspp->find(
-                        'first',
-                        array(
-                            'conditions' => array(
-                                'Dspp.personne_id' => $personne['Personne']['id']
-                            ),
-                            'recursive' => 2
-                        )
-                    ) ;
-                    if( !empty( $dsp_personne ) ) {
-                        $dsp[$rolepers] = array_merge( $dsp[$rolepers], $dsp_personne );
-                    }
+            $personnesFoyer = $this->Personne->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Personne.foyer_id' => $id,
+                        'Prestation.rolepers' => array( 'DEM', 'CJT' )
+                    ),
+                    'recursive' => 0
+                )
+            );
+
+            foreach( $personnesFoyer as $personneFoyer ) {
+                $dsp[$personneFoyer['Prestation']['rolepers']] = $personneFoyer;
+                $dsp_personne = $this->Dspp->findByPersonneId( $personneFoyer['Personne']['id'], null, null, 1 );
+                if( !empty( $dsp_personne ) ) {
+                    $dsp[$personneFoyer['Prestation']['rolepers']] = array_merge( $dsp[$personneFoyer['Prestation']['rolepers']], $dsp_personne );
+                }
+                else {
+                    unset( $dsp[$personneFoyer['Prestation']['rolepers']]['Dspp'] );
                 }
             }
 
             $this->set( 'dsp', $dsp );
-            //debug($dsp);
+
 /*-*************************************************************************/
             $tc = $this->Typocontrat->find(
                 'list',
@@ -256,12 +262,24 @@
 
             //*****************************************************************
 
+            // FIXME: on l'a déjà trouvé plus haut ?
             $personne = $this->Personne->find(
                 'first',
                 array(
                     'conditions' => array(
                         'Personne.foyer_id' => $dossier['Foyer']['id'],
-                        'Personne.rolepers' => 'DEM' // FIXME ?
+                    ),
+                    'joins' => array(
+                        array(
+                            'table'      => 'prestations',
+                            'alias'      => 'Prestation',
+                            'type'       => 'inner',
+                            'foreignKey' => false,
+                            'conditions' => array(
+                                'Prestation.personne_id = Personne.id',
+                                'Prestation.rolepers' => array( 'DEM' )
+                            )
+                        )
                     ),
                     'recursive' => -1
                 )
@@ -401,7 +419,7 @@
             );
             $dossier = Set::merge( $dossier, array( 'Dossiercaf' => $caf['Dossiercaf'] ) );
 
-            //----------------------------------------------------------------- 
+            //-----------------------------------------------------------------
 
 // debug( $dossier );
             $this->assert( !empty( $dossier ), 'error404' );

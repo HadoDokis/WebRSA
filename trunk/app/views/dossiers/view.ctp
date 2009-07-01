@@ -86,8 +86,8 @@
                             </tr>
                             <tr class="even">
                                 <th>Soumis à droits et devoirs</th>
-                                <td><?php echo linkedValue( $toppersdrodevorsa, $dsp, 'DEM', 'Personne', 'toppersdrodevorsa' );?></td>
-                                <td><?php echo linkedValue( $toppersdrodevorsa, $dsp, 'CJT', 'Personne', 'toppersdrodevorsa' );?></td>
+                                <td><?php echo linkedValue( $toppersdrodevorsa, $dsp, 'DEM', 'Prestation', 'toppersdrodevorsa' );?></td>
+                                <td><?php echo linkedValue( $toppersdrodevorsa, $dsp, 'CJT', 'Prestation', 'toppersdrodevorsa' );?></td>
                             </tr>
                         </tbody>
                     </table>

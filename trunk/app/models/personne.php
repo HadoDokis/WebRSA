@@ -9,7 +9,13 @@
         var $hasOne = array(
             'TitreSejour',
             'Dspp',
-            'Orientstruct'
+            'Orientstruct',
+            'Prestation' => array(
+                'foreignKey' => 'personne_id',
+                'conditions' => array (
+                    'Prestation.natprest' => array( 'RSA' )
+                )
+            )
         );
 
         var $belongsTo = array(
@@ -19,13 +25,6 @@
         //---------------------------------------------------------------------
 
         var $validate = array(
-            // Role personne
-            'rolepers' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
             // Qualité
             'qual' => array(
                 array(
