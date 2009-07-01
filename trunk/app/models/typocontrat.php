@@ -13,12 +13,12 @@
             )
         );
 
-/*
+
         var $validate = array(
-            'rang' => array(
-                'rule' => array( 'isUnique', 'premier' ),
-                'message' => 'Il ne peut y avoir qu\'un seul premier Contrat d\'insertion'
+            'lib_typo' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
             )
-        );*/
+        );
     }
 ?>

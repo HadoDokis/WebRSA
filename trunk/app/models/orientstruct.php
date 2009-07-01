@@ -29,6 +29,30 @@
                     'rule' => array( 'choixStructure', 'statut_orient' ),
                     'message' => 'Champ obligatoire'
                 )
+            ),
+            'typeorient_id' => array(
+                'notEmpty' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'toppersdrodevorsa' => array(
+                'notEmpty' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'date_propo' => array(
+                'notEmpty' => array(
+                    'rule' => 'date',
+                    'message' => 'Veuillez entrer une date valide'
+                )
+            ),
+            'date_valid' => array(
+                'notEmpty' => array(
+                    'rule' => 'date',
+                    'message' => 'Veuillez entrer une date valide'
+                )
             )
         );
 

@@ -10,8 +10,28 @@
                 'foreignKey' => 'typeorient_id'
             )
         );
-	
-	
+
+        var $validate = array(
+            'lib_type_orient' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'parentid' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'modele_notif' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+        );
+
         function listOptions() {
             $options = $this->find( 
                 'list',

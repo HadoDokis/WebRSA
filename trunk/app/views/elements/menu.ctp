@@ -24,7 +24,7 @@
 
             <?php if( $permissions->check( 'dossiers', 'index' ) || $permissions->check( 'criteres', 'index' ) || $permissions->check( 'criteresci', 'index' ) ) :?>
             <li>
-                <?php echo $html->link( 'Recherche multi-critères', '#' );?>
+                <?php echo $html->link( 'Recherche multicritères', '#' );?>
                 <ul>
                     <li><?php echo $html->link( 'Par dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?></li>
                     <li><?php echo $html->link( 'Par Orientation', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
