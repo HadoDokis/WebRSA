@@ -55,45 +55,93 @@
 
         function test() { ///Test Unitaire afin de vérifier le bon fonctionnement des enregistrements
             $data = Array (
-                'Contratinsertion' => Array (
-                    'personne_id' => 25,
-                    'rg_ci' => 10,
-                    'typocontrat_id' => 1,
-                    'structurereferente_id' => '5_4',
+                'Contratinsertion' => Array
+                (
+                    'id' => 196,
+                    'personne_id' => 12,
+                    'typocontrat_id' => 2,
+                    'structurereferente_id' => 3,
+                    'dd_ci' => Array
+                        (
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2019',
+                        ),
+
+                    'duree_engag' => '1',
+                    'df_ci' => Array
+                        (
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2019'
+                        ),
+
+                    'diplomes' => 'l!khp',
+                    'expr_prof' => 'ùpjho$',
+                    'form_compl' => 'ùpjo$j',
+                    'actions_prev' => '1',
+                    'obsta_renc' => '',
                     'serviceinstructeur_id' => 2,
                     'service_soutien' => 'Service 2, 14 rue la bas 30900 nimes, 04 67 66 66 66',
                     'pers_charg_suivi' => 'auzolat arnaud',
-                    'date_saisi_ci' => Array (
-                        'day' => 29,
-                        'month' => '06',
-                        'year' => 2009
-                    )
+                    'objectifs_fixes' => 'ùpho',
+                    'engag_object' => 'ùphầ',
+                    'emp_trouv' => '0',
+                    'nature_projet' => 'opjầçh',
+                    'lieu_saisi_ci' => 'ihiĥ',
+                    'date_saisi_ci' => Array
+                        (
+                            'day' => '30',
+                            'month' => '06',
+                            'year' => '2009'
+                        ),
+
+                    'Le bénéficiaire : ' => 'prosper minnie'
                 ),
                 'Actioninsertion' => Array (
-                    array(
-                        'lib_action'   => 'P'
-                    )
+                        'id'            => 70,
+                        'contratinsertion_id' => 196,
+                        'lib_action'   => 'P',
+                        'dd_action'     => Array
+                        (
+                            'day' => '30',
+                            'month' => '06',
+                            'year' => '2009'
+                        ),
+                        'df_action' => Array
+                        (
+                            'day' => '30',
+                            'month' => '06',
+                            'year' => '2009'
+                        ),
                 ),
                 'Refpresta' => array (
-                    'nomrefpresta'      => 'arno auzeolat'
+                    'id'            =>  52,
+                    'nomrefpresta'      => 'arno auzeolat',
+                    'prenomrefpresta' => 'moihùp'
                 ),
                 'Prestform' => Array (
                     array(
-                        'lib_presta' => '1P',
+                        'id'                        => 61,
+                        'actioninsertion_id'          => 70,
+                        'refpresta_id'          => 52,
+                        'lib_presta' => '06',
                         'date_presta' => Array (
                             'day' => '01',
                             'month' => '01',
-                            'year' => 2019
+                            'year' => '2019'
                         )
                     )
                 )
             );
 
             $this->Contratinsertion->begin();
-
+            debug( $this->Actioninsertion->saveAll( $data, array( 'validate' => 'first' ) ) );
+            debug( $data);
+/*
             $this->Refpresta->create();
             $this->Refpresta->set( $data['Refpresta'] );
-            if( $this->Refpresta->validate() && $this->Actioninsertion->saveAll( $data, array( 'validate' => 'only' ) ) ) {
+            if( $this->Refpresta->validates() && $this->Actioninsertion->saveAll( $data, array( 'validate' => 'only' ) ) ) {
                 $saved = $this->Refpresta->save( $data['Refpresta'] );
                 unset( $data['Refpresta'] );
                 $data['Prestform'][0]['refpresta_id'] = $this->Refpresta->id;
@@ -106,7 +154,7 @@
                 else {
                     $this->Contratinsertion->rollback();
                 }
-            }
+            }*/
 
         }
 
@@ -196,19 +244,25 @@
 //                 debug( $this->data );
 
                 $this->Contratinsertion->set( $this->data );
-//                 $this->Refpresta->create();
-                $this->Refpresta->set( $this->data['Refpresta'] );
                 $valid = $this->Contratinsertion->validates();
 
-                $valid = $this->Refpresta->validates();
+                if( isset( $this->data['Refpresta'] ) ) {
+                    $this->Refpresta->create();
+                    $this->Refpresta->set( $this->data['Refpresta'] );
+                    $valid = $this->Refpresta->validates();
+                }
+
                 $valid = $this->Actioninsertion->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
                 $valid = $this->Dspp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
 
                 if( $valid ) {
+                    $saved = true;
                     $this->Actioninsertion->create();
-                    $saved = $this->Refpresta->save( $this->data['Refpresta'] );
-                    unset( $this->data['Refpresta'] );
-                    $this->data['Prestform'][0]['refpresta_id'] = $this->Refpresta->id;
+                    if( isset( $this->data['Prestform'] ) ) {
+                        $saved = $this->Refpresta->save( $this->data['Refpresta'] ) && $saved;
+                        unset( $this->data['Refpresta'] );
+                        $this->data['Prestform'][0]['refpresta_id'] = $this->Refpresta->id;
+                    }
                     $saved = $this->Dspp->saveAll( $this->data, array( 'validate' => 'first' ) ) && $saved;
                     $saved = $this->Actioninsertion->saveAll( $this->data, array( 'validate' => 'first' ) ) && $saved;
 
@@ -340,19 +394,34 @@
                 array(
                     'conditions' => array(
                     'Contratinsertion.id' => $contratinsertion_id
-                    )
+                    ),
+                    'recursive' => 1
                 )
             );
+// debug( $contratinsertion );
 
-            $personne = $this->Personne->find( 
-                'first', 
-                array( 
-                    'conditions'=> array( 
+            $personne = $this->Personne->find(
+                'first',
+                array(
+                    'conditions'=> array(
                         'Personne.id' => $contratinsertion['Personne']['id']
                     ),
                     'recursive' => 2
                 )
             );
+
+//             $action = $this->Actioninsertion->find( 
+//                 'first',
+//                 array(
+//                     'conditions'=> array( 
+//                         'Actioninsertion.contratinsertion_id' => $contratinsertion['Contratinsertion']['id']
+//                     ),
+//                     'recursive' => 1
+//                 )
+//             );
+//             $this->set( 'action', $action );
+
+
             // Assignation à la vue
             $this->set( 'personne', $personne );
 
@@ -386,6 +455,7 @@
 
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
 
+
             if( !empty( $this->data ) ) {
                 if( $this->Contratinsertion->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -397,6 +467,7 @@
                 $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => 0 ) );
                 $contratinsertion['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
                 $this->data = $contratinsertion;
+
 
                 $dspp = $this->Dspp->find(
                     'first',

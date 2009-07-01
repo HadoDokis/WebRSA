@@ -408,6 +408,12 @@ msgstr "Le "
 msgid "lib_action"
 msgstr "Libellé de l'action"
 
+msgid "dd_action"
+msgstr "Date de début de l'action"
+
+msgid "df_action"
+msgstr "Date de fin de l'action"
+
 msgid "lib_aide"
 msgstr "Libellé de l'aide"
 
