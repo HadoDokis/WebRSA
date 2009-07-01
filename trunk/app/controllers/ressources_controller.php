@@ -96,7 +96,7 @@
                 if( $validates ) {
                     $this->Ressource->begin();
                     $saved = $this->Ressource->save( $this->data );
-                    if( isset( $this->data['Ressourcemensuelle'] ) && isset( $this->data['Detailressourcemensuelle'] ) ) {
+                    if( isset( $this->data['Ressourcemensuelle'] ) ) {
                         foreach( $this->data['Ressourcemensuelle'] as $index => $dataRm ) {
                             $dataRm['ressource_id'] = $this->Ressource->id;
                             $this->Ressourcemensuelle->create();
