@@ -21,6 +21,20 @@
             )
         );
 
+        var $validate = array(
+            'libelle' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'codeinsee' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            )
+        );
     }
 
 ?>

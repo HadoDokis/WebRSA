@@ -1,5 +1,5 @@
 <?php
-    class structurereferente extends AppModel
+    class Structurereferente extends AppModel
     {
         var $name = 'Structurereferente';
         var $useTable = 'structuresreferentes';
@@ -55,23 +55,35 @@
         );
 
         var $validate = array(
-            'type_totalisation' => array(
+            'lib_struc' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
             ),
-            'mttotsoclrsa' => array(
+            'num_voie' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
             ),
-            'mttotsoclmajorsa' => array(
+            'type_voie' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
             ),
-            'mttotlocalrsa' => array(
+            'nom_voie' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
             ),
-            'mttotrsa' => array(
+            'code_postal' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'ville' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'code_insee' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'typeorient_id'=> array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
             )
