@@ -17,7 +17,7 @@ function clearcache() {
 function clearlogs() {
     (
         cd "$APP_DIR/tmp/logs/" && \
-        find . -type f -not -path '*/.svn/*' -not -name "empty" | while read -r ; do echo "$REPLY"; done
+        find . -type f -not -path '*/.svn/*' -not -name "empty" | while read -r ; do echo -n "" > "$REPLY"; done
     )
 }
 
