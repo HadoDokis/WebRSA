@@ -96,15 +96,17 @@
                 if( $validates ) {
                     $this->Ressource->begin();
                     $saved = $this->Ressource->save( $this->data );
-                    foreach( $this->data['Ressourcemensuelle'] as $index => $dataRm ) {
-                        $dataRm['ressource_id'] = $this->Ressource->id;
-                        $this->Ressourcemensuelle->create();
-                        $saved = $this->Ressourcemensuelle->save( $dataRm ) && $saved;
-                        if( isset( $this->data['Detailressourcemensuelle'] ) ){
-                            $dataDrm = $this->data['Detailressourcemensuelle'][$index];
-                            $dataDrm['ressourcemensuelle_id'] = $this->Ressourcemensuelle->id;
-                            $this->Detailressourcemensuelle->create();
-                            $saved = $this->Detailressourcemensuelle->save( $dataDrm ) && $saved;
+                    if( isset( $this->data['Ressourcemensuelle'] ) && isset( $this->data['Detailressourcemensuelle'] ) ) {
+                        foreach( $this->data['Ressourcemensuelle'] as $index => $dataRm ) {
+                            $dataRm['ressource_id'] = $this->Ressource->id;
+                            $this->Ressourcemensuelle->create();
+                            $saved = $this->Ressourcemensuelle->save( $dataRm ) && $saved;
+                            if( isset( $this->data['Detailressourcemensuelle'] ) ){
+                                $dataDrm = $this->data['Detailressourcemensuelle'][$index];
+                                $dataDrm['ressourcemensuelle_id'] = $this->Ressourcemensuelle->id;
+                                $this->Detailressourcemensuelle->create();
+                                $saved = $this->Detailressourcemensuelle->save( $dataDrm ) && $saved;
+                            }
                         }
                     }
                     if( $saved ) {
