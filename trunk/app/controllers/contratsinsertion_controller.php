@@ -158,6 +158,104 @@
 
         }
 
+        function test2() { ///Test Unitaire afin de vérifier le bon fonctionnement des enregistrements
+            $data = Array (
+                'Contratinsertion' => Array (
+                    'id' => 1,
+                    'personne_id' => 1,
+                    'typocontrat_id' => 2,
+                    'structurereferente_id' => 1,
+                    'dd_ci' => Array (
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2019',
+                        ),
+
+                    'duree_engag' => '1',
+                    'df_ci' => Array (
+                            'day' => '01',
+                            'month' => '01',
+                            'year' => '2019'
+                        ),
+
+                    'diplomes' => 'l!khp',
+                    'expr_prof' => 'ùpjho$',
+                    'form_compl' => 'ùpjo$j',
+                    'actions_prev' => '1',
+                    'obsta_renc' => '',
+                    'serviceinstructeur_id' => 1,
+                    'service_soutien' => 'Service 2, 14 rue la bas 30900 nimes, 04 67 66 66 66',
+                    'pers_charg_suivi' => 'auzolat arnaud',
+                    'objectifs_fixes' => 'ùpho',
+                    'engag_object' => 'ùphầ',
+                    'emp_trouv' => '0',
+                    'nature_projet' => 'opjầçh',
+                    'lieu_saisi_ci' => 'ihiĥ',
+                    'date_saisi_ci' => Array (
+                            'day' => '30',
+                            'month' => '06',
+                            'year' => '2009'
+                        ),
+
+                    'Le bénéficiaire : ' => 'prosper minnie'
+                ),
+                'Actioninsertion' => Array (
+                    array(
+                        'id'            => 1,
+                        'lib_action'   => 'P',
+                        'dd_action'     => Array (
+                            'day' => '30',
+                            'month' => '06',
+                            'year' => '2009'
+                        ),
+                        'df_action' => Array (
+                            'day' => '30',
+                            'month' => '06',
+                            'year' => '2009'
+                        ),
+                    )
+                ),
+                'Refpresta' => array (
+                    'id'                =>  1,
+                    'nomrefpresta'      => 'arno auzeolat',
+                    'prenomrefpresta'   => 'moihùp'
+                ),
+                'Prestform' => Array (
+                    'id'                    => 1,
+                    'actioninsertion_id'    => 1,
+                    'refpresta_id'          => 1,
+                    'lib_presta'            => '06',
+                    'date_presta' => Array (
+                        'day'   => '01',
+                        'month' => '01',
+                        'year'  => '2019'
+                    )
+                )
+            );
+
+            // TODO: validation
+            $this->Contratinsertion->begin();
+
+            $this->Refpresta->set( $data['Refpresta'] );
+            $saved = $this->Refpresta->save();
+
+            $saved = $this->Contratinsertion->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
+
+            $data['Prestform']['actioninsertion_id'] = $this->Contratinsertion->Actioninsertion->id;
+            $data['Prestform']['refpresta_id'] = $this->Refpresta->id;
+            $this->Prestform->set( $data['Prestform'] );
+            $saved = $this->Prestform->save() && $saved;
+
+            if( $saved ) {
+                $this->Contratinsertion->commit();
+            }
+            else {
+                $this->Contratinsertion->rollback();
+            }
+            debug( $data );
+        }
+
+
         function view( $contratinsertion_id = null ){
             // TODO : vérif param
             // Vérification du format de la variable
@@ -395,7 +493,7 @@
                     'conditions' => array(
                     'Contratinsertion.id' => $contratinsertion_id
                     ),
-                    'recursive' => 1
+                    'recursive' => 0
                 )
             );
 // debug( $contratinsertion );
@@ -410,16 +508,16 @@
                 )
             );
 
-//             $action = $this->Actioninsertion->find( 
-//                 'first',
-//                 array(
-//                     'conditions'=> array( 
-//                         'Actioninsertion.contratinsertion_id' => $contratinsertion['Contratinsertion']['id']
-//                     ),
-//                     'recursive' => 1
-//                 )
-//             );
-//             $this->set( 'action', $action );
+            $action = $this->Actioninsertion->find( 
+                'first',
+                array(
+                    'conditions'=> array( 
+                        'Actioninsertion.contratinsertion_id' => $contratinsertion['Contratinsertion']['id']
+                    ),
+                    'recursive' => 1
+                )
+            );
+            $this->set( 'action', $action );
 
 
             // Assignation à la vue
@@ -454,7 +552,7 @@
             $this->set( 'matricule', $dossier['Dossier']['matricule'] );
 
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
-
+// debug( $contratinsertion );
 
             if( !empty( $this->data ) ) {
                 if( $this->Contratinsertion->saveAll( $this->data ) ) {
@@ -467,6 +565,8 @@
                 $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => 0 ) );
                 $contratinsertion['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
                 $this->data = $contratinsertion;
+//                 $action['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
+//                 $this->data = $action;
 
 
                 $dspp = $this->Dspp->find(

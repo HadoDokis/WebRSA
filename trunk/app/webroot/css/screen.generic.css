@@ -21,8 +21,16 @@ p {
 
 #pageCartouche * { font-size: 10px; }
 #pageCartouche thead { display: none; }
-#pageCartouche { position: relative; }
-#pageCartouche table { position: absolute; right: 0; top: 1em; }
+#pageCartouche {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+}
+#pageCartouche table {
+    position: absolute;
+    right: 0;
+    top: 1em;
+}
 
 /*---------------------------------------------------------------------------*/
 
