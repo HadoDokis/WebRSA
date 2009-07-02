@@ -28,108 +28,108 @@
             $this->Wizard->cancelUrl = '/ajoutdossiers/wizard';
 
             //INFO: on peut préremplir le wizard pour les tests
-            $this->Session->write(
-                'Wizard.Ajoutdossiers.allocataire',
-                array(
-                    'Personne' => array(
-                        'qual'      => 'MR',
-                        'nom'       => 'Auzolat',
-                        'prenom'    => 'Arnaud',
-                        'dtnai'   => array(
-                            'day'   => '11',
-                            'month' => '09',
-                            'year'  => '1981'
-                        ),
-                        'rgnai' => 1,
-                        'nir' => rand_nir(),
-                        'topvalec' => 0,
-                        'nati' => 'C',
-                        'pieecpres' => 'E'
-                    ),
-                    'Prestation' => array(
-                        'natprest'  => 'RSA',
-                        'rolepers'  => 'DEM',
-                    )
-                )
-            );
-            $this->Session->write(
-                'Wizard.Ajoutdossiers.conjoint',
-                array(
-                    'Personne' => array(
-                        'qual'      => 'MME',
-                        'nom'       => 'Buffin',
-                        'prenom'    => 'Simone',
-                        'dtnai'   => array(
-                            'day'   => '01',
-                            'month' => '01',
-                            'year'  => '2009'
-                        ),
-                        'rgnai' => 1,
-                        'nir' => rand_nir(),
-                        'topvalec' => 0,
-                        'nati' => 'C',
-                        'pieecpres' => 'E'
-                    ),
-                    'Prestation' => array(
-                        'natprest'  => 'RSA',
-                        'rolepers'  => 'CJT',
-                    )
-                )
-            );
-            $this->Session->write(
-                'Wizard.Ajoutdossiers.adresse',
-                array(
-                    'Adressefoyer' => array(
-                        'rgadr'     => '01',
-                        'typeadr'   => 'D'
-                    ),
-                    'Adresse' => array(
-                        'numvoie' => 8,
-                        'typevoie' => 'rue',
-                        'nomvoie' => 'des rosiers',
-                        'codepos' => '34000', // FIXME: + code insée
-                        'numcomptt' => '34080',
-                        'locaadr' => 'Montpellier',
-                        'pays' => 'FRA'
-                    ),
-                )
-            );
-            $this->Session->write(
-                'Wizard.Ajoutdossiers.ressourcesallocataire',
-                array(
-                    'Ressource' => array(
-                        'ddress' => array(
-                            'day' => '01',
-                            'month' => '01',
-                            'year' => '2009'
-                        ),
-                        'dfress' => array(
-                            'day' => '01',
-                            'month' => '01',
-                            'year' => '2009'
-                        ),
-                        'topressnotnul' => 0
-                    )
-                )
-            );
-            $this->Session->write(
-                'Wizard.Ajoutdossiers.ressourcesconjoint',
-                array(
-                    'Ressource' => array(
-                        'ddress' => array(
-                            'day' => '01',
-                            'month' => '01',
-                            'year' => '2009'
-                        ),
-                        'dfress' => array(
-                            'day' => '01',
-                            'month' => '01',
-                            'year' => '2009'
-                        ),
-                        'topressnul' => 0
-                    )
-                )
-            );
+//             $this->Session->write(
+//                 'Wizard.Ajoutdossiers.allocataire',
+//                 array(
+//                     'Personne' => array(
+//                         'qual'      => 'MR',
+//                         'nom'       => 'Auzolat',
+//                         'prenom'    => 'Arnaud',
+//                         'dtnai'   => array(
+//                             'day'   => '11',
+//                             'month' => '09',
+//                             'year'  => '1981'
+//                         ),
+//                         'rgnai' => 1,
+//                         'nir' => rand_nir(),
+//                         'topvalec' => 0,
+//                         'nati' => 'C',
+//                         'pieecpres' => 'E'
+//                     ),
+//                     'Prestation' => array(
+//                         'natprest'  => 'RSA',
+//                         'rolepers'  => 'DEM',
+//                     )
+//                 )
+//             );
+//             $this->Session->write(
+//                 'Wizard.Ajoutdossiers.conjoint',
+//                 array(
+//                     'Personne' => array(
+//                         'qual'      => 'MME',
+//                         'nom'       => 'Buffin',
+//                         'prenom'    => 'Simone',
+//                         'dtnai'   => array(
+//                             'day'   => '01',
+//                             'month' => '01',
+//                             'year'  => '2009'
+//                         ),
+//                         'rgnai' => 1,
+//                         'nir' => rand_nir(),
+//                         'topvalec' => 0,
+//                         'nati' => 'C',
+//                         'pieecpres' => 'E'
+//                     ),
+//                     'Prestation' => array(
+//                         'natprest'  => 'RSA',
+//                         'rolepers'  => 'CJT',
+//                     )
+//                 )
+//             );
+//             $this->Session->write(
+//                 'Wizard.Ajoutdossiers.adresse',
+//                 array(
+//                     'Adressefoyer' => array(
+//                         'rgadr'     => '01',
+//                         'typeadr'   => 'D'
+//                     ),
+//                     'Adresse' => array(
+//                         'numvoie' => 8,
+//                         'typevoie' => 'rue',
+//                         'nomvoie' => 'des rosiers',
+//                         'codepos' => '34000', // FIXME: + code insée
+//                         'numcomptt' => '34080',
+//                         'locaadr' => 'Montpellier',
+//                         'pays' => 'FRA'
+//                     ),
+//                 )
+//             );
+//             $this->Session->write(
+//                 'Wizard.Ajoutdossiers.ressourcesallocataire',
+//                 array(
+//                     'Ressource' => array(
+//                         'ddress' => array(
+//                             'day' => '01',
+//                             'month' => '01',
+//                             'year' => '2009'
+//                         ),
+//                         'dfress' => array(
+//                             'day' => '01',
+//                             'month' => '01',
+//                             'year' => '2009'
+//                         ),
+//                         'topressnotnul' => 0
+//                     )
+//                 )
+//             );
+//             $this->Session->write(
+//                 'Wizard.Ajoutdossiers.ressourcesconjoint',
+//                 array(
+//                     'Ressource' => array(
+//                         'ddress' => array(
+//                             'day' => '01',
+//                             'month' => '01',
+//                             'year' => '2009'
+//                         ),
+//                         'dfress' => array(
+//                             'day' => '01',
+//                             'month' => '01',
+//                             'year' => '2009'
+//                         ),
+//                         'topressnul' => 0
+//                     )
+//                 )
+//             );
 
             return parent::beforeFilter();
         }
@@ -406,9 +406,9 @@
 
                     // Prestation
                     $this->Personne->Prestation->create();
-                    $data['allocataire']['Prestation']['personne_id'] = $conjoint_id;
-                    $this->Personne->Prestation->set( $data['allocataire'] );
-                    $saved = $this->Personne->Prestation->save( $data['allocataire'] ) && $saved;
+                    $data['conjoint']['Prestation']['personne_id'] = $conjoint_id;
+                    $this->Personne->Prestation->set( $data['conjoint'] );
+                    $saved = $this->Personne->Prestation->save( $data['conjoint'] ) && $saved;
 
                     // Type orientation conjoint
                     $this->Orientstruct->create();
