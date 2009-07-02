@@ -42,7 +42,7 @@ function make_treemenus( absoluteBaseUrl ) {
     var relBaseUrl = absoluteBaseUrl.replace( new RegExp( '^(http://[^/]+/)' ), '/' );
 
     $$( '.treemenu a' ).each( function ( elmtA ) {
-        if( elmtA.href.replace( absoluteBaseUrl, '/' ) == currentUrl || elmtA.href.replace( absoluteBaseUrl, '/' ) == currentUrl.replace( '/edit/', '/view/' ) ) {
+        if( elmtA.href.replace( absoluteBaseUrl, '/' ) == currentUrl || elmtA.href.replace( absoluteBaseUrl, '/' ) == currentUrl.replace( '/edit/', '/view/' ) || elmtA.href.replace( absoluteBaseUrl, '/' ) == currentUrl.replace( '/add/', '/view/' ) || elmtA.href.replace( absoluteBaseUrl, '/' ) == currentUrl.replace( '/add/', '/index/' ) ) {
             // Montrer tous les ancètres
             elmtA.ancestors().each( function ( aAncestor ) {
                 aAncestor.show();
