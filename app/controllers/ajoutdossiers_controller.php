@@ -27,7 +27,7 @@
             $this->Wizard->completeUrl = '/ajoutdossiers/confirm';
             $this->Wizard->cancelUrl = '/ajoutdossiers/wizard';
 
-            //INFO: on peut préremplir le wizard pour les tests
+//             //INFO: on peut préremplir le wizard pour les tests
 //             $this->Session->write(
 //                 'Wizard.Ajoutdossiers.allocataire',
 //                 array(
@@ -130,7 +130,6 @@
 //                     )
 //                 )
 //             );
-
             return parent::beforeFilter();
         }
 

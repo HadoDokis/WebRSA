@@ -1,6 +1,7 @@
     <script type="text/javascript">
         document.observe("dom:loaded", function() {
             observeDisableFieldsOnValue( 'PersonneQual', [ 'PersonneNomnai' ], 'MME', false );
+
         });
     </script>
 
@@ -12,10 +13,10 @@
             <?php echo $form->input( 'Personne.prenom', array( 'label' => required( __( 'prenom', true ) ) ) );?>
             <?php echo $form->input( 'Personne.prenom2', array( 'label' => __( 'prenom2', true ) ) );?>
             <?php echo $form->input( 'Personne.prenom3', array( 'label' => __( 'prenom3', true ) ) );?>
-            <?php echo $form->input( 'Personne.dtnai', array( 'label' => required( __( 'dtnai', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
             <?php echo $form->input( 'Personne.typedtnai', array( 'label' => __( 'typedtnai', true ), 'type' => 'select', 'options' => $typedtnai, 'empty' => true ) );?>
+            <?php echo $form->input( 'Personne.dtnai', array( 'label' => required( __( 'dtnai', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
             <?php echo $form->input( 'Personne.nomcomnai', array( 'label' => __( 'nomcomnai', true ) ) );?>
-            <?php echo $form->input( 'Personne.rgnai', array( 'label' => required( __( 'rgnai', true ) ) ) );?>
+            <?php echo $form->input( 'Personne.rgnai', array( 'label' => required( __( 'rgnai', true ) ) , 'maxLength' => 2) );?>
             <?php echo $form->input( 'Personne.nir', array( 'label' => required( __( 'nir', true ) ) ) );?>
             <?php echo $form->input( 'Personne.topvalec', array( 'label' => __( 'topvalec', true ) ) );?>
     </fieldset>

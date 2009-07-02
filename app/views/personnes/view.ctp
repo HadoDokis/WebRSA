@@ -28,10 +28,6 @@
                 ).' </li>';
             }
 
-//             echo '<li>'.$html->deleteLink(
-//                 'Supprimer la personne « '.$title.' »',
-//                 array( 'controller' => 'personnes', 'action' => 'delete', $personne['Personne']['id'] )
-//             ).' </li>';
         ?>
     </ul>
 
@@ -40,11 +36,11 @@
         <tbody>
             <tr class="even">
                 <th><?php __( 'rolepers' );?></th>
-                <td><?php echo $rolepers[$personne['Prestation']['rolepers']];?></td>
+                <td><?php echo isset( $rolepers[$personne['Prestation']['rolepers']] ) ? $rolepers[$personne['Prestation']['rolepers']] : null ;?></td>
             </tr>
             <tr class="odd">
                 <th><?php __( 'qual' );?></th>
-                <td><?php echo $qual[$personne['Personne']['qual']];?></td>
+                <td><?php echo isset( $qual[$personne['Personne']['qual']] ) ? $qual[$personne['Personne']['qual']] : null ;?></td>
             </tr>
             <tr class="even">
                 <th><?php __( 'nom' );?></th>
