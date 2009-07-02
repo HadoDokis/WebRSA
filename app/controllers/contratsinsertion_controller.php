@@ -565,8 +565,6 @@
                 $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => 0 ) );
                 $contratinsertion['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
                 $this->data = $contratinsertion;
-//                 $action['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
-//                 $this->data = $action;
 
 
                 $dspp = $this->Dspp->find(

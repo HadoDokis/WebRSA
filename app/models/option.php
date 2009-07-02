@@ -837,6 +837,14 @@
             );
         }
 
+        function printed() {
+            return array(
+                '' => 'Imprimé/Non imprimé',
+                'I' => 'Imprimé',
+                'N' => 'Non imprimé'
+            );
+        }
+
         function qual() {
             return array(
                 'MME' => 'Madame',

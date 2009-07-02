@@ -109,6 +109,7 @@
             $this->set( 'oridemrsa', $this->Option->oridemrsa() );
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );
+            $this->set( 'printed', $this->Option->printed() );
 
             // Un des formulaires a été renvoyé
             if( !empty( $this->data ) ) {
