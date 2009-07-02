@@ -19,6 +19,18 @@
         <?php echo $form->input( 'Filtre.oridemrsa', array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $oridemrsa, 'empty' => false, 'value' => $oridemrsaCochees ) );?>
     </fieldset>
 
+    <fieldset>
+        <legend>Commune de la personne</legend>
+        <?php echo $form->input( 'Filtre.locaadr', array( 'label' => __( 'locaadr', true ), 'type' => 'text' ) );?>
+    </fieldset>
+
+    <?php if( $this->action == 'orientees' ):?>
+        <fieldset>
+            <legend>Imprimé/Non imprimé</legend>
+            <?php echo $form->input( 'Filtre.date_impression', array( 'label' => 'Filtrer par impression', 'type' => 'select', 'options' => $printed, 'empty' => true ) );?>
+        </fieldset>
+    <?php endif;?>
+
     <?php echo $form->input( 'Filtre.dtdemrsa', array( 'label' => 'Filtrer par date de demande', 'type' => 'checkbox' ) );?>
     <fieldset>
         <legend>Date de demande RSA</legend>

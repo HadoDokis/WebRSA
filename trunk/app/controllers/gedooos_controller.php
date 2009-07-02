@@ -122,9 +122,17 @@
                     )
                 )
             );
+
             $personne['Orientstruct'] = $orientstruct['Orientstruct'];
             $personne['Structurereferente'] = $orientstruct['Structurereferente'];
 
+            if( empty( $personne['Orientstruct']['date_impression'] ) ){
+                $orientstruct['Orientstruct']['date_impression'] = strftime( '%Y-%m-%d', mktime() );
+                $this->Orientstruct->create();
+                $this->Orientstruct->set( $orientstruct['Orientstruct'] );
+                $this->Orientstruct->save( $orientstruct['Orientstruct'] );
+            }
+// debug($orientstruct['Orientstruct']  );
             $this->_ged( $personne, 'notification_structure.odt' );
         }
 

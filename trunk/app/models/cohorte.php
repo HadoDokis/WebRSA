@@ -107,6 +107,7 @@
                     'conditions' => array(
                         'Adressefoyer.foyer_id' => ( !empty( $filtres['Foyer.id'] ) ? $filtres['Foyer.id'] : null ),
                         'Adressefoyer.rgadr' => '01',
+                        '"Adresse"."locaadr" ILIKE'  => '%'.$criteres['Filtre']['locaadr'].'%',
                         'Adresse.numcomptt'  => ( !empty( $mesCodesInsee ) ? $mesCodesInsee : null )
                     ),
                     'recursive' => 0
@@ -131,6 +132,26 @@
 
             // --------------------------------------------------------
 
+            $conditions = array(
+                'Orientstruct.statut_orient' => $statutOrientation,
+                'Orientstruct.personne_id'   => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null )
+            );
+
+            if( !empty( $criteres['Filtre']['date_impression'] ) ) {
+                if( $criteres['Filtre']['date_impression'] == 'I' ) {
+                    $conditions = Set::merge(
+                        $conditions,
+                        array( '"Orientstruct"."date_impression" NOT' => NULL )
+                    );
+                }
+                else if( $criteres['Filtre']['date_impression'] == 'N' ) {
+                    $conditions = Set::merge(
+                        $conditions,
+                        array( '"Orientstruct"."date_impression"' => NULL )
+                    );
+                }
+            }
+
             $filtres['Personne.id'] = $this->Dossier->Foyer->Personne->Orientstruct->find(
                 'list',
                 array(
@@ -138,10 +159,7 @@
                         'Orientstruct.personne_id',
                         'Orientstruct.personne_id'
                     ),
-                    'conditions'    => array(
-                        'Orientstruct.statut_orient' => $statutOrientation,
-                        'Orientstruct.personne_id'   => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null )
-                    ),
+                    'conditions'    => $conditions,
                     'recursive'     => -1
                 )
             );
@@ -156,7 +174,7 @@
                         'Ressource.personne_id'
                     ),
                     'conditions' => array(
-                        '"Ressource.mtpersressmenrsa" <' => 500,
+                        '"Ressource.mtpersressmenrsa" <' => 500, ///FIXME: toppersdrodevorsa
                         'Ressource.personne_id' => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null ),
                     ),
                     'recursive' => -1
