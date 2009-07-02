@@ -68,22 +68,20 @@
                     'conditions' => array(
                         'Personne.foyer_id' => $foyer_id
                     ),
-                    'recursive' => -1
+                    'recursive' => 0
                 )
             );
 
             $saved = true;
-            foreach( $personnesFoyer as $personneFoyer ) {
+            foreach( $personnesFoyer as $personne ) {
                 $this->Personne->Prestation->create();
-                $prestationUpdate = array(
-                    'Prestation' => array(
-                        'personne_id'       => $personneFoyer['Personne']['id'],
-                        'natprest'          => 'RSA',
-                        'toppersdrodevorsa' => $this->Personne->soumisDroitsEtDevoirs( $personneFoyer['Personne']['id'] )
-                    )
-                );
-                $this->Personne->Prestation->set( $prestationUpdate );
-                $saved =  $this->Personne->Prestation->save( $prestationUpdate ) && $saved;
+                // FIXME: pourquoi certains sont vides ?
+                if( isset( $personne['Prestation'] ) ) {
+                    $personne['Prestation']['toppersdrodevorsa'] = $this->Personne->soumisDroitsEtDevoirs( $personne['Personne']['id'] );
+                    $this->Personne->Prestation->set( $personne['Prestation'] );
+                    $saved =  $this->Personne->Prestation->save( $personne['Prestation'] ) && $saved;
+
+                }
             }
 
             return $saved;
