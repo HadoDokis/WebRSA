@@ -379,14 +379,19 @@
                 $data['adresse']['Adressefoyer']['foyer_id'] = $this->Foyer->id;
                 $data['adresse']['Adressefoyer']['adresse_id'] = $this->Adresse->id;
                 $saved = $this->Adressefoyer->save( $data['adresse']['Adressefoyer'] ) && $saved;
-
+//debug( $data['allocataire'] );
                 // Demandeur
                 $this->Personne->create();
                 $data['allocataire']['Personne']['foyer_id'] = $this->Foyer->id;
                 $this->Personne->set( $data['allocataire'] );
-// debug( $data['allocataire'] );
                 $saved = $this->Personne->save( $data['allocataire'] ) && $saved;
                 $demandeur_id = $this->Personne->id;
+
+                // Prestation
+                $this->Personne->Prestation->create();
+                $data['allocataire']['Prestation']['personne_id'] = $demandeur_id;
+                $this->Personne->Prestation->set( $data['allocataire'] );
+                $saved = $this->Personne->Prestation->save( $data['allocataire'] ) && $saved;
 
                 // Type orientation demandeur
                 $this->Orientstruct->create();
@@ -398,6 +403,12 @@
                     $data['conjoint']['Personne']['foyer_id'] = $this->Foyer->id;
                     $saved = $this->Personne->save( $data['conjoint']['Personne'] );
                     $conjoint_id = $this->Personne->id;
+
+                    // Prestation
+                    $this->Personne->Prestation->create();
+                    $data['allocataire']['Prestation']['personne_id'] = $conjoint_id;
+                    $this->Personne->Prestation->set( $data['allocataire'] );
+                    $saved = $this->Personne->Prestation->save( $data['allocataire'] ) && $saved;
 
                     // Type orientation conjoint
                     $this->Orientstruct->create();

@@ -158,12 +158,12 @@
                     )
                 );
 
-                $this->assert( !empty( $personne ), 'error500' );
+                $this->assert( !empty( $personne ), 'invalidParameter' );
 
                 $conditions['"Foyer"."id"'] = $personne['Personne']['foyer_id'];
             }
 
-            $this->assert( !empty( $conditions ), 'error500' );
+            $this->assert( !empty( $conditions ), 'invalidParameter' );
 
             $dossier = $this->Dossier->find(
                 'first',
@@ -173,7 +173,7 @@
                 )
             );
 
-            $this->assert( !empty( $dossier ), 'error500' );
+            $this->assert( !empty( $dossier ), 'invalidParameter' );
 
             usort( $dossier['Foyer']['AdressesFoyer'], create_function( '$a,$b', 'return strcmp( $a["rgadr"], $b["rgadr"] );' ) );
 
@@ -258,33 +258,45 @@
                     'recursive' => 0
                 )
             );
-            $this->assert( !empty( $dossier ), 'error500' );
+            $this->assert( !empty( $dossier ), 'invalidParameter' );
 
             //*****************************************************************
 
-            // FIXME: on l'a déjà trouvé plus haut ?
             $personne = $this->Personne->find(
                 'first',
                 array(
                     'conditions' => array(
                         'Personne.foyer_id' => $dossier['Foyer']['id'],
+                        'Prestation.rolepers' => array( 'DEM' )
                     ),
-                    'joins' => array(
-                        array(
-                            'table'      => 'prestations',
-                            'alias'      => 'Prestation',
-                            'type'       => 'inner',
-                            'foreignKey' => false,
-                            'conditions' => array(
-                                'Prestation.personne_id = Personne.id',
-                                'Prestation.rolepers' => array( 'DEM' )
-                            )
-                        )
-                    ),
-                    'recursive' => -1
+                    'recursive' => 0
                 )
             );
-            $this->assert( !empty( $personne ), 'error500' );
+            $this->assert( !empty( $personne ), 'invalidParameter' );
+
+//             // FIXME: on l'a déjà trouvé plus haut ?
+//             $personne = $this->Personne->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Personne.foyer_id' => $dossier['Foyer']['id'],
+//                     ),
+//                     'joins' => array(
+//                         array(
+//                             'table'      => 'prestations',
+//                             'alias'      => 'Prestation',
+//                             'type'       => 'inner',
+//                             'foreignKey' => false,
+//                             'conditions' => array(
+//                                 'Prestation.personne_id = Personne.id',
+//                                 'Prestation.rolepers' => array( 'DEM' )
+//                             )
+//                         )
+//                     ),
+//                     'recursive' => -1
+//                 )
+//             );
+//             $this->assert( !empty( $personne ), 'invalidParameter' );
 
             //-----------------------------------------------------------------
 
@@ -295,7 +307,7 @@
                     'recursive' => 2
                 )
             );
-            //$this->assert( !empty( $orientStruct ), 'error500' );
+            //$this->assert( !empty( $orientStruct ), 'invalidParameter' );
 
             //-----------------------------------------------------------------
 
@@ -306,7 +318,7 @@
                     'recursive' => -1
                 )
             );
-            //$this->assert( !empty( $contratinsertion ), 'error500' );
+            //$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
 
             //-----------------------------------------------------------------
 
@@ -328,7 +340,7 @@
                     'recursive' => 1
                 )
             );
-            //$this->assert( !empty( $adresseFoyer ), 'error500' );
+            //$this->assert( !empty( $adresseFoyer ), 'invalidParameter' );
             $dossier = Set::merge( $dossier, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
 
             //-----------------------------------------------------------------

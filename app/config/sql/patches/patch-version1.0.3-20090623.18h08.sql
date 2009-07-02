@@ -27,3 +27,4 @@ ALTER TABLE personnes DROP COLUMN toppersdrodevorsa;
 
 -- 2
 ALTER TABLE orientsstructs ADD COLUMN date_impression DATE;
+
