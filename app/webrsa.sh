@@ -34,9 +34,10 @@ function package() {
         # TODO: mettre les bonnes valeurs de cache et de debug
         mv "$version/app/config/webrsa.inc" "$version/app/config/webrsa.inc.default" && \
         mv "$version/app/config/core.php" "$version/app/config/core.php.default" && \
-        echo "$version" > "$version/app/VERSION.txt"
-        # TODO/FIXME
-#         sed "s/^ \*Configure::write\( \*'debug' \*, \*[0-9] \*\) \*;/    Configure::write( 'debug', 0 );/" "$version/app/config/core.php.default"
+        echo "$version" > "$version/app/VERSION.txt" && \
+        sed -i "s/Configure::write *( *'debug' *, *[0-9] *) *;/Configure::write('debug', 0);/" "$version/app/config/core.php.default" && \
+        sed -i "s/Configure::write *( *'Cache\.disable' *, *[^)]\+ *) *;/Configure::write('Cache.disable', false);/" "$version/app/config/core.php.default"
+
     ) && \
     (
         cd "$WORK_DIR/package/$version" >> "/dev/null" 2>&1 && \
