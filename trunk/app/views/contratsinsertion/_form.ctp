@@ -5,7 +5,6 @@
 //         document.observe("dom:loaded", function() {
 //             date( 'ContratinsertionDdCiDay', 'ContratinsertionDdCiMonth', 'ContratinsertionDdCiYear', ['ContratinsertionDureeEngag'], 'ContratinsertionDfCiDay', 'ContratinsertionDfCiMonth', 'ContratinsertionDfCiYear' )
 //         });
-
 </script>
 
 <script type="text/javascript">
@@ -100,6 +99,7 @@
             <?php echo $form->input( 'Actioninsertion.df_action', array( 'label' => required( __( 'df_action', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
 
             <?php echo $form->input( 'Aidedirecte.0.typo_aide', array( 'label' => required( __( 'typo_aide', true ) ), 'type' => 'select', 'options' => $typo_aide, 'empty' => true )  ); ?>
+            <?php echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'maxLength' => 2  ) ); ?>
             <?php echo $form->input( 'Aidedirecte.0.lib_aide', array( 'label' => required( __( 'lib_aide', true ) ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
             <?php echo $form->input( 'Aidedirecte.0.date_aide', array( 'label' => required( __( 'date_aide', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
 

@@ -167,6 +167,9 @@ msgstr "Disposez-vous d'un moyen de transport collectif ou individuel ?"
 msgid "natmob"
 msgstr "Etes-vous mobile ?"
 
+msgid "dipfra"
+msgstr "Diplôme Français/Etranger"
+
 msgid "toppersdrodevorsa"
 msgstr "Personne soumise à droits et devoirs ?"
 ###############################################################################
@@ -404,6 +407,8 @@ msgstr "Le "
 ###############################################################################
 # Actions d'insertion
 ###############################################################################
+msgid "code_action"
+msgstr "Code de l'action"
 
 msgid "lib_action"
 msgstr "Libellé de l'action"

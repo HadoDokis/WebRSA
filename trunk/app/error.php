@@ -31,6 +31,9 @@
             if ($method !== 'error') {
                 if( Configure::read( 'debug' ) == 0 ) {
                     switch( $method ) {
+                        case 'dateHabilitationUser':
+                            $method = 'dateHabilitationUser';
+                        break;
                         case 'incompleteUser':
                             $method = 'incompleteUser';
                         break;
@@ -108,6 +111,25 @@
             ));
             $this->_outputMessage( 'locked_dossier' );
         }
+
+        function dateHabilitationUser( $params ) {
+            extract( $params, EXTR_OVERWRITE );
+
+            if (!isset($url)) {
+                $url = $this->controller->here;
+            }
+            $url = Router::normalize($url);
+            header("HTTP/1.0 401 Unauthorized");
+            $this->controller->set(array(
+                'code' => '401',
+                'name' => __( 'Unauthorized', true ),
+                'message' => $url,
+                'base' => $this->controller->base,
+                'params' => $params
+            ));
+            $this->_outputMessage( 'date_habilitation_user' );
+        }
+
 
         function error403( $params ) {
             extract($params, EXTR_OVERWRITE);

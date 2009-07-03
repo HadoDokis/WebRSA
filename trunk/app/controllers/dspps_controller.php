@@ -22,6 +22,7 @@
             $this->set( 'elopersdifdisp', $this->Option->elopersdifdisp() );
             $this->set( 'obstemploidifdisp', $this->Option->obstemploidifdisp() );
             $this->set( 'soutdemarsoc', $this->Option->soutdemarsoc() );
+            $this->set( 'dipfra', $this->Option->dipfra() );
 
             $this->set( 'duractdomi', $this->Option->duractdomi() );
             // Données socioprofessionnelles personne
@@ -58,6 +59,17 @@
             $this->assert( !empty( $personne ), 'invalidParameter' );
 
             $dspp = $this->Dspp->findByPersonneId( $personne_id, null, null, 2 );
+
+
+            $contrat = $this->Contratinsertion->find(
+                'first',
+                array(
+                    'conditions'=> array(
+                        'Contratinsertion.personne_id' => $personne_id
+                    )
+                )
+            );
+            $dspp['Dspp']['diplomes'] = $contrat['Contratinsertion']['diplomes'];
 
             $this->set( 'dspp', $dspp );
             $this->set( 'personne_id', $personne_id );
@@ -156,18 +168,18 @@
                 $this->data = $dspp;
 
 
-            $contrat = $this->Contratinsertion->find(
-                'first',
-                array(
-                    'conditions'=> array(
-                        'Contratinsertion.personne_id' => $personne_id
+                $contrat = $this->Contratinsertion->find(
+                    'first',
+                    array(
+                        'conditions'=> array(
+                            'Contratinsertion.personne_id' => $personne_id
+                        )
                     )
-                )
-            );
+                );
 
-            $personne = $this->Personne->find( 'first', array( 'conditions'=> array( 'Personne.id' => $personne_id ), 'recursive' => 1 ));
-// debug( $contrat );
-            $this->data['Dspp']['diplomes'] = $contrat['Contratinsertion']['diplomes'];
+                $personne = $this->Personne->find( 'first', array( 'conditions'=> array( 'Personne.id' => $personne_id ), 'recursive' => 1 ));
+    // debug( $contrat );
+                $this->data['Dspp']['diplomes'] = $contrat['Contratinsertion']['diplomes'];
             }
 
             $this->Dspp->commit();
