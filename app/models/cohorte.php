@@ -9,7 +9,7 @@
         var $name = 'Cohorte';
         var $useTable = false;
 
-        function search( $statutOrientation, $mesCodesInsee, $criteres, $lockedDossiers, $limit = PHP_INT_MAX ) {
+        function search( $statutOrientation, $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers, $limit = PHP_INT_MAX ) {
             $conditions = array();
 
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
@@ -97,6 +97,19 @@
 
             // --------------------------------------------------------
 
+            $conditions = array(
+                'Adressefoyer.foyer_id' => ( !empty( $filtres['Foyer.id'] ) ? $filtres['Foyer.id'] : null ),
+                'Adressefoyer.rgadr' => '01',
+                '"Adresse"."locaadr" ILIKE'  => '%'.$criteres['Filtre']['locaadr'].'%'
+            );
+
+            if( $filtre_zone_geo ) {
+                $conditions = Set::merge(
+                    $conditions,
+                    array( 'Adresse.numcomptt'  => ( !empty( $mesCodesInsee ) ? $mesCodesInsee : null ) )
+                );
+            }
+
             $filtres['Foyer.id'] = $this->Adressefoyer->find(
                 'list',
                 array(
@@ -104,12 +117,7 @@
                         'Adressefoyer.id',
                         'Adressefoyer.foyer_id'
                     ),
-                    'conditions' => array(
-                        'Adressefoyer.foyer_id' => ( !empty( $filtres['Foyer.id'] ) ? $filtres['Foyer.id'] : null ),
-                        'Adressefoyer.rgadr' => '01',
-                        '"Adresse"."locaadr" ILIKE'  => '%'.$criteres['Filtre']['locaadr'].'%',
-                        'Adresse.numcomptt'  => ( !empty( $mesCodesInsee ) ? $mesCodesInsee : null )
-                    ),
+                    'conditions' => $conditions,
                     'recursive' => 0
                 )
             );

@@ -101,7 +101,7 @@
 
         //*********************************************************************
 
-        function findByZones( $zonesGeographiques = array() ) {
+        function findByZones( $zonesGeographiques = array(), $filtre_zone_geo = true ) {
             $this->Foyer->unbindModelAll();
 
             $this->Foyer->bindModel(
@@ -126,14 +126,18 @@
                 )
             );
 
-            $foyers = $this->Foyer->find(
-                'all',
-                array (
+            if( $filtre_zone_geo ) {
+                $params = array (
                     'conditions' => array(
                         'Adresse.numcomptt' => array_values( $zonesGeographiques )
                     )
-                )
-            );
+                );
+            }
+            else {
+                $params = array();
+            }
+
+            $foyers = $this->Foyer->find( 'all', $params );
 
             $return = Set::extract( $foyers, '{n}.Foyer.dossier_rsa_id' );
             return ( !empty( $return ) ? $return : null );

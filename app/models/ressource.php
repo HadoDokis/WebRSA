@@ -110,34 +110,9 @@
             $return = parent::afterSave( $created );
 
             $thisPersonne = $this->Personne->findById( $this->data['Ressource']['personne_id'], null, null, -1 );
-            return $this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
+            $this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
 
-            // FIXME -> quel rôles ?
-//             $personnesFoyer = $this->Personne->find(
-//                 'all',
-//                 array(
-//                     'conditions' => array(
-//                         'Personne.foyer_id' => $thisPersonne['Personne']['foyer_id']
-//                     ),
-//                     'recursive' => -1
-//                 )
-//             );
-//
-//             $saved = true;
-//             foreach( $personnesFoyer as $personneFoyer ) {
-//                 // FIXME -> changement de table
-//                 $this->Personne->create();
-//                 $personneUpdate = array(
-//                     'Personne' => array(
-//                         'id'                => $personneFoyer['Personne']['id'],
-//                         'toppersdrodevorsa' => $this->Personne->soumisDroitsEtDevoirs( $personneFoyer['Personne']['id'] )
-//                     )
-//                 );
-//                 $this->Personne->set( $personneUpdate );
-//                 $saved =  $this->Personne->save() && $saved;
-//             }
-//
-//             return $saved;
+            return $return;
         }
 
         //*********************************************************************

@@ -28,5 +28,9 @@ ALTER TABLE personnes DROP COLUMN toppersdrodevorsa;
 -- 2
 ALTER TABLE orientsstructs ADD COLUMN date_impression DATE;
 
+--------------- Ajout du 02 07 09 - 14h36 ------------------
+ALTER TABLE orientsstructs ALTER COLUMN date_impression SET DEFAULT NULL;
+ALTER TABLE users ADD COLUMN filtre_zone_geo BOOLEAN DEFAULT true;
+
 --------------- Ajout du 03 07 09 - 10h45 ------------------
 ALTER TABLE dspps ADD COLUMN dipfra CHAR(1);

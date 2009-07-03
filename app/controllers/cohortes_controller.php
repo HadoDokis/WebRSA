@@ -177,7 +177,7 @@
                     $this->Dossier->begin(); // Pour les jetons
 
                     $_limit = 10;
-                    $cohorte = $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->data, $this->Jetons->ids(), $_limit );
+                    $cohorte = $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids(), $_limit );
                     $this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Orientstruct' ) ) ); // FIXME
                     $cohorte = $this->Dossier->Foyer->Personne->find(
                         'all',

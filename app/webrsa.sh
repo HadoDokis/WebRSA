@@ -31,7 +31,6 @@ function package() {
         svn export svn+ssh://$USERNAME@svn.adullact.net/svnroot/webrsa/tags/$version >> "/dev/null" 2>&1 && \
         rm -f "$version/app/config/database.php.default" && \
         mv "$version/app/config/database.php" "$version/app/config/database.php.default" && \
-        # TODO: mettre les bonnes valeurs de cache et de debug
         mv "$version/app/config/webrsa.inc" "$version/app/config/webrsa.inc.default" && \
         mv "$version/app/config/core.php" "$version/app/config/core.php.default" && \
         echo "$version" > "$version/app/VERSION.txt" && \
