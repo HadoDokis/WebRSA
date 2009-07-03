@@ -117,6 +117,12 @@
 
         //*********************************************************************
 
+//         function afterSave( $created ) {
+//
+//         }
+
+        //*********************************************************************
+
         function dossierId( $personne_id ) {
             $this->unbindModelAll();
             $this->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) );
@@ -141,40 +147,47 @@
                         )
                     ),
                     'hasOne' => array(
-                        'Dspp'
+                        'Dspp',
+                        'Prestation' => array(
+                            'foreignKey' => 'personne_id',
+                            'conditions' => array (
+                                'Prestation.natprest' => array( 'RSA' )
+                            )
+                        )
                     )
                 )
             );
 
             $personne = $this->findById( $personne_id, null, null, 1 );
-
-            $montantForfaitaire = $this->Foyer->montantForfaitaire( $personne['Personne']['foyer_id'] );
-            if( $montantForfaitaire ) {
-                return $montantForfaitaire;
-            }
-            else {
-                if( isset( $personne['Ressource'] ) && isset( $personne['Ressource'][0] ) && isset( $personne['Ressource'][0]['mtpersressmenrsa'] ) ) {
-                    $montant = $personne['Ressource'][0]['mtpersressmenrsa'];
+            if( isset( $personne['Prestation'] ) && ( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ) ) {
+                $montantForfaitaire = $this->Foyer->montantForfaitaire( $personne['Personne']['foyer_id'] );
+                if( $montantForfaitaire ) {
+                    return $montantForfaitaire;
                 }
                 else {
-                    $montant = 0;
+                    if( isset( $personne['Ressource'] ) && isset( $personne['Ressource'][0] ) && isset( $personne['Ressource'][0]['mtpersressmenrsa'] ) ) {
+                        $montant = $personne['Ressource'][0]['mtpersressmenrsa'];
+                    }
+                    else {
+                        $montant = 0;
+                    }
+                    if( $montant < 500 ) {
+                        return true;
+                    }
                 }
-                if( $montant < 500 ) {
-                    return true;
-                }
-            }
 
-            $dspp = array_filter( array( 'Dspp' => $personne['Dspp'] ) );
-            $hispro = Set::extract( $dspp, 'Dspp.hispro' );
-            if( $hispro !== NULL ) {
-                // Passé professionnel ? -> Emploi
-                //     1901 : Vous avez toujours travaillé
-                //     1902 : Vous travaillez par intermittence
-                if( $dspp['Dspp']['hispro'] == '1901' || $dspp['Dspp']['hispro'] == '1902' ) {
-                    return false;
-                }
-                else {
-                    return true;
+                $dspp = array_filter( array( 'Dspp' => $personne['Dspp'] ) );
+                $hispro = Set::extract( $dspp, 'Dspp.hispro' );
+                if( $hispro !== NULL ) {
+                    // Passé professionnel ? -> Emploi
+                    //     1901 : Vous avez toujours travaillé
+                    //     1902 : Vous travaillez par intermittence
+                    if( $dspp['Dspp']['hispro'] == '1901' || $dspp['Dspp']['hispro'] == '1902' ) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
                 }
             }
             return false;

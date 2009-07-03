@@ -95,7 +95,7 @@
                 }
 
                 // INFO: seulement les dossiers qui sont dans ma zone géographique
-                $filters['Dossier.id'] =  $this->Dossier->findByZones( $this->Session->read( 'Auth.Zonegeographique' ) );
+                $filters['Dossier.id'] =  $this->Dossier->findByZones( $this->Session->read( 'Auth.Zonegeographique' ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 
                 // Recherche
                 $this->Dossier->recursive = 2;

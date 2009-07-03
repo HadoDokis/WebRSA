@@ -235,7 +235,6 @@
 
                 $this->data = $ressource;
             }
-            // TODO: toppersdrodevorsa
 
             $this->Ressource->commit();
             $this->set( 'personne_id', $ressource['Ressource']['personne_id'] );

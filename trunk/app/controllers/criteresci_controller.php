@@ -41,7 +41,7 @@
                 $conditions = array();
 
                 // INFO: seulement les personnes qui sont dans ma zone géographique
-                $conditions['Contratinsertion.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ) );
+                $conditions['Contratinsertion.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 
                 //Critère recherche par Contrat insertion: date de création contrat
                 if( !dateComplete( $this->data, 'Contratinsertion.date_saisi_ci' ) ) {

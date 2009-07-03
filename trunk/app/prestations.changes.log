@@ -61,11 +61,11 @@ OK => Dspf
     app/controllers/dspfs_controller.php:77:                    $dsp[$personneFoyer['Prestation']['rolepers']] = array_merge( $dsp[$personneFoyer['Prestation']['rolepers']], $dsp_personne );
     app/controllers/dspfs_controller.php:80:                    unset( $dsp[$personneFoyer['Prestation']['rolepers']]['Dspp'] );
 
-=> Foyer
+OK => Foyer
     app/models/foyer.php:80:                        'natprest'          => 'RSA',
     app/models/foyer.php:81:                        'toppersdrodevorsa' => $this->Personne->soumisDroitsEtDevoirs( $personneFoyer['Personne']['id'] )
 
-=> Ajoutdossier
+OK => Ajoutdossier
     app/controllers/ajoutdossiers_controller.php:35://                         'rolepers'  => 'DEM',
     app/controllers/ajoutdossiers_controller.php:56://                         'rolepers'  => 'CJT',
     app/controllers/ajoutdossiers_controller.php:148:                    $this->set( 'rolepers', $this->Option->rolepers() );
@@ -74,7 +74,7 @@ OK => Dspf
     app/views/ajoutdossiers/conjoint.ctp:7:    <?php echo $form->input( 'Prestation.natprest', array( 'type' => 'hidden', 'value' => 'RSA' ) );?>
     app/views/ajoutdossiers/conjoint.ctp:8:    <?php echo $form->input( 'Prestation.rolepers', array( 'type' => 'hidden', 'value' => 'CJT' ) );?>
 
-=> Dossiersimplifie
+OK => Dossiersimplifie (TODO: date d'orientation ?)
     app/controllers/dossierssimplifies_controller.php:11:            $this->set( 'rolepers', $this->Option->rolepers() );
     app/controllers/dossierssimplifies_controller.php:12:            $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
     app/controllers/dossierssimplifies_controller.php:125:                unset( $tPers1['rolepers'] );
@@ -86,6 +86,6 @@ OK => Dspf
     app/views/dossierssimplifies/add.ctp:55:            <?php echo $form->input( 'Personne.1.toppersdrodevorsa', array(  'label' =>   __( 'toppersdrodevorsa', true ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
     app/views/dossierssimplifies/view.ctp:30://                             h( $personne['rolepers'] ),
 
-=> Ressource
+OK => Ressource
     app/models/ressource.php:132://                         'toppersdrodevorsa' => $this->Personne->soumisDroitsEtDevoirs( $personneFoyer['Personne']['id'] )
     app/controllers/ressources_controller.php:238:            // TODO: toppersdrodevorsa

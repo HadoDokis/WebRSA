@@ -46,7 +46,7 @@
                 $conditions = array();
 
                 // INFO: seulement les personnes qui sont dans ma zone géographique
-                $conditions['Orientstruct.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ) );
+                $conditions['Orientstruct.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 
                //Critères sur la date d'ouverture d'orientation
                 if( !dateComplete( $this->data, 'Dossier.dtdemrsa' ) ) {
@@ -119,7 +119,7 @@
                     )
                 );
 
-                $orients = $this->Orientstruct->find( 
+                $orients = $this->Orientstruct->find(
                     'all',
                     array(
                         'conditions' => array(

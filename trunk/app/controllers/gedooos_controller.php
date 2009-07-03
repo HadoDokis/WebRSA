@@ -411,7 +411,7 @@
         */
 
         function notifications_cohortes() {
-            $cohorte = $this->Cohorte->search( 'Orienté', array_values( $this->Session->read( 'Auth.Zonegeographique' ) ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+            $cohorte = $this->Cohorte->search( 'Orienté', array_values( $this->Session->read( 'Auth.Zonegeographique' ) ), $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 
             // Définition des variables & maccros
             // FIXME: chemins

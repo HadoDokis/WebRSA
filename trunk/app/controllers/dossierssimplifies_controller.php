@@ -4,6 +4,12 @@
         var $name = 'Dossierssimplifies';
         var $uses = array( 'Dossier', 'Foyer', /*'Adresse', 'Adressefoyer',*/ 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct', 'Typocontrat' );
 
+        /**
+        *
+        *
+        *
+        */
+
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'pays', $this->Option->pays() );
@@ -16,11 +22,13 @@
             $this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
         }
 
+        /**
+        *
+        *
+        *
+        */
+
         function view( $id = null ) {
-
-//             $this->set( 'typesOrient',   $this->Typeorient->listOptions()  );
-//             $this->set( 'structures',   $this->Structurereferente->list1Options()  );
-
             $typesOrient = $this->Typeorient->find(
                 'list',
                 array(
@@ -34,7 +42,7 @@
                 )
             );
             $this->set( 'typesOrient', $typesOrient );
-// debug( $typesOrient );
+
             $typesStruct = $this->Typeorient->find(
                 'list',
                 array(
@@ -48,7 +56,7 @@
                 )
             );
             $this->set( 'typesStruct', $typesStruct );
-// debug( $typesStruct );
+
             // FIXME: assert
             $dossier = $this->Dossier->find(
                 'first',
@@ -77,9 +85,13 @@
             $this->set( 'dossier', $dossier );
         }
 
+        /**
+        *
+        *
+        *
+        */
 
         function add() {
-
             $this->set( 'typesOrient',   $this->Typeorient->listOptions()  );
             $this->set( 'structures',   $this->Structurereferente->list1Options()  );
 
@@ -130,11 +142,8 @@
                 }
                 $validates = $this->Personne->saveAll( $this->data['Personne'], array( 'validate' => 'only' ) ) & $validates;
 
-
                 $validates = $this->Orientstruct->validates() && $validates;
                 $validates = $this->Structurereferente->validates() && $validates;
-
-
 
                 if( $validates ) {
                     $this->Dossier->begin();
@@ -149,16 +158,24 @@
                             $pData['foyer_id'] = $this->Foyer->id;
                             $this->Personne->set( $pData );
                             $saved = $this->Personne->save() && $saved;
+                            $personneId = $this->Personne->id;
+
+                            // Prestation
+                            $this->Personne->Prestation->create();
+                            $this->data['Prestation'][$key]['personne_id'] = $personneId;
+                            $this->Personne->Prestation->set( $this->data['Prestation'][$key] );
+                            $saved = $this->Personne->Prestation->save( $this->data['Prestation'][$key] ) && $saved;
 
                             // Orientation
-                            $this->Orientstruct->create();
-                            $this->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
-                            $this->data['Orientstruct'][$key]['valid_cg'] = true;
-                            $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
-                            $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
-                            $this->data['Orientstruct'][$key]['statut_orient'] = 'Orienté';
-                            $saved = $this->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
-
+                            if( Set::filter( $this->data['Orientstruct'][$key] ) != array() ) {
+                                $this->Orientstruct->create();
+                                $this->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
+                                $this->data['Orientstruct'][$key]['valid_cg'] = true;
+                                $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
+                                $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
+                                $this->data['Orientstruct'][$key]['statut_orient'] = 'Orienté';
+                                $saved = $this->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
+                            }
                         }
                     }
 
@@ -172,13 +189,19 @@
                     }
                 }
             }
-//            $this->render( $this->action, null, 'add_edit' );
         }
 
-        function edit( $personne_id = null, $orient_id = null ){
-            $this->assert( valid_int( $personne_id ), 'error404' );
+        /**
+        *
+        *
+        *
+        */
 
-            $personne   = $this->Personne->read(null, $personne_id);
+        function edit( $personne_id = null, $orient_id = null ){
+            $this->assert( valid_int( $personne_id ), 'invalidParameter' );
+
+            $personne   = $this->Personne->findById( $personne_id, null, null, 1 );
+// debug( $personne );
             $dossier_id =  $personne['Foyer']['dossier_rsa_id'] ;
             $dossimple  = $this->Dossier->read(null,$dossier_id );
 
@@ -194,9 +217,10 @@
 
 
             if( !empty( $this->data ) ) {
-
-                if (isset($personne['Orientstruct']['id']))
+                if( isset( $personne['Orientstruct']['id'] ) ) {
                     $this->data['Orientstruct']['id'] = $personne['Orientstruct']['id'];
+                }
+// debug( $this->data );
                 if( $this->Personne->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view',   $personne['Foyer']['id'] ) );

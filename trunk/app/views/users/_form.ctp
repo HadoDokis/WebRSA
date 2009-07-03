@@ -8,7 +8,8 @@
     <?php echo $form->input( 'User.date_deb_hab', array( 'label' =>  __( 'date_deb_hab', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y') + 10, 'minYear'=>date('Y') - 10 , 'empty' => true ) );?>
     <?php echo $form->input( 'User.date_fin_hab', array( 'label' =>  __( 'date_fin_hab', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y') + 10, 'minYear'=>date('Y') - 10, 'empty' => true ) ) ;?>
 </fieldset>
-<fieldset class="col2">
+<div><?php echo $form->input( 'User.filtre_zone_geo', array( 'label' => 'Restreindre les zones géographiques', 'type' => 'checkbox' ) );?></div>
+<fieldset class="col2" id="filtres_zone_geo">
     <legend>Zones géographiques</legend>
     <script type="text/javascript">
         function toutCocher() {
@@ -26,6 +27,7 @@
         document.observe("dom:loaded", function() {
             Event.observe( 'toutCocher', 'click', toutCocher );
             Event.observe( 'toutDecocher', 'click', toutDecocher );
+            observeDisableFieldsetOnCheckbox( 'UserFiltreZoneGeo', 'filtres_zone_geo', false );
         });
     </script>
     <?php echo $form->button( 'Tout cocher', array( 'id' => 'toutCocher' ) );?>
