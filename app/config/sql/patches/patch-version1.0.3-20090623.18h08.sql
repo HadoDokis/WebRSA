@@ -28,3 +28,5 @@ ALTER TABLE personnes DROP COLUMN toppersdrodevorsa;
 -- 2
 ALTER TABLE orientsstructs ADD COLUMN date_impression DATE;
 
+--------------- Ajout du 03 07 09 - 10h45 ------------------
+ALTER TABLE dspps ADD COLUMN dipfra CHAR(1);

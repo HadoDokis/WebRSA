@@ -46,25 +46,26 @@
     <?php echo $form->input( 'Difdisp.Difdisp', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $difdisps ) );?>
     </fieldset>
     <fieldset>
-            <legend>Niveau d'étude</legend>
-                <?php echo $form->input( 'Dspp.annderdipobt', array( 'label' =>  __( 'annderdipobt', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80, 'empty' => true ) );?>
-                <?php
-                    echo $widget->booleanRadio( 'Dspp.rappemploiquali', array( 'legend' => __( 'rappemploiquali', true )) );
-                ?>
-                <?php
-                    echo $widget->booleanRadio( 'Dspp.rappemploiform', array( 'legend' => __( 'rappemploiform', true )) );
-                ?>
-                <?php echo $form->input( 'Dspp.libautrqualipro', array( 'label' => __( 'libautrqualipro', true ), 'type' => 'text' ) );?>
-                <?php
-                    echo $widget->booleanRadio( 'Dspp.permicondub', array( 'legend' => __( 'permicondub', true )) );
-                ?>
-                <?php echo $form->input( 'Dspp.libautrpermicondu', array( 'label' => __( 'libautrpermicondu', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Dspp.libcompeextrapro', array( 'label' => __( 'libcompeextrapro', true ), 'type' => 'text' ) );?>
-                <legend><?php echo __( 'nivetu', true ) ?></legend>
-                <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
-                <br />
-                <?php echo $form->input( 'Dspp.diplomes', array( 'label' => __( 'diplomes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
-        </fieldset>
+        <legend>Niveau d'étude</legend>
+            <?php echo $form->input( 'Dspp.annderdipobt', array( 'label' =>  __( 'annderdipobt', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80, 'empty' => true ) );?>
+            <?php
+                echo $widget->booleanRadio( 'Dspp.rappemploiquali', array( 'legend' => __( 'rappemploiquali', true )) );
+            ?>
+            <?php
+                echo $widget->booleanRadio( 'Dspp.rappemploiform', array( 'legend' => __( 'rappemploiform', true )) );
+            ?>
+            <?php echo $form->input( 'Dspp.libautrqualipro', array( 'label' => __( 'libautrqualipro', true ), 'type' => 'text' ) );?>
+            <?php
+                echo $widget->booleanRadio( 'Dspp.permicondub', array( 'legend' => __( 'permicondub', true )) );
+            ?>
+            <?php echo $form->input( 'Dspp.libautrpermicondu', array( 'label' => __( 'libautrpermicondu', true ), 'type' => 'text' ) );?>
+            <?php echo $form->input( 'Dspp.libcompeextrapro', array( 'label' => __( 'libcompeextrapro', true ), 'type' => 'text' ) );?>
+            <?php echo $form->radio( 'Dspp.dipfra', $dipfra );?>
+<!--            <legend><?php echo __( 'nivetu', true ) ?></legend>-->
+            <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
+            <br />
+            <?php echo $form->input( 'Dspp.diplomes', array( 'label' => __( 'diplomes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
+    </fieldset>
 
     <fieldset>
             <legend>Situation professionnelle</legend>

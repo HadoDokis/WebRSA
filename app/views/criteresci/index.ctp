@@ -56,7 +56,7 @@
                     <th>Contrat envoyé par</th>
                     <th>N° CAF</th>
                     <th>Date de saisie du contrat</th>
-                    <th>Durée (en mois)</th>
+                    <th>Rang du contrat</th>
                     <th>Décision</th>
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
@@ -86,7 +86,7 @@
                                 h( $contrat['Contratinsertion']['pers_charg_suivi'] ),
                                 h( $contrat['Dossier']['matricule'] ),
                                 h( $contrat['Contratinsertion']['date_saisi_ci'] ),
-                                h( $contrat['Contratinsertion']['duree_engag'] ),
+                                h( $contrat['Contratinsertion']['rg_ci'] ),
                                 h( $decision_ci[$contrat['Contratinsertion']['decision_ci']].' '.$contrat['Contratinsertion']['datevalidation_ci']),
                                 array(
                                     $html->viewLink(

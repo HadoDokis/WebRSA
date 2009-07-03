@@ -21,22 +21,22 @@
 
         function act() {
             return array(
-                'AAP' => 'ACTIVITE EN ATELIER PROTEGE',
-                'ABA' => 'CHOMEUR-ALLOC DE BASE',
-                'ABS' => 'ABSENT DU FOYER',
-                'ADA' => 'CHOMEUR AUD OU PARE ABATTEMENT',
-                'ADN' => 'CHOMEUR AUD NEUTRALISATION',
-                'AFA' => 'AIDE FAMILIALE AGRICOLE',
-                'AFC' => 'CHO AFR - FIN STAGE - SCE.PUBLIC',
-                'AFD' => 'CHOMEUR-ALLOC FIN DROIT',
-                'AIN' => 'CHOMEUR-ALLOC INSERTION',
-                'AMA' => 'ASSISTANTE MATERNELLE AGREEE',
-                'AMT' => 'MI-TEMPS SUITE PLEIN TEMPS',
-                'ANI' => 'CHOM. NON INDEMNISE + ACTIV.',
-                'ANP' => 'INSCRIT A l\'ANPE',
-                'APP' => 'APPRENTI',
-                'ASP' => 'CHOMEUR-ALLOC SPECIALE',
-                'ASS' => 'CHOMEUR-ALLOC SOLIDARITE SPEC.',
+                'AAP' => 'Activité en atelier protégé',
+                'ABA' => 'Chômeur-alloc de base',
+                'ABS' => 'Absent du foyer',
+                'ADA' => 'Chômeur aud ou pare abattement',
+                'ADN' => 'Chômeur aud neutralisation',
+                'AFA' => 'Aide familiale agricole',
+                'AFC' => 'Cho afr - fin stage - sce.public',
+                'AFD' => 'Chômeur-alloc fin droit',
+                'AIN' => 'Chômeur-alloc insertion',
+                'AMA' => 'Assistante maternelle agréée',
+                'AMT' => 'Mi-temps suite plein temps',
+                'ANI' => 'Chôm. non indemnisé + activ.',
+                'ANP' => 'Inscrit à l\'anpe',
+                'APP' => 'Apprenti',
+                'ASP' => 'Chômeur-alloc spéciale',
+                'ASS' => 'Chômeur-alloc solidarité spec.',
                 'CAC' => 'CESSATION ACTIVITE POUR ENFANT',
                 'CAP' => 'CHOMEUR ET ACTIVITE > 55% DU SMIC',
                 'CAR' => 'DELAI DE CARENCE ASSEDIC',
@@ -93,26 +93,26 @@
                 'NCH' => 'PLUS DE DROIT / NON A CHARGE',
                 'NOB' => 'NON SOUMIS OBLIG. SCOLAIRE',
                 'PIL' => 'STAGIAIRE PROG INSERT. LOCALE',
-                'PRE' => 'PRE-RETRAITE',
-                'RAC' => 'REDUCTION ACTIVITE (CAT)',
-                'RAT' => 'RENTIER ACCIDENT DU TRAVAIL',
-                'RET' => 'RETRAITE(E)',
-                'RMA' => 'TITULAIRE CONTRAT CIRMA/CAV',
-                'RSA' => 'RETRAITE (E) MILITAIRE <60ANS',
-                'SAB' => 'CONGE SABBATIQUE',
-                'SAC' => 'CESSATION ACTIVITE BENEF AAH',
-                'SAL' => 'SALARIE(E)',
-                'SAV' => 'SANS ACTIVITE MOTIF CDAPH (ex-COTOREP)',
-                'SCI' => 'MALADE/HANDICAPE SCOLARISE',
-                'SCO' => 'SCOLAIRE',
-                'SFP' => 'STAGE FORM. PROFESSIONNELLE',
-                'SIN' => 'ACTIVITE INCONNUE',
-                'SNA' => 'SERVICE NATIONAL ACTIF',
-                'SNR' => 'STAGE NON REMUNERE ET RMI',
-                'SSA' => 'SANS ACTIVITE',
-                'SUR' => 'BENEF. RENTE DE SURVIVANT AT',
-                'TSA' => 'TRAVAILLEUR SAISONNIER',
-                'VRP' => 'VOYAGEUR REPRESENTANT PLACIER'
+                'PRE' => 'Pré-retraite',
+                'RAC' => 'Réduction activité (cat)',
+                'RAT' => 'Rentier accident du travail',
+                'RET' => 'Retraité(e)',
+                'RMA' => 'Titulaire contrat cirma/cav',
+                'RSA' => 'Retraité(e) militaire <60ans',
+                'SAB' => 'Congé sabbatique',
+                'SAC' => 'Cessation activité bénef aah',
+                'SAL' => 'Salarié(e)',
+                'SAV' => 'Sans activité motif cdaph (ex-cotorep)',
+                'SCI' => 'Malade/handicapé scolarisé',
+                'SCO' => 'Scolaire',
+                'SFP' => 'Stage form. professionnelle',
+                'SIN' => 'Activité inconnue',
+                'SNA' => 'Service national actif',
+                'SNR' => 'Stage non remunéré et rmi',
+                'SSA' => 'Sans activité',
+                'SUR' => 'Benef. rente de survivant at',
+                'TSA' => 'Travailleur saisonnier',
+                'VRP' => 'Voyageur représentant placier'
             );
         }
 
@@ -211,6 +211,13 @@
                 '1101' => 'Accès à un logement',
                 '1102' => 'Maintien dans le logement',
                 '1103' => 'Aucune'
+            );
+        }
+
+        function dipfra(){
+            return array(
+                'F' => 'Français',
+                'E' => 'Etranger'
             );
         }
 

@@ -18,13 +18,13 @@
                     <td> <?php echo $session->read( 'Auth.User.prenom' ) ;?> </td>
                     <td> <?php echo $session->read( 'Auth.Group.name' ) ;?> </td>
                     <td> <?php echo $session->read( 'Auth.Serviceinstructeur.lib_service' ) ;?> </td>
-                    <!-- <td>
+                    <!--<td>
                         <ul>
-                            <?php foreach( $session->read( 'Auth.Zonegeographique' ) as $zone ):?>
+                            <?php /*foreach( $session->read( 'Auth.Zonegeographique' ) as $zone ):?>
                                 <li><?php echo $zone;?></li>
-                            <?php endforeach;?>
+                            <?php endforeach;*/?>
                         </ul>
-                    </td> -->
+                    </td>-->
                 </tr>
             </tbody>
         </table>

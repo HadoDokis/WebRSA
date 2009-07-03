@@ -178,6 +178,10 @@
                 <td><?php echo $dspp['Dspp']['libcompeextrapro'];?></td>
             </tr>
             <tr class="even">
+                <th><?php __( 'dipfra' );?></th>
+                <td><?php echo isset( $dipfra[$dspp['Dspp']['dipfra']] ) ? $dipfra[$dspp['Dspp']['dipfra']] : null ;?></td>
+            </tr>
+            <tr class="odd">
                 <th><?php __( 'nivetu' );?></th>
                 <td>
                     <?php if( !empty( $dspp['Nivetu'] ) ):?>
@@ -189,9 +193,9 @@
                     <?php endif;?>
                 </td>
             </tr>
-            <tr class="odd">
+            <tr class="even">
                 <th><?php __( 'diplomes' );?></th>
-                <td><?php echo $dspp['Dspp']['diplomes'];?></td>
+                <td><?php echo isset( $dspp['Dspp']['diplomes'] ) ? $dspp['Dspp']['diplomes'] : null ;?></td>
             </tr>
         </tbody>
 </table>
