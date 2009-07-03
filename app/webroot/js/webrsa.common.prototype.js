@@ -350,3 +350,27 @@ function observeDisableFieldsOnBoolean( prefix, fieldsIds, value, condition ) {
         disableFieldsOnBoolean( prefix + otherValue, fieldsIds, otherValue, !condition );
     } );
 }
+
+//-----------------------------------------------------------------------------
+
+function setDateInterval( masterPrefix, slavePrefix, nMonths, firstDay ) {
+    // Initialisation
+    var d = new Date();
+    d.setDate( 1 );
+    d.setMonth( $F( masterPrefix + 'Month' ) - 1 );
+    d.setYear( $F( masterPrefix + 'Year' ) );
+
+    // Ajout de trois mois, et retour au derenier jour du mois précédent
+    d.setDate( d.getDate() + ( nMonths * 31 ) );
+    d.setDate( 1 );
+    if( !firstDay ) {
+        d.setDate( d.getDate() - 1 );
+    }
+
+    // Assignation
+    var day = d.getDate();
+    $( slavePrefix + 'Day' ).value = ( day < 10 ) ? '0' + day : day;
+    var month = d.getMonth() + 1;
+    $( slavePrefix + 'Month' ).value = ( month < 10 ) ? '0' + month : month;
+    $( slavePrefix + 'Year' ).value = d.getFullYear();
+}

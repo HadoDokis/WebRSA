@@ -1,14 +1,25 @@
 <script type="text/javascript">
+    function checkDatesToRefresh() {
+        if( ( $F( 'ContratinsertionDdCiMonth' ) ) && ( $F( 'ContratinsertionDdCiYear' ) )&& ( $F( 'ContratinsertionDureeEngag' ) ) ) {
+            var correspondances = new Array();
+            // FIXME: voir pour les array associatives
+            <?php foreach( $duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
 
-//         var newdate = date("d/M/Y", mktime(0, 0, 0, $mois + 1, $jour, $annee));
-//
-//         document.observe("dom:loaded", function() {
-//             date( 'ContratinsertionDdCiDay', 'ContratinsertionDdCiMonth', 'ContratinsertionDdCiYear', ['ContratinsertionDureeEngag'], 'ContratinsertionDfCiDay', 'ContratinsertionDfCiMonth', 'ContratinsertionDfCiYear' )
-//         });
-</script>
+            setDateInterval( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
+        }
+    }
 
-<script type="text/javascript">
     document.observe( "dom:loaded", function() {
+        Event.observe( $( 'ContratinsertionDdCiMonth' ), 'change', function() {
+            checkDatesToRefresh();
+        } );
+        Event.observe( $( 'ContratinsertionDdCiYear' ), 'change', function() {
+            checkDatesToRefresh();
+        } );
+        Event.observe( $( 'ContratinsertionDureeEngag' ), 'change', function() {
+            checkDatesToRefresh();
+        } );
+
         observeDisableFieldsOnBoolean( 'ContratinsertionActionsPrev', [ 'ContratinsertionObstaRenc'/*, 'PrestformLibPresta', 'RefprestaNomrefpresta', 'PrestformDatePrestaDay', 'PrestformDatePrestaMonth', 'PrestformDatePrestaYear' */], '1', false );
         observeDisableFieldsOnBoolean( 'ContratinsertionEmpTrouv', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], '0', false );
         observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
@@ -99,7 +110,7 @@
             <?php echo $form->input( 'Actioninsertion.df_action', array( 'label' => required( __( 'df_action', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
 
             <?php echo $form->input( 'Aidedirecte.0.typo_aide', array( 'label' => required( __( 'typo_aide', true ) ), 'type' => 'select', 'options' => $typo_aide, 'empty' => true )  ); ?>
-            <?php echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'maxLength' => 2  ) ); ?>
+            <!-- <?php echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'maxLength' => 2  ) ); ?> -->
             <?php echo $form->input( 'Aidedirecte.0.lib_aide', array( 'label' => required( __( 'lib_aide', true ) ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
             <?php echo $form->input( 'Aidedirecte.0.date_aide', array( 'label' => required( __( 'date_aide', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
 
