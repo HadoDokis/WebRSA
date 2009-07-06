@@ -53,7 +53,7 @@
             </tr> -->
             <tr class="odd">
                 <th ><?php __( 'drorsarmiant' );?></th>
-                <td><?php echo (isset( $drorsarmiant[$dspp['Dspp']['drorsarmiant']] ) ? $drorsarmiant[$dspp['Dspp']['drorsarmiant']] : null );?></td>
+                <td><?php echo ( isset( $drorsarmiant[$dspp['Dspp']['drorsarmiant']] ) ? $drorsarmiant[$dspp['Dspp']['drorsarmiant']] : null );?></td>
             </tr>
             <tr class="even">
                 <th><?php __( 'drorsarmianta2' );?></th>

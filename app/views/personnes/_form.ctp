@@ -2,6 +2,17 @@
         document.observe("dom:loaded", function() {
             observeDisableFieldsOnValue( 'PersonneQual', [ 'PersonneNomnai' ], 'MME', false );
 
+            $( 'PersonneTypedtnai' ).observe( 'change', function( event ) {
+                var type = $F( 'PersonneTypedtnai' );
+                if( type == 'J' ) {
+                    $( 'PersonneDtnaiDay' ).value = '01';
+                }
+                else if( type == 'O' ) {
+                    $( 'PersonneDtnaiDay' ).value = '31';
+                    $( 'PersonneDtnaiMonth' ).value = '12';
+                }
+            });
+
         });
     </script>
 

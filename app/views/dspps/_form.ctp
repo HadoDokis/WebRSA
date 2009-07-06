@@ -17,17 +17,17 @@
     </script>
 
     <fieldset>
-            <legend>Généralités DSPP</legend>
-                <?php echo $form->input( 'Dspp.drorsarmiant', array( 'label' =>  ( __( 'drorsarmiant', true ) ), 'type' => 'select', 'options' => $drorsarmiant, 'empty' => true ) );?>
-                <?php echo $form->input( 'Dspp.drorsarmianta2', array( 'label' =>  ( __( 'drorsarmianta2', true ) ), 'type' => 'select', 'options' => $drorsarmianta2, 'empty' => true ) );?>
-                <?php echo $form->input( 'Dspp.couvsoc', array( 'label' =>  ( __( 'couvsoc', true ) ), 'type' => 'select', 'options' => $couvsoc, 'empty' => true ) );?>
+        <legend>Généralités DSPP</legend>
+            <?php echo $form->input( 'Dspp.drorsarmiant', array( 'label' =>  ( __( 'drorsarmiant', true ) ), 'type' => 'select', 'options' => $drorsarmiant, 'empty' => true ) );?>
+            <?php echo $form->input( 'Dspp.drorsarmianta2', array( 'label' =>  ( __( 'drorsarmianta2', true ) ), 'type' => 'select', 'options' => $drorsarmianta2, 'empty' => true ) );?>
+            <?php echo $form->input( 'Dspp.couvsoc', array( 'label' =>  ( __( 'couvsoc', true ) ), 'type' => 'select', 'options' => $couvsoc, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
-            <legend>Situation sociale</legend>
-                <?php echo $form->input( 'Dspp.elopersdifdisp', array( 'label' =>  ( __( 'elopersdifdisp', true ) ), 'type' => 'select', 'options' => $elopersdifdisp, 'empty' => true ) );?>
-                <?php echo $form->input( 'Dspp.obstemploidifdisp', array( 'label' =>  ( __( 'obstemploidifdisp', true ) ), 'type' => 'select', 'options' => $obstemploidifdisp, 'empty' => true ) );?>
-                <?php echo $form->input( 'Dspp.soutdemarsoc', array( 'label' =>  ( __( 'soutdemarsoc', true ) ), 'type' => 'select', 'options' => $soutdemarsoc, 'empty' => true ) );?>
-                <?php echo $form->input( 'Dspp.libcooraccosocindi', array( 'label' => __( 'libcooraccosocindi', true ), 'type' => 'textarea', 'rows' =>3 ) );?>
+        <legend>Situation sociale</legend>
+            <?php echo $form->input( 'Dspp.elopersdifdisp', array( 'label' =>  ( __( 'elopersdifdisp', true ) ), 'type' => 'select', 'options' => $elopersdifdisp, 'empty' => true ) );?>
+            <?php echo $form->input( 'Dspp.obstemploidifdisp', array( 'label' =>  ( __( 'obstemploidifdisp', true ) ), 'type' => 'select', 'options' => $obstemploidifdisp, 'empty' => true ) );?>
+            <?php echo $form->input( 'Dspp.soutdemarsoc', array( 'label' =>  ( __( 'soutdemarsoc', true ) ), 'type' => 'select', 'options' => $soutdemarsoc, 'empty' => true ) );?>
+            <?php echo $form->input( 'Dspp.libcooraccosocindi', array( 'label' => __( 'libcooraccosocindi', true ), 'type' => 'textarea', 'rows' =>3 ) );?>
     </fieldset>
 
 
@@ -60,7 +60,7 @@
             ?>
             <?php echo $form->input( 'Dspp.libautrpermicondu', array( 'label' => __( 'libautrpermicondu', true ), 'type' => 'text' ) );?>
             <?php echo $form->input( 'Dspp.libcompeextrapro', array( 'label' => __( 'libcompeextrapro', true ), 'type' => 'text' ) );?>
-            <?php echo $form->radio( 'Dspp.dipfra', $dipfra );?>
+            <?php echo $form->radio( 'Dspp.dipfra', $dipfra, array( 'legend' => __( 'dipfra', true ) ) );?>
 <!--            <legend><?php echo __( 'nivetu', true ) ?></legend>-->
             <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
             <br />
