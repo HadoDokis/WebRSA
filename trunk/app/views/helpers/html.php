@@ -705,34 +705,6 @@ class HtmlHelper extends AppHelper {
         }
     }
 
-    function lockLink( $title, $url, $enabled = true ) {
-        $content = $this->image(
-            'icons/lock.png',
-            array( 'alt' => '' )
-        );/*.' Vérouillé';*/
-
-        if( $enabled ) {
-            return $this->link(
-                $content,
-                $url,
-                array( 'escape' => false, 'title' => $title )
-            );
-        }
-        else {
-            return '<span class="disabled">'.$content.'</span>';
-        }
-    }
-//     function deleteLink( $title, $url ) {
-//         return $this->link(
-//             $this->image(
-//                 'icons/delete.png',
-//                 array( 'alt' => '' )
-//             ).' Supprimer',
-//             $url,
-//             array( 'escape' => false, 'title' => $title ),
-//             $title.' ?'
-//         );
-//     }
     function deleteLink( $title, $url, $enabled = true ) {
         $content = $this->image(
                 'icons/delete.png',
