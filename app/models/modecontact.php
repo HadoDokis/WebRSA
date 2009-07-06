@@ -28,20 +28,6 @@
         var $validate = array(
             // Role personne
             'numtel' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-                array(
-                    'rule' => 'isUnique',
-                    'message' => 'Ce numéro est déjà utilisé'
-                ),
-                array(
-                    'rule' => array( 'between', 10, 14 ),
-                    'message' => 'Le numéro de téléphone est composé de 10 chiffres'
-                )
-            ),
-//             'numposte' => array(
 //                 array(
 //                     'rule' => 'notEmpty',
 //                     'message' => 'Champ obligatoire'
@@ -50,11 +36,25 @@
 //                     'rule' => 'isUnique',
 //                     'message' => 'Ce numéro est déjà utilisé'
 //                 ),
+                array(
+                    'rule' => array( 'between', 10, 14 ),
+                    'message' => 'Le numéro de téléphone est composé de 10 chiffres'
+                )
+            ),
+            'numposte' => array(
 //                 array(
-//                     'rule' => array( 'between', 4, 4 ),
-//                     'message' => 'Le numéro de poste est composé de 4 chiffres'
-//                 )
-//             ),
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 ),
+//                 array(
+//                     'rule' => 'isUnique',
+//                     'message' => 'Ce numéro est déjà utilisé'
+//                 ),
+                array(
+                    'rule' => array( 'between', 4, 4 ),
+                    'message' => 'Le numéro de poste est composé de 4 chiffres'
+                )
+            ),
 //             'nattel' => array(
 //                 array(
 //                     'rule' => 'notEmpty',

@@ -34,3 +34,6 @@ ALTER TABLE users ADD COLUMN filtre_zone_geo BOOLEAN DEFAULT true;
 
 --------------- Ajout du 03 07 09 - 10h45 ------------------
 ALTER TABLE dspps ADD COLUMN dipfra CHAR(1);
+
+--------------- Ajout du 03 07 09 - 10h45 -----------------
+ALTER TABLE modescontact ALTER COLUMN numposte TYPE VARCHAR(4);
