@@ -30,44 +30,49 @@
         * INFO: Préprofessionnelle => Socioprofessionnelle --> mette un type dans la table ?
         *
         */
+
         function _preOrientation( $element ) {
             $propo_algo = 'Emploi';
+
             if( isset( $element['Dspp'] ) ) {
                 $dspp = array_filter( $element['Dspp'] );
-                if( !empty( $dspp ) && isset( $element['Dspp']['dfderact'] ) ) { // FIXME
-                    $propo_algo = 'Socioprofessionnelle';
+                $propo_algo = 'Socioprofessionnelle';
+                $dfderact = null;
+                if( !empty( $element['Dspp']['dfderact'] ) ) {
                     list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
                     $dfderact = mktime( 0, 0, 0, $month, $day, $year );
-                    // Socioprofessionnelle, Social
-                    // 1°) Passé professionnel ? -> Emploi
-                    //     1901 : Vous avez toujours travaillé
-                    //     1902 : Vous travaillez par intermittence
-                    if( $element['Dspp']['hispro'] == '1901' || $element['Dspp']['hispro'] == '1902' ) {
-                        $propo_algo = 'Emploi';
-                    }
-                    // 2°) Etes-vous accompagné dans votre recherche d'emploi ?
-                    //     1802 : Pôle Emploi
-                    else if( $element['Dspp']['accoemploi'] == '1802' ) {
-                        $propo_algo = 'Emploi';
-                    }
-                    // 3°) Êtes-vous sans activité depuis moins de 24 mois ?
-                    //     Date éventuelle de cessation d’activité ?
-                    else if( ( !empty( $element['Dspp']['dfderact'] ) ) && ( $dfderact < strtotime( '-24 months' ) ) ) {
-                        $propo_algo = 'Emploi';
-                    }
-                    // Votre famille fait-elle l’objet d’un accompagnement ?
-                    //     0410: Logement
-                    //     0411: Endettement
-                    //     FIXME: Santé
-                    else {
-                        $dspf = $this->Dossier->Foyer->Dspf->find(
-                            'first',
-                            array(
-                                'conditions' => array( 'Dspf.id' => $element['Foyer']['Dspf']['id'] )
-                            )
-                        );
+                }
+
+                // Socioprofessionnelle, Social
+                // 1°) Passé professionnel ? -> Emploi
+                //     1901 : Vous avez toujours travaillé
+                //     1902 : Vous travaillez par intermittence
+                if( !empty( $element['Dspp']['hispro'] ) && ( $element['Dspp']['hispro'] == '1901' || $element['Dspp']['hispro'] == '1902' ) ) {
+                    $propo_algo = 'Emploi';
+                }
+                // 2°) Etes-vous accompagné dans votre recherche d'emploi ?
+                //     1802 : Pôle Emploi
+                else if( !empty( $element['Dspp']['accoemploi']) && ( $element['Dspp']['accoemploi'] == '1802' ) ) {
+                    $propo_algo = 'Emploi';
+                }
+                // 3°) Êtes-vous sans activité depuis moins de 24 mois ?
+                //     Date éventuelle de cessation d’activité ?
+                else if( !empty( $dfderact ) && ( $dfderact < strtotime( '-24 months' ) ) ) {
+                    $propo_algo = 'Emploi';
+                }
+                // Votre famille fait-elle l’objet d’un accompagnement ?
+                //     0410: Logement
+                //     0411: Endettement
+                //     FIXME: Santé
+                else {
+                    $dspf = $this->Dossier->Foyer->Dspf->find(
+                        'first',
+                        array(
+                            'conditions' => array( 'Dspf.id' => $element['Foyer']['Dspf']['id'] )
+                        )
+                    );
+                    if( !empty( $dspf ) ) {
                         // FIXME: grosse requête pour pas grand-chose
-    //                     $codes = Set::extract( $dspf, 'Nataccosocfam.{n}.code' );
                         if( $element['Foyer']['Dspf']['accosocfam'] == true ) {
                             $propo_algo = 'Social';
                         }
@@ -178,14 +183,14 @@
 
                     $_limit = 10;
                     $cohorte = $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids(), $_limit );
-                    $this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Orientstruct' ) ) ); // FIXME
+                    $this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp', 'Orientstruct' ) ) ); // FIXME
                     $cohorte = $this->Dossier->Foyer->Personne->find(
                         'all',
                         array(
                             'conditions' => array(
                                 'Personne.id' => ( !empty( $cohorte ) ? $cohorte : null )
                             ),
-                            'recursive' => 0,
+                            'recursive' => 1,
                             'limit'     => $_limit
                         )
                     );
@@ -245,7 +250,6 @@
                             );
                             $cohorte[$key]['Orientstruct']['Structurereferente'] = $Structurereferente['Structurereferente'];
                         }
-
                         if( $statutOrientation !== 'Orienté' ) {
 //                             $structuresReferentes = $this->Structurereferente->find(
 //                                 'list',
@@ -260,6 +264,7 @@
                             $this->set( 'structuresReferentes', $this->Structurereferente->list1Options() );
 //debug( $cohorte );
                             $cohorte[$key]['Orientstruct']['propo_algo_texte'] = $this->_preOrientation( $element );
+// debug( $cohorte[$key]['Orientstruct']['propo_algo_texte'] );
                             $tmp = array_flip( $typesOrient );
                             $cohorte[$key]['Orientstruct']['propo_algo'] = $tmp[$cohorte[$key]['Orientstruct']['propo_algo_texte']];
                             $cohorte[$key]['Orientstruct']['date_propo'] = date( 'Y-m-d' );
