@@ -37,7 +37,7 @@
 
         /**
         *
-        * FIXME: on ne l'utilise jamais ?
+        *
         *
         */
 
@@ -57,6 +57,7 @@
             $this->set( 'options2', $this->Structurereferente->list1Options() );
 
             if( !empty( $this->data ) ) {
+// debug( $this->data );
                 $this->Orientstruct->set( $this->data );
 //                 $this->Typeorient->set( $this->data );
 //                 $this->Structurereferente->set( $this->data );
@@ -74,7 +75,7 @@
                     $this->data['Orientstruct']['valid_cg'] = true;
                     $this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
                     $this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
-                    $this->data['Orientstruct']['statut_orient'] = 'En attente'; //FIXME: Voir si on le met en attente ou bien Non orienté (ici l'orientation n'est pas encore validé
+                    $this->data['Orientstruct']['statut_orient'] = 'Orienté';
 
                     $saved = $this->Orientstruct->Personne->Prestation->save( $this->data );
                     $saved = $this->Orientstruct->save( $this->data['Orientstruct'] ) && $saved;
@@ -90,8 +91,12 @@
                     }
                 }
             }
+            else {
+                $personne = $this->Personne->findByid( $personne_id, null, null, 0 );
+                $this->data['Prestation'] = $personne['Prestation'];
+            }
 
-            $this->Orientstruct->commit();
+            //$this->Orientstruct->commit();
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, 'add_edit' );
         }
