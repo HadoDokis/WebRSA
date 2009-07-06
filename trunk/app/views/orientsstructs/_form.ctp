@@ -21,7 +21,7 @@
         if( isset( $this->data['Prestation']['id'] ) ) {
             echo $form->input( 'Prestation.id', array(  'label' =>  false, 'type' => 'hidden' ) );
         }
-
+        echo $form->input( 'Orientstruct.statut_orient', array(  'label' =>  false, 'type' => 'hidden', 'value' => 'Orienté' ) );
     ?>
     <?php echo $form->input( 'Orientstruct.structurereferente_id', array( 'label' => required(__( 'lib_struc', true  )), 'type' => 'select', 'options' => $options2, 'empty' => true, 'selected' => $this->data['Orientstruct']['structurereferente_id'] ) );?>
     <?php echo $form->input( 'Prestation.toppersdrodevorsa', array(  'label' =>  required( __( 'toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
