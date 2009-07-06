@@ -397,7 +397,7 @@
                 $saved = $this->Orientstruct->save( array( 'Orientstruct' => array( 'personne_id' => $demandeur_id, 'statut_orient' => 'Non orienté' ) ) );
 
                 // Conjoint
-                if( count( array_filter( $data['conjoint']['Personne'] ) ) != 3 ) { // FIXME
+                if(  hasConjoint( $data['conjoint']['Personne'] ) ) { // FIXME
                     $this->Personne->create();
                     $data['conjoint']['Personne']['foyer_id'] = $this->Foyer->id;
                     $saved = $this->Personne->save( $data['conjoint']['Personne'] );
