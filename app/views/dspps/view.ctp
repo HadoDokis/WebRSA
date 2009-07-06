@@ -47,10 +47,6 @@
 
 <table>
         <tbody>
-           <!-- <tr class="even">
-                <th><?php __( 'lib_service' );?></th>
-                <td><?php /*echo ( $typeservices['Serviceinstructeur']['lib_service'] );*/ ?></td>
-            </tr> -->
             <tr class="odd">
                 <th ><?php __( 'drorsarmiant' );?></th>
                 <td><?php echo ( isset( $drorsarmiant[$dspp['Dspp']['drorsarmiant']] ) ? $drorsarmiant[$dspp['Dspp']['drorsarmiant']] : null );?></td>

@@ -83,6 +83,7 @@
                     <th>Commune de l'Allocataire</th>
                     <!--<th>État du dossier</th>-->
                     <th class="action">Actions</th>
+                    <th class="action">Verrouillé</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
             </thead>
@@ -128,7 +129,11 @@
                                     'Voir le dossier « '.$title.' »',
                                     array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] )
                                 ),
-
+                                $html->lockLink(
+                                    'Dossier vérouillé',
+                                    //array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ),
+                                    $permissions->check( 'dossiers', 'view' )
+                                ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
