@@ -132,7 +132,6 @@
                 $this->Orientstruct->set( $orientstruct['Orientstruct'] );
                 $this->Orientstruct->save( $orientstruct['Orientstruct'] );
             }
-// debug($orientstruct['Orientstruct']  );
             $this->_ged( $personne, 'notification_structure.odt' );
         }
 
@@ -460,6 +459,27 @@
                 }
 
                 $oIteration->addPart($oDevPart);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Récupération de la structure referente liée à la personne
+            $orientstruct = $this->Orientstruct->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.personne_id' => $personne_id
+                    )
+                )
+            );
+            if( empty( $personne['Orientstruct']['date_impression'] ) ){
+                $orientstruct['Orientstruct']['date_impression'] = strftime( '%Y-%m-%d', mktime() );
+                $this->Orientstruct->create();
+                $this->Orientstruct->set( $orientstruct['Orientstruct'] );
+                $this->Orientstruct->save( $orientstruct['Orientstruct'] );
+            }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
             }
             $oMainPart->addElement($oIteration);
 

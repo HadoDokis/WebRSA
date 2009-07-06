@@ -97,10 +97,11 @@
 
             // --------------------------------------------------------
 
+            $locaadr = ( isset( $criteres['Filtre']['locaadr'] ) ? $criteres['Filtre']['locaadr'] : null );
             $conditions = array(
                 'Adressefoyer.foyer_id' => ( !empty( $filtres['Foyer.id'] ) ? $filtres['Foyer.id'] : null ),
                 'Adressefoyer.rgadr' => '01',
-                '"Adresse"."locaadr" ILIKE'  => '%'.$criteres['Filtre']['locaadr'].'%'
+                '"Adresse"."locaadr" ILIKE'  => '%'.$locaadr.'%'
             );
 
             if( $filtre_zone_geo ) {
