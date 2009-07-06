@@ -129,10 +129,11 @@
                                     'Voir le dossier « '.$title.' »',
                                     array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] )
                                 ),
-                                $html->lockLink(
-                                    'Dossier vérouillé',
-                                    //array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ),
-                                    $permissions->check( 'dossiers', 'view' )
+                                ( $dossier['Dossier']['locked'] ?
+                                    $html->image(
+                                        'icons/lock.png',
+                                        array( 'alt' => '', 'title' => 'Dossier verrouillé' )
+                                    ) : null
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),

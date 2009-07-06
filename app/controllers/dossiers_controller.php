@@ -4,7 +4,7 @@
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur' );
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' );
         var $aucunDroit = array( 'menu' );
 
         var $paginate = array(
@@ -128,6 +128,15 @@
                         }
                     }
                     $dossiers[$key]['Derniereadresse'] = $derniereadresse;
+
+                    // Dossier verrouillé
+                    $lock = $this->Jeton->find( 'list', array( 'conditions' => array( 'Jeton.dossier_id' => $dossier['Foyer']['dossier_rsa_id'] ) ) );
+                    if( !empty( $lock ) ) {
+                        $dossiers[$key]['Dossier']['locked'] = true;
+                    }
+                    else {
+                        $dossiers[$key]['Dossier']['locked'] = false;
+                    }
                 }
 
                 $this->set( 'dossiers', $dossiers );
@@ -193,6 +202,15 @@
                 $this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Prestation' ) ));
                 $prestation = $this->Dossier->Foyer->Personne->findById( $personne['id'] );
                 $dossier['Foyer']['Personne'][$iPersonne]['Prestation'] = $prestation['Prestation'];
+            }
+
+            // Dossier verrouillé
+            $lock = $this->Jeton->find( 'list', array( 'conditions' => array( 'Jeton.dossier_id' => $dossier['Foyer']['dossier_rsa_id'] ) ) );
+            if( !empty( $lock ) ) {
+                $dossier['Dossier']['locked'] = true;
+            }
+            else {
+                $dossier['Dossier']['locked'] = false;
             }
 
             return $dossier;
