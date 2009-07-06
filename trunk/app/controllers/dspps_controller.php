@@ -69,7 +69,10 @@
                     )
                 )
             );
-            $dspp['Dspp']['diplomes'] = $contrat['Contratinsertion']['diplomes'];
+
+            if( !empty( $dspp ) ) {
+                $dspp['Dspp']['diplomes'] = $contrat['Contratinsertion']['diplomes'];
+            }
 
             $this->set( 'dspp', $dspp );
             $this->set( 'personne_id', $personne_id );
