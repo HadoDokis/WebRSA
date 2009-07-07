@@ -201,7 +201,7 @@
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
             $personne   = $this->Personne->findById( $personne_id, null, null, 1 );
-// debug( $personne );
+
             $dossier_id =  $personne['Foyer']['dossier_rsa_id'] ;
             $dossimple  = $this->Dossier->read(null,$dossier_id );
 
@@ -220,7 +220,13 @@
                 if( isset( $personne['Orientstruct']['id'] ) ) {
                     $this->data['Orientstruct']['id'] = $personne['Orientstruct']['id'];
                 }
-// debug( $this->data );
+
+                if( isset( $personne['Orientstruct']['typeorient_id'] ) && isset( $personne['Orientstruct']['structurereferente_id'] ) ) {
+                    $this->data['Orientstruct']['statut_orient'] = 'Orienté';
+                    $this->data['Orientstruct']['date_propo'] = strftime( '%Y-%m-%d', mktime() ); // FIXME
+                    $this->data['Orientstruct']['date_valid'] = strftime( '%Y-%m-%d', mktime() ); // FIXME
+                }
+
                 if( $this->Personne->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view',   $personne['Foyer']['id'] ) );
