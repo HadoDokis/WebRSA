@@ -223,12 +223,16 @@
                             </tr>
                             <tr class="odd">
                                 <th>Décision</th>
-                                 <?php if(  Set::extract( 'DEM.Contratinsertion', $dsp) != null ):?>
-                                    <td><?php echo ( !empty( $deciD )  ) ? $decision_ci[$deciD] : $decision_ci[''] ;?></td>
-                                <?php endif;?>
-                                <td><?php if( Set::extract( 'CJT.Contratinsertion', $dsp) != null ):?>
-                                    <?php echo ( !empty( $deciC )  ) ? $decision_ci[$deciC] : $decision_ci[''] ;?>
-                                <?php endif;?></td>
+                                <td>
+                                    <?php if(  Set::extract( 'DEM.Contratinsertion', $dsp) != null ):?>
+                                        <?php echo ( !empty( $deciD )  ) ? $decision_ci[$deciD] : $decision_ci[''] ;?>
+                                    <?php endif;?>
+                                </td>
+                                <td>
+                                    <?php if( Set::extract( 'CJT.Contratinsertion', $dsp) != null ):?>
+                                        <?php echo ( !empty( $deciC )  ) ? $decision_ci[$deciC] : $decision_ci[''] ;?>
+                                    <?php endif;?>
+                                </td>
                             </tr>
                             <tr class="even">
                                 <th>Date de décision</th>
