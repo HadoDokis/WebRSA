@@ -14,7 +14,7 @@ ALTER TABLE actionsinsertion ADD COLUMN lib_action CHAR(1);
 -- grep -r -n "rolepers\|natprest\|rolepers\|topchapers\|toppersdrodevorsa" app/ | grep -v "\/\.svn\/" | grep -v "\/config\/sql\/" | grep -v "\/locale\/" | grep -v "\.bak"
 
 -- 1
-DROP TABLE IF EXISTS prestations;
+--DROP TABLE IF EXISTS prestations;
 CREATE TABLE prestations AS SELECT id AS personne_id, natprest, rolepers, topchapers, toppersdrodevorsa
     FROM personnes;
 ALTER TABLE prestations ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
