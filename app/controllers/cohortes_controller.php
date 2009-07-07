@@ -133,7 +133,8 @@
 
                 //-------------------------------------------------------------
 
-                $mesCodesInsee = array_values( $this->Session->read( 'Auth.Zonegeographique' ) );
+                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
                 // --------------------------------------------------------
 
