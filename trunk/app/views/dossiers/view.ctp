@@ -120,8 +120,8 @@
                             </tr>
                             <tr class="odd">
                                 <th>Date de l'orientation</th>
-                                <td><?php echo value( $dsp, 'DEM', 'Orientstruct', 'date_valid' );?></td>
-                                <td><?php echo value( $dsp, 'CJT', 'Orientstruct', 'date_valid' );?></td>
+                                <td><?php echo date_short( value( $dsp, 'DEM', 'Orientstruct', 'date_valid' ) );?></td>
+                                <td><?php echo date_short( value( $dsp, 'CJT', 'Orientstruct', 'date_valid' ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Statut de l'orientation</th>
