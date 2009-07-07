@@ -183,8 +183,23 @@
                         'Ressource.personne_id'
                     ),
                     'conditions' => array(
-                        '"Ressource.mtpersressmenrsa" <' => 500, ///FIXME: toppersdrodevorsa
+                        'or' => array(
+                            '"Ressource.mtpersressmenrsa" <' => 500,
+                            'or' => array(
+                                'Dspp.hispro = \'1903\'',
+                                'Dspp.hispro = \'1904\''
+                            )
+                        ),
                         'Ressource.personne_id' => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null ),
+                    ),
+                    'joins' => array(
+                        array(
+                            'table'      => 'dspps',
+                            'alias'      => 'Dspp',
+                            'type'       => 'inner',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Ressource.personne_id = Dspp.personne_id' )
+                        ),
                     ),
                     'recursive' => -1
                 )

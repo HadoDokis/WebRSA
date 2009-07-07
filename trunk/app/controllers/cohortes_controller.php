@@ -44,7 +44,7 @@
                 }
                 // 2°) Etes-vous accompagné dans votre recherche d'emploi ?
                 //     1802 : Pôle Emploi
-                else if( empty( $propo_algo ) && !empty( $element['Dspp']['accoemploi']) && ( $element['Dspp']['accoemploi'] == '1802' ) ) {
+                else if( empty( $propo_algo ) && ( Set::extract( 'Dspp.Accoemploi.0.code', $element ) != null ) && ( $element['Dspp']['Accoemploi'][0]['code'] == '1802' ) ) { // FIXME: index 0
                     $propo_algo = 'Emploi';
                 }
                 // 3°) Êtes-vous sans activité depuis moins de 24 mois ?
@@ -59,7 +59,8 @@
                         $propo_algo = 'Emploi';
                     }
                 }
-                if( empty( $propo_algo ) && isset( $element['Foyer']['Dspf'] ) ) {
+
+                if( empty( $propo_algo ) && isset( $element['Foyer']['Dspf'] ) && !empty( $element['Foyer']['Dspf'] ) ) {
                     $dspf = $this->Dossier->Foyer->Dspf->find(
                         'first',
                         array(

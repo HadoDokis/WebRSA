@@ -177,7 +177,7 @@
                     else {
                         $montant = 0;
                     }
-                    if( $montant < 500 ) {
+                    if( $montant < 500 ) { // FIXME ?Avoir des revenus tirés de l'exercice d'une activité professionnelleégaux, en moyenne mensuelle calculée sur le trimestre de référence, à 500 EUR ou être sans emploi.
                         return true;
                     }
                 }
