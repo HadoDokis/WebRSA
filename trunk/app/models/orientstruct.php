@@ -14,6 +14,10 @@
             'Structurereferente' => array(
                 'classname'     => 'Structurereferente',
                 'foreignKey'    => 'structurereferente_id'
+            ),
+            'Typeorient' => array(
+                'classname'     => 'Typeorient',
+                'foreignKey'    => 'typeorient_id'
             )/*,///FIXMRE: test avant confirmation !!!!!!!
             'Serviceinstructeur' => array(
                 'classname' => 'Serviceinstructeur',

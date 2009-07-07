@@ -240,7 +240,7 @@
                         'Personne.foyer_id' => $id,
                         'Prestation.rolepers' => array( 'DEM', 'CJT' )
                     ),
-                    'recursive' => 0
+                    'recursive' => 2
                 )
             );
 
@@ -258,6 +258,7 @@
             $this->set( 'dsp', $dsp );
 
 /*-*************************************************************************/
+
             $tc = $this->Typocontrat->find(
                 'list',
                 array(

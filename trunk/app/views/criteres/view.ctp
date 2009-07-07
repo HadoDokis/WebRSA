@@ -23,8 +23,8 @@
                         <td><?php echo $orient['Personne']['qual'].' '.$orient['Personne']['nom'].' '.$orient['Personne']['prenom'];?></td>
                         <td><?php echo $orient['ModeContact']['numtel'];?></td>
                         <td><?php echo $orient['Adresse']['locaadr'];?></td>
-                        <td><?php echo $orient['Dossier']['dtdemrsa'];?></td>
-                        <td><?php echo $orient['Orientstruct']['date_propo'];?></td>
+                        <td><?php echo date_short( $orient['Dossier']['dtdemrsa'] );?></td>
+                        <td><?php echo date_short( $orient['Orientstruct']['date_propo'] );?></td>
                         <td><?php echo isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null;?></td>
                     </tr>
                <?php endforeach;?>
