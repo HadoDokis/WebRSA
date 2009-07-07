@@ -106,8 +106,8 @@
                                 h( $orient['Personne']['qual'].' '.$orient['Personne']['nom'].' '.$orient['Personne']['prenom'] ),
                                 h( $orient['Modecontact']['numtel'] ),
                                 h( $orient['Adresse']['locaadr'] ),
-                                h( $orient['Dossier']['dtdemrsa'] ),
-                                h( $orient['Orientstruct']['date_propo'] ),
+                                h( date_short( $orient['Dossier']['dtdemrsa'] ) ),
+                                h( date_short( $orient['Orientstruct']['date_propo'] ) ),
                                 h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
                                 h( $orient['Orientstruct']['statut_orient'] ),
                                 array( 

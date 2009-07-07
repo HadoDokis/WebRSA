@@ -22,6 +22,12 @@
             'Foyer'
         );
 
+        var $hasMany = array(
+            'Contratinsertion' => array(
+                'classname' => 'Contratinsertion',
+                'foreignKey' => 'personne_id',
+            )
+        );
         //---------------------------------------------------------------------
 
         var $validate = array(
