@@ -68,7 +68,7 @@
                     );
                     if( !empty( $dspf ) ) {
                         // FIXME: grosse requête pour pas grand-chose
-                        if( $element['Foyer']['Dspf']['accosocfam'] == true ) {
+                        if( $element['Foyer']['Dspf']['accosocfam'] == 'O' ) {
                             $propo_algo = 'Social';
                         }
                         else {
@@ -81,6 +81,7 @@
             if( empty( $propo_algo ) ) {
                 $propo_algo = 'Emploi';
             }
+
 
             return $propo_algo;
         }
