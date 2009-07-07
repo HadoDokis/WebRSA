@@ -27,22 +27,14 @@
 
         /**
         *
-        * INFO: Préprofessionnelle => Socioprofessionnelle --> mette un type dans la table ?
+        * INFO: Préprofessionnelle => Socioprofessionnelle --> mettre un type dans la table ?
         *
         */
 
         function _preOrientation( $element ) {
-            $propo_algo = 'Emploi';
+            $propo_algo = null;
 
             if( isset( $element['Dspp'] ) ) {
-                $dspp = array_filter( $element['Dspp'] );
-                $propo_algo = 'Socioprofessionnelle';
-                $dfderact = null;
-                if( !empty( $element['Dspp']['dfderact'] ) ) {
-                    list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
-                    $dfderact = mktime( 0, 0, 0, $month, $day, $year );
-                }
-
                 // Socioprofessionnelle, Social
                 // 1°) Passé professionnel ? -> Emploi
                 //     1901 : Vous avez toujours travaillé
@@ -52,19 +44,22 @@
                 }
                 // 2°) Etes-vous accompagné dans votre recherche d'emploi ?
                 //     1802 : Pôle Emploi
-                else if( !empty( $element['Dspp']['accoemploi']) && ( $element['Dspp']['accoemploi'] == '1802' ) ) {
+                else if( empty( $propo_algo ) && !empty( $element['Dspp']['accoemploi']) && ( $element['Dspp']['accoemploi'] == '1802' ) ) {
                     $propo_algo = 'Emploi';
                 }
                 // 3°) Êtes-vous sans activité depuis moins de 24 mois ?
                 //     Date éventuelle de cessation d’activité ?
-                else if( !empty( $dfderact ) && ( $dfderact < strtotime( '-24 months' ) ) ) {
-                    $propo_algo = 'Emploi';
+                else if( empty( $propo_algo ) ) {
+                    $dfderact = null;
+                    if( !empty( $element['Dspp']['dfderact'] ) ) {
+                        list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
+                        $dfderact = mktime( 0, 0, 0, $month, $day, $year );
+                    }
+                    if( !empty( $dfderact ) && ( $dfderact < strtotime( '-24 months' ) ) ) {
+                        $propo_algo = 'Emploi';
+                    }
                 }
-                // Votre famille fait-elle l’objet d’un accompagnement ?
-                //     0410: Logement
-                //     0411: Endettement
-                //     FIXME: Santé
-                else {
+                if( empty( $propo_algo ) && isset( $element['Foyer']['Dspf'] ) ) {
                     $dspf = $this->Dossier->Foyer->Dspf->find(
                         'first',
                         array(
@@ -81,6 +76,10 @@
                         }
                     }
                 }
+            }
+
+            if( empty( $propo_algo ) ) {
+                $propo_algo = 'Emploi';
             }
 
             return $propo_algo;
@@ -134,22 +133,11 @@
 
                 //-------------------------------------------------------------
 
-                /*$mesCodesInsee = $this->Zonegeographique->find( // FIXME -> voir Auth.zonegeographique
-                    'list',
-                    array(
-                        'fields' => array(
-                            'Zonegeographique.id',
-                            'Zonegeographique.codeinsee'
-                        ),
-                        'conditions' => array( 'Zonegeographique.id' => array_keys( $this->Session->read( 'Auth.Zonegeographique' ) ) )
-                    )
-                );*/
                 $mesCodesInsee = array_values( $this->Session->read( 'Auth.Zonegeographique' ) );
 
                 // --------------------------------------------------------
 
                 if( !empty( $this->data ) ) { // FIXME: déjà fait plus haut ?
-// debug( $this->data );
                     if( !empty( $this->data['Orientstruct'] ) ) {
                         $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only' ) );
                         if( $valid ) {
@@ -162,16 +150,15 @@
                                 $this->data['Orientstruct'][$key]['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct'][$key]['structurereferente_id'] );
                                 $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
                             }
-// debug( $this->data['Orientstruct'] );
                             $saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first' ) );
                             if( $saved ) {
-//                                 // FIXME ?
-//                                 foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
-//                                     $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
-//                                 }
-//                                 $this->Dossier->commit();
-//                             }
-//                             else {
+                                // FIXME ?
+                                foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
+                                    $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
+                                }
+                                $this->Dossier->commit();
+                            }
+                            else {
                                 $this->Dossier->rollback();
                             }
                         }
@@ -194,9 +181,7 @@
                             'limit'     => $_limit
                         )
                     );
-// echo '<pre>';
-// var_dump( $cohorte );
-// echo '</pre>';
+
                     // --------------------------------------------------------
 
                     foreach( $cohorte as $key => $element ) {
@@ -251,20 +236,10 @@
                             $cohorte[$key]['Orientstruct']['Structurereferente'] = $Structurereferente['Structurereferente'];
                         }
                         if( $statutOrientation !== 'Orienté' ) {
-//                             $structuresReferentes = $this->Structurereferente->find(
-//                                 'list',
-//                                 array(
-//                                     'fields' => array(
-//                                         'Structurereferente.id',
-//                                         'Structurereferente.lib_struc'
-//                                     )
-//                                 )
-//                             );
-//                             $this->set( 'structuresReferentes', $structuresReferentes );
                             $this->set( 'structuresReferentes', $this->Structurereferente->list1Options() );
-//debug( $cohorte );
+
                             $cohorte[$key]['Orientstruct']['propo_algo_texte'] = $this->_preOrientation( $element );
-// debug( $cohorte[$key]['Orientstruct']['propo_algo_texte'] );
+
                             $tmp = array_flip( $typesOrient );
                             $cohorte[$key]['Orientstruct']['propo_algo'] = $tmp[$cohorte[$key]['Orientstruct']['propo_algo_texte']];
                             $cohorte[$key]['Orientstruct']['date_propo'] = date( 'Y-m-d' );
