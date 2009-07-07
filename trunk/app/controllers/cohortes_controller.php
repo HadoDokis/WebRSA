@@ -55,7 +55,7 @@
                         list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
                         $dfderact = mktime( 0, 0, 0, $month, $day, $year );
                     }
-                    if( !empty( $dfderact ) && ( $dfderact < strtotime( '-24 months' ) ) ) {
+                    if( !empty( $dfderact ) && ( $dfderact > strtotime( '-24 months' ) ) ) {
                         $propo_algo = 'Emploi';
                     }
                 }
@@ -179,7 +179,7 @@
                             'conditions' => array(
                                 'Personne.id' => ( !empty( $cohorte ) ? $cohorte : null )
                             ),
-                            'recursive' => 1,
+                            'recursive' => 2,
                             'limit'     => $_limit
                         )
                     );
