@@ -662,46 +662,6 @@ INSERT INTO acos VALUES (294, 292, '', 0, 'Grossesses:view', 290, 291);
 INSERT INTO acos VALUES (295, 0, '', 0, 'Dossiers', 293, 296);
 INSERT INTO acos VALUES (296, 295, '', 0, 'Dossiers:view', 294, 295);
 
-
---
--- Data for Name: actions; Type: TABLE DATA; Schema: public; Owner: webrsa
---
-
-INSERT INTO actions VALUES (1, 1, '1P', 'Soutien, suivi social, accompagnement personnel');
-INSERT INTO actions VALUES (2, 1, '1F', 'Soutien, suivi social, accompagnement familial');
-INSERT INTO actions VALUES (3, 1, '02', 'Aide au retour d''enfants placés');
-INSERT INTO actions VALUES (4, 1, '03', 'Soutien éducatif lié aux enfants');
-INSERT INTO actions VALUES (5, 1, '04', 'Aide pour la garde des enfants');
-INSERT INTO actions VALUES (6, 1, '05', 'Aide financière liée au logement');
-INSERT INTO actions VALUES (7, 1, '06', 'Autre aide liée au logement');
-INSERT INTO actions VALUES (8, 1, '07', 'Prise en charge financière des frais de formation (y compris stage de conduite automobile)');
-INSERT INTO actions VALUES (9, 1, '10', 'Autre facilité offerte');
-INSERT INTO actions VALUES (10, 2, '21', 'Démarche liée à la santé');
-INSERT INTO actions VALUES (11, 2, '22', 'Alphabétisation, lutte contre l''illétrisme');
-INSERT INTO actions VALUES (12, 2, '23', 'Organisation quotidienne');
-INSERT INTO actions VALUES (13, 2, '24', 'Démarches administratives (COTOREP, demande d''AAH, de retraite, etc...)');
-INSERT INTO actions VALUES (14, 2, '26', 'Bilan social');
-INSERT INTO actions VALUES (15, 2, '29', 'Autre action visant à l''autonomie sociale');
-INSERT INTO actions VALUES (16, 3, '31', 'Recherche d''un logement');
-INSERT INTO actions VALUES (17, 3, '33', 'Demande d''intervention d''un organisme ou d''un fonds d''aide');
-INSERT INTO actions VALUES (18, 4, '41', 'Aide ou suivi pour une recherche de stage ou de formation');
-INSERT INTO actions VALUES (19, 4, '42', 'Activité en atelier de réinsertion (centre d''hébergement et de réadaptation sociale)');
-INSERT INTO actions VALUES (20, 4, '43', 'Chantier école');
-INSERT INTO actions VALUES (21, 4, '44', 'Stage de conduite automobile (véhicules légers)');
-INSERT INTO actions VALUES (22, 4, '45', 'Stage de formation générale, préparation aux concours, poursuite d''études, etc...');
-INSERT INTO actions VALUES (23, 4, '46', 'Stage de formation professionnelle (stage d''insertion et de formation à l''emploi, permis poids lourd, crédit-formation individuel, etc...)');
-INSERT INTO actions VALUES (24, 4, '48', 'Bilan professionnel et orientation (évaluation du niveau de compétences professionnelles, module d''orientation approfondie, session d''oientation approfondie, évaluation en milieu de travail, VAE, etc...)');
-INSERT INTO actions VALUES (25, 5, '51', 'Aide ou suivi pour une recherche d''emploi');
-INSERT INTO actions VALUES (26, 5, '52', 'Contrat initiative emploi');
-INSERT INTO actions VALUES (27, 5, '53', 'Contrat de qualification, contrat d''apprentissage');
-INSERT INTO actions VALUES (28, 5, '54', 'Emploi dans une association intermédiaire ou une entreprise d''insertion');
-INSERT INTO actions VALUES (29, 5, '55', 'Création d''entreprise');
-INSERT INTO actions VALUES (30, 5, '56', 'Contrats aidés, Contrat d''Avenir, CIRMA');
-INSERT INTO actions VALUES (31, 5, '57', 'Emploi consolidé: CDI');
-INSERT INTO actions VALUES (32, 5, '58', 'Emploi familial, service de proximité');
-INSERT INTO actions VALUES (33, 5, '59', 'Autre forme d''emploi: CDD, CNE');
-
-
 --
 -- Data for Name: actionsinsertion; Type: TABLE DATA; Schema: public; Owner: webrsa
 --
@@ -1256,24 +1216,6 @@ INSERT INTO servicesinstructeurs VALUES (2, 'Service 2', '775', 'moulin', '', '3
 --
 
 
-
---
--- Data for Name: structuresreferentes; Type: TABLE DATA; Schema: public; Owner: webrsa
---
-
-INSERT INTO structuresreferentes VALUES (1, 2, 'Pole emploi Mont Sud', '125', 'Avenue', 'Alco', '34090', 'Montpellier', '34095');
-INSERT INTO structuresreferentes VALUES (2, 2, 'Assedic Nimes', '44', 'chemin', 'Parrot', '30000', 'Nimes', '30009');
-INSERT INTO structuresreferentes VALUES (3, 8, 'MSA du Gard', '48', 'avenue', 'Paul Condorcet', '30900', 'Nimes', '30000');
-INSERT INTO structuresreferentes VALUES (4, 5, 'Conseil Général de l''Hérault', '10', 'rue', 'Georges Freche', '34000', 'Montpellier', '34005');
-INSERT INTO structuresreferentes VALUES (5, 10, 'Organisme ACAL Vauvert', '48', 'rue', 'Georges Freche', '30600', 'Vauvert', '30610');
-
-
---
--- Data for Name: structuresreferentes_zonesgeographiques; Type: TABLE DATA; Schema: public; Owner: webrsa
---
-
-
-
 --
 -- Data for Name: suivisinstruction; Type: TABLE DATA; Schema: public; Owner: webrsa
 --
@@ -1316,6 +1258,44 @@ INSERT INTO typesactions VALUES (5, 'Emploi');
 
 
 --
+-- Data for Name: actions; Type: TABLE DATA; Schema: public; Owner: webrsa
+--
+
+INSERT INTO actions VALUES (1, 1, '1P', 'Soutien, suivi social, accompagnement personnel');
+INSERT INTO actions VALUES (2, 1, '1F', 'Soutien, suivi social, accompagnement familial');
+INSERT INTO actions VALUES (3, 1, '02', 'Aide au retour d''enfants placés');
+INSERT INTO actions VALUES (4, 1, '03', 'Soutien éducatif lié aux enfants');
+INSERT INTO actions VALUES (5, 1, '04', 'Aide pour la garde des enfants');
+INSERT INTO actions VALUES (6, 1, '05', 'Aide financière liée au logement');
+INSERT INTO actions VALUES (7, 1, '06', 'Autre aide liée au logement');
+INSERT INTO actions VALUES (8, 1, '07', 'Prise en charge financière des frais de formation (y compris stage de conduite automobile)');
+INSERT INTO actions VALUES (9, 1, '10', 'Autre facilité offerte');
+INSERT INTO actions VALUES (10, 2, '21', 'Démarche liée à la santé');
+INSERT INTO actions VALUES (11, 2, '22', 'Alphabétisation, lutte contre l''illétrisme');
+INSERT INTO actions VALUES (12, 2, '23', 'Organisation quotidienne');
+INSERT INTO actions VALUES (13, 2, '24', 'Démarches administratives (COTOREP, demande d''AAH, de retraite, etc...)');
+INSERT INTO actions VALUES (14, 2, '26', 'Bilan social');
+INSERT INTO actions VALUES (15, 2, '29', 'Autre action visant à l''autonomie sociale');
+INSERT INTO actions VALUES (16, 3, '31', 'Recherche d''un logement');
+INSERT INTO actions VALUES (17, 3, '33', 'Demande d''intervention d''un organisme ou d''un fonds d''aide');
+INSERT INTO actions VALUES (18, 4, '41', 'Aide ou suivi pour une recherche de stage ou de formation');
+INSERT INTO actions VALUES (19, 4, '42', 'Activité en atelier de réinsertion (centre d''hébergement et de réadaptation sociale)');
+INSERT INTO actions VALUES (20, 4, '43', 'Chantier école');
+INSERT INTO actions VALUES (21, 4, '44', 'Stage de conduite automobile (véhicules légers)');
+INSERT INTO actions VALUES (22, 4, '45', 'Stage de formation générale, préparation aux concours, poursuite d''études, etc...');
+INSERT INTO actions VALUES (23, 4, '46', 'Stage de formation professionnelle (stage d''insertion et de formation à l''emploi, permis poids lourd, crédit-formation individuel, etc...)');
+INSERT INTO actions VALUES (24, 4, '48', 'Bilan professionnel et orientation (évaluation du niveau de compétences professionnelles, module d''orientation approfondie, session d''oientation approfondie, évaluation en milieu de travail, VAE, etc...)');
+INSERT INTO actions VALUES (25, 5, '51', 'Aide ou suivi pour une recherche d''emploi');
+INSERT INTO actions VALUES (26, 5, '52', 'Contrat initiative emploi');
+INSERT INTO actions VALUES (27, 5, '53', 'Contrat de qualification, contrat d''apprentissage');
+INSERT INTO actions VALUES (28, 5, '54', 'Emploi dans une association intermédiaire ou une entreprise d''insertion');
+INSERT INTO actions VALUES (29, 5, '55', 'Création d''entreprise');
+INSERT INTO actions VALUES (30, 5, '56', 'Contrats aidés, Contrat d''Avenir, CIRMA');
+INSERT INTO actions VALUES (31, 5, '57', 'Emploi consolidé: CDI');
+INSERT INTO actions VALUES (32, 5, '58', 'Emploi familial, service de proximité');
+INSERT INTO actions VALUES (33, 5, '59', 'Autre forme d''emploi: CDD, CNE');
+
+--
 -- Data for Name: typesorients; Type: TABLE DATA; Schema: public; Owner: webrsa
 --
 
@@ -1329,6 +1309,22 @@ INSERT INTO typesorients VALUES (7, 6, 'Conseil Général', 'notif_orientation_c
 INSERT INTO typesorients VALUES (8, 6, 'MSA', 'notif_orientation_cg66_mod2');
 INSERT INTO typesorients VALUES (9, 6, 'Organisme agréés ACAL', 'notif_orientation_cg66_mod2');
 INSERT INTO typesorients VALUES (10, 6, 'ATR', 'notif_orientation_cg66_mod2');
+
+
+--
+-- Data for Name: structuresreferentes; Type: TABLE DATA; Schema: public; Owner: webrsa
+--
+
+INSERT INTO structuresreferentes VALUES (1, 2, 'Pole emploi Mont Sud', '125', 'Avenue', 'Alco', '34090', 'Montpellier', '34095');
+INSERT INTO structuresreferentes VALUES (2, 2, 'Assedic Nimes', '44', 'chemin', 'Parrot', '30000', 'Nimes', '30009');
+INSERT INTO structuresreferentes VALUES (3, 8, 'MSA du Gard', '48', 'avenue', 'Paul Condorcet', '30900', 'Nimes', '30000');
+INSERT INTO structuresreferentes VALUES (4, 5, 'Conseil Général de l''Hérault', '10', 'rue', 'Georges Freche', '34000', 'Montpellier', '34005');
+INSERT INTO structuresreferentes VALUES (5, 10, 'Organisme ACAL Vauvert', '48', 'rue', 'Georges Freche', '30600', 'Vauvert', '30610');
+
+
+--
+-- Data for Name: structuresreferentes_zonesgeographiques; Type: TABLE DATA; Schema: public; Owner: webrsa
+--
 
 
 --
@@ -1359,6 +1355,14 @@ INSERT INTO users VALUES (8, 1, 1, 'jmille', 'fe34f1c4a8ba5943e0b21536d0fb6b2d28
 --
 
 
+--
+-- Data for Name: zonesgeographiques; Type: TABLE DATA; Schema: public; Owner: webrsa
+--
+
+INSERT INTO zonesgeographiques VALUES (1, '34090', 'Pole Montpellier-Nord');
+INSERT INTO zonesgeographiques VALUES (2, '34070', 'Pole Montpellier Sud-Est');
+INSERT INTO zonesgeographiques VALUES (3, '34080', 'Pole Montpellier Ouest');
+
 
 --
 -- Data for Name: users_zonesgeographiques; Type: TABLE DATA; Schema: public; Owner: webrsa
@@ -1385,16 +1389,6 @@ INSERT INTO users_zonesgeographiques VALUES (7, 3, 18);
 INSERT INTO users_zonesgeographiques VALUES (8, 1, 19);
 INSERT INTO users_zonesgeographiques VALUES (8, 2, 20);
 INSERT INTO users_zonesgeographiques VALUES (8, 3, 21);
-
-
---
--- Data for Name: zonesgeographiques; Type: TABLE DATA; Schema: public; Owner: webrsa
---
-
-INSERT INTO zonesgeographiques VALUES (1, '34090', 'Pole Montpellier-Nord');
-INSERT INTO zonesgeographiques VALUES (2, '34070', 'Pole Montpellier Sud-Est');
-INSERT INTO zonesgeographiques VALUES (3, '34080', 'Pole Montpellier Ouest');
-
 
 --
 -- Data for Name: zonesgeographiques_regroupementszonesgeo; Type: TABLE DATA; Schema: public; Owner: webrsa
