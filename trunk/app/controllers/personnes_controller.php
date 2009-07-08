@@ -97,6 +97,12 @@
                 }
                 if( $this->Personne->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     if( $this->Personne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+
+                        // FIXME: mettre dans un afterSave (mais ça pose des problèmes)
+                        // FIXME: valeur de retour
+                        $thisPersonne = $this->Personne->findById( $this->Personne->id, null, null, -1 );
+                        $this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
+
                         $this->Jetons->release( $dossier_id );
                         $this->Personne->commit();
                         $this->Session->setFlash( 'Enregistrement réussi', 'flash/success' );
@@ -163,8 +169,14 @@
 
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
-                if( $this->Personne->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
+                if( $this->Personne->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     if( $this->Personne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+
+                        // FIXME: mettre dans un afterSave (mais ça pose des problèmes)
+                        // FIXME: valeur de retour
+                        $thisPersonne = $this->Personne->findById( $this->Personne->id, null, null, -1 );
+                        $this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
+
                         $this->Jetons->release( $dossier_id );
                         $this->Personne->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );

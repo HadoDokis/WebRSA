@@ -28,6 +28,7 @@
                 'foreignKey' => 'personne_id',
             )
         );
+
         //---------------------------------------------------------------------
 
         var $validate = array(
@@ -124,7 +125,12 @@
         //*********************************************************************
 
 //         function afterSave( $created ) {
+//             $return = parent::afterSave( $created );
 //
+//             $thisPersonne = $this->findById( $this->data['Personne']['id'], null, null, -1 );
+//             $this->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
+//
+//             return $return;
 //         }
 
         //*********************************************************************

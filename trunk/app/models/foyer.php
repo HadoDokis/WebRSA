@@ -73,13 +73,12 @@
 
             $saved = true;
             foreach( $personnesFoyer as $personne ) {
-                $this->Personne->Prestation->create();
                 // FIXME: pourquoi certains sont vides ?
                 if( isset( $personne['Prestation'] ) && ( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ) ) {
+                    $this->Personne->Prestation->create();
                     $personne['Prestation']['toppersdrodevorsa'] = $this->Personne->soumisDroitsEtDevoirs( $personne['Personne']['id'] );
                     $this->Personne->Prestation->set( $personne['Prestation'] );
                     $saved =  $this->Personne->Prestation->save( $personne['Prestation'] ) && $saved;
-
                 }
             }
 

@@ -1,3 +1,17 @@
+(11:27:13 AM) Michel: Christian, il y a une règle de gestion des cohortes qui ne fonctionne pas
+(11:27:26 AM) Christian: avec le test n° 2 ?
+(11:27:47 AM) Michel: Lorsque l'on rentre 2 personnes dans un foyer
+(11:28:21 AM) Michel: Non le dossier 4 que j'ai modifié de façon à avoir un revenu inférieur au montant forfaitaire
+(11:28:27 AM) Christian: ah
+(11:28:36 AM) Christian: le 2, tu as vu qu'il ne marche pas non plus ?
+(11:29:06 AM) Michel: Le demandeur a un revenu moyen de 510 € et le conjoint de 100 €
+(11:29:22 AM) Christian: je corrige dans mon fichier
+(11:29:37 AM) Michel: Il n'y a que le conjoint qui apparaît dans les cohortes alors que les 2 devraient apparaître
+(11:30:00 AM) Michel: car le revenu du foyer est < au montant forfaitaire
+(11:30:12 AM) Michel:                               Si 1 foyer = 2 personnes, montant forfaitaire = 150% F
+(11:30:23 AM) Christian: ok, je note et je regarde
+(11:30:30 AM) Christian: le 2 il a marché chez toi ?
+
     * adresses_foyers
         - à l'ajout d'une adresse, changer le rgadr et supprimer si besoin
         - à l'jout / la modification d'une adresse, recalculer les rgadr suivant les dates

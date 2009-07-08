@@ -175,35 +175,36 @@
 
             // Ces personnes sont-elles soumises à droits et devoirs ?
             // FIXME -> est-ce que mtpersressmenrsa existe bien -> à l'importation des données, faire la moyenne ?
-            $filtres['Personne.id'] = $this->Ressource->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Ressource.personne_id',
-                        'Ressource.personne_id'
-                    ),
-                    'conditions' => array(
-                        'or' => array(
-                            '"Ressource.mtpersressmenrsa" <' => 500,
-                            'or' => array(
-                                'Dspp.hispro = \'1903\'',
-                                'Dspp.hispro = \'1904\''
-                            )
-                        ),
-                        'Ressource.personne_id' => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null ),
-                    ),
-                    'joins' => array(
-                        array(
-                            'table'      => 'dspps',
-                            'alias'      => 'Dspp',
-                            'type'       => 'LEFT OUTER', // FIXME ?
-                            'foreignKey' => false,
-                            'conditions' => array( 'Ressource.personne_id = Dspp.personne_id' )
-                        ),
-                    ),
-                    'recursive' => -1
-                )
-            );
+            // FIXME: çe filtre ne servait à rien parce qu'on le fait lors du refresh ?
+//             $filtres['Personne.id'] = $this->Ressource->find(
+//                 'list',
+//                 array(
+//                     'fields' => array(
+//                         'Ressource.personne_id',
+//                         'Ressource.personne_id'
+//                     ),
+//                     'conditions' => array(
+//                         'or' => array(
+//                             '"Ressource.mtpersressmenrsa" <' => 500,
+//                             'or' => array(
+//                                 'Dspp.hispro = \'1903\'',
+//                                 'Dspp.hispro = \'1904\''
+//                             )
+//                         ),
+//                         'Ressource.personne_id' => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null ),
+//                     ),
+//                     'joins' => array(
+//                         array(
+//                             'table'      => 'dspps',
+//                             'alias'      => 'Dspp',
+//                             'type'       => 'LEFT OUTER', // FIXME ?
+//                             'foreignKey' => false,
+//                             'conditions' => array( 'Ressource.personne_id = Dspp.personne_id' )
+//                         ),
+//                     ),
+//                     'recursive' => -1
+//                 )
+//             );
 
             // --------------------------------------------------------
 
