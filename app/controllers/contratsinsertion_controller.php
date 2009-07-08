@@ -308,8 +308,9 @@
 
                 $this->data['Dspp'] = array( 'id' => $dspp['Dspp']['id'] );
                 $this->data['Nivetu'] = ( ( isset( $dspp['Nivetu'] ) ) ? $dspp['Nivetu'] : array() );
-                $this->data['Contratinsertion']['diplomes'] = $dspp['Dspp']['diplomes'];
-
+                if( !empty( $dspp ) ){
+                    $this->data['Contratinsertion']['diplomes'] = $dspp['Dspp']['diplomes'];
+                }
                 // Récupération du services instructeur lié au contrat
                 $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
                 $this->assert( !empty( $user ), 'error500' ); // FIXME

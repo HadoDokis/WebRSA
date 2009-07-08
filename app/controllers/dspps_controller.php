@@ -120,6 +120,11 @@
                 $personne['Personne']['foyer_id']
             );
 
+            $contratinsertion = $this->Contratinsertion->find( 'first', array( 'conditions'=> array( 'Contratinsertion.personne_id' => $personne_id ) ));
+
+            if( !empty( $contratinsertion ) ){
+                $this->data['Dspp']['diplomes'] = $contrat['Contratinsertion']['diplomes'];
+            }
 
             $this->Dspp->commit();
 
