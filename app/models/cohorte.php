@@ -173,6 +173,21 @@
                 )
             );
 
+            $filtres['Personne.id'] = $this->Dossier->Foyer->Personne->Prestation->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Prestation.personne_id',
+                        'Prestation.personne_id'
+                    ),
+                    'conditions' => array(
+                        'Prestation.personne_id' => ( !empty( $filtres['Personne.id'] ) ? $filtres['Personne.id'] : null ),
+                        'Prestation.toppersdrodevorsa' => true
+                    )
+                )
+
+            );
+
             // Ces personnes sont-elles soumises à droits et devoirs ?
             // FIXME -> est-ce que mtpersressmenrsa existe bien -> à l'importation des données, faire la moyenne ?
             // FIXME: çe filtre ne servait à rien parce qu'on le fait lors du refresh ?
