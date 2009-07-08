@@ -256,7 +256,7 @@
                                     'recursive' => 2
                                 )
                             );
-                            $cohorte[$key]['Dossier']['statut'] = 'Diminution des ressource';
+                            $cohorte[$key]['Dossier']['statut'] = 'Diminution des ressources';
                             if( !empty( $ressource ) ) {
                                 list( $year, $month, $day ) = explode( '-', $cohorte[$key]['Dossier']['dtdemrsa'] );
                                 $dateOk = ( mktime( 0, 0, 0, $month, $day, $year ) >= mktime( 0, 0, 0, 6, 1, 2009 ) );
