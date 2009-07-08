@@ -162,6 +162,35 @@
 
         // ********************************************************************
 
+        function locked( $params ) {
+            if( is_array( $params ) ) { // FIXME
+                $dossier_id = $this->_dossierId( $params );
+            }
+            else {
+                $dossier_id = $params;
+            }
+
+            $this->controller->assert( $this->_dossierExists( $dossier_id ) );
+            $this->_clean();
+
+            $jeton = $this->Jeton->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        '"Jeton"."dossier_id"'  => $dossier_id,
+                        'and NOT' => array(
+                            '"Jeton"."php_sid"'     => session_id(), // FIXME: ou pas -> config
+                            '"Jeton"."user_id"'     => $this->_userId
+                        )
+                    )
+                )
+            );
+
+            return !empty( $jeton );
+        }
+
+        // ********************************************************************
+
 //         function has( $params ) {
 //             if( is_array( $params ) ) { // FIXME
 //                 $dossier_id = $this->_dossierId( $params );

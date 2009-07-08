@@ -130,13 +130,14 @@
                     $dossiers[$key]['Derniereadresse'] = $derniereadresse;
 
                     // Dossier verrouillé
-                    $lock = $this->Jeton->find( 'list', array( 'conditions' => array( 'Jeton.dossier_id' => $dossier['Foyer']['dossier_rsa_id'] ) ) );
-                    if( !empty( $lock ) ) {
-                        $dossiers[$key]['Dossier']['locked'] = true;
-                    }
-                    else {
-                        $dossiers[$key]['Dossier']['locked'] = false;
-                    }
+                    $dossiers[$key]['Dossier']['locked'] = $this->Jetons->locked( $dossier['Foyer']['dossier_rsa_id'] );
+//                     $lock = $this->Jeton->find( 'list', array( 'conditions' => array( 'Jeton.dossier_id' => $dossier['Foyer']['dossier_rsa_id'] ) ) );
+//                     if( !empty( $lock ) ) {
+//                         $dossiers[$key]['Dossier']['locked'] = true;
+//                     }
+//                     else {
+//                         $dossiers[$key]['Dossier']['locked'] = false;
+//                     }
                 }
 
                 $this->set( 'dossiers', $dossiers );
@@ -205,13 +206,14 @@
             }
 
             // Dossier verrouillé
-            $lock = $this->Jeton->find( 'list', array( 'conditions' => array( 'Jeton.dossier_id' => $dossier['Foyer']['dossier_rsa_id'] ) ) );
-            if( !empty( $lock ) ) {
-                $dossier['Dossier']['locked'] = true;
-            }
-            else {
-                $dossier['Dossier']['locked'] = false;
-            }
+//             $lock = $this->Jeton->find( 'list', array( 'conditions' => array( 'Jeton.dossier_id' => $dossier['Foyer']['dossier_rsa_id'] ) ) );
+//             if( !empty( $lock ) ) {
+//                 $dossier['Dossier']['locked'] = true;
+//             }
+//             else {
+//                 $dossier['Dossier']['locked'] = false;
+//             }
+            $dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Foyer']['dossier_rsa_id'] );
 
             return $dossier;
         }
