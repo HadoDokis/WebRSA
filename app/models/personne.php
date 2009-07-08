@@ -172,19 +172,27 @@
 
             $personne = $this->findById( $personne_id, null, null, 1 );
             if( isset( $personne['Prestation'] ) && ( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ) ) {
-                $montantForfaitaire = $this->Foyer->montantForfaitaire( $personne['Personne']['foyer_id'] );
-                if( $montantForfaitaire ) {
-                    return $montantForfaitaire;
+                if( isset( $personne['Ressource'] ) && isset( $personne['Ressource'][0] ) && isset( $personne['Ressource'][0]['mtpersressmenrsa'] ) ) {
+                    $montant = $personne['Ressource'][0]['mtpersressmenrsa'];
                 }
                 else {
-                    if( isset( $personne['Ressource'] ) && isset( $personne['Ressource'][0] ) && isset( $personne['Ressource'][0]['mtpersressmenrsa'] ) ) {
-                        $montant = $personne['Ressource'][0]['mtpersressmenrsa'];
-                    }
-                    else {
-                        $montant = 0;
-                    }
-                    if( $montant < 500 ) { // FIXME ?Avoir des revenus tirés de l'exercice d'une activité professionnelleégaux, en moyenne mensuelle calculée sur le trimestre de référence, à 500 EUR ou être sans emploi.
-                        return true;
+                    $montant = 0;
+                }
+
+                $nPersonnes = $this->find(
+                    'count',
+                    array(
+                        'conditions' => array( 'Personne.foyer_id' => $personne['Personne']['foyer_id'] )
+                    )
+                );
+
+                if( $nPersonnes == 1 ) {
+                    return ( $montant < 500 );
+                }
+                else {
+                    $montantForfaitaire = $this->Foyer->montantForfaitaire( $personne['Personne']['foyer_id'] );
+                    if( $montantForfaitaire ) {
+                        return $montantForfaitaire;
                     }
                 }
 
