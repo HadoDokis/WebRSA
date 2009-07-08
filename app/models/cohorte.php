@@ -196,7 +196,7 @@
                         array(
                             'table'      => 'dspps',
                             'alias'      => 'Dspp',
-                            'type'       => 'inner',
+                            'type'       => 'LEFT OUTER', // FIXME ?
                             'foreignKey' => false,
                             'conditions' => array( 'Ressource.personne_id = Dspp.personne_id' )
                         ),
