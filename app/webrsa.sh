@@ -28,6 +28,8 @@ function package() {
     mkdir -p "$WORK_DIR/package" >> "/dev/null" 2>&1 && \
     (
         cd "$WORK_DIR/package" >> "/dev/null" 2>&1 && \
+        # TODO: RC pour trunk
+        # svn export svn+ssh://$USERNAME@svn.adullact.net/svnroot/webrsa/trunk >> "/dev/null" 2>&1 && \
         svn export svn+ssh://$USERNAME@svn.adullact.net/svnroot/webrsa/tags/$version >> "/dev/null" 2>&1 && \
         rm -f "$version/app/config/database.php.default" && \
         mv "$version/app/config/database.php" "$version/app/config/database.php.default" && \
