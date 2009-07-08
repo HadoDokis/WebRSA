@@ -35,16 +35,18 @@
             $propo_algo = null;
 
             if( isset( $element['Dspp'] ) ) {
+                $accoemploiCodes = Set::extract( 'Dspp.Accoemploi.{n}.code', $element );
+
                 // Socioprofessionnelle, Social
                 // 1°) Passé professionnel ? -> Emploi
                 //     1901 : Vous avez toujours travaillé
                 //     1902 : Vous travaillez par intermittence
                 if( !empty( $element['Dspp']['hispro'] ) && ( $element['Dspp']['hispro'] == '1901' || $element['Dspp']['hispro'] == '1902' ) ) {
-                    $propo_algo = 'Emploi';
+                    $propo_algo = 'Emploi'; // Emploi (Pôle emploi)
                 }
                 // 2°) Etes-vous accompagné dans votre recherche d'emploi ?
                 //     1802 : Pôle Emploi
-                else if( empty( $propo_algo ) && ( Set::extract( 'Dspp.Accoemploi.0.code', $element ) != null ) && ( $element['Dspp']['Accoemploi'][0]['code'] == '1802' ) ) { // FIXME: index 0
+                else if( empty( $propo_algo ) && !empty( $accoemploiCodes ) && in_array( '1802', $accoemploiCodes ) ) {
                     $propo_algo = 'Emploi';
                 }
                 // 3°) Êtes-vous sans activité depuis moins de 24 mois ?
@@ -70,10 +72,10 @@
                     if( !empty( $dspf ) ) {
                         // FIXME: grosse requête pour pas grand-chose
                         if( $element['Foyer']['Dspf']['accosocfam'] == 'O' ) {
-                            $propo_algo = 'Social';
+                            $propo_algo = 'Social'; // SSD (Service Social Départemental)
                         }
                         else {
-                            $propo_algo = 'Socioprofessionnelle';
+                            $propo_algo = 'Socioprofessionnelle'; // PDV (Projet De Ville)
                         }
                     }
                 }
