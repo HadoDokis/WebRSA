@@ -5,22 +5,22 @@
 <div class="with_treemenu">
     <h1>Orientation</h1>
 
-    <?php if( empty( $orientstruct ) ):?>
+    <?php if( empty( $orientstructs ) ):?>
         <p class="notice">Cette personne ne possède pas encore d'orientation.</p>
+    <?php endif;?>
 
-        <?php if( $permissions->check( 'orientsstructs', 'add' ) ):?>
-            <ul class="actionMenu">
-                <?php
-                    echo '<li>'.$html->addLink(
-                        'Préconiser une orientation',
-                        array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id )
-                    ).' </li>';
-                ?>
-            </ul>
-        <?php endif;?>
+    <?php if( $permissions->check( 'orientsstructs', 'add' ) ):?>
+        <ul class="actionMenu">
+            <?php
+                echo '<li>'.$html->addLink(
+                    'Préconiser une orientation',
+                    array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id )
+                ).' </li>';
+            ?>
+        </ul>
+    <?php endif;?>
 
-    <?php else:?>
-
+    <?php if( !empty( $orientstructs ) ):?>
     <table class="tooltips">
         <thead>
             <tr>
@@ -35,28 +35,30 @@
         </thead>
         <tbody>
             <?php
-                echo $html->tableCells(
-                    array(
-                        h( $orientstruct['Personne']['nom']),
-                        h( $orientstruct['Personne']['prenom'] ),
-                        h( date_short( $orientstruct['Orientstruct']['date_propo'] ) ),
-                        h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
-                        h( isset( $orientstruct['Structurereferente']['Typeorient']['lib_type_orient'] ) ? $orientstruct['Structurereferente']['Typeorient']['lib_type_orient'] : null ) ,
-                        h( $orientstruct['Structurereferente']['lib_struc']  ),
-                        $html->editLink(
-                            'Editer l\'orientation',
-                            array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
-                            $permissions->check( 'orientsstructs', 'edit' )
+                foreach( $orientstructs as $orientstruct ) {
+                    echo $html->tableCells(
+                        array(
+                            h( $orientstruct['Personne']['nom']),
+                            h( $orientstruct['Personne']['prenom'] ),
+                            h( date_short( $orientstruct['Orientstruct']['date_propo'] ) ),
+                            h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
+                            h( isset( $orientstruct['Structurereferente']['Typeorient']['lib_type_orient'] ) ? $orientstruct['Structurereferente']['Typeorient']['lib_type_orient'] : null ) ,
+                            h( $orientstruct['Structurereferente']['lib_struc']  ),
+                            $html->editLink(
+                                'Editer l\'orientation',
+                                array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
+                                $permissions->check( 'orientsstructs', 'edit' )
+                            ),
+                            $html->printLink(
+                                'Imprimer la notification',
+                                array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
+                                $permissions->check( 'gedooos', 'orientstruct' )
+                            ),
                         ),
-                        $html->printLink(
-                            'Imprimer la notification',
-                            array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
-                            $permissions->check( 'gedooos', 'orientstruct' )
-                        ),
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
+                        array( 'class' => 'odd' ),
+                        array( 'class' => 'even' )
+                    );
+                }
             ?>
         </tbody>
     </table>

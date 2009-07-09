@@ -70,6 +70,11 @@
         }
 
         function notification_structure( $personne_id = null ) {
+            $qual = $this->Option->qual();
+            $this->set( 'qual', $qual );
+            $typevoie = $this->Option->typevoie();
+            $this->set( 'typevoie', $typevoie );
+
             // TODO: error404/error500 si on ne trouve pas les données
             $personne = $this->Personne->find(
                 'first',
@@ -126,6 +131,9 @@
             $personne['Orientstruct'] = $orientstruct['Orientstruct'];
             $personne['Structurereferente'] = $orientstruct['Structurereferente'];
 
+            $personne['Personne']['qual'] = ( isset( $qual[$personne['Personne']['qual']] ) ? $qual[$personne['Personne']['qual']] : null );
+            $personne['Adresse']['typevoie'] = ( isset( $typevoie[$personne['Adresse']['typevoie']] ) ? $typevoie[$personne['Adresse']['typevoie']] : null );
+
             if( empty( $personne['Orientstruct']['date_impression'] ) ){
                 $orientstruct['Orientstruct']['date_impression'] = strftime( '%Y-%m-%d', mktime() );
                 $this->Orientstruct->create();
@@ -158,6 +166,11 @@
             $this->set( 'duree_cdd', $duree_cdd );
             $decision_ci = $this->Option->decision_ci();
             $this->set( 'decision_ci', $decision_ci );
+
+            $qual = $this->Option->qual();
+            $this->set( 'qual', $qual );
+            $typevoie = $this->Option->typevoie();
+            $this->set( 'typevoie', $typevoie );
 
             $sitfam = $this->Option->sitfam();
             $this->set( 'sitfam', $sitfam );
@@ -263,11 +276,13 @@
 
             // Données Personne récupérées
             $contratinsertion['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Personne']['dtnai'] ) );
+            $contratinsertion['Personne']['qual'] = ( isset( $qual[$contratinsertion['Personne']['qual']] ) ? $qual[$contratinsertion['Personne']['qual']] : null );
 
             // Données Foyer récupérées
             $contratinsertion['Foyer']['sitfam'] = ( isset( $sitfam[$foyer['Foyer']['sitfam']] ) ? $sitfam[$foyer['Foyer']['sitfam']] : null );
             $contratinsertion['Foyer']['typeocclog'] = ( isset( $typeocclog[$foyer['Foyer']['typeocclog']] ) ? $typeocclog[$foyer['Foyer']['typeocclog']] : null );
 
+            $contratinsertion['Adresse']['typevoie'] = ( isset( $typevoie[$contratinsertion['Adresse']['typevoie']] ) ? $typevoie[$contratinsertion['Adresse']['typevoie']] : null );
             // Données Dossier récupérées
             $contratinsertion['Dossier']['matricule'] = ( isset( $dossier['Dossier']['matricule'] ) ? $dossier['Dossier']['matricule'] : null );
             $contratinsertion['Dossier']['dtdemrsa'] = strftime( '%d/%m/%Y', strtotime( $dossier['Dossier']['dtdemrsa'] ) );
@@ -410,6 +425,11 @@
         */
 
         function notifications_cohortes() {
+            $qual = $this->Option->qual();
+            $this->set( 'qual', $qual );
+            $typevoie = $this->Option->typevoie();
+            $this->set( 'typevoie', $typevoie );
+
             $cohorte = $this->Cohorte->search( 'Orienté', array_values( $this->Session->read( 'Auth.Zonegeographique' ) ), $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 
             // Définition des variables & maccros
@@ -461,24 +481,52 @@
                 $oIteration->addPart($oDevPart);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Récupération de la structure referente liée à la personne
-            $orientstruct = $this->Orientstruct->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Orientstruct.personne_id' => $personne_id
+
+                // Récupération de la structure referente liée à la personne
+                $orientstruct = $this->Orientstruct->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Orientstruct.personne_id' => $personne_id
+                        )
                     )
-                )
-            );
-            if( empty( $personne['Orientstruct']['date_impression'] ) ){
-                $orientstruct['Orientstruct']['date_impression'] = strftime( '%Y-%m-%d', mktime() );
-                $this->Orientstruct->create();
-                $this->Orientstruct->set( $orientstruct['Orientstruct'] );
-                $this->Orientstruct->save( $orientstruct['Orientstruct'] );
-            }
+                );
+                //////////////////////////////////////////////////////////////////////////
+                $this->Adressefoyer->bindModel(
+                    array(
+                        'belongsTo' => array(
+                            'Adresse' => array(
+                                'className'     => 'Adresse',
+                                'foreignKey'    => 'adresse_id'
+                            )
+                        )
+                    )
+                );
+                $adresse = $this->Adressefoyer->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Adressefoyer.foyer_id' => $orientstruct['Personne']['foyer_id'],
+                            'Adressefoyer.rgadr' => '01',
+                        )
+                    )
+                );
+                $orientstruct['Adresse'] = $adresse['Adresse'];
+// debug( $orientstruct );
+// debug( $qual[$orientstruct['Personne']['qual']] );
+                $orientstruct['Personne']['qual'] = ( isset( $qual[$orientstruct['Personne']['qual']] ) ? $qual[$orientstruct['Personne']['qual']] : null );
+                $orientstruct['Personne']['qual'] = $qual[$orientstruct['Personne']['qual']];
+
+                $orientstruct['Adresse']['typevoie'] = ( isset( $typevoie[$orientstruct['Adresse']['typevoie']] ) ? $typevoie[$orientstruct['Adresse']['typevoie']] : null );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+                if( empty( $personne['Orientstruct']['date_impression'] ) ){
+                    $orientstruct['Orientstruct']['date_impression'] = strftime( '%Y-%m-%d', mktime() );
+                    $this->Orientstruct->create();
+                    $this->Orientstruct->set( $orientstruct['Orientstruct'] );
+                    $this->Orientstruct->save( $orientstruct['Orientstruct'] );
+                }
 
             }
             $oMainPart->addElement($oIteration);

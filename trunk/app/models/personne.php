@@ -10,6 +10,7 @@
             'TitreSejour',
             'Dspp',
             'Orientstruct',
+            'Dossiercaf',
             'Prestation' => array(
                 'foreignKey' => 'personne_id',
                 'conditions' => array (

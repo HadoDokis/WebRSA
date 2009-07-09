@@ -23,11 +23,11 @@
                 'classname' => 'Detaildroitrsa',
                 'foreignKey' => 'dossier_rsa_id'
             ),
-            'Suiviinstruction' => array(
+            'Suiviinstruction' => array( // FIXME: hasMany
                 'classname' => 'Suiviinstruction',
                 'foreignKey' => 'dossier_rsa_id'
             ),
-            'Infofinanciere' => array(
+            'Infofinanciere' => array( // FIXME: hasMany
                 'classname' => 'Infofinanciere',
                 'foreignKey' => 'dossier_rsa_id'
             )
