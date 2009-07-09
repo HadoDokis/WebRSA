@@ -179,15 +179,8 @@
                     $montant = 0;
                 }
 
-                $nPersonnes = $this->find(
-                    'count',
-                    array(
-                        'conditions' => array( 'Personne.foyer_id' => $personne['Personne']['foyer_id'] )
-                    )
-                );
-
-                if( $nPersonnes == 1 ) {
-                    return ( $montant < 500 );
+                if( $montant < 500 ) {
+                    return true;
                 }
                 else {
                     $montantForfaitaire = $this->Foyer->montantForfaitaire( $personne['Personne']['foyer_id'] );
