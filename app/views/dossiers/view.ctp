@@ -9,17 +9,15 @@
             </thead>';
     }
 
-    function value( $details, $personne, $table, $field ) {
-        return ( ( isset( $details[$personne][$table] ) && isset( $details[$personne][$table][$field] ) ) ? ( $details[$personne][$table][$field] ) : null );
-    }
-
     function linkedValue( $links, $details, $personne, $table, $field ) {
         $value = ( ( isset( $details[$personne][$table] ) && isset( $details[$personne][$table][$field] ) ) ? ( $details[$personne][$table][$field] ) : null );
         return ( isset( $links[$value] ) ? $links[$value] : null );
     }
 
-    function toto( $array, $index ) {
-        if( !empty( $index ) && isset( $array[$index] ) ) {
+    function value( $array, $index ) {
+        $keys = array_keys( $array );
+        $index = ( ( $index == null ) ? '' : $index );
+        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
             return $array[$index];
         }
         else {
@@ -55,11 +53,11 @@
             </tr>
             <tr class="odd">
                 <th>État du dossier</th>
-                <td><?php echo h( toto( $etatdosrsa, Set::extract( 'Situationdossierrsa.etatdosrsa', $details ) ) );?></td>
+                <td><?php echo h( value( $etatdosrsa, Set::extract( 'Situationdossierrsa.etatdosrsa', $details ) ) );?></td>
             </tr>
             <tr class="even">
                 <th>Service instructeur</th>
-                <td><?php echo h( toto( $typeserins, Set::extract( 'Suiviinstruction.typeserins', $details ) ) );?></td>
+                <td><?php echo h( value( $typeserins, Set::extract( 'Suiviinstruction.typeserins', $details ) ) );?></td>
             </tr>
         </tbody>
     </table>
@@ -98,8 +96,8 @@
                             </tr>
                             <tr class="even">
                                 <th>Soumis à droits et devoirs</th>
-                                <td><?php echo  toto( $toppersdrodevorsa, Set::extract( 'DEM.Prestation.toppersdrodevorsa', $details ) );?></td>
-                                <td><?php echo toto( $toppersdrodevorsa, Set::extract( 'CJT.Prestation.toppersdrodevorsa', $details ) );?></td>
+                                <td><?php echo value( $toppersdrodevorsa, Set::extract( 'DEM.Prestation.toppersdrodevorsa', $details ) );?></td>
+                                <td><?php echo value( $toppersdrodevorsa, Set::extract( 'CJT.Prestation.toppersdrodevorsa', $details ) );?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -111,12 +109,12 @@
                         <tbody>
                             <tr class="odd">
                                 <th>Type d'orientation</th>
-                                <td><?php echo toto( $typesorient, Set::extract( 'DEM.Orientstruct.derniere.typeorient_id', $details ) );?></td>
-                                <td><?php echo toto( $typesorient, Set::extract( 'CJT.Orientstruct.derniere.typeorient_id', $details ) );?></td>                            </tr>
+                                <td><?php echo value( $typesorient, Set::extract( 'DEM.Orientstruct.derniere.typeorient_id', $details ) );?></td>
+                                <td><?php echo value( $typesorient, Set::extract( 'CJT.Orientstruct.derniere.typeorient_id', $details ) );?></td>                            </tr>
                             <tr class="even">
                                 <th>Structure référente<!--Type de structure--></th>
-                                <td><?php echo toto( $structuresreferentes, Set::extract( 'DEM.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
-                                <td><?php echo toto( $structuresreferentes, Set::extract( 'CJT.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
+                                <td><?php echo value( $structuresreferentes, Set::extract( 'DEM.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
+                                <td><?php echo value( $structuresreferentes, Set::extract( 'CJT.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date de l'orientation</th>
@@ -130,8 +128,8 @@
                             </tr>
                             <tr class="odd">
                                 <th>Référent en cours</th>
-                                <td><?php echo toto( $structuresreferentes, Set::extract( 'DEM.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
-                                <td><?php echo toto( $structuresreferentes, Set::extract( 'CJT.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
+                                <td><?php echo value( $structuresreferentes, Set::extract( 'DEM.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
+                                <td><?php echo value( $structuresreferentes, Set::extract( 'CJT.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -157,7 +155,7 @@
                             </tr>
                             <tr class="odd">
                                 <th>Motif de fin de droits</th>
-                                <td><?php echo h( toto( $moticlorsa, Set::extract( 'Situationdossierrsa.moticlorsa', $details ) ) );?></td>
+                                <td><?php echo h( value( $moticlorsa, Set::extract( 'Situationdossierrsa.moticlorsa', $details ) ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Numéro de demande RSA</th>
@@ -177,7 +175,7 @@
                             </tr>
                             <tr class="even">
                                 <th>Motif</th>
-                                <td><?php echo toto( $natpf, Set::extract( 'Detailcalculdroitrsa.0.natpf', $details ) );?></td>
+                                <td><?php echo value( $natpf, Set::extract( 'Detailcalculdroitrsa.0.natpf', $details ) );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Montant INDUS</th>
@@ -205,8 +203,8 @@
                         <tbody>
                             <tr class="even">
                                 <th>Type de contrat</th>
-                                <td><?php echo toto( $typoscontrat, Set::extract( 'DEM.Contratinsertion.typocontrat_id', $details) );?></td>
-                                <td><?php echo toto( $typoscontrat, Set::extract( 'CJT.Contratinsertion.typocontrat_id', $details) );?></td>
+                                <td><?php echo value( $typoscontrat, Set::extract( 'DEM.Contratinsertion.typocontrat_id', $details) );?></td>
+                                <td><?php echo value( $typoscontrat, Set::extract( 'CJT.Contratinsertion.typocontrat_id', $details) );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date de début</th>
