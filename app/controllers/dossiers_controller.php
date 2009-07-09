@@ -4,7 +4,7 @@
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' );
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Referent');
         var $aucunDroit = array( 'menu' );
 
         var $paginate = array(
@@ -26,6 +26,7 @@
             $this->set( 'natpf', $this->Option->natpf() );
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+            $this->set( 'moticlorsa', $this->Option->moticlorsa() );
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
             $this->set( 'typevoie', $this->Option->typevoie() );
@@ -222,19 +223,88 @@
         */
         function view( $id = null ) {
             $this->assert( valid_int( $id ), 'invalidParameter' );
+            /**
+                OK -> Dossier
+                OK -> Foyer
+                OK -> Situationdossierrsa
+                OK -> Adresse
+                OK -> Detaildroitrsa
+                    OK -> Detailcalculdroitrsa
+                OK -> Suiviinstruction
+                OK -> Infofinanciere
+                OK -> Creance
+                OK -> Dossiercaf
+                OK -> Personne (DEM/CJT)
+                    OK -> Personne
+                    OK -> Prestation
+                    OK -> Orientstruct (premier/dernier)
+                        //Typeorient
+                    OK -> Dspp
+                    OK -> Contratinsertion
+            */
+            $details = array();
 
-            $dsp = array();
-            // DSP foyer
-            $dsp['foyer'] = $this->Dspf->find(
+            $tDossier = $this->Dossier->findById( $id, null, null, -1 );
+            $details = Set::merge( $details, $tDossier );
+
+            $tFoyer = $this->Dossier->Foyer->findByDossierRsaId( $id, null, null, -1 );
+            $details = Set::merge( $details, $tFoyer );
+
+            $tDetaildroitrsa = $this->Detaildroitrsa->findByDossierRsaId( $id, null, null, 1 );
+            $details = Set::merge( $details, $tDetaildroitrsa );
+
+            $tSituationdossierrsa = $this->Dossier->Situationdossierrsa->findByDossierRsaId( $id, null, null, -1 );
+            $details = Set::merge( $details, $tSituationdossierrsa );
+
+            // FIXME
+//             $tCreance = $this->Dossier->Foyer->Creance->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array( 'Creance.foyer_id' => $id ),
+//                     'recursive' => -1,
+//                     'order' => array( 'Creance.dtimplcre DESC' )
+//                 )
+//             );
+//             $details = Set::merge( $details, $tCreance );
+
+            $tSuiviinstruction = $this->Dossier->Suiviinstruction->find(
+                'first',
+                array(
+                    'conditions' => array( 'Suiviinstruction.dossier_rsa_id' => $id ),
+                    'recursive' => -1,
+                    'order' => array( 'Suiviinstruction.date_etat_instruction DESC' )
+                )
+            );
+            $details = Set::merge( $details, $tSuiviinstruction );
+
+            $tInfofinanciere = $this->Dossier->Infofinanciere->find(
+                'first',
+                array(
+                    'conditions' => array( 'Infofinanciere.dossier_rsa_id' => $id ),
+                    'recursive' => -1,
+                    'order' => array( 'Infofinanciere.moismoucompta DESC' )
+                )
+            );
+            $details = Set::merge( $details, $tInfofinanciere );
+
+            $adresseFoyer = $this->Adressefoyer->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Dspf.foyer_id' => $id
-                    )
+                        'Adressefoyer.foyer_id' => $details['Foyer']['id'],
+                        'Adressefoyer.rgadr'    => '01'
+                    ),
+                    'recursive' => 1
                 )
-            ) ;
+            );
+            $details = Set::merge( $details, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
 
-            // Ajout des DSP demandeur et conjoint
+            /**
+                Personnes
+            */
+            $bindPrestation = $this->Personne->hasOne['Prestation'];
+            $this->Personne->unbindModelAll();
+            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dspp', 'Prestation' => $bindPrestation ) ) );
             $personnesFoyer = $this->Personne->find(
                 'all',
                 array(
@@ -242,222 +312,274 @@
                         'Personne.foyer_id' => $id,
                         'Prestation.rolepers' => array( 'DEM', 'CJT' )
                     ),
-                    'recursive' => 2
+                    'recursive' => 0
                 )
             );
 
-            foreach( $personnesFoyer as $personneFoyer ) {
-                $dsp[$personneFoyer['Prestation']['rolepers']] = $personneFoyer;
-                $dsp_personne = $this->Dspp->findByPersonneId( $personneFoyer['Personne']['id'], null, null, 1 );
-                if( !empty( $dsp_personne ) ) {
-                    $dsp[$personneFoyer['Prestation']['rolepers']] = array_merge( $dsp[$personneFoyer['Prestation']['rolepers']], $dsp_personne );
-                }
-                else {
-                    unset( $dsp[$personneFoyer['Prestation']['rolepers']]['Dspp'] );
-                }
+            $roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
+            foreach( $roles as $index => $role ) {
+                $tContratinsertion = $this->Contratinsertion->find(
+                    'first',
+                    array(
+                        'conditions' => array( 'Contratinsertion.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+                        'recursive' => -1,
+                        'order' => array( 'Contratinsertion.rg_ci DESC' )
+                    )
+                );
+                $personnesFoyer[$index]['Contratinsertion'] = $tContratinsertion['Contratinsertion'];
+
+                $tOrientstruct = $this->Orientstruct->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id']
+                        ),
+                        'order' => 'Orientstruct.date_valid ASC',
+                        'recursive' => -1
+                    )
+                );
+                $personnesFoyer[$index]['Orientstruct']['premiere'] = $tOrientstruct['Orientstruct'];
+
+                $tOrientstruct = $this->Orientstruct->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id']
+                        ),
+                        'order' => 'Orientstruct.date_valid DESC',
+                        'recursive' => -1
+                    )
+                );
+                $personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct['Orientstruct'];
+
+                $details[$role] = $personnesFoyer[$index];
             }
 
-            $this->set( 'dsp', $dsp );
+/*debug( $details );*/
 
-/*-*************************************************************************/
+            $structuresreferentes = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
+            $typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
+            $typoscontrat = $this->Typocontrat->find( 'list', array( 'fields' => array( 'id', 'lib_typo' ) ) );
 
-            $tc = $this->Typocontrat->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Typocontrat.lib_typo'
-                    ),
-                )
-            );
-            $this->set( 'tc', $tc );
+            $this->set( 'structuresreferentes', $structuresreferentes );
+            $this->set( 'typesorient', $typesorient );
+            $this->set( 'typoscontrat', $typoscontrat );
 
+            $this->set( 'details', $details );
 
-            $dossier = $this->Dossier->find(
-                'first',
-                array(
-                    'conditions' => array( 'Dossier.id' => $id ),
-                    'recursive' => 0
-                )
-            );
-            $this->assert( !empty( $dossier ), 'invalidParameter' );
-
-            //*****************************************************************
-
-            $personne = $this->Personne->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Personne.foyer_id' => $dossier['Foyer']['id'],
-                        'Prestation.rolepers' => array( 'DEM' )
-                    ),
-                    'recursive' => 0
-                )
-            );
-            $this->assert( !empty( $personne ), 'invalidParameter' );
-
-//             // FIXME: on l'a déjà trouvé plus haut ?
+// // -----------------------------------------------------------------------------
+// 
+//             $dsp = array();
+//             // DSP foyer
+// //             $dsp['foyer'] = $this->Dspf->find(
+// //                 'first',
+// //                 array(
+// //                     'conditions' => array(
+// //                         'Dspf.foyer_id' => $id
+// //                     )
+// //                 )
+// //             ) ;
+// 
+//             // Dspf + Foyer
+//             $dsp['foyer'] = $this->Dspf->findByFoyerId( $id, null, null, 0 );
+// 
+//             // Ajout des DSP demandeur et conjoint
+//             $personnesFoyer = $this->Personne->find(
+//                 'all',
+//                 array(
+//                     'conditions' => array(
+//                         'Personne.foyer_id' => $id,
+//                         'Prestation.rolepers' => array( 'DEM', 'CJT' )
+//                     ),
+//                     'recursive' => 2
+//                 )
+//             );
+// 
+//             foreach( $personnesFoyer as $personneFoyer ) {
+//                 $dsp[$personneFoyer['Prestation']['rolepers']] = $personneFoyer;
+//                 $dsp_personne = $this->Dspp->findByPersonneId( $personneFoyer['Personne']['id'], null, null, 1 );
+//                 if( !empty( $dsp_personne ) ) {
+//                     $dsp[$personneFoyer['Prestation']['rolepers']] = array_merge( $dsp[$personneFoyer['Prestation']['rolepers']], $dsp_personne );
+//                 }
+//                 else {
+//                     unset( $dsp[$personneFoyer['Prestation']['rolepers']]['Dspp'] );
+//                 }
+// 
+//                 //-----------------------------------------------------------------
+// 
+//                 $contratinsertion = $this->Contratinsertion->find(
+//                     'first',
+//                     array(
+//                         'conditions' => array( 'Contratinsertion.personne_id' => $personneFoyer['Personne']['id'] ),
+//                         'recursive' => -1,
+//                         'order' => array( 'Contratinsertion.rg_ci DESC' )
+//                     )
+//                 );
+//                 //$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
+//                 $dsp[$personneFoyer['Prestation']['rolepers']]['Contratinsertion'] = $contratinsertion['Contratinsertion'];
+//             }
+// 
+//             $this->set( 'dsp', $dsp );
+// 
+//             /*-*************************************************************************/
+// 
+//             $tc = $this->Typocontrat->find(
+//                 'list',
+//                 array(
+//                     'fields' => array(
+//                         'Typocontrat.lib_typo'
+//                     ),
+//                 )
+//             );
+//             $this->set( 'tc', $tc );
+// 
+// 
+//             $dossier = $this->Dossier->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array( 'Dossier.id' => $id ),
+//                     'recursive' => 0
+//                 )
+//             );
+//             $this->assert( !empty( $dossier ), 'invalidParameter' );
+// 
+//             //*****************************************************************
+// 
 //             $personne = $this->Personne->find(
 //                 'first',
 //                 array(
 //                     'conditions' => array(
 //                         'Personne.foyer_id' => $dossier['Foyer']['id'],
+//                         'Prestation.rolepers' => array( 'DEM' )
 //                     ),
-//                     'joins' => array(
-//                         array(
-//                             'table'      => 'prestations',
-//                             'alias'      => 'Prestation',
-//                             'type'       => 'inner',
-//                             'foreignKey' => false,
-//                             'conditions' => array(
-//                                 'Prestation.personne_id = Personne.id',
-//                                 'Prestation.rolepers' => array( 'DEM' )
-//                             )
-//                         )
+//                     'recursive' => 0
+//                 )
+//             );
+//             $this->assert( !empty( $personne ), 'invalidParameter' );
+// 
+//             //-----------------------------------------------------------------
+// 
+//             $orientStruct = $this->Orientstruct->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Orientstruct.personne_id' => $personne['Personne']['id']
+//                     ),
+//                     'order' => 'Orientstruct.date_valid ASC',
+//                     'recursive' => -1
+//                 )
+//             );
+//             $personne['Personne']['Orientstruct']['premiere'] = $orientStruct['Orientstruct'];
+// 
+//             $orientStruct = $this->Orientstruct->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Orientstruct.personne_id' => $personne['Personne']['id']
+//                     ),
+//                     'order' => 'Orientstruct.date_valid DESC',
+//                     'recursive' => -1
+//                 )
+//             );
+//             $personne['Personne']['Orientstruct']['derniere'] = $orientStruct['Orientstruct'];
+// 
+//             //-----------------------------------------------------------------
+// 
+//             //$personne['Personne']['Typeorient'] = $orientStruct['Typeorient'];
+//             //$personne['Personne']['Structurereferente'] = $orientStruct['Structurereferente'];
+//             $dossier = Set::merge( $dossier, $personne );
+// // debug( $personne['Personne']['Contratinsertion'] );
+//             //*****************************************************************
+// 
+//             $adresseFoyer = $this->Adressefoyer->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Adressefoyer.foyer_id' => $dossier['Foyer']['id'],
+//                         'Adressefoyer.rgadr'    => '01'
+//                     ),
+//                     'recursive' => 1
+//                 )
+//             );
+//             //$this->assert( !empty( $adresseFoyer ), 'invalidParameter' );
+//             $dossier = Set::merge( $dossier, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
+// 
+//             //-----------------------------------------------------------------
+// 
+//             $creance = $this->Creance->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Creance.id' => $dossier['Foyer']['id'], // WTF ??
+//                     ),
+//                     'recursive' => 2
+//                 )
+//             );
+//             $dossier = Set::merge( $dossier, array( 'Creance' => $creance['Creance'] ) );
+// 
+// 
+//             $modes = $this->Modecontact->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Modecontact.foyer_id' => $dossier['Foyer']['id'],
+//                     ),
+//                     'recursive' => 2
+//                 )
+//             );
+//             $dossier = Set::merge( $dossier, array( 'Modecontact' => $modes['Modecontact'] ) );
+// 
+//             //-----------------------------------------------------------------
+// /*
+//             $struct = $this->Structurereferente->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Structurereferente.id' => $orientStruct['Structurereferente']['id'], // WTF ??
 //                     ),
 //                     'recursive' => -1
 //                 )
 //             );
-//             $this->assert( !empty( $personne ), 'invalidParameter' );
-
-            //-----------------------------------------------------------------
-
-            $orientStruct = $this->Orientstruct->find(
-                'first',
-                array(
-                    'conditions' => array( 'Orientstruct.personne_id' => $personne['Personne']['id'] ),
-                    'recursive' => 2
-                )
-            );
-            //$this->assert( !empty( $orientStruct ), 'invalidParameter' );
-
-            //-----------------------------------------------------------------
-
-            $contratinsertion = $this->Contratinsertion->find(
-                'first',
-                array(
-                    'conditions' => array( 'Contratinsertion.personne_id' => $personne['Personne']['id'] ),
-                    'recursive' => -1
-                )
-            );
-            //$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
-
-            //-----------------------------------------------------------------
-
-            $personne['Personne']['Orientstruct'] = $orientStruct['Orientstruct'];
-            //$personne['Personne']['Typeorient'] = $orientStruct['Typeorient'];
-            $personne['Personne']['Structurereferente'] = $orientStruct['Structurereferente'];
-            $personne['Personne']['Contratinsertion'] = $contratinsertion['Contratinsertion'];
-            $dossier = Set::merge( $dossier, $personne );
-
-            //*****************************************************************
-
-            $adresseFoyer = $this->Adressefoyer->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Adressefoyer.foyer_id' => $dossier['Foyer']['id'],
-                        'Adressefoyer.rgadr'    => '01'
-                    ),
-                    'recursive' => 1
-                )
-            );
-            //$this->assert( !empty( $adresseFoyer ), 'invalidParameter' );
-            $dossier = Set::merge( $dossier, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
-
-            //-----------------------------------------------------------------
-
-            $creance = $this->Creance->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Creance.id' => $dossier['Foyer']['id'],
-                    ),
-                    'recursive' => 2
-                )
-            );
-            $dossier = Set::merge( $dossier, array( 'Creance' => $creance['Creance'] ) );
-
-
-            $modes = $this->Modecontact->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Modecontact.id' => $dossier['Foyer']['id'],
-                    ),
-                    'recursive' => 2
-                )
-            );
-            $dossier = Set::merge( $dossier, array( 'Modecontact' => $modes['Modecontact'] ) );
-
-            //-----------------------------------------------------------------
-            $struct = $this->Structurereferente->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Structurereferente.id' => $dossier['Foyer']['id'],
-                    ),
-                    'recursive' => -1
-                )
-            );
-            $dossier = Set::merge( $dossier, array( 'Structurereferente' => $struct['Structurereferente'] ) );
-            //-----------------------------------------------------------------
-            $typeorient = $this->Typeorient->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Typeorient.id' => $dossier['Foyer']['id'],
-                    ),
-                    'recursive' => -1
-                )
-            );
-            $dossier = Set::merge( $dossier, array( 'Typeorient' => $typeorient['Typeorient'] ) );
-
-            //-----------------------------------------------------------------
-
-            $detail = $this->Detailcalculdroitrsa->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Detailcalculdroitrsa.detaildroitrsa_id' => $dossier['Detaildroitrsa']['id'],
-                    ),
-                    'order' => 'dtderrsavers DESC',
-                    'recursive' => -1
-                )
-            );
-
-            $dossier['Detaildroitrsa']['Detailcalculdroitrsa'] = $detail['Detailcalculdroitrsa']; // FIXME: vérifier avec plusieurs
-
-            //-----------------------------------------------------------------
-
-            $dsp = $this->Dspp->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dspp.personne_id' => $personne['Personne']['id'],
-                    ),
-                    'recursive' => 0
-                )
-            );
-            $dossier = Set::merge( $dossier, array( 'Dspp' => $dsp['Dspp'] ) );
-
-            //-----------------------------------------------------------------
-            $caf = $this->Dossiercaf->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dossiercaf.personne_id' => $personne['Personne']['id'],
-                    ),
-                    'recursive' => 0
-                )
-            );
-            $dossier = Set::merge( $dossier, array( 'Dossiercaf' => $caf['Dossiercaf'] ) );
-
-            //-----------------------------------------------------------------
-
-// debug( $dossier );
-            $this->assert( !empty( $dossier ), 'error404' );
-            $this->set( 'dossier', $dossier );
-
+//             $dossier = Set::merge( $dossier, array( 'Structurereferente' => $struct['Structurereferente'] ) );*/
+// 
+//             //-----------------------------------------------------------------
+// 
+//             $typeorient = $this->Typeorient->findById( $dossier['Foyer']['id'], null, null, -1 );
+//             $dossier = Set::merge( $dossier, array( 'Typeorient' => $typeorient['Typeorient'] ) );
+// 
+//             //-----------------------------------------------------------------
+// 
+//             $detail = $this->Detailcalculdroitrsa->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Detailcalculdroitrsa.detaildroitrsa_id' => $dossier['Detaildroitrsa']['id'],
+//                     ),
+//                     'order' => 'dtderrsavers DESC',
+//                     'recursive' => -1
+//                 )
+//             );
+// 
+//             $dossier['Detaildroitrsa']['Detailcalculdroitrsa'] = $detail['Detailcalculdroitrsa']; // FIXME: vérifier avec plusieurs
+// 
+//             //-----------------------------------------------------------------
+// 
+//             $dsp = $this->Dspp->findByPersonneId( $personne['Personne']['id'], null, null, 0 );
+//             $dossier = Set::merge( $dossier, array( 'Dspp' => $dsp['Dspp'] ) );
+// 
+//             //-----------------------------------------------------------------
+// 
+//             $caf = $this->Dossiercaf->findByPersonneId( $personne['Personne']['id'], null, null, 0 );
+//             $dossier = Set::merge( $dossier, array( 'Dossiercaf' => $caf['Dossiercaf'] ) );
+// // debug( $dossier );
+//             //-----------------------------------------------------------------
+// 
+//             $this->assert( !empty( $dossier ), 'error404' );
+// 
+// // debug( Set::extract( 'Personne.Contratinsertion', $dossier ) );
+// 
+// 
+//             $this->set( 'dossier', $dossier );
         }
     }
 ?>

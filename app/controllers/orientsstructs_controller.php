@@ -29,9 +29,18 @@
         function index( $personne_id = null ){
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
-            $orientstruct = $this->Orientstruct->findByPersonneId( $personne_id, null, null, 2 );
+            $orientstructs = $this->Orientstruct->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Personne.id' => $personne_id
+                    ),
+                    'recursive' => 2
+                )
+            );
+//             debug( $orientstruct );
 
-            $this->set( 'orientstruct', $orientstruct );
+            $this->set( 'orientstructs', $orientstructs );
             $this->set( 'personne_id', $personne_id );
         }
 

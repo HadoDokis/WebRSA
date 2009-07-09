@@ -9,51 +9,57 @@
             </thead>';
     }
 
-    function value( $dsp, $personne, $table, $field ) {
-        return ( ( isset( $dsp[$personne][$table] ) && isset( $dsp[$personne][$table][$field] ) ) ? ( $dsp[$personne][$table][$field] ) : null );
+    function value( $details, $personne, $table, $field ) {
+        return ( ( isset( $details[$personne][$table] ) && isset( $details[$personne][$table][$field] ) ) ? ( $details[$personne][$table][$field] ) : null );
     }
 
-    function linkedValue( $links, $dossier, $personne, $table, $field ) {
-        $value = ( ( isset( $dossier[$personne][$table] ) && isset( $dossier[$personne][$table][$field] ) ) ? ( $dossier[$personne][$table][$field] ) : null );
+    function linkedValue( $links, $details, $personne, $table, $field ) {
+        $value = ( ( isset( $details[$personne][$table] ) && isset( $details[$personne][$table][$field] ) ) ? ( $details[$personne][$table][$field] ) : null );
         return ( isset( $links[$value] ) ? $links[$value] : null );
     }
 
+    function toto( $array, $index ) {
+        if( !empty( $index ) && isset( $array[$index] ) ) {
+            return $array[$index];
+        }
+        else {
+            return null;
+        }
+    }
+
     /////  Récupération données du Contratinsertion pour le DEM et le CJT
-    $DT = Set::extract( 'DEM.Contratinsertion.0.typocontrat_id', $dsp);
-    $CT = Set::extract( 'CJT.Contratinsertion.0.typocontrat_id', $dsp);
+    $DT = Set::extract( 'DEM.Contratinsertion.typocontrat_id', $details);
+    $CT = Set::extract( 'CJT.Contratinsertion.typocontrat_id', $details);
 
-    $deciD = Set::extract( 'DEM.Contratinsertion.0.decision_ci', $dsp);
-    $deciC = Set::extract( 'CJT.Contratinsertion.0.decision_ci', $dsp);
+    $deciD = Set::extract( 'DEM.Contratinsertion.decision_ci', $details);
+    $deciC = Set::extract( 'CJT.Contratinsertion.decision_ci', $details);
 
-//     debug($role);
-//      debug( ( !empty( $role ) ) ? $role : null );
-// debug( Set::extract( 'DEM.Orientstruct', $dsp));
 ?>
-<?php $this->pageTitle = 'Dossier RSA '.$dossier['Dossier']['numdemrsa'];?>
+<?php $this->pageTitle = 'Dossier RSA '.$details['Dossier']['numdemrsa'];?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier['Dossier']['id'] ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'id' => $details['Dossier']['id'] ) );?>
 
 <div class="with_treemenu">
-    <h1>Dossier RSA <?php echo h( $dossier['Dossier']['numdemrsa'] );?></h1>
+    <h1>Dossier RSA <?php echo h( $details['Dossier']['numdemrsa'] );?></h1>
 
 <div id="resumeDossier">
     <table>
         <tbody>
             <tr class="odd">
                 <th>Numéro de dossier</th>
-                <td><?php echo h( $dossier['Dossier']['numdemrsa'] );?></td>
+                <td><?php echo h( $details['Dossier']['numdemrsa'] );?></td>
             </tr>
             <tr class="even">
                 <th>Date de demande</th>
-                <td><?php echo h( date_short( $dossier['Dossier']['dtdemrsa'] ) );?></td>
+                <td><?php echo h( date_short( $details['Dossier']['dtdemrsa'] ) );?></td>
             </tr>
             <tr class="odd">
                 <th>État du dossier</th>
-                <td><?php echo h( isset( $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null );?></td>
+                <td><?php echo h( toto( $etatdosrsa, Set::extract( 'Situationdossierrsa.etatdosrsa', $details ) ) );?></td>
             </tr>
             <tr class="even">
                 <th>Service instructeur</th>
-                <td><?php echo h( isset( $typeserins[$dossier['Suiviinstruction']['typeserins']] ) ? $typeserins[$dossier['Suiviinstruction']['typeserins']] : null );?></td>
+                <td><?php echo h( toto( $typeserins, Set::extract( 'Suiviinstruction.typeserins', $details ) ) );?></td>
             </tr>
         </tbody>
     </table>
@@ -68,37 +74,32 @@
                         <tbody>
                             <tr class="odd">
                                 <th><?php __( 'nom' );?></th>
-                                <td><?php echo value( $dsp, 'DEM', 'Personne', 'nom' ) ;?></td>
-                                <td><?php echo value( $dsp, 'CJT', 'Personne', 'nom' ) ;?></td>
+                                <td><?php echo Set::extract( 'DEM.Personne.nom', $details );?></td>
+                                <td><?php echo Set::extract( 'CJT.Personne.nom', $details );?></td>
                             </tr>
                             <tr class="even">
                                 <th><?php __( 'prenom' );?></th>
-                                <td><?php echo value( $dsp, 'DEM', 'Personne', 'prenom' ) ;?></td>
-                                <td><?php echo value( $dsp, 'CJT', 'Personne', 'prenom' ) ;?></td>
+                                <td><?php echo Set::extract( 'DEM.Personne.prenom', $details );?></td>
+                                <td><?php echo Set::extract( 'CJT.Personne.prenom', $details );?></td>
                             </tr>
                             <tr class="odd">
                                 <th><?php __( 'sitfam' );?></th>
-                                <td colspan="2"><?php echo ( isset( $sitfam[$dossier['Foyer']['sitfam']] ) ?  $sitfam[$dossier['Foyer']['sitfam']] : null );?></td>
+                                <td colspan="2"><?php echo ( isset( $sitfam[$details['Foyer']['sitfam']] ) ?  $sitfam[$details['Foyer']['sitfam']] : null );?></td>
                             </tr>
                             <tr class="even">
                                 <th><?php __( 'adresse' );?></th>
                                 <td colspan="2">
-                                    <?php echo $dossier['Adresse']['numvoie'].' '.( isset( $typevoie[$dossier['Adresse']['typevoie']] ) ? $typevoie[$dossier['Adresse']['typevoie']] : null ).' '. $dossier['Adresse']['nomvoie'];?>
+                                    <?php echo $details['Adresse']['numvoie'].' '.( isset( $typevoie[$details['Adresse']['typevoie']] ) ? $typevoie[$details['Adresse']['typevoie']] : null ).' '. $details['Adresse']['nomvoie'];?>
                                 </td>
                             </tr>
-                            <!-- <tr class="even">
-                                <th><?php __( 'numtel' );?></th>
-                                <td><?php echo isset( $dossier['ModeContact']['numtel'] ) ? $dossier['ModeContact']['numtel'] : null;?></td>
-                                <td><?php echo isset( $dossier['ModeContact']['numtel'] ) ? $dossier['ModeContact']['numtel'] : null;?></td>
-                            </tr>-->
                             <tr class="odd">
                                 <th><?php __( 'locaadr' );?></th>
-                                <td colspan="2"><?php echo ( isset( $dossier['Adresse']['locaadr'] ) ? $dossier['Adresse']['locaadr'] : null );?></td>
+                                <td colspan="2"><?php echo ( isset( $details['Adresse']['locaadr'] ) ? $details['Adresse']['locaadr'] : null );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Soumis à droits et devoirs</th>
-                                <td><?php echo linkedValue( $toppersdrodevorsa, $dsp, 'DEM', 'Prestation', 'toppersdrodevorsa' );?></td>
-                                <td><?php echo linkedValue( $toppersdrodevorsa, $dsp, 'CJT', 'Prestation', 'toppersdrodevorsa' );?></td>
+                                <td><?php echo  toto( $toppersdrodevorsa, Set::extract( 'DEM.Prestation.toppersdrodevorsa', $details ) );?></td>
+                                <td><?php echo toto( $toppersdrodevorsa, Set::extract( 'CJT.Prestation.toppersdrodevorsa', $details ) );?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -110,32 +111,27 @@
                         <tbody>
                             <tr class="odd">
                                 <th>Type d'orientation</th>
-                                <td><?php echo Set::extract( 'DEM.Orientstruct.Typeorient.lib_type_orient', $dsp );?></td>
-                                <td><?php echo Set::extract( 'CJT.Orientstruct.Typeorient.lib_type_orient', $dsp );?></td>
-                            </tr>
+                                <td><?php echo toto( $typesorient, Set::extract( 'DEM.Orientstruct.derniere.typeorient_id', $details ) );?></td>
+                                <td><?php echo toto( $typesorient, Set::extract( 'CJT.Orientstruct.derniere.typeorient_id', $details ) );?></td>                            </tr>
                             <tr class="even">
                                 <th>Structure référente<!--Type de structure--></th>
-                                <td><?php echo Set::extract( 'DEM.Orientstruct.Structurereferente.lib_struc', $dsp );?></td>
-                                <td><?php echo Set::extract( 'CJT.Orientstruct.Structurereferente.lib_struc', $dsp );?></td>
+                                <td><?php echo toto( $structuresreferentes, Set::extract( 'DEM.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
+                                <td><?php echo toto( $structuresreferentes, Set::extract( 'CJT.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date de l'orientation</th>
-                                <td><?php echo date_short( value( $dsp, 'DEM', 'Orientstruct', 'date_valid' ) );?></td>
-                                <td><?php echo date_short( value( $dsp, 'CJT', 'Orientstruct', 'date_valid' ) );?></td>
+                                <td><?php echo date_short( Set::extract( 'DEM.Orientstruct.derniere.date_valid', $details ) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Orientstruct.derniere.date_valid', $details ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Statut de l'orientation</th>
-                                <td><?php if( Set::extract( 'DEM.Orientstruct', $dsp) != null ):?>
-                                    <?php echo value( $dsp, 'DEM', 'Orientstruct', 'statut_orient' );?>
-                                <?php endif;?></td>
-                                <td><?php if( Set::extract( 'CJT.Orientstruct', $dsp) != null ):?>
-                                    <?php echo value( $dsp, 'CJT', 'Orientstruct', 'statut_orient' );?>
-                                <?php endif;?></td>
+                                <td><?php echo Set::extract( 'DEM.Orientstruct.derniere.statut_orient', $details );?></td>
+                                <td><?php echo Set::extract( 'CJT.Orientstruct.derniere.statut_orient', $details );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Référent en cours</th>
-                                <td><?php echo Set::extract( 'DEM.Orientstruct.Structurereferente.lib_struc', $dsp );?></td>
-                                <td><?php echo Set::extract( 'CJT.Orientstruct.Structurereferente.lib_struc', $dsp );?></td>
+                                <td><?php echo toto( $structuresreferentes, Set::extract( 'DEM.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
+                                <td><?php echo toto( $structuresreferentes, Set::extract( 'CJT.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -148,55 +144,56 @@
                         <tbody>
                             <tr class="even">
                                 <th>Numéro CAF</th>
-                                <td><?php echo h( $dossier['Dossier']['matricule'] );?></td>
+                                <td><?php echo Set::extract( 'Dossier.matricule', $details );;?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date d'ouverture des droits</th>
-                                <td><?php echo h( date_short( $dossier['Dossier']['dtdemrsa'] ) );?></td>
+                                <td><?php echo h( date_short( Set::extract( 'Dossier.dtdemrsa', $details ) ) );?></td>
                             </tr>
                             <tr class="even">
+
                                 <th>Date de fin de droits</th>
-                                <td><?php echo h( date_short( $dossier['Situationdossierrsa']['dtclorsa'] ) );?></td>
+                                <td><?php echo h( date_short( Set::extract( 'Situationdossierrsa.dtclorsa', $details ) ) );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Motif de fin de droits</th>
-                                <td><?php echo h( $dossier['Situationdossierrsa']['moticlorsa'] );?></td>
+                                <td><?php echo h( toto( $moticlorsa, Set::extract( 'Situationdossierrsa.moticlorsa', $details ) ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Numéro de demande RSA</th>
-                                <td><?php echo h( isset( $dossier['Dossier']['numdemrsa'] ) ? $dossier['Dossier']['numdemrsa'] : null );?></td>
+                                <td><?php echo Set::extract( 'Dossier.numdemrsa', $details );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>DSP</th>
-                                <td><?php echo h( isset( $dossier['Dspp']['id'] ) ? 'Oui' : 'Non');?></td>
+                                <td><?php echo h( isset( $details['Dspp']['id'] ) ? 'Oui' : 'Non');?></td>
                             </tr>
                             <tr class="even">
                                 <th>Montant RSA</th>
-                                <td><?php echo h( isset( $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['mtrsavers'] ) ? $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['mtrsavers'] : null );?></td>
+                                <td><?php echo Set::extract( 'Detailcalculdroitrsa.0.mtrsavers', $details ); ?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date dernier montant</th>
-                                <td><?php echo h( date_short( isset( $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['dtderrsavers'] ) ) ? date_short( $dossier['Detaildroitrsa']['Detailcalculdroitrsa']['dtderrsavers'] ) : null);?></td>
+                                <td><?php echo date_short( Set::extract( 'Detailcalculdroitrsa.0.mtrsavers', $details ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Motif</th>
-                                <td><?php echo h( isset( $natpf[$dossier['Detaildroitrsa']['Detailcalculdroitrsa']['natpf']] ) ? $natpf[$dossier['Detaildroitrsa']['Detailcalculdroitrsa']['natpf']] : null );?></td>
+                                <td><?php echo toto( $natpf, Set::extract( 'Detailcalculdroitrsa.0.natpf', $details ) );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Montant INDUS</th>
-                                <td><?php echo h( isset( $dossier['Infofinanciere']['mtmoucompta'] ) ? $dossier['Infofinanciere']['mtmoucompta'] : null  );?></td>
+                                <td><?php echo h( Set::extract( 'Infofinanciere.mtmoucompta', $details ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Motif</th>
-                                <td><?php echo h( isset( $dossier['Creance']['motiindu'] ) ? $dossier['Creance']['motiindu'] : null );?></td>
+                                <td><?php echo h( Set::extract( 'Creance.motiindu', $details ) );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Début du traitement CAF</th>
-                                <td><?php echo h(  date_short( isset( $dossier['Dossiercaf']['ddratdos'] ) ) ? date_short( $dossier['Dossiercaf']['ddratdos'] ) : null  );?></td>
+                                <td><?php echo h(  date_short( Set::extract( 'DEM.Dossiercaf.ddratdos', $details ) ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Fin du traitement CAF</th>
-                                <td><?php echo h( isset( $dossier['Creance']['motiindu'] ) ? $dossier['Creance']['motiindu'] : null );?></td>
+                                <td><?php echo h(  date_short( Set::extract( 'DEM.Dossiercaf.dfratdos', $details ) ) );?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -208,36 +205,36 @@
                         <tbody>
                             <tr class="even">
                                 <th>Type de contrat</th>
-                                <td><?php echo h( ( !empty( $DT ) && isset( $tc[$DT] ) ) ? $tc[$DT] : null );?></td>
-                                <td><?php echo h( ( !empty( $CT ) && isset( $tc[$CT] ) ) ? $tc[$CT] : null );?></td>
+                                <td><?php echo toto( $typoscontrat, Set::extract( 'DEM.Contratinsertion.typocontrat_id', $details) );?></td>
+                                <td><?php echo toto( $typoscontrat, Set::extract( 'CJT.Contratinsertion.typocontrat_id', $details) );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date de début</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.0.dd_ci', $dsp) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.0.dd_ci', $dsp) );?></td>
+                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.dd_ci', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.dd_ci', $details) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Date de fin</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.0.df_ci', $dsp) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.0.df_ci', $dsp) );?></td>
+                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.df_ci', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.df_ci', $details) );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Décision</th>
                                 <td>
-                                    <?php if(  Set::extract( 'DEM.Contratinsertion', $dsp) != null ):?>
+                                    <?php if(  Set::extract( 'DEM.Contratinsertion', $details) != null ):?>
                                         <?php echo ( !empty( $deciD )  ) ? $decision_ci[$deciD] : $decision_ci[''] ;?>
                                     <?php endif;?>
                                 </td>
                                 <td>
-                                    <?php if( Set::extract( 'CJT.Contratinsertion', $dsp) != null ):?>
+                                    <?php if( Set::extract( 'CJT.Contratinsertion', $details) != null ):?>
                                         <?php echo ( !empty( $deciC )  ) ? $decision_ci[$deciC] : $decision_ci[''] ;?>
                                     <?php endif;?>
                                 </td>
                             </tr>
                             <tr class="even">
                                 <th>Date de décision</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.0.datevalidation_ci', $dsp) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.0.datevalidation_ci', $dsp) );?></td>
+                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.0.datevalidation_ci', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.0.datevalidation_ci', $details) );?></td>
                             </tr>
                         </tbody>
                     </table>
