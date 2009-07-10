@@ -85,50 +85,62 @@
                 array(
                     'recursive' => 1
                 )
-
             );
 
             $this->set('users', $users);
         }
+
+        function _setNewPermissions( $group_id, $group_name, $user_id, $username ) {
+            $group = $this->User->Group->findById( $group_id, null, null, -1 );
+            $aroGroup = $this->Acl->Aro->findByAlias( 'Group:'.$group_name, null, null, 2 );
+
+            $aroAlias = 'Utilisateur:'.$username;
+            $this->Acl->Aro->create( array( 'parent_id' => $aroGroup['Aro']['id'], 'foreign_key' => $user_id, 'alias' => $aroAlias ) );
+            $saved = $this->Acl->Aro->save();
+
+            $permissions = Set::combine( $aroGroup, 'Aco.{n}.alias', 'Aco.{n}.Permission._create' );
+            foreach( $permissions as $acoAlias => $permission ) {
+                if( $permission == 1 ) {
+                    $saved = $this->Acl->allow( $aroAlias, $acoAlias ) && $saved;
+                }
+                else {
+                    $saved = $this->Acl->deny( $aroAlias, $acoAlias ) && $saved;
+                }
+            }
+
+            return $saved;
+        }
+
         // FIXME: à l'ajout, on n'obtient pas toutes les acl de son groupe
         function add() {
-            $zg = $this->Zonegeographique->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Zonegeographique.id',
-                        'Zonegeographique.libelle'
-                    )
-                )
-            );
-            $this->set( 'zglist', $zg );
-
-            $gp = $this->Group->find(
-                'list',
-                array(
-                    'fields' => array(
-                       // 'Group.id',
-                        'Group.name'
-                    )
-                )
-            );
-            $this->set( 'gp', $gp );
-
-            $si = $this->Serviceinstructeur->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Serviceinstructeur.id',
-                        'Serviceinstructeur.lib_service'
-                    ),
-                )
-            );
-            $this->set( 'si', $si );
+            $this->set( 'zglist', $this->Zonegeographique->find( 'list' ) );
+            $this->set( 'gp', $this->Group->find( 'list' ) );
+            $this->set( 'si', $this->Serviceinstructeur->find( 'list' ) );
 
             if( !empty( $this->data ) ) {
-                if( $this->User->saveAll( $this->data ) ) {
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
+                $this->User->begin();
+                if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+
+                    // Définition des nouvelles permissions
+                    $saved = $this->_setNewPermissions(
+                        $this->data['User']['group_id'],
+                        $group['Group']['name'],
+                        $this->User->id,
+                        $this->data['User']['username']
+                    );
+
+                    if( $saved ) {
+                        $this->User->commit();
+                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                        $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
+                    }
+                    else {
+                        $this->User->rollback();
+                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                    }
+                }
+                else {
+                    $this->User->rollback();
                 }
             }
 
@@ -140,55 +152,69 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $user_id ), 'error404' );
 
-            $zg = $this->Zonegeographique->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Zonegeographique.id',
-                        'Zonegeographique.libelle'
-                    )
-                )
-            );
-            $this->set( 'zglist', $zg );
+            $userDb = $this->User->findById( $user_id );
+            $this->assert( !empty( $userDb ), 'error404' );
 
-            $gp = $this->Group->find(
-                'list',
-                array(
-                    'fields' => array(
-                        //'Group.id',
-                        'Group.name'
-                    )
-                )
-            );
-            $this->set( 'gp', $gp );
-
-            $si = $this->Serviceinstructeur->find(
-                'list',
-                array(
-                    'fields' => array(
-                        //'Serviceinstructeur.id',
-                        'Serviceinstructeur.lib_service'
-                    )
-                )
-            );
-            $this->set( 'si', $si );
+            $this->set( 'zglist', $this->Zonegeographique->find( 'list' ) );
+            $this->set( 'gp', $this->Group->find( 'list' ) );
+            $this->set( 'si', $this->Serviceinstructeur->find( 'list' ) );
 
             if( !empty( $this->data ) ) {
-                if( $this->User->saveAll( $this->data ) ) {
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
+                $this->User->begin();
+                if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+                    if( $userDb['User']['group_id'] != $this->data['User']['group_id'] ) {
+                        $group = $this->User->Group->findById( $this->data['User']['group_id'], null, null, -1 );
+                        $aroGroup = $this->Acl->Aro->findByAlias( 'Group:'.$group['Group']['name'], null, null, -1 );
+
+                        $aroUserDb = $this->Acl->Aro->findByForeignKey( $this->data['User']['id'], null, null, 2 );
+
+                        $aroUserData = array( 'Aro' => $aroUserDb['Aro'] );
+                        $aroUserData['Aro']['parent_id'] = $aroGroup['Aro']['id'];
+                        // Utile SSI l'utilisateur change de username
+                        $aroUserData['Aro']['alias'] = 'Utilisateur:'.$this->data['User']['username'];
+
+                        // Sauvegarde des bonnes données liées à l'uilisateur et à son groupe dans la table Aros
+                        $this->Acl->Aro->create( $aroUserData );
+                        $saved = $this->Acl->Aro->save();
+
+                        // Suppression des anciennes entrées liées à cet utilisateur dans la table aros_acos
+                        // FIXME: celà ne pose-t'il pas de problème ?
+                        $arosAcosDb = Set::extract( 'Aco.{n}.Permission.id', $aroUserDb );
+                        if( !empty( $arosAcosDb ) ) {
+                            $saved = $this->Acl->Aro->query( 'DELETE FROM aros_acos WHERE id IN ('.implode( ', ', $arosAcosDb ).');' ) && $saved;
+                        }
+
+                        // Ajout des nouvelles entrées liées à cet groupe (dont on descend) dans la table aros_acos
+                        $saved = $this->_setNewPermissions(
+                            $this->data['User']['group_id'],
+                            $group['Group']['name'],
+                            $this->User->id,
+                            $this->data['User']['username']
+                        );
+
+                        if( $saved ) {
+                            $this->User->commit();
+                            $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                            $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
+                        }
+                        else {
+                            $this->User->rollback();
+                            $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                        }
+                    }
+                    else {
+                        $this->User->commit();
+                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                        $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
+                    }
+                }
+                else {
+                    $this->User->rollback();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                 }
             }
             else {
-               $user = $this->User->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'User.id' => $user_id,
-                        )
-                    )
-                );
-                $this->data = $user;
+                $this->data = $userDb;
             }
             $this->render( $this->action, null, 'add_edit' );
         }
