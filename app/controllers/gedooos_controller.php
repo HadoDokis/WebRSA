@@ -123,14 +123,12 @@
                 'first',
                 array(
                     'conditions' => array(
-                        'Orientstruct.id' => $personne['Orientstruct']['id']
+                        'Orientstruct.personne_id' => $personne_id
                     )
                 )
             );
-
             $personne['Orientstruct'] = $orientstruct['Orientstruct'];
             $personne['Structurereferente'] = $orientstruct['Structurereferente'];
-
             $personne['Personne']['qual'] = ( isset( $qual[$personne['Personne']['qual']] ) ? $qual[$personne['Personne']['qual']] : null );
             $personne['Adresse']['typevoie'] = ( isset( $typevoie[$personne['Adresse']['typevoie']] ) ? $typevoie[$personne['Adresse']['typevoie']] : null );
 
@@ -140,6 +138,8 @@
                 $this->Orientstruct->set( $orientstruct['Orientstruct'] );
                 $this->Orientstruct->save( $orientstruct['Orientstruct'] );
             }
+
+            unset( $personne['Contratinsertion'] ); // FIXME: faire un unbindModel
             $this->_ged( $personne, 'notification_structure.odt' );
         }
 
@@ -425,10 +425,10 @@
         */
 
         function notifications_cohortes() {
-            $qual = $this->Option->qual();
-            $this->set( 'qual', $qual );
-            $typevoie = $this->Option->typevoie();
-            $this->set( 'typevoie', $typevoie );
+//             $qual = $this->Option->qual();
+//             $this->set( 'qual', $qual );
+//             $typevoie = $this->Option->typevoie();
+//             $this->set( 'typevoie', $typevoie );
 
             $cohorte = $this->Cohorte->search( 'Orienté', array_values( $this->Session->read( 'Auth.Zonegeographique' ) ), $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 
@@ -455,15 +455,20 @@
             // Organisation des données
             //
             $u = new GDO_Utility();
-
             $oMainPart = new GDO_PartType();
-
             $oIteration = new GDO_IterationType( "notification" );
+
+            $qual = $this->Option->qual();
+            $typevoie = $this->Option->typevoie();
 
             foreach( $cohorte as $personne_id ) {
                 $oDevPart = new GDO_PartType();
 
                 $datas = $this->_get( $personne_id );
+
+                $datas['Personne']['qual'] = $qual[$datas['Personne']['qual']];
+                $datas['Adresse']['typevoie'] = $typevoie[$datas['Adresse']['typevoie']];
+
                 foreach( $datas as $group => $details ) {
                     if( !empty( $details ) ) {
                         foreach( $details as $key => $value ) {
@@ -483,7 +488,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 // Récupération de la structure referente liée à la personne
-                $orientstruct = $this->Orientstruct->find(
+                $orientstruct = $this->Orientstruct->find( // FIXME: +++ -> dernière ?
                     'first',
                     array(
                         'conditions' => array(
@@ -491,34 +496,9 @@
                         )
                     )
                 );
-                //////////////////////////////////////////////////////////////////////////
-                $this->Adressefoyer->bindModel(
-                    array(
-                        'belongsTo' => array(
-                            'Adresse' => array(
-                                'className'     => 'Adresse',
-                                'foreignKey'    => 'adresse_id'
-                            )
-                        )
-                    )
-                );
-                $adresse = $this->Adressefoyer->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Adressefoyer.foyer_id' => $orientstruct['Personne']['foyer_id'],
-                            'Adressefoyer.rgadr' => '01',
-                        )
-                    )
-                );
-                $orientstruct['Adresse'] = $adresse['Adresse'];
-// debug( $orientstruct );
-// debug( $qual[$orientstruct['Personne']['qual']] );
-                $orientstruct['Personne']['qual'] = ( isset( $qual[$orientstruct['Personne']['qual']] ) ? $qual[$orientstruct['Personne']['qual']] : null );
-                $orientstruct['Personne']['qual'] = $qual[$orientstruct['Personne']['qual']];
 
-                $orientstruct['Adresse']['typevoie'] = ( isset( $typevoie[$orientstruct['Adresse']['typevoie']] ) ? $typevoie[$orientstruct['Adresse']['typevoie']] : null );
-
+//                 $orientstruct['Adresse']['typevoie'] = ( isset( $typevoie[$orientstruct['Adresse']['typevoie']] ) ? $typevoie[$orientstruct['Adresse']['typevoie']] : null );
+// debug( $orientstruct['Personne']['qual'] );
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 if( empty( $personne['Orientstruct']['date_impression'] ) ){
