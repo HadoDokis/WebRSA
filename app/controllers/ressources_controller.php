@@ -28,8 +28,9 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
-            $nPersonnes = $this->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
-            $this->assert( ( $nPersonnes == 1 ), 'invalidParameter' );
+//             $nPersonnes = $this->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
+//             debug( $nPersonnes );
+//             $this->assert( ( $nPersonnes == 1 ), 'invalidParameter' );
 
             $ressources = $this->Ressource->find(
                 'all',
