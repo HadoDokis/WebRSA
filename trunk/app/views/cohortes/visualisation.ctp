@@ -4,7 +4,16 @@
 
 <?php if( !empty( $this->data ) ):?>
     <?php if( empty( $cohorte ) ):?>
-        <p class="notice">Tous les allocataires ont été orientés.</p>
+        <?php
+            switch( $this->action ) {
+                case 'orientees':
+                    $message = 'Aucun allocataire orienté ne correspond à vos critères.';
+                    break;
+                default:
+                    $message = 'Tous les allocataires ont été orientés.';
+            }
+        ?>
+        <p class="notice"><?php echo $message;?></p>
     <?php else:?>
         <table class="tooltips_oupas">
             <thead>
