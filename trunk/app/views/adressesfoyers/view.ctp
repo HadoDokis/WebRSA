@@ -3,7 +3,7 @@
         ' ',
         array(
             $adresse['Adresse']['numvoie'],
-            $adresse['Adresse']['typevoie'],
+            $typevoie[$adresse['Adresse']['typevoie']],
             $adresse['Adresse']['nomvoie']
         )
     );
