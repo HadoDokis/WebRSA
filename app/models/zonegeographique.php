@@ -3,6 +3,7 @@
     {
         var $name = 'Zonegeographique';
         var $useTable = 'zonesgeographiques';
+        var $displayField = 'libelle';
 
         //---------------------------------------------------------------------
 
