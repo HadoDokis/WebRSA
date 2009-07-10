@@ -9,7 +9,7 @@
             ' ',
             array(
                 $this->data['Adresse']['numvoie'],
-                $this->data['Adresse']['typevoie'],
+                $typevoie[$this->data['Adresse']['typevoie']],
                 $this->data['Adresse']['nomvoie'] )
         );
 
