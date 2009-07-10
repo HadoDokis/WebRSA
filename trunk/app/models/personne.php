@@ -9,7 +9,6 @@
         var $hasOne = array(
             'TitreSejour',
             'Dspp',
-            'Orientstruct',
             'Dossiercaf',
             'Prestation' => array(
                 'foreignKey' => 'personne_id',
@@ -27,6 +26,10 @@
             'Contratinsertion' => array(
                 'classname' => 'Contratinsertion',
                 'foreignKey' => 'personne_id',
+            ),
+            'Orientstruct' => array(
+                'classname' => 'Orientstruct',
+                'foreignKey' => 'personne_id'
             )
         );
 
