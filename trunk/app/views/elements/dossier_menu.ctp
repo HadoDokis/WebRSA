@@ -23,68 +23,56 @@
                             );
                         ?>
                         <ul>
-                            <!-- Sous-menu concernant uniquement le demandeur et son conjoint -->
+                            <!-- Début "Partie du sous-menu concernant uniquement le demandeur et son conjoint" -->
                             <?php if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ):?>
-                                <?php
-                                    // FIXME: plusieurs niveaux
-                                    $affichage = array();
-                                    $affichage['dspps'] = $permissions->check( 'dspps', 'view' );
-                                    $affichage['contratsinsertion'] = $permissions->check( 'contratsinsertion', 'index' );
-                                    $affichage['ressources'] = $permissions->check( 'ressources', 'index' );
-                                    $affichage['orientsstructs'] = $permissions->check( 'orientsstructs', 'index' );
 
-                                    $affichageSubmenu = false;
-                                    foreach( $affichage as $affichageTmp ) {
-                                        $affichageSubmenu = ( $affichageSubmenu || $affichageTmp );
-                                    }
-                                ?>
-                                <?php if( $affichageSubmenu ):?>
-                                    <?php if( $affichage['dspps'] ):?>
-                                        <li>
-                                            <?php
-                                                echo $html->link(
-                                                    h( 'Données socio-professionnelles' ),
-                                                    array( 'controller' => 'dspps', 'action' => 'view', $personne['id'] )
-                                                );?>
-                                        </li>
-                                    <?php endif;?>
-
-                                    <?php if( $affichage['contratsinsertion'] ):?>
-                                        <li>
-                                            <?php
-                                                echo $html->link(
-                                                    'Contrats d\'insertion',
-                                                    array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne['id'] )
-                                                );
-                                            ?>
-                                        </li>
-                                    <?php endif;?>
-
-                                    <?php if( $affichage['ressources'] ):?>
-                                        <li>
-                                            <?php
-                                                echo $html->link(
-                                                    'Ressources',
-                                                    array( 'controller' => 'ressources', 'action' => 'index', $personne['id'] )
-                                                );
-                                            ?>
-                                        </li>
-                                    <?php endif;?>
-
-                                    <?php if( $affichage['orientsstructs'] ):?>
-                                        <li>
-                                            <?php
-                                                echo $html->link(
-                                                    h( 'Orientation' ),
-                                                    array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
-                                                );
-                                            ?>
-                                        </li>
-                                    <?php endif;?>
+                                <?php if( $permissions->check( 'dspps', 'view' ) ):?>
+                                    <li>
+                                        <?php
+                                            echo $html->link(
+                                                h( 'Données socio-professionnelles' ),
+                                                array( 'controller' => 'dspps', 'action' => 'view', $personne['id'] )
+                                            );?>
+                                    </li>
                                 <?php endif;?>
-                            <?php endif;?>
 
-                            <!-- Sous-menu concernant toutes les personnes du foyer -->
+                                <?php if( $permissions->check( 'contratsinsertion', 'index' ) ):?>
+                                    <li>
+                                        <?php
+                                            echo $html->link(
+                                                'Contrats d\'insertion',
+                                                array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne['id'] )
+                                            );
+                                        ?>
+                                    </li>
+                                <?php endif;?>
+
+                                <?php if( $permissions->check( 'ressources', 'index' ) ):?>
+                                    <li>
+                                        <?php
+                                            echo $html->link(
+                                                'Ressources',
+                                                array( 'controller' => 'ressources', 'action' => 'index', $personne['id'] )
+                                            );
+                                        ?>
+                                    </li>
+                                <?php endif;?>
+
+                                <?php if( $permissions->check( 'orientsstructs', 'index' ) ):?>
+                                    <li>
+                                        <?php
+                                            echo $html->link(
+                                                h( 'Orientation' ),
+                                                array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
+                                            );
+                                        ?>
+                                    </li>
+                                <?php endif;?>
+
+                            <?php endif;?>
+                            <!-- Fin "Partie du sous-menu concernant uniquement le demandeur et son conjoint" -->
+
+                            <!-- Début "Partie du sous-menu concernant toutes les personnes du foyer" -->
                             <!--<?php if( $permissions->check( 'dossierscaf', 'view' ) ):?>
                                 <li>
                                     <?php
@@ -95,6 +83,7 @@
                                     ?>
                                 </li>
                             <?php endif;?>-->
+                            <!-- Fin "Partie du sous-menu concernant toutes les personnes du foyer" -->
                         </ul>
                     </li>
                 <?php endforeach;?>
