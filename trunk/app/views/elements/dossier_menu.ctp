@@ -22,22 +22,23 @@
                                 array( 'controller' => 'personnes', 'action' => 'view', $personne['id'] )
                             );
                         ?>
-                        <?php if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ):?>
-                            <?php
-                                // FIXME: plusieurs niveaux
-                                $affichage = array();
-                                $affichage['dspps'] = $permissions->check( 'dspps', 'view' );
-                                $affichage['contratsinsertion'] = $permissions->check( 'contratsinsertion', 'index' );
-                                $affichage['ressources'] = $permissions->check( 'ressources', 'index' );
-                                $affichage['orientsstructs'] = $permissions->check( 'orientsstructs', 'index' );
+                        <ul>
+                            <!-- Sous-menu concernant uniquement le demandeur et son conjoint -->
+                            <?php if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ):?>
+                                <?php
+                                    // FIXME: plusieurs niveaux
+                                    $affichage = array();
+                                    $affichage['dspps'] = $permissions->check( 'dspps', 'view' );
+                                    $affichage['contratsinsertion'] = $permissions->check( 'contratsinsertion', 'index' );
+                                    $affichage['ressources'] = $permissions->check( 'ressources', 'index' );
+                                    $affichage['orientsstructs'] = $permissions->check( 'orientsstructs', 'index' );
 
-                                $affichageSubmenu = false;
-                                foreach( $affichage as $affichageTmp ) {
-                                    $affichageSubmenu = ( $affichageSubmenu || $affichageTmp );
-                                }
-                            ?>
-                            <?php if( $affichageSubmenu ):?>
-                                <ul>
+                                    $affichageSubmenu = false;
+                                    foreach( $affichage as $affichageTmp ) {
+                                        $affichageSubmenu = ( $affichageSubmenu || $affichageTmp );
+                                    }
+                                ?>
+                                <?php if( $affichageSubmenu ):?>
                                     <?php if( $affichage['dspps'] ):?>
                                         <li>
                                             <?php
@@ -80,9 +81,21 @@
                                             ?>
                                         </li>
                                     <?php endif;?>
-                                </ul>
+                                <?php endif;?>
                             <?php endif;?>
-                        <?php endif;?>
+
+                            <!-- Sous-menu concernant toutes les personnes du foyer -->
+                            <!--<?php if( $permissions->check( 'dossierscaf', 'view' ) ):?>
+                                <li>
+                                    <?php
+                                        echo $html->link(
+                                            h( 'Dossier CAF' ),
+                                            array( 'controller' => 'dossierscaf', 'action' => 'view', $personne['id'] )
+                                        );
+                                    ?>
+                                </li>
+                            <?php endif;?>-->
+                        </ul>
                     </li>
                 <?php endforeach;?>
             </ul>
