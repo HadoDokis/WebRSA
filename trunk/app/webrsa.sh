@@ -25,28 +25,24 @@ function clearlogs() {
 
 function package() {
     version=${1}
-    mkdir -p "$WORK_DIR/package" >> "/dev/null" 2>&1 && \
+    mkdir -p "$WORK_DIR/package/webrsa-$version" >> "/dev/null" 2>&1 && \
     (
-        cd "$WORK_DIR/package" >> "/dev/null" 2>&1 && \
+        cd "$WORK_DIR/package/webrsa-$version" >> "/dev/null" 2>&1 && \
         # TODO: RC pour trunk
         # svn export svn+ssh://$USERNAME@svn.adullact.net/svnroot/webrsa/trunk >> "/dev/null" 2>&1 && \
-        svn export svn+ssh://$USERNAME@svn.adullact.net/svnroot/webrsa/tags/$version >> "/dev/null" 2>&1 && \
-        rm -f "$version/app/config/database.php.default" && \
-        mv "$version/app/config/database.php" "$version/app/config/database.php.default" && \
-        mv "$version/app/config/webrsa.inc" "$version/app/config/webrsa.inc.default" && \
-        mv "$version/app/config/core.php" "$version/app/config/core.php.default" && \
-        echo "$version" > "$version/app/VERSION.txt" && \
-        sed -i "s/Configure::write *( *'debug' *, *[0-9] *) *;/Configure::write('debug', 0);/" "$version/app/config/core.php.default" && \
-        sed -i "s/Configure::write *( *'Cache\.disable' *, *[^)]\+ *) *;/Configure::write('Cache.disable', false);/" "$version/app/config/core.php.default"
-
+        svn export svn+ssh://$USERNAME@svn.adullact.net/svnroot/webrsa/tags/$version/app >> "/dev/null" 2>&1 && \
+        rm -f "app/config/database.php.default" && \
+        mv "app/config/database.php" "app/config/database.php.default" && \
+        mv "app/config/webrsa.inc" "app/config/webrsa.inc.default" && \
+        mv "app/config/core.php" "app/config/core.php.default" && \
+        echo -n "$version" > "app/VERSION.txt" && \
+        sed -i "s/Configure::write *( *'debug' *, *[0-9] *) *;/Configure::write('debug', 0);/" "app/config/core.php.default" && \
+        sed -i "s/Configure::write *( *'Cache\.disable' *, *[^)]\+ *) *;/Configure::write('Cache.disable', false);/" "app/config/core.php.default"
     ) && \
     (
-        cd "$WORK_DIR/package/$version" >> "/dev/null" 2>&1 && \
-        # FIXME: chemins
-        zip -o -r -m "../../webrsa-$version.zip" app >> "/dev/null" 2>&1 && \
-        cd "../.." && \
-        rmdir "package/$version" && \
-        rmdir "package"
+        cd "$WORK_DIR/package" >> "/dev/null" 2>&1 && \
+        zip -o -r -m "$WORK_DIR/webrsa-$version.zip" "webrsa-$version" >> "/dev/null" 2>&1 && \
+        rmdir "$WORK_DIR/package"
     ) && \
     echo $version
 }
