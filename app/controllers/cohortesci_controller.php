@@ -1,43 +1,34 @@
 <?php
     App::import('Sanitize');
 
-    class CriteresciController extends AppController
+    class CohortesciController extends AppController
     {
-        var $name = 'Criteresci';
-        var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Contratinsertion', 'Option', 'Serviceinstructeur' );
-//         var $aucunDroit = array( 'constReq' );
-
-        /**
-            INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
-        */
-
+        var $name = 'Cohortesci';
+        var $uses = array( 'Jetons', 'Cohorteci', 'Option', 'Contratinsertion', 'Typeorient', 'Orientstruct', 'Accoemploi', 'Adresse', 'Serviceinstructeur', 'Suiviinstruction' );
 
         var $paginate = array(
             // FIXME
             'limit' => 20,
-//             'order' => array(
-//                 'Criteresci.locaadr' => 'asc'
-//             )
         );
 
-        /**
-        */
-//         function __construct() {
-//             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-//             $this->helpers = Set::merge( $this->helpers, array( 'Paginator' ) );
-//             parent::__construct();
-//         }
-
+        function __construct() {
+            parent::__construct();
+            $this->components[] = 'Jetons';
+        }
 
         function beforeFilter() {
             $return = parent::beforeFilter();
-                //$this->set( 'statuts', $this->Option->statut_contrat_insertion() );
-                $this->set( 'decision_ci', $this->Option->decision_ci() );
+            $this->set( 'oridemrsa', $this->Option->oridemrsa() );
+            $this->set( 'typeserins', $this->Option->typeserins() );
+            $this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );
+            $this->set( 'printed', $this->Option->printed() );
+            $this->set( 'decision_ci', $this->Option->decision_ci() );
             return $return;
         }
 
+        function index( ) {
+//             $this->assert( !empty( $statutCI ), 'error404' );
 
-        function index() {
             $typeservice = $this->Serviceinstructeur->find(
                 'list',
                 array(
@@ -58,7 +49,7 @@
                 $conditions['Contratinsertion.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 
                 //Critère recherche par Contrat insertion: date de création contrat
-                if( dateComplete( $this->data, 'Contratinsertion.date_saisi_ci' ) ) {
+                if( !dateComplete( $this->data, 'Contratinsertion.date_saisi_ci' ) ) {
                     $date_saisi_ci = $this->data['Contratinsertion']['date_saisi_ci'];
                     $conditions['Contratinsertion.date_saisi_ci'] = $date_saisi_ci['year'].'-'.$date_saisi_ci['month'].'-'.$date_saisi_ci['day'];
                 }
@@ -121,13 +112,12 @@
                 );
 
                 $contrats = $this->Contratinsertion->find( 'all', array( 'conditions' => array( $conditions ), 'recursive' => 0 ) );
-//                 $contrats = $this->paginate( 'Contratinsertion', $conditions );
 
                 $this->set( 'contrats', $contrats );
-// debug($contrats);
+
                 $this->data['Search'] = $params;
             }
-        }
 
+        }
     }
 ?>

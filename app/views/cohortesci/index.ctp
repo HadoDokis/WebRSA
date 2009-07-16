@@ -1,5 +1,5 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche par contrats d\'insertion';?>
+<?php $this->pageTitle = 'Gestion des contrats d\'insertion';?>
 
 <h1>Recherche par Contrat d'insertion</h1>
 
@@ -23,7 +23,7 @@
     }
 ?>
 
-<?php echo $form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $form->create( 'Cohorteci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
         <legend>Recherche par Contrat d'insertion</legend>
             <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => 'Date de saisie du contrat', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => date( 'Y' ) - 10, 'empty' => true ) );?>
@@ -55,15 +55,17 @@
 
                     <!--<th><?php /*echo $paginator->sort('Nom allocataire', 'Personne.nom'); ?></th>
                     <th><?php echo $paginator->sort('Commune de l\'allocataire', 'Adresse.locaadr'); */?></th> -->
+                    <th>N° Dossier</th>
                     <th>Nom de l'allocataire</th>
                     <th>Commune de l'allocataire</th>
-                    <th>Contrat envoyé par</th>
-                    <th>N° CAF</th>
-                    <th>Date de saisie du contrat</th>
-                    <th>Rang du contrat</th>
+                    <!--<th>Contrat envoyé par</th>-->
+                    <!--<th>N° CAF</th>-->
+                    <th>Date début contrat</th>
+                    <th>Date fin contrat</th>
+                    <th>Date validation</th>
+                    <!--<th>Rang du contrat</th>-->
                     <th>Décision</th>
-                    <th class="action noprint">Actions</th>
-                    <th class="innerTableHeader noprint">Informations complémentaires</th>
+                    <th>Observations</th>
                 </tr>
             </thead>
             <tbody>
@@ -71,38 +73,20 @@
                     <?php
                         $title = $contrat['Dossier']['numdemrsa'];
 
-                        $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
-                            <tbody>
-                               <!-- <tr>
-                                    <th>Commune de naissance</th>
-                                    <td>'.$contrat['Personne']['nomcomnai'].'</td>
-                                </tr> -->
-                                <tr>
-                                    <th>Date de naissance</th>
-                                    <td>'.date_short( $contrat['Personne']['dtnai'] ).'</td>
-                                </tr>
-                            </tbody>
-                        </table>';
                         echo $html->tableCells(
                             array(
+                                h( $contrat['Dossier']['numdemrsa'] ),
                                 h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
                                 h( $contrat['Adresse']['locaadr'] ),
-                                h( $contrat['Contratinsertion']['pers_charg_suivi'] ),
-                                h( $contrat['Dossier']['matricule'] ),
-                                h( date_short( $contrat['Contratinsertion']['date_saisi_ci'] ) ),
-                                h( $contrat['Contratinsertion']['rg_ci'] ),
-                                h( $decision_ci[$contrat['Contratinsertion']['decision_ci']].' '.$contrat['Contratinsertion']['datevalidation_ci']),
-                                array(
-                                    $html->viewLink(
-                                        'Voir le dossier « '.$title.' »',
-                                        array( 'controller' => 'contratsinsertion', 'action' => 'index', $contrat['Contratinsertion']['personne_id'] )
-                                    ),
-                                    array( 'class' => 'noprint' )
-                                ),
-                                array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
-                            ),
-                            array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-                            array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+/*                                h( $contrat['Contratinsertion']['pers_charg_suivi'] ),*/
+//                                 h( $contrat['Dossier']['matricule'] ),
+                                h( date_short( $contrat['Contratinsertion']['dd_ci'] ) ),
+                                h( date_short( $contrat['Contratinsertion']['df_ci'] ) ),
+                                h( date_short( $contrat['Contratinsertion']['datevalidation_ci'] ) ),
+//                                 h( $contrat['Contratinsertion']['rg_ci'] ),
+                                h( $decision_ci[$contrat['Contratinsertion']['decision_ci']].' '.date_short( $contrat['Contratinsertion']['datevalidation_ci'] ) ),
+                                h( $contrat['Contratinsertion']['observ_ci'] ),
+                            )
                         );
                     ?>
                 <?php endforeach;?>
@@ -114,5 +98,5 @@
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>
-
+            <?php echo $form->submit( 'Validation de la liste' );?>
 <?php endif?>

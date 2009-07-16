@@ -231,8 +231,8 @@
                             </tr>
                             <tr class="even">
                                 <th>Date de décision</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.0.datevalidation_ci', $details) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.0.datevalidation_ci', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.datevalidation_ci', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.datevalidation_ci', $details) );?></td>
                             </tr>
                         </tbody>
                     </table>

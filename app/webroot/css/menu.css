@@ -1,0 +1,250 @@
+div#menu1Wrapper {
+width:80%;
+margin: auto;
+}
+.menu1 { /* Positionnement et forme du menu  */
+float:left;
+width:100%;
+font-family: sans-serif;
+/*background: repeat-x top left;*/
+border-top:3px solid #235F7D;
+border-left:3px solid #235F7D;
+border-right:3px solid #235F7D;
+border-bottom:3px solid #235F7D;
+margin:20px 0 60px 0;
+/* font-weight:bold; */
+}
+.menu1 ul {
+padding:0;
+margin:0;
+list-style-type:none;
+z-index: 10;
+}
+.menu1 li {
+padding: 0;
+margin: 0;
+}
+.menu1 ul li {
+float:left;
+position:relative;
+}
+.menu1 ul li a, .menu1 ul li a:visited { /* Menu */
+float:left;
+display:block;
+text-decoration:none;
+
+color:#000;
+padding:0px 16px;
+line-height:22px;
+height:22px;
+/*border-bottom:3px solid #fff;*/ /* lien sous les titres des menus */
+font-size: 14px
+}
+
+.menu1 ul li:hover {width:auto;}
+
+.menu1 ul li a.menu1one:hover {border-color:#c00; color:#000;}
+.menu1 ul li a.menu1two:hover {border-color:#c60; color:#fc0;}
+.menu1 ul li a.menu1three:hover {border-color:#cc0; color:#cc0;}
+.menu1 ul li a.menu1four:hover {border-color:#080; color:#0e0;}
+.menu1 ul li a.menu1five:hover {border-color:#00c; color:#aaf;}
+.menu1 ul li a.menu1six:hover {border-color:#c0c; color:#f8f;}
+
+.menu1 ul li:hover a.menu1one {border-color:#c00; color:#000; }
+.menu1 ul li:hover a.menu1two {border-color:#c60; color:#fc0; }
+.menu1 ul li:hover a.menu1three {border-color:#cc0; color:#cc0; }
+.menu1 ul li:hover a.menu1four {border-color:#080; color:#0e0; }
+.menu1 ul li:hover a.menu1five {border-color:#00c; color:#aaf; }
+.menu1 ul li:hover a.menu1six {border-color:#c0c; color:#f8f; }
+
+li#menu1one :hover { color:blue; background-color: #83c2e2 }
+li#menu2one :hover { color:blue; background-color: #83c2e2}
+li#menu3one :hover { color:blue; background-color: #83c2e2 }
+li#menu4one :hover { color:blue; }
+
+.menu1 ul li ul {
+display: none;
+}
+.menu1 table {
+margin:0;
+border-collapse:collapse;
+font-size:11px;
+position:absolute;
+top:0;
+left:0;
+}
+
+/* specific to non IE browsers */
+.menu1 ul li:hover ul {
+display:block;
+position:absolute;
+top:22px;
+margin-top:1px;
+left:0;
+width:154px;
+border-bottom:1px solid #000;
+}
+.menu1 ul li:hover ul.endstop {
+left:-92px;
+}
+.menu1 ul li:hover ul li ul {
+display: none;
+}
+.menu1 ul li:hover ul li a { /* Sous-menu horizontal */
+display:block;
+background:#fff;
+color:#000;
+height:auto;
+line-height:15px;
+padding:4px 16px;
+width:120px;
+border:1px solid #000;
+border-bottom:0;
+}
+.menu1 ul li:hover ul li a.drop {
+background:#83c2e2  no-repeat 3px 8px;
+}
+.menu1 ul li:hover ul li a:hover {
+color:#000;
+background: #83c2e2  no-repeat 3px 8px; /* coloration des background des sous menus  */
+}
+.menu1 ul li:hover ul li a:hover.drop {
+background: #83c2e2  no-repeat 3px 8px;
+}
+.menu1 ul li:hover ul li:hover ul {
+display:block;
+position:absolute;
+left:153px;
+top:-1px;
+}
+.menu1 ul li:hover ul li:hover ul.left {
+left:-153px;
+}
+
+
+
+/* specific to IE5.5 and IE6 browsers */
+.menu1 ul li a:hover ul {
+display:block;
+position:absolute;
+top:22px;
+t\op:22px;
+background:#fff;
+left:0;
+border-bottom:1px solid #000;
+}
+
+.menu1 ul li a:hover ul.endstop {
+left: -92px;
+}
+.menu1 ul li a:hover ul li a {
+display:block;
+background:#fff;
+color:#000;
+height:1px;
+line-height:15px;
+padding:4px 16px;
+width:154px; 
+w\idth:120px;
+border:1px solid #000;
+border-bottom:0;
+}
+.menu1 ul li a:hover ul li a.drop {
+background:#ccd  no-repeat 3px 8px;
+padding-bottom:4px;
+}
+.menu1 ul li a:hover ul li a ul {
+visibility:hidden;
+position:absolute;
+height:0;
+width:0;
+}
+.menu1 ul li a:hover ul li a:hover {
+color:#000;
+background: #ccd  no-repeat 3px 8px;
+}
+.menu1 ul li a:hover ul li a:hover.drop {
+ background: #ccd no-repeat 3px 8px;
+}
+.menu1 ul li a:hover ul li a:hover ul {
+visibility:visible;
+position:absolute;
+top:0;
+color:#000;
+left:153px;
+}
+.menu1 ul li a:hover ul li a:hover ul.left {
+left:-153px;
+}
+
+
+/**************** Autre Menu *********************/
+#nav {margin:20px 0 180px 0;}
+
+/* A modified version of A List Apart - http://alistapart.com/articles/slidingdoors2/ */
+    #nav {
+      float:center;
+      width: 80%;
+      position: center;
+      }
+    #nav ul {
+      margin:0;
+      padding:10px 10px 0;
+      list-style:none;
+      }
+    #nav li {
+      float:left;
+      display:inline;
+      background:url("right_both.gif") no-repeat right top;
+      margin:0 0 0 9px;
+      padding:0;
+      }
+    #nav a {
+      float:left;
+      display:block;
+      position:relative;
+      left:-9px;
+      margin-right:-9px;
+      width:.1em;
+      background:url("left_both.gif") no-repeat left top;
+      padding:5px 20px;
+      text-decoration:none;
+      font-weight:bold;
+      color:#765;
+      }
+    #nav > ul a {width:auto;}
+    /* Commented Backslash Hack hides rule from IE5-Mac \*/
+    #nav a {float:none;}
+    /* End IE5-Mac hack */
+    #nav a:hover {
+      color:#333;
+      }
+    #demos #nav-demos, 
+    #menus #nav-menus,
+    #layouts #nav-layouts, 
+    #boxes #nav-boxes,
+    #mozilla #nav-mozilla,
+    #explorer #nav-explorer,
+    #opacity #nav-opacity {
+      background-position:100% -150px;
+      }
+    #demos #nav-demos a, 
+    #menus #nav-menus a,
+    #layouts #nav-layouts a, 
+    #boxes #nav-boxes a,
+    #mozilla #nav-mozilla a,
+    #explorer #nav-explorer a,
+    #opacity #nav-opacity a {
+      background-position:0 -150px;
+      padding-bottom:6px;
+      color:#333;
+      }
+      /* not for IE5.x or IE6 */
+    #nav li:hover, 
+    #nav li:hover a {
+      background-position:90% -150px;
+      color:#333;
+      }
+    #nav li:hover a {
+      background-position:0 -150px;
+      }
