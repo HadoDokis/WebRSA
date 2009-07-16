@@ -68,6 +68,10 @@ table.cake-sql-log caption {
     color: black;
 }
 
+table thead a {
+    color: white;
+}
+
 /*****************************************************************************/
 
 #whois {

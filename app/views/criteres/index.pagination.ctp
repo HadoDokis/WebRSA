@@ -3,7 +3,7 @@
 ?>
 <p>
     <?php
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        $paginator->options( array( 'url' => $this->passedArgs, 'model' => 'Critere' ) );
         $params = array( // FIXME: pluriels
             //'format' => 'Page %page% sur %pages%, %current% enregistrements sur %count%, de l\'enregistrement %start%, à l\'enregistrement %end%.'
              'format' => 'Résultats %start% - %end% sur un total de %count%.'
@@ -17,5 +17,4 @@
     <?php echo $paginator->numbers(); ?>
     <?php echo $paginator->next( '>' ); ?>
     <?php echo $paginator->last( '>>' ); ?>
-
 </p>
