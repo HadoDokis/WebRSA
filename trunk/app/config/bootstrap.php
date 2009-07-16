@@ -67,7 +67,7 @@
 
     function cake_version() {
         $versionData = explode( "\n", file_get_contents( ROOT.DS.'cake'.DS.'VERSION.txt' ) );
-        $version = explode( '.', $versionData[ count( $versionData) - 1] );
+        $version = explode( '.', $versionData[count( $versionData) - 1] );
         return implode( '.', $version );
     }
 
@@ -105,7 +105,7 @@
     function dateComplete( $data, $key ) {
         $dateComplete = Set::extract( $data, $key );
         if( !is_array( $dateComplete ) || empty( $dateComplete ) ) {
-            return empty( $dateComplete );
+            return !empty( $dateComplete );
         }
         else {
             $empty = true;
@@ -114,7 +114,7 @@
                     $empty = false;
                 }
             }
-            return $empty;
+            return !$empty;
         }
     }
 
