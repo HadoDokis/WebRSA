@@ -212,7 +212,7 @@
 
         //*********************************************************************
 
-        function findByZones( $zonesGeographiques = array() ) { // TODO
+        function findByZones( $zonesGeographiques = array(), $filtre_zone_geo = true ) { // TODO
             $this->unbindModelAll();
 
             $this->bindModel(
@@ -237,14 +237,12 @@
                 )
             );
 
-            $personnes = $this->find(
-                'all',
-                array (
-                    'conditions' => array(
-                        'Adresse.numcomptt' => array_values( $zonesGeographiques )
-                    )
-                )
-            );
+            $conditions = array();
+            if( $filtre_zone_geo ) {
+                $conditions = array( 'Adresse.numcomptt' => ( !empty( $zonesGeographiques ) ? array_values( $zonesGeographiques ) : array() ) );
+            }
+
+            $personnes = $this->find( 'all', array ( 'conditions' => $conditions ) );
 
             $return = Set::extract( $personnes, '{n}.Personne.id' );
             return ( !empty( $return ) ? $return : null );
