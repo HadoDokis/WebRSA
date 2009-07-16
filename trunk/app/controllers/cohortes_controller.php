@@ -143,8 +143,8 @@
                 // --------------------------------------------------------
 
                 if( !empty( $this->data ) ) { // FIXME: déjà fait plus haut ?
-                    if( !empty( $this->data['Orientstruct'] ) ) {
-                        $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only' ) );
+                    if( !empty( $this->data['Orientstruct'] ) ) { // Formulaire du bas
+                        $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
                         if( $valid ) {
                             $this->Dossier->begin();
                             foreach( $this->data['Orientstruct'] as $key => $value ) {
@@ -155,7 +155,7 @@
                                 $this->data['Orientstruct'][$key]['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct'][$key]['structurereferente_id'] );
                                 $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
                             }
-                            $saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first' ) );
+                            $saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) );
                             if( $saved ) {
                                 // FIXME ?
                                 foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
