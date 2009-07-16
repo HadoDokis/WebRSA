@@ -25,7 +25,7 @@
         }
 
         // INFO: http://bakery.cakephp.org/articles/view/unbindall
-        function unbindModelAll() {
+        function unbindModelAll( $reset = true ) {
             $unbind = array();
             foreach ($this->belongsTo as $model=>$info) {
                 $unbind['belongsTo'][] = $model;
@@ -39,7 +39,7 @@
             foreach ($this->hasAndBelongsToMany as $model=>$info) {
                 $unbind['hasAndBelongsToMany'][] = $model;
             }
-            parent::unbindModel( $unbind, true );
+            parent::unbindModel( $unbind, $reset );
         }
     }
 ?>
