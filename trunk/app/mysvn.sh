@@ -28,7 +28,7 @@ svn propset svn:keywords "Date Author Revision" views/elements/footer.ctp
 
 # svn copy \
 # svn+ssh://cbuffin@svn.adullact.net/svnroot/webrsa/trunk/ \
-# svn+ssh://cbuffin@svn.adullact.net/svnroot/webrsa/tags/1.0.2.1/ \
-# -m "Version 1.0.2.1 (installation CG93 23/06/09 12h52) avec correction bug modes contact"
+# svn+ssh://cbuffin@svn.adullact.net/svnroot/webrsa/tags/1.0.3/ \
+# -m "Version 1.0.3 (installation CG93 13/07/09 12h30)"
 
 # svn export svn+ssh://cbuffin@svn.adullact.net/svnroot/webrsa/tags/1.0.2.1/

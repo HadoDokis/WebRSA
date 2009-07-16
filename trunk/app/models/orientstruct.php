@@ -60,7 +60,109 @@
             )
         );
 
-        // --------------------------------------------------------------------
+        // ********************************************************************
+
+        var $queries = array(
+            'criteres' => array(
+                'fields' => array(
+                    '"Orientstruct"."id"',
+                    '"Orientstruct"."personne_id"',
+                    '"Orientstruct"."typeorient_id"',
+                    '"Orientstruct"."structurereferente_id"',
+                    '"Orientstruct"."propo_algo"',
+                    '"Orientstruct"."valid_cg"',
+                    '"Orientstruct"."date_propo"',
+                    '"Orientstruct"."date_valid"',
+                    '"Orientstruct"."statut_orient"',
+                    '"Orientstruct"."date_impression"',
+                    '"Dossier"."numdemrsa"',
+                    '"Dossier"."dtdemrsa"',
+                    '"Personne"."id"',
+                    '"Personne"."nom"',
+                    '"Personne"."prenom"',
+                    '"Personne"."dtnai"',
+                    '"Personne"."qual"',
+                    '"Personne"."nomcomnai"',
+                    '"Adresse"."locaadr"',
+                    '"Modecontact"."numtel"',
+                ),
+                'recursive' => -1,
+                'joins' => array(
+                    array(
+                        'table'      => 'personnes',
+                        'alias'      => 'Personne',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.id = Orientstruct.personne_id' )
+                    ),
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'dossiers_rsa',
+                        'alias'      => 'Dossier',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'adresses_foyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    ),
+                    array(
+                        'table'      => 'modescontact',
+                        'alias'      => 'Modecontact',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Modecontact.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'typesorients',
+                        'alias'      => 'Typeorient',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Typeorient.id = Orientstruct.typeorient_id' )
+                    ),
+                    array(
+                        'table'      => 'structuresreferentes',
+                        'alias'      => 'Structurereferente',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Orientstruct.structurereferente_id = Structurereferente.id' )
+                    ),
+                    array(
+                        'table'      => 'suivisinstruction',
+                        'alias'      => 'Suiviinstruction',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'servicesinstructeurs',
+                        'alias'      => 'Serviceinstructeur',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+                    )
+                )
+            )
+        );
+
+        // ********************************************************************
 
         function choixStructure( $field = array(), $compare_field = null ) {
             foreach( $field as $key => $value ) {

@@ -22,6 +22,8 @@ function clearlogs() {
 }
 
 # ------------------------------------------------------------------------------
+# TODO: svn log app > log-20090716-10h52.txt
+# http://svnbook.red-bean.com/en/1.5/svn.tour.history.html
 
 function package() {
     version=${1}
@@ -50,6 +52,10 @@ function package() {
 # ------------------------------------------------------------------------------
 
 case $1 in
+    clear)
+        clearcache
+        clearlogs
+    ;;
     clearcache)
         clearcache
     ;;
@@ -60,7 +66,7 @@ case $1 in
         package $2 # FIXME vérification argument
     ;;
     *)
-        echo "Usage: $ME {clearcache|clearlogs|package}"
+        echo "Usage: $ME {clearcache|clear|clearlogs|package}"
         exit 1
     ;;
 esac

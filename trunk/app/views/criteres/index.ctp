@@ -42,7 +42,7 @@
     }
 ?>
 
-<?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
     <fieldset>
         <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => __( 'dtdemrsa', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => date( 'Y' ) - 10, 'empty' => true ) );?>
@@ -50,8 +50,8 @@
         <?php echo $form->input( 'Typeorient.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
         <?php echo $form->input( 'Structurereferente.id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
         <?php echo $form->input( 'Orientstruct.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
-         <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?> 
-    </fieldset> 
+         <?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
+    </fieldset>
 
     <div class="submit noprint">
         <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -68,18 +68,18 @@
 
     <?php if( is_array( $orients ) && count( $orients ) > 0  ):?>
 
-        <?php //require( 'index.pagination.ctp' )?>
+        <?php require( 'index.pagination.ctp' )?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                  <tr>
-                    <th>Numéro dossier</th>
-                    <th>Allocataire</th>
-                    <th>N° Téléphone</th>
-                    <th>Commune</th>
-                    <th>Date d'ouverture droits</th>
-                    <th>Date d'orientation</th>
-                    <th>Structure référente</th>
-                    <th>Statut orientation</th>
+                    <th><?php echo $paginator->sort( 'Numéro dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $paginator->sort( 'N° Téléphone', 'Modecontact.numtel' );?></th>
+                    <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $paginator->sort( 'Date d\'ouverture droits', 'Dossier.dtdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Date d\'orientation', 'Orientstruct.date_propo' );?></th>
+                    <th><?php echo $paginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
+                    <th><?php echo $paginator->sort( 'Statut orientation', 'Orientstruct.statut_orient' );?></th>
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -110,7 +110,7 @@
                                 h( date_short( $orient['Orientstruct']['date_propo'] ) ),
                                 h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
                                 h( $orient['Orientstruct']['statut_orient'] ),
-                                array( 
+                                array(
                                     $html->viewLink(
                                         'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
                                         array( 'controller' => 'personnes', 'action' => 'view', $orient['Personne']['id'] )

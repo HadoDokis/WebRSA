@@ -9,10 +9,25 @@
         var $aucunDroit = array( 'constReq' );
 
         /**
-            INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
+        *
+        *
+        *
         */
 
-        function index() {
+        function __construct() {
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+            parent::__construct();
+        }
+
+        /**
+        *
+        *
+        *
+        */
+
+        function beforeFilter() {
+            $return = parent::beforeFilter();
+
             $typeservice = $this->Serviceinstructeur->find(
                 'list',
                 array(
@@ -40,7 +55,108 @@
             $this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
             $this->set( 'typeservice', $this->Serviceinstructeur->listOptions());
 
+            return $return;
+        }
 
+        /**
+            INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
+        */
+
+//         function index() {
+//             $params = $this->data;
+//             if( !empty( $params ) ) {
+//                 $conditions = array();
+//
+//                 // INFO: seulement les personnes qui sont dans ma zone géographique
+//                 $conditions['Orientstruct.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
+//
+//                //Critères sur la date d'ouverture d'orientation
+//                 if( !dateComplete( $this->data, 'Dossier.dtdemrsa' ) ) {
+//                     $dtdemrsa = $this->data['Dossier']['dtdemrsa'];
+//                     $conditions['Dossier.dtdemrsa'] = $dtdemrsa['year'].'-'.$dtdemrsa['month'].'-'.$dtdemrsa['day'];
+//                 }
+//
+//                 //Critère recherche par Contrat insertion: localisation de la personne rattachée au contrat
+//                 if( isset( $params['Adresse']['locaadr'] ) && !empty( $params['Adresse']['locaadr'] ) ){
+//                     $conditions[] = "Adresse.locaadr ILIKE '%".Sanitize::paranoid( $params['Adresse']['locaadr'] )."%'";
+//                 }
+//
+//                 //Critère recherche par Type orientation: localisation de la personne rattachée au contrat
+//                 if( isset( $params['Typeorient']['id'] ) && !empty( $params['Typeorient']['id'] ) ){
+//                     $conditions['Orientstruct.typeorient_id'] = $params['Typeorient']['id'];
+//                 }
+//
+//                 //Critère recherche par Orientation : Structure referente
+//                 if( isset( $params['Structurereferente']['id'] ) && !empty( $params['Structurereferente']['id'] ) ){
+//                     $conditions['Orientstruct.structurereferente_id'] = $params['Structurereferente']['id'];
+//                 }
+//
+//                 //Critère recherche par Orientation: par statut_orient
+//                 if( isset( $params['Orientstruct']['statut_orient'] ) && !empty( $params['Orientstruct']['statut_orient'] ) )
+//                     /*$conditions[] = "Orientsstructs.statut_orient ILIKE '%".Sanitize::paranoid( $params['Orientsstructs']['statut_orient'] )."%'";*/
+//                     $conditions['Orientstruct.statut_orient'] = $params['Orientstruct']['statut_orient'];
+//
+//
+//                 //Critère recherche par Orientation : par service instructeur
+//                 if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) ){
+//                     $conditions['Serviceinstructeur.id'] = $params['Serviceinstructeur']['id'];
+//                 }
+//
+//                 $this->Orientstruct->unbindModelAll();
+//                 $this->Orientstruct->bindModel(
+//                     array(
+//                         'belongsTo' => array(
+//                             'Personne' => array(
+//                                 'foreignKey' => false,
+//                                 'conditions' => array( 'Orientstruct.personne_id = Personne.id' )
+//                             ),
+//                             'Adressefoyer' => array(
+//                                 'foreignKey' => false,
+//                                 'conditions' => array(
+//                                     'Adressefoyer.foyer_id = Personne.foyer_id',
+//                                     'Adressefoyer.rgadr = \'01\''
+//                                 )
+//                             ),
+//                             'Modecontact' => array(
+//                                 'foreignKey' => false,
+//                                 'conditions' => array( 'Modecontact.id = Personne.foyer_id' )
+//                             ),
+//                             'Adresse' => array(
+//                                 'foreignKey' => false,
+//                                 'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+//                             ),
+//                             'Foyer' => array(
+//                                 'foreignKey' => false,
+//                                 'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+//                             ),
+//                             'Dossier' => array(
+//                                 'foreignKey' => false,
+//                                 'conditions' => array( 'Dossier.id = Foyer.dossier_rsa_id' )
+//                             ),
+//                             'Serviceinstructeur' => array(
+//                                 'foreignKey' => false,
+//                                 'conditions' => array( 'Serviceinstructeur.id' => $this->Session->read( 'Auth.User.serviceinstructeur_id' ) )
+//                             ),
+//                         )
+//                     )
+//                 );
+//
+//                 $orients = $this->Orientstruct->find(
+//                     'all',
+//                     array(
+//                         'conditions' => array(
+//                             $conditions
+//                         ),
+//                         'recursive' => 0
+//                     )
+//                 );
+//
+//                 $this->set( 'orients', $orients );
+//                 $this->data['Search'] = $params;
+//             }
+//         }
+
+        function index() {
             $params = $this->data;
             if( !empty( $params ) ) {
                 $conditions = array();
@@ -49,7 +165,7 @@
                 $conditions['Orientstruct.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 
                //Critères sur la date d'ouverture d'orientation
-                if( !dateComplete( $this->data, 'Dossier.dtdemrsa' ) ) {
+                if( dateComplete( $this->data, 'Dossier.dtdemrsa' ) ) {
                     $dtdemrsa = $this->data['Dossier']['dtdemrsa'];
                     $conditions['Dossier.dtdemrsa'] = $dtdemrsa['year'].'-'.$dtdemrsa['month'].'-'.$dtdemrsa['day'];
                 }
@@ -70,70 +186,24 @@
                 }
 
                 //Critère recherche par Orientation: par statut_orient
-                if( isset( $params['Orientstruct']['statut_orient'] ) && !empty( $params['Orientstruct']['statut_orient'] ) )
-                    /*$conditions[] = "Orientsstructs.statut_orient ILIKE '%".Sanitize::paranoid( $params['Orientsstructs']['statut_orient'] )."%'";*/
+                if( isset( $params['Orientstruct']['statut_orient'] ) && !empty( $params['Orientstruct']['statut_orient'] ) ) {
                     $conditions['Orientstruct.statut_orient'] = $params['Orientstruct']['statut_orient'];
-
+                }
 
                 //Critère recherche par Orientation : par service instructeur
                 if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) ){
                     $conditions['Serviceinstructeur.id'] = $params['Serviceinstructeur']['id'];
                 }
 
-                $this->Orientstruct->unbindModelAll();
-                $this->Orientstruct->bindModel(
-                    array(
-                        'belongsTo' => array(
-                            'Personne' => array(
-                                'foreignKey' => false,
-                                'conditions' => array( 'Orientstruct.personne_id = Personne.id' )
-                            ),
-                            'Adressefoyer' => array(
-                                'foreignKey' => false,
-                                'conditions' => array(
-                                    'Adressefoyer.foyer_id = Personne.foyer_id',
-                                    'Adressefoyer.rgadr = \'01\''
-                                )
-                            ),
-                            'Modecontact' => array(
-                                'foreignKey' => false,
-                                'conditions' => array( 'Modecontact.id = Personne.foyer_id' )
-                            ),
-                            'Adresse' => array(
-                                'foreignKey' => false,
-                                'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                            ),
-                            'Foyer' => array(
-                                'foreignKey' => false,
-                                'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-                            ),
-                            'Dossier' => array(
-                                'foreignKey' => false,
-                                'conditions' => array( 'Dossier.id = Foyer.dossier_rsa_id' )
-                            ),
-                            'Serviceinstructeur' => array(
-                                'foreignKey' => false,
-                                'conditions' => array( 'Serviceinstructeur.id' => $this->Session->read( 'Auth.User.serviceinstructeur_id' ) )
-                            ),
-                        )
-                    )
-                );
+                $query = $this->Orientstruct->queries['criteres'];
+                $query['limit'] = 10;
 
-                $orients = $this->Orientstruct->find(
-                    'all',
-                    array(
-                        'conditions' => array(
-                            $conditions
-                        ),
-                        'recursive' => 0
-                    )
-                );
+                $this->paginate = $query;
+                $orients = $this->paginate( 'Orientstruct', $conditions );
+
                 $this->set( 'orients', $orients );
-// debug( $orients );
-//             debug($params);
                 $this->data['Search'] = $params;
             }
         }
-
     }
 ?>
