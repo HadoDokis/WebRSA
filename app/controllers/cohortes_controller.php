@@ -270,6 +270,7 @@
                         }
                     }
                     $this->set( 'cohorte', $cohorte );
+//                     debug( $cohorte );
                 }
                 $this->Dossier->commit(); // Pour les jetons + FIXME: bloquer maintenant les ids dont on s'occupe
             }
