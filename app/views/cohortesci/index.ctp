@@ -77,8 +77,8 @@
                                     $form->input( 'Contratinsertion.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $contrat['Contratinsertion']['id'] ) ).
                                         $form->input( 'Contratinsertion.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $contrat['Dossier']['id'] ) ).
                                         $form->input( 'Contratinsertion.'.$index.'.decision_ci', array( 'label' => false, 'type' => 'select', 'options' => $decision_ci, 'value' => $contrat['Contratinsertion']['proposition_decision_ci'] ) ),
-    //                                 h( date_short( $contrat['Contratinsertion']['datevalidation_ci'] ) ),
-                                    $form->input( 'Contratinsertion.'.$index.'.datevalidation_ci', array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'selected' => $contrat['Contratinsertion']['proposition_datevalidation_ci'] ) ),
+                                    h( date_short( $contrat['Contratinsertion']['proposition_datevalidation_ci'] ) ),
+//                                     $form->input( 'Contratinsertion.'.$index.'.datevalidation_ci', array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'selected' => $contrat['Contratinsertion']['proposition_datevalidation_ci'] ) ),
                                     $form->input( 'Contratinsertion.'.$index.'.observ_ci', array( 'label' => false, 'type' => 'text', 'rows' => 2, 'value' => $contrat['Contratinsertion']['observ_ci'] ) ),
                                 )
                             );
