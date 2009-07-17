@@ -74,7 +74,7 @@
                 }
 
                 //Critère recherche par Contrat insertion: date de validation du contrat
-                if( !dateComplete( $this->data, 'Contratinsertion.datevalidation_ci' ) ) {
+                if( dateComplete( $this->data, 'Contratinsertion.datevalidation_ci' ) ) {
                     $datevalidation_ci = $this->data['Contratinsertion']['datevalidation_ci'];
                     $conditions['Contratinsertion.datevalidation_ci'] = $datevalidation_ci['year'].'-'.$datevalidation_ci['month'].'-'.$datevalidation_ci['day'];
                 }

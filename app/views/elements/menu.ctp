@@ -7,9 +7,9 @@
                     <?php echo $html->link( 'Gestion des cohortes', '#' );?>
                     <ul>
                     <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
-                      <!--  <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                             <?php echo $html->link( 'Contrat insertion', array( 'controller' => 'cohortesci', 'action' => 'index' ), array( 'title'=>'Gestion des contrats' ) );?>
-                        </li> -->
+                        </li> 
                     <!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
                         <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                             <?php  echo $html->link( 'Orientation', '#' );?>
