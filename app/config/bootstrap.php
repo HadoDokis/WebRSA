@@ -40,6 +40,9 @@
  * $controllerPaths = array('this path to controllers', 'second full path to controllers', 'etc...');
  *
  */
+    //@set_time_limit( 0 );
+    @ini_set( 'memory_limit', '512M' );
+
     define( 'REQUIRED_MARK', '<abbr class="required" title="Champ obligatoire">*</abbr>' );
 
     // Messages en français

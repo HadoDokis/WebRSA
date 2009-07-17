@@ -6,9 +6,9 @@
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
 <script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        observeDisableFieldsOnValue( 'ContratinsertionDecisionCi', [ 'ContratinsertionDatevalidationCiDay', 'ContratinsertionDatevalidationCiMonth', 'ContratinsertionDatevalidationCiYear' ], 'V', false );
-    });
+//     document.observe("dom:loaded", function() {
+//         observeDisableFieldsOnValue( 'ContratinsertionDecisionCi', [ 'ContratinsertionDatevalidationCiDay', 'ContratinsertionDatevalidationCiMonth', 'ContratinsertionDatevalidationCiYear' ], 'V', false );
+//     });
 </script>
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
@@ -21,7 +21,7 @@
                 <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden' ) );?>
 
                 <?php echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __( 'observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
-                <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __( 'decision_ci', true ), 'type' => 'select', 'options' => $decision_ci, 'empty' => 'En attente de décision' ) ); ?>
+                <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __( 'decision_ci', true ), 'type' => 'select', 'options' => $decision_ci, 'empty' => 'E' ) ); ?>
                 <?php echo $form->input( 'Contratinsertion.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?><br />
                 <!-- <?php echo $form->input( 'Contratinsertion.faita', array( 'label' => 'Fait à : ', 'type' => 'text')  ); ?><br />
                 <?php echo $form->input( 'Contratinsertion.le ', array( 'label' => 'Le : ', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>

@@ -4,9 +4,9 @@
 <h1>Recherche par Contrat d'insertion</h1>
 
 <script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        observeDisableFieldsOnValue( 'ContratinsertionDecisionCi', [ 'ContratinsertionDatevalidationCiDay', 'ContratinsertionDatevalidationCiMonth', 'ContratinsertionDatevalidationCiYear' ], 'V', false );
-    });
+//     document.observe("dom:loaded", function() {
+//         observeDisableFieldsOnValue( 'ContratinsertionDecisionCi', [ 'ContratinsertionDatevalidationCiDay', 'ContratinsertionDatevalidationCiMonth', 'ContratinsertionDatevalidationCiYear' ], 'V', false );
+//     });
 </script>
 
 

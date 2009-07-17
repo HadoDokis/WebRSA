@@ -51,6 +51,7 @@
 
                 // On a renvoyé  le formulaire de la cohorte
                 if( !empty( $this->data['Contratinsertion'] ) ) {
+// debug( $this->data['Contratinsertion'] );
                     $valid = $this->Dossier->Foyer->Personne->Contratinsertion->saveAll( $this->data['Contratinsertion'], array( 'validate' => 'only', 'atomic' => false ) );
                     if( $valid ) {
                         $this->Dossier->begin();
@@ -143,14 +144,20 @@
                     $contrats = $this->Contratinsertion->find( 'all', array( 'conditions' => array( $conditions ), 'recursive' => 0 ) );
 
                     foreach( $contrats as $key => $value ) {
-                        if( empty( $value['Contratinsertion']['decision_ci'] ) ) {
+                        if( $value['Contratinsertion']['decision_ci'] == 'E' ) {
                             $contrats[$key]['Contratinsertion']['proposition_decision_ci'] = 'V';
-                            $contrats[$key]['Contratinsertion']['proposition_datevalidation_ci'] = date( 'Y-m-d' );
                         }
                         else {
                             $contrats[$key]['Contratinsertion']['proposition_decision_ci'] = $value['Contratinsertion']['decision_ci'];
+                        }
+
+                        if( empty( $value['Contratinsertion']['datevalidation_ci'] ) ) {
+                            $contrats[$key]['Contratinsertion']['proposition_datevalidation_ci'] = date( 'Y-m-d' );
+                        }
+                        else {
                             $contrats[$key]['Contratinsertion']['proposition_datevalidation_ci'] = $value['Contratinsertion']['datevalidation_ci'];
                         }
+
                     }
 
     // debug( $contrats );
