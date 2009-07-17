@@ -7,10 +7,10 @@ float:left;
 width:100%;
 font-family: sans-serif;
 /*background: repeat-x top left;*/
-border-top:3px solid #235F7D;
+/*border-top:3px solid #235F7D;
 border-left:3px solid #235F7D;
 border-right:3px solid #235F7D;
-border-bottom:3px solid #235F7D;
+border-bottom:3px solid #235F7D*/;
 margin:20px 0 60px 0;
 /* font-weight:bold; */
 }
@@ -23,6 +23,8 @@ z-index: 10;
 .menu1 li {
 padding: 0;
 margin: 0;
+border: 1px solid #235F7D;
+background: white;
 }
 .menu1 ul li {
 float:left;
@@ -98,7 +100,7 @@ height:auto;
 line-height:15px;
 padding:4px 16px;
 width:120px;
-border:1px solid #000;
+border:1px solid white;
 border-bottom:0;
 }
 .menu1 ul li:hover ul li a.drop {
@@ -144,7 +146,7 @@ color:#000;
 height:1px;
 line-height:15px;
 padding:4px 16px;
-width:154px; 
+width:154px;
 w\idth:120px;
 border:1px solid #000;
 border-bottom:0;
@@ -219,18 +221,18 @@ left:-153px;
     #nav a:hover {
       color:#333;
       }
-    #demos #nav-demos, 
+    #demos #nav-demos,
     #menus #nav-menus,
-    #layouts #nav-layouts, 
+    #layouts #nav-layouts,
     #boxes #nav-boxes,
     #mozilla #nav-mozilla,
     #explorer #nav-explorer,
     #opacity #nav-opacity {
       background-position:100% -150px;
       }
-    #demos #nav-demos a, 
+    #demos #nav-demos a,
     #menus #nav-menus a,
-    #layouts #nav-layouts a, 
+    #layouts #nav-layouts a,
     #boxes #nav-boxes a,
     #mozilla #nav-mozilla a,
     #explorer #nav-explorer a,
@@ -240,7 +242,7 @@ left:-153px;
       color:#333;
       }
       /* not for IE5.x or IE6 */
-    #nav li:hover, 
+    #nav li:hover,
     #nav li:hover a {
       background-position:90% -150px;
       color:#333;
