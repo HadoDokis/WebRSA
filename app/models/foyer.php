@@ -61,6 +61,7 @@
         //*********************************************************************
 
         function refreshSoumisADroitsEtDevoirs( $foyer_id ) {
+            $this->Personne->bindModel( array( 'hasOne' => array( 'Prestation' ) ) );
             $personnesFoyer = $this->Personne->find(
                 'all',
                 array(
@@ -77,9 +78,13 @@
                 if( isset( $personne['Prestation'] ) && ( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ) ) {
                     $this->Personne->Prestation->create();
                     $personne['Prestation']['toppersdrodevorsa'] = $this->Personne->soumisDroitsEtDevoirs( $personne['Personne']['id'] );
+// var_dump( array( $foyer_id, $personne['Personne']['id'], $personne['Prestation']['toppersdrodevorsa'] ) );
                     $this->Personne->Prestation->set( $personne['Prestation'] );
                     $saved =  $this->Personne->Prestation->save( $personne['Prestation'] ) && $saved;
                 }
+//                 else {
+// var_dump( $personne );
+//                 }
             }
 
             return $saved;
