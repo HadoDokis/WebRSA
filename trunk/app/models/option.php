@@ -199,7 +199,7 @@
 
         function decision_ci() {
             return array(
-                '' => 'En attente de décision',
+                'E' => 'En attente de décision',
                 'V' => 'Validation à compter du',
                 'A' => 'Ajournement',
                 'R' => 'Rejet'
