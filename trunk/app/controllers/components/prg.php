@@ -100,8 +100,9 @@
                             }
                             $params[$key] =  urlencode( $param );
                         }
-                        //$getUrl = Router::url( array_merge( array( 'action' => $controller->action ), $params ) );
-                        $getUrl = Router::url( array( 'action' => $controller->action ) ).'/index/'.implode_assoc( '/', ':', $params );
+                        $getUrl = Router::url( array_merge( array( 'action' => $controller->action ), $params ) );
+                        // FIXME: donne des url erronées
+                        //$getUrl = Router::url( array( 'controller' => strtolower( $controller->name ), 'action' => $controller->action ) ).'/'.implode_assoc( '/', ':', $params );
                     }
 
                     header( 'Location: '.$getUrl );
