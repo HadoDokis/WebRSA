@@ -209,6 +209,102 @@
             )
         );
 
+        // ********************************************************************
+
+        var $queries = array(
+            'criteresci' => array(
+                'fields' => array(
+                    '"Contratinsertion"."id"',
+                    '"Contratinsertion"."personne_id"',
+                    '"Contratinsertion"."typocontrat_id"',
+                    '"Contratinsertion"."structurereferente_id"',
+                    '"Contratinsertion"."rg_ci"',
+                    '"Contratinsertion"."decision_ci"',
+                    '"Contratinsertion"."dd_ci"',
+                    '"Contratinsertion"."df_ci"',
+                    '"Contratinsertion"."datevalidation_ci"',
+                    '"Contratinsertion"."date_saisi_ci"',
+                    '"Contratinsertion"."pers_charg_suivi"',
+                    '"Dossier"."numdemrsa"',
+                    '"Dossier"."dtdemrsa"',
+                    '"Dossier"."matricule"',
+                    '"Personne"."id"',
+                    '"Personne"."nom"',
+                    '"Personne"."prenom"',
+                    '"Personne"."dtnai"',
+                    '"Personne"."qual"',
+                    '"Personne"."nomcomnai"',
+                    '"Adresse"."locaadr"'
+                ),
+                'recursive' => -1,
+                'joins' => array(
+                    array(
+                        'table'      => 'personnes',
+                        'alias'      => 'Personne',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.id = Contratinsertion.personne_id' )
+                    ),
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'dossiers_rsa',
+                        'alias'      => 'Dossier',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'adresses_foyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    ),
+                    array(
+                        'table'      => 'typoscontrats',
+                        'alias'      => 'Typocontrat',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Typocontrat.id = Contratinsertion.typocontrat_id' )
+                    ),
+                    array(
+                        'table'      => 'structuresreferentes',
+                        'alias'      => 'Structurereferente',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Contratinsertion.structurereferente_id = Structurereferente.id' )
+                    ),
+                    array(
+                        'table'      => 'suivisinstruction',
+                        'alias'      => 'Suiviinstruction',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'servicesinstructeurs',
+                        'alias'      => 'Serviceinstructeur',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+                    )
+                )
+            )
+        );
+
         function beforeSave( $options = array() ) {
             $return = parent::beforeSave( $options );
 

@@ -4,40 +4,33 @@
     class CriteresciController extends AppController
     {
         var $name = 'Criteresci';
-        var $uses = array( 'Dossier', 'Foyer', 'Personne', 'Contratinsertion', 'Option', 'Serviceinstructeur' );
-//         var $aucunDroit = array( 'constReq' );
+        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typocontrat', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur' );
+        var $aucunDroit = array( 'constReq' );
 
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
         */
 
 
-        var $paginate = array(
-            // FIXME
-            'limit' => 20,
-//             'order' => array(
-//                 'Criteresci.locaadr' => 'asc'
-//             )
-        );
+//         var $paginate = array(
+//             // FIXME
+//             'limit' => 20,
+// //             'order' => array(
+// //                 'Criteresci.locaadr' => 'asc'
+// //             )
+//         );
 
         /**
         */
-//         function __construct() {
-//             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-//             $this->helpers = Set::merge( $this->helpers, array( 'Paginator' ) );
-//             parent::__construct();
-//         }
+        function __construct() {
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+            parent::__construct();
+        }
 
 
         function beforeFilter() {
             $return = parent::beforeFilter();
-                //$this->set( 'statuts', $this->Option->statut_contrat_insertion() );
-                $this->set( 'decision_ci', $this->Option->decision_ci() );
-            return $return;
-        }
 
-
-        function index() {
             $typeservice = $this->Serviceinstructeur->find(
                 'list',
                 array(
@@ -49,8 +42,13 @@
             );
             $this->set( 'typeservice', $typeservice );
 
+            $this->set( 'decision_ci', $this->Option->decision_ci() );
+            return $return;
+        }
+
+
+        function index() {
             $params = $this->data;
-//             debug( $params );
             if( !empty( $params ) ) {
                 $conditions = array();
 
@@ -83,7 +81,7 @@
                 if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) ){
                     $conditions['Serviceinstructeur.id'] = $params['Serviceinstructeur']['id'];
                 }
-
+/*
 
                 $this->Contratinsertion->unbindModelAll();
                 $this->Contratinsertion->bindModel(
@@ -125,6 +123,15 @@
 
                 $this->set( 'contrats', $contrats );
 // debug($contrats);
+                $this->data['Search'] = $params;*/
+                $query = $this->Contratinsertion->queries['criteresci'];
+                $query['limit'] = 10;
+
+                $this->paginate = $query;
+                $contrats = $this->paginate( 'Contratinsertion', $conditions );
+
+                $this->set( 'contrats', $contrats );
+//                 debug( $contrats );
                 $this->data['Search'] = $params;
             }
         }
