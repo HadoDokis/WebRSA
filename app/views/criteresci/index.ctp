@@ -23,7 +23,7 @@
     }
 ?>
 
-<?php echo $form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
         <legend>Recherche par Contrat d'insertion</legend>
             <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => 'Date de saisie du contrat', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => date( 'Y' ) - 10, 'empty' => true ) );?>
@@ -47,21 +47,25 @@
     </div>
     <h2 class="noprint">Résultats de la recherche</h2>
 
-    <?php if( is_array( $contrats ) && count( $contrats ) > 0 ):?>
-        <?php /*require( 'index.pagination.ctp' )*/?>
+    <?php if( is_array( $contrats ) && count( $contrats ) > 0  ):?>
+        <?php require( 'index.pagination.ctp' )?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-
-                    <!--<th><?php /*echo $paginator->sort('Nom allocataire', 'Personne.nom'); ?></th>
-                    <th><?php echo $paginator->sort('Commune de l\'allocataire', 'Adresse.locaadr'); */?></th> -->
-                    <th>Nom de l'allocataire</th>
+                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $paginator->sort( 'Contrat envoyé par', 'Serviceinstructeur.id' );?></th>
+                    <th><?php echo $paginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de saisie du contrat', 'Contratinsertion.date_saisi_ci' );?></th>
+                    <th><?php echo $paginator->sort( 'Rang du contrat', 'Contratinsertion.rg_ci' );?></th>
+                    <th><?php echo $paginator->sort( 'Décision', 'contratinsertion.decision_ci' );?></th>
+                    <!--<th>Nom de l'allocataire</th>
                     <th>Commune de l'allocataire</th>
                     <th>Contrat envoyé par</th>
                     <th>N° CAF</th>
                     <th>Date de saisie du contrat</th>
                     <th>Rang du contrat</th>
-                    <th>Décision</th>
+                    <th>Décision</th>-->
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -109,7 +113,7 @@
             </tbody>
         </table>
 
-    <?php /*require( 'index.pagination.ctp' )*/ ?>
+    <?php  require( 'index.pagination.ctp' )  ?>
 
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
