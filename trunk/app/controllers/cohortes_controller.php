@@ -301,5 +301,94 @@
                     break;
             }
         }
+
+/************************************* Export des données en Xls *******************************/
+        var $helpers = array( /*'Csv', '*/'Xls' );
+
+//         function view() {
+//             $data = $this->Personne->find( 'first' );
+//             $this->set( compact('data') );
+//         }
+
+
+        function export()
+        {
+//             $cohorte = $this->Cohorte->search( 'Orienté', array(), false, $this->data, array(), 10 );
+//             if( !empty( $cohorte ) ) {
+//                 $data = $this->Personne->find( 'all', array( 'fields' => array( 'qual', 'nom', 'prenom' ), 'limit' => 20, 'recursive' => -1, 'conditions' => array( 'Personne.id' => array_values( $cohorte ) ) ) );
+//             }
+//             else {
+//                 $data = array();
+//             }
+// debug( $data );
+// die();
+
+            $headers = array( 'Commune', 'Qual', 'Nom', 'Prénom', 'Date demande', 'Date ouverture', 'Service instructeur', 'Préorientation', 'Orientation', 'Structure', 'Décision', 'Date proposition', 'Date dernier CI' );
+
+            $data = $this->Personne->find( 'all', array( 'fields' => array( 'qual', 'nom', 'prenom' ), 'limit' => 20, 'recursive' => -1 ) );
+            $data = Set::extract( $data, '{n}.Personne' );
+            $this->set( compact( 'data', 'headers' ) );
+
+
+            $filename  = 'export_' . strftime('%Y-%m-%d-%Hh%M') . '.xls';
+
+            $this->autoLayout = false;
+
+            App::import('Core', 'File');
+
+            $file = new File( WWW_ROOT.'files/exports/'.$filename, true );
+            $file->write( $this->render() );
+
+            $file->close();
+
+            $this->Session->setFlash( "Nouveau fichier disponible.", 'flash/success' );
+            $this->redirect($this->referer());
+        }
+
+        function exports_index()
+        {
+            App::import( 'Core', 'Folder' );
+
+            $dir = new Folder(WWW_ROOT.'files/exports');
+
+            $data = $dir->find('.+\.xls');
+
+            rsort($data);
+
+            $this->set(compact('data'));
+        }
+
+        function export_download( $filename )
+        {
+            $this->view = 'Media';
+// debug( $filename );
+            $params = array(
+                'path'      => WWW_ROOT.'files/exports' . DS,
+                'id'        => $filename,
+                'name'      => substr($filename, 0, strpos($filename, '.xls')),
+                'extension' => 'xls',
+                'download'  => true
+            );
+
+            $this->set($params);
+        }
+
+        function export_delete( $filename )
+        {
+            App::import('Core', 'File');
+
+            $file = new File( WWW_ROOT.'files/exports' . DS . $filename);
+
+            if(!$file->delete())
+            {
+                $this->Session->setFlash("Impossible de supprimer le fichier '{$filename}'.", 'flash/error');
+            }
+            else
+            {
+                $this->Session->setFlash("Fichier '{$filename}' supprimé.", 'flash/success');
+            }
+
+            $this->redirect($this->referer());
+        }
     }
 ?>

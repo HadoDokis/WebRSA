@@ -60,12 +60,35 @@
                         <th>Décision</th>
                         <th>Date validation</th>
                         <th>Observations</th>
+                        <th class="action">Action</th>
+                        <th class="innerTableHeader">Informations complémentaires</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach( $contrats as $index => $contrat ):?>
                         <?php
+                        $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+                            <tbody>
+                                <tr>
+                                    <th>Date naissance</th>
+                                    <td>'.h( date_short( $contrat['Personne']['dtnai'] ) ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Numéro CAF</th>
+                                    <td>'.h( $contrat['Dossier']['matricule'] ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>NIR</th>
+                                    <td>'.h( $contrat['Personne']['nir'] ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Code postal</th>
+                                    <td>'.h( $contrat['Adresse']['codepos'] ).'</td>
+                                </tr>
+                            </tbody>
+                        </table>';
                             $title = $contrat['Dossier']['numdemrsa'];
+
                             echo $html->tableCells(
                                 array(
                                     h( $contrat['Dossier']['numdemrsa'] ),
@@ -80,7 +103,14 @@
                                     h( date_short( $contrat['Contratinsertion']['proposition_datevalidation_ci'] ) ).
                                      $form->input( 'Contratinsertion.'.$index.'.datevalidation_ci', array( 'label' => false, 'type' => 'hidden', 'value' => $contrat['Contratinsertion']['proposition_datevalidation_ci'] ) ),
                                     $form->input( 'Contratinsertion.'.$index.'.observ_ci', array( 'label' => false, 'type' => 'text', 'rows' => 2, 'value' => $contrat['Contratinsertion']['observ_ci'] ) ),
-                                )
+                                    $html->viewLink(
+                                        'Voir le contrat « '.$title.' »',
+                                        array( 'controller' => 'cohortesci', 'action' => 'view', $contrat['Contratinsertion']['id'] )
+                                    ),
+                                    array( $innerTable, array( 'class' => 'innerTableCell' ) )
+                                ),
+                            array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+                            array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
                             );
                         ?>
                     <?php endforeach;?>
