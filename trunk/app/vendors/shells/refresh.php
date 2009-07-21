@@ -25,6 +25,11 @@
 
             //-----------------------------------------------------------------
 
+            // FIXME: calculer et sauvegarder les mtpersressmenrsa
+            // FIXME: ajouter une entrée dans la table orientsstructs ?
+
+            //-----------------------------------------------------------------
+
             $foyers = $this->Foyer->find( 'list', array( 'fields' => array( 'Foyer.id', 'Foyer.id' ), 'order' => 'Foyer.id ASC' ) );
             foreach( $foyers as $foyer_id ) {
                 $saved = $this->Foyer->refreshSoumisADroitsEtDevoirs( $foyer_id ) && $saved;
