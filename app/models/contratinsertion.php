@@ -305,6 +305,7 @@
             )
         );
 
+        /*********************************************************************************************/
         function beforeSave( $options = array() ) {
             $return = parent::beforeSave( $options );
 

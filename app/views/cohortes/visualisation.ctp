@@ -116,5 +116,19 @@
                 );
             ?>
         </p>
+        <p>
+            <?php
+                echo $html->link(
+                    'Exporter le tableau',
+                    Set::merge(
+                        array(
+                            'controller' => 'cohortes',
+                            'action' => 'export'
+                        ),
+                        array_unisize( $this->data )
+                    )
+                );
+            ?>
+        </p>
     <?php endif;?>
 <?php endif;?>

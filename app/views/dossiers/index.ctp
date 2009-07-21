@@ -44,6 +44,7 @@
 
     <fieldset>
         <legend>Recherche par dossier</legend>
+        <?php echo $form->input( 'Dossier.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
         <?php echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA' ) );?>
         <!--<?php echo $form->input( 'Dossier.numero_dossier_caf', array( 'label' => 'Numéro de dossier CAF' ) );?>-->
         <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => 'Filtrer par date de demande', 'type' => 'checkbox' ) );?>
@@ -76,12 +77,16 @@
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <th>Numéro dossier</th>
-                    <th>Date de demande</th>
+                    <th><?php echo $paginator->sort( 'Numéro de dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de demande', 'Dossier.dtdemrsa' );?></th>
+                    <!--<th><?php echo $paginator->sort( 'NIR', 'Personne.nir' );?></th>
+                    <th><?php echo $paginator->sort( 'Allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>-->
+                    <!-- <th>Numéro dossier</th>
+                    <th>Date de demande</th> -->
                     <th>NIR</th>
                     <th>Allocataire</th>
                     <th>Commune de l'Allocataire</th>
-                    <!--<th>État du dossier</th>-->
                     <th class="action">Actions</th>
                     <th class="action">Verrouillé</th>
                     <th class="innerTableHeader">Informations complémentaires</th>

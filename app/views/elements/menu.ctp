@@ -17,8 +17,8 @@
                                     <li><?php echo $html->link( 'Nouvelles demandes', array( 'controller' => 'cohortes', 'action' => 'nouvelles' ), array( 'title'=>'Nouvelles demandes' ) );?></li>
                                     <li><?php echo $html->link( 'Demandes orientées', array( 'controller' => 'cohortes', 'action' => 'orientees' ), array( 'title'=>'Demandes orientées' ) );?></li>
                                     <li><?php echo $html->link( 'En attente', array( 'controller' => 'cohortes', 'action' => 'enattente' ), array( 'title'=>'Demandes en attente' ) );?></li>
-                                    <!-- <li><?php echo $html->link( 'Gestion des PDO', '#' );?></li>
-                                    <li><?php echo $html->link( 'Liste suivant critères', '#' );?></li>
+                                    <li><?php echo $html->link( 'Fichiers Exportés', array( 'controller' => 'cohortes', 'action' => 'exports_index' ), array( 'title'=>'Fichiers exportés' ) );?></li>
+                                    <!--<li><?php echo $html->link( 'Liste suivant critères', '#' );?></li>
                                     <li><?php echo $html->link( 'Gestion des éditions', '#' );?></li> -->
                                 </ul>
                         </li>

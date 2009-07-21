@@ -142,5 +142,8 @@
             $return = Set::extract( $foyers, '{n}.Foyer.dossier_rsa_id' );
             return ( !empty( $return ) ? $return : null );
         }
+
+// ********************************************************************
+
     }
 ?>
