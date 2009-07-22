@@ -211,7 +211,9 @@
                             ) && $saved;
                         }
                     }
-// debug( $saved );
+
+                    $saved = $this->Ressource->refresh( $ressource['Ressource']['personne_id'] ) && $saved;
+
                     if( $saved ) {
                         $this->Jetons->release( $dossier_id );
                         $this->Ressource->commit();
