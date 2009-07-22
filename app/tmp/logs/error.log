@@ -1,1 +1,15 @@
 
+2009-07-22 15:02:55 Warning: Warning (2): pg_query() [<a href='http://php.net/function.pg-query'>function.pg-query</a>]: Query failed: ERROR:  null value in column &quot;personne_id&quot; violates not-null constraint in [CORE/cake/libs/model/datasources/dbo/dbo_postgres.php, line 148]
+2009-07-22 15:02:55 Warning: Warning (512): <span style = "color:Red;text-align:left"><b>SQL Error:</b> ERROR:  null value in column "personne_id" violates not-null constraint</span> in [CORE/cake/libs/model/datasources/dbo_source.php, line 525]
+2009-07-22 15:02:55 Warning: Warning (2): pg_query() [<a href='http://php.net/function.pg-query'>function.pg-query</a>]: Query failed: ERROR:  current transaction is aborted, commands ignored until end of transaction block in [CORE/cake/libs/model/datasources/dbo/dbo_postgres.php, line 148]
+2009-07-22 15:02:55 Warning: Warning (512): <span style = "color:Red;text-align:left"><b>SQL Error:</b> ERROR:  current transaction is aborted, commands ignored until end of transaction block</span> in [CORE/cake/libs/model/datasources/dbo_source.php, line 525]
+2009-07-22 15:02:55 Warning: Warning (2): Invalid argument supplied for foreach() in [APP/models/foyer.php, line 111]
+2009-07-22 15:02:55 Error: Assertion failed: error500 in app/controllers/components/jetons.php line 273 for url /adullact/webrsa/personnes/add/1
+2009-07-22 15:02:55 Warning: Warning (2): Cannot modify header information - headers already sent by (output started at /home/cbuffin/projets/htdocs/adullact/webrsa/cake/basics.php:313) in [APP/error.php, line 158]
+2009-07-22 15:04:44 Warning: Warning (2): pg_query() [<a href='http://php.net/function.pg-query'>function.pg-query</a>]: Query failed: ERROR:  null value in column &quot;personne_id&quot; violates not-null constraint in [CORE/cake/libs/model/datasources/dbo/dbo_postgres.php, line 148]
+2009-07-22 15:04:44 Warning: Warning (512): <span style = "color:Red;text-align:left"><b>SQL Error:</b> ERROR:  null value in column "personne_id" violates not-null constraint</span> in [CORE/cake/libs/model/datasources/dbo_source.php, line 525]
+2009-07-22 15:04:44 Warning: Warning (2): pg_query() [<a href='http://php.net/function.pg-query'>function.pg-query</a>]: Query failed: ERROR:  current transaction is aborted, commands ignored until end of transaction block in [CORE/cake/libs/model/datasources/dbo/dbo_postgres.php, line 148]
+2009-07-22 15:04:44 Warning: Warning (512): <span style = "color:Red;text-align:left"><b>SQL Error:</b> ERROR:  current transaction is aborted, commands ignored until end of transaction block</span> in [CORE/cake/libs/model/datasources/dbo_source.php, line 525]
+2009-07-22 15:04:44 Warning: Warning (2): Invalid argument supplied for foreach() in [APP/models/foyer.php, line 111]
+2009-07-22 15:04:44 Error: Assertion failed: error500 in app/controllers/components/jetons.php line 273 for url /adullact/webrsa/personnes/add/1
+2009-07-22 15:04:44 Warning: Warning (2): Cannot modify header information - headers already sent by (output started at /home/cbuffin/projets/htdocs/adullact/webrsa/cake/libs/debugger.php:512) in [APP/error.php, line 158]
