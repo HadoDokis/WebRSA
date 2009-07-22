@@ -115,7 +115,7 @@
                 );
             ?>
 
-            <?php
+           <!-- <?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
                     Set::merge(
@@ -126,7 +126,7 @@
                         array_unisize( $this->data )
                     )
                 );
-            ?>
+            ?> -->
         </ul>
     <?php endif;?>
 <?php endif;?>
