@@ -105,7 +105,7 @@
                                     $form->input( 'Contratinsertion.'.$index.'.observ_ci', array( 'label' => false, 'type' => 'text', 'rows' => 2, 'value' => $contrat['Contratinsertion']['observ_ci'] ) ),
                                     $html->viewLink(
                                         'Voir le contrat « '.$title.' »',
-                                        array( 'controller' => 'cohortesci', 'action' => 'view', $contrat['Contratinsertion']['id'] )
+                                        array( 'controller' => 'contratsinsertion', 'action' => 'view', $contrat['Contratinsertion']['id'] )
                                     ),
                                     array( $innerTable, array( 'class' => 'innerTableCell' ) )
                                 ),
