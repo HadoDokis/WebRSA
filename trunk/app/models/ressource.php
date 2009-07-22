@@ -57,13 +57,15 @@
         function afterFind( $results, $primary = false ) {
             $return = parent::afterFind( $results, $primary );
 
-            foreach( $results as $key => $result ) {
-                if( isset( $result['Ressource'] ) ) {
-                    if( isset( $result['Ressource']['topressnul'] ) ) {
-                        $result['Ressource']['topressnotnul'] = !$result['Ressource']['topressnul'];
+            if( !empty( $results ) ) {
+                foreach( $results as $key => $result ) {
+                    if( isset( $result['Ressource'] ) ) {
+                        if( isset( $result['Ressource']['topressnul'] ) ) {
+                            $result['Ressource']['topressnotnul'] = !$result['Ressource']['topressnul'];
+                        }
                     }
+                    $results[$key] = $result;
                 }
-                $results[$key] = $result;
             }
 
             return $results;
@@ -102,15 +104,17 @@
                 )
             );
 
-            $moyenne = $this->moyenne( $ressource );
-            $ressource['Ressource']['topressnotnul'] = ( $moyenne != 0 );
-            $ressource['Ressource']['topressnul'] = ( $moyenne == 0 );
-            $ressource['Ressource']['mtpersressmenrsa'] = number_format( $moyenne, 2 );
+            if( !empty( $ressource ) ) {
+                $moyenne = $this->moyenne( $ressource );
+                $ressource['Ressource']['topressnotnul'] = ( $moyenne != 0 );
+                $ressource['Ressource']['topressnul'] = ( $moyenne == 0 );
+                $ressource['Ressource']['mtpersressmenrsa'] = number_format( $moyenne, 2 );
 
-            $this->create( $ressource );
-            $saved = $this->save();
+                $this->create( $ressource );
+                return $this->save();
+            }
 
-            return $saved;
+            return true;
         }
 
         //*********************************************************************
