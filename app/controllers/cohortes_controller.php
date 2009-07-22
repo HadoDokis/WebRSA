@@ -2,7 +2,7 @@
     class CohortesController extends AppController
     {
         var $name = 'Cohortes';
-        var $uses = array( 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne' );
+        var $uses = array( 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne', 'Orientstruct' );
 
         //*********************************************************************
 
@@ -303,12 +303,82 @@
         }
 
 /************************************* Export des données en Xls *******************************/
-        var $helpers = array( /*'Csv', '*/'Xls' );
+        var $helpers = array( 'Csv'/*, 'Xls' */);
 
-//         function view() {
-//             $data = $this->Personne->find( 'first' );
-//             $this->set( compact('data') );
+        function exportcsv() {
+            $headers = array( 'Commune', 'Qual', 'Nom', 'Prénom', 'Date demande', 'Date ouverture', 'Service instructeur', 'Préorientation', 'Orientation', 'Structure', 'Décision', 'Date proposition', 'Date dernier CI' );
+
+            $dataPers = $this->Personne->find( 'all', array( 'fields' => array( 'qual', 'nom', 'prenom' ), 'limit' => 20, 'recursive' => -1 ) );
+            $dataPers = Set::extract( $dataPers, '{n}.Personne' );
+
+            $dataDos = $this->Dossier->find( 'all', array( 'fields' => array( 'dtdemrsa', 'numdemrsa' ), 'limit' => 20, 'recursive' => -1 ) );
+            $dataDos = Set::extract( $dataDos, '{n}.Dossier' );
+
+            $dataAdr = $this->Adresse->find( 'all', array( 'fields' => array( 'locaadr' ), 'limit' => 20, 'recursive' => -1 ) );
+            $dataAdr = Set::extract( $dataAdr, '{n}.Adresse' );
+
+            $dataOri = $this->Orientstruct->find( 'all', array( 'fields' => array( 'structurereferente_id', 'propo_algo', 'date_propo', 'statut_orient' ), 'limit' => 20, 'recursive' => -1 ) );
+            $dataOri = Set::extract( $dataOri, '{n}.Orientstruct' );
+
+//             $dataStr = $this->Structurereferente->find( 'all', array( 'fields' => array( 'structure', 'date_propo', 'statut_orient' ), 'limit' => 20, 'recursive' => -1 ) );
+//             $dataStr = Set::extract( $dataStr, '{n}.Structurereferente' );
+
+            $this->layout = '';
+            $this->set( compact( 'dataPers', 'dataDos', 'dataAdr', 'dataOri' ) );
+
+            $this->set( 'dataToExport', $data );
+        }
+
+
+        // Exports CSV
+//         function exportCSV( $where = NULL, $delimeter = ',' )
+//         {
+//             $csv = '';
+//             $this->recursive = -1;
+//             $rows = $this->find($where);
+//             foreach($rows as $row)
+//             {
+//                 $row[$this->name];
+//                 $row[$this->name]; 
+//                 $csv .= implode( $delimeter, $row[$this->name] ) . chr(13);
+//             }
+// 
+//             $csv = trim($csv);
+//             return $csv;
 //         }
+
+        // Imports CSV 
+        function importCSV($csv, $delimeter = ',')
+        {
+            $keys = $this->getFieldNames();
+            $rows = array();
+            $csv = trim($csv); 
+            $csv_rows = explode(chr(13), $csv);
+
+            foreach($csv_rows as $csv_row)
+            {
+                $row = explode($delimeter, $csv_row);
+                $row = str_replace(chr(26), $delimeter, $row);
+                $row = array_combine($keys, $row);
+                $rows = array_merge_recursive($rows, array(array($this->name => $row)));
+            }
+            return $rows;
+        }
+
+        // Returns model fieldnames 
+        function getFieldNames()
+        {
+
+            $names = array(); 
+            $fields = $this->_schema;
+
+            foreach($fields as $key => $value)
+                array_push($names, $key);
+
+            return $names;
+        }
+
+
 
 
         function export()
@@ -329,23 +399,39 @@
             $data = Set::extract( $data, '{n}.Personne' );
             $this->set( compact( 'data', 'headers' ) );
 
-
             $filename  = 'export_' . strftime('%Y-%m-%d-%Hh%M') . '.xls';
 
             $this->autoLayout = false;
 
             App::import('Core', 'File');
 
-            $file = new File( WWW_ROOT.'files/exports/'.$filename, true );
+            $file = new File( $filename, true );
             $file->write( $this->render() );
 
             $file->close();
 
             $this->Session->setFlash( "Nouveau fichier disponible.", 'flash/success' );
             $this->redirect($this->referer());
+
         }
 
-        function exports_index()
+
+        function export_download( $filename )
+        {
+            $this->view = 'Media';
+
+            $params = array(
+                'path'      => WWW_ROOT.'files/exports' . DS,
+                'id'        => $filename,
+                'name'      => substr($filename, 0, strpos($filename, '.xls')),
+                'extension' => 'xls',
+                'download'  => true
+            );
+
+            $this->set($params);
+        }
+
+       /* function exports_index()
         {
             App::import( 'Core', 'Folder' );
 
@@ -389,6 +475,6 @@
             }
 
             $this->redirect($this->referer());
-        }
+        } */
     }
 ?>
