@@ -93,9 +93,9 @@
 
             if( !empty( $this->data ) ) {
                 if( ( $this->data['Prestation']['rolepers'] == 'DEM' ) || ( $this->data['Prestation']['rolepers'] == 'CJT' ) ) {
-                    $this->data['Orientstruct'] = array( 'statut_orient' => 'Non orienté' );
                     $this->data['Prestation']['toppersdrodevorsa'] = true;
                 }
+
                 if( $this->Personne->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     if( $this->Personne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 
