@@ -1,15 +1,8 @@
 <?php
-    $line = array('First Name', 'Last Name', 'Gender', 'City');
-    $csv->addRow($line);
+    $csv->addRow( $headers );
 
-    $line = array('Adam', 'Royle', 'M', 'Brisbane');
-    $csv->addRow($line);
-
-    $line = array('Skrimpy', 'Bopimpy', 'M', 'North Sydney');
-    $csv->addRow($line);
-
-    $line = array('Sarah', 'Jincera"s', 'F', 'Melbourne');
-    $csv->addRow($line);
-
-    echo $csv->render( false );
-?> 
+    foreach( $data as $row ){
+        $csv->addRow( array_values( $row ) );
+    }
+    echo $csv->render();
+?>

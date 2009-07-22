@@ -89,7 +89,6 @@
                                 $html->printLink(
                                     'Imprimer la notification',
                                     array( 'controller' => 'gedooos', 'action' => 'notification_structure', $personne['Personne']['id'] ),
-//                                     !empty( $personne['Orientstruct']['personne_id'] ),
                                     $permissions->check( 'gedooos', 'notification_structure' )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
@@ -102,9 +101,9 @@
             </tbody>
         </table>
 
-        <p>
+        <ul class="actionMenu">
             <?php
-                echo $html->link(
+                echo $html->printCohorteLink(
                     'Imprimer la cohorte',
                     Set::merge(
                         array(
@@ -115,20 +114,19 @@
                     )
                 );
             ?>
-        </p>
-        <p>
+
             <?php
-                echo $html->link(
-                    'Exporter le tableau',
+                echo $html->exportLink(
+                    'Télécharger le tableau',
                     Set::merge(
                         array(
                             'controller' => 'cohortes',
-                            'action' => 'export'
+                            'action' => 'exportcsv'
                         ),
                         array_unisize( $this->data )
                     )
                 );
             ?>
-        </p>
+        </ul>
     <?php endif;?>
 <?php endif;?>

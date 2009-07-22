@@ -804,6 +804,42 @@ class HtmlHelper extends AppHelper {
             return '<span class="disabled">'.$content.'</span>';
         }
     }
+
+    function printCohorteLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/printer.png',
+            array( 'alt' => '' )
+        ).' Imprimer la cohorte';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title , 'class' => 'external' )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
+
+    function exportLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/page_white_get.png',
+            array( 'alt' => '' )
+        ).' Télécharger le tableau';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title , 'class' => 'external' )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
     //*************************************************************************
 
     function boolean( $boolean ) {
