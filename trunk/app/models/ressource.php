@@ -23,10 +23,10 @@
         );
 
         var $validate = array(
-            'topressnotnul' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            ),
+//             'topressnotnul' => array(
+//                 'rule' => 'notEmpty',
+//                 'message' => 'Champ obligatoire'
+//             ),
 //             'topressnul' => array(
 //                 'rule' => 'notEmpty',
 //                 'message' => 'Champ obligatoire'
@@ -71,20 +71,69 @@
 
         //*********************************************************************
 
-        function beforeValidate( $options = array() ) {
-            $return = parent::beforeValidate( $options );
+        function moyenne( $ressource ) {
+            $somme = 0;
+            $moyenne = 0;
 
-            if( !empty( $this->data['Ressource']['topressnotnul'] ) ) {
-                $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
+            $montants = Set::extract( $ressource, '/Ressourcemensuelle/Detailressourcemensuelle/mtnatressmen' );
+            if( count( $montants ) > 0 ) {
+                foreach( $montants as $montant ) {
+                    $somme += $montant;
+                }
+                $moyenne = ( $somme / count( $montants ) );
             }
 
-            $this->data['Ressource']['mtpersressmenrsa'] = 0;
-            if( ( !empty( $this->data['Ressource']['topressnul'] ) ) && ( $this->data['Ressource']['topressnul'] != 0 ) && !empty( $this->data['Detailressourcemensuelle'] ) ) {
-                $this->data['Ressource']['mtpersressmenrsa'] = number_format( array_sum( Set::extract( $this->data['Detailressourcemensuelle'], '{n}.mtnatressmen' ) ) / 3, 2 );
-            }
-
-            return $return;
+            return $moyenne;
         }
+
+        //*********************************************************************
+
+        function refresh( $personne_id ) {
+            $this->unbindModel( array( 'belongsTo' => array( 'Personne' ) ) );
+
+            $ressource  = $this->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Ressource.personne_id' => $personne_id
+                    ),
+                    'order' => 'Ressource.dfress DESC',
+                    'recursive' => 2
+                )
+            );
+
+            $moyenne = $this->moyenne( $ressource );
+            $ressource['Ressource']['topressnotnul'] = ( $moyenne != 0 );
+            $ressource['Ressource']['topressnul'] = ( $moyenne == 0 );
+            $ressource['Ressource']['mtpersressmenrsa'] = number_format( $moyenne, 2 );
+
+            $this->create( $ressource );
+            $saved = $this->save();
+
+            return $saved;
+        }
+
+        //*********************************************************************
+
+//         function beforeValidate( $options = array() ) {
+//             $return = parent::beforeValidate( $options );
+// debug( $this->data );
+//             $moyenne = $this->moyenne( $this->data );
+//             $this->data['Ressource']['topressnotnul'] = ( $moyenne != 0 );
+//             $this->data['Ressource']['topressnul'] = ( $moyenne == 0 );
+//             $this->data['Ressource']['mtpersressmenrsa'] = number_format( $moyenne, 2 );
+//
+// //             if( !empty( $this->data['Ressource']['topressnotnul'] ) ) {
+// //                 $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
+// //             }
+// //
+// //             $this->data['Ressource']['mtpersressmenrsa'] = 0;
+// //             if( ( !empty( $this->data['Ressource']['topressnul'] ) ) && ( $this->data['Ressource']['topressnul'] != 0 ) && !empty( $this->data['Detailressourcemensuelle'] ) ) {
+// //                 $this->data['Ressource']['mtpersressmenrsa'] = number_format( array_sum( Set::extract( $this->data['Detailressourcemensuelle'], '{n}.mtnatressmen' ) ) / 3, 2 );
+// //             }
+//
+//             return $return;
+//         }
 
 
         //*********************************************************************
@@ -92,14 +141,19 @@
         function beforeSave( $options = array() ) {
             $return = parent::beforeSave( $options );
 
-            if( !empty( $this->data['Ressource']['topressnotnul'] ) ) {
-                $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
-            }
+            $moyenne = $this->moyenne( $this->data );
+            $this->data['Ressource']['topressnotnul'] = ( $moyenne != 0 );
+            $this->data['Ressource']['topressnul'] = ( $moyenne == 0 );
+            $this->data['Ressource']['mtpersressmenrsa'] = number_format( $moyenne, 2 );
 
-            $this->data['Ressource']['mtpersressmenrsa'] = 0;
-            if( ( $this->data['Ressource']['topressnul'] == false ) && !empty( $this->data['Detailressourcemensuelle'] ) ) {
-                $this->data['Ressource']['mtpersressmenrsa'] = number_format( array_sum( Set::extract( $this->data['Detailressourcemensuelle'], '{n}.mtnatressmen' ) ) / 3, 2, '.', '' );
-            }
+//             if( !empty( $this->data['Ressource']['topressnotnul'] ) ) {
+//                 $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
+//             }
+//
+//             $this->data['Ressource']['mtpersressmenrsa'] = 0;
+//             if( ( $this->data['Ressource']['topressnul'] == false ) && !empty( $this->data['Detailressourcemensuelle'] ) ) {
+//                 $this->data['Ressource']['mtpersressmenrsa'] = number_format( array_sum( Set::extract( $this->data['Detailressourcemensuelle'], '{n}.mtnatressmen' ) ) / 3, 2, '.', '' );
+//             }
 
             return $return;
         }
