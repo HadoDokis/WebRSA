@@ -1,4 +1,7 @@
 <?php
+    @set_time_limit( 0 );
+    @ini_set( 'memory_limit', '128M' );
+
     class CohortesController extends AppController
     {
         var $name = 'Cohortes';
@@ -175,6 +178,7 @@
 
                     $_limit = 10;
                     $cohorte = $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids(), $_limit );
+
                     $this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp', 'Orientstruct' ) ) ); // FIXME
                     $cohorte = $this->Dossier->Foyer->Personne->find(
                         'all',
@@ -186,7 +190,8 @@
                             'limit'     => $_limit
                         )
                     );
-
+// INFO: on se retrouve avec deux orientsstructs par personne suite au script
+// debug( $cohorte );
                     // --------------------------------------------------------
 
                     foreach( $cohorte as $key => $element ) {
@@ -339,20 +344,20 @@
 //             foreach($rows as $row)
 //             {
 //                 $row[$this->name];
-//                 $row[$this->name]; 
+//                 $row[$this->name];
 //                 $csv .= implode( $delimeter, $row[$this->name] ) . chr(13);
 //             }
-// 
+//
 //             $csv = trim($csv);
 //             return $csv;
 //         }
 
-        // Imports CSV 
+        // Imports CSV
         function importCSV($csv, $delimeter = ',')
         {
             $keys = $this->getFieldNames();
             $rows = array();
-            $csv = trim($csv); 
+            $csv = trim($csv);
             $csv_rows = explode(chr(13), $csv);
 
             foreach($csv_rows as $csv_row)
@@ -365,11 +370,11 @@
             return $rows;
         }
 
-        // Returns model fieldnames 
+        // Returns model fieldnames
         function getFieldNames()
         {
 
-            $names = array(); 
+            $names = array();
             $fields = $this->_schema;
 
             foreach($fields as $key => $value)

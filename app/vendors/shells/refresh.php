@@ -9,7 +9,7 @@
             *** ***************************************************************/
 
             $this_start = microtime( true );
-            echo "Demarrage du script de rafraicissement: ".date( 'Y-m-d H:i:s' )."\n";
+            echo "Demarrage du script de rafraichissement: ".date( 'Y-m-d H:i:s' )."\n";
 
             $this->Foyer->begin();
             $saved = true;
@@ -45,8 +45,17 @@
 
             $foyers = $this->Foyer->find( 'list', array( 'fields' => array( 'Foyer.id', 'Foyer.id' ), 'order' => 'Foyer.id ASC' ) );
             foreach( $foyers as $foyer_id ) {
-                $saved = $this->Foyer->refreshRessources( $foyer_id ) && $saved;
-                $saved = $this->Foyer->refreshSoumisADroitsEtDevoirs( $foyer_id ) && $saved;
+                $refreshRessources = $this->Foyer->refreshRessources( $foyer_id );
+                if( !$refreshRessources ) {
+                    echo "Erreur Foyer->refreshRessources pour l\'id $foyer_id\n";
+                }
+
+                $refreshSoumisADroitsEtDevoirs = $this->Foyer->refreshSoumisADroitsEtDevoirs( $foyer_id );
+                if( !$refreshRessources ) {
+                    echo "Erreur Foyer->refreshSoumisADroitsEtDevoirs pour l\'id $foyer_id\n";
+                }
+
+                $saved = $refreshRessources && $refreshSoumisADroitsEtDevoirs && $saved;
             }
 
             echo 'Fin de la mise a jour des orientsstructs: '.number_format( microtime( true ) - $this_start, 2 )."\n";
