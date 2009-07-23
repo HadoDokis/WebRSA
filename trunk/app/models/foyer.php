@@ -116,7 +116,8 @@
                     $saved =  $this->Personne->Prestation->save( $personne['Prestation'] ) && $saved;
 
                     // Ajout dans la table Orientstruct si aucune entrée
-                    if( $personne['Prestation']['toppersdrodevorsa'] && empty( $personne['Orientstruct'] ) ) {
+                    $nbrOrientstruct = $this->Personne->Orientstruct->find( 'count', array( 'conditions' => array( 'Orientstruct.personne_id' => $personne['Personne']['id'] ) ) );
+                    if( $personne['Prestation']['toppersdrodevorsa'] && $nbrOrientstruct == 0 ) {
                         $orientstruct = array(
                             'Orientstruct' => array(
                                 'personne_id' => $personne['Personne']['id'],
