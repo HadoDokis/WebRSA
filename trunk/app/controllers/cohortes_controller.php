@@ -181,7 +181,11 @@
                     $_limit = 10;
                     $cohorte = $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids(), $_limit );
 
-                    $this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp', 'Orientstruct' ) ) ); // FIXME
+                    foreach( $cohorte as $personne_id ) {
+                        $this->Jetons->get( array( 'Dossier.id' => $this->Dossier->Foyer->Personne->dossierId( $personne_id ) ) );
+                    }
+
+                    $this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp', 'Orientstruct' ), 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
                     $cohorte = $this->Dossier->Foyer->Personne->find(
                         'all',
                         array(
@@ -192,8 +196,7 @@
                             'limit'     => $_limit
                         )
                     );
-// INFO: on se retrouve avec deux orientsstructs par personne suite au script
-// debug( $cohorte );
+
                     // --------------------------------------------------------
 
                     foreach( $cohorte as $key => $element ) {
