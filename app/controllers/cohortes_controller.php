@@ -148,6 +148,7 @@
                 if( !empty( $this->data ) ) { // FIXME: déjà fait plus haut ?
                     if( !empty( $this->data['Orientstruct'] ) ) { // Formulaire du bas
                         $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
+                        $valid = ( count( $this->Dossier->Foyer->Personne->Orientstruct->validationErrors ) == 0 );
                         if( $valid ) {
                             $this->Dossier->begin();
                             foreach( $this->data['Orientstruct'] as $key => $value ) {
@@ -165,6 +166,7 @@
                                     $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
                                 }
                                 $this->Dossier->commit();
+                                $this->data['Orientstruct'] = array();
                             }
                             else {
                                 $this->Dossier->rollback();
