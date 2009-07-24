@@ -468,7 +468,7 @@ SELECT pg_catalog.setval('typesactions_id_seq', 6, false);
 -- Name: typesorients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webrsa
 --
 
-SELECT pg_catalog.setval('typesorients_id_seq', 11, false);
+SELECT pg_catalog.setval('typesorients_id_seq', 4, false);
 
 
 --
@@ -1299,26 +1299,26 @@ INSERT INTO actions VALUES (33, 5, '59', 'Autre forme d''emploi: CDD, CNE');
 --
 
 INSERT INTO typesorients VALUES (1, NULL, 'Emploi', 'notif_orientation_cg66_mod3');
-INSERT INTO typesorients VALUES (2, 1, 'Pôle emploi', 'notif_orientation_cg66_mod3');
-INSERT INTO typesorients VALUES (3, 1, 'Exploitant agricole MSA', 'notif_orientation_cg66_mod3');
-INSERT INTO typesorients VALUES (4, NULL, 'Socioprofessionnelle', 'notif_orientation_cg66_mod1');
-INSERT INTO typesorients VALUES (5, 4, 'Conseil Général', 'notif_orientation_cg66_mod1');
-INSERT INTO typesorients VALUES (6, NULL, 'Social', 'notif_orientation_cg66_mod2');
-INSERT INTO typesorients VALUES (7, 6, 'Conseil Général', 'notif_orientation_cg66_mod2');
-INSERT INTO typesorients VALUES (8, 6, 'MSA', 'notif_orientation_cg66_mod2');
-INSERT INTO typesorients VALUES (9, 6, 'Organisme agréés ACAL', 'notif_orientation_cg66_mod2');
-INSERT INTO typesorients VALUES (10, 6, 'ATR', 'notif_orientation_cg66_mod2');
+/*INSERT INTO typesorients VALUES (2, 1, 'Pôle emploi', 'notif_orientation_cg66_mod3');
+INSERT INTO typesorients VALUES (3, 1, 'Exploitant agricole MSA', 'notif_orientation_cg66_mod3');*/
+INSERT INTO typesorients VALUES (2, NULL, 'Socioprofessionnelle', 'notif_orientation_cg66_mod1');
+-- INSERT INTO typesorients VALUES (5, 4, 'Conseil Général', 'notif_orientation_cg66_mod1');
+INSERT INTO typesorients VALUES (3, NULL, 'Social', 'notif_orientation_cg66_mod2');
+-- INSERT INTO typesorients VALUES (7, 6, 'Conseil Général', 'notif_orientation_cg66_mod2');
+-- INSERT INTO typesorients VALUES (8, 6, 'MSA', 'notif_orientation_cg66_mod2');
+-- INSERT INTO typesorients VALUES (9, 6, 'Organisme agréés ACAL', 'notif_orientation_cg66_mod2');
+-- INSERT INTO typesorients VALUES (10, 6, 'ATR', 'notif_orientation_cg66_mod2');
 
 
 --
 -- Data for Name: structuresreferentes; Type: TABLE DATA; Schema: public; Owner: webrsa
 --
 
-INSERT INTO structuresreferentes VALUES (1, 2, 'Pole emploi Mont Sud', '125', 'Avenue', 'Alco', '34090', 'Montpellier', '34095');
-INSERT INTO structuresreferentes VALUES (2, 2, 'Assedic Nimes', '44', 'chemin', 'Parrot', '30000', 'Nimes', '30009');
-INSERT INTO structuresreferentes VALUES (3, 8, 'MSA du Gard', '48', 'avenue', 'Paul Condorcet', '30900', 'Nimes', '30000');
-INSERT INTO structuresreferentes VALUES (4, 5, 'Conseil Général de l''Hérault', '10', 'rue', 'Georges Freche', '34000', 'Montpellier', '34005');
-INSERT INTO structuresreferentes VALUES (5, 10, 'Organisme ACAL Vauvert', '48', 'rue', 'Georges Freche', '30600', 'Vauvert', '30610');
+INSERT INTO structuresreferentes VALUES (1, 1, 'Pole emploi Mont Sud', '125', 'Avenue', 'Alco', '34090', 'Montpellier', '34095');
+INSERT INTO structuresreferentes VALUES (2, 1, 'Assedic Nimes', '44', 'chemin', 'Parrot', '30000', 'Nimes', '30009');
+INSERT INTO structuresreferentes VALUES (3, 3, 'MSA du Gard', '48', 'avenue', 'Paul Condorcet', '30900', 'Nimes', '30000');
+INSERT INTO structuresreferentes VALUES (4, 2, 'Conseil Général de l''Hérault', '10', 'rue', 'Georges Freche', '34000', 'Montpellier', '34005');
+INSERT INTO structuresreferentes VALUES (5, 3, 'Organisme ACAL Vauvert', '48', 'rue', 'Georges Freche', '30600', 'Vauvert', '30610');
 
 
 --

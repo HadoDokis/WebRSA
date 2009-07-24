@@ -5807,3 +5807,11 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 -- PostgreSQL database dump complete
 --
 
+ALTER TABLE personnes ALTER COLUMN nom TYPE VARCHAR(50);
+ALTER TABLE personnes ALTER COLUMN prenom TYPE VARCHAR(50);
+ALTER TABLE personnes ALTER COLUMN nomnai TYPE VARCHAR(50);
+ALTER TABLE personnes ALTER COLUMN prenom2 TYPE VARCHAR(50);
+ALTER TABLE personnes ALTER COLUMN prenom3 TYPE VARCHAR(50);
+
+ALTER TABLE creancesalimentaires ADD COLUMN personne_id INTEGER;
+ALTER TABLE creancesalimentaires ADD CONSTRAINT distfk FOREIGN KEY (personne_id) REFERENCES personnes (id) MATCH FULL;
