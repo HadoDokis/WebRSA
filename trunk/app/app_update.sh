@@ -1,9 +1,13 @@
 #!/bin/bash
 
-OLDVERSION="1.0.2.1"
-VERSION="1.0.3"
+OLDVERSION="1.0.3"
+VERSION="1.0.4"
 TMP=`mktemp -d /tmp/WEBRSA-XXXXXX`
-URL="http://adullact.net/frs/download.php/4579/webrsa-1.0.3.zip"
+URL="http://adullact.net/frs/download.php/4581/webrsa-$VERSION.zip"
+USER="webrsa"
+WEBRSADIR="/var/www/webrsa"
+
+# ------------------------------------------------------------------------------
 
 if [ $UID -ne 0 ]; then
     echo " Must be run by root"
@@ -25,6 +29,18 @@ fi
 
 DOCROOT="/var/www"
 
+# ------------------------------------------------------------------------------
+
+# function addcron() {
+#     if [ ! -e /etc/cron.d/webrsa ]; then
+#         echo "PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin" >> /etc/cron.d/webrsa
+#         echo "" >> /etc/cron.d/webrsa
+#         echo "15 10 * * * $USER $WEBRSADIR/cake/console/cake refresh -app $WEBRSADIR/app >> $WEBRSADIR/app/tmp/logs/cron.log" >> /etc/cron.d/webrsa
+#     fi
+# }
+
+# ------------------------------------------------------------------------------
+
 if [ -d $DOCROOT/webrsa ] ; then
     if wget $URL -O $TMP/webrsa-$VERSION.zip; then
         unzip $TMP/webrsa-$VERSION.zip -d $TMP/
@@ -41,5 +57,7 @@ else
     echo "Veuillez installer webrsa, ceci est un script de mise a jour"
     echo "Fin du script"
 fi
+
+# ------------------------------------------------------------------------------
 
 rm -r $TMP
