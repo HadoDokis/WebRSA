@@ -1,3 +1,207 @@
  * Transactions
     - http://bakery.cakephp.org/articles/view/transaction-behavior
     - http://www.postgresql.org/docs/8.1/static/sql-select.html#SQL-FOR-UPDATE-SHARE
+
+/******************************************************************************/
+
+ * Flux échange instruction transmis le 04/05/2009 ( rSa_Echange_Instruction_Virs0101.xls )
+    - SituationProfessionnelle > DetailSituationProfessionnelle > ACCOEMPLOI 0,N => Pourquoi (ligne 199)
+    - nivetu => 0,N ?
+
+/******************************************************************************/
+
+(11:27:13 AM) Michel: Christian, il y a une règle de gestion des cohortes qui ne fonctionne pas
+(11:27:26 AM) Christian: avec le test n° 2 ?
+(11:27:47 AM) Michel: Lorsque l'on rentre 2 personnes dans un foyer
+(11:28:21 AM) Michel: Non le dossier 4 que j'ai modifié de façon à avoir un revenu inférieur au montant forfaitaire
+(11:28:27 AM) Christian: ah
+(11:28:36 AM) Christian: le 2, tu as vu qu'il ne marche pas non plus ?
+(11:29:06 AM) Michel: Le demandeur a un revenu moyen de 510 € et le conjoint de 100 €
+(11:29:22 AM) Christian: je corrige dans mon fichier
+(11:29:37 AM) Michel: Il n'y a que le conjoint qui apparaît dans les cohortes alors que les 2 devraient apparaître
+(11:30:00 AM) Michel: car le revenu du foyer est < au montant forfaitaire
+(11:30:12 AM) Michel:                               Si 1 foyer = 2 personnes, montant forfaitaire = 150% F
+(11:30:23 AM) Christian: ok, je note et je regarde
+(11:30:30 AM) Christian: le 2 il a marché chez toi ?
+
+    * adresses_foyers
+        - à l'ajout d'une adresse, changer le rgadr et supprimer si besoin
+        - à l'jout / la modification d'une adresse, recalculer les rgadr suivant les dates
+    * personnes
+        - compléter les données si le jour ou le mois de la dtnaiss ne sont pas connus (voir avec typedtnaiss)
+        - validation du format du NIR
+        - personne isUnique SSI nom + prénom + ???
+        - rang de naissance obligatoire ?
+        - formattage NIR
+    * cohortes
+        - traitement réel + locks bd
+        - une ligne pour chaque personne soumise à d et d ?!
+    * dossier
+        - état du dossier
+        - formattage n° de dossier + validation
+    * dossiers/index + ...
+        - période entre deux dates à vérifier
+    * css
+        - cacher les cellules de l'infobulle
+    * formulaires
+        - vérifier les périodes (années) proposée pour les champs date
+    * js / ctp
+        - changer tooltips_oupas et vérifier si on n'a plus de tooltips simple, ou convertir
+    * adresses et les communes de naissance => Pays <> France => ?
+    * création de contrat d'insertion -> ?? (Bug rapporté par Michel le 12/05/09 à 16h30)
+    * DSP
+        - quand on ajoute ou qu'on édite sur une personne, on ne revient pas au résumé DSP
+    * Personnes uniques (nom/prenom/NIR) ?
+    * L'abbréviation de Monsieur c'est M et pas MR (Mr d'ailleurs <=> mister)
+    * Undefined index dans les view/index
+    * Formulaire infos financières -> corriger JS dépendants
+
+/******************************************************************************/
+
+20090605 15h00 cbuffin:
+    * Lock/Jeton:
+        - OK pour cohortes (LIMIT 10), recherche dossier, multi-critères
+        - OK en modif pour personnes (-> lock)
+            --> TODO les autres contrôleurs et actions
+        - OK à la déconnexion
+    * Accès aux dossiers suivant zones User
+        - OK cohortes, recherche dossier, multi-critères
+        - TODO: si on change les id dans l'URL
+
+20090531 03h40 cbuffin:
+    * Ajout d'un Helper Permissions, qui stockera les permiisions dans la Session + modification AppController + vues
+
+20/05/2009 17h52 aauzolat:
+    * Finalisation formualire simplifié CG66
+    * Modification du MCD
+    * Modifications tables:
+        - personnes, typesorients, orientsstructs -> fichier de patch dans dossier patch pour modif Schema SQL (orientstruct.sql)
+        - "orientstructs" -> modification du modèle après modification du MCD
+    * Ajout onglet "Orientation" pour le Dossier, lié à chaque Personne
+    * Ajout champ "modele_notif" pour les "typesorients"
+
+19/05/2009 18h26 aauzolat:
+    * Création de plusieurs tables
+    - Table "structuresreferentes" liée à la "Typeorient" et "Zonegeographique",
+    - Table "typesorients" liée à "Structurereferente"
+    - Table "orientstruct" liée à "Structurereferente"
+    * Mise en place Model pour "Structurereferente" et "Typeorient"
+
+    * Modification au niveau du "dossiersimplifié":
+    - au niveau du controller, rectification pour bon fonctionnement de lenregistrement
+    - redirection vers une page permettant l'impression de la Notification (index.ctp : non fonctionnelle pour le moment !!!!).
+    - ajout des "types orientations" et "structures referentes" dans le formulaire simplifié.
+    * Rectification de bugs sur "informationsfinancieres"
+    * Modification de la table "Dossier_rsa", ajout des différents attributs de la table, du coup :
+    - modification au niveau du modèle de "dossier.php" sur l'attribut "etatdosrsa"
+    - modification au niveau du modèle de "referent.php" sur la table liée "structure referente" au lieu de "service referent"
+    - modification au niveau du modèle de "contratinsertion.php" sur l'attribut "structurereferent_id" au lieu de "servicereferent_id"
+
+18/05/2009 17h58 aauzolat:
+    * Modification table "adresses", ajout de l'attribut "canton CHAR(5)"
+    * Modification table "contratsinsertion": attribut lié "referent_id", remplacé par "structurereferente_id" après modification du MCD
+    * Ajout du bloc conjoint dans le dossier simplifié pour le CG66
+    * Ajout de la question sur "Droits et devoir" dans dossier simplifié pour CG66
+    * Modification dans "cohortes_controller.php", ajout de la "structure référente", mais A VERIFIER !!!!!!
+    * Modification du bouton "Ajouter"(dans views/helper/html.php) pour le dossier simplifié (views/dossiers)  et de l'intitulé du formulaire ("Préconisation d'orientation")
+
+18/05/2009 11h56 aauzolat:
+    * Création de plusieurs tables:
+        - Table "Information ETI" lié à la Personne,
+        - Table "Grossesse" liée à la Personne,
+        - Table "Infos agricoles" lié à la Personne,
+        - Table "Détail droit rsa" lié au Dossier.
+    * Mise en place Model + Controller + Vue pour chacune des 4 tables précédentes
+
+15/05/2009 17h56 aauzolat:
+    * Création de tables:
+       - Table "Suivis instruction" liée au dossier RSA,
+       - Tables "Situations dossiers rsa" avec ses 2 tables liées: "suspensions versements" et "suspensions droits"
+       - Tables "Avispcgdroitrsa" avec ses 2 tables liées: "reduc rsa" et "cond admin"
+    * Mise en place Model + Controller + Vue pour chacune des tables précédentes
+
+14/05/2009 18h45 aauzolat:
+    * Modifications:
+       - Remplacement DEM/CJT par Demandeur/Conjoint dans page Données Socioprofessionnelles du Menu
+       - Dans la table 'totalisationsacomptes', modifications de la récupération des données Type_totalisation (ajout dans option.php et totalisationsacomptes_controller.php)
+       - Dans la table 'informationsfinancieres', modifications de la récupération des données Type_allocation (ajout dans option.php et informationsfinancieres_controller.php)
+       - Suppression dans "contratinsertion.php" du champ obligatoire "decision_ci" (non nécessaire), par volonté du CG93.
+       - Ajout "if( isset( $this->data['Detailressourcemensuelle'] ) ){}" dans fonction "add" de "ressources_controller.php"
+       - Mise en place de l'affichage pour la Totalisation d'acompte (création table + remplissage de table pour test affichage).
+
+13/05/2009 17h45 cbuffin, aauzolat:
+    * Limitation des select sur select parent dans formulaire informations financières
+
+13/05/2009 17h45 cbuffin:
+    * Dossier simplifié, ajout de champs cachés:
+        - la personne est le demandeur
+        - ajout de qual
+        - rang adresse -> O1
+        - typeadr -> D
+    * Flux échange instruction transmis le 04/05/2009 ( rSa_Echange_Instruction_Virs0101.xls )
+        - changement dans le script SQL de création du schéma
+        - ACCOEMPLOI -> voir FIXME.txt
+    * Personne: nom de naissance SSI qual = MME
+
+13/05/2009 17h45 aauzolat:
+    * Affichage de l'étoile pour les champs obligatoires (contrats d'insertion et leurs actions - prestations et aides)
+    * Rajout du champ "mois de mouvements" dans les informations fincancières
+    * Création des tables identification flux et totalisation d'accomptes
+    * DSP -> vue pour les personnes (DEM et CJT) en deux colonnes
+
+13/05/2009 12h30 aauzolat cbuffin:
+    * visualisation données socio-professionnelles, mise en deux colonnes (début)
+    * formulaire de création de dossier simplifié - bouton à côté de celui de création normale (seulement pour l'utilisateur cg66)
+
+12/05/2009 20h00 cbuffin:
+    * ajout du conjoint + remise en forme des DSP
+    * ajout de classes pour les view.ctp (essai dans dspfs/view.ctp)
+        - table.wide
+        - table.bodyHeaders
+        - table.smallHeader (le titre fait 25% de la largeur)
+        - table.mediumHeader (le titre fait 50% de la largeur)
+        - table.wideHeader (le titre fait 75% de la largeur)
+        - table.widerHeader (le titre fait 90% de la largeur)
+    * ajout de $html->boolean() view.ctp (essai dans dspfs/view.ctp) à la place de ( $boolean ? 'Oui' : 'Non' )
+
+12/05/2009 16h40 cbuffin / aauzolat:
+    * réparation du contrat d'insertion
+    (04:37:39 PM) Arnaud: g modifié l'affichage des Dspp sur le menu
+    (04:37:47 PM) Arnaud: on a les 2 sur la meme page comme ils le voulaient
+    (04:38:14 PM) Christian: ok
+    (04:38:15 PM) Arnaud: par contre c celui du demandeur seulement
+    (04:38:23 PM) Christian: comme ils voulaient ,
+    (04:38:24 PM) Christian: ?
+    (04:38:28 PM) Arnaud: le 93
+    (04:38:31 PM) Christian: ou il faut le cjt avec ?
+    (04:38:43 PM) Arnaud: oui mais pr le moment ya que le dmeandeur
+    (04:38:51 PM) Christian: ok, je fais le cjt alors
+
+12/05/2009 14h00 cbuffin:
+    * nettoyage de dossiers_controller avec AppController::assert
+
+12/05/2009 12h00 cbuffin:
+    * bootstrap:
+        - réparation de gettext
+        - réparation de la fonction short_date
+    * app_controller:
+        - ajout d'une fonction d'assertion: $this->assert( $condition, $error = 'error500' )
+    * app_model:
+        - redéfinition de la validation alphaNumeric ... à vérifier
+    * personnes
+        - model:
+            * ajout de validations
+        - controller:
+            * utilisation de la contion assert
+            * suppression de la fonction delete
+        - view:
+    * adresses et adresses_foyers
+        - model:
+            * ajout de validations
+        - controller:
+            * utilisation de la contion assert
+            * suppression de la fonction delete
+        - view:
+    * bootstrap.php et footer.ctp
+        - ajout du numéro de version de CakePHP: cake_version()
+    * ajout des fichiers ChangeLog.txt et TODO.txt
