@@ -725,3 +725,18 @@ msgstr "Adresse électronique"
 
 msgid "autorutiadrelec"
 msgstr "Autorisation d'utiliser l'adresse électronique pour contacter le demandeur"
+
+###############################################################################
+# Grossesses
+###############################################################################
+msgid "ddgro"
+msgstr "Date de début de grossesse"
+
+msgid "dfgro"
+msgstr "Date de fin de grossesse"
+
+msgid "dtdeclgro"
+msgstr "Date de déclaration de grossesse"
+
+msgid "natfingro"
+msgstr "Motif de fin de grossesse"

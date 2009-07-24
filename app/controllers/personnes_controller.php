@@ -2,7 +2,7 @@
     class PersonnesController extends AppController
     {
         var $name = 'Personnes';
-        var $uses = array( 'Personne', 'Option' );
+        var $uses = array( 'Personne', 'Option', 'Grossesse' );
 
         /**
         *
@@ -56,6 +56,15 @@
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
             // Recherche de la personne
+            $grossesse = $this->Grossesse->find(
+                'first',
+                array(
+                    'conditions' => array( 'Grossesse.id' => $id ),
+                    'recursive' => 2
+                )
+            );
+
+            // Recherche de la personne
             $personne = $this->Personne->find(
                 'first',
                 array(
@@ -68,6 +77,7 @@
             $this->assert( !empty( $personne ), 'invalidParameter' );
 
             // Assignation à la vue
+            $this->set( 'grossesse', $grossesse );
             $this->set( 'personne', $personne );
         }
 

@@ -25,7 +25,6 @@
                         <ul>
                             <!-- Début "Partie du sous-menu concernant uniquement le demandeur et son conjoint" -->
                             <?php if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ):?>
-
                                 <?php if( $permissions->check( 'dspps', 'view' ) ):?>
                                     <li>
                                         <?php
@@ -163,7 +162,16 @@
                         ?>
                     </li>
                 <?php endif;?>
-
+               <?php if( $permissions->check( 'detailsdroitsrsa', 'index' ) ):?>
+                    <li>
+                        <?php
+                            echo $html->link(
+                                'Détails du droit RSA',
+                                array( 'controller' => 'detailsdroitsrsa', 'action' => 'index', $dossier['Foyer']['id'] )
+                            );
+                        ?>
+                    </li>
+                <?php endif;?>
             </ul>
         </li>
 
