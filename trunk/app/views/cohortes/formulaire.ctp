@@ -73,8 +73,13 @@
                                     </tr>
                                 </tbody>
                             </table>';
-// debug( $personne );
+// debug( $this->data['Orientstruct'] );
+                            $typeorient_id = Set::extract( $this->data, 'Orientstruct.'.$index.'.typeorient_id' );
+                            $structurereferente_id = ( !empty( $typeorient_id ) ? $typeorient_id.'_'.preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', Set::extract( $this->data, 'Orientstruct.'.$index.'.structurereferente_id' ) ) : null );
                             $statut_orient = Set::extract( $this->data, 'Orientstruct.'.$index.'.statut_orient' );
+
+// debug( array( $typeorient_id, $structurereferente_id, $statut_orient ) );
+
                             echo $html->tableCells(
                                 array(
                                     h( $personne['Adresse']['locaadr'] ),
@@ -100,8 +105,8 @@
                                         $form->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['id'] ) ).
                                         $form->input( 'Orientstruct.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Foyer']['dossier_rsa_id'] ) ).
                                         $form->input( 'Orientstruct.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Personne']['id'] ) ),
-                                    $form->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient, 'value' => $personne['Orientstruct']['propo_algo'] ) ),
-                                    $form->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structuresReferentes, 'empty' => true ) ),
+                                    $form->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient, 'value' => ( !empty( $typeorient_id ) ? $typeorient_id : $personne['Orientstruct']['typeorient_id'] ) ) ),
+                                    $form->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structuresReferentes, 'empty' => true, 'value' => ( !empty( $structurereferente_id ) ? $structurereferente_id : $personne['Orientstruct']['structurereferente_id'] ) ) ),
                                     $form->input( 'Orientstruct.'.$index.'.statut_orient', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => array( 'Orienté' => 'A valider', 'En attente' => 'En attente' ), 'value' => ( !empty( $statut_orient ) ? $statut_orient : 'Orienté' ) ) ),
                                     h( $personne['Dossier']['statut'] ),
                                     array( $innerTable, array( 'class' => 'innerTableCell' ) ),
