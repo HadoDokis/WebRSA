@@ -6,7 +6,7 @@ TRUNCATE TABLE prestations CASCADE;
 
 TRUNCATE TABLE foyers CASCADE;
 
-TRUNCATE TABLE creancesalimentaires_personnes CASCADE;
+-- TRUNCATE TABLE creancesalimentaires_personnes CASCADE;
 
 TRUNCATE TABLE creancesalimentaires CASCADE;
 

@@ -12,6 +12,14 @@
     );
 
     $this->pageTitle = 'Visualisation d\'une personne « '.$title.' »';
+
+    function thead( $pct = 10 ) {
+        return '<thead>
+                <tr>
+                    <th colspan="2" style="width: '.$pct.'%;">Grossesse</th>
+                </tr>
+            </thead>';
+    }
 ?>
 
 <?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $personne['Personne']['foyer_id'] ) );?>
@@ -109,6 +117,29 @@
             </tr>
         </tbody>
     </table>
+    <?php if( $sexe[$personne['Personne']['sexe']] == 'Femme' ):?>
+        <table>
+            <?php echo thead( 10 );?>
+            <tbody>
+                <tr class="odd">
+                    <th><?php __( 'ddgro' );?></th>
+                    <td><?php echo date_short( isset( $grossesse['Grossesse']['ddgro'] ) ) ? date_short( $grossesse['Grossesse']['ddgro'] ) : null;?></td>
+                </tr>
+                <tr class="even">
+                    <th><?php __( 'dfgro' );?></th>
+                    <td><?php echo date_short( isset( $grossesse['Grossesse']['dfgro'] ) ) ? date_short( $grossesse['Grossesse']['dfgro'] ) : null;?></td>
+                </tr>
+                <tr class="odd">
+                    <th><?php __( 'dtdeclgro' );?></th>
+                    <td><?php echo date_short( isset( $grossesse['Grossesse']['dtdeclgro'] ) ) ? date_short( $grossesse['Grossesse']['dtdeclgro'] ) : null;?></td>
+                </tr>
+                <tr class="even">
+                    <th><?php __( 'natfingro' );?></th>
+                    <td><?php echo isset( $grossesse['Grossesse']['natfingro'] ) ? $grossesse['Grossesse']['natfingro'] : null;?></td>
+                </tr>
+            </tbody>
+        </table>
+    <?php endif;?>
 </div>
 </div>
 <div class="clearer"><hr /></div>
