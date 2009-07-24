@@ -11,7 +11,7 @@
             $this_start = microtime( true );
             echo "Demarrage du script de rafraichissement: ".date( 'Y-m-d H:i:s' )."\n";
 
-            $this->Foyer->begin();
+            // $this->Foyer->begin();
             $saved = true;
 
             /** ****************************************************************
@@ -67,12 +67,12 @@
             $this->hr();
 
             if( $saved ) {
-                $this->Foyer->commit();
+                //$this->Foyer->commit();
                 echo "Script de rafraicissement termine avec succes: ".date( 'Y-m-d H:i:s' ).'( en '.number_format( microtime( true ) - $this_start, 2 ).' secondes )'."\n";
                 return 0;
             }
             else {
-                $this->Foyer->rollback();
+                //$this->Foyer->rollback();
                 echo "Script de rafraicissement termine avec erreurs: ".date( 'Y-m-d H:i:s' ).'( en '.number_format( microtime( true ) - $this_start, 2 ).' secondes )'."\n";
                 return 1;
             }
