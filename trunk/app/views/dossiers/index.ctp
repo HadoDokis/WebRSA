@@ -50,12 +50,16 @@
         <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => 'Filtrer par date de demande', 'type' => 'checkbox' ) );?>
         <fieldset>
             <legend>Date de demande RSA</legend>
-            <?php echo $form->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => strtotime( '-1 week' ) ) );?>
-            <?php echo $form->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ) );?>
+            <?php
+                $dtdemrsa_from = Set::check( $this->data, 'Dossier.dtdemrsa_from' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_from' ) : strtotime( '-1 week' );
+                $dtdemrsa_to = Set::check( $this->data, 'Dossier.dtdemrsa_to' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_to' ) : strtotime( 'now' );
+            ?>
+            <?php echo $form->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );?>
+            <?php echo $form->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_to ) );?>
         </fieldset>
     </fieldset>
     <fieldset>
-        <legend>Recherche par personne du foyer</legend>
+        <legend>Recherche par demandeur<!--FIXME: personne du foyer--></legend>
         <?php echo $form->input( 'Personne.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );?>
         <?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom' ) );?>
         <?php echo $form->input( 'Personne.nomnai', array( 'label' => 'Nom de jeune fille' ) );?>
@@ -79,14 +83,14 @@
                 <tr>
                     <th><?php echo $paginator->sort( 'Numéro de dossier', 'Dossier.numdemrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Date de demande', 'Dossier.dtdemrsa' );?></th>
-                    <!--<th><?php echo $paginator->sort( 'NIR', 'Personne.nir' );?></th>
-                    <th><?php echo $paginator->sort( 'Allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>-->
+                    <th><?php echo $paginator->sort( 'NIR', 'Personne.nir' );?></th>
+                    <th><?php echo $paginator->sort( 'Allocataire', 'Personne.nom' );?></th><!-- FIXME: qual/nom/prénom -->
+                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
                     <!-- <th>Numéro dossier</th>
                     <th>Date de demande</th> -->
-                    <th>NIR</th>
+                    <!--<th>NIR</th>
                     <th>Allocataire</th>
-                    <th>Commune de l'Allocataire</th>
+                    <th>Commune de l'Allocataire</th>-->
                     <th class="action">Actions</th>
                     <th class="action">Verrouillé</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
@@ -101,11 +105,11 @@
                             <tbody>
                                <!-- <tr>
                                     <th>Commune de naissance</th>
-                                    <td>'.$dossier['Foyer']['Personne'][0]['nomcomnai'].'</td>
+                                    <td>'.$dossier['Personne']['nomcomnai'].'</td>
                                 </tr> -->
                                 <tr>
                                     <th>Date de naissance</th>
-                                    <td>'.date_short( $dossier['Foyer']['Personne'][0]['dtnai'] ).'</td>
+                                    <td>'.date_short( $dossier['Personne']['dtnai'] ).'</td>
                                 </tr>
                                 <tr>
                                     <th>Etat du dossier</th>
@@ -113,21 +117,21 @@
                                 </tr>
                             </tbody>
                         </table>';
-// debug( $dossier['Foyer']['Personne'] );
+// debug( $dossier['Personne'] );
                         echo $html->tableCells(
                             array(
                                 h( $dossier['Dossier']['numdemrsa'] ),
                                 h( date_short( $dossier['Dossier']['dtdemrsa'] ) ),
-                                h( $dossier['Foyer']['Personne'][0]['nir'] ), // FIXME: 0
+                                h( $dossier['Personne']['nir'] ),
                                 implode(
                                     ' ',
                                     array(
-                                        $dossier['Foyer']['Personne'][0]['qual'],
-                                        $dossier['Foyer']['Personne'][0]['nom'],
-                                        implode( ' ', array( $dossier['Foyer']['Personne'][0]['prenom'], $dossier['Foyer']['Personne'][0]['prenom2'], $dossier['Foyer']['Personne'][0]['prenom3'] ) )
+                                        $dossier['Personne']['qual'],
+                                        $dossier['Personne']['nom'],
+                                        implode( ' ', array( $dossier['Personne']['prenom'], $dossier['Personne']['prenom2'], $dossier['Personne']['prenom3'] ) )
                                     )
                                 ),
-                                h(Set::extract(  $dossier, 'Derniereadresse.Adresse.locaadr' ) ),
+                                h( Set::extract(  $dossier, 'Adresse.locaadr' ) ),
                                 //h( isset( $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null ),
 
                                 $html->viewLink(

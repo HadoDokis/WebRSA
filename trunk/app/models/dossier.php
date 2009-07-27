@@ -143,7 +143,122 @@
             return ( !empty( $return ) ? $return : null );
         }
 
-// ********************************************************************
+        // ********************************************************************
 
+        function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
+            $conditions = array();
+
+            /// Filtre zone géographique
+            if( $filtre_zone_geo ) {
+                $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
+                $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
+            }
+
+            // Critères sur le dossier - numéro de dossier
+            if( isset( $params['Dossier']['numdemrsa'] ) && !empty( $params['Dossier']['numdemrsa'] ) ) {
+                $conditions[] = "Dossier.numdemrsa ILIKE '%".Sanitize::paranoid( $params['Dossier']['numdemrsa'] )."%'";
+            }
+
+            // Critères sur le dossier - date de demande
+            if( isset( $params['Dossier']['dtdemrsa'] ) && !empty( $params['Dossier']['dtdemrsa'] ) ) {
+                $valid_from = ( valid_int( $params['Dossier']['dtdemrsa_from']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['day'] ) );
+                $valid_to = ( valid_int( $params['Dossier']['dtdemrsa_to']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_to']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_to']['day'] ) );
+                if( $valid_from && $valid_to ) {
+                    $conditions[] = 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $params['Dossier']['dtdemrsa_from']['year'], $params['Dossier']['dtdemrsa_from']['month'], $params['Dossier']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $params['Dossier']['dtdemrsa_to']['year'], $params['Dossier']['dtdemrsa_to']['month'], $params['Dossier']['dtdemrsa_to']['day'] ) ).'\'';
+                }
+            }
+
+            // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+            $filtersPersonne = array();
+            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
+                if( isset( $params['Personne'][$criterePersonne] ) && !empty( $params['Personne'][$criterePersonne] ) ) {
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.$params['Personne'][$criterePersonne].'%\'';
+                }
+            }
+
+            // Critères sur une personne du foyer - date de naissance -> FIXME: seulement demandeur pour l'instant
+            if( isset( $params['Personne']['dtnai'] ) && !empty( $params['Personne']['dtnai'] ) ) {
+                if( valid_int( $params['Personne']['dtnai']['year'] ) ) {
+                    $conditions[] = 'EXTRACT(YEAR FROM Personne.dtnai) = '.$params['Personne']['dtnai']['year'];
+                }
+                if( valid_int( $params['Personne']['dtnai']['month'] ) ) {
+                    $conditions[] = 'EXTRACT(MONTH FROM Personne.dtnai) = '.$params['Personne']['dtnai']['month'];
+                }
+                if( valid_int( $params['Personne']['dtnai']['day'] ) ) {
+                    $conditions[] = 'EXTRACT(DAY FROM Personne.dtnai) = '.$params['Personne']['dtnai']['day'];
+                }
+            }
+
+            $query = array(
+                'fields' => array(
+                    '"Dossier"."id"',
+                    '"Dossier"."numdemrsa"',
+                    '"Dossier"."dtdemrsa"',
+                    '"Personne"."nir"',
+                    '"Personne"."qual"',
+                    '"Personne"."nom"',
+                    '"Personne"."prenom"',
+                    '"Personne"."prenom2"',
+                    '"Personne"."prenom3"',
+                    '"Personne"."dtnai"',
+                    '"Personne"."nomcomnai"',
+                    '"Adresse"."locaadr"',
+                    '"Situationdossierrsa"."etatdosrsa"'
+                ),
+                'recursive' => -1,
+                'joins' => array(
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Dossier.id = Foyer.dossier_rsa_id' )
+                    ),
+                    array(
+                        'table'      => 'personnes',
+                        'alias'      => 'Personne',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'prestations',
+                        'alias'      => 'Prestation',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Personne.id = Prestation.personne_id',
+                            'Prestation.natprest = \'RSA\'',
+                            'Prestation.rolepers = \'DEM\''
+                        )
+                    ),
+                    array(
+                        'table'      => 'situationsdossiersrsa',
+                        'alias'      => 'Situationdossierrsa',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'adresses_foyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    )
+                ),
+                'limit' => 10,
+                'conditions' => $conditions
+            );
+
+            return $query;
+        }
     }
 ?>
