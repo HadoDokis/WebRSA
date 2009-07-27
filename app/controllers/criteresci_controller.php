@@ -1,12 +1,11 @@
 <?php
-    @set_time_limit( 0 );
-    @ini_set( 'memory_limit', '128M' );
+
     App::import('Sanitize');
 
     class CriteresciController extends AppController
     {
         var $name = 'Criteresci';
-        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typocontrat', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur' );
+        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typocontrat', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Cohorteci' );
         var $aucunDroit = array( 'constReq' );
 
         /**
@@ -33,16 +32,29 @@
         function beforeFilter() {
             $return = parent::beforeFilter();
 
-            $typeservice = $this->Serviceinstructeur->find(
+//             $typeservice = $this->Serviceinstructeur->find(
+//                 'list',
+//                 array(
+//                     'fields' => array(
+//                         'Serviceinstructeur.id',
+//                         'Serviceinstructeur.lib_service'
+//                     ),
+//                 )
+//             );
+//             $this->set( 'typeservice', $typeservice );
+
+            $personne_suivi = $this->Contratinsertion->find(
                 'list',
                 array(
                     'fields' => array(
-                        'Serviceinstructeur.id',
-                        'Serviceinstructeur.lib_service'
+                        'Contratinsertion.pers_charg_suivi',
+                        'Contratinsertion.pers_charg_suivi'
                     ),
+                    'order' => 'Contratinsertion.pers_charg_suivi ASC',
+                    'group' => 'Contratinsertion.pers_charg_suivi',
                 )
             );
-            $this->set( 'typeservice', $typeservice );
+            $this->set( 'personne_suivi', $personne_suivi );
 
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             return $return;
@@ -52,7 +64,7 @@
         function index() {
             $params = $this->data;
             if( !empty( $params ) ) {
-                $conditions = array();
+                /*$conditions = array();
 
                 // INFO: seulement les personnes qui sont dans ma zone géographique
                 $conditions['Contratinsertion.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
@@ -83,57 +95,25 @@
                 if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) ){
                     $conditions['Serviceinstructeur.id'] = $params['Serviceinstructeur']['id'];
                 }
-/*
 
-                $this->Contratinsertion->unbindModelAll();
-                $this->Contratinsertion->bindModel(
-                    array(
-                        'belongsTo' => array(
-                            'Personne' => array(
-                                'foreignKey' => false,
-                                'conditions' => array( 'Contratinsertion.personne_id = Personne.id' )
-                            ),
-                            'Adressefoyer' => array(
-                                'foreignKey' => false,
-                                'conditions' => array(
-                                    'Adressefoyer.foyer_id = Personne.foyer_id',
-                                    'Adressefoyer.rgadr = \'01\''
-                                )
-                            ),
-                            'Adresse' => array(
-                                'foreignKey' => false,
-                                'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                            ),
-                            'Foyer' => array(
-                                'foreignKey' => false,
-                                'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id' )
-                            ),
-                            'Dossier' => array(
-                                'foreignKey' => false,
-                                'conditions' => array( 'Dossier.id = Foyer.dossier_rsa_id' )
-                            ),
-                            'Serviceinstructeur' => array(
-                                'foreignKey' => false,
-                                'conditions' => array( 'Serviceinstructeur.id' => $this->Session->read( 'Auth.User.serviceinstructeur_id' ) )
-                            )
-                        )
-                    )
-                );
-
-                $contrats = $this->Contratinsertion->find( 'all', array( 'conditions' => array( $conditions ), 'recursive' => 0 ) );
-//                 $contrats = $this->paginate( 'Contratinsertion', $conditions );
-
-                $this->set( 'contrats', $contrats );
-// debug($contrats);
-                $this->data['Search'] = $params;*/
                 $query = $this->Contratinsertion->queries['criteresci'];
                 $query['limit'] = 10;
 
                 $this->paginate = $query;
-                $contrats = $this->paginate( 'Contratinsertion', $conditions );
+                $contrats = $this->paginate( 'Contratinsertion', $conditions );*/
+
+                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+                $this->Dossier->begin(); // Pour les jetons
+
+                $this->paginate = $this->Cohorteci->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                $this->paginate['limit'] = 10;
+                $contrats = $this->paginate( 'Contratinsertion' );
+
+                $this->Dossier->commit();
 
                 $this->set( 'contrats', $contrats );
-//                 debug( $contrats );
                 $this->data['Search'] = $params;
             }
         }

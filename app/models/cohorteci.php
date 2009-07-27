@@ -24,6 +24,7 @@
             $decision_ci = Set::extract( $criteresci, 'Filtre.decision_ci' );
             $datevalidation_ci = Set::extract( $criteresci, 'Filtre.datevalidation_ci' );
             $locaadr = Set::extract( $criteresci, 'Filtre.locaadr' );
+            $personne_suivi = Set::extract( $criteresci, 'Filtre.pers_charg_suivi' );
 
             // ...
             if( !empty( $date_saisi_ci ) && dateComplete( $criteresci, 'Filtre.date_saisi_ci' ) ) {
@@ -47,10 +48,14 @@
                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
             }
 
-//                     //Critère recherche par Contrat insertion: par service instructeur
-//                     if( isset( $params['Cohorteci']['serviceinstructeur_id'] ) && !empty( $params['Cohorteci']['serviceinstructeur_id'] ) ){
-//                         $conditions['Serviceinstructeur.id'] = $params['Cohorteci']['serviceinstructeur_id'];
-//                     }
+            // Localité adresse
+            if( !empty( $personne_suivi ) ) {
+                $conditions[] = 'Contratinsertion.pers_charg_suivi = \''.Sanitize::clean( $personne_suivi ).'\'';
+            }
+//             //Critère recherche par Contrat insertion: par service instructeur
+//             if( isset( $params['Cohorteci']['serviceinstructeur_id'] ) && !empty( $params['Cohorteci']['serviceinstructeur_id'] ) ){
+//                 $conditions['Serviceinstructeur.id'] = $params['Cohorteci']['serviceinstructeur_id'];
+//             }
 
 /**
 SELECT DISTINCT contratsinsertion.id
@@ -146,27 +151,27 @@ SELECT DISTINCT contratsinsertion.id
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
                     ),
-                    array(
-                        'table'      => 'structuresreferentes',
-                        'alias'      => 'Structurereferente',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Contratinsertion.structurereferente_id = Structurereferente.id' )
-                    ),
-                    array(
-                        'table'      => 'suivisinstruction',
-                        'alias'      => 'Suiviinstruction',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
-                    ),
-                    array(
-                        'table'      => 'servicesinstructeurs',
-                        'alias'      => 'Serviceinstructeur',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
-                    )
+//                     array(
+//                         'table'      => 'structuresreferentes',
+//                         'alias'      => 'Structurereferente',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Contratinsertion.structurereferente_id = Structurereferente.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'suivisinstruction',
+//                         'alias'      => 'Suiviinstruction',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'servicesinstructeurs',
+//                         'alias'      => 'Serviceinstructeur',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+//                     )
                 ),
                 'limit' => 10,
                 'conditions' => $conditions
