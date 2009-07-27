@@ -80,9 +80,9 @@
             $dtdemrsa = Set::extract( $criteres, 'Filtre.dtdemrsa' );
             $locaadr = Set::extract( $criteres, 'Filtre.locaadr' );
             $statut_orient = Set::extract( $criteres, 'Filtre.statut_orient' );
-//             $typeorient_id = Set::extract( $criteres, 'Filtre.typeorient_id' );
-//             $structurereferente_id = Set::extract( $criteres, 'Filtre.structurereferente_id' );
-//             $serviceinstructeur_id = Set::extract( $criteres, 'Filtre.serviceinstructeur_id' );
+            $typeorient_id = Set::extract( $criteres, 'Filtre.typeorient_id' );
+            $structurereferente_id = Set::extract( $criteres, 'Filtre.structurereferente_id' );
+            $serviceinstructeur_id = Set::extract( $criteres, 'Filtre.serviceinstructeur_id' );
 
             // ...
             if( !empty( $dtdemrsa ) && dateComplete( $criteres, 'Filtre.dtdemrsa' ) ) {
@@ -99,25 +99,23 @@
             if( !empty( $statut_orient ) ) {
                 $conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statut_orient ).'\'';
             }
-            //...
-//             if( !empty( $typeorient_id ) ) {
-//                 $conditions[] = 'Orientstruct.typeorient_id = \''.Sanitize::clean( $typeorient_id ).'\'';
-//             }
 
-//             ...
+            // ...
+            if( !empty( $typeorient_id ) ) {
+                $conditions[] = 'Orientstruct.typeorient_id = \''.Sanitize::clean( $typeorient_id ).'\'';
+            }
+
+            // ...
+            if( !empty( $structurereferente_id ) ) {
+                $conditions[] = 'Orientstruct.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
+            }
+
+            // ... FIXME
 //             if( !empty( $serviceinstructeur_id ) ) {
 //                 $conditions[] = 'Orientstruct.serviceinstructeur_id ILIKE \'%'.Sanitize::clean( $serviceinstructeur_id ).'%\'';
 //             }
 
-//             ...
-//             if( !empty( $structurereferente_id ) ) {
-//                 $conditions[] = 'Orientstruct.structurereferente_id ILIKE \'%'.Sanitize::clean( $structurereferente_id ).'%\'';
-//             }
-
-
             /// Requête
-            $this->Dossier =& ClassRegistry::init( 'Dossier' );
-
             $query = array(
                 'fields' => array(
                     '"Orientstruct"."id"',
