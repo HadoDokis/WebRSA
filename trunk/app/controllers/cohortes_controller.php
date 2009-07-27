@@ -250,7 +250,7 @@
                             );
                             $cohorte[$key]['Orientstruct']['Structurereferente'] = $Structurereferente['Structurereferente'];
                         }
-                        if( $statutOrientation !== 'Orienté' ) {
+                        else {
                             $this->set( 'structuresReferentes', $this->Structurereferente->list1Options() );
 
                             $cohorte[$key]['Orientstruct']['propo_algo_texte'] = $this->_preOrientation( $element );
