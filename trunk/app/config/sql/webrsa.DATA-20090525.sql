@@ -797,21 +797,21 @@ INSERT INTO typesorients VALUES
      'notif_orientation_cg66_mod3'
    );
 
-INSERT INTO typesorients VALUES
-   (
-     2,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     1,   --                INTEGER,
-     'Pôle emploi',
-     'notif_orientation_cg66_mod3'
-   );
+-- INSERT INTO typesorients VALUES
+--    (
+--      2,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+--      1,   --                INTEGER,
+--      'Pôle emploi',
+--      'notif_orientation_cg66_mod3'
+--    );
 
-INSERT INTO typesorients VALUES
-   (
-     3,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     1,   --                INTEGER,
-    'Exploitant agricole MSA',
-     'notif_orientation_cg66_mod3'
-   );
+-- INSERT INTO typesorients VALUES
+--    (
+--      3,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+--      1,   --                INTEGER,
+--     'Exploitant agricole MSA',
+--      'notif_orientation_cg66_mod3'
+--    );
 
 INSERT INTO typesorients VALUES
    (
@@ -821,13 +821,13 @@ INSERT INTO typesorients VALUES
      'notif_orientation_cg66_mod1'
    );
 
-INSERT INTO typesorients VALUES
-   (
-     5,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     4,     --                INTEGER,
-    'Conseil Général',   --     name varchar(30) null
-     'notif_orientation_cg66_mod1'
-   );
+-- INSERT INTO typesorients VALUES
+--    (
+--      5,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+--      4,     --                INTEGER,
+--     'Conseil Général',   --     name varchar(30) null
+--      'notif_orientation_cg66_mod1'
+--    );
 
 INSERT INTO typesorients VALUES
    (
@@ -837,37 +837,37 @@ INSERT INTO typesorients VALUES
      'notif_orientation_cg66_mod2'
    );
 
-INSERT INTO typesorients VALUES
-   (
-     7,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     6,  --                INTEGER,
-    'Conseil Général',
-     'notif_orientation_cg66_mod2'
-   );
+-- INSERT INTO typesorients VALUES
+--    (
+--      7,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+--      6,  --                INTEGER,
+--     'Conseil Général',
+--      'notif_orientation_cg66_mod2'
+--    );
 
-INSERT INTO typesorients VALUES
-   (
-     8,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     6,  --                INTEGER,
-    'MSA',
-     'notif_orientation_cg66_mod2'
-   );
+-- INSERT INTO typesorients VALUES
+--    (
+--      8,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+--      6,  --                INTEGER,
+--     'MSA',
+--      'notif_orientation_cg66_mod2'
+--    );
 
-INSERT INTO typesorients VALUES
-   (
-     9,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     6,  --                INTEGER,
-    'Organisme agréés ACAL',
-     'notif_orientation_cg66_mod2'
-   );
+-- INSERT INTO typesorients VALUES
+--    (
+--      9,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+--      6,  --                INTEGER,
+--     'Organisme agréés ACAL',
+--      'notif_orientation_cg66_mod2'
+--    );
 
-INSERT INTO typesorients VALUES
-   (
-     10,   --     id                  SERIAL NOT NULL PRIMARY KEY,
-     6,  --                INTEGER,
-    'ATR',
-     'notif_orientation_cg66_mod2'
-   );
+-- INSERT INTO typesorients VALUES
+--    (
+--      10,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+--      6,  --                INTEGER,
+--     'ATR',
+--      'notif_orientation_cg66_mod2'
+--    );
 
 ----------------------------
 ----------------------------

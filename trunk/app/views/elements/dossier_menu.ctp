@@ -22,9 +22,9 @@
                                 array( 'controller' => 'personnes', 'action' => 'view', $personne['id'] )
                             );
                         ?>
-                        <ul>
                             <!-- Début "Partie du sous-menu concernant uniquement le demandeur et son conjoint" -->
                             <?php if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ):?>
+                                <ul>
                                 <?php if( $permissions->check( 'dspps', 'view' ) ):?>
                                     <li>
                                         <?php
@@ -67,7 +67,7 @@
                                         ?>
                                     </li>
                                 <?php endif;?>
-
+                            </ul>
                             <?php endif;?>
                             <!-- Fin "Partie du sous-menu concernant uniquement le demandeur et son conjoint" -->
 
@@ -83,7 +83,6 @@
                                 </li>
                             <?php endif;?>-->
                             <!-- Fin "Partie du sous-menu concernant toutes les personnes du foyer" -->
-                        </ul>
                     </li>
                 <?php endforeach;?>
             </ul>

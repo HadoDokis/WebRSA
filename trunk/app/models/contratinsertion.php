@@ -246,6 +246,17 @@
                         'conditions' => array( 'Personne.id = Contratinsertion.personne_id' )
                     ),
                     array(
+                        'table'      => 'prestations',
+                        'alias'      => 'Prestation',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Personne.id = Prestation.personne_id',
+                            'Prestation.natprest = \'RSA\'',
+                            '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+                        )
+                    ),
+                    array(
                         'table'      => 'foyers',
                         'alias'      => 'Foyer',
                         'type'       => 'INNER',
@@ -280,27 +291,27 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Typocontrat.id = Contratinsertion.typocontrat_id' )
                     ),
-                    array(
-                        'table'      => 'structuresreferentes',
-                        'alias'      => 'Structurereferente',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Contratinsertion.structurereferente_id = Structurereferente.id' )
-                    ),
-                    array(
-                        'table'      => 'suivisinstruction',
-                        'alias'      => 'Suiviinstruction',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
-                    ),
-                    array(
-                        'table'      => 'servicesinstructeurs',
-                        'alias'      => 'Serviceinstructeur',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
-                    )
+//                     array(
+//                         'table'      => 'structuresreferentes',
+//                         'alias'      => 'Structurereferente',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Contratinsertion.structurereferente_id = Structurereferente.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'suivisinstruction',
+//                         'alias'      => 'Suiviinstruction',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'servicesinstructeurs',
+//                         'alias'      => 'Serviceinstructeur',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+//                     )
                 )
             )
         );

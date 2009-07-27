@@ -29,16 +29,30 @@
         function index() {
 //             $this->assert( !empty( $statutCI ), 'error404' );
 
-            $typeservice = $this->Serviceinstructeur->find(
+//             $typeservice = $this->Serviceinstructeur->find(
+//                 'list',
+//                 array(
+//                     'fields' => array(
+//                         'Serviceinstructeur.id',
+//                         'Serviceinstructeur.lib_service'
+//                     ),
+//                 )
+//             );
+
+            $personne_suivi = $this->Contratinsertion->find(
                 'list',
                 array(
                     'fields' => array(
-                        'Serviceinstructeur.id',
-                        'Serviceinstructeur.lib_service'
+                        'Contratinsertion.pers_charg_suivi',
+                        'Contratinsertion.pers_charg_suivi'
                     ),
+                    'order' => 'Contratinsertion.pers_charg_suivi ASC',
+                    'group' => 'Contratinsertion.pers_charg_suivi',
                 )
             );
-            $this->set( 'typeservice', $typeservice );
+//             debug( $personne_suivi );
+
+            $this->set( 'personne_suivi', $personne_suivi );
 
             $params = $this->data;
 //             debug( $params );
@@ -51,7 +65,6 @@
 
                 // On a renvoyé  le formulaire de la cohorte
                 if( !empty( $this->data['Contratinsertion'] ) ) {
-// debug( $this->data['Contratinsertion'] );
                     $valid = $this->Dossier->Foyer->Personne->Contratinsertion->saveAll( $this->data['Contratinsertion'], array( 'validate' => 'only', 'atomic' => false ) );
                     if( $valid ) {
                         $this->Dossier->begin();
@@ -80,6 +93,7 @@
                     $this->Dossier->begin(); // Pour les jetons
 
                     $this->paginate = $this->Cohorteci->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                    $this->paginate['limit'] = 10;
                     $cohorteci = $this->paginate( 'Contratinsertion' );
 
                     $this->Dossier->commit();
