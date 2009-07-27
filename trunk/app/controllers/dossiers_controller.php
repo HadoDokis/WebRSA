@@ -1,4 +1,5 @@
 <?php
+//     @ini_set( 'memory_limit', '128M' );
     App::import( 'Sanitize' );
 
     class DossiersController extends AppController

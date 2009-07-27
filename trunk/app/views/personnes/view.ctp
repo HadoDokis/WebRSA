@@ -140,6 +140,7 @@
             </tbody>
         </table>
     <?php endif;?>
+
 </div>
 </div>
 <div class="clearer"><hr /></div>

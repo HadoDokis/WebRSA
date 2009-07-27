@@ -13,20 +13,22 @@
             <table class="tooltips">
                 <thead>
                     <tr>
-                    <th colspan="3">Activité ETI</th>
-        <!--                        <th>Bénéficiaire ACCRE</th>
-                                <th>Activité eti</th>-->
-                    <th colspn="3">Employés</th>
-        <!--			<th>Date</th>
-                    <th>Date</th>
-                    <th>Date</th>-->
-                    <th colspn="3">Chiffre d'affaire</th>
-        <!--			<th>Date</th>
-                    <th>Date</th>
-                    <th>Date</th>
-                    <th>Date</th>-->
-                    <th colspn="9">Eléménts fiscaux</th>
-
+                        <th>Top créateur d'entreprise</th>
+                        <th>Bénéficiaire ACCRE</th>
+                        <th>Activité eti</th>
+                        <th colspan="3">Employés</th>
+                        <th>Date de début du chiffre d'affaire ETI</th>
+                        <th>Date de fin du chiffre d'affaire ETI</th>
+                        <th>Montant du chiffre d'affaire </th>
+                        <th>Régime fiscal ETI</th>
+                        <th>Top bénéfice ETI</th>
+                        <th>Régime fiscal ETI de l'année précédente</th>
+                        <th>Montant des bénéfices de l'année précédente</th>
+                        <th>Montant des amortissements</th>
+                        <th>Montant des plus values professionnelles</th>
+                        <th>Top évolutions des revenus</th>
+                        <th>Libellé évolution des revenus</th>
+                        <th>Top ressources à évaluer</th>
                     </tr>
                 </thead>
                 <tbody>
