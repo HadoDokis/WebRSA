@@ -31,6 +31,7 @@
             $oridemrsa = Set::extract( $criteres, 'Filtre.oridemrsa' );
             $locaadr = Set::extract( $criteres, 'Filtre.locaadr' );
             $dtdemrsa = Set::extract( $criteres, 'Filtre.dtdemrsa' );
+            $date_impression = Set::extract( $criteres, 'Filtre.date_impression' );
 
             // Origine de la demande
             if( !empty( $oridemrsa ) ) {
@@ -42,7 +43,7 @@
                 $conditions[] = 'adresses.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
             }
 
-            // Localité adresse
+            // Date de demande
             if( !empty( $dtdemrsa ) && $dtdemrsa != 0 ) {
                 $dtdemrsa_from = Set::extract( $criteres, 'Filtre.dtdemrsa_from' );
                 $dtdemrsa_to = Set::extract( $criteres, 'Filtre.dtdemrsa_to' );
@@ -51,6 +52,16 @@
                 $dtdemrsa_to = $dtdemrsa_to['year'].'-'.$dtdemrsa_to['month'].'-'.$dtdemrsa_to['day'];
 
                 $conditions[] = 'dossiers_rsa.dtdemrsa BETWEEN \''.$dtdemrsa_from.'\' AND \''.$dtdemrsa_to.'\'';
+            }
+
+            // Statut impression
+            if( !empty( $date_impression ) && in_array( $date_impression, array( 'I', 'N' ) ) ) {
+                if( $date_impression == 'I' ) {
+                    $conditions[] = 'orientsstructs.date_impression IS NOT NULL';
+                }
+                else {
+                    $conditions[] = 'orientsstructs.date_impression IS NULL';
+                }
             }
 
             /// Requête
@@ -68,11 +79,7 @@
                         INNER JOIN detailsdroitsrsa ON ( detailsdroitsrsa.dossier_rsa_id = dossiers_rsa.id )
                     WHERE '.implode( ' AND ', $conditions ).'
                     LIMIT '.$limit;
-//                     WHERE
-//                         prestations.toppersdrodevorsa = true
-//                         AND orientsstructs.statut_orient = 'Non orienté'
-//                         AND adresses.numcomptt = '93066'
-//                         AND dossiers_rsa.dtdemrsa = '2009-06-01'
+
             $cohorte = $this->Dossier->query( $sql );
 
             return Set::extract( $cohorte, '{n}.0.id' );
