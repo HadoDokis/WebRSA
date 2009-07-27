@@ -74,96 +74,33 @@
                 *
                 */
                 else {
-                    $conditions = array();
-                    // INFO: seulement les personnes qui sont dans ma zone géographique
-                    $conditions['Contratinsertion.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
+                    $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+                    $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
-                    //Critère recherche par Contrat insertion: date de création contrat
-                    if( dateComplete( $params, 'Cohorteci.date_saisi_ci' ) ) {
-                        $date_saisi_ci = $params['Cohorteci']['date_saisi_ci'];
-                        $conditions['Contratinsertion.date_saisi_ci'] = $date_saisi_ci['year'].'-'.$date_saisi_ci['month'].'-'.$date_saisi_ci['day'];
-                    }
+                    $this->Dossier->begin(); // Pour les jetons
 
-                    //Critère recherche par Contrat insertion: localisation de la personne rattachée au contrat
-                    if( isset( $params['Cohorteci']['locaadr'] ) && !empty( $params['Cohorteci']['locaadr'] ) ){
-                        $conditions[] = "Adresse.locaadr ILIKE '%".Sanitize::paranoid( $params['Cohorteci']['locaadr'] )."%'";
-                    }
+                    $this->paginate = $this->Cohorteci->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                    $cohorteci = $this->paginate( 'Contratinsertion' );
 
-                    //Critère recherche par Contrat insertion: par décision du CG
-                    if( isset( $params['Cohorteci']['decision_ci'] ) && !empty( $params['Cohorteci']['decision_ci'] ) ){
-                        $conditions[] = "Contratinsertion.decision_ci ILIKE '%".Sanitize::paranoid( $params['Cohorteci']['decision_ci'] )."%'";
-                    }
+                    $this->Dossier->commit();
 
-                    //Critère recherche par Contrat insertion: date de validation du contrat
-                    if( dateComplete( $params, 'Cohorteci.datevalidation_ci' ) ) {
-                        $datevalidation_ci = $params['Cohorteci']['datevalidation_ci'];
-                        $conditions['Contratinsertion.datevalidation_ci'] = $datevalidation_ci['year'].'-'.$datevalidation_ci['month'].'-'.$datevalidation_ci['day'];
-                    }
-
-                    //Critère recherche par Contrat insertion: par service instructeur
-                    if( isset( $params['Cohorteci']['serviceinstructeur_id'] ) && !empty( $params['Cohorteci']['serviceinstructeur_id'] ) ){
-                        $conditions['Serviceinstructeur.id'] = $params['Cohorteci']['serviceinstructeur_id'];
-                    }
-
-
-                    $this->Contratinsertion->unbindModelAll();
-                    $this->Contratinsertion->bindModel(
-                        array(
-                            'belongsTo' => array(
-                                'Personne' => array(
-                                    'foreignKey' => false,
-                                    'conditions' => array( 'Contratinsertion.personne_id = Personne.id' )
-                                ),
-                                'Adressefoyer' => array(
-                                    'foreignKey' => false,
-                                    'conditions' => array(
-                                        'Adressefoyer.foyer_id = Personne.foyer_id',
-                                        'Adressefoyer.rgadr = \'01\''
-                                    )
-                                ),
-                                'Adresse' => array(
-                                    'foreignKey' => false,
-                                    'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                                ),
-                                'Foyer' => array(
-                                    'foreignKey' => false,
-                                    'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id' )
-                                ),
-                                'Dossier' => array(
-                                    'foreignKey' => false,
-                                    'conditions' => array( 'Dossier.id = Foyer.dossier_rsa_id' )
-                                ),
-                                'Serviceinstructeur' => array(
-                                    'foreignKey' => false,
-                                    'conditions' => array( 'Serviceinstructeur.id' => $this->Session->read( 'Auth.User.serviceinstructeur_id' ) )
-                                )
-                            )
-                        )
-                    );
-
-                    $contrats = $this->Contratinsertion->find( 'all', array( 'conditions' => array( $conditions ), 'recursive' => 0 ) );
-
-                    foreach( $contrats as $key => $value ) {
+                    foreach( $cohorteci as $key => $value ) {
                         if( $value['Contratinsertion']['decision_ci'] == 'E' ) {
-                            $contrats[$key]['Contratinsertion']['proposition_decision_ci'] = 'V';
+                            $cohorteci[$key]['Contratinsertion']['proposition_decision_ci'] = 'V';
                         }
                         else {
-                            $contrats[$key]['Contratinsertion']['proposition_decision_ci'] = $value['Contratinsertion']['decision_ci'];
+                            $cohorteci[$key]['Contratinsertion']['proposition_decision_ci'] = $value['Contratinsertion']['decision_ci'];
                         }
 
                         if( empty( $value['Contratinsertion']['datevalidation_ci'] ) ) {
-                            $contrats[$key]['Contratinsertion']['proposition_datevalidation_ci'] = date( 'Y-m-d' );
+                            $cohorteci[$key]['Contratinsertion']['proposition_datevalidation_ci'] = date( 'Y-m-d' );
                         }
                         else {
-                            $contrats[$key]['Contratinsertion']['proposition_datevalidation_ci'] = $value['Contratinsertion']['datevalidation_ci'];
+                            $cohorteci[$key]['Contratinsertion']['proposition_datevalidation_ci'] = $value['Contratinsertion']['datevalidation_ci'];
                         }
-
                     }
 
-    // debug( $contrats );
-
-                    $this->set( 'contrats', $contrats );
-
+                    $this->set( 'cohorteci', $cohorteci );
                     $this->data['Search'] = $params;
 
                 }
