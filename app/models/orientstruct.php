@@ -61,9 +61,64 @@
         );
 
         // ********************************************************************
+        function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
+            /// Conditions de base
+            $conditions = array(/* '1 = 1' */);
 
-        var $queries = array(
-            'criteres' => array(
+            /// Filtre zone géographique
+            if( $filtre_zone_geo ) {
+                $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
+                $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
+            }
+
+            /// Dossiers lockés
+            if( !empty( $lockedDossiers ) ) {
+                $conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+            }
+
+            /// Critères
+            $dtdemrsa = Set::extract( $criteres, 'Filtre.dtdemrsa' );
+            $locaadr = Set::extract( $criteres, 'Filtre.locaadr' );
+            $statut_orient = Set::extract( $criteres, 'Filtre.statut_orient' );
+//             $typeorient_id = Set::extract( $criteres, 'Filtre.typeorient_id' );
+//             $structurereferente_id = Set::extract( $criteres, 'Filtre.structurereferente_id' );
+//             $serviceinstructeur_id = Set::extract( $criteres, 'Filtre.serviceinstructeur_id' );
+
+            // ...
+            if( !empty( $dtdemrsa ) && dateComplete( $criteres, 'Filtre.dtdemrsa' ) ) {
+                $dtdemrsa = $dtdemrsa['year'].'-'.$dtdemrsa['month'].'-'.$dtdemrsa['day'];
+                $conditions[] = 'Dossier.dtdemrsa = \''.$dtdemrsa.'\'';
+            }
+
+            // Localité adresse
+            if( !empty( $locaadr ) ) {
+                $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+            }
+
+            // ...
+            if( !empty( $statut_orient ) ) {
+                $conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statut_orient ).'\'';
+            }
+            //...
+//             if( !empty( $typeorient_id ) ) {
+//                 $conditions[] = 'Orientstruct.typeorient_id = \''.Sanitize::clean( $typeorient_id ).'\'';
+//             }
+
+//             ...
+//             if( !empty( $serviceinstructeur_id ) ) {
+//                 $conditions[] = 'Orientstruct.serviceinstructeur_id ILIKE \'%'.Sanitize::clean( $serviceinstructeur_id ).'%\'';
+//             }
+
+//             ...
+//             if( !empty( $structurereferente_id ) ) {
+//                 $conditions[] = 'Orientstruct.structurereferente_id ILIKE \'%'.Sanitize::clean( $structurereferente_id ).'%\'';
+//             }
+
+
+            /// Requête
+            $this->Dossier =& ClassRegistry::init( 'Dossier' );
+
+            $query = array(
                 'fields' => array(
                     '"Orientstruct"."id"',
                     '"Orientstruct"."personne_id"',
@@ -75,6 +130,7 @@
                     '"Orientstruct"."date_valid"',
                     '"Orientstruct"."statut_orient"',
                     '"Orientstruct"."date_impression"',
+                    '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
                     '"Dossier"."dtdemrsa"',
                     '"Personne"."id"',
@@ -85,6 +141,7 @@
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Modecontact"."numtel"',
+                    '"Serviceinstructeur"."id"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -158,10 +215,13 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
                     )
-                )
-            )
-        );
-
+                ),
+                'limit' => 10,
+                'conditions' => $conditions
+            );
+// debug( $query );
+            return $query;
+        }
         // ********************************************************************
 
         function choixStructure( $field = array(), $compare_field = null ) {
