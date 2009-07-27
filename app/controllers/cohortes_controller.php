@@ -133,7 +133,8 @@
                         'fields' => array(
                             'Typeorient.id',
                             'Typeorient.lib_type_orient'
-                        )
+                        ),
+                        'order' => 'Typeorient.lib_type_orient ASC'
                     )
                 );
                 $this->set( 'typesOrient', $typesOrient );
