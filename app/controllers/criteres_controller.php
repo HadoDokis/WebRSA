@@ -122,7 +122,7 @@
                 $orients = $this->paginate( 'Orientstruct' );
 
                 $this->Dossier->commit();
-
+// debug( $orients );
                 $this->set( 'orients', $orients );
                 $this->data['Search'] = $this->data;
             }

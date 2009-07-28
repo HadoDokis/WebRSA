@@ -1,5 +1,5 @@
 <?php 
-    class identificationflux extends AppModel
+    class Identificationflux extends AppModel
     {
         var $name = 'Identificationflux';
         var $useTable = 'identificationsflux';

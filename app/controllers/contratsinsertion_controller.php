@@ -19,6 +19,7 @@
             $this->set( 'legend_typeocclog', $this->Option->typeocclog() );
             $this->set( 'legend_couvsoc', $this->Option->couvsoc() );
             $this->set( 'legend_oridemrsa', $this->Option->oridemrsa() );
+            $this->set( 'typevoie', $this->Option->typevoie() );
 
             $this->set( 'referents', $this->Referent->find( 'list' ) );
             $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
@@ -220,6 +221,7 @@
             $this->set( 'dtdemrsa', $dossier['Dossier']['dtdemrsa'] );
             $this->set( 'matricule', $dossier['Dossier']['matricule'] );
 
+            $this->set( 'typevoie', $this->Option->typevoie() );
             // Calcul du numéro du contrat d'insertion
             $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
