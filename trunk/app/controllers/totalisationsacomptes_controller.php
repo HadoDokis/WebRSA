@@ -13,7 +13,7 @@
         }
 
 
-        function index($identificationflux_id = null){
+        function index( $identificationflux_id = null ){
             // Vérification du format de la variable
             $this->assert( valid_int( $identificationflux_id ), 'error404' );
 

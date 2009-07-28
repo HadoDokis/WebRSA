@@ -111,9 +111,10 @@
             }
 
             // ... FIXME
-//             if( !empty( $serviceinstructeur_id ) ) {
-//                 $conditions[] = 'Orientstruct.serviceinstructeur_id ILIKE \'%'.Sanitize::clean( $serviceinstructeur_id ).'%\'';
-//             }
+            if( !empty( $serviceinstructeur_id ) ) {
+
+                $conditions[] = 'Serviceinstructeur.lib_service ILIKE \''.Sanitize::clean( $serviceinstructeur_id ).'\'';
+            }
 
             /// Requête
             $query = array(
@@ -139,7 +140,8 @@
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Modecontact"."numtel"',
-                    '"Serviceinstructeur"."id"'
+                    '"Serviceinstructeur"."id"',
+                    '"Serviceinstructeur"."lib_service"'
                 ),
                 'recursive' => -1,
                 'joins' => array(

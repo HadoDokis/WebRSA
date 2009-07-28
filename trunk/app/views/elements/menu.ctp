@@ -35,15 +35,19 @@
                     </ul>
                 </li>
             <?php endif;?>
-            <?php if( $permissions->check( 'droits', 'edit' ) || $permissions->check( 'parametrages', 'index' ) ) : ?>
+            <?php if( $permissions->check( 'droits', 'edit' ) || $permissions->check( 'parametrages', 'index' ) || $permissions->check( 'totalisationsacomptes', 'index' ) ) : ?>
                     <li id="menu3one">
                         <?php echo $html->link( 'Administration', '#' );?>
                         <ul>
                             <li><?php echo $html->link( 'Droits', array( 'controller' => 'droits', 'action' => 'edit' )  );?></li>
                             <li><?php echo $html->link( 'Paramétrage',  array( 'controller' => 'parametrages', 'action' => 'index'  ) );?></li>
-                        <!--  <li><?php echo $html->link( 'Intégration flux', '#' );?></li>
-                            <li><?php echo $html->link( 'Gestion des logs', '#' );?></li>
-                            <li><?php echo $html->link( 'Gestion des éditions', '#' );?></li>-->
+                            <!-- <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <?/*php  echo $html->link( 'Paiement allocation', '#' );?>
+                                <ul>
+                                    <li><?php echo $html->link( 'Liste nominative', array( 'controller' => 'totalisationsacomptes', 'action' => 'index' ), array( 'title'=>'Liste nominative' ) );?></li>
+                                    <li><?php echo $html->link( 'Mandat mensuel', array( 'controller' => 'totalisationsacomptes', 'action' => 'index' ), array( 'title'=>'Mandat mensuel' ) );*/?></li>
+                                </ul>
+                            </li> -->
                         </ul>
                     </li>
             <?php endif;?>
