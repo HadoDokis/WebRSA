@@ -14,6 +14,3 @@ ALTER TABLE personnes ALTER COLUMN prenom3 TYPE VARCHAR(50);
 
 ALTER TABLE creancesalimentaires ADD COLUMN personne_id INTEGER;
 ALTER TABLE creancesalimentaires ADD CONSTRAINT distfk FOREIGN KEY (personne_id) REFERENCES personnes (id) MATCH FULL;
-
---------------- Ajout du 24/07/2009 à 12h10 ------------------
-ALTER TABLE prestations ADD CONSTRAINT personneidfk FOREIGN KEY (personne_id) REFERENCES personnes (id) MATCH FULL;
