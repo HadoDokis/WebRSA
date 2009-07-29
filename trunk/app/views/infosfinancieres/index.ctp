@@ -16,8 +16,9 @@
         ).'</li></ul>';
     }
 
-   $mois = strftime('%B %Y', strtotime( $infosfinancieres[0]['Infofinanciere']['moismoucompta'] ) ); ///FIXME: enlever ce saleté de 0
+
 ?>
+
 
 <?php echo $form->create( 'Infosfinancieres', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
@@ -32,9 +33,8 @@
 
 <!-- Résultats -->
 <?php if( isset( $infosfinancieres ) ):?>
-   <div class="submit noprint">
-        <!-- <?php echo $form->button( 'Imprimer cette page', array( 'onclick' => 'printit();' ) );?> -->
-    </div>
+   <?php $mois = strftime('%B %Y', strtotime( $infosfinancieres[0]['Infofinanciere']['moismoucompta'] ) ); ?>
+<!--  ///FIXME: enlever ce saleté de 0 -->
     <h2 class="noprint">Liste des allocations pour le mois de <?php echo isset( $mois ) ? $mois : null ; ?></h2>
 
     <?php if( is_array( $infosfinancieres ) && count( $infosfinancieres ) > 0  ):?>
@@ -84,31 +84,19 @@
             </tbody>
         </table>
        <!-- <ul class="actionMenu">
-            <?php/*
+            <?php
                 echo $html->printLink(
                     'Imprimer le tableau',
-                    Set::merge(
-                        array(
-                            'controller' => 'gedooos',
-                            'action'     => 'notifications_cohortes'
-                        ),
-                        array_unisize( $this->data )
-                    )
+                    array( 'controller' => 'gedooos', 'action' => 'notifications_cohortes' )
                 );
             ?>
 
             <?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
-                    Set::merge(
-                        array(
-                            'controller' => 'cohortes',
-                            'action' => 'exportcsv'
-                        ),
-                        array_unisize( $this->data )
-                    )
+                    array( 'controller' => 'cohortes', 'action' => 'exportcsv' )
                 );
-            */?>
+            ?>
         </ul> -->
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
