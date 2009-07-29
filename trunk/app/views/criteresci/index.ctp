@@ -21,6 +21,7 @@
             array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
         ).'</li></ul>';
     }
+
 ?>
 
 <?php echo $form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
@@ -89,7 +90,7 @@
                                 h( $contrat['Dossier']['matricule'] ),
                                 h( date_short( $contrat['Contratinsertion']['date_saisi_ci'] ) ),
                                 h( $contrat['Contratinsertion']['rg_ci'] ),
-                                h( $decision_ci[$contrat['Contratinsertion']['decision_ci']].' '.$contrat['Contratinsertion']['datevalidation_ci']),
+                                h( $decision_ci[$contrat['Contratinsertion']['decision_ci']].' '.date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
                                 array(
                                     $html->viewLink(
                                         'Voir le dossier « '.$title.' »',

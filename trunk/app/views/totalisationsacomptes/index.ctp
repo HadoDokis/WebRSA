@@ -1,55 +1,89 @@
-<?php  $this->pageTitle = 'Totalisations des acomptes';?>
+<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php  echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
+<?php  $this->pageTitle = 'Versement d\'acompte RSA';?>
 
+<h1><?php echo $this->pageTitle;?></h1>
 
-<div class="with_treemenu">
-    <h1><?php echo $this->pageTitle;?></h1>
+<?php
+    if( is_array( $this->data ) ) {
+        echo '<ul class="actionMenu"><li>'.$html->link(
+            $html->image(
+                'icons/application_form_magnify.png',
+                array( 'alt' => '' )
+            ).' Formulaire',
+            '#',
+            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+        ).'</li></ul>';
+    }
 
-    <?php if( empty( $totsacoms ) ):?>
-        <p class="notice">Ce foyer ne possède pas encore de totalisations d'acomptes.</p>
-
-    <?php else: ?>
-        <table class="tooltips">
-            <thead>
+    function thead( $pct = 30 ) {
+        return '<thead>
                 <tr>
-                    <th>Type de totalisation </th>
-                    <th>Montant total Rsa socle</th>
-                    <th>Montant total Rsa socle majoré</th>
-                    <th>Montant total Rsa local</th>
-                    <th>Montant total</th>
-<!--                    <th colspan="2" class="action">Actions</th>-->
+                    <th style="width: '.$pct.'%;"></th>
+                    <th style="width: '.$pct.'%;"></th>
+                    <th style="width: '.$pct.'%;"></th>
                 </tr>
-            </thead>
-            <tbody>
-                <?php foreach( $totsacoms as $totacom ) :?>
-                    <?php
-                        $title = implode( ' ', array(
-                            $totacom['Totalisationacompte']['type_totalisation'] ,
-                            $totacom['Totalisationacompte']['mttotsoclrsa'] ,
-                            $totacom['Totalisationacompte']['mttotsoclmajorsa'] ,
-                            $totacom['Totalisationacompte']['mttotlocalrsa'] ,
-                            $totacom['Totalisationacompte']['mttotrsa'] ,
-                        ));
+            </thead>';
+    }
 
-                        echo $html->tableCells(
-                            array(
-                                h( $type_totalisation[$totacom['Totalisationacompte']['type_totalisation']] ),
-                                h( $totacom['Totalisationacompte']['mttotsoclrsa'] ),
-                                h( $totacom['Totalisationacompte']['mttotsoclmajorsa']),
-                                h( $totacom['Totalisationacompte']['mttotlocalrsa'] ),
-                                h( $totacom['Totalisationacompte']['mttotrsa'] ) ,
-//                                 $html->viewLink(
-//                                     'Voir les informations financières',
-//                                     array( 'controller' => 'totalisationsacomptes', 'action' => 'view', $totacom['Totalisationacompte']['id'] ) )
-                                ),
-                            array( 'class' => 'odd' ),
-                            array( 'class' => 'even' )
-                        );
-                    ?>
-                <?php endforeach; ?>
-            </tbody>
+   $mois = strftime('%B %Y', strtotime( $totsacoms[0]['Identificationflux']['dtref'] ) ); ///FIXME: enlever ce saleté de 0
+
+?>
+
+<?php echo $form->create( 'Totalisationsacomptes', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+        <fieldset>
+            <?php echo $form->input( 'Filtre.dtref', array( 'label' => 'Recherche des versements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) ) );?>
+    </fieldset>
+
+    <div class="submit noprint">
+        <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+        <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+    </div>
+<?php echo $form->end();?>
+
+<!-- Résultats -->
+<?php if( isset( $totsacoms ) ):?>
+
+    <h2 class="noprint">Liste des versements d'allocation pour le mois de <?php echo isset( $mois ) ? $mois : null ; ?> </h2>
+
+    <?php if( is_array( $totsacoms ) && count( $totsacoms ) > 0  ):?>
+
+        <table id="searchResults" class="tooltips_oupas">
+            <?php foreach( $totsacoms as $totacom ) :?>
+                <tbody>
+                    <tr class="even">
+                        <th><?php echo $type_totalisation[$totacom['Totalisationacompte']['type_totalisation']];?></th>
+                        <th>Total acomptes transmis (CAF/MSA)</th>
+                        <th>Total acomptes calculés</th>
+                    </tr>
+                    <tr class="odd">
+                        <td>RSA socle</td>
+                        <td><?php echo $totacom['Totalisationacompte']['mttotsoclrsa'];?></td>
+                        <td></td>
+                    </tr>
+                    <tr class="even">
+                        <td>RSA socle majoré</td>
+                        <td><?php echo $totacom['Totalisationacompte']['mttotsoclmajorsa'];?></td>
+                        <td></td>
+                    </tr>
+                    <tr class="odd">
+                        <td>RSA local</td>
+                        <td><?php echo $totacom['Totalisationacompte']['mttotlocalrsa'];?></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            <?php endforeach; ?>
+            <?php foreach( $totsacoms as $totacom ) :?>
+            <tr class="odd">
+                <th>Soit un total de versement de </th>
+                <td><?php echo $totacom['Totalisationacompte']['mttotsoclrsa'] + $totacom['Totalisationacompte']['mttotsoclmajorsa'] + $totacom['Totalisationacompte']['mttotlocalrsa'];?> </td>
+                <td><!--<?php ?>--> </td>
+            </tr>
+            <?php endforeach;?>
         </table>
-    <?php  endif;?>
-</div>
-<div class="clearer"><hr /></div>
+
+    <?php else:?>
+        <p>Vos critères n'ont retourné aucun dossier.</p>
+    <?php endif?>
+
+<?php endif?>

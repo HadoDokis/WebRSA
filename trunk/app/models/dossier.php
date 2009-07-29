@@ -235,7 +235,7 @@
                     array(
                         'table'      => 'situationsdossiersrsa',
                         'alias'      => 'Situationdossierrsa',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id' )
                     ),

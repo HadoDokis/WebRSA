@@ -41,13 +41,13 @@
                         <ul>
                             <li><?php echo $html->link( 'Droits', array( 'controller' => 'droits', 'action' => 'edit' )  );?></li>
                             <li><?php echo $html->link( 'Paramétrage',  array( 'controller' => 'parametrages', 'action' => 'index'  ) );?></li>
-                            <!-- <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                            <?/*php  echo $html->link( 'Paiement allocation', '#' );?>
+                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <?php  echo $html->link( 'Paiement allocation', '#' );?>
                                 <ul>
-                                    <li><?php echo $html->link( 'Liste nominative', array( 'controller' => 'totalisationsacomptes', 'action' => 'index' ), array( 'title'=>'Liste nominative' ) );?></li>
-                                    <li><?php echo $html->link( 'Mandat mensuel', array( 'controller' => 'totalisationsacomptes', 'action' => 'index' ), array( 'title'=>'Mandat mensuel' ) );*/?></li>
+                                    <li><?php echo $html->link( 'Listes nominatives', array( 'controller' => 'infosfinancieres', 'action' => 'index' ), array( 'title' => 'Listes nominatives' ) );?></li>
+                                    <li><?php echo $html->link( 'Mandats mensuels', array( 'controller' => 'totalisationsacomptes', 'action' => 'index' ), array( 'title' => 'Mandats mensuels' ) );?></li>
                                 </ul>
-                            </li> -->
+                            </li>
                         </ul>
                     </li>
             <?php endif;?>

@@ -14,22 +14,42 @@
         }
 
 
-        function index( $dossier_rsa_id = null ) {
+        function index(/* $dossier_rsa_id = null*/ ) {
             // Vérification du format de la variable
-            $this->assert( valid_int( $dossier_rsa_id ), 'error404' );
+//             $this->assert( valid_int( $dossier_rsa_id ), 'error404' );
 
             // Recherche des adresses du foyer
-            $infosfinancieres = $this->Infofinanciere->find(
-                'all',
-                array(
-                    'conditions' => array( 'Infofinanciere.dossier_rsa_id' => $dossier_rsa_id ),
-                    'recursive' => 1
-                )
-            );
+//             $infosfinancieres = $this->Infofinanciere->find(
+//                 'all',
+//                 array(
+//                     'conditions' => array( 'Infofinanciere.dossier_rsa_id' => $dossier_rsa_id ),
+//                     'recursive' => 1
+//                 )
+//             );
+// 
+//             // Assignations à la vue
+//             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+//             $this->set( 'infosfinancieres', $infosfinancieres );
 
-            // Assignations à la vue
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
-            $this->set( 'infosfinancieres', $infosfinancieres );
+
+            if( !empty( $this->data ) ) {
+
+                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+                $this->Dossier->begin(); // Pour les jetons
+
+                $this->paginate = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                $this->paginate['limit'] = 10;
+                $infosfinancieres = $this->paginate( 'Infofinanciere' );
+
+                $this->Dossier->commit();
+
+                $this->set( 'infosfinancieres', $infosfinancieres );
+                $this->data['Search'] = $this->data;
+            }
+
+
         }
 
         function view( $infofinanciere_id = null ) {

@@ -1,56 +1,69 @@
-<?php  $this->pageTitle = 'Informations financières du foyer';?>
+<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php  echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
+<?php  $this->pageTitle = 'Paiement des allocations';?>
 
+<h1><?php echo $this->pageTitle;?></h1>
 
-<div class="with_treemenu">
-    <h1><?php echo $this->pageTitle;?></h1>
+<?php
+    if( is_array( $this->data ) ) {
+        echo '<ul class="actionMenu"><li>'.$html->link(
+            $html->image(
+                'icons/application_form_magnify.png',
+                array( 'alt' => '' )
+            ).' Formulaire',
+            '#',
+            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+        ).'</li></ul>';
+    }
 
-    <?php if( empty( $infosfinancieres ) ):?>
-        <p class="notice">Ce foyer ne possède pas encore d'informations financières.</p>
-    <?php endif;?>
+   $mois = strftime('%B %Y', strtotime( $infosfinancieres[0]['Infofinanciere']['moismoucompta'] ) ); ///FIXME: enlever ce saleté de 0
+?>
 
-    <!--<?php if( $permissions->check( 'infosfinancieres', 'add' ) ):?>
-        <ul class="actionMenu">
-            <?php
-                echo '<li>'.$html->addLink(
-                    'Ajouter une information financière',
-                    array( 'controller' => 'infosfinancieres', 'action' => 'add', $dossier_rsa_id )
-                ).' </li>';
-            ?>
-        </ul>
-    <?php endif;?>-->
+<?php echo $form->create( 'Infosfinancieres', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+    <fieldset>
+            <?php echo $form->input( 'Filtre.moismoucompta', array( 'label' => 'Recherche des paiements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) ) );?>
+    </fieldset>
 
-    <?php if( !empty( $infosfinancieres ) ):?>
-        <table class="tooltips">
+    <div class="submit noprint">
+        <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+        <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+    </div>
+<?php echo $form->end();?>
+
+<!-- Résultats -->
+<?php if( isset( $infosfinancieres ) ):?>
+   <div class="submit noprint">
+        <!-- <?php echo $form->button( 'Imprimer cette page', array( 'onclick' => 'printit();' ) );?> -->
+    </div>
+    <h2 class="noprint">Liste des allocations pour le mois de <?php echo isset( $mois ) ? $mois : null ; ?></h2>
+
+    <?php if( is_array( $infosfinancieres ) && count( $infosfinancieres ) > 0  ):?>
+        <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <th>Mois des mouvements </th>
+                    <th>N° Dossier</th>
+                    <th>N° CAF </th>
+                    <th>Nom/Prénom allocataire</th>
+                    <th>Nom/prénom bénéficiaire</th>
+                    <th>Date de naissance de l'allocataire</th>
                     <th>Type d'allocation</th>
-                    <th>Nature de la prestation</th>
-                    <th>Montant</th>
-<!--                    <th>Date </th>-->
+                    <th>Montant de l'allocation</th>
                     <th colspan="2" class="action">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach( $infosfinancieres as $infofinanciere ):?>
                     <?php
-                        $title = implode( ' ', array(
-                            $infofinanciere['Infofinanciere']['moismoucompta'] ,
-                            $infofinanciere['Infofinanciere']['type_allocation'] ,
-                            $natpfcre[$infofinanciere['Infofinanciere']['natpfcre']] ,
-                            $infofinanciere['Infofinanciere']['mtmoucompta'] ,
-//                             $infofinanciere['Infofinanciere']['dttraimoucompta'] ,
-                        ));
-
                         echo $html->tableCells(
                             array(
-                                h( strftime('%B %Y', strtotime( $infofinanciere['Infofinanciere']['moismoucompta'] ) ) ) ,
+                                h( $infofinanciere['Dossier']['numdemrsa'] ),
+                                h( $infofinanciere['Dossier']['matricule'] ),
+                                h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                                h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                                h( date_short( $infofinanciere['Personne']['dtnai'] ) ),
                                 h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
-                                h( $natpfcre[$infofinanciere['Infofinanciere']['natpfcre']]),
                                 h( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
-//                                 h( date_short( $infofinanciere['Infofinanciere']['dttraimoucompta'] ) ),
+//                                 h( strftime('%B %Y', strtotime( $infofinanciere['Infofinanciere']['moismoucompta'] ) ) ) ,
                                 $html->viewLink(
                                     'Voir les informations financières',
                                     array( 'controller' => 'infosfinancieres', 'action' => 'view', $infofinanciere['Infofinanciere']['id']),
@@ -67,9 +80,38 @@
                             array( 'class' => 'even' )
                         );
                     ?>
-                <?php endforeach;?>
+                <?php endforeach; ?>
             </tbody>
         </table>
-    <?php  endif;?>
-</div>
-<div class="clearer"><hr /></div>
+       <!-- <ul class="actionMenu">
+            <?php/*
+                echo $html->printLink(
+                    'Imprimer le tableau',
+                    Set::merge(
+                        array(
+                            'controller' => 'gedooos',
+                            'action'     => 'notifications_cohortes'
+                        ),
+                        array_unisize( $this->data )
+                    )
+                );
+            ?>
+
+            <?php
+                echo $html->exportLink(
+                    'Télécharger le tableau',
+                    Set::merge(
+                        array(
+                            'controller' => 'cohortes',
+                            'action' => 'exportcsv'
+                        ),
+                        array_unisize( $this->data )
+                    )
+                );
+            */?>
+        </ul> -->
+    <?php else:?>
+        <p>Vos critères n'ont retourné aucun dossier.</p>
+    <?php endif?>
+
+<?php endif?>
