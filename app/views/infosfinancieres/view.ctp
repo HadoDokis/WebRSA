@@ -23,7 +23,7 @@
                 </tr>
                 <tr class="odd">
                     <th ><?php __( 'type_allocation' );?></th>
-                    <td><?php echo ($type_alloc[$infofinanciere['Infofinanciere']['type_allocation']]);?></td>
+                    <td><?php echo ($type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]);?></td>
                 </tr>
                 <tr class="even">
                     <th ><?php __( 'natpfcre' );?></th>

@@ -75,5 +75,117 @@
                 )
             )*/
         );
+
+        function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
+            /// Conditions de base
+            $conditions = array();
+
+            /// Filtre zone géographique
+            if( $filtre_zone_geo ) {
+                $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
+                $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
+            }
+
+            /// Dossiers lockés
+            if( !empty( $lockedDossiers ) ) {
+                $conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+            }
+
+            /// Critères
+            $mois = Set::extract( $criteres, 'Filtre.moismoucompta' );
+
+            // ...
+            if( !empty( $mois ) && dateComplete( $criteres, 'Filtre.moismoucompta' ) ) {
+                $mois = $mois['month'];
+                $conditions[] = 'EXTRACT(MONTH FROM Infofinanciere.moismoucompta) = '.$mois;
+            }
+
+            /// Requête
+            $this->Dossier =& ClassRegistry::init( 'Dossier' );
+
+            $query = array(
+                'fields' => array(
+                    '"Infofinanciere"."id"',
+                    '"Infofinanciere"."dossier_rsa_id"',
+                    '"Infofinanciere"."moismoucompta"',
+                    '"Infofinanciere"."type_allocation"',
+                    '"Infofinanciere"."natpfcre"',
+                    '"Infofinanciere"."rgcre"',
+                    '"Infofinanciere"."numintmoucompta"',
+                    '"Infofinanciere"."typeopecompta"',
+                    '"Infofinanciere"."sensopecompta"',
+                    '"Infofinanciere"."mtmoucompta"',
+                    '"Infofinanciere"."ddregu"',
+                    '"Infofinanciere"."dttraimoucompta"',
+                    '"Infofinanciere"."heutraimoucompta"',
+                    '"Dossier"."id"',
+                    '"Dossier"."numdemrsa"',
+                    '"Dossier"."matricule"',
+                    '"Personne"."id"',
+                    '"Personne"."nom"',
+                    '"Personne"."prenom"',
+                    '"Personne"."dtnai"',
+                    '"Personne"."qual"',
+                    '"Personne"."nomcomnai"',
+//                     '"Adresse"."locaadr"',
+//                     '"Adresse"."codepos"',
+                ),
+                'recursive' => -1,
+                'joins' => array(
+                    array(
+                        'table'      => 'dossiers_rsa',
+                        'alias'      => 'Dossier',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Infofinanciere.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'personnes',
+                        'alias'      => 'Personne',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'prestations',
+                        'alias'      => 'Prestation',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Personne.id = Prestation.personne_id',
+                            'Prestation.natprest = \'RSA\'',
+                            '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+                        )
+                    )
+                    /*,
+                    array(
+                        'table'      => 'adresses_foyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    )*/
+                ),
+                'limit' => 10,
+                'conditions' => $conditions
+            );
+
+            return $query;
+
+        }
     }
 ?>
