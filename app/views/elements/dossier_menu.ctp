@@ -134,7 +134,7 @@
                         <?php
                             echo $html->link(
                                 'Informations financières',
-                                array( 'controller' => 'infosfinancieres', 'action' => 'index', $dossier['Foyer']['id'] )
+                                array( 'controller' => 'infosfinancieres', 'action' => 'indexdossier', $dossier['Foyer']['id'] )
                             );
                         ?>
                     </li>

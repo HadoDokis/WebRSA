@@ -1,88 +1,21 @@
 <?php
-    class Infofinanciere extends AppModel
+    class Cohorteindu extends AppModel
     {
-        var $name = 'Infofinanciere';
-        var $useTable = 'infosfinancieres';
+        var $name = 'Cohorteindu';
+        var $useTable = false;
 
+//         var $validate = array(
+//             'mtmoucompta' => array(
+//                 array(
+//                     'rule' => 'date',
+//                     'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
+//                 )
+//             )
+//         );
 
-        var $hasMany = array(
-            'Dossier' => array(
-                'classname'     => 'Dossier',
-                'foreignKey'    => 'id'
-            )
-        );
-
-
-        var $validate = array(
-            'type_allocation' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'natpfcre' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'typeopecompta' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'sensopecompta' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'dttraimoucompta' => array(
-                array(
-                    'rule' => 'date',
-                    'message' => 'Veuillez entrer une date valide'
-                ),
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'mtmoucompta' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-                array(
-                    'rule' => 'numeric',
-                    'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
-                ),
-            ),
-            'mtmoucompta' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-
-            /*'ddregu' => array(
-                array(
-                    'rule' => 'date',
-                    'message' => 'Veuillez entrer une date valide'
-                )
-            ),
-
-            'heutraimoucompta' => array(
-                array(
-                    'rule' => 'date',
-                    'message' => 'Veuillez entrer une date valide'
-                )
-            )*/
-        );
-
-        function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
+        function search( $mesCodesInsee, $filtre_zone_geo, $criteresindu, $lockedDossiers ) {
             /// Conditions de base
-            $conditions = array();
+            $conditions = array(/* '1 = 1' */);
 
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
@@ -96,13 +29,44 @@
             }
 
             /// Critères
-            $mois = Set::extract( $criteres, 'Filtre.moismoucompta' );
+            $natpfcre = Set::extract( $criteresindu, 'Filtre.natpfcre' );
+            $locaadr = Set::extract( $criteresindu, 'Filtre.locaadr' );
+            $nom = Set::extract( $criteresindu, 'Filtre.nom' );
+            $typeparte = Set::extract( $criteresindu, 'Filtre.typeparte' );
+            $structurereferente_id = Set::extract( $criteresindu, 'Filtre.structurereferente_id' );
+            $mtmoucompta = Set::extract( $criteresindu, 'Filtre.mtmoucompta' );
 
-            // ...
-            if( !empty( $mois ) && dateComplete( $criteres, 'Filtre.moismoucompta' ) ) {
-                $mois = $mois['month'];
-                $conditions[] = 'EXTRACT(MONTH FROM Infofinanciere.moismoucompta) = '.$mois;
+            // Type d'indu
+            if( !empty( $natpfcre ) ) {
+                $conditions[] = 'Infofinanciere.natpfcre = \''.Sanitize::clean( $natpfcre ).'\'';
             }
+
+            // Localité adresse
+            if( !empty( $locaadr ) ) {
+                $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+            }
+
+            // Nom allocataire
+            if( !empty( $nom ) ) {
+                $conditions[] = 'Personne.nom ILIKE \'%'.Sanitize::clean( $nom ).'%\'';
+            }
+
+            // Suivi
+            if( !empty( $typeparte ) ) {
+                $conditions[] = 'Dossier.typeparte = \''.Sanitize::clean( $typeparte ).'\'';
+            }
+
+            // Montant indu
+            if( !empty( $mtmoucompta ) ) {
+                $conditions[] = 'Infofinanciere.mtmoucompta = \''.Sanitize::clean( $mtmoucompta ).'\'';
+            }
+
+
+            // Structure référente
+            if( !empty( $structurereferente_id ) ) {
+                $conditions[] = 'Structurereferente.id = \''.$structurereferente_id.'\'';
+            }
+
 
             /// Requête
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
@@ -124,18 +88,22 @@
                     '"Infofinanciere"."heutraimoucompta"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
+                    '"Dossier"."dtdemrsa"',
                     '"Dossier"."matricule"',
                     '"Dossier"."typeparte"',
+                    '"Situationdossierrsa"."id"',
+                    '"Situationdossierrsa"."etatdosrsa"',
                     '"Personne"."id"',
                     '"Personne"."nom"',
                     '"Personne"."prenom"',
-                    '"Personne"."nir"',
                     '"Personne"."dtnai"',
+                    '"Personne"."nir"',
                     '"Personne"."qual"',
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."codepos"',
-                    '"Situationdossierrsa"."etatdosrsa"',
+                    '"Structurereferente"."id"',
+                    '"Structurereferente"."lib_struc"',
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -168,6 +136,20 @@
                         'conditions' => array( 'Personne.foyer_id = Foyer.id' )
                     ),
                     array(
+                        'table'      => 'contratsinsertion',
+                        'alias'      => 'Contratinsertion',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Contratinsertion.personne_id = Personne.id' )
+                    ),
+                    array(
+                        'table'      => 'structuresreferentes',
+                        'alias'      => 'Structurereferente',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Contratinsertion.structurereferente_id = Structurereferente.id' )
+                    ),
+                    array(
                         'table'      => 'prestations',
                         'alias'      => 'Prestation',
                         'type'       => 'INNER',
@@ -198,7 +180,6 @@
             );
 
             return $query;
-
         }
     }
 ?>

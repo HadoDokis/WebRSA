@@ -66,7 +66,7 @@
 //                                 h( strftime('%B %Y', strtotime( $infofinanciere['Infofinanciere']['moismoucompta'] ) ) ) ,
                                 $html->viewLink(
                                     'Voir les informations financières',
-                                    array( 'controller' => 'infosfinancieres', 'action' => 'view', $infofinanciere['Infofinanciere']['id']),
+                                    array( 'controller' => 'infosfinancieres', 'action' => 'indexdossier', $infofinanciere['Infofinanciere']['id']),
                                     $permissions->check( 'infosfinancieres', 'view' )
                                 ),
 //                                 $html->editLink(
