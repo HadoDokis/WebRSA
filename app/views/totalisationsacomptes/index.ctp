@@ -25,9 +25,6 @@
                 </tr>
             </thead>';
     }
-
-   $mois = strftime('%B %Y', strtotime( $totsacoms[0]['Identificationflux']['dtref'] ) ); ///FIXME: enlever ce saleté de 0
-
 ?>
 
 <?php echo $form->create( 'Totalisationsacomptes', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
@@ -44,6 +41,8 @@
 <!-- Résultats -->
 <?php if( isset( $totsacoms ) ):?>
 
+   <?php $mois = strftime('%B %Y', strtotime( $totsacoms[0]['Identificationflux']['dtref'] ) ); ?>
+   <!--  ///FIXME: enlever ce saleté de 0 -->
     <h2 class="noprint">Liste des versements d'allocation pour le mois de <?php echo isset( $mois ) ? $mois : null ; ?> </h2>
 
     <?php if( is_array( $totsacoms ) && count( $totsacoms ) > 0  ):?>
@@ -81,7 +80,21 @@
             </tr>
             <?php endforeach;?>
         </table>
+       <!-- <ul class="actionMenu">
+            <?php
+                echo $html->printLink(
+                    'Imprimer le tableau',
+                    array( 'controller' => 'gedooos', 'action' => 'notifications_cohortes' )
+                );
+            ?>
 
+            <?php
+                echo $html->exportLink(
+                    'Télécharger le tableau',
+                    array( 'controller' => 'cohortes', 'action' => 'exportcsv' )
+                );
+            ?>
+        </ul> -->
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>
