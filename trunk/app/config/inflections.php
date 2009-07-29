@@ -90,7 +90,8 @@
         'dossiercaf' => 'dossierscaf',
         'critereci' => 'criteresci',
         'regroupementzonegeo' => 'regroupementszonesgeo',
-        'cohorteci' => 'cohortesci'
+        'cohorteci' => 'cohortesci',
+        'cohorteindu' => 'cohortesindus'
      );
 /**
  * This is a key => value array of regex used to match words.

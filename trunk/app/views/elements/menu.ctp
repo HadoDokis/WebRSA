@@ -22,6 +22,10 @@
                                     <li><?php echo $html->link( 'Gestion des éditions', '#' );?></li> -->
                                 </ul>
                         </li>
+                        <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <?php echo $html->link( 'Indu', array( 'controller' => 'cohortesindus', 'action' => 'index' ), array( 'title'=>'Gestion des indus' ) );?>
+                        </li> 
                     </ul>
                 </li> 
             <?php endif;?>

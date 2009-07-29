@@ -1,4 +1,4 @@
-<?php $this->pageTitle = 'Visualisation des informations financières';?>
+<?php $this->pageTitle = 'Informations financières';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );?>
 
@@ -51,7 +51,7 @@
                 </tr>
                 <tr class="even">
                     <th ><?php __( 'ddregu' );?></th>
-                    <td><?php echo ($infofinanciere['Infofinanciere']['ddregu']);?></td>
+                    <td><?php echo (  date_short( $infofinanciere['Infofinanciere']['ddregu'] ) );?></td>
                 </tr>
                 <tr class="odd">
                     <th ><?php __( 'dttraimoucompta' );?></th>
@@ -59,7 +59,7 @@
                 </tr>
                 <tr class="even">
                     <th ><?php __( 'heutraimoucompta' );?></th>
-                    <td><?php echo ($infofinanciere['Infofinanciere']['heutraimoucompta']);?></td>
+                    <td><?php echo (  date_short( $infofinanciere['Infofinanciere']['heutraimoucompta'] ) );?></td>
                 </tr>
             </tbody>
         </table>
