@@ -33,8 +33,8 @@
 
 <!-- Résultats -->
 <?php if( isset( $infosfinancieres ) ):?>
-   <?php $mois = strftime('%B %Y', strtotime( $infosfinancieres[0]['Infofinanciere']['moismoucompta'] ) ); ?>
-<!--  ///FIXME: enlever ce saleté de 0 -->
+   <?php $mois = strftime('%B %Y', strtotime( $this->data['Filtre']['moismoucompta']['year'].'-'.$this->data['Filtre']['moismoucompta']['month'].'-01' ) ); ?>
+
     <h2 class="noprint">Liste des allocations pour le mois de <?php echo isset( $mois ) ? $mois : null ; ?></h2>
 
     <?php if( is_array( $infosfinancieres ) && count( $infosfinancieres ) > 0  ):?>
