@@ -24,9 +24,11 @@
             <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
             <?php echo $form->input( 'Filtre.nom', array( 'label' => 'Nom de l\'allocataire', 'type' => 'text' ) );?>
             <?php echo $form->input( 'Filtre.typeparte', array( 'label' => 'Suivi', 'type' => 'select', 'options' => $typeparte, 'empty' => true ) ); ?>
-             <?php echo $form->input( 'Filtre.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $sr , 'empty' => true)  ); ?> 
-            <?php echo $form->input( 'Filtre.mtmoucompta', array( 'label' => 'Montant de l\'indu', 'type' => 'text' ) );?>
-
+             <?php echo $form->input( 'Filtre.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $sr , 'empty' => true, 'style' => 10)  ); ?> 
+            <?php 
+                echo $form->select( 'Filtre.compare', array( 'comparison' => '', '<','>','<=','>=' ) );
+                echo $form->input( 'Filtre.mtmoucompta', array( 'label' => 'Montant de l\'indu', 'type' => 'text' ) );
+            ?>
     </fieldset>
 
     <div class="submit noprint">
