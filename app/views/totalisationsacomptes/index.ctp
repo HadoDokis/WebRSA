@@ -41,8 +41,8 @@
 <!-- Résultats -->
 <?php if( isset( $totsacoms ) ):?>
 
-   <?php $mois = strftime('%B %Y', strtotime( $totsacoms[0]['Identificationflux']['dtref'] ) ); ?>
-   <!--  ///FIXME: enlever ce saleté de 0 -->
+   <?php $mois = strftime('%B %Y', strtotime( $this->data['Filtre']['dtref']['year'].'-'.$this->data['Filtre']['dtref']['month'].'-01' ) ); ?>
+
     <h2 class="noprint">Liste des versements d'allocation pour le mois de <?php echo isset( $mois ) ? $mois : null ; ?> </h2>
 
     <?php if( is_array( $totsacoms ) && count( $totsacoms ) > 0  ):?>
