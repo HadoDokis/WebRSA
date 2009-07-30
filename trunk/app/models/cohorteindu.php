@@ -35,6 +35,8 @@
             $typeparte = Set::extract( $criteresindu, 'Filtre.typeparte' );
             $structurereferente_id = Set::extract( $criteresindu, 'Filtre.structurereferente_id' );
             $mtmoucompta = Set::extract( $criteresindu, 'Filtre.mtmoucompta' );
+            $compare = Set::extract( $criteresindu, 'Filtre.compare' );
+// debug( $compare );
 
             // Type d'indu
             if( !empty( $natpfcre ) ) {
@@ -56,11 +58,22 @@
                 $conditions[] = 'Dossier.typeparte = \''.Sanitize::clean( $typeparte ).'\'';
             }
 
-            // Montant indu
-            if( !empty( $mtmoucompta ) ) {
+            /*********       // Montant indu + comparatif vis à vis du montant   ***************/
+            if( !empty( $mtmoucompta ) && ( $compare == '') ) {
                 $conditions[] = 'Infofinanciere.mtmoucompta = \''.Sanitize::clean( $mtmoucompta ).'\'';
             }
-
+            if( !empty( $mtmoucompta ) && ( $compare == 0 ) ) {
+                $conditions[] = 'Infofinanciere.mtmoucompta < \''.Sanitize::clean( $mtmoucompta ).'\'';
+            }
+            if( !empty( $mtmoucompta ) && ( $compare == 1 ) ) {
+                $conditions[] = 'Infofinanciere.mtmoucompta > \''.Sanitize::clean( $mtmoucompta ).'\'';
+            }
+            if( !empty( $mtmoucompta ) && ( $compare == 2 ) ) {
+                $conditions[] = 'Infofinanciere.mtmoucompta <= \''.Sanitize::clean( $mtmoucompta ).'\'';
+            }
+            if( !empty( $mtmoucompta ) && ( $compare == 3 ) ) {
+                $conditions[] = 'Infofinanciere.mtmoucompta >= \''.Sanitize::clean( $mtmoucompta ).'\'';
+            }
 
             // Structure référente
             if( !empty( $structurereferente_id ) ) {
