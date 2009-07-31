@@ -175,7 +175,7 @@
                         'conditions' => array(
                             'Personne.id = Prestation.personne_id',
                             'Prestation.natprest = \'RSA\'',
-                            '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+                            '( Prestation.rolepers = \'DEM\' )',
                         )
                     ),
                     array(

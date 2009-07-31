@@ -53,7 +53,7 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'password' => array(
+            'passwd' => array(
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'

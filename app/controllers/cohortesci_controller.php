@@ -27,17 +27,6 @@
         }
 
         function index() {
-//             $this->assert( !empty( $statutCI ), 'error404' );
-
-//             $typeservice = $this->Serviceinstructeur->find(
-//                 'list',
-//                 array(
-//                     'fields' => array(
-//                         'Serviceinstructeur.id',
-//                         'Serviceinstructeur.lib_service'
-//                     ),
-//                 )
-//             );
 
             $personne_suivi = $this->Contratinsertion->find(
                 'list',

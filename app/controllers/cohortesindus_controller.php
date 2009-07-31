@@ -29,10 +29,10 @@
 
 
             $return = parent::beforeFilter();
-                $this->set( 'natpfcre', $this->Option->natpfcre() );
+                $this->set( 'natpfcre', $this->Option->natpfcre( 'autreannulation' ) );
                 $this->set( 'typeparte', $this->Option->typeparte() );
                 $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-
+                $this->set( 'type_allocation', $this->Option->type_allocation() );
 
                 $this->set( 'dif', $this->Option->dif() );
             return $return;
