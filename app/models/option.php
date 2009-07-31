@@ -385,6 +385,13 @@
             );
         }
 
+        function formeci() {
+            return array(
+                'S' => 'Simple',
+                'C' => 'Complexe'
+            );
+        }
+
         function hispro() {
             return array(
                 '1901' => 'Vous avez toujours travaillé',

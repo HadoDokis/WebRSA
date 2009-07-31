@@ -99,12 +99,12 @@
 //                     'message' => 'Champ obligatoire'
 //                 )
 //             ),
-//             'obsta_renc' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
+            'forme_ci' => array(
+                'notEmpty' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
             'service_soutien' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',

@@ -16,7 +16,7 @@
         ).'</li></ul>';
     }
 
-    function thead( $pct = 30 ) {
+    function thead( $pct = null ) {
         return '<thead>
                 <tr>
                     <th style="width: '.$pct.'%;"></th>
@@ -48,6 +48,7 @@
     <?php if( is_array( $totsacoms ) && count( $totsacoms ) > 0  ):?>
 
         <table id="searchResults" class="tooltips_oupas">
+        <?php echo thead( 40 );?>
             <?php foreach( $totsacoms as $totacom ) :?>
                 <tbody>
                     <tr class="even">
@@ -73,11 +74,13 @@
                 </tbody>
             <?php endforeach; ?>
             <?php foreach( $totsacoms as $totacom ) :?>
-            <tr class="odd">
-                <th>Soit un total de versement de </th>
-                <td><?php echo $totacom['Totalisationacompte']['mttotsoclrsa'] + $totacom['Totalisationacompte']['mttotsoclmajorsa'] + $totacom['Totalisationacompte']['mttotlocalrsa'];?> </td>
-                <td><!--<?php ?>--> </td>
-            </tr>
+                <tr class="even">
+                    <th>Soit un total de versement de </th>
+                    <td>
+                        <?php echo $totacom['Totalisationacompte']['mttotsoclrsa'] + $totacom['Totalisationacompte']['mttotsoclmajorsa'] + $totacom['Totalisationacompte']['mttotlocalrsa'];?> 
+                    </td>
+                    <td><!--<?php ?>--> </td>
+                </tr>
             <?php endforeach;?>
         </table>
        <!-- <ul class="actionMenu">

@@ -25,6 +25,7 @@
             $datevalidation_ci = Set::extract( $criteresci, 'Filtre.datevalidation_ci' );
             $locaadr = Set::extract( $criteresci, 'Filtre.locaadr' );
             $personne_suivi = Set::extract( $criteresci, 'Filtre.pers_charg_suivi' );
+            $forme_ci = Set::extract( $criteresci, 'Filtre.forme_ci' );
 
             // ...
             if( !empty( $date_saisi_ci ) && dateComplete( $criteresci, 'Filtre.date_saisi_ci' ) ) {
@@ -51,6 +52,11 @@
             // Localité adresse
             if( !empty( $personne_suivi ) ) {
                 $conditions[] = 'Contratinsertion.pers_charg_suivi = \''.Sanitize::clean( $personne_suivi ).'\'';
+            }
+
+            // Forme du contrat
+            if( !empty( $forme_ci ) ) {
+                $conditions[] = 'Contratinsertion.forme_ci = \''.Sanitize::clean( $forme_ci ).'\'';
             }
 //             //Critère recherche par Contrat insertion: par service instructeur
 //             if( isset( $params['Cohorteci']['serviceinstructeur_id'] ) && !empty( $params['Cohorteci']['serviceinstructeur_id'] ) ){
