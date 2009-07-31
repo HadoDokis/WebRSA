@@ -74,20 +74,6 @@
                     '"Totalisationacompte"."mttotrsa"',
                     '"Identificationflux"."id"',
                     '"Identificationflux"."dtref"',
-//                     '"Infofinanciere"."id"',
-//                     '"Dossier"."id"',
-//                     '"Dossier"."numdemrsa"',
-//                     '"Dossier"."dtdemrsa"',
-//                     '"Dossier"."matricule"',
-//                     '"Personne"."id"',
-//                     '"Personne"."nom"',
-//                     '"Personne"."prenom"',
-//                     '"Personne"."dtnai"',
-//                     '"Personne"."nir"',
-//                     '"Personne"."qual"',
-//                     '"Personne"."nomcomnai"',
-//                     '"Adresse"."locaadr"',
-//                     '"Adresse"."codepos"',
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -97,14 +83,7 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Totalisationacompte.identificationflux_id = Identificationflux.id' )
-                    )/*,
-                    array(
-                        'table'      => 'infosfinancieres',
-                        'alias'      => 'Infofinanciere',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Dossier.id = Infofinanciere.dossier_rsa_id' )
-                    )*/
+                    )
                 ),
                 'limit' => 10,
                 'conditions' => $conditions

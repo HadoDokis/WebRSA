@@ -86,7 +86,7 @@
                 )
             );
 
-// debug( $personne );
+// debug( $infosfinancieres );
 $this->assert( !empty( $personne ), 'invalidParameter' );
             $this->set( 'personne', $personne );
 //             debug( $personne );
