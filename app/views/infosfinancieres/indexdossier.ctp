@@ -1,4 +1,4 @@
-<?php $this->pageTitle = 'Liste des indus';?>
+<?php $this->pageTitle = 'Informations financières';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
 
@@ -10,11 +10,33 @@
         <p class="notice">Cette personne ne possède pas encore d'informations financières.</p>
 
     <?php else:?>
+    <fieldset>
+    <table>
+        <tbody>
+            <tr>
+                <th>Nom / Prénom</th>
+                <td> <?php echo $personne['Personne']['qual'].' '.$personne['Personne']['nom'].' '.$personne['Personne']['prenom'];?> </td>
+            </tr>
+            <tr>
+                <th>NIR</th>
+                <td> <?php echo $personne['Personne']['nir'];?> </td>
+            </tr>
+            <tr>
+                <th>Date de naissance</th>
+                <td> <?php echo  date_short( $personne['Personne']['dtnai'] );?> </td>
+            </tr>
+            <tr>
+                <th>N° CAF</th>
+                <td> <?php echo  $infosfinancieres[0]['Dossier'][0]['matricule'];?> </td> <!-- FIXME: Voir si possibilité changer ces 0 -->
+            </tr>
+        </tbody>
+    </table>
+    </fieldset>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <th>NIR</th>
-                    <th>Nom de l'allocataire</th>
+                    <th>Nature de la prestation pour la créance</tH>
+                    <th>Type d'allocation</th>
                     <th>Suivi</th>
                     <th>Situation des droits</th>
                     <th>Date indus</th>
@@ -28,24 +50,24 @@
             <tbody>
                 <?php foreach( $infosfinancieres as $index => $indu ):?>
                     <?php
-                    $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
-                        <tbody>
-                            <tr>
-                                <th>Date naissance</th>
-                                <td>'.h( date_short( $personne['Personne']['dtnai'] ) ).'</td>
-                            </tr>
-                            <tr>
-                                <th>Numéro CAF</th>
-                                <td>'.h( $indu['Dossier'][0]['matricule'] ).'</td>
-                            </tr>
-                        </tbody>
-                    </table>';
+//                     $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+//                         <tbody>
+//                             <tr>
+//                                 <th>Date naissance</th>
+//                                 <td>'.h( date_short( $personne['Personne']['dtnai'] ) ).'</td>
+//                             </tr>
+//                             <tr>
+//                                 <th>Numéro CAF</th>
+//                                 <td>'.h( $indu['Dossier'][0]['matricule'] ).'</td>
+//                             </tr>
+//                         </tbody>
+//                     </table>';
                         $title = $indu['Dossier'][0]['numdemrsa'];
 
                         echo $html->tableCells(
                             array(
-                                h( $personne['Personne']['nir'] ),
-                                h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
+                                h( $type_allocation[$indu['Infofinanciere']['type_allocation']] ),
+                                h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ),
                                 h( $indu['Dossier'][0]['typeparte'] ), //h( $typeparte[$indu['Dossier']['typeparte']] ),
                                 h( $etatdosrsa[$indu['Dossier'][0]['Situationdossierrsa']['etatdosrsa']] ),
                                 h( date_short( $indu['Infofinanciere']['dttraimoucompta'] ) ),
@@ -56,7 +78,7 @@
                                     'Voir le contrat « '.$title.' »',
                                     array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] )
                                 ),
-                                array( $innerTable, array( 'class' => 'innerTableCell' ) )
+//                                 array( $innerTable, array( 'class' => 'innerTableCell' ) )
                             ),
                         array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
                         array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
