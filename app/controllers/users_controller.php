@@ -238,7 +238,7 @@
             }
 
             // Tentative de suppression ... FIXME
-            if( $this->User->delete( array( 'User.id' => $user_id ) ) ) {
+            if( $this->User->deleteAll( array( 'User.id' => $user_id ), true ) ) {
                 $this->Session->setFlash( 'Suppression effectuée' );
                 $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
             }
