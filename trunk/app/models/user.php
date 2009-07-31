@@ -109,5 +109,12 @@
             parent::beforeSave();
             return true;
         }
+
+        //*********************************************************************
+
+        function beforeDelete() {
+            debug( $this->data );
+            die();
+        }
     }
 ?>
