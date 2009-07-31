@@ -25,7 +25,7 @@
             <?php echo $form->input( 'Filtre.nom', array( 'label' => 'Nom de l\'allocataire', 'type' => 'text' ) );?>
             <?php echo $form->input( 'Filtre.typeparte', array( 'label' => 'Suivi', 'type' => 'select', 'options' => $typeparte, 'empty' => true ) ); ?>
              <?php echo $form->input( 'Filtre.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $sr , 'empty' => true, 'style' => 10)  ); ?> 
-            <?php 
+            <?php
                 echo $form->select( 'Filtre.compare', array( 'comparison' => '', '<','>','<=','>=' ) );
                 echo $form->input( 'Filtre.mtmoucompta', array( 'label' => 'Montant de l\'indu', 'type' => 'text' ) );
             ?>
@@ -57,6 +57,7 @@
                         <th>Montant transféré CG</th>
                         <th>Remise CG</th>
                         <th>Montant remboursé</th>
+                        <th>Solde du</th>
                         <th class="action">Action</th>
                         <th class="innerTableHeader">Informations complémentaires</th>
                     </tr>
@@ -97,9 +98,10 @@
                                     h( $indu['Infofinanciere']['mtmoucompta'] ),
                                     h( $indu['Infofinanciere']['mtmoucompta'] ),
                                     h( $indu['Infofinanciere']['mtmoucompta'] ),
+                                    h( $indu['Infofinanciere']['mtmoucompta'] ),
                                     $html->viewLink(
                                         'Voir le contrat « '.$title.' »',
-                                        array( 'controller' => 'infosfinancieres', 'action' => 'indexdossier', $indu['Infofinanciere']['id'] )
+                                        array( 'controller' => 'infosfinancieres', 'action' => 'indexdossier', $indu['Infofinanciere']['dossier_rsa_id'] )
                                     ),
                                     array( $innerTable, array( 'class' => 'innerTableCell' ) )
                                 ),

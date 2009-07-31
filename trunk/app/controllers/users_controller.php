@@ -90,9 +90,9 @@
             $this->set('users', $users);
         }
 
-        function _setNewPermissions( $group_id, $group_name, $user_id, $username ) {
+        function _setNewPermissions( $group_id, $user_id, $username ) {
             $group = $this->User->Group->findById( $group_id, null, null, -1 );
-            $aroGroup = $this->Acl->Aro->findByAlias( 'Group:'.$group_name, null, null, 2 );
+            $aroGroup = $this->Acl->Aro->findByAlias( 'Group:'.$group['Group']['name'], null, null, 2 );
 
             $aroAlias = 'Utilisateur:'.$username;
             $this->Acl->Aro->create( array( 'parent_id' => $aroGroup['Aro']['id'], 'foreign_key' => $user_id, 'alias' => $aroAlias ) );
@@ -120,11 +120,10 @@
             if( !empty( $this->data ) ) {
                 $this->User->begin();
                 if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-
+// debug( $this->data );
                     // Définition des nouvelles permissions
                     $saved = $this->_setNewPermissions(
                         $this->data['User']['group_id'],
-                        $group['Group']['name'],
                         $this->User->id,
                         $this->data['User']['username']
                     );

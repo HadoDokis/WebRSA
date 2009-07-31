@@ -221,6 +221,19 @@
             );
         }
 
+
+        function dif(){
+            return array(
+                '<=' => '<=',
+                '=>' => '=>',
+                '<' => '<',
+                '>' => '>'
+            );
+        }
+
+
+
+
         function domideract(){
             return array(
                 'O' => 'Oui',
@@ -523,7 +536,70 @@
             );
         }
 
-        function natpfcre() {
+        function natpfcre( $type = null ) {
+            $natindu = array(
+                'alloccompta' => array(
+                    'RSD' => 'rsa socle',
+                    'RSI' => 'rsa socle majoration parent isolé',
+                    'RSB' => 'rsa socle local',
+                    'RCB' => 'rsa activité local',
+                    'ASD' => 'Acompte sur droit rsa. (le droit est constaté et ouvert)',
+                    'VSD' => 'Avance sur droit rsa (suite absence DTRSa ou dans l\'attente de l\'ouverture du droit)',
+                    'INK' => 'Indu sur rsa socle ',
+                    'INL' => 'Indu sur rsa socle majoré',
+                    'INM' => 'Indu sur rsa socle local ou rSa activite local',
+                    'ITK' => 'Indu sur rsa socle  transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ITL' => 'Indu sur rsa socle majoré transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ITM' => 'Indu sur rsa socle local ou rSa activite local transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ISK' => 'Indu sur rSa socle subrogé',
+                ),
+                'indutransferecg' => array(
+                    'INK' => 'Indu sur rsa socle ',
+                    'INL' => 'Indu sur rsa socle majoré',
+                    'INM' => 'Indu sur rsa socle local ou rSa activite local',
+                    'ITK' => 'Indu sur rsa socle  transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ITL' => 'Indu sur rsa socle majoré transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ITM' => 'Indu sur rsa socle local ou rSa activite local transféré ou reçu d\'une autre Caf ou Msa ',
+                ),
+                'annulationfaible' => array(
+                    'INK' => 'Indu sur rsa socle ',
+                    'INL' => 'Indu sur rsa socle majoré',
+                    'INM' => 'Indu sur rsa socle local ou rSa activite local',
+                    'ITK' => 'Indu sur rsa socle  transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ITL' => 'Indu sur rsa socle majoré transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ITM' => 'Indu sur rsa socle local ou rSa activite local transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ISK' => 'Indu sur rSa socle subrogé',
+                    'INN' => 'Indu RCD RCI',
+                    'ITN' => 'Indu RCD RCI transféré',
+                    'INP' => 'Indu RSU RCU',
+                    'ITP' => 'Indu RSU RCU transféré'
+                ),
+                'autreannulation' => array(
+                    'INK' => 'Indu sur rsa socle ',
+                    'INL' => 'Indu sur rsa socle majoré',
+                    'INM' => 'Indu sur rsa socle local ou rSa activite local',
+                    'ITK' => 'Indu sur rsa socle  transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ITL' => 'Indu sur rsa socle majoré transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ITM' => 'Indu sur rsa socle local ou rSa activite local transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ISK' => 'Indu sur rSa socle subrogé',
+                )
+            );
+
+            switch( $type ){
+                case 'alloccompta':
+                case 'indutransferecg':
+                case 'annulationfaible':
+                case 'autreannulation':
+                    return $natindu[$type];
+                default:
+                    $result = array();
+                    $keys = array_keys( $natindu );
+                    foreach( $keys as $key ) {
+                        $result = Set::merge( $result, $natindu[$key] );
+                    }
+                    return $result;
+            }
+
             return array(
 /*AllocCompta*/
                 'RSD' => 'rsa socle',

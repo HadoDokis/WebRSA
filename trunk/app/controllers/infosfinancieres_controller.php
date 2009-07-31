@@ -73,8 +73,21 @@
                 )
             );
 
-            $personne = $this->Dossier->Foyer->Personne->findById( $dossier_rsa_id, null, null, -1 );
-            $this->assert( !empty( $personne ), 'invalidParameter' );
+            $foyer = $this->Dossier->Foyer->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
+
+            $personne = $this->Dossier->Foyer->Personne->find(
+                'first',
+                array(
+                    'conditions' => array( 'Personne.foyer_id' => $foyer['Foyer']['id'] ,
+//                     'recursive' => -1,
+                    'Prestation.natprest = \'RSA\'',
+                            '( Prestation.rolepers = \'DEM\' )',
+                )
+                )
+            );
+
+// debug( $personne );
+$this->assert( !empty( $personne ), 'invalidParameter' );
             $this->set( 'personne', $personne );
 //             debug( $personne );
 
