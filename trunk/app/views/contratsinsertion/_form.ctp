@@ -78,6 +78,7 @@
 
 <fieldset>
     <legend>Contrats d'insertion</legend>
+            <?php echo $form->input( 'Contratinsertion.forme_ci', array( 'label' => false, 'type' => 'radio' , 'options' => array( 'S' => 'Simple', 'C' => 'Complexe' ), 'legend' => required( __( 'forme_ci', true ) ) ) );?>
         <?php if( $this->data['Contratinsertion']['typocontrat_id'] == 1 ):?>
             <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false, 'type' => 'hidden' ,  'id' => 'freu') );?>
         <?php endif;?>
