@@ -15,19 +15,39 @@
             array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
         ).'</li></ul>';
     }
+
+    //
+
+    if( isset( $cohorteindu ) ) {
+        $paginator->options( array( 'url' => $this->passedArgs ) );
+        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+
+        $pages = $paginator->first( '<<' );
+        $pages .= $paginator->prev( '<' );
+        $pages .= $paginator->numbers();
+        $pages .= $paginator->next( '>' );
+        $pages .= $paginator->last( '>>' );
+
+        $pagination .= $html->tag( 'p', $pages );
+    }
+    else {
+        $pagination = '';
+    }
 ?>
 
-<?php echo $form->create( 'Cohorteindu', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( is_array( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $form->create( 'Cohorteindu', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->data ) && empty( $this->validationErrors ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
         <legend>Recherche d'Indu</legend>
-            <?php echo $form->input( 'Filtre.natpfcre', array( 'label' => 'Type d\'indu', 'type' => 'select', 'options' => $natpfcre, 'empty' => true ) );?>
-            <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-            <?php echo $form->input( 'Filtre.nom', array( 'label' => 'Nom de l\'allocataire', 'type' => 'text' ) );?>
-            <?php echo $form->input( 'Filtre.typeparte', array( 'label' => 'Suivi', 'type' => 'select', 'options' => $typeparte, 'empty' => true ) ); ?>
-             <?php echo $form->input( 'Filtre.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $sr , 'empty' => true, 'style' => 10)  ); ?> 
+            <?php echo $form->input( 'Cohorteindu.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+            <?php echo $form->input( 'Cohorteindu.natpfcre', array( 'label' => 'Type d\'indu', 'type' => 'select', 'options' => $natpfcre, 'empty' => true ) );?>
+            <?php echo $form->input( 'Cohorteindu.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+            <?php echo $form->input( 'Cohorteindu.nom', array( 'label' => 'Nom de l\'allocataire', 'type' => 'text' ) );?>
+            <?php echo $form->input( 'Cohorteindu.typeparte', array( 'label' => 'Suivi', 'type' => 'select', 'options' => $typeparte, 'empty' => true ) ); ?>
+             <?php echo $form->input( 'Cohorteindu.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $sr , 'empty' => true )  ); ?> 
             <?php
-                echo $form->select( 'Filtre.compare', array( 'comparison' => '', '<','>','<=','>=' ) );
-                echo $form->input( 'Filtre.mtmoucompta', array( 'label' => 'Montant de l\'indu', 'type' => 'text' ) );
+                echo $form->input( 'Cohorteindu.compare', array( 'label' => 'FIXME', 'type' => 'select', 'options' => $comparators, 'empty' => true ) );
+                echo $form->input( 'Cohorteindu.mtmoucompta', array( 'label' => 'Montant de l\'indu', 'type' => 'text' ) );
             ?>
     </fieldset>
 
@@ -43,21 +63,24 @@
     <h2 class="noprint">Résultats de la recherche</h2>
 
     <?php if( is_array( $cohorteindu ) && count( $cohorteindu ) > 0 ):?>
-        <?php /*require( 'index.pagination.ctp' )*/?>
-        <?php echo $form->create( 'GestionIndu', array( 'url'=> Router::url( null, true ) ) );?>
+        <?php echo $pagination;?>
             <table id="searchResults" class="tooltips_oupas">
                 <thead>
                     <tr>
-                        <th>N° Dossier</th>
-                        <th>Nom de l'allocataire</th>
-                        <th>Suivi</th>
-                        <th>Situation des droits</th>
-                        <th>Date indus</th>
-                        <th>Montant initial de l'indu</th>
-                        <th>Montant transféré CG</th>
-                        <th>Remise CG</th>
-                        <th>Montant remboursé</th>
-                        <th>Solde du</th>
+                        <th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
+                        <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                        <th><?php echo $paginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
+                        <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
+
+                        <th>Date indus</th><!-- FIXME -->
+
+                        <th><?php echo $paginator->sort( 'Allocation comptabilisée', 'AllocationComptabilisee.mtmoucompta' );?></th>
+                        <th><?php echo $paginator->sort( 'Montant initial de l\'indu', 'IndusConstates.mtmoucompta' );?></th>
+                        <th><?php echo $paginator->sort( 'Montant transféré CG', 'IndusTransferesCG.mtmoucompta' );?></th>
+                        <th><?php echo $paginator->sort( 'Remise CG', 'RemisesIndus.mtmoucompta' );?></th>
+                        <th><?php echo $paginator->sort( 'Annulation faible montant', 'AnnulationsFaibleMontant.mtmoucompta' );?></th>
+                        <th><?php echo $paginator->sort( 'Autres montants', 'AutresAnnulations.mtmoucompta' );?></th>
+
                         <th class="action">Action</th>
                         <th class="innerTableHeader">Informations complémentaires</th>
                     </tr>
@@ -93,15 +116,16 @@
                                     h( $indu['Personne']['nom'].' '.$indu['Personne']['prenom'] ),
                                     h( $indu['Dossier']['typeparte'] ), //h( $typeparte[$indu['Dossier']['typeparte']] ),
                                     h( $etatdosrsa[$indu['Situationdossierrsa']['etatdosrsa']] ),
-                                    h( date_short( $indu['Infofinanciere']['dttraimoucompta'] ) ),
-                                    h( $indu['Infofinanciere']['mtmoucompta'] ),
-                                    h( $indu['Infofinanciere']['mtmoucompta'] ),
-                                    h( $indu['Infofinanciere']['mtmoucompta'] ),
-                                    h( $indu['Infofinanciere']['mtmoucompta'] ),
-                                    h( $indu['Infofinanciere']['mtmoucompta'] ),
+                                        $locale->date( 'Date::mini', $indu[0]['moismoucompta'] ),
+                                    $locale->money( $indu[0]['mt_allocation_comptabilisee'] ),
+                                    $locale->money( $indu[0]['mt_indu_constate'] ),
+                                    $locale->money( $indu[0]['mt_indus_transferes_c_g'] ),
+                                    $locale->money( $indu[0]['mt_remises_indus'] ),
+                                    $locale->money( $indu[0]['mt_annulations_faible_montant'] ),
+                                    $locale->money( $indu[0]['mt_autre_annulation'] ),
                                     $html->viewLink(
                                         'Voir le contrat « '.$title.' »',
-                                        array( 'controller' => 'infosfinancieres', 'action' => 'indexdossier', $indu['Infofinanciere']['dossier_rsa_id'] )
+                                        array( 'controller' => 'infosfinancieres', 'action' => 'indexdossier', $indu['Dossier']['id'] )
                                     ),
                                     array( $innerTable, array( 'class' => 'innerTableCell' ) )
                                 ),
@@ -113,7 +137,7 @@
                 </tbody>
             </table>
 
-    <?php /*require( 'index.pagination.ctp' )*/ ?>
+    <?php echo $pagination;?>
 
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>

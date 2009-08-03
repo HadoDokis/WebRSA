@@ -63,7 +63,6 @@
                                 h( date_short( $infofinanciere['Personne']['dtnai'] ) ),
                                 h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
                                 h( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
-//                                 h( strftime('%B %Y', strtotime( $infofinanciere['Infofinanciere']['moismoucompta'] ) ) ) ,
                                 $html->viewLink(
                                     'Voir les informations financières',
                                     array( 'controller' => 'infosfinancieres', 'action' => 'indexdossier', $infofinanciere['Infofinanciere']['dossier_rsa_id']),

@@ -91,7 +91,14 @@
         'critereci' => 'criteresci',
         'regroupementzonegeo' => 'regroupementszonesgeo',
         'cohorteci' => 'cohortesci',
-        'cohorteindu' => 'cohortesindus'
+        'cohorteindu' => 'cohortesindus',
+        // Infos financières
+        'allocation_comptabilisee' => 'allocations_comptabilisees',
+        'indu_constate' => 'indus_constates',
+        'indu_transfere_cg' => 'indus_transferes_cg',
+        'remise_indu' => 'remises_indus',
+        'annulation_faible_montant' => 'annulations_faible_montant',
+        'autre_annulation' => 'autres_annulations',
      );
 /**
  * This is a key => value array of regex used to match words.

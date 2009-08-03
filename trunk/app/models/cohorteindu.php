@@ -1,19 +1,33 @@
 <?php
+    App::import( 'Sanitize' );
+
     class Cohorteindu extends AppModel
     {
         var $name = 'Cohorteindu';
         var $useTable = false;
 
-//         var $validate = array(
-//             'mtmoucompta' => array(
-//                 array(
-//                     'rule' => 'date',
-//                     'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
-//                 )
-//             )
-//         );
+        var $validate = array(
+            'mtmoucompta' => array(
+                'rule' => 'numeric',
+                'message' => 'Veuillez entrer un montant valide',
+                'allowEmpty' => true
+            ),
+            'compare' => array(
+                'rule' => 'mountComparator',
+                'message' => 'Ce champ ne peut rester vide, si vous avez saisi un montant'
+            )
+        );
+
+        function mountComparator($data) {
+            $compare = Set::extract( $this->data, 'Cohorteindu.compare' );
+            $mtmoucompta = Set::extract( $this->data, 'Cohorteindu.mtmoucompta' );
+
+            return ( ( empty( $compare ) && empty( $mtmoucompta ) ) || ( !empty( $compare ) && !empty( $mtmoucompta ) ) );
+        }
+
 
         function search( $mesCodesInsee, $filtre_zone_geo, $criteresindu, $lockedDossiers ) {
+// debug( $criteresindu );
             /// Conditions de base
             $conditions = array(/* '1 = 1' */);
 
@@ -29,19 +43,19 @@
             }
 
             /// Critères
-            $natpfcre = Set::extract( $criteresindu, 'Filtre.natpfcre' );
-            $locaadr = Set::extract( $criteresindu, 'Filtre.locaadr' );
-            $nom = Set::extract( $criteresindu, 'Filtre.nom' );
-            $typeparte = Set::extract( $criteresindu, 'Filtre.typeparte' );
-            $structurereferente_id = Set::extract( $criteresindu, 'Filtre.structurereferente_id' );
-            $mtmoucompta = Set::extract( $criteresindu, 'Filtre.mtmoucompta' );
-            $compare = Set::extract( $criteresindu, 'Filtre.compare' );
+            $natpfcre = Set::extract( $criteresindu, 'Cohorteindu.natpfcre' );
+            $locaadr = Set::extract( $criteresindu, 'Cohorteindu.locaadr' );
+            $nom = Set::extract( $criteresindu, 'Cohorteindu.nom' );
+            $typeparte = Set::extract( $criteresindu, 'Cohorteindu.typeparte' );
+            $structurereferente_id = Set::extract( $criteresindu, 'Cohorteindu.structurereferente_id' );
+            $mtmoucompta = Set::extract( $criteresindu, 'Cohorteindu.mtmoucompta' );
+            $compare = Set::extract( $criteresindu, 'Cohorteindu.compare' );
 // debug( $compare );
 
             // Type d'indu
-            if( !empty( $natpfcre ) ) {
-                $conditions[] = 'Infofinanciere.natpfcre = \''.Sanitize::clean( $natpfcre ).'\'';
-            }
+//             if( !empty( $natpfcre ) ) {
+//                 $conditions[] = 'Infofinanciere.natpfcre = \''.Sanitize::clean( $natpfcre ).'\'';
+//             }
 
             // Localité adresse
             if( !empty( $locaadr ) ) {
@@ -58,23 +72,6 @@
                 $conditions[] = 'Dossier.typeparte = \''.Sanitize::clean( $typeparte ).'\'';
             }
 
-            /*********       // Montant indu + comparatif vis à vis du montant   ***************/
-            if( !empty( $mtmoucompta ) && ( $compare == '') ) {
-                $conditions[] = 'Infofinanciere.mtmoucompta = \''.Sanitize::clean( $mtmoucompta ).'\'';
-            }
-            if( !empty( $mtmoucompta ) && ( $compare == 0 ) ) {
-                $conditions[] = 'Infofinanciere.mtmoucompta < \''.Sanitize::clean( $mtmoucompta ).'\'';
-            }
-            if( !empty( $mtmoucompta ) && ( $compare == 1 ) ) {
-                $conditions[] = 'Infofinanciere.mtmoucompta > \''.Sanitize::clean( $mtmoucompta ).'\'';
-            }
-            if( !empty( $mtmoucompta ) && ( $compare == 2 ) ) {
-                $conditions[] = 'Infofinanciere.mtmoucompta <= \''.Sanitize::clean( $mtmoucompta ).'\'';
-            }
-            if( !empty( $mtmoucompta ) && ( $compare == 3 ) ) {
-                $conditions[] = 'Infofinanciere.mtmoucompta >= \''.Sanitize::clean( $mtmoucompta ).'\'';
-            }
-
             // Structure référente
             if( !empty( $structurereferente_id ) ) {
                 $conditions[] = 'Structurereferente.id = \''.$structurereferente_id.'\'';
@@ -84,28 +81,16 @@
             /// Requête
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
 
+            // FIXME -> qu'a-t'on dans la base à un instant t ?
+            $date_start = date( 'Y-m-d', strtotime( 'previous month', strtotime( date( 'Y-m-01' ) ) ) );
+            $date_end = date( 'Y-m-d', strtotime( 'next month', strtotime( date( 'Y-m-d', strtotime( $date_start ) ) ) ) - 1 );
+
             $query = array(
                 'fields' => array(
-                    '"Infofinanciere"."id"',
-                    '"Infofinanciere"."dossier_rsa_id"',
-                    '"Infofinanciere"."moismoucompta"',
-                    '"Infofinanciere"."type_allocation"',
-                    '"Infofinanciere"."natpfcre"',
-                    '"Infofinanciere"."rgcre"',
-                    '"Infofinanciere"."numintmoucompta"',
-                    '"Infofinanciere"."typeopecompta"',
-                    '"Infofinanciere"."sensopecompta"',
-                    '"Infofinanciere"."mtmoucompta"',
-                    '"Infofinanciere"."ddregu"',
-                    '"Infofinanciere"."dttraimoucompta"',
-                    '"Infofinanciere"."heutraimoucompta"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
-                    '"Dossier"."dtdemrsa"',
                     '"Dossier"."matricule"',
                     '"Dossier"."typeparte"',
-                    '"Situationdossierrsa"."id"',
-                    '"Situationdossierrsa"."etatdosrsa"',
                     '"Personne"."id"',
                     '"Personne"."nom"',
                     '"Personne"."prenom"',
@@ -115,25 +100,13 @@
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."codepos"',
-                    '"Structurereferente"."id"',
-                    '"Structurereferente"."lib_struc"',
+                    '"Situationdossierrsa"."id"',
+                    '"Situationdossierrsa"."etatdosrsa"',
+                    '"Situationdossierrsa"."etatdosrsa"',
+                    '\''.$date_start.'\' AS "moismoucompta"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
-                    array(
-                        'table'      => 'dossiers_rsa',
-                        'alias'      => 'Dossier',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Infofinanciere.dossier_rsa_id = Dossier.id' )
-                    ),
-                    array(
-                        'table'      => 'situationsdossiersrsa',
-                        'alias'      => 'Situationdossierrsa',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id' )
-                    ),
                     array(
                         'table'      => 'foyers',
                         'alias'      => 'Foyer',
@@ -147,20 +120,6 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-                    ),
-                    array(
-                        'table'      => 'contratsinsertion',
-                        'alias'      => 'Contratinsertion',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Contratinsertion.personne_id = Personne.id' )
-                    ),
-                    array(
-                        'table'      => 'structuresreferentes',
-                        'alias'      => 'Structurereferente',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Contratinsertion.structurereferente_id = Structurereferente.id' )
                     ),
                     array(
                         'table'      => 'prestations',
@@ -186,11 +145,61 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                    )
+                    ),
+                    array(
+                        'table'      => 'situationsdossiersrsa',
+                        'alias'      => 'Situationdossierrsa',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id' )
+                    ),
                 ),
                 'limit' => 10,
-                'conditions' => $conditions
+                'conditions' => array()
             );
+
+            $typesAllocation = array( 'AllocationComptabilisee', 'IndusConstates', 'IndusTransferesCG', 'RemisesIndus', 'AnnulationsFaibleMontant', 'AutresAnnulations' );
+            $conditionsNotNull = array();
+            $conditionsComparator = array();
+            $conditionsNat = array();
+
+            foreach( $typesAllocation as $type ) {
+                $meu  = Inflector::singularize( Inflector::tableize( $type ) );
+                $query['fields'][] = '"'.$type.'"."mtmoucompta" AS mt_'.$meu;
+
+                $join = array(
+                    'table'      => 'infosfinancieres',
+                    'alias'      => $type,
+                    'type'       => 'LEFT OUTER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        $type.'.dossier_rsa_id = Dossier.id',
+                        $type.'.type_allocation' => $type,
+                        '"'.$type.'"."moismoucompta" BETWEEN \''.$date_start.'\' AND \''.$date_end.'\'',
+                    )
+                );
+
+                $query['joins'][] = $join;
+                $conditionsNotNull[] = $type.'.mtmoucompta IS NOT NULL';
+
+                // Montant indu + comparatif vis à vis du montant
+                if( !empty( $compare ) && !empty( $mtmoucompta ) ) {
+                    $conditionsComparator[] = $type.'.mtmoucompta '.$compare.' '.Sanitize::clean( $mtmoucompta );
+                }
+
+                // Nature de la prestation de créance
+                if( !empty( $natpfcre ) ) {
+                    $conditionsNat[] = $type.'.natpfcre = \''.Sanitize::clean( $natpfcre ).'\'';
+                }
+            }
+            $conditions[] = '( '.implode( ' OR ', $conditionsNotNull  ).' )';
+            if( !empty( $conditionsComparator ) ) {
+                $conditions[] = '( '.implode( ' OR ', $conditionsComparator  ).' )';
+            }
+            if( !empty( $natpfcre ) ) {
+                $conditions[] = '( '.implode( ' OR ', $conditionsNat  ).' )';
+            }
+            $query['conditions'] = Set::merge( $query['conditions'], $conditions );
 
             return $query;
         }

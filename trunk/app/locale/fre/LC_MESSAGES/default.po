@@ -57,8 +57,22 @@ msgid "December"
 msgstr "décembre"
 
 ###############################################################################
+# Locale
+###############################################################################
+
+msgid "Date::short"
+msgstr "d/m/Y"
+
+msgid "Date::mini"
+msgstr "m/Y"
+
+msgid "Datetime::short"
+msgstr "d/m/Y H:i:s"
+
+###############################################################################
 # Donnees socioprofessionnelles personnes
 ###############################################################################
+
 msgid "drorsarmiant"
 msgstr "Avez-vous bénéficié du RSA (RMI) ?"
 
@@ -105,13 +119,14 @@ msgid "rappemploiform"
 msgstr "Le niveau de formation est-il en concordance avec l'emploi recherché ?"
 
 msgid "libautrqualipro"
-msgstr "Autres qualifications ou certificats professionnelsPrécisez "
+msgstr "Autres qualifications ou certificats professionnels. Précisez "
 
 msgid "permicondub"
 msgstr "Permis de conduire catégorie B ?"
 
+# FIXME
 msgid "libautrpermicondu"
-msgstr "Autres qualifications ou certificats professionnelsPrécisez "
+msgstr "Autres qualifications ou certificats professionnels. Précisez "
 
 msgid "libcompeextrapro"
 msgstr "Compétences ou activités extraprofessionnelles: Précisez "

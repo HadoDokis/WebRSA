@@ -73,15 +73,15 @@
                     </tr>
                 </tbody>
             <?php endforeach; ?>
-            <?php foreach( $totsacoms as $totacom ) :?>
+            <!-- <?php /*foreach( $totsacoms as $totacom ) :*/?> -->
                 <tr class="even">
                     <th>Soit un total de versement de </th>
                     <td>
-                        <?php echo $totacom['Totalisationacompte']['mttotsoclrsa'] + $totacom['Totalisationacompte']['mttotsoclmajorsa'] + $totacom['Totalisationacompte']['mttotlocalrsa'];?> 
+                        <?php echo $totsacoms[0]['Totalisationacompte']['mttotsoclrsa'] + $totsacoms[0]['Totalisationacompte']['mttotsoclmajorsa'] + $totsacoms[0]['Totalisationacompte']['mttotlocalrsa']+$totsacoms[1]['Totalisationacompte']['mttotsoclrsa'] + $totsacoms[1]['Totalisationacompte']['mttotsoclmajorsa'] + $totsacoms[1]['Totalisationacompte']['mttotlocalrsa'];?> 
                     </td>
                     <td><!--<?php ?>--> </td>
                 </tr>
-            <?php endforeach;?>
+            <!-- <?php /*endforeach;*/?> -->
         </table>
        <!-- <ul class="actionMenu">
             <?php

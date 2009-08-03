@@ -1173,7 +1173,7 @@
 
         function type_allocation() {
             return array(
-                'AllocationsComptabilisees' => 'Allocation comptabilisée',
+                'AllocationComptabilisee' => 'Allocation comptabilisée',
                 'IndusConstates' => 'Indu constaté',
                 'IndusTransferesCG' => 'Indu transféré au CG',
                 'RemisesIndus' => 'Remise d\'indu',
