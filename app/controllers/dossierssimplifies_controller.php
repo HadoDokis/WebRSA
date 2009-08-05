@@ -200,7 +200,15 @@
         function edit( $personne_id = null, $orient_id = null ){
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
-            $personne   = $this->Personne->findById( $personne_id, null, null, 1 );
+            $personne = $this->Personne->findById( $personne_id, null, null, 0 );
+            $orientstruct = $this->Orientstruct->find(
+                'first',
+                array(
+                    'conditions' => array( 'Orientstruct.personne_id' => $personne_id ),
+                    'order' => 'Orientstruct.date_propo DESC'
+                )
+            );
+            $personne = Set::merge( $personne, array( 'Orientstruct' => array( $orientstruct['Orientstruct'] ) ) );
 
             $dossier_id =  $personne['Foyer']['dossier_rsa_id'] ;
             $dossimple  = $this->Dossier->read(null,$dossier_id );
@@ -212,19 +220,19 @@
             $this->set( 'structures',   $this->Structurereferente->list1Options()  );
             $this->set( 'numdossierrsa',  $dossimple['Dossier']['numdemrsa']  );
             $this->set( 'datdemdossrsa',  $dossimple['Dossier']['dtdemrsa'] );
-            $this->set( 'orient_id', $personne['Orientstruct']['typeorient_id']);
-            $this->set( 'structure_id', $personne['Orientstruct']['structurereferente_id']);
+            $this->set( 'orient_id', $personne['Orientstruct'][0]['typeorient_id']);
+            $this->set( 'structure_id', $personne['Orientstruct'][0]['structurereferente_id']);
 
 
             if( !empty( $this->data ) ) {
-                if( isset( $personne['Orientstruct']['id'] ) ) {
-                    $this->data['Orientstruct']['id'] = $personne['Orientstruct']['id'];
+                if( isset( $personne['Orientstruct'][0]['id'] ) ) {
+                    $this->data['Orientstruct'][0]['id'] = $personne['Orientstruct'][0]['id'];
                 }
 
-                if( isset( $personne['Orientstruct']['typeorient_id'] ) && isset( $personne['Orientstruct']['structurereferente_id'] ) ) {
-                    $this->data['Orientstruct']['statut_orient'] = 'Orienté';
-                    $this->data['Orientstruct']['date_propo'] = strftime( '%Y-%m-%d', mktime() ); // FIXME
-                    $this->data['Orientstruct']['date_valid'] = strftime( '%Y-%m-%d', mktime() ); // FIXME
+                if( isset( $personne['Orientstruct'][0]['typeorient_id'] ) && isset( $personne['Orientstruct'][0]['structurereferente_id'] ) ) {
+                    $this->data['Orientstruct'][0]['statut_orient'] = 'Orienté';
+                    $this->data['Orientstruct'][0]['date_propo'] = strftime( '%Y-%m-%d', mktime() ); // FIXME
+                    $this->data['Orientstruct'][0]['date_valid'] = strftime( '%Y-%m-%d', mktime() ); // FIXME
                 }
 
                 if( $this->Personne->saveAll( $this->data ) ) {
@@ -235,6 +243,6 @@
             else {
                 $this->data = $personne;
             }
+        }
     }
-}
 ?>

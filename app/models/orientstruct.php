@@ -61,6 +61,7 @@
         );
 
         // ********************************************************************
+
         function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
             /// Conditions de base
             $conditions = array(/* '1 = 1' */);
@@ -238,7 +239,7 @@
         function beforeSave( $options = array() ) {
             $return = parent::beforeSave( $options );
             $hasMany = ( array_depth( $this->data ) > 2 );
-
+// debug( $hasMany );
             if( !$hasMany ) { // INFO: 1 seul enregistrement
                 if( array_key_exists( 'structurereferente_id', $this->data['Orientstruct'] ) ) {
                     $this->data['Orientstruct']['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct']['structurereferente_id'] );
@@ -251,7 +252,7 @@
                     }
                 }
             }
-
+// debug( $this->data );
             return $return;
         }
 

@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        observeDisableFieldsOnValue( 'PrestationToppersdrodevorsa', [ /*'TypeorientParentId', */'OrientstructTypeorientId', 'OrientstructStructurereferenteId' ], 0, true );
+        observeDisableFieldsOnValue( 'PrestationToppersdrodevorsa', [ /*'TypeorientParentId', */'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId' ], 0, true );
 
     });
 </script>
@@ -12,7 +12,7 @@
 <?php echo $javascript->link( 'dependantselect.js' ); ?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        dependantSelect( 'OrientstructStructurereferenteId', 'OrientstructTypeorientId' );
+        dependantSelect( 'Orientstruct0StructurereferenteId', 'Orientstruct0TypeorientId' );
     });
 </script>
 
@@ -21,12 +21,13 @@
 
         <fieldset>
             <h2>Dossier RSA</h2>
-            <?php echo $form->label("Numéro de demande RSA : $numdossierrsa<br /><br />" );    ?>
-            <?php echo $form->label("Date de demande du dossier : $datdemdossrsa<br /><br />");?>
+            <p><?php echo "Numéro de demande RSA : $numdossierrsa";?></p>
+            <p><?php echo "Date de demande du dossier : $datdemdossrsa";?></p>
         </fieldset>
         <fieldset>
             <h2>Personne orientée</h2>
             <div><?php echo $form->input( 'Prestation.id', array( 'label' => false, 'type' => 'hidden') );?></div>
+            <div><?php echo $form->input( 'Prestation.personne_id', array( 'label' => false, 'type' => 'hidden') );?></div>
             <div><?php echo $form->input( 'Prestation.natprest', array( 'label' => false, 'value' => 'RSA', 'type' => 'hidden') );?></div>
 
             <div><?php echo $form->input( 'Prestation.rolepers', array( 'label' => required( __( 'rolepers', true ) ), 'type' => 'hidden') );?></div>
@@ -40,9 +41,10 @@
         </fieldset>
         <fieldset>
             <h3>Orientation</h3>
-            <?php echo $form->input( 'Orientstruct.typeorient_id', array( 'label' => "Type d'orientation / Type de structure",'type' => 'select', 'selected'=> $orient_id, 'options' => $typesOrient, 'empty'=>true));?>
-            <?php $this->data['Orientstruct']['structurereferente_id'] = $this->data['Orientstruct']['typeorient_id'].'_'.$this->data['Orientstruct']['structurereferente_id'];?>
-            <?php echo $form->input( 'Orientstruct.structurereferente_id', array( 'label' => __( 'structure_referente', true ), 'type' => 'select', 'selected' => $this->data['Orientstruct']['structurereferente_id'], 'options' => $structures, 'empty' => true ) );?>
+            <div><?php echo $form->input( 'Orientstruct.0.personne_id', array( 'label' => false, 'type' => 'hidden') );?></div>
+            <?php echo $form->input( 'Orientstruct.0.typeorient_id', array( 'label' => "Type d'orientation / Type de structure",'type' => 'select', 'selected'=> $orient_id, 'options' => $typesOrient, 'empty'=>true));?>
+            <?php $this->data['Orientstruct'][0]['structurereferente_id'] = $this->data['Orientstruct'][0]['typeorient_id'].'_'.$this->data['Orientstruct'][0]['structurereferente_id'];?>
+            <?php echo $form->input( 'Orientstruct.0.structurereferente_id', array( 'label' => __( 'structure_referente', true ), 'type' => 'select', 'selected' => $this->data['Orientstruct'][0]['structurereferente_id'], 'options' => $structures, 'empty' => true ) );?>
         </fieldset>
 
         <?php echo $form->submit( 'Enregistrer' );?>
