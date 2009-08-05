@@ -545,11 +545,35 @@
 
         function natpfcre( $type = null ) {
             $natindu = array(
+                'totsocl' => array(
+                    'RSD' => 'Rsa socle',
+                    'INK' => 'Indu sur rsa socle ',
+                    'ITK' => 'Indu sur rsa socle  transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ISK' => 'Indu sur rSa socle subrogé',
+                    'ACD' => 'ACD',
+                    'ASD' => 'Acompte sur droit rsa. (le droit est constaté et ouvert)'
+                ),
+                'soclmaj' => array(
+                    'RSI' => 'Rsa socle majoration parent isolé',
+                    'INL' => 'Indu sur rsa socle majoré',
+                    'ITL' => 'Indu sur rsa socle majoré transféré ou reçu d\'une autre Caf ou Msa '
+                ),
+                'localrsa' => array(
+                    'RSB' => 'Rsa socle local',
+                    'RCB' => 'Rsa activité local',
+                    'INM' => 'Indu sur rsa socle local ou rSa activite local',
+                    'ITM' => 'Indu sur rsa socle local ou rSa activite local transféré ou reçu d\'une autre Caf ou Msa '
+                ),
+                'indutotsocl' => array(
+                    'INK' => 'Indu sur rsa socle ',
+                    'ITK' => 'Indu sur rsa socle  transféré ou reçu d\'une autre Caf ou Msa ',
+                    'ISK' => 'Indu sur rSa socle subrogé',
+                ),
                 'alloccompta' => array(
-                    'RSD' => 'rsa socle',
-                    'RSI' => 'rsa socle majoration parent isolé',
-                    'RSB' => 'rsa socle local',
-                    'RCB' => 'rsa activité local',
+                    'RSD' => 'Rsa socle',
+                    'RSI' => 'Rsa socle majoration parent isolé',
+                    'RSB' => 'Rsa socle local',
+                    'RCB' => 'Rsa activité local',
                     'ASD' => 'Acompte sur droit rsa. (le droit est constaté et ouvert)',
                     'VSD' => 'Avance sur droit rsa (suite absence DTRSa ou dans l\'attente de l\'ouverture du droit)',
                     'INK' => 'Indu sur rsa socle ',
@@ -593,6 +617,9 @@
             );
 
             switch( $type ){
+                case 'totalloccompta':
+                case 'soclmaj':
+                case 'localrsa':
                 case 'alloccompta':
                 case 'indutransferecg':
                 case 'annulationfaible':
@@ -609,10 +636,10 @@
 
             return array(
 /*AllocCompta*/
-                'RSD' => 'rsa socle',
-                'RSI' => 'rsa socle majoration parent isolé',
-                'RSB' => 'rsa socle local',
-                'RCB' => 'rsa activité local',
+                'RSD' => 'Rsa socle',
+                'RSI' => 'Rsa socle majoration parent isolé',
+                'RSB' => 'Rsa socle local',
+                'RCB' => 'Rsa activité local',
                 'ASD' => 'Acompte sur droit rsa. (le droit est constaté et ouvert)',
                 'VSD' => 'Avance sur droit rsa (suite absence DTRSa ou dans l\'attente de l\'ouverture du droit)',
     /*Indusconstates*/ /*Remises indus*/    /* Autres annulations*/
