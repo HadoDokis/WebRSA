@@ -4,7 +4,7 @@
 
         var $name = 'Totalisationsacomptes';
         var $uses = array( 'Totalisationacompte', 'Identificationflux', 'Option', 'Infofinanciere' );
-
+        var $helpers = array( 'Locale' );
 
         function beforeFilter() {
             parent::beforeFilter();
@@ -13,26 +13,9 @@
         }
 
 
-        function index(/* $identificationflux_id = null*/ ){
-            // Vérification du format de la variable
-//             $this->assert( valid_int( $identificationflux_id ), 'error404' );
-
-//             $totsacoms = $this->Totalisationacompte->find(
-//                 'all',
-//                 array(
-//                     'conditions' => array(
-//                         'Totalisationacompte.identificationflux_id' => $identificationflux_id
-//                     )
-//                 )
-//             ) ;
-
-/*            $this->set( 'identificationflux_id', $identificationflux_id);*/
-
-//             $this->set('personne_id', $identificationflux_id );
+        function index(){
 
             if( !empty( $this->data ) ) {
-//                 $totsacoms = $this->Totalisationacompte->find( 'all' );
-//                 $ident = $this->Infofinanciere->find( 'first' );
 
                 $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
                 $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
@@ -44,7 +27,6 @@
                 $totsacoms = $this->paginate( 'Totalisationacompte' );
 
                 $this->Dossier->commit();
-//                 $this->set('ident', $ident );
                 $this->set('totsacoms', $totsacoms );
 
 //                 debug( $totsacoms );

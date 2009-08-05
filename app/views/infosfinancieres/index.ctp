@@ -60,19 +60,14 @@
                                 h( $infofinanciere['Dossier']['matricule'] ),
                                 h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
                                 h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
-                                h( date_short( $infofinanciere['Personne']['dtnai'] ) ),
+                                $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
                                 h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
-                                h( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
+                                $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
                                 $html->viewLink(
                                     'Voir les informations financières',
                                     array( 'controller' => 'infosfinancieres', 'action' => 'indexdossier', $infofinanciere['Infofinanciere']['dossier_rsa_id']),
                                     $permissions->check( 'infosfinancieres', 'view' )
                                 ),
-//                                 $html->editLink(
-//                                     'Éditer les informations financières ',
-//                                     array( 'controller' => 'infosfinancieres', 'action' => 'edit', $infofinanciere['Infofinanciere']['id'] ),
-//                                     $permissions->check( 'infosfinancieres', 'edit' )
-//                                 )
 
                             ),
                             array( 'class' => 'odd' ),

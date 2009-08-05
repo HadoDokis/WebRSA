@@ -58,17 +58,17 @@
                     </tr>
                     <tr class="odd">
                         <td>RSA socle</td>
-                        <td><?php echo $totacom['Totalisationacompte']['mttotsoclrsa'];?></td>
+                        <td><?php echo $locale->money( $totacom['Totalisationacompte']['mttotsoclrsa'] );?></td>
                         <td></td>
                     </tr>
                     <tr class="even">
                         <td>RSA socle majoré</td>
-                        <td><?php echo $totacom['Totalisationacompte']['mttotsoclmajorsa'];?></td>
+                        <td><?php echo $locale->money( $totacom['Totalisationacompte']['mttotsoclmajorsa'] );?></td>
                         <td></td>
                     </tr>
                     <tr class="odd">
                         <td>RSA local</td>
-                        <td><?php echo $totacom['Totalisationacompte']['mttotlocalrsa'];?></td>
+                        <td><?php echo $locale->money( $totacom['Totalisationacompte']['mttotlocalrsa'] );?></td>
                         <td></td>
                     </tr>
                 </tbody>
@@ -77,12 +77,18 @@
                 <tr class="even">
                     <th>Soit un total de versement de </th>
                     <td>
-                        <?php echo $totsacoms[0]['Totalisationacompte']['mttotsoclrsa'] + $totsacoms[0]['Totalisationacompte']['mttotsoclmajorsa'] + $totsacoms[0]['Totalisationacompte']['mttotlocalrsa']+$totsacoms[1]['Totalisationacompte']['mttotsoclrsa'] + $totsacoms[1]['Totalisationacompte']['mttotsoclmajorsa'] + $totsacoms[1]['Totalisationacompte']['mttotlocalrsa'];?> 
+                        <?php echo  $locale->money( $totsacoms[0]['Totalisationacompte']['mttotsoclrsa'] + $totsacoms[0]['Totalisationacompte']['mttotsoclmajorsa'] + $totsacoms[0]['Totalisationacompte']['mttotlocalrsa'] + $totsacoms[1]['Totalisationacompte']['mttotsoclrsa'] + $totsacoms[1]['Totalisationacompte']['mttotsoclmajorsa'] + $totsacoms[1]['Totalisationacompte']['mttotlocalrsa'] );?>
+                       <!-- <?php /*foreach( $totsacoms as $key => $value ) :?>
+                            <?php echo  $locale->money( $totsacoms[$key]['Totalisationacompte']['mttotsoclrsa'] + $totsacoms[$key]['Totalisationacompte']['mttotsoclmajorsa'] + $totsacoms[$key]['Totalisationacompte']['mttotlocalrsa'] );?> -->
+                        <?php endforeach;*/?> -->
                     </td>
-                    <td><!--<?php ?>--> </td>
                 </tr>
             <!-- <?php /*endforeach;*/?> -->
         </table>
+
+
+
+
        <!-- <ul class="actionMenu">
             <?php
                 echo $html->printLink(

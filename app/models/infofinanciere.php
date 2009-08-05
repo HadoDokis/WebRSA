@@ -133,8 +133,8 @@
                     '"Personne"."dtnai"',
                     '"Personne"."qual"',
                     '"Personne"."nomcomnai"',
-                    '"Adresse"."locaadr"',
-                    '"Adresse"."codepos"',
+//                     '"Adresse"."locaadr"',
+//                     '"Adresse"."codepos"',
                     '"Situationdossierrsa"."etatdosrsa"',
                 ),
                 'recursive' => -1,
@@ -177,7 +177,7 @@
                             'Prestation.natprest = \'RSA\'',
                             '( Prestation.rolepers = \'DEM\' )',
                         )
-                    ),
+                    )/*,
                     array(
                         'table'      => 'adresses_foyers',
                         'alias'      => 'Adressefoyer',
@@ -191,11 +191,12 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                    )
+                    )*/
                 ),
                 'limit' => 10,
                 'conditions' => $conditions
             );
+
 
             return $query;
 

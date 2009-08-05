@@ -3,7 +3,7 @@
     {
         var $name = 'Infosfinancieres';
         var $uses = array( 'Infofinanciere', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
-
+        var $helpers = array( /*'Paginator', */'Locale' );
 
         function beforeFilter() {
             parent::beforeFilter();
@@ -87,14 +87,13 @@
             );
 
 // debug( $infosfinancieres );
-$this->assert( !empty( $personne ), 'invalidParameter' );
+            $this->assert( !empty( $personne ), 'invalidParameter' );
             $this->set( 'personne', $personne );
 //             debug( $personne );
 
 
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
             $this->set( 'infosfinancieres', $infosfinancieres );
-
 
         }
 }
