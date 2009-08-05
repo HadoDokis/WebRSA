@@ -10,28 +10,20 @@
             parent::beforeFilter();
             // Type_totalisation
             $this->set( 'type_totalisation', $this->Option->type_totalisation() );
+//             $this->set( 'totalloccompta', $this->Option->natpfcre( 'totalloccompta' ) );
+//             $this->set( 'soclmaj', $this->Option->natpfcre( 'soclmaj' ) );
+//             $this->set( 'localrsa', $this->Option->natpfcre( 'localrsa' ) );
+            $this->set( 'natpfcre', $this->Option->natpfcre(  ) );
         }
 
 
         function index(){
-
             if( !empty( $this->data ) ) {
+                $params = $this->Totalisationacompte->search( $this->data );
+                $totsacoms = $this->Totalisationacompte->find( 'all', $params );
 
-                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-
-                $this->Dossier->begin(); // Pour les jetons
-
-                $this->paginate = $this->Totalisationacompte->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-                $this->paginate['limit'] = 10;
-                $totsacoms = $this->paginate( 'Totalisationacompte' );
-
-                $this->Dossier->commit();
                 $this->set('totsacoms', $totsacoms );
-
-//                 debug( $totsacoms );
-                $this->data['Search'] = $this->data;
             }
         }
-
     }
+?>
