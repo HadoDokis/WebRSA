@@ -36,20 +36,9 @@
         );
 
 
-        function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
+        function search( $criteres ) {
             /// Conditions de base
             $conditions = array();
-
-            /// Filtre zone géographique
-            if( $filtre_zone_geo ) {
-                $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
-                $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
-            }
-
-            /// Dossiers lockés
-            if( !empty( $lockedDossiers ) ) {
-                $conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
-            }
 
             /// Critères
             $mois = Set::extract( $criteres, 'Filtre.dtref' );
@@ -65,15 +54,10 @@
 
             $query = array(
                 'fields' => array(
-                    '"Totalisationacompte"."id"',
-                    '"Totalisationacompte"."identificationflux_id"',
                     '"Totalisationacompte"."type_totalisation"',
-                    '"Totalisationacompte"."mttotsoclrsa"',
-                    '"Totalisationacompte"."mttotsoclmajorsa"',
-                    '"Totalisationacompte"."mttotlocalrsa"',
-                    '"Totalisationacompte"."mttotrsa"',
-                    '"Identificationflux"."id"',
-                    '"Identificationflux"."dtref"',
+                    'SUM("Totalisationacompte"."mttotsoclrsa") AS "Totalisationacompte__mttotsoclrsa"',
+                    'SUM("Totalisationacompte"."mttotsoclmajorsa") AS "Totalisationacompte__mttotsoclmajorsa"',
+                    'SUM("Totalisationacompte"."mttotlocalrsa") AS "Totalisationacompte__mttotlocalrsa"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -82,13 +66,15 @@
                         'alias'      => 'Identificationflux',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Totalisationacompte.identificationflux_id = Identificationflux.id' )
+                        'conditions' => array( 'Totalisationacompte.identificationflux_id = Identificationflux.id' ),
                     )
                 ),
-                'limit' => 10,
+                'group' => array(
+                    'Totalisationacompte.type_totalisation'
+                ),
                 'conditions' => $conditions
             );
-
+// debug( $query );
             return $query;
 
         }
