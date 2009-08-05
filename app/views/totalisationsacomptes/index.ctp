@@ -43,13 +43,18 @@
 
    <?php $mois = strftime('%B %Y', strtotime( $this->data['Filtre']['dtref']['year'].'-'.$this->data['Filtre']['dtref']['month'].'-01' ) ); ?>
 
-    <h2 class="noprint">Liste des versements d'allocation pour le mois de <?php echo isset( $mois ) ? $mois : null ; ?> </h2>
+    <h2 class="noprint">Liste des versements d'allocation pour le mois de <?php echo isset( $mois ) ? $mois : null ;?> </h2>
 
     <?php if( is_array( $totsacoms ) && count( $totsacoms ) > 0  ):?>
+        <?php $sommeFlux = $sommeCalculee = 0; ?>
 
         <table id="searchResults" class="tooltips_oupas">
-        <?php echo thead( 40 );?>
             <?php foreach( $totsacoms as $totacom ) :?>
+                <?php
+                    foreach( array( 'mttotsoclrsa', 'mttotsoclmajorsa', 'mttotlocalrsa' ) as $typemontant ) {
+                        $sommeFlux += $totacom['Totalisationacompte'][$typemontant];
+                    }
+                ?>
                 <tbody>
                     <tr class="even">
                         <th><?php echo $type_totalisation[$totacom['Totalisationacompte']['type_totalisation']];?></th>
@@ -57,37 +62,36 @@
                         <th>Total acomptes calculés</th>
                     </tr>
                     <tr class="odd">
+                    <?php /*debug( $natpfcre );*/?>
                         <td>RSA socle</td>
-                        <td><?php echo $locale->money( $totacom['Totalisationacompte']['mttotsoclrsa'] );?></td>
-                        <td></td>
+                        <td class="number"><?php echo $locale->money( $totacom['Totalisationacompte']['mttotsoclrsa'] );?></td>
+                       <!-- <?php /*if( $natpfcre == ( 'RSI' || 'INL' || 'ITL' ) ):?>
+                            <td class="number"><?php echo $locale->money( $sommeFlux );?></td>
+                        <?php else:?>
+                            <td class="number"><?php echo $locale->money( $totacom['Totalisationacompte']['mttotsoclrsa'] );?></td>
+                        <?php endif;*/?> -->
+                        <td class="number"></td>
                     </tr>
                     <tr class="even">
                         <td>RSA socle majoré</td>
-                        <td><?php echo $locale->money( $totacom['Totalisationacompte']['mttotsoclmajorsa'] );?></td>
-                        <td></td>
+                        <td class="number"><?php echo $locale->money( $totacom['Totalisationacompte']['mttotsoclmajorsa'] );?></td>
+                        <td class="number"></td>
                     </tr>
                     <tr class="odd">
                         <td>RSA local</td>
-                        <td><?php echo $locale->money( $totacom['Totalisationacompte']['mttotlocalrsa'] );?></td>
-                        <td></td>
+                        <td class="number"><?php echo $locale->money( $totacom['Totalisationacompte']['mttotlocalrsa'] );?></td>
+                        <td class="number"></td>
                     </tr>
                 </tbody>
             <?php endforeach; ?>
-            <!-- <?php /*foreach( $totsacoms as $totacom ) :*/?> -->
+            <tbody>
                 <tr class="even">
                     <th>Soit un total de versement de </th>
-                    <td>
-                        <?php echo  $locale->money( $totsacoms[0]['Totalisationacompte']['mttotsoclrsa'] + $totsacoms[0]['Totalisationacompte']['mttotsoclmajorsa'] + $totsacoms[0]['Totalisationacompte']['mttotlocalrsa'] + $totsacoms[1]['Totalisationacompte']['mttotsoclrsa'] + $totsacoms[1]['Totalisationacompte']['mttotsoclmajorsa'] + $totsacoms[1]['Totalisationacompte']['mttotlocalrsa'] );?>
-                       <!-- <?php /*foreach( $totsacoms as $key => $value ) :?>
-                            <?php echo  $locale->money( $totsacoms[$key]['Totalisationacompte']['mttotsoclrsa'] + $totsacoms[$key]['Totalisationacompte']['mttotsoclmajorsa'] + $totsacoms[$key]['Totalisationacompte']['mttotlocalrsa'] );?> -->
-                        <?php endforeach;*/?> -->
-                    </td>
+                    <td class="number"><?php echo $locale->money( $sommeFlux );?></td>
+                    <td class="number"><?php echo $locale->money( $sommeCalculee );?></td>
                 </tr>
-            <!-- <?php /*endforeach;*/?> -->
+            </tbody>
         </table>
-
-
-
 
        <!-- <ul class="actionMenu">
             <?php
