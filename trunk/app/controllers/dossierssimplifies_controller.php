@@ -229,7 +229,7 @@
                     $this->data['Orientstruct'][0]['id'] = $personne['Orientstruct'][0]['id'];
                 }
 
-                if( isset( $personne['Orientstruct'][0]['typeorient_id'] ) && isset( $personne['Orientstruct'][0]['structurereferente_id'] ) ) {
+                if( $this->Personne->saveAll( $this->data, array( 'validate' => 'only' ) ) && isset( $this->data['Orientstruct'][0]['typeorient_id'] ) && isset( $this->data['Orientstruct'][0]['structurereferente_id'] ) ) {
                     $this->data['Orientstruct'][0]['statut_orient'] = 'Orienté';
                     $this->data['Orientstruct'][0]['date_propo'] = strftime( '%Y-%m-%d', mktime() ); // FIXME
                     $this->data['Orientstruct'][0]['date_valid'] = strftime( '%Y-%m-%d', mktime() ); // FIXME
