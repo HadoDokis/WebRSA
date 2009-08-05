@@ -55,7 +55,7 @@
                     $this->Dossier->begin(); // Pour les jetons
 
                     $this->paginate = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-                    $this->paginate['limit'] = 1;
+                    $this->paginate['limit'] = 10;
                     $cohorteindu = $this->paginate( 'Dossier' );
 
                     $this->Dossier->commit();

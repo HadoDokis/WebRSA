@@ -41,8 +41,8 @@
                     <th>Situation des droits</th>
                     <th>Date indus</th>
                     <th>Montant initial de l'indu</th>
-                    <th>Remise CG</th>
-                    <th>Montant remboursé</th>
+                   <!-- <th>Remise CG</th>
+                    <th>Montant remboursé</th> -->
                     <th class="action">Action</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
@@ -61,8 +61,8 @@
                                 h( $etatdosrsa[$indu['Dossier'][0]['Situationdossierrsa']['etatdosrsa']] ),
                                 h( date_short( $indu['Infofinanciere']['dttraimoucompta'] ) ),
                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
-                                h( $indu['Infofinanciere']['mtmoucompta'] ),
-                                h( $indu['Infofinanciere']['mtmoucompta'] ),
+//                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
+//                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
                                 $html->viewLink(
                                     'Voir le contrat « '.$title.' »',
                                     array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] )

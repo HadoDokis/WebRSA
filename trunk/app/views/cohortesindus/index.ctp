@@ -116,7 +116,7 @@
                                     h( $indu['Personne']['nom'].' '.$indu['Personne']['prenom'] ),
                                     h( $indu['Dossier']['typeparte'] ), //h( $typeparte[$indu['Dossier']['typeparte']] ),
                                     h( $etatdosrsa[$indu['Situationdossierrsa']['etatdosrsa']] ),
-                                        $locale->date( 'Date::mini', $indu[0]['moismoucompta'] ),
+                                    $locale->date( 'Date::mini', $indu[0]['moismoucompta'] ),
                                     $locale->money( $indu[0]['mt_allocation_comptabilisee'] ),
                                     $locale->money( $indu[0]['mt_indu_constate'] ),
                                     $locale->money( $indu[0]['mt_indus_transferes_c_g'] ),
