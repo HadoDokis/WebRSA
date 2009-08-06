@@ -611,6 +611,21 @@ msgid "numagrins"
 msgstr "Numero d'agréement du service instructeur"
 
 ###############################################################################
+# Situation dossier rsa
+##############################################################################
+
+msgid "etatdosrsa"
+msgstr "Etat du dossier"
+
+msgid "dtrefursa"
+msgstr "Date de refus"
+
+msgid "dtclorsa"
+msgstr "Date de fin des droits"
+
+msgid "moticlorsa"
+msgstr "Motif de fin des droits"
+###############################################################################
 # Srucuture referente
 ##############################################################################
 
