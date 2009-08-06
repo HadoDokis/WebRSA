@@ -77,6 +77,7 @@
                         INNER JOIN adresses ON ( adresses_foyers.adresse_id = adresses.id)
                         INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
                         INNER JOIN detailsdroitsrsa ON ( detailsdroitsrsa.dossier_rsa_id = dossiers_rsa.id )
+                        INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id AND ( situationsdossiersrsa.etatdosrsa IN ( \'2\', \'3\', \'4\' ) ) )
                     WHERE '.implode( ' AND ', $conditions ).'
                     LIMIT '.$limit;
 

@@ -157,6 +157,13 @@ SELECT DISTINCT contratsinsertion.id
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
                     ),
+                    array(
+                        'table'      => 'situationsdossiersrsa',
+                        'alias'      => 'Situationdossierrsa',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id AND ( Situationdossierrsa.etatdosrsa IN ( \'2\', \'3\', \'4\' ) )' )
+                    ),
 //                     array(
 //                         'table'      => 'structuresreferentes',
 //                         'alias'      => 'Structurereferente',

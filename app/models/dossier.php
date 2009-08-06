@@ -235,7 +235,7 @@
                     array(
                         'table'      => 'situationsdossiersrsa',
                         'alias'      => 'Situationdossierrsa',
-                        'type'       => 'LEFT OUTER',
+                        'type'       => 'LEFT OUTER', // FIXME
                         'foreignKey' => false,
                         'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id' )
                     ),
