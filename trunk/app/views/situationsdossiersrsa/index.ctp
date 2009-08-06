@@ -11,7 +11,7 @@
 
     <?php else:?>
         <?php if( $situationdossierrsa['Situationdossierrsa']['etatdosrsa'] == 0 ): ?>
-            <table class="tooltips">
+            <table class="aere">
                 <thead>
                     <tr>
                         <th>Etat du dossier </th>
@@ -32,7 +32,7 @@
 
         <?php elseif( $situationdossierrsa['Situationdossierrsa']['etatdosrsa'] == 1 ): ?>
             <h2>Refus</h2>
-            <table class="tooltips">
+            <table class="aere">
                 <thead>
                     <tr>
                         <th>Etat du dossier </th>
@@ -53,7 +53,7 @@
                 </tbody>
             </table>
         <?php elseif( $situationdossierrsa['Situationdossierrsa']['etatdosrsa'] == 2 ): ?>
-            <table class="tooltips">
+            <table class="aere">
                 <thead>
                     <tr>
                         <th>Etat du dossier </th>
@@ -73,7 +73,7 @@
             </table>
         <?php elseif( $situationdossierrsa['Situationdossierrsa']['etatdosrsa'] == 3 ): ?>
             <h2>Suspension des droits</h2>
-            <table class="tooltips">
+            <table class="aere">
                 <thead>
                     <tr>
                         <th>Etat du dossier </th>
@@ -103,7 +103,7 @@
             </table>
         <?php elseif( $situationdossierrsa['Situationdossierrsa']['etatdosrsa'] == 4 ): ?>
             <h2>Suspension des versements</h2>
-            <table class="tooltips">
+            <table class="aere">
                 <thead>
                     <tr>
                         <th>Etat du dossier </th>
@@ -133,7 +133,7 @@
             </table>
         <?php elseif( $situationdossierrsa['Situationdossierrsa']['etatdosrsa'] == 5 ): ?>
             <h2>Fin des droits</h2>
-            <table class="tooltips">
+            <table class="aere">
                 <thead>
                     <tr>
                         <th>Etat du dossier </th>
@@ -157,7 +157,7 @@
             </table>
         <?php elseif( $situationdossierrsa['Situationdossierrsa']['etatdosrsa'] == 6 ): ?>
             <h2>Fin des droits au mois antérieur</h2>
-            <table class="tooltips">
+            <table class="aere">
                 <thead>
                     <tr>
                         <th>Etat du dossier </th>
@@ -181,13 +181,11 @@
             </table>
         <?php endif;?>
 
-            <p>
             <h2>Historique suspension des droits</h2>
-                <?php if( empty( $suspensiondroit) ):?>
-                    <p>Ce dossier ne possède pas de suspension de droits RSA</p>
-                <?php else:?>
-
-                <table class="tooltips">
+            <?php if( empty( $suspensiondroit) ):?>
+                <p>Ce dossier ne possède pas de suspension de droits RSA</p>
+            <?php else:?>
+                <table class="aere">
                     <thead>
                         <tr>
                             <th>Motif suspension au droit RSA</th>
@@ -216,14 +214,12 @@
                     </tbody>
                 </table>
             <?php endif;?>
-            </p>
-            <p>
-                <h2>Historique suspension versement des droits</h2>
 
-                <?php if( empty( $suspensionversement) ):?>
-                    <p>Ce dossier ne possède pas de versement de droits RSA</p>
-                <?php else:?>
-                <table class="tooltips">
+            <h2>Historique suspension versement des droits</h2>
+            <?php if( empty( $suspensionversement) ):?>
+                <p>Ce dossier ne possède pas de versement de droits RSA</p>
+            <?php else:?>
+                <table class="aere">
                     <thead>
                         <tr>
                             <th>Motif suspension versement RSA</th>
@@ -253,7 +249,7 @@
                     </tbody>
                 </table>
             <?php endif;?>
-            </p>
+
     <?php endif;?>
 </div>
 <div class="clearer"><hr /></div>
