@@ -96,4 +96,19 @@
             $this->set( 'infosfinancieres', $infosfinancieres );
 
         }
+
+
+        function indexindus( $dossier_rsa_id = null) {
+            //Vérification du format de la variable
+            $this->assert( valid_int( $dossier_rsa_id ), 'invalidParameter' );
+
+            $params = $this->Infofinanciere->search( array( 'Dossier.id' => $dossier_rsa_id ) );
+            $infofinanciere = $this->Infofinanciere->find( 'first',  $params );
+
+// debug( $infofinanciere );
+
+            $this->set('infofinanciere', $infofinanciere );
+            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+
+        }
 }
