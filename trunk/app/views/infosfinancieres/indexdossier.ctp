@@ -57,7 +57,7 @@
 //                                 h( $indu['Dossier'][0]['typeparte'] ),
 //                                 h( $etatdosrsa[$indu['Dossier'][0]['Situationdossierrsa']['etatdosrsa']] ),
 //                                 h( date_short( $indu['Infofinanciere']['dttraimoucompta'] ) ),
-                                h( $indu['Infofinanciere']['mtmoucompta'] ),
+                                h(  $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ),
 //                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
 //                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
                                 $html->viewLink(
