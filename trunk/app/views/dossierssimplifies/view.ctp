@@ -30,8 +30,8 @@
 //                             h( $personne['rolepers'] ),
                             h( $personne['nom'] ),
                             h( $personne['prenom'] ),
-                            h( date_short( $dossier['Dossier']['dtdemrsa'] ) ),
-                            h( date_short( $personne['Orientstruct']['date_valid'] ) ),
+                            h( $locale->date( 'Date::short', $dossier['Dossier']['dtdemrsa'] ) ),
+                            h( $locale->date( 'Date::short', $personne['Orientstruct']['date_valid'] ) ),
                             h( isset( $personne['Structurereferente']['Typeorient']['lib_type_orient'] ) ? $personne['Structurereferente']['Typeorient']['lib_type_orient']  : null ) ,
                             h( isset( $personne['Structurereferente']['lib_struc'] ) ? $personne['Structurereferente']['lib_struc'] : null ),
 

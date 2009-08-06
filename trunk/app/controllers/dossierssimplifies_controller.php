@@ -148,11 +148,22 @@
                 if( $validates ) {
                     $this->Dossier->begin();
                     $saved = $this->Dossier->save( $this->data );
+                    // Foyer
                     $this->data['Foyer']['dossier_rsa_id'] = $this->Dossier->id;
                     $saved = $this->Foyer->save( $this->data ) && $saved;
+                    // Détails du droit -> FIXME: le faut-il ? alors rajouter un champ dans le formulaire
+//                     $data['dossier']['Detaildroitrsa']['dossier_rsa_id'] = $this->Dossier->id;
+//                     $saved = $this->Detaildroitrsa->save( $data['dossier']['Detaildroitrsa'] ) && $saved;
+                    // Situation dossier RSA
+                    $situationdossierrsa = array( 'Situationdossierrsa' => array( 'dossier_rsa_id' => $this->Dossier->id, 'etatdosrsa' => NULL ) );
+                    $this->Dossier->Situationdossierrsa->validate = array();
+                    $saved = $this->Dossier->Situationdossierrsa->save( $situationdossierrsa ) && $saved;
+
+                    $orientstruct_validate = $this->Orientstruct->validate;
 
                     foreach( $this->data['Personne'] as $key => $pData ) {
                         if( !empty( $pData ) ) {
+                            $this->Orientstruct->validate = $orientstruct_validate;
                             // Personne
                             $this->Personne->create();
                             $pData['foyer_id'] = $this->Foyer->id;
@@ -167,13 +178,25 @@
                             $saved = $this->Personne->Prestation->save( $this->data['Prestation'][$key] ) && $saved;
 
                             // Orientation
-                            if( Set::filter( $this->data['Orientstruct'][$key] ) != array() ) {
+                            $tOrientstruct = Set::extract( $this->data, 'Orientstruct.'.$key );
+                            if( !empty( $tOrientstruct ) ) {
+                                $tOrientstruct = Set::filter( $tOrientstruct );
+                            }
+
+                            if( !empty( $tOrientstruct ) ) {
                                 $this->Orientstruct->create();
                                 $this->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
                                 $this->data['Orientstruct'][$key]['valid_cg'] = true;
                                 $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
                                 $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
                                 $this->data['Orientstruct'][$key]['statut_orient'] = 'Orienté';
+                                $saved = $this->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
+                            }
+                            else {
+                                $this->Orientstruct->create();
+                                $this->Orientstruct->validate = array();
+                                $this->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
+//                                 $this->data['Orientstruct'][$key]['statut_orient'] = 'Non orienté'; // FIXME ?
                                 $saved = $this->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
                             }
                         }
@@ -237,7 +260,7 @@
 
                 if( $this->Personne->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view',   $personne['Foyer']['id'] ) );
+                    $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $personne['Foyer']['dossier_rsa_id'] ) );
                 }
             }
             else {
