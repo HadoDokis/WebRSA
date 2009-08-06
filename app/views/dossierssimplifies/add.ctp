@@ -4,8 +4,8 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        observeDisableFieldsOnValue( 'Personne0Toppersdrodevorsa', [ /*'Typeorient0ParentId', */'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId' ], 0, true );
-        observeDisableFieldsOnValue( 'Personne1Toppersdrodevorsa', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId' ], 0, true );
+        observeDisableFieldsOnValue( 'Prestation0Toppersdrodevorsa', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId' ], 0, true );
+        observeDisableFieldsOnValue( 'Prestation1Toppersdrodevorsa', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId' ], 0, true );
     });
 </script>
 
