@@ -13,7 +13,7 @@
             <table class="tooltips">
                 <thead>
                     <tr>
-                        <th>Domicile fixe ?</th>
+                        <th>Domicile fixe</th>
                         <th>Code origine de la demande</th>
                         <th>Date début calcul</th>
                         <th>Date de fin calcul</th>
@@ -29,8 +29,8 @@
                             array(
                                 h( $topsansdomfixe[$detaildroitrsa['Detaildroitrsa']['topsansdomfixe']]),
                                 h( $oridemrsa[$detaildroitrsa['Detaildroitrsa']['oridemrsa']]),
-                                h( date_short( $detaildroitrsa['Detaildroitrsa']['ddelecal'] ) ),
-                                h( date_short( $detaildroitrsa['Detaildroitrsa']['dfelecal'] ) ),
+                                h( $locale->date( 'Date::short', $detaildroitrsa['Detaildroitrsa']['ddelecal'] ) ),
+                                h( $locale->date( 'Date::short', $detaildroitrsa['Detaildroitrsa']['dfelecal'] ) ),
                                 h( $detaildroitrsa['Detaildroitrsa']['mtrevminigararsa'] ),
                                 h( $detaildroitrsa['Detaildroitrsa']['mtrevgararsa'] ),
                                 h( $detaildroitrsa['Detaildroitrsa']['mtressmenrsa'] ),
@@ -59,7 +59,7 @@
                                 array(
                                     h( $natpf[$detailcalcul['natpf']]),
                                     h( $sousnatpf[$detailcalcul['sousnatpf']]),
-                                    h( date_short( $detailcalcul['ddnatdro'] ) ),
+                                    h( $locale->date( 'Date::short', $detailcalcul['ddnatdro'] ) ),
                                 ),
                                 array( 'class' => 'odd' ),
                                 array( 'class' => 'even' )
