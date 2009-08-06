@@ -1,4 +1,4 @@
-<?php $this->pageTitle = 'Informations financières';?>
+<?php $this->pageTitle = 'Visualisation des Informations financières';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );?>
 

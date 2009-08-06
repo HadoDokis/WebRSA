@@ -35,14 +35,10 @@
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <th>Nature de la prestation pour la créance</th>
+                    <th>Mois des mouvements</th>
                     <th>Type d'allocation</th>
-                    <th>Suivi</th>
-                    <th>Situation des droits</th>
-                    <th>Date indus</th>
-                    <th>Montant initial de l'indu</th>
-                   <!-- <th>Remise CG</th>
-                    <th>Montant remboursé</th> -->
+                    <th>Nature de la prestation pour la créance</th>
+                    <th>Montant</th>
                     <th class="action">Action</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
@@ -55,11 +51,12 @@
 
                         echo $html->tableCells(
                             array(
+                                h( $locale->date( 'Date::miniLettre', $indu['Infofinanciere']['dttraimoucompta'] ) ),
                                 h( $type_allocation[$indu['Infofinanciere']['type_allocation']] ),
                                 h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ),
-                                h( $indu['Dossier'][0]['typeparte'] ),
-                                h( $etatdosrsa[$indu['Dossier'][0]['Situationdossierrsa']['etatdosrsa']] ),
-                                h( date_short( $indu['Infofinanciere']['dttraimoucompta'] ) ),
+//                                 h( $indu['Dossier'][0]['typeparte'] ),
+//                                 h( $etatdosrsa[$indu['Dossier'][0]['Situationdossierrsa']['etatdosrsa']] ),
+//                                 h( date_short( $indu['Infofinanciere']['dttraimoucompta'] ) ),
                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
 //                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
 //                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
