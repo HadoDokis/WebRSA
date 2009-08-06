@@ -24,7 +24,7 @@
 
                 $this->Dossier->begin(); // Pour les jetons
 
-                $this->paginate = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                $this->paginate = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
                 $this->paginate['limit'] = 10;
                 $infosfinancieres = $this->paginate( 'Infofinanciere' );
 
@@ -102,7 +102,10 @@
             //Vérification du format de la variable
             $this->assert( valid_int( $dossier_rsa_id ), 'invalidParameter' );
 
-            $params = $this->Infofinanciere->search( array( 'Dossier.id' => $dossier_rsa_id ) );
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+            $params = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array( 'Dossier.id' => $dossier_rsa_id ) );
             $infofinanciere = $this->Infofinanciere->find( 'first',  $params );
 
 // debug( $infofinanciere );
