@@ -30,7 +30,7 @@
                     'recursive' => 1
                 )
             ) ;
-
+// debug( $situationdossierrsa );
 
             // Assignations à la vue
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
@@ -56,7 +56,7 @@
             $this->assert( !empty( $situationdossierrsa ), 'error404' );
 
             // Assignations à la vue
-            $this->set( 'dossier_id', $situationdossierrsa['Situationdossierrsa']['dossier_rsa_id'] );
+            $this->set( 'dossier_rsa_id', $situationdossierrsa['Situationdossierrsa']['dossier_rsa_id'] );
             $this->set( 'situationdossierrsa', $situationdossierrsa );
 
         }
