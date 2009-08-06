@@ -14,15 +14,15 @@
                 </tr>
                 <tr class="odd">
                     <th ><?php __( 'dtrefursa' );?></th>
-                    <td><?php echo (date_short( $situationdossierrsa['Situationdossierrsa']['dtrefursa'] ) );?></td>
+                    <td><?php echo ( date_short( $situationdossierrsa['Situationdossierrsa']['dtrefursa'] ) );?></td>
                 </tr>
                 <tr class="even">
                     <th ><?php __( 'moticlorsa' );?></th>
-                    <td><?php echo ($moticlorsa[$situationdossierrsa['Situationdossierrsa']['moticlorsa']] );?></td>
+                    <td><?php echo ( isset( $moticlorsa[$situationdossierrsa['Situationdossierrsa']['moticlorsa']] ) ? $moticlorsa[$situationdossierrsa['Situationdossierrsa']['moticlorsa']] : null );?></td>
                 </tr>
                 <tr class="odd">
                     <th ><?php __( 'dtclorsa' );?></th>
-                    <td><?php echo (date_short( $situationdossierrsa['Situationdossierrsa']['dtclorsa'] ) );?></td>
+                    <td><?php echo ( date_short( $situationdossierrsa['Situationdossierrsa']['dtclorsa'] ) );?></td>
                 </tr>
 
             </tbody>
