@@ -61,13 +61,16 @@ msgstr "décembre"
 ###############################################################################
 
 msgid "Date::short"
-msgstr "d/m/Y"
+msgstr "%d/%m/%Y"
 
 msgid "Date::mini"
-msgstr "m/Y"
+msgstr "%m/%Y"
 
 msgid "Datetime::short"
-msgstr "d/m/Y H:i:s"
+msgstr "%d/%m/%Y %H:%M:%S"
+
+msgid "Date::miniLettre"
+msgstr "%B %Y"
 
 ###############################################################################
 # Donnees socioprofessionnelles personnes
