@@ -141,13 +141,25 @@
                 <?php endif;?>
 
                 <?php if( $permissions->check( 'situationsdossiersrsa', 'index' ) ):?>
-                    <li>
-                        <?php
-                            echo $html->link(
-                                'Situation dossier rsa',
-                                array( 'controller' => 'situationsdossiersrsa', 'action' => 'index', $dossier['Foyer']['id'] )
-                            );
-                        ?>
+                    <li><span>Situation dossier rsa</span>
+                        <ul>
+                            <li>
+                                <?php
+                                    echo $html->link(
+                                        'Historique du droit',
+                                        array( 'controller' => 'situationsdossiersrsa', 'action' => 'index', $dossier['Foyer']['id'] )
+                                    );
+                                ?>
+                            </li>
+                            <li>
+                                <?php
+                                    echo $html->link(
+                                        'Liste des indus',
+                                        array( 'controller' => 'infosfinancieres', 'action' => 'indexindus', $dossier['Foyer']['id'] )
+                                    );
+                                ?>
+                            </li>
+                        </ul>
                     </li>
                 <?php endif;?>
 
