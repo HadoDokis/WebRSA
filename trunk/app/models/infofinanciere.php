@@ -80,28 +80,22 @@
             )*/
         );
 
-        function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
+        function search( $criteres ) {
             /// Conditions de base
             $conditions = array();
-
-            /// Filtre zone géographique
-            if( $filtre_zone_geo ) {
-                $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
-                $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
-            }
-
-            /// Dossiers lockés
-            if( !empty( $lockedDossiers ) ) {
-                $conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
-            }
 
             /// Critères
             $mois = Set::extract( $criteres, 'Filtre.moismoucompta' );
 
-            // ...
+            /// Mois du mouvement comptable
             if( !empty( $mois ) && dateComplete( $criteres, 'Filtre.moismoucompta' ) ) {
                 $mois = $mois['month'];
                 $conditions[] = 'EXTRACT(MONTH FROM Infofinanciere.moismoucompta) = '.$mois;
+            }
+
+            /// Id du Dossier
+            if( !empty( $criteres ) && isset( $criteres['Dossier.id'] ) ) {
+                $conditions['Dossier.id'] = $criteres['Dossier.id'];
             }
 
             /// Requête
@@ -133,9 +127,7 @@
                     '"Personne"."dtnai"',
                     '"Personne"."qual"',
                     '"Personne"."nomcomnai"',
-//                     '"Adresse"."locaadr"',
-//                     '"Adresse"."codepos"',
-                    '"Situationdossierrsa"."etatdosrsa"',
+                    '"Situationdossierrsa"."etatdosrsa"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -177,27 +169,38 @@
                             'Prestation.natprest = \'RSA\'',
                             '( Prestation.rolepers = \'DEM\' )',
                         )
-                    )/*,
-                    array(
-                        'table'      => 'adresses_foyers',
-                        'alias'      => 'Adressefoyer',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-                    ),
-                    array(
-                        'table'      => 'adresses',
-                        'alias'      => 'Adresse',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                    )*/
+                    )
                 ),
                 'limit' => 10,
+                'order' => array( '"Personne"."nom"' ),
                 'conditions' => $conditions
             );
 
+            $typesAllocation = array( 'AllocationComptabilisee', 'IndusConstates', 'IndusTransferesCG', 'RemisesIndus', 'AnnulationsFaibleMontant', 'AutresAnnulations' );
+//             $conditionsNotNull = array();
 
+
+            foreach( $typesAllocation as $type ) {
+                $meu  = Inflector::singularize( Inflector::tableize( $type ) );
+                $query['fields'][] = '"'.$type.'"."mtmoucompta" AS mt_'.$meu;
+
+                $join = array(
+                    'table'      => 'infosfinancieres',
+                    'alias'      => $type,
+                    'type'       => 'LEFT OUTER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        $type.'.dossier_rsa_id = Dossier.id',
+                        $type.'.type_allocation' => $type,
+                    )
+                );
+
+                $query['joins'][] = $join;
+               // $conditionsNotNull[] = $type.'.mtmoucompta IS NOT NULL';
+
+            }
+
+            $query['conditions'] = Set::merge( $query['conditions'], $conditions );
             return $query;
 
         }
