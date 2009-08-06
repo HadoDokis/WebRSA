@@ -9,7 +9,7 @@
         var $belongsTo = array(
             'Dossier' => array(
                 'classname'     => 'Dossier',
-                'foreignKey'    => 'id'
+                'foreignKey'    => 'dossier_rsa_id'
             )
         );
 
@@ -38,13 +38,13 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-	    
+
             'topfoydrodevorsa' => array(
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
-            ),	    
+            ),
             'nbenfautcha' => array(
                 array(
                     'rule' => 'notEmpty',
@@ -56,7 +56,7 @@
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
-            ),	    
+            ),
             'ddelecal' => array(
                 array(
                     'rule' => 'date',
@@ -66,7 +66,7 @@
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
-            ),	    	    
+            ),
             'dfelecal' => array(
                 array(
                     'rule' => 'date',

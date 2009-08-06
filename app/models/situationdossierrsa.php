@@ -9,7 +9,7 @@
         var $belongsTo = array(
             'Dossier' => array(
                 'classname'     => 'Dossier',
-                'foreignKey'    => 'id'
+                'foreignKey'    => 'dossier_rsa_id'
             )
         );
 

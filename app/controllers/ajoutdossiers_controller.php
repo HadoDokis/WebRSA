@@ -368,6 +368,11 @@
                 $data['dossier']['Detaildroitrsa']['dossier_rsa_id'] = $this->Dossier->id;
                 $saved = $this->Detaildroitrsa->save( $data['dossier']['Detaildroitrsa'] ) && $saved;
 
+                // Situation dossier RSA
+                $situationdossierrsa = array( 'Situationdossierrsa' => array( 'dossier_rsa_id' => $this->Dossier->id, 'etatdosrsa' => NULL ) );
+                $this->Dossier->Situationdossierrsa->validate = array();
+                $saved = $this->Dossier->Situationdossierrsa->save( $situationdossierrsa ) && $saved;
+
                 // Foyer
                 $saved = $this->Foyer->save( array( 'dossier_rsa_id' => $this->Dossier->id ) ) && $saved;
 
