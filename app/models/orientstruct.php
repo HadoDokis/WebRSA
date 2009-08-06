@@ -215,6 +215,13 @@
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+                    ),
+                    array(
+                        'table'      => 'situationsdossiersrsa',
+                        'alias'      => 'Situationdossierrsa',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id AND ( Situationdossierrsa.etatdosrsa IN ( \'2\', \'3\', \'4\' ) )' )
                     )
                 ),
                 'limit' => 10,
