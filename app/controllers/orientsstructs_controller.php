@@ -38,8 +38,10 @@
                     'recursive' => 2
                 )
             );
-//             debug( $orientstruct );
 
+            $dossier_rsa_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_rsa_id' );
+
+            $this->set( 'droitsouverts', $this->Dossier->Situationdossierrsa->droitsOuverts( $dossier_rsa_id ) );
             $this->set( 'orientstructs', $orientstructs );
             $this->set( 'personne_id', $personne_id );
         }
