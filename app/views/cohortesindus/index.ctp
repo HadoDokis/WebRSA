@@ -125,7 +125,7 @@
                                     $locale->money( $indu[0]['mt_autre_annulation'] ),
                                     $html->viewLink(
                                         'Voir le contrat « '.$title.' »',
-                                        array( 'controller' => 'infosfinancieres', 'action' => 'indexdossier', $indu['Dossier']['id'] )
+                                        array( 'controller' => 'indus', 'action' => 'view', $indu['Dossier']['id'] )
                                     ),
                                     array( $innerTable, array( 'class' => 'innerTableCell' ) )
                                 ),
