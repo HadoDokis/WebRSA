@@ -840,6 +840,61 @@ class HtmlHelper extends AppHelper {
             return '<span class="disabled">'.$content.'</span>';
         }
     }
+
+    ///Boutons à utiliser pour les détails des indus
+    function remiseLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/money.png',
+            array( 'alt' => '' )
+        ).' Enregistrer les remises';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title , 'class' => 'external' )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
+
+    function recgraLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/money_add.png',
+            array( 'alt' => '' )
+        ).' Recours gracieux';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title , 'class' => 'external' )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
+
+    function recconLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/money_delete.png',
+            array( 'alt' => '' )
+        ).' Recours contentieux';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title , 'class' => 'external' )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
     //*************************************************************************
 
     function boolean( $boolean ) {
