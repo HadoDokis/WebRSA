@@ -10,7 +10,7 @@
         <p class="notice">Ce dossier ne possède pas encore d'avis.</p>
 
     <?php else:?>
-            <table class="tooltips">
+            <table class="aere">
                 <thead>
                     <tr>
                         <th>Avis  </th>
@@ -23,10 +23,10 @@
                     <?php
                         echo $html->tableCells(
                             array(
-                                h( $avisdestpairsa[$avispcgdroitrsa['Avispcgdroitrsa']['avisdestpairsa']]),
-                                h( $avispcgdroitrsa['Avispcgdroitrsa']['dtavisdestpairsa']),
-                                h( $avispcgdroitrsa['Avispcgdroitrsa']['nomtie']),
-                                h( $typeperstie[$avispcgdroitrsa['Avispcgdroitrsa']['typeperstie']]),
+                                h( ( trim( Set::extract( $avispcgdroitrsa, 'Avispcgdroitrsa.avisdestpairsa' ) )  != '' ) ? $avisdestpairsa[$avispcgdroitrsa['Avispcgdroitrsa']['avisdestpairsa']] : null ),
+                                h( $locale->date( 'Date::short', $avispcgdroitrsa['Avispcgdroitrsa']['dtavisdestpairsa'] ) ),
+                                h( ( Set::extract( $avispcgdroitrsa, 'Avispcgdroitrsa.nomtie' ) != '' ) ? $avispcgdroitrsa['Avispcgdroitrsa']['nomtie'] : null ),
+                                h( ( Set::extract( $avispcgdroitrsa, 'Avispcgdroitrsa.$typeperstie' ) != '' ) ?$typeperstie[$avispcgdroitrsa['Avispcgdroitrsa']['typeperstie']] : null ),
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )
@@ -36,7 +36,7 @@
             </table>
 
             <h2>Condition administrative</h2>
-            <table class="tooltips">
+            <table class="aere">
                 <thead>
                     <tr>
                         <th>Avis  </th>
@@ -52,11 +52,11 @@
                         <?php
                             echo $html->tableCells(
                                 array(
-                                    h( $avisdestpairsa[$avispcgdroitrsa['Avispcgdroitrsa']['avisdestpairsa']]),
+                                    h( ( trim( Set::extract( $avispcgdroitrsa, 'Avispcgdroitrsa.avisdestpairsa' ) ) != '' ) ?$avisdestpairsa[$avispcgdroitrsa['Avispcgdroitrsa']['avisdestpairsa']] : null ),
                                     h( $aviscondadmrsa[$condadmin['aviscondadmrsa']]),
                                     h( $condadmin['moticondadmrsa']),
                                     h( $condadmin['comm1condadmrsa']),
-                                    h( $condadmin['comm2condadmrsa']),
+                                    h( ( Set::extract( $condadmin, 'Condadmin.comm2condadmrsa' ) != '' ) ? $condadmin['comm2condadmrsa'] : null ),
                                     h( $condadmin['dteffaviscondadmrsa']),
                                 ),
                                 array( 'class' => 'odd' ),
@@ -67,30 +67,35 @@
                 </tbody>
             </table>
             <h2>Réduction RSA</h2>
-            <table class="tooltips">
-                <thead>
-                    <tr>
-                        <th>Montant de la réduction</th>
-                        <th>Date de début</th>
-                        <th>Date de fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach( $avispcgdroitrsa['Reducrsa'] as $reducrsa ):?>
-                        <?php
-                            echo $html->tableCells(
-                                array(
-                                    h( $reducrsa['mtredrsa']),
-                                    h( $reducrsa['ddredrsa']),
-                                    h( $reducrsa['dfredrsa']),
-                                ),
-                                array( 'class' => 'odd' ),
-                                array( 'class' => 'even' )
-                            );
-                        ?>
-                    <?php endforeach;?>
-                </tbody>
-            </table>
+            <?php if ( empty( $avispcgdroitrsa['Reducrsa'] ) ):?>
+                <p>Pas de réduction RSA.</p>
+            <?php else:?>
+                <table class="aere">
+                    <thead>
+                        <tr>
+                            <th>Montant de la réduction</th>
+                            <th>Date de début</th>
+                            <th>Date de fin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach( $avispcgdroitrsa['Reducrsa'] as $reducrsa ):?>
+
+                                <?php
+                                    echo $html->tableCells(
+                                        array(
+                                            h( $reducrsa['mtredrsa']),
+                                            h( $reducrsa['ddredrsa']),
+                                            h( $reducrsa['dfredrsa']),
+                                        ),
+                                        array( 'class' => 'odd' ),
+                                        array( 'class' => 'even' )
+                                    );
+                                ?>
+                        <?php endforeach;?>
+                    </tbody>
+                </table>
+            <?php endif;?>
     <?php endif;?>
 </div>
 <div class="clearer"><hr /></div>
