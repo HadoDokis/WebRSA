@@ -852,7 +852,7 @@ class HtmlHelper extends AppHelper {
             return $this->link(
                 $content,
                 $url,
-                array( 'escape' => false, 'title' => $title , 'class' => 'external' )
+                array( 'escape' => false, 'title' => $title , 'class' => 'internal' )
             );
         }
         else {
@@ -870,7 +870,7 @@ class HtmlHelper extends AppHelper {
             return $this->link(
                 $content,
                 $url,
-                array( 'escape' => false, 'title' => $title , 'class' => 'external' )
+                array( 'escape' => false, 'title' => $title , 'class' => 'internal' )
             );
         }
         else {
@@ -888,7 +888,7 @@ class HtmlHelper extends AppHelper {
             return $this->link(
                 $content,
                 $url,
-                array( 'escape' => false, 'title' => $title , 'class' => 'external' )
+                array( 'escape' => false, 'title' => $title , 'class' => 'internal' )
             );
         }
         else {

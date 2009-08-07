@@ -39,7 +39,8 @@
  * $uninflectedPlural = array('.*[nrlm]ese', '.*deer', '.*fish', '.*measles', '.*ois', '.*pox');
  */
 	$uninflectedPlural = array(
-        'avispcgdroitrsa'
+        'avispcgdroitrsa',
+        'recours'
     );
 /**
  * This is a key => value array of plural irregular words.
