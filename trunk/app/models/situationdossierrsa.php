@@ -60,5 +60,22 @@
             )
         );
 
+        //*********************************************************************
+
+        function etatOuvert() {
+            return array( 2, 3, 4 );
+        }
+
+        //---------------------------------------------------------------------
+
+        function droitsOuverts( $dossier_rsa_id ) {
+            if( valid_int( $dossier_rsa_id ) ) {
+                $situation = $this->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
+                return in_array( Set::extract( $situation, 'Situationdossierrsa.etatdosrsa' ), $this->etatOuvert() );
+            }
+            else {
+                return false;
+            }
+        }
     }
 ?>
