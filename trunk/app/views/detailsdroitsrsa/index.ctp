@@ -10,7 +10,7 @@
         <p class="notice">Ce dossier ne possède pas encore de détails sur les droits.</p>
 
     <?php else:?>
-            <table class="tooltips">
+            <table class="aere">
                 <thead>
                     <tr>
                         <th>Domicile fixe</th>
