@@ -43,8 +43,6 @@
 
             $this->assert( !empty( $recours ), 'error404' );
 
-
-
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
             $this->set( 'recours', $recours );
         }
