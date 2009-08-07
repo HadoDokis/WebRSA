@@ -15,11 +15,11 @@
 
             $this->assert( valid_int( $dossier_rsa_id ), 'invalidParameter' );
 
-            $gracieux = $this->Infofinanciere->find(
+            $gracieux = $this->Avispcgdroitrsa->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Infofinanciere.dossier_rsa_id' => $dossier_rsa_id
+                        'Avispcgdroitrsa.dossier_rsa_id' => $dossier_rsa_id
                     ),
                 'recursive' => -1
                 )
@@ -29,7 +29,7 @@
 //             $this->assert( !empty( $gracieux ), 'error404' );
 
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
-//             $this->set( 'avispcg', $avispcg );
+            $this->set( 'avispcg', $avispcg );
             $this->set( 'gracieux', $gracieux );
         }
 
@@ -37,11 +37,11 @@
 
             $this->assert( valid_int( $dossier_rsa_id ), 'invalidParameter' );
 
-            $contentieux = $this->Infofinanciere->find(
+            $contentieux = $this->Avispcgdroitrsa->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Infofinanciere.dossier_rsa_id' => $dossier_rsa_id
+                        'Avispcgdroitrsa.dossier_rsa_id' => $dossier_rsa_id
                     ),
                 'recursive' => -1
                 )
