@@ -51,7 +51,7 @@
 
                         echo $html->tableCells(
                             array(
-                                h( $locale->date( 'Date::miniLettre', $indu['Infofinanciere']['dttraimoucompta'] ) ),
+                                h( $locale->date( 'Date::miniLettre', $indu['Infofinanciere']['moismoucompta'] ) ),
                                 h( $type_allocation[$indu['Infofinanciere']['type_allocation']] ),
                                 h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ),
 //                                 h( $indu['Dossier'][0]['typeparte'] ),
