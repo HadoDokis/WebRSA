@@ -64,10 +64,6 @@
                                     array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] ),
                                     $permissions->check( 'personnes', 'edit' )
                                 ),
-    //                             $html->deleteLink(
-    //                                 'Supprimer la personne « '.$title.' »',
-    //                                 array( 'controller' => 'personnes', 'action' => 'delete', $personne['Personne']['id'] )
-    //                             )
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
