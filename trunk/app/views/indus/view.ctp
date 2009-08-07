@@ -11,7 +11,7 @@
 
     <?php else:?>
     <h2>Généralités</h2>
-        <table class="wide">
+        <table class="smallHeader aere">
             <tbody>
                     <tr class="odd">
                         <th class="aere">Type de l'indu</th>
@@ -75,27 +75,30 @@
             </tbody>
         </table>
     <?php endif;?>
+
         <ul class="actionMenu">
-            <?php
+            <!-- <li><?php
                 echo $html->remiseLink(
                     'Enregistrer les remises',
                     array( 'controller' => 'gedooos', 'action' => 'notifications_cohortes' )
                 );
-            ?>
-
-            <?php
-                echo $html->recgraLink(
-                    'Recours gracieux',
-                    array( 'controller' => 'recours', 'action' => 'gracieux', $infofinanciere['Dossier']['id'] )
-                );
-            ?>
-
-            <?php
-                echo $html->recconLink(
-                    'Recours contentieux',
-                    array( 'controller' => 'recours', 'action' => 'contentieux', $infofinanciere['Dossier']['id'] )
-                );
-            ?>
+            ?> </li>-->
+            <li>
+                <?php
+                    echo $html->recgraLink(
+                        'Recours gracieux',
+                        array( 'controller' => 'recours', 'action' => 'gracieux', $infofinanciere['Dossier']['id'] )
+                    );
+                ?>
+            </li>
+            <li>
+                <?php
+                    echo $html->recconLink(
+                        'Recours contentieux',
+                        array( 'controller' => 'recours', 'action' => 'contentieux', $infofinanciere['Dossier']['id'] )
+                    );
+                ?>
+            </li>
         </ul>
 </div>
 <div class="clearer"><hr /></div>
