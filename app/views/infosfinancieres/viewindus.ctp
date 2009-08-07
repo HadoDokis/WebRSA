@@ -75,5 +75,27 @@
             </tbody>
         </table>
     <?php endif;?>
+        <ul class="actionMenu">
+            <?php
+                echo $html->remiseLink(
+                    'Enregistrer les remises',
+                    array( 'controller' => 'gedooos', 'action' => 'notifications_cohortes' )
+                );
+            ?>
+
+            <?php
+                echo $html->recgraLink(
+                    'Recours gracieux',
+                    array( 'controller' => 'cohortes', 'action' => 'exportcsv' )
+                );
+            ?>
+
+            <?php
+                echo $html->recconLink(
+                    'Recours contentieux',
+                    array( 'controller' => 'cohortes', 'action' => 'exportcsv' )
+                );
+            ?>
+        </ul>
 </div>
 <div class="clearer"><hr /></div>
