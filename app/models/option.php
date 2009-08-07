@@ -177,7 +177,7 @@
             return array(
                 'D' => 'Avis demandé au CG',
                 'A' => 'Accord du CG',
-                'R' => 'refus du CG'
+                'R' => 'Refus du CG'
             );
         }
 
@@ -1543,5 +1543,32 @@
                 'P' => 'Versement partiel d\'une PA'
             );
         }
+
+
+/********************TEST pour les Recours
+*********************/
+/*
+        function motif(){
+            return array(
+                'N' => 'Non admissible',
+                'A' => 'Admissible',
+                'P' => 'Pièces manquantes'
+            );
+        }
+        function decision(){
+        return array(
+            '' => 'pas de décision',
+            '1' => 'Validé',
+            '2' => 'Refusé',
+            '3' => 'Ajourné'
+        );
+        }
+        function typecommission(){
+            return array(
+                'V' => 'Commission de validation',
+                'R' => 'Commission de recours',
+                'E' => 'Commission d\'évaluation'
+            );
+        }*/
     }
 ?>
