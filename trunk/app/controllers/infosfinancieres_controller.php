@@ -15,7 +15,7 @@
         }
 
 
-        function index() {
+        function indexdossier() {
 
             if( !empty( $this->data ) ) {
 
@@ -37,7 +37,7 @@
 
         }
 
-        function indexdossier( $dossier_rsa_id = null ) {
+        function index( $dossier_rsa_id = null ) {
             //Vérification du format de la variable
             $this->assert( valid_int( $dossier_rsa_id ), 'invalidParameter' );
 
@@ -74,24 +74,6 @@
 
         }
 
-
-        function indexindus( $dossier_rsa_id = null) {
-            //Vérification du format de la variable
-            $this->assert( valid_int( $dossier_rsa_id ), 'invalidParameter' );
-
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-
-            $params = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array( 'Dossier.id' => $dossier_rsa_id ) );
-            $infofinanciere = $this->Infofinanciere->find( 'first',  $params );
-
-// debug( $infofinanciere );
-
-            $this->set('infofinanciere', $infofinanciere );
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
-
-        }
-
         function view( $infofinanciere_id = null ) {
             // Vérification du format de la variable
             $this->assert( valid_int( $infofinanciere_id ), 'error404' );
@@ -115,25 +97,4 @@
 
         }
 
-
-        function viewindus( $dossier_rsa_id = null ) {
-            // Vérification du format de la variable
-            $this->assert( valid_int( $dossier_rsa_id ), 'error404' );
-
-
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-
-            $params = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array( 'Dossier.id' => $dossier_rsa_id ) );
-            $infofinanciere = $this->Infofinanciere->find( 'first',  $params );
-            $this->assert( !empty( $infofinanciere ), 'error404' );
-
-
-// debug( $infofinanciere );
-
-            // Assignations à la vue
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );// $infofinanciere['Infofinanciere']['dossier_rsa_id'] );
-            $this->set( 'infofinanciere', $infofinanciere );
-
-        }
 }

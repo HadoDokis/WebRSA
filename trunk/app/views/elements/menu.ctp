@@ -48,7 +48,7 @@
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                             <?php  echo $html->link( 'Paiement allocation', '#' );?>
                                 <ul>
-                                    <li><?php echo $html->link( 'Listes nominatives', array( 'controller' => 'infosfinancieres', 'action' => 'index' ), array( 'title' => 'Listes nominatives' ) );?></li>
+                                    <li><?php echo $html->link( 'Listes nominatives', array( 'controller' => 'infosfinancieres', 'action' => 'indexdossier' ), array( 'title' => 'Listes nominatives' ) );?></li>
                                     <li><?php echo $html->link( 'Mandats mensuels', array( 'controller' => 'totalisationsacomptes', 'action' => 'index' ), array( 'title' => 'Mandats mensuels' ) );?></li>
                                 </ul>
                             </li>

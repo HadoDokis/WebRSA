@@ -1,78 +1,99 @@
-<?php $this->pageTitle = 'Informations financières';?>
+<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
+<?php  $this->pageTitle = 'Paiement des allocations';?>
 
-<div class="with_treemenu">
-    <h1><?php echo $this->pageTitle;?></h1>
+<h1><?php echo $this->pageTitle;?></h1>
+
+<?php
+    if( is_array( $this->data ) ) {
+        echo '<ul class="actionMenu"><li>'.$html->link(
+            $html->image(
+                'icons/application_form_magnify.png',
+                array( 'alt' => '' )
+            ).' Formulaire',
+            '#',
+            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+        ).'</li></ul>';
+    }
 
 
-    <?php if( empty( $infosfinancieres ) ):?>
-        <p class="notice">Cette personne ne possède pas encore d'informations financières.</p>
+?>
 
-    <?php else:?>
+
+<?php echo $form->create( 'Infosfinancieres', array( 'type' => 'post', 'action' => '/indexdossier/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
-    <table>
-        <tbody>
-            <tr>
-                <th>Nom / Prénom</th>
-                <td> <?php echo $personne['Personne']['qual'].' '.$personne['Personne']['nom'].' '.$personne['Personne']['prenom'];?> </td>
-            </tr>
-            <tr>
-                <th>NIR</th>
-                <td> <?php echo $personne['Personne']['nir'];?> </td>
-            </tr>
-            <tr>
-                <th>Date de naissance</th>
-                <td> <?php echo  date_short( $personne['Personne']['dtnai'] );?> </td>
-            </tr>
-            <tr>
-                <th>N° CAF</th>
-                <td> <?php echo  $infosfinancieres[0]['Dossier'][0]['matricule'];?> </td> <!-- FIXME: Voir si possibilité changer ces 0 -->
-            </tr>
-        </tbody>
-    </table>
+            <?php echo $form->input( 'Filtre.moismoucompta', array( 'label' => 'Recherche des paiements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) ) );?>
     </fieldset>
+
+    <div class="submit noprint">
+        <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+        <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+    </div>
+<?php echo $form->end();?>
+
+<!-- Résultats -->
+<?php if( isset( $infosfinancieres ) ):?>
+   <?php $mois = strftime('%B %Y', strtotime( $this->data['Filtre']['moismoucompta']['year'].'-'.$this->data['Filtre']['moismoucompta']['month'].'-01' ) ); ?>
+
+    <h2 class="noprint">Liste des allocations pour le mois de <?php echo isset( $mois ) ? $mois : null ; ?></h2>
+
+    <?php if( is_array( $infosfinancieres ) && count( $infosfinancieres ) > 0  ):?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <th>Mois des mouvements</th>
+                    <th>N° Dossier</th>
+                    <th>N° CAF </th>
+                    <th>Nom/Prénom allocataire</th>
+                    <th>Nom/prénom bénéficiaire</th>
+                    <th>Date de naissance de l'allocataire</th>
                     <th>Type d'allocation</th>
-                    <th>Nature de la prestation pour la créance</th>
-                    <th>Montant</th>
-                    <th class="action">Action</th>
-                    <th class="innerTableHeader">Informations complémentaires</th>
+                    <th>Montant de l'allocation</th>
+                    <th colspan="2" class="action">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach( $infosfinancieres as $index => $indu ):?>
+                <?php foreach( $infosfinancieres as $infofinanciere ):?>
                     <?php
-
-                        $title = $indu['Dossier'][0]['numdemrsa'];
-
                         echo $html->tableCells(
                             array(
-                                h( $locale->date( 'Date::miniLettre', $indu['Infofinanciere']['dttraimoucompta'] ) ),
-                                h( $type_allocation[$indu['Infofinanciere']['type_allocation']] ),
-                                h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ),
-//                                 h( $indu['Dossier'][0]['typeparte'] ),
-//                                 h( $etatdosrsa[$indu['Dossier'][0]['Situationdossierrsa']['etatdosrsa']] ),
-//                                 h( date_short( $indu['Infofinanciere']['dttraimoucompta'] ) ),
-                                h(  $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ),
-//                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
-//                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
+                                h( $infofinanciere['Dossier']['numdemrsa'] ),
+                                h( $infofinanciere['Dossier']['matricule'] ),
+                                h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                                h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                                $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
+                                h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
+                                $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
                                 $html->viewLink(
-                                    'Voir le contrat « '.$title.' »',
-                                    array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] )
+                                    'Voir les informations financières',
+                                    array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
+                                    $permissions->check( 'infosfinancieres', 'view' )
                                 ),
+
                             ),
-                        array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-                        array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+                            array( 'class' => 'odd' ),
+                            array( 'class' => 'even' )
                         );
                     ?>
-                <?php endforeach;?>
+                <?php endforeach; ?>
             </tbody>
         </table>
+       <!-- <ul class="actionMenu">
+            <?php
+                echo $html->printLink(
+                    'Imprimer le tableau',
+                    array( 'controller' => 'gedooos', 'action' => 'notifications_cohortes' )
+                );
+            ?>
+
+            <?php
+                echo $html->exportLink(
+                    'Télécharger le tableau',
+                    array( 'controller' => 'cohortes', 'action' => 'exportcsv' )
+                );
+            ?>
+        </ul> -->
+    <?php else:?>
+        <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>
 
-</div>
-<div class="clearer"><hr /></div>
+<?php endif?>
