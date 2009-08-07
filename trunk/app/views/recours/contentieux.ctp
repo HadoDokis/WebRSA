@@ -10,7 +10,7 @@
         <p class="notice">Ce dossier ne possède pas encore de détails sur les droits.</p>
 
     <?php else:?>
-        <p class="notice">On va le créer</p>
+        <p class="notice">En développement ...</p>
 
     <?php endif;?>
 </div>
