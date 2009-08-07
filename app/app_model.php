@@ -41,5 +41,7 @@
             }
             parent::unbindModel( $unbind, $reset );
         }
+
+        // TODO: http://teknoid.wordpress.com/2008/09/29/dealing-with-calculated-fields-in-cakephps-find/
     }
 ?>
