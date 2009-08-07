@@ -42,8 +42,8 @@
                                 $locale->money( $infofinanciere[0]['mt_annulations_faible_montant'] ),
 //                                 $locale->money( $indu[0]['mt_autre_annulation'] ),
                                 $html->viewLink(
-                                    'Voir l\'indu',
-                                    array( 'controller' => 'infosfinancieres', 'action' => 'indexdossier', $infofinanciere['Dossier']['id'] )
+                                    'Détails d\'indu',
+                                    array( 'controller' => 'infosfinancieres', 'action' => 'viewindus', $infofinanciere['Dossier']['id'] )
                                 ),
                             ),
                         array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$infofinanciere ),
