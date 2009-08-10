@@ -51,7 +51,7 @@
         <table id="searchResults" class="tooltips_oupas">
             <?php foreach( $totsacoms as $totacom ) :?>
                 <?php
-                    foreach( array( 'mttotsoclrsa', 'mttotsoclmajorsa', 'mttotlocalrsa' ) as $typemontant ) {
+                    foreach( array( 'mttotsoclrsa', 'mttotsoclmajorsa', 'mttotlocalrsa', 'mttotrsa' ) as $typemontant ) {
                         $sommeFlux += $totacom['Totalisationacompte'][$typemontant];
                     }
                 ?>
@@ -80,6 +80,11 @@
                     <tr class="odd">
                         <td>RSA local</td>
                         <td class="number"><?php echo $locale->money( $totacom['Totalisationacompte']['mttotlocalrsa'] );?></td>
+                        <td class="number"></td>
+                    </tr>
+                    <tr class="even">
+                        <td>RSA socle total</td>
+                        <td class="number"><?php echo $locale->money( $totacom['Totalisationacompte']['mttotrsa'] );?></td>
                         <td class="number"></td>
                     </tr>
                 </tbody>

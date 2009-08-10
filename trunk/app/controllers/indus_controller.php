@@ -3,7 +3,8 @@
     {
         var $name = 'Indus';
         var $uses = array( 'Infofinanciere', 'Indu', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
-        var $helpers = array( /*'Paginator', */'Locale' );
+//         var $helpers = array( 'Locale' );
+
 
         function beforeFilter() {
             parent::beforeFilter();
@@ -13,6 +14,7 @@
             $this->set( 'sensopecompta', $this->Option->sensopecompta() );
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
         }
+
 
         function index( $dossier_rsa_id = null) {
             //Vérification du format de la variable
@@ -29,6 +31,7 @@
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
 
         }
+
 
         function view( $dossier_rsa_id = null ) {
             // Vérification du format de la variable

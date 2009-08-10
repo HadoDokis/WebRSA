@@ -46,27 +46,66 @@
             <tbody>
                 <?php foreach( $infosfinancieres as $index => $indu ):?>
                     <?php
+//                     debug( Set::extract( $infosfinancieres, ( $index-1 ).'.Infofinanciere.type_allocation' ) );
+                        /*$even = true;
+                        $rowspan = 1;
+                        for( $i = $index + 1 ; $i < count( $indu ) ; $i++ ) {
+                            if( Set::extract( $indu, 'Infofinanciere.type_allocation' ) == Set::extract( $infosfinancieres, $index.'.Infofinanciere.type_allocation' ) )
+                                $rowspan++;
+                        }
+                        if( Set::extract( $infosfinancieres, ( $index-1 ).'.Infofinanciere.type_allocation' ) != Set::extract( $infosfinancieres, $index.'.Infofinanciere.type_allocation' ) ) {
+                            if( $rowspan == 1 ) {
+                                $even = !$even;
+                                echo $html->tableCells(
+                                    array(
+                                        h( $locale->date( 'Date::miniLettre', $indu['Infofinanciere']['moismoucompta'] ) ),
+                                        h( $type_allocation[$indu['Infofinanciere']['type_allocation']] ),
+                                        h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ),
+                                        h( $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ),
+                                        $html->viewLink(
+                                            'Voir le contrat',
+                                            array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] ) 
+                                        ),
+                                    ),
+                                    array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+                                    array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+                                );
+                            }
+                            else{
+                                echo '<tr class="'.( $even ? 'even' : 'odd' ).'">
+                                        <td rowspan="'.$rowspan.'">'.h( $locale->date( 'Date::miniLettre', $indu['Infofinanciere']['moismoucompta'] ) ).'</td>
+                                        <td rowspan="'.$rowspan.'">'.h( $type_allocation[$indu['Infofinanciere']['type_allocation']] ).'</td>
+                                        <td>'.h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ).'</td>
+                                        <td>'.h( $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ).'</td>
+                                        <td>'.$html->viewLink(
+                                            'Voir le contrat',
+                                            array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] ),
+                                            $permissions->check( 'infosfinancieres', 'view' )
+                                        ).'</td>
+                                    </tr>';
+                            }
+                        }
+                        else{
+                            echo '<tr class="'.( $even ? 'even' : 'odd' ).'">
+                                    <td>'.h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ).'</td>
+                                    <td>'.h( $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ).'</td>
+                                </tr>';
+                        } */
 
-                        $title = $indu['Dossier'][0]['numdemrsa'];
 
                         echo $html->tableCells(
                             array(
                                 h( $locale->date( 'Date::miniLettre', $indu['Infofinanciere']['moismoucompta'] ) ),
                                 h( $type_allocation[$indu['Infofinanciere']['type_allocation']] ),
                                 h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ),
-//                                 h( $indu['Dossier'][0]['typeparte'] ),
-//                                 h( $etatdosrsa[$indu['Dossier'][0]['Situationdossierrsa']['etatdosrsa']] ),
-//                                 h( date_short( $indu['Infofinanciere']['dttraimoucompta'] ) ),
                                 h(  $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ),
-//                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
-//                                 h( $indu['Infofinanciere']['mtmoucompta'] ),
                                 $html->viewLink(
-                                    'Voir le contrat « '.$title.' »',
+                                    'Voir le contrat',
                                     array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] )
                                 ),
                             ),
-                        array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-                        array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+                            array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+                            array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
                         );
                     ?>
                 <?php endforeach;?>
