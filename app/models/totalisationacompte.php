@@ -57,7 +57,8 @@
                     '"Totalisationacompte"."type_totalisation"',
                     'SUM("Totalisationacompte"."mttotsoclrsa") AS "Totalisationacompte__mttotsoclrsa"',
                     'SUM("Totalisationacompte"."mttotsoclmajorsa") AS "Totalisationacompte__mttotsoclmajorsa"',
-                    'SUM("Totalisationacompte"."mttotlocalrsa") AS "Totalisationacompte__mttotlocalrsa"'
+                    'SUM("Totalisationacompte"."mttotlocalrsa") AS "Totalisationacompte__mttotlocalrsa"',
+                    'SUM("Totalisationacompte"."mttotrsa") AS "Totalisationacompte__mttotrsa"'
                 ),
                 'recursive' => -1,
                 'joins' => array(

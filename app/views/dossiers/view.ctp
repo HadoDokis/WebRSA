@@ -187,7 +187,7 @@
                             </tr>
                             <tr class="odd">
                                 <th>Début du traitement CAF</th>
-                                <td><?php debug( $locale->date( 'Date::short', Set::extract( 'DEM.Dossiercaf.ddratdos', $details ) ) ); echo h(  date_short( Set::extract( 'DEM.Dossiercaf.ddratdos', $details ) ) );?></td>
+                                <td><?php echo $locale->date( 'Date::short', Set::extract( 'DEM.Dossiercaf.ddratdos', $details ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Fin du traitement CAF</th>

@@ -43,7 +43,7 @@
                 <tr>
                     <th>N° Dossier</th>
                     <th>N° CAF </th>
-                    <th>Nom/Prénom allocataire</th>
+                    <!-- <th>Nom/Prénom allocataire</th> -->
                     <th>Nom/prénom bénéficiaire</th>
                     <th>Date de naissance de l'allocataire</th>
                     <th>Type d'allocation</th>
@@ -52,27 +52,62 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach( $infosfinancieres as $infofinanciere ):?>
+                <?php foreach( $infosfinancieres as $index => $infofinanciere ):?>
                     <?php
-                        echo $html->tableCells(
-                            array(
-                                h( $infofinanciere['Dossier']['numdemrsa'] ),
-                                h( $infofinanciere['Dossier']['matricule'] ),
-                                h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
-                                h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
-                                $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
-                                h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
-                                $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
-                                $html->viewLink(
-                                    'Voir les informations financières',
-                                    array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
-                                    $permissions->check( 'infosfinancieres', 'view' )
-                                ),
+                        $even = true;
+                        $rowspan = 1;
+                        for( $i = $index + 1 ; $i < count( $infofinanciere ) ; $i++ ) {
+                            if( Set::extract( $infofinanciere, 'Dossier.numdemrsa' ) == Set::extract( $infosfinancieres, $index.'.Dossier.numdemrsa' ) )
+                                $rowspan++;
+                        }
+                        if( Set::extract( $infosfinancieres, ( $index-1 ).'.Dossier.numdemrsa' ) != Set::extract( $infosfinancieres, $index.'.Dossier.numdemrsa' ) ) {
+                            if( $rowspan == 1 ) {
+                                $even = !$even;
+                                echo $html->tableCells(
+                                    array(
+                                        h( $infofinanciere['Dossier']['numdemrsa'] ),
+                                        h( $infofinanciere['Dossier']['matricule'] ),
+        //                                 h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                                        h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                                        $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
+                                        h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
+                                        $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
+                                        $html->viewLink(
+                                            'Voir les informations financières',
+                                            array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
+                                            $permissions->check( 'infosfinancieres', 'view' )
+                                        ),
 
-                            ),
-                            array( 'class' => 'odd' ),
-                            array( 'class' => 'even' )
-                        );
+                                    ),
+                                    array( 'class' => 'odd' ),
+                                    array( 'class' => 'even' )
+                                );
+                            }
+                            else {
+//                                 $even = !$even;
+                                echo '<tr class="'.( $even ? 'even' : 'odd' ).'">
+                                        <td rowspan="'.$rowspan.'">'.h( $infofinanciere['Dossier']['numdemrsa'] ).'</td>
+                                        <td rowspan="'.$rowspan.'">'.h( $infofinanciere['Dossier']['matricule'] ).'</td>
+                                        <td rowspan="'.$rowspan.'">'.h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ).'</td>
+                                        <td rowspan="'.$rowspan.'">'.$locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ).'</td>
+
+                                        <td>'.h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]).'</td>
+                                        <td>'.$locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ).'</td>
+                                        <td rowspan="'.$rowspan.'">'.$html->viewLink(
+                                            'Voir les informations financières',
+                                            array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
+                                            $permissions->check( 'infosfinancieres', 'view' )
+                                        ).'</td>
+                                    </tr>';
+                            }
+                        }
+                        else {
+                            echo '<tr class="'.( $even ? 'even' : 'odd' ).'">
+                                    <td>'.h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]).'</td>
+                                    <td>'.$locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ).'</td>
+
+                                </tr>';
+                        }
                     ?>
                 <?php endforeach; ?>
             </tbody>

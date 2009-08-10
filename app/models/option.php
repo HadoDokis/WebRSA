@@ -366,7 +366,7 @@
 
         function etatdosrsa() {
             return array(
-                '-1' => 'Non défini',
+                'Z' => 'Non défini',
                 '0'  => 'Nouvelle demande en attente de décision CG pour ouverture du droit',
                 '1'  => 'Droit refusé',
                 '2'  => 'Droit ouvert et versable',
