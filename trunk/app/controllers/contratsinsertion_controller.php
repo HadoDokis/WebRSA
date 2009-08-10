@@ -453,9 +453,10 @@
 // debug( $contratinsertion );
 
             if( !empty( $this->data ) ) {
+//             debug($this->data);
                 if( $this->Contratinsertion->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                   $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']) );
+//                     $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']) );
                 }
             }
             else {
