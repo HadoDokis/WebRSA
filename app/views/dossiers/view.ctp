@@ -171,7 +171,7 @@
                             </tr>
                             <tr class="odd">
                                 <th>Date dernier montant</th>
-                                <td><?php echo date_short( Set::extract( 'Detailcalculdroitrsa.0.mtrsavers', $details ) );?></td>
+                                <td><?php echo date_short( Set::extract( 'Detailcalculdroitrsa.0.dtderrsavers', $details ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Motif</th>
@@ -187,7 +187,7 @@
                             </tr>
                             <tr class="odd">
                                 <th>Début du traitement CAF</th>
-                                <td><?php echo h(  date_short( Set::extract( 'DEM.Dossiercaf.ddratdos', $details ) ) );?></td>
+                                <td><?php debug( $locale->date( 'Date::short', Set::extract( 'DEM.Dossiercaf.ddratdos', $details ) ) ); echo h(  date_short( Set::extract( 'DEM.Dossiercaf.ddratdos', $details ) ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Fin du traitement CAF</th>
