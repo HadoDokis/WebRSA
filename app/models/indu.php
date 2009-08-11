@@ -117,7 +117,7 @@
                 'conditions' => $conditions
             );
 
-            $typesAllocation = array( 'AllocationComptabilisee', 'IndusConstates', 'IndusTransferesCG', 'RemisesIndus', 'AnnulationsFaibleMontant', 'AutresAnnulations' );
+            $typesAllocation = array( 'AllocationsComptabilisees', 'IndusConstates', 'IndusTransferesCG', 'RemisesIndus', 'AnnulationsFaibleMontant', 'AutresAnnulations' );
 //             $conditionsNotNull = array();
 
 
