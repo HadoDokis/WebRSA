@@ -259,28 +259,6 @@
             );
 
 
-            $typesAllocation = array( 'AllocationsComptabilisees', 'IndusConstates', 'IndusTransferesCG', 'RemisesIndus', 'AnnulationsFaibleMontant', 'AutresAnnulations' );
-
-            foreach( $typesAllocation as $type ) {
-                $meu  = Inflector::singularize( Inflector::tableize( $type ) );
-                $query['fields'][] = '"'.$type.'"."mtmoucompta" AS mt_'.$meu;
-
-                $join = array(
-                    'table'      => 'infosfinancieres',
-                    'alias'      => $type,
-                    'type'       => 'LEFT OUTER',
-                    'foreignKey' => false,
-                    'conditions' => array(
-                        $type.'.dossier_rsa_id = Dossier.id',
-                        $type.'.type_allocation' => $type,
-                    )
-                );
-
-                $query['joins'][] = $join;
-            }
-            $query['conditions'] = Set::merge( $query['conditions'], $conditions );
-
-// debug($query['fields']  );
             return $query;
         }
     }
