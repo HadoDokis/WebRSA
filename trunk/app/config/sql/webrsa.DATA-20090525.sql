@@ -815,7 +815,7 @@ INSERT INTO typesorients VALUES
 
 INSERT INTO typesorients VALUES
    (
-     4,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     2,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      null,   --                INTEGER,
      'Socioprofessionnelle',
      'notif_orientation_cg66_mod1'
@@ -831,7 +831,7 @@ INSERT INTO typesorients VALUES
 
 INSERT INTO typesorients VALUES
    (
-     6,   --     id                  SERIAL NOT NULL PRIMARY KEY,
+     3,   --     id                  SERIAL NOT NULL PRIMARY KEY,
      null,  --                INTEGER,
     'Social',
      'notif_orientation_cg66_mod2'
@@ -894,7 +894,7 @@ INSERT INTO typoscontrats VALUES
 INSERT INTO structuresreferentes VALUES
    (
       1,  --     id                  SERIAL NOT NULL PRIMARY KEY,
-      2,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
+      1,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
       'Pole emploi Mont Sud',  --     lib_struc           VARCHAR(32) NOT NULL,
       '125',  --     num_voie            VARCHAR(6) NOT NULL,
       'Avenue',  --     type_voie           VARCHAR(6) NOT NULL,
@@ -907,7 +907,7 @@ INSERT INTO structuresreferentes VALUES
 INSERT INTO structuresreferentes VALUES
    (
       2,  --     id                  SERIAL NOT NULL PRIMARY KEY,
-      2,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
+      1,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
       'Assedic Nimes',  --     lib_struc           VARCHAR(32) NOT NULL,
       '44',  --     num_voie            VARCHAR(6) NOT NULL,
       'chemin',  --     type_voie           VARCHAR(6) NOT NULL,
@@ -920,7 +920,7 @@ INSERT INTO structuresreferentes VALUES
 INSERT INTO structuresreferentes VALUES
    (
       3,  --     id                  SERIAL NOT NULL PRIMARY KEY,
-      8,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
+      2,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
       'MSA du Gard',  --     lib_struc           VARCHAR(32) NOT NULL,
       '48',  --     num_voie            VARCHAR(6) NOT NULL,
       'avenue',  --     type_voie           VARCHAR(6) NOT NULL,
@@ -934,7 +934,7 @@ INSERT INTO structuresreferentes VALUES
 INSERT INTO structuresreferentes VALUES
    (
       4,  --     id                  SERIAL NOT NULL PRIMARY KEY,
-      5,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
+      3,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
       'Conseil Général de l\'Hérault',  --     lib_struc           VARCHAR(32) NOT NULL,
       '10',  --     num_voie            VARCHAR(6) NOT NULL,
       'rue',  --     type_voie           VARCHAR(6) NOT NULL,
@@ -948,7 +948,7 @@ INSERT INTO structuresreferentes VALUES
 INSERT INTO structuresreferentes VALUES
    (
       5,  --     id                  SERIAL NOT NULL PRIMARY KEY,
-      10,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
+      3,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
       'Organisme ACAL Vauvert',  --     lib_struc           VARCHAR(32) NOT NULL,
       '48',  --     num_voie            VARCHAR(6) NOT NULL,
       'rue',  --     type_voie           VARCHAR(6) NOT NULL,
