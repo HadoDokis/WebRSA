@@ -280,7 +280,7 @@
             }
             $query['conditions'] = Set::merge( $query['conditions'], $conditions );
 
-debug($query['fields']  );
+// debug($query['fields']  );
             return $query;
         }
     }
