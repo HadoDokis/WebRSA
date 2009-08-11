@@ -100,7 +100,7 @@
                 <?php foreach( $dossiers as $index => $dossier ):?>
                     <?php
                         $title = $dossier['Dossier']['numdemrsa'];
-
+// debug( $dossier );
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
                                <!-- <tr>
