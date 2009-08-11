@@ -54,7 +54,7 @@
             <tbody>
                 <?php foreach( $infosfinancieres as $index => $infofinanciere ):?>
                     <?php
-                        $even = true;
+                        /*$even = true;
 //                         debug( $index );
                         $rowspan = 1;
                         for( $i = $index + 1 ; $i < count( $infofinanciere ) ; $i++ ) {
@@ -108,7 +108,28 @@
                                     <td>'.$locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ).'</td>
 
                                 </tr>';
-                        }
+                        }*/
+                        
+                        
+                        echo $html->tableCells(
+                                    array(
+                                        h( $infofinanciere['Dossier']['numdemrsa'] ),
+                                        h( $infofinanciere['Dossier']['matricule'] ),
+        //                                 h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                                        h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                                        $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
+                                        h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
+                                        $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
+                                        $html->viewLink(
+                                            'Voir les informations financières',
+                                            array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
+                                            $permissions->check( 'infosfinancieres', 'view' )
+                                        ),
+
+                                    ),
+                                    array( 'class' => 'odd' ),
+                                    array( 'class' => 'even' )
+                                );
                     ?>
                 <?php endforeach; ?>
             </tbody>
