@@ -374,6 +374,8 @@
             );
             $this->set( 'sr', $sr );
 
+
+
             $tc = $this->Typocontrat->find(
                 'list',
                 array(
@@ -453,10 +455,20 @@
 // debug( $contratinsertion );
 
             if( !empty( $this->data ) ) {
-//             debug($this->data);
-                if( $this->Contratinsertion->saveAll( $this->data ) ) {
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-//                     $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']) );
+debug( $this->data );
+                $this->Nivetu->create();
+                $this->Nivetu->set( $this->data/*['Nivetu']*/ );
+
+                $valid = $this->Nivetu->validates(/* $this->data['Nivetu']*/ );
+//                 debug( $this->data['Nivetu'] );
+                $valid = $this->Contratinsertion->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
+
+
+                if( false && $valid ) {
+                    if( $this->Contratinsertion->saveAll( $this->data ) ) {
+                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+    //                     $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']) );
+                    }
                 }
             }
             else {
@@ -475,11 +487,10 @@
                     )
                 );
 
-                if( !empty($dspp) ){
+                if( !empty( $dspp ) ){
                     $this->data['Nivetu'] = $dspp['Nivetu'];
                 }
                 else{
-
                 }
 
             }
