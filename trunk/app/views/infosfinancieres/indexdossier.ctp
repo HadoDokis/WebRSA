@@ -55,6 +55,7 @@
                 <?php foreach( $infosfinancieres as $index => $infofinanciere ):?>
                     <?php
                         $even = true;
+//                         debug( $index );
                         $rowspan = 1;
                         for( $i = $index + 1 ; $i < count( $infofinanciere ) ; $i++ ) {
                             if( Set::extract( $infofinanciere, 'Dossier.numdemrsa' ) == Set::extract( $infosfinancieres, $index.'.Dossier.numdemrsa' ) )
