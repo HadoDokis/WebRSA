@@ -167,7 +167,7 @@
                             </tr>
                             <tr class="even">
                                 <th>Montant RSA</th>
-                                <td><?php echo Set::extract( 'Detailcalculdroitrsa.0.mtrsavers', $details ); ?></td>
+                                <td><?php echo $locale->money( Set::extract( 'Detailcalculdroitrsa.0.mtrsavers', $details ) ); ?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date dernier montant</th>
@@ -179,7 +179,7 @@
                             </tr>
                             <tr class="odd">
                                 <th>Montant INDUS</th>
-                                <td><?php echo h( Set::extract( 'Infofinanciere.mtmoucompta', $details ) );?></td>
+                                <td><?php echo $locale->money( Set::extract( 'Infofinanciere.mtmoucompta', $details ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Motif</th>
