@@ -16,13 +16,29 @@
         ).'</li></ul>';
     }
 
+    if( isset( $infosfinancieres ) ) {
+        $paginator->options( array( 'url' => $this->passedArgs ) );
+        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
 
+        $pages = $paginator->first( '<<' );
+        $pages .= $paginator->prev( '<' );
+        $pages .= $paginator->numbers();
+        $pages .= $paginator->next( '>' );
+        $pages .= $paginator->last( '>>' );
+
+        $pagination .= $html->tag( 'p', $pages );
+    }
+    else {
+        $pagination = '';
+    }
 ?>
 
 
 <?php echo $form->create( 'Infosfinancieres', array( 'type' => 'post', 'action' => '/indexdossier/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
-            <?php echo $form->input( 'Filtre.moismoucompta', array( 'label' => 'Recherche des paiements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) ) );?>
+        <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+        <?php echo $form->input( 'Filtre.moismoucompta', array( 'label' => 'Recherche des paiements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) ) );?>
     </fieldset>
 
     <div class="submit noprint">
@@ -38,14 +54,20 @@
     <h2 class="noprint">Liste des allocations pour le mois de <?php echo isset( $mois ) ? $mois : null ; ?></h2>
 
     <?php if( is_array( $infosfinancieres ) && count( $infosfinancieres ) > 0  ):?>
+    <?php /*echo $pagination;*/?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
+                    <!--<th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
+                    <th><?php echo $paginator->sort( 'Nom/prénom du bénéficiaire', 'Personne.nom' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de naissance du bénéficiaire', 'Personne.dtnai' );?></th>
+                    <th><?php echo $paginator->sort( 'Type d\'allocation', 'Infofinanciere.type_allocation' );?></th>
+                    <th><?php echo $paginator->sort( 'Montant de l\'allocation', 'Infofinanciere.mtmoucompta' );?></th> -->
                     <th>N° Dossier</th>
-                    <th>N° CAF </th>
-                    <!-- <th>Nom/Prénom allocataire</th> -->
-                    <th>Nom/prénom bénéficiaire</th>
-                    <th>Date de naissance de l'allocataire</th>
+                    <th>N° CAF</th>
+                    <th>Nom/Prénom allocataire</th>
+                    <th>Date de naissance du bénéficiaire</th>
                     <th>Type d'allocation</th>
                     <th>Montant de l'allocation</th>
                     <th colspan="2" class="action">Actions</th>
@@ -112,24 +134,24 @@
                         
                         
                         echo $html->tableCells(
-                                    array(
-                                        h( $infofinanciere['Dossier']['numdemrsa'] ),
-                                        h( $infofinanciere['Dossier']['matricule'] ),
-        //                                 h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
-                                        h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
-                                        $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
-                                        h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
-                                        $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
-                                        $html->viewLink(
-                                            'Voir les informations financières',
-                                            array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
-                                            $permissions->check( 'infosfinancieres', 'view' )
-                                        ),
+                            array(
+                                h( $infofinanciere['Dossier']['numdemrsa'] ),
+                                h( $infofinanciere['Dossier']['matricule'] ),
+//                                 h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                                h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                                $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
+                                h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
+                                $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
+                                $html->viewLink(
+                                    'Voir les informations financières',
+                                    array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
+                                    $permissions->check( 'infosfinancieres', 'view' )
+                                ),
 
-                                    ),
-                                    array( 'class' => 'odd' ),
-                                    array( 'class' => 'even' )
-                                );
+                            ),
+                            array( 'class' => 'odd' ),
+                            array( 'class' => 'even' )
+                        );
                     ?>
                 <?php endforeach; ?>
             </tbody>
@@ -149,6 +171,7 @@
                 );
             ?>
         </ul> -->
+
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>

@@ -79,7 +79,7 @@
 //                                         <td>'.h( $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ).'</td>
 // 
 //                                         <td>'.$html->viewLink(
-//                                             'Voir le contrat',
+//                                             'Voir l\'indu',
 //                                             array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] ),
 //                                             $permissions->check( 'infosfinancieres', 'view' )
 //                                         ).'</td>

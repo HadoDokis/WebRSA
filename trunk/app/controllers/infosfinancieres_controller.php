@@ -5,6 +5,11 @@
         var $uses = array( 'Infofinanciere', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
         var $helpers = array( /*'Paginator', */'Locale' );
 
+//         var $paginate = array(
+//             // FIXME
+//             'limit' => 20,
+//         );
+
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'type_allocation', $this->Option->type_allocation() );
@@ -25,7 +30,7 @@
                 $this->Dossier->begin(); // Pour les jetons
 
                 $this->paginate = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
-                $this->paginate['limit'] = 10;
+                $this->paginate['limit'] = 15;
                 $infosfinancieres = $this->paginate( 'Infofinanciere' );
 
                 $this->Dossier->commit();
@@ -33,8 +38,6 @@
                 $this->set( 'infosfinancieres', $infosfinancieres );
                 $this->data['Search'] = $this->data;
             }
-
-
         }
 
         function index( $dossier_rsa_id = null ) {
@@ -56,17 +59,14 @@
                 'first',
                 array(
                     'conditions' => array( 'Personne.foyer_id' => $foyer['Foyer']['id'] ,
-//                     'recursive' => -1,
                     'Prestation.natprest = \'RSA\'',
                             '( Prestation.rolepers = \'DEM\' )',
                 )
                 )
             );
 
-// debug( $infosfinancieres );
             $this->assert( !empty( $personne ), 'invalidParameter' );
             $this->set( 'personne', $personne );
-//             debug( $personne );
 
 
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
