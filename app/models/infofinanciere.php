@@ -188,7 +188,8 @@
                     ),
                 ),
                 'limit' => 10,
-                'order' => array( '"Personne"."nom"' ),
+                //'order' => array( '"Personne"."nom"' ),
+                'order' => array( '"Dossier"."numdemrsa"' ),
                 'conditions' => $conditions
             );
 
