@@ -95,6 +95,8 @@
         <?php echo $form->input( 'Dspp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
     <?php endif;?>
 <!--$this->Nivetu->validationErrors-->
+        <?php echo $form->input( 'Dspp.id', array( 'type' => 'hidden' ) );?>
+        
         <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
         <?php echo $form->input( 'Contratinsertion.diplomes', array( 'label' => required( __( 'diplomes', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => required( __( 'expr_prof', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>

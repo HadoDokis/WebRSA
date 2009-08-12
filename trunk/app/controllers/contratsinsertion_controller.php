@@ -455,19 +455,24 @@
 // debug( $contratinsertion );
 
             if( !empty( $this->data ) ) {
-debug( $this->data );
-                $this->Nivetu->create();
-                $this->Nivetu->set( $this->data/*['Nivetu']*/ );
+                $this->Dspp->create();
+                $this->Dspp->set( $this->data/*['Nivetu']*/ );
 
-                $valid = $this->Nivetu->validates(/* $this->data['Nivetu']*/ );
+                $valid = $this->Dspp->validates( $this->data );
 //                 debug( $this->data['Nivetu'] );
                 $valid = $this->Contratinsertion->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
 
-
-                if( false && $valid ) {
-                    if( $this->Contratinsertion->saveAll( $this->data ) ) {
+                if( $valid ) {
+                    $this->Dspp->begin();
+                    $saved = $this->Contratinsertion->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+                    $saved = $this->Dspp->save( $this->data ) && $saved;
+                    if( $saved ) {
+                        $this->Dspp->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
     //                     $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']) );
+                    }
+                    else {
+                        $this->Dspp->rollback();
                     }
                 }
             }
@@ -488,6 +493,7 @@ debug( $this->data );
                 );
 
                 if( !empty( $dspp ) ){
+                    $this->data['Dspp']['id'] = $dspp['Dspp']['id'];
                     $this->data['Nivetu'] = $dspp['Nivetu'];
                 }
                 else{
