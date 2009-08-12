@@ -29,7 +29,7 @@
 
 <?php echo $form->create( 'Totalisationsacomptes', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
         <fieldset>
-            <?php echo $form->input( 'Filtre.dtref', array( 'label' => 'Recherche des versements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) ) );?>
+            <?php echo $form->input( 'Filtre.dtcreaflux', array( 'label' => 'Recherche des versements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) ) );?>
     </fieldset>
 
     <div class="submit noprint">
@@ -41,7 +41,7 @@
 <!-- Résultats -->
 <?php if( isset( $totsacoms ) ):?>
 
-   <?php $mois = strftime('%B %Y', strtotime( $this->data['Filtre']['dtref']['year'].'-'.$this->data['Filtre']['dtref']['month'].'-01' ) ); ?>
+   <?php $mois = strftime('%B %Y', strtotime( $this->data['Filtre']['dtcreaflux']['year'].'-'.$this->data['Filtre']['dtcreaflux']['month'].'-01' ) ); ?>
 
     <h2 class="noprint">Liste des versements d'allocation pour le mois de <?php echo isset( $mois ) ? $mois : null ;?> </h2>
 

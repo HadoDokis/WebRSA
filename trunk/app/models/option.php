@@ -1339,7 +1339,7 @@
             return array(
                 'TotalAllocationsComptabilisees' => 'Total des allocations comptabilisees',
                 'TotalIndusConstates' => 'Total des indus constates',
-                'TotalIndusTransferésCG' => 'Total des indus transferés au CG',
+                'TotalIndusTransferesCG' => 'Total des indus transferés au CG',
                 'TotalRemisesIndus' => 'Total des remises des indus',
                 'TotalAnnulationsIndus' => 'Total des annulations des indus',
                 'MontantTotalAcompte' => 'Montant total de l\'acompte'
