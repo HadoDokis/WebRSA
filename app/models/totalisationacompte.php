@@ -41,12 +41,12 @@
             $conditions = array();
 
             /// Critères
-            $mois = Set::extract( $criteres, 'Filtre.dtref' );
+            $mois = Set::extract( $criteres, 'Filtre.dtcreaflux' );
 
             /// Date du flux financier
-            if( !empty( $mois ) && dateComplete( $criteres, 'Filtre.dtref' ) ) {
+            if( !empty( $mois ) && dateComplete( $criteres, 'Filtre.dtcreaflux' ) ) {
                 $mois = $mois['month'];
-                $conditions[] = 'EXTRACT(MONTH FROM Identificationflux.dtref) = '.$mois;
+                $conditions[] = 'EXTRACT(MONTH FROM Identificationflux.dtcreaflux) = '.$mois;
             }
 
             /// Requête

@@ -10,6 +10,13 @@
 //             'limit' => 20,
 //         );
 
+        /**
+        */
+        function __construct() {
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'indexdossier' ) ) ) );
+            parent::__construct();
+        }
+
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'type_allocation', $this->Option->type_allocation() );

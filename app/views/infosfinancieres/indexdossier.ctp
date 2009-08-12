@@ -16,22 +16,22 @@
         ).'</li></ul>';
     }
 
-    if( isset( $infosfinancieres ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
-        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
-
-        $pages = $paginator->first( '<<' );
-        $pages .= $paginator->prev( '<' );
-        $pages .= $paginator->numbers();
-        $pages .= $paginator->next( '>' );
-        $pages .= $paginator->last( '>>' );
-
-        $pagination .= $html->tag( 'p', $pages );
-    }
-    else {
-        $pagination = '';
-    }
+//     if( isset( $infosfinancieres ) ) {
+//         $paginator->options( array( 'url' => $this->passedArgs ) );
+//         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+//         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+// 
+//         $pages = $paginator->first( '<<' );
+//         $pages .= $paginator->prev( '<' );
+//         $pages .= $paginator->numbers();
+//         $pages .= $paginator->next( '>' );
+//         $pages .= $paginator->last( '>>' );
+// 
+//         $pagination .= $html->tag( 'p', $pages );
+//     }
+//     else {
+//         $pagination = '';
+//     }
 ?>
 
 
@@ -55,6 +55,7 @@
 
     <?php if( is_array( $infosfinancieres ) && count( $infosfinancieres ) > 0  ):?>
     <?php /*echo $pagination;*/?>
+    <?php require( 'index.pagination.ctp' );?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
@@ -76,7 +77,7 @@
             <tbody>
                 <?php foreach( $infosfinancieres as $index => $infofinanciere ):?>
                     <?php
-                        /*$even = true;
+                        $even = true;
 //                         debug( $index );
                         $rowspan = 1;
                         for( $i = $index + 1 ; $i < count( $infofinanciere ) ; $i++ ) {
@@ -130,28 +131,28 @@
                                     <td>'.$locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ).'</td>
 
                                 </tr>';
-                        }*/
+                        }
                         
                         
-                        echo $html->tableCells(
-                            array(
-                                h( $infofinanciere['Dossier']['numdemrsa'] ),
-                                h( $infofinanciere['Dossier']['matricule'] ),
+//                         echo $html->tableCells(
+//                             array(
+//                                 h( $infofinanciere['Dossier']['numdemrsa'] ),
+//                                 h( $infofinanciere['Dossier']['matricule'] ),
+// //                                 h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
 //                                 h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
-                                h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
-                                $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
-                                h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
-                                $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
-                                $html->viewLink(
-                                    'Voir les informations financières',
-                                    array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
-                                    $permissions->check( 'infosfinancieres', 'view' )
-                                ),
-
-                            ),
-                            array( 'class' => 'odd' ),
-                            array( 'class' => 'even' )
-                        );
+//                                 $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
+//                                 h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
+//                                 $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
+//                                 $html->viewLink(
+//                                     'Voir les informations financières',
+//                                     array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
+//                                     $permissions->check( 'infosfinancieres', 'view' )
+//                                 ),
+// 
+//                             ),
+//                             array( 'class' => 'odd' ),
+//                             array( 'class' => 'even' )
+//                         );
                     ?>
                 <?php endforeach; ?>
             </tbody>
@@ -171,7 +172,7 @@
                 );
             ?>
         </ul> -->
-
+    <?php require( 'index.pagination.ctp' ); ?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>
