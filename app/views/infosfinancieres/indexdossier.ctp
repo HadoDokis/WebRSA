@@ -16,22 +16,6 @@
         ).'</li></ul>';
     }
 
-//     if( isset( $infosfinancieres ) ) {
-//         $paginator->options( array( 'url' => $this->passedArgs ) );
-//         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-//         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
-// 
-//         $pages = $paginator->first( '<<' );
-//         $pages .= $paginator->prev( '<' );
-//         $pages .= $paginator->numbers();
-//         $pages .= $paginator->next( '>' );
-//         $pages .= $paginator->last( '>>' );
-// 
-//         $pagination .= $html->tag( 'p', $pages );
-//     }
-//     else {
-//         $pagination = '';
-//     }
 ?>
 
 
@@ -59,30 +43,31 @@
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <!--<th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
                     <th><?php echo $paginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
                     <th><?php echo $paginator->sort( 'Nom/prénom du bénéficiaire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Date de naissance du bénéficiaire', 'Personne.dtnai' );?></th>
                     <th><?php echo $paginator->sort( 'Type d\'allocation', 'Infofinanciere.type_allocation' );?></th>
-                    <th><?php echo $paginator->sort( 'Montant de l\'allocation', 'Infofinanciere.mtmoucompta' );?></th> -->
-                    <th>N° Dossier</th>
+                    <th><?php echo $paginator->sort( 'Montant de l\'allocation', 'Infofinanciere.mtmoucompta' );?></th> 
+                    <!--<th>N° Dossier</th>
                     <th>N° CAF</th>
                     <th>Nom/Prénom allocataire</th>
                     <th>Date de naissance du bénéficiaire</th>
                     <th>Type d'allocation</th>
-                    <th>Montant de l'allocation</th>
+                    <th>Montant de l'allocation</th>-->
                     <th colspan="2" class="action">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach( $infosfinancieres as $index => $infofinanciere ):?>
                     <?php
-                        $even = true;
+                        /*$even = true;
 //                         debug( $index );
                         $rowspan = 1;
                         for( $i = $index + 1 ; $i < count( $infofinanciere ) ; $i++ ) {
                             if( Set::extract( $infofinanciere, 'Dossier.numdemrsa' ) == Set::extract( $infosfinancieres, $index.'.Dossier.numdemrsa' ) )
                                 $rowspan++;
+
                         }
                         if( Set::extract( $infosfinancieres, ( $index-1 ).'.Dossier.numdemrsa' ) != Set::extract( $infosfinancieres, $index.'.Dossier.numdemrsa' ) ) {
                             if( $rowspan == 1 ) {
@@ -131,28 +116,28 @@
                                     <td>'.$locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ).'</td>
 
                                 </tr>';
-                        }
+                        } */
                         
                         
-//                         echo $html->tableCells(
-//                             array(
-//                                 h( $infofinanciere['Dossier']['numdemrsa'] ),
-//                                 h( $infofinanciere['Dossier']['matricule'] ),
-// //                                 h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                        echo $html->tableCells(
+                            array(
+                                h( $infofinanciere['Dossier']['numdemrsa'] ),
+                                h( $infofinanciere['Dossier']['matricule'] ),
 //                                 h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
-//                                 $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
-//                                 h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
-//                                 $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
-//                                 $html->viewLink(
-//                                     'Voir les informations financières',
-//                                     array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
-//                                     $permissions->check( 'infosfinancieres', 'view' )
-//                                 ),
-// 
-//                             ),
-//                             array( 'class' => 'odd' ),
-//                             array( 'class' => 'even' )
-//                         );
+                                h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
+                                $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
+                                h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
+                                $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
+                                $html->viewLink(
+                                    'Voir les informations financières',
+                                    array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
+                                    $permissions->check( 'infosfinancieres', 'view' )
+                                ),
+
+                            ),
+                            array( 'class' => 'odd' ),
+                            array( 'class' => 'even' )
+                        );
                     ?>
                 <?php endforeach; ?>
             </tbody>
