@@ -51,7 +51,7 @@
         <table id="searchResults" class="tooltips_oupas">
             <?php foreach( $totsacoms as $totacom ) :?>
                 <?php
-                    foreach( array( 'mttotsoclrsa', 'mttotsoclmajorsa', 'mttotlocalrsa', 'mttotrsa' ) as $typemontant ) {
+                    foreach( array( 'mttotsoclrsa', 'mttotsoclmajorsa', 'mttotlocalrsa' ) as $typemontant ) {
                         $sommeFlux += $totacom['Totalisationacompte'][$typemontant];
                     }
                 ?>
