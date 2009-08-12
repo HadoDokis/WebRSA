@@ -59,24 +59,21 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $even = true;?>
                 <?php foreach( $infosfinancieres as $index => $infofinanciere ):?>
                     <?php
-                        /*$even = true;
-//                         debug( $index );
-                        $rowspan = 1;
-                        for( $i = $index + 1 ; $i < count( $infofinanciere ) ; $i++ ) {
-                            if( Set::extract( $infofinanciere, 'Dossier.numdemrsa' ) == Set::extract( $infosfinancieres, $index.'.Dossier.numdemrsa' ) )
-                                $rowspan++;
-
-                        }
-                        if( Set::extract( $infosfinancieres, ( $index-1 ).'.Dossier.numdemrsa' ) != Set::extract( $infosfinancieres, $index.'.Dossier.numdemrsa' ) ) {
+                        // Nouvelle entrée
+                        if( Set::extract( $infosfinancieres, ( $index - 1 ).'.Dossier.numdemrsa' ) != Set::extract( $infofinanciere, 'Dossier.numdemrsa' ) ) {
+                            $rowspan = 1;
+                            for( $i = ( $index + 1 ) ; $i < count( $infosfinancieres ) ; $i++ ) {
+                                if( Set::extract( $infofinanciere, 'Dossier.numdemrsa' ) == Set::extract( $infosfinancieres, $i.'.Dossier.numdemrsa' ) )
+                                    $rowspan++;
+                            }
                             if( $rowspan == 1 ) {
-                                $even = !$even;
                                 echo $html->tableCells(
                                     array(
                                         h( $infofinanciere['Dossier']['numdemrsa'] ),
                                         h( $infofinanciere['Dossier']['matricule'] ),
-        //                                 h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
                                         h( $infofinanciere['Personne']['qual'].' '.$infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
                                         $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
                                         h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
@@ -88,12 +85,12 @@
                                         ),
 
                                     ),
-                                    array( 'class' => 'odd' ),
-                                    array( 'class' => 'even' )
+                                    array( 'class' => ( $even ? 'even' : 'odd' ) ),
+                                    array( 'class' => ( !$even ? 'even' : 'odd' ) )
                                 );
                             }
+                            // Nouvelle entrée avec rowspan
                             else {
-//                                 $even = !$even;
                                 echo '<tr class="'.( $even ? 'even' : 'odd' ).'">
                                         <td rowspan="'.$rowspan.'">'.h( $infofinanciere['Dossier']['numdemrsa'] ).'</td>
                                         <td rowspan="'.$rowspan.'">'.h( $infofinanciere['Dossier']['matricule'] ).'</td>
@@ -110,16 +107,16 @@
                                     </tr>';
                             }
                         }
+                        // Suite avec rowspan
                         else {
                             echo '<tr class="'.( $even ? 'even' : 'odd' ).'">
                                     <td>'.h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]).'</td>
                                     <td>'.$locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ).'</td>
-
                                 </tr>';
-                        } */
-                        
-                        
-                        echo $html->tableCells(
+                        }
+
+
+                       /* echo $html->tableCells(
                             array(
                                 h( $infofinanciere['Dossier']['numdemrsa'] ),
                                 h( $infofinanciere['Dossier']['matricule'] ),
@@ -137,7 +134,13 @@
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )
-                        );
+                        );*/
+// debug( 'i => '.Set::extract( $infofinanciere, 'Dossier.numdemrsa' ) );
+// debug( 'i + 1 => '.Set::extract( $infosfinancieres, ( $index + 1 ).'.Dossier.numdemrsa' ) );
+                        if( Set::extract( $infosfinancieres, ( $index + 1 ).'.Dossier.numdemrsa' ) != Set::extract( $infofinanciere, 'Dossier.numdemrsa' ) ) {
+                            $even = !$even;
+                        }
+// var_dump( $even );
                     ?>
                 <?php endforeach; ?>
             </tbody>
