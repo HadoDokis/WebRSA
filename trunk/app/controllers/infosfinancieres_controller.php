@@ -39,7 +39,7 @@
                 $this->paginate = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
                 $this->paginate['limit'] = 15;
                 $infosfinancieres = $this->paginate( 'Infofinanciere' );
-
+// debug( $infosfinancieres );
                 $this->Dossier->commit();
 
                 $this->set( 'infosfinancieres', $infosfinancieres );
