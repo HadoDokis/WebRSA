@@ -469,7 +469,7 @@
                     if( $saved ) {
                         $this->Dspp->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-    //                     $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']) );
+                        $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']) );
                     }
                     else {
                         $this->Dspp->rollback();
@@ -497,6 +497,7 @@
                     $this->data['Nivetu'] = $dspp['Nivetu'];
                 }
                 else{
+                    //TODO : cakeError
                 }
 
             }
