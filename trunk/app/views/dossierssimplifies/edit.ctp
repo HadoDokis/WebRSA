@@ -30,7 +30,11 @@
             <div><?php echo $form->input( 'Prestation.personne_id', array( 'label' => false, 'type' => 'hidden') );?></div>
             <div><?php echo $form->input( 'Prestation.natprest', array( 'label' => false, 'value' => 'RSA', 'type' => 'hidden') );?></div>
 
-            <div><?php echo $form->input( 'Prestation.rolepers', array( 'label' => required( __( 'rolepers', true ) ), 'type' => 'hidden') );?></div>
+            <!-- <div><?php echo $form->input( 'Prestation.rolepers', array( 'label' => required( __( 'rolepers', true ) ), 'type' => 'hidden') );?></div> -->
+
+            <?php echo $form->input( 'Prestation.rolepers', array( 'label' => required( __( 'rolepers', true ) ), 'type' => 'select', 'options' => $rolepers, 'empty' => true ) );?>
+
+
             <div><?php echo $form->input( 'Personne.id', array( 'label' => required( __( 'id', true ) ), 'value' =>$id , 'type' => 'hidden') );?></div>
             <?php echo $form->input( 'Personne.qual', array( 'label' => required( __( 'qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
             <?php echo $form->input( 'Personne.nom', array( 'label' => required( __( 'nom', true ) ) ) );?>

@@ -125,6 +125,7 @@
 
 
             if( !empty( $this->data ) ) {
+
                 $this->Dossier->set( $this->data );
                 $this->Foyer->set( $this->data );
                 $this->Orientstruct->set( $this->data );
