@@ -28,7 +28,11 @@
         <fieldset>
             <h2>Personne à orienter</h2>
             <div><?php echo $form->input( 'Prestation.0.natprest', array( 'label' => false, 'value' => 'RSA', 'type' => 'hidden') );?></div>
-            <div><?php echo $form->input( 'Prestation.0.rolepers', array( 'label' => false, 'value' => 'DEM', 'type' => 'hidden') );?></div>
+            <!-- <div><?php echo $form->input( 'Prestation.0.rolepers', array( 'label' => false, 'value' => 'DEM', 'type' => 'hidden') );?></div> -->
+
+            <?php echo $form->input( 'Prestation.0.rolepers', array( 'label' => required( __( 'rolepers', true ) ), 'type' => 'select', 'options' => $rolepers, 'empty' => true ) );?>
+
+
             <div><?php echo $form->input( 'Personne.0.id', array( 'label' => required( __( 'id', true ) ),  'type' => 'hidden') );?></div>
             <?php echo $form->input( 'Personne.0.qual', array( 'label' => required( __( 'qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
             <?php echo $form->input( 'Personne.0.nom', array( 'label' => required( __( 'nom', true ) ) ) );?>
@@ -47,7 +51,9 @@
         <fieldset>
             <h2>Autre personne à orienter (le cas échéant)</h2>
             <div><?php echo $form->input( 'Prestation.1.natprest', array( 'label' => false, 'value' => 'RSA', 'type' => 'hidden') );?></div>
-            <div><?php echo $form->input( 'Prestation.1.rolepers', array( 'label' => false, 'value' => 'CJT', 'type' => 'hidden') );?></div>
+            <!-- <div><?php echo $form->input( 'Prestation.1.rolepers', array( 'label' => false, 'value' => 'CJT', 'type' => 'hidden') );?></div> -->
+
+            <?php echo $form->input( 'Prestation.1.rolepers', array( 'label' => __( 'rolepers', true ), 'type' => 'select', 'options' => $rolepers , 'empty' => true ) );?>
 
             <div><?php  echo $form->input( 'Personne.1.id', array( 'label' => required( __( 'id', true ) ), 'type' => 'hidden') );?></div>
             <?php echo $form->input( 'Personne.1.qual', array( 'label' =>  __( 'qual', true ) , 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
