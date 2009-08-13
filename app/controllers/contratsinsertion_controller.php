@@ -3,7 +3,7 @@
     {
 
         var $name = 'Contratsinsertion';
-        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta' );
+        var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'DsppNivetu' );
 
 
         function beforeFilter() {
@@ -452,14 +452,18 @@
             $this->set( 'matricule', $dossier['Dossier']['matricule'] );
 
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
-// debug( $contratinsertion );
 
             if( !empty( $this->data ) ) {
                 $this->Dspp->create();
-                $this->Dspp->set( $this->data/*['Nivetu']*/ );
-
+                $this->Dspp->set( $this->data );
                 $valid = $this->Dspp->validates( $this->data );
-//                 debug( $this->data['Nivetu'] );
+
+                $this->Nivetu->create();
+                $this->Nivetu->set( $this->data );
+//                 $valid = $this->Nivetu->validates( $this->data );
+// debug( $valid );
+//                 $valid = $this->DsppNivetu->validateErrors;
+
                 $valid = $this->Contratinsertion->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
 
                 if( $valid ) {
@@ -498,8 +502,8 @@
                 }
                 else{
                     //TODO : cakeError
-                }
 
+                }
             }
             $this->render( $this->action, null, 'add_edit' );
         }
@@ -515,7 +519,7 @@
                 'first',
                 array(
                     'conditions' => array(
-                    'Contratinsertion.id' => $contratinsertion_id
+                        'Contratinsertion.id' => $contratinsertion_id
                     )
                 )
             );
