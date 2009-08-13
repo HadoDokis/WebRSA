@@ -1002,7 +1002,7 @@
             );
         }
 
-        function rolepers() {
+        function rolepers( ) {
             return array(
                 'DEM' => 'Demandeur du RSA',
                 'CJT' => 'Conjoint du demandeur',
