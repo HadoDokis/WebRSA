@@ -50,11 +50,11 @@
 
         <table id="searchResults" class="tooltips_oupas">
             <?php foreach( $totsacoms as $totacom ) :?>
-                <?php
-                    foreach( array( 'mttotsoclrsa', 'mttotsoclmajorsa', 'mttotlocalrsa' ) as $typemontant ) {
+               <!-- <?php
+                    /*foreach( array( 'mttotsoclrsa', 'mttotsoclmajorsa', 'mttotlocalrsa' ) as $typemontant ) {
                         $sommeFlux += $totacom['Totalisationacompte'][$typemontant];
-                    }
-                ?>
+                    }*/
+                ?> -->
                 <tbody>
                     <tr class="even">
                         <th><?php echo $type_totalisation[$totacom['Totalisationacompte']['type_totalisation']];?></th>
@@ -89,13 +89,13 @@
                     </tr>
                 </tbody>
             <?php endforeach; ?>
-            <tbody>
+            <!-- <tbody>
                 <tr class="even">
                     <th>Soit un total de versement de </th>
                     <td class="number"><?php echo $locale->money( $sommeFlux );?></td>
                     <td class="number"><?php echo $locale->money( $sommeCalculee );?></td>
                 </tr>
-            </tbody>
+            </tbody> -->
         </table>
 
        <!-- <ul class="actionMenu">
