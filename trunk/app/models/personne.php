@@ -13,8 +13,8 @@
             'Prestation' => array(
                 'foreignKey' => 'personne_id',
                 'conditions' => array (
-//                     'Prestation.natprest' => array( 'RSA' )
-                    'Prestation.natprest' => array( 'RSA', 'PFA' )
+                    'Prestation.natprest' => array( 'RSA' )
+//                     'Prestation.natprest' => array( 'RSA', 'PFA' )
                 )
             )
         );
@@ -168,8 +168,8 @@
                         'Prestation' => array(
                             'foreignKey' => 'personne_id',
                             'conditions' => array (
-                                'Prestation.natprest' => array( 'RSA', 'PFA' )
-//                                 'Prestation.natprest' => array( 'RSA' )
+//                                 'Prestation.natprest' => array( 'RSA', 'PFA' )
+                                'Prestation.natprest' => array( 'RSA' )
                             )
                         )
                     )
