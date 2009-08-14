@@ -32,7 +32,6 @@
         </tbody>
     </table>
     </fieldset>
-        <?php require( 'index.pagination.ctp' ); ?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
@@ -114,6 +113,6 @@
             </tbody>
         </table>
     <?php endif?>
-    <?php require( 'index.pagination.ctp' ); ?>
+
 </div>
 <div class="clearer"><hr /></div>
