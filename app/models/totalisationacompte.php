@@ -71,8 +71,10 @@
                     )
                 ),
                 'group' => array(
-                    'Totalisationacompte.type_totalisation'
+                    'Totalisationacompte.type_totalisation',
+                    'Totalisationacompte.id'
                 ),
+                'order' => array( '"Totalisationacompte"."id" ASC' ),
                 'conditions' => $conditions
             );
 // debug( $query );
