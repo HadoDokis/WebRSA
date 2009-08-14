@@ -3,7 +3,7 @@
     {
         var $name = 'Infosfinancieres';
         var $uses = array( 'Infofinanciere', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
-        var $helpers = array( /*'Paginator', */'Locale' );
+        var $helpers = array( 'Paginator', 'Locale' );
 
 //         var $paginate = array(
 //             // FIXME
@@ -66,7 +66,8 @@
                 'first',
                 array(
                     'conditions' => array( 'Personne.foyer_id' => $foyer['Foyer']['id'] ,
-                    'Prestation.natprest = \'RSA\'',
+//                     'Prestation.natprest = \'RSA\'',
+                        '( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
                             '( Prestation.rolepers = \'DEM\' )',
                 )
                 )

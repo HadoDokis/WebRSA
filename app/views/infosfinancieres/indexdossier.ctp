@@ -39,7 +39,7 @@
 
     <?php if( is_array( $infosfinancieres ) && count( $infosfinancieres ) > 0  ):?>
     <?php /*echo $pagination;*/?>
-    <?php require( 'index.pagination.ctp' );?>
+    <?php require( 'index.pagination.ctp' )?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
@@ -160,7 +160,7 @@
                 );
             ?>
         </ul> -->
-    <?php require( 'index.pagination.ctp' ); ?>
+    <?php require( 'index.pagination.ctp' )?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>
