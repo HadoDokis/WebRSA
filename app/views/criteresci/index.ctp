@@ -40,16 +40,18 @@
         <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
+
 <?php echo $form->end();?>
 
 <!-- Résultats -->
 <?php if( isset( $contrats ) ):?>
-   <div class="submit noprint">
-        <?php echo $form->button( 'Imprimer cette page', array( 'onclick' => 'printit();' ) );?>
-    </div>
+
     <h2 class="noprint">Résultats de la recherche</h2>
 
     <?php if( is_array( $contrats ) && count( $contrats ) > 0  ):?>
+        <div class="submit noprint">
+            <?php echo $form->button( 'Imprimer cette page', array( 'onclick' => 'printit();' ) );?>
+        </div>
         <?php require( 'index.pagination.ctp' )?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
