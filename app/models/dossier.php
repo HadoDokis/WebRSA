@@ -228,8 +228,8 @@
                         'foreignKey' => false,
                         'conditions' => array(
                             'Personne.id = Prestation.personne_id',
-                            '( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
-                            'Prestation.rolepers = \'DEM\''
+                            'Prestation.rolepers = \'DEM\'',
+                            'Prestation.natprest = \'RSA\''
                         )
                     ),
                     array(

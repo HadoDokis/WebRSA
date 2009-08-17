@@ -314,7 +314,7 @@
                 'all',
                 array(
                     'conditions' => array(
-                        'Personne.foyer_id' => $id,
+                        'Personne.foyer_id' => $tFoyer['Foyer']['id'],
                         'Prestation.rolepers' => array( 'DEM', 'CJT' )
                     ),
                     'recursive' => 0

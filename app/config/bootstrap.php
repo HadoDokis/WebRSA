@@ -122,6 +122,29 @@
         }
     }
 
+
+    /**
+        * ...
+        *
+        * @param array $array
+        * @param array $filterKeys
+        * @return array $newArray
+    */
+
+    function array_filter_keys( array $array, array $filterKeys, $remove = false ) { // FIXME ?
+        $newArray = array();
+        foreach( $array as $key => $value) {
+            if( $remove && !in_array( $key, $filterKeys ) ) {
+                $newArray[$key] = $value;
+            }
+            else if( !$remove && in_array( $key, $filterKeys ) ) {
+                $newArray[$key] = $value;
+            }
+        }
+        return $newArray;
+    }
+
+
     /**
         @input  multisized array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
         @output unisized array (eg. array( 'Foo__Bar' => 'value' ) )

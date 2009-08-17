@@ -14,7 +14,7 @@
             parent::beforeFilter();
             $this->set( 'pays', $this->Option->pays() );
             $this->set( 'qual', $this->Option->qual() );
-            $this->set( 'rolepers', $this->Option->rolepers() );
+            $this->set( 'rolepers', array_filter_keys( $this->Option->rolepers(), array( 'DEM', 'CJT' ) ) );
             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
             //$this->set( 'lib_struc', $this->Option->lib_struc() ); ///FIXME
             $this->set( 'statut_orient', $this->Option->statut_orient() );
