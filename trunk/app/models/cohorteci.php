@@ -79,6 +79,7 @@ SELECT DISTINCT contratsinsertion.id
 */
 
             /// Requête
+            $Situationdossierrsa =& ClassRegistry::init( 'Situationdossierrsa' );
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
 
             $query = array(
@@ -163,7 +164,7 @@ SELECT DISTINCT contratsinsertion.id
                         'alias'      => 'Situationdossierrsa',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id AND ( Situationdossierrsa.etatdosrsa IN ( \'2\', \'3\', \'4\' ) )' )
+                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )' )
                     ),
 //                     array(
 //                         'table'      => 'structuresreferentes',

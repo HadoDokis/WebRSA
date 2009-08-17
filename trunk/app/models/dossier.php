@@ -151,7 +151,7 @@
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
                 $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
-                $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
+                $conditions[] = '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) OR ( Situationdossierrsa.etatdosrsa = \'Z\' ) )';
             }
 
             // Critères sur le dossier - numéro de dossier
@@ -242,14 +242,14 @@
                     array(
                         'table'      => 'adresses_foyers',
                         'alias'      => 'Adressefoyer',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
                     ),
                     array(
                         'table'      => 'adresses',
                         'alias'      => 'Adresse',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
                     )
