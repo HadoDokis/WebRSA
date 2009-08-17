@@ -60,29 +60,64 @@
 
         //*********************************************************************
 
+//         function refreshRessources( $foyer_id ) {
+//             $this->Personne->bindModel(
+//                 array(
+//                     'hasOne' => array( 'Prestation' ),
+//                     'hasMany' => array( 'Ressource' )
+//                 )
+//             );
+//             $personnesFoyer = $this->Personne->find(
+//                 'all',
+//                 array(
+//                     'conditions' => array(
+//                         'Personne.foyer_id' => $foyer_id
+//                     ),
+//                     'recursive' => 0
+//                 )
+//             );
+//
+//             $saved = true;
+//             foreach( $personnesFoyer as $personne ) {
+//                 $rolepers = Set::extract( $personne, 'Prestation.rolepers' );
+//                 if( $rolepers == 'DEM' || $rolepers == 'CJT' ) {
+//                     $saved =  $this->Personne->Ressource->refresh( $personne['Personne']['id'] ) && $saved;
+//                 }
+//             }
+//
+//             return $saved;
+//         }
+
         function refreshRessources( $foyer_id ) {
-            $this->Personne->bindModel(
-                array(
-                    'hasOne' => array( 'Prestation' ),
-                    'hasMany' => array( 'Ressource' )
-                )
-            );
-            $personnesFoyer = $this->Personne->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'Personne.foyer_id' => $foyer_id
-                    ),
-                    'recursive' => 0
-                )
+            $query = array(
+                'fields' => array(
+                    '"Personne"."id'
+                ),
+                'joins' => array(
+                    array(
+                        'table'      => 'prestations',
+                        'alias'      => 'Prestation',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Personne.id = Prestation.personne_id',
+                            'Prestation.natprest = \'RSA\'',
+                            'Prestation.rolepers' => array( 'DEM', 'CJT' )
+                        )
+                    )
+                ),
+                'conditions' => array(
+                    'Personne.foyer_id' => $foyer_id
+                ),
+                'recursive' => -1
             );
 
+            $personnes = $this->Personne->find( 'all', $query );
+            $this->Personne->bindModel( array( 'hasMany' => array( 'Ressource' ) ) );
+
             $saved = true;
-            foreach( $personnesFoyer as $personne ) {
-                $rolepers = Set::extract( $personne, 'Prestation.rolepers' );
-                if( $rolepers == 'DEM' || $rolepers == 'CJT' ) {
-                    $saved =  $this->Personne->Ressource->refresh( $personne['Personne']['id'] ) && $saved;
-                }
+            foreach( $personnes as $personne ) {
+                $saved =  $this->Personne->Ressource->refresh( $personne['Personne']['id'] ) && $saved;
             }
 
             return $saved;
@@ -90,43 +125,99 @@
 
         //*********************************************************************
 
+//         function refreshSoumisADroitsEtDevoirs( $foyer_id ) {
+//             $this->Personne->bindModel(
+//                 array(
+//                     'hasOne' => array( 'Prestation' ),
+//                     'hasMany' => array( 'Orientstruct' )
+//                 )
+//             );
+//             $personnesFoyer = $this->Personne->find(
+//                 'all',
+//                 array(
+//                     'conditions' => array(
+//                         'Personne.foyer_id' => $foyer_id
+//                     ),
+//                     'recursive' => 1
+//                 )
+//             );
+//
+//             $saved = true;
+//             foreach( $personnesFoyer as $personne ) {
+//                 // FIXME: pourquoi certains sont vides ?
+//                 if( isset( $personne['Prestation'] ) && ( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ) ) {
+//                     $personne['Prestation']['toppersdrodevorsa'] = $this->Personne->soumisDroitsEtDevoirs( $personne['Personne']['id'] );
+//                     $this->Personne->Prestation->create( $personne['Prestation'] );
+//                     $saved =  $this->Personne->Prestation->save( $personne['Prestation'] ) && $saved;
+//
+//                     // Ajout dans la table Orientstruct si aucune entrée
+//                     $nbrOrientstruct = $this->Personne->Orientstruct->find( 'count', array( 'conditions' => array( 'Orientstruct.personne_id' => $personne['Personne']['id'] ) ) );
+//                     if( $personne['Prestation']['toppersdrodevorsa'] && $nbrOrientstruct == 0 ) {
+//                         $orientstruct = array(
+//                             'Orientstruct' => array(
+//                                 'personne_id' => $personne['Personne']['id'],
+//                                 'statut_orient' => 'Non orienté'
+//                             )
+//                         );
+//                         $this->Personne->Orientstruct->create( $orientstruct );
+//                         $saved = $this->Personne->Orientstruct->save() && $saved;
+//                     }
+//                 }
+//             }
+//
+//             return $saved;
+//         }
+
         function refreshSoumisADroitsEtDevoirs( $foyer_id ) {
-            $this->Personne->bindModel(
+            $this->Personne->unbindModel(
                 array(
-                    'hasOne' => array( 'Prestation' ),
-                    'hasMany' => array( 'Orientstruct' )
+                    'hasMany' => array( 'Orientstruct' ),
+                    'hasOne' => array( 'Prestation' )
                 )
             );
-            $personnesFoyer = $this->Personne->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'Personne.foyer_id' => $foyer_id
-                    ),
-                    'recursive' => 1
-                )
+            $query = array(
+                'fields' => array(
+                    '"Personne"."id"',
+                    '"Prestation"."id"'
+                ),
+                'joins' => array(
+                    array(
+                        'table'      => 'prestations',
+                        'alias'      => 'Prestation',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Personne.id = Prestation.personne_id',
+                            'Prestation.natprest = \'RSA\'',
+                            'Prestation.rolepers' => array( 'DEM', 'CJT' )
+                        )
+                    )
+                ),
+                'conditions' => array(
+                    'Personne.foyer_id' => $foyer_id
+                ),
+                'recursive' => 1
             );
+
+            $personnesFoyer = $this->Personne->find( 'all', $query );
 
             $saved = true;
             foreach( $personnesFoyer as $personne ) {
-                // FIXME: pourquoi certains sont vides ?
-                if( isset( $personne['Prestation'] ) && ( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ) ) {
-                    $personne['Prestation']['toppersdrodevorsa'] = $this->Personne->soumisDroitsEtDevoirs( $personne['Personne']['id'] );
-                    $this->Personne->Prestation->create( $personne['Prestation'] );
-                    $saved =  $this->Personne->Prestation->save( $personne['Prestation'] ) && $saved;
+                $personne['Prestation']['toppersdrodevorsa'] = $this->Personne->soumisDroitsEtDevoirs( $personne['Personne']['id'] );
+                $this->Personne->Prestation->create( $personne['Prestation'] );
+                $saved =  $this->Personne->Prestation->save( $personne['Prestation'] ) && $saved;
 
-                    // Ajout dans la table Orientstruct si aucune entrée
-                    $nbrOrientstruct = $this->Personne->Orientstruct->find( 'count', array( 'conditions' => array( 'Orientstruct.personne_id' => $personne['Personne']['id'] ) ) );
-                    if( $personne['Prestation']['toppersdrodevorsa'] && $nbrOrientstruct == 0 ) {
-                        $orientstruct = array(
-                            'Orientstruct' => array(
-                                'personne_id' => $personne['Personne']['id'],
-                                'statut_orient' => 'Non orienté'
-                            )
-                        );
-                        $this->Personne->Orientstruct->create( $orientstruct );
-                        $saved = $this->Personne->Orientstruct->save() && $saved;
-                    }
+                // Ajout dans la table Orientstruct si aucune entrée
+                $nbrOrientstruct = $this->Personne->Orientstruct->find( 'count', array( 'conditions' => array( 'Orientstruct.personne_id' => $personne['Personne']['id'] ) ) );
+                if( $personne['Prestation']['toppersdrodevorsa'] && $nbrOrientstruct == 0 ) {
+                    $orientstruct = array(
+                        'Orientstruct' => array(
+                            'personne_id' => $personne['Personne']['id'],
+                            'statut_orient' => 'Non orienté'
+                        )
+                    );
+                    $this->Personne->Orientstruct->create( $orientstruct );
+                    $saved = $this->Personne->Orientstruct->save() && $saved;
                 }
             }
 
