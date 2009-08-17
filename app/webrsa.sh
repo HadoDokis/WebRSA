@@ -8,6 +8,8 @@ ChangeLog="ChangeLog.txt"
 ASNV="svn://svn.adullact.net/svnroot/webrsa"
 
 # ------------------------------------------------------------------------------
+# INFO: rgadr sur un char -> sed -i "s/<RGADR>\([1-3]\)<\/RGADR>/<RGADR>0\1<\/RGADR>/" XXX
+# ------------------------------------------------------------------------------
 
 function clearcache() {
     cd "$APP_DIR/tmp/cache/" && \

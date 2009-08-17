@@ -408,10 +408,10 @@
                 )
             );
 
-            $action = $this->Actioninsertion->find( 
+            $action = $this->Actioninsertion->find(
                 'first',
                 array(
-                    'conditions'=> array( 
+                    'conditions'=> array(
                         'Actioninsertion.contratinsertion_id' => $contratinsertion['Contratinsertion']['id']
                     ),
                     'recursive' => 1
@@ -524,10 +524,10 @@
                 )
             );
 
-            $personne = $this->Personne->find( 
-                'first', 
-                array( 
-                    'conditions'=> array( 
+            $personne = $this->Personne->find(
+                'first',
+                array(
+                    'conditions'=> array(
                         'Personne.id' => $contratinsertion['Personne']['id']
                     ),
                     'recursive' => 2

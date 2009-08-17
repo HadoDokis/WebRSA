@@ -65,6 +65,8 @@
             }
 
             /// Requête
+            $Situationdossierrsa =& ClassRegistry::init( 'Situationdossierrsa' );
+
             /*INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id )*/
             /*LEFT OUTER JOIN suivisinstruction ON ( suivisinstruction.dossier_rsa_id = dossiers_rsa.id )*/
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
@@ -77,7 +79,7 @@
                         INNER JOIN adresses ON ( adresses_foyers.adresse_id = adresses.id)
                         INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
                         INNER JOIN detailsdroitsrsa ON ( detailsdroitsrsa.dossier_rsa_id = dossiers_rsa.id )
-                        INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id AND ( situationsdossiersrsa.etatdosrsa IN ( \'2\', \'3\', \'4\' ) ) )
+                        INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id AND ( situationsdossiersrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) ) )
                     WHERE '.implode( ' AND ', $conditions ).'
                     LIMIT '.$limit;
 

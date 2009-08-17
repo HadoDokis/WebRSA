@@ -42,116 +42,14 @@
         function index() {
             $params = $this->data;
             if( !empty( $params ) ) {
-//                 $filters = array();
-//
-//                 // Critères sur le dossier - numéro de dossier
-//                 if( isset( $params['Dossier']['numdemrsa'] ) && !empty( $params['Dossier']['numdemrsa'] ) ) {
-//                     $filters[] = "Dossier.numdemrsa ILIKE '%".Sanitize::paranoid( $params['Dossier']['numdemrsa'] )."%'";
-//                 }
-//
-//                 // Critères sur le dossier - date de demande
-//                 if( isset( $params['Dossier']['dtdemrsa'] ) && !empty( $params['Dossier']['dtdemrsa'] ) ) {
-//                     $valid_from = ( valid_int( $params['Dossier']['dtdemrsa_from']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['day'] ) );
-//                     $valid_to = ( valid_int( $params['Dossier']['dtdemrsa_to']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_to']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_to']['day'] ) );
-//                     if( $valid_from && $valid_to ) {
-//                         $filters[] = 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $params['Dossier']['dtdemrsa_from']['year'], $params['Dossier']['dtdemrsa_from']['month'], $params['Dossier']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $params['Dossier']['dtdemrsa_to']['year'], $params['Dossier']['dtdemrsa_to']['month'], $params['Dossier']['dtdemrsa_to']['day'] ) ).'\'';
-//                     }
-//                 }
-//
-//                 // Critères sur une personne du foyer - nom, prénom, nom de jeune fille
-//                 $filtersPersonne = array();
-//                 foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
-//                     if( isset( $params['Personne'][$criterePersonne] ) && !empty( $params['Personne'][$criterePersonne] ) ) {
-//                         $filtersPersonne['Personne.'.$criterePersonne.' ILIKE'] = '%'.$params['Personne'][$criterePersonne].'%';
-//                     }
-//                 }
-//
-//                 // Critères sur une personne du foyer - date de naissance
-//                 if( isset( $params['Personne']['dtnai'] ) && !empty( $params['Personne']['dtnai'] ) ) {
-//                     if( valid_int( $params['Personne']['dtnai']['year'] ) ) {
-//                         $filtersPersonne['EXTRACT(YEAR FROM Personne.dtnai) ='] = $params['Personne']['dtnai']['year'];
-//                     }
-//                     if( valid_int( $params['Personne']['dtnai']['month'] ) ) {
-//                         $filtersPersonne['EXTRACT(MONTH FROM Personne.dtnai) ='] = $params['Personne']['dtnai']['month'];
-//                     }
-//                     if( valid_int( $params['Personne']['dtnai']['day'] ) ) {
-//                         $filtersPersonne['EXTRACT(DAY FROM Personne.dtnai) ='] = $params['Personne']['dtnai']['day'];
-//                     }
-//                 }
-//
-//                 // Recherche des foyers suivant les critères sur les personnes
-//                 if( count( $filtersPersonne ) > 0 ) {
-//                     $foyers = $this->Personne->find(
-//                         'list',
-//                         array(
-//                             'fields' => array(
-//                                 'Personne.id',
-//                                 'Personne.foyer_id',
-//                             ),
-//                             'conditions' => array( $filtersPersonne ),
-//                             'recursive' => -1
-//                         )
-//                     );
-//                     // Critères sur les dossiers suivant les numéros de foyers retournés
-//                     $filters[] = ( count( $foyers ) > 0 ) ? 'Foyer.id IN ( '.implode( ',', $foyers ).' )' : 'FALSE';
-//                 }
-//
-//                 // INFO: seulement les dossiers qui sont dans ma zone géographique
-//                 $filters['Dossier.id'] =  $this->Dossier->findByZones( $this->Session->read( 'Auth.Zonegeographique' ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
-//
-//                 // Recherche
-//                 $this->Dossier->recursive = 2;
-//                 $dossiers = $this->paginate( 'Dossier', array( $filters ) );
-//
-//                 foreach( $dossiers as $key => $dossier ) {
-//                     // Personnes
-//                     foreach( $dossier['Foyer']['Personne'] as $iPersonne => $personne ) {
-//                         $dossier['Foyer']['Personne'][$iPersonne] = Set::merge( $dossier['Foyer']['Personne'][$iPersonne], $this->Personne->Prestation->findByPersonneId( $personne['id'], null, null, -1 ) );
-//                     }
-// // 'return strcmp( $a["Prestation"]["rolepers"], $b["Prestation"]["rolepers"] );'
-//                     usort( $dossier['Foyer']['Personne'], create_function( '$a,$b', 'if( $a["Prestation"]["rolepers"] == "DEM" ) return -1; else if( $b["Prestation"]["rolepers"] == "DEM" ) return 1; else return strcmp( $a["Prestation"]["rolepers"], $b["Prestation"]["rolepers"] );' ) );
-// // debug( $dossier['Foyer'] );
-//
-//                     // Dernière adresse
-//                     $derniereadresse = array();
-//                     foreach( $dossier['Foyer']['Adressefoyer'] as $adressefoyer ) {
-//                         if( $adressefoyer['rgadr'] == '01' ) {
-//                             $adresse = $this->Adresse->find(
-//                                 'first',
-//                                 array(
-//                                     'conditions' => array(
-//                                         'Adresse.id' => $adressefoyer['adresse_id']
-//                                     ),
-//                                     'recursive' => -1
-//                                 )
-//                             );
-//                             $derniereadresse['Adressefoyer'] = $adressefoyer;
-//                             $derniereadresse['Adresse'] = $adresse['Adresse'];
-//                         }
-//                     }
-//                     $dossiers[$key]['Derniereadresse'] = $derniereadresse;
-//
-//                     // Dossier verrouillé
-//                     $dossiers[$key]['Dossier']['locked'] = $this->Jetons->locked( $dossier['Foyer']['dossier_rsa_id'] );
-// //                     $lock = $this->Jeton->find( 'list', array( 'conditions' => array( 'Jeton.dossier_id' => $dossier['Foyer']['dossier_rsa_id'] ) ) );
-// //                     if( !empty( $lock ) ) {
-// //                         $dossiers[$key]['Dossier']['locked'] = true;
-// //                     }
-// //                     else {
-// //                         $dossiers[$key]['Dossier']['locked'] = false;
-// //                     }
-//                 }
+                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+                $this->paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+                $dossiers = $this->paginate( 'Dossier' );
 
-                    $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-                    $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-                    $this->paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
-                    $dossiers = $this->paginate( 'Dossier' );
-
-                    foreach( $dossiers as $key => $dossier ) {
-                        $dossiers[$key]['Dossier']['locked'] = $this->Jetons->locked( $dossier['Dossier']['id'] );
-                    }
-
-// debug( $dossiers );
+                foreach( $dossiers as $key => $dossier ) {
+                    $dossiers[$key]['Dossier']['locked'] = $this->Jetons->locked( $dossier['Dossier']['id'] );
+                }
 
                 $this->set( 'dossiers', $dossiers );
                 $this->data['Search'] = $params;

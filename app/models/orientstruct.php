@@ -118,6 +118,8 @@
             }
 
             /// Requête
+            $Situationdossierrsa =& ClassRegistry::init( 'Situationdossierrsa' );
+
             $query = array(
                 'fields' => array(
                     '"Orientstruct"."id"',
@@ -221,7 +223,7 @@
                         'alias'      => 'Situationdossierrsa',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id AND ( Situationdossierrsa.etatdosrsa IN ( \'2\', \'3\', \'4\' ) )' )
+                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )' )
                     )
                 ),
                 'limit' => 10,
