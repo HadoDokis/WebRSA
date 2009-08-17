@@ -89,8 +89,10 @@
 
             /// Mois du mouvement comptable
             if( !empty( $mois ) && dateComplete( $criteres, 'Filtre.moismoucompta' ) ) {
-                $mois = $mois['month'];
-                $conditions[] = 'EXTRACT(MONTH FROM Infofinanciere.moismoucompta) = '.$mois;
+                $month = $mois['month'];
+                $year = $mois['year'];
+                $conditions[] = 'EXTRACT(MONTH FROM Infofinanciere.moismoucompta) = '.$month;
+                $conditions[] = 'EXTRACT(YEAR FROM Infofinanciere.moismoucompta) = '.$year;
             }
 
             /// Id du Dossier
@@ -198,25 +200,25 @@
 //             $conditionsNotNull = array();
 
 
-            foreach( $typesAllocation as $type ) {
-                $meu  = Inflector::singularize( Inflector::tableize( $type ) );
-                $query['fields'][] = '"'.$type.'"."mtmoucompta" AS mt_'.$meu;
-
-                $join = array(
-                    'table'      => 'infosfinancieres',
-                    'alias'      => $type,
-                    'type'       => 'LEFT OUTER',
-                    'foreignKey' => false,
-                    'conditions' => array(
-                        $type.'.dossier_rsa_id = Dossier.id',
-                        $type.'.type_allocation' => $type,
-                    )
-                );
-
-                $query['joins'][] = $join;
-               // $conditionsNotNull[] = $type.'.mtmoucompta IS NOT NULL';
-
-            }
+//             foreach( $typesAllocation as $type ) {
+//                 $meu  = Inflector::singularize( Inflector::tableize( $type ) );
+//                 $query['fields'][] = '"'.$type.'"."mtmoucompta" AS mt_'.$meu;
+// 
+//                 $join = array(
+//                     'table'      => 'infosfinancieres',
+//                     'alias'      => $type,
+//                     'type'       => 'LEFT OUTER',
+//                     'foreignKey' => false,
+//                     'conditions' => array(
+//                         $type.'.dossier_rsa_id = Dossier.id',
+//                         $type.'.type_allocation' => $type,
+//                     )
+//                 );
+// 
+//                 $query['joins'][] = $join;
+//                // $conditionsNotNull[] = $type.'.mtmoucompta IS NOT NULL';
+// 
+//             }
 
             $query['conditions'] = Set::merge( $query['conditions'], $conditions );
             return $query;
