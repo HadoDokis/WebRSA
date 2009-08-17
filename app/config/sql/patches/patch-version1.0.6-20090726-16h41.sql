@@ -22,13 +22,9 @@ ALTER TABLE zonesgeographiques_regroupementszonesgeo ADD COLUMN id SERIAL NOT NU
 ALTER TABLE users_contratsinsertion DROP CONSTRAINT users_contratsinsertion_pkey;
 ALTER TABLE users_contratsinsertion ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
 
-ALTER TABLE users_contratsinsertion DROP CONSTRAINT users_contratsinsertion_pkey;
-ALTER TABLE users_contratsinsertion ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
-
 ALTER TABLE foyers_evenements ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
 ALTER TABLE foyers_creances ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
 
-ALTER TABLE dspps_nivetus ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
 ALTER TABLE dspps_natmobs ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
 ALTER TABLE dspps_nataccosocindis ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
 ALTER TABLE dspps_difsocs ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
@@ -40,7 +36,7 @@ ALTER TABLE dspfs_diflogs ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
 
 ALTER TABLE creancesalimentaires_personnes ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
 
---------------- Ajout du 24/07/2009 à 12h30 ------------------
+--------------- Ajout du 14/08/2009 à 15h30 ------------------
 ALTER TABLE ressourcesmensuelles DROP CONSTRAINT ressourcesmensuelles_ressource_id_fkey;
 ALTER TABLE ressourcesmensuelles ADD CONSTRAINT ressourcesmensuelles_ressource_id_fkey FOREIGN KEY (ressource_id) REFERENCES ressources (id) ON DELETE CASCADE;
 
