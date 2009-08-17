@@ -123,7 +123,7 @@
                         <?php
                             echo $html->link(
                                 'Avis PCG droit rsa',
-                                array( 'controller' => 'avispcgdroitrsa', 'action' => 'index', $dossier['Foyer']['id'] )
+                                array( 'controller' => 'avispcgdroitrsa', 'action' => 'index', $dossier['Dossier']['id'] )
                             );
                         ?>
                     </li>
@@ -134,7 +134,7 @@
                         <?php
                             echo $html->link(
                                 'Informations financières',
-                                array( 'controller' => 'infosfinancieres', 'action' => 'index', $dossier['Foyer']['id'] )
+                                array( 'controller' => 'infosfinancieres', 'action' => 'index', $dossier['Dossier']['id'] )
                             );
                         ?>
                     </li>
@@ -147,7 +147,7 @@
                                 <?php
                                     echo $html->link(
                                         'Historique du droit',
-                                        array( 'controller' => 'situationsdossiersrsa', 'action' => 'index', $dossier['Foyer']['id'] )
+                                        array( 'controller' => 'situationsdossiersrsa', 'action' => 'index', $dossier['Dossier']['id'] )
                                     );
                                 ?>
                             </li>
@@ -155,7 +155,7 @@
                                 <?php
                                     echo $html->link(
                                         'Liste des indus',
-                                        array( 'controller' => 'indus', 'action' => 'index', $dossier['Foyer']['id'] )
+                                        array( 'controller' => 'indus', 'action' => 'index', $dossier['Dossier']['id'] )
                                     );
                                 ?>
                             </li>
@@ -168,7 +168,7 @@
                         <?php
                             echo $html->link(
                                 'Suivi instruction du dossier',
-                                array( 'controller' => 'suivisinstruction', 'action' => 'index', $dossier['Foyer']['id'] )
+                                array( 'controller' => 'suivisinstruction', 'action' => 'index', $dossier['Dossier']['id'] )
                             );
                         ?>
                     </li>
@@ -178,7 +178,7 @@
                         <?php
                             echo $html->link(
                                 'Détails du droit RSA',
-                                array( 'controller' => 'detailsdroitsrsa', 'action' => 'index', $dossier['Foyer']['id'] )
+                                array( 'controller' => 'detailsdroitsrsa', 'action' => 'index', $dossier['Dossier']['id'] )
                             );
                         ?>
                     </li>

@@ -31,31 +31,31 @@
             )
         );
 
-        var $validate = array(
-            'lib_action' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'lib_aide' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'date_aide' => array(
-                array(
-                    'rule' => 'date',
-                    'message' => 'Veuillez entrer une date valide.'
-                )
-            ),
-            'lib_presta' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            )
-        );
+//         var $validate = array(
+//             'lib_action' => array(
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
+//             'lib_aide' => array(
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
+//             'date_aide' => array(
+//                 array(
+//                     'rule' => 'date',
+//                     'message' => 'Veuillez entrer une date valide.'
+//                 )
+//             ),
+//             'lib_presta' => array(
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             )
+//         );
     }
 ?>
