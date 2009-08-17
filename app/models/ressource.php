@@ -109,7 +109,7 @@
                 $ressource['Ressource']['topressnotnul'] = ( $moyenne != 0 );
                 $ressource['Ressource']['topressnul'] = ( $moyenne == 0 );
                 $ressource['Ressource']['mtpersressmenrsa'] = number_format( $moyenne, 2, '.', '' );
-// debug( $ressource );
+
                 $this->create( $ressource );
                 return $this->save();
             }
