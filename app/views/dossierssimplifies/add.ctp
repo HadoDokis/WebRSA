@@ -15,7 +15,7 @@
         dependantSelect( 'Orientstruct0StructurereferenteId', 'Orientstruct0TypeorientId' );
         dependantSelect( 'Orientstruct1StructurereferenteId', 'Orientstruct1TypeorientId' );
 
-        dependantSelect( 'Prestation1Rolepers', 'Prestation0Rolepers' );
+//         dependantSelect( 'Prestation1Rolepers', 'Prestation0Rolepers' );
     });
 </script>
 
