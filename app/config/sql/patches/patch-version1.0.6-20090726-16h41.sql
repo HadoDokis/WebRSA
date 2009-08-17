@@ -73,3 +73,6 @@ SELECT *
     )
 )
 */
+
+ALTER TABLE identificationsflux ALTER COLUMN heucreaflux TYPE timestamp with time zone;
+ALTER TABLE identificationsflux ALTER COLUMN heucreaflux TYPE time;
