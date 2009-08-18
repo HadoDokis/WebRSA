@@ -38,7 +38,7 @@
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );
 
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
-            echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden' ) );
+            //echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden' ) );
 
             echo '</div>';
         }
