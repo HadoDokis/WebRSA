@@ -30,6 +30,8 @@
             $this->set( 'actions', $this->Action->grouplist( 'aide' ) );
             $this->set( 'actions', $this->Action->grouplist( 'prest' ) );
             $this->set( 'typo_aide', $this->Option->typo_aide() );
+
+            $this->set( 'codesaction', $this->Action->find( 'list', array( 'fields' => array( 'code', 'id' ) ) ) );
         }
 
         function index( $personne_id = null ){
@@ -487,6 +489,10 @@
                 // Récupération du services instructeur lié au contrat
                 $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => 0 ) );
                 $contratinsertion['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
+
+                $typevoie = $this->Option->typevoie();
+                $type_voie = empty( $user['Serviceinstructeur']['type_voie'] ) ? null : $typevoie[$user['Serviceinstructeur']['type_voie']];
+                $contratinsertion['Contratinsertion']['service_soutien'] = $user['Serviceinstructeur']['lib_service'].', '.$user['Serviceinstructeur']['num_rue'].' '.$type_voie.' '.$user['Serviceinstructeur']['nom_rue'].' '.$user['Serviceinstructeur']['code_insee'].' '.$user['Serviceinstructeur']['ville'].', '.$user['User']['numtel'];
                 $this->data = $contratinsertion;
 
 

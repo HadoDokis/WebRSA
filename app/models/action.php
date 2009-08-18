@@ -3,6 +3,7 @@
     {
         var $name = 'Action';
         var $useTable = false;
+        var $displayField = 'libelle';
 
 
         function grouplist( $type = null ) {
