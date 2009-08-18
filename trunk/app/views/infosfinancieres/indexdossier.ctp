@@ -47,14 +47,16 @@
                     <th><?php echo $paginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
                     <th><?php echo $paginator->sort( 'Nom/prénom du bénéficiaire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Date de naissance du bénéficiaire', 'Personne.dtnai' );?></th>
-                    <th><?php echo $paginator->sort( 'Type d\'allocation', 'Infofinanciere.type_allocation' );?></th>
-                    <th><?php echo $paginator->sort( 'Montant de l\'allocation', 'Infofinanciere.mtmoucompta' );?></th> 
-                    <!--<th>N° Dossier</th>
+                    <th>Type d'allocation</th>
+                    <th>Montant de l'allocation</th>
+                    <!-- <th><?php /*echo $paginator->sort( 'Type d\'allocation', 'Infofinanciere.type_allocation' );*/?></th>
+                    <th><?php /*echo $paginator->sort( 'Montant de l\'allocation', 'Infofinanciere.mtmoucompta' );*/?></th>
+                    <th>N° Dossier</th>
                     <th>N° CAF</th>
                     <th>Nom/Prénom allocataire</th>
                     <th>Date de naissance du bénéficiaire</th>
                     <th>Type d'allocation</th>
-                    <th>Montant de l'allocation</th>-->
+                    <th>Montant de l'allocation</th> -->
                     <th colspan="2" class="action">Actions</th>
                 </tr>
             </thead>
