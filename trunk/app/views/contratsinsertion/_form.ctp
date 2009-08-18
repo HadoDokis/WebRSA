@@ -9,7 +9,26 @@
         }
     }
 
+    <?php
+        $codes = array();
+        foreach( $codesaction as $codeaction => $id ) {
+            $codes[] = '\''.$codeaction.'\' : \''.$id.'\'';
+        }
+        echo 'var codesaction = { '.implode( ',', $codes ).' };';
+    ?>
+
     document.observe( "dom:loaded", function() {
+        Event.observe( $( 'ActionCode' ), 'keyup', function() {
+            var value = $F( 'ActionCode' );
+            if( value.length == 2 ) { // FIXME: in_array
+                //$( 'ContratinsertionEngagObject' ).value = codesaction[value];
+                var opt = $$( '#ContratinsertionEngagObject option');
+                if( opt[codesaction[value]] ) {
+                    opt[codesaction[value]].selected = 'selected';
+                }
+            }
+        } );
+
         Event.observe( $( 'ContratinsertionDdCiMonth' ), 'change', function() {
             checkDatesToRefresh();
         } );
@@ -116,7 +135,7 @@
             <?php echo $form->input( 'Actioninsertion.df_action', array( 'label' => __( 'df_action', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
 
             <?php echo $form->input( 'Aidedirecte.0.typo_aide', array( 'label' => __( 'typo_aide', true ), 'type' => 'select', 'options' => $typo_aide, 'empty' => true )  ); ?>
-            <!-- <?php echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'maxLength' => 2  ) ); ?> -->
+            <!-- <?php echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'maxlength' => 2  ) ); ?> -->
             <?php echo $form->input( 'Aidedirecte.0.lib_aide', array( 'label' => __( 'lib_aide', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
             <?php echo $form->input( 'Aidedirecte.0.date_aide', array( 'label' =>  __( 'date_aide', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
 
@@ -133,8 +152,12 @@
     <legend> PROJET ET ACTIONS D'INSERTION </legend>
         <?php echo $form->input( 'Contratinsertion.objectifs_fixes', array( 'label' => required( __( 'objectifs_fixes', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 
-        <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => required( __( 'engag_object', true ) ), 'type' => 'textarea', 'rows' => 4)  ); ?>
-        <!-- <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => required( __( 'engag_object', true ) ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?> -->
+        <!-- <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => required( __( 'engag_object', true ) ), 'type' => 'textarea', 'rows' => 4)  ); ?> -->
+        <?php 
+            echo $form->input( 'Action.id', array( 'type' => 'hidden' ) );
+            echo $form->input( 'Action.code', array( 'label' => required( __( 'code_action', true ) ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
+            echo $form->input( 'Contratinsertion.engag_object', array( 'label' => required( __( 'engag_object', true ) ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
+
 
         <?php
             echo $widget->booleanRadio( 'Contratinsertion.emp_trouv', array( 'legend' => required( __( 'emp_trouv', true ) )) );
