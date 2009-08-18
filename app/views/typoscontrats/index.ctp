@@ -12,7 +12,7 @@
         ?>
     </ul>
     <div>
-        <h2>Table types de Contrat d'insertion</h2>
+        <h2>Table Types de Contrat d'insertion</h2>
         <table>
         <thead>
             <tr>
