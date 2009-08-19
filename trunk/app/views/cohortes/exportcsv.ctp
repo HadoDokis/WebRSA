@@ -5,5 +5,6 @@
     $csv->addGrid( $dataAdr );
     $csv->addGrid( $dataOri );
 
+    $csv->addGrid( $dataToExport );
     echo $csv->render( true );
 ?>
