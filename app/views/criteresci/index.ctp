@@ -49,9 +49,7 @@
     <h2 class="noprint">Résultats de la recherche</h2>
 
     <?php if( is_array( $contrats ) && count( $contrats ) > 0  ):?>
-        <div class="submit noprint">
-            <?php echo $form->button( 'Imprimer cette page', array( 'onclick' => 'printit();' ) );?>
-        </div>
+
         <?php require( 'index.pagination.ctp' )?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
@@ -109,7 +107,14 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-
+        <ul class="actionMenu">
+            <li><?php
+                echo $html->printLinkJs(
+                    'Imprimer le tableau',
+                    array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+                );
+            ?></li>
+        </ul>
     <?php  require( 'index.pagination.ctp' )  ?>
 
     <?php else:?>

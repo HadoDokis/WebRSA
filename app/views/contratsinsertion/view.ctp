@@ -94,7 +94,7 @@
                 </tr>
                 <tr class="even">
                     <th><?php __( 'engag_object' );?></th>
-                    <td><?php echo $contratinsertion['Contratinsertion']['engag_object'];?></td>
+                    <td><?php echo $codesaction;?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'sect_acti_emp' );?></th>
