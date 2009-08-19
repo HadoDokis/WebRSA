@@ -823,6 +823,24 @@ class HtmlHelper extends AppHelper {
         }
     }
 
+    function printLinkJs( $title, $htmlAttributes = array(), $enabled = true ) {
+        $content = $this->image(
+            'icons/printer.png',
+            array( 'alt' => '' )
+        ).' '.$title;
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                '#',
+                Set::merge( array( 'escape' => false ), $htmlAttributes )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
+
     function exportLink( $title, $url, $enabled = true ) {
         $content = $this->image(
             'icons/page_white_get.png',
