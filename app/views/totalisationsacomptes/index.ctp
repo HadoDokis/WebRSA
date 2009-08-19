@@ -98,21 +98,21 @@
             </tbody> -->
         </table>
 
-       <!-- <ul class="actionMenu">
+        <ul class="actionMenu">
             <?php
-                echo $html->printLink(
+                echo $html->printLinkJs(
                     'Imprimer le tableau',
-                    array( 'controller' => 'gedooos', 'action' => 'notifications_cohortes' )
+                    array( 'onclick' => 'printit(); return false;' )
                 );
             ?>
 
-            <?php
+            <!-- <?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'cohortes', 'action' => 'exportcsv' )
                 );
-            ?>
-        </ul> -->
+            ?> -->
+        </ul> 
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>
