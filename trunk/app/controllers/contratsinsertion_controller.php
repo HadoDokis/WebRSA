@@ -183,7 +183,8 @@
             $codesaction = empty( $contratinsertion['Contratinsertion']['engag_object'] ) ? null : $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
             $this->set( 'codesaction', $codesaction );
 
-
+            $forme = array( 'S' => 'Simple', 'C' => 'Complexe' );
+            $this->set( 'forme', $forme );
             // TODO: si personne n'existe pas -> 404
             $this->set( 'contratinsertion', $contratinsertion );
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
