@@ -57,7 +57,7 @@
                     <th>Date de naissance du bénéficiaire</th>
                     <th>Type d'allocation</th>
                     <th>Montant de l'allocation</th> -->
-                    <th colspan="2" class="action">Actions</th>
+                    <th class="action noprint">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -80,12 +80,14 @@
                                         $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
                                         h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
                                         $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
-                                        $html->viewLink(
-                                            'Voir les informations financières',
-                                            array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
-                                            $permissions->check( 'infosfinancieres', 'view' )
-                                        ),
-
+                                        array(
+                                            $html->viewLink(
+                                                'Voir les informations financières',
+                                                array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
+                                                $permissions->check( 'infosfinancieres', 'view' )
+                                            ),
+                                            array( 'class' => 'noprint' )
+                                        )
                                     ),
                                     array( 'class' => ( $even ? 'even' : 'odd' ) ),
                                     array( 'class' => ( !$even ? 'even' : 'odd' ) )
@@ -101,7 +103,7 @@
 
                                         <td>'.h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]).'</td>
                                         <td>'.$locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ).'</td>
-                                        <td rowspan="'.$rowspan.'">'.$html->viewLink(
+                                        <td rowspan="'.$rowspan.'" class="noprint">'. $html->viewLink(
                                             'Voir les informations financières',
                                             array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
                                             $permissions->check( 'infosfinancieres', 'view' )
@@ -147,21 +149,21 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-       <!-- <ul class="actionMenu">
-            <?php
-                echo $html->printLink(
+        <ul class="actionMenu">
+            <li><?php
+                echo $html->printLinkJs(
                     'Imprimer le tableau',
-                    array( 'controller' => 'gedooos', 'action' => 'notifications_cohortes' )
+                    array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
-            ?>
+            ?></li>
 
-            <?php
+             <!-- <?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'cohortes', 'action' => 'exportcsv' )
                 );
-            ?>
-        </ul> -->
+            ?> -->
+        </ul>
     <?php require( 'index.pagination.ctp' )?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
