@@ -102,7 +102,7 @@
         </table>
 
         <ul class="actionMenu">
-            <?php
+            <li><?php
                 echo $html->printCohorteLink(
                     'Imprimer la cohorte',
                     Set::merge(
@@ -113,9 +113,9 @@
                         array_unisize( $this->data )
                     )
                 );
-            ?>
+            ?></li>
 
-           <!-- <?php
+           <!-- <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
                     Set::merge(
@@ -126,7 +126,7 @@
                         array_unisize( $this->data )
                     )
                 );
-            ?> -->
+            ?></li> -->
         </ul>
     <?php endif;?>
 <?php endif;?>

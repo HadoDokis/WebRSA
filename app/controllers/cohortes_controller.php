@@ -335,7 +335,7 @@
 //             $dataStr = Set::extract( $dataStr, '{n}.Structurereferente' );
 
             $this->layout = '';
-            $this->set( compact( 'dataPers', 'dataDos', 'dataAdr', 'dataOri' ) );
+            $data = $this->set( compact( 'dataPers', 'dataDos', 'dataAdr', 'dataOri' ) );
 
             $this->set( 'dataToExport', $data );
         }
