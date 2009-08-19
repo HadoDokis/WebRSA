@@ -179,6 +179,11 @@
                 )
             ) ;
 
+            $codesaction = $this->Action->find( 'list', array( 'fields' => array( 'code', 'libelle' ) ) );
+            $codesaction = empty( $contratinsertion['Contratinsertion']['engag_object'] ) ? null : $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
+            $this->set( 'codesaction', $codesaction );
+
+
             // TODO: si personne n'existe pas -> 404
             $this->set( 'contratinsertion', $contratinsertion );
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
