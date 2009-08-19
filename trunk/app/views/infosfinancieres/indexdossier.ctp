@@ -157,12 +157,12 @@
                 );
             ?></li>
 
-             <!-- <?php
+             <!--<li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
-                    array( 'controller' => 'cohortes', 'action' => 'exportcsv' )
+                    array( 'controller' => 'infosfinancieres', 'action' => 'exportcsv' )
                 );
-            ?> -->
+            ?></li> -->
         </ul>
     <?php require( 'index.pagination.ctp' )?>
     <?php else:?>

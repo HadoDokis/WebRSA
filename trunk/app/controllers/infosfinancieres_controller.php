@@ -3,7 +3,7 @@
     {
         var $name = 'Infosfinancieres';
         var $uses = array( 'Infofinanciere', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
-        var $helpers = array( 'Paginator', 'Locale' );
+        var $helpers = array( 'Paginator', 'Locale', 'Csv' );
 
 //         var $paginate = array(
 //             // FIXME
@@ -102,6 +102,29 @@
             // Assignations à la vue
             $this->set( 'dossier_id', $infofinanciere['Infofinanciere']['dossier_rsa_id'] );
             $this->set( 'infofinanciere', $infofinanciere );
+
+        }
+
+
+
+        /************************************* Export des données en Csv *******************************/
+        function exportcsv() {
+            $headers = array( 'N° Dossier', 'N° CAF', 'Nom/Prénom Allocataire', 'Date naissance', 'Type d\'allocation', 'Montant de l\'allocation' );
+
+            $dataPers = $this->Personne->find( 'all', array( 'fields' => array( 'qual', 'nom', 'prenom', 'dtnai' ), 'limit' => 20, 'recursive' => -1 ) );
+            $dataPers = Set::extract( $dataPers, '{n}.Personne' );
+
+            $dataDos = $this->Dossier->find( 'all', array( 'fields' => array( 'numdemrsa', 'matricule' ), 'limit' => 20, 'recursive' => -1 ) );
+            $dataDos = Set::extract( $dataDos, '{n}.Dossier' );
+
+            $dataAlloc = $this->Infofinanciere->find( 'all', array( 'fields' => array( 'type_allocation', 'mtmoucompta' ), 'limit' => 20, 'recursive' => -1 ) );
+            $dataAlloc = Set::extract( $dataAlloc, '{n}.Infofinanciere' );
+
+
+            $this->layout = '';
+            $data = $this->set( compact( 'dataPers', 'dataDos', 'dataAlloc' ) );
+// debug( $data );
+            $this->set( 'dataToExport', $this->Infofinanciere->findAll( $data ) );
 
         }
 
