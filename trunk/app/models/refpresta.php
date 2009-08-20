@@ -13,14 +13,14 @@
         );
 
 
-        var $validate = array(
-            'nomrefpresta' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            )
-        );
+//         var $validate = array(
+//             'nomrefpresta' => array(
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             )
+//         );
 
     }
 ?>

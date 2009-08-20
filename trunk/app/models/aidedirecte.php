@@ -11,7 +11,7 @@
                 'foreignKey' => 'actioninsertion_id',
             )
         );
-
+/*
         var $validate = array(
             'lib_aide' => array(
                 array(
@@ -36,6 +36,6 @@
                 )
             ),
 
-        );
+        );*/
     }
 ?>
