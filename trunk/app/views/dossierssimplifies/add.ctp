@@ -39,7 +39,7 @@
             <?php echo $form->input( 'Personne.0.qual', array( 'label' => required( __( 'qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
             <?php echo $form->input( 'Personne.0.nom', array( 'label' => required( __( 'nom', true ) ) ) );?>
             <?php echo $form->input( 'Personne.0.prenom', array( 'label' => required( __( 'prenom', true ) ) ) );?>
-            <?php echo $form->input( 'Personne.0.nir', array( 'label' => required( __( 'nir', true ) ) ) );?>
+            <?php echo $form->input( 'Personne.0.nir', array( 'label' => __( 'nir', true ) ) );?>
             <?php echo $form->input( 'Personne.0.dtnai', array( 'label' => required( __( 'dtnai', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
             <?php echo $form->input( 'Prestation.0.toppersdrodevorsa', array(  'label' =>  required( __( 'toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
         </fieldset>
