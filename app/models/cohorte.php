@@ -30,6 +30,8 @@
             /// Critères
             $oridemrsa = Set::extract( $criteres, 'Filtre.oridemrsa' );
             $locaadr = Set::extract( $criteres, 'Filtre.locaadr' );
+            $numcomptt = Set::extract( $criteres, 'Filtre.numcomptt' );
+            $codepos = Set::extract( $criteres, 'Filtre.codepos' );
             $dtdemrsa = Set::extract( $criteres, 'Filtre.dtdemrsa' );
             $date_impression = Set::extract( $criteres, 'Filtre.date_impression' );
 
@@ -41,6 +43,14 @@
             // Localité adresse
             if( !empty( $locaadr ) ) {
                 $conditions[] = 'adresses.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+            }
+            // Localité adresse
+            if( !empty( $numcomptt ) ) {
+                $conditions[] = 'adresses.numcomptt = \''.Sanitize::clean( $numcomptt ).'\'';
+            }
+            // Localité adresse
+            if( !empty( $codepos ) ) {
+                $conditions[] = 'adresses.codepos = \''.Sanitize::clean( $codepos ).'\'';
             }
 
             // Date de demande

@@ -22,6 +22,8 @@
     <fieldset>
         <legend>Commune de la personne</legend>
         <?php echo $form->input( 'Filtre.locaadr', array( 'label' => __( 'locaadr', true ), 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => __( 'numcomptt', true ), 'type' => 'text', 'maxlength' => 5 ) );?>
+        <?php echo $form->input( 'Filtre.codepos', array( 'label' => __( 'codepos', true ), 'type' => 'text', 'maxlength' => 5 ) );?>
     </fieldset>
 
     <?php if( $this->action == 'orientees' ):?>
