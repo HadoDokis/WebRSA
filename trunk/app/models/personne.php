@@ -54,26 +54,26 @@
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
-            'nir' => array(
-                array(
-                    'rule' => 'isUnique',
-                    'message' => 'Ce NIR est déjà utilisé'
-                ),
-                array(
-                    'rule' => array( 'between', 15, 15 ),
-                    'message' => 'Le NIR est composé de 15 chiffres'
-                ),
-                array(
-                    'rule' => 'numeric',
-                    'message' => 'Veuillez entrer une valeur numérique.',
-                    'allowEmpty' => true
-                ),
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-                // TODO: format NIR
-            ),
+//             'nir' => array(
+//                 array(
+//                     'rule' => 'isUnique',
+//                     'message' => 'Ce NIR est déjà utilisé'
+//                 ),
+//                 array(
+//                     'rule' => array( 'between', 15, 15 ),
+//                     'message' => 'Le NIR est composé de 15 chiffres'
+//                 ),
+//                 array(
+//                     'rule' => 'numeric',
+//                     'message' => 'Veuillez entrer une valeur numérique.',
+//                     'allowEmpty' => true
+//                 ),
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//                 // TODO: format NIR
+//             ),
             'dtnai' => array(
                 array(
                     'rule' => 'date',
