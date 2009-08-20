@@ -1,8 +1,8 @@
 <fieldset>
     <?php echo $form->input( 'Structurereferente.lib_struc', array( 'label' => required( __( 'lib_struc', true ) ), 'type' => 'text' ) );?>
-    <?php echo $form->input( 'Structurereferente.num_voie', array( 'label' => required( __( 'num_voie', true ) ), 'type' => 'text', 'maxLength' => 6 ) );?>
+    <?php echo $form->input( 'Structurereferente.num_voie', array( 'label' => required( __( 'num_voie', true ) ), 'type' => 'text', 'maxLength' => 15 ) );?>
     <?php echo $form->input( 'Structurereferente.type_voie', array( 'label' => required( __( 'type_voie', true ) ), 'type' => 'select', 'options' => $typevoie, 'empty' => true ) );?>
-    <?php echo $form->input( 'Structurereferente.nom_voie', array( 'label' => required(  __( 'nom_voie', true ) ), 'type' => 'text' ) );?> 
+    <?php echo $form->input( 'Structurereferente.nom_voie', array( 'label' => required(  __( 'nom_voie', true ) ), 'type' => 'text', 'maxlength' => 50 ) );?> 
     <?php echo $form->input( 'Structurereferente.code_postal', array( 'label' => required( __( 'code_postal', true ) ), 'type' => 'text', 'maxLength' => 5 ) );?> 
     <?php echo $form->input( 'Structurereferente.ville', array( 'label' => required( __( 'ville', true ) ), 'type' => 'text' ) );?> 
     <?php echo $form->input( 'Structurereferente.code_insee', array( 'label' => required( __( 'code_insee', true ) ), 'type' => 'text', 'maxLength' => 5 ) );?> 
