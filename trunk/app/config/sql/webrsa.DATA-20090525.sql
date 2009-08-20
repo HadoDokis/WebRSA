@@ -269,7 +269,7 @@ INSERT INTO actions VALUES
       3,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       1,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '02',                  --         code                CHAR(2),
-      'Aide au retour d\'enfants placés'                  --         libelle             VARCHAR(250)
+      '02 - Aide au retour d\'enfants placés'                  --         libelle             VARCHAR(250)
    );
 
 
