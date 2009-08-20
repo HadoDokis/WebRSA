@@ -14,8 +14,8 @@
 //             'limit' => 20
 //         );
 //
-//         /**
-//         */
+//        /**
+//        */
 //         function __construct() {
 //             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
 //             parent::__construct();
