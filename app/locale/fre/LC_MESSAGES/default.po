@@ -432,7 +432,7 @@ msgid "code_action"
 msgstr "Code de l'action"
 
 msgid "lib_action"
-msgstr "Libellé de l'action"
+msgstr "Type d'action"
 
 msgid "dd_action"
 msgstr "Date de début de l'action"
