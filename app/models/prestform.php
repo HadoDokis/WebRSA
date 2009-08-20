@@ -16,7 +16,7 @@
             )
         );
 
-
+/*
         var $validate = array(
             'nomrefpresta' => array(
                 array(
@@ -40,7 +40,7 @@
                     'message' => 'Champ obligatoire'
                 )
             )
-        );
+        );*/
 
     }
 ?>
