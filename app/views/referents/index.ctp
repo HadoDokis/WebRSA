@@ -1,7 +1,7 @@
 <?php $this->pageTitle = 'Paramétrage des référents';?>
 
 <div>
-    <h1><?php echo 'Visualisation de la table  ';?></h1>
+    <h1><?php echo 'Visualisation de la table référents ';?></h1>
 
     <ul class="actionMenu">
         <?php
@@ -11,6 +11,11 @@
             ).' </li>';
         ?>
     </ul>
+
+    <?php if( empty( $referents ) ):?>
+        <p class="notice">Aucun référent présent pour le moment.</p>
+
+    <?php else:?>
     <div>
         <h2>Table Référents</h2>
         <table>
@@ -51,6 +56,7 @@
             <?php endforeach;?>
             </tbody>
         </table>
-</div>
+    </div>
+<?php endif?>
 </div>
 <div class="clearer"><hr /></div>
