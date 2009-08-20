@@ -96,7 +96,7 @@
 
 
 <fieldset>
-    <legend>Contrats d'insertion</legend>
+    <legend> CONTRATS D'INSERTION </legend>
             <?php echo $form->input( 'Contratinsertion.forme_ci', array( 'label' => false, 'type' => 'radio' , 'options' => array( 'S' => 'Simple', 'C' => 'Complexe' ), 'legend' => required( __( 'forme_ci', true ) ) ) );?>
         <?php if( $this->data['Contratinsertion']['typocontrat_id'] == 1 ):?>
             <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false, 'type' => 'hidden' ,  'id' => 'freu') );?>
@@ -113,9 +113,7 @@
     <?php if( $this->action != 'edit' ) :?>
         <?php echo $form->input( 'Dspp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
     <?php endif;?>
-<!--$this->Nivetu->validationErrors-->
         <?php echo $form->input( 'Dspp.id', array( 'type' => 'hidden' ) );?>
-
         <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
         <?php echo $form->input( 'Contratinsertion.diplomes', array( 'label' => required( __( 'diplomes', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => required( __( 'expr_prof', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
@@ -127,8 +125,9 @@
             echo $widget->booleanRadio( 'Contratinsertion.actions_prev', array( 'legend' => required( __( 'actions_prev', true ) ) ) );
         ?>
 
-        <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => required( __( 'obsta_renc', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
-
+        <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => __( 'obsta_renc', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
+<!--</fieldset>
+<fieldset>-->
         <?php if( $this->action != 'edit' ) :?>
             <?php echo $form->input( 'Actioninsertion.lib_action', array( 'label' =>  __( 'lib_action', true ), 'type' => 'select', 'options' => $lib_action, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Actioninsertion.dd_action', array( 'label' =>  __( 'dd_action', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
@@ -145,9 +144,6 @@
             <?php echo $form->input( 'Prestform.0.date_presta', array( 'label' => __( 'date_presta', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  ); ?>
         <?php endif;?>
 </fieldset>
-        <?php echo $form->input( 'Contratinsertion.serviceinstructeur_id', array( 'label' => required( __( 'Nom du service d\'accompagnement', true ) ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
-        <?php echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => '<em>'.required( __( 'service_soutien', true ) ).'</em>', 'type' => 'textarea', 'rows' => 3 )  ); ?>
-        <?php echo $form->input( 'Contratinsertion.pers_charg_suivi', array( 'label' => '<em>'.required( __( 'pers_charg_suivi', true ) ).'</em>', 'type' => 'textarea', 'rows' => 1 )  ); ?>
 <fieldset>
     <legend> PROJET ET ACTIONS D'INSERTION </legend>
         <?php echo $form->input( 'Contratinsertion.objectifs_fixes', array( 'label' => required( __( 'objectifs_fixes', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
@@ -156,9 +152,8 @@
         <?php 
             echo $form->input( 'Action.id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Action.code', array( 'label' => required( __( 'code_action', true ) ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
-            echo $form->input( 'Contratinsertion.engag_object', array( 'label' => required( __( 'engag_object', true ) ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
-
-
+            echo $form->input( 'Contratinsertion.engag_object', array( 'label' => required( __( 'engag_object', true ) ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); 
+        ?>
         <?php
             echo $widget->booleanRadio( 'Contratinsertion.emp_trouv', array( 'legend' => required( __( 'emp_trouv', true ) )) );
         ?>
@@ -169,9 +164,13 @@
         <?php echo $form->input( 'Contratinsertion.nat_cont_trav', array( 'label' => required( __( 'nat_cont_trav', true ) ), 'type' => 'select', 'options' => $nat_cont_trav, 'empty' => true )  ); ?>
         <?php echo $form->input( 'Contratinsertion.duree_cdd', array( 'label' => required( __( 'duree_cdd', true ) ), 'type' => 'select', 'options' => $duree_cdd, 'empty' => true )  ); ?>
 </fieldset>
+
 <fieldset>
         <?php echo $form->input( 'Contratinsertion.nature_projet', array( 'label' => required( __( 'nature_projet', true ) ), 'type' => 'textarea', 'rows' => 6)  ); ?>
         <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => required( __( 'lieu_saisi_ci', true ) ), 'type' => 'text')  ); ?><br />
         <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => required( __( 'date_saisi_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 /*, 'empty' => true*/)  ); ?>
         <?php echo $form->input( 'Le bénéficiaire : ', array( 'label' => 'Le bénéficiaire : ', 'type' => 'text', 'value' => $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] )  ); ?>
 </fieldset>
+        <?php echo $form->input( 'Contratinsertion.serviceinstructeur_id', array( 'label' => required( __( 'Nom du service d\'accompagnement', true ) ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
+        <?php echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => '<em>'.required( __( 'service_soutien', true ) ).'</em>', 'type' => 'textarea', 'rows' => 3 )  ); ?>
+        <?php echo $form->input( 'Contratinsertion.pers_charg_suivi', array( 'label' => '<em>'.required( __( 'pers_charg_suivi', true ) ).'</em>', 'type' => 'textarea', 'rows' => 1 )  ); ?>
