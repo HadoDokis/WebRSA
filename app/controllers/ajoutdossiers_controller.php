@@ -369,7 +369,7 @@
                 $saved = $this->Detaildroitrsa->save( $data['dossier']['Detaildroitrsa'] ) && $saved;
 
                 // Situation dossier RSA
-                $situationdossierrsa = array( 'Situationdossierrsa' => array( 'dossier_rsa_id' => $this->Dossier->id, 'etatdosrsa' => NULL ) );
+                $situationdossierrsa = array( 'Situationdossierrsa' => array( 'dossier_rsa_id' => $this->Dossier->id, 'etatdosrsa' => 'Z' ) ); ///FIXME Remplacement de l'état de Null à Z
                 $this->Dossier->Situationdossierrsa->validate = array();
                 $saved = $this->Dossier->Situationdossierrsa->save( $situationdossierrsa ) && $saved;
 
