@@ -35,10 +35,11 @@
             echo '</div>';
         }
     ?>
-    <?php echo $form->input( 'Personne.foyer_id', array( 'type' => 'hidden', 'div' => 'div', 'value' => $foyer_id ) );?>
-    <?php echo $form->input( 'Prestation.natprest', array( 'type' => 'hidden', 'value' => 'RSA' ) );?>
-    <?php echo $form->input( 'Prestation.rolepers', array( 'label' => __( 'rolepers', true ), 'type' => 'select', 'empty' => true ) );?>
-
+    <div>
+        <?php echo $form->input( 'Personne.foyer_id', array( 'type' => 'hidden', 'div' => 'div', 'value' => $foyer_id ) );?>
+        <?php echo $form->input( 'Prestation.natprest', array( 'type' => 'hidden', 'value' => 'RSA' ) );?>
+        <?php echo $form->input( 'Prestation.rolepers', array( 'label' => __( 'rolepers', true ), 'type' => 'select', 'empty' => true ) );?>
+    </div>
     <?php include( '_form.ctp' );?>
 
     <?php echo $form->submit( 'Enregistrer' );?>

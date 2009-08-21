@@ -26,10 +26,11 @@
             echo '</div>';
         }
     ?>
-    <?php echo $form->input( 'Modecontact.foyer_id', array( 'type' => 'hidden', 'div' => 'div', 'value' => $foyer_id ) );?>
-
+    <div>
+        <?php echo $form->input( 'Modecontact.foyer_id', array( 'type' => 'hidden', 'div' => 'div', 'value' => $foyer_id ) );?>
+    </div>
     <?php echo $form->input( 'Modecontact.numtel', array( 'label' =>  __( 'numtel', true ) ) );?>
-    <?php echo $form->input( 'Modecontact.numposte', array( 'label' => __( 'numposte', true ), 'maxLength' => 4 ) );?>
+    <?php echo $form->input( 'Modecontact.numposte', array( 'label' => __( 'numposte', true ), 'maxlength' => 4 ) );?>
     <?php echo $form->input( 'Modecontact.nattel', array( 'label' =>  __( 'nattel', true ), 'type' => 'select', 'options' => $nattel, 'empty' => true  ) );?>
     <?php echo $form->input( 'Modecontact.matetel', array( 'label' => __( 'matetel', true ), 'type' => 'select', 'options' => $matetel, 'empty' => true  ) );?>
     <?php echo $form->input( 'Modecontact.autorutitel', array( 'label' => __( 'autorutitel', true ), 'type' => 'select', 'options' => $autorutitel, 'empty' => true  ) );?>
