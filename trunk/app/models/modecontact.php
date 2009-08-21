@@ -42,10 +42,9 @@
                 )
             ),
             'numposte' => array(
-//                 array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 ),
+                array(
+                    'allowEmpty' => true
+                ),
 //                 array(
 //                     'rule' => 'isUnique',
 //                     'message' => 'Ce numéro est déjà utilisé'
