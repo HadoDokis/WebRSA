@@ -62,6 +62,12 @@ case $1 in
     tablesmetiers_struct)
         tablesmetiers_struct
     ;;
+    allBD_struct)
+        allBD_struct
+    ;;
+    allBD_data)
+        allBD_data
+    ;;
 #     restore)
 #         restore $2 # FIXME : Problèmes d'arguments
 #     ;;
