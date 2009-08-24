@@ -432,7 +432,14 @@
 //             $typevoie = $this->Option->typevoie();
 //             $this->set( 'typevoie', $typevoie );
 
-            $cohorte = $this->Cohorte->search( 'Orienté', array_values( $this->Session->read( 'Auth.Zonegeographique' ) ), $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+            $AuthZonegeographique = $this->Session->read( 'Auth.Zonegeographique' );
+            if( !empty( $AuthZonegeographique ) ) {
+                $AuthZonegeographique = array_values( $AuthZonegeographique );
+            }
+            else {
+                $AuthZonegeographique = array();
+            }
+            $cohorte = $this->Cohorte->search( 'Orienté', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 
             // Définition des variables & maccros
             // FIXME: chemins
