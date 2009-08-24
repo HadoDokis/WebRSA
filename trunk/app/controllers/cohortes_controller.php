@@ -28,6 +28,8 @@
             $this->components[] = 'Jetons';
         }
 
+        //*********************************************************************
+
         /**
         *
         * INFO: Préprofessionnelle => Socioprofessionnelle --> mettre un type dans la table ?
@@ -121,6 +123,7 @@
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );
             $this->set( 'printed', $this->Option->printed() );
+            $this->set( 'structuresAutomatiques', $this->Cohorte->structuresAutomatiques() );
 
             // Un des formulaires a été renvoyé
             if( !empty( $this->data ) ) {
@@ -259,6 +262,7 @@
                             $tmp = array_flip( $typesOrient );
                             $cohorte[$key]['Orientstruct']['propo_algo'] = $tmp[$cohorte[$key]['Orientstruct']['propo_algo_texte']];
                             $cohorte[$key]['Orientstruct']['date_propo'] = date( 'Y-m-d' );
+
                             // Statut suivant ressource
                             $ressource = $this->Ressource->find(
                                 'first',
@@ -281,7 +285,6 @@
                         }
                     }
                     $this->set( 'cohorte', $cohorte );
-//                     debug( $cohorte );
                 }
                 $this->Dossier->commit(); // Pour les jetons + FIXME: bloquer maintenant les ids dont on s'occupe
             }

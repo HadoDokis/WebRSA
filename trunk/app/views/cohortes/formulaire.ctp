@@ -3,10 +3,39 @@
 <?php if( isset( $cohorte ) ):?>
     <?php echo $javascript->link( 'dependantselect.js' ); ?>
     <script type="text/javascript">
+        var structAuto = new Array();
+        <?php foreach( $structuresAutomatiques as $typeId => $structureAutomatique ):?>
+                if( structAuto["<?php echo $typeId;?>"] == undefined ) { structAuto["<?php echo $typeId;?>"] = new Array(); }
+                <?php foreach( $structureAutomatique as $codeInsee => $structure ):?>
+                    structAuto["<?php echo $typeId;?>"]["<?php echo $codeInsee;?>"] = "<?php echo $structure;?>";
+                <?php endforeach;?>
+        <?php endforeach;?>
+
+        function selectStructure( index ) {
+            var typeOrient = $F( 'Orientstruct' + index + 'TypeorientId' );
+            var codeinsee = $F( 'Orientstruct' + index + 'Codeinsee' );
+            if( ( structAuto[typeOrient] != undefined ) && ( structAuto[typeOrient][codeinsee] != undefined ) ) {
+                $( 'Orientstruct' + index + 'StructurereferenteId' ).value = structAuto[typeOrient][codeinsee];
+            }
+        }
+
         document.observe("dom:loaded", function() {
-            <?php foreach( $cohorte as $index => $personne ):?>
-                dependantSelect( 'Orientstruct<?php echo $index;?>StructurereferenteId', 'Orientstruct<?php echo $index;?>TypeorientId' );
-            <?php endforeach;?>
+            var indexes = new Array( <?php echo implode( ', ', array_keys( $cohorte ) );?> );
+            indexes.each( function( index ) {
+                /* Dépendance des deux champs "select" */
+                dependantSelect( 'Orientstruct' + index + 'StructurereferenteId', 'Orientstruct' + index + 'TypeorientId' );
+
+                /* Structures automatiques suivant le code Insée */
+                // Initialisation
+                if( $F( 'Orientstruct' + index + 'StructurereferenteId' ) == '' ) {
+                    selectStructure( index );
+                }
+
+                // Traquer les changements
+                Event.observe( $( 'Orientstruct' + index + 'TypeorientId' ), 'change', function() {
+                    selectStructure( index );
+                } );
+            } );
         });
     </script>
 <?php endif;?>
@@ -104,6 +133,7 @@
                                         /* FIXME -> id unset ? */
                                         $form->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['id'] ) ).
                                         $form->input( 'Orientstruct.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Foyer']['dossier_rsa_id'] ) ).
+                                        $form->input( 'Orientstruct.'.$index.'.codeinsee', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Adresse']['numcomptt'] ) ).
                                         $form->input( 'Orientstruct.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Personne']['id'] ) ),
                                     $form->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient, 'value' => ( !empty( $typeorient_id ) ? $typeorient_id : $personne['Orientstruct']['propo_algo'] ) ) ),
                                     $form->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structuresReferentes, 'empty' => true, 'value' => ( !empty( $structurereferente_id ) ? $structurereferente_id : $personne['Orientstruct']['structurereferente_id'] ) ) ),

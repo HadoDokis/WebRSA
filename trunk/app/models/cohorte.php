@@ -97,5 +97,49 @@
 
             return Set::extract( $cohorte, '{n}.0.id' );
         }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function structuresAutomatiques() {
+            App::import( 'Model','Structurereferente' );
+            $this->Structurereferente = new Structurereferente();
+            App::import( 'Model','Typeorient' );
+            $this->Typeorient = new Typeorient();
+
+            // FIXME: valeurs magiques
+            $typesPermis = $this->Typeorient->find(
+                'list',
+                array(
+                    'conditions' => array(
+                        'Typeorient.lib_type_orient' => array( 'Emploi', 'Socioprofessionnelle' ) )
+                )
+            );
+            $typesPermis = array_keys( $typesPermis );
+
+            $this->Structurereferente->unbindModelAll();
+            $this->Structurereferente->bindModel( array( 'hasAndBelongsToMany' => array( 'Zonegeographique' ) ) );
+            $structures = $this->Structurereferente->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Structurereferente.typeorient_id' => $typesPermis
+                    ),
+                    'recursive' => 2
+                )
+            );
+
+            $return = array();
+            foreach( $structures as $structure ) {
+                if( !empty( $structure['Zonegeographique'] ) ) {
+                    foreach( $structure['Zonegeographique'] as $zonegeographique ) {
+                        $return[$structure['Structurereferente']['typeorient_id']][$zonegeographique['codeinsee']] = $structure['Structurereferente']['typeorient_id'].'_'.$structure['Structurereferente']['id'];
+                    }
+                }
+            }
+
+            return $return;
+        }
     }
 ?>

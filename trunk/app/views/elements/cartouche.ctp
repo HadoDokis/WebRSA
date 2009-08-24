@@ -1,5 +1,3 @@
-  <!-- <?php debug( $session->read( 'Auth' ) );?> -->
-
 <?php if( $session->check( 'Auth.User' ) ):?>
     <div id="pageCartouche">
         <table>
