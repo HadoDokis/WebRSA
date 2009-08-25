@@ -17,13 +17,14 @@
 
             $permissions = $this->Session->read( 'Auth.Permissions' );
 
-            $foundController = array_key_exists( $controller, $permissions );
-            $returnController = ( $foundController ? $permissions[$controller] : null );
+//             $foundController = array_key_exists( $controller, $permissions );
+//             $returnController = ( $foundController ? $permissions[$controller] : null );
+//
+//             $foundAction = array_key_exists( $controller.':'.$action, $permissions );
+//             $returnAction = ( $foundAction ? $permissions[$controller.':'.$action] : null );
 
-            $foundAction = array_key_exists( $controller.':'.$action, $permissions );
-            $returnAction = ( $foundAction ? $permissions[$controller.':'.$action] : null );
-
-// var_dump( array( $controller, $action, $returnAction, $returnController ) );
+            $returnController = Set::extract( $permissions, $controller );
+            $returnAction = Set::extract( $permissions, $controller.':'.$action );
 
             if( $returnAction !== null ) {
                 return $returnAction;
