@@ -59,7 +59,7 @@
                     <tr class="even">
                         <th><?php echo $type_totalisation[$totacom['Totalisationacompte']['type_totalisation']];?></th>
                         <th>Total acomptes transmis (CAF/MSA)</th>
-                        <th>Total acomptes calculés</th>
+<!--                         <th>Total acomptes calculés</th> -->
                     </tr>
                     <tr class="odd">
                     <?php /*debug( $natpfcre );*/?>
@@ -70,22 +70,22 @@
                         <?php else:?>
                             <td class="number"><?php echo $locale->money( $totacom['Totalisationacompte']['mttotsoclrsa'] );?></td>
                         <?php endif;*/?> -->
-                        <td class="number"></td>
+<!--                         <td class="number"></td> -->
                     </tr>
                     <tr class="even">
                         <td>RSA socle majoré</td>
                         <td class="number"><?php echo $locale->money( $totacom['Totalisationacompte']['mttotsoclmajorsa'] );?></td>
-                        <td class="number"></td>
+<!--                         <td class="number"></td> -->
                     </tr>
                     <tr class="odd">
                         <td>RSA local</td>
                         <td class="number"><?php echo $locale->money( $totacom['Totalisationacompte']['mttotlocalrsa'] );?></td>
-                        <td class="number"></td>
+<!--                         <td class="number"></td> -->
                     </tr>
                     <tr class="even">
                         <td>RSA socle total</td>
                         <td class="number"><?php echo $locale->money( $totacom['Totalisationacompte']['mttotrsa'] );?></td>
-                        <td class="number"></td>
+<!--                         <td class="number"></td> -->
                     </tr>
                 </tbody>
             <?php endforeach; ?>
