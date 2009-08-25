@@ -5,10 +5,10 @@
         var $uses = array( 'Group', 'Zonegeographique', 'User', 'Serviceinstructeur', 'Connection' );
         var $aucunDroit = array('login', 'logout');
 
-        /**
-        *  The AuthComponent provides the needed functionality
-        *  for login, so you can leave this function blank.
-        */
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function login() {
            if( $this->Auth->user() ) {
                 /* Lecture de l'utilisateur authentifié */
@@ -59,6 +59,10 @@
             }
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function logout() {
             if( $user_id = $this->Session->read( 'Auth.User.id' ) ) {
                 if( valid_int( $user_id ) ) {
@@ -79,6 +83,10 @@
             $this->redirect( $this->Auth->logout() );
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function index() {
             $users = $this->User->find(
                 'all',
@@ -89,6 +97,10 @@
 
             $this->set('users', $users);
         }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
 
         function _setNewPermissions( $group_id, $user_id, $username ) {
             $group = $this->User->Group->findById( $group_id, null, null, -1 );
@@ -110,6 +122,10 @@
 
             return $saved;
         }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
 
         // FIXME: à l'ajout, on n'obtient pas toutes les acl de son groupe
         function add() {
@@ -146,6 +162,10 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function edit( $user_id = null ) {
             // TODO : vérif param
             // Vérification du format de la variable
@@ -157,6 +177,8 @@
             $this->set( 'zglist', $this->Zonegeographique->find( 'list' ) );
             $this->set( 'gp', $this->Group->find( 'list' ) );
             $this->set( 'si', $this->Serviceinstructeur->find( 'list' ) );
+
+            unset( $this->User->validate['passwd'] );
 
             if( !empty( $this->data ) ) {
                 $this->User->begin();
@@ -186,7 +208,7 @@
                         // Ajout des nouvelles entrées liées à cet groupe (dont on descend) dans la table aros_acos
                         $saved = $this->_setNewPermissions(
                             $this->data['User']['group_id'],
-                            $group['Group']['name'],
+                            //$group['Group']['name'],
                             $this->User->id,
                             $this->data['User']['username']
                         );
@@ -218,6 +240,9 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
 
         function delete( $user_id = null ) {
             // Vérification du format de la variable
