@@ -131,8 +131,6 @@
             $options = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
             $infos = $this->Infofinanciere->find( 'all', $options );
 
-            $headers = array( 'N° Dossier', 'N° CAF', 'Nom/prénom du bénéficiaire', 'Date de naissance du bénéficiaire', 'Type d\'allocation', 'Montant de l\'allocation' );
-
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'headers', 'infos' ) );
         }
