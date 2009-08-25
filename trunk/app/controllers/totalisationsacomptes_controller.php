@@ -4,7 +4,7 @@
 
         var $name = 'Totalisationsacomptes';
         var $uses = array( 'Totalisationacompte', 'Identificationflux', 'Option', 'Infofinanciere' );
-        var $helpers = array( 'Locale' );
+        var $helpers = array( 'Locale', 'Csv' );
 
         /** ********************************************************************
         *
@@ -41,6 +41,7 @@
             $params = $this->Totalisationacompte->search( $this->data );
             $totsacoms = $this->Totalisationacompte->find( 'all', $params );
 
+            $this->layout = ''; // FIXME ?
             $this->set( compact( 'totsacoms' ) );
         }
     }
