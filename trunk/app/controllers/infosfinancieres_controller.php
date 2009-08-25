@@ -10,12 +10,18 @@
 //             'limit' => 20,
 //         );
 
-        /**
-        */
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function __construct() {
             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'indexdossier' ) ) ) );
             parent::__construct();
         }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
 
         function beforeFilter() {
             parent::beforeFilter();
@@ -26,11 +32,12 @@
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
 
         function indexdossier() {
-
             if( !empty( $this->data ) ) {
-
                 $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
                 $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
@@ -39,13 +46,17 @@
                 $this->paginate = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
                 $this->paginate['limit'] = 15;
                 $infosfinancieres = $this->paginate( 'Infofinanciere' );
-// debug( $infosfinancieres );
+
                 $this->Dossier->commit();
 
                 $this->set( 'infosfinancieres', $infosfinancieres );
                 $this->data['Search'] = $this->data;
             }
         }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
 
         function index( $dossier_rsa_id = null ) {
             //Vérification du format de la variable
@@ -82,6 +93,10 @@
 
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function view( $infofinanciere_id = null ) {
             // Vérification du format de la variable
             $this->assert( valid_int( $infofinanciere_id ), 'error404' );
@@ -105,27 +120,21 @@
 
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
 
-
-        /************************************* Export des données en Csv *******************************/
         function exportcsv() {
-            $headers = array( 'N° Dossier', 'N° CAF', 'Nom/Prénom Allocataire', 'Date naissance', 'Type d\'allocation', 'Montant de l\'allocation' );
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
-            $dataPers = $this->Personne->find( 'all', array( 'fields' => array( 'qual', 'nom', 'prenom', 'dtnai' ), 'limit' => 20, 'recursive' => -1 ) );
-            $dataPers = Set::extract( $dataPers, '{n}.Personne' );
+            $options = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+            $infos = $this->Infofinanciere->find( 'all', $options );
 
-            $dataDos = $this->Dossier->find( 'all', array( 'fields' => array( 'numdemrsa', 'matricule' ), 'limit' => 20, 'recursive' => -1 ) );
-            $dataDos = Set::extract( $dataDos, '{n}.Dossier' );
+            $headers = array( 'N° Dossier', 'N° CAF', 'Nom/prénom du bénéficiaire', 'Date de naissance du bénéficiaire', 'Type d\'allocation', 'Montant de l\'allocation' );
 
-            $dataAlloc = $this->Infofinanciere->find( 'all', array( 'fields' => array( 'type_allocation', 'mtmoucompta' ), 'limit' => 20, 'recursive' => -1 ) );
-            $dataAlloc = Set::extract( $dataAlloc, '{n}.Infofinanciere' );
-
-
-            $this->layout = '';
-            $data = $this->set( compact( 'dataPers', 'dataDos', 'dataAlloc' ) );
-// debug( $data );
-            $this->set( 'dataToExport', $this->Infofinanciere->findAll( $data ) );
-
+            $this->layout = ''; // FIXME ?
+            $this->set( compact( 'headers', 'infos' ) );
         }
-
-}
+    }
+?>
