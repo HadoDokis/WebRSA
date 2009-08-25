@@ -19,10 +19,16 @@
             array(
                 'avr',
                 'mai',
+                'jun',
+                'jui',
+                'aoû',
             ),
             array(
                 'apr',
                 'may',
+                'jun',
+                'jul',
+                'aug',
             ),
             $date
         );
@@ -32,19 +38,24 @@
     class ChangematrixShell extends Shell
     {
         function main() {
-            $svnUrl = 'svn://svn.adullact.net/svnroot/webrsa/trunk/app';
+            if( empty( $this->args ) ) {
+                $matrixType = 'SVN '.strftime( '%d/%m/%Y %H:%M' );
+                $svnUrl = 'svn://svn.adullact.net/svnroot/webrsa/trunk/app';
+            }
+            else {
+                $matrixType = 'version '.$this->args[0];
+                $svnUrl = 'svn://svn.adullact.net/svnroot/webrsa/tags/'.$this->args[0].'/app';
+            }
             $lines = array();
             $controllers = array();
             $models = array();
             $views = array();
-            // $lines = file( '/home/cbuffin/projets/htdocs/cakephp/default/1.2.3.8166/svnlist.txt' );
             $hasList = @exec( 'svn list -R --verbose '.$svnUrl, &$lines );
-            // FIXME: if( !$hasList ) ...
 
             if( $hasList ) {
                 foreach( $lines as $line ) {
                     $extract = preg_match(
-                        '/^ *(?P<revision>[0-9]+) +(?P<user>[^ ]+) +(?P<size>[^ ]+) +(?P<date>[a-z]+ [0-9]+ [0-9]+:[0-9]+) +(?P<file>.+)$/i',
+                        '/^ *(?P<revision>[0-9]+) +(?P<user>[^ ]+) +(?P<size>[^ ]+) +(?P<date>[^ ]+ [0-9]+ [0-9]+:[0-9]+) +(?P<file>.+)$/i',
                         $line,
                         $matches
                     );
@@ -89,7 +100,7 @@
                         <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
                             <head>
                                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                                <title>Changematrix</title>
+                                <title>Changematrix '.$matrixType.'</title>
                                 <style type="text/css" media="all">
                                     body { font-size: 12px; }
                                     table { border-collapse: collapse; }
@@ -101,7 +112,7 @@
                                 </style>
                             </head>
                             <body>
-                                <h1>MVC</h1>
+                                <h1>Webrsa '.$matrixType.'</h1>
                                 <table>
                                     <colgroup span="1" />
                                     <colgroup span="2" />
@@ -161,7 +172,7 @@
                 file_put_contents( 'changematrix.html', $data);
             }
             else {
-                echo 'Erreur: impossible d\'obtenir '.$svnUrl;
+                echo 'Erreur: impossible d\'obtenir '.$svnUrl."\n";
             }
         }
     }
