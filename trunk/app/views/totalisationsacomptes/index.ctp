@@ -99,20 +99,20 @@
         </table>
 
         <ul class="actionMenu">
-            <?php
+            <li><?php
                 echo $html->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;' )
                 );
-            ?>
+            ?></li>
 
-            <!-- <?php
+            <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
-                    array( 'controller' => 'cohortes', 'action' => 'exportcsv' )
+                    array( 'controller' => 'totalisationsacomptes', 'action' => 'exportcsv' )
                 );
-            ?> -->
-        </ul> 
+            ?></li>
+        </ul>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>

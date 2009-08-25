@@ -6,6 +6,10 @@
         var $uses = array( 'Totalisationacompte', 'Identificationflux', 'Option', 'Infofinanciere' );
         var $helpers = array( 'Locale' );
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function beforeFilter() {
             parent::beforeFilter();
             // Type_totalisation
@@ -16,14 +20,28 @@
             $this->set( 'natpfcre', $this->Option->natpfcre(  ) );
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
 
-        function index(){
+        function index() {
             if( !empty( $this->data ) ) {
                 $params = $this->Totalisationacompte->search( $this->data );
                 $totsacoms = $this->Totalisationacompte->find( 'all', $params );
 
                 $this->set('totsacoms', $totsacoms );
             }
+        }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function exportcsv() {
+            $params = $this->Totalisationacompte->search( $this->data );
+            $totsacoms = $this->Totalisationacompte->find( 'all', $params );
+
+            $this->set( compact( 'totsacoms' ) );
         }
     }
 ?>

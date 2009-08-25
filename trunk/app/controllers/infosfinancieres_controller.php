@@ -129,6 +129,7 @@
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
             $options = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+            unset( $options['limit'] );
             $infos = $this->Infofinanciere->find( 'all', $options );
 
             $this->layout = ''; // FIXME ?
