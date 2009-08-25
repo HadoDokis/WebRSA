@@ -140,6 +140,7 @@
             }
 
             unset( $personne['Contratinsertion'] ); // FIXME: faire un unbindModel
+
             $this->_ged( $personne, 'notification_structure.odt' );
         }
 
@@ -360,6 +361,7 @@
         }
 
         function _get( $personne_id ) {
+            $this->Personne->unbindModel( array( 'hasMany' => array( 'Contratinsertion'/*, 'Orientstruct'*/ ) ) );
             $personne = $this->Personne->find(
                 'first',
                 array(
@@ -368,6 +370,20 @@
                     )
                 )
             );
+
+            $contratinsertion = $this->Personne->Contratinsertion->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Contratinsertion.personne_id' => $personne_id
+                    ),
+                    'order' => array(
+                        'Contratinsertion.dd_ci DESC'
+                    ),
+                    'recursive' => -1
+                )
+            );
+            $personne = Set::merge( $personne, $contratinsertion );
 
             // Récupération de l'adresse lié à la personne
             $this->Adressefoyer->bindModel(
