@@ -45,9 +45,15 @@
                 <li id="menu2one" >
                     <?php echo $html->link( 'Recherche multicritères', '#' );?>
                     <ul>
-                        <li><?php echo $html->link( 'Par dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?></li>
-                        <li><?php echo $html->link( 'Par Orientation', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
-                        <li><?php echo $html->link( 'Par Contrat insertion',  array( 'controller' => 'criteresci', 'action' => 'index'  ) );?></li>
+                        <?php if( $permissions->check( 'dossiers', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Par dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?></li>
+                        <?php endif;?>
+                        <?php if( $permissions->check( 'criteres', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Par Orientation', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
+                        <?php endif;?>
+                        <?php if( $permissions->check( 'criteresci', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Par Contrat insertion',  array( 'controller' => 'criteresci', 'action' => 'index'  ) );?></li>
+                        <?php endif;?>
                     </ul>
                 </li>
             <?php endif;?>
