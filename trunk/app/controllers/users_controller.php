@@ -107,16 +107,29 @@
             $aroGroup = $this->Acl->Aro->findByAlias( 'Group:'.$group['Group']['name'], null, null, 2 );
 
             $aroAlias = 'Utilisateur:'.$username;
-            $this->Acl->Aro->create( array( 'parent_id' => $aroGroup['Aro']['id'], 'foreign_key' => $user_id, 'alias' => $aroAlias ) );
+            $aroUser = $this->Acl->Aro->find( 'first', array( 'conditions' => array( 'Aro.foreign_key' => $user_id, 'Aro.alias' => $aroAlias ), 'recursive' => -1 ) );
+
+            if( empty( $aroUser ) ) {
+                $aroUser = array();
+            }
+
+            $aroUser['Aro']['parent_id'] = $aroGroup['Aro']['id'];
+            $aroUser['Aro']['foreign_key'] = $user_id;
+            $aroUser['Aro']['alias'] = $aroAlias;
+
+            $this->Acl->Aro->create( $aroUser );
             $saved = $this->Acl->Aro->save();
 
-            $permissions = Set::combine( $aroGroup, 'Aco.{n}.alias', 'Aco.{n}.Permission._create' );
-            foreach( $permissions as $acoAlias => $permission ) {
-                if( $permission == 1 ) {
-                    $saved = $this->Acl->allow( $aroAlias, $acoAlias ) && $saved;
-                }
-                else {
-                    $saved = $this->Acl->deny( $aroAlias, $acoAlias ) && $saved;
+            // Permissions héritées du groupe
+            if( !empty( $aroGroup['Aco'] ) ) {
+                $permissions = Set::combine( $aroGroup, 'Aco.{n}.alias', 'Aco.{n}.Permission._create' );
+                foreach( $permissions as $acoAlias => $permission ) {
+                    if( $permission == 1 ) {
+                        $saved = $this->Acl->allow( $aroAlias, $acoAlias ) && $saved;
+                    }
+                    else {
+                        $saved = $this->Acl->deny( $aroAlias, $acoAlias ) && $saved;
+                    }
                 }
             }
 
@@ -136,7 +149,6 @@
             if( !empty( $this->data ) ) {
                 $this->User->begin();
                 if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-// debug( $this->data );
                     // Définition des nouvelles permissions
                     $saved = $this->_setNewPermissions(
                         $this->data['User']['group_id'],
@@ -144,7 +156,7 @@
                         $this->data['User']['username']
                     );
 
-                    if( $saved ) {
+                    if( /*false &&*/ $saved ) {
                         $this->User->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
@@ -208,7 +220,6 @@
                         // Ajout des nouvelles entrées liées à cet groupe (dont on descend) dans la table aros_acos
                         $saved = $this->_setNewPermissions(
                             $this->data['User']['group_id'],
-                            //$group['Group']['name'],
                             $this->User->id,
                             $this->data['User']['username']
                         );
