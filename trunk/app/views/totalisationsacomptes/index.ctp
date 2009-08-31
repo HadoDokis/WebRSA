@@ -109,7 +109,7 @@
             <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
-                    array( 'controller' => 'totalisationsacomptes', 'action' => 'exportcsv' )
+                    array( 'controller' => 'totalisationsacomptes', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
             ?></li>
         </ul>
