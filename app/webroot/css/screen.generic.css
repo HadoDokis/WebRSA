@@ -383,6 +383,37 @@ div#ficheInfoFina tbody tr.odd th {
     color: black;
 }
 /*****************************************************************************/
+/* Affichage vue Suivi insertion */
+div#suiviInsertion table {
+/*     width: 360px; */
+    width: auto;
+    margin-bottom: 1em;
+    float: left;
+}
+
+div#suiviInsertion tbody th {
+/*     width: 190px; */
+}
+
+div#suiviInsertion table tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#suiviInsertion tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#suiviInsertion tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+#suiviInsertion tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
 
 /*****************************************************************************/
 /*****************************************************************************/
