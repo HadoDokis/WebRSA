@@ -1,7 +1,11 @@
 <?php
     $csv->preserveLeadingZerosInExcel = true;
+// //     foreach( $identsflux as $identflux ){
+//         $csv->addRow( array( 'MOIS TRAITEMENT', $identflux['Identificationflux']['dtcreaflux'] ) );
+//     }
 
     foreach( $totsacoms as $totacom ) {
+//         $csv->addRow( array( 'MOIS TRAITEMENT', $identsflux['Identificationflux']['dtcreaflux'] ) );
         $csv->addRow( array( $type_totalisation[$totacom['Totalisationacompte']['type_totalisation']] ) );
         $csv->addRow( array( 'RSA socle', $totacom['Totalisationacompte']['mttotsoclrsa'] ) );
         $csv->addRow( array( 'RSA socle majoré', $totacom['Totalisationacompte']['mttotsoclmajorsa'] ) );

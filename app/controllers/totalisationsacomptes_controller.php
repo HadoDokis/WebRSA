@@ -28,7 +28,6 @@
             if( !empty( $this->data ) ) {
                 $params = $this->Totalisationacompte->search( $this->data );
                 $totsacoms = $this->Totalisationacompte->find( 'all', $params );
-
                 $this->set('totsacoms', $totsacoms );
             }
         }
@@ -38,8 +37,11 @@
         *** *******************************************************************/
 
         function exportcsv() {
-            $params = $this->Totalisationacompte->search( $this->data );
+            $params = $this->Totalisationacompte->search( array_multisize( $this->params['named'] ) );
             $totsacoms = $this->Totalisationacompte->find( 'all', $params );
+
+            $identsflux = $this->Identificationflux->find( 'all' );
+            $this->set( 'identsflux', $identsflux );
 
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'totsacoms' ) );
