@@ -195,6 +195,15 @@
             ?>
         <?php endif;?>
 
+        <?php if( $permissions->check( 'suivisinsertion', 'index' ) ):?>
+            <?php
+                echo '<li>'.$html->link(
+                    'Suivis du parcours d\'insertion',
+                    array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Foyer']['id'] )
+                ).'</li>';
+            ?>
+        <?php endif;?>
+
         <?php if( $permissions->check( 'dossierssimplifies', 'edit' ) ):?>
             <li><span>Préconisation d'orientation</span>
                 <ul>
