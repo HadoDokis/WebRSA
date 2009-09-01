@@ -257,8 +257,6 @@
                 'limit' => 10,
                 'conditions' => $conditions
             );
-
-
             return $query;
         }
     }
