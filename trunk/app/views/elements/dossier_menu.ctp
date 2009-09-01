@@ -159,6 +159,14 @@
                                     );
                                 ?>
                             </li>
+                            <li>
+                                <?php
+                                    echo $html->link(
+                                        'Consultation dossier PDO',
+                                        array( 'controller' => 'dossierspdo', 'action' => 'index', $dossier['Dossier']['id'] )
+                                    );
+                                ?>
+                            </li>
                         </ul>
                     </li>
                 <?php endif;?>
