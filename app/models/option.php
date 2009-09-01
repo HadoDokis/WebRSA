@@ -173,6 +173,14 @@
             );
         }
 
+        function avisdero() {
+            return array(
+                'D' => 'Avis demandé au CG',
+                'O' => 'Accord du CG',
+                'N' => 'Refus du CG'
+            );
+        }
+
         function avisdestpairsa() {
             return array(
                 'D' => 'Avis demandé au CG',
@@ -1210,6 +1218,14 @@
             );
         }
 
+        function typdero() {
+            return array(
+                'AGE' => 'Dérogation sur les conditions d\'age',
+                'ACT' => 'Dérogation sur les conditions d\'activité',
+                'RES' => 'Dérogation sur les conditions de résidence',
+                'NAT' => 'Dérogation sur les conditions de nationnalité'
+            );
+        }
 
         function typeadr() {
             return array(
