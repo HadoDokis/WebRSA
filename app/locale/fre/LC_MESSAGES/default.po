@@ -776,3 +776,30 @@ msgstr "Date de déclaration de grossesse"
 
 msgid "natfingro"
 msgstr "Motif de fin de grossesse"
+
+###############################################################################
+# PDO
+###############################################################################
+msgid "numdero"
+msgstr "Numéro de PDO"
+
+msgid "typdero"
+msgstr "Type de PDO"
+
+msgid "avisdero"
+msgstr "Avis PDO"
+
+msgid "ddavisdero"
+msgstr "Date de début PDO"
+
+msgid "dfavisdero"
+msgstr "Date de fin PDO"
+
+msgid "motif"
+msgstr "Motif de la demande PDO"
+
+msgid "commentdero"
+msgstr "Commentaires"
+
+msgid "ressdero"
+msgstr "Moyenne des ressources mensuelles"

@@ -102,7 +102,9 @@
         'autre_annulation' => 'autres_annulations',
         'dspp_nivetu' => 'dspps_nivetus',
         //Parcours d'insertion
-        'suiviinsertion' => 'suivisinsertion'
+        'suiviinsertion' => 'suivisinsertion',
+        'dossierpdo' => 'dossierspdo',
+        'avispcgpersonne' => 'avispcgpersonnes'
      );
 /**
  * This is a key => value array of regex used to match words.
