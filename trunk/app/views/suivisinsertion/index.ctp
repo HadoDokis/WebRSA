@@ -2,7 +2,7 @@
 
 <?php  $this->pageTitle = 'Suivi du parcours d\'insertion';?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $details['Dossier']['id'] ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );?>
 
 
 <?php
@@ -330,8 +330,8 @@
                     <td><?php echo value( $decision_ci, Set::extract( 'DEM.Contratinsertion.decision_ci', $details ) );?></td>
                     <td><?php echo $html->boolean( !empty( $details['DEM']['Contratinsertion']['decision_ci'] )  && ( $details['DEM']['Contratinsertion']['decision_ci'] != 'E' ) );?></td>
                     <td><?php echo $html->viewLink(
-                        'Voir les actions d\'insertion',
-                        array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
+                        'Voir le contrat d\'insertion',
+                        array( 'controller' => 'contratsinsertion', 'action' => 'valider', Set::extract( 'DEM.Personne.id', $details ) )
                         );?>
                     </td>
                 </tr>
@@ -351,8 +351,8 @@
                     <td><?php echo value( $decision_ci, Set::extract( 'CJT.Contratinsertion.decision_ci', $details ) );?></td>
                     <td><?php echo $html->boolean( !empty( $details['CJT']['Contratinsertion']['decision_ci'] ) && ( $details['CJT']['Contratinsertion']['decision_ci'] != 'E' ) );?></td>
                     <td><?php echo $html->viewLink(
-                        'Voir les actions d\'insertion',
-                        array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
+                        'Voir le contrat d\'insertion',
+                        array( 'controller' => 'contratsinsertion', 'action' => 'valider', Set::extract( 'CJT.Personne.id', $details ) )
                         );?>
                     </td>
                 </tr>

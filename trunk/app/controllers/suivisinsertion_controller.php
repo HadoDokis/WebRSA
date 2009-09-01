@@ -20,17 +20,18 @@
         *
         *** *******************************************************************/
 
-        function index( $id = null ){
+        function index( $foyer_id = null ){
             // Vérification du format de la variable
-            $this->assert( valid_int( $id ), 'error404' );
+            $this->assert( valid_int( $foyer_id ), 'error404' );
 
             $details = array();
 
-            $tDossier = $this->Dossier->findById( $id, null, null, -1 );
-            $details = Set::merge( $details, $tDossier );
-
-            $tFoyer = $this->Dossier->Foyer->findByDossierRsaId( $id, null, null, -1 );
+            $tFoyer = $this->Foyer->findById( $foyer_id, null, null, -1 );
+            $this->assert( !empty( $tFoyer ), 'invalidParameter' );
             $details = Set::merge( $details, $tFoyer );
+
+            $tDossier = $this->Dossier->findById( $tFoyer['Foyer']['dossier_rsa_id'], null, null, -1 );
+            $details = Set::merge( $details, $tDossier );
 
             // Récupération du services instructeur lié au contrat
             $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
@@ -116,6 +117,7 @@
             $this->set( 'typesorient', $typesorient );
             $this->set( 'typoscontrat', $typoscontrat );
 
+            $this->set( 'foyer_id', $foyer_id );
             $this->set( 'details', $details );
 
         }
