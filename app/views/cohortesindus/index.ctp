@@ -46,7 +46,7 @@
             <?php echo $form->input( 'Cohorteindu.typeparte', array( 'label' => 'Suivi', 'type' => 'select', 'options' => $typeparte, 'empty' => true ) ); ?>
              <?php echo $form->input( 'Cohorteindu.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $sr , 'empty' => true )  ); ?> 
             <?php
-                echo $form->input( 'Cohorteindu.compare', array( 'label' => 'FIXME', 'type' => 'select', 'options' => $comparators, 'empty' => true ) );
+                echo $form->input( 'Cohorteindu.compare', array( 'label' => 'Opérateurs', 'type' => 'select', 'options' => $comparators, 'empty' => true ) );
                 echo $form->input( 'Cohorteindu.mtmoucompta', array( 'label' => 'Montant de l\'indu', 'type' => 'text' ) );
             ?>
     </fieldset>
