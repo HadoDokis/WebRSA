@@ -769,6 +769,24 @@ class HtmlHelper extends AppHelper {
         );
     }
 
+    function attachLink( $title, $url, $enabled = true ){
+        $content = $this->image(
+            'icons/attach.png',
+            array( 'alt' => '' )
+        ).' Visualiser';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
+
     function printLink( $title, $url, $enabled = true ) {
         $content = $this->image(
             'icons/printer.png',
