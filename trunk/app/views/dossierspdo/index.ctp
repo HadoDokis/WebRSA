@@ -97,9 +97,8 @@
             <?php endforeach;?>
         </tbody>
     </table>
-<?php endif;?>
 </div>
-
+<?php endif;?>
 
 </div>
 <div class="clearer"><hr /></div>

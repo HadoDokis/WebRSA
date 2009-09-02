@@ -24,10 +24,10 @@
     <ul class="actionMenu">
         <li>
             <?php
-                if( $permissions->check( 'dossierspdos', 'edit' ) ) {
+                if( $permissions->check( 'dossierspdo', 'edit' ) ) {
                     echo '<li>'.$html->editLink(
                         'Éditer PDO',
-                        array( 'controller' => 'dossierspdos', 'action' => 'edit', $pdos['Derogation']['id'] )
+                        array( 'controller' => 'dossierspdo', 'action' => 'edit', $pdos[0]['Derogation']['id'] )
                     ).' </li>';
                 }
 
@@ -86,10 +86,10 @@
                     <tr>
                         <td><?php echo value( $pieecpres, Set::extract( '0.Personne.pieecpres', $pdos ) );?></td>
                         <td><?php echo $html->boolean( !empty( $pdos[0]['Personne']['pieecpres'] ) );?></td>
-                        <td><?php echo '';?></td>
-                        <td><?php echo $html->viewLink(
+                        <td><?php echo '';?></td> <!-- FIXME: Voir pour la date à afficher pour les pièces jointes -->
+                        <td><?php echo $html->attachLink(
                                 'Voir PDO',
-                                array( 'controller' => 'dossierspdos', 'action' => 'view', $pdos[0]['Derogation']['id'] )
+                                array( 'controller' => 'dossierspdo', 'action' => 'view', $pdos[0]['Derogation']['id'] )
                             );?></td>
                     </tr>
                 <?php /*endforeach;*/?>
