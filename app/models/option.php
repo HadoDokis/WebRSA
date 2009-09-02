@@ -189,6 +189,14 @@
             );
         }
 
+        function commission() { ///FIXME: ajout pour les PDO mais à voir
+            return array(
+                'V' => 'Commission de validation',
+                'D' => 'Commission de décision',
+                'P' => 'Commission pluridisciplinaire'
+            );
+        }
+
         function couvsoc() {
             return array(
                 'O' => 'Oui',
@@ -442,6 +450,21 @@
                 'RGD' => 'Cloture pour regroupement de dossier'
             );
 
+        }
+
+        function motideccg() { ///FIXME: ajout pour les PDO mais à voir
+            return array(
+                'N' => 'Non admissible',
+                'A' => 'Admissible',
+                'M' => 'Pièce manquante'
+            );
+        }
+
+        function motidempdo() { ///FIXME: ajout pour les PDO mais à voir
+            return array(
+                'C' => 'Changement de situation',
+                'P' => 'Perte d\'emploi'
+            );
         }
 
         function motidemrsa() {
