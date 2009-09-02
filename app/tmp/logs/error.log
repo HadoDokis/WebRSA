@@ -1,1 +1,14 @@
 
+2009-09-02 16:39:50 Warning: Warning (2): pg_query() [<a href='http://php.net/function.pg-query'>function.pg-query</a>]: Query failed: ERREUR:  erreur de syntaxe sur ou près de « GROUP »
+LINE 4:       GROUP BY annee, mois
+              ^ in [CORE/cake/libs/model/datasources/dbo/dbo_postgres.php, line 148]
+2009-09-02 16:39:50 Warning: Warning (512): <span style = "color:Red;text-align:left"><b>SQL Error:</b> ERREUR:  erreur de syntaxe sur ou près de « GROUP »
+LINE 4:       GROUP BY annee, mois
+              ^</span> in [CORE/cake/libs/model/datasources/dbo_source.php, line 524]
+2009-09-02 17:08:41 Warning: Warning (2): pg_query() [<a href='http://php.net/function.pg-query'>function.pg-query</a>]: Query failed: ERREUR:  erreur de syntaxe sur ou près de « ORDER »
+LINE 5:       ORDER BY annee, mois;
+              ^ in [CORE/cake/libs/model/datasources/dbo/dbo_postgres.php, line 148]
+2009-09-02 17:08:41 Warning: Warning (512): <span style = "color:Red;text-align:left"><b>SQL Error:</b> ERREUR:  erreur de syntaxe sur ou près de « ORDER »
+LINE 5:       ORDER BY annee, mois;
+              ^</span> in [CORE/cake/libs/model/datasources/dbo_source.php, line 524]
+2009-09-02 17:29:44 Warning: Warning (2): Missing argument 2 for LocaleHelper::number(), called in /home/cbuffin/www/webrsa/app/views/indicateursmensuels/index.ctp on line 7 and defined in [APP/views/helpers/locale.php, line 27]

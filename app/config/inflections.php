@@ -104,7 +104,8 @@
         //Parcours d'insertion
         'suiviinsertion' => 'suivisinsertion',
         'dossierpdo' => 'dossierspdo',
-        'avispcgpersonne' => 'avispcgpersonnes'
+        'avispcgpersonne' => 'avispcgpersonnes',
+        'indicateurmensuel' => 'indicateursmensuels',
      );
 /**
  * This is a key => value array of regex used to match words.

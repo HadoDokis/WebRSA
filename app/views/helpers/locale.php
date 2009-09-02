@@ -19,5 +19,13 @@
         function money( $amount ) {
             return h( ( empty( $amount ) ) ? null : money_format( '%.2n', $amount ) );
         }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function number( $number, $precision = 0 ) {
+            return h( ( empty( $number ) ) ? null : number_format( $number, $precision, ',', ' ' ) );
+        }
     }
 ?>

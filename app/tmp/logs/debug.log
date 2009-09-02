@@ -1,1 +1,6 @@
 
+2009-09-02 16:39:50 Notice: Notice (8): Undefined variable: anneessssss in [APP/models/indicateurmensuel.php, line 22]
+2009-09-02 16:44:22 Notice: Notice (8): Undefined offset:  0 in [APP/models/indicateurmensuel.php, line 15]
+2009-09-02 16:44:23 Notice: Notice (8): Undefined offset:  0 in [APP/models/indicateurmensuel.php, line 15]
+2009-09-02 16:44:26 Notice: Notice (8): Undefined offset:  0 in [APP/models/indicateurmensuel.php, line 15]
+2009-09-02 17:29:44 Notice: Notice (8): Undefined variable: precision in [APP/views/helpers/locale.php, line 28]
