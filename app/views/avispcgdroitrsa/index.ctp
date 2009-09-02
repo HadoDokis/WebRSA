@@ -26,7 +26,7 @@
                                 h( ( trim( Set::extract( $avispcgdroitrsa, 'Avispcgdroitrsa.avisdestpairsa' ) )  != '' ) ? $avisdestpairsa[$avispcgdroitrsa['Avispcgdroitrsa']['avisdestpairsa']] : null ),
                                 h( $locale->date( 'Date::short', $avispcgdroitrsa['Avispcgdroitrsa']['dtavisdestpairsa'] ) ),
                                 h( ( Set::extract( $avispcgdroitrsa, 'Avispcgdroitrsa.nomtie' ) != '' ) ? $avispcgdroitrsa['Avispcgdroitrsa']['nomtie'] : null ),
-                                h( ( Set::extract( $avispcgdroitrsa, 'Avispcgdroitrsa.$typeperstie' ) != '' ) ?$typeperstie[$avispcgdroitrsa['Avispcgdroitrsa']['typeperstie']] : null ),
+                                h( ( Set::extract( $avispcgdroitrsa, 'Avispcgdroitrsa.typeperstie' ) != '' ) ?$typeperstie[$avispcgdroitrsa['Avispcgdroitrsa']['typeperstie']] : null ),
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )
