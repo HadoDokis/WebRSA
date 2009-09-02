@@ -787,15 +787,15 @@ msgid "typdero"
 msgstr "Type de PDO"
 
 msgid "avisdero"
-msgstr "Avis PDO"
+msgstr "Décision du Conseil Général"
 
 msgid "ddavisdero"
-msgstr "Date de début PDO"
+msgstr "Date soumission CAF"
 
 msgid "dfavisdero"
 msgstr "Date de fin PDO"
 
-msgid "motif"
+msgid "motidempdo"
 msgstr "Motif de la demande PDO"
 
 msgid "commentdero"
@@ -803,3 +803,9 @@ msgstr "Commentaires"
 
 msgid "ressdero"
 msgstr "Moyenne des ressources mensuelles"
+
+msgid "motideccg"
+msgstr "Motif de la décision CG"
+
+msgid "commission"
+msgstr "Type de commission"
