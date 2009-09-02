@@ -104,7 +104,7 @@
                     '"Situationdossierrsa"."id"',
                     '"Situationdossierrsa"."etatdosrsa"',
                     '"Situationdossierrsa"."etatdosrsa"',
-                    '\''.$date_start.'\' AS "moismoucompta"'
+//                     '\''.$date_start.'\' AS "moismoucompta"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -164,6 +164,7 @@
             $conditionsNotNull = array();
             $conditionsComparator = array();
             $conditionsNat = array();
+            $coalesce = array();
 
             foreach( $typesAllocation as $type ) {
                 $meu  = Inflector::singularize( Inflector::tableize( $type ) );
@@ -176,13 +177,14 @@
                     'foreignKey' => false,
                     'conditions' => array(
                         $type.'.dossier_rsa_id = Dossier.id',
-                        $type.'.type_allocation' => $type,
-                        '"'.$type.'"."moismoucompta" BETWEEN \''.$date_start.'\' AND \''.$date_end.'\'',
+                        $type.'.type_allocation' => $type
+//                         '"'.$type.'"."moismoucompta" BETWEEN \''.$date_start.'\' AND \''.$date_end.'\'', // FIXME
                     )
                 );
-
                 $query['joins'][] = $join;
                 $conditionsNotNull[] = $type.'.mtmoucompta IS NOT NULL';
+
+                $coalesce[] = '"'.$type.'"."moismoucompta"';
 
                 // Montant indu + comparatif vis à vis du montant
                 if( !empty( $compare ) && !empty( $mtmoucompta ) ) {
@@ -194,6 +196,7 @@
                     $conditionsNat[] = $type.'.natpfcre = \''.Sanitize::clean( $natpfcre ).'\'';
                 }
             }
+            $query['fields'][] = 'COALESCE( '.implode( ',', $coalesce ).' ) AS "moismoucompta"';
             $conditions[] = '( '.implode( ' OR ', $conditionsNotNull  ).' )';
             if( !empty( $conditionsComparator ) ) {
                 $conditions[] = '( '.implode( ' OR ', $conditionsComparator  ).' )';
@@ -202,6 +205,23 @@
                 $conditions[] = '( '.implode( ' OR ', $conditionsNat  ).' )';
             }
             $query['conditions'] = Set::merge( $query['conditions'], $conditions );
+
+            $tConditions = array();
+            foreach( $coalesce as $item1 ) {
+                foreach( $coalesce as $item2 ) {
+                    if( $item1 != $item2 ) {
+                        $cmp = strcmp( $item1, $item2 );
+                        if( $cmp < 0 ) {
+                            $tConditions[] = '( ( '.$item1.' = '.$item2.' ) OR '.$item1.' IS NULL OR '.$item2.' IS NULL )';
+                        }
+                        else {
+                            $tConditions[] = '( ( '.$item2.' = '.$item1.' ) OR '.$item2.' IS NULL OR '.$item1.' IS NULL )';
+                        }
+                    }
+                }
+            }
+            $query['conditions'] = Set::merge( $query['conditions'], '( '.implode( ' OR ', array_unique( $tConditions ) ).' )' );
+            $query['conditions'] = Set::merge( $query['conditions'], array( 'COALESCE( '.implode( ',', $coalesce ).' ) IS NOT NULL' ) );
 
             return $query;
         }
