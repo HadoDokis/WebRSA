@@ -25,7 +25,7 @@
         *** *******************************************************************/
 
         function number( $number, $precision = 0 ) {
-            return h( ( empty( $number ) ) ? null : number_format( $number, $precision, ',', ' ' ) );
+            return str_replace( ' ', '&nbsp;', h( ( empty( $number ) ) ? null : number_format( $number, $precision, ',', ' ' ) ) );
         }
     }
 ?>

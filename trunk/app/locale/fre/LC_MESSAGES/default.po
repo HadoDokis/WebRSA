@@ -809,3 +809,37 @@ msgstr "Motif de la décision CG"
 
 msgid "commission"
 msgstr "Type de commission"
+
+###############################################################################
+# Indicateurs mensuels
+###############################################################################
+
+msgid "Indicateurmensuel.nbrDossiersInstruits"
+msgstr "Nombre de dossiers instruits"
+
+msgid "Indicateurmensuel.nbrDossiersRejetesCaf"
+msgstr "Nombre de dossiers rejetés par la CAF"
+
+msgid "Indicateurmensuel.nbrOuverturesDroits"
+msgstr "Nombre d'ouvertures de droits"
+
+msgid "Indicateurmensuel.nbrAllocatairesDroitsEtDevoirs"
+msgstr "Nombre d'allocataires en droits et devoirs"
+
+msgid "Indicateurmensuel.nbrPreorientationsEmploi"
+msgstr "Nombre de préorientations vers le Pôle Emploi"
+
+msgid "Indicateurmensuel.delaiOuvertureNotification"
+msgstr "Délai entre l'ouverture de droit et la notification d'orientation"
+
+msgid "Indicateurmensuel.delaiNotificationSignature"
+msgstr "Délai entre la notification d'orientation et la signature du contrat"
+
+msgid "Indicateurmensuel.montantsIndus"
+msgstr "Montant des indus"
+
+msgid "Indicateurmensuel.nbrCiNouveauxEntrantsCg"
+msgstr "Nombre de contrats d'insertion pour les nouveaux entrants CG"
+
+msgid "Indicateurmensuel.nbrSuspensionsDroits"
+msgstr "Nombre de suspensions de droits"
