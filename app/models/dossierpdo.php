@@ -77,7 +77,8 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Personne.foyer_id = Foyer.id' )
                     )
-                )
+                ),
+                'order' => 'Derogation.ddavisdero ASC',
             )
         );
 
