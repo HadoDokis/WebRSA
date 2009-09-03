@@ -1,11 +1,10 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php  $this->pageTitle = 'Situation de l\'allocataire';?>
+<?php  $this->pageTitle = 'Situation PDO';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
 
 <?php
-
     function value( $array, $index ) {
         $keys = array_keys( $array );
         $index = ( ( $index == null ) ? '' : $index );

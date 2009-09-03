@@ -1,6 +1,6 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php  $this->pageTitle = 'Détails demande PDOe';?>
+<?php  $this->pageTitle = 'Détails demande PDO';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
 
@@ -59,7 +59,7 @@
                     <td><?php echo '' ;?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'motif' );?></th>
+                    <th><?php __( 'motideccg' );?></th>
                     <td><?php echo '';?></td>
                 </tr>
                 <tr class="even">

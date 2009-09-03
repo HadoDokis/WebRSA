@@ -62,9 +62,6 @@
             $options = $this->Dossierpdo->prepare( 'derogation', array( 'conditions' => $conditions ) );
             $pdos = $this->Derogation->find( 'all', $options );
 
-
-// debug( $pdos);
-
             $this->set( 'pdos', $pdos );
             $this->set( 'dossier_rsa_id', $this->Derogation->dossierId( $derogation_id ) );
         }

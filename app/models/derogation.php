@@ -21,7 +21,10 @@
                         'alias'      => 'Avispcgpersonne',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Derogation.avispcgpersonne_id = Avispcgpersonne.id' )
+                        'conditions' => array(
+                            'Derogation.avispcgpersonne_id = Avispcgpersonne.id',
+                            'Derogation.id' => $derogation_id
+                        )
                     ),
                     array(
                         'table'      => 'personnes',
