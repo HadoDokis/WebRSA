@@ -67,7 +67,7 @@
 
 
 //             $params = $this->data;
-// 
+//
 //             if( !empty( $params ) ) {
 //                 // On a renvoyé  le formulaire de la cohorte
 //                 if( !empty( $this->data['Infofinanciere'] ) ) {
