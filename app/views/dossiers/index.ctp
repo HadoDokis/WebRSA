@@ -105,10 +105,10 @@
 // debug( $dossier );
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
-                               <!-- <tr>
-                                    <th>Commune de naissance</th>
-                                    <td>'.$dossier['Personne']['nomcomnai'].'</td>
-                                </tr> -->
+                               <tr>
+                                    <th>Numéro CAF</th>
+                                    <td>'.$dossier['Dossier']['matricule'].'</td>
+                                </tr>
                                 <tr>
                                     <th>Date de naissance</th>
                                     <td>'.date_short( $dossier['Personne']['dtnai'] ).'</td>
