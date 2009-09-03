@@ -4,8 +4,11 @@
 		var $name = 'Indicateursmensuels';
 
 		function index() {
-			$indicateurs = $this->Indicateurmensuel->liste( 2009 );
-			$this->set( compact( 'indicateurs' ) );
+			$annee = Set::extract( $this->data, 'Indicateurmensuel.annee' );
+			if( !empty( $annee ) ) {
+				$indicateurs = $this->Indicateurmensuel->liste( $annee );
+				$this->set( compact( 'indicateurs' ) );
+			}
 		}
 	}
 ?>

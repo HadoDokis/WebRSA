@@ -57,6 +57,16 @@
                     </ul>
                 </li>
             <?php endif;?>
+            <?php if( $permissions->check( 'indicateursmensuels', 'index' ) ) :?>
+                <li id="menu2one" >
+                    <?php echo $html->link( 'Tableaux de bord', '#' );?>
+                    <ul>
+                        <?php if( $permissions->check( 'indicateursmensuels', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Indicateurs mensuels', array( 'controller' => 'indicateursmensuels', 'action' => 'index' ) );?></li>
+                        <?php endif;?>
+                    </ul>
+                </li>
+            <?php endif;?>
             <?php if( $permissions->check( 'droits', 'edit' ) || $permissions->check( 'parametrages', 'index' ) || $permissions->check( 'infosfinancieres', 'indexdossier' ) || $permissions->check( 'totalisationsacomptes', 'index' ) ): ?>
                     <li id="menu3one">
                         <?php echo $html->link( 'Administration', '#' );?>
