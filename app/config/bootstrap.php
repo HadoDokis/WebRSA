@@ -190,6 +190,31 @@
         return implode( $outer_glue, $ret );
     }
 
+	/**
+	* SOURCE: http://fr2.php.net/manual/fr/function.array-sum.php#58441
+	*/
+
+	function array_avg( $array ) {
+		$avg = 0;
+		if( !is_array( $array ) || count( $array ) == 0 ) {
+			return false;
+		}
+
+		return ( array_sum( $array ) / count( $array ) );
+	}
+
+	function array_range( $low, $high, $step = 1 ) {
+		$return = array();
+		foreach( range( $low, $high, $step ) as $value ) {
+			$return[$value] = $value;
+		}
+		return $return;
+	}
+
+    /** ************************************************************************
+    *
+    *** ***********************************************************************/
+
     require_once( 'webrsa.inc' );
 
     /** ************************************************************************

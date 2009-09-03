@@ -814,6 +814,9 @@ msgstr "Type de commission"
 # Indicateurs mensuels
 ###############################################################################
 
+msgid "Indicateurmensuel.annee"
+msgstr "Recherche indicateurs pour l'année"
+
 msgid "Indicateurmensuel.nbrDossiersInstruits"
 msgstr "Nombre de dossiers instruits"
 

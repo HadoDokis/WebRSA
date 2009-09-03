@@ -111,6 +111,7 @@
 							INNER JOIN dossiers_rsa ON foyers.dossier_rsa_id = dossiers_rsa.id
 						WHERE orientsstructs.statut_orient = \'Orienté\'
 							AND orientsstructs.date_impression IS NOT NULL
+							AND dossiers_rsa.dtdemrsa IS NOT NULL
 							AND EXTRACT(YEAR FROM dossiers_rsa.dtdemrsa) = '.Sanitize::clean( $annee ).'
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
@@ -126,6 +127,8 @@
 						FROM orientsstructs
 							INNER JOIN contratsinsertion ON contratsinsertion.personne_id = orientsstructs.personne_id
 						WHERE EXTRACT(YEAR FROM orientsstructs.date_impression) = '.Sanitize::clean( $annee ).'
+							AND orientsstructs.date_impression IS NOT NULL
+							AND contratsinsertion.date_saisi_ci IS NOT NULL
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
 			return $this->_query( $sql );
@@ -140,6 +143,7 @@
 						FROM infosfinancieres
 						WHERE infosfinancieres.type_allocation = \'IndusConstates\'
 							AND EXTRACT(YEAR FROM infosfinancieres.moismoucompta) = '.Sanitize::clean( $annee ).'
+							AND infosfinancieres.moismoucompta IS NOT NULL
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
 			return $this->_query( $sql );
@@ -158,6 +162,7 @@
 						WHERE ( AGE( contratsinsertion.date_saisi_ci, dossiers_rsa.dtdemrsa ) <= INTERVAL \'2 months\' )
 							AND contratsinsertion.typocontrat_id = 1
 							AND contratsinsertion.rg_ci = 1
+							AND contratsinsertion.date_saisi_ci IS NOT NULL
 							AND EXTRACT(YEAR FROM contratsinsertion.date_saisi_ci) = '.Sanitize::clean( $annee ).'
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
@@ -172,6 +177,7 @@
 			$sql = 'SELECT EXTRACT(MONTH FROM suspensionsdroits.ddsusdrorsa) AS mois, EXTRACT(YEAR FROM suspensionsdroits.ddsusdrorsa) AS annee, COUNT(suspensionsdroits.*) AS indicateur
 						FROM suspensionsdroits
 						WHERE EXTRACT(YEAR FROM suspensionsdroits.ddsusdrorsa) = '.Sanitize::clean( $annee ).'
+							AND suspensionsdroits.ddsusdrorsa IS NOT NULL
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
 			return $this->_query( $sql );
