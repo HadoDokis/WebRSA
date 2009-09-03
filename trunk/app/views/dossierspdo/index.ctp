@@ -72,11 +72,12 @@
             </tr>
         </thead>
         <tbody>
+            <?php $nrPDO = 1; ?>
             <?php foreach( $pdos as $pdo ):?>
                 <?php
                     echo $html->tableCells(
                         array(
-                            h( Set::extract( 'Derogation.id', $pdo ) ),
+                            h( $nrPDO ),
                             h( value( $typdero, Set::extract( 'Derogation.typdero', $pdo ) ) ),
                             h( date_short( Set::extract( 'Derogation.ddavisdero', $pdo ) ) ),
                             h( value( $avisdero, Set::extract( 'Derogation.avisdero', $pdo ) ) ),
@@ -92,6 +93,7 @@
                         array( 'class' => 'odd' ),
                         array( 'class' => 'even' )
                     );
+                    $nrPDO++;
                 ?>
             <?php endforeach;?>
         </tbody>

@@ -36,17 +36,6 @@
             $options = $this->Dossierpdo->prepare( 'derogation', array( 'conditions' => $conditions ) );
             $pdos = $this->Derogation->find( 'all', $options );
 
-            /// Calcul du numéro du PDO
-            $nbPDO = $this->Derogation->find(
-                'count',
-                array(
-                    'conditions' => array(
-                        'Derogation.avispcgpersonne_id' => $pdos[0]['Avispcgpersonne']['id']
-                    ),
-                    'order' => 'Derogation.ddavisdero DESC'
-                )
-            );
-            $this->set( 'nbPDO', $nbPDO );
 
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
             $this->set( 'pdos', $pdos );
