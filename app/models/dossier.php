@@ -159,6 +159,12 @@
                 $conditions[] = "Dossier.numdemrsa ILIKE '%".Sanitize::paranoid( $params['Dossier']['numdemrsa'] )."%'";
             }
 
+            // Critères sur le dossier - matricule
+            if( isset( $params['Dossier']['matricule'] ) && !empty( $params['Dossier']['matricule'] ) ) {
+                $conditions[] = "Dossier.matricule ILIKE '%".Sanitize::paranoid( $params['Dossier']['matricule'] )."%'";
+            }
+
+
             // Critères sur le dossier - date de demande
             if( isset( $params['Dossier']['dtdemrsa'] ) && !empty( $params['Dossier']['dtdemrsa'] ) ) {
                 $valid_from = ( valid_int( $params['Dossier']['dtdemrsa_from']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['day'] ) );
@@ -194,6 +200,7 @@
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
                     '"Dossier"."dtdemrsa"',
+                    '"Dossier"."matricule"',
                     '"Personne"."nir"',
                     '"Personne"."qual"',
                     '"Personne"."nom"',
