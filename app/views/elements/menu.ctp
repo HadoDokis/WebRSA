@@ -37,6 +37,12 @@
                                 <?php echo $html->link( 'Indu', array( 'controller' => 'cohortesindus', 'action' => 'index' ), array( 'title'=>'Gestion des indus' ) );?>
                             </li>
                         <?php endif;?>
+                        <?php if( $permissions->check( 'cohortespdos', 'index' ) ): ?>
+                            <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
+                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                <?php echo $html->link( 'PDOs', array( 'controller' => 'cohortespdos', 'action' => 'index' ), array( 'title'=>'Gestion des PDOs' ) );?>
+                            </li>
+                        <?php endif;?>
                     </ul>
                     <?php endif;?>
                 </li>
