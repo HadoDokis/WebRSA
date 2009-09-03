@@ -1,5 +1,4 @@
 <?php
-
     /**
     *
     * Usage: cake/console/cake changematrix
@@ -8,28 +7,15 @@
     *   * denière révision/date pour
     *       - l'ensemble
     *       - chaque "composant"
-    *   * on n'a pas les behaviours, helpers, et components
-    *   * continuer la conversion dates fr / dates en ou trouver un autre système
+	* 	* on n'a pas les shells/tasks, vendors, ...
     *
     */
 
     function datetime_short( $date ) {
         $date = strtolower( $date );
         $date = str_replace(
-            array(
-                'avr',
-                'mai',
-                'jun',
-                'jui',
-                'aoû',
-            ),
-            array(
-                'apr',
-                'may',
-                'jun',
-                'jul',
-                'aug',
-            ),
+            array( 'jan', 'fév', 'mar', 'avr', 'mai', 'jun', 'jui', 'aoû', 'sep', 'oct', 'nov', 'déc' ),
+            array( 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec' ),
             $date
         );
         return strftime( '%d/%m/%Y %H:%M', strtotime( $date ) );
@@ -50,12 +36,19 @@
             $controllers = array();
             $models = array();
             $views = array();
+
+			$behaviors = array();
+			$components = array();
+			$helpers = array();
+
+			$shells = array();
+
             $hasList = @exec( 'svn list -R --verbose '.$svnUrl, &$lines );
 
             if( $hasList ) {
                 foreach( $lines as $line ) {
                     $extract = preg_match(
-                        '/^ *(?P<revision>[0-9]+) +(?P<user>[^ ]+) +(?P<size>[^ ]+) +(?P<date>[^ ]+ [0-9]+ [0-9]+:[0-9]+) +(?P<file>.+)$/i',
+                        '/^ *(?P<revision>[0-9]+) +(?P<user>[^ ]+) +(?P<size>[^ ]+) +(?P<date>.+ [0-9]+:[0-9]+) +(?P<file>.+)$/i',
                         $line,
                         $matches
                     );
@@ -79,7 +72,7 @@
                             }
 
                             // Views
-                            if( preg_match( '/^views\/([^\/]+)\/([^\/]+).ctp/', $matches['file'], $matches_views ) ) {
+                            if( !preg_match( '/^views\/helpers\//', $matches['file'] ) && preg_match( '/^views\/([^\/]+)\/([^\/]+).ctp/', $matches['file'], $matches_views ) ) {
                                 // Si n'existe pas ou est plus récent
                                 if( !isset( $views[$matches_views[1]] )  ) {
                                     $views[$matches_views[1]] = array();
@@ -89,9 +82,47 @@
                                     'date' => $matches['date']
                                 );
                             }
+
+							//**************************************************
+
+							// Behaviors
+                            if( preg_match( '/^models\/behaviors\/([^\/]+).php$/', $matches['file'], $matches_behaviors ) ) {
+                                $behaviors[$matches_behaviors[1]] = array(
+                                    'revision' => $matches['revision'],
+                                    'date' => $matches['date']
+                                );
+                            }
+
+							// Components
+                            if( preg_match( '/^controllers\/components\/([^\/]+).php$/', $matches['file'], $matches_components ) ) {
+                                $components[$matches_components[1]] = array(
+                                    'revision' => $matches['revision'],
+                                    'date' => $matches['date']
+                                );
+                            }
+
+							// Helpers
+                            if( preg_match( '/^views\/helpers\/([^\/]+).php$/', $matches['file'], $matches_helpers ) ) {
+                                $helpers[$matches_helpers[1]] = array(
+                                    'revision' => $matches['revision'],
+                                    'date' => $matches['date']
+                                );
+                            }
+
+							//**************************************************
+
+							// Shells
+                            if( preg_match( '/^vendors\/shells\/([^\/]+).php$/', $matches['file'], $matches_shells ) ) {
+                                $shells[$matches_shells[1]] = array(
+                                    'revision' => $matches['revision'],
+                                    'date' => $matches['date']
+                                );
+                            }
                         }
                     }
                 }
+
+				//--------------------------------------------------------------
 
                 $indexes = array_unique( Set::merge( array_keys( $controllers ), array_keys( $models ), array_keys( $views ) ) );
                 sort( $indexes );
@@ -113,6 +144,9 @@
                             </head>
                             <body>
                                 <h1>Webrsa '.$matrixType.'</h1>
+
+								<h2>MVC</h2>
+
                                 <table>
                                     <colgroup span="1" />
                                     <colgroup span="2" />
@@ -168,7 +202,47 @@
                     }
                     $data .= '</tbody>';
                 }
-                $data .= '</table></body></html>';
+                $data .= '</table>';
+
+				//--------------------------------------------------------------
+
+				$data .= '<h2>Abstractions</h2>';
+
+				foreach( array( 'behaviors', 'components', 'helpers' ) as $abstraction ) {
+					if( !empty( ${$abstraction} ) ) {
+						$data .= '<h3>'.ucfirst( $abstraction ).'</h3>';
+
+						$data .= '<table><tbody>';
+						foreach( ${$abstraction} as $name => $item ) {
+							$data .= '<tr>
+								<th>'.$name.'</th>
+								<td>'.$item['revision'].'</td>
+								<td>'.datetime_short( $item['date'] ).'</td>
+							</tr>';
+						}
+						$data .= '</tbody></table>';
+					}
+				}
+
+				//--------------------------------------------------------------
+
+				if( !empty( $shells ) ) {
+					$data .= '<h2>Shells</h2>';
+
+					$data .= '<table><tbody>';
+					foreach( $shells as $name => $item ) {
+						$data .= '<tr>
+							<th>'.$name.'</th>
+							<td>'.$item['revision'].'</td>
+							<td>'.datetime_short( $item['date'] ).'</td>
+						</tr>';
+					}
+					$data .= '</tbody></table>';
+				}
+
+				//--------------------------------------------------------------
+
+                $data .= '</body></html>';
                 file_put_contents( 'changematrix.html', $data);
             }
             else {
