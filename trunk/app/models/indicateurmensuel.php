@@ -84,14 +84,14 @@
 		*
 		*/
 
-		function _nbrPreorientationsEmploi( $annee ) {
+		function _nbrPreorientations( $annee, $type ) {
 			$sql = 'SELECT EXTRACT(MONTH FROM orientsstructs.date_propo) AS mois, EXTRACT(YEAR FROM orientsstructs.date_propo) AS annee, COUNT(orientsstructs.*) AS indicateur
 						FROM orientsstructs
 						WHERE orientsstructs.statut_orient = \'Orienté\'
 							AND orientsstructs.propo_algo IN
 								( SELECT typesorients.id
 									FROM typesorients
-										WHERE typesorients.lib_type_orient = \'Emploi\'
+										WHERE typesorients.lib_type_orient = \''.$type.'\'
 								)
 							AND EXTRACT(YEAR FROM orientsstructs.date_propo) = '.Sanitize::clean( $annee ).'
 						GROUP BY annee, mois
@@ -138,10 +138,25 @@
 		*
 		*/
 
-		function _montantsIndus( $annee ) {
-			$sql = 'SELECT EXTRACT(MONTH FROM infosfinancieres.moismoucompta) AS mois, EXTRACT(YEAR FROM infosfinancieres.moismoucompta) AS annee, AVG(infosfinancieres.mtmoucompta) AS indicateur
+		function _montantsIndusConstates( $annee ) {
+			$sql = 'SELECT EXTRACT(MONTH FROM infosfinancieres.moismoucompta) AS mois, EXTRACT(YEAR FROM infosfinancieres.moismoucompta) AS annee, SUM(infosfinancieres.mtmoucompta) AS indicateur
 						FROM infosfinancieres
 						WHERE infosfinancieres.type_allocation = \'IndusConstates\'
+							AND EXTRACT(YEAR FROM infosfinancieres.moismoucompta) = '.Sanitize::clean( $annee ).'
+							AND infosfinancieres.moismoucompta IS NOT NULL
+						GROUP BY annee, mois
+						ORDER BY annee, mois;';
+			return $this->_query( $sql );
+		}
+
+		/**
+		*
+		*/
+
+		function _montantsIndusTransferes( $annee ) {
+			$sql = 'SELECT EXTRACT(MONTH FROM infosfinancieres.moismoucompta) AS mois, EXTRACT(YEAR FROM infosfinancieres.moismoucompta) AS annee, SUM(infosfinancieres.mtmoucompta) AS indicateur
+						FROM infosfinancieres
+						WHERE infosfinancieres.type_allocation = \'IndusTransferes\'
 							AND EXTRACT(YEAR FROM infosfinancieres.moismoucompta) = '.Sanitize::clean( $annee ).'
 							AND infosfinancieres.moismoucompta IS NOT NULL
 						GROUP BY annee, mois
@@ -192,12 +207,15 @@
 			$results['nbrDossiersRejetesCaf'] = $this->_nbrDossiersRejetesCaf( $annee );
 			$results['nbrOuverturesDroits'] = $this->_nbrOuverturesDroits( $annee );
 			$results['nbrAllocatairesDroitsEtDevoirs'] = $this->_nbrAllocatairesDroitsEtDevoirs( $annee );
-			$results['nbrPreorientationsEmploi'] = $this->_nbrPreorientationsEmploi( $annee );
+			$results['nbrPreorientationsEmploi'] = $this->_nbrPreorientations( $annee, 'Emploi' );
+			$results['nbrPreorientationsSocial'] = $this->_nbrPreorientations( $annee, 'Social' );
+			$results['nbrPreorientationsSocioprofessionnelle'] = $this->_nbrPreorientations( $annee, 'Socioprofessionnelle' );
 
 			$results['delaiOuvertureNotification'] = $this->_delaiOuvertureNotification( $annee );
 			$results['delaiNotificationSignature'] = $this->_delaiNotificationSignature( $annee );
 
-			$results['montantsIndus'] = $this->_montantsIndus( $annee );
+			$results['montantsIndusConstates'] = $this->_montantsIndusConstates( $annee );
+			$results['montantsIndusTransferes'] = $this->_montantsIndusTransferes( $annee );
 
 			$results['nbrCiNouveauxEntrantsCg'] = $this->_nbrCiNouveauxEntrantsCg( $annee );
 			$results['nbrSuspensionsDroits'] = $this->_nbrSuspensionsDroits( $annee );
