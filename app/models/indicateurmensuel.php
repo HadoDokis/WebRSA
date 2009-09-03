@@ -104,7 +104,7 @@
 		*/
 
 		function _delaiOuvertureNotification( $annee ) {
-			$sql = 'SELECT EXTRACT(MONTH FROM dossiers_rsa.dtdemrsa) AS mois, EXTRACT(YEAR FROM dossiers_rsa.dtdemrsa) AS annee, AVG(orientsstructs.date_impression - dossiers_rsa.dtdemrsa ) AS indicateur
+			$sql = 'SELECT EXTRACT(MONTH FROM dossiers_rsa.dtdemrsa) AS mois, EXTRACT(YEAR FROM dossiers_rsa.dtdemrsa) AS annee, AVG( ABS(orientsstructs.date_impression - dossiers_rsa.dtdemrsa ) ) AS indicateur
 						FROM orientsstructs
 							INNER JOIN personnes ON orientsstructs.personne_id = personnes.id
 							INNER JOIN foyers ON personnes.foyer_id = foyers.id
@@ -123,7 +123,7 @@
 		*/
 
 		function _delaiNotificationSignature( $annee ) {
-			$sql = 'SELECT EXTRACT(MONTH FROM orientsstructs.date_impression) AS mois, EXTRACT(YEAR FROM orientsstructs.date_impression) AS annee, AVG(contratsinsertion.date_saisi_ci - orientsstructs.date_impression ) AS indicateur
+			$sql = 'SELECT EXTRACT(MONTH FROM orientsstructs.date_impression) AS mois, EXTRACT(YEAR FROM orientsstructs.date_impression) AS annee, AVG( ABS( contratsinsertion.date_saisi_ci - orientsstructs.date_impression ) ) AS indicateur
 						FROM orientsstructs
 							INNER JOIN contratsinsertion ON contratsinsertion.personne_id = orientsstructs.personne_id
 						WHERE EXTRACT(YEAR FROM orientsstructs.date_impression) = '.Sanitize::clean( $annee ).'
