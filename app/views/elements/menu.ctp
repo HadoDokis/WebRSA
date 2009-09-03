@@ -58,7 +58,7 @@
                 </li>
             <?php endif;?>
             <?php if( $permissions->check( 'indicateursmensuels', 'index' ) ) :?>
-                <li id="menu2one" >
+                <li id="menu3one" >
                     <?php echo $html->link( 'Tableaux de bord', '#' );?>
                     <ul>
                         <?php if( $permissions->check( 'indicateursmensuels', 'index' ) ):?>
@@ -68,7 +68,7 @@
                 </li>
             <?php endif;?>
             <?php if( $permissions->check( 'droits', 'edit' ) || $permissions->check( 'parametrages', 'index' ) || $permissions->check( 'infosfinancieres', 'indexdossier' ) || $permissions->check( 'totalisationsacomptes', 'index' ) ): ?>
-                    <li id="menu3one">
+                    <li id="menu4one">
                         <?php echo $html->link( 'Administration', '#' );?>
                         <ul>
                             <?php if( $permissions->check( 'droits', 'edit' ) ):?>
@@ -93,7 +93,7 @@
                         </ul>
                     </li>
             <?php endif;?>
-            <li id="menu4one"><?php echo $html->link( 'Déconnexion '.$session->read( 'Auth.User.username' ), array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
+            <li id="menu5one"><?php echo $html->link( 'Déconnexion '.$session->read( 'Auth.User.username' ), array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
             <?php else: ?>
                 <li><?php echo $html->link( 'Connexion', array( 'controller' => 'users', 'action' => 'login' ) );?></li>
             <?php endif; ?>
