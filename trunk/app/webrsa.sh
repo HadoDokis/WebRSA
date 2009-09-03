@@ -12,8 +12,10 @@ ASNV="svn://svn.adullact.net/svnroot/webrsa"
 # ------------------------------------------------------------------------------
 
 function clearcache() {
-    cd "$APP_DIR/tmp/cache/" && \
-    find . -type f -not -path '*/.svn/*' -not -name "empty" | while read -r ; do rm "$REPLY"; done
+    (
+		cd "$APP_DIR/tmp/cache/" && \
+		find . -type f -not -path '*/.svn/*' -not -name "empty" | while read -r ; do rm "$REPLY"; done
+	)
 }
 
 # ------------------------------------------------------------------------------
