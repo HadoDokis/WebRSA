@@ -24,8 +24,31 @@
         <!-- TODO: à la manière de cake, dans les vues qui en ont besoin -->
         <script type="text/javascript">
             // prototype
-            document.observe("dom:loaded", function() {
+            document.observe( "dom:loaded", function() {
+				<?php
+					$backAllowed = true;
+
+					$pagesBackNotAllowed = array(
+						'Ajoutdossiers::wizard',
+						'Ajoutdossiers::confirm',
+						'Cohortes::nouvelles',
+						'Cohortes::orientees',
+						'Cohortes::enattente',
+						'Cohortesci::index',
+						'Cohortesindus::index',
+						'Cohortespdos::index',
+						'Droits::edit', // Charge quand même les droits :'(
+						'Users::login',
+						// TODO: faire à partir de Module:Recours dans Droits::edit
+					);
+
+					if( ( $this->action == 'add' ) || ( $this->action == 'edit' ) || ( $this->action == 'delete' ) || in_array( $this->name.'::'.$this->action, $pagesBackNotAllowed ) ) {
+						$backAllowed = false;
+					}
+				?>
+				<?php if( !$backAllowed ):?>
                 window.history.forward();
+				<?php endif;?>
 
                 var baseUrl = '<?php echo Router::url( '/', true );?>';
                 make_treemenus( baseUrl );
@@ -67,6 +90,10 @@
     <?php else: ?>
         <body>
     <?php endif; ?>
+		<?php
+			debug( $this->name );
+			debug( $this->action );
+		?>
         <div id="pageWrapper">
             <?php echo $this->element( 'header' );?>
             <?php echo $this->element( 'menu' );?>
