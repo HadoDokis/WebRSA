@@ -45,19 +45,7 @@
     }
 ?>
 
-<?php echo $form->create( 'Cohortepdo', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->data ) && empty( $this->validationErrors ) ) ? 'folded' : 'unfolded' ) ) );?>
-    <fieldset>
-        <legend>Recherche PDO</legend>
-        <?php echo $form->input( 'Cohortepdo.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-        <?php echo $form->input( 'Cohortepdo.typdero', array( 'label' => __( 'typdero', true ), 'type' => 'select', 'options' => $typdero, 'empty' => true ) );?>
-        <?php echo $form->input( 'Cohortepdo.avisdero', array( 'label' => __( 'avisdero', true ), 'type' => 'select', 'options' => $avisdero, 'empty' => true ) );?>
-        <?php echo $form->input( 'Cohortepdo.ddavisdero', array( 'label' => __( 'ddavisdero', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80, 'empty' => true ) );?>
-    </fieldset>
-    <div class="submit noprint">
-        <?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
-        <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
-    </div>
-<?php echo $form->end();?>
+<?php require_once( 'filtre.ctp' );?>
 
 <!-- Résultats -->
 
@@ -78,6 +66,7 @@
                     <th><?php echo $paginator->sort( 'Type de PDO', 'Derogation.typdero' );?></th>
                     <th><?php echo $paginator->sort( 'Date de soumission CAF', 'Derogation.avisdero' );?></th>
                     <th><?php echo $paginator->sort( 'Décision du CG (Droit)', 'Derogation.ddavisdero' );?></th>
+                    <!-- <th>Commentaires</th> -->
                     <th class="action">Action</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
@@ -118,7 +107,7 @@
                             h( value( $typdero, Set::extract( 'Derogation.typdero', $pdo ) ) ),
                             h( date_short( Set::extract( 'Derogation.ddavisdero', $pdo ) ) ),
                             h( value( $avisdero, Set::extract( 'Derogation.avisdero', $pdo ) ) ),
-
+//                             $form->input( 'Derogation.'.$index.'.commentdero', array( 'label' => false, 'type' => 'text', 'rows' => 2, 'value' => $pdo['Derogation']['commentdero'] ) ),
                             $html->viewLink(
                                 'Voir le contrat « '.$title.' »',
                                 array( 'controller' => 'dossierspdo', 'action' => 'index', $pdo['Dossier']['id'] )
@@ -132,7 +121,7 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-        <?php echo $form->submit( 'Validation de la liste' );?>
+
         <?php echo $form->end();?>
    <!-- <?php /*echo $pagination;*/?> -->
 
