@@ -4,10 +4,13 @@
         var $name = 'Cohortepdo';
         var $useTable = false;
 
-        function search( $mesCodesInsee, $filtre_zone_geo, $criterespdo, $lockedDossiers ) {
+        function search( $statutAvis, $mesCodesInsee, $filtre_zone_geo, $criterespdo, $lockedDossiers ) {
            /// Conditions de base
-            $conditions = array();
-
+            $conditions = array(
+//                  'Derogation.avisdero = \'D\'',
+                    'Derogation.avisdero = \''.Sanitize::clean( $statutAvis ).'\'',
+            );
+// debug( $conditions );
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
                 $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
@@ -41,21 +44,6 @@
                 $ddavisdero = $ddavisdero['year'].'-'.$ddavisdero['month'].'-'.$ddavisdero['day'];
                 $conditions[] = 'Derogation.ddavisdero = \''.$ddavisdero.'\'';
             }
-
-//             // Localité adresse
-//             if( !empty( $locaadr ) ) {
-//                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
-//             }
-// 
-//             // Nom allocataire
-//             if( !empty( $nom ) ) {
-//                 $conditions[] = 'Personne.nom ILIKE \'%'.Sanitize::clean( $nom ).'%\'';
-//             }
-
-            // Suivi
-//             if( !empty( $typeparte ) ) {
-//                 $conditions[] = 'Dossier.typeparte = \''.Sanitize::clean( $typeparte ).'\'';
-//             }
 
 
             $query = array(

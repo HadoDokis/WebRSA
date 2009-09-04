@@ -6,45 +6,53 @@
                 <li id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                     <?php echo $html->link( 'Gestion des cohortes', '#' );?>
                     <ul>
-                    <?php if( $permissions->check( 'cohortesci', 'index' ) ): ?>
-                        <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
-                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                            <?php echo $html->link( 'Contrat insertion', array( 'controller' => 'cohortesci', 'action' => 'index' ), array( 'title'=>'Gestion des contrats' ) );?>
-                        </li>
-                    <?php endif;?>
-                    <?php if( $permissions->check( 'cohortes', 'nouvelles' ) || $permissions->check( 'cohortes', 'orientees' ) || $permissions->check( 'cohortes', 'enattente' ) || $permissions->check( 'cohortesindus', 'index' ) ): ?>
-                        <!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
-                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                            <?php  echo $html->link( 'Orientation', '#' );?>
-                                <ul>
-                                    <?php if( $permissions->check( 'cohortes', 'nouvelles' ) ): ?>
-                                        <li><?php echo $html->link( 'Nouvelles demandes', array( 'controller' => 'cohortes', 'action' => 'nouvelles' ), array( 'title'=>'Nouvelles demandes' ) );?></li>
-                                    <?php endif; ?>
-                                    <?php if( $permissions->check( 'cohortes', 'orientees' ) ): ?>
-                                        <li><?php echo $html->link( 'Demandes orientées', array( 'controller' => 'cohortes', 'action' => 'orientees' ), array( 'title'=>'Demandes orientées' ) );?></li>
-                                    <?php endif; ?>
-                                    <?php if( $permissions->check( 'cohortes', 'enattente' ) ): ?>
-                                        <li><?php echo $html->link( 'En attente', array( 'controller' => 'cohortes', 'action' => 'enattente' ), array( 'title'=>'Demandes en attente' ) );?></li>
-                                    <?php endif; ?>
-                                    <!-- <li><?php echo $html->link( 'Fichiers Exportés', array( 'controller' => 'cohortes', 'action' => 'exports_index' ), array( 'title'=>'Fichiers exportés' ) );?></li> -->
-                                    <!--<li><?php echo $html->link( 'Liste suivant critères', '#' );?></li>
-                                    <li><?php echo $html->link( 'Gestion des éditions', '#' );?></li> -->
-                                </ul>
-                        </li>
+                        <?php if( $permissions->check( 'cohortesci', 'index' ) ): ?>
+                            <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
+                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                <?php echo $html->link( 'Contrat insertion', array( 'controller' => 'cohortesci', 'action' => 'index' ), array( 'title'=>'Gestion des contrats' ) );?>
+                            </li>
+                        <?php endif;?>
+                        <?php if( $permissions->check( 'cohortes', 'nouvelles' ) || $permissions->check( 'cohortes', 'orientees' ) || $permissions->check( 'cohortes', 'enattente' ) ): ?>
+                            <!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
+                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                <?php  echo $html->link( 'Orientation', '#' );?>
+                                    <ul>
+                                        <?php if( $permissions->check( 'cohortes', 'nouvelles' ) ): ?>
+                                            <li><?php echo $html->link( 'Nouvelles demandes', array( 'controller' => 'cohortes', 'action' => 'nouvelles' ), array( 'title'=>'Nouvelles demandes' ) );?></li>
+                                        <?php endif; ?>
+                                        <?php if( $permissions->check( 'cohortes', 'orientees' ) ): ?>
+                                            <li><?php echo $html->link( 'Demandes orientées', array( 'controller' => 'cohortes', 'action' => 'orientees' ), array( 'title'=>'Demandes orientées' ) );?></li>
+                                        <?php endif; ?>
+                                        <?php if( $permissions->check( 'cohortes', 'enattente' ) ): ?>
+                                            <li><?php echo $html->link( 'En attente', array( 'controller' => 'cohortes', 'action' => 'enattente' ), array( 'title'=>'Demandes en attente' ) );?></li>
+                                        <?php endif; ?>
+                                        <!-- <li><?php echo $html->link( 'Fichiers Exportés', array( 'controller' => 'cohortes', 'action' => 'exports_index' ), array( 'title'=>'Fichiers exportés' ) );?></li> -->
+                                        <!--<li><?php echo $html->link( 'Liste suivant critères', '#' );?></li>
+                                        <li><?php echo $html->link( 'Gestion des éditions', '#' );?></li> -->
+                                    </ul>
+                            </li>
+                        <?php endif;?>
                         <?php if( $permissions->check( 'cohortesindus', 'index' ) ): ?>
                             <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                                 <?php echo $html->link( 'Indu', array( 'controller' => 'cohortesindus', 'action' => 'index' ), array( 'title'=>'Gestion des indus' ) );?>
                             </li>
                         <?php endif;?>
-                        <?php if( $permissions->check( 'cohortespdos', 'index' ) ): ?>
-                            <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
+                        <?php if( $permissions->check( 'cohortespdos', 'avisdemande' ) || $permissions->check( 'cohortespdos', 'valide' ) ): ?>
+                            <!-- AJOUT POUR LA GESTION DES PDOs (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                                <?php echo $html->link( 'PDOs', array( 'controller' => 'cohortespdos', 'action' => 'index' ), array( 'title'=>'Gestion des PDOs' ) );?>
+                                <?php echo $html->link( 'PDOs', '#' );?>
+                                <ul>
+                                    <?php if( $permissions->check( 'cohortespdos', 'avisdemande' ) ): ?>
+                                        <li><?php echo $html->link( 'Avis CG demandé', array( 'controller' => 'cohortespdos', 'action' => 'avisdemande' ), array( 'title' => 'Avis CG demandé' ) );?></li>
+                                    <?php endif; ?>
+                                    <?php if( $permissions->check( 'cohortespdos', 'valide' ) ): ?>
+                                        <li><?php echo $html->link( 'PDOs validés', array( 'controller' => 'cohortespdos', 'action' => 'valide' ), array( 'title' => 'PDOs validés' ) );?></li>
+                                    <?php endif; ?>
+                                </ul>
                             </li>
                         <?php endif;?>
                     </ul>
-                    <?php endif;?>
                 </li>
             <?php endif;?>
             <?php if( $permissions->check( 'dossiers', 'index' ) || $permissions->check( 'criteres', 'index' ) || $permissions->check( 'criteresci', 'index' ) ) :?>
@@ -73,7 +81,7 @@
                     </ul>
                 </li>
             <?php endif;?>
-            <?php if( $permissions->check( 'droits', 'edit' ) || $permissions->check( 'parametrages', 'index' ) || $permissions->check( 'infosfinancieres', 'indexdossier' ) || $permissions->check( 'totalisationsacomptes', 'index' ) ): ?>
+            <?php if(/* $permissions->check( 'droits', 'edit' ) || */$permissions->check( 'parametrages', 'index' ) || $permissions->check( 'infosfinancieres', 'indexdossier' ) || $permissions->check( 'totalisationsacomptes', 'index' ) ): ?>
                     <li id="menu4one">
                         <?php echo $html->link( 'Administration', '#' );?>
                         <ul>
