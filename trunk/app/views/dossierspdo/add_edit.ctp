@@ -34,10 +34,10 @@
     <div class="aere">
         <fieldset>
             <legend>Détails PDO</legend>
-            <?php echo $form->input( 'Derogation.typdero', array( 'label' =>  ( __( 'typdero', true ) ), 'type' => 'select', 'options' => $typdero, 'empty' => true ) );?>
+            <?php echo $form->input( 'Derogation.typedero', array( 'label' =>  ( __( 'typedero', true ) ), 'type' => 'select', 'options' => $typedero, 'empty' => true ) );?>
             <?php echo $form->input( 'Derogation.ddavisdero', array( 'label' =>  ( __( 'ddavisdero', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>
             <?php echo $form->input( 'Derogation.avisdero', array( 'label' =>  ( __( 'avisdero', true ) ), 'type' => 'select', 'options' => $avisdero, 'empty' => true ) );?>
-            <!--<?php /* echo $form->input( 'Derogation.ressdero', array( 'label' =>  ( __( 'ressdero', true ) ), 'type' => 'text') );?>
+            <?php  echo $form->input( 'Derogation.ressdero', array( 'label' =>  ( __( 'ressdero', true ) ), 'type' => 'text') );?>
             <?php echo $form->input( 'Derogation.motidempdo', array( 'label' =>  ( __( 'motidempdo', true ) ), 'type' => 'select', 'options' => $motidempdo, 'empty' => true ) );?>
             <?php echo $form->input( 'Derogation.ciobli', array( 'label' =>  ( __( 'Contrat d\'insertion obligatoire', true ) ), 'type' => 'select', 'options' => $avisdero, 'empty' => true ) );?>
             <?php echo $form->input( 'Derogation.datesave', array( 'label' =>  ( __( 'Date d\'enregistrement CG', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>
@@ -46,7 +46,7 @@
             <legend>Décision CG</legend>
             <?php echo $form->input( 'Derogation.commission', array( 'label' =>  ( __( 'commission', true ) ), 'type' => 'select', 'options' => $commission, 'empty' => true ) );?>
             <?php echo $form->input( 'Derogation.motideccg', array( 'label' =>  ( __( 'motideccg', true ) ), 'type' => 'select', 'options' => $motideccg, 'empty' => true ) );?>
-            <?php echo $form->input( 'Derogation.commentdero', array( 'label' =>  ( __( 'commentdero', true ) ), 'type' => 'textarea', 'rows' => 3, 'empty' => true ) );*/?> -->
+            <?php echo $form->input( 'Derogation.commentdero', array( 'label' =>  ( __( 'commentdero', true ) ), 'type' => 'textarea', 'rows' => 3, 'empty' => true ) );?> 
         </fieldset>
     </div>
 

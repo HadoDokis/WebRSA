@@ -78,7 +78,7 @@
                     echo $html->tableCells(
                         array(
                             h( $nrPDO ),
-                            h( value( $typdero, Set::extract( 'Derogation.typdero', $pdo ) ) ),
+                            h( value( $typedero, Set::extract( 'Derogation.typedero', $pdo ) ) ),
                             h( date_short( Set::extract( 'Derogation.ddavisdero', $pdo ) ) ),
                             h( value( $avisdero, Set::extract( 'Derogation.avisdero', $pdo ) ) ),
                             $html->viewLink(

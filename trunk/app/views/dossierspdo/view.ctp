@@ -43,8 +43,8 @@
                     <td><?php echo Set::extract( '0.Derogation.id', $pdos );?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'typdero' );?></th>
-                    <td><?php echo value( $typdero, Set::extract( '0.Derogation.typdero', $pdos ) ) ;?></td>
+                    <th><?php __( 'typedero' );?></th>
+                    <td><?php echo value( $typedero, Set::extract( '0.Derogation.typedero', $pdos ) ) ;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'ddavisdero' );?></th>
