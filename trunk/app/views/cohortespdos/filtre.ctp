@@ -2,14 +2,14 @@
 
 <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ) ) );?>
 
-  <fieldset>
+  <fieldset class= "noprint">
         <legend>Recherche PDO</legend>
         <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
         <?php echo $form->input( 'Filtre.typedero', array( 'label' => __( 'typedero', true ), 'type' => 'select', 'options' => $typedero, 'empty' => true ) );?>
         <?php echo $form->input( 'Filtre.avisdero', array( 'label' => __( 'avisdero', true ), 'type' => 'select', 'options' => $avisdero, 'empty' => true ) );?>
         <?php echo $form->input( 'Filtre.ddavisdero', array( 'label' => __( 'ddavisdero', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80, 'empty' => true ) );?>
     </fieldset>
-    <div class="submit">
+    <div class="submit noprint">
         <?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
