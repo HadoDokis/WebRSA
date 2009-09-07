@@ -11,7 +11,7 @@
             $this->controller = &$controller;
             // FIXME
             if( $this->_userId = $this->Session->read( 'Auth.User.id' ) ) {
-                $this->controller->assert( valid_int( $this->_userId ), 'error500' ); // FIXME
+                $this->controller->assert( valid_int( $this->_userId ), 'invalidParamForToken' ); // FIXME
             }
 
             $this->User = ClassRegistry::init( 'User' );
@@ -34,7 +34,7 @@
                     )
                 );
 // debug( $personne );
-                $this->controller->assert( !empty( $personne ), 'error500' );
+                $this->controller->assert( !empty( $personne ), 'invalidParamForToken' );
                 return $personne['Foyer']['dossier_rsa_id'];
             }
             else if( array_key_exists( 'Dossier.id', $params ) ) {
@@ -78,7 +78,7 @@
         // ********************************************************************
 
 //         function removeByUid( $user_id ) {
-//             $this->controller->assert( valid_int( $user_id ), 'error500' );
+//             $this->controller->assert( valid_int( $user_id ), 'invalidParamForToken' );
 //
 //             return $this->Jeton->deleteAll(
 //                 array(
@@ -121,7 +121,7 @@
                 $dossier_id = $params;
             }
 
-            $this->controller->assert( $this->_dossierExists( $dossier_id ) );
+            $this->controller->assert( $this->_dossierExists( $dossier_id ), 'invalidParamForToken' );
             $this->_clean();
 
             $jeton = $this->Jeton->find(
@@ -147,7 +147,7 @@
                         'recursive' => -1
                     )
                 );
-                $this->controller->assert( !empty( $lockingUser ), 'error500' );
+                $this->controller->assert( !empty( $lockingUser ), 'invalidParamForToken' );
                 $this->controller->cakeError(
                     'lockedDossier',
                     array(
@@ -170,7 +170,7 @@
                 $dossier_id = $params;
             }
 
-            $this->controller->assert( $this->_dossierExists( $dossier_id ) );
+            $this->controller->assert( $this->_dossierExists( $dossier_id ), 'invalidParamForToken' );
             $this->_clean();
 
             $jeton = $this->Jeton->find(
@@ -226,7 +226,7 @@
             else {
                 $dossier_id = $params;
             }
-            $this->controller->assert( $this->_dossierExists( $dossier_id ) );
+            $this->controller->assert( $this->_dossierExists( $dossier_id ), 'invalidParamForToken' );
 
             if( $this->check( $params ) ) {
                 $jeton = array(
@@ -270,7 +270,7 @@
                 $dossier_id = $params;
             }
 
-            $this->controller->assert( $this->_dossierExists( $dossier_id ) );
+            $this->controller->assert( $this->_dossierExists( $dossier_id ), 'invalidParamForToken' );
 
             return $this->Jeton->deleteAll(
                 array(
