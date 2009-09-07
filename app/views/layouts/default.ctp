@@ -90,10 +90,7 @@
     <?php else: ?>
         <body>
     <?php endif; ?>
-		<?php
-			debug( $this->name );
-			debug( $this->action );
-		?>
+
         <div id="pageWrapper">
             <?php echo $this->element( 'header' );?>
             <?php echo $this->element( 'menu' );?>

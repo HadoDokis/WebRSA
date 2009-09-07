@@ -10,6 +10,7 @@
             'TitreSejour',
             'Dspp',
             'Dossiercaf',
+            'Avispcgpersonne',
             'Prestation' => array(
                 'foreignKey' => 'personne_id',
                 'conditions' => array (
