@@ -1,6 +1,10 @@
 <?php
     class AppError extends ErrorHandler
     {
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function __construct($method, $messages) {
             App::import('Core', 'Sanitize');
             static $__previousError = null;
@@ -51,6 +55,7 @@
                         case 'error404':
                             $method = 'error404';
                         break;
+                        case 'invalidParamForToken':
                         default:
                             $method = 'error500';
                         break;
@@ -76,6 +81,10 @@
             $this->_stop();
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function incompleteUser( $params ) {
             extract( $params, EXTR_OVERWRITE );
 
@@ -93,6 +102,10 @@
             ));
             $this->_outputMessage( 'incomplete_user' );
         }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
 
         function lockedDossier( $params ) {
             extract( $params, EXTR_OVERWRITE );
@@ -112,6 +125,10 @@
             $this->_outputMessage( 'locked_dossier' );
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function dateHabilitationUser( $params ) {
             extract( $params, EXTR_OVERWRITE );
 
@@ -130,6 +147,9 @@
             $this->_outputMessage( 'date_habilitation_user' );
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
 
         function error403( $params ) {
             extract($params, EXTR_OVERWRITE);
@@ -148,6 +168,10 @@
             $this->_outputMessage('error403');
         }
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function error500( $params ) {
             extract($params, EXTR_OVERWRITE);
 
@@ -165,11 +189,9 @@
             $this->_outputMessage('error500');
         }
 
-        /**
+        /** ********************************************************************
         *
-        *
-        *
-        */
+        *** *******************************************************************/
 
         function invalidParameter( $params ) {
             extract( $params, EXTR_OVERWRITE );
@@ -185,6 +207,26 @@
             );
 
             $this->_outputMessage( 'invalidParameter' );
+        }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function invalidParamForToken( $params ) {
+            extract( $params, EXTR_OVERWRITE );
+
+            $this->controller->set(
+                array(
+                    'controller'    => $className,
+                    'action'        => $action,
+                    'file'          => $file,
+                    'line'          => $line,
+                    'title'         => __( 'Invalid token', true )
+                )
+            );
+
+            $this->_outputMessage( 'invalidParamForToken' );
         }
     }
 ?>
