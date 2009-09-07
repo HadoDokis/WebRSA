@@ -99,7 +99,8 @@ class DroitsComponent extends Object
         }
 
         // Création de la liste des actions du controleur
-        $parentClassMethods = get_class_methods('AppController');
+        $parentClassMethods = get_class_methods( 'AppController' );
+		$parentClassMethods = array_diff( $parentClassMethods, array( 'add', 'edit' ) );
         $subClassMethods = get_class_methods($controllerName.'Controller');
         $classMethods = array_diff($subClassMethods, $parentClassMethods);
 
