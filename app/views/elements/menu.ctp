@@ -44,10 +44,10 @@
                                 <?php echo $html->link( 'PDOs', '#' );?>
                                 <ul>
                                     <?php if( $permissions->check( 'cohortespdos', 'avisdemande' ) ): ?>
-                                        <li><?php echo $html->link( 'Avis CG demandé', array( 'controller' => 'cohortespdos', 'action' => 'avisdemande' ), array( 'title' => 'Avis CG demandé' ) );?></li>
+                                        <li><?php echo $html->link( 'Nouvelles demandes', array( 'controller' => 'cohortespdos', 'action' => 'avisdemande' ), array( 'title' => 'Avis CG demandé' ) );?></li>
                                     <?php endif; ?>
                                     <?php if( $permissions->check( 'cohortespdos', 'valide' ) ): ?>
-                                        <li><?php echo $html->link( 'PDOs validés', array( 'controller' => 'cohortespdos', 'action' => 'valide' ), array( 'title' => 'PDOs validés' ) );?></li>
+                                        <li><?php echo $html->link( 'Liste PDOs', array( 'controller' => 'cohortespdos', 'action' => 'valide' ), array( 'title' => 'PDOs validés' ) );?></li>
                                     <?php endif; ?>
                                 </ul>
                             </li>
