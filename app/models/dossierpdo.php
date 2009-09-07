@@ -33,7 +33,7 @@
             'derogation' => array(
                 'fields' => array(
                     '"Derogation"."id"',
-                    '"Derogation"."typdero"',
+                    '"Derogation"."typedero"',
                     '"Derogation"."avisdero"',
                     '"Derogation"."ddavisdero"',
                     '"Derogation"."dfavisdero"',
