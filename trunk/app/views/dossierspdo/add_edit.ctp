@@ -34,7 +34,7 @@
     <div class="aere">
         <fieldset>
             <legend>Détails PDO</legend>
-            <?php echo $form->input( 'Derogation.typedero', array( 'label' =>  ( __( 'typedero', true ) ), 'type' => 'select', 'options' => $typedero, 'empty' => true ) );?>
+            <?php echo $form->input( 'Derogation.typdero', array( 'label' =>  ( __( 'typdero', true ) ), 'type' => 'select', 'options' => $typdero, 'empty' => true ) );?>
             <?php echo $form->input( 'Derogation.ddavisdero', array( 'label' =>  ( __( 'ddavisdero', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>
             <?php echo $form->input( 'Derogation.avisdero', array( 'label' =>  ( __( 'avisdero', true ) ), 'type' => 'select', 'options' => $avisdero, 'empty' => true ) );?>
             <?php  echo $form->input( 'Derogation.ressdero', array( 'label' =>  ( __( 'ressdero', true ) ), 'type' => 'text') );?>
