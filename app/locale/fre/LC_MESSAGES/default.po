@@ -778,13 +778,13 @@ msgid "natfingro"
 msgstr "Motif de fin de grossesse"
 
 ###############################################################################
-# PDO
+# Dérogation
 ###############################################################################
 msgid "numdero"
-msgstr "Numéro de PDO"
+msgstr "Numéro de dérogation"
 
-msgid "typdero"
-msgstr "Type de PDO"
+msgid "typedero"
+msgstr "Type de dérogation"
 
 msgid "avisdero"
 msgstr "Décision du Conseil Général"
@@ -793,10 +793,10 @@ msgid "ddavisdero"
 msgstr "Date soumission CAF"
 
 msgid "dfavisdero"
-msgstr "Date de fin PDO"
+msgstr "Date de fin dérogation"
 
 msgid "motidempdo"
-msgstr "Motif de la demande PDO"
+msgstr "Motif de la demande dérogation"
 
 msgid "commentdero"
 msgstr "Commentaires"
@@ -855,3 +855,18 @@ msgstr "Nombre de contrats d'insertion pour les nouveaux entrants CG"
 
 msgid "Indicateurmensuel.nbrSuspensionsDroits"
 msgstr "Nombre de suspensions de droits"
+
+###############################################################################
+# PDOs
+###############################################################################
+msgid "typepdo"
+msgstr "Type de PDO"
+
+msgid "commentairepdo"
+msgstr "Commentaires PDO"
+
+msgid "decisionpdo"
+msgstr "Décision PDO"
+
+msgid "datedecisionpdo"
+msgstr "Date de décision PDO"
