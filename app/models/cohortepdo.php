@@ -9,10 +9,12 @@
 
            /// Conditions de base
             $conditions = array(
-                'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ',
-                    'Derogation.avisdero = \''.Sanitize::clean( $statutAvis ).'\'',
+                'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) '
             );
-// debug( $conditions );
+            if( !empty( $statutAvis ) ) {
+                $conditions[] = 'Derogation.avisdero = \''.Sanitize::clean( $statutAvis ).'\'';
+            }
+
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
                 $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
@@ -28,8 +30,7 @@
             $typedero = Set::extract( $criterespdo, 'Cohortepdo.typedero' );
             $avisdero = Set::extract( $criterespdo, 'Cohortepdo.avisdero' );
             $ddavisdero = Set::extract( $criterespdo, 'Cohortepdo.ddavisdero' );
-//             $locaadr = Set::extract( $criterespdo, 'Adresse.locaadr' );
-//             $nom = Set::extract( $criterespdo, 'Personne.nom' );
+
 
             // Type de PDO
             if( !empty( $typedero ) ) {
@@ -129,8 +130,7 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array(
-                            'Situationdossierrsa.dossier_rsa_id = Dossier.id',
-                            //'( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) )'
+                            'Situationdossierrsa.dossier_rsa_id = Dossier.id'
                         )
                     ),
                 ),

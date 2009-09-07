@@ -4,6 +4,7 @@
 
         var $name = 'Cohortespdos';
         var $uses = array( 'Cohortepdo', 'Option', 'Derogation', 'Avispcgpersonne', 'Situationdossierrsa' );
+        var $helpers = array( 'Csv' );
 
         var $paginate = array(
             // FIXME
@@ -100,6 +101,26 @@
                     $this->render( $this->action, null, 'visualisation' );
                     break;
             }
+        }
+
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function exportcsv() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+            $_limit = 10;
+            $params = $this->Cohortepdo->search( null, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+//             debug( $params );
+//             unset( $params['limit'] );
+            $pdos = $this->Derogation->find( 'all', $params );
+
+
+            $this->layout = ''; // FIXME ?
+            $this->set( compact( /*'headers',*/ 'pdos' ) );
         }
     }
 ?>

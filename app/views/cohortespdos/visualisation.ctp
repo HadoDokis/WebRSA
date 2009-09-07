@@ -68,7 +68,7 @@
                     <th><?php echo $paginator->sort( 'Décision du CG (Droit)', 'Derogation.ddavisdero' );?></th>
                     <!-- <th>Commentaires</th> -->
                     <th class="action">Action</th>
-                    <th class="innerTableHeader">Informations complémentaires</th>
+                    <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
             <tbody>
@@ -121,7 +121,21 @@
                 <?php endforeach;?>
             </tbody>
         </table>
+       <ul class="actionMenu">
+            <li><?php
+                echo $html->printLinkJs(
+                    'Imprimer le tableau',
+                    array( 'onclick' => 'printit(); return false;' )
+                );
+            ?></li>
 
+<!--            <li><?php
+                echo $html->exportLink(
+                    'Télécharger le tableau',
+                    array( 'controller' => 'cohortespdos', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                );
+            ?></li>-->
+        </ul>
         <?php echo $form->end();?>
    <!-- <?php /*echo $pagination;*/?> -->
 
