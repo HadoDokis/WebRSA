@@ -75,12 +75,12 @@
 //                     'message' => 'Champ obligatoire'
 //                 )
 //             ),
-            'expr_prof' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+//             'expr_prof' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
             'aut_expr_prof' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
@@ -105,30 +105,30 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'service_soutien' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'pers_charg_suivi' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'objectifs_fixes' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'engag_object' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+//             'service_soutien' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
+//             'pers_charg_suivi' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
+//             'objectifs_fixes' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
+//             'engag_object' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
             'emp_trouv' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
@@ -199,14 +199,14 @@
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
-            ),
+            )/*,
             'date_saisi_ci' => array(
                 'notEmpty' => array(
                     'rule' => 'date',
                     'message' => 'Veuillez entrer une date valide',
                     'allowEmpty'    => false
                 )
-            )
+            )*/
         );
 
         // ********************************************************************
