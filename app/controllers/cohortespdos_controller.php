@@ -3,7 +3,7 @@
     class CohortespdosController extends AppController {
 
         var $name = 'Cohortespdos';
-        var $uses = array( 'Cohortepdo', 'Option', 'Derogation', 'Avispcgpersonne' );
+        var $uses = array( 'Cohortepdo', 'Option', 'Derogation', 'Avispcgpersonne', 'Situationdossierrsa' );
 
         var $paginate = array(
             // FIXME
@@ -25,7 +25,7 @@
             parent::beforeFilter();
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
             $this->set( 'avisdero', $this->Option->avisdero() );
-            $this->set( 'typdero', $this->Option->typdero() );
+            $this->set( 'typedero', $this->Option->typedero() );
             $this->set( 'pieecpres', $this->Option->pieecpres() );
             $this->set( 'commission', $this->Option->commission() );
             $this->set( 'motidempdo', $this->Option->motidempdo() );
