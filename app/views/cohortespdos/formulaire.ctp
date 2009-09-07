@@ -96,7 +96,7 @@
                         $title = $pdo['Dossier']['numdemrsa'];
 
                     $statutAvis = Set::extract( $pdo, 'Derogation.'.$index.'.avisdero' );
-
+// debug( $pdo );
                     $avispcgpersonne_id = Set::extract( $pdo, 'Derogation.avispcgpersonne_id');
                     $derogation_id = Set::extract( $pdo, 'Derogation.id');
 
@@ -109,9 +109,10 @@
                             h( value( $typdero, Set::extract( 'Derogation.typdero', $pdo ) ) ),
                             h( date_short( Set::extract( 'Derogation.ddavisdero', $pdo ) ) ),
                             //h( value( $avisdero, Set::extract( 'Derogation.avisdero', $pdo ) ) ),
-                            $form->input( 'Derogation.avisdero', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => array( 'O' => 'Ouvert', 'N' => 'Refusé' ), 'value' => ( !empty( $statutAvis ) ? $statutAvis : 'O' ) ) ).
-                            $form->input( 'Derogation.avispcgpersonne_id', array( 'label' => false, 'div' => false, 'value' => $avispcgpersonne_id, 'type' => 'hidden' ) ).
-                            $form->input( 'Derogation.id', array( 'label' => false, 'div' => false, 'value' => $derogation_id, 'type' => 'hidden' ) ),
+                            $form->input( 'Derogation.'.$index.'.avisdero', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => array( 'O' => 'Ouvert', 'N' => 'Refusé' ), 'value' => ( !empty( $statutAvis ) ? $statutAvis : 'O' ) ) ).
+                            $form->input( 'Derogation.'.$index.'.avispcgpersonne_id', array( 'label' => false, 'div' => false, 'value' => $avispcgpersonne_id, 'type' => 'hidden' ) ).
+                            $form->input( 'Derogation.'.$index.'.id', array( 'label' => false, 'div' => false, 'value' => $derogation_id, 'type' => 'hidden' ) ).
+                            $form->input( 'Derogation.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $pdo['Dossier']['id'] ) ),
 //                             $form->input( 'Derogation.'.$index.'.commentdero', array( 'label' => false, 'type' => 'text', 'rows' => 2, 'value' => $pdo['Derogation']['commentdero'] ) ),
                             $html->viewLink(
                                 'Voir le contrat « '.$title.' »',
