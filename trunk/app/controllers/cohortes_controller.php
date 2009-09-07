@@ -118,7 +118,7 @@
         /**
         */
         function _index( $statutOrientation = null ) {
-            $this->assert( !empty( $statutOrientation ), 'error404' );
+            $this->assert( !empty( $statutOrientation ), 'invalidParameter' );
             $this->set( 'oridemrsa', $this->Option->oridemrsa() );
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );

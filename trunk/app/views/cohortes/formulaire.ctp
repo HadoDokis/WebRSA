@@ -111,6 +111,7 @@
 
                             echo $html->tableCells(
                                 array(
+
                                     h( $personne['Adresse']['locaadr'] ),
                                     h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
                                     h( date_short( $personne['Dossier']['dtdemrsa'] ) ), // FIXME: voir flux instruction
