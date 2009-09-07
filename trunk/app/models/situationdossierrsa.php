@@ -66,12 +66,25 @@
             return array( 'Z', 2, 3, 4 ); // Z => dossier ajouté avec le formulaire "Préconisation ..."
         }
 
+        function etatAttente() {
+            return array( 0 );
+        }
         //---------------------------------------------------------------------
 
         function droitsOuverts( $dossier_rsa_id ) {
             if( valid_int( $dossier_rsa_id ) ) {
                 $situation = $this->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
                 return in_array( Set::extract( $situation, 'Situationdossierrsa.etatdosrsa' ), $this->etatOuvert() );
+            }
+            else {
+                return false;
+            }
+        }
+
+        function droitsEnAttente( $dossier_rsa_id ) {
+            if( valid_int( $dossier_rsa_id ) ) {
+                $situation = $this->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
+                return in_array( Set::extract( $situation, 'Situationdossierrsa.etatdosrsa' ), $this->etatAttente() );
             }
             else {
                 return false;

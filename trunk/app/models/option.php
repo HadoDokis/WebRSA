@@ -177,7 +177,8 @@
             return array(
                 'D' => 'Avis demandé au CG',
                 'O' => 'Accord du CG',
-                'N' => 'Refus du CG'
+                'N' => 'Refus du CG',
+                'A' => 'Ajourné'
             );
         }
 
@@ -210,6 +211,15 @@
                 'O' => 'Oui',
                 'N' => 'Non',
                 'P' => 'Pas de réponse'
+            );
+        }
+
+        function decisionpdo() {
+            return array(
+                'P' => 'Pas de décision',
+                'A' => 'Accord',
+                'R' => 'Refus',
+                'J' => 'Ajourné'
             );
         }
 
@@ -1241,7 +1251,7 @@
             );
         }
 
-        function typdero() {
+        function typedero() {
             return array(
                 'AGE' => 'Dérogation sur les conditions d\'age',
                 'ACT' => 'Dérogation sur les conditions d\'activité',
@@ -1281,6 +1291,14 @@
                 'PRO' => 'Proprietaire sans charges de remboursement',
                 'SRG' => 'Sans resid. stable avec forfait logement',
                 'SRO' => 'Sans resid. stable sans forfait logement'
+            );
+        }
+
+        function typepdo(){
+            return array(
+                'C' => 'PDO de contrôle',
+                'M' => 'PDO de maintien',
+                'O' => 'PDO d\'ouverture'
             );
         }
 
