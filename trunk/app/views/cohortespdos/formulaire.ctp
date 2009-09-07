@@ -62,7 +62,7 @@
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
                     <th><?php echo $paginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
                     <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Type de PDO', 'Derogation.typdero' );?></th>
+                    <th><?php echo $paginator->sort( 'Type de PDO', 'Derogation.typedero' );?></th>
                     <th><?php echo $paginator->sort( 'Date de soumission CAF', 'Derogation.avisdero' );?></th>
                     <th><?php echo $paginator->sort( 'Décision du CG (Droit)', 'Derogation.ddavisdero' );?></th>
                     <!-- <th>Commentaires</th> -->
@@ -106,7 +106,7 @@
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
                             h( $pdo['Dossier']['typeparte'] ),
                             h( value( $etatdosrsa, Set::extract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
-                            h( value( $typdero, Set::extract( 'Derogation.typdero', $pdo ) ) ),
+                            h( value( $typedero, Set::extract( 'Derogation.typedero', $pdo ) ) ),
                             h( date_short( Set::extract( 'Derogation.ddavisdero', $pdo ) ) ),
                             //h( value( $avisdero, Set::extract( 'Derogation.avisdero', $pdo ) ) ),
                             $form->input( 'Derogation.'.$index.'.avisdero', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => array( 'O' => 'Ouvert', 'N' => 'Refusé' ), 'value' => ( !empty( $statutAvis ) ? $statutAvis : 'O' ) ) ).

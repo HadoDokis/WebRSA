@@ -5,9 +5,11 @@
         var $useTable = false;
 
         function search( $statutAvis, $mesCodesInsee, $filtre_zone_geo, $criterespdo, $lockedDossiers ) {
+            $Situationdossierrsa =& ClassRegistry::init( 'Situationdossierrsa' );
+
            /// Conditions de base
             $conditions = array(
-//                  'Derogation.avisdero = \'D\'',
+                'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ',
                     'Derogation.avisdero = \''.Sanitize::clean( $statutAvis ).'\'',
             );
 // debug( $conditions );
@@ -23,15 +25,15 @@
             }
 
             /// Critères
-            $typdero = Set::extract( $criterespdo, 'Cohortepdo.typdero' );
+            $typedero = Set::extract( $criterespdo, 'Cohortepdo.typedero' );
             $avisdero = Set::extract( $criterespdo, 'Cohortepdo.avisdero' );
             $ddavisdero = Set::extract( $criterespdo, 'Cohortepdo.ddavisdero' );
 //             $locaadr = Set::extract( $criterespdo, 'Adresse.locaadr' );
 //             $nom = Set::extract( $criterespdo, 'Personne.nom' );
 
             // Type de PDO
-            if( !empty( $typdero ) ) {
-                $conditions[] = 'Derogation.typdero ILIKE \'%'.Sanitize::clean( $typdero ).'%\'';
+            if( !empty( $typedero ) ) {
+                $conditions[] = 'Derogation.typedero ILIKE \'%'.Sanitize::clean( $typedero ).'%\'';
             }
 
             // Décision CG
@@ -45,12 +47,11 @@
                 $conditions[] = 'Derogation.ddavisdero = \''.$ddavisdero.'\'';
             }
 
-
             $query = array(
                 'fields' => array(
                     '"Derogation"."id"',
                     '"Derogation"."avispcgpersonne_id"',
-                    '"Derogation"."typdero"',
+                    '"Derogation"."typedero"',
                     '"Derogation"."avisdero"',
                     '"Derogation"."ddavisdero"',
                     '"Dossier"."id"',
@@ -127,7 +128,10 @@
                         'alias'      => 'Situationdossierrsa',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id' )
+                        'conditions' => array(
+                            'Situationdossierrsa.dossier_rsa_id = Dossier.id',
+                            //'( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) )'
+                        )
                     ),
                 ),
                 'recursive' => -1,
