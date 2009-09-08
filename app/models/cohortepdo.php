@@ -4,15 +4,18 @@
         var $name = 'Cohortepdo';
         var $useTable = false;
 
-        function search( $statutAvis, $mesCodesInsee, $filtre_zone_geo, $criterespdo, $lockedDossiers ) {
+        function search( $statutValidationAvis, $mesCodesInsee, $filtre_zone_geo, $criterespdo, $lockedDossiers ) {
             $Situationdossierrsa =& ClassRegistry::init( 'Situationdossierrsa' );
 
            /// Conditions de base
-            $conditions = array(
-                'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) '
-            );
-            if( !empty( $statutAvis ) ) {
-                $conditions[] = 'Derogation.avisdero = \''.Sanitize::clean( $statutAvis ).'\'';
+            $conditions = array( );
+
+            if( !empty( $statutValidationAvis ) ) {
+                if( $statutValidationAvis == 'Decisionpdo::nonvalide' ) {
+                    $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
+                    $conditions[] = 'Propopdo.decisionpdo ILIKE \'%P%\'';
+
+                }
             }
 
             /// Filtre zone géographique
@@ -27,34 +30,35 @@
             }
 
             /// Critères
-            $typedero = Set::extract( $criterespdo, 'Cohortepdo.typedero' );
-            $avisdero = Set::extract( $criterespdo, 'Cohortepdo.avisdero' );
-            $ddavisdero = Set::extract( $criterespdo, 'Cohortepdo.ddavisdero' );
+            $typepdo = Set::extract( $criterespdo, 'Cohortepdo.typepdo' );
+            $decisionpdo = Set::extract( $criterespdo, 'Cohortepdo.decisionpdo' );
+            $datedecisionpdo = Set::extract( $criterespdo, 'Cohortepdo.datedecisionpdo' );
 
 
             // Type de PDO
-            if( !empty( $typedero ) ) {
-                $conditions[] = 'Derogation.typedero ILIKE \'%'.Sanitize::clean( $typedero ).'%\'';
+            if( !empty( $typepdo ) ) {
+                $conditions[] = 'Propopdo.typepdo ILIKE \'%'.Sanitize::clean( $typepdo ).'%\'';
             }
 
             // Décision CG
-            if( !empty( $avisdero ) ) {
-                $conditions[] = 'Derogation.avisdero ILIKE \'%'.Sanitize::clean( $avisdero ).'%\'';
+            if( !empty( $decisionpdo ) ) {
+                $conditions[] = 'Propopdo.decisionpdo ILIKE \'%'.Sanitize::clean( $decisionpdo ).'%\'';
             }
 
             // Type de PDO
-            if( !empty( $ddavisdero ) && dateComplete( $criterespdo, 'Cohortepdo.ddavisdero' ) ) {
-                $ddavisdero = $ddavisdero['year'].'-'.$ddavisdero['month'].'-'.$ddavisdero['day'];
-                $conditions[] = 'Derogation.ddavisdero = \''.$ddavisdero.'\'';
+            if( !empty( $datedecisionpdo ) && dateComplete( $criterespdo, 'Cohortepdo.datedecisionpdo' ) ) {
+                $datedecisionpdo = $datedecisionpdo['year'].'-'.$datedecisionpdo['month'].'-'.$datedecisionpdo['day'];
+                $conditions[] = 'Propopdo.datedecisionpdo = \''.$datedecisionpdo.'\'';
             }
-
+// debug( $conditions );
             $query = array(
                 'fields' => array(
-                    '"Derogation"."id"',
-                    '"Derogation"."avispcgpersonne_id"',
-                    '"Derogation"."typedero"',
-                    '"Derogation"."avisdero"',
-                    '"Derogation"."ddavisdero"',
+                    '"Propopdo"."id"',
+                    '"Propopdo"."dossier_rsa_id"',
+                    '"Propopdo"."typepdo"',
+                    '"Propopdo"."decisionpdo"',
+                    '"Propopdo"."datedecisionpdo"',
+                    '"Propopdo"."commentairepdo"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
                     '"Dossier"."matricule"',
@@ -72,18 +76,25 @@
                 ),
                 'joins' => array(
                     array(
-                        'table'      => 'avispcgpersonnes',
-                        'alias'      => 'Avispcgpersonne',
+                        'table'      => 'dossiers_rsa',
+                        'alias'      => 'Dossier',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Avispcgpersonne.id = Derogation.avispcgpersonne_id' )
+                        'conditions' => array( 'Propopdo.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
                     ),
                     array(
                         'table'      => 'personnes',
                         'alias'      => 'Personne',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Personne.id = Avispcgpersonne.personne_id' )
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
                     ),
                     array(
                         'table'      => 'prestations',
@@ -93,22 +104,9 @@
                         'conditions' => array(
                             'Personne.id = Prestation.personne_id',
                             'Prestation.natprest = \'RSA\'',
-                            '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+//                             '( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
+                            '( Prestation.rolepers = \'DEM\' )',
                         )
-                    ),
-                    array(
-                        'table'      => 'foyers',
-                        'alias'      => 'Foyer',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-                    ),
-                    array(
-                        'table'      => 'dossiers_rsa',
-                        'alias'      => 'Dossier',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
                     ),
                     array(
                         'table'      => 'adresses_foyers',
@@ -130,9 +128,10 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array(
-                            'Situationdossierrsa.dossier_rsa_id = Dossier.id'
+                            'Situationdossierrsa.dossier_rsa_id = Dossier.id',
+                            //'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' )' 
                         )
-                    ),
+                    )
                 ),
                 'recursive' => -1,
                 'conditions' => $conditions,

@@ -55,18 +55,17 @@
 
     <?php if( is_array( $cohortepdo ) && count( $cohortepdo ) > 0 ):?>
         <?php echo $form->create( 'GestionPDO', array( 'url'=> Router::url( null, true ) ) );?>
-   <!-- <?php /*echo $pagination;*/?> -->
+    <?php echo $pagination;?> 
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'N° PDO', 'Derogation.id' );?></th>
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
                     <th><?php echo $paginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
                     <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Type de PDO', 'Derogation.typedero' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de soumission CAF', 'Derogation.avisdero' );?></th>
-                    <th><?php echo $paginator->sort( 'Décision du CG (Droit)', 'Derogation.ddavisdero' );?></th>
-                    <!-- <th>Commentaires</th> -->
+                    <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.decisionpdo' );?></th>
+                    <th><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.datedecisionpdo' );?></th>
+                     <th>Commentaires</th> 
                     <th class="action">Action</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -96,18 +95,16 @@
                         </table>';
                         $title = $pdo['Dossier']['numdemrsa'];
 
-                    $statut_avis = Set::extract( $pdo, 'Derogation.'.$index.'.avisdero' );
-// debug( $statut_avis );
+
                     echo $html->tableCells(
                         array(
-                            h( $pdo['Derogation']['id'] ),
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
-                            h( $pdo['Dossier']['typeparte'] ),
+                            h( Set::extract( $pdo, 'Dossier.typeparte' ) ),
                             h( value( $etatdosrsa, Set::extract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
-                            h( value( $typedero, Set::extract( 'Derogation.typedero', $pdo ) ) ),
-                            h( date_short( Set::extract( 'Derogation.ddavisdero', $pdo ) ) ),
-                            h( value( $avisdero, Set::extract( 'Derogation.avisdero', $pdo ) ) ),
-//                             $form->input( 'Derogation.'.$index.'.commentdero', array( 'label' => false, 'type' => 'text', 'rows' => 2, 'value' => $pdo['Derogation']['commentdero'] ) ),
+                            h( value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ),
+                            h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
+                            h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo', $pdo ) ) ),
+                            h( Set::extract( $pdo, 'Propopdo.commentairepdo' ) ),
                             $html->viewLink(
                                 'Voir le contrat « '.$title.' »',
                                 array( 'controller' => 'dossierspdo', 'action' => 'index', $pdo['Dossier']['id'] )
@@ -121,6 +118,7 @@
                 <?php endforeach;?>
             </tbody>
         </table>
+        <?php echo $pagination;?>
        <ul class="actionMenu">
             <li><?php
                 echo $html->printLinkJs(
@@ -129,15 +127,15 @@
                 );
             ?></li>
 
-<!--            <li><?php
+            <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'cohortespdos', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
-            ?></li>-->
+            ?></li>
         </ul>
         <?php echo $form->end();?>
-   <!-- <?php /*echo $pagination;*/?> -->
+
 
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
