@@ -3,8 +3,8 @@
     class CohortespdosController extends AppController {
 
         var $name = 'Cohortespdos';
-        var $uses = array( 'Cohortepdo', 'Option', 'Derogation', 'Avispcgpersonne', 'Situationdossierrsa' );
-        var $helpers = array( 'Csv' );
+        var $uses = array( 'Cohortepdo', 'Option', 'Dossier', 'Situationdossierrsa', 'Propopdo' );
+        var $helpers = array( 'Csv', 'Paginator' );
 
         var $paginate = array(
             // FIXME
@@ -25,8 +25,8 @@
         function beforeFilter(){
             parent::beforeFilter();
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-            $this->set( 'avisdero', $this->Option->avisdero() );
-            $this->set( 'typedero', $this->Option->typedero() );
+            $this->set( 'decisionpdo', $this->Option->decisionpdo() );
+            $this->set( 'typepdo', $this->Option->typepdo() );
             $this->set( 'pieecpres', $this->Option->pieecpres() );
             $this->set( 'commission', $this->Option->commission() );
             $this->set( 'motidempdo', $this->Option->motidempdo() );
@@ -36,20 +36,20 @@
         //*********************************************************************
 
         function avisdemande() {
-            $this->_index( 'D' );
+            $this->_index( 'Decisionpdo::nonvalide' );
         }
 
         //---------------------------------------------------------------------
 
         function valide() {
-            $this->_index( 'O' );
+            $this->_index( 'Decisionpdo::valide' );
         }
         //---------------------------------------------------------------------
 
         //*********************************************************************
 
-        function _index( $statutAvis = null ) {
-            $this->assert( !empty( $statutAvis ), 'invalidParameter' );
+        function _index( $statutValidationAvis = null ) {
+            $this->assert( !empty( $statutValidationAvis ), 'invalidParameter' );
 
 //             $this->Cohortepdo->create( $this->data );
 
@@ -57,19 +57,20 @@
                 $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
                 $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
+//         debug( $this->data['Propopdo'] );
 
-                if( !empty( $this->data['Derogation'] ) ) {
-                    $valid = $this->Dossier->Foyer->Personne->Avispcgpersonne->Derogation->saveAll( $this->data['Derogation'], array( 'validate' => 'only', 'atomic' => false ) );
+                if( !empty( $this->data['Propopdo'] ) ) {
+                    $valid = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'only', 'atomic' => false ) );
                     if( $valid ) {
                         $this->Dossier->begin();
-                        $saved = $this->Dossier->Foyer->Personne->Avispcgpersonne->Derogation->saveAll( $this->data['Derogation'], array( 'validate' => 'first', 'atomic' => false ) );
+                        $saved = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'first', 'atomic' => false ) );
                         if( $saved ) {
                             //FIXME ?
-                            foreach( array_unique( Set::extract( $this->data, 'Derogation.{n}.dossier_id' ) ) as $dossier_id ) {
+                            foreach( array_unique( Set::extract( $this->data, 'Propopdo.{n}.dossier_id' ) ) as $dossier_id ) {
                                 $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
                             }
                             $this->Dossier->commit();
-                            $this->data['Derogation'] = array();
+                            $this->data['Propopdo'] = array();
 
                         }
                         else {
@@ -80,9 +81,9 @@
 
                 $this->Dossier->begin(); // Pour les jetons
 
-                $this->paginate = $this->Cohortepdo->search( $statutAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                $this->paginate = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
                 $this->paginate['limit'] = 10;
-                $cohortepdo = $this->paginate( 'Derogation' );
+                $cohortepdo = $this->paginate( 'Propopdo' );
 
                 $this->Dossier->commit();
 
@@ -91,12 +92,12 @@
             }
 
 
-            switch( $statutAvis ) {
-                case 'D':
+            switch( $statutValidationAvis ) {
+                case 'Decisionpdo::nonvalide':
                     $this->set( 'pageTitle', 'Nouvelles demandes PDOs' );
                     $this->render( $this->action, null, 'formulaire' );
                     break;
-                case 'O':
+                case 'Decisionpdo::valide':
                     $this->set( 'pageTitle', 'PDOs validés' );
                     $this->render( $this->action, null, 'visualisation' );
                     break;
@@ -111,16 +112,17 @@
         function exportcsv() {
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+//             $statutValidationAvis = $this->Propopdo->find( 'list', array( 'fields' => array( 'decisionpdo' ) ) );
 
             $_limit = 10;
-            $params = $this->Cohortepdo->search( null, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-//             debug( $params );
-//             unset( $params['limit'] );
-            $pdos = $this->Derogation->find( 'all', $params );
+            $params = $this->Cohortepdo->search( 'Decisionpdo::valide', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+
+            unset( $params['limit'] );
+            $pdos = $this->Propopdo->find( 'all', $params );
 
 
             $this->layout = ''; // FIXME ?
-            $this->set( compact( /*'headers',*/ 'pdos' ) );
+            $this->set( compact( 'headers', 'pdos' ) );
         }
     }
 ?>
