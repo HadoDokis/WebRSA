@@ -106,7 +106,8 @@
         'dossierpdo' => 'dossierspdo',
         'avispcgpersonne' => 'avispcgpersonnes',
         'indicateurmensuel' => 'indicateursmensuels',
-        'cohortepdo' => 'cohortespdos'
+        'cohortepdo' => 'cohortespdos',
+        'propopdo' => 'propospdos'
      );
 /**
  * This is a key => value array of regex used to match words.
