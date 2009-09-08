@@ -30,34 +30,39 @@
                     )
                 )
             ),
-            'derogation' => array(
+            'propopdo' => array(
                 'fields' => array(
-                    '"Derogation"."id"',
-                    '"Derogation"."typedero"',
-                    '"Derogation"."avisdero"',
-                    '"Derogation"."ddavisdero"',
-                    '"Derogation"."dfavisdero"',
+                    '"Propopdo"."id"',
+                    '"Propopdo"."dossier_rsa_id"',
+                    '"Propopdo"."typepdo"',
+                    '"Propopdo"."decisionpdo"',
+                    '"Propopdo"."datedecisionpdo"',
+                    '"Propopdo"."commentairepdo"',
                     '"Personne"."id"',
                     '"Personne"."pieecpres"',
-                    'Avispcgpersonne.personne_id',
-                    'Avispcgpersonne.id',
-                    'Derogation.avispcgpersonne_id'
                 ),
                 'recursive' => -1,
                 'joins' => array(
                     array(
-                        'table'      => 'avispcgpersonnes',
-                        'alias'      => 'Avispcgpersonne',
+                        'table'      => 'dossiers_rsa',
+                        'alias'      => 'Dossier',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Derogation.avispcgpersonne_id = Avispcgpersonne.id' )
+                        'conditions' => array( 'Propopdo.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
                     ),
                     array(
                         'table'      => 'personnes',
                         'alias'      => 'Personne',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Avispcgpersonne.personne_id = Personne.id' )
+                        'conditions' => array( 'Foyer.id = Personne.foyer_id' )
                     ),
                     array(
                         'table'      => 'prestations',
@@ -69,16 +74,9 @@
                             'Prestation.rolepers = \'DEM\'',
                             'Prestation.natprest = \'RSA\''
                         )
-                    ),
-                    array(
-                        'table'      => 'foyers',
-                        'alias'      => 'Foyer',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
                     )
                 ),
-                'order' => 'Derogation.ddavisdero ASC',
+                'order' => 'Propopdo.datedecisionpdo ASC',
             )
         );
 
@@ -94,7 +92,7 @@
                     case 'etat':
                         $query = Set::merge( $query, $params );
                         break;
-                    case 'derogation':
+                    case 'propopdo':
                         $query = Set::merge( $query, $params );
                         break;
                 }
