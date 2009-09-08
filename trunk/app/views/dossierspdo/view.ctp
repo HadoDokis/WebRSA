@@ -27,7 +27,7 @@
                 if( $permissions->check( 'dossierspdo', 'edit' ) ) {
                     echo '<li>'.$html->editLink(
                         'Éditer PDO',
-                        array( 'controller' => 'dossierspdo', 'action' => 'edit', $pdos[0]['Derogation']['id'] )
+                        array( 'controller' => 'dossierspdo', 'action' => 'edit', $dossier_rsa_id )
                     ).' </li>';
                 }
 
@@ -40,19 +40,19 @@
             <tbody>
                 <tr class="even">
                     <th><?php __( 'numdero' );?></th>
-                    <td><?php echo Set::extract( '0.Derogation.id', $pdos );?></td>
+                    <td><?php echo Set::extract( 'Propopdo.id', $pdo );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'typedero' );?></th>
-                    <td><?php echo value( $typedero, Set::extract( '0.Derogation.typedero', $pdos ) ) ;?></td>
+                    <td><?php echo value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'ddavisdero' );?></th>
-                    <td><?php echo date_short( Set::extract( '0.Derogation.ddavisdero', $pdos ) ) ;?></td>
+                    <td><?php echo date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ;?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'avisdero' );?></th>
-                    <td><?php echo value( $avisdero, Set::extract( '0.Derogation.avisdero', $pdos ) ) ;?></td>
+                    <td><?php echo value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo', $pdo ) ) ;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'ressdero' );?></th>
@@ -63,8 +63,8 @@
                     <td><?php echo '';?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'commentdero' );?></th>
-                    <td><?php echo '' ;?></td>
+                    <th><?php __( 'commentairepdo' );?></th>
+                    <td><?php echo Set::extract( 'Propopdo.commentairepdo', $pdo ) ;?></td>
                 </tr>
             </tbody>
         </table>
@@ -76,7 +76,7 @@
     <h1>Pièces jointes</h1>
         <table class="aere">
             <tbody>
-                <?php /*foreach( $pdos as $index => $i ):*/?>
+                <?php /*foreach( $pdo as $index => $i ):*/?>
                     <tr class="even">
                         <th>Type de la pièce</th>
                         <th>Fournie</th>
@@ -84,12 +84,12 @@
                         <th class="action">Action</th>
                     </tr>
                     <tr>
-                        <td><?php echo value( $pieecpres, Set::extract( '0.Personne.pieecpres', $pdos ) );?></td>
-                        <td><?php echo $html->boolean( !empty( $pdos[0]['Personne']['pieecpres'] ) );?></td>
+                        <td><?php echo value( $pieecpres, Set::extract( 'Personne.pieecpres', $pdo ) );?></td>
+                        <td><?php echo $html->boolean( !empty( $pdo['Personne']['pieecpres'] ) );?></td>
                         <td><?php echo '';?></td> <!-- FIXME: Voir pour la date à afficher pour les pièces jointes -->
                         <td><?php echo $html->attachLink(
                                 'Voir PDO',
-                                array( 'controller' => 'dossierspdo', 'action' => 'view', $pdos[0]['Derogation']['id'] )
+                                array( 'controller' => 'dossierspdo', 'action' => 'view', $pdo['Propopdo']['id'] )
                             );?></td>
                     </tr>
                 <?php /*endforeach;*/?>

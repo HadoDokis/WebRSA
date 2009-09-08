@@ -44,11 +44,10 @@
 <hr />
 
 <h1>Liste des PDO</h1>
-    <?php if( empty( $pdos ) ):?>
-        <p class="notice">Ce dossier ne possède pas encore de PDO.</p>
-    <?php  endif;?>
-
     <?php if( $permissions->check( 'dossierspdo', 'add' ) ):?>
+        <?php if( empty( $pdo ) ):?>
+            <p class="notice">Ce dossier ne possède pas encore de PDO.</p>
+
         <ul class="actionMenu">
             <?php
                 echo '<li>'.$html->addLink(
@@ -57,45 +56,42 @@
                 ).' </li>';
             ?>
         </ul>
+        <?php  endif;?>
     <?php endif;?>
 
-<?php if( !empty( $pdos ) ):?>
+<?php if( !empty( $pdo ) ):?>
 <div>
     <table class="aere">
         <thead>
             <tr>
-                <th>Numéro PDO</th>
                 <th>Type de PDO</th>
                 <th>Date soumission CAF</th>
                 <th>Décision du Conseil Général</th>
+                <th>Commentaires PDO</th>
                 <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
-            <?php $nrPDO = 1; ?>
-            <?php foreach( $pdos as $pdo ):?>
                 <?php
                     echo $html->tableCells(
                         array(
-                            h( $nrPDO ),
-                            h( value( $typedero, Set::extract( 'Derogation.typedero', $pdo ) ) ),
-                            h( date_short( Set::extract( 'Derogation.ddavisdero', $pdo ) ) ),
-                            h( value( $avisdero, Set::extract( 'Derogation.avisdero', $pdo ) ) ),
+                            h( value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ),
+                            h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
+                            h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo', $pdo ) ) ),
+                            h( Set::extract( 'Propopdo.commentairepdo', $pdo ) ),
                             $html->viewLink(
                                 'Voir PDO',
-                                array( 'controller' => 'dossierspdo', 'action' => 'view', $pdo['Derogation']['id'] )
+                                array( 'controller' => 'dossierspdo', 'action' => 'view', $pdo['Propopdo']['id'] )
                             ),
                             $html->editLink(
                                 'Modifier PDO',
-                                array( 'controller' => 'dossierspdo', 'action' => 'edit', $pdo['Derogation']['id'] )
+                                array( 'controller' => 'dossierspdo', 'action' => 'edit', $dossier_rsa_id )
                             )
                         ),
                         array( 'class' => 'odd' ),
                         array( 'class' => 'even' )
                     );
-                    $nrPDO++;
                 ?>
-            <?php endforeach;?>
         </tbody>
     </table>
 </div>
