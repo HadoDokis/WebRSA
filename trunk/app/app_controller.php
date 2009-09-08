@@ -385,20 +385,5 @@
         }
 
 
-
-        /** ********************************************************************
-        *
-        *** *******************************************************************/
-
-        public function add() {
-            $args = func_get_args();
-            call_user_func_array( array( $this, '_add_edit' ), $args );
-        }
-
-
-        public function edit() {
-            $args = func_get_args();
-            call_user_func_array( array( $this, '_add_edit' ), $args );
-        }
     }
 ?>
