@@ -55,10 +55,10 @@
 
         var $validate = array(
             'dfderact' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 ),
                 array(
                     'rule'          => 'date',
                     'message'       => 'Veuillez entrer une date valide',
@@ -71,12 +71,12 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'duractdomi' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+//             'duractdomi' => array(
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
             'annderdipobt' => array(
                 array(
                     'rule'          => 'date',
