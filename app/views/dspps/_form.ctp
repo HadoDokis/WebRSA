@@ -75,11 +75,11 @@
                 <?php echo $form->input( 'Dspp.hispro', array( 'label' =>  required( __( 'hispro', true ) ), 'type' => 'select', 'options' => $hispro, 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.libderact', array( 'label' => __( 'libderact', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactderact', array( 'label' => __( 'libsecactderact', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Dspp.dfderact', array( 'label' => required( __( 'dfderact', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true ) );?>
-                <?php echo $form->input( 'Dspp.domideract', array( 'label' => required( __( 'domideract', true ) ), 'type' => 'select', 'options' => $domideract, 'empty' => true ) );?>
+                <?php echo $form->input( 'Dspp.dfderact', array( 'label' => __( 'dfderact', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true ) );?>
+                <?php echo $form->input( 'Dspp.domideract', array( 'label' =>  __( 'domideract', true ), 'type' => 'select', 'options' => $domideract, 'empty' => true ) );?>
                 <?php echo $form->input( 'Dspp.libactdomi', array( 'label' => __( 'libactdomi', true ), 'type' => 'text' ) );?>
                 <?php echo $form->input( 'Dspp.libsecactdomi', array( 'label' => __( 'libsecactdomi', true ), 'type' => 'text' ) );?>
-                <?php echo $form->input( 'Dspp.duractdomi', array( 'label' => required( __( 'duractdomi', true ) ), 'type' => 'select', 'options' => $duractdomi, 'empty' => true ) );?>
+                <?php echo $form->input( 'Dspp.duractdomi', array( 'label' =>  __( 'duractdomi', true ), 'type' => 'select', 'options' => $duractdomi, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
             <legend>Métier recherché</legend>
