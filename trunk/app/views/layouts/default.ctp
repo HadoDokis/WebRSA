@@ -29,17 +29,17 @@
 					$backAllowed = true;
 
 					$pagesBackNotAllowed = array(
+						'Cohortesci::index',
+						'Cohortes::nouvelles',
+						'Cohortes::enattente',
+						'Cohortespdos::avisdemande',
+						'Recours::gracieux',
+						'Recours::contentieux',
+						'Contratsinsertion::valider',
 						'Ajoutdossiers::wizard',
 						'Ajoutdossiers::confirm',
-						'Cohortes::nouvelles',
-						'Cohortes::orientees',
-						'Cohortes::enattente',
-						'Cohortesci::index',
 						'Cohortesindus::index',
-						'Cohortespdos::index',
-						'Droits::edit', // Charge quand même les droits :'(
 						'Users::login',
-						// TODO: faire à partir de Module:Recours dans Droits::edit
 					);
 
 					if( ( $this->action == 'add' ) || ( $this->action == 'edit' ) || ( $this->action == 'delete' ) || in_array( $this->name.'::'.$this->action, $pagesBackNotAllowed ) ) {
