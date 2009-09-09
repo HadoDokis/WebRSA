@@ -32,6 +32,10 @@
             'Orientstruct' => array(
                 'classname' => 'Orientstruct',
                 'foreignKey' => 'personne_id'
+            ),
+            'Rendezvous' => array(
+                'classname' => 'Rendezvous',
+                'foreignKey' => 'personne_id'
             )
         );
 

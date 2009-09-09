@@ -18,7 +18,8 @@ CREATE TABLE rendezvous (
     structurereferente_id   INT NOT NULL REFERENCES structuresreferentes(id),
     daterdv                 DATE,
     objetrdv                VARCHAR(256),
-    commentairerdv          TEXT
+    commentairerdv          TEXT,
+    statutrdv               CHAR(1)
 );
 
 -- -----------------------------------------------------------------------------
