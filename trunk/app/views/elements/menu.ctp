@@ -68,6 +68,9 @@
                         <?php if( $permissions->check( 'criteresci', 'index' ) ):?>
                             <li><?php echo $html->link( 'Par Contrat insertion',  array( 'controller' => 'criteresci', 'action' => 'index'  ) );?></li>
                         <?php endif;?>
+                        <?php if( $permissions->check( 'criteresrdv', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Par Rendez-vous',  array( 'controller' => 'criteresrdv', 'action' => 'index'  ) );?></li>
+                        <?php endif;?>
                     </ul>
                 </li>
             <?php endif;?>
