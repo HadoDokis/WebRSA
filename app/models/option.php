@@ -1160,6 +1160,15 @@
             );
         }
 
+        function statutrdv() {
+            return array(
+                'P' => 'Prévu',
+                'T' => 'Tenu',
+                'A' => 'Annulé',
+                'R' => 'Reporté'
+            );
+        }
+
 
         function topaccre() {
             return array(

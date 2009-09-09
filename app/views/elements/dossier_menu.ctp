@@ -67,6 +67,16 @@
                                         ?>
                                     </li>
                                 <?php endif;?>
+                                <?php if( $permissions->check( 'rendezvous', 'index' ) ):?>
+                                    <li>
+                                        <?php
+                                            echo $html->link(
+                                                h( 'Rendez-vous' ),
+                                                array( 'controller' => 'rendezvous', 'action' => 'index', $personne['id'] )
+                                            );
+                                        ?>
+                                    </li>
+                                <?php endif;?>
                             </ul>
                             <?php endif;?>
                             <!-- Fin "Partie du sous-menu concernant uniquement le demandeur et son conjoint" -->
