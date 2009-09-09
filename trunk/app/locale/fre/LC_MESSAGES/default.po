@@ -866,7 +866,22 @@ msgid "commentairepdo"
 msgstr "Commentaires PDO"
 
 msgid "decisionpdo"
-msgstr "Décision PDO"
+msgstr "Décision CG"
 
 msgid "datedecisionpdo"
 msgstr "Date de décision PDO"
+
+###############################################################################
+# Rendez-vous
+###############################################################################
+msgid "statutrdv"
+msgstr "Statut du RDV"
+
+msgid "commentairerdv"
+msgstr "Commentaires suite au RDV"
+
+msgid "objetrdv"
+msgstr "Objet du RDV"
+
+msgid "daterdv"
+msgstr "Date du RDV"

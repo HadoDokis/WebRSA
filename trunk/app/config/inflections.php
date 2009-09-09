@@ -40,7 +40,8 @@
  */
 	$uninflectedPlural = array(
         'avispcgdroitrsa',
-        'recours'
+        'recours',
+        'rendezvous'
     );
 /**
  * This is a key => value array of plural irregular words.
