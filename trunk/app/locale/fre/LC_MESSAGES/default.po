@@ -885,3 +885,6 @@ msgstr "Objet du RDV"
 
 msgid "daterdv"
 msgstr "Date du RDV"
+
+msgid "lib_struct"
+msgstr "Structure référente"
