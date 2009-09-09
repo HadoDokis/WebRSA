@@ -63,7 +63,7 @@
                     <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo' );?></th>
                     <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.decisionpdo' );?></th>
-                    <th><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.datedecisionpdo' );?></th>
+                    <th style="width:10em"><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.datedecisionpdo' );?></th>
                      <th>Commentaires</th> 
                     <th class="action noprint">Action</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
@@ -107,7 +107,7 @@
                             h( value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ),
                             h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
 
-                            $form->input( 'Propopdo.'.$index.'.decisionpdo', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => array( 'P' => 'Pas de réponse', 'A' => 'Accord', 'R' => 'Refus', 'J' => 'Ajourné' ), 'value' => ( !empty( $statutAvis ) ? $statutAvis : 'P' ) ) ).
+                            $form->input( 'Propopdo.'.$index.'.decisionpdo', array( 'label' => false, 'div' => false, 'legend' => false, 'separator' => '<br />' , 'type' => 'radio', 'options' => array( 'P' => 'Pas de réponse', 'A' => 'Accord', 'R' => 'Refus', 'J' => 'Ajourné' ), 'value' => ( !empty( $statutAvis ) ? $statutAvis : 'P' ) ) ).
                             $form->input( 'Propopdo.'.$index.'.dossier_rsa_id', array( 'label' => false, 'div' => false, 'value' => $dossier_rsa_id, 'type' => 'hidden' ) ).
                             $form->input( 'Propopdo.'.$index.'.id', array( 'label' => false, 'div' => false, 'value' => $pdo_id, 'type' => 'hidden' ) ).
                             $form->input( 'Propopdo.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $pdo['Dossier']['id'] ) ),
