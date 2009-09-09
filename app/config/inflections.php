@@ -108,7 +108,8 @@
         'avispcgpersonne' => 'avispcgpersonnes',
         'indicateurmensuel' => 'indicateursmensuels',
         'cohortepdo' => 'cohortespdos',
-        'propopdo' => 'propospdos'
+        'propopdo' => 'propospdos',
+        'critererdv' => 'criteresrdv'
      );
 /**
  * This is a key => value array of regex used to match words.

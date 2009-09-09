@@ -57,25 +57,49 @@
             }
         }
 
-        function search( $criteres ) {
+        function search( $mesCodesInsee, $filtre_zone_geo, $criteresrdv ) {
             /// Conditions de base
             $conditions = array();
 
             /// Critères
-            $statutrdv = Set::extract( $criteres, 'Filtre.statutrdv' );
-            $daterdv = Set::extract( $criteres, 'Filtre.daterdv' );
+            $statutrdv = Set::extract( $criteresrdv, 'Critererdv.statutrdv' );
+            $structurereferente_id = Set::extract( $criteresrdv, 'Critererdv.structurereferente_id' );
+            $locaadr = Set::extract( $criteresrdv, 'Critererdv.locaadr' );
+            $nom = Set::extract( $criteresrdv, 'Critererdv.nom' );
 
-            /// Date du flux RDV
-            if( !empty( $daterdv ) && dateComplete( $criterespdo, 'Filtre.daterdv' ) ) {
-                $daterdv = $daterdv['year'].'-'.$daterdv['month'].'-'.$daterdv['day'];
-                $conditions[] = 'Rendezvous.daterdv = \''.$daterdv.'\'';
+            /// Filtre zone géographique
+            if( $filtre_zone_geo ) {
+                $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
+                $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
             }
 
+            /// Critères sur le RDV - date de demande
+            if( isset( $criteresrdv['Critererdv']['daterdv'] ) && !empty( $criteresrdv['Critererdv']['daterdv'] ) ) {
+                $valid_from = ( valid_int( $criteresrdv['Critererdv']['daterdv_from']['year'] ) && valid_int( $criteresrdv['Critererdv']['daterdv_from']['month'] ) && valid_int( $criteresrdv['Critererdv']['daterdv_from']['day'] ) );
+                $valid_to = ( valid_int( $criteresrdv['Critererdv']['daterdv_to']['year'] ) && valid_int( $criteresrdv['Critererdv']['daterdv_to']['month'] ) && valid_int( $criteresrdv['Critererdv']['daterdv_to']['day'] ) );
+                if( $valid_from && $valid_to ) {
+                    $conditions[] = 'Rendezvous.daterdv BETWEEN \''.implode( '-', array( $criteresrdv['Critererdv']['daterdv_from']['year'], $criteresrdv['Critererdv']['daterdv_from']['month'], $criteresrdv['Critererdv']['daterdv_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresrdv['Critererdv']['daterdv_to']['year'], $criteresrdv['Critererdv']['daterdv_to']['month'], $criteresrdv['Critererdv']['daterdv_to']['day'] ) ).'\'';
+                }
+            }
             /// Statut RDV
-            if( !empty( $statut ) ) {
+            if( !empty( $statutrdv ) ) {
                 $conditions[] = 'Rendezvous.statutrdv ILIKE \'%'.Sanitize::clean( $statutrdv ).'%\'';
             }
 
+            /// Nom allocataire
+            if( !empty( $nom ) ) {
+                $conditions[] = 'Personne.nom ILIKE \'%'.Sanitize::clean( $nom ).'%\'';
+            }
+
+            /// Adresse personne
+            if( !empty( $locaadr ) ) {
+                $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+            }
+
+            /// Structure référente
+            if( !empty( $structurereferente_id ) ) {
+                $conditions[] = 'Rendezvous.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
+            }
             /// Requête
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
 
@@ -86,8 +110,15 @@
                     '"Rendezvous"."structurereferente_id"',
                     '"Rendezvous"."statutrdv"',
                     '"Rendezvous"."daterdv"',
+                    '"Rendezvous"."objetrdv"',
+                    '"Rendezvous"."commentairerdv"',
+                    '"Dossier"."numdemrsa"',
+                    '"Adresse"."locaadr"',
                     '"Personne"."nom"',
                     '"Personne"."prenom"',
+                    '"Personne"."nomcomnai"',
+                    '"Personne"."dtnai"',
+                    '"Structurereferente"."lib_struc"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -99,19 +130,52 @@
                         'conditions' => array( 'Rendezvous.personne_id = Personne.id' ),
                     ),
                     array(
-                        'table'      => 'orientsstructs',
-                        'alias'      => 'Orientstruct',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Orientstruct.personne_id = Personne.id' ),
-                    ),
-                    array(
                         'table'      => 'structuresreferentes',
                         'alias'      => 'Structurereferente',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Structurereferente.id = Orientstruct.structurereferente_id' ),
-                    )
+                        'conditions' => array( 'Structurereferente.id = Rendezvous.structurereferente_id' ),
+                    ),
+                    array(
+                        'table'      => 'prestations',
+                        'alias'      => 'Prestation',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Personne.id = Prestation.personne_id',
+                            'Prestation.natprest = \'RSA\'',
+//                             '( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
+                            '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+                        )
+                    ),
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'adresses_foyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    ),
+                    array(
+                        'table'      => 'dossiers_rsa',
+                        'alias'      => 'Dossier',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
+                    ),
                 ),
 //                 'group' => array(
 //                     'Totalisationacompte.type_totalisation',
