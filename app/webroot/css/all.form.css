@@ -3,7 +3,7 @@ form {
     text-align: left;
 }
 
-div.text, div.password, div.select, div.date, div.textarea {
+div.text, div.password, div.select, div.radio, div.date, div.textarea {
     margin-bottom: 0.5em;
     width: auto;
 }

@@ -5,9 +5,15 @@
 }
 
 #pageMenu, #pageContent, #pageCartouche, table.cake-sql-log {
-    width: 1024px;
+    width: 90%;
     margin: auto;
 }
+
+/* #pageContent {
+    width: 80%;
+    margin: auto;
+    left: 100px;
+} */
 
 table.cake-sql-log {
     background: white;
@@ -530,6 +536,7 @@ div.clearer hr {
     width: 17em;
     border: 1px solid #235f7d;
     float: left;
+    z-index: 100;
 }
 
 .treemenu ul {
