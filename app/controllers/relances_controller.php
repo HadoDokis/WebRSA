@@ -4,7 +4,7 @@
 
         var $name = 'Relances';
         var $uses = array( 'Orientstruct', 'Relance', 'Option', 'Personne', 'Structurereferente' );
-
+        var $helpers = array( 'Csv', 'Paginator', 'Locale' );
         /**
         *
         *
@@ -96,6 +96,25 @@
                     $this->render( $this->action, null, 'relance' );
                     break;
             }
+        }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function exportcsv() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+            $_limit = 10;
+            $params = $this->Relance->search( 'Relance::relance', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+
+            unset( $params['limit'] );
+            $orients = $this->Orientstruct->find( 'all', $params );
+
+
+            $this->layout = ''; // FIXME ?
+            $this->set( compact( 'headers', 'orients' ) );
         }
     }
 ?>
