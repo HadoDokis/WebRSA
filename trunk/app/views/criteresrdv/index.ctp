@@ -50,7 +50,7 @@
                 ?>
                 <?php echo $form->input( 'Critererdv.daterdv_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterdv_from ) );?>
                 <?php echo $form->input( 'Critererdv.daterdv_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterdv_to ) );?>
-        </fieldset>
+            </fieldset>
         <fieldset>
             <legend>Recherche par demandeur</legend>
             <?php echo $form->input( 'Critererdv.nom', array( 'label' => 'Nom' ) );?>
