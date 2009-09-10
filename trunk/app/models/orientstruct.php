@@ -62,9 +62,10 @@
 
         // ********************************************************************
 
+
         function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
             /// Conditions de base
-            $conditions = array(/* '1 = 1' */);
+            $conditions = array();
 
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {

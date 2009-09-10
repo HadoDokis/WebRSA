@@ -26,7 +26,6 @@
                                         <?php if( $permissions->check( 'cohortes', 'enattente' ) ): ?>
                                             <li><?php echo $html->link( 'En attente', array( 'controller' => 'cohortes', 'action' => 'enattente' ), array( 'title'=>'Demandes en attente' ) );?></li>
                                         <?php endif; ?>
-                                        <!-- <li><?php echo $html->link( 'Fichiers Exportés', array( 'controller' => 'cohortes', 'action' => 'exports_index' ), array( 'title'=>'Fichiers exportés' ) );?></li> -->
                                         <!--<li><?php echo $html->link( 'Liste suivant critères', '#' );?></li>
                                         <li><?php echo $html->link( 'Gestion des éditions', '#' );?></li> -->
                                     </ul>
@@ -52,6 +51,19 @@
                                 </ul>
                             </li>
                         <?php endif;?>
+                        <?php if( $permissions->check( 'relances', 'relance' ) || $permissions->check( 'relances', 'arelancer' )): ?>
+                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                <?php echo $html->link( 'Relances','#' );?>
+                                <ul>
+                                    <?php if( $permissions->check( 'relances', 'arelancer' ) ): ?>
+                                        <li><?php echo $html->link( 'Dossiers à relancer', array( 'controller' => 'relances', 'action' => 'arelancer' ), array( 'title' => 'Dossiers à relancer' ) );?></li>
+                                    <?php endif;?>
+                                    <?php if( $permissions->check( 'relances', 'relance' ) ): ?>
+                                        <li><?php echo $html->link( 'Dossiers relancés', array( 'controller' => 'relances', 'action' => 'relance' ), array( 'title' => 'Dossiers relancés' ) );?></li>
+                                    <?php endif;?>
+                                </ul>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </li>
             <?php endif;?>
