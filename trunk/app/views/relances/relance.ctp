@@ -22,9 +22,11 @@
 ?>
 
 <?php echo $form->create( 'Relance', array( 'url'=> Router::url( null, true ) ) );?>
-    <?php echo $form->input( 'Relance.daterelance', array( 'label' => 'Filtrer par date de relance', 'type' => 'checkbox' ) );?>
-   <fieldset>
-        <legend>Date de Relance</legend>
+    <div class="noprint">
+        <?php echo $form->input( 'Relance.daterelance', array( 'label' => 'Filtrer par date de relance', 'type' => 'checkbox' ) );?>
+    </div>
+   <fieldset class="noprint">
+        <legend class="noprint">Date de Relance</legend>
         <?php
             $daterelance_from = Set::check( $this->data, 'Relance.daterelance_from' ) ? Set::extract( $this->data, 'Relance.daterelance_from' ) : strtotime( '-1 week' );
             $daterelance_to = Set::check( $this->data, 'Relance.daterelance_to' ) ? Set::extract( $this->data, 'Relance.daterelance_to' ) : strtotime( 'now' );
@@ -33,7 +35,7 @@
         <?php echo $form->input( 'Relance.daterelance_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_to ) );?>
     </fieldset>
 
-    <div class="submit">
+    <div class="submit noprint">
         <?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
@@ -52,8 +54,8 @@
                     <th>Date orientation</th>
                     <th>Date de relance</th>
                     <th>Statut relance</th>
-                    <th class="action">Action</th>
-                    <th class="innerTableHeader">Informations complémentaires</th>
+                    <th class="action noprint">Action</th>
+                    <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
             <tbody>
@@ -109,30 +111,18 @@
 
         <ul class="actionMenu">
             <li><?php
-                echo $html->printLink(
-                    'Imprimer la cohorte',
-                    Set::merge(
-                        array(
-                            'controller' => 'gedooos',
-                            'action'     => 'notifications_cohortes'
-                        ),
-                        array_unisize( $this->data )
-                    )
+                echo $html->printLinkJs(
+                    'Imprimer le tableau',
+                    array( 'onclick' => 'printit(); return false;' )
                 );
             ?></li>
 
-           <!-- <li><?php
+            <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
-                    Set::merge(
-                        array(
-                            'controller' => 'cohortes',
-                            'action' => 'exportcsv'
-                        ),
-                        array_unisize( $this->data )
-                    )
+                    array( 'controller' => 'relances', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
-            ?></li> -->
+            ?></li>
         </ul>
     <?php endif;?>
 <?php endif;?>
