@@ -85,14 +85,18 @@
                                 h( $orientstruct['Dossier']['numdemrsa'] ),
                                 h( $orientstruct['Dossier']['matricule'] ),
                                 h( $orientstruct['Personne']['nom'].' '.$orientstruct['Personne']['prenom'] ),
-                                h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
-                                h( date_short( $orientstruct['Orientstruct']['daterelance'] ) ),
+                                h( $locale->date( 'Date::short', Set::extract( $orientstruct, 'Orientstruct.date_valid' ) ) ),
+                                h( $locale->date( 'Date::short', Set::extract( $orientstruct, 'Orientstruct.daterelance' ) ) ),
                                 h( value( $statutrelance, Set::extract( $orientstruct, 'Orientstruct.statutrelance' ) ) ),
-                                $html->printLink(
-                                    'Imprimer la notification',
-                                    array( 'controller' => 'gedooos', 'action' => 'notification_structure', $orientstruct['Personne']['id'] ),
-                                    $permissions->check( 'gedooos', 'notification_structure' )
+                                $html->viewLink(
+                                    'Voir l\'orientation de la personne',
+                                    array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Personne']['id'] )
                                 ),
+//                                 $html->printLink(
+//                                     'Imprimer la notification',
+//                                     array( 'controller' => 'gedooos', 'action' => 'notification_structure', $orientstruct['Personne']['id'] ),
+//                                     $permissions->check( 'gedooos', 'notification_structure' )
+//                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
@@ -105,7 +109,7 @@
 
         <ul class="actionMenu">
             <li><?php
-                echo $html->printCohorteLink(
+                echo $html->printLink(
                     'Imprimer la cohorte',
                     Set::merge(
                         array(
