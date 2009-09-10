@@ -54,3 +54,8 @@ ALTER TABLE prestations DROP COLUMN toppersdrodevorsa;
 ALTER TABLE ressources DROP COLUMN mtpersressmenrsa;
 ALTER TABLE ressourcesmensuelles DROP COLUMN mtabaneu;
 */
+
+--------------- Ajout du 08/09/2009 à 09h13 ------------------
+
+ALTER TABLE orientsstructs ADD COLUMN daterelance DATE;
+ALTER TABLE orientsstructs ADD COLUMN statutrelance CHAR(1);
