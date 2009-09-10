@@ -1169,6 +1169,12 @@
             );
         }
 
+        function statutrelance() {
+            return array(
+                'R' => 'Relancé',
+                'E' => 'En attente'
+            );
+        }
 
         function topaccre() {
             return array(
