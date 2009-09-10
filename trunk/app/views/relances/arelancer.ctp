@@ -75,20 +75,13 @@
                                 h( $orientstruct['Personne']['nom'].' '.$orientstruct['Personne']['prenom'] ),
                                 h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
                                 h( $orientstruct['Orientstruct']['nbjours'] ),
-                                $form->input( 'Orientstruct.'.$index.'.daterelance', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) ).
+                                $form->input( 'Orientstruct.'.$index.'.daterelance', array( 'label' => false, 'div' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) ).
                                 $form->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'div' => false, 'value' => $orientstruct_id, 'type' => 'hidden' ) ).
                                 $form->input( 'Orientstruct.'.$index.'.personne_id', array( 'label' => false, 'div' => false, 'value' => $orientstruct['Orientstruct']['personne_id'], 'type' => 'hidden' ) ).
                                 $form->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'div' => false, 'value' => $orientstruct['Orientstruct']['typeorient_id'], 'type' => 'hidden' ) ).
                                 $form->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'div' => false, 'value' => $orientstruct['Orientstruct']['structurereferente_id'], 'type' => 'hidden' ) ).
                                 $form->input( 'Orientstruct.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $orientstruct['Dossier']['id'] ) ),
                                 $form->input( 'Orientstruct.'.$index.'.statutrelance', array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => array( 'R' => 'Relancer', 'E' => 'En attente' ), 'value' => ( !empty( $statutRelance ) ? $statutRelance : 'E' ) ) ),
-//                                 h( date_short( $orientstruct['Orientstruct']['daterelance'] ) ),
-//                                 h( $orientstruct['Orientstruct']['statutrelance'] ),
-//                                 $html->printLink(
-//                                     'Imprimer la notification',
-//                                     array( 'controller' => 'gedooos', 'action' => 'notification_structure', $orientstruct['Personne']['id'] ),
-//                                     $permissions->check( 'gedooos', 'notification_structure' )
-//                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
