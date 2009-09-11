@@ -3,7 +3,7 @@
     {
 
         var $name = 'Suivisinsertion';
-        var $uses = array( 'Foyer', 'Dossier', 'Suiviinstruction', 'Contratinsertion', 'Orientstruct', 'Structurereferente', 'Typocontrat', 'Typeorient', 'Actioninsertion', 'Option' );
+        var $uses = array( 'Foyer', 'Dossier', 'Suiviinstruction', 'Contratinsertion', 'Orientstruct', 'Structurereferente', 'Typocontrat', 'Typeorient', 'Actioninsertion', 'Option', 'Rendezvous' );
 //         var $helpers = array( 'Locale', 'Csv' );
 
         /** ********************************************************************
@@ -79,6 +79,33 @@
                     )
                 );
                 $personnesFoyer[$index]['Actioninsertion'] = $tActioninsertion['Actioninsertion'];
+
+                // Premier Rendez-vous
+                $tRendezvous = $this->Rendezvous->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Rendezvous.personne_id' => $personnesFoyer[$index]['Personne']['id']
+                        ),
+                        'order' => 'Rendezvous.daterdv ASC',
+                        'recursive' => -1
+                    )
+                );
+                $personnesFoyer[$index]['Rendezvous']['premier'] = $tRendezvous['Rendezvous'];
+
+                // Dernier Rendez-vous
+                $tRendezvous = $this->Rendezvous->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Rendezvous.personne_id' => $personnesFoyer[$index]['Personne']['id']
+                        ),
+                        'order' => 'Rendezvous.daterdv DESC',
+                        'recursive' => -1
+                    )
+                );
+                $personnesFoyer[$index]['Rendezvous']['dernier'] = $tRendezvous['Rendezvous'];
+
 
                 // Première Orientation
                 $tOrientstruct = $this->Orientstruct->find(

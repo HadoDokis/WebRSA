@@ -61,7 +61,7 @@
         </fieldset>
     </fieldset>
     <fieldset>
-        <legend>Recherche par demandeur<!--FIXME: personne du foyer--></legend>
+        <legend>Recherche par allocataire<!--FIXME: personne du foyer--></legend>
         <?php echo $form->input( 'Personne.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );?>
         <?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom' ) );?>
         <?php echo $form->input( 'Personne.nomnai', array( 'label' => 'Nom de jeune fille' ) );?>
