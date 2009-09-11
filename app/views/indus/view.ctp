@@ -76,13 +76,13 @@
         </table>
     <?php endif;?>
 
-       <!-- <ul class="actionMenu">
-             <li><?php
+        <ul class="actionMenu">
+             <!-- <li><?php
                 echo $html->remiseLink(
                     'Enregistrer les remises',
                     array( 'controller' => 'gedooos', 'action' => 'notifications_cohortes' )
                 );
-            ?> </li>
+            ?> </li> -->
             <li>
                 <?php
                     echo $html->recgraLink(
@@ -99,6 +99,6 @@
                     );
                 ?>
             </li>
-        </ul> -->
+        </ul> 
 </div>
 <div class="clearer"><hr /></div>

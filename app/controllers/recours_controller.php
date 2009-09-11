@@ -6,9 +6,9 @@
 
         function beforeFilter() {
             parent::beforeFilter();
-            $this->set( 'typecommission', $this->Option->typecommission() );
-            $this->set( 'decision', $this->Option->decision() );
-            $this->set( 'motif', $this->Option->motif() );
+            $this->set( 'commission', $this->Option->commission() );
+            $this->set( 'decisionrecours', $this->Option->decisionrecours() );
+            $this->set( 'motifrecours', $this->Option->motifrecours() );
         }
 
         function gracieux( $dossier_rsa_id = null ){
