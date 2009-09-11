@@ -2,6 +2,25 @@
 
 <?php require_once( 'filtre.ctp' );?>
 
+<?php
+//     if( isset( $cohorte ) ) {
+//         $paginator->options( array( 'url' => $this->passedArgs ) );
+//         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+//         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+// 
+//         $pages = $paginator->first( '<<' );
+//         $pages .= $paginator->prev( '<' );
+//         $pages .= $paginator->numbers();
+//         $pages .= $paginator->next( '>' );
+//         $pages .= $paginator->last( '>>' );
+// 
+//         $pagination .= $html->tag( 'p', $pages );
+//     }
+//     else {
+//         $pagination = '';
+//     }
+
+?>
 <?php if( !empty( $this->data ) ):?>
     <?php if( empty( $cohorte ) ):?>
         <?php
@@ -18,6 +37,18 @@
         <table class="tooltips_oupas">
             <thead>
                 <tr>
+                   <!-- <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
+                    <th><?php echo $paginator->sort( 'Date demande', 'Dossier.dtdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Date ouverture des droits', 'Dossier.dtdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Service instructeur', 'Suiviinstruction.typeserins' );?></th>
+                    <th><?php echo $paginator->sort( 'PréOrientation', 'Orientstruct.propo_algo' );?></th>
+                    <th><?php echo $paginator->sort( 'Orientation', 'Orientstruct.typeorient_id' );?></th>
+                    <th><?php echo $paginator->sort( 'Structure', 'Structurereferente.lib_struc' );?></th>
+                    <th><?php echo $paginator->sort( 'Décision', 'Orientstruct.statut_orient' );?></th>
+                    <th><?php echo $paginator->sort( 'Date proposition', 'Orientstruct.date_propo' );?></th>
+                    <th><?php echo $paginator->sort( 'Date dernier CI', 'Contratinsertion.dd_ci' );?></th> -->
+
                     <th>Commune</th>
                     <th>Nom prenom</th>
                     <th>Date demande</th>
@@ -100,7 +131,6 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-
         <ul class="actionMenu">
             <li><?php
                 echo $html->printCohorteLink(
