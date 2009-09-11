@@ -21,8 +21,8 @@
 
             <h2>Décision tribunal administratif</h2>
                 <?php echo $form->input( 'Recours.date_commission', array( 'label' =>  ( __( 'date_commission', true ) ), 'type' => 'date', 'dateFormat'=> 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true ) );?>
-                <?php echo $form->input( 'Recours.decision', array( 'label' => __( 'decision', true ), 'type' => 'select', 'options' => $decision, 'empty' => true ) );?>
-                <?php echo $form->input( 'Recours.motif', array( 'label' => __( 'motif', true ), 'type' => 'select', 'options' => $motif, 'empty' => true ) );?>
+                <?php echo $form->input( 'Recours.decision', array( 'label' => __( 'decision', true ), 'type' => 'select', 'options' => $decisionrecours, 'empty' => true ) );?>
+                <?php echo $form->input( 'Recours.motif', array( 'label' => __( 'motif', true ), 'type' => 'select', 'options' => $motifrecours, 'empty' => true ) );?>
                 <?php echo $form->input( 'Recours.avis', array( 'label' => 'Avis tribunal administratif', 'type' => 'textarea' ) ); ?>
         <?php echo $form->submit( 'Enregistrer' );?>
     <?php echo $form->end();?>

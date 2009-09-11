@@ -223,6 +223,15 @@
             );
         }
 
+        function decisionrecours() {
+            return array(
+                'P' => 'Pas de décision',
+                'A' => 'Accord',
+                'R' => 'Refus',
+                'J' => 'Ajourné'
+            );
+        }
+
         function decision_ci() {
             return array(
                 'E' => 'En attente de décision',
@@ -1620,15 +1629,15 @@
 
 /********************TEST pour les Recours
 *********************/
-/*
-        function motif(){
+
+        function motifrecours(){
             return array(
                 'N' => 'Non admissible',
                 'A' => 'Admissible',
                 'P' => 'Pièces manquantes'
             );
         }
-        function decision(){
+/*        function decision(){
         return array(
             '' => 'pas de décision',
             '1' => 'Validé',
