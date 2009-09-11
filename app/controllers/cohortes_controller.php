@@ -1,18 +1,17 @@
 <?php
     @set_time_limit( 0 );
     @ini_set( 'memory_limit', '128M' );
-
+    App::import('Sanitize');
     class CohortesController extends AppController
     {
         var $name = 'Cohortes';
         var $uses = array( 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne', 'Orientstruct' );
+        var $helpers = array( 'Csv', 'Paginator' );
 
-        //*********************************************************************
-
-//         var $paginate = array(
-//             // FIXME
-//             'limit' => 20
-//         );
+        var $paginate = array(
+            // FIXME
+            'limit' => 20,
+        );
 //
 //        /**
 //        */
@@ -317,7 +316,7 @@
         }
 
 /************************************* Export des données en Xls *******************************/
-        var $helpers = array( 'Csv'/*, 'Xls' */);
+
 
         function exportcsv() {
             $headers = array( 'Commune', 'Qual', 'Nom', 'Prénom', 'Date demande', 'Date ouverture', 'Service instructeur', 'Préorientation', 'Orientation', 'Structure', 'Décision', 'Date proposition', 'Date dernier CI' );
