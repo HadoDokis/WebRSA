@@ -394,7 +394,7 @@ div#suiviInsertion table {
 /*     width: 360px; */
     width: auto;
     margin-bottom: 1em;
-    float: left;
+/*     float: left; */
 }
 
 div#suiviInsertion tbody th {
