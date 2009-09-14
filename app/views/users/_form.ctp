@@ -5,8 +5,8 @@
     <?php echo $form->input( 'User.passwd', array( 'label' =>  required( __( 'password', true ) ), 'type' => 'password', 'value' => '' ) );?>
     <?php echo $form->input( 'User.numtel', array( 'label' =>  required( __( 'numtel', true ) ), 'type' => 'text', 'maxLength' => 15 ) );?>
     <?php echo $form->input( 'User.date_naissance', array( 'label' =>  __( 'date_naissance', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y') - 80 , 'empty' => true ) ) ;?>
-    <?php echo $form->input( 'User.date_deb_hab', array( 'label' =>  __( 'date_deb_hab', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y') + 10, 'minYear'=>date('Y') - 10 , 'empty' => true ) );?>
-    <?php echo $form->input( 'User.date_fin_hab', array( 'label' =>  __( 'date_fin_hab', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y') + 10, 'minYear'=>date('Y') - 10, 'empty' => true ) ) ;?>
+    <?php echo $form->input( 'User.date_deb_hab', array( 'label' => required(  __( 'date_deb_hab', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y') + 10, 'minYear'=>date('Y') - 10 , 'empty' => true ) );?>
+    <?php echo $form->input( 'User.date_fin_hab', array( 'label' => required(  __( 'date_fin_hab', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y') + 10, 'minYear'=>date('Y') - 10, 'empty' => true ) ) ;?>
 </fieldset>
 <div><?php echo $form->input( 'User.filtre_zone_geo', array( 'label' => 'Restreindre les zones géographiques', 'type' => 'checkbox' ) );?></div>
 <fieldset class="col2" id="filtres_zone_geo">

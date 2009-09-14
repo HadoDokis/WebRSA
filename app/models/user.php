@@ -97,6 +97,18 @@
                     'message' => 'Le numéro de téléphone est composé de 10 chiffres'
                 )
             ),
+            'date_deb_hab' => array(
+                'notEmpty' => array(
+                    'rule' => 'date',
+                    'message' => 'Veuillez entrer une date valide'
+                )
+            ),
+            'date_fin_hab' => array(
+                'notEmpty' => array(
+                    'rule' => 'date',
+                    'message' => 'Veuillez entrer une date valide'
+                )
+            ),
         );
 
         //*********************************************************************
