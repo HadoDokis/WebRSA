@@ -58,7 +58,7 @@
                                 $html->deleteLink(
                                     'Supprimer le service instructeur ',
                                     array( 'controller' => 'servicesinstructeurs', 'action' => 'delete', $serviceinstructeur['Serviceinstructeur']['id'] ),
-                                    $permissions->check( 'servicesinstructeurs', 'delete' )
+                                    $permissions->check( 'servicesinstructeurs', 'delete' ) && ( $serviceinstructeur['Serviceinstructeur']['id'] != $user['User']['serviceinstructeur_id'] )
                                 )
                             ),
                             array( 'class' => 'odd' ),
