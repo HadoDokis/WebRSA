@@ -39,6 +39,7 @@
         <legend>Recherche par Contrat d'insertion</legend>
             <?php echo $form->input( 'Critererdv.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
             <?php echo $form->input( 'Critererdv.locaadr', array( 'label' => __( 'locaadr', true ), 'type' => 'text' ) );?>
+            <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'text' ) );?>
             <?php echo $form->input( 'Critererdv.statutrdv', array( 'label' => __( 'statutrdv', true ), 'type' => 'select' , 'options' => $statutrdv, 'empty' => true ) );?>
             <?php echo $form->input( 'Critererdv.structurereferente_id', array( 'label' => __( 'lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Critererdv.daterdv', array( 'label' => 'Filtrer par date de RDV', 'type' => 'checkbox' ) );?>
@@ -101,6 +102,10 @@
                                 <tr>
                                     <th>Date de naissance</th>
                                     <td>'.date_short( $rdv['Personne']['dtnai'] ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Code INSEE</th>
+                                    <td>'.$rdv['Adresse']['numcomptt'].'</td>
                                 </tr>
                             </tbody>
                         </table>';

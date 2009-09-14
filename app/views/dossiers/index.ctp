@@ -61,6 +61,10 @@
         </fieldset>
     </fieldset>
     <fieldset>
+        <legend>Recherche par Adresse</legend>
+        <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?>
+    </fieldset>
+    <fieldset>
         <legend>Recherche par allocataire<!--FIXME: personne du foyer--></legend>
         <?php echo $form->input( 'Personne.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );?>
         <?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom' ) );?>
@@ -116,6 +120,10 @@
                                 <tr>
                                     <th>Etat du dossier</th>
                                     <td>'.(array_key_exists( $dossier['Situationdossierrsa']['etatdosrsa'] ,$etatdosrsa ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Code INSEE</th>
+                                    <td>'.$dossier['Adresse']['numcomptt'].'</td>
                                 </tr>
                             </tbody>
                         </table>';

@@ -48,6 +48,7 @@
         <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
         <?php echo $form->input( 'Filtre.dtdemrsa', array( 'label' => __( 'dtdemrsa', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => date( 'Y' ) - 10, 'empty' => true ) );?>
         <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Filtre.typeorient_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
         <?php echo $form->input( 'Filtre.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
         <?php echo $form->input( 'Filtre.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
@@ -97,6 +98,10 @@
                                 <tr>
                                     <th>Date de naissance</th>
                                     <td>'.date_short( $orient['Personne']['dtnai']).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Code INSEE</th>
+                                    <td>'.$orient['Adresse']['numcomptt'].'</td>
                                 </tr>
                             </tbody>
                         </table>';

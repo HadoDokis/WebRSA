@@ -24,6 +24,7 @@
             $decision_ci = Set::extract( $criteresci, 'Filtre.decision_ci' );
             $datevalidation_ci = Set::extract( $criteresci, 'Filtre.datevalidation_ci' );
             $locaadr = Set::extract( $criteresci, 'Filtre.locaadr' );
+            $numcomptt = Set::extract( $criteresci, 'Filtre.numcomptt' );
             $personne_suivi = Set::extract( $criteresci, 'Filtre.pers_charg_suivi' );
             $forme_ci = Set::extract( $criteresci, 'Filtre.forme_ci' );
 
@@ -49,7 +50,12 @@
                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
             }
 
-            // Localité adresse
+            // Commune au sens INSEE
+            if( !empty( $numcomptt ) ) {
+                $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+            }
+
+            // Personne chargée du suiv
             if( !empty( $personne_suivi ) ) {
                 $conditions[] = 'Contratinsertion.pers_charg_suivi = \''.Sanitize::clean( $personne_suivi ).'\'';
             }
@@ -109,6 +115,7 @@ SELECT DISTINCT contratsinsertion.id
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."codepos"',
+                    '"Adresse"."numcomptt"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
