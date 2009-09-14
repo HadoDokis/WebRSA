@@ -43,7 +43,7 @@
 
 <?php if( !empty( $this->data ) ):?>
     <?php if( empty( $orientsstructs ) ):?>
-        <p class="notice">Aucun dossier relancé n'est présente.</p>
+        <p class="notice">Aucun dossier relancé n'est présent.</p>
     <?php else:?>
         <table class="tooltips_oupas">
             <thead>
