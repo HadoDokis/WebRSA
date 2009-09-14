@@ -102,7 +102,7 @@
             <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false, 'type' => 'hidden' ,  'id' => 'freu') );?>
         <?php endif;?>
         <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => required( __( 'lib_typo', true ) ), 'type' => 'select' , 'options' => $tc ) );?>
-        <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => required( __( 'Structure référente', true ) ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );?>
+        <!-- <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => required( __( 'Structure référente', true ) ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );?> -->
         <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __( 'dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );?>
         <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => required( __( 'duree_engag', true ) ), 'type' => 'select', 'options' => $duree_engag, 'empty' => true )  ); ?>
         <!-- <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ) ;?> -->
@@ -171,6 +171,10 @@
         <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __( 'date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
         <?php echo $form->input( 'Le bénéficiaire : ', array( 'label' => 'Le bénéficiaire : ', 'type' => 'text', 'value' => $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] )  ); ?>
 </fieldset>
-        <?php echo $form->input( 'Contratinsertion.serviceinstructeur_id', array( 'label' => __( 'Nom du service d\'accompagnement', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
+        <!-- <?php echo $form->input( 'Contratinsertion.serviceinstructeur_id', array( 'label' => __( 'Nom du service d\'accompagnement', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?> -->
+
+        <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __( 'Nom du service d\'accompagnement (Structure référente)', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );?>
         <?php echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => '<em>'.__( 'service_soutien', true ).'</em>', 'type' => 'textarea', 'rows' => 3 )  ); ?>
+        <?php echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'ContratinsertionServiceSoutien', 'url' => Router::url( array( 'action' => 'ajax' ), true ) ) ) ;?>
+
         <?php echo $form->input( 'Contratinsertion.pers_charg_suivi', array( 'label' => '<em>'. __( 'pers_charg_suivi', true ).'</em>', 'type' => 'textarea', 'rows' => 1 )  ); ?>

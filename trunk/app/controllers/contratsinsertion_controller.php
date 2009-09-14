@@ -4,7 +4,8 @@
 
         var $name = 'Contratsinsertion';
         var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'DsppNivetu' );
-
+        var $helpers = array( 'Ajax' );
+        var $components = array( 'RequestHandler' );
 
         function beforeFilter() {
             parent::beforeFilter();
@@ -190,6 +191,23 @@
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
         }
 
+        function _serviceSoutien( $structureReferente_id ) {
+                $structure = $this->Structurereferente->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Structurereferente.id' => $structureReferente_id
+                        ),
+                        //'order' => 'Orientstruct.date_propo DESC',
+                        'recursive' => -1
+                    )
+                );
+                $typevoie = $this->Option->typevoie();
+                $type_voie = empty( $structure['Structurereferente']['type_voie'] ) ? null : $typevoie[$structure['Structurereferente']['type_voie']];
+
+                return $structure['Structurereferente']['lib_struc'].', '.$structure['Structurereferente']['num_voie'].' '.$type_voie.' '.$structure['Structurereferente']['nom_voie'].' '.$structure['Structurereferente']['code_postal'].' '.$structure['Structurereferente']['ville'];
+        }
+
         /**
             Ajout
         */
@@ -234,7 +252,7 @@
 
             // Assignation à la vue
             $this->set( 'typeservice', $this->Serviceinstructeur->find( 'list' ) );
-            $this->set( 'sr', $this->Structurereferente->list1Options() );
+            $this->set( 'sr', $this->Structurereferente->find( 'list' ) );
             $this->set( 'tc', $this->Typocontrat->find( 'list' ) );
             $this->set( 'personne', $personne );
             $this->set( 'personne_id', $personne_id );
@@ -324,13 +342,12 @@
                 $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
                 $this->assert( !empty( $user ), 'error500' ); // FIXME
 
-                $typevoie = $this->Option->typevoie();
-                $type_voie = empty( $user['Serviceinstructeur']['type_voie'] ) ? null : $typevoie[$user['Serviceinstructeur']['type_voie']];
+//                 $type_voie = empty( $user['Serviceinstructeur']['type_voie'] ) ? null : $typevoie[$user['Serviceinstructeur']['type_voie']];
 
                 // Récupération des données utilisateurs lié au contrat
-                $this->data['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
+//                 $this->data['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
                 $this->data['Contratinsertion']['pers_charg_suivi'] = $user['User']['nom'].' '.$user['User']['prenom'];
-                $this->data['Contratinsertion']['service_soutien'] = $user['Serviceinstructeur']['lib_service'].', '.$user['Serviceinstructeur']['num_rue'].' '.$type_voie.' '.$user['Serviceinstructeur']['nom_rue'].' '.$user['Serviceinstructeur']['code_insee'].' '.$user['Serviceinstructeur']['ville'].', '.$user['User']['numtel'];
+//                 $this->data['Contratinsertion']['service_soutien'] = $user['Serviceinstructeur']['lib_service'].', '.$user['Serviceinstructeur']['num_rue'].' '.$type_voie.' '.$user['Serviceinstructeur']['nom_rue'].' '.$user['Serviceinstructeur']['code_insee'].' '.$user['Serviceinstructeur']['ville'].', '.$user['User']['numtel'];
 
 
                 // Récupération de la dernière structure referente liée au contrat
@@ -344,6 +361,10 @@
                         'recursive' => -1
                     )
                 );
+
+                $this->data['Contratinsertion']['structurereferente_id'] = $orientstruct['Orientstruct']['structurereferente_id'];
+                $this->data['Contratinsertion']['service_soutien'] = $this->_serviceSoutien( Set::extract( $this->data, 'Contratinsertion.structurereferente_id' ) );
+
 
                 if( !empty( $orientstruct ) ) {
                     $this->data['Structurereferente']['id'] = $orientstruct['Orientstruct']['structurereferente_id'];
@@ -365,6 +386,15 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
+        /**
+        *
+        */
+
+        function ajax() { // FIXME
+            Configure::write( 'debug', 0 );
+            echo $this->_serviceSoutien( Set::extract( $this->data, 'Contratinsertion.structurereferente_id' ) );
+            $this->render( null, 'ajax' );
+        }
 
         function edit( $contratinsertion_id = null ) {
 
@@ -494,11 +524,14 @@
             else {
                 // Récupération du services instructeur lié au contrat
                 $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => 0 ) );
-                $contratinsertion['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
+//                 $contratinsertion['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
+// 
+//                 $typevoie = $this->Option->typevoie();
+//                 $type_voie = empty( $user['Serviceinstructeur']['type_voie'] ) ? null : $typevoie[$user['Serviceinstructeur']['type_voie']];
+//                 $contratinsertion['Contratinsertion']['service_soutien'] = $user['Serviceinstructeur']['lib_service'].', '.$user['Serviceinstructeur']['num_rue'].' '.$type_voie.' '.$user['Serviceinstructeur']['nom_rue'].' '.$user['Serviceinstructeur']['code_insee'].' '.$user['Serviceinstructeur']['ville'].', '.$user['User']['numtel'];
+//                 $this->data['Contratinsertion']['structurereferente_id'] = $structure['Structurereferente']['id'];
+                $this->data['Contratinsertion']['service_soutien'] = $this->_serviceSoutien( Set::extract( $this->data, 'Contratinsertion.structurereferente_id' ) );
 
-                $typevoie = $this->Option->typevoie();
-                $type_voie = empty( $user['Serviceinstructeur']['type_voie'] ) ? null : $typevoie[$user['Serviceinstructeur']['type_voie']];
-                $contratinsertion['Contratinsertion']['service_soutien'] = $user['Serviceinstructeur']['lib_service'].', '.$user['Serviceinstructeur']['num_rue'].' '.$type_voie.' '.$user['Serviceinstructeur']['nom_rue'].' '.$user['Serviceinstructeur']['code_insee'].' '.$user['Serviceinstructeur']['ville'].', '.$user['User']['numtel'];
                 $this->data = $contratinsertion;
 
 
