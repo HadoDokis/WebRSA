@@ -34,6 +34,7 @@
         ?>
         <p class="notice"><?php echo $message;?></p>
     <?php else:?>
+        <p><?php echo sprintf( 'Nombre de pages: %s - Nombre de résultats: %s.', $locale->number( $pages ), $locale->number( $count ) );?></p>
         <table class="tooltips_oupas">
             <thead>
                 <tr>
