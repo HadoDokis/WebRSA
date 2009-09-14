@@ -109,12 +109,12 @@
 
 
 
-        function exportcsv() {
-            $params = $this->Rendezvous->search( array_multisize( $this->params['named'] ) );
-            $rdvs = $this->Rendezvous->find( 'all', $params );
-
-            $this->layout = ''; // FIXME ?
-            $this->set( compact( 'rdvs' ) );
-        }
+//         function exportcsv() {
+//             $params = $this->Rendezvous->search( array_multisize( $this->params['named'] ) );
+//             $rdvs = $this->Rendezvous->find( 'all', $params );
+// 
+//             $this->layout = ''; // FIXME ?
+//             $this->set( compact( 'rdvs' ) );
+//         }
     }
 ?>
