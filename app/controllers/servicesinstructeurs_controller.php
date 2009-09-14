@@ -22,10 +22,9 @@
             );
             $this->set('servicesinstructeurs', $servicesinstructeurs);
             // Récupération du services instructeur lié au contrat
-                $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
-                $this->assert( !empty( $user ), 'error500' ); // FIXME
-                $this->set( 'user', $user );
-//                 debug( $user );
+            $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
+            $this->assert( !empty( $user ), 'error500' ); // FIXME
+            $this->set( 'user', $user );
         }
 
         function add() {

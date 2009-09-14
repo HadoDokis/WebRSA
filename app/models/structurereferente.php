@@ -3,6 +3,8 @@
     {
         var $name = 'Structurereferente';
         var $useTable = 'structuresreferentes';
+        var $displayField = 'lib_struc';
+        var $order = array( 'lib_struc ASC' );
 
         function list1Options() {
             $tmp = $this->find(
