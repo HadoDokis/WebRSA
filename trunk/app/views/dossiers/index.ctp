@@ -163,7 +163,20 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-
+        <ul class="actionMenu">
+          <!--  <li><?php
+                echo $html->exportLink(
+                    'Télécharger le tableau',
+                    Set::merge(
+                        array(
+                            'controller' => 'dossiers',
+                            'action' => 'exportcsv'
+                        ),
+                        array_unisize( $this->data )
+                    )
+                );
+            ?></li> -->
+        </ul>
         <?php require( 'index.pagination.ctp' )?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>

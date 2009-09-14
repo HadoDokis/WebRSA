@@ -7,6 +7,7 @@
         var $name = 'Dossiers';
         var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent');
         var $aucunDroit = array( 'menu' );
+        var $helpers = array( 'Csv' );
 
         var $paginate = array(
             // FIXME
@@ -272,6 +273,15 @@
             $this->set( 'details', $details );
 
 // debug( $details );
+        }
+
+        /// Export du tableau en CSV
+        function exportcsv() {
+            $params = $this->Dossier->search( array_multisize( $this->params['named'] ) );
+            $dossiers = $this->Dossier->find( 'all', $params );
+
+            $this->layout = ''; // FIXME ?
+            $this->set( compact( 'dossiers' ) );
         }
     }
 ?>

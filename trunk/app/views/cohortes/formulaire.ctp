@@ -49,6 +49,7 @@
     <?php if( empty( $cohorte ) ):?>
         <p class="notice">Aucune demande dans la cohorte.</p>
     <?php else:?>
+        <p><?php echo sprintf( 'Nombre de pages: %s - Nombre de résultats: %s.', $locale->number( $pages ), $locale->number( $count ) );?></p>
         <?php echo $form->create( 'NouvellesDemandes', array( 'url'=> Router::url( null, true ) ) );?>
             <table class="tooltips_oupas">
                 <thead>

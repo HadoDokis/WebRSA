@@ -184,6 +184,10 @@
                     $_limit = 10;
                     $cohorte = $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids(), $_limit );
 
+                    $count = count( $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() ) );
+                    $this->set( 'count', $count );
+                    $this->set( 'pages', ceil( $count / $_limit ) );
+
                     foreach( $cohorte as $personne_id ) {
                         $this->Jetons->get( array( 'Dossier.id' => $this->Dossier->Foyer->Personne->dossierId( $personne_id ) ) );
                     }
