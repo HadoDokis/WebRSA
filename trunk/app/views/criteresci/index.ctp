@@ -30,6 +30,7 @@
             <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
             <?php echo $form->input( 'Filtre.date_saisi_ci', array( 'label' => 'Date de saisie du contrat', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => date( 'Y' ) - 10, 'empty' => true ) );?>
             <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+            <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'text' ) );?>
             <?php echo $form->input( 'Filtre.pers_charg_suivi', array( 'label' => 'Contrat envoyé par ', 'type' => 'select' , 'options' => $personne_suivi, 'empty' => true ) );?>
             <?php echo $form->input( 'Filtre.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Filtre.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
@@ -79,6 +80,10 @@
                                 <tr>
                                     <th>Date de naissance</th>
                                     <td>'.date_short( $contrat['Personne']['dtnai'] ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Code INSEE</th>
+                                    <td>'.$contrat['Adresse']['numcomptt'].'</td>
                                 </tr>
                             </tbody>
                         </table>';

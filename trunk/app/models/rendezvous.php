@@ -65,6 +65,7 @@
             $statutrdv = Set::extract( $criteresrdv, 'Critererdv.statutrdv' );
             $structurereferente_id = Set::extract( $criteresrdv, 'Critererdv.structurereferente_id' );
             $locaadr = Set::extract( $criteresrdv, 'Critererdv.locaadr' );
+            $numcomptt = Set::extract( $criteresrdv, 'Critererdv.numcomptt' );
             $nom = Set::extract( $criteresrdv, 'Critererdv.nom' );
 
             /// Filtre zone géographique
@@ -96,6 +97,11 @@
                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
             }
 
+            /// Code INSSE
+            if( !empty( $numcomptt ) ) {
+                $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+            }
+
             /// Structure référente
             if( !empty( $structurereferente_id ) ) {
                 $conditions[] = 'Rendezvous.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
@@ -114,6 +120,7 @@
                     '"Rendezvous"."commentairerdv"',
                     '"Dossier"."numdemrsa"',
                     '"Adresse"."locaadr"',
+                    '"Adresse"."numcomptt"',
                     '"Personne"."nom"',
                     '"Personne"."prenom"',
                     '"Personne"."nomcomnai"',

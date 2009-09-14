@@ -81,6 +81,7 @@
             /// Critères
             $dtdemrsa = Set::extract( $criteres, 'Filtre.dtdemrsa' );
             $locaadr = Set::extract( $criteres, 'Filtre.locaadr' );
+            $numcomptt = Set::extract( $criteres, 'Filtre.numcomptt' );
             $statut_orient = Set::extract( $criteres, 'Filtre.statut_orient' );
             $typeorient_id = Set::extract( $criteres, 'Filtre.typeorient_id' );
             $structurereferente_id = Set::extract( $criteres, 'Filtre.structurereferente_id' );
@@ -95,6 +96,11 @@
             // Localité adresse
             if( !empty( $locaadr ) ) {
                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+            }
+
+            // Commune au sens INSEE
+            if( !empty( $numcomptt ) ) {
+                $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
             // ...
@@ -143,6 +149,7 @@
                     '"Personne"."qual"',
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
+                    '"Adresse"."numcomptt"',
                     '"Modecontact"."numtel"',
                     '"Serviceinstructeur"."id"',
                     '"Serviceinstructeur"."lib_service"'

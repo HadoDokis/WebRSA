@@ -164,6 +164,10 @@
                 $conditions[] = "Dossier.matricule ILIKE '%".Sanitize::paranoid( $params['Dossier']['matricule'] )."%'";
             }
 
+            // Critères sur l'adresse - code insee
+            if( isset( $params['Adresse']['numcomptt'] ) && !empty( $params['Adresse']['numcomptt'] ) ) {
+                $conditions[] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $params['Adresse']['numcomptt'] )."%'";
+            }
 
             // Critères sur le dossier - date de demande
             if( isset( $params['Dossier']['dtdemrsa'] ) && !empty( $params['Dossier']['dtdemrsa'] ) ) {
@@ -210,6 +214,7 @@
                     '"Personne"."dtnai"',
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
+                    '"Adresse"."numcomptt"',
                     '"Situationdossierrsa"."etatdosrsa"'
                 ),
                 'recursive' => -1,

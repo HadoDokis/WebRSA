@@ -234,7 +234,8 @@
                     '"Personne"."dtnai"',
                     '"Personne"."qual"',
                     '"Personne"."nomcomnai"',
-                    '"Adresse"."locaadr"'
+                    '"Adresse"."locaadr"',
+                    '"Adresse"."numcomptt"'
                 ),
                 'recursive' => -1,
                 'joins' => array(

@@ -44,11 +44,11 @@
             if( !empty( $locaadr ) ) {
                 $conditions[] = 'adresses.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
             }
-            // Localité adresse
+            // Commune au sens INSEE
             if( !empty( $numcomptt ) ) {
                 $conditions[] = 'adresses.numcomptt = \''.Sanitize::clean( $numcomptt ).'\'';
             }
-            // Localité adresse
+            // Code postal adresse
             if( !empty( $codepos ) ) {
                 $conditions[] = 'adresses.codepos = \''.Sanitize::clean( $codepos ).'\'';
             }

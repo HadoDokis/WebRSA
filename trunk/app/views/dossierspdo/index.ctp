@@ -34,7 +34,7 @@
                 <td><?php echo Set::extract( 'Situationdossierrsa.dtclorsa', $details );?></td>
                 <td><?php echo $html->viewLink( 
                         'Voir le dossier',
-                        array( 'controller' => 'dossiers', 'action' => 'view', $details['Dossier']['id'] )
+                        array( 'controller' => 'dossiers', 'action' => 'view', $dossier_rsa_id/*$details['Dossier']['id']*/ )
                         );?>
                 </td>
             </tr>

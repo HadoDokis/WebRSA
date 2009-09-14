@@ -50,7 +50,7 @@
             $structurereferente_id = Set::extract( $criteresindu, 'Cohorteindu.structurereferente_id' );
             $mtmoucompta = Set::extract( $criteresindu, 'Cohorteindu.mtmoucompta' );
             $compare = Set::extract( $criteresindu, 'Cohorteindu.compare' );
-// debug( $compare );
+            $numcomptt = Set::extract( $criteresindu, 'Cohorteindu.numcomptt' );
 
             // Type d'indu
 //             if( !empty( $natpfcre ) ) {
@@ -60,6 +60,11 @@
             // Localité adresse
             if( !empty( $locaadr ) ) {
                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+            }
+
+            // Commune au sens INSEE
+            if( !empty( $numcomptt ) ) {
+                $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
             // Nom allocataire
@@ -101,6 +106,7 @@
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."codepos"',
+                    '"Adresse"."numcomptt"',
                     '"Situationdossierrsa"."id"',
                     '"Situationdossierrsa"."etatdosrsa"',
                     '"Situationdossierrsa"."etatdosrsa"',

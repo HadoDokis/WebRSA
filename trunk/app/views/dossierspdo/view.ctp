@@ -22,28 +22,21 @@
 
     <h1>Détails demande PDO</h1>
     <ul class="actionMenu">
-        <li>
-            <?php
-                if( $permissions->check( 'dossierspdo', 'edit' ) ) {
-                    echo '<li>'.$html->editLink(
-                        'Éditer PDO',
-                        array( 'controller' => 'dossierspdo', 'action' => 'edit', $dossier_rsa_id )
-                    ).' </li>';
-                }
-
-            ?>
-        </li>
+        <?php
+            if( $permissions->check( 'dossierspdo', 'edit' ) ) {
+                echo '<li>'.$html->editLink(
+                    'Éditer PDO',
+                    array( 'controller' => 'dossierspdo', 'action' => 'edit', $dossier_rsa_id )
+                ).' </li>';
+            }
+        ?>
     </ul>
 
     <div id="fichePers">
         <table>
             <tbody>
-                <tr class="even">
-                    <th><?php __( 'numdero' );?></th>
-                    <td><?php echo Set::extract( 'Propopdo.id', $pdo );?></td>
-                </tr>
                 <tr class="odd">
-                    <th><?php __( 'typedero' );?></th>
+                    <th><?php __( 'typepdo' );?></th>
                     <td><?php echo value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ;?></td>
                 </tr>
                 <tr class="even">
@@ -87,10 +80,15 @@
                         <td><?php echo value( $pieecpres, Set::extract( 'Personne.pieecpres', $pdo ) );?></td>
                         <td><?php echo $html->boolean( !empty( $pdo['Personne']['pieecpres'] ) );?></td>
                         <td><?php echo '';?></td> <!-- FIXME: Voir pour la date à afficher pour les pièces jointes -->
-                        <td><?php echo $html->attachLink(
-                                'Voir PDO',
-                                array( 'controller' => 'dossierspdo', 'action' => 'view', $pdo['Propopdo']['id'] )
-                            );?></td>
+                        <td><?php
+                            if( !empty( $pdo['Personne']['pieecpres'] ) ){
+                                echo $html->attachLink(
+                                    'Voir PDO',
+                                    array( 'controller' => 'dossierspdo', 'action' => 'view', $pdo['Propopdo']['id'] )
+                                );
+                            }
+                            ?>
+                        </td>
                     </tr>
                 <?php /*endforeach;*/?>
             </tbody>

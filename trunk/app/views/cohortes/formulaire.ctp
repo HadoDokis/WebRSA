@@ -40,7 +40,10 @@
     </script>
 <?php endif;?>
 
+
 <?php require_once( 'filtre.ctp' );?>
+
+
 
 <?php if( !empty( $this->data ) ):?>
     <?php if( empty( $cohorte ) ):?>
