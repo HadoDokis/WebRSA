@@ -26,7 +26,7 @@
         }
     }
     //
-
+/*
     if( isset( $cohortepdo ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
@@ -42,29 +42,32 @@
     }
     else {
         $pagination = '';
-    }
+    }*/
 ?>
 
-<?php require_once( 'filtre.ctp' );?>
+<?php /* require_once( 'filtre.ctp' );*/?>
 <!-- Résultats -->
 
 <?php if( isset( $cohortepdo ) ):?>
 
-    <h2 class="noprint">Résultats de la recherche</h2>
-
     <?php if( is_array( $cohortepdo ) && count( $cohortepdo ) > 0 ):?>
         <?php echo $form->create( 'GestionPDO', array( 'url'=> Router::url( null, true ) ) );?>
-    <?php echo $pagination;?> 
+
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
+                    <!-- <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
                     <th><?php echo $paginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
-                    <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
+                     <th>Situation des droits RSA</th>
                     <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo' );?></th>
                     <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.decisionpdo' );?></th>
-                    <th style="width:10em"><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.datedecisionpdo' );?></th>
-                     <th>Commentaires</th> 
+                    <th style="width:10em"><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.datedecisionpdo' );?></th> -->
+                    <th>Nom de l'allocataire</th>
+                    <th>Suivi</th>
+                    <th>Type de PDO</th>
+                    <th>Date de décision PDO</th>
+                    <th>Decision PDO</th>
+                    <th>Commentaires</th>
                     <th class="action noprint">Action</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -95,24 +98,31 @@
                         $title = $pdo['Dossier']['numdemrsa'];
 
                     $statutAvis = Set::extract( $pdo, 'Propopdo.'.$index.'.decisionpdo' );
+                    $typepdo = Set::extract( $pdo, 'Propopdo.'.$index.'.typepdo' );
 // debug( $pdo );
-                    $dossier_rsa_id = Set::extract( $pdo, 'Propopdo.dossier_rsa_id');
+                    $dossier_rsa_id = $pdo['Dossier']['id'];//Set::extract( $pdo, 'Propopdo.dossier_rsa_id');
                     $pdo_id = Set::extract( $pdo, 'Propopdo.id');
 
                     echo $html->tableCells(
                         array(
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
                             h( $pdo['Dossier']['typeparte'] ),
-                            h( value( $etatdosrsa, Set::extract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
-                            h( value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ),
-                            h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
+//                             h( value( $etatdosrsa, Set::extract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
+//                             h( value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ),
+//                             h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
+                            $form->input( 'Propopdo.'.$index.'.typepdo', array( 'label' => false, 'div' => false, 'legend' => false, 'separator' => '<br />' , 'type' => 'radio', 'options' => array( 'C' => 'PDO de contrôle', 'M' => 'PDO de maintien', 'O' => 'PDO d\'ouverture' ), 'value' => ( !empty( $typepdo ) ? $typepdo : 'C' ) ) ),
+
+                            $form->input( 'Propopdo.'.$index.'.datedecisionpdo', array( 'label' => false, 'div' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) ),
 
                             $form->input( 'Propopdo.'.$index.'.decisionpdo', array( 'label' => false, 'div' => false, 'legend' => false, 'separator' => '<br />' , 'type' => 'radio', 'options' => array( 'P' => 'Pas de réponse', 'A' => 'Accord', 'R' => 'Refus', 'J' => 'Ajourné' ), 'value' => ( !empty( $statutAvis ) ? $statutAvis : 'P' ) ) ).
+                            
                             $form->input( 'Propopdo.'.$index.'.dossier_rsa_id', array( 'label' => false, 'div' => false, 'value' => $dossier_rsa_id, 'type' => 'hidden' ) ).
+                            
                             $form->input( 'Propopdo.'.$index.'.id', array( 'label' => false, 'div' => false, 'value' => $pdo_id, 'type' => 'hidden' ) ).
+                            
                             $form->input( 'Propopdo.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $pdo['Dossier']['id'] ) ),
 
-                            $form->input( 'Propopdo.'.$index.'.commentairepdo', array( 'label' => false, 'type' => 'text', 'rows' => 3, 'value' => $pdo['Propopdo']['commentairepdo'] ) ),
+                            $form->input( 'Propopdo.'.$index.'.commentairepdo', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
                             $html->viewLink(
                                 'Voir le contrat « '.$title.' »',
                                 array( 'controller' => 'dossierspdo', 'action' => 'index', $pdo['Dossier']['id'] )
@@ -128,7 +138,7 @@
         </table>
         <?php echo $form->submit( 'Validation de la liste' );?>
         <?php echo $form->end();?>
-    <?php echo $pagination;?> 
+
 
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
