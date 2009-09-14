@@ -53,12 +53,11 @@
 
 //             $this->Cohortepdo->create( $this->data );
 
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+
             if( !empty( $this->data ) ) {
-                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-
-//         debug( $this->data['Propopdo'] );
-
                 if( !empty( $this->data['Propopdo'] ) ) {
                     $valid = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'only', 'atomic' => false ) );
                     if( $valid ) {
@@ -78,17 +77,17 @@
                         }
                     }
                 }
+            }
 
+            if( ( $statutValidationAvis == 'Decisionpdo::nonvalide' ) || ( ( $statutValidationAvis == 'Decisionpdo::valide' ) && !empty( $this->data ) ) ) {
                 $this->Dossier->begin(); // Pour les jetons
 
                 $this->paginate = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
                 $this->paginate['limit'] = 10;
-                $cohortepdo = $this->paginate( 'Propopdo' );
+                $cohortepdo = $this->paginate( 'Dossier' );
 
                 $this->Dossier->commit();
-
                 $this->set( 'cohortepdo', $cohortepdo );
-
             }
 
 

@@ -13,8 +13,11 @@
             if( !empty( $statutValidationAvis ) ) {
                 if( $statutValidationAvis == 'Decisionpdo::nonvalide' ) {
                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
-                    $conditions[] = 'Propopdo.decisionpdo ILIKE \'%P%\'';
-
+                    $conditions[] = 'Situationdossierrsa.dossier_rsa_id NOT IN ( SELECT propospdos.dossier_rsa_id FROM propospdos /*WHERE propospdos.decisionpdo = \'P\'*/ )';
+                }
+                else if( $statutValidationAvis == 'Decisionpdo::valide' ) {
+                    $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
+                    $conditions[] = 'Propopdo.decisionpdo IS NOT NULL';
                 }
             }
 
@@ -76,9 +79,9 @@
                 ),
                 'joins' => array(
                     array(
-                        'table'      => 'dossiers_rsa',
-                        'alias'      => 'Dossier',
-                        'type'       => 'INNER',
+                        'table'      => 'propospdos',
+                        'alias'      => 'Propopdo',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Propopdo.dossier_rsa_id = Dossier.id' )
                     ),
@@ -135,7 +138,7 @@
                 ),
                 'recursive' => -1,
                 'conditions' => $conditions,
-                'order' => array( '"Personne"."nom"' )
+//                 'order' => array( '"Personne"."nom"' )
             );
 
             return $query;
