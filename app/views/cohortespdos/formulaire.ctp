@@ -4,16 +4,16 @@
 <h1>Gestion des PDOs</h1>
 
 <?php
-    if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
-                'icons/application_form_magnify.png',
-                array( 'alt' => '' )
-            ).' Formulaire',
-            '#',
-            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
-        ).'</li></ul>';
-    }
+//     if( is_array( $this->data ) ) {
+//         echo '<ul class="actionMenu"><li>'.$html->link(
+//             $html->image(
+//                 'icons/application_form_magnify.png',
+//                 array( 'alt' => '' )
+//             ).' Formulaire',
+//             '#',
+//             array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+//         ).'</li></ul>';
+//     }
 
     function value( $array, $index ) {
         $keys = array_keys( $array );
@@ -107,19 +107,17 @@
                         array(
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
                             h( $pdo['Dossier']['typeparte'] ),
-//                             h( value( $etatdosrsa, Set::extract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
-//                             h( value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ),
-//                             h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
+
                             $form->input( 'Propopdo.'.$index.'.typepdo', array( 'label' => false, 'div' => false, 'legend' => false, 'separator' => '<br />' , 'type' => 'radio', 'options' => array( 'C' => 'PDO de contrôle', 'M' => 'PDO de maintien', 'O' => 'PDO d\'ouverture' ), 'value' => ( !empty( $typepdo ) ? $typepdo : 'C' ) ) ),
 
                             $form->input( 'Propopdo.'.$index.'.datedecisionpdo', array( 'label' => false, 'div' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) ),
 
                             $form->input( 'Propopdo.'.$index.'.decisionpdo', array( 'label' => false, 'div' => false, 'legend' => false, 'separator' => '<br />' , 'type' => 'radio', 'options' => array( 'P' => 'Pas de réponse', 'A' => 'Accord', 'R' => 'Refus', 'J' => 'Ajourné' ), 'value' => ( !empty( $statutAvis ) ? $statutAvis : 'P' ) ) ).
-                            
+
                             $form->input( 'Propopdo.'.$index.'.dossier_rsa_id', array( 'label' => false, 'div' => false, 'value' => $dossier_rsa_id, 'type' => 'hidden' ) ).
-                            
+
                             $form->input( 'Propopdo.'.$index.'.id', array( 'label' => false, 'div' => false, 'value' => $pdo_id, 'type' => 'hidden' ) ).
-                            
+
                             $form->input( 'Propopdo.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $pdo['Dossier']['id'] ) ),
 
                             $form->input( 'Propopdo.'.$index.'.commentairepdo', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
@@ -141,6 +139,6 @@
 
 
     <?php else:?>
-        <p>Vos critères n'ont retourné aucun dossier.</p>
+        <p>Aucun dossier ne nécessite de PDO.</p>
     <?php endif?>
 <?php endif?>
