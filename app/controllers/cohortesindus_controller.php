@@ -5,7 +5,7 @@
     {
         var $name = 'Cohortesindus';
         var $uses = array( 'Cohorteindu', 'Option',  'Structurereferente', 'Infofinanciere', 'Dossier' );
-        var $helpers = array( 'Paginator', 'Locale' );
+        var $helpers = array( 'Csv', 'Paginator', 'Locale' );
 
         var $paginate = array(
             // FIXME
@@ -64,48 +64,21 @@
                 }
 
                 $this->set( 'comparators', $comparators );
+        }
+
+        function exportcsv(){
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+            $_limit = 10;
+            $params = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+
+            unset( $params['limit'] );
+            $indus = $this->Dossier->find( 'all', $params );
 
 
-//             $params = $this->data;
-//
-//             if( !empty( $params ) ) {
-//                 // On a renvoyé  le formulaire de la cohorte
-//                 if( !empty( $this->data['Infofinanciere'] ) ) {
-//                     $valid = $this->Dossier->Infofinanciere->saveAll( $this->data['Infofinanciere'], array( 'validate' => 'only', 'atomic' => false ) );
-//                     if( $valid ) {
-//                         $this->Dossier->begin();
-//                         $saved = $this->Dossier->Infofinanciere->saveAll( $this->data['Infofinanciere'], array( 'validate' => 'first', 'atomic' => false ) );
-//                         if( $saved ) {
-//                             // FIXME ?
-//                             foreach( array_unique( Set::extract( $this->data, 'Infofinanciere.{n}.dossier_id' ) ) as $dossier_id ) {
-//                                 $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
-//                             }
-//                             $this->Dossier->commit();
-//                         }
-//                         else {
-//                             $this->Dossier->rollback();
-//                         }
-//                     }
-//                 }
-//                 else {
-//                     $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-//                     $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-// 
-//                     $this->Dossier->begin(); // Pour les jetons
-// 
-//                     $this->paginate = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-//                     $this->paginate['limit'] = 10;
-//                     $cohorteindu = $this->paginate( 'Infofinanciere' );
-// 
-//                     $this->Dossier->commit();
-// 
-// 
-//                     $this->set( 'cohorteindu', $cohorteindu );
-// 
-//                     $this->data['Search'] = $params;
-// 
-//                 }
-//             }
+            $this->layout = ''; // FIXME ?
+            $this->set( compact( 'headers', 'indus' ) );
         }
     }
 ?>

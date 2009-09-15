@@ -1,5 +1,5 @@
 <div id="pageFooter">
     webrsa v. <?php echo app_version();?> (CakePHP v. <?php echo core_version();?>) - 2009@Adullact.
     <?php echo sprintf( "Page construite en %s secondes.", number_format( getMicrotime() - $GLOBALS['TIME_START'] , 2, ',', ' ' ) );?>
-    $LastChangedDate: 2009-09-15 09:04:16 +0200 (mar., 15 sept. 2009)$
+    $LastChangedDate: 2009-09-15 17:49:28 +0200 (mar., 15 sept. 2009)$
 </div>

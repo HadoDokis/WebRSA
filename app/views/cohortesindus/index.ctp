@@ -144,6 +144,14 @@
 
     <?php echo $pagination;?>
 
+       <ul class="actionMenu">
+            <li><?php
+                echo $html->exportLink(
+                    'Télécharger le tableau',
+                    array( 'controller' => 'cohortesindus', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                );
+            ?></li>
+        </ul>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>

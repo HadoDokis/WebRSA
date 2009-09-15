@@ -163,19 +163,13 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-        <ul class="actionMenu">
-          <!--  <li><?php
-                echo $html->exportLink(
+       <ul class="actionMenu">
+            <li><?php
+                /*echo $html->exportLink(
                     'Télécharger le tableau',
-                    Set::merge(
-                        array(
-                            'controller' => 'dossiers',
-                            'action' => 'exportcsv'
-                        ),
-                        array_unisize( $this->data )
-                    )
-                );
-            ?></li> -->
+                    array( 'controller' => 'dossiers', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                );*/
+            ?></li>
         </ul>
         <?php require( 'index.pagination.ctp' )?>
     <?php else:?>

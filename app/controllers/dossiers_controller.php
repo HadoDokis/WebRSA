@@ -276,12 +276,15 @@
         }
 
         /// Export du tableau en CSV
-        function exportcsv() {
-            $params = $this->Dossier->search( array_multisize( $this->params['named'] ) );
-            $dossiers = $this->Dossier->find( 'all', $params );
 
+        function exportcsv() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+            $querydata = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+            unset( $querydata['limit'] );
+            $dossiers = $this->Dossier->find( 'all', $querydata );
             $this->layout = ''; // FIXME ?
-            $this->set( compact( 'dossiers' ) );
+            $this->set( compact( 'headers', 'dossiers' ) );
         }
     }
 ?>
