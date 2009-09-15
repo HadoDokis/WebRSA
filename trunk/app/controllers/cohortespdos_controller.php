@@ -117,7 +117,7 @@
             $params = $this->Cohortepdo->search( 'Decisionpdo::valide', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 
             unset( $params['limit'] );
-            $pdos = $this->Propopdo->find( 'all', $params );
+            $pdos = $this->Dossier->find( 'all', $params );
 
 
             $this->layout = ''; // FIXME ?

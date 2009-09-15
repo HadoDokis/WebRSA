@@ -16,6 +16,7 @@
 
     foreach( $pdos as $pdo ) {
         $row = array(
+
             Set::extract( $pdo, 'Personne.nom' ).' '.Set::extract( $pdo, 'Personne.prenom'),
             Set::extract( $pdo, 'Dossier.typeparte' ),
             value( $etatdosrsa, Set::extract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ),
