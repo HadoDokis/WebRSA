@@ -1,7 +1,24 @@
 <h1><?php echo $this->pageTitle = $pageTitle;?></h1>
 
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+    if( isset( $orientsstructs ) ) {
+        $paginator->options( array( 'url' => $this->passedArgs ) );
+        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
 
+        $pages = $paginator->first( '<<' );
+        $pages .= $paginator->prev( '<' );
+        $pages .= $paginator->numbers();
+        $pages .= $paginator->next( '>' );
+        $pages .= $paginator->last( '>>' );
+
+        $pagination .= $html->tag( 'p', $pages );
+    }
+    else {
+        $pagination = '';
+    }
+?>
 <?php echo $form->create( 'Relance', array( 'url'=> Router::url( null, true ) ) );?>
     <fieldset>
         <?php echo $form->input( 'Relance.compare', array( 'label' => 'Opérateurs', 'type' => 'select', 'options' =>             $comparators = array( '<' => '<' ,'>' => '>','<=' => '<=', '>=' => '>=' ), 'empty' => true ) );?>
@@ -22,6 +39,7 @@
 
     <?php if( is_array( $orientsstructs ) && count( $orientsstructs ) > 0 ):?>
         <?php echo $form->create( 'RelanceOrient', array( 'url'=> Router::url( null, true ) ) );?>
+        <?php echo $pagination;?>
         <table class="tooltips_oupas">
             <thead>
                 <tr>
@@ -91,6 +109,7 @@
                 <?php endforeach;?>
             </tbody>
         </table>
+    <?php echo $pagination;?>
         <?php echo $form->submit( 'Validation de la liste' );?>
         <?php echo $form->end();?>
 

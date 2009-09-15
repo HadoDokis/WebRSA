@@ -256,7 +256,7 @@
             $this->set( 'tc', $this->Typocontrat->find( 'list' ) );
             $this->set( 'personne', $personne );
             $this->set( 'personne_id', $personne_id );
-
+// debug( $personne );
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;

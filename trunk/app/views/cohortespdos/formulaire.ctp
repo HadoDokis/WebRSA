@@ -26,7 +26,7 @@
         }
     }
     //
-/*
+
     if( isset( $cohortepdo ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
@@ -42,7 +42,7 @@
     }
     else {
         $pagination = '';
-    }*/
+    }
 ?>
 
 <?php /* require_once( 'filtre.ctp' );*/?>
@@ -51,6 +51,7 @@
 <?php if( isset( $cohortepdo ) ):?>
 
     <?php if( is_array( $cohortepdo ) && count( $cohortepdo ) > 0 ):?>
+        <?php echo $pagination;?>
         <?php echo $form->create( 'GestionPDO', array( 'url'=> Router::url( null, true ) ) );?>
 
         <table id="searchResults" class="tooltips_oupas">
@@ -140,6 +141,7 @@
                 <?php endforeach;?>
             </tbody>
         </table>
+    <?php echo $pagination;?>
         <?php echo $form->submit( 'Validation de la liste' );?>
         <?php echo $form->end();?>
 
