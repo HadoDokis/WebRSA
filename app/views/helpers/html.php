@@ -722,7 +722,7 @@ class HtmlHelper extends AppHelper {
                 return '<span class="disabled">'.$content.'</span>';
             }
     }
-    function viewLink( $title, $url, $enabled = true ) {
+    function viewLink( $title, $url, $enabled = true, $external = false ) {
         $content = $this->image(
             'icons/zoom.png',
             array( 'alt' => '' )
@@ -732,7 +732,7 @@ class HtmlHelper extends AppHelper {
             return $this->link(
                 $content,
                 $url,
-                array( 'escape' => false, 'title' => $title )
+                array( 'escape' => false, 'title' => $title, 'class' => ( $external ? 'external' : 'internal' ) )
             );
         }
         else {

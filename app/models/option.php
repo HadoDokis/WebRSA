@@ -1320,6 +1320,7 @@
 
         function typepdo(){
             return array(
+                'N' => 'Non défini',
                 'C' => 'PDO de contrôle',
                 'M' => 'PDO de maintien',
                 'O' => 'PDO d\'ouverture'

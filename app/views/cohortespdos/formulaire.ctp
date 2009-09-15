@@ -78,6 +78,10 @@
                     $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
                                 <tr>
+                                    <th>N° Dossier</th>
+                                    <td>'.h( $pdo['Dossier']['numdemrsa'] ).'</td>
+                                </tr>
+                                <tr>
                                     <th>Date naissance</th>
                                     <td>'.h( date_short( $pdo['Personne']['dtnai'] ) ).'</td>
                                 </tr>
@@ -108,7 +112,7 @@
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
                             h( $pdo['Dossier']['typeparte'] ),
 
-                            $form->input( 'Propopdo.'.$index.'.typepdo', array( 'label' => false, 'div' => false, 'legend' => false, 'separator' => '<br />' , 'type' => 'radio', 'options' => array( 'C' => 'PDO de contrôle', 'M' => 'PDO de maintien', 'O' => 'PDO d\'ouverture' ), 'value' => ( !empty( $typepdo ) ? $typepdo : 'C' ) ) ),
+                            $form->input( 'Propopdo.'.$index.'.typepdo', array( 'label' => false, 'div' => false, 'legend' => false, 'separator' => '<br />' , 'type' => 'radio', 'options' => array(  'N' => 'Non défini', 'C' => 'PDO de contrôle', 'M' => 'PDO de maintien', 'O' => 'PDO d\'ouverture' ), 'value' => ( !empty( $typepdo ) ? $typepdo : 'N' ) ) ),
 
                             $form->input( 'Propopdo.'.$index.'.datedecisionpdo', array( 'label' => false, 'div' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) ),
 
@@ -122,8 +126,10 @@
 
                             $form->input( 'Propopdo.'.$index.'.commentairepdo', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
                             $html->viewLink(
-                                'Voir le contrat « '.$title.' »',
-                                array( 'controller' => 'dossierspdo', 'action' => 'index', $pdo['Dossier']['id'] )
+                                'Voir le dossier « '.$pdo['Dossier']['numdemrsa'].' »',
+                                array( 'controller' => 'suivisinsertion', 'action' => 'index', $pdo['Dossier']['id'] ),
+                                true,
+                                true
                             ),
                             array( $innerTable, array( 'class' => 'innerTableCell' ) )
                         ),
