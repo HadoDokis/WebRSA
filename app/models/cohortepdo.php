@@ -138,7 +138,8 @@
                 ),
                 'recursive' => -1,
                 'conditions' => $conditions,
-//                 'order' => array( '"Personne"."nom"' )
+                'order' => array( '"Personne"."nom"' ),
+//                 'limit' => $_limit
             );
 
             return $query;

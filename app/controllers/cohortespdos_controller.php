@@ -83,8 +83,14 @@
                 $this->Dossier->begin(); // Pour les jetons
 
                 $this->paginate = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+//                 $_limit = 10;
                 $this->paginate['limit'] = 10;
                 $cohortepdo = $this->paginate( 'Dossier' );
+
+//                 $count = count( $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() ) );
+//                 $this->set( 'count', $count );
+// //                 debug( $count );
+//                 $this->set( 'pages', ceil( $count / $_limit ) );
 
                 $this->Dossier->commit();
                 $this->set( 'cohortepdo', $cohortepdo );

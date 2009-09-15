@@ -11,6 +11,16 @@
         *
         */
 
+        var $paginate = array(
+            // FIXME
+            'limit' => 20,
+        );
+
+        function __construct() {
+            parent::__construct();
+            $this->components[] = 'Jetons';
+        }
+
         function beforeFilter() {
             $return = parent::beforeFilter();
             $this->set( 'statutrelance', $this->Option->statutrelance() );
@@ -74,11 +84,14 @@
 
                 $this->Dossier->begin(); // Pour les jetons
 
-                $options = $this->Relance->search( $statutRelance, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+//                 $options = $this->Relance->search( $statutRelance, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+//                 $orientsstructs = $this->Orientstruct->find( 'all', $options );
 
-//                 $options['fields'][] = 'Orientstruct.daterelance';
-//                 $options['fields'][] = 'Orientstruct.statutrelance';
-                $orientsstructs = $this->Orientstruct->find( 'all', $options );
+
+                $this->paginate = $this->Relance->search( $statutRelance, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                $this->paginate['limit'] = 10;
+                $orientsstructs = $this->paginate( 'Orientstruct' );
+
 
                 $this->Dossier->commit();
 

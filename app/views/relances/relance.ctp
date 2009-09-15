@@ -9,6 +9,23 @@
 </script>
 
 <?php
+    if( isset( $orientsstructs ) ) {
+        $paginator->options( array( 'url' => $this->passedArgs ) );
+        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+
+        $pages = $paginator->first( '<<' );
+        $pages .= $paginator->prev( '<' );
+        $pages .= $paginator->numbers();
+        $pages .= $paginator->next( '>' );
+        $pages .= $paginator->last( '>>' );
+
+        $pagination .= $html->tag( 'p', $pages );
+    }
+    else {
+        $pagination = '';
+    }
+
     function value( $array, $index ) {
         $keys = array_keys( $array );
         $index = ( ( $index == null ) ? '' : $index );
@@ -45,6 +62,7 @@
     <?php if( empty( $orientsstructs ) ):?>
         <p class="notice">Aucun dossier relancé n'est présent.</p>
     <?php else:?>
+            <?php echo $pagination;?>
         <table class="tooltips_oupas">
             <thead>
                 <tr>
@@ -108,7 +126,7 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-
+        <?php echo $pagination;?>
         <ul class="actionMenu">
             <li><?php
                 echo $html->printLinkJs(
