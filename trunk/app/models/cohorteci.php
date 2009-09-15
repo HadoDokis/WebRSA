@@ -28,11 +28,21 @@
             $personne_suivi = Set::extract( $criteresci, 'Filtre.pers_charg_suivi' );
             $forme_ci = Set::extract( $criteresci, 'Filtre.forme_ci' );
 
-            // ...
-            if( !empty( $date_saisi_ci ) && dateComplete( $criteresci, 'Filtre.date_saisi_ci' ) ) {
-                $date_saisi_ci = $date_saisi_ci['year'].'-'.$date_saisi_ci['month'].'-'.$date_saisi_ci['day'];
-                $conditions[] = 'Contratinsertion.date_saisi_ci = \''.$date_saisi_ci.'\'';
+
+            /// Critères sur le CI - date de saisi contrat
+            if( isset( $criteresci['Filtre']['date_saisi_ci'] ) && !empty( $criteresci['Filtre']['date_saisi_ci'] ) ) {
+                $valid_from = ( valid_int( $criteresci['Filtre']['date_saisi_ci_from']['year'] ) && valid_int( $criteresci['Filtre']['date_saisi_ci_from']['month'] ) && valid_int( $criteresci['Filtre']['date_saisi_ci_from']['day'] ) );
+                $valid_to = ( valid_int( $criteresci['Filtre']['date_saisi_ci_to']['year'] ) && valid_int( $criteresci['Filtre']['date_saisi_ci_to']['month'] ) && valid_int( $criteresci['Filtre']['date_saisi_ci_to']['day'] ) );
+                if( $valid_from && $valid_to ) {
+                    $conditions[] = 'Contratinsertion.date_saisi_ci BETWEEN \''.implode( '-', array( $criteresci['Filtre']['date_saisi_ci_from']['year'], $criteresci['Filtre']['date_saisi_ci_from']['month'], $criteresci['Filtre']['date_saisi_ci_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresci['Filtre']['date_saisi_ci_to']['year'], $criteresci['Filtre']['date_saisi_ci_to']['month'], $criteresci['Filtre']['date_saisi_ci_to']['day'] ) ).'\'';
+                }
             }
+
+//             // ...
+//             if( !empty( $date_saisi_ci ) && dateComplete( $criteresci, 'Filtre.date_saisi_ci' ) ) {
+//                 $date_saisi_ci = $date_saisi_ci['year'].'-'.$date_saisi_ci['month'].'-'.$date_saisi_ci['day'];
+//                 $conditions[] = 'Contratinsertion.date_saisi_ci = \''.$date_saisi_ci.'\'';
+//             }
 
             // ...
             if( !empty( $decision_ci ) ) {
