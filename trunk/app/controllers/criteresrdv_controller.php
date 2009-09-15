@@ -5,9 +5,10 @@
     class CriteresrdvController extends AppController
     {
         var $name = 'Criteresrdv';
-        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Structurereferente', 'Option' );
+        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Option' );
         var $aucunDroit = array( 'constReq' );
 
+        var $helpers = array( 'Csv' );
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
         */
@@ -45,16 +46,26 @@
 
                 $this->Dossier->begin(); // Pour les jetons
 
-                $this->paginate = $this->Rendezvous->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+                $this->paginate = $this->Critererdv->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
                 $this->paginate['limit'] = 10;
                 $rdvs = $this->paginate( 'Rendezvous' );
 
                 $this->Dossier->commit();
-// debug( $rdvs );
                 $this->set( 'rdvs', $rdvs );
                 $this->data['Search'] = $this->data;
             }
         }
 
+        /// Export du tableau en CSV
+        function exportcsv() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+            $querydata = $this->Critererdv->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+            unset( $querydata['limit'] );
+            $rdvs = $this->Rendezvous->find( 'all', $querydata );
+
+            $this->layout = ''; // FIXME ?
+            $this->set( compact( 'rdvs' ) );
+        }
     }
 ?>

@@ -48,11 +48,19 @@
                 $conditions[] = 'Propopdo.decisionpdo ILIKE \'%'.Sanitize::clean( $decisionpdo ).'%\'';
             }
 
-            // Type de PDO
-            if( !empty( $datedecisionpdo ) && dateComplete( $criterespdo, 'Cohortepdo.datedecisionpdo' ) ) {
-                $datedecisionpdo = $datedecisionpdo['year'].'-'.$datedecisionpdo['month'].'-'.$datedecisionpdo['day'];
-                $conditions[] = 'Propopdo.datedecisionpdo = \''.$datedecisionpdo.'\'';
+            /// Critères sur les PDOs - date de décision
+            if( isset( $criterespdo['Cohortepdo']['datedecisionpdo'] ) && !empty( $criterespdo['Cohortepdo']['datedecisionpdo'] ) ) {
+                $valid_from = ( valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_from']['year'] ) && valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_from']['month'] ) && valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_from']['day'] ) );
+                $valid_to = ( valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_to']['year'] ) && valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_to']['month'] ) && valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_to']['day'] ) );
+                if( $valid_from && $valid_to ) {
+                    $conditions[] = 'Propopdo.datedecisionpdo BETWEEN \''.implode( '-', array( $criterespdo['Cohortepdo']['datedecisionpdo_from']['year'], $criterespdo['Cohortepdo']['datedecisionpdo_from']['month'], $criterespdo['Cohortepdo']['datedecisionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdo['Cohortepdo']['datedecisionpdo_to']['year'], $criterespdo['Cohortepdo']['datedecisionpdo_to']['month'], $criterespdo['Cohortepdo']['datedecisionpdo_to']['day'] ) ).'\'';
+                }
             }
+            // Type de PDO
+//             if( !empty( $datedecisionpdo ) && dateComplete( $criterespdo, 'Cohortepdo.datedecisionpdo' ) ) {
+//                 $datedecisionpdo = $datedecisionpdo['year'].'-'.$datedecisionpdo['month'].'-'.$datedecisionpdo['day'];
+//                 $conditions[] = 'Propopdo.datedecisionpdo = \''.$datedecisionpdo.'\'';
+//             }
 // debug( $conditions );
             $query = array(
                 'fields' => array(

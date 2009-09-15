@@ -141,6 +141,12 @@
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
+            <li><?php
+                /*echo $html->exportLink(
+                    'Télécharger le tableau',
+                    array( 'controller' => 'criteresrdv', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                );*/
+            ?></li>
         </ul>
     <?php  /*require( 'index.pagination.ctp' )*/  ?>
 

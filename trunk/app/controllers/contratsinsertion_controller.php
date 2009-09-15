@@ -6,6 +6,7 @@
         var $uses = array( 'Contratinsertion', 'Referent', 'Personne', 'Dossier', 'Option', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'DsppNivetu' );
         var $helpers = array( 'Ajax' );
         var $components = array( 'RequestHandler' );
+        var $aucunDroit = array( 'ajax' );
 
         function beforeFilter() {
             parent::beforeFilter();

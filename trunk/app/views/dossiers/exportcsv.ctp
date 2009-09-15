@@ -1,14 +1,30 @@
 <?php
-//     $csv->preserveLeadingZerosInExcel = true;
-// 
-//     foreach( $dossiers as $dossier ) {
-//         $csv->addRow( array( $type_totalisation[$dossier['Totalisationacompte']['type_totalisation']] ) );
-//         $csv->addRow( array( 'RSA socle', $dossier['Totalisationacompte']['mttotsoclrsa'] ) );
-//         $csv->addRow( array( 'RSA socle majoré', $dossier['Totalisationacompte']['mttotsoclmajorsa'] ) );
-//         $csv->addRow( array( 'RSA local', $dossier['Totalisationacompte']['mttotlocalrsa'] ) );
-//         $csv->addRow( array( 'RSA socle total', $dossier['Totalisationacompte']['mttotrsa'] ) );
-//     }
-// 
-//     Configure::write( 'debug', 0 );
-//     echo $csv->render( 'infosfinancieres-'.date( 'Ymd-Hhm' ).'.csv' );
+    $csv->preserveLeadingZerosInExcel = true;
+
+    function value( $array, $index ) {
+        $keys = array_keys( $array );
+        $index = ( ( $index == null ) ? '' : $index );
+        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
+            return $array[$index];
+        }
+        else {
+            return null;
+        }
+    }
+
+    $csv->addRow( array( 'N° Dossier', 'Date de demande', 'NIR', 'Nom/Prénom allocataire',  'Commune de l\'allocataire' ) );
+
+    foreach( $dossiers as $dossier ) {
+        $row = array(
+            Set::extract( $dossier, 'Dossier.numdemrsa' ),
+            Set::extract( $dossier, 'Dossier.dtdemrsa' ),
+            Set::extract( $dossier, 'Personne.nir' ),
+            Set::extract( $dossier, 'Personne.nom' ).' '.Set::extract( $dossier, 'Personne.prenom'),
+            Set::extract( $dossier, 'Adresse.locaadr' )
+        );
+        $csv->addRow($row);
+    }
+
+    Configure::write( 'debug', 0 );
+    echo $csv->render( 'dossiers-'.date( 'Ymd-Hhm' ).'.csv' );
 ?>

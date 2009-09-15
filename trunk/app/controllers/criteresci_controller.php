@@ -7,7 +7,7 @@
         var $name = 'Criteresci';
         var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typocontrat', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Cohorteci' );
         var $aucunDroit = array( 'constReq' );
-
+        var $helpers = array( 'Csv' );
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
         */
@@ -64,43 +64,6 @@
         function index() {
             $params = $this->data;
             if( !empty( $params ) ) {
-                /*$conditions = array();
-
-                // INFO: seulement les personnes qui sont dans ma zone géographique
-                $conditions['Contratinsertion.personne_id'] = $this->Personne->findByZones( $this->Session->read( 'Auth.Zonegeographique' ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
-
-                //Critère recherche par Contrat insertion: date de création contrat
-                if( dateComplete( $this->data, 'Contratinsertion.date_saisi_ci' ) ) {
-                    $date_saisi_ci = $this->data['Contratinsertion']['date_saisi_ci'];
-                    $conditions['Contratinsertion.date_saisi_ci'] = $date_saisi_ci['year'].'-'.$date_saisi_ci['month'].'-'.$date_saisi_ci['day'];
-                }
-
-                //Critère recherche par Contrat insertion: localisation de la personne rattachée au contrat
-                if( isset( $params['Adresse']['locaadr'] ) && !empty( $params['Adresse']['locaadr'] ) ){
-                    $conditions[] = "Adresse.locaadr ILIKE '%".Sanitize::paranoid( $params['Adresse']['locaadr'] )."%'";
-                }
-
-                //Critère recherche par Contrat insertion: par décision du CG
-                if( isset( $params['Contratinsertion']['decision_ci'] ) && !empty( $params['Contratinsertion']['decision_ci'] ) ){
-                    $conditions[] = "Contratinsertion.decision_ci ILIKE '%".Sanitize::paranoid( $params['Contratinsertion']['decision_ci'] )."%'";
-                }
-
-                //Critère recherche par Contrat insertion: date de validation du contrat
-                if( dateComplete( $this->data, 'Contratinsertion.datevalidation_ci' ) ) {
-                    $datevalidation_ci = $this->data['Contratinsertion']['datevalidation_ci'];
-                    $conditions['Contratinsertion.datevalidation_ci'] = $datevalidation_ci['year'].'-'.$datevalidation_ci['month'].'-'.$datevalidation_ci['day'];
-                }
-
-                //Critère recherche par Contrat insertion: par service instructeur
-                if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) ){
-                    $conditions['Serviceinstructeur.id'] = $params['Serviceinstructeur']['id'];
-                }
-
-                $query = $this->Contratinsertion->queries['criteresci'];
-                $query['limit'] = 10;
-
-                $this->paginate = $query;
-                $contrats = $this->paginate( 'Contratinsertion', $conditions );*/
 
                 $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
                 $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
@@ -118,5 +81,17 @@
             }
         }
 
+        /// Export du tableau en CSV
+        function exportcsv() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+            $querydata = $this->Cohorteci->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+            unset( $querydata['limit'] );
+            $contrats = $this->Contratinsertion->find( 'all', $querydata );
+
+            $this->layout = ''; // FIXME ?
+            $this->set( compact( 'contrats' ) );
+        }
     }
 ?>

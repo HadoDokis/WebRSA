@@ -119,9 +119,18 @@
                             array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
                         );
                     ?>
-            <?php endforeach;?>
+                <?php endforeach;?>
             </tbody>
         </table>
+       <!-- <ul class="actionMenu">
+             <li><?php
+                /*echo $html->exportLink(
+                    'Télécharger le tableau',
+                    array( 'controller' => 'criteres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                );*/
+            ?></li> 
+        </ul> -->
+        <?php require( 'index.pagination.ctp' )?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>
