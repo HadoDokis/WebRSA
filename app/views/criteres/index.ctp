@@ -4,30 +4,10 @@
 <h1>Recherche par Orientation</h1>
 
 <script type="text/javascript">
-    function toutCocher() {
-        $$( 'input[name="data[Zonegeographique][Zonegeographique][]"]' ).each( function( checkbox ) {
-            $( checkbox ).checked = true;
-        });
-    }
-
-    function toutDecocher() {
-        $$( 'input[name="data[Zonegeographique][Zonegeographique][]"]' ).each( function( checkbox ) {
-            $( checkbox ).checked = false;
-        });
-    }
-
     document.observe("dom:loaded", function() {
-        Event.observe( 'toutCocher', 'click', toutCocher );
-        Event.observe( 'toutDecocher', 'click', toutDecocher );
+        observeDisableFieldsetOnCheckbox( 'FiltreDateValid', $( 'FiltreDateValidFromDay' ).up( 'fieldset' ), false );
     });
 </script>
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        observeDisableFieldsetOnCheckbox( 'DossierDtdemrsa', $( 'DossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
-    });
-</script>
-
-
 
 <?php
     if( is_array( $this->data ) ) {
@@ -46,7 +26,17 @@
 
     <fieldset>
         <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-        <?php echo $form->input( 'Filtre.dtdemrsa', array( 'label' => __( 'dtdemrsa', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => date( 'Y' ) - 10, 'empty' => true ) );?>
+        <?php echo $form->input( 'Filtre.date_valid', array( 'label' => 'Filtrer par date d\'orientation', 'type' => 'checkbox' ) );?>
+            <fieldset>
+                <legend>Date d'orientation</legend>
+                <?php
+                    $date_valid_from = Set::check( $this->data, 'Filtre.date_valid_from' ) ? Set::extract( $this->data, 'Filtre.date_valid_from' ) : strtotime( '-1 week' );
+                    $date_valid_to = Set::check( $this->data, 'Filtre.date_valid_to' ) ? Set::extract( $this->data, 'Filtre.date_valid_to' ) : strtotime( 'now' );
+                ?>
+                <?php echo $form->input( 'Filtre.date_valid_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_from ) );?>
+                <?php echo $form->input( 'Filtre.date_valid_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_to ) );?>
+            </fieldset>
+
         <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Filtre.typeorient_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
@@ -78,8 +68,8 @@
                     <th><?php echo $paginator->sort( 'Allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'N° Téléphone', 'Modecontact.numtel' );?></th>
                     <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date d\'ouverture droits', 'Dossier.dtdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Date d\'orientation', 'Orientstruct.date_propo' );?></th>
+                    <th><?php echo $paginator->sort( 'Date d\'ouverture droits', 'Dossier.date_valid' );?></th>
+                    <th><?php echo $paginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' );?></th>
                     <th><?php echo $paginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
                     <th><?php echo $paginator->sort( 'Statut orientation', 'Orientstruct.statut_orient' );?></th>
                     <th class="action noprint">Actions</th>
@@ -113,7 +103,7 @@
                                 h( $orient['Modecontact']['numtel'] ),
                                 h( $orient['Adresse']['locaadr'] ),
                                 h( date_short( $orient['Dossier']['dtdemrsa'] ) ),
-                                h( date_short( $orient['Orientstruct']['date_propo'] ) ),
+                                h( date_short( $orient['Orientstruct']['date_valid'] ) ),
                                 h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
                                 h( $orient['Orientstruct']['statut_orient'] ),
                                 array(

@@ -79,13 +79,22 @@
             }
 
             /// Critères
-            $dtdemrsa = Set::extract( $criteres, 'Filtre.dtdemrsa' );
+//             $dtdemrsa = Set::extract( $criteres, 'Filtre.dtdemrsa' );
             $locaadr = Set::extract( $criteres, 'Filtre.locaadr' );
             $numcomptt = Set::extract( $criteres, 'Filtre.numcomptt' );
             $statut_orient = Set::extract( $criteres, 'Filtre.statut_orient' );
             $typeorient_id = Set::extract( $criteres, 'Filtre.typeorient_id' );
             $structurereferente_id = Set::extract( $criteres, 'Filtre.structurereferente_id' );
             $serviceinstructeur_id = Set::extract( $criteres, 'Filtre.serviceinstructeur_id' );
+
+            /// Critères sur l'orientation - date d'orientation
+            if( isset( $criteres['Filtre']['date_valid'] ) && !empty( $criteres['Filtre']['date_valid'] ) ) {
+                $valid_from = ( valid_int( $criteres['Filtre']['date_valid_from']['year'] ) && valid_int( $criteres['Filtre']['date_valid_from']['month'] ) && valid_int( $criteres['Filtre']['date_valid_from']['day'] ) );
+                $valid_to = ( valid_int( $criteres['Filtre']['date_valid_to']['year'] ) && valid_int( $criteres['Filtre']['date_valid_to']['month'] ) && valid_int( $criteres['Filtre']['date_valid_to']['day'] ) );
+                if( $valid_from && $valid_to ) {
+                    $conditions[] = 'Orientstruct.date_valid BETWEEN \''.implode( '-', array( $criteres['Filtre']['date_valid_from']['year'], $criteres['Filtre']['date_valid_from']['month'], $criteres['Filtre']['date_valid_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteres['Filtre']['date_valid_to']['year'], $criteres['Filtre']['date_valid_to']['month'], $criteres['Filtre']['date_valid_to']['day'] ) ).'\'';
+                }
+            }
 
             // ...
             if( !empty( $dtdemrsa ) && dateComplete( $criteres, 'Filtre.dtdemrsa' ) ) {
