@@ -1,6 +1,6 @@
 #!/bin/bash
 # http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html
-# svn checkout svn+ssh://cbuffin@svn.adullact.net/svnroot/webrsa .
+# svn checkout svn+ssh://cbuffin@svn.adullact.net/svnroot/webrsa/trunk/app .
 
 f="`dirname "$0"`"
 cd "$f"
@@ -32,3 +32,13 @@ svn propset svn:keywords "Date Author Revision" views/elements/footer.ctp
 # -m "Version 1.0.3 (installation CG93 13/07/09 12h30)"
 
 # svn export svn+ssh://cbuffin@svn.adullact.net/svnroot/webrsa/tags/1.0.2.1/
+
+
+######## Ajout de la branche 1.0.7 pour les patchs #####################
+
+# svn copy \
+# svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/tags/1.0.7/ \
+# svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/branches/1.0.7/ \
+# -m "Création de la branche 1.0.7"
+# 
+# svn checkout svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/branches/1.0.7/

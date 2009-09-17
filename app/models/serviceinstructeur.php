@@ -83,5 +83,65 @@
                 )
             )
         );
+
+        var $_types = array(
+            'list' => array(
+                'fields' => array(
+                    '"Serviceinstructeur"."id"',
+                    '"Serviceinstructeur"."lib_service"',
+                    '"Serviceinstructeur"."num_rue"',
+                    '"Serviceinstructeur"."nom_rue"',
+                    '"Serviceinstructeur"."complement_adr"',
+                    '"Serviceinstructeur"."code_insee"',
+                    '"Serviceinstructeur"."code_postal"',
+                    '"Serviceinstructeur"."ville"',
+                    '"Serviceinstructeur"."numdepins"',
+                    '"Serviceinstructeur"."typeserins"',
+                    '"Serviceinstructeur"."numcomins"',
+                    '"Serviceinstructeur"."numagrins"',
+                    '"Serviceinstructeur"."type_voie"',
+                    'COUNT("User"."id") AS "Serviceinstructeur__nbUsers"',
+                ),
+                'recursive' => -1,
+                'joins' => array(
+                    array(
+                        'table'      => 'users',
+                        'alias'      => 'User',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Serviceinstructeur.id = User.serviceinstructeur_id' )
+                    ),
+                ),
+                'group' => array(
+                    '"Serviceinstructeur"."id"',
+                    '"Serviceinstructeur"."lib_service"',
+                    '"Serviceinstructeur"."num_rue"',
+                    '"Serviceinstructeur"."nom_rue"',
+                    '"Serviceinstructeur"."complement_adr"',
+                    '"Serviceinstructeur"."code_insee"',
+                    '"Serviceinstructeur"."code_postal"',
+                    '"Serviceinstructeur"."ville"',
+                    '"Serviceinstructeur"."numdepins"',
+                    '"Serviceinstructeur"."typeserins"',
+                    '"Serviceinstructeur"."numcomins"',
+                    '"Serviceinstructeur"."numagrins"',
+                    '"Serviceinstructeur"."type_voie"',
+                ),
+                'order' => 'Serviceinstructeur.lib_service ASC',
+            )
+        );
+
+        function prepare( $type, $params = array() ) {
+            $types = array_keys( $this->_types );
+            if( !in_array( $type, $types ) ) {
+                trigger_error( 'Invalid parameter "'.$type.'" for '.$this->name.'::prepare()', E_USER_WARNING );
+            }
+            else {
+                $querydata = $this->_types[$type];
+                $querydata = Set::merge( $querydata, $params );
+
+                return $querydata;
+            }
+        }
     }
 ?>

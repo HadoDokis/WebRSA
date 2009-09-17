@@ -12,19 +12,9 @@
         }
 
         function index() {
-
-            $servicesinstructeurs = $this->Serviceinstructeur->find(
-                'all',
-                array(
-                    'recursive' => -1
-                )
-
-            );
-            $this->set('servicesinstructeurs', $servicesinstructeurs);
-            // Récupération du services instructeur lié au contrat
-            $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
-            $this->assert( !empty( $user ), 'error500' ); // FIXME
-            $this->set( 'user', $user );
+            $querydata = $this->Serviceinstructeur->prepare( 'list' );
+            $servicesinstructeurs = $this->Serviceinstructeur->find( 'all', $querydata );
+            $this->set( compact( 'servicesinstructeurs') );
         }
 
         function add() {
