@@ -129,7 +129,7 @@
 <!--</fieldset>
 <fieldset>-->
         <?php if( $this->action != 'edit' ) :?>
-            <?php echo $form->input( 'Actioninsertion.lib_action', array( 'label' =>  __( 'lib_action', true ), 'type' => 'select', 'options' => $lib_action, 'empty' => true ) ); ?>
+            <!-- <?php /*echo $form->input( 'Actioninsertion.lib_action', array( 'label' =>  __( 'lib_action', true ), 'type' => 'select', 'options' => $lib_action, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Actioninsertion.dd_action', array( 'label' =>  __( 'dd_action', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
             <?php echo $form->input( 'Actioninsertion.df_action', array( 'label' => __( 'df_action', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
 
@@ -141,7 +141,7 @@
             <?php echo $form->input( 'Prestform.0.lib_presta', array( 'label' =>  __( 'lib_presta', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
             <?php echo $form->input( 'Refpresta.nomrefpresta', array( 'label' =>  __( 'nomrefpresta', true ), 'type' => 'text')); ?>
             <?php echo $form->input( 'Refpresta.prenomrefpresta', array( 'label' =>  __( 'prenomrefpresta', true ), 'type' => 'text')); ?>
-            <?php echo $form->input( 'Prestform.0.date_presta', array( 'label' => __( 'date_presta', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  ); ?>
+            <?php echo $form->input( 'Prestform.0.date_presta', array( 'label' => __( 'date_presta', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  ); */?> -->
         <?php endif;?>
 </fieldset>
 <fieldset>
@@ -153,6 +153,7 @@
             echo $form->input( 'Action.id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
             echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __( 'engag_object', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  );
+            echo $form->input( 'Contratinsertion.commentaire_action', array( 'label' => __( 'commentaire_action', true ), 'type' => 'textarea', 'rows' => 3 )  );
         ?>
         <?php
             echo $widget->booleanRadio( 'Contratinsertion.emp_trouv', array( 'legend' => required( __( 'emp_trouv', true ) )) );
