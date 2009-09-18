@@ -425,6 +425,9 @@ msgstr "Le "
 
 msgid "forme_ci"
 msgstr "Forme du contrat "
+
+msgid "commentaire_action"
+msgstr "Commentaire concernant l'action "
 ###############################################################################
 # Actions d'insertion
 ###############################################################################
