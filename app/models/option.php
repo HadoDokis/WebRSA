@@ -581,7 +581,7 @@
                 '0901' => 'Logement autonome : habitat individuel',
                 '0902' => 'Logement autonome : habitat collectif',
                 '0903' => 'Logement d\'urgence : foyer d\'urgence',
-                '0904' => 'Logement d\'urgence : CHRS (Centree d\'Hébergement Réinsertion Social)',
+                '0904' => 'Logement d\'urgence : CHRS (Centre d\'Hébergement et de Réinsertion Sociale)',
                 '0905' => 'Logement d\'urgence : hôtel social',
                 '0906' => 'Autre logement d\'urgence',
                 '0907' => 'Logement temporaire : appartement relais',
@@ -600,7 +600,7 @@
                     'RSD' => 'Rsa socle',
                     'INK' => 'Indu sur rsa socle ',
                     'ITK' => 'Indu sur rsa socle  transféré ou reçu d\'une autre Caf ou Msa ',
-                    'ISK' => 'Indu sur rSa socle subrogé',
+                    'ISK' => 'Indu sur rsa socle subrogé',
                     'ACD' => 'ACD',
                     'ASD' => 'Acompte sur droit rsa. (le droit est constaté et ouvert)'
                 ),
@@ -618,7 +618,7 @@
                 'indutotsocl' => array(
                     'INK' => 'Indu sur rsa socle ',
                     'ITK' => 'Indu sur rsa socle  transféré ou reçu d\'une autre Caf ou Msa ',
-                    'ISK' => 'Indu sur rSa socle subrogé',
+                    'ISK' => 'Indu sur rsa socle subrogé',
                 ),
                 'alloccompta' => array(
                     'RSD' => 'Rsa socle',
@@ -633,7 +633,7 @@
                     'ITK' => 'Indu sur rsa socle  transféré ou reçu d\'une autre Caf ou Msa ',
                     'ITL' => 'Indu sur rsa socle majoré transféré ou reçu d\'une autre Caf ou Msa ',
                     'ITM' => 'Indu sur rsa socle local ou rSa activite local transféré ou reçu d\'une autre Caf ou Msa ',
-                    'ISK' => 'Indu sur rSa socle subrogé',
+                    'ISK' => 'Indu sur rsa socle subrogé',
                 ),
                 'indutransferecg' => array(
                     'INK' => 'Indu sur rsa socle ',
@@ -650,7 +650,7 @@
                     'ITK' => 'Indu sur rsa socle  transféré ou reçu d\'une autre Caf ou Msa ',
                     'ITL' => 'Indu sur rsa socle majoré transféré ou reçu d\'une autre Caf ou Msa ',
                     'ITM' => 'Indu sur rsa socle local ou rSa activite local transféré ou reçu d\'une autre Caf ou Msa ',
-                    'ISK' => 'Indu sur rSa socle subrogé',
+                    'ISK' => 'Indu sur rsa socle subrogé',
                     'INN' => 'Indu RCD RCI',
                     'ITN' => 'Indu RCD RCI transféré',
                     'INP' => 'Indu RSU RCU',
@@ -663,7 +663,7 @@
                     'ITK' => 'Indu sur rsa socle  transféré ou reçu d\'une autre Caf ou Msa ',
                     'ITL' => 'Indu sur rsa socle majoré transféré ou reçu d\'une autre Caf ou Msa ',
                     'ITM' => 'Indu sur rsa socle local ou rSa activite local transféré ou reçu d\'une autre Caf ou Msa ',
-                    'ISK' => 'Indu sur rSa socle subrogé',
+                    'ISK' => 'Indu sur rsa socle subrogé',
                 )
             );
 
@@ -702,7 +702,7 @@
                 'ITL' => 'Indu sur rsa socle majoré transféré ou reçu d\'une autre Caf ou Msa ',
                 'ITM' => 'Indu sur rsa socle local ou rSa activite local transféré ou reçu d\'une autre Caf ou Msa ',
             /*IndustransférésCG*/
-                'ISK' => 'Indu sur rSa socle subrogé',
+                'ISK' => 'Indu sur rsa socle subrogé',
     /*Indusconstates*/ /*Remises indus*/    /* Autres annulations*/
 /*AllocCompta*/
                 'INN' => 'Indu RCD RCI',
@@ -1172,7 +1172,7 @@
         function statutrdv() {
             return array(
                 'P' => 'Prévu',
-                'T' => 'Tenu',
+                'T' => 'Honoré',
                 'A' => 'Annulé',
                 'R' => 'Reporté'
             );
@@ -1307,7 +1307,7 @@
                 'BAL' => 'Forfait logement a appliquer',
                 'HCG' => 'Hébergement collectif a titre gratuit',
                 'HCO' => 'Hébergement collectif a titre onereux',
-                'HGP' => 'Hébergement a titre gratuit par des particulier',
+                'HGP' => 'Hébergement à titre gratuit par des particuliers',
                 'HOP' => 'Hébergement onereux par des particuliers',
                 'HOT' => 'Hotel',
                 'LOC' => 'Locataire ou sous locataire',
@@ -1384,7 +1384,7 @@
                 'CCAS' => 'Centre Communal d\'Action Sociale', // Code identification partenaire = N° de commune Insee sur 5 positions
                 'CIAS' => 'Centre Intercommunal d\'Action Sociale', // Code identification partenaire = N° de commune Insee du siège de l'intercommunalité sur 5 positions
                 'PE' => 'Pole Emploi', // Code identification partenaire = a préciser avec PE
-                'MDPH' => 'Maison Départemental Pour le Handicap' //  Code identification partenaire = n° de département sur 3 positions
+                'MDPH' => 'Maison Départementale Pour le Handicap' //  Code identification partenaire = n° de département sur 3 positions
             );
         }
 

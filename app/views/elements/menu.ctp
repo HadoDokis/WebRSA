@@ -34,7 +34,7 @@
                         <?php if( $permissions->check( 'cohortesindus', 'index' ) ): ?>
                             <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                                <?php echo $html->link( 'Indu', array( 'controller' => 'cohortesindus', 'action' => 'index' ), array( 'title'=>'Gestion des indus' ) );?>
+                                <?php echo $html->link( 'Indus', array( 'controller' => 'cohortesindus', 'action' => 'index' ), array( 'title'=>'Gestion des indus' ) );?>
                             </li>
                         <?php endif;?>
                         <?php if( $permissions->check( 'cohortespdos', 'avisdemande' ) || $permissions->check( 'cohortespdos', 'valide' ) ): ?>
