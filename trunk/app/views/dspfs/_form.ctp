@@ -35,7 +35,7 @@
 
 <fieldset>
     <legend>Généralités DSPF</legend>
-        <?php echo $form->input( 'Dspf.motidemrsa', array( 'label' =>  __( 'motidemrsa', true ), 'type' => 'select', 'options' => $motidemrsa, 'empty' => true ) );?>
+        <?php echo $form->input( 'Dspf.motidemrsa', array( 'label' =>  __( 'motidemrsa', true ), 'type' => 'select', 'options' => $motidemrsa, 'empty' => 'Absence de droit' ) );?>
         <?php echo $form->input( 'Foyer.sitfam', array( 'label' =>  __( 'sitfam', true ), 'type' => 'select', 'options' => $sitfam, 'empty' => true ) ); ?>
         <?php echo $form->input( 'Foyer.typeocclog', array( 'label' =>  __( 'typeocclog', true ), 'type' => 'select', 'options' => $typeocclog, 'empty' => true ) ); ?>
 </fieldset>
