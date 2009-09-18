@@ -23,6 +23,9 @@
     <fieldset>
         <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
         <?php echo $form->input( 'Filtre.moismoucompta', array( 'label' => 'Recherche des paiements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) ) );?>
+        <?php echo $form->input( 'Filtre.type_allocation', array( 'label' => 'Type d\'allocation', 'type' => 'select', 'options' => $type_allocation, 'empty' => true ) ); ?>
+        <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire', 'type' => 'text' ) ); ?>
+        <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Code INSEE', 'type' => 'text', 'maxlength' => 5 ) ); ?>
     </fieldset>
 
     <div class="submit noprint">
@@ -149,6 +152,9 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <?php if( Set::extract( $paginator, 'params.paging.Infofinanciere.count' ) > 65000 ):?>
+            <p style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $html->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
+        <?php endif;?>
         <ul class="actionMenu">
             <li><?php
                 echo $html->printLinkJs(

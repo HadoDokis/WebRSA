@@ -86,6 +86,9 @@
 
             /// Critères
             $mois = Set::extract( $criteres, 'Filtre.moismoucompta' );
+            $types = Set::extract( $criteres, 'Filtre.type_allocation' );
+            $locaadr = Set::extract( $criteres, 'Filtre.locaadr' );
+            $numcomptt = Set::extract( $criteres, 'Filtre.numcomptt' );
 
             /// Mois du mouvement comptable
             if( !empty( $mois ) && dateComplete( $criteres, 'Filtre.moismoucompta' ) ) {
@@ -100,6 +103,20 @@
                 $conditions['Dossier.id'] = $criteres['Dossier.id'];
             }
 
+            /// Type d'allocation
+            if( !empty( $types ) ) {
+                $conditions[] = 'Infofinanciere.type_allocation ILIKE \'%'.Sanitize::clean( $types ).'%\'';
+            }
+
+            /// Par adresse
+            if( !empty( $locaadr ) ) {
+                $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+            }
+
+            /// Par code postal
+            if( !empty( $numcomptt ) ) {
+                $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+            }
             /// Requête
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
 
@@ -131,7 +148,7 @@
                     '"Personne"."nomcomnai"',
                     '"Situationdossierrsa"."etatdosrsa"',
                     '"Adresse"."locaadr"',
-                    '"Adresse"."codepos"',
+                    '"Adresse"."numcomptt"',
                 ),
                 'recursive' => -1,
                 'joins' => array(
