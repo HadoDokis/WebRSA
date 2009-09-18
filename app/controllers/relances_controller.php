@@ -49,6 +49,8 @@
 
         function _index( $statutRelance = null ){
             $this->assert( !empty( $statutRelance ), 'invalidParameter' );
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
             $this->Relance->create( $this->data );
             $comparators = array( '<' => '<' ,'>' => '>','<=' => '<=', '>=' => '>=' );
@@ -56,9 +58,6 @@
             $this->assert( empty( $cmp ) || in_array( $cmp, array_keys( $comparators ) ), 'invalidParameter' );
 
             if( !empty( $this->data ) && $this->Relance->validates()  ) {
-                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-
 // debug( $this->data['Orientstruct'] );
                 if( !empty( $this->data['Orientstruct'] ) ) {
                     $valid = $this->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );

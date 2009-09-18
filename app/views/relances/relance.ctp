@@ -72,7 +72,7 @@
                     <th>Date orientation</th>
                     <th>Date de relance</th>
                     <th>Statut relance</th>
-                    <th class="action noprint">Action</th>
+                    <th colspan="2" class="action noprint">Action</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
@@ -112,11 +112,11 @@
                                     'Voir l\'orientation de la personne',
                                     array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Personne']['id'] )
                                 ),
-//                                 $html->printLink(
-//                                     'Imprimer la notification',
-//                                     array( 'controller' => 'gedooos', 'action' => 'notification_structure', $orientstruct['Personne']['id'] ),
-//                                     $permissions->check( 'gedooos', 'notification_structure' )
-//                                 ),
+                                $html->printLink(
+                                    'Imprimer la notification',
+                                    array( 'controller' => 'gedooos', 'action' => 'notification_relance', $orientstruct['Personne']['id'] ),
+                                    $permissions->check( 'gedooos', 'notification_relance' )
+                                ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
@@ -139,6 +139,18 @@
                 echo $html->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'relances', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                );
+            ?></li>
+            <li><?php
+                echo $html->printCohorteLink(
+                    'Imprimer la cohorte',
+                    Set::merge(
+                        array(
+                            'controller' => 'gedooos',
+                            'action'     => 'notifications_relances'
+                        ),
+                        array_unisize( $this->data )
+                    )
                 );
             ?></li>
         </ul>

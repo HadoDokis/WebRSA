@@ -37,8 +37,8 @@ svn propset svn:keywords "Date Author Revision" views/elements/footer.ctp
 ######## Ajout de la branche 1.0.7 pour les patchs #####################
 
 # svn copy \
-# svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/tags/1.0.7/ \
-# svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/branches/1.0.7/ \
-# -m "Création de la branche 1.0.7"
+# svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/tags/1.0.8.1/ \
+# svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/branches/1.0.8/ \
+# -m "Création de la branche 1.0.8"
 # 
-# svn checkout svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/branches/1.0.7/
+# svn checkout svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/branches/1.0.8/
