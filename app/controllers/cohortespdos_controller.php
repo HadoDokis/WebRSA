@@ -31,6 +31,7 @@
             $this->set( 'commission', $this->Option->commission() );
             $this->set( 'motidempdo', $this->Option->motidempdo() );
             $this->set( 'motideccg', $this->Option->motideccg() );
+            $this->set( 'motifpdo', $this->Option->motifpdo() );
         }
 
         //*********************************************************************
@@ -56,7 +57,6 @@
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
-
             if( !empty( $this->data ) ) {
                 if( !empty( $this->data['Propopdo'] ) ) {
                     $valid = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'only', 'atomic' => false ) );
@@ -77,25 +77,25 @@
                         }
                     }
                 }
+
+
+                if( ( $statutValidationAvis == 'Decisionpdo::nonvalide' ) || ( ( $statutValidationAvis == 'Decisionpdo::valide' ) && !empty( $this->data ) ) ) {
+                    $this->Dossier->begin(); // Pour les jetons
+
+                    $this->paginate = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+    //                 $_limit = 10;
+                    $this->paginate['limit'] = 10;
+                    $cohortepdo = $this->paginate( 'Dossier' );
+
+    //                 $count = count( $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() ) );
+    //                 $this->set( 'count', $count );
+    // //                 debug( $count );
+    //                 $this->set( 'pages', ceil( $count / $_limit ) );
+
+                    $this->Dossier->commit();
+                    $this->set( 'cohortepdo', $cohortepdo );
+                }
             }
-
-            if( ( $statutValidationAvis == 'Decisionpdo::nonvalide' ) || ( ( $statutValidationAvis == 'Decisionpdo::valide' ) && !empty( $this->data ) ) ) {
-                $this->Dossier->begin(); // Pour les jetons
-
-                $this->paginate = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-//                 $_limit = 10;
-                $this->paginate['limit'] = 10;
-                $cohortepdo = $this->paginate( 'Dossier' );
-
-//                 $count = count( $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() ) );
-//                 $this->set( 'count', $count );
-// //                 debug( $count );
-//                 $this->set( 'pages', ceil( $count / $_limit ) );
-
-                $this->Dossier->commit();
-                $this->set( 'cohortepdo', $cohortepdo );
-            }
-
 
             switch( $statutValidationAvis ) {
                 case 'Decisionpdo::nonvalide':

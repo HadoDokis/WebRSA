@@ -35,12 +35,24 @@
             /// Critères
             $typepdo = Set::extract( $criterespdo, 'Cohortepdo.typepdo' );
             $decisionpdo = Set::extract( $criterespdo, 'Cohortepdo.decisionpdo' );
+            $motifpdo = Set::extract( $criterespdo, 'Cohortepdo.motifpdo' );
             $datedecisionpdo = Set::extract( $criterespdo, 'Cohortepdo.datedecisionpdo' );
+            $matricule = Set::extract( $criterespdo, 'Cohortepdo.matricule' );
 
 
             // Type de PDO
             if( !empty( $typepdo ) ) {
                 $conditions[] = 'Propopdo.typepdo ILIKE \'%'.Sanitize::clean( $typepdo ).'%\'';
+            }
+
+            // Motif de la PDO
+            if( !empty( $motifpdo ) ) {
+                $conditions[] = 'Propopdo.motifpdo ILIKE \'%'.Sanitize::clean( $motifpdo ).'%\'';
+            }
+
+            // N° CAF
+            if( !empty( $matricule ) ) {
+                $conditions[] = 'Dossier.matricule ILIKE \'%'.Sanitize::clean( $matricule ).'%\'';
             }
 
             // Décision CG
@@ -69,6 +81,7 @@
                     '"Propopdo"."typepdo"',
                     '"Propopdo"."decisionpdo"',
                     '"Propopdo"."datedecisionpdo"',
+                    '"Propopdo"."motifpdo"',
                     '"Propopdo"."commentairepdo"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',

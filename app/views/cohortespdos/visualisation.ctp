@@ -4,14 +4,14 @@
 <h1>Gestion des PDOs</h1>
 
 <?php
-    if( is_array( $this->data ) ) {
+    if( !empty( $this->data ) ) {
         echo '<ul class="actionMenu"><li>'.$html->link(
             $html->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
             '#',
-            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Cohortepdo' ).toggle(); return false;" )
         ).'</li></ul>';
     }
 
@@ -64,6 +64,7 @@
                     <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo' );?></th>
                     <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.decisionpdo' );?></th>
+                    <th><?php echo $paginator->sort( 'Motif', 'Propopdo.motifpdo' );?></th>
                     <th><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.datedecisionpdo' );?></th>
                      <th>Commentaires</th> 
                     <th class="action">Action</th>
@@ -104,6 +105,7 @@
                             h( value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ),
                             h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
                             h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo', $pdo ) ) ),
+                            h( value( $motifpdo, Set::extract( 'Propopdo.motifpdo', $pdo ) ) ),
                             h( Set::extract( $pdo, 'Propopdo.commentairepdo' ) ),
                             $html->viewLink(
                                 'Voir le contrat « '.$title.' »',

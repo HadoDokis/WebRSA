@@ -4,16 +4,16 @@
 <h1>Gestion des PDOs</h1>
 
 <?php
-//     if( is_array( $this->data ) ) {
-//         echo '<ul class="actionMenu"><li>'.$html->link(
-//             $html->image(
-//                 'icons/application_form_magnify.png',
-//                 array( 'alt' => '' )
-//             ).' Formulaire',
-//             '#',
-//             array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
-//         ).'</li></ul>';
-//     }
+    if( !empty( $this->data ) ) {
+        echo '<ul class="actionMenu"><li>'.$html->link(
+            $html->image(
+                'icons/application_form_magnify.png',
+                array( 'alt' => '' )
+            ).' Formulaire',
+            '#',
+            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Cohortepdo' ).toggle(); return false;" )
+        ).'</li></ul>';
+    }
 
     function value( $array, $index ) {
         $keys = array_keys( $array );
@@ -45,7 +45,7 @@
     }
 ?>
 
-<?php /* require_once( 'filtre.ctp' );*/?>
+<?php  require_once( 'filtre.ctp' );?>
 <!-- Résultats -->
 
 <?php if( isset( $cohortepdo ) ):?>
@@ -68,6 +68,7 @@
                     <th>Type de PDO</th>
                     <th>Date de décision PDO</th>
                     <th>Decision PDO</th>
+                    <th>Motif</th>
                     <th>Commentaires</th>
                     <th class="action noprint">Action</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
@@ -124,6 +125,8 @@
                             $form->input( 'Propopdo.'.$index.'.id', array( 'label' => false, 'div' => false, 'value' => $pdo_id, 'type' => 'hidden' ) ).
 
                             $form->input( 'Propopdo.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $pdo['Dossier']['id'] ) ),
+
+                            $form->input( 'Propopdo.'.$index.'.motifpdo', array( 'label' => false, 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) ),
 
                             $form->input( 'Propopdo.'.$index.'.commentairepdo', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
                             $html->viewLink(

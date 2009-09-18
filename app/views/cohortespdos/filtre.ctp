@@ -1,6 +1,6 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php echo $form->create( 'Cohortepdo', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $form->create( 'Cohortepdo', array( 'url'=> Router::url( null, true ), 'id' => 'Cohortepdo', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
@@ -11,9 +11,13 @@
  <fieldset class= "noprint">
         <legend>Recherche PDO</legend>
         <?php echo $form->input( 'Cohortepdo.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+        <?php if( $this->action == 'avisdemande' ):?>
+            <?php echo $form->input( 'Cohortepdo.matricule', array( 'label' => 'N° CAF', 'type' => 'text', 'maxlength' => 15 ) );?>
+        <?php else :?>
         <?php
             echo $form->input( 'Cohortepdo.typepdo', array( 'label' => __( 'typepdo', true ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );
             echo $form->input( 'Cohortepdo.decisionpdo', array( 'label' => __( 'decisionpdo', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );
+            echo $form->input( 'Cohortepdo.motifpdo', array( 'label' => __( 'motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) );
         ?>
             <?php echo $form->input( 'Cohortepdo.datedecisionpdo', array( 'label' => 'Filtrer par date de décision des PDOs', 'type' => 'checkbox' ) );?>
             <fieldset>
@@ -25,6 +29,7 @@
                 <?php echo $form->input( 'Cohortepdo.datedecisionpdo_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedecisionpdo_from ) );?>
                 <?php echo $form->input( 'Cohortepdo.datedecisionpdo_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedecisionpdo_to ) );?>
             </fieldset>
+        <?php endif;?>
     </fieldset>
     <div class="submit noprint">
         <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
