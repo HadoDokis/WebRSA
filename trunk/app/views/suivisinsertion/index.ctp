@@ -2,7 +2,7 @@
 
 <?php  $this->pageTitle = 'Suivi du parcours d\'insertion';?>
 
-<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
 
 
 <?php
