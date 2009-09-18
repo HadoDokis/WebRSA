@@ -479,6 +479,14 @@
             );
         }
 
+        function motifpdo() { ///FIXME: ajout pour les PDO mais à voir
+            return array(
+                'N' => 'Non admissible',
+                'A' => 'Admissible',
+                'M' => 'Pièce manquante'
+            );
+        }
+
         function motidempdo() { ///FIXME: ajout pour les PDO mais à voir
             return array(
                 'C' => 'Changement de situation',

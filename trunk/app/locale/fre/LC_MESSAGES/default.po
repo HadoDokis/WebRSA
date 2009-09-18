@@ -871,6 +871,8 @@ msgstr "Décision CG"
 msgid "datedecisionpdo"
 msgstr "Date de décision PDO"
 
+msgid "motifpdo"
+msgstr "Motif de la PDO"
 ###############################################################################
 # Rendez-vous
 ###############################################################################
