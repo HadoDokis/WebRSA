@@ -163,12 +163,15 @@
                 <?php endforeach;?>
             </tbody>
         </table>
+        <?php if( Set::extract( $paginator, 'params.paging.Dossier.count' ) > 65000 ):?>
+            <p style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $html->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
+        <?php endif;?>
        <ul class="actionMenu">
             <li><?php
-                /*echo $html->exportLink(
+                echo $html->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'dossiers', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
-                );*/
+                );
             ?></li>
         </ul>
         <?php require( 'index.pagination.ctp' )?>
