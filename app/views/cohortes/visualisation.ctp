@@ -146,14 +146,14 @@
                 );
             ?></li>
 
-            <li><?php
+            <!--<li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
                     Set::merge(
                         array( 'controller' => 'cohortes', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                     )
                 );
-            ?></li> 
+            ?></li> -->
         </ul>
     <?php endif;?>
 <?php endif;?>
