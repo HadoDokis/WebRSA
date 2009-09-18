@@ -72,7 +72,7 @@
         <?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom' ) );?>
     </fieldset>
 
-    <div class="submit">
+    <div class="submit noprint">
         <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type'=>'reset' ) );?>
     </div>
@@ -80,7 +80,7 @@
 
 <!-- Résultats -->
 <?php if( isset( $dossiers ) ):?>
-    <h2>Résultats de la recherche</h2>
+    <h2 class="noprint">Résultats de la recherche</h2>
 
     <?php if( is_array( $dossiers ) && count( $dossiers ) > 0 ):?>
         <?php require( 'index.pagination.ctp' )?>
@@ -97,9 +97,9 @@
                     <!--<th>NIR</th>
                     <th>Allocataire</th>
                     <th>Commune de l'Allocataire</th>-->
-                    <th class="action">Actions</th>
-                    <th class="action">Verrouillé</th>
-                    <th class="innerTableHeader">Informations complémentaires</th>
+                    <th class="action noprint">Actions</th>
+                    <th class="action noprint">Verrouillé</th>
+                    <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
             <tbody>
@@ -143,18 +143,23 @@
                                 ),
                                 h( Set::extract(  $dossier, 'Adresse.locaadr' ) ),
                                 //h( isset( $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null ),
-
-                                $html->viewLink(
-                                    'Voir le dossier « '.$title.' »',
-                                    array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] )
+                                array(
+                                    $html->viewLink(
+                                        'Voir le dossier « '.$title.' »',
+                                        array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] )
+                                    ),
+                                    array( 'class' => 'noprint' )
                                 ),
-                                ( $dossier['Dossier']['locked'] ?
-                                    $html->image(
-                                        'icons/lock.png',
-                                        array( 'alt' => '', 'title' => 'Dossier verrouillé' )
-                                    ) : null
+                                array(
+                                    ( $dossier['Dossier']['locked'] ?
+                                        $html->image(
+                                            'icons/lock.png',
+                                            array( 'alt' => '', 'title' => 'Dossier verrouillé' )
+                                        ) : null
+                                    ),
+                                    array( 'class' => 'noprint' )
                                 ),
-                                array( $innerTable, array( 'class' => 'innerTableCell' ) ),
+                                array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
                             ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
                             array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
@@ -164,9 +169,15 @@
             </tbody>
         </table>
         <?php if( Set::extract( $paginator, 'params.paging.Dossier.count' ) > 65000 ):?>
-            <p style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $html->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
+            <p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $html->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
         <?php endif;?>
        <ul class="actionMenu">
+            <li><?php
+                echo $html->printLinkJs(
+                    'Imprimer le tableau',
+                    array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+                );
+            ?></li>
             <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
