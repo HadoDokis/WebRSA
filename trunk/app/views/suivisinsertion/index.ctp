@@ -247,7 +247,6 @@
                 </tr>
             </tbody>
         </table>
-
         <!-- Etape 6 : Affichage des Actions d'insertion engagées -->
         <h2>Etape 6: Actions d'insertion engagées</h2>
         <table>
@@ -270,27 +269,27 @@
                     <th class="action">Action</th>
                 </tr>
                 <tr>
-                    <td><?php echo count( Set::extract( 'DEM.Actioninsertion.id', $details ) );?></td>
-                    <td><?php echo date_short( Set::extract( 'DEM.Actioninsertion.dd_action', $details ) );?></td>
+                    <td><?php echo count( Set::extract( 'DEM.Actioninsertion', $details ) );?></td>
+                    <td><?php echo date_short( Set::extract( 'DEM.Actioninsertion.0.Actioninsertion.dd_action', $details ) );?></td>
                     <td><?php echo $html->boolean( !empty( $details['DEM']['Contratinsertion']['datevalidation_ci'] ) );?></td>
                     <td><?php
-                        if( !empty( $details['DEM']['Actioninsertion']['id'] ) ){
+                        if( !empty( $details['DEM']['Contratinsertion'] ) ){
                             echo $html->viewLink(
                                 'Voir les actions d\'insertion',
-                                array( 'controller' => 'actionsinsertion', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
+                                array( 'controller' => 'actionsinsertion', 'action' => 'index', Set::extract( 'DEM.Contratinsertion.id', $details ) )
                             );
                         }
                         ?>
                     </td>
 
-                    <td><?php echo count( Set::extract( 'CJT.Actioninsertion.id', $details ) );?></td>
-                    <td><?php echo date_short( Set::extract( 'CJT.Actioninsertion.dd_action', $details ) );?></td>
+                    <td><?php echo count( Set::extract( 'CJT.Actioninsertion', $details ) );?></td>
+                    <td><?php echo date_short( Set::extract( 'CJT.Actioninsertion.0.Actioninsertion.dd_action', $details ) );?></td>
                     <td><?php echo $html->boolean( !empty( $details['CJT']['Actioninsertion']['dd_action'] ) );?></td>
                     <td><?php
-                        if( !empty( $details['CJT']['Actioninsertion']['id'] ) ){
+                        if( !empty( $details['CJT']['Contratinsertion'] ) ){
                             echo $html->viewLink(
                                 'Voir les actions d\'insertion',
-                                array( 'controller' => 'actionsinsertion', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
+                                array( 'controller' => 'actionsinsertion', 'action' => 'index', Set::extract( 'CJT.Contratinsertion.id', $details ) )
                             );
                         }
                         ?>
@@ -372,7 +371,7 @@
                     <th class="action">Action</th>
                 </tr>
                 <tr>
-                    <td><?php echo Set::extract( 'DEM.Contratinsertion.datevalidation_ci', $details );?></td>
+                    <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.datevalidation_ci', $details ) );?></td>
                     <td><?php echo value( $decision_ci, Set::extract( 'DEM.Contratinsertion.decision_ci', $details ) );?></td>
                     <td><?php echo $html->boolean( !empty( $details['DEM']['Contratinsertion']['decision_ci'] )  && ( $details['DEM']['Contratinsertion']['decision_ci'] != 'E' ) );?></td>
                     <td><?php
@@ -385,7 +384,7 @@
                         ?>
                     </td>
 
-                    <td><?php echo Set::extract( 'CJT.Contratinsertion.datevalidation_ci', $details );?></td>
+                    <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.datevalidation_ci', $details ) );?></td>
                     <td><?php echo value( $decision_ci, Set::extract( 'CJT.Contratinsertion.decision_ci', $details ) );?></td>
                     <td><?php echo $html->boolean( !empty( $details['CJT']['Contratinsertion']['decision_ci'] ) && ( $details['CJT']['Contratinsertion']['decision_ci'] != 'E' ) );?></td>
                     <td><?php
@@ -402,5 +401,6 @@
         </table>
     </div>
 </div>
+
 <div class="clearer"><hr /></div>
 <?php /*debug( $details );*/?>
