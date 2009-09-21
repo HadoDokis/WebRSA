@@ -96,6 +96,8 @@
             );
 
             $this->set('users', $users);
+            $authUser = $this->Session->read( 'Auth.User.id' );
+            $this->set( 'authUser', $authUser );
         }
 
         /** ********************************************************************
@@ -275,7 +277,7 @@
 
             // Tentative de suppression ... FIXME
             if( $this->User->deleteAll( array( 'User.id' => $user_id ), true ) ) {
-                $this->Session->setFlash( 'Suppression effectuée' );
+                $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
                 $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
             }
         }

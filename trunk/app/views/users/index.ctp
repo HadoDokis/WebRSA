@@ -47,7 +47,7 @@
                                 ),
                                 $html->deleteLink(
                                     'Supprimer l\'utilisateur',
-                                    array( 'controller' => 'users', 'action' => 'delete', $user['User']['id'] )
+                                    array( 'controller' => 'users', 'action' => 'delete', $user['User']['id'] ), $permissions->check( 'users', 'delete' ) && ( $user['User']['id'] != $authUser )
                                 )
                             ),
                             array( 'class' => 'odd' ),
