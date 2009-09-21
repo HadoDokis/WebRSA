@@ -2,9 +2,50 @@
     class Action extends AppModel
     {
         var $name = 'Action';
-        var $useTable = false;
+        var $useTable = 'actions';
         var $displayField = 'libelle';
 
+        var $belongsTo = array(
+            'Typeaction' => array(
+                'classname' => 'Typeaction',
+                'foreignKey' => 'typeaction_id',
+            )
+        );
+
+        //*********************************************************************
+
+        var $validate = array(
+            'code' => array(
+                array(
+                    'rule' => 'isUnique',
+                    'message' => 'Cette valeur est déjà utilisée'
+                ),
+                array(
+                    'rule' => 'alphaNumeric',
+                    'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
+                ),
+                array(
+                    'rule' => array( 'between', 2, 2 ),
+                    'message' => 'Le code de l\'action est composé de 2 caractères'
+                ),
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'libelle' => array(
+                array(
+                    'rule' => 'isUnique',
+                    'message' => 'Cette valeur est déjà utilisée'
+                ),
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            )
+        );
+
+        //*********************************************************************
 
         function grouplist( $type = null ) {
             $conditions = array();
@@ -75,7 +116,5 @@
             );
             return $actions;
         }
-
-
     }
 ?>
