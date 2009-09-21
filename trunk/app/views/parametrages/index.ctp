@@ -67,6 +67,17 @@
                 );
                 echo $html->tableCells(
                     array(
+                        h( 'Types d\'actions' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'typesactions', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
                         h( 'Types de contrats d\'insertion' ),
                         $html->viewLink(
                             'Voir la table',
