@@ -12,10 +12,10 @@
             <?php
                 echo $html->tableCells(
                     array(
-                        h( 'Utilisateurs' ),
+                        h( 'Actions d\'insertion' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'users', 'action' => 'index' )
+                            array( 'controller' => 'actions', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),
@@ -23,10 +23,10 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Zones géographiques' ),
+                        h( 'Groupes d\'utilisateurs' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'zonesgeographiques', 'action' => 'index' )
+                            array( 'controller' => 'groups', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),
@@ -34,10 +34,21 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Types orientations' ),
+                        h( 'Référents' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'typesorients', 'action' => 'index' )
+                            array( 'controller' => 'referents', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
+                        h( 'Services instructeurs' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'servicesinstructeurs', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),
@@ -67,10 +78,10 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Référents' ),
+                        h( 'Types orientations' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'referents', 'action' => 'index' )
+                            array( 'controller' => 'typesorients', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),
@@ -78,10 +89,10 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Groupes d\'utilisateurs' ),
+                        h( 'Utilisateurs' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'groups', 'action' => 'index' )
+                            array( 'controller' => 'users', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),
@@ -89,26 +100,15 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Services instructeurs' ),
+                        h( 'Zones géographiques' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'servicesinstructeurs', 'action' => 'index' )
+                            array( 'controller' => 'zonesgeographiques', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                /*echo $html->tableCells(
-                    array(
-                        h( 'Regroupement par région' ),
-                        $html->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'regroupementszonesgeo', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );*/
             ?>
         </tbody>
     </table>

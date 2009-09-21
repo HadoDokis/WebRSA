@@ -96,9 +96,6 @@
                 $this->data = $contratinsertion;
             }
             $this->render( $this->action, null, 'add_edit' );
-
-
-
         }
 
 

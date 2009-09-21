@@ -33,7 +33,7 @@
             $this->set( 'actions', $this->Action->grouplist( 'prest' ) );
             $this->set( 'typo_aide', $this->Option->typo_aide() );
 
-            $this->set( 'codesaction', $this->Action->find( 'list', array( 'fields' => array( 'code', 'id' ) ) ) );
+            //$this->set( 'codesaction', $this->Action->find( 'list', array( 'fields' => array( 'code', 'id' ) ) ) );
         }
 
         function index( $personne_id = null ){

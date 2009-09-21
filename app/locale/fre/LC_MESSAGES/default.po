@@ -435,6 +435,9 @@ msgid "code_action"
 msgstr "Code de l'action"
 
 msgid "lib_action"
+msgstr "Libellé de l'action"
+
+msgid "type_action"
 msgstr "Type d'action"
 
 msgid "dd_action"
