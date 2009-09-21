@@ -23,6 +23,23 @@
                     )
                 );
 
+				// Recherche des droits pour les sous-groupes
+				$parent_id = Set::extract( $Aro, 'Aro.parent_id' );
+				$parentAros = array();
+				while( !empty( $parent_id ) && ( $parent_id != 0 ) ) {
+					$parentAro = $this->Acl->Aro->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Aro.id' => $parent_id
+							)
+						)
+					);
+					$parentAros[] = $parentAro;
+					$parent_id = Set::extract( $parentAro, 'Aro.parent_id' );
+				}
+				$permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
+
                 if( !empty( $Aro ) ) {
                     // FIXME: trié par parent / fils ? .. un seul niveau
                     $sql = 'SELECT acos.alias AS aco, aros_acos._create, aros.alias AS aro
@@ -33,7 +50,7 @@
                                 ORDER BY aco, aro ASC';
                     $data = $this->User->query( $sql ); // FIXME: c'est sale ?
 
-                    $permissions = Set::combine( $data, '{n}.0.aco', '{n}.0._create' );
+                    $permissions = Set::merge( $permissions, Set::combine( $data, '{n}.0.aco', '{n}.0._create' ) );
                     foreach( $permissions as $key => $permission ) {
                         $permissions[$key] = ( $permission != -1 );
                     }
