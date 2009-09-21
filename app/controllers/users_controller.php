@@ -160,7 +160,7 @@
 
                     if( /*false &&*/ $saved ) {
                         $this->User->commit();
-                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                        $this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
                         $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
                     }
                     else {
@@ -228,7 +228,7 @@
 
                         if( $saved ) {
                             $this->User->commit();
-                            $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                            $this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
                             $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
                         }
                         else {
@@ -238,7 +238,7 @@
                     }
                     else {
                         $this->User->commit();
-                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                        $this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
                         $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
                     }
                 }

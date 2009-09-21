@@ -51,6 +51,7 @@
                 $conditions[] = 'EXTRACT(YEAR FROM Identificationflux.dtcreaflux) = '.$annee;
             }
 
+
             /// Requête
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
 

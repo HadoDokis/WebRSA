@@ -117,6 +117,17 @@
             if( !empty( $numcomptt ) ) {
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
+
+            /// Limitation suivant les zones géographiques visibles par l'utilisateur
+            if( $filtre_zone_geo ) {
+                if( !empty( $mescodesinsee ) ) {
+                    $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mescodesinsee ).'\' )';
+                }
+                else {
+                    $conditions[] = 'FALSE';
+                }
+            }
+
             /// Requête
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
 
