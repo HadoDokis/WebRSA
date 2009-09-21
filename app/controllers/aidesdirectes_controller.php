@@ -67,7 +67,7 @@
 //                 }
             }
 
-            $this->set( 'actioninsertion_id', $contratinsertion['Actioninsertion']['id'] );
+//             $this->set( 'actioninsertion_id', $contratinsertion['Actioninsertion']['id'] );
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
             $this->render( $this->action, null, 'add_edit' );
 
@@ -109,7 +109,7 @@
 
                     if( $saved ) {
                         $this->Aidedirecte->commit();
-                        $this->Session->setFlash( 'Enregistrement effectué' );
+                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
                     //FIXME: 
                        $this->redirect( array( 'controller' => 'actionsinsertion', 'action' => 'index', $aidedirecte['Actioninsertion']['Contratinsertion']['id']) );

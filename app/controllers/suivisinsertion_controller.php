@@ -3,7 +3,7 @@
     {
 
         var $name = 'Suivisinsertion';
-        var $uses = array( 'Foyer', 'Dossier', 'Suiviinstruction', 'Contratinsertion', 'Orientstruct', 'Structurereferente', 'Typocontrat', 'Typeorient', 'Actioninsertion', 'Option', 'Rendezvous' );
+        var $uses = array( 'Foyer', 'Dossier', 'Suiviinstruction', 'Contratinsertion', 'Orientstruct', 'Structurereferente', 'Typocontrat', 'Typeorient', 'Actioninsertion', 'Option', 'Rendezvous', 'Aidedirecte' );
 //         var $helpers = array( 'Locale', 'Csv' );
 
         /** ********************************************************************
@@ -71,15 +71,17 @@
 
 
                 // Actions insertions engagées par la personne
+//                 $this->Actioninsertion->unbindModelAll();
+//                 $this->Actioninsertion->bindModel( array( 'hasMany' => array( 'Aidedirecte', 'Prestform' ) ) );
                 $tActioninsertion = $this->Actioninsertion->find(
-                    'first',
+                    'all',
                     array(
                         'conditions' => array( 'Actioninsertion.contratinsertion_id' => $personnesFoyer[$index]['Contratinsertion']['id'] ),
                         'recursive' => -1,
-//                         'order' => array( 'Actioninsertion.rg_ci DESC' )
+                        'order' => 'Actioninsertion.dd_action DESC'
                     )
                 );
-                $personnesFoyer[$index]['Actioninsertion'] = $tActioninsertion['Actioninsertion'];
+                $personnesFoyer[$index]['Actioninsertion'] = Set::extract( $tActioninsertion, '/Actioninsertion' );
 
                 // Premier Rendez-vous
                 $tRendezvous = $this->Rendezvous->find(
