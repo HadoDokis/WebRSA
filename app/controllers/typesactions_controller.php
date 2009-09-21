@@ -11,7 +11,8 @@
             $typesactions = $this->Typeaction->find(
                 'all',
                 array(
-                    'recursive' => 1
+                    'recursive' => 1,
+                    'order' => 'Typeaction.libelle ASC'
                 )
             );
             $this->set( 'typesactions', $typesactions );
