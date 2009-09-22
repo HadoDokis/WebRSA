@@ -53,9 +53,7 @@
 
 <!-- Résultats -->
 <?php if( isset( $orients ) ):?>
-    <div class="submit noprint">
-        <?php echo $form->button( 'Imprimer cette page', array( 'onclick' => 'printit();' ) );?>
-    </div>
+
     <h2 class="noprint">Résultats de la recherche</h2>
 
     <?php if( is_array( $orients ) && count( $orients ) > 0  ):?>
@@ -122,14 +120,21 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-       <!-- <ul class="actionMenu">
+        <ul class="actionMenu">
+            <li><?php
+                echo $html->printLinkJs(
+                    'Imprimer le tableau',
+                    array( 'onclick' => 'printit(); return false;' )
+                );
+            ?>
+            </li>
              <li><?php
                 /*echo $html->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'criteres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );*/
             ?></li> 
-        </ul> -->
+        </ul> 
         <?php require( 'index.pagination.ctp' )?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
