@@ -12,8 +12,13 @@
             // Montant de la ressource selon la nature
             'mtnatressmen' => array(
                 array(
-                    'rule'      => array( 'range', 0, 33333332 ),
-                    'message'   => 'Veuillez entrer un montant compris entre 0 et 33 333 332',
+                    'rule'          => array( 'comparison', '<=', 33333332 ),
+                    'message'       => 'Veuillez entrer un montant compris entre 0 et 33 333 332',
+                    'allowEmpty'    => true
+                ),
+                array(
+                    'rule'          => array( 'comparison', '>=', 0 ),
+                    'message'       => 'Veuillez entrer un montant compris entre 0 et 33 333 332',
                     'allowEmpty'    => true
                 ),
                 array(
