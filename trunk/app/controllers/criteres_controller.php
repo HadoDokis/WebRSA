@@ -1,6 +1,7 @@
 <?php
     App::import('Sanitize');
-
+    @set_time_limit( 0 );
+    @ini_set( 'memory_limit', '128M' );
     class CriteresController extends AppController
     {
         var $name = 'Criteres';

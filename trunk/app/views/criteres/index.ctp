@@ -129,10 +129,10 @@
             ?>
             </li>
              <li><?php
-                /*echo $html->exportLink(
-                    'Télécharger le tableau',
-                    array( 'controller' => 'criteres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
-                );*/
+//                 echo $html->exportLink(
+//                     'Télécharger le tableau',
+//                     array( 'controller' => 'criteres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+//                 );
             ?></li> 
         </ul> 
         <?php require( 'index.pagination.ctp' )?>
