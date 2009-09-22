@@ -141,7 +141,7 @@
                     array( 'controller' => 'relances', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
             ?></li>
-            <!-- <li><?php
+             <li><?php
                 echo $html->printCohorteLink(
                     'Imprimer la cohorte',
                     Set::merge(
@@ -152,7 +152,7 @@
                         array_unisize( $this->data )
                     )
                 );
-            ?></li> -->
+            ?></li> 
         </ul>
     <?php endif;?>
 <?php endif;?>

@@ -8,6 +8,7 @@
     {
         var $name = 'Gedooos';
         var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance' );
+        var $component = array( 'Jetons' );
 
 
         function _ged( $datas, $model ) {
@@ -561,73 +562,6 @@
 /******************************************************************************/
         /* Notification de relances
 /******************************************************************************/
-/*
-        function _getRelance( $personne_id ) {
-            $this->Personne->unbindModel(
-                array(
-                    'hasMany' => array( 'Contratinsertion', 'Rendezvous' ),
-                    'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
-                )
-            );
-
-            $personne = $this->Personne->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Personne.id' => $personne_id
-                    )
-                )
-            );
-
-            // Récupération de l'adresse lié à la personne
-            $this->Adressefoyer->bindModel(
-                array(
-                    'belongsTo' => array(
-                        'Adresse' => array(
-                            'className'     => 'Adresse',
-                            'foreignKey'    => 'adresse_id'
-                        )
-                    )
-                )
-            );
-            $adresse = $this->Adressefoyer->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Adressefoyer.foyer_id' => $personne['Personne']['foyer_id'],
-                        'Adressefoyer.rgadr' => '01',
-                    )
-                )
-            );
-            $personne['Adresse'] = $adresse['Adresse'];
-
-            // Récupération de l'utilisateur
-            $user = $this->User->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'User.id' => $this->Session->read( 'Auth.User.id' )
-                    )
-                )
-            );
-            $personne['User'] = $user['User'];
-
-            // Récupération de la structure referente liée à la personne
-            $orientstruct = $this->Orientstruct->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        // 'Orientstruct.id' => $personne['Orientstruct']['id']
-                        'Orientstruct.personne_id' => $personne['Personne']['id'] // FIXME
-                    )
-                )
-            );
-            $personne['Orientstruct'] = $orientstruct['Orientstruct'];
-            $personne['Structurereferente'] = $orientstruct['Structurereferente'];
-
-            return $personne;
-        }
-*/
         /**
         * Notification de relances
         **/
@@ -685,6 +619,7 @@
                 )
             );
             $personne['User'] = $user['User'];
+            $personne['Serviceinstructeur'] = $user['Serviceinstructeur'];
 
             // Récupération de la structure referente liée à la personne
             $orientstruct = $this->Orientstruct->find(
@@ -699,6 +634,7 @@
             $personne['Structurereferente'] = $orientstruct['Structurereferente'];
 
             $personne['Structurereferente']['type_voie'] = ( isset( $typevoie[$personne['Structurereferente']['type_voie']] ) ? $typevoie[$personne['Structurereferente']['type_voie']] : null );
+            $personne['Serviceinstructeur']['type_voie'] = ( isset( $typevoie[$personne['Serviceinstructeur']['type_voie']] ) ? $typevoie[$personne['Serviceinstructeur']['type_voie']] : null );
 
             $personne['Personne']['qual'] = ( isset( $qual[$personne['Personne']['qual']] ) ? $qual[$personne['Personne']['qual']] : null );
 
@@ -706,30 +642,30 @@
 
             $personne['Adresse']['typevoie'] = ( isset( $typevoie[$personne['Adresse']['typevoie']] ) ? $typevoie[$personne['Adresse']['typevoie']] : null );
 
-//             unset( $personne['Contratinsertion'] ); // FIXME: faire un unbindModel
-
-// debug( $personne );
-// die();
             $this->_ged( $personne, 'notifications_relances.odt' );
         }
+
+
         /**
         * Notification de relances par cohorte
         **/
-        function notifications_relances( $personne_id = null ) {
-            $AuthZonegeographique = $this->Session->read( 'Auth.Zonegeographique' );
-            if( !empty( $AuthZonegeographique ) ) {
-                $AuthZonegeographique = array_values( $AuthZonegeographique );
-            }
-            else {
-                $AuthZonegeographique = array();
-            }
-            $relance = $this->Relance->search( 'Relance::relance', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+        function notifications_relances() {
+            $params = array_multisize( $this->params['named'] );
+            $params['User']['filtre_zone_geo'] = $this->Session->read( 'Auth.User.filtre_zone_geo' );
+            $params['User']['id'] = $this->Session->read( 'Auth.User.id' );
+            $params['User']['serviceinstructeur_id'] = $this->Session->read( 'Auth.User.serviceinstructeur_id' );
+            $params['Zonegeographique'] = $this->Session->read( 'Auth.Zonegeographique' );
+            $params['Jetons']['id'] = $this->Jetons->ids();
+
+            $querydata = $this->Relance->querydata( 'gedooo', $params );
+            $relances = $this->Orientstruct->find( 'all', $querydata );
 
             // Définition des variables & maccros
             // FIXME: chemins
             $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo'; // FIXME: chemin
             $sMimeType  = "application/pdf";
-            $sModele = $phpGedooDir.'/../notifications_relances.odt';
+            $sModele = $phpGedooDir.'/../notif.odt';
+            //$sModele = $phpGedooDir.'/../notifications_cohorte.odt';
 
             // Inclusion des fichiers nécessaires à GEDOOo
             // FIXME
@@ -749,19 +685,20 @@
             //
             $u = new GDO_Utility();
             $oMainPart = new GDO_PartType();
-            $oIteration = new GDO_IterationType( "Relance" );
+            $oIteration = new GDO_IterationType( 'relance' );
 
             $qual = $this->Option->qual();
             $typevoie = $this->Option->typevoie();
 
-            foreach( $relance as $personne_id ) {
+            foreach( $relances as $datas ) {
                 $oDevPart = new GDO_PartType();
-
-                $datas = $this->_get( $personne_id );
-debug($datas);
-die();
+// debug( $datas );
                 $datas['Personne']['qual'] = $qual[$datas['Personne']['qual']];
-                $datas['Adresse']['typevoie'] = $typevoie[$datas['Adresse']['typevoie']];
+                $datas['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $datas, 'Adresse.typevoie' ) );
+                $datas['Structurereferente']['type_voie'] = Set::extract( $typevoie, Set::extract( $datas, 'Structurereferente.type_voie' ) );
+                $datas['Serviceinstructeur']['type_voie'] = Set::extract( $typevoie, Set::extract( $datas, 'Serviceinstructeur.type_voie' ) );
+//                 debug( $datas );
+                $datas['Orientstruct']['daterelance'] = date_short( Set::extract( $datas, 'Orientstruct.daterelance' ) );
 
                 foreach( $datas as $group => $details ) {
                     if( !empty( $details ) ) {
@@ -777,20 +714,7 @@ die();
                     }
                 }
 
-                $oIteration->addPart($oDevPart);
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                // Récupération de la structure referente liée à la personne
-                $orientstruct = $this->Orientstruct->find( // FIXME: +++ -> dernière ?
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Orientstruct.personne_id' => $personne_id
-                        )
-                    )
-                );
-
+                $oIteration->addPart( $oDevPart );
             }
             $oMainPart->addElement($oIteration);
 
