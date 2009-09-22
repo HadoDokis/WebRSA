@@ -1,4 +1,16 @@
 <h1><?php echo $this->pageTitle = $pageTitle;?></h1>
+<?php
+    if( !empty( $this->data ) ) {
+        echo '<ul class="actionMenu"><li>'.$html->link(
+            $html->image(
+                'icons/application_form_magnify.png',
+                array( 'alt' => '' )
+            ).' Formulaire',
+            '#',
+            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Filtre' ).toggle(); return false;" )
+        ).'</li></ul>';
+    }
+?>
 
 <?php if( isset( $cohorte ) ):?>
     <?php echo $javascript->link( 'dependantselect.js' ); ?>

@@ -1,8 +1,17 @@
 <h1><?php echo $this->pageTitle = $pageTitle;?></h1>
 
-<?php require_once( 'filtre.ctp' );?>
-
 <?php
+
+    if( !empty( $this->data ) ) {
+        echo '<ul class="actionMenu"><li>'.$html->link(
+            $html->image(
+                'icons/application_form_magnify.png',
+                array( 'alt' => '' )
+            ).' Formulaire',
+            '#',
+            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Filtre' ).toggle(); return false;" )
+        ).'</li></ul>';
+    }
 //     if( isset( $cohorte ) ) {
 //         $paginator->options( array( 'url' => $this->passedArgs ) );
 //         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
@@ -21,6 +30,9 @@
 //     }
 
 ?>
+
+<?php require_once( 'filtre.ctp' );?>
+
 <?php if( !empty( $this->data ) ):?>
     <?php if( empty( $cohorte ) ):?>
         <?php
@@ -146,14 +158,14 @@
                 );
             ?></li>
 
-            <!--<li><?php
+           <!-- <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
                     Set::merge(
                         array( 'controller' => 'cohortes', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                     )
                 );
-            ?></li> -->
+            ?></li>  -->
         </ul>
     <?php endif;?>
 <?php endif;?>
