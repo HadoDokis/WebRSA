@@ -36,3 +36,52 @@
 	</thead>
 	<?php $droits->afficheCorpsTableau($profilsUsersTree, $structColonnes, $nbMenuControllers, $tabDroits); ?>
 </table>
+
+<script type="text/javascript">
+	function checkRow( checked, row ) {
+		$( row ).getElementsBySelector( 'input[type=checkbox]' ).each( function( checkbox ) {
+			$( checkbox ).checked = checked;
+		} );
+	}
+
+	function checkLine( checked, lineId ) {
+		var row = $$( '#tableDroits tbody tr#' + lineId );
+		if( $( row ).length == 1 ) {
+			row = row[0];
+
+			checkRow( checked, row );
+
+			if( $( row ).hasClassName( 'altLigneProfil' ) || $( row ).hasClassName( 'ligneProfil' ) ) {
+				while( ( row = $( row ).next( 'tr' ) ) != undefined ) {
+					if( $( row ).hasClassName( 'altLigneUtilisateur' ) || $( row ).hasClassName( 'ligneUtilisateur' ) ) {
+						checkRow( checked, row );
+					}
+					else {
+						row = undefined;
+					}
+				}
+			}
+		}
+	}
+
+	// Thead
+	var i = 0;
+	$$( '#tableDroits thead tr' ).each( function( row ) {
+		$( row ).getElementsBySelector( 'th:first-child' ).each( function( cell ) {
+			if( i == 0 ) {
+				$( cell ).insert( { 'after' : '<th class="droits">Tout cocher</th>' } );
+			}
+			else {
+				$( cell ).insert( { 'after' : '<th class="droits">|</th>' } );
+			}
+		} );
+		i++;
+	} );
+
+	// Tbody
+	$$( '#tableDroits tbody tr' ).each( function( row ) {
+		$( row ).getElementsBySelector( 'td:first-child' ).each( function( cell ) {
+			$( cell ).insert( { 'after' : '<td><input type="checkbox" onchange="checkLine( $( this ).checked, \'' + $( row ).id + '\' );" /></td>' } );
+		} );
+	} );
+</script>
