@@ -12,8 +12,8 @@
         $oridemrsaCochees = array_keys( $oridemrsa );
     }
 ?>
-
-<?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+<!-- <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ) ) );?> -->
     <fieldset>
         <legend>Code origine demande Rsa</legend>
         <?php echo $form->input( 'Filtre.oridemrsa', array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $oridemrsa, 'empty' => false, 'value' => $oridemrsaCochees ) );?>
