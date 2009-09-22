@@ -16,13 +16,13 @@
 //         $paginator->options( array( 'url' => $this->passedArgs ) );
 //         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
 //         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
-// 
+//
 //         $pages = $paginator->first( '<<' );
 //         $pages .= $paginator->prev( '<' );
 //         $pages .= $paginator->numbers();
 //         $pages .= $paginator->next( '>' );
 //         $pages .= $paginator->last( '>>' );
-// 
+//
 //         $pagination .= $html->tag( 'p', $pages );
 //     }
 //     else {
@@ -65,7 +65,7 @@
                     <th>Commune</th>
                     <th>Nom prenom</th>
                     <th>Date demande</th>
-                    <th>Date ouverture de droit</th>
+                    <th>Présence DSP</th>
                     <th>Service instructeur</th>
                     <th>PréOrientation</th>
                     <th>Orientation</th>
@@ -80,12 +80,17 @@
             <tbody>
                 <?php foreach( $cohorte as $index => $personne ):?>
                     <?php
+						// FIXME: date ouverture de droits -> voir flux instruction
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
                                 <tr>
                                     <th>N° de dossier</th>
                                     <td>'.h( $personne['Dossier']['numdemrsa'] ).'</td>
                                 </tr>
+								<tr>
+									<th>Date ouverture de droit</th>
+									<td>'.h( date_short( $personne['Dossier']['dtdemrsa'] ) ).'</td>
+								</tr>
                                 <tr>
                                     <th>Date naissance</th>
                                     <td>'.h( date_short( $personne['Personne']['dtnai'] ) ).'</td>
@@ -122,7 +127,7 @@
                                 h( $personne['Adresse']['locaadr'] ),
                                 h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
                                 h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
-                                h( date_short( $personne['Dossier']['dtdemrsa'] ) ), // FIXME: voir flux instruction
+                                h( $personne['Dspp'] ? 'Oui' : 'Non' ),
                                 h( $typeserins[$personne['Suiviinstruction']['typeserins']] ),
                                 h( isset( $typesOrient[$personne['Orientstruct']['propo_algo']] ) ? $typesOrient[$personne['Orientstruct']['propo_algo']] : null),
                                 h( $typesOrient[$personne['Orientstruct']['typeorient_id']] ),

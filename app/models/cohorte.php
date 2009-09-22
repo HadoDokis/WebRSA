@@ -83,6 +83,7 @@
             $sql = 'SELECT DISTINCT personnes.id
                     FROM personnes
                         INNER JOIN prestations ON ( prestations.personne_id = personnes.id AND prestations.natprest = \'RSA\' AND ( prestations.rolepers = \'DEM\' OR prestations.rolepers = \'CJT\' ) )
+                        '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dspps ON ( dspps.personne_id = personnes.id )' : '' ).'
                         INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
                         INNER JOIN dossiers_rsa ON ( foyers.dossier_rsa_id = dossiers_rsa.id )
                         INNER JOIN adresses_foyers ON ( adresses_foyers.foyer_id = foyers.id AND adresses_foyers.rgadr = \'01\' )

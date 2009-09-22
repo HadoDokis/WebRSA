@@ -68,7 +68,7 @@
                     <tr>
                         <th>Commune</th>
                         <th>Date demande</th>
-                        <th>Date ouverture de droit</th>
+                        <th>Présence DSP</th>
                         <th>Nom prenom</th>
                         <th>Service instructeur</th>
                         <th>PréOrientation</th>
@@ -88,6 +88,10 @@
                                         <th>N° de dossier</th>
                                         <td>'.h( $personne['Dossier']['numdemrsa'] ).'</td>
                                     </tr>
+									<tr>
+										<th>Date ouverture de droit</th>
+										<td>'.h( date_short( $personne['Dossier']['dtdemrsa'] ) ).'</td>
+									</tr>
                                     <tr>
                                         <th>Date naissance</th>
                                         <td>'.h( date_short( $personne['Personne']['dtnai'] ) ).'</td>
@@ -130,7 +134,7 @@
 
                                     h( $personne['Adresse']['locaadr'] ),
                                     h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
-                                    h( date_short( $personne['Dossier']['dtdemrsa'] ) ), // FIXME: voir flux instruction
+                                    h( $personne['Dspp'] ? 'Oui' : 'Non' ),
 //                                     h( date_short( $personne['Dossier']['Situationdossierrsa']['dtclorsa'] ) ),
                                     h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
                                     h( $typeserins[$personne['Suiviinstruction']['typeserins']] ),
