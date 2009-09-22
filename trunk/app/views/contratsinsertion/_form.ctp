@@ -9,23 +9,15 @@
         }
     }
 
-    <?php
-        $codes = array();
-        foreach( $codesaction as $codeaction => $id ) {
-            $codes[] = '\''.$codeaction.'\' : \''.$id.'\'';
-        }
-        echo 'var codesaction = { '.implode( ',', $codes ).' };';
-    ?>
-
     document.observe( "dom:loaded", function() {
         Event.observe( $( 'ActionCode' ), 'keyup', function() {
             var value = $F( 'ActionCode' );
             if( value.length == 2 ) { // FIXME: in_array
-                //$( 'ContratinsertionEngagObject' ).value = codesaction[value];
-                var opt = $$( '#ContratinsertionEngagObject option');
-                if( opt[codesaction[value]] ) {
-                    opt[codesaction[value]].selected = 'selected';
-                }
+                $$( '#ContratinsertionEngagObject option').each( function ( option ) {
+                    if( $( option ).value == value ) {
+                        $( option ).selected = 'selected';
+                    }
+                } );
             }
         } );
 
@@ -153,6 +145,7 @@
             echo $form->input( 'Action.id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
             echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __( 'engag_object', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  );
+            echo $form->input( 'Actioninsertion.dd_action', array( 'label' => __( 'dd_action', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  );
             echo $form->input( 'Contratinsertion.commentaire_action', array( 'label' => __( 'commentaire_action', true ), 'type' => 'textarea', 'rows' => 3 )  );
         ?>
         <?php
