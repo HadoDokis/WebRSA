@@ -169,7 +169,7 @@
                         $validates = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $validates;
                     }
                 }
-// debug( $validates );
+// debug( $this->data );
                 if( $validates ) {
                     $this->Ressource->begin();
                     $saved = $this->Ressource->save( $this->data );

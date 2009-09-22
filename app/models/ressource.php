@@ -78,6 +78,10 @@
             $moyenne = 0;
 
             $montants = Set::extract( $ressource, '/Ressourcemensuelle/Detailressourcemensuelle/mtnatressmen' );
+			if( empty( $montants ) ) {
+				$montants = Set::extract( $ressource, '/Detailressourcemensuelle/mtnatressmen' );
+			}
+
             if( count( $montants ) > 0 ) {
                 foreach( $montants as $montant ) {
                     $somme += $montant;
@@ -107,7 +111,7 @@
             if( !empty( $ressource ) ) {
                 $moyenne = $this->moyenne( $ressource );
                 $ressource['Ressource']['topressnotnul'] = ( $moyenne != 0 );
-                $ressource['Ressource']['topressnul'] = ( $moyenne == 0 );
+                $ressource['Ressource']['topressnul'] = !$ressource['Ressource']['topressnotnul'];
                 $ressource['Ressource']['mtpersressmenrsa'] = number_format( $moyenne, 2, '.', '' );
 
                 $this->create( $ressource );
@@ -147,7 +151,7 @@
 
             $moyenne = $this->moyenne( $this->data );
             $this->data['Ressource']['topressnotnul'] = ( $moyenne != 0 );
-            $this->data['Ressource']['topressnul'] = ( $moyenne == 0 );
+            $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
             $this->data['Ressource']['mtpersressmenrsa'] = number_format( $moyenne, 2, '.', '' );
 
 //             if( !empty( $this->data['Ressource']['topressnotnul'] ) ) {
