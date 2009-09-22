@@ -233,6 +233,19 @@
                         $cohorte[$key] = Set::merge( $cohorte[$key], array( 'Adresse' => $adresseFoyer['Adresse'] ) );
 
                         // ----------------------------------------------------
+
+                        // Dspp ?
+                        $dspp = $this->Dossier->Foyer->Personne->Dspp->find(
+                            'count',
+                            array(
+                                'conditions' => array(
+                                    'Dspp.personne_id' => $element['Personne']['id']
+                                )
+                            )
+                        );
+                        $cohorte[$key] = Set::merge( $cohorte[$key], array( 'Dspp' => $dspp ) );
+
+                        // ----------------------------------------------------
                         // TODO: continuer le nettoyage à partir d'ici
                         if( $statutOrientation == 'Orienté' ) {
                             $contratinsertion = $this->Contratinsertion->find(
