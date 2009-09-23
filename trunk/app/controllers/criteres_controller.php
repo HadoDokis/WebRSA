@@ -1,7 +1,6 @@
 <?php
     App::import('Sanitize');
-//     @set_time_limit( 0 );
-//     @ini_set( 'memory_limit', '256M' );
+    @ini_set( 'memory_limit', '512M' );
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
@@ -30,25 +29,10 @@
         function beforeFilter() {
             $return = parent::beforeFilter();
 
-            $typeservice = $this->Serviceinstructeur->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Serviceinstructeur.id',
-                        'Serviceinstructeur.lib_service'
-                    ),
-                )
-            );
+            $typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'id', 'lib_service' ) ) );
             $this->set( 'typeservice', $typeservice );
 
-            $sr = $this->Structurereferente->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Structurereferente.lib_struc'
-                    ),
-                )
-            );
+            $sr = $this->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ) ) );
             $this->set( 'sr', $sr );
 
 
@@ -71,18 +55,13 @@
 
                 $this->Dossier->begin(); // Pour les jetons
 
-                $this->paginate = $this->Orientstruct->search(
-                    $mesCodesInsee,
-                    $this->Session->read( 'Auth.User.filtre_zone_geo' ),
-                    $this->data,
-                    $this->Jetons->ids()
-                );
+                $this->paginate = $this->Orientstruct->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 
                 $this->paginate['limit'] = 10;
                 $orients = $this->paginate( 'Orientstruct' );
 
                 $this->Dossier->commit();
-// debug( $orients );
+
                 $this->set( 'orients', $orients );
                 $this->data['Search'] = $this->data;
             }

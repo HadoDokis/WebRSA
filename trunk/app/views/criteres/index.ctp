@@ -5,7 +5,7 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        observeDisableFieldsetOnCheckbox( 'FiltreDateValid', $( 'FiltreDateValidFromDay' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'CritereDateValid', $( 'CritereDateValidFromDay' ).up( 'fieldset' ), false );
     });
 </script>
 
@@ -25,24 +25,24 @@
 <?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
     <fieldset>
-        <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-        <?php echo $form->input( 'Filtre.date_valid', array( 'label' => 'Filtrer par date d\'orientation', 'type' => 'checkbox' ) );?>
+        <?php echo $form->input( 'Critere.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+        <?php echo $form->input( 'Critere.date_valid', array( 'label' => 'Filtrer par date d\'orientation', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date d'orientation</legend>
                 <?php
-                    $date_valid_from = Set::check( $this->data, 'Filtre.date_valid_from' ) ? Set::extract( $this->data, 'Filtre.date_valid_from' ) : strtotime( '-1 week' );
-                    $date_valid_to = Set::check( $this->data, 'Filtre.date_valid_to' ) ? Set::extract( $this->data, 'Filtre.date_valid_to' ) : strtotime( 'now' );
+                    $date_valid_from = Set::check( $this->data, 'Critere.date_valid_from' ) ? Set::extract( $this->data, 'Critere.date_valid_from' ) : strtotime( '-1 week' );
+                    $date_valid_to = Set::check( $this->data, 'Critere.date_valid_to' ) ? Set::extract( $this->data, 'Critere.date_valid_to' ) : strtotime( 'now' );
                 ?>
-                <?php echo $form->input( 'Filtre.date_valid_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_from ) );?>
-                <?php echo $form->input( 'Filtre.date_valid_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_to ) );?>
+                <?php echo $form->input( 'Critere.date_valid_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_from ) );?>
+                <?php echo $form->input( 'Critere.date_valid_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_to ) );?>
             </fieldset>
 
-        <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Filtre.typeorient_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
-        <?php echo $form->input( 'Filtre.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
-        <?php echo $form->input( 'Filtre.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
-         <?php echo $form->input( 'Filtre.serviceinstructeur_id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
+        <?php echo $form->input( 'Critere.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Critere.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Critere.typeorient_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
+        <?php echo $form->input( 'Critere.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
+        <?php echo $form->input( 'Critere.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
+         <?php echo $form->input( 'Critere.serviceinstructeur_id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
     </fieldset>
 
     <div class="submit noprint">
@@ -128,17 +128,16 @@
             <li><?php
                 echo $html->printLinkJs(
                     'Imprimer le tableau',
-                    array( 'onclick' => 'printit(); return false;' )
+                    array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
-            ?>
-            </li>
-             <li><?php
+            ?></li>
+            <li><?php
 //                 echo $html->exportLink(
 //                     'Télécharger le tableau',
 //                     array( 'controller' => 'criteres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
 //                 );
-            ?></li> 
-        </ul> 
+            ?></li>
+        </ul>
         <?php require( 'index.pagination.ctp' )?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
