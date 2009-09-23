@@ -15,6 +15,7 @@
 
             /// Critères
             $statutrdv = Set::extract( $criteresrdv, 'Critererdv.statutrdv' );
+            $typerdv_id = Set::extract( $criteresrdv, 'Critererdv.typerdv_id' );
             $structurereferente_id = Set::extract( $criteresrdv, 'Critererdv.structurereferente_id' );
             $locaadr = Set::extract( $criteresrdv, 'Critererdv.locaadr' );
             $numcomptt = Set::extract( $criteresrdv, 'Critererdv.numcomptt' );
@@ -58,6 +59,11 @@
             if( !empty( $structurereferente_id ) ) {
                 $conditions[] = 'Rendezvous.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
             }
+
+            /// Type de rendez vous
+            if( !empty( $typerdv_id ) ) {
+                $conditions[] = 'Rendezvous.typerdv_id = \''.Sanitize::clean( $typerdv_id ).'\'';
+            }
             /// Requête
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
 
@@ -66,6 +72,7 @@
                     '"Rendezvous"."id"',
                     '"Rendezvous"."personne_id"',
                     '"Rendezvous"."structurereferente_id"',
+                    '"Rendezvous"."typerdv_id"',
                     '"Rendezvous"."statutrdv"',
                     '"Rendezvous"."daterdv"',
                     '"Rendezvous"."objetrdv"',
@@ -94,6 +101,13 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Structurereferente.id = Rendezvous.structurereferente_id' ),
+                    ),
+                    array(
+                        'table'      => 'typesrdv',
+                        'alias'      => 'Typerdv',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Typerdv.id = Rendezvous.typerdv_id' ),
                     ),
                     array(
                         'table'      => 'prestations',

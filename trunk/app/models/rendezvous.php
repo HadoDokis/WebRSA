@@ -16,6 +16,13 @@
             )
         );
 
+        var $hasOne = array(
+            'Typerdv' => array(
+                'foreignKey' => false,
+                'conditions' => array( 'Typerdv.id = Rendezvous.typerdv_id' )
+            )
+        );
+
         var $validate = array(
             'statutrdv' => array(
                     'rule' => 'notEmpty',
@@ -43,6 +50,10 @@
                         'Foyer' => array(
                             'foreignKey' => false,
                             'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+                        ),
+                        'Typerdv' => array(
+                            'foreignKey' => false,
+                            'conditions' => array( 'Typerdv.id = Rendezvous.typerdv_id' )
                         )
                     )
                 )

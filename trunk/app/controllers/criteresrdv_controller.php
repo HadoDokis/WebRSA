@@ -6,7 +6,7 @@
     class CriteresrdvController extends AppController
     {
         var $name = 'Criteresrdv';
-        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Option' );
+        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Option', 'Typerdv' );
         var $aucunDroit = array( 'constReq' );
 
         var $helpers = array( 'Csv' );
@@ -36,6 +36,8 @@
             $this->set( 'statutrdv', $this->Option->statutrdv() );
             $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
             $this->set( 'struct', $struct );
+            $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
+            $this->set( 'typerdv', $typerdv );
         }
 
 

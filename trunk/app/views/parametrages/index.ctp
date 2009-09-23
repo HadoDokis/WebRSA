@@ -89,7 +89,18 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Types orientations' ),
+                        h( 'Types de rendez-vous' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'typesrdv', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
+                        h( 'Types d\'orientations' ),
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'typesorients', 'action' => 'index' )
