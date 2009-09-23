@@ -664,8 +664,7 @@
             // FIXME: chemins
             $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo'; // FIXME: chemin
             $sMimeType  = "application/pdf";
-            $sModele = $phpGedooDir.'/../notif.odt';
-            //$sModele = $phpGedooDir.'/../notifications_cohorte.odt';
+            $sModele = $phpGedooDir.'/../notifications_relances.odt';
 
             // Inclusion des fichiers nécessaires à GEDOOo
             // FIXME
@@ -692,12 +691,12 @@
 
             foreach( $relances as $datas ) {
                 $oDevPart = new GDO_PartType();
-// debug( $datas );
+
                 $datas['Personne']['qual'] = $qual[$datas['Personne']['qual']];
                 $datas['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $datas, 'Adresse.typevoie' ) );
                 $datas['Structurereferente']['type_voie'] = Set::extract( $typevoie, Set::extract( $datas, 'Structurereferente.type_voie' ) );
                 $datas['Serviceinstructeur']['type_voie'] = Set::extract( $typevoie, Set::extract( $datas, 'Serviceinstructeur.type_voie' ) );
-//                 debug( $datas );
+
                 $datas['Orientstruct']['daterelance'] = date_short( Set::extract( $datas, 'Orientstruct.daterelance' ) );
 
                 foreach( $datas as $group => $details ) {
