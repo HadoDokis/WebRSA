@@ -70,6 +70,10 @@
             ),
             'numagrins' => array(
                 array(
+                    'rule' => 'isUnique',
+                    'message' => 'Cette valeur est déjà utilisée'
+                ),
+                array(
                     'rule' => 'numeric',
                     'message' => 'Veuillez n\'utiliser que des lettres et des chiffres'
                 ),

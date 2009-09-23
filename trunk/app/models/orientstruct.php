@@ -161,7 +161,8 @@
                     '"Adresse"."numcomptt"',
                     '"Modecontact"."numtel"',
                     '"Serviceinstructeur"."id"',
-                    '"Serviceinstructeur"."lib_service"'
+                    '"Serviceinstructeur"."lib_service"',
+                    'Suiviinstruction.*'
                 ),
                 'recursive' => -1,
                 'joins' => array(
