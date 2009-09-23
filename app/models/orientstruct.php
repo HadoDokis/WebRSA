@@ -67,7 +67,7 @@
             /// Conditions de base
             $conditions = array();
 
-            /// Filtre zone géographique
+            /// Critere zone géographique
             if( $filtre_zone_geo ) {
                 $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
                 $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
@@ -79,25 +79,25 @@
             }
 
             /// Critères
-//             $dtdemrsa = Set::extract( $criteres, 'Filtre.dtdemrsa' );
-            $locaadr = Set::extract( $criteres, 'Filtre.locaadr' );
-            $numcomptt = Set::extract( $criteres, 'Filtre.numcomptt' );
-            $statut_orient = Set::extract( $criteres, 'Filtre.statut_orient' );
-            $typeorient_id = Set::extract( $criteres, 'Filtre.typeorient_id' );
-            $structurereferente_id = Set::extract( $criteres, 'Filtre.structurereferente_id' );
-            $serviceinstructeur_id = Set::extract( $criteres, 'Filtre.serviceinstructeur_id' );
+//             $dtdemrsa = Set::extract( $criteres, 'Critere.dtdemrsa' );
+            $locaadr = Set::extract( $criteres, 'Critere.locaadr' );
+            $numcomptt = Set::extract( $criteres, 'Critere.numcomptt' );
+            $statut_orient = Set::extract( $criteres, 'Critere.statut_orient' );
+            $typeorient_id = Set::extract( $criteres, 'Critere.typeorient_id' );
+            $structurereferente_id = Set::extract( $criteres, 'Critere.structurereferente_id' );
+            $serviceinstructeur_id = Set::extract( $criteres, 'Critere.serviceinstructeur_id' );
 
             /// Critères sur l'orientation - date d'orientation
-            if( isset( $criteres['Filtre']['date_valid'] ) && !empty( $criteres['Filtre']['date_valid'] ) ) {
-                $valid_from = ( valid_int( $criteres['Filtre']['date_valid_from']['year'] ) && valid_int( $criteres['Filtre']['date_valid_from']['month'] ) && valid_int( $criteres['Filtre']['date_valid_from']['day'] ) );
-                $valid_to = ( valid_int( $criteres['Filtre']['date_valid_to']['year'] ) && valid_int( $criteres['Filtre']['date_valid_to']['month'] ) && valid_int( $criteres['Filtre']['date_valid_to']['day'] ) );
+            if( isset( $criteres['Critere']['date_valid'] ) && !empty( $criteres['Critere']['date_valid'] ) ) {
+                $valid_from = ( valid_int( $criteres['Critere']['date_valid_from']['year'] ) && valid_int( $criteres['Critere']['date_valid_from']['month'] ) && valid_int( $criteres['Critere']['date_valid_from']['day'] ) );
+                $valid_to = ( valid_int( $criteres['Critere']['date_valid_to']['year'] ) && valid_int( $criteres['Critere']['date_valid_to']['month'] ) && valid_int( $criteres['Critere']['date_valid_to']['day'] ) );
                 if( $valid_from && $valid_to ) {
-                    $conditions[] = 'Orientstruct.date_valid BETWEEN \''.implode( '-', array( $criteres['Filtre']['date_valid_from']['year'], $criteres['Filtre']['date_valid_from']['month'], $criteres['Filtre']['date_valid_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteres['Filtre']['date_valid_to']['year'], $criteres['Filtre']['date_valid_to']['month'], $criteres['Filtre']['date_valid_to']['day'] ) ).'\'';
+                    $conditions[] = 'Orientstruct.date_valid BETWEEN \''.implode( '-', array( $criteres['Critere']['date_valid_from']['year'], $criteres['Critere']['date_valid_from']['month'], $criteres['Critere']['date_valid_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteres['Critere']['date_valid_to']['year'], $criteres['Critere']['date_valid_to']['month'], $criteres['Critere']['date_valid_to']['day'] ) ).'\'';
                 }
             }
 
             // ...
-            if( !empty( $dtdemrsa ) && dateComplete( $criteres, 'Filtre.dtdemrsa' ) ) {
+            if( !empty( $dtdemrsa ) && dateComplete( $criteres, 'Critere.dtdemrsa' ) ) {
                 $dtdemrsa = $dtdemrsa['year'].'-'.$dtdemrsa['month'].'-'.$dtdemrsa['day'];
                 $conditions[] = 'Dossier.dtdemrsa = \''.$dtdemrsa.'\'';
             }
@@ -161,8 +161,7 @@
                     '"Adresse"."numcomptt"',
                     '"Modecontact"."numtel"',
                     '"Serviceinstructeur"."id"',
-                    '"Serviceinstructeur"."lib_service"',
-                    'Suiviinstruction.*'
+                    '"Serviceinstructeur"."lib_service"'
                 ),
                 'recursive' => -1,
                 'joins' => array(

@@ -3,7 +3,7 @@
     {
         var $name = 'Rendezvous';
         var $useTable = 'rendezvous';
-
+        var $displayField = 'libelle';
 
         var $belongsTo = array(
             'Personne' => array(

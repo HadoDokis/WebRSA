@@ -12,7 +12,7 @@
         }
     }
 
-    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire',  'N° Téléphone', 'Commune de l\'allocataire', 'Date de demande', 'Date de l\'orientation', 'Structure référente', 'Statu de l\'orientation' ) );
+    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire',  'N° Téléphone', 'Commune de l\'allocataire', 'Date de demande', 'Date de l\'orientation', 'Structure référente', 'Statut de l\'orientation' ) );
 
     foreach( $orients as $orient ) {
         $row = array(
@@ -29,5 +29,5 @@
     }
 
     Configure::write( 'debug', 0 );
-    echo $csv->render( 'dossiers-'.date( 'Ymd-Hhm' ).'.csv' );
+    echo $csv->render( 'orientstructs-'.date( 'Ymd-Hhm' ).'.csv' );
 ?>
