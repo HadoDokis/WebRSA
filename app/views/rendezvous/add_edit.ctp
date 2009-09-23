@@ -35,9 +35,9 @@
     <div class="aere">
         <fieldset>
             <legend>Détails PDO</legend>
-            <?php /* if( $this->action == 'add' ){*/
+            <?php
                 echo $form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  ( __( 'lib_struct', true ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
-//                 }
+                echo $form->input( 'Rendezvous.typerdv_id', array( 'label' =>  ( __( 'lib_rdv', true ) ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
             ?>
             <?php echo $form->input( 'Rendezvous.statutrdv', array( 'label' =>  ( __( 'statutrdv', true ) ), 'type' => 'select', 'options' => $statutrdv, 'empty' => true ) );?>
             <?php echo $form->input( 'Rendezvous.daterdv', array( 'label' =>  ( __( 'daterdv', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>

@@ -885,6 +885,9 @@ msgstr "Motif de la PDO"
 msgid "statutrdv"
 msgstr "Statut du RDV"
 
+msgid "lib_rdv"
+msgstr "Type de RDV"
+
 msgid "commentairerdv"
 msgstr "Commentaires suite au RDV"
 

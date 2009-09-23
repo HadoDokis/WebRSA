@@ -38,6 +38,7 @@
             <tr>
                 <th>Nom/Prénom Allocataire</th>
                 <th>Structure référente</th>
+                <th>Type de RDV</th>
                 <th>Statut du RDV</th>
                 <th>Date du RDV</th>
                 <th>Objet du RDV</th>
@@ -52,6 +53,7 @@
                         array(
                             h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
                             h( Set::extract( $rdv, 'Structurereferente.lib_struc' ) ),
+                            h( Set::extract( $rdv, 'Typerdv.libelle' ) ),
                             h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv' ) ) ),
                             h(  date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) ) ),
                             h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),

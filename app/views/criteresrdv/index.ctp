@@ -42,6 +42,7 @@
             <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'text' ) );?>
             <?php echo $form->input( 'Critererdv.statutrdv', array( 'label' => __( 'statutrdv', true ), 'type' => 'select' , 'options' => $statutrdv, 'empty' => true ) );?>
             <?php echo $form->input( 'Critererdv.structurereferente_id', array( 'label' => __( 'lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
+            <?php echo $form->input( 'Critererdv.typerdv_id', array( 'label' => __( 'lib_rdv', true ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Critererdv.daterdv', array( 'label' => 'Filtrer par date de RDV', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de Rendez-vous</legend>
@@ -80,6 +81,7 @@
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
                     <th><?php echo $paginator->sort( 'Structure référente', 'Rendezvous.structurereferente_id' );?></th>
+                    <th><?php echo $paginator->sort( 'Type de RDV', 'Rendezvous.typerdv_id' );?></th>
                     <th><?php echo $paginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv' );?></th>
                     <th><?php echo $paginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
                     <th>Objet du RDV</th>
@@ -114,6 +116,7 @@
                                 h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
                                 h( Set::extract( $rdv, 'Adresse.locaadr' ) ),
                                 h( value( $struct, Set::extract( $rdv, 'Rendezvous.structurereferente_id' ) ) ),
+                                h( value( $typerdv, Set::extract( $rdv, 'Rendezvous.typerdv_id' ) ) ),
                                 h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv' ) ) ),
                                 h( date_short( $rdv['Rendezvous']['daterdv'] ) ),
                                 h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),

@@ -109,7 +109,8 @@
         'indicateurmensuel' => 'indicateursmensuels',
         'cohortepdo' => 'cohortespdos',
         'propopdo' => 'propospdos',
-        'critererdv' => 'criteresrdv'
+        'critererdv' => 'criteresrdv',
+        'typerdv' => 'typesrdv'
      );
 /**
  * This is a key => value array of regex used to match words.

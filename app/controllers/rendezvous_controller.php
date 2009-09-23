@@ -3,7 +3,7 @@
     {
 
         var $name = 'Rendezvous';
-        var $uses = array( 'Rendezvous', 'Option', 'Personne', 'Structurereferente' );
+        var $uses = array( 'Rendezvous', 'Option', 'Personne', 'Structurereferente', 'Typerdv' );
         var $helpers = array( 'Locale', 'Csv' );
 
         /** ********************************************************************
@@ -25,7 +25,6 @@
 
             $rdvs = $this->Rendezvous->find( 'all', array( 'conditions' => array( 'Rendezvous.personne_id' => $personne_id ) ) );
             $this->set( 'rdvs', $rdvs );
-
             $this->set( 'personne_id', $personne_id );
         }
 
@@ -54,6 +53,9 @@
 
             $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
             $this->set( 'struct', $struct );
+
+            $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
+            $this->set( 'typerdv', $typerdv );
 //             debug( $struct );
 
             // Récupération des id afférents
