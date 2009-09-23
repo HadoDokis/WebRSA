@@ -16,7 +16,7 @@
         <table>
         <thead>
             <tr>
-                <th>Libellé du rendez-vous</th>
+                <th>Type de rendez-vous</th>
                 <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
