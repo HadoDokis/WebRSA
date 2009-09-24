@@ -7,14 +7,19 @@ ALTER TABLE contratsinsertion ADD COLUMN commentaire_action TEXT;
 
 CREATE TABLE typesrdv(
     id                      SERIAL NOT NULL PRIMARY KEY,
-    libelle                 VARCHAR(255);
+    libelle                 VARCHAR(255),
+    modelenotifrdv          VARCHAR (50)
 );
 
 INSERT INTO typesrdv VALUES ( 1, 'Pour Contrat d\'insertion' );
 INSERT INTO typesrdv VALUES ( 2, 'Pour l\'orientation' );
+SELECT pg_catalog.setval('typesrdv_id_seq', ( SELECT max(typesrdv.id) + 1 FROM typesrdv ), false);
 
 ALTER TABLE rendezvous ADD COLUMN typerdv_id INTEGER REFERENCES typesrdv(id);
 
 CREATE INDEX rendezvous_daterdv_idx ON rendezvous (daterdv);
 CREATE INDEX rendezvous_statutrdv_idx ON rendezvous (statutrdv);
 CREATE INDEX typesrdv_libelle_idx ON typesrdv (libelle);
+
+
+

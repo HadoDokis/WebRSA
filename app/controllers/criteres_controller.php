@@ -4,16 +4,11 @@
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Orientstruct' );
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Orientstruct', 'Critere' );
         //var $aucunDroit = array('index', 'menu', 'constReq');
         var $aucunDroit = array( 'constReq' );
         var $helpers = array( 'Csv' );
 
-        /**
-        *
-        *
-        *
-        */
 
         function __construct() {
             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
@@ -21,9 +16,7 @@
         }
 
         /**
-        *
-        *
-        *
+
         */
 
         function beforeFilter() {
@@ -44,9 +37,7 @@
             return $return;
         }
 
-        /**
-            INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
-        */
+
         function index() {
             if( !empty( $this->data ) ) {
 
@@ -55,7 +46,7 @@
 
                 $this->Dossier->begin(); // Pour les jetons
 
-                $this->paginate = $this->Orientstruct->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                $this->paginate = $this->Critere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 
                 $this->paginate['limit'] = 10;
                 $orients = $this->paginate( 'Orientstruct' );
@@ -65,6 +56,7 @@
                 $this->set( 'orients', $orients );
                 $this->data['Search'] = $this->data;
             }
+
         }
 
         /// Export du tableau en CSV
@@ -72,7 +64,7 @@
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
-            $querydata = $this->Orientstruct->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+            $querydata = $this->Critere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 
             unset( $querydata['limit'] );
             $orients = $this->Orientstruct->find( 'all', $querydata );
