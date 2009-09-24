@@ -50,11 +50,14 @@
 
                 $this->paginate['limit'] = 10;
                 $orients = $this->paginate( 'Orientstruct' );
-// debug( $this->data );
+
                 $this->Dossier->commit();
 
                 $this->set( 'orients', $orients );
                 $this->data['Search'] = $this->data;
+/*
+                debug( $orients );
+                die();*/
             }
 
         }

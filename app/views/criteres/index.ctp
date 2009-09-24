@@ -66,7 +66,7 @@
                     <th><?php echo $paginator->sort( 'Allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'N° Téléphone', 'Modecontact.numtel' );?></th>
                     <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date d\'ouverture droits', 'Dossier.date_valid' );?></th>
+                    <th><?php echo $paginator->sort( 'Date d\'ouverture droits', 'Dossier.dtdemrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' );?></th>
                     <th><?php echo $paginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
                     <th><?php echo $paginator->sort( 'Statut orientation', 'Orientstruct.statut_orient' );?></th>
