@@ -17,6 +17,7 @@
         <thead>
             <tr>
                 <th>Type de rendez-vous</th>
+                <th>Modèle de notification de RDV</th>
                 <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
@@ -25,6 +26,7 @@
                 <?php echo $html->tableCells(
                             array(
                                 h( $typerdv['Typerdv']['libelle'] ),
+                                h( $typerdv['Typerdv']['modelenotifrdv'] ),
                                 $html->editLink(
                                     'Éditer le type d\'action',
                                     array( 'controller' => 'typesrdv', 'action' => 'edit', $typerdv['Typerdv']['id'] )
