@@ -66,3 +66,4 @@ SELECT pg_catalog.setval('typoscontrats_id_seq', ( SELECT max(typoscontrats.id) 
 SELECT pg_catalog.setval('users_id_seq', ( SELECT max(users.id) + 1 FROM users ), false);
 SELECT pg_catalog.setval('zonesgeographiques_id_seq', ( SELECT max(zonesgeographiques.id) + 1 FROM zonesgeographiques ), false);
 SELECT pg_catalog.setval('prestations_id_seq', ( SELECT max(prestations.id) + 1 FROM prestations ), false);
+SELECT pg_catalog.setval('typesrdv_id_seq', ( SELECT max(typesrdv.id) + 1 FROM typesrdv ), false);
