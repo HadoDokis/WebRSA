@@ -22,7 +22,7 @@
         function beforeFilter() {
             $return = parent::beforeFilter();
 
-            $typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'id', 'lib_service' ) ) );
+            $typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
             $this->set( 'typeservice', $typeservice );
 
             $sr = $this->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ) ) );
@@ -32,7 +32,7 @@
             $this->set( 'typeorient', $this->Typeorient->listOptions() );
             $this->set( 'statuts', $this->Option->statut_orient() );
             $this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
-            $this->set( 'typeservice', $this->Serviceinstructeur->listOptions());
+//             $this->set( 'typeservice', $this->Serviceinstructeur->listOptions());
 
             return $return;
         }
@@ -50,7 +50,7 @@
 
                 $this->paginate['limit'] = 10;
                 $orients = $this->paginate( 'Orientstruct' );
-
+// debug( $this->data );
                 $this->Dossier->commit();
 
                 $this->set( 'orients', $orients );

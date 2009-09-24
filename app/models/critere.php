@@ -76,7 +76,7 @@
             // ... FIXME
             if( !empty( $serviceinstructeur_id ) ) {
 
-                $conditions[] = 'Serviceinstructeur.lib_service ILIKE \''.Sanitize::clean( $serviceinstructeur_id ).'\'';
+                $conditions[] = 'Serviceinstructeur.id = \''.Sanitize::clean( $serviceinstructeur_id ).'\'';
             }
 
             /// Requête
