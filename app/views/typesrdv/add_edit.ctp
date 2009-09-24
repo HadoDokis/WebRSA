@@ -16,6 +16,7 @@
 
 <fieldset>
     <?php echo $form->input( 'Typerdv.libelle', array( 'label' =>  required( __( 'lib_rdv', true ) ), 'type' => 'text' ) );?>
+    <?php echo $form->input( 'Typerdv.modelenotifrdv', array( 'label' =>  required( __( 'modelenotifrdv', true ) ), 'type' => 'text' ) );?>
 </fieldset>
 
     <?php echo $form->submit( 'Enregistrer' );?>

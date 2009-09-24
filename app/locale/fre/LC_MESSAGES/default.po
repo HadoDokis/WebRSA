@@ -899,3 +899,6 @@ msgstr "Date du RDV"
 
 msgid "lib_struct"
 msgstr "Structure référente"
+
+msgid "modelenotifrdv"
+msgstr "Modèle de notification lié au type de RDV"
