@@ -104,8 +104,8 @@
                             h( value( $etatdosrsa, Set::extract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
                             h( value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ),
                             h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
-                            h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo', $pdo ) ) ),
                             h( value( $motifpdo, Set::extract( 'Propopdo.motifpdo', $pdo ) ) ),
+                            h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo', $pdo ) ) ),
                             h( Set::extract( $pdo, 'Propopdo.commentairepdo' ) ),
                             $html->viewLink(
                                 'Voir le contrat « '.$title.' »',

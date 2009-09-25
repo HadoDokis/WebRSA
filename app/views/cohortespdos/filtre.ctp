@@ -1,6 +1,19 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php echo $form->create( 'Cohortepdo', array( 'url'=> Router::url( null, true ), 'id' => 'Cohortepdo', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php
+    if( !empty( $this->data ) ) {
+        echo '<ul class="actionMenu"><li>'.$html->link(
+            $html->image(
+                'icons/application_form_magnify.png',
+                array( 'alt' => '' )
+            ).' Formulaire',
+            '#',
+            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Cohortepdo' ).toggle(); return false;" )
+        ).'</li></ul>';
+    }
+
+    echo $form->create( 'Cohortepdo', array( 'url'=> Router::url( null, true ), 'id' => 'Cohortepdo', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );
+?>
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {

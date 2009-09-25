@@ -6,24 +6,44 @@
         var $name = 'Cohorteindu';
         var $useTable = false;
 
+
         var $validate = array(
-            'mtmoucompta' => array(
-                'rule' => 'numeric',
-                'message' => 'Veuillez entrer un montant valide',
-                'allowEmpty' => true
-            ),
             'compare' => array(
-                'rule' => 'mountComparator',
-                'message' => 'Ce champ ne peut rester vide, si vous avez saisi un montant'
+                array(
+                    'rule' => array( 'allEmpty', 'mtmoucompta' ),
+                    'message' => 'Si opérateurs est renseigné, nombre de jours depuis l\'orientation doit l\'être aussi'
+                )
+            ),
+            'mtmoucompta' => array(
+                array(
+                    'rule' => array( 'allEmpty', 'compare' ),
+                    'message' => 'Si le montant est saisi, opérateurs doit l\'être aussi'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer un chiffre valide',
+                    'allowEmpty' => true
+                )
             )
         );
 
-        function mountComparator($data) {
-            $compare = Set::extract( $this->data, 'Cohorteindu.compare' );
-            $mtmoucompta = Set::extract( $this->data, 'Cohorteindu.mtmoucompta' );
+        function beforeValidate() {
+            $_compare = Set::extract( $this->data, 'Cohorteindu.compare' );
+            $_mtmoucompta = Set::extract( $this->data, 'Cohorteindu.mtmoucompta' );
 
-            return ( ( empty( $compare ) && empty( $mtmoucompta ) ) || ( !empty( $compare ) && !empty( $mtmoucompta ) ) );
+            if( empty( $_compare ) != empty( $_mtmoucompta )  ) {
+                $this->data['Cohorteindu']['compare'] = $_compare;
+                $this->data['Cohorteindu']['mtmoucompta'] = $_mtmoucompta;
+            }
         }
+
+
+//         function mountComparator($data) {
+//             $compare = Set::extract( $this->data, 'Cohorteindu.compare' );
+//             $mtmoucompta = Set::extract( $this->data, 'Cohorteindu.mtmoucompta' );
+// 
+//             return ( ( !empty( $compare ) && !empty( $mtmoucompta ) ) || ( empty( $compare ) && empty( $mtmoucompta ) ) );
+//         }
 
 
         function search( $mesCodesInsee, $filtre_zone_geo, $criteresindu, $lockedDossiers ) {

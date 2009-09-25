@@ -7,14 +7,22 @@
         var $useTable = false;
 
         var $validate = array(
-            'nbjours' => array(
-                'rule' => 'numeric',
-                'message' => 'Veuillez entrer un montant valide',
-                'allowEmpty' => true
-            ),
             'compare' => array(
-                'rule' => 'mountComparator',
-                'message' => 'Ce champ ne peut rester vide, si vous avez saisi un montant'
+                array(
+                    'rule' => array( 'allEmpty', 'nbjours' ),
+                    'message' => 'Si nombre de jours depuis l\'orientation est renseigné, opérateurs doit l\'être aussi'
+                )
+            ),
+            'nbjours' => array(
+                array(
+                    'rule' => array( 'allEmpty', 'compare' ),
+                    'message' => 'Si opérateurs est renseigné, nombre de jours depuis l\'orientation doit l\'être aussi'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer un chiffre valide',
+                    'allowEmpty' => true
+                )
             )
         );
 
@@ -124,7 +132,7 @@
         function mountComparator($data) {
             $compare = Set::extract( $this->data, 'Relance.compare' );
             $nbjours = Set::extract( $this->data, 'Relance.nbjours' );
-            return ( ( empty( $compare ) && empty( $nbjours ) ) || ( !empty( $compare ) && !empty( $nbjours ) ) );
+            return ( ( empty( $compare ) && empty( $nbjours ) ) || ( !empty( $compare ) && empty( $nbjours ) ) );
         }
 
 
