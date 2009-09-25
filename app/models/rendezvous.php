@@ -24,18 +24,28 @@
         );
 
         var $validate = array(
-            'statutrdv' => array(
+            'structurereferente_id' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
             ),
-            'objetrdv' => array(
+            'typerdv_id' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
-            )/*,
+            ),
             'daterdv' => array(
+                array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
-            )*/
+                ),
+                array(
+                    'rule' => 'date',
+                    'message' => 'Veuillez vérifier le format de la date.'
+                )
+            ),
+            'statutrdv' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            )
         );
 
         function dossierId( $rdv_id ){
