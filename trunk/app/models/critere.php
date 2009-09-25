@@ -9,7 +9,7 @@
         var $name = 'Critere';
         var $useTable = false;
 
- 
+
         function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
             /// Conditions de base
             $conditions = array();
@@ -133,20 +133,6 @@
                         'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
                     ),
                     array(
-                        'table'      => 'adresses_foyers',
-                        'alias'      => 'Adressefoyer',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-                    ),
-                    array(
-                        'table'      => 'adresses',
-                        'alias'      => 'Adresse',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                    ),
-                    array(
                         'table'      => 'modescontact',
                         'alias'      => 'Modecontact',
                         'type'       => 'LEFT OUTER',
@@ -192,6 +178,41 @@
                 'limit' => 10,
                 'conditions' => $conditions
             );
+
+            // Permet de voir les entrées qui n'ont pas d'adresse si on ne filtre
+			// pas sur les codes INSEE pour l'utilisateur
+            if( $filtre_zone_geo ) {
+				$query['joins'][] = array(
+					'table'      => 'adresses_foyers',
+					'alias'      => 'Adressefoyer',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+				);
+				$query['joins'][] = array(
+					'table'      => 'adresses',
+					'alias'      => 'Adresse',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+				);
+            }
+            else {
+				$query['joins'][] = array(
+					'table'      => 'adresses_foyers',
+					'alias'      => 'Adressefoyer',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+				);
+				$query['joins'][] = array(
+					'table'      => 'adresses',
+					'alias'      => 'Adresse',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+				);
+            }
 
             return $query;
         }
