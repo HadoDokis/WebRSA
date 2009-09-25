@@ -7,7 +7,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous' );
         var $component = array( 'Jetons' );
 
 
@@ -730,5 +730,84 @@
             $oFusion->process();
             $oFusion->SendContentToClient();
         }
+
+
+        /**
+        * Notification de RDV
+        **/
+        function rendezvous( $rdv_id = null ) {
+            // TODO: error404/error500 si on ne trouve pas les données
+            $qual = $this->Option->qual();
+            $typevoie = $this->Option->typevoie();
+
+            $rdv = $this->Rendezvous->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Rendezvous.id' => $rdv_id
+                    )
+                )
+            );
+
+            // FIXME: seulement pour le cg66 ?
+            $modele = $rdv['Typerdv']['modelenotifrdv'];
+
+            $this->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+
+            $adresse = $this->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => $rdv['Personne']['foyer_id'],
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $rdv['Adresse'] = $adresse['Adresse'];
+
+            // Récupération de l'utilisateur
+            $user = $this->User->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'User.id' => $this->Session->read( 'Auth.User.id' )
+                    )
+                )
+            );
+            $rdv['User'] = $user['User'];
+
+            $dossier = $this->Dossier->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossier.id' => $rdv['Personne']['foyer_id']
+                    )
+                )
+            );
+            $rdv['Dossier_RSA'] = $dossier['Dossier'];
+
+            ///Pour la qualité de la personne
+            $rdv['Personne']['qual'] = Set::extract( $qual, Set::extract( $rdv, 'Personne.qual' ) );
+            ///Pour l'adresse de la structure référente
+            $rdv['Structurereferente']['type_voie'] = Set::extract( $typevoie, Set::extract( $rdv, 'Structurereferente.type_voie' ) );
+            ///Pour la date du rendez-vous
+            $rdv['Rendezvous']['daterdv'] = date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) );
+            ///Pour l'adresse de la personne
+            $rdv['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $rdv, 'Adresse.typevoie' ) );
+
+// debug( $rdv );
+// die();
+            $this->_ged( $rdv, 'RDV/'.$modele.'.odt' );
+        }
+
     }
 ?>
