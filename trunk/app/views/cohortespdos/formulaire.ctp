@@ -4,17 +4,6 @@
 <h1>Gestion des PDOs</h1>
 
 <?php
-    if( !empty( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
-                'icons/application_form_magnify.png',
-                array( 'alt' => '' )
-            ).' Formulaire',
-            '#',
-            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Cohortepdo' ).toggle(); return false;" )
-        ).'</li></ul>';
-    }
-
     function value( $array, $index ) {
         $keys = array_keys( $array );
         $index = ( ( $index == null ) ? '' : $index );
@@ -52,7 +41,7 @@
 
     <?php if( is_array( $cohortepdo ) && count( $cohortepdo ) > 0 ):?>
         <?php echo $pagination;?>
-        <?php echo $form->create( 'GestionPDO', array( 'url'=> Router::url( null, true ) ) );?>
+        <?php echo $form->create( 'Propopdo', array( 'url'=> Router::url( null, true ) ) );?>
 
         <table id="searchResults" class="tooltips_oupas">
             <thead>
@@ -103,9 +92,9 @@
                         </table>';
                         $title = $pdo['Dossier']['numdemrsa'];
 
-                    $statutAvis = Set::extract( $pdo, 'Propopdo.'.$index.'.decisionpdo' );
-                    $typepdo = Set::extract( $pdo, 'Propopdo.'.$index.'.typepdo' );
-// debug( $pdo );
+                    /*$_decisionpdo = Set::extract( $this->data, 'Propopdo.'.$index.'.decisionpdo' );
+                    $_typepdo = Set::extract( $this->data, 'Propopdo.'.$index.'.typepdo' );*/
+
                     $dossier_rsa_id = $pdo['Dossier']['id'];//Set::extract( $pdo, 'Propopdo.dossier_rsa_id');
                     $pdo_id = Set::extract( $pdo, 'Propopdo.id');
 
@@ -114,11 +103,11 @@
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
                             h( $pdo['Dossier']['typeparte'] ),
 
-                            $form->input( 'Propopdo.'.$index.'.typepdo', array( 'label' => false, 'div' => false, 'legend' => false, 'separator' => '<br />' , 'type' => 'radio', 'options' => array(  'N' => 'Non défini', 'C' => 'PDO de contrôle', 'M' => 'PDO de maintien', 'O' => 'PDO d\'ouverture' ), 'value' => ( !empty( $typepdo ) ? $typepdo : 'N' ) ) ),
+                            $form->input( 'Propopdo.'.$index.'.typepdo', array( 'label' => false, 'type' => 'select', 'options' => $typepdo/*, 'value' => $_typepdo*/ ) ),
 
                             $form->input( 'Propopdo.'.$index.'.datedecisionpdo', array( 'label' => false, 'div' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) ),
 
-                            $form->input( 'Propopdo.'.$index.'.decisionpdo', array( 'label' => false, 'div' => false, 'legend' => false, 'separator' => '<br />' , 'type' => 'radio', 'options' => array( 'P' => 'Pas de réponse', 'A' => 'Accord', 'R' => 'Refus', 'J' => 'Ajourné' ), 'value' => ( !empty( $statutAvis ) ? $statutAvis : 'P' ) ) ).
+                            $form->input( 'Propopdo.'.$index.'.decisionpdo', array( 'label' => false, 'type' => 'select', 'options' => $decisionpdo, 'empty' => true/*, 'value' => $_decisionpdo*/ ) ).
 
                             $form->input( 'Propopdo.'.$index.'.dossier_rsa_id', array( 'label' => false, 'div' => false, 'value' => $dossier_rsa_id, 'type' => 'hidden' ) ).
 

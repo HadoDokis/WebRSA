@@ -216,7 +216,7 @@
 
         function decisionpdo() {
             return array(
-                'P' => 'Pas de décision',
+                'E' => 'En attente',
                 'A' => 'Accord',
                 'R' => 'Refus',
                 'J' => 'Ajourné'

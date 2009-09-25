@@ -47,7 +47,6 @@
                 $this->assert( empty( $cmp ) || in_array( $cmp, array_keys( $comparators ) ), 'invalidParameter' );
 
                 $this->Cohorteindu->create( $this->data );
-
                 if( !empty( $this->data ) && $this->Cohorteindu->validates() ) {
                     $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
                     $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );

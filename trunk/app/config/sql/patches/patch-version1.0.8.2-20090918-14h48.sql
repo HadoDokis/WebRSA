@@ -11,8 +11,8 @@ CREATE TABLE typesrdv(
     modelenotifrdv          VARCHAR (50)
 );
 
-INSERT INTO typesrdv VALUES ( 1, 'Pour Contrat d\'insertion' );
-INSERT INTO typesrdv VALUES ( 2, 'Pour l\'orientation' );
+INSERT INTO typesrdv VALUES ( 1, 'Pour Contrat d\'insertion', 'modele_convoc_ci' );
+INSERT INTO typesrdv VALUES ( 2, 'Pour l\'orientation', 'modele_convoc_orient' );
 SELECT pg_catalog.setval('typesrdv_id_seq', ( SELECT max(typesrdv.id) + 1 FROM typesrdv ), false);
 
 ALTER TABLE rendezvous ADD COLUMN typerdv_id INTEGER REFERENCES typesrdv(id);

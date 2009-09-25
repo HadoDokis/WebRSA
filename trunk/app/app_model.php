@@ -43,5 +43,19 @@
         }
 
         // TODO: http://teknoid.wordpress.com/2008/09/29/dealing-with-calculated-fields-in-cakephps-find/
+
+        /**
+        *
+        */
+
+        function allEmpty( array $data, $reference ) { // FIXME + $reference2, ....
+            $data = array_values( $data );
+            $value = ( isset( $data[0] ) ? $data[0] : null );
+
+            $reference = Set::extract( $this->data, $this->name.'.'.$reference );
+
+            return ( empty( $value ) == empty( $reference )  );
+        }
+
     }
 ?>

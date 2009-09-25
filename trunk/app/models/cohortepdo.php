@@ -15,9 +15,14 @@
                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
                     $conditions[] = 'Situationdossierrsa.dossier_rsa_id NOT IN ( SELECT propospdos.dossier_rsa_id FROM propospdos /*WHERE propospdos.decisionpdo = \'P\'*/ )';
                 }
+                else if( $statutValidationAvis == 'Decisionpdo::enattente' ) {
+                    $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
+                    $conditions[] = 'Propopdo.decisionpdo = \'E\'';
+                }
                 else if( $statutValidationAvis == 'Decisionpdo::valide' ) {
                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
                     $conditions[] = 'Propopdo.decisionpdo IS NOT NULL';
+                    $conditions[] = 'Propopdo.decisionpdo <> \'E\'';
                 }
             }
 

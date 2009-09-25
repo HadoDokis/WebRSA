@@ -37,13 +37,16 @@
                                 <?php echo $html->link( 'Indus', array( 'controller' => 'cohortesindus', 'action' => 'index' ), array( 'title'=>'Gestion des indus' ) );?>
                             </li>
                         <?php endif;?>
-                        <?php if( $permissions->check( 'cohortespdos', 'avisdemande' ) || $permissions->check( 'cohortespdos', 'valide' ) ): ?>
+                        <?php if( $permissions->check( 'cohortespdos', 'avisdemande' ) || $permissions->check( 'cohortespdos', 'valide' ) || $permissions->check( 'cohortespdos', 'enattente' ) ): ?>
                             <!-- AJOUT POUR LA GESTION DES PDOs (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                                 <?php echo $html->link( 'PDOs', '#' );?>
                                 <ul>
                                     <?php if( $permissions->check( 'cohortespdos', 'avisdemande' ) ): ?>
                                         <li><?php echo $html->link( 'Nouvelles demandes', array( 'controller' => 'cohortespdos', 'action' => 'avisdemande' ), array( 'title' => 'Avis CG demandé' ) );?></li>
+                                    <?php endif; ?>
+                                    <?php if( $permissions->check( 'cohortespdos', 'enattente' ) ): ?>
+                                        <li><?php echo $html->link( 'PDOs en attente', array( 'controller' => 'cohortespdos', 'action' => 'enattente' ), array( 'title' => 'PDOs en attente' ) );?></li>
                                     <?php endif; ?>
                                     <?php if( $permissions->check( 'cohortespdos', 'valide' ) ): ?>
                                         <li><?php echo $html->link( 'Liste PDOs', array( 'controller' => 'cohortespdos', 'action' => 'valide' ), array( 'title' => 'PDOs validés' ) );?></li>

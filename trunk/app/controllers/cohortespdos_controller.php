@@ -13,10 +13,7 @@
 
         /**
         */
-//         function __construct() {
-//             $this->components = Set::merge( $this->components, array( 'Jetons', 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-//             parent::__construct();
-//         }
+
         function __construct() {
             parent::__construct();
             $this->components[] = 'Jetons';
@@ -45,7 +42,13 @@
         function valide() {
             $this->_index( 'Decisionpdo::valide' );
         }
+
         //---------------------------------------------------------------------
+
+        function enattente() {
+            $this->_index( 'Decisionpdo::enattente' );
+        }
+
 
         //*********************************************************************
 
@@ -59,18 +62,17 @@
 
             if( !empty( $this->data ) ) {
                 if( !empty( $this->data['Propopdo'] ) ) {
-                    $valid = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'only', 'atomic' => false ) );
-                    if( $valid ) {
-                        $this->Dossier->begin();
-                        $saved = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'first', 'atomic' => false ) );
-                        if( $saved ) {
+                    $this->Dossier->begin();
+                    $data = Set::extract( $this->data, '/Propopdo' );
+                    if( $this->Propopdo->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+                        $saved = $this->Propopdo->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
+                        if( array_search( 0, $saved ) == false ) {
                             //FIXME ?
                             foreach( array_unique( Set::extract( $this->data, 'Propopdo.{n}.dossier_id' ) ) as $dossier_id ) {
                                 $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
                             }
                             $this->Dossier->commit();
-                            $this->data['Propopdo'] = array();
-
+//                             $this->data = array();
                         }
                         else {
                             $this->Dossier->rollback();
@@ -78,8 +80,7 @@
                     }
                 }
 
-
-                if( ( $statutValidationAvis == 'Decisionpdo::nonvalide' ) || ( ( $statutValidationAvis == 'Decisionpdo::valide' ) && !empty( $this->data ) ) ) {
+                if( ( $statutValidationAvis == 'Decisionpdo::nonvalide' ) || ( ( $statutValidationAvis == 'Decisionpdo::valide' ) && !empty( $this->data ) ) || ( ( $statutValidationAvis == 'Decisionpdo::enattente' ) && !empty( $this->data ) ) ) {
                     $this->Dossier->begin(); // Pour les jetons
 
                     $this->paginate = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
@@ -100,6 +101,10 @@
             switch( $statutValidationAvis ) {
                 case 'Decisionpdo::nonvalide':
                     $this->set( 'pageTitle', 'Nouvelles demandes PDOs' );
+                    $this->render( $this->action, null, 'formulaire' );
+                    break;
+                case 'Decisionpdo::enattente':
+                    $this->set( 'pageTitle', 'PDOs en attente' );
                     $this->render( $this->action, null, 'formulaire' );
                     break;
                 case 'Decisionpdo::valide':
