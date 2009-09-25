@@ -40,7 +40,6 @@
 
         function index() {
             if( !empty( $this->data ) ) {
-
                 $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
                 $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
@@ -54,10 +53,6 @@
                 $this->Dossier->commit();
 
                 $this->set( 'orients', $orients );
-                $this->data['Search'] = $this->data;
-/*
-                debug( $orients );
-                die();*/
             }
 
         }
