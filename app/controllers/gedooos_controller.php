@@ -749,7 +749,7 @@
                 )
             );
 
-            // FIXME: seulement pour le cg66 ?
+            ///Pour le choix entre les différentes notifications possibles
             $modele = $rdv['Typerdv']['modelenotifrdv'];
 
             $this->Adressefoyer->bindModel(
