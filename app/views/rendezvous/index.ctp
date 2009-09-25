@@ -62,12 +62,12 @@
                                 'Editer l\'orientation',
                                 array( 'controller' => 'rendezvous', 'action' => 'edit', $rdv['Rendezvous']['id'] ),
                                 $permissions->check( 'rendezvous', 'edit' )
-                            )/*,
+                            ),
                             $html->printLink(
                                 'Imprimer la notification',
                                 array( 'controller' => 'gedooos', 'action' => 'rendezvous', $rdv['Rendezvous']['id'] ),
-                                $permissions->check( 'gedooos', 'orientstruct' )
-                            ),*/
+                                $permissions->check( 'gedooos', 'rendezvous' )
+                            ),
                         ),
                         array( 'class' => 'odd' ),
                         array( 'class' => 'even' )
