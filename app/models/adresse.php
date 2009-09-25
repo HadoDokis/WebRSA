@@ -45,6 +45,10 @@
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => array( 'between', 5, 5 ),
+                    'message' => 'Le code INSEE se compose de 5 caractères'
                 )
             ),
             'codepos' => array(
