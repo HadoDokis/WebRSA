@@ -153,9 +153,10 @@
         $newArray = array();
         foreach( $array as $key => $value ) {
             $newKey = ( !empty( $prefix ) ? $prefix.'__'.$key : $key );
-            if( is_array( $value ) ) {
-                $newArray = Set::merge( $newArray, array_unisize( $value, $newKey ) );
-            }
+             if( is_array( $value ) ) {
+				$tmpArray = array_unisize( $value, $newKey );
+                $newArray = Set::merge( $newArray, $tmpArray );
+             }
             else {
                 $newArray[$newKey] = $value;
             }
