@@ -149,18 +149,19 @@
         @input  multisized array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
         @output unisized array (eg. array( 'Foo__Bar' => 'value' ) )
     */
-    function array_unisize( array $array, $prefix = null ) {
+    function array_unisize( $array, $prefix = null ) {
         $newArray = array();
-        foreach( $array as $key => $value ) {
-            $newKey = ( !empty( $prefix ) ? $prefix.'__'.$key : $key );
-             if( is_array( $value ) ) {
-				$tmpArray = array_unisize( $value, $newKey );
-                $newArray = Set::merge( $newArray, $tmpArray );
-             }
-            else {
-                $newArray[$newKey] = $value;
-            }
-        }
+		if( is_array( $array ) && !empty( $array ) ) {
+			foreach( $array as $key => $value ) {
+				$newKey = ( !empty( $prefix ) ? $prefix.'__'.$key : $key );
+				if( is_array( $value ) ) {
+					$newArray = Set::merge( $newArray, array_unisize( $value, $newKey ) );
+				}
+				else {
+					$newArray[$newKey] = $value;
+				}
+			}
+		}
         return $newArray;
     }
 
@@ -170,9 +171,11 @@
     */
     function array_multisize( array $array, $prefix = null ) {
         $newArray = array();
-        foreach( $array as $key => $value ) {
-            $newArray = Set::insert( $newArray, implode( '.', explode( '__', $key ) ), $value );
-        }
+		if( is_array( $array ) && !empty( $array ) ) {
+			foreach( $array as $key => $value ) {
+				$newArray = Set::insert( $newArray, implode( '.', explode( '__', $key ) ), $value );
+			}
+		}
         return $newArray;
     }
 
