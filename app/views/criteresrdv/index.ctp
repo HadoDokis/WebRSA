@@ -86,7 +86,7 @@
                     <th><?php echo $paginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
                     <th>Objet du RDV</th>
                     <th>Commentaire suite au RDV</th>
-                    <th class="action noprint">Actions</th>
+                    <th colspan="2" class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
@@ -127,6 +127,10 @@
                                         array( 'controller' => 'rendezvous', 'action' => 'index', $rdv['Rendezvous']['personne_id'] )
                                     ),
                                     array( 'class' => 'noprint' )
+                                ),
+                                $html->printLink(
+                                    'Imprimer la notification',
+                                    array( 'controller' => 'gedooos', 'action' => 'rendezvous', $rdv['Rendezvous']['id'] )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
                             ),
