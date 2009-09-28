@@ -6,10 +6,21 @@
                 <li id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                     <?php echo $html->link( 'Gestion des cohortes', '#' );?>
                     <ul>
-                        <?php if( $permissions->check( 'cohortesci', 'index' ) ): ?>
+                        <?php if( $permissions->check( 'cohortesci', 'nouveaux' ) || $permissions->check( 'cohortesci', 'valides' ) || $permissions->check( 'cohortesci', 'enattente' ) ):?>
                             <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                                <?php echo $html->link( 'Contrat insertion', array( 'controller' => 'cohortesci', 'action' => 'index' ), array( 'title'=>'Gestion des contrats' ) );?>
+                                <?php  echo $html->link( 'Contrat insertion', '#' );?>
+                                    <ul>
+                                        <?php if( $permissions->check( 'cohortesci', 'nouveaux' ) ): ?>
+                                            <li><?php echo $html->link( 'Contrats à valider', array( 'controller' => 'cohortesci', 'action' => 'nouveaux' ), array( 'title' => 'Contrats à valider' ) );?></li>
+                                        <?php endif; ?>
+                                        <?php if( $permissions->check( 'cohortesci', 'enattente' ) ): ?>
+                                            <li><?php echo $html->link( 'En attente', array( 'controller' => 'cohortesci', 'action' => 'enattente' ), array( 'title' => 'Contrats en attente' ) );?></li>
+                                        <?php endif; ?>
+                                        <?php if( $permissions->check( 'cohortesci', 'valides' ) ): ?>
+                                            <li><?php echo $html->link( 'Contrats validés', array( 'controller' => 'cohortesci', 'action' => 'valides' ), array( 'title' => 'Contrats validés' ) );?></li>
+                                        <?php endif; ?>
+                                    </ul>
                             </li>
                         <?php endif;?>
                         <?php if( $permissions->check( 'cohortes', 'nouvelles' ) || $permissions->check( 'cohortes', 'orientees' ) || $permissions->check( 'cohortes', 'enattente' ) ): ?>
@@ -20,11 +31,11 @@
                                         <?php if( $permissions->check( 'cohortes', 'nouvelles' ) ): ?>
                                             <li><?php echo $html->link( 'Nouvelles demandes', array( 'controller' => 'cohortes', 'action' => 'nouvelles' ), array( 'title'=>'Nouvelles demandes' ) );?></li>
                                         <?php endif; ?>
-                                        <?php if( $permissions->check( 'cohortes', 'orientees' ) ): ?>
-                                            <li><?php echo $html->link( 'Demandes orientées', array( 'controller' => 'cohortes', 'action' => 'orientees' ), array( 'title'=>'Demandes orientées' ) );?></li>
-                                        <?php endif; ?>
                                         <?php if( $permissions->check( 'cohortes', 'enattente' ) ): ?>
                                             <li><?php echo $html->link( 'En attente', array( 'controller' => 'cohortes', 'action' => 'enattente' ), array( 'title'=>'Demandes en attente' ) );?></li>
+                                        <?php endif; ?>
+                                        <?php if( $permissions->check( 'cohortes', 'orientees' ) ): ?>
+                                            <li><?php echo $html->link( 'Demandes orientées', array( 'controller' => 'cohortes', 'action' => 'orientees' ), array( 'title'=>'Demandes orientées' ) );?></li>
                                         <?php endif; ?>
                                         <!--<li><?php echo $html->link( 'Liste suivant critères', '#' );?></li>
                                         <li><?php echo $html->link( 'Gestion des éditions', '#' );?></li> -->

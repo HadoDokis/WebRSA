@@ -12,6 +12,7 @@
         );
 
         function __construct() {
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'valides' ) ) ) );
             parent::__construct();
             $this->components[] = 'Jetons';
         }
@@ -26,7 +27,30 @@
             return $return;
         }
 
-        function index() {
+
+        //*********************************************************************
+
+        function nouveaux() {
+            $this->_index( 'Decisionci::nonvalide' );
+        }
+
+        //---------------------------------------------------------------------
+
+        function valides() {
+            $this->_index( 'Decisionci::valides' );
+        }
+
+        //---------------------------------------------------------------------
+
+        function enattente() {
+            $this->_index( 'Decisionci::enattente' );
+        }
+
+        //*********************************************************************
+
+
+        function _index( $statutValidation = null ) {
+            $this->assert( !empty( $statutValidation ), 'invalidParameter' );
 
             $personne_suivi = $this->Contratinsertion->find(
                 'list',
@@ -39,12 +63,11 @@
                     'group' => 'Contratinsertion.pers_charg_suivi',
                 )
             );
-//             debug( $personne_suivi );
 
             $this->set( 'personne_suivi', $personne_suivi );
 
             $params = $this->data;
-//             debug( $params );
+
             if( !empty( $params ) ) {
                 /**
                 *
@@ -70,18 +93,19 @@
                         }
                     }
                 }
+
                 /**
                 *
                 * Filtrage
                 *
                 */
-                else {
-                    $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-                    $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
+                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+                if( ( $statutValidation == 'Decisionci::nonvalide' ) || ( ( $statutValidation == 'Decisionci::valides' ) && !empty( $this->data ) ) || ( ( $statutValidation == 'Decisionci::enattente' ) && !empty( $this->data ) ) ) {
                     $this->Dossier->begin(); // Pour les jetons
 
-                    $this->paginate = $this->Cohorteci->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                    $this->paginate = $this->Cohorteci->search( $statutValidation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
                     $this->paginate['limit'] = 10;
                     $cohorteci = $this->paginate( 'Contratinsertion' );
 
@@ -105,8 +129,24 @@
 
                     $this->set( 'cohorteci', $cohorteci );
                     $this->data['Search'] = $params;
-
                 }
+
+            }
+
+
+            switch( $statutValidation ) {
+                case 'Decisionci::nonvalide':
+                    $this->set( 'pageTitle', 'Contrats à valider' );
+                    $this->render( $this->action, null, 'formulaire' );
+                    break;
+                case 'Decisionci::enattente':
+                    $this->set( 'pageTitle', 'Contrats en attente' );
+                    $this->render( $this->action, null, 'formulaire' );
+                    break;
+                case 'Decisionci::valides':
+                    $this->set( 'pageTitle', 'Contrats validés' );
+                    $this->render( $this->action, null, 'visualisation' );
+                    break;
             }
         }
     }
