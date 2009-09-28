@@ -4,9 +4,24 @@
         var $name = 'Cohorteci';
         var $useTable = false;
 
-        function search( $mesCodesInsee, $filtre_zone_geo, $criteresci, $lockedDossiers ) {
+        function search( $statutValidation, $mesCodesInsee, $filtre_zone_geo, $criteresci, $lockedDossiers ) {
             /// Conditions de base
             $conditions = array(/* '1 = 1' */);
+
+
+            if( !empty( $statutValidation ) ) {
+                if( $statutValidation == 'Decisionci::nonvalide' ) {
+                    $conditions[] = '( ( Contratinsertion.decision_ci <> \'V\' ) AND ( Contratinsertion.decision_ci <> \'E\' ) ) OR ( Contratinsertion.decision_ci IS NULL )';
+                }
+                else if( $statutValidation == 'Decisionci::enattente' ) {
+                    $conditions[] = 'Contratinsertion.decision_ci = \'E\'';
+                }
+                else if( $statutValidation == 'Decisionci::valides' ) {
+                    $conditions[] = 'Contratinsertion.decision_ci IS NOT NULL';
+                    $conditions[] = 'Contratinsertion.decision_ci = \'V\'';
+                }
+            }
+
 
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
@@ -38,11 +53,6 @@
                 }
             }
 
-//             // ...
-//             if( !empty( $date_saisi_ci ) && dateComplete( $criteresci, 'Filtre.date_saisi_ci' ) ) {
-//                 $date_saisi_ci = $date_saisi_ci['year'].'-'.$date_saisi_ci['month'].'-'.$date_saisi_ci['day'];
-//                 $conditions[] = 'Contratinsertion.date_saisi_ci = \''.$date_saisi_ci.'\'';
-//             }
 
             // ...
             if( !empty( $decision_ci ) ) {

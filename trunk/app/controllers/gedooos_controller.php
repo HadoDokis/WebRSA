@@ -702,13 +702,13 @@
 
                 $datas['Personne']['qual'] = $qual[$datas['Personne']['qual']];
 
-				foreach( array( 'Adresse.typevoie', 'Structurereferente.type_voie', 'Serviceinstructeur.type_voie' ) as $tmpField ) {
-					list( $model, $field ) = explode( '.', $tmpField );
-					$datas[$model][$field] = Set::extract( $typevoie, Set::extract( $datas, $tmpField ) );
-					if( is_array( $datas[$model][$field] ) ) {
-						$datas[$model][$field] = null; // FIXME -> ajouter une erreur
-					}
-				}
+                foreach( array( 'Adresse.typevoie', 'Structurereferente.type_voie', 'Serviceinstructeur.type_voie' ) as $tmpField ) {
+                    list( $model, $field ) = explode( '.', $tmpField );
+                    $datas[$model][$field] = Set::extract( $typevoie, Set::extract( $datas, $tmpField ) );
+                    if( is_array( $datas[$model][$field] ) ) {
+                        $datas[$model][$field] = null; // FIXME -> ajouter une erreur
+                    }
+                }
 
                 $datas['Orientstruct']['daterelance'] = date_short( Set::extract( $datas, 'Orientstruct.daterelance' ) );
 
