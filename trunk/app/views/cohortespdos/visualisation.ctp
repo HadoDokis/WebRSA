@@ -140,6 +140,6 @@
 
 
     <?php else:?>
-        <p>Vos critères n'ont retourné aucun dossier.</p>
+        <p>Aucune PDO dans la cohorte.</p>
     <?php endif?>
 <?php endif?>

@@ -139,6 +139,6 @@
 
 
     <?php else:?>
-        <p>Aucun dossier ne nécessite de PDO.</p>
+        <p>Aucune PDO dans la cohorte.</p>
     <?php endif?>
 <?php endif?>
