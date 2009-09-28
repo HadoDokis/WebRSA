@@ -14,5 +14,5 @@
     }
 
     Configure::write( 'debug', 0 );
-    echo $csv->render( 'infosfinancieres-'.date( 'Ymd-Hhm' ).'.csv' );
+    echo $csv->render( 'totalisationsacomptes-'.date( 'Ymd-Hhm' ).'.csv' );
 ?>
