@@ -7,13 +7,13 @@
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
 
-        $pages = $paginator->first( '<<' );
-        $pages .= $paginator->prev( '<' );
-        $pages .= $paginator->numbers();
-        $pages .= $paginator->next( '>' );
-        $pages .= $paginator->last( '>>' );
-
-        $pagination .= $html->tag( 'p', $pages );
+//         $pages = $paginator->first( '<<' );
+//         $pages .= $paginator->prev( '<' );
+//         $pages .= $paginator->numbers();
+//         $pages .= $paginator->next( '>' );
+//         $pages .= $paginator->last( '>>' );
+// 
+//         $pagination .= $html->tag( 'p', $pages );
     }
     else {
         $pagination = '';
