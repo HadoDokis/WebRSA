@@ -693,9 +693,14 @@
                 $oDevPart = new GDO_PartType();
 
                 $datas['Personne']['qual'] = $qual[$datas['Personne']['qual']];
-                $datas['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $datas, 'Adresse.typevoie' ) );
-                $datas['Structurereferente']['type_voie'] = Set::extract( $typevoie, Set::extract( $datas, 'Structurereferente.type_voie' ) );
-                $datas['Serviceinstructeur']['type_voie'] = Set::extract( $typevoie, Set::extract( $datas, 'Serviceinstructeur.type_voie' ) );
+
+				foreach( array( 'Adresse.typevoie', 'Structurereferente.type_voie', 'Serviceinstructeur.type_voie' ) as $typevoie ) {
+					list( $model, $field ) = explode( '.', $typevoie );
+					$datas[$model][$field] = Set::extract( $typevoie, Set::extract( $datas, $typevoie ) );
+					if( is_array( $datas[$model][$field] ) ) {
+						$datas[$model][$field] = null; // FIXME -> ajouter une erreur
+					}
+				}
 
                 $datas['Orientstruct']['daterelance'] = date_short( Set::extract( $datas, 'Orientstruct.daterelance' ) );
 
