@@ -17,7 +17,7 @@
         );
 
         function __construct() {
-            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'relance' ) ) ) );
             parent::__construct();
             $this->components[] = 'Jetons';
         }
