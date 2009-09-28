@@ -25,6 +25,7 @@
         function beforeFilter() {
             $return = parent::beforeFilter();
             $this->set( 'statutrelance', $this->Option->statutrelance() );
+            $this->set( 'printed', $this->Option->printed() );
             return $return;
         }
 

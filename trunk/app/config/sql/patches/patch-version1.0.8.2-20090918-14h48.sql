@@ -21,5 +21,5 @@ CREATE INDEX rendezvous_daterdv_idx ON rendezvous (daterdv);
 CREATE INDEX rendezvous_statutrdv_idx ON rendezvous (statutrdv);
 CREATE INDEX typesrdv_libelle_idx ON typesrdv (libelle);
 
-
-
+--------------- Ajout du 28/09/2009 à 11h48 ------------------
+ALTER TABLE orientsstructs ADD COLUMN date_impression_relance DATE;

@@ -37,6 +37,7 @@
                     '"Orientstruct"."statut_orient"',
                     '"Orientstruct"."daterelance"',
                     '"Orientstruct"."statutrelance"',
+                    '"Orientstruct"."date_impression_relance"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
                     '"Dossier"."dtdemrsa"',
@@ -230,11 +231,17 @@
             /// Critères
             $nbjours = Set::extract( $criteresrelance, 'Relance.nbjours' );
             $compare = Set::extract( $criteresrelance, 'Relance.compare' );
+            $date_impression_relance = Set::extract( $criteresrelance, 'Relance.date_impression_relance' );
 
-            /// Nb de jours depuis l'orientation
-//             if( !empty( $nbjours ) && dateComplete( $criteresrelance, 'Relance.nbjours' ) ) {
-//                 $conditions[] = '( DATE( NOW() ) - "Orientstruct"."date_valid" ) = \''.$nbjours.'\'';
-//             }
+            // Statut impression
+            if( !empty( $date_impression_relance ) && in_array( $date_impression_relance, array( 'I', 'N' ) ) ) {
+                if( $date_impression_relance == 'I' ) {
+                    $conditions[] = 'Orientstruct.date_impression_relance IS NOT NULL';
+                }
+                else {
+                    $conditions[] = 'Orientstruct.date_impression_relance IS NULL';
+                }
+            }
 
             if( !empty( $compare ) && !empty( $nbjours ) ) {
                 $conditions[] = '( DATE( NOW() ) - "Orientstruct"."date_valid" ) '.$compare.' '.Sanitize::clean( $nbjours );
@@ -253,6 +260,7 @@
                     '"Orientstruct"."statut_orient"',
                     '"Orientstruct"."daterelance"',
                     '"Orientstruct"."statutrelance"',
+                    '"Orientstruct"."date_impression_relance"',
                     '( DATE( NOW() ) - "Orientstruct"."date_valid" ) AS "Orientstruct__nbjours"', // FIXME
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
