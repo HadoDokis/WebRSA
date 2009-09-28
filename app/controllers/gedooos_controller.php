@@ -640,6 +640,14 @@
 
             $personne['Orientstruct']['daterelance'] = date_short( Set::extract( $personne, 'Orientstruct.daterelance' ) );
 
+            ///Imprimé / Non imprimé
+            if( empty( $personne['Orientstruct']['date_impression_relance'] ) ){
+                $orientstruct['Orientstruct']['date_impression_relance'] = strftime( '%Y-%m-%d', mktime() );
+                $this->Orientstruct->create();
+                $this->Orientstruct->set( $orientstruct['Orientstruct'] );
+                $this->Orientstruct->save( $orientstruct['Orientstruct'] );
+            }
+
             $personne['Adresse']['typevoie'] = ( isset( $typevoie[$personne['Adresse']['typevoie']] ) ? $typevoie[$personne['Adresse']['typevoie']] : null );
 
             $this->_ged( $personne, 'notifications_relances.odt' );
@@ -694,15 +702,24 @@
 
                 $datas['Personne']['qual'] = $qual[$datas['Personne']['qual']];
 
-				foreach( array( 'Adresse.typevoie', 'Structurereferente.type_voie', 'Serviceinstructeur.type_voie' ) as $typevoie ) {
-					list( $model, $field ) = explode( '.', $typevoie );
-					$datas[$model][$field] = Set::extract( $typevoie, Set::extract( $datas, $typevoie ) );
+				foreach( array( 'Adresse.typevoie', 'Structurereferente.type_voie', 'Serviceinstructeur.type_voie' ) as $tmpField ) {
+					list( $model, $field ) = explode( '.', $tmpField );
+					$datas[$model][$field] = Set::extract( $typevoie, Set::extract( $datas, $tmpField ) );
 					if( is_array( $datas[$model][$field] ) ) {
 						$datas[$model][$field] = null; // FIXME -> ajouter une erreur
 					}
 				}
 
                 $datas['Orientstruct']['daterelance'] = date_short( Set::extract( $datas, 'Orientstruct.daterelance' ) );
+
+
+                if( empty( $datas['Orientstruct']['date_impression_relance'] ) ){
+                    $datas['Orientstruct']['personne_id'] = Set::extract( $datas, 'Personne.id' );
+                    $datas['Orientstruct']['date_impression_relance'] = strftime( '%Y-%m-%d', mktime() );
+                    $this->Orientstruct->create();
+                    $this->Orientstruct->set( $datas['Orientstruct'] );
+                    $this->Orientstruct->save( $datas['Orientstruct'] );
+                }
 
                 foreach( $datas as $group => $details ) {
                     if( !empty( $details ) ) {
@@ -720,6 +737,7 @@
 
                 $oIteration->addPart( $oDevPart );
             }
+
             $oMainPart->addElement($oIteration);
 
             $bTemplate = $u->ReadFile($sModele);

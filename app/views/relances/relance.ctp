@@ -51,7 +51,10 @@
         <?php echo $form->input( 'Relance.daterelance_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_from ) );?>
         <?php echo $form->input( 'Relance.daterelance_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_to ) );?>
     </fieldset>
-
+    <fieldset>
+        <legend>Imprimé/Non imprimé</legend>
+        <?php echo $form->input( 'Relance.date_impression_relance', array( 'label' => 'Filtrer par impression', 'type' => 'select', 'options' => $printed, 'empty' => true ) );?>
+    </fieldset>
     <div class="submit noprint">
         <?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>

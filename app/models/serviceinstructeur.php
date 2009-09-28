@@ -27,6 +27,12 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
+            'type_voie' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
             'code_insee' => array(
                 array(
                     'rule' => 'notEmpty',
