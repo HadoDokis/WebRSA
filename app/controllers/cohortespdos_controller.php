@@ -15,6 +15,7 @@
         */
 
         function __construct() {
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'valide' ) ) ) );
             parent::__construct();
             $this->components[] = 'Jetons';
         }
@@ -85,7 +86,7 @@
 
                     $this->paginate = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
     //                 $_limit = 10;
-                    $this->paginate['limit'] = 10;
+                    $this->paginate['limit'] = 1;
                     $cohortepdo = $this->paginate( 'Dossier' );
 
     //                 $count = count( $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() ) );

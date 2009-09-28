@@ -4,16 +4,16 @@
 <h1>Gestion des PDOs</h1>
 
 <?php
-    if( !empty( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
-                'icons/application_form_magnify.png',
-                array( 'alt' => '' )
-            ).' Formulaire',
-            '#',
-            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Cohortepdo' ).toggle(); return false;" )
-        ).'</li></ul>';
-    }
+//     if( !empty( $this->data ) ) {
+//         echo '<ul class="actionMenu"><li>'.$html->link(
+//             $html->image(
+//                 'icons/application_form_magnify.png',
+//                 array( 'alt' => '' )
+//             ).' Formulaire',
+//             '#',
+//             array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Cohortepdo' ).toggle(); return false;" )
+//         ).'</li></ul>';
+//     }
 
     function value( $array, $index ) {
         $keys = array_keys( $array );
