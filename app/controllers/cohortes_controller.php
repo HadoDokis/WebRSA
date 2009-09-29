@@ -333,32 +333,6 @@
         }
 
 /************************************* Export des données en Xls *******************************/
-
-
-        /*function exportcsv() {
-            $headers = array( 'Commune', 'Qual', 'Nom', 'Prénom', 'Date demande', 'Date ouverture', 'Service instructeur', 'Préorientation', 'Orientation', 'Structure', 'Décision', 'Date proposition', 'Date dernier CI' );
-
-            $dataPers = $this->Personne->find( 'all', array( 'fields' => array( 'qual', 'nom', 'prenom' ), 'limit' => 20, 'recursive' => -1 ) );
-            $dataPers = Set::extract( $dataPers, '{n}.Personne' );
-
-            $dataDos = $this->Dossier->find( 'all', array( 'fields' => array( 'dtdemrsa', 'numdemrsa' ), 'limit' => 20, 'recursive' => -1 ) );
-            $dataDos = Set::extract( $dataDos, '{n}.Dossier' );
-
-            $dataAdr = $this->Adresse->find( 'all', array( 'fields' => array( 'locaadr' ), 'limit' => 20, 'recursive' => -1 ) );
-            $dataAdr = Set::extract( $dataAdr, '{n}.Adresse' );
-
-            $dataOri = $this->Orientstruct->find( 'all', array( 'fields' => array( 'structurereferente_id', 'propo_algo', 'date_propo', 'statut_orient' ), 'limit' => 20, 'recursive' => -1 ) );
-            $dataOri = Set::extract( $dataOri, '{n}.Orientstruct' );
-
-//             $dataStr = $this->Structurereferente->find( 'all', array( 'fields' => array( 'structure', 'date_propo', 'statut_orient' ), 'limit' => 20, 'recursive' => -1 ) );
-//             $dataStr = Set::extract( $dataStr, '{n}.Structurereferente' );
-
-            $this->layout = '';
-            $data = $this->set( compact( 'dataPers', 'dataDos', 'dataAdr', 'dataOri' ) );
-
-            $this->set( 'dataToExport', $data );
-        } */
-
       function exportcsv(){
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );

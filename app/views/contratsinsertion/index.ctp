@@ -48,7 +48,7 @@
                             h( $contratinsertion['Typocontrat']['lib_typo'] ),
                             h( date_short( isset( $contratinsertion['Contratinsertion']['dd_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['dd_ci']  ) : null ),
                             h( date_short( isset( $contratinsertion['Contratinsertion']['df_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['df_ci'] ) : null ),
-                            h( /*isset( */$decision_ci[$contratinsertion['Contratinsertion']['decision_ci']]/* ) ? $decision_ci[$contratinsertion['Contratinsertion']['decision_ci']] : null ).' '*/.' '.date_short( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) ),
+                            h( Set::extract( $decision_ci, Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' ) ).' '.$locale->date( 'Date::short', Set::extract( $contratinsertion, 'Contratinsertion.datevalidation_ci' ) ) ),
                             $html->validateLink(
                                 'Valider le contrat d\'insertion ',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] )
