@@ -27,7 +27,7 @@
                     $message = 'Aucun contrat ne correspond à vos critères.';
                     break;
                 default:
-                    $message = 'Aucun contrat de validé.';
+                    $message = 'Aucun contrat de validé n\'a été trouvé.';
             }
         ?>
         <p class="notice"><?php echo $message;?></p>
@@ -109,7 +109,7 @@
         </table>
         <?php echo $pagination;?>
         <ul class="actionMenu">
-            <li><?php
+            <!-- <li><?php
                 echo $html->printCohorteLink(
                     'Imprimer la cohorte',
                     Set::merge(
@@ -122,7 +122,7 @@
                 );
             ?></li>
 
-           <!-- <li><?php
+            <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
                     Set::merge(
