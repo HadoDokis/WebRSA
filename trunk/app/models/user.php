@@ -125,8 +125,8 @@
         //*********************************************************************
 
         function beforeDelete() {
-            debug( $this->data );
-            die();
+//             debug( $this->data );
+//             die();
         }
     }
 ?>

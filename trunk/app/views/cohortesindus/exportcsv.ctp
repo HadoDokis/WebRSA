@@ -12,7 +12,7 @@
         }
     }
 
-    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'Suivi', 'Situation des droits', 'Date indus', 'Allocation comptabilisée', 'Montant initial de l\'indu', 'Montant transféré CG', 'Remise CG', 'Annulation faible montant', 'Autres montants' ) );
+    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'Suivi', 'Situation des droits', 'Date indus', 'Allocations comptabilisées', 'Montant initial de l\'indu', 'Montant transféré CG', 'Remise CG', 'Annulation faible montant', 'Autres montants' ) );
 
     foreach( $indus as $indu ) {
         $row = array(

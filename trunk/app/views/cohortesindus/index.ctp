@@ -75,7 +75,7 @@
 
                         <th>Date indus</th><!-- FIXME -->
 
-                        <th><?php echo $paginator->sort( 'Allocation comptabilisée', 'AllocationComptabilisee.mtmoucompta' );?></th>
+                        <th><?php echo $paginator->sort( 'Allocation comptabilisée', 'AllocationsComptabilisees.mtmoucompta' );?></th>
                         <th><?php echo $paginator->sort( 'Montant initial de l\'indu', 'IndusConstates.mtmoucompta' );?></th>
                         <th><?php echo $paginator->sort( 'Montant transféré CG', 'IndusTransferesCG.mtmoucompta' );?></th>
                         <th><?php echo $paginator->sort( 'Remise CG', 'RemisesIndus.mtmoucompta' );?></th>
