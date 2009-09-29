@@ -96,15 +96,16 @@
                                 </tr>
                             </tbody>
                         </table>';
+//                         debug( $contrat );
                         echo $html->tableCells(
                             array(
                                 h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
                                 h( $contrat['Adresse']['locaadr'] ),
                                 h( $contrat['Contratinsertion']['pers_charg_suivi'] ),
                                 h( $contrat['Dossier']['matricule'] ),
-                                h( date_short( $contrat['Contratinsertion']['date_saisi_ci'] ) ),
+                                h( $locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.date_saisi_ci' ) ) ),//date_short( $contrat['Contratinsertion']['date_saisi_ci'] ) ),
                                 h( $contrat['Contratinsertion']['rg_ci'] ),
-                                h( $decision_ci[$contrat['Contratinsertion']['decision_ci']].' '.date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
+                                h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
                                 array(
                                     $html->viewLink(
                                         'Voir le dossier « '.$title.' »',
