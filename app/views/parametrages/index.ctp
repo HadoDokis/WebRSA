@@ -1,3 +1,4 @@
+<?php $this->pageTitle = 'Paramétrages';?>
 <h1>Paramétrage des tables</h1>
 
 <?php echo $form->create( 'NouvellesDemandes', array( 'url'=> Router::url( null, true ) ) );?>
