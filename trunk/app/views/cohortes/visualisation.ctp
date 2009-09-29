@@ -51,7 +51,7 @@
             <thead>
                 <tr>
                    <!-- <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
+                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Date demande', 'Dossier.dtdemrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Date ouverture des droits', 'Dossier.dtdemrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Service instructeur', 'Suiviinstruction.typeserins' );?></th>

@@ -37,7 +37,7 @@
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
+                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
                     <th><?php echo $paginator->sort( 'Date de début contrat', 'Contratinsertion.dd_ci' );?></th>
                     <th><?php echo $paginator->sort( 'Date de fin contrat', 'Contratinsertion.df_ci' );?></th>

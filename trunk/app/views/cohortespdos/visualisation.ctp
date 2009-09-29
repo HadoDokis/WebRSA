@@ -59,7 +59,7 @@
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
+                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
                     <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo' );?></th>
