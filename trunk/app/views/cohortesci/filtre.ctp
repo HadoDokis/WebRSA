@@ -40,7 +40,7 @@
                 <?php echo $form->input( 'Filtre.date_saisi_ci_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_saisi_ci_to ) );?>
             </fieldset>
             <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-            <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?>
+            <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text', 'maxlength' => 5 ) );?>
             <?php echo $form->input( 'Filtre.pers_charg_suivi', array( 'label' => 'Contrat envoyé par ', 'type' => 'select' , 'options' => $personne_suivi, 'empty' => true ) );?>
             <?php echo $form->input( 'Filtre.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Filtre.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>

@@ -1,11 +1,28 @@
 <h1><?php echo $this->pageTitle = $pageTitle;?></h1>
 <?php require_once( 'filtre.ctp' );?>
+<?php
+    if( isset( $cohorteci ) ) {
+        $paginator->options( array( 'url' => $this->passedArgs ) );
+        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
 
+//         $pages = $paginator->first( '<<' );
+//         $pages .= $paginator->prev( '<' );
+//         $pages .= $paginator->numbers();
+//         $pages .= $paginator->next( '>' );
+//         $pages .= $paginator->last( '>>' );
+// 
+//         $pagination .= $html->tag( 'p', $pages );
+    }
+    else {
+        $pagination = '';
+    }
+?>
 <!-- Résultats -->
 <?php if( isset( $cohorteci ) ):?>
 
     <h2 class="noprint">Résultats de la recherche</h2>
-
+<?php echo $pagination;?>
     <?php if( is_array( $cohorteci ) && count( $cohorteci ) > 0 ):?>
         <?php /*require( 'index.pagination.ctp' )*/?>
         <?php echo $form->create( 'GestionContrat', array( 'url'=> Router::url( null, true ) ) );?>
@@ -105,7 +122,7 @@
                     <?php endforeach;?>
                 </tbody>
             </table>
-
+<?php echo $pagination;?>
             <?php echo $form->submit( 'Validation de la liste' );?>
         <?php echo $form->end();?>
 
