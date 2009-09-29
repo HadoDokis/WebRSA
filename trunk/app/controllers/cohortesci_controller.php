@@ -5,6 +5,7 @@
     {
         var $name = 'Cohortesci';
         var $uses = array( 'Cohorteci', 'Option', 'Contratinsertion', 'Typeorient', 'Orientstruct', 'Accoemploi', 'Adresse', 'Serviceinstructeur', 'Suiviinstruction' );
+        var $helpers = array( 'Csv' );
 
         var $paginate = array(
             // FIXME
@@ -148,6 +149,20 @@
                     $this->render( $this->action, null, 'visualisation' );
                     break;
             }
+        }
+
+
+        /// Export du tableau en CSV
+        function exportcsv() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+            $querydata = $this->Cohorteci->search( 'Decisionci::valides', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+            unset( $querydata['limit'] );
+            $contrats = $this->Contratinsertion->find( 'all', $querydata );
+
+            $this->layout = ''; // FIXME ?
+            $this->set( compact( 'contrats' ) );
         }
     }
 ?>

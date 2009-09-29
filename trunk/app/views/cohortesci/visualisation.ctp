@@ -109,27 +109,18 @@
         </table>
         <?php echo $pagination;?>
         <ul class="actionMenu">
-            <!-- <li><?php
-                echo $html->printCohorteLink(
-                    'Imprimer la cohorte',
-                    Set::merge(
-                        array(
-                            'controller' => 'gedooos',
-                            'action'     => 'notifications_cohortes'
-                        ),
-                        array_unisize( $this->data )
-                    )
+            <li><?php
+                echo $html->printLinkJs(
+                    'Imprimer le tableau',
+                    array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
-
             <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
-                    Set::merge(
-                        array( 'controller' => 'cohortes', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
-                    )
+                    array( 'controller' => 'cohortesci', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
-            ?></li>  -->
+            ?></li>
         </ul>
     <?php endif;?>
 <?php endif;?>
