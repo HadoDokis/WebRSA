@@ -502,14 +502,18 @@
 
                 $this->Nivetu->create();
                 $this->Nivetu->set( $this->data );
-//                 $valid = $this->Nivetu->validates( $this->data );
-// debug( $valid );
-//                 $valid = $this->DsppNivetu->validateErrors;
 
                 $valid = $this->Contratinsertion->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
 
                 if( $valid ) {
                     $this->Dspp->begin();
+                    $this->data['Actioninsertion'] = Set::filter( $this->data['Actioninsertion'] );
+                    if( empty( $this->data['Actioninsertion'] ) ) {
+                        unset( $this->data['Actioninsertion'] );
+                    }
+                    else if( !empty( $this->data['Contratinsertion']['id'] ) && !empty( $this->data['Actioninsertion'] ) ) {
+                        $this->data['Actioninsertion']['contratinsertion_id'] = $this->data['Contratinsertion']['id'];
+                    }
                     $saved = $this->Contratinsertion->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
                     $saved = $this->Dspp->save( $this->data ) && $saved;
                     if( $saved ) {
@@ -525,12 +529,7 @@
             else {
                 // Récupération du services instructeur lié au contrat
                 $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => 0 ) );
-//                 $contratinsertion['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
-// 
-//                 $typevoie = $this->Option->typevoie();
-//                 $type_voie = empty( $user['Serviceinstructeur']['type_voie'] ) ? null : $typevoie[$user['Serviceinstructeur']['type_voie']];
-//                 $contratinsertion['Contratinsertion']['service_soutien'] = $user['Serviceinstructeur']['lib_service'].', '.$user['Serviceinstructeur']['num_rue'].' '.$type_voie.' '.$user['Serviceinstructeur']['nom_rue'].' '.$user['Serviceinstructeur']['code_insee'].' '.$user['Serviceinstructeur']['ville'].', '.$user['User']['numtel'];
-//                 $this->data['Contratinsertion']['structurereferente_id'] = $structure['Structurereferente']['id'];
+
                 $this->data['Contratinsertion']['service_soutien'] = $this->_serviceSoutien( Set::extract( $this->data, 'Contratinsertion.structurereferente_id' ) );
 
                 $this->data = $contratinsertion;

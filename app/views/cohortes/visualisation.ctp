@@ -12,17 +12,19 @@
             array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Filtre' ).toggle(); return false;" )
         ).'</li></ul>';
     }
+
+
 //     if( isset( $cohorte ) ) {
 //         $paginator->options( array( 'url' => $this->passedArgs ) );
 //         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
 //         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
-//
+// 
 //         $pages = $paginator->first( '<<' );
 //         $pages .= $paginator->prev( '<' );
 //         $pages .= $paginator->numbers();
 //         $pages .= $paginator->next( '>' );
 //         $pages .= $paginator->last( '>>' );
-//
+// 
 //         $pagination .= $html->tag( 'p', $pages );
 //     }
 //     else {
@@ -47,10 +49,11 @@
         <p class="notice"><?php echo $message;?></p>
     <?php else:?>
         <p><?php echo sprintf( 'Nombre de pages: %s - Nombre de résultats: %s.', $locale->number( $pages ), $locale->number( $count ) );?></p>
+        <?php /*echo $pagination;*/ ?>
         <table class="tooltips_oupas">
             <thead>
                 <tr>
-                   <!-- <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
+                    <!-- <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Date demande', 'Dossier.dtdemrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Date ouverture des droits', 'Dossier.dtdemrsa' );?></th>
@@ -72,7 +75,7 @@
                     <th>Structure</th>
                     <th>Décision</th>
                     <th>Date proposition</th>
-                    <th>Date dernier CI</th>
+                    <th>Date dernier CI</th> 
                     <th class="action">Action</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
@@ -80,17 +83,17 @@
             <tbody>
                 <?php foreach( $cohorte as $index => $personne ):?>
                     <?php
-						// FIXME: date ouverture de droits -> voir flux instruction
+                        // FIXME: date ouverture de droits -> voir flux instruction
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
                                 <tr>
                                     <th>N° de dossier</th>
                                     <td>'.h( $personne['Dossier']['numdemrsa'] ).'</td>
                                 </tr>
-								<tr>
-									<th>Date ouverture de droit</th>
-									<td>'.h( date_short( $personne['Dossier']['dtdemrsa'] ) ).'</td>
-								</tr>
+                                <tr>
+                                    <th>Date ouverture de droit</th>
+                                    <td>'.h( date_short( $personne['Dossier']['dtdemrsa'] ) ).'</td>
+                                </tr>
                                 <tr>
                                     <th>Date naissance</th>
                                     <td>'.h( date_short( $personne['Personne']['dtnai'] ) ).'</td>
@@ -149,6 +152,7 @@
                 <?php endforeach;?>
             </tbody>
         </table>
+        <?php /*echo $pagination;*/ ?>
         <ul class="actionMenu">
             <li><?php
                 echo $html->printCohorteLink(
@@ -163,14 +167,14 @@
                 );
             ?></li>
 
-           <!-- <li><?php
+            <!--<li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
                     Set::merge(
                         array( 'controller' => 'cohortes', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                     )
                 );
-            ?></li>  -->
+            ?></li>-->
         </ul>
     <?php endif;?>
 <?php endif;?>

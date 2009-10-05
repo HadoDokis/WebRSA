@@ -5,6 +5,20 @@
         var $name = 'Orientsstructs';
         var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente');
 
+        var $helpers = array( 'Paginator' );
+
+        var $paginate = array(
+            // FIXME
+            'limit' => 20
+        );
+
+        /**
+        */
+        function __construct() {
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+            parent::__construct();
+        }
+
         /**
         *
         *
