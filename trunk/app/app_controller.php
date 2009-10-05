@@ -23,22 +23,22 @@
                     )
                 );
 
-				// Recherche des droits pour les sous-groupes
-				$parent_id = Set::extract( $Aro, 'Aro.parent_id' );
-				$parentAros = array();
-				while( !empty( $parent_id ) && ( $parent_id != 0 ) ) {
-					$parentAro = $this->Acl->Aro->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Aro.id' => $parent_id
-							)
-						)
-					);
-					$parentAros[] = $parentAro;
-					$parent_id = Set::extract( $parentAro, 'Aro.parent_id' );
-				}
-				$permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
+                // Recherche des droits pour les sous-groupes
+                $parent_id = Set::extract( $Aro, 'Aro.parent_id' );
+                $parentAros = array();
+                while( !empty( $parent_id ) && ( $parent_id != 0 ) ) {
+                    $parentAro = $this->Acl->Aro->find(
+                        'first',
+                        array(
+                            'conditions' => array(
+                                'Aro.id' => $parent_id
+                            )
+                        )
+                    );
+                    $parentAros[] = $parentAro;
+                    $parent_id = Set::extract( $parentAro, 'Aro.parent_id' );
+                }
+                $permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
 
                 if( !empty( $Aro ) ) {
                     // FIXME: trié par parent / fils ? .. un seul niveau
@@ -172,6 +172,7 @@
                     $this->assert( $this->Droits->check( $user['User']['aroAlias'], $controllerAction ), 'error403' );
                 }
             }
+            $this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
             return $return;
         }
 
