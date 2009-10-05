@@ -1,7 +1,8 @@
 <?php
-    @set_time_limit( 0 );
-    @ini_set( 'memory_limit', '128M' );
-    App::import('Sanitize');
+
+    @ini_set( 'memory_limit', '256M' );
+    App::import( 'Sanitize' );
+
     class CohortesController extends AppController
     {
         var $name = 'Cohortes';
@@ -10,19 +11,14 @@
 
         var $paginate = array(
             // FIXME
-            'limit' => 20,
+            'limit' => 20
         );
-//
-//        /**
-//        */
-//         function __construct() {
-//             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-//             parent::__construct();
-//         }
+
 
         //*********************************************************************
 
         function __construct() {
+//             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'orientees' ) ) ) );
             parent::__construct();
             $this->components[] = 'Jetons';
         }
@@ -338,8 +334,9 @@
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
             $_limit = 10;
-            $params = $this->Cohorte->search( 'Orienté', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-
+            $params = $this->Cohorte->search( 'Orienté', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids(), $_limit );
+// debug( $params['limit'] );
+// die();
             unset( $params['limit'] );
             $cohortes = $this->Dossier->find( 'all', $params );
 
