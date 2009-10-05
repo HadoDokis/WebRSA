@@ -1,4 +1,5 @@
 <?php
+
     if( isset( $personne_id ) ) {
         $dossier = $this->requestAction( array( 'controller' => 'dossiers', 'action' => 'menu' ), array( 'personne_id' => $personne_id ) );
     }
@@ -12,6 +13,9 @@
 
 <div class="treemenu">
     <h2><?php echo $html->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) ).( $dossier['Dossier']['locked'] ? $html->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null );?></h2>
+
+    <p class="etatDossier"> <?php echo Set::extract( $etatdosrsa, Set::extract( $dossier, 'Situationdossierrsa.etatdosrsa' ) );?> </p>
+
     <ul>
         <li><?php echo $html->link( 'Composition du foyer', array( 'controller' => 'personnes', 'action' => 'index', $dossier['Foyer']['id'] ) );?>
             <ul>
@@ -25,6 +29,36 @@
                             <!-- Début "Partie du sous-menu concernant uniquement le demandeur et son conjoint" -->
                             <?php if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ):?>
                                 <ul>
+                                <?php if( $permissions->check( 'situationsdossiersrsa', 'index' ) || $permissions->check( 'detailsdroitsrsa', 'index' ) || $permissions->check( 'dossierspdo', 'index' ) ):?>
+                                    <li><span>Droit</span>
+                                        <ul>
+                                            <li>
+                                                <?php
+                                                    echo $html->link(
+                                                        'Historique du droit',
+                                                        array( 'controller' => 'situationsdossiersrsa', 'action' => 'index', $dossier['Dossier']['id'] )
+                                                    );
+                                                ?>
+                                            </li>
+                                            <li>
+                                                <?php
+                                                    echo $html->link(
+                                                        'Détails du droit RSA',
+                                                        array( 'controller' => 'detailsdroitsrsa', 'action' => 'index', $dossier['Dossier']['id'] )
+                                                    );
+                                                ?>
+                                            </li>
+                                            <li>
+                                                <?php
+                                                    echo $html->link(
+                                                        'Consultation dossier PDO',
+                                                        array( 'controller' => 'dossierspdo', 'action' => 'index', $dossier['Dossier']['id'] )
+                                                    );
+                                                ?>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                <?php endif;?>
                                 <?php if( $permissions->check( 'dspps', 'view' ) ):?>
                                     <li>
                                         <?php
@@ -32,28 +66,6 @@
                                                 h( 'Données socio-professionnelles' ),
                                                 array( 'controller' => 'dspps', 'action' => 'view', $personne['id'] )
                                             );?>
-                                    </li>
-                                <?php endif;?>
-
-                                <?php if( $permissions->check( 'contratsinsertion', 'index' ) ):?>
-                                    <li>
-                                        <?php
-                                            echo $html->link(
-                                                'Contrats d\'insertion',
-                                                array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne['id'] )
-                                            );
-                                        ?>
-                                    </li>
-                                <?php endif;?>
-
-                                <?php if( $permissions->check( 'ressources', 'index' ) ):?>
-                                    <li>
-                                        <?php
-                                            echo $html->link(
-                                                'Ressources',
-                                                array( 'controller' => 'ressources', 'action' => 'index', $personne['id'] )
-                                            );
-                                        ?>
                                     </li>
                                 <?php endif;?>
 
@@ -67,16 +79,89 @@
                                         ?>
                                     </li>
                                 <?php endif;?>
-                                <?php if( $permissions->check( 'rendezvous', 'index' ) ):?>
-                                    <li>
-                                        <?php
-                                            echo $html->link(
-                                                h( 'Rendez-vous' ),
-                                                array( 'controller' => 'rendezvous', 'action' => 'index', $personne['id'] )
-                                            );
-                                        ?>
+
+                                <?php if( $permissions->check( 'rendezvous', 'index' ) || $permissions->check( 'contratsinsertion', 'index' ) ):?>
+                                    <li><span>Parcours</span>
+                                        <ul>
+                                            <li>
+                                                <?php
+                                                    echo $html->link(
+                                                        h( 'Rendez-vous' ),
+                                                        array( 'controller' => 'rendezvous', 'action' => 'index', $personne['id'] )
+                                                    );
+                                                ?>
+                                            </li>
+                                            <li>
+                                                <?php
+                                                    echo $html->link(
+                                                        'Contrats d\'insertion',
+                                                        array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne['id'] )
+                                                    );
+                                                ?>
+                                            </li>
+                                            <li><span>Accompagnement</span>
+                                                <ul>
+                                                    <li>
+                                                        <?php
+                                                            echo $html->link(
+                                                                'Actions /Partenaires /Bilan',
+                                                                '#'//array( 'controller' => 'actionsinsertion', 'action' => 'index', $personne['id'] )
+                                                            );
+                                                        ?>
+                                                    </li>
+                                                    <li>
+                                                        <?php
+                                                            echo $html->link(
+                                                                'Aides / APRE',
+                                                                '#'//array( 'controller' => 'aidesdirectes', 'action' => 'index', $personne['id'] )
+                                                            );
+                                                        ?>
+                                                    </li>
+                                                    <li>
+                                                        <?php
+                                                            echo $html->link(
+                                                                'Bilan de l\'accompagnement',
+                                                                '#'//array( 'controller' => '', 'action' => 'index', $personne['id'] )
+                                                            );
+                                                        ?>
+                                                    </li>
+                                                    <!-- <li>
+                                                        <?php
+                                                            echo '<li>'.$html->link(
+                                                                'Suivis du parcours d\'insertion',
+                                                                array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Foyer']['id'] )
+                                                            ).'</li>';
+                                                        ?>
+                                                    </li> -->
+                                                </ul>
+                                            </li>
+                                        </ul>
                                     </li>
                                 <?php endif;?>
+
+                                <?php if( $permissions->check( 'ressources', 'index' ) || $permissions->check( 'indus', 'index' ) ):?>
+                                    <li><span>Situation financière</span>
+                                        <ul>
+                                            <li>
+                                                <?php
+                                                    echo $html->link(
+                                                        'Ressources',
+                                                        array( 'controller' => 'ressources', 'action' => 'index', $personne['id'] )
+                                                    );
+                                                ?>
+                                            </li>
+                                            <li>
+                                                <?php
+                                                    echo $html->link(
+                                                        'Liste des Indus',
+                                                        array( 'controller' => 'indus', 'action' => 'index', $dossier['Dossier']['id'] )
+                                                    );
+                                                ?>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                <?php endif;?>
+
                             </ul>
                             <?php endif;?>
                             <!-- Fin "Partie du sous-menu concernant uniquement le demandeur et son conjoint" -->
@@ -150,36 +235,6 @@
                     </li>
                 <?php endif;?>
 
-                <?php if( $permissions->check( 'situationsdossiersrsa', 'index' ) ):?>
-                    <li><span>Situation dossier rsa</span>
-                        <ul>
-                            <li>
-                                <?php
-                                    echo $html->link(
-                                        'Historique du droit',
-                                        array( 'controller' => 'situationsdossiersrsa', 'action' => 'index', $dossier['Dossier']['id'] )
-                                    );
-                                ?>
-                            </li>
-                            <li>
-                                <?php
-                                    echo $html->link(
-                                        'Liste des indus',
-                                        array( 'controller' => 'indus', 'action' => 'index', $dossier['Dossier']['id'] )
-                                    );
-                                ?>
-                            </li>
-                            <li>
-                                <?php
-                                    echo $html->link(
-                                        'Consultation dossier PDO',
-                                        array( 'controller' => 'dossierspdo', 'action' => 'index', $dossier['Dossier']['id'] )
-                                    );
-                                ?>
-                            </li>
-                        </ul>
-                    </li>
-                <?php endif;?>
 
                <?php if( $permissions->check( 'suivisinstruction', 'index' ) ):?>
                     <li>
@@ -213,14 +268,14 @@
             ?>
         <?php endif;?>
 
-        <?php if( $permissions->check( 'suivisinsertion', 'index' ) ):?>
+         <?php if( $permissions->check( 'suivisinsertion', 'index' ) ):?>
             <?php
                 echo '<li>'.$html->link(
                     'Suivis du parcours d\'insertion',
                     array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Foyer']['id'] )
                 ).'</li>';
             ?>
-        <?php endif;?>
+        <?php endif;?> 
 
         <?php if( $permissions->check( 'dossierssimplifies', 'edit' ) ):?>
             <li><span>Préconisation d'orientation</span>
