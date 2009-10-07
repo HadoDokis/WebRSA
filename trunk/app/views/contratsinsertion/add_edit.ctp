@@ -144,6 +144,11 @@
         <table class="wide noborder">
             <tr>
                 <td class="mediumSize noborder">
+                    <?php echo $form->input( 'Contratinsertion.forme_ci', array( 'label' => false, 'type' => 'radio' , 'options' => array( 'S' => 'Simple', 'C' => 'Complexe' ), 'legend' => required( __( 'forme_ci', true ) ) ) );?>
+                </td>
+            </tr>
+            <tr>
+                <td class="mediumSize noborder">
                     <strong>Date d'ouverture du droit ( RMI, API, rSa ) : </strong><?php echo $oridemrsa;?>
                 </td>
                 <td class="mediumSize noborder" colspan ="2">
@@ -232,9 +237,26 @@
             </tr>
         </table>
 </fieldset>
+<fieldset class="loici">
+    <p>
+        Loi N°2008-1249 du 1er Décembre, généralisant le revenu de solidarité active et réformant les politiques d'insertion : <strong>Contrat librement débattu avec engagements réciproques</strong> ( articles L.263.35 et L.262.36 )<br />
+        <strong>Respect du Contrat</strong> ( Article L-262-37 1° et 2° ) :<br />
+        <em>"Sauf décision prise au regard de la situation particulière du bénéficiaire, le versement du revenu de solidarité active est suspendu, en tout ou partie, par le Président du Conseil Général :<br />
+        lorsque, du fait du bénéficiaire et sans motif légitime, le projet personnalisé d'accès à l'emploi ou l'un des contrats mentionnés aux articles L.262-35 et L.262-36 ne sont pas établis dans les délais prévus ou ne sont pas renouvelés.<br />
+        lorsque, sans motif légitime, les dispositions du projet personnalisé d'accès à l'emploi ou les stipulations de l'un des contrats mentionnés aux articles L.262-35 et L.262-36 ne sont pas respectés par le bénéficiaire."<br />
+        </em>
+        <strong>Lorsque le bénéficiaire ne respecte pas les conditions de ce contrat, l'organisme signataire le signale au Président du conseil Général.</strong>
+
+    </p>
+</fieldset>
 
 <?php include 'add_edit_specif_'.Configure::read( 'nom_form_ci_cg' ).'.ctp';?>
 
+<fieldset class="cnilci">
+    <p>
+        <em>Conformément à la loi "Informatique et liberté" n°78-17 du 06 janvier 1978 relative à l'informatique, aux fichiers et aux libertés nous nous engageons à prendre toutes les précautions afin de préserver la sécurité de ces informations liées à l'adresse, téléphone et mail seront utilisées uniquement pour permettre la prise de contact, dans le cadre du parcours d'insertion.</em>
+    </p>
+</fieldset>
 
         <?php echo $form->submit( 'Enregistrer' );?>
     <?php echo $form->end();?>

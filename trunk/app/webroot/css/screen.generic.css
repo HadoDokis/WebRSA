@@ -776,10 +776,28 @@ td.radioSize {
     width: 3%;
 }
 
-td.radioSize div.input.radio div.input.select {
+td.radioSize div.input.radio, td.radioSize div.input.select {
     width: 70%;
 }
 
-/*td.textArea div.input.textarea {
-    width: 90%;
-}*/
+
+/** Ajout d'une légende pour les titres des fieldset ds le CI **/
+legend.title {
+    cursor: help;
+}
+
+fieldset.loici {
+    padding: 1em;
+    background-color: #FDF5E7;
+}
+fieldset.cnilci, fieldset.cnilci p {
+    font-size: 11px;
+    padding-bottom: 0em;
+    padding-bottom: 0em;
+    margin-bottom: 0em;
+    margin-top: 0em;
+}
+
+td.signature{
+    padding-bottom: 5em;
+}

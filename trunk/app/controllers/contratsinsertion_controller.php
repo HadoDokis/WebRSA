@@ -311,6 +311,7 @@
                 $this->assert( !empty( $user ), 'error500' ); // FIXME
 
                 $this->data['Contratinsertion']['pers_charg_suivi'] = $user['User']['nom'].' '.$user['User']['prenom'];
+                $this->set( 'perschargsuivi', $this->data['Contratinsertion']['pers_charg_suivi'] );
 
                 $referent = $this->Referent->find( 'first', array( 'fields' => array( 'id', 'fonction' ) ) );
                 $this->data['Contratinsertion']['fonction_ref'] = Set::extract(  $referent, 'Referent.fonction' );
@@ -491,6 +492,7 @@
             $this->set( 'numdemrsa', $dossier['Dossier']['numdemrsa'] );
             $this->set( 'matricule', $dossier['Dossier']['matricule'] );
 
+            $this->set( 'perschargsuivi', $contratinsertion['Contratinsertion']['pers_charg_suivi'] );
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
             $this->set( 'foyer', $foyer );
             $this->set( 'dossier', $dossier );
@@ -507,13 +509,13 @@
 
                 if( $valid ) {
                     $this->Dspp->begin();
-                    $this->data['Actioninsertion'] = Set::filter( $this->data['Actioninsertion'] );
-                    if( empty( $this->data['Actioninsertion'] ) ) {
-                        unset( $this->data['Actioninsertion'] );
-                    }
-                    else if( !empty( $this->data['Contratinsertion']['id'] ) && !empty( $this->data['Actioninsertion'] ) ) {
-                        $this->data['Actioninsertion']['contratinsertion_id'] = $this->data['Contratinsertion']['id'];
-                    }
+//                     $this->data['Actioninsertion'] = Set::filter( $this->data['Actioninsertion'] );
+//                     if( empty( $this->data['Actioninsertion'] ) ) {
+//                         unset( $this->data['Actioninsertion'] );
+//                     }
+//                     else if( !empty( $this->data['Contratinsertion']['id'] ) && !empty( $this->data['Actioninsertion'] ) ) {
+//                         $this->data['Actioninsertion']['contratinsertion_id'] = $this->data['Contratinsertion']['id'];
+//                     }
                     $saved = $this->Contratinsertion->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
                     $saved = $this->Dspp->save( $this->data ) && $saved;
                     if( $saved ) {
@@ -530,7 +532,9 @@
                 // Récupération du services instructeur lié au contrat
                 $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => 0 ) );
 
+
                 $this->data['Contratinsertion']['service_soutien'] = $this->_serviceSoutien( Set::extract( $this->data, 'Contratinsertion.structurereferente_id' ) );
+
 
                 $referent = $this->Referent->find( 'first', array( 'fields' => array( 'id', 'fonction' ) ) );
                 $this->data['Contratinsertion']['fonction_ref'] = Set::extract( $referent, 'Referent.fonction' );
