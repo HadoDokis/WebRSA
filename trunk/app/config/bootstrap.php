@@ -215,6 +215,16 @@
 		return $return;
 	}
 
+    function array_intersects( array $needle, array $haystack ) {
+        $return = array();
+        foreach( $needle as $n ) {
+            if( in_array( $n, $haystack ) ) {
+                $return[] = $n;
+            }
+        }
+        return $return;
+    }
+
     /** ************************************************************************
     *
     *** ***********************************************************************/

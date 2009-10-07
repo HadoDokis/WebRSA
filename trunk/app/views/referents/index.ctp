@@ -24,6 +24,7 @@
                 <th>Civilité</th>
                 <th>Nom</th>
                 <th>Prénom</th>
+                <th>Fonction</th>
                 <th>N° téléphone</th>
                 <th>Email</th>
                 <th>Structure référente liée</th>
@@ -37,6 +38,7 @@
                                 h( $qual[$referent['Referent']['qual']] ),
                                 h( $referent['Referent']['nom'] ),
                                 h( $referent['Referent']['prenom'] ),
+                                h( $referent['Referent']['fonction'] ),
                                 h( $referent['Referent']['numero_poste'] ),
                                 h( $referent['Referent']['email'] ),
                                 h( $sr[$referent['Referent']['structurereferente_id']] ),

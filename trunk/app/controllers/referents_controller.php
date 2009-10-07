@@ -9,6 +9,7 @@
         function beforeFilter() {
             $return = parent::beforeFilter();
             $this->set( 'qual', $this->Option->qual() );
+            $this->set( 'fonction_pers', $this->Option->fonction_pers() );
             return $return;
         }
 
