@@ -33,7 +33,7 @@
         );
 
         function listOptions() {
-            $options = $this->find( 
+            $options = $this->find(
                 'list',
                 array (
                     'fields' => array(

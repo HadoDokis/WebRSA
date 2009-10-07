@@ -165,6 +165,13 @@
             );
         }
 
+        function avis_ci(){
+            return array(
+                'S' => 'Suspension',
+                'R' => 'Radiation'
+            );
+        }
+
         function aviscondadmrsa() {
             return array(
                 'D' => 'Avis demandé au CG',
@@ -189,6 +196,14 @@
                 'R' => 'Refus du CG'
             );
         }
+
+        function aviseqpluri() {
+            return array(
+                'R' => 'Réorientation',
+                'M' => 'Maintien de l\'orientation'
+            );
+        }
+
 
         function commission() { ///FIXME: ajout pour les PDO mais à voir
             return array(
@@ -420,6 +435,15 @@
                 '06' => 'Recueil des données socio-profesionnelles validé en totalité'
             );
         }
+
+        function fonction_pers() {
+            return array(
+                'ADM' => 'Administrateur',
+                'VAL' => 'Validateur',
+                'AGE' => 'Agent simple'
+            );
+        }
+
 
         function formeci() {
             return array(
@@ -1026,6 +1050,13 @@
                 'MME' => 'Madame',
                 'MLE' => 'Mademoiselle',
                 'MR' => 'Monsieur'
+            );
+        }
+
+        function raison_ci() {
+            return array(
+                'D' => 'Défaut de conclusion',
+                'N' => 'Non respect du contrat'
             );
         }
 

@@ -749,9 +749,9 @@ td.aere, th.aere{
 }
 
 /*****************************************************************************/
-
+/*Pour le dossier_menu dans l'entête*/
 p.etatDossier {
-    font-size: 12px;
+    font-size: 14px;
     border-bottom: 1px solid #235F7D;
     line-height: 1em;
     margin: 0;
@@ -759,3 +759,27 @@ p.etatDossier {
     background: #E6EEF2;
 }
 /*****************************************************************************/
+
+.noborder, table.noborder tbody {
+    border: 0!important;
+}
+
+.center {
+    text-align: center;
+}
+
+td.mediumSize  {
+    width: 50%;
+}
+
+td.radioSize {
+    width: 3%;
+}
+
+td.radioSize div.input.radio div.input.select {
+    width: 70%;
+}
+
+/*td.textArea div.input.textarea {
+    width: 90%;
+}*/

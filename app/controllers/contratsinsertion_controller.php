@@ -11,6 +11,9 @@
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'decision_ci', $this->Option->decision_ci() );
+            $this->set( 'raison_ci', $this->Option->raison_ci() );
+            $this->set( 'avis_ci', $this->Option->avis_ci() );
+            $this->set( 'aviseqpluri', $this->Option->aviseqpluri() );
             $this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
             $this->set( 'emp_occupe', $this->Option->emp_occupe() );
             $this->set( 'duree_hebdo_emp', $this->Option->duree_hebdo_emp() );
@@ -23,7 +26,9 @@
             $this->set( 'legend_oridemrsa', $this->Option->oridemrsa() );
             $this->set( 'typevoie', $this->Option->typevoie() );
 
-            $this->set( 'referents', $this->Referent->find( 'list' ) );
+
+            $this->set( 'fonction_pers', $this->Option->fonction_pers() );
+
             $this->set( 'nivetus', $this->Nivetu->find( 'list' ) );
 
 //             $this->set( 'actions_prev', $this->Option->actions_prev() );
@@ -33,6 +38,7 @@
             $this->set( 'actions', $this->Action->grouplist( 'prest' ) );
             $this->set( 'typo_aide', $this->Option->typo_aide() );
 
+            $this->set( 'soclmaj', $this->Option->natpfcre( 'soclmaj' ) );
             //$this->set( 'codesaction', $this->Action->find( 'list', array( 'fields' => array( 'code', 'id' ) ) ) );
         }
 
@@ -57,104 +63,6 @@
             $this->set( 'personne_id', $personne_id );
 
         }
-
-        function test2() { ///Test Unitaire afin de vérifier le bon fonctionnement des enregistrements
-            $data = Array (
-                'Contratinsertion' => Array (
-                    'id' => 1,
-                    'personne_id' => 1,
-                    'typocontrat_id' => 2,
-                    'structurereferente_id' => 1,
-                    'dd_ci' => Array (
-                            'day' => '01',
-                            'month' => '01',
-                            'year' => '2019',
-                        ),
-
-                    'duree_engag' => '1',
-                    'df_ci' => Array (
-                            'day' => '01',
-                            'month' => '01',
-                            'year' => '2019'
-                        ),
-
-                    'diplomes' => 'l!khp',
-                    'expr_prof' => 'ùpjho$',
-                    'form_compl' => 'ùpjo$j',
-                    'actions_prev' => '1',
-                    'obsta_renc' => '',
-                    'serviceinstructeur_id' => 1,
-                    'service_soutien' => 'Service 2, 14 rue la bas 30900 nimes, 04 67 66 66 66',
-                    'pers_charg_suivi' => 'auzolat arnaud',
-                    'objectifs_fixes' => 'ùpho',
-                    'engag_object' => 'ùphầ',
-                    'emp_trouv' => '0',
-                    'nature_projet' => 'opjầçh',
-                    'lieu_saisi_ci' => 'ihiĥ',
-                    'date_saisi_ci' => Array (
-                            'day' => '30',
-                            'month' => '06',
-                            'year' => '2009'
-                        ),
-
-                    'Le bénéficiaire : ' => 'prosper minnie'
-                ),
-                'Actioninsertion' => Array (
-                    array(
-                        'id'            => 1,
-                        'lib_action'   => 'P',
-                        'dd_action'     => Array (
-                            'day' => '30',
-                            'month' => '06',
-                            'year' => '2009'
-                        ),
-                        'df_action' => Array (
-                            'day' => '30',
-                            'month' => '06',
-                            'year' => '2009'
-                        ),
-                    )
-                ),
-                'Refpresta' => array (
-                    'id'                =>  1,
-                    'nomrefpresta'      => 'arno auzeolat',
-                    'prenomrefpresta'   => 'moihùp'
-                ),
-                'Prestform' => Array (
-                    'id'                    => 1,
-                    'actioninsertion_id'    => 1,
-                    'refpresta_id'          => 1,
-                    'lib_presta'            => '06',
-                    'date_presta' => Array (
-                        'day'   => '01',
-                        'month' => '01',
-                        'year'  => '2019'
-                    )
-                )
-            );
-
-            // TODO: validation
-            $this->Contratinsertion->begin();
-
-            $this->Refpresta->set( $data['Refpresta'] );
-            $saved = $this->Refpresta->save();
-
-            $saved = $this->Contratinsertion->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
-
-            $data['Prestform']['actioninsertion_id'] = $this->Contratinsertion->Actioninsertion->id;
-            $data['Prestform']['refpresta_id'] = $this->Refpresta->id;
-            $this->Prestform->set( $data['Prestform'] );
-            $saved = $this->Prestform->save() && $saved;
-
-            if( $saved ) {
-                $this->Contratinsertion->commit();
-            }
-            else {
-                $this->Contratinsertion->rollback();
-            }
-            debug( $data );
-        }
-
 
         function view( $contratinsertion_id = null ){
             // TODO : vérif param
@@ -231,6 +139,8 @@
             $this->set( 'dtnai', $personne['Personne']['dtnai'] );
             $this->set( 'nom', $personne['Personne']['nom'] );
             $this->set( 'prenom', $personne['Personne']['prenom'] );
+            $this->set( 'idassedic', $personne['Personne']['idassedic'] );
+            $this->set( 'rolepers', $this->Option->rolepers() );
 
             $dspp_id =  $personne['Dspp']['id'] ;
             $dspp = $this->Dspp->read( null, $dspp_id );
@@ -243,26 +153,82 @@
             $this->set( 'typeocclog',  $foyer['Foyer']['typeocclog'] );
 
             $dossier_id =  $personne['Foyer']['dossier_rsa_id'] ;
+// debug( $personne );
+
+            $this->Dossier->unbindModel( array( 'hasMany' => array( 'Infofinanciere' ) ) );
+            $this->Dossier->bindModel(
+                array(
+                    'hasMany' => array(
+                        'Infofinanciere' => array(
+                            'className'     => 'Infofinanciere',
+                            'foreignKey'    => 'dossier_rsa_id',
+                            'order' => array( 'Infofinanciere.moismoucompta DESC' )
+                        )
+                    )
+                )
+            );
+
             $dossier = $this->Dossier->read( null, $dossier_id );
+// debug( $dossier );
+
             $this->set( 'oridemrsa', $dossier['Detaildroitrsa']['oridemrsa'] );
             $this->set( 'dtdemrsa', $dossier['Dossier']['dtdemrsa'] );
+            $this->set( 'numdemrsa', $dossier['Dossier']['numdemrsa'] );
             $this->set( 'matricule', $dossier['Dossier']['matricule'] );
+
+
+            // Récupération de l'adresse lié à la personne
+            $this->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+            $adresse = $this->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => $personne['Personne']['foyer_id'],
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $personne['Adresse'] = $adresse['Adresse'];
+
+            $this->set( 'typeorient', $this->Typeorient->find(
+                'list',
+                array (
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient'
+                    ),
+                    'conditions' => array( 'Typeorient.parentid' => NULL ),
+                    'order'  => array( 'Typeorient.lib_type_orient ASC' )
+                )
+            )  );
+
 
             // Calcul du numéro du contrat d'insertion
             $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
-
+            $this->set( 'nbrCi', $nbrCi );
             // Assignation à la vue
-            $this->set( 'typeservice', $this->Serviceinstructeur->find( 'list' ) );
+            $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
+
             $this->set( 'sr', $this->Structurereferente->find( 'list' ) );
             $this->set( 'tc', $this->Typocontrat->find( 'list' ) );
             $this->set( 'personne', $personne );
             $this->set( 'personne_id', $personne_id );
-// debug( $personne );
+            $this->set( 'foyer', $foyer );
+            $this->set( 'dossier', $dossier );
+
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
 
-//                 debug( $this->data );
 
                 $this->Contratinsertion->set( $this->data );
                 $valid = $this->Contratinsertion->validates();
@@ -284,6 +250,7 @@
                         unset( $this->data['Refpresta'] );
                         $this->data['Prestform'][0]['refpresta_id'] = $this->Refpresta->id;
                     }
+// debug( $this->data );
                     $saved = $this->Dspp->saveAll( $this->data, array( 'validate' => 'first' ) ) && $saved;
                     $saved = $this->Actioninsertion->saveAll( $this->data, array( 'validate' => 'first' ) ) && $saved;
 
@@ -291,7 +258,7 @@
                         $this->Jetons->release( $dossier_id );
                         $this->Contratinsertion->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
+                       $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
                     }
                     else {
                         $this->Contratinsertion->rollback();
@@ -334,7 +301,7 @@
                 }
                 //$this->assert( !empty( $dspp ), 'error500' ); // FIXME -> error code
 
-                $this->data['Dspp'] = array( 'id' => $dspp['Dspp']['id'] );
+                $this->data['Dspp'] = array( 'id' => $dspp['Dspp']['id'], 'personne_id' => $dspp['Dspp']['personne_id'] );
                 $this->data['Nivetu'] = ( ( isset( $dspp['Nivetu'] ) ) ? $dspp['Nivetu'] : array() );
                 if( !empty( $dspp ) ){
                     $this->data['Contratinsertion']['diplomes'] = $dspp['Dspp']['diplomes'];
@@ -343,14 +310,10 @@
                 $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
                 $this->assert( !empty( $user ), 'error500' ); // FIXME
 
-//                 $type_voie = empty( $user['Serviceinstructeur']['type_voie'] ) ? null : $typevoie[$user['Serviceinstructeur']['type_voie']];
-
-                // Récupération des données utilisateurs lié au contrat
-//                 $this->data['Contratinsertion']['serviceinstructeur_id'] = $user['Serviceinstructeur']['id'];
                 $this->data['Contratinsertion']['pers_charg_suivi'] = $user['User']['nom'].' '.$user['User']['prenom'];
-//                 $this->data['Contratinsertion']['service_soutien'] = $user['Serviceinstructeur']['lib_service'].', '.$user['Serviceinstructeur']['num_rue'].' '.$type_voie.' '.$user['Serviceinstructeur']['nom_rue'].' '.$user['Serviceinstructeur']['code_insee'].' '.$user['Serviceinstructeur']['ville'].', '.$user['User']['numtel'];
 
-
+                $referent = $this->Referent->find( 'first', array( 'fields' => array( 'id', 'fonction' ) ) );
+                $this->data['Contratinsertion']['fonction_ref'] = Set::extract(  $referent, 'Referent.fonction' );
                 // Récupération de la dernière structure referente liée au contrat
                 $orientstruct = $this->Orientstruct->find(
                     'first',
@@ -404,7 +367,7 @@
                 $this->cakeError( 'error404' );
             }
 
-            $this->set( 'typeservice', $this->Serviceinstructeur->find( 'list' ) );
+            $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
 
             $sr = $this->Structurereferente->find(
                 'list',
@@ -438,7 +401,6 @@
                     'recursive' => 0
                 )
             );
-// debug( $contratinsertion );
 
             $personne = $this->Personne->find(
                 'first',
@@ -460,11 +422,44 @@
                 )
             );
             $this->set( 'action', $action );
-
-
+            // Récupération de l'adresse lié à la personne
+            $this->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+            $adresse = $this->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => $personne['Personne']['foyer_id'],
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $personne['Adresse'] = $adresse['Adresse'];
+            // Calcul du numéro du contrat d'insertion
+            $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $contratinsertion['Personne']['id']) ) );
+            $this->set( 'nbrCi', $nbrCi );
             // Assignation à la vue
             $this->set( 'personne', $personne );
 
+            $this->set( 'typeorient', $this->Typeorient->find(
+                'list',
+                array (
+                    'fields' => array(
+                        'Typeorient.id',
+                        'Typeorient.lib_type_orient'
+                    ),
+                    'conditions' => array( 'Typeorient.parentid' => NULL ),
+                    'order'  => array( 'Typeorient.lib_type_orient ASC' )
+                )
+            )  );
             $conditions = array( );
 
             if ( empty( $contratinsertion )){
@@ -477,6 +472,8 @@
             $this->set( 'dtnai', $personne['Personne']['dtnai'] );
             $this->set( 'nom', $personne['Personne']['nom'] );
             $this->set( 'prenom', $personne['Personne']['prenom'] );
+            $this->set( 'idassedic', $personne['Personne']['idassedic'] );
+            $this->set( 'rolepers', $this->Option->rolepers() );
 
             $dspp_id =  $personne['Dspp']['id'] ;
             $dspp = $this->Dspp->read( null, $dspp_id );
@@ -491,9 +488,12 @@
             $dossier = $this->Dossier->read( null, $dossier_id );
             $this->set( 'oridemrsa', $dossier['Detaildroitrsa']['oridemrsa'] );
             $this->set( 'dtdemrsa', $dossier['Dossier']['dtdemrsa'] );
+            $this->set( 'numdemrsa', $dossier['Dossier']['numdemrsa'] );
             $this->set( 'matricule', $dossier['Dossier']['matricule'] );
 
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
+            $this->set( 'foyer', $foyer );
+            $this->set( 'dossier', $dossier );
 
             if( !empty( $this->data ) ) {
                 $this->Dspp->create();
@@ -531,6 +531,9 @@
                 $user = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => 0 ) );
 
                 $this->data['Contratinsertion']['service_soutien'] = $this->_serviceSoutien( Set::extract( $this->data, 'Contratinsertion.structurereferente_id' ) );
+
+                $referent = $this->Referent->find( 'first', array( 'fields' => array( 'id', 'fonction' ) ) );
+                $this->data['Contratinsertion']['fonction_ref'] = Set::extract( $referent, 'Referent.fonction' );
 
                 $this->data = $contratinsertion;
 

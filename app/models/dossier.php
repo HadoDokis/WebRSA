@@ -22,7 +22,7 @@
             'Detaildroitrsa' => array(
                 'classname' => 'Detaildroitrsa',
                 'foreignKey' => 'dossier_rsa_id'
-            ),
+            )/*,
             'Suiviinstruction' => array( // FIXME: hasMany
                 'classname' => 'Suiviinstruction',
                 'foreignKey' => 'dossier_rsa_id'
@@ -30,9 +30,19 @@
             'Infofinanciere' => array( // FIXME: hasMany
                 'classname' => 'Infofinanciere',
                 'foreignKey' => 'dossier_rsa_id'
-            )
+            )*/
         );
 
+        var $hasMany = array(
+            'Suiviinstruction' => array(
+                'classname' => 'Suiviinstruction',
+                'foreignKey' => 'dossier_rsa_id'
+            ),
+            'Infofinanciere' => array(
+                'classname' => 'Infofinanciere',
+                'foreignKey' => 'dossier_rsa_id'
+            )
+        );
 
 
         //*********************************************************************
