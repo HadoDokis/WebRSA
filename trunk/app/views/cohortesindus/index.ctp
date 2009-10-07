@@ -1,7 +1,7 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Gestion des indus';?>
 
-<h1>Gestion des Indus</h1>
+<h1>Recherche par Indus</h1>
 
 
 <?php
