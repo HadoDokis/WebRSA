@@ -42,12 +42,6 @@
                                     </ul>
                             </li>
                         <?php endif;?>
-                        <?php if( $permissions->check( 'cohortesindus', 'index' ) ): ?>
-                            <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
-                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                                <?php echo $html->link( 'Indus', array( 'controller' => 'cohortesindus', 'action' => 'index' ), array( 'title'=>'Gestion des indus' ) );?>
-                            </li>
-                        <?php endif;?>
                         <?php if( $permissions->check( 'cohortespdos', 'avisdemande' ) || $permissions->check( 'cohortespdos', 'valide' ) || $permissions->check( 'cohortespdos', 'enattente' ) ): ?>
                             <!-- AJOUT POUR LA GESTION DES PDOs (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
@@ -93,6 +87,10 @@
                         <?php endif;?>
                         <?php if( $permissions->check( 'criteresci', 'index' ) ):?>
                             <li><?php echo $html->link( 'Par Contrat insertion',  array( 'controller' => 'criteresci', 'action' => 'index'  ) );?></li>
+                        <?php endif;?>
+                        <?php if( $permissions->check( 'cohortesindus', 'index' ) ): ?>
+                            <li><?php echo $html->link( 'Par Indus', array( 'controller' => 'cohortesindus', 'action' => 'index' ) );?>
+                            </li>
                         <?php endif;?>
                         <?php if( $permissions->check( 'criteresrdv', 'index' ) ):?>
                             <li><?php echo $html->link( 'Par Rendez-vous',  array( 'controller' => 'criteresrdv', 'action' => 'index'  ) );?></li>
