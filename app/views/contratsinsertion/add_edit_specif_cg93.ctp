@@ -1,12 +1,6 @@
 
 <fieldset>
     <legend> CONTRATS D'INSERTION </legend>
-            <?php echo $form->input( 'Contratinsertion.forme_ci', array( 'label' => false, 'type' => 'radio' , 'options' => array( 'S' => 'Simple', 'C' => 'Complexe' ), 'legend' => required( __( 'forme_ci', true ) ) ) );?>
-            <!-- <?php /*if( $this->data['Contratinsertion']['typocontrat_id'] == 1 ):?>
-                <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false, 'type' => 'hidden' ,  'id' => 'freu') );?>
-            <?php endif;?>
-            <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => required( __( 'lib_typo', true ) ), 'type' => 'select' , 'options' => $tc ) );*/?> -->
-        <!-- <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => required( __( 'Structure référente', true ) ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );?> -->
         <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __( 'dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );?>
         <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => required( __( 'duree_engag', true ) ), 'type' => 'select', 'options' => $duree_engag, 'empty' => true )  ); ?>
         <!-- <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ) ;?> -->
