@@ -13,6 +13,11 @@
     }
 ?>
 <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+    <fieldset>
+        <legend>Recherche par personne</legend>
+        <?php echo $form->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+    </fieldset>
 <!-- <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ) ) );?> -->
     <fieldset>
         <legend>Code origine demande Rsa</legend>

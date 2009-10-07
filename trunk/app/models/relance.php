@@ -243,6 +243,14 @@
                 }
             }
 
+            // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+            $filtersPersonne = array();
+            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
+                if( isset( $criteresrelance['Relance'][$criterePersonne] ) && !empty( $criteresrelance['Relance'][$criterePersonne] ) ) {
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.$criteresrelance['Relance'][$criterePersonne].'%\'';
+                }
+            }
+
             if( !empty( $compare ) && !empty( $nbjours ) ) {
                 $conditions[] = '( DATE( NOW() ) - "Orientstruct"."date_valid" ) '.$compare.' '.Sanitize::clean( $nbjours );
             }

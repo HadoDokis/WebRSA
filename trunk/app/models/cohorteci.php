@@ -53,6 +53,13 @@
                 }
             }
 
+            // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+            $filtersPersonne = array();
+            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
+                if( isset( $criteresci['Filtre'][$criterePersonne] ) && !empty( $criteresci['Filtre'][$criterePersonne] ) ) {
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.$criteresci['Filtre'][$criterePersonne].'%\'';
+                }
+            }
 
             // ...
             if( !empty( $decision_ci ) ) {

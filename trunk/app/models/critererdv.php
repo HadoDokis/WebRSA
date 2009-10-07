@@ -40,9 +40,12 @@
                 $conditions[] = 'Rendezvous.statutrdv ILIKE \'%'.Sanitize::clean( $statutrdv ).'%\'';
             }
 
-            /// Nom allocataire
-            if( !empty( $nom ) ) {
-                $conditions[] = 'Personne.nom ILIKE \'%'.Sanitize::clean( $nom ).'%\'';
+            /// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+            $filtersPersonne = array();
+            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
+                if( isset( $criteresrdv['Critererdv'][$criterePersonne] ) && !empty( $criteresrdv['Critererdv'][$criterePersonne] ) ) {
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.$criteresrdv['Critererdv'][$criterePersonne].'%\'';
+                }
             }
 
             /// Adresse personne

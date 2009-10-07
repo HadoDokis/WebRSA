@@ -40,6 +40,14 @@
                 $conditions[] = 'detailsdroitsrsa.oridemrsa IN ( \''.implode( '\', \'', $oridemrsa ).'\' )';
             }
 
+            // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+            $filtersPersonne = array();
+            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
+                if( isset( $criteres['Filtre'][$criterePersonne] ) && !empty( $criteres['Filtre'][$criterePersonne] ) ) {
+                    $conditions[] = 'personnes.'.$criterePersonne.' ILIKE \'%'.$criteres['Filtre'][$criterePersonne].'%\'';
+                }
+            }
+
             // Localité adresse
             if( !empty( $locaadr ) ) {
                 $conditions[] = 'adresses.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';

@@ -38,12 +38,17 @@
 
 <?php echo $form->create( 'Cohorteindu', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->data ) && empty( $this->validationErrors ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
+        <legend>Recherche par personne</legend>
+        <?php echo $form->input( 'Cohorteindu.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Cohorteindu.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+    </fieldset>
+    <fieldset>
         <legend>Recherche d'Indu</legend>
             <?php echo $form->input( 'Cohorteindu.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
             <?php echo $form->input( 'Cohorteindu.natpfcre', array( 'label' => 'Type d\'indu', 'type' => 'select', 'options' => $natpfcre, 'empty' => true ) );?>
             <?php echo $form->input( 'Cohorteindu.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
             <?php echo $form->input( 'Cohorteindu.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?>
-            <?php echo $form->input( 'Cohorteindu.nom', array( 'label' => 'Nom de l\'allocataire', 'type' => 'text' ) );?>
+
             <?php echo $form->input( 'Cohorteindu.typeparte', array( 'label' => 'Suivi', 'type' => 'select', 'options' => $typeparte, 'empty' => true ) ); ?>
              <?php echo $form->input( 'Cohorteindu.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $sr , 'empty' => true )  ); ?> 
             <?php

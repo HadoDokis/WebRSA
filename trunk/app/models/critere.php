@@ -33,6 +33,7 @@
             $structurereferente_id = Set::extract( $criteres, 'Critere.structurereferente_id' );
             $serviceinstructeur_id = Set::extract( $criteres, 'Critere.serviceinstructeur_id' );
 
+
             /// Critères sur l'orientation - date d'orientation
             if( isset( $criteres['Critere']['date_valid'] ) && !empty( $criteres['Critere']['date_valid'] ) ) {
                 $valid_from = ( valid_int( $criteres['Critere']['date_valid_from']['year'] ) && valid_int( $criteres['Critere']['date_valid_from']['month'] ) && valid_int( $criteres['Critere']['date_valid_from']['day'] ) );
@@ -46,6 +47,14 @@
             if( !empty( $dtdemrsa ) && dateComplete( $criteres, 'Critere.dtdemrsa' ) ) {
                 $dtdemrsa = $dtdemrsa['year'].'-'.$dtdemrsa['month'].'-'.$dtdemrsa['day'];
                 $conditions[] = 'Dossier.dtdemrsa = \''.$dtdemrsa.'\'';
+            }
+
+            // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+            $filtersPersonne = array();
+            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
+                if( isset( $criteres['Critere'][$criterePersonne] ) && !empty( $criteres['Critere'][$criterePersonne] ) ) {
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.$criteres['Critere'][$criterePersonne].'%\'';
+                }
             }
 
             // Localité adresse
