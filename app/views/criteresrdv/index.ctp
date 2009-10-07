@@ -36,6 +36,11 @@
 
 <?php echo $form->create( 'Critererdv', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
+        <legend>Recherche par personne</legend>
+        <?php echo $form->input( 'Critererdv.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Critererdv.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+    </fieldset>
+    <fieldset>
         <legend>Recherche par Contrat d'insertion</legend>
             <?php echo $form->input( 'Critererdv.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
             <?php echo $form->input( 'Critererdv.locaadr', array( 'label' => __( 'locaadr', true ), 'type' => 'text' ) );?>
@@ -53,11 +58,6 @@
                 <?php echo $form->input( 'Critererdv.daterdv_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterdv_from ) );?>
                 <?php echo $form->input( 'Critererdv.daterdv_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterdv_to ) );?>
             </fieldset>
-        <fieldset>
-            <legend>Recherche par demandeur</legend>
-            <?php echo $form->input( 'Critererdv.nom', array( 'label' => 'Nom' ) );?>
-        </fieldset>
-
     </fieldset>
 
     <div class="submit noprint">

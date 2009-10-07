@@ -65,18 +65,20 @@
             /// Critères
             $natpfcre = Set::extract( $criteresindu, 'Cohorteindu.natpfcre' );
             $locaadr = Set::extract( $criteresindu, 'Cohorteindu.locaadr' );
-            $nom = Set::extract( $criteresindu, 'Cohorteindu.nom' );
+//             $nom = Set::extract( $criteresindu, 'Cohorteindu.nom' );
             $typeparte = Set::extract( $criteresindu, 'Cohorteindu.typeparte' );
             $structurereferente_id = Set::extract( $criteresindu, 'Cohorteindu.structurereferente_id' );
             $mtmoucompta = Set::extract( $criteresindu, 'Cohorteindu.mtmoucompta' );
             $compare = Set::extract( $criteresindu, 'Cohorteindu.compare' );
             $numcomptt = Set::extract( $criteresindu, 'Cohorteindu.numcomptt' );
 
-            // Type d'indu
-//             if( !empty( $natpfcre ) ) {
-//                 $conditions[] = 'Infofinanciere.natpfcre = \''.Sanitize::clean( $natpfcre ).'\'';
-//             }
-
+            // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+            $filtersPersonne = array();
+            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
+                if( isset( $criteresindu['Cohorteindu'][$criterePersonne] ) && !empty( $criteresindu['Cohorteindu'][$criterePersonne] ) ) {
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.$criteresindu['Cohorteindu'][$criterePersonne].'%\'';
+                }
+            }
             // Localité adresse
             if( !empty( $locaadr ) ) {
                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
@@ -87,10 +89,10 @@
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
-            // Nom allocataire
-            if( !empty( $nom ) ) {
-                $conditions[] = 'Personne.nom ILIKE \'%'.Sanitize::clean( $nom ).'%\'';
-            }
+//             // Nom allocataire
+//             if( !empty( $nom ) ) {
+//                 $conditions[] = 'Personne.nom ILIKE \'%'.Sanitize::clean( $nom ).'%\'';
+//             }
 
             // Suivi
             if( !empty( $typeparte ) ) {

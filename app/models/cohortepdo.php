@@ -44,6 +44,13 @@
             $datedecisionpdo = Set::extract( $criterespdo, 'Cohortepdo.datedecisionpdo' );
             $matricule = Set::extract( $criterespdo, 'Cohortepdo.matricule' );
 
+            // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+            $filtersPersonne = array();
+            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
+                if( isset( $criterespdo['Cohortepdo'][$criterePersonne] ) && !empty( $criterespdo['Cohortepdo'][$criterePersonne] ) ) {
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.$criterespdo['Cohortepdo'][$criterePersonne].'%\'';
+                }
+            }
 
             // Type de PDO
             if( !empty( $typepdo ) ) {

@@ -23,7 +23,11 @@
 ?>
 
 <?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
-
+    <fieldset>
+        <legend>Recherche par personne</legend>
+        <?php echo $form->input( 'Critere.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Critere.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+    </fieldset>
     <fieldset>
         <?php echo $form->input( 'Critere.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
         <?php echo $form->input( 'Critere.date_valid', array( 'label' => 'Filtrer par date d\'orientation', 'type' => 'checkbox' ) );?>

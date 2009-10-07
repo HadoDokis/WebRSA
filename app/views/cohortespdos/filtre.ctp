@@ -20,7 +20,11 @@
         observeDisableFieldsetOnCheckbox( 'CohortepdoDatedecisionpdo', $( 'CohortepdoDatedecisionpdoFromDay' ).up( 'fieldset' ), false );
     });
 </script>
-
+    <fieldset>
+        <legend>Recherche par personne</legend>
+        <?php echo $form->input( 'Cohortepdo.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Cohortepdo.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+    </fieldset>
  <fieldset class= "noprint">
         <legend>Recherche PDO</legend>
         <?php echo $form->input( 'Cohortepdo.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
