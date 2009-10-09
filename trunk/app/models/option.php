@@ -165,12 +165,6 @@
             );
         }
 
-        function avis_ci(){
-            return array(
-                'S' => 'Suspension',
-                'R' => 'Radiation'
-            );
-        }
 
         function aviscondadmrsa() {
             return array(
@@ -1055,6 +1049,8 @@
 
         function raison_ci() {
             return array(
+                'S' => 'Suspension',
+                'R' => 'Radiation',
                 'D' => 'Défaut de conclusion',
                 'N' => 'Non respect du contrat'
             );

@@ -36,7 +36,11 @@
             'Rendezvous' => array(
                 'classname' => 'Rendezvous',
                 'foreignKey' => 'personne_id'
-            )
+            ),
+            'Activite' => array(
+                'classname' => 'Activite',
+                'foreignKey' => 'personne_id',
+            ),
         );
 
         //---------------------------------------------------------------------

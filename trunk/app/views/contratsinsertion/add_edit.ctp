@@ -27,6 +27,7 @@
             echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
+
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
             echo $form->input( 'Contratinsertion.rg_ci', array( 'type' => 'hidden'/*, 'value' => '' */) );
             echo '</div>';
@@ -108,8 +109,8 @@
                 <br />
                 <strong>Inscrit au Pôle emploi</strong>
                 <?php
-                    $isPoleemploi = Set::classicExtract( $personne, 'Personne.idassedic' );
-                    if( !empty( $isPoleemploi ) )
+                    $isPoleemploi = Set::classicExtract( $personne, 'Activite.0.act' );
+                    if( $isPoleemploi == 'ANP' )
                         echo 'Oui';
                     else
                         echo 'Non';
@@ -143,37 +144,41 @@
     <legend>Type de Contrat</legend>
         <table class="wide noborder">
             <tr>
-                <td class="mediumSize noborder">
+                <td class="noborder">
                     <?php echo $form->input( 'Contratinsertion.forme_ci', array( 'label' => false, 'type' => 'radio' , 'options' => array( 'S' => 'Simple', 'C' => 'Complexe' ), 'legend' => required( __( 'forme_ci', true ) ) ) );?>
                 </td>
             </tr>
             <tr>
-                <td class="mediumSize noborder">
-                    <strong>Date d'ouverture du droit ( RMI, API, rSa ) : </strong><?php echo $oridemrsa;?>
+                <td class="noborder" colspan="2">
+                    <strong>Date d'ouverture du droit ( RMI, API, rSa ) : </strong><?php echo date_short( $dtdemrsa );?>
                 </td>
-                <td class="mediumSize noborder" colspan ="2">
+            </tr>
+            <tr>
+                <td class="mediumSize noborder">
+                    <strong>Ouverture de droit ( nombre d'ouvertures ) : </strong><?php echo count( $dtdemrsa );?>
+                </td>
+                <td class="mediumSize noborder">
                     <strong>rSa majoré</strong>
-                        <?php
-                            $soclmajValues = array_unique( Set::extract( $dossier, '/Infofinanciere/natpfcre' ) );
-                            if( array_intersects( $soclmajValues, array_keys( $soclmaj ) )   )
-                                echo 'Oui';
-                            else
-                                echo 'Non';
-                        ?>
+                    <?php
+                        $soclmajValues = array_unique( Set::extract( $dossier, '/Infofinanciere/natpfcre' ) );
+                        if( array_intersects( $soclmajValues, array_keys( $soclmaj ) )   )
+                            echo 'Oui';
+                        else
+                            echo 'Non';
+                    ?>
                 </td>
             </tr>
             <tr>
-                <td class="mediumSize noborder">
-                    <strong>Ouverture de droit ( nombre d'ouvertures ) : </strong><?php echo '';?>
-                </td>
-            </tr>
-            <tr>
-                <td class="mediumSize noborder">
+                <td class="noborder">
                     <?php if( $this->data['Contratinsertion']['typocontrat_id'] == 1 ):?>
                         <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false, 'type' => 'hidden', 'id' => 'freu' ) );?>
                     <?php endif;?>
-                    <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false , 'type' => 'radio' , 'options' => $tc, 'legend' => false ) );
-                    echo '(nombre de renouvellement) : '.$nbrCi;?>
+                    <?php
+                        echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false , 'type' => 'radio' , 'options' => $tc, 'legend' => false ) );
+                    ?>
+                </td>
+                <td class="noborder">
+                    <?php echo '(nombre de renouvellement) : '.$nbrCi;?>
                 </td>
             </tr>
         </table>
@@ -184,9 +189,6 @@
                 </td>
             </tr>
             <tr>
-                <td class="radioSize noborder">
-                    <?php echo $form->input( 'Contratinsertion.avis_ci', array( 'label' => false , 'type' => 'radio' , 'options' => $avis_ci, 'separator' => '<br />', 'legend' => false ) );?>
-                </td>
                 <td class="radioSize noborder">
                     <?php echo $form->input( 'Contratinsertion.raison_ci', array( 'label' => false , 'type' => 'radio' , 'options' => $raison_ci, 'separator' => '<br />', 'legend' => false ) );?>
                 </td>
@@ -203,35 +205,39 @@
         <table class="wide noborder">
             <tr>
                 <td class="mediumSize noborder" colspan="3">
-                    <?php
-                        echo $form->input( 'Orientstruct.typeorient_id', array( 'label' => false, 'type' => 'radio', 'options' => $typeorient, 'value' => Set::classicExtract( $personne, 'Orientstruct.0.Typeorient.parentid' ), 'legend' => false ) );
-                    ?>
+                    <strong>Type d'orientation:</strong> <?php echo $typeOrientation ; ?>
                 </td>
             </tr>
             <tr>
-                <td class="noborder" colspan="3">
-                    <?php 
+                <td class="noborder" colspan="2">
+                   <!-- <?php 
                         echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __( '<em>Nom de l\'organisme de suivi </em>', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );
-                    ?>
-                </td><!--
-                <td class="noborder"></td>
-                <td class="noborder"></td>-->
+                    ?> -->
+                    <strong>Nom de l'organisme de suivi :</strong> <?php echo $typeStruct; ?>
+                </td>
+                <td class="noborder"><?php 
+                        echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
+                    ?></td>
+                <!--<td class="noborder"></td>-->
             </tr>
             <tr>
                 <td class="textArea noborder">
                     <?php 
                         echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => '<em> et coordonnées</em>', 'type' => 'textarea', 'rows' => 3 )  );
-                        echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'ContratinsertionServiceSoutien', 'url' => Router::url( array( 'action' => 'ajax' ), true ) ) ) ;
+                        echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'ContratinsertionServiceSoutien', 'url' => Router::url( array( 'action' => 'ajax' ), true ) ) );
+                        echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'ContratinsertionReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
                     ?>
                 </td>
                 <td class="textArea noborder">
                     <?php
-                        echo $form->input( 'Contratinsertion.pers_charg_suivi', array( 'label' => '<em>'. __( '<em>Nom du référent </em>: et coordonnées', true ).'</em>', 'type' => 'textarea', 'rows' => 3 )  ); 
+                        echo $form->input( 'Referent.email', array( 'label' => '<em>Coordonnées du référent</em>', 'type' => 'textarea', 'rows' => 3 )  );
+                        echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentEmail', 'url' => Router::url( array( 'action' => 'ajaxrefcoord' ), true ) ) );
                     ?>
                 </td>
                 <td class="textArea noborder">
                     <?php
-                       echo $form->input( 'Contratinsertion.fonction_ref', array( 'label' => '<em>'. __( 'Fonction du référent', true ).'</em>', 'type' => 'textarea', 'rows' => 3 )  ); 
+                       echo $form->input( 'Referent.fonction', array( 'label' => '<em>'. __( 'Fonction du référent', true ).'</em>', 'type' => 'textarea', 'rows' => 3 )  );
+                       echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
                     ?>
                 </td>
             </tr>
@@ -254,7 +260,7 @@
 
 <fieldset class="cnilci">
     <p>
-        <em>Conformément à la loi "Informatique et liberté" n°78-17 du 06 janvier 1978 relative à l'informatique, aux fichiers et aux libertés nous nous engageons à prendre toutes les précautions afin de préserver la sécurité de ces informations liées à l'adresse, téléphone et mail seront utilisées uniquement pour permettre la prise de contact, dans le cadre du parcours d'insertion.</em>
+        <em>Conformément à la loi "Informatique et liberté" n°78-17 du 06 janvier 1978 relative à l'informatique, aux fichiers et aux libertés nous nous engageons à prendre toutes les précautions afin de préserver la sécurité de ces informations et notamment empêcher qu'elles soient déformées, endommagées ou communiquées à des tiers. Les coordonnées informations liées à l'adresse, téléphone et mail seront utilisées uniquement pour permettre la prise de contact, dans le cadre du parcours d'insertion.</em>
     </p>
 </fieldset>
 

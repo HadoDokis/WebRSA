@@ -75,11 +75,17 @@
 <fieldset>
     <table class="wide noborder">
         <tr>
-            <td class="signature noborder">
+            <td class="signature noborder center">
                 <strong>Le bénéficiaire du contrat</strong><br /><?php echo $qual.' '.$nom.' '.$prenom;?>
             </td>
-            <td class="signature noborder">
+            <td class="signature noborder center">
                 <strong>Le Référent</strong><br /><?php echo $perschargsuivi;?>
+            </td>
+        </tr>
+        <tr>
+            <td class="mediumSize noborder"></td>
+            <td class="mediumSize noborder">
+                <p class="caution center">Attention : si le contrat conditionne l'ouverture du droit  celui-ci n'aura                                                                                                                                                      de valeur qu'après signature du Président du Conseil Général.</p>
             </td>
         </tr>
     </table>
