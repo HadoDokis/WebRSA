@@ -32,6 +32,10 @@
             ),
         );
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function listOptions() {
             $options = $this->find(
                 'list',
@@ -67,6 +71,44 @@
             else {
                 return $options;
             }
+        }
+
+        /** ********************************************************************
+        *   Recherche du type d'orientation qui n'a plus de parent
+        *** *******************************************************************/
+
+        function getIdLevel0( $typeorient_id ) {
+            $tmpTypeorient = $this->find(
+                'first',
+                array(
+                    'fields' => array( 'Typeorient.id', 'Typeorient.parentid' ),
+                    'recursive' => -1,
+                    'conditions' => array(
+                        'Typeorient.id' => $typeorient_id
+                    )
+                )
+            );
+            if( !empty( $tmpTypeorient ) ) {
+                while( $parentid = Set::classicExtract( $tmpTypeorient, 'Typeorient.parentid' ) ) {
+                    $tmpTypeorient = $this->find(
+                        'first',
+                        array(
+                            'fields' => array( 'Typeorient.id', 'Typeorient.parentid' ),
+                            'recursive' => -1,
+                            'conditions' => array(
+                                'Typeorient.id' => $parentid
+                            )
+                        )
+                    );
+                }
+            }
+            if( !empty( $tmpTypeorient ) ) {
+                $typeorient_niv1_id = Set::classicExtract( $tmpTypeorient, 'Typeorient.id' );
+                if( !empty( $typeorient_niv1_id ) ) {
+                    return $typeorient_niv1_id;
+                }
+            }
+            return null;
         }
 
     }
