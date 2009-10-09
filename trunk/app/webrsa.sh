@@ -2,7 +2,6 @@
 
 ME="$0"
 APP_DIR="`dirname "$ME"`"
-USERNAME="cbuffin"
 WORK_DIR="$PWD"
 ChangeLog="ChangeLog.txt"
 ASNV="svn://svn.adullact.net/svnroot/webrsa"
@@ -11,20 +10,28 @@ ASNV="svn://svn.adullact.net/svnroot/webrsa"
 # INFO: rgadr sur un char -> sed -i "s/<RGADR>\([1-3]\)<\/RGADR>/<RGADR>0\1<\/RGADR>/" XXX
 # ------------------------------------------------------------------------------
 
-function clearcache() {
-    (
-		cd "$APP_DIR/tmp/cache/" && \
-		find . -type f -not -path '*/.svn/*' -not -name "empty" | while read -r ; do rm "$REPLY"; done
-	)
+function __clearDir() {
+	dir="$1"
+
+	if [ -d "$dir" ]
+	then
+		(
+			cd "$dir"
+			find . -type f -not -path '*/.svn/*' -not -name "empty" | while read -r ; do rm "$REPLY"; done
+		)
+	fi
 }
 
 # ------------------------------------------------------------------------------
 
-function clearlogs() {
-    (
-        cd "$APP_DIR/tmp/logs/" && \
-        find . -type f -not -path '*/.svn/*' -not -name "empty" | while read -r ; do echo -n "" > "$REPLY"; done
-    )
+function clearCache() {
+	__clearDir "$APP_DIR/tmp/cache/"
+}
+
+# ------------------------------------------------------------------------------
+
+function clearLogs() {
+	__clearDir "$APP_DIR/tmp/logs/"
 }
 
 # ------------------------------------------------------------------------------
@@ -69,8 +76,8 @@ function package() {
     (
         cd "$WORK_DIR/package/webrsa-$version" >> "/dev/null" 2>&1 && \
         # TODO: RC pour trunk
-        # svn export svn+ssh://$USERNAME@svn.adullact.net/svnroot/webrsa/trunk >> "/dev/null" 2>&1 && \
-#         svn export svn+ssh://$USERNAME@svn.adullact.net/svnroot/webrsa/tags/$version/app >> "/dev/null" 2>&1 && \
+        # svn export svn://svn.adullact.net/svnroot/webrsa/trunk >> "/dev/null" 2>&1 && \
+#         svn export svn://svn.adullact.net/svnroot/webrsa/tags/$version/app >> "/dev/null" 2>&1 && \
         svn export $ASNV/tags/$version/app >> "/dev/null" 2>&1 && \
 
         rm -f "app/config/database.php.default" && \
@@ -94,14 +101,14 @@ function package() {
 
 case $1 in
     clear)
-        clearcache
-        clearlogs
+        clearCache
+        clearLogs
     ;;
     clearcache)
-        clearcache
+        clearCache
     ;;
     clearlogs)
-        clearlogs
+        clearLogs
     ;;
     package)
         package $2 # FIXME vérification argument
