@@ -232,7 +232,9 @@
                 // FIXME !!!! ça marche, mais c'est un hack
                 $ressource['Detailressourcemensuelle'] = array();
                 foreach( $ressource['Ressourcemensuelle'] as $kRm => $rm ) {
-                    $ressource['Detailressourcemensuelle'][$kRm] = $rm['Detailressourcemensuelle'][0];
+					if( isset( $rm['Detailressourcemensuelle'][0] ) ) {
+						$ressource['Detailressourcemensuelle'][$kRm] = $rm['Detailressourcemensuelle'][0];
+					}
                     unset( $ressource['Ressourcemensuelle'][$kRm]['Detailressourcemensuelle'] );
                 }
 
