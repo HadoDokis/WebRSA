@@ -34,19 +34,21 @@
 
     <div class="aere">
         <fieldset>
-            <legend>Détails PDO</legend>
             <?php
                 echo $form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'lib_struct', true ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
                 echo $form->input( 'Rendezvous.typerdv_id', array( 'label' =>  required( __( 'lib_rdv', true ) ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
             ?>
             <?php echo $form->input( 'Rendezvous.statutrdv', array( 'label' =>  required( __( 'statutrdv', true ) ), 'type' => 'select', 'options' => $statutrdv, 'empty' => true ) );?>
             <?php echo $form->input( 'Rendezvous.daterdv', array( 'label' =>  required( __( 'daterdv', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>
+            <?php
+                echo $form->input( 'Rendezvous.heurerdv', array( 'label' =>  required( __( 'heurerdv', true ) ), 'type' => 'time', 'timeFormat' => '24', 'empty' => true ) );
+            ?>
             <?php echo $form->input( 'Rendezvous.objetrdv', array( 'label' =>  ( __( 'objetrdv', true ) ), 'type' => 'text', 'rows' => 2, 'empty' => true ) );?>
             <?php echo $form->input( 'Rendezvous.commentairerdv', array( 'label' =>  ( __( 'commentairerdv', true ) ), 'type' => 'text', 'rows' => 3, 'empty' => true ) );?>
         </fieldset>
     </div>
 
-            <?php echo $form->submit( 'Enregistrer' );?>
+        <?php echo $form->submit( 'Enregistrer' );?>
     <?php echo $form->end();?>
 </div>
 <div class="clearer"><hr /></div>

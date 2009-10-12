@@ -684,6 +684,9 @@ msgstr "Modèle de notification"
 msgid "numero_poste"
 msgstr "Numéro de poste"
 
+msgid "fonction"
+msgstr "Fonction du référent"
+
 msgid "password"
 msgstr "Mot de passe"
 
@@ -896,6 +899,9 @@ msgstr "Objet du RDV"
 
 msgid "daterdv"
 msgstr "Date du RDV"
+
+msgid "heurerdv"
+msgstr "Heure du RDV"
 
 msgid "lib_struct"
 msgstr "Structure référente"

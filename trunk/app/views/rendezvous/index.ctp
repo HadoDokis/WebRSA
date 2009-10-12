@@ -41,6 +41,7 @@
                 <th>Type de RDV</th>
                 <th>Statut du RDV</th>
                 <th>Date du RDV</th>
+                <th>Heure du RDV</th>
                 <th>Objet du RDV</th>
                 <th>Commentaire suite au RDV</th>
                 <th colspan="2" class="action">Actions</th>
@@ -56,6 +57,7 @@
                             h( Set::extract( $rdv, 'Typerdv.libelle' ) ),
                             h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv' ) ) ),
                             h(  date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) ) ),
+                            h(  Set::extract( $rdv, 'Rendezvous.heurerdv' ) ),
                             h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),
                             h( Set::extract( $rdv, 'Rendezvous.commentairerdv' ) ) ,
                             $html->editLink(
