@@ -23,3 +23,6 @@ CREATE INDEX contratsinsertion_referents_referent_id_idx ON contratsinsertion_re
 
 ALTER TABLE contratsinsertion ADD COLUMN referent_id INT REFERENCES referents(id);
 CREATE INDEX contratsinsertion_referent_id_idx ON contratsinsertion (referent_id);
+
+--------------- Ajout du 12/10/2009 à 08h49 ------------------
+ALTER TABLE rendezvous ADD COLUMN heurerdv TIME;
