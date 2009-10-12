@@ -1,7 +1,7 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Contrats d\'insertion';?>
 
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
 
 <?php
     if( $this->action == 'add' ) {
@@ -27,8 +27,8 @@
             echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
-
-            echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
+            echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Structurereferente.id' ) ) );
+            echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
             echo $form->input( 'Contratinsertion.rg_ci', array( 'type' => 'hidden'/*, 'value' => '' */) );
             echo '</div>';
 
@@ -38,7 +38,7 @@
             echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );
 
-            echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
+            echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
 
             echo '</div>';
         }
@@ -80,8 +80,8 @@
         } );
 
         observeDisableFieldsOnBoolean( 'ContratinsertionActionsPrev', [ 'ContratinsertionObstaRenc' ], '1', false );
-        observeDisableFieldsOnBoolean( 'ContratinsertionEmpTrouv', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], '0', false );
         observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
+        observeDisableFieldsOnBoolean( 'ContratinsertionEmpTrouv', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], 0, false );
 
         observeDisableFieldsOnValue( 'ActioninsertionLibAction', [ 'Aidedirecte0TypoAide', 'Aidedirecte0LibAide', 'Aidedirecte0DateAideDay', 'Aidedirecte0DateAideMonth', 'Aidedirecte0DateAideYear' ], 'A', false );
         observeDisableFieldsOnValue( 'ActioninsertionLibAction', [ 'Prestform0LibPresta', 'RefprestaNomrefpresta', 'RefprestaPrenomrefpresta', 'Prestform0DatePrestaDay', 'Prestform0DatePrestaMonth', 'Prestform0DatePrestaYear' ], 'P', false );
@@ -94,18 +94,18 @@
             <td class="mediumSize noborder">
                 <strong>Statut de la personne : </strong><?php echo Set::extract( $rolepers, Set::extract( $personne, 'Prestation.rolepers' ) ); ?>
                 <br />
-                <strong>Nom : </strong><?php echo $qual.' '.$nom;?>
+                <strong>Nom : </strong><?php echo Set::classicExtract( $personne, 'Personne.qual' ).' '.Set::classicExtract( $personne, 'Personne.nom' );?>
                 <br />
-                <strong>Prénom : </strong><?php echo $prenom;?>
+                <strong>Prénom : </strong><?php echo Set::classicExtract( $personne, 'Personne.prenom' );?>
                 <br />
-                <strong>Date de naissance : </strong><?php echo date_short( $dtnai );?>
+                <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
             </td>
             <td class="mediumSize noborder">
                 <strong>N° Service instructeur : </strong><?php echo Set::extract( 'Serviceinstructeur.lib_service', $typeservice );?>
                 <br />
-                <strong>N° demandeur : </strong><?php echo $numdemrsa;?>
+                <strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.numdemrsa' );?>
                 <br />
-                <strong>N° CAF/MSA : </strong><?php echo $matricule;?>
+                <strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.matricule' );?>
                 <br />
                 <strong>Inscrit au Pôle emploi</strong>
                 <?php
@@ -116,7 +116,7 @@
                         echo 'Non';
                 ?>
                 <br />
-                <strong>N° identifiant : </strong><?php echo $idassedic;?>
+                <strong>N° identifiant : </strong><?php echo Set::classicExtract( $personne, 'Personne.idassedic' );?>
             </td>
         </tr>
         <tr>
@@ -126,7 +126,7 @@
         </tr>
         <tr>
             <td class="mediumSize noborder">
-                <strong>Tél. fixe : </strong><?php echo Set::extract( $foyer, 'Modecontact.0.numtel' );?>
+                <strong>Tél. fixe : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?>
             </td>
             <td class="mediumSize noborder">
                 <strong>Tél. portable : </strong><?php echo ''/*.Set::extract( $foyer, 'Modecontact.0.numtel' );*/?>
@@ -134,7 +134,7 @@
         </tr>
         <tr>
             <td colspan="2" class="mediumSize noborder">
-                <strong>Adresse mail : </strong><?php echo Set::extract( $foyer, 'Modecontact.0.adrelec' )?> <!-- FIXME -->
+                <strong>Adresse mail : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?> <!-- FIXME -->
             </td>
         </tr>
     </table>
@@ -150,17 +150,17 @@
             </tr>
             <tr>
                 <td class="noborder" colspan="2">
-                    <strong>Date d'ouverture du droit ( RMI, API, rSa ) : </strong><?php echo date_short( $dtdemrsa );?>
+                    <strong>Date d'ouverture du droit ( RMI, API, rSa ) : </strong><?php echo date_short( Set::classicExtract( $personne, 'Foyer.Dossier.dtdemrsa' ) );?>
                 </td>
             </tr>
             <tr>
                 <td class="mediumSize noborder">
-                    <strong>Ouverture de droit ( nombre d'ouvertures ) : </strong><?php echo count( $dtdemrsa );?>
+                    <strong>Ouverture de droit ( nombre d'ouvertures ) : </strong><?php echo count( Set::extract( $personne, '/Foyer/Dossier/dtdemrsa' ) );?>
                 </td>
                 <td class="mediumSize noborder">
                     <strong>rSa majoré</strong>
                     <?php
-                        $soclmajValues = array_unique( Set::extract( $dossier, '/Infofinanciere/natpfcre' ) );
+                        $soclmajValues = array_unique( Set::extract( $personne, '/Foyer/Dossier/Infofinanciere/natpfcre' ) );
                         if( array_intersects( $soclmajValues, array_keys( $soclmaj ) )   )
                             echo 'Oui';
                         else
@@ -213,7 +213,7 @@
                    <!-- <?php 
                         echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __( '<em>Nom de l\'organisme de suivi </em>', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );
                     ?> -->
-                    <strong>Nom de l'organisme de suivi :</strong> <?php echo $typeStruct; ?>
+                    <strong>Nom de l'organisme de suivi :</strong> <?php echo Set::classicExtract( $personne, 'Structurereferente.lib_struc' ); ?>
                 </td>
                 <td class="noborder"><?php 
                         echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
@@ -222,21 +222,40 @@
             </tr>
             <tr>
                 <td class="textArea noborder">
-                    <?php 
-                        echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => '<em> et coordonnées</em>', 'type' => 'textarea', 'rows' => 3 )  );
-                        echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'ContratinsertionServiceSoutien', 'url' => Router::url( array( 'action' => 'ajax' ), true ) ) );
+                    <?php
+                        echo $html->tag(
+                            'p',
+                            $html->tag( 'em', 'Coordonnées de l\'organisme' ).'<br />'.
+                            Set::classicExtract( $personne, 'Structurereferente.num_voie' ).' '.
+                            Set::classicExtract( $typevoie, Set::classicExtract( $personne, 'Structurereferente.type_voie' ) ).' '.
+                            Set::classicExtract( $personne, 'Structurereferente.nom_voie' ).'<br />'.
+                            Set::classicExtract( $personne, 'Structurereferente.code_postal' ).' '.
+                            Set::classicExtract( $personne, 'Structurereferente.ville' )
+                        );
+                        //echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => '<em> et coordonnées</em>', 'type' => 'textarea', 'rows' => 3 )  );
+                        //echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'ContratinsertionServiceSoutien', 'url' => Router::url( array( 'action' => 'ajax' ), true ) ) );
                         echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'ContratinsertionReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
                     ?>
                 </td>
                 <td class="textArea noborder">
                     <?php
-                        echo $form->input( 'Referent.email', array( 'label' => '<em>Coordonnées du référent</em>', 'type' => 'textarea', 'rows' => 3 )  );
+                        //echo $form->input( 'Referent.email', array( 'label' => '<em>Coordonnées du référent</em>', 'type' => 'textarea', 'rows' => 3 )  );
+                        echo $html->tag(
+                            'p',
+                            $html->tag( 'em', 'Coordonnées du référent' ).'<br />'.
+                            $html->tag( 'span', ( isset( $ReferentEmail ) ? $ReferentEmail : null ), array( 'id' => 'ReferentEmail' ) )
+                        );
                         echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentEmail', 'url' => Router::url( array( 'action' => 'ajaxrefcoord' ), true ) ) );
                     ?>
                 </td>
                 <td class="textArea noborder">
                     <?php
-                       echo $form->input( 'Referent.fonction', array( 'label' => '<em>'. __( 'Fonction du référent', true ).'</em>', 'type' => 'textarea', 'rows' => 3 )  );
+                       //echo $form->input( 'Referent.fonction', array( 'label' => '<em>'. __( 'Fonction du référent', true ).'</em>', 'type' => 'textarea', 'rows' => 3 )  );
+                        echo $html->tag(
+                            'p',
+                            $html->tag( 'em', 'Fonction du référent' ).'<br />'.
+                            $html->tag( 'span', ( isset( $ReferentFonction ) ? $ReferentFonction : null ), array( 'id' => 'ReferentFonction' ) )
+                        );
                        echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
                     ?>
                 </td>
@@ -252,7 +271,6 @@
         lorsque, sans motif légitime, les dispositions du projet personnalisé d'accès à l'emploi ou les stipulations de l'un des contrats mentionnés aux articles L.262-35 et L.262-36 ne sont pas respectés par le bénéficiaire."<br />
         </em>
         <strong>Lorsque le bénéficiaire ne respecte pas les conditions de ce contrat, l'organisme signataire le signale au Président du conseil Général.</strong>
-
     </p>
 </fieldset>
 

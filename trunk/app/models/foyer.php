@@ -7,7 +7,7 @@
             'Dspf'
         );
 
-        var $belongTo = array(
+        var $belongsTo = array(
             'Dossier' => array(
                 'classname'     => 'Dossier',
                 'foreignKey'    => 'dossier_rsa_id'
@@ -36,10 +36,10 @@
                 'classname'     => 'Modecontact',
                 'foreignKey'    => 'foyer_id'
             ),
-            'AdressesFoyer' => array(
+            /*'AdressesFoyer' => array(
                 'classname'     => 'AdressesFoyer',
                 'foreignKey'    => 'foyer_id'
-            )/*,
+            ),
             'Creance' => array(
                 'classname'     => 'Creance',
                 'foreignKey'    => 'foyer_id'

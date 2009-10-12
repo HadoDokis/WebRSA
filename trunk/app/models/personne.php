@@ -258,5 +258,107 @@
             $return = Set::extract( $personnes, '{n}.Personne.id' );
             return ( !empty( $return ) ? $return : null );
         }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function detailsCi( $personne_id ){
+            // TODO: début dans le modèle
+            ///Recup personne
+            $this->unbindModel(
+                array(
+                    'hasOne' => array( 'TitreSejour', 'Avispcgpersonne', 'Dossiercaf' ),
+                    'hasMany' => array( 'Rendezvous', 'Activite', 'Contratinsertion', 'Orientstruct' )
+                )
+            );
+            $this->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
+            $this->Foyer->unbindModel(
+                array(
+                    'hasMany' => array( 'Personne', 'Modecontact', 'Adressefoyer' ),
+                    'hasOne' => array( 'Dspf' ), 'hasAndBelongsToMany' => array( 'Creance' )
+                )
+            );
+            $this->Foyer->Dossier->unbindModelAll();
+            $this->Prestation->unbindModelAll();
+            $this->Dspp->unbindModelAll();
+
+            $personne = $this->findById( $personne_id, null, null, 2 );
+
+            /// Recherche des informations financières
+            $infofinancieres = $this->Foyer->Dossier->Infofinanciere->find(
+                'all',
+                array(
+                    'recursive' => -1,
+                    'order' => array( 'Infofinanciere.moismoucompta DESC' )
+                )
+            );
+            $personne['Foyer']['Dossier']['Infofinanciere'] = Set::classicExtract( $infofinancieres, '{n}.Infofinanciere' );
+
+//             $detaildroitrsa = $this->Foyer->Dossier->Detaildroitrsa->find(
+//                 'first',
+//                 array(
+//                     'recursive' => -1,
+//                     'conditions' => array( 'Detaildroitrsa.dossier_rsa_id' => $personne['Foyer']['Dossier']['id'] )
+//                 )
+//             );
+//             $personne['Foyer']['Dossier']['Detaildroitrsa'] = $detaildroitrsa['Detaildroitrsa'];
+
+            // FIXME -> comment distinguer ? + FIXME autorutitel / autorutiadrelec
+            $modecontact = $this->Foyer->Modecontact->find(
+                'all',
+                array(
+                    'recursive' => -1,
+                    'conditions' => array(
+                        'Modecontact.foyer_id' => $personne['Foyer']['id']
+                    )
+                )
+            );
+            $personne['Foyer']['Modecontact'] = Set::extract( $modecontact, '/Modecontact' );
+
+            /// Récupération de l'adresse lié à la personne
+            $this->Foyer->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+
+            $adresse = $this->Foyer->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => $personne['Personne']['foyer_id'],
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $personne['Adresse'] = $adresse['Adresse'];
+
+            // Recherche de la structure référente
+            $this->Orientstruct->unbindModelAll();
+            $this->Orientstruct->bindModel( array( 'belongsTo' => array( 'Structurereferente' ) ) );
+            $orientstruct = $this->Orientstruct->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.personne_id' => $personne_id,
+                        'Orientstruct.date_propo IS NOT NULL'
+                    ),
+                    'order' => 'Orientstruct.date_propo DESC',
+                    'recursive' => 0
+                )
+            );
+
+            if( !empty( $orientstruct ) ) {
+                $personne = Set::merge( $personne, $orientstruct );
+            }
+
+            return $personne;
+        }
     }
 ?>

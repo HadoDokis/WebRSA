@@ -19,7 +19,7 @@
             <tbody>
                 <tr class="even">
                     <th><?php __( 'forme_ci' );?></th>
-                    <td><?php echo $forme[$contratinsertion['Contratinsertion']['forme_ci']];?></td>
+                    <td><?php echo $formeci[$contratinsertion['Contratinsertion']['forme_ci']];?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'lib_typo' );?></th>

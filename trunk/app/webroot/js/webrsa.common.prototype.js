@@ -311,7 +311,7 @@ function observeDisableFieldsetOnCheckbox( cbId, fieldsetId, condition ) {
 //*****************************************************************************
 
 function disableFieldsOnBoolean( field, fieldsIds, value, condition ) {
-    var disabled = !condition;
+    var disabled = !( ( $F( field ) == value ) == condition );
     fieldsIds.each( function ( fieldId ) {
         var field = $( fieldId );
         if( !disabled ) {

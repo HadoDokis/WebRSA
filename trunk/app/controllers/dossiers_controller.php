@@ -98,17 +98,17 @@
 
             $this->assert( !empty( $dossier ), 'invalidParameter' );
 
-            usort( $dossier['Foyer']['AdressesFoyer'], create_function( '$a,$b', 'return strcmp( $a["rgadr"], $b["rgadr"] );' ) );
+            usort( $dossier['Foyer']['Adressefoyer'], create_function( '$a,$b', 'return strcmp( $a["rgadr"], $b["rgadr"] );' ) );
 
-            foreach( $dossier['Foyer']['AdressesFoyer'] as $key => $AdressesFoyer ) {
+            foreach( $dossier['Foyer']['Adressefoyer'] as $key => $Adressefoyer ) {
                 $adresses = $this->Adresse->find(
                     'all',
                     array(
                         'conditions' => array(
-                            'Adresse.id' => $AdressesFoyer['adresse_id'] )
+                            'Adresse.id' => $Adressefoyer['adresse_id'] )
                     )
                 );
-                $dossier['Foyer']['AdressesFoyer'][$key] = array_merge( $dossier['Foyer']['AdressesFoyer'][$key], $adresses[0] );
+                $dossier['Foyer']['Adressefoyer'][$key] = array_merge( $dossier['Foyer']['Adressefoyer'][$key], $adresses[0] );
             }
 
             foreach( $dossier['Foyer']['Personne'] as $iPersonne => $personne ) {
