@@ -89,4 +89,7 @@
             </td>
         </tr>
     </table>
+        <!--    <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => required( __( 'lieu_saisi_ci', true ) ), 'type' => 'text')  ); ?><br />
+        <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __( 'date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
+       -->
 </fieldset>

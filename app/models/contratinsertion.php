@@ -39,6 +39,12 @@
 
 
         var $validate = array(
+            'referent_id' => array(
+                'notEmpty' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
             'typocontrat_id' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
@@ -69,66 +75,18 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-//             'form_compl' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
-//             'expr_prof' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
             'aut_expr_prof' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
             ),
-//             'actions_prev' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
-//             'lib_presta' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
             'forme_ci' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
             ),
-//             'service_soutien' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
-//             'pers_charg_suivi' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
-//             'objectifs_fixes' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
-//             'engag_object' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
             'emp_trouv' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
@@ -199,14 +157,7 @@
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
-            )/*,
-            'date_saisi_ci' => array(
-                'notEmpty' => array(
-                    'rule' => 'date',
-                    'message' => 'Veuillez entrer une date valide',
-                    'allowEmpty'    => false
-                )
-            )*/
+            )
         );
 
         // ********************************************************************
@@ -292,33 +243,14 @@
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Typocontrat.id = Contratinsertion.typocontrat_id' )
-                    ),
-//                     array(
-//                         'table'      => 'structuresreferentes',
-//                         'alias'      => 'Structurereferente',
-//                         'type'       => 'LEFT OUTER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'Contratinsertion.structurereferente_id = Structurereferente.id' )
-//                     ),
-//                     array(
-//                         'table'      => 'suivisinstruction',
-//                         'alias'      => 'Suiviinstruction',
-//                         'type'       => 'LEFT OUTER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
-//                     ),
-//                     array(
-//                         'table'      => 'servicesinstructeurs',
-//                         'alias'      => 'Serviceinstructeur',
-//                         'type'       => 'LEFT OUTER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
-//                     )
+                    )
                 )
             )
         );
 
-        /*********************************************************************************************/
+        /** ********************************************************************
+        *   BeforeSave
+        *** *******************************************************************/
         function beforeSave( $options = array() ) {
             $return = parent::beforeSave( $options );
 

@@ -3,12 +3,12 @@ form {
     text-align: left;
 }
 
-div.text, div.password, div.select, div.radio, div.date, div.textarea {
+div.text, div.password, div.select, div.radio, div.date, div.textarea, div.input.text {
     margin-bottom: 0.5em;
     width: auto;
 }
 
-div.input label {
+div.input label, div.input span.label {
     display: -moz-inline-box;
     display: inline-table;
     display: inline-block;
@@ -26,7 +26,7 @@ div.textarea label, div.textarea textarea {
     width: 100%;
 }
 
-div.text input, div.password input, div.select select {
+div.text input, div.password input, div.select select, div.input.text span.input {
     display: -moz-inline-box;
     display: inline-table;
     display: inline-block;
