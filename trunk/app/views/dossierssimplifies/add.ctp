@@ -4,8 +4,14 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        observeDisableFieldsOnValue( 'Prestation0Toppersdrodevorsa', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId' ], 0, true );
-        observeDisableFieldsOnValue( 'Prestation1Toppersdrodevorsa', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId' ], 0, true );
+        // Masquage des champs select si Statut = non orienté
+        observeDisableFieldsOnValue( 'Orientstruct0StatutOrient', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId' ], 'Non orienté', true );
+        observeDisableFieldsOnValue( 'Orientstruct1StatutOrient', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId' ], 'Non orienté', true );
+        // Masquage des champs select si non droit et devoir
+        observeDisableFieldsOnValue( 'Prestation0Toppersdrodevorsa', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId', 'Orientstruct0StatutOrient' ], 0, true );
+        observeDisableFieldsOnValue( 'Prestation1Toppersdrodevorsa', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId', 'Orientstruct1StatutOrient' ], 0, true );
+        ///
+
     });
 </script>
 
@@ -45,6 +51,7 @@
         </fieldset>
         <fieldset>
             <h3>Orientation</h3>
+            <?php echo $form->input( 'Orientstruct.0.statut_orient', array( 'label' => "Statut de l'orientation", 'type' => 'select' , 'options' => $statut_orient, 'empty' => true ) );?>
             <?php echo $form->input( 'Orientstruct.0.typeorient_id', array( 'label' => "Type d'orientation / Type de structure", 'type' => 'select' , 'options' => $options, 'empty' => true ) );?>
           <!--  <?php echo $form->input( 'Typeorient.0.parent_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
             <?php echo $form->input( 'Orientstruct.0.typeorient_id', array( 'label' => __( 'lib_struc', true ), 'type' => 'select', 'options' => $typesStruct, 'empty' => true ) );?> -->
@@ -67,6 +74,7 @@
         </fieldset>
         <fieldset>
             <h3>Orientation</h3>
+            <?php echo $form->input( 'Orientstruct.1.statut_orient', array( 'label' => "Statut de l'orientation", 'type' => 'select' , 'options' => $statut_orient, 'empty' => true ) );?>
             <?php echo $form->input( 'Orientstruct.1.typeorient_id', array( 'label' => "Type d'orientation / Type de structure", 'type' => 'select' , 'options' => $options, 'empty' => true ) );?>
           <!--  <?php echo $form->input( 'Typeorient.1.parent_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
             <?php echo $form->input( 'Orientstruct.1.typeorient_id', array( 'label' => __( 'lib_struc', true ), 'type' => 'select', 'options' => $typesStruct, 'empty' => true ) );?> -->

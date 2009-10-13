@@ -17,6 +17,7 @@
                 <th>Prénom</th>
                 <th>Date de la demande</th>
                 <th>Date d'orientation</th>
+                <th>Statut de l'orientation</th>
                 <th>Préconisation d'orientation</th>
                 <th>Structure référente</th>
                 <th colspan="2" class="action">Actions</th>
@@ -32,6 +33,7 @@
                             h( $personne['prenom'] ),
                             h( $locale->date( 'Date::short', $dossier['Dossier']['dtdemrsa'] ) ),
                             h( $locale->date( 'Date::short', $personne['Orientstruct']['date_valid'] ) ),
+                            h( $personne['Orientstruct']['statut_orient'] ),
                             h( isset( $personne['Structurereferente']['Typeorient']['lib_type_orient'] ) ? $personne['Structurereferente']['Typeorient']['lib_type_orient']  : null ) ,
                             h( isset( $personne['Structurereferente']['lib_struc'] ) ? $personne['Structurereferente']['lib_struc'] : null ),
 
