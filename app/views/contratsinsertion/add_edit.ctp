@@ -46,9 +46,10 @@
 
     ?>
 <!--/************************************************************************/ -->
+
 <script type="text/javascript">
     function checkDatesToRefresh() {
-        if( ( $F( 'ContratinsertionDdCiMonth' ) ) && ( $F( 'ContratinsertionDdCiYear' ) )&& ( $F( 'ContratinsertionDureeEngag' ) ) ) {
+        if( ( $F( 'ContratinsertionDdCiMonth' ) ) && ( $F( 'ContratinsertionDdCiYear' ) ) && ( $F( 'ContratinsertionDureeEngag' ) ) ) {
             var correspondances = new Array();
             // FIXME: voir pour les array associatives
             <?php foreach( $duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
@@ -58,33 +59,19 @@
     }
 
     document.observe( "dom:loaded", function() {
-        Event.observe( $( 'ActionCode' ), 'keyup', function() {
-            var value = $F( 'ActionCode' );
-            if( value.length == 2 ) { // FIXME: in_array
-                $$( '#ContratinsertionEngagObject option').each( function ( option ) {
-                    if( $( option ).value == value ) {
-                        $( option ).selected = 'selected';
-                    }
-                } );
-            }
+        Event.observe( $( 'ContratinsertionDdCiDay' ), 'change', function() {
+            checkDatesToRefresh();
         } );
-
         Event.observe( $( 'ContratinsertionDdCiMonth' ), 'change', function() {
             checkDatesToRefresh();
         } );
         Event.observe( $( 'ContratinsertionDdCiYear' ), 'change', function() {
             checkDatesToRefresh();
         } );
+
         Event.observe( $( 'ContratinsertionDureeEngag' ), 'change', function() {
             checkDatesToRefresh();
         } );
-
-        observeDisableFieldsOnBoolean( 'ContratinsertionActionsPrev', [ 'ContratinsertionObstaRenc' ], '1', false );
-        observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
-        observeDisableFieldsOnBoolean( 'ContratinsertionEmpTrouv', [ 'ContratinsertionSectActiEmp', 'ContratinsertionEmpOccupe', 'ContratinsertionDureeHebdoEmp', 'ContratinsertionNatContTrav', 'ContratinsertionDureeCdd' ], 0, false );
-
-        observeDisableFieldsOnValue( 'ActioninsertionLibAction', [ 'Aidedirecte0TypoAide', 'Aidedirecte0LibAide', 'Aidedirecte0DateAideDay', 'Aidedirecte0DateAideMonth', 'Aidedirecte0DateAideYear' ], 'A', false );
-        observeDisableFieldsOnValue( 'ActioninsertionLibAction', [ 'Prestform0LibPresta', 'RefprestaNomrefpresta', 'RefprestaPrenomrefpresta', 'Prestform0DatePrestaDay', 'Prestform0DatePrestaMonth', 'Prestform0DatePrestaYear' ], 'P', false );
     } );
 </script>
 
@@ -215,10 +202,11 @@
                     ?> -->
                     <strong>Nom de l'organisme de suivi :</strong> <?php echo Set::classicExtract( $personne, 'Structurereferente.lib_struc' ); ?>
                 </td>
-                <td class="noborder"><?php 
+                <td class="noborder">
+                    <?php 
                         echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
-                    ?></td>
-                <!--<td class="noborder"></td>-->
+                    ?>
+                </td>
             </tr>
             <tr>
                 <td class="textArea noborder">
@@ -232,9 +220,6 @@
                             Set::classicExtract( $personne, 'Structurereferente.code_postal' ).' '.
                             Set::classicExtract( $personne, 'Structurereferente.ville' )
                         );
-                        //echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => '<em> et coordonnées</em>', 'type' => 'textarea', 'rows' => 3 )  );
-                        //echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'ContratinsertionServiceSoutien', 'url' => Router::url( array( 'action' => 'ajax' ), true ) ) );
-                        echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'ContratinsertionReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
                     ?>
                 </td>
                 <td class="textArea noborder">
@@ -243,18 +228,18 @@
                         echo $html->tag(
                             'p',
                             $html->tag( 'em', 'Coordonnées du référent' ).'<br />'.
-                            $html->tag( 'span', ( isset( $ReferentEmail ) ? $ReferentEmail : null ), array( 'id' => 'ReferentEmail' ) )
+                            $html->tag( 'span', ( isset( $ReferentEmail ) ? $ReferentEmail : ' ' ), array( 'id' => 'ReferentEmail' ) )
                         );
                         echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentEmail', 'url' => Router::url( array( 'action' => 'ajaxrefcoord' ), true ) ) );
+
                     ?>
                 </td>
                 <td class="textArea noborder">
                     <?php
-                       //echo $form->input( 'Referent.fonction', array( 'label' => '<em>'. __( 'Fonction du référent', true ).'</em>', 'type' => 'textarea', 'rows' => 3 )  );
                         echo $html->tag(
                             'p',
                             $html->tag( 'em', 'Fonction du référent' ).'<br />'.
-                            $html->tag( 'span', ( isset( $ReferentFonction ) ? $ReferentFonction : null ), array( 'id' => 'ReferentFonction' ) )
+                            $html->tag( 'span', ( isset( $ReferentFonction ) ? $ReferentFonction : ' ' ), array( 'id' => 'ReferentFonction' ) )
                         );
                        echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
                     ?>

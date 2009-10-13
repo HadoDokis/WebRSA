@@ -418,7 +418,7 @@ msgid "date_valid"
 msgstr "Date de l'orientation"
 
 msgid "lieu_saisi_ci"
-msgstr "Fait à "
+msgstr "Réalisé à "
 
 msgid "date_saisi_ci"
 msgstr "Le "

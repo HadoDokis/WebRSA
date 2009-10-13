@@ -14,7 +14,7 @@
         var $uses = array( 'Contratinsertion', 'Option', 'Action'/*, 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'DsppNivetu'*/ );
         var $helpers = array( 'Ajax' );
         var $components = array( 'RequestHandler' );
-        var $aucunDroit = array( 'ajax', 'ajaxreffonct', 'ajaxrefcoord' );
+        var $aucunDroit = array( 'ajax', 'ajaxreffonct', 'ajaxrefcoord', 'ajaxreferent' );
 
         /** ********************************************************************
         *
@@ -119,6 +119,16 @@
             $this->render( null, 'ajax' );
         }
 
+        /** ********************************************************************
+        *   Ajax pour le nom du référent
+        *** *******************************************************************/
+
+        function ajaxreferent() { // FIXME
+            Configure::write( 'debug', 0 );
+            $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( Set::extract( $this->data, 'Contratinsertion.referent_id' ), null, null, -1 );
+            echo $referent['Referent']['nom'].' '.$referent['Referent']['prenom'];
+            $this->render( null, 'ajax' );
+        }
         /** ********************************************************************
         *
         *** *******************************************************************/
@@ -307,8 +317,8 @@
                 $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
                 $this->assert( !empty( $user ), 'error500' ); // FIXME
 
-                $this->data['Contratinsertion']['pers_charg_suivi'] = $user['User']['nom'].' '.$user['User']['prenom'];
-                $this->set( 'perschargsuivi', $this->data['Contratinsertion']['pers_charg_suivi'] );
+//                 $this->data['Contratinsertion']['pers_charg_suivi'] = $user['User']['nom'].' '.$user['User']['prenom'];
+//                 $this->set( 'perschargsuivi', $this->data['Contratinsertion']['pers_charg_suivi'] );
 
                 $this->data['Contratinsertion']['structurereferente_id'] = $personne['Orientstruct']['structurereferente_id'];
 
@@ -329,6 +339,7 @@
                 $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( Set::extract( $this->data, 'Contratinsertion.referent_id' ), null, null, -1 );
                 $this->set( 'ReferentEmail', $referent['Referent']['email']. '<br/>' .$referent['Referent']['numero_poste'] );
                 $this->set( 'ReferentFonction', $referent['Referent']['fonction'] );
+                $this->set( 'ReferentNom', $referent['Referent']['nom'].' '.$referent['Referent']['prenom'] );
             }
 
             $this->Contratinsertion->commit();
