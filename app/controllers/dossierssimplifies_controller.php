@@ -190,7 +190,7 @@
                                 $this->data['Orientstruct'][$key]['valid_cg'] = true;
                                 $this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
                                 $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
-                                $this->data['Orientstruct'][$key]['statut_orient'] = 'Orienté';
+//                                 $this->data['Orientstruct'][$key]['statut_orient'] = 'Orienté';
                                 $saved = $this->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
                             }
                             else {
