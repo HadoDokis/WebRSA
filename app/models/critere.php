@@ -29,6 +29,7 @@
             $locaadr = Set::extract( $criteres, 'Critere.locaadr' );
             $numcomptt = Set::extract( $criteres, 'Critere.numcomptt' );
             $statut_orient = Set::extract( $criteres, 'Critere.statut_orient' );
+            $etatdosrsa = Set::extract( $criteres, 'Critere.etatdosrsa' );
             $typeorient_id = Set::extract( $criteres, 'Critere.typeorient_id' );
             $structurereferente_id = Set::extract( $criteres, 'Critere.structurereferente_id' );
             $serviceinstructeur_id = Set::extract( $criteres, 'Critere.serviceinstructeur_id' );
@@ -43,10 +44,13 @@
                 }
             }
 
-            // ...
-            if( !empty( $dtdemrsa ) && dateComplete( $criteres, 'Critere.dtdemrsa' ) ) {
-                $dtdemrsa = $dtdemrsa['year'].'-'.$dtdemrsa['month'].'-'.$dtdemrsa['day'];
-                $conditions[] = 'Dossier.dtdemrsa = \''.$dtdemrsa.'\'';
+            // Critères sur le dossier - date de demande
+            if( isset( $criteres['Critere']['dtdemrsa'] ) && !empty( $criteres['Critere']['dtdemrsa'] ) ) {
+                $valid_from = ( valid_int( $criteres['Critere']['dtdemrsa_from']['year'] ) && valid_int( $criteres['Critere']['dtdemrsa_from']['month'] ) && valid_int( $criteres['Critere']['dtdemrsa_from']['day'] ) );
+                $valid_to = ( valid_int( $criteres['Critere']['dtdemrsa_to']['year'] ) && valid_int( $criteres['Critere']['dtdemrsa_to']['month'] ) && valid_int( $criteres['Critere']['dtdemrsa_to']['day'] ) );
+                if( $valid_from && $valid_to ) {
+                    $conditions[] = 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $criteres['Critere']['dtdemrsa_from']['year'], $criteres['Critere']['dtdemrsa_from']['month'], $criteres['Critere']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteres['Critere']['dtdemrsa_to']['year'], $criteres['Critere']['dtdemrsa_to']['month'], $criteres['Critere']['dtdemrsa_to']['day'] ) ).'\'';
+                }
             }
 
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
@@ -88,6 +92,11 @@
                 $conditions[] = 'Serviceinstructeur.id = \''.Sanitize::clean( $serviceinstructeur_id ).'\'';
             }
 
+            // ...
+            if( !empty( $etatdosrsa ) ) {
+                $conditions[] = 'Situationdossierrsa.etatdosrsa = \''.Sanitize::clean( $etatdosrsa ).'\'';
+            }
+
             /// Requête
             $Situationdossierrsa =& ClassRegistry::init( 'Situationdossierrsa' );
 
@@ -116,7 +125,8 @@
                     '"Adresse"."numcomptt"',
                     '"Modecontact"."numtel"',
                     '"Serviceinstructeur"."id"',
-                    '"Serviceinstructeur"."lib_service"'
+                    '"Serviceinstructeur"."lib_service"',
+                    '"Situationdossierrsa"."etatdosrsa"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
