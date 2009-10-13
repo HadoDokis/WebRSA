@@ -43,8 +43,11 @@
         <legend>Recherche par personne</legend>
         <?php echo $form->input( 'Critere.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Critere.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Critere.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Critere.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?>
     </fieldset>
     <fieldset>
+        <legend>Recherche par orientation</legend>
         <?php echo $form->input( 'Critere.date_valid', array( 'label' => 'Filtrer par date d\'orientation', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date d'orientation</legend>
@@ -56,8 +59,6 @@
                 <?php echo $form->input( 'Critere.date_valid_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_to ) );?>
             </fieldset>
 
-        <?php echo $form->input( 'Critere.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Critere.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Critere.typeorient_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
         <?php echo $form->input( 'Critere.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
         <?php echo $form->input( 'Critere.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
