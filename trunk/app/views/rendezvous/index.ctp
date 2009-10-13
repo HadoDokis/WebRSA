@@ -44,7 +44,7 @@
                 <th>Heure du RDV</th>
                 <th>Objet du RDV</th>
                 <th>Commentaire suite au RDV</th>
-                <th colspan="2" class="action">Actions</th>
+                <th colspan="3" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -60,8 +60,13 @@
                             h(  Set::extract( $rdv, 'Rendezvous.heurerdv' ) ),
                             h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),
                             h( Set::extract( $rdv, 'Rendezvous.commentairerdv' ) ) ,
+                            $html->viewLink(
+                                'Voir le rendez-vous',
+                                array( 'controller' => 'rendezvous', 'action' => 'view', $rdv['Rendezvous']['id'] ),
+                                $permissions->check( 'rendezvous', 'view' )
+                            ),
                             $html->editLink(
-                                'Editer l\'orientation',
+                                'Editer le rendez-vous',
                                 array( 'controller' => 'rendezvous', 'action' => 'edit', $rdv['Rendezvous']['id'] ),
                                 $permissions->check( 'rendezvous', 'edit' )
                             ),
