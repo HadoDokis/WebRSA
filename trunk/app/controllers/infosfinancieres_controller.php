@@ -51,7 +51,7 @@
                 $this->Dossier->commit();
 
                 $this->set( 'infosfinancieres', $infosfinancieres );
-                $this->data['Search'] = $this->data;
+
             }
         }
 
@@ -126,10 +126,12 @@
         *** *******************************************************************/
 
         function exportcsv() {
+
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
-            $options = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+            $options = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ) );
+
             unset( $options['limit'] );
             $infos = $this->Infofinanciere->find( 'all', $options );
 

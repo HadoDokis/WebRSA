@@ -166,7 +166,7 @@
              <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
-                    array( 'controller' => 'infosfinancieres', 'action' => 'exportcsv' )
+                    array( 'controller' => 'infosfinancieres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
             ?></li>
         </ul>
