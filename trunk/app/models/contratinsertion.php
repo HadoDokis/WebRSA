@@ -133,12 +133,12 @@
                             'message' => 'Veuillez entrer une valeur numérique.'
                 )
             ),
-            'nature_projet' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+//             'nature_projet' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
             'decision_ci' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
@@ -151,13 +151,13 @@
                     'message' => 'Veuillez entrer une date valide',
                     'allowEmpty'    => true
                 )
-            ),
+            )/*,
             'lieu_saisi_ci' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
-            )
+            )*/
         );
 
         // ********************************************************************

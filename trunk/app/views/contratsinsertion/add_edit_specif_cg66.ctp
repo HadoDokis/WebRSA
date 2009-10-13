@@ -50,7 +50,7 @@
 </fieldset>
 <fieldset>
     <p>
-        Entre <?php echo $qual.' '.$nom.' '.$prenom;?> bénéficiare du rSa et le Département représenté par le référent signataire désigné par l'organisme choisi par le Président du conseil Général, il est conclu le présent contrat visant à faciliter son insertion sociale ou professionnelle.<br />
+        Entre <?php echo $personne['Personne']['qual'].' '.$personne['Personne']['nom'].' '.$personne['Personne']['prenom'];?> bénéficiare du rSa et le Département représenté par le référent signataire désigné par l'organisme choisi par le Président du conseil Général, il est conclu le présent contrat visant à faciliter son insertion sociale ou professionnelle.<br />
         Le bénéficiaire <strong>s'engage à respecter les orientations et le suivi</strong> du parcours d'insertion, ainsi que les différents moyens d'actions proposés. Le Département, représenté par le référent signataire désigné par l'organisme choisi par le Président du Conseil Général <strong>s'engage à mettre en oeuvre les actions pré-citées et/ou un accompagnement adapté.</strong>
     </p>
 </fieldset>
@@ -76,10 +76,17 @@
     <table class="wide noborder">
         <tr>
             <td class="signature noborder center">
-                <strong>Le bénéficiaire du contrat</strong><br /><?php echo $qual.' '.$nom.' '.$prenom;?>
+                <strong>Le bénéficiaire du contrat</strong><br /><?php echo $personne['Personne']['qual'].' '.$personne['Personne']['nom'].' '.$personne['Personne']['prenom'];?>
             </td>
             <td class="signature noborder center">
-                <strong>Le Référent</strong><br /><?php echo $perschargsuivi;?>
+                <strong>Le Référent</strong><br />
+                <?php
+                    echo $html->tag(
+                        'div',
+                        $html->tag( 'span', ( isset( $ReferentNom ) ? $ReferentNom : ' ' ), array( 'id' => 'ReferentNom' ) )
+                    );
+                    echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentNom', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
+                ?>
             </td>
         </tr>
         <tr>
@@ -89,7 +96,8 @@
             </td>
         </tr>
     </table>
-        <!--    <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => required( __( 'lieu_saisi_ci', true ) ), 'type' => 'text')  ); ?><br />
+    <br />
+        <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => __( 'lieu_saisi_ci', true ), 'type' => 'text')  ); ?><br />
         <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __( 'date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
-       -->
+
 </fieldset>
