@@ -6,6 +6,7 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsetOnCheckbox( 'CritereDateValid', $( 'CritereDateValidFromDay' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'CritereDtdemrsa', $( 'CritereDtdemrsaFromDay' ).up( 'fieldset' ), false );
     });
 </script>
 
@@ -24,12 +25,26 @@
 
 <?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
+        <legend>Recherche par dossier</legend>
+        <?php echo $form->input( 'Critere.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+        <?php echo $form->input( 'Critere.etatdosrsa', array( 'label' => 'Situation dossier rsa', 'type' => 'select', 'options' => $etatdosrsa, 'empty' => true ) );?>
+        <?php echo $form->input( 'Critere.dtdemrsa', array( 'label' => 'Filtrer par date de demande', 'type' => 'checkbox' ) );?>
+        <fieldset>
+            <legend>Date de demande RSA</legend>
+            <?php
+                $dtdemrsa_from = Set::check( $this->data, 'Critere.dtdemrsa_from' ) ? Set::extract( $this->data, 'Critere.dtdemrsa_from' ) : strtotime( '-1 week' );
+                $dtdemrsa_to = Set::check( $this->data, 'Critere.dtdemrsa_to' ) ? Set::extract( $this->data, 'Critere.dtdemrsa_to' ) : strtotime( 'now' );
+            ?>
+            <?php echo $form->input( 'Critere.dtdemrsa_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );?>
+            <?php echo $form->input( 'Critere.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_to ) );?>
+        </fieldset>
+    </fieldset>
+    <fieldset>
         <legend>Recherche par personne</legend>
         <?php echo $form->input( 'Critere.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Critere.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
     </fieldset>
     <fieldset>
-        <?php echo $form->input( 'Critere.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
         <?php echo $form->input( 'Critere.date_valid', array( 'label' => 'Filtrer par date d\'orientation', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date d'orientation</legend>
