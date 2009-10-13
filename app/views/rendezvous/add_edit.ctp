@@ -36,6 +36,18 @@
         <fieldset>
             <?php
                 echo $form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'lib_struct', true ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
+                echo $form->input( 'Rendezvous.referent_id', array( 'label' =>  required( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+                ///Ajax
+                echo $ajax->observeField( 'RendezvousStructurereferenteId', array( 'update' => 'RendezvousReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
+
+                echo $html->tag(
+                    'div',
+                    $html->tag( 'span', 'Fonction du référent', array( 'class' => 'label' ) ).
+                    $html->tag( 'span', ( isset( $ReferentFonction ) ? $ReferentFonction : null ), array( 'id' => 'ReferentFonction', 'class' => 'input' ) ),
+                    array( 'class' => 'input text' )
+                );
+                echo $ajax->observeField( 'RendezvousReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
+
                 echo $form->input( 'Rendezvous.typerdv_id', array( 'label' =>  required( __( 'lib_rdv', true ) ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
             ?>
             <?php echo $form->input( 'Rendezvous.statutrdv', array( 'label' =>  required( __( 'statutrdv', true ) ), 'type' => 'select', 'options' => $statutrdv, 'empty' => true ) );?>
