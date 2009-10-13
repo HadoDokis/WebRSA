@@ -38,6 +38,7 @@
             $this->set( 'struct', $struct );
             $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
             $this->set( 'typerdv', $typerdv );
+
             $referents = $this->Rendezvous->Structurereferente->Referent->find(
                 'all',
                 array(

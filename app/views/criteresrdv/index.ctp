@@ -85,8 +85,9 @@
                     <th><?php echo $paginator->sort( 'Type de RDV', 'Rendezvous.typerdv_id' );?></th>
                     <th><?php echo $paginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv' );?></th>
                     <th><?php echo $paginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
-                    <th>Objet du RDV</th>
-                    <th>Commentaire suite au RDV</th>
+                    <th>Référent</th>
+                    <!--<th>Objet du RDV</th>
+                    <th>Commentaire suite au RDV</th>-->
                     <th colspan="2" class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -112,6 +113,7 @@
                                 </tr>
                             </tbody>
                         </table>';
+
                         echo $html->tableCells(
                             array(
                                 h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
@@ -120,8 +122,9 @@
                                 h( value( $typerdv, Set::extract( $rdv, 'Rendezvous.typerdv_id' ) ) ),
                                 h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv' ) ) ),
                                 h( date_short( $rdv['Rendezvous']['daterdv'] ) ),
-                                h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),
-                                h( Set::extract( $rdv, 'Rendezvous.commentairerdv' ) ),
+                                h(  value( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) ) ),
+//                                 h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),
+//                                 h( Set::extract( $rdv, 'Rendezvous.commentairerdv' ) ),
                                 array(
                                     $html->viewLink(
                                         'Voir le dossier « '.$title.' »',
