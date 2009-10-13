@@ -80,6 +80,7 @@
                 'fields' => array(
                     '"Rendezvous"."id"',
                     '"Rendezvous"."personne_id"',
+                    '"Rendezvous"."referent_id"',
                     '"Rendezvous"."structurereferente_id"',
                     '"Rendezvous"."typerdv_id"',
                     '"Rendezvous"."statutrdv"',
