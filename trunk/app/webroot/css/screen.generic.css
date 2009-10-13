@@ -535,10 +535,10 @@ div.clearer hr {
 }
 
 .treemenu {
-    width: 17em;
+    width: 200px;/*17em*/
     border: 1px solid #235f7d;
     float: left;
-    z-index: 100;
+    /*z-index: 100;*/
 }
 
 .treemenu ul {
