@@ -6,7 +6,7 @@
     class CriteresrdvController extends AppController
     {
         var $name = 'Criteresrdv';
-        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Option', 'Typerdv' );
+        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Option', 'Typerdv', 'Referent' );
         var $aucunDroit = array( 'constReq' );
 
         var $helpers = array( 'Csv' );
@@ -38,6 +38,19 @@
             $this->set( 'struct', $struct );
             $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
             $this->set( 'typerdv', $typerdv );
+            $referents = $this->Rendezvous->Structurereferente->Referent->find(
+                'all',
+                array(
+                    'recursive' => -1,
+                    'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom' ),
+                )
+            );
+            if( !empty( $referents ) ) {
+                $ids = Set::extract( $referents, '/Referent/id' );
+                $values = Set::format( $referents, '{0} {1} {2}', array( '{n}.Referent.qual', '{n}.Referent.nom', '{n}.Referent.prenom' ) );
+                $referents = array_combine( $ids, $values );
+            }
+            $this->set( 'referents', $referents );
         }
 
 

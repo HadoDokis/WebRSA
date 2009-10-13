@@ -17,6 +17,7 @@
             $statutrdv = Set::extract( $criteresrdv, 'Critererdv.statutrdv' );
             $typerdv_id = Set::extract( $criteresrdv, 'Critererdv.typerdv_id' );
             $structurereferente_id = Set::extract( $criteresrdv, 'Critererdv.structurereferente_id' );
+            $referent_id = Set::extract( $criteresrdv, 'Critererdv.referent_id' );
             $locaadr = Set::extract( $criteresrdv, 'Critererdv.locaadr' );
             $numcomptt = Set::extract( $criteresrdv, 'Critererdv.numcomptt' );
             $nom = Set::extract( $criteresrdv, 'Critererdv.nom' );
@@ -61,6 +62,11 @@
             /// Structure référente
             if( !empty( $structurereferente_id ) ) {
                 $conditions[] = 'Rendezvous.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
+            }
+
+            /// Référent
+            if( !empty( $referent_id ) ) {
+                $conditions[] = 'Rendezvous.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
             }
 
             /// Type de rendez vous
