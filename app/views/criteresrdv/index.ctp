@@ -87,6 +87,7 @@
                     <th><?php echo $paginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv' );?></th>
                     <th><?php echo $paginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
                     <th>Référent</th>
+                    <th>Heure du RDV</th>
                     <!--<th>Objet du RDV</th>
                     <th>Commentaire suite au RDV</th>-->
                     <th colspan="2" class="action noprint">Actions</th>
@@ -124,6 +125,7 @@
                                 h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv' ) ) ),
                                 h( date_short( $rdv['Rendezvous']['daterdv'] ) ),
                                 h(  value( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) ) ),
+                                h( ( $rdv['Rendezvous']['heurerdv'] ) ),
 //                                 h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),
 //                                 h( Set::extract( $rdv, 'Rendezvous.commentairerdv' ) ),
                                 array(
