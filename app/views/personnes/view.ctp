@@ -117,7 +117,8 @@
             </tr>
         </tbody>
     </table>
-    <?php if( $sexe[$personne['Personne']['sexe']] == 'Femme' ):?>
+    <?php if( $sexe[$personne['Personne']['sexe']] == 'Femme'  && $rolepers[$personne['Prestation']['rolepers']] != 'Enfant'):?>
+
         <table>
             <?php echo thead( 10 );?>
             <tbody>
