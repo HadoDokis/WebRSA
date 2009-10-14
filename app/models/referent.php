@@ -56,5 +56,35 @@
                 'message' => 'Champ obligatoire'
             ),
         );
+
+
+
+        /** ********************************************************************
+        *   Retourne la liste des Referents
+        ** ********************************************************************/
+
+        function _referentsListe( $structurereferente_id = null ) {
+            // Population du select référents liés aux structures
+            $conditions = array();
+            if( !empty( $structurereferente_id ) ) {
+                $conditions['Referent.structurereferente_id'] = $structurereferente_id;
+            }
+
+            $referents = $this->find(
+                'all',
+                array(
+                    'recursive' => -1,
+                    'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom' ),
+                    'conditions' => $conditions
+                )
+            );
+
+            if( !empty( $referents ) ) {
+                $ids = Set::extract( $referents, '/Referent/id' );
+                $values = Set::format( $referents, '{0} {1} {2}', array( '{n}.Referent.qual', '{n}.Referent.nom', '{n}.Referent.prenom' ) );
+                $referents = array_combine( $ids, $values );
+            }
+            return $referents;
+        }
     }
 ?>

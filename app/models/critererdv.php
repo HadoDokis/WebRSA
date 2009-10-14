@@ -85,6 +85,7 @@
                     '"Rendezvous"."typerdv_id"',
                     '"Rendezvous"."statutrdv"',
                     '"Rendezvous"."daterdv"',
+                    '"Rendezvous"."heurerdv"',
                     '"Rendezvous"."objetrdv"',
                     '"Rendezvous"."commentairerdv"',
                     '"Dossier"."numdemrsa"',
