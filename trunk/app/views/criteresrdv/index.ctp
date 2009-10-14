@@ -83,11 +83,12 @@
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
                     <th><?php echo $paginator->sort( 'Structure référente', 'Rendezvous.structurereferente_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Type de RDV', 'Rendezvous.typerdv_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv' );?></th>
-                    <th><?php echo $paginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
                     <th>Référent</th>
+                    <th><?php echo $paginator->sort( 'Type de RDV', 'Rendezvous.typerdv_id' );?></th>
+                    <th><?php echo $paginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
                     <th>Heure du RDV</th>
+                    <th><?php echo $paginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv' );?></th>
+
                     <!--<th>Objet du RDV</th>
                     <th>Commentaire suite au RDV</th>-->
                     <th colspan="2" class="action noprint">Actions</th>
@@ -121,11 +122,12 @@
                                 h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
                                 h( Set::extract( $rdv, 'Adresse.locaadr' ) ),
                                 h( value( $struct, Set::extract( $rdv, 'Rendezvous.structurereferente_id' ) ) ),
-                                h( value( $typerdv, Set::extract( $rdv, 'Rendezvous.typerdv_id' ) ) ),
-                                h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv' ) ) ),
-                                h( date_short( $rdv['Rendezvous']['daterdv'] ) ),
                                 h(  value( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) ) ),
+                                h( value( $typerdv, Set::extract( $rdv, 'Rendezvous.typerdv_id' ) ) ),
+                                h( date_short( $rdv['Rendezvous']['daterdv'] ) ),
                                 h( ( $rdv['Rendezvous']['heurerdv'] ) ),
+                                h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv' ) ) ),
+
 //                                 h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),
 //                                 h( Set::extract( $rdv, 'Rendezvous.commentairerdv' ) ),
                                 array(

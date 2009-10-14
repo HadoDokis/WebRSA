@@ -18,7 +18,7 @@
         $row = array(
             Set::extract( $contrat, 'Personne.nom' ).' '.Set::extract( $contrat, 'Personne.prenom'),
             Set::extract( $contrat, 'Adresse.locaadr' ),
-            Set::extract( $contrat, 'Contratinsertion.pers_charg_suivi' ),
+            value( $referents, Set::extract( $contrat, 'Contratinsertion.referent_id' ) ),
             Set::extract( $contrat, 'Dossier.matricule' ),
             date_short( Set::extract( $contrat, 'Contratinsertion.date_saisi_ci' ) ),
             Set::extract( $contrat, 'Contratinsertion.rg_ci' ),

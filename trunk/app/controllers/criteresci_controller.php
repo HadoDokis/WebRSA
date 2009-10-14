@@ -142,6 +142,11 @@
             unset( $querydata['limit'] );
             $contrats = $this->Contratinsertion->find( 'all', $querydata );
 
+            /// Population du select référents liés aux structures
+            $structurereferente_id = Set::classicExtract( $this->data, 'Contratinsertion.structurereferente_id' );
+            $referents = $this->Referent->_referentsListe( $structurereferente_id );
+            $this->set( 'referents', $referents );
+
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'contrats' ) );
         }
