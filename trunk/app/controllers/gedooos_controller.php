@@ -7,7 +7,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action' );
         var $component = array( 'Jetons' );
 
         function _value( $array, $index ) {
@@ -184,6 +184,9 @@
             $typevoie = $this->Option->typevoie();
             $this->set( 'typevoie', $typevoie );
 
+            $act = $this->Option->act();
+            $this->set( 'act', $act );
+
             $sitfam = $this->Option->sitfam();
             $this->set( 'sitfam', $sitfam );
             $typeocclog = $this->Option->typeocclog();
@@ -267,6 +270,30 @@
             $dossier['Dossier']['id'] = $ddrsa['Detaildroitrsa']['dossier_rsa_id'];
 //             debug($ddrsa['Detaildroitrsa']);
             //////////////////////////////////////////////////////////////////////////
+//             $this->Activite->bindModel(
+//                 array(
+//                     'belongsTo' => array(
+//                         'Personne' => array(
+//                             'classname' => 'Personne',
+//                             'foreignKey' => 'personne_id',
+//                         )
+//                     )
+//                 )
+//             );
+            $activite = $this->Activite->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Activite.personne_id' => $contratinsertion['Personne']['id'],
+                    )
+                )
+            );
+            $contratinsertion['Activite'] = $activite['Activite'];
+            //$contratinsertion['Activite']['act_anp'] = ( Set::classicExtract( $contratinsertion, 'Activite.act' ) == 'ANP' );
+
+            $contratinsertion['Activite']['act'] = ( ( $contratinsertion['Activite']['act'] == 'ANP' )  ? 'Oui' : 'Non' );
+
+            //////////////////////////////////////////////////////////////////////////
             // Affichage des données réelles et non leurs variables
             foreach( array( 'tc', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd', 'sect_acti_emp' ) as $varName ) {
                 $contratinsertion['Contratinsertion'][$varName] = ( isset( $contratinsertion['Contratinsertion'][$varName] ) ? ${$varName}[$contratinsertion['Contratinsertion'][$varName]] : null );
@@ -290,12 +317,17 @@
             $contratinsertion['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Personne']['dtnai'] ) );
             $contratinsertion['Personne']['qual'] = ( isset( $qual[$contratinsertion['Personne']['qual']] ) ? $qual[$contratinsertion['Personne']['qual']] : null );
 
+
             // Données Foyer récupérées
             $contratinsertion['Foyer']['sitfam'] = ( isset( $sitfam[$foyer['Foyer']['sitfam']] ) ? $sitfam[$foyer['Foyer']['sitfam']] : null );
             $contratinsertion['Foyer']['typeocclog'] = ( isset( $typeocclog[$foyer['Foyer']['typeocclog']] ) ? $typeocclog[$foyer['Foyer']['typeocclog']] : null );
 
             $contratinsertion['Adresse']['typevoie'] = ( isset( $typevoie[$contratinsertion['Adresse']['typevoie']] ) ? $typevoie[$contratinsertion['Adresse']['typevoie']] : null );
             // Données Dossier récupérées
+
+            $contratinsertion['Structurereferente']['type_voie'] = ( isset( $typevoie[$contratinsertion['Structurereferente']['type_voie']] ) ? $typevoie[$contratinsertion['Structurereferente']['type_voie']] : null );
+
+
             $contratinsertion['Dossier']['matricule'] = ( isset( $dossier['Dossier']['matricule'] ) ? $dossier['Dossier']['matricule'] : null );
             $contratinsertion['Dossier']['dtdemrsa'] = strftime( '%d/%m/%Y', strtotime( $dossier['Dossier']['dtdemrsa'] ) );
 
@@ -305,9 +337,16 @@
             $contratinsertion['Dspp']['couvsoc'] = ( isset( $dspp['Dspp']['couvsoc'] ) ? 'Oui' : 'Non' );
 
             /// Population du select référents liés aux structures
-//             $structurereferente_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.structurereferente_id' );
-//             $referents = $this->Referent->_referentsListe( $structurereferente_id );
-//             $this->set( 'referents', $referents );
+            $referent_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.referent_id' );
+            $referent = $this->Referent->findById( $referent_id, null, null, -1 );
+            $contratinsertion = Set::merge( $contratinsertion, $referent );
+
+            /// Code des actions engagées
+            $codesaction = $this->Action->find( 'list', array( 'fields' => array( 'code', 'libelle' ) ) );
+            $codesaction = empty( $contratinsertion['Contratinsertion']['engag_object'] ) ? null : $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
+            $contratinsertion['Contratinsertion']['engag_object'] = $codesaction;
+// debug( $contratinsertion );
+// die();
 
             $this->_ged( $contratinsertion, 'contratinsertion.odt' );
         }
