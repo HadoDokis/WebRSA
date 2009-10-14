@@ -42,6 +42,8 @@
             $numcomptt = Set::extract( $criteresci, 'Filtre.numcomptt' );
             $personne_suivi = Set::extract( $criteresci, 'Filtre.pers_charg_suivi' );
             $forme_ci = Set::extract( $criteresci, 'Filtre.forme_ci' );
+            $structurereferente_id = Set::extract( $criteresci, 'Filtre.structurereferente_id' );
+            $referent_id = Set::extract( $criteresci, 'Filtre.referent_id' );
 
 
             /// Critères sur le CI - date de saisi contrat
@@ -91,10 +93,16 @@
             if( !empty( $forme_ci ) ) {
                 $conditions[] = 'Contratinsertion.forme_ci = \''.Sanitize::clean( $forme_ci ).'\'';
             }
-//             //Critère recherche par Contrat insertion: par service instructeur
-//             if( isset( $params['Cohorteci']['serviceinstructeur_id'] ) && !empty( $params['Cohorteci']['serviceinstructeur_id'] ) ){
-//                 $conditions['Serviceinstructeur.id'] = $params['Cohorteci']['serviceinstructeur_id'];
-//             }
+
+            /// Structure référente
+            if( !empty( $structurereferente_id ) ) {
+                $conditions[] = 'Contratinsertion.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
+            }
+
+            /// Référent
+            if( !empty( $referent_id ) ) {
+                $conditions[] = 'Contratinsertion.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
+            }
 
 /**
 SELECT DISTINCT contratsinsertion.id
@@ -120,6 +128,7 @@ SELECT DISTINCT contratsinsertion.id
                     '"Contratinsertion"."id"',
                     '"Contratinsertion"."personne_id"',
                     '"Contratinsertion"."typocontrat_id"',
+                    '"Contratinsertion"."referent_id"',
                     '"Contratinsertion"."structurereferente_id"',
                     '"Contratinsertion"."rg_ci"',
                     '"Contratinsertion"."decision_ci"',

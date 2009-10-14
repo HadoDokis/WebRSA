@@ -100,7 +100,7 @@
                                                 ?>
                                             </li>
                                             <li><span>Accompagnement</span>
-                                                <ul>
+                                               <!-- <ul>
                                                     <li>
                                                         <?php
                                                             echo $html->link(
@@ -125,15 +125,15 @@
                                                             );
                                                         ?>
                                                     </li>
-                                                    <!-- <li>
+                                                     <li>
                                                         <?php
                                                             echo '<li>'.$html->link(
                                                                 'Suivis du parcours d\'insertion',
                                                                 array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Foyer']['id'] )
                                                             ).'</li>';
                                                         ?>
-                                                    </li> -->
-                                                </ul>
+                                                    </li> 
+                                                </ul> -->
                                             </li>
                                         </ul>
                                     </li>

@@ -5,9 +5,10 @@
     class CriteresciController extends AppController
     {
         var $name = 'Criteresci';
-        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typocontrat', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Cohorteci' );
-        var $aucunDroit = array( 'constReq' );
-        var $helpers = array( 'Csv' );
+        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typocontrat', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Cohorteci', 'Referent' );
+        var $aucunDroit = array( 'constReq', 'ajaxreferent' );
+
+        var $helpers = array( 'Csv', 'Ajax' );
         /**
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
         */
@@ -31,17 +32,8 @@
 
         function beforeFilter() {
             $return = parent::beforeFilter();
-
-//             $typeservice = $this->Serviceinstructeur->find(
-//                 'list',
-//                 array(
-//                     'fields' => array(
-//                         'Serviceinstructeur.id',
-//                         'Serviceinstructeur.lib_service'
-//                     ),
-//                 )
-//             );
-//             $this->set( 'typeservice', $typeservice );
+            $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
+            $this->set( 'struct', $struct );
 
             $personne_suivi = $this->Contratinsertion->find(
                 'list',
@@ -60,6 +52,42 @@
             return $return;
         }
 
+        /** ********************************************************************
+        *   Ajax pour lien référent - structure référente
+        ********************************************************************/
+
+        function _selectReferents( $structurereferente_id ) {
+            $conditions = array();
+
+            if( !empty( $structurereferente_id ) ) {
+                $conditions['Referent.structurereferente_id'] = $structurereferente_id;
+            }
+
+            $referents = $this->Referent->find(
+                'all',
+                array(
+                    'conditions' => $conditions,
+                    'recursive' => -1
+                )
+            );
+            return $referents;
+
+        }
+
+        /** ********************************************************************
+        *
+        ** ********************************************************************/
+
+        function ajaxreferent() { // FIXME
+            Configure::write( 'debug', 0 );
+            $referents = $this->_selectReferents( Set::classicExtract( $this->data, 'Filtre.structurereferente_id' ) );
+            $options = array( '<option value=""></option>' );
+            foreach( $referents as $referent ) {
+                $options[] = '<option value="'.$referent['Referent']['id'].'">'.$referent['Referent']['nom'].' '.$referent['Referent']['prenom'].'</option>';
+            } ///FIXME: à mettre dans la vue
+            echo implode( '', $options );
+            $this->render( null, 'ajax' );
+        }
 
         function index() {
             $params = $this->data;
@@ -77,8 +105,32 @@
                 $this->Dossier->commit();
 
                 $this->set( 'contrats', $contrats );
-                $this->data['Search'] = $params;
             }
+
+            /// Population du select référents liés aux structures
+            $conditions = array();
+            $structurereferente_id = Set::classicExtract( $this->data, 'Filtre.structurereferente_id' );
+
+            if( !empty( $structurereferente_id ) ) {
+                $conditions['Referent.structurereferente_id'] = Set::classicExtract( $this->data, 'Filtre.structurereferente_id' );
+            }
+
+            $referents = $this->Contratinsertion->Structurereferente->Referent->find(
+                'all',
+                array(
+                    'recursive' => -1,
+                    'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom' ),
+                    'conditions' => $conditions
+                )
+            );
+
+            if( !empty( $referents ) ) {
+                $ids = Set::extract( $referents, '/Referent/id' );
+                $values = Set::format( $referents, '{0} {1} {2}', array( '{n}.Referent.qual', '{n}.Referent.nom', '{n}.Referent.prenom' ) );
+                $referents = array_combine( $ids, $values );
+            }
+
+            $this->set( 'referents', $referents );
         }
 
         /// Export du tableau en CSV
