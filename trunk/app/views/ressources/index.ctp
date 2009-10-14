@@ -35,7 +35,7 @@
     <table class="tooltips">
         <thead>
             <tr>
-                <th>N° ressource</th>
+                <!--<th>N° ressource</th>-->
                 <th>Percevez-vous des ressources ?</th>
                 <th>Montant DTR RSA</th>
                 <th>Date de début </th>
@@ -47,7 +47,7 @@
             <?php foreach( $ressources as $ressource ):?>
                 <?php
                     $title = implode( ' ', array(
-                        $ressource['Ressource']['id'] ,
+//                         $ressource['Ressource']['id'] ,
                         $ressource['Ressource']['topressnotnul'] ,
                         $ressource['Ressource']['mtpersressmenrsa'] ,
                         $ressource['Ressource']['ddress'] ,
@@ -56,7 +56,7 @@
 
                     echo $html->tableCells(
                         array(
-                            h( $ressource['Ressource']['id']),
+//                             h( $ressource['Ressource']['id']),
                             h( $ressource['Ressource']['topressnotnul']  ? 'Oui' : 'Non'),
                             h( $ressource['Ressource']['mtpersressmenrsa'] ),
                             h( date_short( $ressource['Ressource']['ddress'] ) ),
