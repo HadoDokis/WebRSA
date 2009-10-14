@@ -7,9 +7,19 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent' );
         var $component = array( 'Jetons' );
 
+        function _value( $array, $index ) {
+            $keys = array_keys( $array );
+            $index = ( ( $index == null ) ? '' : $index );
+            if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
+                return $array[$index];
+            }
+            else {
+                return null;
+            }
+        }
 
         function _ged( $datas, $model ) {
             // Définition des variables & maccros
@@ -294,6 +304,10 @@
             // Données Dspp récupérées
             $contratinsertion['Dspp']['couvsoc'] = ( isset( $dspp['Dspp']['couvsoc'] ) ? 'Oui' : 'Non' );
 
+            /// Population du select référents liés aux structures
+//             $structurereferente_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.structurereferente_id' );
+//             $referents = $this->Referent->_referentsListe( $structurereferente_id );
+//             $this->set( 'referents', $referents );
 
             $this->_ged( $contratinsertion, 'contratinsertion.odt' );
         }
@@ -826,9 +840,21 @@
             $rdv['Rendezvous']['daterdv'] = date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) );
             ///Pour l'adresse de la personne
             $rdv['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $rdv, 'Adresse.typevoie' ) );
+            ///Pour le référent lié au RDV
+            $referents = $this->Rendezvous->Structurereferente->Referent->find( 'all', array( 'recursive' => -1, 'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom', 'Referent.fonction' ) ) );
+            $ids = Set::extract( $referents, '/Referent/id' );
+            $values = Set::format( $referents, '{0} {1}', array( '{n}.Referent.nom', '{n}.Referent.prenom' ) );
+            $referents = array_combine( $ids, $values );
+            $this->set( 'referents', $referents );
 
-// debug( $rdv );
-// die();
+            $rdv['Rendezvous']['referent_id'] = Set::extract( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) );
+//             debug( $referent );
+//             die();
+            /// Population du select référents liés aux structures
+            $structurereferente_id = Set::classicExtract( $rdv, 'Structurereferente.id' );
+            $referents = $this->Referent->_referentsListe( $structurereferente_id );
+            $this->set( 'referents', $referents );
+            
             $this->_ged( $rdv, 'RDV/'.$modele.'.odt' );
         }
 

@@ -4,8 +4,10 @@
     class CohortesciController extends AppController
     {
         var $name = 'Cohortesci';
-        var $uses = array( 'Cohorteci', 'Option', 'Contratinsertion', 'Typeorient', 'Orientstruct', 'Accoemploi', 'Adresse', 'Serviceinstructeur', 'Suiviinstruction' );
-        var $helpers = array( 'Csv' );
+        var $uses = array( 'Cohorteci', 'Option', 'Contratinsertion', 'Typeorient', 'Orientstruct', 'Accoemploi', 'Adresse', 'Serviceinstructeur', 'Suiviinstruction', 'Referent', 'Structurereferente' );
+        var $aucunDroit = array( 'constReq', 'ajaxreferent' );
+
+        var $helpers = array( 'Csv', 'Ajax' );
 
         var $paginate = array(
             // FIXME
@@ -25,6 +27,8 @@
             $this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );
             $this->set( 'printed', $this->Option->printed() );
             $this->set( 'decision_ci', $this->Option->decision_ci() );
+            $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
+            $this->set( 'struct', $struct );
             return $return;
         }
 
@@ -48,6 +52,43 @@
         }
 
         //*********************************************************************
+
+        /** ********************************************************************
+        *   Ajax pour lien référent - structure référente
+        ********************************************************************/
+
+        function _selectReferents( $structurereferente_id ) {
+            $conditions = array();
+
+            if( !empty( $structurereferente_id ) ) {
+                $conditions['Referent.structurereferente_id'] = $structurereferente_id;
+            }
+
+            $referents = $this->Referent->find(
+                'all',
+                array(
+                    'conditions' => $conditions,
+                    'recursive' => -1
+                )
+            );
+            return $referents;
+
+        }
+
+        /** ********************************************************************
+        *
+        ** ********************************************************************/
+
+        function ajaxreferent() { // FIXME
+            Configure::write( 'debug', 0 );
+            $referents = $this->_selectReferents( Set::classicExtract( $this->data, 'Filtre.structurereferente_id' ) );
+            $options = array( '<option value=""></option>' );
+            foreach( $referents as $referent ) {
+                $options[] = '<option value="'.$referent['Referent']['id'].'">'.$referent['Referent']['nom'].' '.$referent['Referent']['prenom'].'</option>';
+            } ///FIXME: à mettre dans la vue
+            echo implode( '', $options );
+            $this->render( null, 'ajax' );
+        }
 
 
         function _index( $statutValidation = null ) {
@@ -129,11 +170,14 @@
                     }
 
                     $this->set( 'cohorteci', $cohorteci );
-                    $this->data['Search'] = $params;
                 }
 
             }
 
+            /// Population du select référents liés aux structures
+            $structurereferente_id = Set::classicExtract( $this->data, 'Filtre.structurereferente_id' );
+            $referents = $this->Referent->_referentsListe( $structurereferente_id );
+            $this->set( 'referents', $referents );
 
             switch( $statutValidation ) {
                 case 'Decisionci::nonvalide':
@@ -160,6 +204,11 @@
             $querydata = $this->Cohorteci->search( 'Decisionci::valides', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
             unset( $querydata['limit'] );
             $contrats = $this->Contratinsertion->find( 'all', $querydata );
+
+            /// Population du select référents liés aux structures
+            $structurereferente_id = Set::classicExtract( $this->data, 'Contratinsertion.structurereferente_id' );
+            $referents = $this->Referent->_referentsListe( $structurereferente_id );
+            $this->set( 'referents', $referents );
 
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'contrats' ) );
