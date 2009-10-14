@@ -840,21 +840,14 @@
             $rdv['Rendezvous']['daterdv'] = date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) );
             ///Pour l'adresse de la personne
             $rdv['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $rdv, 'Adresse.typevoie' ) );
-            ///Pour le référent lié au RDV
-            $referents = $this->Rendezvous->Structurereferente->Referent->find( 'all', array( 'recursive' => -1, 'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom', 'Referent.fonction' ) ) );
-            $ids = Set::extract( $referents, '/Referent/id' );
-            $values = Set::format( $referents, '{0} {1}', array( '{n}.Referent.nom', '{n}.Referent.prenom' ) );
-            $referents = array_combine( $ids, $values );
-            $this->set( 'referents', $referents );
 
-            $rdv['Rendezvous']['referent_id'] = Set::extract( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) );
-//             debug( $referent );
-//             die();
-            /// Population du select référents liés aux structures
+            ///Pour le référent lié au RDV
             $structurereferente_id = Set::classicExtract( $rdv, 'Structurereferente.id' );
             $referents = $this->Referent->_referentsListe( $structurereferente_id );
             $this->set( 'referents', $referents );
-            
+            $rdv['Rendezvous']['referent_id'] = Set::extract( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) );
+
+
             $this->_ged( $rdv, 'RDV/'.$modele.'.odt' );
         }
 
