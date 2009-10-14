@@ -9,7 +9,18 @@
     });
 </script>
 
-
+<?php
+    function value( $array, $index ) {
+        $keys = array_keys( $array );
+        $index = ( ( $index == null ) ? '' : $index );
+        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
+            return $array[$index];
+        }
+        else {
+            return null;
+        }
+    }
+?>
 <?php
     if( is_array( $this->data ) ) {
         echo '<ul class="actionMenu"><li>'.$html->link(
@@ -45,7 +56,9 @@
             </fieldset>
             <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
             <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'text' ) );?>
-            <?php echo $form->input( 'Filtre.pers_charg_suivi', array( 'label' => 'Contrat envoyé par ', 'type' => 'select' , 'options' => $personne_suivi, 'empty' => true ) );?>
+            <?php echo $form->input( 'Filtre.structurereferente_id', array( 'label' => __( 'lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
+            <?php echo $form->input( 'Filtre.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
+            <?php echo $ajax->observeField( 'FiltreStructurereferenteId', array( 'update' => 'FiltreReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
             <?php echo $form->input( 'Filtre.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Filtre.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
 
@@ -71,7 +84,7 @@
                 <tr>
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Contrat envoyé par', 'Serviceinstructeur.id' );?></th>
+                    <th><?php echo $paginator->sort( 'Référent lié', 'Contratinsertion.referent_id' );?></th>
                     <th><?php echo $paginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
                     <th><?php echo $paginator->sort( 'Date de saisie du contrat', 'Contratinsertion.date_saisi_ci' );?></th>
                     <th><?php echo $paginator->sort( 'Rang du contrat', 'Contratinsertion.rg_ci' );?></th>
@@ -106,7 +119,7 @@
                             array(
                                 h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
                                 h( $contrat['Adresse']['locaadr'] ),
-                                h( $contrat['Contratinsertion']['pers_charg_suivi'] ),
+                                h( value( $referents, Set::classicExtract( $contrat, 'Contratinsertion.referent_id' ) ) ),
                                 h( $contrat['Dossier']['matricule'] ),
                                 h( $locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.date_saisi_ci' ) ) ),//date_short( $contrat['Contratinsertion']['date_saisi_ci'] ) ),
                                 h( $contrat['Contratinsertion']['rg_ci'] ),
