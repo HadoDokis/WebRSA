@@ -12,7 +12,7 @@
         }
     }
 
-    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire',  'N° Téléphone', 'Commune de l\'allocataire', 'Date de demande', 'Date de l\'orientation', 'Structure référente', 'Statut de l\'orientation' ) );
+    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire',  'N° Téléphone', 'Commune de l\'allocataire', 'Date d\'ouverture de droit', 'Date de l\'orientation', 'Structure référente', 'Statut de l\'orientation' ) );
 
     foreach( $orients as $orient ) {
         $row = array(

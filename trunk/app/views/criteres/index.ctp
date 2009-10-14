@@ -28,7 +28,7 @@
         <legend>Recherche par dossier</legend>
         <?php echo $form->input( 'Critere.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
         <?php echo $form->input( 'Critere.etatdosrsa', array( 'label' => 'Situation dossier rsa', 'type' => 'select', 'options' => $etatdosrsa, 'empty' => true ) );?>
-        <?php echo $form->input( 'Critere.dtdemrsa', array( 'label' => 'Filtrer par date de demande', 'type' => 'checkbox' ) );?>
+        <?php echo $form->input( 'Critere.dtdemrsa', array( 'label' => 'Filtrer par date d\'ouverture de droit', 'type' => 'checkbox' ) );?>
         <fieldset>
             <legend>Date de demande RSA</legend>
             <?php
