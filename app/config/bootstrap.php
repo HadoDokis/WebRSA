@@ -225,6 +225,40 @@
         return $return;
     }
 
+	/** ********************************************************************
+	*	Vérifie si au moins une des valeurs des clés existe en tant que clé
+	*	dans le second paramètre
+	** ********************************************************************/
+
+	function array_any_key_exists( $keys, $search ) {
+		if( !is_array( $keys ) ) {
+			$keys = array( $keys );
+		}
+		foreach( $keys as $key ) {
+			if( array_key_exists( $key, $search ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** ********************************************************************
+	*
+	** ********************************************************************/
+
+	function array_set_null_on_empty( array $array ) {
+		$newArray = array();
+		foreach( $array as $key => $value ) {
+			if( empty( $value ) ) {
+				$newArray[$key] = null;
+			}
+			else {
+				$newArray[$key] = $value;
+			}
+		}
+		return $newArray;
+	}
+
     /** ************************************************************************
     *
     *** ***********************************************************************/

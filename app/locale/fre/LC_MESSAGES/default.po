@@ -908,3 +908,10 @@ msgstr "Structure référente"
 
 msgid "modelenotifrdv"
 msgstr "Modèle de notification lié au type de RDV"
+
+###############################################################################
+# Formulaires
+###############################################################################
+
+msgid "Form::Save"
+msgstr "Enregistrer"
