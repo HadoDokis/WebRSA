@@ -246,10 +246,10 @@
 	*
 	** ********************************************************************/
 
-	function array_set_null_on_empty( array $array ) {
+	function nullify_empty_values( array $array ) {
 		$newArray = array();
 		foreach( $array as $key => $value ) {
-			if( empty( $value ) ) {
+			if( ( is_string( $value ) && strlen( trim( $value ) ) == 0 ) || ( !is_string( $value ) && empty( $value ) ) ) {
 				$newArray[$key] = null;
 			}
 			else {

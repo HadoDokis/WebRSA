@@ -65,7 +65,7 @@
 
 			///
 			if( !empty( $this->data ) ) {
-				$this->data['Dsp'] = array_set_null_on_empty( $this->data['Dsp'] ); // FIXME
+				$this->data['Dsp'] = nullify_empty_values( $this->data['Dsp'] ); // FIXME
 
 				$this->Dsp->create( $this->data );
 				if( $this->Dsp->save() ) {
