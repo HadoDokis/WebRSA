@@ -100,6 +100,10 @@
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
                                 <tr>
+                                    <th>Etat du droit</th>
+                                    <td>'.Set::classicExtract( $etatdosrsa, Set::classicExtract( $orient, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
+                                </tr>
+                                <tr>
                                     <th>Commune de naissance</th>
                                     <td>'. $orient['Personne']['nomcomnai'].'</td>
                                 </tr>
