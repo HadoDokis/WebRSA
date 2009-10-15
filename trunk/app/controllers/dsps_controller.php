@@ -12,39 +12,7 @@
 		function beforeFilter() {
 			$return = parent::beforeFilter();
 
-			// FIXME -> dans le modèle ?
-			$enums = array(
-				'sitpersdemrsa',
-				'topisogroouenf',
-				'topdrorsarmiant',
-				'drorsarmianta2',
-				'topcouvsoc',
-				'accosocfam',
-				'accosocindi',
-				'soutdemarsoc',
-				'nivetu',
-				'nivdipmaxobt',
-				'topqualipro',
-				'topcompeextrapro',
-				'topengdemarechemploi',
-				'hispro',
-				'cessderact',
-				'topdomideract',
-				'duractdomi',
-				'inscdememploi',
-				'topisogrorechemploi',
-				'accoemploi',
-				'topprojpro',
-				'topcreareprientre',
-				'concoformqualiemploi',
-				'topmoyloco',
-				'toppermicondub',
-				'topautrpermicondu',
-				'natlog',
-				'demarlog'
-			);
-
-			$options = $this->Dsp->allEnumOptions( $enums, 'dsp' );
+			$options = $this->Dsp->allEnumOptions( 'dsp' );
 			$this->set( 'options', $options );
 
 			return $return;
