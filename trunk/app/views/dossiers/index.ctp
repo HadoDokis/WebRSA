@@ -90,9 +90,11 @@
                     <th><?php echo $paginator->sort( 'Numéro de dossier', 'Dossier.numdemrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Date de demande', 'Dossier.dtdemrsa' );?></th>
                     <th><?php echo $paginator->sort( 'NIR', 'Personne.nir' );?></th>
+                    <th><?php echo $paginator->sort( 'Etat du droit', 'Situationdossierrsa.etatdosrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Allocataire', 'Personne.nom' );?></th><!-- FIXME: qual/nom/prénom -->
                     <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-                    <!-- <th>Numéro dossier</th>
+
+                    <!--
                     <th>Date de demande</th> -->
                     <!--<th>NIR</th>
                     <th>Allocataire</th>
@@ -117,10 +119,10 @@
                                     <th>Date de naissance</th>
                                     <td>'.date_short( $dossier['Personne']['dtnai'] ).'</td>
                                 </tr>
-                                <tr>
+                               <!-- <tr>
                                     <th>Etat du dossier</th>
                                     <td>'.(array_key_exists( $dossier['Situationdossierrsa']['etatdosrsa'] ,$etatdosrsa ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null ).'</td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <th>Code INSEE</th>
                                     <td>'.$dossier['Adresse']['numcomptt'].'</td>
@@ -133,6 +135,7 @@
                                 h( $dossier['Dossier']['numdemrsa'] ),
                                 h( date_short( $dossier['Dossier']['dtdemrsa'] ) ),
                                 h( $dossier['Personne']['nir'] ),
+                                h( Set::classicExtract( $etatdosrsa, Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' ) ) ),
                                 implode(
                                     ' ',
                                     array(

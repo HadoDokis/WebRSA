@@ -12,13 +12,14 @@
         }
     }
 
-    $csv->addRow( array( 'N° Dossier', 'Date de demande', 'NIR', 'Nom/Prénom allocataire',  'Commune de l\'allocataire' ) );
+    $csv->addRow( array( 'N° Dossier', 'Date de demande', 'NIR', 'Etat du droit', 'Nom/Prénom allocataire',  'Commune de l\'allocataire' ) );
 
     foreach( $dossiers as $dossier ) {
         $row = array(
             Set::extract( $dossier, 'Dossier.numdemrsa' ),
             Set::extract( $dossier, 'Dossier.dtdemrsa' ),
             Set::extract( $dossier, 'Personne.nir' ),
+            Set::extract( $etatdosrsa, Set::extract( $dossier, 'Situationdossierrsa.etatdosrsa' ) ),
             Set::extract( $dossier, 'Personne.nom' ).' '.Set::extract( $dossier, 'Personne.prenom'),
             Set::extract( $dossier, 'Adresse.locaadr' )
         );
