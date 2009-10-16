@@ -56,7 +56,7 @@
     setlocale( LC_ALL, $locales );
 
     function valid_int( $value ) {
-        return !( empty( $value ) || !is_numeric( $value ) || !( (int)$value == $value ) );
+        return !( !is_numeric( $value ) || !( (int)$value == $value ) );
     }
 
     function date_short( $sqldate ) {
