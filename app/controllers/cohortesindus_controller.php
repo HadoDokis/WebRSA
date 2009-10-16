@@ -45,12 +45,10 @@
 
                 $cmp = Set::extract( $this->data, 'Cohorteindu.compare' );
                 $this->assert( empty( $cmp ) || in_array( $cmp, array_keys( $comparators ) ), 'invalidParameter' );
-
+                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
                 $this->Cohorteindu->create( $this->data );
                 if( !empty( $this->data ) && $this->Cohorteindu->validates() ) {
-                    $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-                    $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-
                     $this->Dossier->begin(); // Pour les jetons
 
                     $this->paginate = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
@@ -61,7 +59,7 @@
 
                     $this->set( 'cohorteindu', $cohorteindu );
                 }
-
+                $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee ) );
                 $this->set( 'comparators', $comparators );
         }
 
