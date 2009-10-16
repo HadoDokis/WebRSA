@@ -160,7 +160,7 @@
 
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
-                $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
+                $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : array( null ) );
                 $conditions[] = '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) OR ( Situationdossierrsa.etatdosrsa = \'Z\' ) )';
             }
 
