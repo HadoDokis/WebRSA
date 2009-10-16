@@ -196,6 +196,13 @@
 
             if( !empty( $this->data ) ) {
                 $this->User->begin();
+
+                // Permet de supprimer les zones associées si on ne filtre pas sur les zones
+                $filtre_zone_geo = Set::classicExtract( $this->data, 'User.filtre_zone_geo' );
+                if( empty( $filtre_zone_geo ) ) {
+                    $this->data['Zonegeographique']['Zonegeographique'] = array();
+                }
+
                 if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
                     if( $userDb['User']['group_id'] != $this->data['User']['group_id'] ) {
                         $group = $this->User->Group->findById( $this->data['User']['group_id'], null, null, -1 );

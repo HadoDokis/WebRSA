@@ -174,7 +174,7 @@
 
             }
 
-            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee ) );
+            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
 
             /// Population du select référents liés aux structures
             $structurereferente_id = Set::classicExtract( $this->data, 'Filtre.structurereferente_id' );
