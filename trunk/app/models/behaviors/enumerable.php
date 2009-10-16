@@ -173,7 +173,7 @@
 					$options[$key] = __( $msgid, true );
 				}
 				else {
-					$options[$key] = __d( 'dsp', $msgid, true );
+					$options[$key] = __d( $model->enumFields[$field]['domain'], $msgid, true );
 				}
 			}
 			return $options;
