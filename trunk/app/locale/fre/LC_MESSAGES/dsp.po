@@ -22,7 +22,7 @@ msgstr ""
 ###############################################################################
 
 msgid "Dsp.sitpersdemrsa"
-msgstr "Quelle est votre situation au moment  de votre demande de rSa ?"
+msgstr "Quelle est votre situation au moment de votre demande de rSa ?"
 
 msgid "Dsp.topisogroouenf"
 msgstr "Vous êtes isolée en état de grossesse déclarée ou isolé(e) avec enfant(s) à charge?"
@@ -215,16 +215,16 @@ msgid "ENUM::SITPERSDEMRSA::0102"
 msgstr "Fin de droits AAH"
 
 msgid "ENUM::SITPERSDEMRSA::0103"
-msgstr "Fin d'indemnités journalières (maternit‚)"
+msgstr "Fin d'indemnités journalières (maternité)"
 
 msgid "ENUM::SITPERSDEMRSA::0104"
 msgstr "Fin d'indemnités journalières (maladie et accidents du travail)"
 
 msgid "ENUM::SITPERSDEMRSA::0105"
-msgstr "Attente de pension vieillesse ou invalidit‚ ou d'allocation handicap‚"
+msgstr "Attente de pension vieillesse ou invalidité ou d'allocation handicapé"
 
 msgid "ENUM::SITPERSDEMRSA::0106"
-msgstr "Personne isolée avec grossesse ou enfants … charge de moins de 6 ans"
+msgstr "Personne isolée avec grossesse ou enfants à charge de moins de 6 ans"
 
 msgid "ENUM::SITPERSDEMRSA::0107"
 msgstr "Faibles ressources"
