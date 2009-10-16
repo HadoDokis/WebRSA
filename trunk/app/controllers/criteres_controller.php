@@ -5,7 +5,7 @@
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Orientstruct', 'Critere' );
+        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Orientstruct', 'Critere', 'Zonegeographique' );
         //var $aucunDroit = array('index', 'menu', 'constReq');
         var $aucunDroit = array( 'constReq' );
         var $helpers = array( 'Csv' );
@@ -54,8 +54,7 @@
 
                 $this->set( 'orients', $orients );
             }
-            $this->set( 'mesCodesInsee', $this->Orientstruct->Personne->Foyer->Adressefoyer->Adresse->listeCodesInseeLocalites( $mesCodesInsee ) );
-
+            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee ) );
         }
 
         /// Export du tableau en CSV
