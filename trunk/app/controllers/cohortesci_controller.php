@@ -94,6 +94,8 @@
         function _index( $statutValidation = null ) {
             $this->assert( !empty( $statutValidation ), 'invalidParameter' );
 
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
             $personne_suivi = $this->Contratinsertion->find(
                 'list',
                 array(
@@ -142,8 +144,6 @@
                 *
                 */
 
-                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
                 if( ( $statutValidation == 'Decisionci::nonvalide' ) || ( ( $statutValidation == 'Decisionci::valides' ) && !empty( $this->data ) ) || ( ( $statutValidation == 'Decisionci::enattente' ) && !empty( $this->data ) ) ) {
                     $this->Dossier->begin(); // Pour les jetons
 
@@ -173,6 +173,8 @@
                 }
 
             }
+
+            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee ) );
 
             /// Population du select référents liés aux structures
             $structurereferente_id = Set::classicExtract( $this->data, 'Filtre.structurereferente_id' );
