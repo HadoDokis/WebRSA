@@ -236,8 +236,18 @@ function observeDisableFieldsOnCheckbox( cbId, fieldsIds, condition ) {
 //*****************************************************************************
 
 function disableFieldsOnValue( selectId, fieldsIds, value, condition ) {
+	if( ( typeof value ) != 'object' ) {
+		value = [ value ];
+	}
+
     var select = $( selectId );
-    var result = ( ( $F( select ) == value ) ? true : false );
+
+    var result = false;
+	value.each( function( elmt ) {
+		if( $F( select ) == elmt ) {
+			result = true;
+		}
+	} );
 
     fieldsIds.each( function ( fieldId ) {
         var field = $( fieldId );
