@@ -12,7 +12,7 @@
 		function beforeFilter() {
 			$return = parent::beforeFilter();
 
-			$options = $this->Dsp->allEnumLists( 'dsp' );
+			$options = $this->Dsp->allEnumLists();
 			$this->set( 'options', $options );
 
 			return $return;
