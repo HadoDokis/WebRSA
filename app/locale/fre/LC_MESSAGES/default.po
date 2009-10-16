@@ -915,3 +915,43 @@ msgstr "Modèle de notification lié au type de RDV"
 
 msgid "Form::Save"
 msgstr "Enregistrer"
+
+###############################################################################
+# Enums généraux
+###############################################################################
+
+msgid "ENUM::BOOLEANNUMBER::0"
+msgstr "Non"
+
+msgid "ENUM::BOOLEANNUMBER::1"
+msgstr "Oui"
+
+###############################################################################
+
+msgid "ENUM::NO::N"
+msgstr "Non"
+
+msgid "ENUM::NO::O"
+msgstr "Oui"
+
+###############################################################################
+
+msgid "ENUM::NOS::N"
+msgstr "Non"
+
+msgid "ENUM::NOS::O"
+msgstr "Oui"
+
+msgid "ENUM::NOS::S"
+msgstr "Ne sait pas"
+
+###############################################################################
+
+msgid "ENUM::NOV::N"
+msgstr "Non"
+
+msgid "ENUM::NOV::O"
+msgstr "Oui"
+
+msgid "ENUM::NOV::V"
+msgstr "Ne veut pas répondre"

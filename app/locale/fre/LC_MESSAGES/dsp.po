@@ -139,70 +139,7 @@ msgid "Dsp.natlog"
 msgstr "Nature du logement ?"
 
 msgid "Dsp.demarlog"
-msgstr "Démarches entreprise en matière de logement ?"
-
-###############################################################################
-# FIXME: Enums
-###############################################################################
-
-msgid "ENUM::TOPISOGROOUENF::0"
-msgstr "Non"
-
-msgid "ENUM::TOPISOGROOUENF::1"
-msgstr "Oui"
-
-###############################################################################
-
-msgid "ENUM::TOPDRORSARMIANT::O"
-msgstr "Oui"
-
-msgid "ENUM::TOPDRORSARMIANT::N"
-msgstr "Non"
-
-###############################################################################
-
-msgid "ENUM::DRORSARMIANTA2::O"
-msgstr "Oui"
-
-msgid "ENUM::DRORSARMIANTA2::N"
-msgstr "Non"
-
-msgid "ENUM::DRORSARMIANTA2::S"
-msgstr "Ne sait pas"
-
-###############################################################################
-
-msgid "ENUM::ACCOSOCFAM::O"
-msgstr "Oui"
-
-msgid "ENUM::ACCOSOCFAM::N"
-msgstr "Non"
-
-msgid "ENUM::ACCOSOCFAM::V"
-msgstr "Ne veut pas répondre"
-
-###############################################################################
-
-msgid "ENUM::ACCOSOCINDI::O"
-msgstr "Oui"
-
-msgid "ENUM::ACCOSOCINDI::N"
-msgstr "Non"
-
-msgid "ENUM::ACCOSOCINDI::V"
-msgstr "Ne veut pas répondre"
-
-
-###############################################################################
-
-msgid "ENUM::SOUTDEMARSOC::O"
-msgstr "Oui"
-
-msgid "ENUM::SOUTDEMARSOC::N"
-msgstr "Non"
-
-msgid "ENUM::SOUTDEMARSOC::V"
-msgstr "Ne veut pas répondre"
+msgstr "Démarches entreprises en matière de logement ?"
 
 ###############################################################################
 # Enum Dsp.sitpersdemrsa
@@ -283,30 +220,6 @@ msgid "ENUM::NIVDIPMAXOBT::2606"
 msgstr "Aucun"
 
 ###############################################################################
-
-msgid "ENUM::TOPQUALIPRO::0"
-msgstr "Non"
-
-msgid "ENUM::TOPQUALIPRO::1"
-msgstr "Oui"
-
-###############################################################################
-
-msgid "ENUM::TOPCOMPEEXTRAPRO::0"
-msgstr "Non"
-
-msgid "ENUM::TOPCOMPEEXTRAPRO::1"
-msgstr "Oui"
-
-###############################################################################
-
-msgid "ENUM::TOPENGDEMARECHEMPLOI::0"
-msgstr "Non"
-
-msgid "ENUM::TOPENGDEMARECHEMPLOI::1"
-msgstr "Oui"
-
-###############################################################################
 # Enum Dsp.hispro
 ###############################################################################
 
@@ -331,14 +244,6 @@ msgstr "Encore en activité ou cessation depuis moins d'un an"
 
 msgid "ENUM::CESSDERACT::2702"
 msgstr "Cessation d'activité depuis plus d'un an"
-
-###############################################################################
-
-msgid "ENUM::TOPDOMIDERACT::0"
-msgstr "Non"
-
-msgid "ENUM::TOPDOMIDERACT::1"
-msgstr "Oui"
 
 ###############################################################################
 # Enum Dsp.duractdomi
@@ -373,16 +278,6 @@ msgid "ENUM::INSCDEMEMPLOI::4304"
 msgstr "Plus de 5 ans "
 
 ###############################################################################
-# Enum Dsp.topisogrorechemploi
-###############################################################################
-
-msgid "ENUM::TOPISOGRORECHEMPLOI::0"
-msgstr "Non"
-
-msgid "ENUM::TOPISOGRORECHEMPLOI::1"
-msgstr "Oui"
-
-###############################################################################
 # Enum Dsp.accoemploi
 ###############################################################################
 
@@ -395,68 +290,6 @@ msgstr "Pôle Emploi"
 msgid "ENUM::ACCOEMPLOI::1803"
 msgstr "Autres"
 
-###############################################################################
-# Enum Dsp.topprojpro
-###############################################################################
-
-msgid "ENUM::TOPPROJPRO::0"
-msgstr "Non"
-
-msgid "ENUM::TOPPROJPRO::1"
-msgstr "Oui"
-
-###############################################################################
-# Enum Dsp.topcreareprientre
-###############################################################################
-
-msgid "ENUM::TOPCREAREPRIENTRE::0"
-msgstr "Non"
-
-msgid "ENUM::TOPCREAREPRIENTRE::1"
-msgstr "Oui"
-
-###############################################################################
-# Enum Dsp.concoformqualiemploi
-###############################################################################
-
-msgid "ENUM::CONCOFORMQUALIEMPLOI::O"
-msgstr "Oui"
-
-msgid "ENUM::CONCOFORMQUALIEMPLOI::N"
-msgstr "Non"
-
-msgid "ENUM::CONCOFORMQUALIEMPLOI::S"
-msgstr "Ne sait pas"
-
-###############################################################################
-# Enum Dsp.topmoyloco
-###############################################################################
-
-msgid "ENUM::TOPMOYLOCO::0"
-msgstr "Non"
-
-msgid "ENUM::TOPMOYLOCO::1"
-msgstr "Oui"
-
-###############################################################################
-# Enum Dsp.toppermicondub
-###############################################################################
-
-msgid "ENUM::TOPPERMICONDUB::0"
-msgstr "Non"
-
-msgid "ENUM::TOPPERMICONDUB::1"
-msgstr "Oui"
-
-###############################################################################
-# Enum Dsp.topautrpermicondu
-###############################################################################
-
-msgid "ENUM::TOPAUTRPERMICONDU::0"
-msgstr "Non"
-
-msgid "ENUM::TOPAUTRPERMICONDU::1"
-msgstr "Oui"
 
 ###############################################################################
 # Enum Dsp.natmob

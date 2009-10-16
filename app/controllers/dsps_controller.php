@@ -12,7 +12,7 @@
 		function beforeFilter() {
 			$return = parent::beforeFilter();
 
-			$options = $this->Dsp->allEnumOptions( 'dsp' );
+			$options = $this->Dsp->allEnumLists( 'dsp' );
 			$this->set( 'options', $options );
 
 			return $return;
@@ -40,7 +40,7 @@
 
 				$this->Dsp->create( $this->data );
 				if( $this->Dsp->save() ) {
-					$this->Session->setFlash( 'Enregistrement effectué' );
+					$this->Session->setFlash( __( 'Enregistrement effectué', true ) );
 				}
 			}
 			else if( !empty( $id ) ) {
