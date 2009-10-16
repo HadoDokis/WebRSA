@@ -269,7 +269,7 @@ INSERT INTO actions VALUES
       3,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       1,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '02',                  --         code                CHAR(2),
-      '02 - Aide au retour d\'enfants placés'                  --         libelle             VARCHAR(250)
+      '02 - Aide au retour d''enfants placés'                  --         libelle             VARCHAR(250)
    );
 
 
@@ -342,7 +342,7 @@ INSERT INTO actions VALUES
       11,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       2,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '22',                  --         code                CHAR(2),
-      'Alphabétisation, lutte contre l\'illétrisme'                  --         libelle             VARCHAR(250)
+      'Alphabétisation, lutte contre l''illétrisme'                  --         libelle             VARCHAR(250)
    );
 
 INSERT INTO actions VALUES
@@ -358,7 +358,7 @@ INSERT INTO actions VALUES
       13,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       2,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '24',                  --         code                CHAR(2),
-      'Démarches administratives (COTOREP, demande d\'AAH, de retraite, etc...)'                  --         libelle             VARCHAR(250)
+      'Démarches administratives (COTOREP, demande d''AAH, de retraite, etc...)'                  --         libelle             VARCHAR(250)
    );
 
 INSERT INTO actions VALUES
@@ -374,7 +374,7 @@ INSERT INTO actions VALUES
       15,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       2,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '29',                  --         code                CHAR(2),
-      'Autre action visant à l\'autonomie sociale'                  --         libelle             VARCHAR(250)
+      'Autre action visant à l''autonomie sociale'                  --         libelle             VARCHAR(250)
    );
 
 -------------------------------------------------
@@ -386,7 +386,7 @@ INSERT INTO actions VALUES
       16,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       3,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '31',                  --         code                CHAR(2),
-      'Recherche d\'un logement'                  --         libelle             VARCHAR(250)
+      'Recherche d''un logement'                  --         libelle             VARCHAR(250)
    );
 
 INSERT INTO actions VALUES
@@ -394,7 +394,7 @@ INSERT INTO actions VALUES
       17,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       3,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '33',                  --         code                CHAR(2),
-      'Demande d\'intervention d\'un organisme ou d\'un fonds d\'aide'                  --         libelle             VARCHAR(250)
+      'Demande d''intervention d''un organisme ou d''un fonds d''aide'                  --         libelle             VARCHAR(250)
    );
 
 -------------------------------------------------
@@ -414,7 +414,7 @@ INSERT INTO actions VALUES
       19,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       4,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '42',                  --         code                CHAR(2),
-      'Activité en atelier de réinsertion (centre d\'hébergement et de réadaptation sociale)'                  --         libelle             VARCHAR(250)
+      'Activité en atelier de réinsertion (centre d''hébergement et de réadaptation sociale)'                  --         libelle             VARCHAR(250)
    );
 
 INSERT INTO actions VALUES
@@ -438,7 +438,7 @@ INSERT INTO actions VALUES
       22,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       4,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '45',                  --         code                CHAR(2),
-      'Stage de formation générale, préparation aux concours, poursuite d\'études, etc...'                  --         libelle             VARCHAR(250)
+      'Stage de formation générale, préparation aux concours, poursuite d''études, etc...'                  --         libelle             VARCHAR(250)
    );
 
 INSERT INTO actions VALUES
@@ -446,7 +446,7 @@ INSERT INTO actions VALUES
       23,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       4,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '46',                  --         code                CHAR(2),
-      'Stage de formation professionnelle (stage d\'insertion et de formation à l\'emploi, permis poids lourd, crédit-formation individuel, etc...)'                  --         libelle             VARCHAR(250)
+      'Stage de formation professionnelle (stage d''insertion et de formation à l''emploi, permis poids lourd, crédit-formation individuel, etc...)'                  --         libelle             VARCHAR(250)
    );
 
 INSERT INTO actions VALUES
@@ -454,7 +454,7 @@ INSERT INTO actions VALUES
       24,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       4,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '48',                  --         code                CHAR(2),
-      'Bilan professionnel et orientation (évaluation du niveau de compétences professionnelles, module d\'orientation approfondie, session d\'oientation approfondie, évaluation en milieu de travail, VAE, etc...)'                  --         libelle             VARCHAR(250)
+      'Bilan professionnel et orientation (évaluation du niveau de compétences professionnelles, module d''orientation approfondie, session d''oientation approfondie, évaluation en milieu de travail, VAE, etc...)'                  --         libelle             VARCHAR(250)
    );
 
 -------------------------------------------------
@@ -466,7 +466,7 @@ INSERT INTO actions VALUES
       25,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       5,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '51',                  --         code                CHAR(2),
-      'Aide ou suivi pour une recherche d\'emploi'                  --         libelle             VARCHAR(250)
+      'Aide ou suivi pour une recherche d''emploi'                  --         libelle             VARCHAR(250)
    );
 
 INSERT INTO actions VALUES
@@ -482,7 +482,7 @@ INSERT INTO actions VALUES
       27,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       5,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '53',                  --         code                CHAR(2),
-      'Contrat de qualification, contrat d\'apprentissage'                  --         libelle             VARCHAR(250)
+      'Contrat de qualification, contrat d''apprentissage'                  --         libelle             VARCHAR(250)
    );
 
 INSERT INTO actions VALUES
@@ -490,7 +490,7 @@ INSERT INTO actions VALUES
       28,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       5,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '54',                  --         code                CHAR(2),
-      'Emploi dans une association intermédiaire ou une entreprise d\'insertion'                  --         libelle             VARCHAR(250)
+      'Emploi dans une association intermédiaire ou une entreprise d''insertion'                  --         libelle             VARCHAR(250)
    );
 
 INSERT INTO actions VALUES
@@ -498,7 +498,7 @@ INSERT INTO actions VALUES
       29,                  --         id                  SERIAL NOT NULL PRIMARY KEY
       5,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '55',                  --         code                CHAR(2),
-      'Création d\'entreprise'                  --         libelle             VARCHAR(250)
+      'Création d''entreprise'                  --         libelle             VARCHAR(250)
    );
 
 INSERT INTO actions VALUES
@@ -506,7 +506,7 @@ INSERT INTO actions VALUES
       30,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       5,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '56',                  --         code                CHAR(2),
-      'Contrats aidés, Contrat d\'Avenir, CIRMA'                  --         libelle             VARCHAR(250)
+      'Contrats aidés, Contrat d''Avenir, CIRMA'                  --         libelle             VARCHAR(250)
    );
 
 INSERT INTO actions VALUES
@@ -530,7 +530,7 @@ INSERT INTO actions VALUES
       33,                  --         id                  SERIAL NOT NULL PRIMARY KEY,
       5,                    --       typeaction_id       INTEGER NOT NULL REFERENCES typesactions(id),
       '59',                  --         code                CHAR(2),
-      'Autre forme d\'emploi: CDD, CNE'                  --         libelle             VARCHAR(250)
+      'Autre forme d''emploi: CDD, CNE'                  --         libelle             VARCHAR(250)
    );
 
 --------------------------------------
@@ -586,7 +586,7 @@ INSERT INTO diflogs VALUES(
 INSERT INTO diflogs VALUES(
     5,
     '1005',
-    'Qualité de l\'environnement (isolement, absence de transport collectif)'
+    'Qualité de l''environnement (isolement, absence de transport collectif)'
 );
 
 INSERT INTO diflogs VALUES(
@@ -654,7 +654,7 @@ INSERT INTO difsocs VALUES(
 INSERT INTO nataccosocindis VALUES(
     1,
     '0415',
-    'Pas d\'accompagnement individuel'
+    'Pas d''accompagnement individuel'
 );
 INSERT INTO nataccosocindis VALUES(
     2,
@@ -694,19 +694,19 @@ INSERT INTO difdisps VALUES(
 INSERT INTO difdisps VALUES(
     2,
     '0502',
-    'La garde d\'enfant de moins de 6 ans'
+    'La garde d''enfant de moins de 6 ans'
 );
 
 INSERT INTO difdisps VALUES(
     3,
     '0503',
-    'La garde d\'enfant(s) de plus de 6 ans'
+    'La garde d''enfant(s) de plus de 6 ans'
 );
 
 INSERT INTO difdisps VALUES(
     4,
     '0504',
-    'La garde d\'enfant(s) ou de proche(s) invalide(s)'
+    'La garde d''enfant(s) ou de proche(s) invalide(s)'
 );
 
 INSERT INTO difdisps VALUES(
@@ -774,7 +774,7 @@ INSERT INTO natmobs VALUES(
 INSERT INTO accoemplois VALUES(
     1,
     '1801',
-    'Pas d\'accompagnement'
+    'Pas d''accompagnement'
 );
 INSERT INTO accoemplois VALUES(
     2,
@@ -935,7 +935,7 @@ INSERT INTO structuresreferentes VALUES
    (
       4,  --     id                  SERIAL NOT NULL PRIMARY KEY,
       3,  --     typeorient_id           INTEGER NOT NULL REFERENCES typesorients(id),
-      'Conseil Général de l\'Hérault',  --     lib_struc           VARCHAR(32) NOT NULL,
+      'Conseil Général de l''Hérault',  --     lib_struc           VARCHAR(32) NOT NULL,
       '10',  --     num_voie            VARCHAR(6) NOT NULL,
       'rue',  --     type_voie           VARCHAR(6) NOT NULL,
       'Georges Freche', --     nom_voie            VARCHAR(30) NOT NULL,
