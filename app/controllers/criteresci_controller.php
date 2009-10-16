@@ -90,11 +90,11 @@
         }
 
         function index() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
             $params = $this->data;
             if( !empty( $params ) ) {
-
-                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
                 $this->Dossier->begin(); // Pour les jetons
 
@@ -106,6 +106,7 @@
 
                 $this->set( 'contrats', $contrats );
             }
+            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee ) );
 
             /// Population du select référents liés aux structures
             $conditions = array();
