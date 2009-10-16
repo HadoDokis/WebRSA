@@ -66,10 +66,11 @@
                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
             }
 
-            // Commune au sens INSEE
-            if( !empty( $numcomptt ) ) {
-                $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+            // Critères sur l'adresse - code insee
+            if( isset( $criteres['Adresse']['numcomptt'] ) && !empty( $criteres['Adresse']['numcomptt'] ) ) {
+                $conditions[] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $criteres['Adresse']['numcomptt'] )."%'";
             }
+
 
             // ...
             if( !empty( $statut_orient ) ) {

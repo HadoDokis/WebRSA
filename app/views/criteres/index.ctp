@@ -44,7 +44,8 @@
         <?php echo $form->input( 'Critere.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Critere.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Critere.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Critere.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?>
+        <!-- <?php echo $form->input( 'Critere.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?> -->
+        <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
         <legend>Recherche par orientation</legend>

@@ -40,10 +40,9 @@
 
 
         function index() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
             if( !empty( $this->data ) ) {
-                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-
                 $this->Dossier->begin(); // Pour les jetons
 
                 $this->paginate = $this->Critere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
@@ -55,6 +54,7 @@
 
                 $this->set( 'orients', $orients );
             }
+            $this->set( 'mesCodesInsee', $this->Orientstruct->Personne->Foyer->Adressefoyer->Adresse->listeCodesInseeLocalites( $mesCodesInsee ) );
 
         }
 
