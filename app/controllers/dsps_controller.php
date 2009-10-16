@@ -33,7 +33,12 @@
 
 			///
 			if( !empty( $this->data ) ) {
-				$this->data['Dsp'] = nullify_empty_values( $this->data['Dsp'] ); // FIXME
+				$this->data['Dsp']['sitpersdemrsa'] = 'freu';
+
+				// FIXME: faire une fonction
+				$fields = array_keys( $this->Dsp->schema() );
+				$fields = array_combine( $fields, array_fill( 0, count( $fields ), null ) );
+				$this->data['Dsp'] = Set::merge( $fields, nullify_empty_values( $this->data['Dsp'] ) );
 
 				$this->Dsp->create( $this->data );
 				if( $this->Dsp->save() ) {

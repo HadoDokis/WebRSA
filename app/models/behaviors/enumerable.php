@@ -12,6 +12,24 @@
 	class EnumerableBehavior extends ModelBehavior
 	{
 		/**
+		*
+		*/
+
+		function setup( &$Model, $settings ) {
+			if( !empty( $Model->enumFields ) ) {
+				foreach( $Model->enumFields as $field ) {
+					$options = $this->enumOptions( $Model, $field );
+					$Model->validate[$field][] = array(
+						'rule' => array( 'inList', $options ),
+						// FIXME: message
+						'message' => sprintf( __( 'Veuillez entrer une valeur parmi %s', true ), implode( ', ', $options ) ),
+						'allowEmpty' => true
+					);
+				}
+			}
+		}
+
+		/**
 		* Fetches the enum type options for a specific field
 		*
 		* @param string $field
