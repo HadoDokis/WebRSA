@@ -92,11 +92,10 @@
         ** ********************************************************************/
 
         function index() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
             if( !empty( $this->data ) ) {
-                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-
-
                 $this->Dossier->begin(); // Pour les jetons
 
                 $this->paginate = $this->Critererdv->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
@@ -106,6 +105,7 @@
                 $this->Dossier->commit();
                 $this->set( 'rdvs', $rdvs );
             }
+            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee ) );
 
             // Population du select référents liés aux structures
             $structurereferente_id = Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' );
