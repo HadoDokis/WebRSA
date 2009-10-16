@@ -42,10 +42,11 @@
             INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
         */
         function index() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
             $params = $this->data;
             if( !empty( $params ) ) {
-                $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-                $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
                 $this->paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
                 $dossiers = $this->paginate( 'Dossier' );
 
@@ -54,8 +55,9 @@
                 }
 
                 $this->set( 'dossiers', $dossiers );
-                $this->data['Search'] = $params;
+
             }
+            $this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInseeLocalites( $mesCodesInsee ) );
         }
 
         /**

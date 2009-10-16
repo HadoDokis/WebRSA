@@ -62,7 +62,8 @@
     </fieldset>
     <fieldset>
         <legend>Recherche par Adresse</legend>
-        <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?>
+        <!-- <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
+        <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
         <legend>Recherche par allocataire<!--FIXME: personne du foyer--></legend>
