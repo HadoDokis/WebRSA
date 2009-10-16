@@ -71,31 +71,5 @@
             ),
         );
 
-
-        /**
-        *   FIXME: on retourne des locaadr sur lesquels on n'a pas le contrôle
-        *       => à mettre en table paramétrages
-        */
-
-        function listeCodesInseeLocalites( $codesFiltres = array() ){
-            $conditions = array();
-
-            if( !empty( $codesFiltres ) ) {
-                $conditions['Adresse.numcomptt'] = $codesFiltres;
-            }
-
-            $codes = $this->find(
-                'all',
-                array(
-                    'fields' => array( 'DISTINCT Adresse.numcomptt', 'Adresse.locaadr' ),
-                    'conditions' => $conditions,
-                    'recursive' => -1,
-                    'order' => 'Adresse.numcomptt'
-                )
-            );
-            $ids = Set::extract( $codes, '/Adresse/numcomptt' );
-            $values = Set::format( $codes, '{0} {1}', array( '{n}.Adresse.numcomptt', '{n}.Adresse.locaadr' ) );
-            return array_combine( $ids, $values );
-        }
     }
 ?>

@@ -36,6 +36,32 @@
                 )
             )
         );
+
+        /**
+        *
+        *
+        */
+
+        function listeCodesInseeLocalites( $codesFiltres = array() ){
+            $conditions = array();
+
+            if( !empty( $codesFiltres ) ) {
+                $conditions['Zonegeographique.codeinsee'] = $codesFiltres;
+            }
+
+            $codes = $this->find(
+                'all',
+                array(
+                    'fields' => array( 'DISTINCT Zonegeographique.codeinsee', 'Zonegeographique.libelle' ),
+                    'conditions' => $conditions,
+                    'recursive' => -1,
+                    'order' => 'Zonegeographique.codeinsee'
+                )
+            );
+            $ids = Set::extract( $codes, '/Zonegeographique/codeinsee' );
+            $values = Set::format( $codes, '{0} {1}', array( '{n}.Zonegeographique.codeinsee', '{n}.Zonegeographique.libelle' ) );
+            return array_combine( $ids, $values );
+        }
     }
 
 ?>
