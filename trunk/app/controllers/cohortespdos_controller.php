@@ -99,6 +99,9 @@
                 }
             }
 
+            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+
+
             switch( $statutValidationAvis ) {
                 case 'Decisionpdo::nonvalide':
                     $this->set( 'pageTitle', 'Nouvelles demandes PDOs' );

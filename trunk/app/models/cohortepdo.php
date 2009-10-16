@@ -43,6 +43,7 @@
             $motifpdo = Set::extract( $criterespdo, 'Cohortepdo.motifpdo' );
             $datedecisionpdo = Set::extract( $criterespdo, 'Cohortepdo.datedecisionpdo' );
             $matricule = Set::extract( $criterespdo, 'Cohortepdo.matricule' );
+            $numcomptt = Set::extract( $criterespdo, 'Cohortepdo.numcomptt' );
 
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
             $filtersPersonne = array();
@@ -65,6 +66,11 @@
             // N° CAF
             if( !empty( $matricule ) ) {
                 $conditions[] = 'Dossier.matricule ILIKE \'%'.Sanitize::clean( $matricule ).'%\'';
+            }
+
+            // Commune au sens INSEE
+            if( !empty( $numcomptt ) ) {
+                $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
             // Décision CG

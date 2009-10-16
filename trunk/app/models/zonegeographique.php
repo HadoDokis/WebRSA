@@ -42,11 +42,16 @@
         *
         */
 
-        function listeCodesInseeLocalites( $codesFiltres = array() ){
+        function listeCodesInseeLocalites( $codesFiltres = array(), $filtre_zone_geo = true ){
             $conditions = array();
 
-            if( !empty( $codesFiltres ) ) {
-                $conditions['Zonegeographique.codeinsee'] = $codesFiltres;
+            if( $filtre_zone_geo == true ) {
+                if( !empty( $codesFiltres ) ) {
+                    $conditions['Zonegeographique.codeinsee'] = $codesFiltres;
+                }
+                else {
+                    $conditions['Zonegeographique.codeinsee'] = null;
+                }
             }
 
             $codes = $this->find(

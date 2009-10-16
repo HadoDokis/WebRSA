@@ -43,6 +43,7 @@
         <legend>Recherche par personne</legend>
         <?php echo $form->input( 'Relance.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Relance.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Relance.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
     </fieldset>
     <div class="noprint">
         <?php echo $form->input( 'Relance.daterelance', array( 'label' => 'Filtrer par date de relance', 'type' => 'checkbox' ) );?>

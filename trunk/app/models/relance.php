@@ -231,6 +231,7 @@
             /// Critères
             $nbjours = Set::extract( $criteresrelance, 'Relance.nbjours' );
             $compare = Set::extract( $criteresrelance, 'Relance.compare' );
+            $numcomptt = Set::extract( $criteresrelance, 'Relance.numcomptt' );
             $date_impression_relance = Set::extract( $criteresrelance, 'Relance.date_impression_relance' );
 
             // Statut impression
@@ -241,6 +242,11 @@
                 else {
                     $conditions[] = 'Orientstruct.date_impression_relance IS NULL';
                 }
+            }
+
+            // Commune au sens INSEE
+            if( !empty( $numcomptt ) ) {
+                $conditions[] = 'Adresse.numcomptt = \''.Sanitize::clean( $numcomptt ).'\'';
             }
 
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant

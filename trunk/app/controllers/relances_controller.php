@@ -85,8 +85,7 @@
 
                 $this->Dossier->begin(); // Pour les jetons
 
-//                 $options = $this->Relance->search( $statutRelance, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-//                 $orientsstructs = $this->Orientstruct->find( 'all', $options );
+
 
 
                 $this->paginate = $this->Relance->search( $statutRelance, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
@@ -99,7 +98,7 @@
                 $this->set( 'orientsstructs', $orientsstructs );
             }
 
-
+            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
             switch( $statutRelance ){
                 case 'Relance::arelancer':
                     $this->set( 'pageTitle', 'Dossiers à relancer' );
