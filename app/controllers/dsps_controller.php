@@ -33,8 +33,6 @@
 
 			///
 			if( !empty( $this->data ) ) {
-				$this->data['Dsp']['sitpersdemrsa'] = 'freu';
-
 				// FIXME: faire une fonction
 				$fields = array_keys( $this->Dsp->schema() );
 				$fields = array_combine( $fields, array_fill( 0, count( $fields ), null ) );
