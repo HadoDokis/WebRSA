@@ -32,10 +32,7 @@
 		echo $xform->create( null );
 
 		$tmp = '';
-		$id = Set::extract( $this->data, 'Dsp.id' );
-		if( !empty( $id ) ) {
-			$tmp .= $xform->input( 'Dsp.id', array( 'type' => 'hidden' ) );
-		}
+		$tmp .= $xform->input( 'Dsp.id', array( 'type' => 'hidden' ) );
 		$tmp .= $xform->input( 'Dsp.personne_id', array( 'type' => 'hidden', 'value' => 1 ) ); // FIXME
 		echo $html->tag( 'div', $tmp );
 
@@ -139,8 +136,6 @@
 	<?php
 		echo $xform->submit( 'Form::Save' );
 		echo $xform->end();
-
-		debug( $this->data );
 	?>
 </div>
 <div class="clearer"><hr /></div>

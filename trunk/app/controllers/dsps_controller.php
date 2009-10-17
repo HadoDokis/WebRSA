@@ -3,7 +3,9 @@
 	{
 		var $name = 'Dsps';
 
-		var $helpers = array( 'Xform' );
+		var $helpers = array( 'Xform', 'Xhtml' );
+
+		var $components = array( 'Jetons' );
 
 		/** ********************************************************************
 		*
@@ -18,36 +20,86 @@
 			return $return;
 		}
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        public function add() {
+            $args = func_get_args();
+            call_user_func_array( array( $this, '_add_edit' ), $args );
+        }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        public function edit() {
+            $args = func_get_args();
+            call_user_func_array( array( $this, '_add_edit' ), $args );
+        }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        public function view( $id = null ) {
+			$dsp = $this->Dsp->findByPersonneId( $id );
+			if( empty( $dsp ) ) {
+				$dsp = $this->Dsp->Personne->findById( $id );
+			}
+			$this->assert( !empty( $dsp ), 'invalidParameter' );
+			$this->set( 'dsp', $dsp );
+        }
+
+
 		/** ********************************************************************
-		*	FIXME: En fait, c'est un add_edit
+		*
 		*** *******************************************************************/
 
-		function view( $id = null ) {
-			if( !empty( $id ) ) {
+		function _add_edit( $id = null ) {
+			// Début de la transaction
+			$this->Dsp->begin();
+
+			// On cherche soit la dsp directement, soit la personne liée
+			$dsp = null;
+			if( ( $this->action == 'edit' ) && !empty( $id ) ) {
 				$dsp = $this->Dsp->findById( $id );
-				$this->assert( !empty( $dsp ), 'invalidParameter' );
 			}
-			else {
-				$dsp = $this->Dsp->Personne->findById( 1 ); // FIXME
+			else if( ( $this->action == 'add' ) && !empty( $id ) ) {
+				$dsp = $this->Dsp->Personne->findById( $id, null, null, -1 );
 			}
 
-			///
+			// Vérification indirecte de l'id
+			$this->assert( !empty( $dsp ), 'invalidParameter' );
+
+			// Assertion: on doit pouvoir mettre un jeton sur le dossier
+			$dossier_id = $this->Dsp->Personne->dossierId( Set::classicExtract( $dsp, 'Personne.id' ) );
+			$hasJeton = $this->Jetons->get( $dossier_id );
+			$this->assert( $hasJeton, 'lockedDossier' );
+
+			// Tentative d'enregistrement
 			if( !empty( $this->data ) ) {
-				// FIXME: faire une fonction
-				$fields = array_keys( $this->Dsp->schema() );
-				$fields = array_combine( $fields, array_fill( 0, count( $fields ), null ) );
-				$this->data['Dsp'] = Set::merge( $fields, nullify_empty_values( $this->data['Dsp'] ) );
-
 				$this->Dsp->create( $this->data );
 				if( $this->Dsp->save() ) {
 					$this->Session->setFlash( __( 'Enregistrement effectué', true ) );
+					// On enlève le jeton du dossier
+					$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) ); // FIXME: if -> error
+					// Fin de la transaction
+					$this->Dsp->commit();
+					$this->redirect( array( 'action' => 'view', Set::classicExtract( $this->data, 'Dsp.personne_id' ) ) );
 				}
 			}
-			else if( !empty( $id ) ) {
+			// Affectation au formulaire
+			else if( $this->action == 'edit' ) {
 				$this->data = $dsp;
 			}
 
+			// Fin de la transaction
+			$this->Dsp->commit();
+
+			// Affectation à la vue
 			$this->set( 'dsp', $dsp );
+            $this->render( $this->action, null, '_add_edit' );
 		}
 	}
 ?>

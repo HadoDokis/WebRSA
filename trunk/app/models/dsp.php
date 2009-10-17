@@ -37,5 +37,13 @@
 			'natlog',
 			'demarlog'
 		);
+
+		function beforeSave( $options = array() ) {
+			$return = parent::beforeSave( $options = array() );
+
+			$this->nullify( array( 'exceptions' => array( 'Dsp.id' ) ) );
+
+			return $return;
+		}
 	}
 ?>

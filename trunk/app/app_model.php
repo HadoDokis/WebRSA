@@ -1,6 +1,10 @@
 <?php
     class AppModel extends Model
     {
+		/** ********************************************************************
+		*
+		*** *******************************************************************/
+
         function alphaNumeric($check) {
             $_this =& Validation::getInstance();
             $_this->__reset();
@@ -24,6 +28,10 @@
             return $_this->_check();
         }
 
+		/** ********************************************************************
+		*
+		*** *******************************************************************/
+
         // INFO: http://bakery.cakephp.org/articles/view/unbindall
         function unbindModelAll( $reset = true ) {
             $unbind = array();
@@ -44,9 +52,9 @@
 
         // TODO: http://teknoid.wordpress.com/2008/09/29/dealing-with-calculated-fields-in-cakephps-find/
 
-        /**
-        *
-        */
+		/** ********************************************************************
+		*
+		*** *******************************************************************/
 
         function allEmpty( array $data, $reference ) { // FIXME + $reference2, ....
             $data = array_values( $data );
@@ -57,5 +65,21 @@
             return ( empty( $value ) == empty( $reference )  );
         }
 
+		/** ********************************************************************
+		*	FIXME: renommer, mettre où ? (modèle)
+		*** *******************************************************************/
+
+		function nullify( $params ) {
+			$fields = array_keys( $this->schema() );
+			$fields = array_combine( $fields, array_fill( 0, count( $fields ), null ) );
+			$this->data[$this->name] = Set::merge( $fields, nullify_empty_values( $this->data[$this->name] ) );
+
+			$exceptions = Set::classicExtract( $params, 'exceptions' );
+			if( !empty( $exceptions ) ) {
+				foreach( $exceptions as $exception ) {
+					$this->data = Set::remove( $this->data, $exception );
+				}
+			}
+		}
     }
 ?>
