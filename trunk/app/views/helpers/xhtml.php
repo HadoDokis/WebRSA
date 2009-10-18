@@ -7,33 +7,53 @@
         *
         ** ********************************************************************/
 
-        function details( $rows = array(), $htmlAttributes = array(), $allowEmpty = true ) {
-			$type = 'list';// FIXME + $allowEmpty + $htmlAttributes -> array options
+		function details( $rows = array(), $options = array(), $oddOptions = array( 'class' => 'odd'), $evenOptions = array( 'class' => 'even') ) {
+			$default = array(
+				'type' => 'table',
+				'empty' => true
+			);
+			$options = Set::merge( $default, $options );
+
+			$type = Set::classicExtract( $options, 'type' );
+			$allowEmpty = Set::classicExtract( $options, 'empty' );
+
+			if( !in_array( $type, array( 'list', 'table' ) ) ) {
+				trigger_error( sprintf( __( 'Type type "%s" not supported in XhtmlHelper::freu.', true ), $type ), E_USER_WARNING );
+				return;
+			}
+
             $return = null;
             if( count( $rows ) > 0 ) {
                 $class = 'odd';
-                foreach( $rows as $row ) {
+				foreach( $rows as $row ) {
                     if( $allowEmpty || ( !empty( $row[1] ) || valid_int( $row[1] ) ) ) {
 						$question = $row[0];
 						$answer = ( ( !empty( $row[1] ) || valid_int( $row[1] ) ) ? $row[1] : ' ' );
+						// TODO ?
+						//$htmlAttributes = ( isset( $row[2] ) ? $row[2] : array() );
+						$currentOptions = ( ( $class == 'even' ) ? $evenOptions : $oddOptions );
 
 						if( $type == 'table' ) {
 							$return .= $this->tag(
 								'tr',
 								$this->tag( 'th', $question ).$this->tag( 'td', $answer ),
-								array( 'class' => $class )
+								$currentOptions
 							);
 						}
 						else if( $type == 'list' ) {
-							$return .= $this->tag( 'dt', $question, array( 'class' => $class ) );
-							$return .= $this->tag( 'dd', $answer, array( 'class' => $class ) );
+							$return .= $this->tag( 'dt', $question, $currentOptions );
+							$return .= $this->tag( 'dd', $answer, $currentOptions );
 						}
 
-                        $class = ( ( $class == 'odd' ) ? 'even' : 'odd' );
-                    }
-                }
+						$class = ( ( $class == 'odd' ) ? 'even' : 'odd' );
+					}
+				}
 
                 if( !empty( $return ) ) {
+					foreach( array( 'type', 'empty' ) as $key ) {
+						unset( $options[$key] );
+					}
+
 					if( $type == 'table' ) {
 						$return = $this->tag(
 							'table',
@@ -41,20 +61,20 @@
 								'tbody',
 								$return
 							),
-							Set::merge( $htmlAttributes, array( 'class' => 'details' ) )
+							$options
 						);
 					}
 					else if( $type == 'list' ) {
 						$return = $this->tag(
 							'dl',
 							$return,
-							Set::merge( $htmlAttributes, array( 'class' => 'details' ) )
+							$options
 						);
 					}
                 }
-            }
+			}
 
             return $return;
-        }
+		}
     }
 ?>
