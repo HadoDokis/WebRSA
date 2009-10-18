@@ -47,8 +47,7 @@
 			}
 
 			// Généralités
-			echo $html->tag( 'h2', 'Généralités' );
-			$rows = array(
+			$generalites = array(
 				array(
 					__d( 'dsp', 'Dsp.sitpersdemrsa', true ),
 					result( $dsp, 'Dsp.sitpersdemrsa', 'enum', $options['sitpersdemrsa'] ),
@@ -66,7 +65,10 @@
 					result( $dsp, 'Dsp.drorsarmianta2', 'enum', $options['drorsarmianta2'] ),
 				)
 			);
-			echo $xhtml->details( $rows );
+			$generalites = $xhtml->details( $generalites, array( 'type' => 'list', 'empty' => false ) );
+			if( !empty( $generalites ) ) {
+				echo $html->tag( 'h2', 'Généralités' ).$generalites;
+			}
 
 
 			// Situation sociale
