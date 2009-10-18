@@ -127,6 +127,22 @@ li {
     margin-left: 1.8em;
 }
 
+dl {
+}
+
+dt {
+	border: 1px solid silver;
+	padding: 0.25em 0.5em;
+	background: #eef;
+}
+
+dd {
+	border: 1px solid silver;
+	border-top: 0;
+	margin-bottom: 1em;
+	padding: 0.25em 0.5em;
+}
+
 /******************************************************************************
     Citations
 ******************************************************************************/
