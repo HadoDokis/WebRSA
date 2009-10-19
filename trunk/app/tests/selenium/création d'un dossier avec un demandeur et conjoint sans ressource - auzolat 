@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>création d'un dossier avec un demandeur et conjoint sans ressource - auzolat </title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">création d'un dossier avec un demandeur et conjoint sans ressource - auzolat </td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/WEBRSA/webrsa/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneQual</td>
+	<td>label=Monsieur</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PersonneNom</td>
+	<td>AUZOLAT</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PersonnePrenom</td>
+	<td>Arnaud</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneTypedtnai</td>
+	<td>label=Jour et mois connus</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneDtnaiDay</td>
+	<td>label=11</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneDtnaiMonth</td>
+	<td>label=septembre</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneDtnaiYear</td>
+	<td>label=1981</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PersonneNomcomnai</td>
+	<td>NIMES</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PersonneRgnai</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PersonneNir</td>
+	<td>181093018910516</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneNati</td>
+	<td>label=Française</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonnePieecpres</td>
+	<td>label=Pièce d'état civil</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Suivant &gt;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneQual</td>
+	<td>label=Mademoiselle</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PersonneNom</td>
+	<td>AUZOLAT</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PersonnePrenom</td>
+	<td>Lea</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneTypedtnai</td>
+	<td>label=Jour et mois connus</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneDtnaiDay</td>
+	<td>label=3</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneDtnaiMonth</td>
+	<td>label=février</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneDtnaiYear</td>
+	<td>label=1982</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PersonneNomcomnai</td>
+	<td>Ales</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PersonneRgnai</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PersonneNir</td>
+	<td>282305644864864</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneNati</td>
+	<td>label=Autre nationalité</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonnePieecpres</td>
+	<td>label=Pièce d'état civil</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>PersonneNati</td>
+	<td>label=Française</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Suivant &gt;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AdresseNumvoie</td>
+	<td>775</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>AdresseTypevoie</td>
+	<td>label=Rue</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AdresseNomvoie</td>
+	<td>Paul rimbaud</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AdresseComplideadr</td>
+	<td>Res Le Clos de Passy</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AdresseCompladr</td>
+	<td>Bat E1 Appt 314</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AdresseNumcomptt</td>
+	<td>34080</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AdresseCodepos</td>
+	<td>34080</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AdresseLocaadr</td>
+	<td>MONTPELLIER</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>AdressePays</td>
+	<td>label=France</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>AdressefoyerTypeadr</td>
+	<td>label=Définitive</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Suivant &gt;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>RessourceDdressDay</td>
+	<td>label=1</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>RessourceDdressMonth</td>
+	<td>label=janvier</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>RessourceDdressYear</td>
+	<td>label=2009</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Suivant &gt;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>RessourceDdressDay</td>
+	<td>label=1</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>RessourceDdressMonth</td>
+	<td>label=janvier</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>RessourceDdressYear</td>
+	<td>label=2009</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Suivant &gt;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>DossierNumdemrsa</td>
+	<td>BBBBBBBBBBB</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>AjoutdossierServiceinstructeurId</td>
+	<td>label=Service 1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Terminer']</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
