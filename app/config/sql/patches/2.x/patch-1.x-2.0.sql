@@ -124,6 +124,9 @@ CREATE /*UNIQUE*/ INDEX dsps_personne_id_idx ON dsps (personne_id);
 -- 			dspfs.motidemrsa, dspps.drorsarmiant, dspps.drorsarmianta2, dspps.couvsoc, dspfs.accosocfam, dspfs.libcooraccosocfam, dspps.soutdemarsoc, dspps.libcooraccosocindi, dspps.libautrqualipro, dspps.libcompeextrapro, dspps_nivetus.dspp_id, dspps.annderdipobt, dspps.persisogrorechemploi, dspps.libcooraccoemploi, dspps.hispro, dspps.libderact, dspps.libsecactderact, dspps.dfderact, dspps.domideract, dspps.libactdomi, dspps.libsecactdomi, dspps.duractdomi, dspps.libemploirech, dspps.libsecactrech, dspps.creareprisentrrech, dspps_accoemplois.dspp_id, dspfs.natlog, dspfs.demarlog, dspps_nataccosocindis.dspp_id, dspps.moyloco, dspps.permicondub, dspps.libautrpermicondu;
 
 -- --------------------------------------------------------------------------------------------------------
+--------------- Ajout du 19/10/2009 à 11h40 ------------------
+--------------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "transmissionsflux" liée à 'identificationsflux'
 -- --------------------------------------------------------------------------------------------------------
 CREATE TABLE transmissionsflux(
@@ -131,6 +134,7 @@ CREATE TABLE transmissionsflux(
     identificationflux_id       INTEGER NOT NULL REFERENCES identificationsflux(id),
     nbtotdemrsatransm           CHAR(8)
 );
+CREATE INDEX transmissionsflux_identificationflux_idx ON transmissionsflux (identificationflux_id);
 
 -- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "suivisappuisorientation" liée à 'personnes'
@@ -146,6 +150,7 @@ CREATE TABLE suivisappuisorientation (
     dtenrparco                  DATE,
     dtenrorie                   DATE
 );
+CREATE INDEX suivisappuisorientation_personne_id_idx ON suivisappuisorientation (personne_id);
 
 -- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "orientations" liée à 'personnes'
@@ -155,7 +160,7 @@ CREATE  TABLE orientations (
     personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
     raisocorgorie               VARCHAR(60),
     numvoie                     VARCHAR(6),
-    typevoie                    CHAR(4);
+    typevoie                    CHAR(4),
     nomvoie                     VARCHAR(25),
     complideadr                 VARCHAR(38),
     compladr                    VARCHAR(26),
@@ -168,6 +173,7 @@ CREATE  TABLE orientations (
     libadrrvorgorie             TEXT,
     numtelrvorgorie             VARCHAR(10)
 );
+CREATE INDEX orientations_personne_id_idx ON orientations (personne_id);
 
 -- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "parcours" liée à 'personnes'
@@ -198,3 +204,32 @@ CREATE TABLE parcours (
     libadrrvorgdeciorie         TEXT,
     numtelrvorgdeciorie         VARCHAR(10)
 );
+CREATE INDEX parcours_personne_id_idx ON parcours (personne_id);
+
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout de la table "calculsdroitsrsa" liée à 'personnes'
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE calculsdroitsrsa (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
+    toppersdrodevorsa           type_booleannumber DEFAULT NULL,
+    mtpersressmenrsa            NUMERIC(9,2),
+    mtpersabaneursa             NUMERIC(9,2)
+);
+CREATE INDEX calculsdroitsrsa_personne_id_idx ON calculsdroitsrsa (personne_id);
+-- --------------------------------------------------------------------------------------------------------
+-- Déplacement des trois champs toppersdrodevorsa / mtpersressmenrsa / mtpersabaneursa de leur table respectives (prestations / ressources / ressourcesmensuelles) vers la table calculsdroitsrsa
+-- --------------------------------------------------------------------------------------------------------
+INSERT INTO calculsdroitsrsa ( personne_id, toppersdrodevorsa, mtpersressmenrsa, mtpersabaneursa )
+  SELECT  prestations.personne_id AS personne_id,
+          CAST( ( CASE WHEN prestations.toppersdrodevorsa = true THEN '1' WHEN prestations.toppersdrodevorsa = false THEN '0' ELSE NULL END ) AS type_booleannumber ) AS toppersdrodevorsa,
+          ressources.mtpersressmenrsa AS mtpersressmenrsa,
+          SUM(ressourcesmensuelles.mtabaneu) AS mtpersabaneursa
+      FROM prestations
+          INNER JOIN personnes ON personnes.id = prestations.personne_id
+          LEFT OUTER JOIN ressources ON personnes.id = ressources.personne_id
+              AND ressources.dfress = ( SELECT MAX( latestRessource.dfress ) FROM ressources AS latestRessource WHERE latestRessource.personne_id = personnes.id )
+          LEFT OUTER JOIN ressourcesmensuelles ON ressources.id = ressourcesmensuelles.ressource_id
+      WHERE prestations.natprest = 'RSA' AND prestations.rolepers IN ( 'DEM', 'CJT' )
+      GROUP BY prestations.personne_id, prestations.toppersdrodevorsa, ressources.mtpersressmenrsa, ressourcesmensuelles.ressource_id
+
