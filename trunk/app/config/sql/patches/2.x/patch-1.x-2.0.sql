@@ -31,47 +31,47 @@ CREATE TYPE type_demarlog AS ENUM ( '1101', '1102', '1103' );
 CREATE TABLE dsps (
     id                      SERIAL NOT NULL PRIMARY KEY,
     personne_id             INTEGER NOT NULL REFERENCES personnes(id),
-	sitpersdemrsa   		type_sitpersdemrsa DEFAULT NULL,
-	topisogroouenf   		type_booleannumber DEFAULT NULL,
-	topdrorsarmiant   		type_no DEFAULT NULL,
-	drorsarmianta2   		type_nos DEFAULT NULL,
-	topcouvsoc    			type_no DEFAULT NULL,
-	accosocfam    			type_nov DEFAULT NULL,
-	libcooraccosocfam  		VARCHAR(250) DEFAULT NULL,
-	accosocindi    			type_nov DEFAULT NULL,
-	libcooraccosocindi  	VARCHAR(250) DEFAULT NULL,
-	soutdemarsoc   			type_nov DEFAULT NULL,
-	nivetu     				type_nivetu DEFAULT NULL,
-	nivdipmaxobt   			type_nivdipmaxobt DEFAULT NULL,
-	annobtnivdipmax   		CHAR(4) DEFAULT NULL,
-	topqualipro    			type_booleannumber DEFAULT NULL,
-	libautrqualipro   		VARCHAR(100) DEFAULT NULL,
-	topcompeextrapro  		type_booleannumber DEFAULT NULL,
-	libcompeextrapro  		VARCHAR(100) DEFAULT NULL,
-	topengdemarechemploi	type_booleannumber DEFAULT NULL,
-	hispro     				type_hispro DEFAULT NULL,
-	libderact    			VARCHAR(100) DEFAULT NULL,
-	libsecactderact   		VARCHAR(100) DEFAULT NULL,
-	cessderact    			type_cessderact DEFAULT NULL,
-	topdomideract   		type_booleannumber DEFAULT NULL,
-	libactdomi    			VARCHAR(100) DEFAULT NULL,
-	libsecactdomi   		VARCHAR(100) DEFAULT NULL,
-	duractdomi    			type_duractdomi DEFAULT NULL,
-	inscdememploi   		type_inscdememploi DEFAULT NULL,
-	topisogrorechemploi  	type_booleannumber DEFAULT NULL,
-	accoemploi    			type_accoemploi DEFAULT NULL,
-	libcooraccoemploi  		VARCHAR(100) DEFAULT NULL,
-	topprojpro    			type_booleannumber DEFAULT NULL,
-	libemploirech   		VARCHAR(250) DEFAULT NULL,
-	libsecactrech   		VARCHAR(250) DEFAULT NULL,
-	topcreareprientre		type_booleannumber DEFAULT NULL,
-	concoformqualiemploi 	type_nos DEFAULT NULL,
-	topmoyloco    			type_booleannumber DEFAULT NULL,
-	toppermicondub   		type_booleannumber DEFAULT NULL,
-	topautrpermicondu  		type_booleannumber DEFAULT NULL,
-	libautrpermicondu  		VARCHAR(100) DEFAULT NULL,
-	natlog     				type_natlog DEFAULT NULL,
-	demarlog				type_demarlog DEFAULT NULL
+    sitpersdemrsa   		type_sitpersdemrsa DEFAULT NULL,
+    topisogroouenf   		type_booleannumber DEFAULT NULL,
+    topdrorsarmiant   		type_no DEFAULT NULL,
+    drorsarmianta2   		type_nos DEFAULT NULL,
+    topcouvsoc    			type_no DEFAULT NULL,
+    accosocfam    			type_nov DEFAULT NULL,
+    libcooraccosocfam  		VARCHAR(250) DEFAULT NULL,
+    accosocindi    			type_nov DEFAULT NULL,
+    libcooraccosocindi  	VARCHAR(250) DEFAULT NULL,
+    soutdemarsoc   			type_nov DEFAULT NULL,
+    nivetu     				type_nivetu DEFAULT NULL,
+    nivdipmaxobt   			type_nivdipmaxobt DEFAULT NULL,
+    annobtnivdipmax   		CHAR(4) DEFAULT NULL,
+    topqualipro    			type_booleannumber DEFAULT NULL,
+    libautrqualipro   		VARCHAR(100) DEFAULT NULL,
+    topcompeextrapro  		type_booleannumber DEFAULT NULL,
+    libcompeextrapro  		VARCHAR(100) DEFAULT NULL,
+    topengdemarechemploi	type_booleannumber DEFAULT NULL,
+    hispro     				type_hispro DEFAULT NULL,
+    libderact    			VARCHAR(100) DEFAULT NULL,
+    libsecactderact   		VARCHAR(100) DEFAULT NULL,
+    cessderact    			type_cessderact DEFAULT NULL,
+    topdomideract   		type_booleannumber DEFAULT NULL,
+    libactdomi    			VARCHAR(100) DEFAULT NULL,
+    libsecactdomi   		VARCHAR(100) DEFAULT NULL,
+    duractdomi    			type_duractdomi DEFAULT NULL,
+    inscdememploi   		type_inscdememploi DEFAULT NULL,
+    topisogrorechemploi  	type_booleannumber DEFAULT NULL,
+    accoemploi    			type_accoemploi DEFAULT NULL,
+    libcooraccoemploi  		VARCHAR(100) DEFAULT NULL,
+    topprojpro    			type_booleannumber DEFAULT NULL,
+    libemploirech   		VARCHAR(250) DEFAULT NULL,
+    libsecactrech   		VARCHAR(250) DEFAULT NULL,
+    topcreareprientre		type_booleannumber DEFAULT NULL,
+    concoformqualiemploi 	type_nos DEFAULT NULL,
+    topmoyloco    			type_booleannumber DEFAULT NULL,
+    toppermicondub   		type_booleannumber DEFAULT NULL,
+    topautrpermicondu  		type_booleannumber DEFAULT NULL,
+    libautrpermicondu  		VARCHAR(100) DEFAULT NULL,
+    natlog     				type_natlog DEFAULT NULL,
+    demarlog				type_demarlog DEFAULT NULL
 );
 CREATE /*UNIQUE*/ INDEX dsps_personne_id_idx ON dsps (personne_id);
 
@@ -122,3 +122,79 @@ CREATE /*UNIQUE*/ INDEX dsps_personne_id_idx ON dsps (personne_id);
 -- 			LEFT OUTER JOIN accoemplois ON dspps_accoemplois.accoemploi_id = accoemplois.id
 -- 		GROUP BY dspps_nataccosocindis.dspp_id, dspps.id, dspps.personne_id,
 -- 			dspfs.motidemrsa, dspps.drorsarmiant, dspps.drorsarmianta2, dspps.couvsoc, dspfs.accosocfam, dspfs.libcooraccosocfam, dspps.soutdemarsoc, dspps.libcooraccosocindi, dspps.libautrqualipro, dspps.libcompeextrapro, dspps_nivetus.dspp_id, dspps.annderdipobt, dspps.persisogrorechemploi, dspps.libcooraccoemploi, dspps.hispro, dspps.libderact, dspps.libsecactderact, dspps.dfderact, dspps.domideract, dspps.libactdomi, dspps.libsecactdomi, dspps.duractdomi, dspps.libemploirech, dspps.libsecactrech, dspps.creareprisentrrech, dspps_accoemplois.dspp_id, dspfs.natlog, dspfs.demarlog, dspps_nataccosocindis.dspp_id, dspps.moyloco, dspps.permicondub, dspps.libautrpermicondu;
+
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout de la table "transmissionsflux" liée à 'identificationsflux'
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE transmissionsflux(
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    identificationflux_id       INTEGER NOT NULL REFERENCES identificationsflux(id),
+    nbtotdemrsatransm           CHAR(8)
+);
+
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout de la table "suivisappuisorientation" liée à 'personnes'
+-- --------------------------------------------------------------------------------------------------------
+CREATE TYPE type_sitperssocpro AS ENUM ( 'AF', 'EF', 'RE' );
+CREATE TABLE suivisappuisorientation (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
+    topoblsocpro                type_booleannumber DEFAULT NULL,
+    topsouhsocpro               type_booleannumber DEFAULT NULL,
+    sitperssocpro               type_sitperssocpro DEFAULT NULL,
+    dtenrsocpro                 DATE,
+    dtenrparco                  DATE,
+    dtenrorie                   DATE
+);
+
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout de la table "orientations" liée à 'personnes'
+-- --------------------------------------------------------------------------------------------------------
+CREATE  TABLE orientations (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
+    raisocorgorie               VARCHAR(60),
+    numvoie                     VARCHAR(6),
+    typevoie                    CHAR(4);
+    nomvoie                     VARCHAR(25),
+    complideadr                 VARCHAR(38),
+    compladr                    VARCHAR(26),
+    lieudist                    VARCHAR(32),
+    codepos                     CHAR(5),
+    locaadr                     VARCHAR(26),
+    numtelorgorie               VARCHAR(10),
+    dtrvorgorie                 DATE,
+    hrrvorgorie                 TIME,
+    libadrrvorgorie             TEXT,
+    numtelrvorgorie             VARCHAR(10)
+);
+
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout de la table "parcours" liée à 'personnes'
+-- --------------------------------------------------------------------------------------------------------
+CREATE TYPE type_natparcocal AS ENUM ( 'AS', 'PP', 'PS' );
+CREATE TYPE type_natparcomod AS ENUM ( 'AS', 'PP', 'PS' );
+CREATE TYPE type_motimodparco AS ENUM ( 'CL', 'EA' );
+
+CREATE  TABLE parcours (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
+    natparcocal                 type_natparcocal DEFAULT NULL,
+    natparcomod                 type_natparcomod DEFAULT NULL,
+    toprefuparco                type_booleannumber DEFAULT NULL,
+    motimodparco                type_motimodparco DEFAULT NULL,
+    raisocorgdeciorie           VARCHAR(60),
+    numvoie                     VARCHAR(6),
+    typevoie                    CHAR(4),
+    nomvoie                     VARCHAR(25),
+    complideadr                 VARCHAR(38),
+    compladr                    VARCHAR(26),
+    lieudist                    VARCHAR(32),
+    codepos                     CHAR(5),
+    locaadr                     VARCHAR(26),
+    numtelorgdeciorie           VARCHAR(10),
+    dtrvorgdeciorie             DATE,
+    hrrvorgdeciorie             TIME,
+    libadrrvorgdeciorie         TEXT,
+    numtelrvorgdeciorie         VARCHAR(10)
+);
