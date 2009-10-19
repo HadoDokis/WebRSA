@@ -176,7 +176,7 @@ CREATE TYPE type_natparcocal AS ENUM ( 'AS', 'PP', 'PS' );
 CREATE TYPE type_natparcomod AS ENUM ( 'AS', 'PP', 'PS' );
 CREATE TYPE type_motimodparco AS ENUM ( 'CL', 'EA' );
 
-CREATE  TABLE parcours (
+CREATE TABLE parcours (
     id                          SERIAL NOT NULL PRIMARY KEY,
     personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
     natparcocal                 type_natparcocal DEFAULT NULL,
