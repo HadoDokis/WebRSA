@@ -113,7 +113,8 @@
         'critererdv' => 'criteresrdv',
         'typerdv' => 'typesrdv',
         'transmissionflux' => 'transmissionsflux',
-        'suiviappuiorientation' => 'suivisappuisorientation'
+        'suiviappuiorientation' => 'suivisappuisorientation',
+        'calculdroitrsa' => 'calculsdroitsrsa'
      );
 /**
  * This is a key => value array of regex used to match words.
