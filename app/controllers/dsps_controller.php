@@ -80,6 +80,7 @@
 			// Tentative d'enregistrement
 			if( !empty( $this->data ) ) {
 				$this->Dsp->create( $this->data );
+                $this->Dsp->nullify( array( 'exceptions' => array( 'Dsp.'.$this->Dsp->primaryKey ) ) );
 				if( $this->Dsp->save() ) {
 					$this->Session->setFlash( __( 'Enregistrement effectué', true ) );
 					// On enlève le jeton du dossier
