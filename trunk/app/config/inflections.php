@@ -41,7 +41,8 @@
 	$uninflectedPlural = array(
         'avispcgdroitrsa',
         'recours',
-        'rendezvous'
+        'rendezvous',
+        'parcours'
     );
 /**
  * This is a key => value array of plural irregular words.
@@ -110,7 +111,9 @@
         'cohortepdo' => 'cohortespdos',
         'propopdo' => 'propospdos',
         'critererdv' => 'criteresrdv',
-        'typerdv' => 'typesrdv'
+        'typerdv' => 'typesrdv',
+        'transmissionflux' => 'transmissionsflux',
+        'suiviappuiorientation' => 'suivisappuisorientation'
      );
 /**
  * This is a key => value array of regex used to match words.
