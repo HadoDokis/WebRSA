@@ -33,7 +33,7 @@
 
 		$tmp = '';
 		$tmp .= $xform->input( 'Dsp.id', array( 'type' => 'hidden' ) );
-		$tmp .= $xform->input( 'Dsp.personne_id', array( 'type' => 'hidden', 'value' => 1 ) ); // FIXME
+		$tmp .= $xform->input( 'Dsp.personne_id', array( 'type' => 'hidden', 'value' => Set::extract( $dsp, 'Personne.id' ) ) );
 		echo $html->tag( 'div', $tmp );
 
 		asort( $options['sitpersdemrsa'] );
