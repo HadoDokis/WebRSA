@@ -225,10 +225,12 @@
 
         function decisionpdo() {
             return array(
-                'E' => 'En attente',
-                'A' => 'Accord',
-                'R' => 'Refus',
-                'J' => 'Ajourné'
+                'P' => 'En attente d\'ouverture',
+                'I' => 'Instruction en cours',
+                'O' => 'Droit ouvert',
+                'R' => 'Rejeté',
+                'A' => 'Radié',
+                'S' => 'Suspendu'
             );
         }
 
@@ -489,19 +491,19 @@
 
         }
 
-        function motideccg() { ///FIXME: ajout pour les PDO mais à voir
-            return array(
-                'N' => 'Non admissible',
-                'A' => 'Admissible',
-                'M' => 'Pièce manquante'
-            );
-        }
+//         function motideccg() { ///FIXME: ajout pour les PDO mais à voir
+//             return array(
+//                 'E' => 'En attente de justificatif',
+//                 'A' => 'Admissible',
+//                 'N' => 'Non admissible'
+//             );
+//         }
 
         function motifpdo() { ///FIXME: ajout pour les PDO mais à voir
             return array(
-                'N' => 'Non admissible',
+                'E' => 'En attente de justificatif',
                 'A' => 'Admissible',
-                'M' => 'Pièce manquante'
+                'N' => 'Non admissible'
             );
         }
 
@@ -1333,6 +1335,23 @@
                 'J' => 'Jour inconnu',
                 'N' => 'Jour et mois connus',
                 'O' => 'Jour et mois inconnus'
+            );
+        }
+
+        function typenotifpdo() {
+            return array(
+                'RE' => 'Ressortissant européen',
+                'AN' => 'Activité non salariée',
+                'AA' => 'Activité non salariée agricole',
+                'CN' => 'Création activité non salariée',
+                'CA' => 'Création activité non salariée agricole',
+                'SN' => 'Stagiaire non rémunéré',
+                'AS' => 'Accord stagiaire',
+                'RS' => 'Renseignements étudiants',
+                'AE' => 'Accord étudiant, élève',
+                'DR' => 'Décision de réduction',
+                'RN' => 'Radiation pour éléments non déclarés',
+                'RD' => 'Radiation pour défaut d\'insertion'
             );
         }
 

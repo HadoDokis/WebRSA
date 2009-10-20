@@ -34,10 +34,19 @@
                 'fields' => array(
                     '"Propopdo"."id"',
                     '"Propopdo"."dossier_rsa_id"',
-                    '"Propopdo"."typepdo"',
-                    '"Propopdo"."decisionpdo"',
+                    '"Propopdo"."typepdo_id"',
+                    '"Propopdo"."decisionpdo_id"',
+                    '"Propopdo"."typenotif_id"',
                     '"Propopdo"."datedecisionpdo"',
+                    '"Propopdo"."motifpdo"',
+                    '"Propopdo"."datenotif"',
                     '"Propopdo"."commentairepdo"',
+//                     '"Decisionpdo"."id"',
+                    '"Decisionpdo"."libelle"',
+//                     '"Typenotif"."id"',
+                    '"Typenotif"."libelle"',
+//                     '"Typepdo"."id"',
+                    '"Typepdo"."libelle"',
                     '"Personne"."id"',
                     '"Personne"."pieecpres"',
                 ),
@@ -49,6 +58,27 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Propopdo.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'typesnotifs',
+                        'alias'      => 'Typenotif',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.typenotif_id = Typenotif.id' )
+                    ),
+                    array(
+                        'table'      => 'decisionspdos',
+                        'alias'      => 'Decisionpdo',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.decisionpdo_id = Decisionpdo.id' )
+                    ),
+                    array(
+                        'table'      => 'typespdos',
+                        'alias'      => 'Typepdo',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.typepdo_id = Typepdo.id' )
                     ),
                     array(
                         'table'      => 'foyers',

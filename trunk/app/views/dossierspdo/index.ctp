@@ -18,7 +18,7 @@
 ?>
 
 <div class="with_treemenu">
-
+<!--
     <h1>Situation du droit</h1>
     <table>
         <tbody>
@@ -41,7 +41,7 @@
         </tbody>
     </table>
 
-<hr />
+<hr />-->
 
 <h1>Liste des PDO</h1>
     <?php if( $permissions->check( 'dossierspdo', 'add' ) ):?>
@@ -75,9 +75,9 @@
                 <?php
                     echo $html->tableCells(
                         array(
-                            h( value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ),
-                            h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
-                            h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo', $pdo ) ) ),
+                            h( value( $typepdo, Set::extract( $pdo, 'Propopdo.typepdo_id' ) ) ),
+                            h( date_short( Set::extract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
+                            h( value( $decisionpdo, Set::extract( $pdo, 'Propopdo.decisionpdo_id' ) ) ),
                             h( Set::extract( 'Propopdo.commentairepdo', $pdo ) ),
                             $html->viewLink(
                                 'Voir PDO',

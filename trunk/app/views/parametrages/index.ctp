@@ -35,6 +35,17 @@
                 );
                 echo $html->tableCells(
                     array(
+                        h( 'PDOs' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'pdos', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
                         h( 'Référents' ),
                         $html->viewLink(
                             'Voir la table',

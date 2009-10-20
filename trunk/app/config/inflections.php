@@ -114,7 +114,11 @@
         'typerdv' => 'typesrdv',
         'transmissionflux' => 'transmissionsflux',
         'suiviappuiorientation' => 'suivisappuisorientation',
-        'calculdroitrsa' => 'calculsdroitsrsa'
+        'calculdroitrsa' => 'calculsdroitsrsa',
+        //PDOS
+        'typenotif' => 'typesnotifs',
+        'decisionpdo' => 'decisionspdos',
+        'typepdo' => 'typespdos'
      );
 /**
  * This is a key => value array of regex used to match words.
