@@ -3,7 +3,7 @@
     {
         var $name = 'Suiviinstruction';
         var $useTable = 'suivisinstruction';
-
+        var $displayField = 'typeserins';
 
         var $belongsTo = array(
             'Dossier' => array(

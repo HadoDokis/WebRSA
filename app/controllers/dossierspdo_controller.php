@@ -3,7 +3,7 @@
     class DossierspdoController extends AppController{
 
         var $name = 'Dossierspdo';
-        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotif' );
+        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotif', 'Suiviinstruction' );
 
         function beforeFilter(){
             parent::beforeFilter();
@@ -13,6 +13,7 @@
             $this->set( 'motidempdo', $this->Option->motidempdo() );
             $this->set( 'motifpdo', $this->Option->motifpdo() );
             $this->set( 'typenotifpdo', $this->Typenotif->find( 'list' ) );
+            $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
             $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
         }

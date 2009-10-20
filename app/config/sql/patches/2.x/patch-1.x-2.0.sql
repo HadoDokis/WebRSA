@@ -261,3 +261,10 @@ ALTER TABLE propospdos ADD COLUMN typenotif_id INTEGER REFERENCES typesnotifs(id
 ALTER TABLE propospdos DROP COLUMN decisionpdo;
 ALTER TABLE propospdos DROP COLUMN typepdo;
 ALTER TABLE propospdos DROP COLUMN typenotifpdo;
+
+CREATE TABLE piecespdos (
+    id              SERIAL NOT NULL PRIMARY KEY,
+    propopdo_id     INTEGER REFERENCES propospdos(id),
+    libelle         VARCHAR(50),
+    dateajout       DATE
+);

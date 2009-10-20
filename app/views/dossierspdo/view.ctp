@@ -37,11 +37,11 @@
             <tbody>
                 <tr class="odd">
                     <th><?php __( 'typepdo' );?></th>
-                    <td><?php echo value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ;?></td>
+                    <td><?php echo value( $typepdo, Set::extract( $pdo, 'Propopdo.typepdo_id' ) ) ;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Décision du Conseil Général' );?></th>
-                    <td><?php echo value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo', $pdo ) ) ;?></td>
+                    <td><?php echo value( $decisionpdo, Set::extract( $pdo, 'Propopdo.decisionpdo_id' ) ) ;?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Motif de la décision' );?></th>
@@ -53,7 +53,7 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Type de notification' );?></th>
-                    <td><?php echo Set::classicExtract( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotifpdo' ) ) ;?></td>
+                    <td><?php echo Set::classicExtract( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotif_id' ) ) ;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Date de notification' );?></th>

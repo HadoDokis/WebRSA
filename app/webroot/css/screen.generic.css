@@ -330,6 +330,30 @@ table#ficheDossier table td { border-width: 1px; }
     color: black;
 }
 
+/*         Affichage index des PDOs            */
+#fichePDO table {
+    width: 350px;
+    margin: 0;
+}
+
+#fichePDO table tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+#fichePDO tbody tr.odd td {
+    background: white;
+    color: black;
+}
+#fichePDO tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+#fichePDO tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
 
 /* Affichage vue Ressources */
 div#ficheRessTri table {

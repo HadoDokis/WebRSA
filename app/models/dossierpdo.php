@@ -9,8 +9,12 @@
                 'fields' => array(
                     '"Dossier"."id"',
                     '"Situationdossierrsa"."etatdosrsa"',
+                    '"Dossier"."numdemrsa"',
+                    '"Dossier"."matricule"',
+                    '"Dossier"."dtdemrsa"',
                     '"Situationdossierrsa"."dtrefursa"',
-                    '"Situationdossierrsa"."dtclorsa"'
+                    '"Situationdossierrsa"."dtclorsa"',
+                    '"Suiviinstruction"."typeserins"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -20,6 +24,13 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'suivisinstruction',
+                        'alias'      => 'Suiviinstruction',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
                     ),
                     array(
                         'table'      => 'foyers',
