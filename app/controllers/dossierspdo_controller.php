@@ -3,17 +3,18 @@
     class DossierspdoController extends AppController{
 
         var $name = 'Dossierspdo';
-        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo' );
+        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotif' );
 
         function beforeFilter(){
             parent::beforeFilter();
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-            $this->set( 'decisionpdo', $this->Option->decisionpdo() );
-            $this->set( 'typepdo', $this->Option->typepdo() );
             $this->set( 'pieecpres', $this->Option->pieecpres() );
             $this->set( 'commission', $this->Option->commission() );
             $this->set( 'motidempdo', $this->Option->motidempdo() );
-            $this->set( 'motideccg', $this->Option->motideccg() );
+            $this->set( 'motifpdo', $this->Option->motifpdo() );
+            $this->set( 'typenotifpdo', $this->Typenotif->find( 'list' ) );
+            $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
+            $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
         }
 
 
@@ -35,7 +36,7 @@
             /// Récupération des listes des PDO
             $options = $this->Dossierpdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
             $pdo = $this->Propopdo->find( 'first', $options );
-// debug( $pdos );
+
 
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
             $this->set( 'pdo', $pdo );

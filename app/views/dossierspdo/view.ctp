@@ -40,24 +40,28 @@
                     <td><?php echo value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ;?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'ddavisdero' );?></th>
-                    <td><?php echo date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ;?></td>
-                </tr>
-                <tr class="odd">
-                    <th><?php __( 'avisdero' );?></th>
+                    <th><?php __( 'Décision du Conseil Général' );?></th>
                     <td><?php echo value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo', $pdo ) ) ;?></td>
                 </tr>
+                <tr class="odd">
+                    <th><?php __( 'Motif de la décision' );?></th>
+                    <td><?php echo Set::classicExtract( $motifpdo, Set::classicExtract( $pdo, 'Propopdo.motifpdo' ) );?></td>
+                </tr>
                 <tr class="even">
-                    <th><?php __( 'ressdero' );?></th>
-                    <td><?php echo '' ;?></td>
+                    <th><?php __( 'Date de la décision CG' );?></th>
+                    <td><?php echo date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) );?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'motideccg' );?></th>
-                    <td><?php echo '';?></td>
+                    <th><?php __( 'Type de notification' );?></th>
+                    <td><?php echo Set::classicExtract( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotifpdo' ) ) ;?></td>
                 </tr>
                 <tr class="even">
+                    <th><?php __( 'Date de notification' );?></th>
+                    <td><?php echo date_short( Set::extract( 'Propopdo.datenotif', $pdo ) );?></td>
+                </tr>
+                <tr class="odd">
                     <th><?php __( 'commentairepdo' );?></th>
-                    <td><?php echo Set::extract( 'Propopdo.commentairepdo', $pdo ) ;?></td>
+                    <td><?php echo Set::extract( 'Propopdo.commentairepdo', $pdo );?></td>
                 </tr>
             </tbody>
         </table>

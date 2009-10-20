@@ -233,3 +233,31 @@ INSERT INTO calculsdroitsrsa ( personne_id, toppersdrodevorsa, mtpersressmenrsa,
       WHERE prestations.natprest = 'RSA' AND prestations.rolepers IN ( 'DEM', 'CJT' )
       GROUP BY prestations.personne_id, prestations.toppersdrodevorsa, ressources.mtpersressmenrsa, ressourcesmensuelles.ressource_id
 
+
+--------------- Ajout du 20/10/2009 à 10h17 ------------------
+ALTER TABLE propospdos ADD COLUMN typenotifpdo CHAR(2);
+ALTER TABLE propospdos ADD COLUMN datenotif DATE;
+
+CREATE TABLE typespdos (
+    id            SERIAL NOT NULL PRIMARY KEY,
+    libelle       VARCHAR(30)
+);
+
+CREATE TABLE decisionspdos (
+    id            SERIAL NOT NULL PRIMARY KEY,
+    libelle       VARCHAR(30)
+);
+
+CREATE TABLE typesnotifs (
+    id              SERIAL NOT NULL PRIMARY KEY,
+    libelle         VARCHAR(30),
+    modelenotifpdo  VARCHAR(50)
+);
+
+ALTER TABLE propospdos ADD COLUMN typepdo_id INTEGER NOT NULL REFERENCES typespdos(id);
+ALTER TABLE propospdos ADD COLUMN decisionpdo_id INTEGER REFERENCES decisionspdos(id);
+ALTER TABLE propospdos ADD COLUMN typenotif_id INTEGER REFERENCES typesnotifs(id);
+
+ALTER TABLE propospdos DROP COLUMN decisionpdo;
+ALTER TABLE propospdos DROP COLUMN typepdo;
+ALTER TABLE propospdos DROP COLUMN typenotifpdo;

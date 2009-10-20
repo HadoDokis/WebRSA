@@ -34,20 +34,13 @@
     <div class="aere">
         <fieldset>
             <legend>Détails PDO</legend>
-            <?php echo $form->input( 'Propopdo.typepdo', array( 'label' =>  ( __( 'typepdo', true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );?>
-            <?php echo $form->input( 'Propopdo.datedecisionpdo', array( 'label' =>  ( __( 'datedecisionpdo', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>
-            <?php echo $form->input( 'Propopdo.decisionpdo', array( 'label' =>  ( __( 'decisionpdo', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );?>
-            <?php echo $form->input( 'Propopdo.commentairepdo', array( 'label' =>  ( __( 'commentairepdo', true ) ), 'type' => 'text', 'rows' => 3, 'empty' => true ) );?>
-            <!-- <?php  /*echo $form->input( 'Propopdo.ressdero', array( 'label' =>  ( __( 'ressdero', true ) ), 'type' => 'text') );?>
-            <?php echo $form->input( 'Propopdo.motidempdo', array( 'label' =>  ( __( 'motidempdo', true ) ), 'type' => 'select', 'options' => $motidempdo, 'empty' => true ) );?>
-            <?php echo $form->input( 'Propopdo.ciobli', array( 'label' =>  ( __( 'Contrat d\'insertion obligatoire', true ) ), 'type' => 'select', 'options' => $avisdero, 'empty' => true ) );?>
-            <?php echo $form->input( 'Propopdo.datesave', array( 'label' =>  ( __( 'Date d\'enregistrement CG', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>
-        </fieldset>
-        <fieldset>
-            <legend>Décision CG</legend>
-            <?php echo $form->input( 'Propopdo.commission', array( 'label' =>  ( __( 'commission', true ) ), 'type' => 'select', 'options' => $commission, 'empty' => true ) );?>
-            <?php echo $form->input( 'Propopdo.motideccg', array( 'label' =>  ( __( 'motideccg', true ) ), 'type' => 'select', 'options' => $motideccg, 'empty' => true ) );?>
-            <?php echo $form->input( 'Propopdo.commentdero', array( 'label' =>  ( __( 'commentdero', true ) ), 'type' => 'textarea', 'rows' => 3, 'empty' => true ) );*/?> -->
+            <?php echo $form->input( 'Propopdo.typepdo_id', array( 'label' =>  ( __( 'typepdo', true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );?>
+            <?php echo $form->input( 'Propopdo.decisionpdo_id', array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );?>
+            <?php echo $form->input( 'Propopdo.motifpdo', array( 'label' =>  ( __( 'Motif de la décision', true ) ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) );?>
+            <?php echo $form->input( 'Propopdo.datedecisionpdo', array( 'label' =>  ( __( 'Date de décision CG', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>
+            <?php echo $form->input( 'Propopdo.typenotif_id', array( 'label' =>  ( __( 'Type de notification', true ) ), 'type' => 'select', 'options' => $typenotifpdo, 'empty' => true ) );?>
+            <?php echo $form->input( 'Propopdo.datenotif', array( 'label' =>  ( __( 'Date de notification', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>
+            <?php echo $form->input( 'Propopdo.commentairepdo', array( 'label' =>  'Observations', 'type' => 'text', 'rows' => 3, 'empty' => true ) );?>
         </fieldset>
     </div>
 
