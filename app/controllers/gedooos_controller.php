@@ -92,7 +92,8 @@
                 array(
                     'conditions' => array(
                         'Personne.id' => $personne_id
-                    )
+                    ),
+                    'recursive' => -1
                 )
             );
 
@@ -141,6 +142,7 @@
             $personne['Orientstruct'] = $orientstruct['Orientstruct'];
             $personne['Structurereferente'] = $orientstruct['Structurereferente'];
             $personne['Personne']['qual'] = ( isset( $qual[$personne['Personne']['qual']] ) ? $qual[$personne['Personne']['qual']] : null );
+            $personne['Structurereferente']['type_voie'] = ( isset( $typevoie[$personne['Structurereferente']['type_voie']] ) ? $typevoie[$personne['Structurereferente']['type_voie']] : null );
             $personne['Adresse']['typevoie'] = ( isset( $typevoie[$personne['Adresse']['typevoie']] ) ? $typevoie[$personne['Adresse']['typevoie']] : null );
 
             if( empty( $personne['Orientstruct']['date_impression'] ) ){
@@ -268,18 +270,8 @@
                 )
             );
             $dossier['Dossier']['id'] = $ddrsa['Detaildroitrsa']['dossier_rsa_id'];
-//             debug($ddrsa['Detaildroitrsa']);
-            //////////////////////////////////////////////////////////////////////////
-//             $this->Activite->bindModel(
-//                 array(
-//                     'belongsTo' => array(
-//                         'Personne' => array(
-//                             'classname' => 'Personne',
-//                             'foreignKey' => 'personne_id',
-//                         )
-//                     )
-//                 )
-//             );
+
+
             $activite = $this->Activite->find(
                 'first',
                 array(
@@ -395,7 +387,16 @@
                 )
             );
             $orientstruct['Adresse'] = $adresse['Adresse'];
-
+            // Récupération de l'utilisateur
+            $user = $this->User->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'User.id' => $this->Session->read( 'Auth.User.id' )
+                    )
+                )
+            );
+            $orientstruct['User'] = $user['User'];
 
             $dossier = $this->Dossier->find(
                 'first',
