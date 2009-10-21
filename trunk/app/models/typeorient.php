@@ -18,12 +18,6 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'parentid' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
             'modele_notif' => array(
                 array(
                     'rule' => 'notEmpty',
