@@ -9,6 +9,9 @@
         var $hasOne = array(
             'TitreSejour',
             'Dspp',
+            'Orientation',
+            'Suiviappuiorientation',
+            'Parcours',
             'Dossiercaf',
             'Avispcgpersonne',
             'Prestation' => array(
