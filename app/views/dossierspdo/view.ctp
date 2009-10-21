@@ -37,11 +37,11 @@
             <tbody>
                 <tr class="odd">
                     <th><?php __( 'typepdo' );?></th>
-                    <td><?php echo value( $typepdo, Set::extract( $pdo, 'Propopdo.typepdo_id' ) ) ;?></td>
+                    <td><?php echo value( $typepdo, Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ) ) ;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Décision du Conseil Général' );?></th>
-                    <td><?php echo value( $decisionpdo, Set::extract( $pdo, 'Propopdo.decisionpdo_id' ) ) ;?></td>
+                    <td><?php echo value( $decisionpdo, Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ) ) ;?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Motif de la décision' );?></th>
@@ -49,7 +49,7 @@
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Date de la décision CG' );?></th>
-                    <td><?php echo date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) );?></td>
+                    <td><?php echo date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Type de notification' );?></th>
@@ -57,11 +57,11 @@
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Date de notification' );?></th>
-                    <td><?php echo date_short( Set::extract( 'Propopdo.datenotif', $pdo ) );?></td>
+                    <td><?php echo date_short( Set::classicExtract( $pdo, 'Propopdo.datenotif' ) );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'commentairepdo' );?></th>
-                    <td><?php echo Set::extract( 'Propopdo.commentairepdo', $pdo );?></td>
+                    <td><?php echo Set::classicExtract( $pdo, 'Propopdo.commentairepdo' );?></td>
                 </tr>
             </tbody>
         </table>

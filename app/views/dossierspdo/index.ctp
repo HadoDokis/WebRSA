@@ -122,7 +122,7 @@
             ?>
         </ul>
     <?php endif;?>
-   <!-- <table class="aere">
+<!--    <table class="aere">
             <tbody>
                 <?php /*foreach( $pdo as $index => $i ):*/?>
                     <tr class="even">
@@ -132,7 +132,7 @@
                         <th class="action">Action</th>
                     </tr>
                     <tr>
-                        <td><?php echo value( $pieecpres, Set::extract( 'Personne.pieecpres', $pdo ) );?></td>
+                        <td><?php echo value( $pieecpres, Set::classicExtract( $pdo, 'Personne.pieecpres' ) );?></td>
                         <td><?php echo $html->boolean( !empty( $pdo['Personne']['pieecpres'] ) );?></td>
                         <td><?php echo '';?></td> 
                         <td><?php

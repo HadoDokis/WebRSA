@@ -152,7 +152,7 @@
 
             unset( $personne['Contratinsertion'] ); // FIXME: faire un unbindModel
 
-            $this->_ged( $personne, 'notification_structure.odt' );
+            $this->_ged( $personne, 'Orientation/notification_structure.odt' );
         }
 
         function contratinsertion( $contratinsertion_id = null ) {
@@ -348,7 +348,7 @@
 // debug( $contratinsertion );
 // die();
 
-            $this->_ged( $contratinsertion, 'contratinsertion.odt' );
+            $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
         }
 
         function orientstruct( $orientstruct_id = null ) {
@@ -411,7 +411,7 @@
 
             $orientstruct['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $orientstruct['Personne']['dtnai'] ) );
 
-            $this->_ged( $orientstruct, 'cg66/'.$modele.'.odt' );
+            $this->_ged( $orientstruct, 'Orientation/'.$modele.'.odt' );
         }
 
         function _get( $personne_id ) {
@@ -522,7 +522,7 @@
             // FIXME: chemins
             $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo'; // FIXME: chemin
             $sMimeType  = "application/pdf";
-            $sModele = $phpGedooDir.'/../notifications_cohorte.odt';
+            $sModele = $phpGedooDir.'/../Orientation/notifications_cohorte.odt';
 
             // Inclusion des fichiers nécessaires à GEDOOo
             // FIXME
@@ -703,7 +703,7 @@
 
             $personne['Adresse']['typevoie'] = ( isset( $typevoie[$personne['Adresse']['typevoie']] ) ? $typevoie[$personne['Adresse']['typevoie']] : null );
 
-            $this->_ged( $personne, 'notifications_relances.odt' );
+            $this->_ged( $personne, 'Relance/notifications_relances.odt' );
         }
 
 
@@ -725,7 +725,7 @@
             // FIXME: chemins
             $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo'; // FIXME: chemin
             $sMimeType  = "application/pdf";
-            $sModele = $phpGedooDir.'/../notifications_relances.odt';
+            $sModele = $phpGedooDir.'/../Relance/notifications_relances.odt';
 
             // Inclusion des fichiers nécessaires à GEDOOo
             // FIXME
