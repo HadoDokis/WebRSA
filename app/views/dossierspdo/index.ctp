@@ -118,17 +118,18 @@
     </table>
 
 <br />
-    <h1>Liste des traitements</h1>
 <?php if( !empty( $notif ) ):?>
+    <h1>Liste des traitements</h1>
+
     <?php if( $permissions->check( 'dossierspdo', 'add' ) ):?>
-        <ul class="actionMenu">
+        <!--<ul class="actionMenu">
             <?php
                 echo '<li>'.$html->addLink(
                     'Ajouter PDO',
-                    array( 'controller' => 'dossierspdo', 'action' => 'add', $dossier_rsa_id )
+                    array( 'controller' => 'traitementspdos', 'action' => 'add', $dossier_rsa_id )
                 ).' </li>';
             ?>
-        </ul>
+        </ul>-->
     <?php endif;?>
     <table class="aere">
             <tbody>
@@ -140,7 +141,7 @@
                     </tr>
                     <tr>
                         <td><?php echo Set::classicExtract( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' ) );?></td>
-                        <td><?php echo date_short( Set::classicExtract( $pdo, 'Propopdo.datenotif' ) );?></td>
+                        <td><?php echo date_short( Set::classicExtract( $pdo, 'PropopdoTypenotifpdo.datenotif' ) );?></td>
                         <td><?php
                                 echo $html->printLink(
                                     'Imprimer la notification',
@@ -154,7 +155,50 @@
         </table> 
 <?php endif;?>
 
+<br />
+<?php if( !empty( $piecespdos ) ):?>
+    <h1>Liste des pièces</h1>
 
+    <?php if( $permissions->check( 'dossierspdo', 'add' ) ):?>
+        <!--<ul class="actionMenu">
+            <?php
+                echo '<li>'.$html->addLink(
+                    'Ajouter PDO',
+                    array( 'controller' => 'piecespdos', 'action' => 'add', $dossier_rsa_id )
+                ).' </li>';
+            ?>
+        </ul>-->
+    <?php endif;?>
+    <table class="aere">
+            <tbody>
+                <?php foreach( $piecespdos as $index => $piece ):?>
+                    <tr class="even">
+                        <th>Type de le pièce</th>
+                        <th>Date d'ajout</th>
+                        <th colspan="2" class="action center">Action</th>
+                    </tr>
+                    <tr>
+                        <td><?php echo Set::classicExtract( $piece, 'Piecepdo.libelle' );?></td>
+                        <td><?php echo date_short( Set::classicExtract( $piece, 'Piecepdo.dateajout' ) );?></td>
+                        <td><?php
+                                echo $html->attachLink(
+                                    'Visualiser la pièce',
+                                    array( 'controller' => 'gedooos', 'action' => 'notifpdo', $pdo['Propopdo']['id'] )
+                                );
+                            ?>
+                        </td>
+                        <td><?php
+                                echo $html->printLink(
+                                    'Imprimer la notification',
+                                    array( 'controller' => 'gedooos', 'action' => 'notifpdo', $pdo['Propopdo']['id'] )
+                                );
+                            ?>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+            </tbody>
+        </table> 
+<?php endif;?>
 
 
 </div>

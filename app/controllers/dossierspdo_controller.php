@@ -3,7 +3,7 @@
     class DossierspdoController extends AppController{
 
         var $name = 'Dossierspdo';
-        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction' );
+        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction', 'Piecepdo' );
 
         function beforeFilter(){
             parent::beforeFilter();
@@ -38,12 +38,16 @@
             $options = $this->Dossierpdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
             $pdo = $this->Propopdo->find( 'first', $options );
 
-            /// Récupération des listes des PDO
-//             $notif = $this->Typenotifpdo->find( 'all', array( 'conditions' => array( 'Typenotifpdo.id' => Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' )  ) ) );
-//             $this->set( 'notif', $notif );
+            /// Récupération des Types de notification liées à la PDO
+            $notif = $this->Typenotifpdo->find( 'all', array( 'conditions' => array( 'Typenotifpdo.id' => Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' )  ) ) );
+
+            /// Récupération des Pièces liées à la PDO
+            $piecespdos = $this->Piecepdo->find( 'all', array( 'conditions' => array( 'Piecepdo.propopdo_id' => Set::classicExtract( $pdo, 'Propopdo.id' )  ) ) );
 
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
             $this->set( 'pdo', $pdo );
+            $this->set( 'notif', $notif );
+            $this->set( 'piecespdos', $piecespdos );
             $this->set( 'details', $details );
         }
 
@@ -82,9 +86,6 @@
         *** *******************************************************************/
 
         function _add_edit( $id = null ) {
-//             $nbrDossiers = $this->Dossier->find( 'count', array( 'conditions' => array( 'Dossier.id' => $dossier_rsa_id ), 'recursive' => -1 ) );
-//             $this->assert( ( $nbrDossiers == 1 ), 'invalidParameter' );
-
             if( $this->action == 'add' ) {
                 $dossier_rsa_id = $id;
                 $nbrDossiers = $this->Dossier->find( 'count', array( 'conditions' => array( 'Dossier.id' => $dossier_rsa_id ), 'recursive' => -1 ) );
