@@ -27,7 +27,7 @@
                         h( 'Type de notification' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'typesnotifs', 'action' => 'index' )
+                            array( 'controller' => 'typesnotifspdos', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),

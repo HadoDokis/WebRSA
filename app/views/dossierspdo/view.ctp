@@ -53,11 +53,11 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Type de notification' );?></th>
-                    <td><?php echo Set::classicExtract( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotif_id' ) ) ;?></td>
+                    <td><?php echo Set::classicExtract( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' ) ) ;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Date de notification' );?></th>
-                    <td><?php echo date_short( Set::classicExtract( $pdo, 'Propopdo.datenotif' ) );?></td>
+                    <td><?php echo date_short( Set::classicExtract( $pdo, 'PropopdoTypenotifpdo.datenotif' ) );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'commentairepdo' );?></th>

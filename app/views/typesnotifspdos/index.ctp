@@ -7,7 +7,7 @@
         <?php
             echo '<li>'.$html->addLink(
                 'Ajouter',
-                array( 'controller' => 'typesnotifs', 'action' => 'add' )
+                array( 'controller' => 'typesnotifspdos', 'action' => 'add' )
             ).' </li>';
         ?>
     </ul>
@@ -22,18 +22,18 @@
             </tr>
         </thead>
         <tbody>
-                <?php foreach( $typesnotifs as $typenotif ):?>
+                <?php foreach( $typesnotifspdos as $typenotifpdo ):?>
                 <?php echo $html->tableCells(
                             array(
-                                h( $typenotif['Typenotif']['libelle'] ),
-                                h( $typenotif['Typenotif']['modelenotifpdo'] ),
+                                h( $typenotifpdo['Typenotifpdo']['libelle'] ),
+                                h( $typenotifpdo['Typenotifpdo']['modelenotifpdo'] ),
                                 $html->editLink(
                                     'Éditer le type de PDO ',
-                                    array( 'controller' => 'typesnotifs', 'action' => 'edit', $typenotif['Typenotif']['id'] )
+                                    array( 'controller' => 'typesnotifspdos', 'action' => 'edit', $typenotifpdo['Typenotifpdo']['id'] )
                                 ),
                                 $html->deleteLink(
                                     'Supprimer le type de PDO ',
-                                    array( 'controller' => 'typesnotifs', 'action' => 'delete', $typenotif['Typenotif']['id'] )
+                                    array( 'controller' => 'typesnotifspdos', 'action' => 'delete', $typenotifpdo['Typenotifpdo']['id'] )
                                 )
                             ),
                             array( 'class' => 'odd' ),

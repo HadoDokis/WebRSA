@@ -47,17 +47,16 @@
                     '"Propopdo"."dossier_rsa_id"',
                     '"Propopdo"."typepdo_id"',
                     '"Propopdo"."decisionpdo_id"',
-                    '"Propopdo"."typenotif_id"',
+                    '"Propopdo"."typenotifpdo_id"',
                     '"Propopdo"."datedecisionpdo"',
                     '"Propopdo"."motifpdo"',
-                    '"Propopdo"."datenotif"',
                     '"Propopdo"."commentairepdo"',
 //                     '"Decisionpdo"."id"',
                     '"Decisionpdo"."libelle"',
-//                     '"Typenotif"."id"',
-                    '"Typenotif"."libelle"',
+                    '"Typenotifpdo"."libelle"',
 //                     '"Typepdo"."id"',
                     '"Typepdo"."libelle"',
+
                     '"Personne"."id"',
                     '"Personne"."pieecpres"',
                 ),
@@ -71,11 +70,18 @@
                         'conditions' => array( 'Propopdo.dossier_rsa_id = Dossier.id' )
                     ),
                     array(
-                        'table'      => 'typesnotifs',
-                        'alias'      => 'Typenotif',
-                        'type'       => 'INNER',
+                        'table'      => 'typesnotifspdos',
+                        'alias'      => 'Typenotifpdo',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Propopdo.typenotif_id = Typenotif.id' )
+                        'conditions' => array( 'Propopdo.typenotifpdo_id = Typenotifpdo.id' )
+                    ),
+                    array(
+                        'table'      => 'propospdos_typesnotifspdos',
+                        'alias'      => 'PropopdoTypenotifpdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'PropopdoTypenotifpdo.propopdo_id = Propopdo.id' )
                     ),
                     array(
                         'table'      => 'decisionspdos',

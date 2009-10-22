@@ -11,6 +11,15 @@
             )
         );
 
+        var $hasAndBelongsToMany = array(
+            'Typenotifpdo' => array(
+                'classname' => 'Typenotifpdo',
+                'joinTable' => 'propospdos_typesnotifspdos',
+                'foreignKey' => 'propopdo_id',
+                'associationForeignKey' => 'typenotifpdo_id'
+            )
+        );
+
         var $validate = array(
             'typepdo' => array(
                 'rule' => 'notEmpty',

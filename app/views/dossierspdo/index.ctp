@@ -22,7 +22,7 @@
     <table id="fichePDO" class=" noborder">
         <tbody>
             <tr>
-                <td class="noborder">
+<!--                <td class="noborder">
                     <h2>Informations dossier</h2>
                     <table>
                         <tbody>
@@ -48,21 +48,29 @@
                             </tr>
                         </tbody>
                     </table>
-                </td>
+                </td>-->
                 <td class="noborder">
                 <h2>Détails PDO</h2>
                     <?php if( $permissions->check( 'dossierspdo', 'add' ) ):?>
                         <?php if( empty( $pdo ) ):?>
                             <p class="notice">Ce dossier ne possède pas encore de PDO.</p>
-
-<!--                        <ul class="actionMenu">
-                            <?php
-                                echo '<li>'.$html->addLink(
-                                    'Ajouter PDO',
-                                    array( 'controller' => 'dossierspdo', 'action' => 'add', $dossier_rsa_id )
-                                ).' </li>';
-                            ?>
-                        </ul>-->
+                            <ul class="actionMenu">
+                                <?php
+                                    echo '<li>'.$html->addLink(
+                                        'Ajouter PDO',
+                                        array( 'controller' => 'dossierspdo', 'action' => 'add', $dossier_rsa_id )
+                                    ).' </li>';
+                                ?>
+                            </ul>
+                        <?php else:?>
+                            <ul class="actionMenu">
+                                <?php
+                                    echo '<li>'.$html->editLink(
+                                        'Modifier PDO',
+                                        array( 'controller' => 'dossierspdo', 'action' => 'edit', Set::classicExtract( $pdo, 'Propopdo.id' ) )
+                                    ).' </li>';
+                                ?>
+                            </ul>
                         <?php  endif;?>
                     <?php endif;?>
 
@@ -87,7 +95,7 @@
                                 </tr>
                                 <tr class="odd">
                                     <th><?php __( 'Type de notification' );?></th>
-                                    <td><?php echo Set::classicExtract( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotif_id' ) ) ;?></td>
+                                    <td><?php echo Set::classicExtract( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' ) ) ;?></td>
                                 </tr>
                                 <tr class="even">
                                     <th><?php __( 'Pièces jointes' );?></th>
@@ -95,7 +103,7 @@
                                 </tr>
                                 <tr class="odd">
                                     <th><?php __( 'Date de notification' );?></th>
-                                    <td><?php echo date_short( Set::classicExtract( $pdo, 'Propopdo.datenotif' ) );?></td>
+                                     <td><?php echo date_short( Set::classicExtract( $pdo, 'PropopdoTypenotifpdo.datenotif' ) );?></td>
                                 </tr>
                                 <tr class="even">
                                     <th><?php __( 'commentairepdo' );?></th>
@@ -111,8 +119,8 @@
 
 <br />
     <h1>Liste des traitements</h1>
+<?php if( !empty( $notif ) ):?>
     <?php if( $permissions->check( 'dossierspdo', 'add' ) ):?>
-
         <ul class="actionMenu">
             <?php
                 echo '<li>'.$html->addLink(
@@ -122,33 +130,29 @@
             ?>
         </ul>
     <?php endif;?>
-<!--    <table class="aere">
+    <table class="aere">
             <tbody>
-                <?php /*foreach( $pdo as $index => $i ):*/?>
+                <?php foreach( $notif as $index => $i ):?>
                     <tr class="even">
-                        <th>Date de traitement</th>
-                        <th>Type de traitement</th>
-                        <th>Date d'ajout</th>
+                        <th>Type de notification</th>
+                        <th>Date de notification</th>
                         <th class="action">Action</th>
                     </tr>
                     <tr>
-                        <td><?php echo value( $pieecpres, Set::classicExtract( $pdo, 'Personne.pieecpres' ) );?></td>
-                        <td><?php echo $html->boolean( !empty( $pdo['Personne']['pieecpres'] ) );?></td>
-                        <td><?php echo '';?></td> 
+                        <td><?php echo Set::classicExtract( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' ) );?></td>
+                        <td><?php echo date_short( Set::classicExtract( $pdo, 'Propopdo.datenotif' ) );?></td>
                         <td><?php
-                            if( !empty( $pdo['Personne']['pieecpres'] ) ){
-                                echo $html->attachLink(
-                                    'Voir PDO',
-                                    array( 'controller' => 'dossierspdo', 'action' => 'view', $pdo['Propopdo']['id'] )
+                                echo $html->printLink(
+                                    'Imprimer la notification',
+                                    array( 'controller' => 'gedooos', 'action' => 'notifpdo', $pdo['Propopdo']['id'] )
                                 );
-                            }
                             ?>
                         </td>
                     </tr>
-                <?php /*endforeach;*/?>
+                <?php endforeach;?>
             </tbody>
-        </table> -->
-
+        </table> 
+<?php endif;?>
 
 
 
