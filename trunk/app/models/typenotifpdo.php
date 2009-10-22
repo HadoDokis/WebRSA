@@ -1,15 +1,17 @@
 <?php
-    class Typenotif extends AppModel
+    class Typenotifpdo extends AppModel
     {
-        var $name = 'Typenotif';
-        var $useTable = 'typesnotifs';
+        var $name = 'Typenotifpdo';
+        var $useTable = 'typesnotifspdos';
         var $displayField = 'libelle';
-        var $order = 'Typenotif.id ASC';
+        var $order = 'Typenotifpdo.id ASC';
 
-        var $hasMany = array(
+        var $hasAndBelongsToMany = array(
             'Propopdo' => array(
                 'classname' => 'Propopdo',
-                'foreignKey' => 'typenotif_id'
+                'joinTable' => 'propospdos_typesnotifspdos',
+                'foreignKey' => 'typenotifpdo_id',
+                'associationForeignKey' => 'propopdo_id'
             )
         );
 

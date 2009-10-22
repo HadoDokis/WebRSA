@@ -24,6 +24,7 @@
             echo $form->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $form->input( 'Propopdo.id', array( 'type' => 'hidden' ) );
+            echo $form->input( 'PropopdoTypenotifpdo.id', array( 'type' => 'hidden' ) );
             echo '</div>';
         }
         echo '<div>';
@@ -38,8 +39,8 @@
             <?php echo $form->input( 'Propopdo.decisionpdo_id', array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );?>
             <?php echo $form->input( 'Propopdo.motifpdo', array( 'label' =>  ( __( 'Motif de la décision', true ) ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) );?>
             <?php echo $form->input( 'Propopdo.datedecisionpdo', array( 'label' =>  ( __( 'Date de décision CG', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>
-            <?php echo $form->input( 'Propopdo.typenotif_id', array( 'label' =>  ( __( 'Type de notification', true ) ), 'type' => 'select', 'options' => $typenotifpdo, 'empty' => true ) );?>
-            <?php echo $form->input( 'Propopdo.datenotif', array( 'label' =>  ( __( 'Date de notification', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>
+            <?php echo $form->input( 'Propopdo.typenotifpdo_id', array( 'label' =>  ( __( 'Type de notification', true ) ), 'type' => 'select', 'options' => $typenotifpdo, 'empty' => true ) );?>
+            <?php echo $form->input( 'PropopdoTypenotifpdo.datenotif', array( 'label' =>  ( __( 'Date de notification', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?>
             <?php echo $form->input( 'Propopdo.commentairepdo', array( 'label' =>  'Observations', 'type' => 'text', 'rows' => 3, 'empty' => true ) );?>
         </fieldset>
     </div>

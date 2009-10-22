@@ -116,7 +116,7 @@
         'suiviappuiorientation' => 'suivisappuisorientation',
         'calculdroitrsa' => 'calculsdroitsrsa',
         //PDOS
-        'typenotif' => 'typesnotifs',
+        'typenotifpdo' => 'typesnotifspdos',
         'decisionpdo' => 'decisionspdos',
         'typepdo' => 'typespdos'
      );

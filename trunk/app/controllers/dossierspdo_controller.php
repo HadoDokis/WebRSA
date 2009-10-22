@@ -3,7 +3,7 @@
     class DossierspdoController extends AppController{
 
         var $name = 'Dossierspdo';
-        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotif', 'Suiviinstruction' );
+        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction' );
 
         function beforeFilter(){
             parent::beforeFilter();
@@ -12,7 +12,7 @@
             $this->set( 'commission', $this->Option->commission() );
             $this->set( 'motidempdo', $this->Option->motidempdo() );
             $this->set( 'motifpdo', $this->Option->motifpdo() );
-            $this->set( 'typenotifpdo', $this->Typenotif->find( 'list' ) );
+            $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
             $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
@@ -38,6 +38,9 @@
             $options = $this->Dossierpdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
             $pdo = $this->Propopdo->find( 'first', $options );
 
+            /// Récupération des listes des PDO
+//             $notif = $this->Typenotifpdo->find( 'all', array( 'conditions' => array( 'Typenotifpdo.id' => Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' )  ) ) );
+//             $this->set( 'notif', $notif );
 
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
             $this->set( 'pdo', $pdo );
@@ -78,19 +81,30 @@
         *
         *** *******************************************************************/
 
-        function _add_edit( $dossier_rsa_id = null ) {
-            $nbrDossiers = $this->Dossier->find( 'count', array( 'conditions' => array( 'Dossier.id' => $dossier_rsa_id ), 'recursive' => -1 ) );
-            $this->assert( ( $nbrDossiers == 1 ), 'invalidParameter' );
+        function _add_edit( $id = null ) {
+//             $nbrDossiers = $this->Dossier->find( 'count', array( 'conditions' => array( 'Dossier.id' => $dossier_rsa_id ), 'recursive' => -1 ) );
+//             $this->assert( ( $nbrDossiers == 1 ), 'invalidParameter' );
 
-             //debug( $this->data );
+            if( $this->action == 'add' ) {
+                $dossier_rsa_id = $id;
+                $nbrDossiers = $this->Dossier->find( 'count', array( 'conditions' => array( 'Dossier.id' => $dossier_rsa_id ), 'recursive' => -1 ) );
+                $this->assert( ( $nbrDossiers == 1 ), 'invalidParameter' );
+            }
+            else if( $this->action == 'edit' ) {
+                $pdo_id = $id;
+                $pdo = $this->Propopdo->findById( $pdo_id, null, null, -1 );
+                $this->assert( !empty( $pdo ), 'invalidParameter' );
+                $dossier_rsa_id = Set::classicExtract( $pdo, 'Propopdo.dossier_rsa_id' );
+            }
 
             $this->Propopdo->begin();
-
+            $this->Propopdo->Typenotifpdo->create();
             if( !$this->Jetons->check( $dossier_rsa_id ) ) {
                 $this->Propopdo->rollback();
             }
             $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
 
+// debug( $this->data );
             //Essai de sauvegarde
             if( !empty( $this->data ) ) {
                 if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
@@ -110,12 +124,12 @@
             else {
                 $this->data = $this->Propopdo->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
 
-                if( $this->action == 'add' ) {
-                    $this->assert( empty( $this->data ), 'invalidParameter' );
-                }
-                else if( $this->action == 'edit' ) {
-                    $this->assert( !empty( $this->data ), 'invalidParameter' );
-                }
+//                 if( $this->action == 'add' ) {
+//                     $this->assert( empty( $this->data ), 'invalidParameter' );
+//                 }
+//                 else if( $this->action == 'edit' ) {
+//                     $this->assert( !empty( $this->data ), 'invalidParameter' );
+//                 }
             }
             $this->Propopdo->commit();
 

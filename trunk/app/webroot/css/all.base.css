@@ -2,18 +2,14 @@
     Général
 ******************************************************************************/
 
-* {
-    line-height: 1.2;
-}
+* { line-height: 1.2; }
 
 body {
     font-family: sans-serif;
-    font-size: 14px;
+    font-size: 13px;
 }
 
-p, ul, ol, dl {
-    margin: 0.75em 0;
-}
+p, ul, ol, dl { margin: 0.75em 0; }
 
 p {
     line-height: 1.4em;
@@ -35,29 +31,13 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.2em;
 }
 
-h1 {
-    font-size: 1.95em;
-}
+h1 { font-size: 1.95em; }
+h2 { font-size: 1.56em; }
+h3 { font-size: 1.25em; }
 
-h2 {
-    font-size: 1.56em;
-}
-
-h3 {
-    font-size: 1.25em;
-}
-
-body.home h2 {
-    font-size: 1.95em;
-}
-
-body.home h3 {
-    font-size: 1.56em;
-}
-
-body.home h4 {
-    font-size: 1.25em;
-}
+body.home h2 { font-size: 1.95em; }
+body.home h3 { font-size: 1.56em; }
+body.home h4 { font-size: 1.25em; }
 
 /******************************************************************************
     Abbréviations
@@ -115,33 +95,9 @@ code {
     Listes
 ******************************************************************************/
 
-ul {
-    list-style-type: disc;
-}
-
-ol {
-    list-style-type: decimal;
-}
-
-li {
-    margin-left: 1.8em;
-}
-
-dl {
-}
-
-dt {
-	border: 1px solid silver;
-	padding: 0.25em 0.5em;
-	background: #eef;
-}
-
-dd {
-	border: 1px solid silver;
-	border-top: 0;
-	margin-bottom: 1em;
-	padding: 0.25em 0.5em;
-}
+ul { list-style-type: disc; }
+ol { list-style-type: decimal; }
+li { margin-left: 1.8em; }
 
 /******************************************************************************
     Citations
