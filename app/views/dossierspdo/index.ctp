@@ -200,6 +200,5 @@
         </table> 
 <?php endif;?>
 
-
 </div>
 <div class="clearer"><hr /></div>
