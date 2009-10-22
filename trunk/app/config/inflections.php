@@ -118,7 +118,8 @@
         //PDOS
         'typenotifpdo' => 'typesnotifspdos',
         'decisionpdo' => 'decisionspdos',
-        'typepdo' => 'typespdos'
+        'typepdo' => 'typespdos',
+        'piecepdo' => 'piecespdos'
      );
 /**
  * This is a key => value array of regex used to match words.
