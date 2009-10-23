@@ -14,11 +14,11 @@
 
             $pdo = $this->Propopdo->find( 'first', array( 'conditions' => array( 'Propopdo.id' => $pdo_id ) ) );
             $this->set( 'pdo', $pdo );
-// debug($pdo);
+
             $dossier_rsa_id = Set::extract( $pdo, 'Propopdo.dossier_rsa_id' );
 
             if( !empty( $this->data ) ) {
-//             debug($this->data  );
+
                 if( $this->Piecepdo->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'dossierspdo', 'action' => 'index', $dossier_rsa_id ) );
