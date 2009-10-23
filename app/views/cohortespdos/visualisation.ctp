@@ -60,13 +60,14 @@
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
-                    <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.decisionpdo' );?></th>
+                    <th><?php echo $paginator->sort( 'N° CAF/MSA', 'Dossier.matricule' );?></th>
+                    <th><?php echo $paginator->sort( 'Ville', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de la demande RSA', 'Dossier.dtdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo_id' );?></th>
+                    <th><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.decisionpdo_id' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.datedecisionpdo' );?></th>
                     <th><?php echo $paginator->sort( 'Motif', 'Propopdo.motifpdo' );?></th>
-                    <th><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.datedecisionpdo' );?></th>
-                     <th>Commentaires</th> 
+
                     <th class="action">Action</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -79,10 +80,6 @@
                                 <tr>
                                     <th>Date naissance</th>
                                     <td>'.h( date_short( $pdo['Personne']['dtnai'] ) ).'</td>
-                                </tr>
-                                <tr>
-                                    <th>Numéro CAF</th>
-                                    <td>'.h( $pdo['Dossier']['matricule'] ).'</td>
                                 </tr>
                                 <tr>
                                     <th>NIR</th>
@@ -100,13 +97,13 @@
                     echo $html->tableCells(
                         array(
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
-                            h( Set::extract( $pdo, 'Dossier.typeparte' ) ),
-                            h( value( $etatdosrsa, Set::extract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
-                            h( value( $typepdo, Set::extract( 'Propopdo.typepdo', $pdo ) ) ),
+                            h( Set::extract( $pdo, 'Dossier.matricule' ) ),
+                            h( Set::extract( $pdo, 'Adresse.locaadr' ) ),
+                            h( date_short( Set::extract( $pdo, 'Dossier.dtdemrsa' ) ) ),
+                            h( value( $typepdo, Set::extract( 'Propopdo.typepdo_id', $pdo ) ) ),
+                            h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo_id', $pdo ) ) ),
                             h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
                             h( value( $motifpdo, Set::extract( 'Propopdo.motifpdo', $pdo ) ) ),
-                            h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo', $pdo ) ) ),
-                            h( Set::extract( $pdo, 'Propopdo.commentairepdo' ) ),
                             $html->viewLink(
                                 'Voir le contrat « '.$title.' »',
                                 array( 'controller' => 'dossierspdo', 'action' => 'index', $pdo['Dossier']['id'] )
