@@ -43,7 +43,7 @@
                 $notif = $this->Typenotifpdo->find( 'all', array( 'conditions' => array( 'Typenotifpdo.id' => Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' )  ) ) );
 
                 /// Récupération des Pièces liées à la PDO
-                $piecespdos = $this->Piecepdo->find( 'all', array( 'conditions' => array( 'Piecepdo.propopdo_id' => Set::classicExtract( $pdo, 'Propopdo.id' )  ) ) );
+                $piecespdos = $this->Piecepdo->find( 'all', array( 'conditions' => array( 'Piecepdo.propopdo_id' => Set::classicExtract( $pdo, 'Propopdo.id' )  ), 'order' => 'Piecepdo.dateajout DESC' ) );
 // debug($piecespdos);
                 $this->set( 'notif', $notif );
                 $this->set( 'piecespdos', $piecespdos );

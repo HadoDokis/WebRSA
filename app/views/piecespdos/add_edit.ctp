@@ -1,6 +1,10 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+
+<?php echo $this->element( 'dossier_menu', array( 'id' => Set::extract( $pdo, 'Propopdo.dossier_rsa_id' ) ) );?>
+
 <?php $this->pageTitle = 'Pieces PDOs';?>
 
+<div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 
     <?php 
@@ -21,5 +25,5 @@
 
         <?php echo $form->submit( 'Enregistrer' );?>
     <?php echo $form->end();?>
-
+</div>
 <div class="clearer"><hr /></div>
