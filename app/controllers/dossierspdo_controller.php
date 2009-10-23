@@ -38,16 +38,20 @@
             $options = $this->Dossierpdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
             $pdo = $this->Propopdo->find( 'first', $options );
 
-            /// Récupération des Types de notification liées à la PDO
-            $notif = $this->Typenotifpdo->find( 'all', array( 'conditions' => array( 'Typenotifpdo.id' => Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' )  ) ) );
+            if( !empty( $pdo ) ){
+                /// Récupération des Types de notification liées à la PDO
+                $notif = $this->Typenotifpdo->find( 'all', array( 'conditions' => array( 'Typenotifpdo.id' => Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' )  ) ) );
 
-            /// Récupération des Pièces liées à la PDO
-            $piecespdos = $this->Piecepdo->find( 'all', array( 'conditions' => array( 'Piecepdo.propopdo_id' => Set::classicExtract( $pdo, 'Propopdo.id' )  ) ) );
+                /// Récupération des Pièces liées à la PDO
+                $piecespdos = $this->Piecepdo->find( 'all', array( 'conditions' => array( 'Piecepdo.propopdo_id' => Set::classicExtract( $pdo, 'Propopdo.id' )  ) ) );
+// debug($piecespdos);
+                $this->set( 'notif', $notif );
+                $this->set( 'piecespdos', $piecespdos );
+            }
 
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
             $this->set( 'pdo', $pdo );
-            $this->set( 'notif', $notif );
-            $this->set( 'piecespdos', $piecespdos );
+
             $this->set( 'details', $details );
         }
 
@@ -94,22 +98,23 @@
             else if( $this->action == 'edit' ) {
                 $pdo_id = $id;
                 $pdo = $this->Propopdo->findById( $pdo_id, null, null, -1 );
+//                 $typenotifpdo = $this->Typenotifpdo->Propopdo->findById( $pdo_id, null, null, -1 );
                 $this->assert( !empty( $pdo ), 'invalidParameter' );
                 $dossier_rsa_id = Set::classicExtract( $pdo, 'Propopdo.dossier_rsa_id' );
             }
 
             $this->Propopdo->begin();
-            $this->Propopdo->Typenotifpdo->create();
             if( !$this->Jetons->check( $dossier_rsa_id ) ) {
                 $this->Propopdo->rollback();
             }
             $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
 
-// debug( $this->data );
+
             //Essai de sauvegarde
             if( !empty( $this->data ) ) {
-                if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-                    if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+
+                if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) /*&& $this->Typenotifpdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) */) {
+                    if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) )/* && $this->Typenotifpdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) )*/) {
 
                         $this->Jetons->release( $dossier_rsa_id );
                         $this->Propopdo->commit();
@@ -125,12 +130,14 @@
             else {
                 $this->data = $this->Propopdo->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
 
-//                 if( $this->action == 'add' ) {
-//                     $this->assert( empty( $this->data ), 'invalidParameter' );
-//                 }
-//                 else if( $this->action == 'edit' ) {
-//                     $this->assert( !empty( $this->data ), 'invalidParameter' );
-//                 }
+
+
+                if( $this->action == 'add' ) {
+                    $this->assert( empty( $this->data ), 'invalidParameter' );
+                }
+                else if( $this->action == 'edit' ) {
+                    $this->assert( !empty( $this->data ), 'invalidParameter' );
+                }
             }
             $this->Propopdo->commit();
 
