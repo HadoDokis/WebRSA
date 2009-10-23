@@ -4,10 +4,17 @@
     {
         var $name = 'Propopdo';
 
-        var $belongTo = array(
+        var $belongsTo = array(
             'Dossier' => array(
                 'classname'     => 'Dossier',
                 'foreignKey'    => 'dossier_rsa_id'
+            )
+        );
+
+        var $hasMany = array(
+            'Piecepdo' => array(
+                'classname'     => 'Piecepdo',
+                'foreignKey'    => 'propopdo_id'
             )
         );
 

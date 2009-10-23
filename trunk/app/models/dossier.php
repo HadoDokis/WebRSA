@@ -161,7 +161,7 @@
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
                 $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : array( null ) );
-                $conditions[] = '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) OR ( Situationdossierrsa.etatdosrsa = \'Z\' ) )';
+                $conditions[] = '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) AND ( Situationdossierrsa.etatdosrsa = \'Z\' ) )'; ///FIXME: passage de OR à AND car les dossier sà Z mais non présents dans le code insee apparaissaient !!!!!!!
             }
 
             // Critères sur le dossier - numéro de dossier

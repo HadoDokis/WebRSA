@@ -669,6 +669,18 @@ class HtmlHelper extends AppHelper {
         );
     }
 
+    function addPieceLink( $title, $url ) {
+        return $this->link(
+            $this->image(
+                'icons/add.png',
+                array( 'alt' => '' )
+            ).' Ajouter une pièce',
+            $url,
+            array( 'escape' => false, 'title' => $title )
+        );
+    }
+
+
     function editLink( $title, $url, $enabled = true ) {
         $content = $this->image(
             'icons/pencil.png',

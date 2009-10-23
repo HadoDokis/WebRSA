@@ -119,7 +119,8 @@
         'typenotifpdo' => 'typesnotifspdos',
         'decisionpdo' => 'decisionspdos',
         'typepdo' => 'typespdos',
-        'piecepdo' => 'piecespdos'
+        'piecepdo' => 'piecespdos',
+        'propopdo_typenotifpdo' => 'propospdos_typesnotifspdos'
      );
 /**
  * This is a key => value array of regex used to match words.

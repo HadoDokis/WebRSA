@@ -38,7 +38,21 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Dossier.id = Foyer.dossier_rsa_id' )
-                    )
+                    )/*,
+                    array(
+                        'table'      => 'adresses_foyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    )*/
                 )
             ),
             'propopdo' => array(
@@ -53,6 +67,7 @@
                     '"Propopdo"."commentairepdo"',
 //                     '"Decisionpdo"."id"',
                     '"Decisionpdo"."libelle"',
+                    '"Typenotifpdo"."id"',
                     '"Typenotifpdo"."libelle"',
 //                     '"Typepdo"."id"',
                     '"Typepdo"."libelle"',
@@ -76,13 +91,20 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Propopdo.typenotifpdo_id = Typenotifpdo.id' )
                     ),
-                    array(
-                        'table'      => 'propospdos_typesnotifspdos',
-                        'alias'      => 'PropopdoTypenotifpdo',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'PropopdoTypenotifpdo.propopdo_id = Propopdo.id' )
-                    ),
+//                     array(
+//                         'table'      => 'propospdos_typesnotifspdos',
+//                         'alias'      => 'PropopdoTypenotifpdo',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'PropopdoTypenotifpdo.propopdo_id = Propopdo.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'piecespdos',
+//                         'alias'      => 'Piecepdo',
+//                         'type'       => 'INNER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Piecepdo.propopdo_id = Propopdo.id' )
+//                     ),
                     array(
                         'table'      => 'decisionspdos',
                         'alias'      => 'Decisionpdo',
@@ -103,6 +125,20 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'adresses_foyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
                     ),
                     array(
                         'table'      => 'personnes',
