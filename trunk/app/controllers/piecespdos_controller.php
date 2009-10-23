@@ -25,6 +25,7 @@
                 }
             }
             $this->render( $this->action, null, 'add_edit' );
+
         }
 
         function edit( $piecepdo_id = null ) {
