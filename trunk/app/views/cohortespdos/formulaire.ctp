@@ -47,16 +47,16 @@
             <thead>
                 <tr>
                     <!-- <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
-                    <th><?php echo $paginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de demande RSA', 'Dossier.dtdemrsa' );?></th>
                      <th>Situation des droits RSA</th>
-                    <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.decisionpdo' );?></th>
+                    <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo_id' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.decisionpdo_id' );?></th>
                     <th style="width:10em"><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.datedecisionpdo' );?></th> -->
                     <th>Nom de l'allocataire</th>
-                    <th>Suivi</th>
+                    <th>Date de demande RSA</th>
                     <th>Type de PDO</th>
-                    <th>Date de décision PDO</th>
                     <th>Decision PDO</th>
+                    <th>Date de décision PDO</th>
                     <th>Motif</th>
                     <th>Commentaires</th>
                     <th class="action noprint">Action</th>
@@ -97,23 +97,24 @@
 
                     $dossier_rsa_id = $pdo['Dossier']['id'];//Set::extract( $pdo, 'Propopdo.dossier_rsa_id');
                     $pdo_id = Set::extract( $pdo, 'Propopdo.id');
-
+// debug($pdo);
                     echo $html->tableCells(
                         array(
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
-                            h( $pdo['Dossier']['typeparte'] ),
+                            h( date_short( $pdo['Dossier']['dtdemrsa'] ) ),
 
-                            $form->input( 'Propopdo.'.$index.'.typepdo', array( 'label' => false, 'type' => 'select', 'options' => $typepdo/*, 'value' => $_typepdo*/ ) ),
+                            $form->input( 'Propopdo.'.$index.'.typepdo_id', array( 'label' => false, 'type' => 'select', 'options' => $typepdo/*, 'value' => $_typepdo*/ ) ),
 
-                            $form->input( 'Propopdo.'.$index.'.datedecisionpdo', array( 'label' => false, 'div' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) ),
-
-                            $form->input( 'Propopdo.'.$index.'.decisionpdo', array( 'label' => false, 'type' => 'select', 'options' => $decisionpdo, 'empty' => true/*, 'value' => $_decisionpdo*/ ) ).
+                            $form->input( 'Propopdo.'.$index.'.decisionpdo_id', array( 'label' => false, 'type' => 'select', 'options' => $decisionpdo, 'empty' => true/*, 'value' => $_decisionpdo*/ ) ).
 
                             $form->input( 'Propopdo.'.$index.'.dossier_rsa_id', array( 'label' => false, 'div' => false, 'value' => $dossier_rsa_id, 'type' => 'hidden' ) ).
 
                             $form->input( 'Propopdo.'.$index.'.id', array( 'label' => false, 'div' => false, 'value' => $pdo_id, 'type' => 'hidden' ) ).
 
                             $form->input( 'Propopdo.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $pdo['Dossier']['id'] ) ),
+
+
+                            $form->input( 'Propopdo.'.$index.'.datedecisionpdo', array( 'label' => false, 'div' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) ),
 
                             $form->input( 'Propopdo.'.$index.'.motifpdo', array( 'label' => false, 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) ),
 

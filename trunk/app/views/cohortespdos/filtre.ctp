@@ -34,8 +34,8 @@
         <?php else :?>
          <?php echo $form->input( 'Cohortepdo.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
         <?php
-            echo $form->input( 'Cohortepdo.typepdo', array( 'label' => __( 'typepdo', true ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );
-            echo $form->input( 'Cohortepdo.decisionpdo', array( 'label' => __( 'decisionpdo', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );
+            echo $form->input( 'Cohortepdo.typepdo_id', array( 'label' =>  ( __( 'typepdo', true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );
+            echo $form->input( 'Cohortepdo.decisionpdo_id', array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );
             echo $form->input( 'Cohortepdo.motifpdo', array( 'label' => __( 'motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) );
         ?>
             <?php echo $form->input( 'Cohortepdo.datedecisionpdo', array( 'label' => 'Filtrer par date de décision des PDOs', 'type' => 'checkbox' ) );?>

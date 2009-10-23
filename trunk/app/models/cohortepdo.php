@@ -17,12 +17,15 @@
                 }
                 else if( $statutValidationAvis == 'Decisionpdo::enattente' ) {
                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
-                    $conditions[] = 'Propopdo.decisionpdo = \'E\'';
+                    $conditions[] = 'Propopdo.motifpdo = \'E\'';
+//                     $conditions[] = 'Propopdo.decisionpdo_id = \'E\'';
                 }
                 else if( $statutValidationAvis == 'Decisionpdo::valide' ) {
                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
-                    $conditions[] = 'Propopdo.decisionpdo IS NOT NULL';
-                    $conditions[] = 'Propopdo.decisionpdo <> \'E\'';
+//                     $conditions[] = 'Propopdo.decisionpdo IS NOT NULL';
+                    $conditions[] = 'Propopdo.motifpdo <> \'E\'';
+                    $conditions[] = 'Propopdo.decisionpdo_id IS NOT NULL';
+//                     $conditions[] = 'Propopdo.decisionpdo_id <> \'E\'';
                 }
             }
 
@@ -38,8 +41,8 @@
             }
 
             /// Critères
-            $typepdo = Set::extract( $criterespdo, 'Cohortepdo.typepdo' );
-            $decisionpdo = Set::extract( $criterespdo, 'Cohortepdo.decisionpdo' );
+            $typepdo_id = Set::extract( $criterespdo, 'Cohortepdo.typepdo_id' );
+            $decisionpdo_id = Set::extract( $criterespdo, 'Cohortepdo.decisionpdo_id' );
             $motifpdo = Set::extract( $criterespdo, 'Cohortepdo.motifpdo' );
             $datedecisionpdo = Set::extract( $criterespdo, 'Cohortepdo.datedecisionpdo' );
             $matricule = Set::extract( $criterespdo, 'Cohortepdo.matricule' );
@@ -54,8 +57,8 @@
             }
 
             // Type de PDO
-            if( !empty( $typepdo ) ) {
-                $conditions[] = 'Propopdo.typepdo ILIKE \'%'.Sanitize::clean( $typepdo ).'%\'';
+            if( !empty( $typepdo_id ) ) {
+                $conditions[] = 'Propopdo.typepdo_id = \''.$typepdo_id.'\'';
             }
 
             // Motif de la PDO
@@ -74,8 +77,8 @@
             }
 
             // Décision CG
-            if( !empty( $decisionpdo ) ) {
-                $conditions[] = 'Propopdo.decisionpdo ILIKE \'%'.Sanitize::clean( $decisionpdo ).'%\'';
+            if( !empty( $decisionpdo_id ) ) {
+                $conditions[] = 'Propopdo.decisionpdo_id = \''.$decisionpdo_id.'\'';
             }
 
             /// Critères sur les PDOs - date de décision
@@ -96,13 +99,15 @@
                 'fields' => array(
                     '"Propopdo"."id"',
                     '"Propopdo"."dossier_rsa_id"',
-                    '"Propopdo"."typepdo"',
-                    '"Propopdo"."decisionpdo"',
+                    '"Propopdo"."typepdo_id"',
+                    '"Propopdo"."decisionpdo_id"',
+                    '"Propopdo"."typenotifpdo_id"',
                     '"Propopdo"."datedecisionpdo"',
                     '"Propopdo"."motifpdo"',
                     '"Propopdo"."commentairepdo"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
+                    '"Dossier"."dtdemrsa"',
                     '"Dossier"."matricule"',
                     '"Dossier"."typeparte"',
                     '"Personne"."id"',
@@ -123,6 +128,27 @@
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Propopdo.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'typesnotifspdos',
+                        'alias'      => 'Typenotifpdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.typenotifpdo_id = Typenotifpdo.id' )
+                    ),
+                    array(
+                        'table'      => 'decisionspdos',
+                        'alias'      => 'Decisionpdo',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.decisionpdo_id = Decisionpdo.id' )
+                    ),
+                    array(
+                        'table'      => 'typespdos',
+                        'alias'      => 'Typepdo',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.typepdo_id = Typepdo.id' )
                     ),
                     array(
                         'table'      => 'foyers',

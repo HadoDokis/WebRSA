@@ -3,7 +3,7 @@
     class CohortespdosController extends AppController {
 
         var $name = 'Cohortespdos';
-        var $uses = array( 'Cohortepdo', 'Option', 'Dossier', 'Situationdossierrsa', 'Propopdo' );
+        var $uses = array( 'Cohortepdo', 'Option', 'Dossier', 'Situationdossierrsa', 'Propopdo', 'Typenotifpdo', 'Typepdo', 'Decisionpdo' );
         var $helpers = array( 'Csv', 'Paginator' );
 
         var $paginate = array(
@@ -23,12 +23,13 @@
         function beforeFilter(){
             parent::beforeFilter();
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-            $this->set( 'decisionpdo', $this->Option->decisionpdo() );
-            $this->set( 'typepdo', $this->Option->typepdo() );
+            $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
+            $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );;
+            $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
             $this->set( 'pieecpres', $this->Option->pieecpres() );
             $this->set( 'commission', $this->Option->commission() );
             $this->set( 'motidempdo', $this->Option->motidempdo() );
-            $this->set( 'motideccg', $this->Option->motideccg() );
+//             $this->set( 'motideccg', $this->Option->motideccg() );
             $this->set( 'motifpdo', $this->Option->motifpdo() );
         }
 
