@@ -55,7 +55,7 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
-        function delete( $typenotifpdo_id = null ) {
+        function deleteparametrage( $typenotifpdo_id = null ) {
             // Vérification du format de la variable
             if( !valid_int( $typenotifpdo_id ) ) {
                 $this->cakeError( 'error404' );

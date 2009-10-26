@@ -9,6 +9,12 @@
         var $name = 'Gedooos';
         var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action' );
         var $component = array( 'Jetons' );
+        var $helpers = array( 'Locale' );
+
+        function beforeFilter() {
+            App::import( 'Helper', 'Locale' );
+            $this->Locale = new LocaleHelper(); 
+        }
 
         function _value( $array, $index ) {
             $keys = array_keys( $array );
@@ -875,9 +881,11 @@
             ///Pour la qualité de la personne
             $rdv['Personne']['qual'] = Set::extract( $qual, Set::extract( $rdv, 'Personne.qual' ) );
             ///Pour l'adresse de la structure référente
-            $rdv['Structurereferente']['type_voie'] = Set::extract( $typevoie, Set::extract( $rdv, 'Structurereferente.type_voie' ) );
+            $rdv['Structurereferente']['type_voie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Structurereferente.type_voie' ) );
             ///Pour la date du rendez-vous
-            $rdv['Rendezvous']['daterdv'] = date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) );
+
+            $rdv['Rendezvous']['daterdv'] =  $this->Locale->date( '%d-%m-%Y', Set::classicExtract( $rdv, 'Rendezvous.daterdv' ) );
+            $rdv['Rendezvous']['heurerdv'] = $this->Locale->date( 'Time::short', Set::classicExtract( $rdv, 'Rendezvous.heurerdv' ) );
             ///Pour l'adresse de la personne
             $rdv['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $rdv, 'Adresse.typevoie' ) );
 

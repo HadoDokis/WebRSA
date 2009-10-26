@@ -42,5 +42,17 @@
             )
         );
 
+        function dossierId( $propopdo_id ) {
+//             $this->unbindModelAll();
+//             $this->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) );
+            $propopdo = $this->findById( $propopdo_id, null, null, 0 );
+            if( !empty( $propopdo ) ) {
+                return $propopdo['Propopdo']['dossier_rsa_id'];
+            }
+            else {
+                return null;
+            }
+            debug($propopdo);
+        }
     }
 ?>

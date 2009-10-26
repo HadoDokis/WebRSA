@@ -3,7 +3,7 @@
     class DossierspdoController extends AppController{
 
         var $name = 'Dossierspdo';
-        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction', 'Piecepdo' );
+        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction', 'Piecepdo', 'PropopdoTypenotifpdo' );
 
         function beforeFilter(){
             parent::beforeFilter();
@@ -40,12 +40,12 @@
 
             if( !empty( $pdo ) ){
                 /// Récupération des Types de notification liées à la PDO
-                $notif = $this->Typenotifpdo->find( 'all', array( 'conditions' => array( 'Typenotifpdo.id' => Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' )  ) ) );
+                $notifs = $this->PropopdoTypenotifpdo->find( 'all', array( 'conditions' => array( 'PropopdoTypenotifpdo.propopdo_id' => Set::classicExtract( $pdo, 'Propopdo.id' )  ) ) );
 
                 /// Récupération des Pièces liées à la PDO
                 $piecespdos = $this->Piecepdo->find( 'all', array( 'conditions' => array( 'Piecepdo.propopdo_id' => Set::classicExtract( $pdo, 'Propopdo.id' )  ), 'order' => 'Piecepdo.dateajout DESC' ) );
 // debug($piecespdos);
-                $this->set( 'notif', $notif );
+                $this->set( 'notifs', $notifs );
                 $this->set( 'piecespdos', $piecespdos );
             }
 
@@ -129,8 +129,6 @@
             //Affichage des données
             else {
                 $this->data = $this->Propopdo->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
-
-
 
                 if( $this->action == 'add' ) {
                     $this->assert( empty( $this->data ), 'invalidParameter' );

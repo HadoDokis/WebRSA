@@ -35,7 +35,6 @@
 </script>
 
 <?php echo $form->create( 'Critererdv', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
-    <?php echo $form->input( 'Critererdv.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
     <fieldset>
         <legend>Recherche par personne</legend>
         <?php echo $form->input( 'Critererdv.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
@@ -43,6 +42,7 @@
     </fieldset>
     <fieldset>
         <legend>Recherche par Contrat d'insertion</legend>
+            <?php echo $form->input( 'Critererdv.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
             <?php echo $form->input( 'Critererdv.locaadr', array( 'label' => __( 'locaadr', true ), 'type' => 'text' ) );?>
             <!-- <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
             <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
@@ -125,8 +125,8 @@
                                 h( value( $struct, Set::extract( $rdv, 'Rendezvous.structurereferente_id' ) ) ),
                                 h(  value( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) ) ),
                                 h( value( $typerdv, Set::extract( $rdv, 'Rendezvous.typerdv_id' ) ) ),
-                                h( date_short( $rdv['Rendezvous']['daterdv'] ) ),
-                                h( ( $rdv['Rendezvous']['heurerdv'] ) ),
+                                h( $locale->date( 'Date::short', $rdv['Rendezvous']['daterdv'] ) ),
+                                h( $locale->date( 'Time::short', $rdv['Rendezvous']['heurerdv'] ) ),
                                 h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv' ) ) ),
 
 //                                 h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),

@@ -70,7 +70,7 @@ msgid "Datetime::short"
 msgstr "%d/%m/%Y %H:%M:%S"
 
 msgid "Time::short"
-msgstr "%Hh%I"
+msgstr "%Hh%M"
 
 msgid "Date::miniLettre"
 msgstr "%B %Y"
