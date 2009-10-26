@@ -65,17 +65,14 @@
 					result( $dsp, 'Dsp.drorsarmianta2', 'enum', $options['drorsarmianta2'] ),
 				)
 			);
-			$generalites = $xhtml->details( $generalites, array( 'type' => 'list', 'empty' => false ) );
+			$generalites = $xhtml->details( $generalites, array( 'type' => 'list', 'empty' => true ) );
 			if( !empty( $generalites ) ) {
 				echo $html->tag( 'h2', 'Généralités' ).$generalites;
 			}
 
 
 			// Situation sociale
-			echo $html->tag( 'h2', 'Situation sociale' );
-
 			// Situation sociale: généralités
-			echo $html->tag( 'h3', 'Généralités' );
 			$rows = array(
 				array(
 					__d( 'dsp', 'Dsp.accosocfam', true ),
@@ -98,10 +95,12 @@
 					result( $dsp, 'Dsp.soutdemarsoc', 'enum', $options['soutdemarsoc'] ),
 				)
 			);
-			echo $xhtml->details( $rows );
+			$generalites = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
+			if( !empty( $generalites ) ) {
+				$generalites = $html->tag( 'h3', 'Généralités' ).$generalites;
+			}
 
 			// Niveau d'étude
-			echo $html->tag( 'h2', 'Niveau d\'étude' );
 			$rows = array(
 				array(
 					__d( 'dsp', 'Dsp.nivetu', true ),
@@ -132,20 +131,24 @@
 					result( $dsp, 'Dsp.libcompeextrapro', 'textarea' ),
 				),
 			);
-			echo $xhtml->details( $rows );
+			$nivetus = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
+			if( !empty( $nivetus ) ) {
+				$nivetus = $html->tag( 'h2', 'Niveau d\'étude' ).$nivetus;
+			}
 
 			// Disponibilités emploi
-			echo $html->tag( 'h2', 'Disponibilités emploi' );
-			$rows = array(
+			$disponibilitésEmploi = array(
 				array(
 					__d( 'dsp', 'Dsp.topengdemarechemploi', true ),
 					result( $dsp, 'Dsp.topengdemarechemploi', 'enum', $options['topengdemarechemploi'] ),
 				)
 			);
-			echo $xhtml->details( $rows );
+			$disponibilitésEmploi = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
+			if( !empty( $disponibilitésEmploi ) ) {
+				$disponibilitésEmploi = $html->tag( 'h2', 'Disponibilités emploi' ).$disponibilitésEmploi;
+			}
 
 			// Situation professionnelle
-			echo $html->tag( 'h2', 'Situation professionnellei' );
 			$rows = array(
 				array(
 					__d( 'dsp', 'Dsp.hispro', true ),
@@ -216,10 +219,12 @@
 					result( $dsp, 'Dsp.concoformqualiemploi', 'enum', $options['concoformqualiemploi'] ),
 				),
 			);
-			echo $xhtml->details( $rows );
+			$situationProfessionnelle = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
+			if( !empty( $situationProfessionnelle ) ) {
+				$situationProfessionnelle = $html->tag( 'h2', 'Situation professionnelle' ).$situationProfessionnelle;
+			}
 
 			// Mobilité
-			echo $html->tag( 'h2', 'Mobilité' );
 			$rows = array(
 				array(
 					__d( 'dsp', 'Dsp.topmoyloco', true ),
@@ -238,10 +243,12 @@
 					result( $dsp, 'Dsp.libautrpermicondu', 'textarea' ),
 				),
 			);
-			echo $xhtml->details( $rows );
+			$mobilite = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
+			if( !empty( $mobilite ) ) {
+				$mobilite = $html->tag( 'h2', 'Mobilité' ).$mobilite;
+			}
 
 			// Difficultés logement
-			echo $html->tag( 'h2', 'Difficultés logement' );
 			$rows = array(
 				array(
 					__d( 'dsp', 'Dsp.natlog', true ),
@@ -260,7 +267,15 @@
 					result( $dsp, 'Dsp.libautrpermicondu', 'textarea' ),
 				),
 			);
-			echo $xhtml->details( $rows );
+			$difficultesLogement = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
+			if( !empty( $difficultesLogement ) ) {
+				$difficultesLogement = $html->tag( 'h2', 'Difficultés logement' ).$difficultesLogement;
+			}
+
+			$situationSolciale = implode( '', array( $generalites, $nivetus, $disponibilitésEmploi, $situationProfessionnelle, $mobilite, $difficultesLogement ) );
+			if( !empty( $situationSolciale ) ) {
+				echo $html->tag( 'h2', 'Situation sociale' ).$situationSolciale;
+			}
 		}
 	?>
 </div>

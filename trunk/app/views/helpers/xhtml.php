@@ -12,6 +12,7 @@
 				'type' => 'table',
 				'empty' => true
 			);
+
 			$options = Set::merge( $default, $options );
 
 			$type = Set::classicExtract( $options, 'type' );
@@ -27,11 +28,15 @@
                 $class = 'odd';
 				foreach( $rows as $row ) {
                     if( $allowEmpty || ( !empty( $row[1] ) || valid_int( $row[1] ) ) ) {
+						// TODO ?
+						$currentOptions = ( ( $class == 'even' ) ? $evenOptions : $oddOptions );
+						$classes = Set::classicExtract( $currentOptions, 'class' );
+						if( ( !empty( $row[1] ) || valid_int( $row[1] ) ) ) {
+							$currentOptions['class'] = implode( ' ', Set::merge( $classes, array( 'answered' ) ) );
+						}
+
 						$question = $row[0];
 						$answer = ( ( !empty( $row[1] ) || valid_int( $row[1] ) ) ? $row[1] : ' ' );
-						// TODO ?
-						//$htmlAttributes = ( isset( $row[2] ) ? $row[2] : array() );
-						$currentOptions = ( ( $class == 'even' ) ? $evenOptions : $oddOptions );
 
 						if( $type == 'table' ) {
 							$return .= $this->tag(
@@ -53,7 +58,6 @@
 					foreach( array( 'type', 'empty' ) as $key ) {
 						unset( $options[$key] );
 					}
-
 					if( $type == 'table' ) {
 						$return = $this->tag(
 							'table',

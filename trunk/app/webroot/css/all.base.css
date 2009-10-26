@@ -216,3 +216,22 @@ table#tableDroits {
 .droits {
     color: black;
 }
+
+/* FIXME: class details */
+
+dt {
+	border: 1px solid silver;
+	background: #eef;
+	padding: 0.5em;
+}
+
+dd {
+	border: 1px solid silver;
+	border-top: 0;
+	padding: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+dt.answered, dd.answered {
+	font-weight: bold;
+}
