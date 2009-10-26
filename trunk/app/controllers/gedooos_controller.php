@@ -62,15 +62,17 @@
             foreach( $datas as $group => $details ) {
                 if( !empty( $details ) ) {
                     foreach( $details as $key => $value ) {
-// if( is_array( $value ) ) {
-//     debug( $key );
-//     debug( $value );
-// }
+
+                        $type = 'text';
+                        if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
+                            $type = 'date';
+                        }
+
                         $oMainPart->addElement(
                             new GDO_FieldType(
                                 strtolower( $group ).'_'.strtolower( $key ),
                                 $value,
-                                'text'
+                                $type
                             )
                         );
                     }
@@ -884,7 +886,8 @@
             $rdv['Structurereferente']['type_voie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Structurereferente.type_voie' ) );
             ///Pour la date du rendez-vous
 
-            $rdv['Rendezvous']['daterdv'] =  $this->Locale->date( '%d-%m-%Y', Set::classicExtract( $rdv, 'Rendezvous.daterdv' ) );
+            $rdv['Rendezvous']['daterdv'] =  $this->Locale->date( '%d/%m/%Y', Set::classicExtract( $rdv, 'Rendezvous.daterdv' ) );
+//             debug( $this->Locale->date( '%d-%m-%Y', Set::classicExtract( $rdv, 'Rendezvous.daterdv' ) ) );
             $rdv['Rendezvous']['heurerdv'] = $this->Locale->date( 'Time::short', Set::classicExtract( $rdv, 'Rendezvous.heurerdv' ) );
             ///Pour l'adresse de la personne
             $rdv['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $rdv, 'Adresse.typevoie' ) );
@@ -895,6 +898,8 @@
             $this->set( 'referents', $referents );
             $rdv['Rendezvous']['referent_id'] = Set::extract( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) );
 
+// debug( $rdv['Rendezvous']['daterdv']  );
+// die();
 
             $this->_ged( $rdv, 'RDV/'.$modele.'.odt' );
         }

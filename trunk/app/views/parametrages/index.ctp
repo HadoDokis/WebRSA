@@ -46,6 +46,17 @@
                 );
                 echo $html->tableCells(
                     array(
+                        h( 'Permanences' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'permanences', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
                         h( 'Référents' ),
                         $html->viewLink(
                             'Voir la table',

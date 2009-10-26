@@ -92,6 +92,7 @@
     </table>
 
 <br />
+<!--  AJOUT DE TRAITEMENTS POUR LA PDO   -->
 <?php if( !empty( $pdo ) ):?>
     <h1>Liste des traitements</h1>
 
@@ -139,7 +140,7 @@
     <?php endif;?>
 
 <br />
-
+<!--  AJOUT DE PIECES JOINTES POUR LA PDO   -->
     <h1>Liste des pièces</h1>
 
     <?php if( $permissions->check( 'dossierspdo', 'add' ) ):?>
