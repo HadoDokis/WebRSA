@@ -4,7 +4,7 @@
 
         var $name = 'Rendezvous';
         var $uses = array( 'Rendezvous', 'Option', 'Personne', 'Structurereferente', 'Typerdv', 'Referent' );
-        var $helpers = array( 'Locale', 'Csv', 'Ajax' );
+        var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct' );
 
         /** ********************************************************************

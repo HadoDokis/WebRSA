@@ -56,8 +56,8 @@
                             h( Set::extract( $rdv, 'Structurereferente.lib_struc' ) ),
                             h( Set::extract( $rdv, 'Typerdv.libelle' ) ),
                             h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv' ) ) ),
-                            h(  date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) ) ),
-                            h(  Set::extract( $rdv, 'Rendezvous.heurerdv' ) ),
+                            h( date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) ) ),
+                            h( $locale->date( 'Time::short', Set::extract( $rdv, 'Rendezvous.heurerdv' ) ) ),
                             h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),
                             h( Set::extract( $rdv, 'Rendezvous.commentairerdv' ) ) ,
                             $html->viewLink(

@@ -1,3 +1,13 @@
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
+SET search_path = public, pg_catalog;
+SET default_tablespace = '';
+SET default_with_oids = false;
+
+-- *****************************************************************************
 -- DROP TYPE type_booleannumber;
 -- DROP TYPE type_no;
 -- DROP TYPE type_nos;
@@ -209,14 +219,21 @@ CREATE INDEX parcours_personne_id_idx ON parcours (personne_id);
 -- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "calculsdroitsrsa" liée à 'personnes'
 -- --------------------------------------------------------------------------------------------------------
-CREATE TABLE calculsdroitsrsa (
-    id                          SERIAL NOT NULL PRIMARY KEY,
-    personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
-    toppersdrodevorsa           type_booleannumber DEFAULT NULL,
-    mtpersressmenrsa            NUMERIC(9,2),
-    mtpersabaneursa             NUMERIC(9,2)
-);
+
+-- CREATE TABLE calculsdroitsrsa (
+--     id                          SERIAL NOT NULL PRIMARY KEY,
+--     personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
+--     toppersdrodevorsa           type_booleannumber DEFAULT NULL,
+--     mtpersressmenrsa            NUMERIC(9,2),
+--     mtpersabaneursa             NUMERIC(9,2)
+-- );
 CREATE INDEX calculsdroitsrsa_personne_id_idx ON calculsdroitsrsa (personne_id);
+
+ALTER TABLE calculsdroitsrsa ADD COLUMN _tmp type_booleannumber DEFAULT NULL;
+UPDATE calculsdroitsrsa SET _tmp = CAST( ( CASE WHEN toppersdrodevorsa = true THEN '1' WHEN toppersdrodevorsa = false THEN '0' ELSE NULL END ) AS type_booleannumber ); -- FIXME: 
+ALTER TABLE calculsdroitsrsa DROP COLUMN toppersdrodevorsa;
+ALTER TABLE calculsdroitsrsa RENAME _tmp TO toppersdrodevorsa;
+
 -- --------------------------------------------------------------------------------------------------------
 -- Déplacement des trois champs toppersdrodevorsa / mtpersressmenrsa / mtpersabaneursa de leur table respectives (prestations / ressources / ressourcesmensuelles) vers la table calculsdroitsrsa
 -- --------------------------------------------------------------------------------------------------------
@@ -231,7 +248,7 @@ INSERT INTO calculsdroitsrsa ( personne_id, toppersdrodevorsa, mtpersressmenrsa,
               AND ressources.dfress = ( SELECT MAX( latestRessource.dfress ) FROM ressources AS latestRessource WHERE latestRessource.personne_id = personnes.id )
           LEFT OUTER JOIN ressourcesmensuelles ON ressources.id = ressourcesmensuelles.ressource_id
       WHERE prestations.natprest = 'RSA' AND prestations.rolepers IN ( 'DEM', 'CJT' )
-      GROUP BY prestations.personne_id, prestations.toppersdrodevorsa, ressources.mtpersressmenrsa, ressourcesmensuelles.ressource_id
+      GROUP BY prestations.personne_id, prestations.toppersdrodevorsa, ressources.mtpersressmenrsa, ressourcesmensuelles.ressource_id;
 
 
 --------------- Ajout du 20/10/2009 à 10h17 ------------------
@@ -252,13 +269,13 @@ CREATE TABLE typesnotifspdos (
 );
 
 
+ALTER TABLE propospdos DROP COLUMN decisionpdo;
+ALTER TABLE propospdos DROP COLUMN typepdo;
+
 ALTER TABLE propospdos ADD COLUMN typepdo_id INTEGER NOT NULL REFERENCES typespdos(id);
 ALTER TABLE propospdos ADD COLUMN decisionpdo_id INTEGER REFERENCES decisionspdos(id);
 ALTER TABLE propospdos ADD COLUMN typenotifpdo_id INTEGER REFERENCES typesnotifspdos(id);
 
-ALTER TABLE propospdos DROP COLUMN decisionpdo;
-ALTER TABLE propospdos DROP COLUMN typepdo;
-ALTER TABLE propospdos DROP COLUMN typenotifpdo;
 
 CREATE TABLE piecespdos (
     id              SERIAL NOT NULL PRIMARY KEY,
