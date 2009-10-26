@@ -53,6 +53,10 @@
             'Orientstruct' => array(
                 'classname' => 'Orientstruct',
                 'foreignKey' => 'structurereferente_id'
+            ),
+            'Permanence' => array(
+                'classname' => 'Permanence',
+                'foreignKey' => 'structurereferente_id'
             )
         );
 
