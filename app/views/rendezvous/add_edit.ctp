@@ -53,7 +53,7 @@
             <?php echo $form->input( 'Rendezvous.statutrdv', array( 'label' =>  required( __( 'statutrdv', true ) ), 'type' => 'select', 'options' => $statutrdv, 'empty' => true ) );?>
             <?php echo $form->input( 'Rendezvous.daterdv', array( 'label' =>  required( __( 'daterdv', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 ) );?>
             <?php
-                echo $form->input( 'Rendezvous.heurerdv', array( 'label' =>  required( __( 'heurerdv', true ) ), 'type' => 'time', 'timeFormat' => '24', 'empty' => true ) );
+                echo $xform->input( 'Rendezvous.heurerdv', array( 'label' =>  required( __( 'heurerdv', true ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ) ) );
             ?>
             <?php echo $form->input( 'Rendezvous.objetrdv', array( 'label' =>  ( __( 'objetrdv', true ) ), 'type' => 'text', 'rows' => 2, 'empty' => true ) );?>
             <?php echo $form->input( 'Rendezvous.commentairerdv', array( 'label' =>  ( __( 'commentairerdv', true ) ), 'type' => 'text', 'rows' => 3, 'empty' => true ) );?>
