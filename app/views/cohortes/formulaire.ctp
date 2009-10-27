@@ -10,6 +10,17 @@
             array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Filtre' ).toggle(); return false;" )
         ).'</li></ul>';
     }
+
+    function value( $array, $index ) {
+        $keys = array_keys( $array );
+        $index = ( ( $index == null ) ? '' : $index );
+        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
+            return $array[$index];
+        }
+        else {
+            return null;
+        }
+    }
 ?>
 
 <?php if( isset( $cohorte ) ):?>
@@ -137,7 +148,7 @@
                                     h( $personne['Dspp'] ? 'Oui' : 'Non' ),
 //                                     h( date_short( $personne['Dossier']['Situationdossierrsa']['dtclorsa'] ) ),
                                     h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
-                                    h( $typeserins[$personne['Suiviinstruction']['typeserins']] ),
+                                    h( value( $typeserins, Set::classicExtract( $personne, 'Suiviinstruction.typeserins' ) ) ),
                                     /*h(
                                         implode(
                                             ' ',
