@@ -34,7 +34,22 @@ CREATE INDEX rendezvous_referent_id_idx ON rendezvous (referent_id);
 
 ALTER TABLE actionsinsertion ADD COLUMN commentaire_action TEXT;
 
---------------- Ajout du 12/10/2009 à 08h49 ------------------
+
+--------------- Ajout du 26/10/2009 à 16h57 ------------------
+CREATE TABLE permanences(
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    structurereferente_id           INTEGER NOT NULL REFERENCES structuresreferentes(id),
+    libpermanence                   VARCHAR(100),
+    numvoie                         VARCHAR(15),
+    typevoie                        VARCHAR(6),
+    nomvoie                         VARCHAR(50),
+    codepos                         CHAR(5),
+    ville                           VARCHAR(45),
+    canton                          VARCHAR(50),
+    numtel                          VARCHAR(15)
+);
+CREATE INDEX permanences_structurereferente_id_idx ON permanences(structurereferente_id);
+
 ALTER TABLE rendezvous ADD COLUMN permanence_id INTEGER REFERENCES permanences(id);
 
 --------------- Ajout du 20/10/2009 à 10h17 ------------------

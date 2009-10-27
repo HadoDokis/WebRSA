@@ -89,18 +89,3 @@ CREATE TABLE parcours (
     numtelrvorgdeciorie         VARCHAR(10)
 );
 CREATE INDEX parcours_personne_id_idx ON parcours (personne_id);
-
---------------- Ajout du 26/10/2009 à 16h57 ------------------
-CREATE TABLE permanences(
-    id                              SERIAL NOT NULL PRIMARY KEY,
-    structurereferente_id           INTEGER NOT NULL REFERENCES structuresreferentes(id),
-    libpermanence                   VARCHAR(100),
-    numvoie                         VARCHAR(15),
-    typevoie                        VARCHAR(6),
-    nomvoie                         VARCHAR(50),
-    codepos                         CHAR(5),
-    ville                           VARCHAR(45),
-    canton                          VARCHAR(50),
-    numtel                          VARCHAR(15)
-);
-CREATE INDEX permanences_structurereferente_id_idx ON permanences(structurereferente_id);
