@@ -2,7 +2,6 @@
 
 <h1><?php echo 'Visualisation de la table  ';?></h1>
 
-<?php if( $permissions->check( 'permanences', 'add' ) ):?>
     <ul class="actionMenu">
         <?php
             echo '<li>'.$html->addLink(
@@ -11,7 +10,7 @@
             ).' </li>';
         ?>
     </ul>
-<?php endif;?>
+
     <?php if( empty( $permanences ) ):?>
         <p class="notice">Aucune permanence présente pour le moment.</p>
 
