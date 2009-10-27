@@ -6,8 +6,8 @@
     class CriteresrdvController extends AppController
     {
         var $name = 'Criteresrdv';
-        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Option', 'Typerdv', 'Referent' );
-        var $aucunDroit = array( 'constReq', 'ajaxreferent' );
+        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Option', 'Typerdv', 'Referent', 'Permanence' );
+        var $aucunDroit = array( 'constReq', 'ajaxreferent', 'ajaxperm' );
 
         var $helpers = array( 'Csv', 'Ajax' );
         /**
@@ -43,6 +43,7 @@
             $this->set( 'struct', $struct );
             $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
             $this->set( 'typerdv', $typerdv );
+            $this->set( 'permanences', $this->Permanence->find( 'list' ) );
 /*
             $referents = $this->_selectReferents( Set::classicExtract( $this->data, 'Structurereferente.id' ) );
             $this->set( 'referents', $referents );*/
@@ -86,6 +87,35 @@
             $this->render( null, 'ajax' );
         }
 
+        /** ********************************************************************
+        *   Ajax pour la permanence liée à la structure référente
+        *** *******************************************************************/
+        function _selectPermanences( $structurereferente_id ) {
+            $permanences = $this->Rendezvous->Structurereferente->Permanence->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Permanence.structurereferente_id' => $structurereferente_id
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+            return $permanences;
+
+        }
+
+        function ajaxperm() { // FIXME
+            Configure::write( 'debug', 0 );
+            $permanences = $this->_selectPermanences( Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' ) );
+
+            $options = array( '<option value=""></option>' );
+            foreach( $permanences as $permanence ) {
+                $options[] = '<option value="'.$permanence['Permanence']['id'].'">'.$permanence['Permanence']['libpermanence'].'</option>';
+            }
+            echo implode( '', $options );
+            $this->render( null, 'ajax' );
+        }
 
         /** ********************************************************************
         *

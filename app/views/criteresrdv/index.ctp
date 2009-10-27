@@ -50,6 +50,12 @@
             <?php echo $form->input( 'Critererdv.structurereferente_id', array( 'label' => __( 'lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Critererdv.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
             <?php echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
+
+            <!--  Ajout d'une permanence liée à une structurereferente  -->
+            <?php 
+                echo $form->input( 'Critererdv.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'empty' => true ) );
+                echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvPermanenceId', 'url' => Router::url( array( 'action' => 'ajaxperm' ), true ) ) );
+            ?>
             <?php echo $form->input( 'Critererdv.typerdv_id', array( 'label' => __( 'lib_rdv', true ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Critererdv.daterdv', array( 'label' => 'Filtrer par date de RDV', 'type' => 'checkbox' ) );?>
             <fieldset>

@@ -36,7 +36,7 @@
         <fieldset>
             <?php
                 echo $form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'lib_struct', true ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
-                echo $form->input( 'Rendezvous.referent_id', array( 'label' =>  required( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+                echo $form->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
                 ///Ajax
                 echo $ajax->observeField( 'RendezvousStructurereferenteId', array( 'update' => 'RendezvousReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
 
@@ -47,9 +47,9 @@
                     array( 'class' => 'input text' )
                 );
                 echo $ajax->observeField( 'RendezvousReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
+
                 ///Ajout d'une permanence liée à une structurereferente
                 echo $form->input( 'Rendezvous.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'empty' => true ) );
-
                 echo $ajax->observeField( 'RendezvousStructurereferenteId', array( 'update' => 'RendezvousPermanenceId', 'url' => Router::url( array( 'action' => 'ajaxperm' ), true ) ) );
 
                 echo $form->input( 'Rendezvous.typerdv_id', array( 'label' =>  required( __( 'lib_rdv', true ) ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
