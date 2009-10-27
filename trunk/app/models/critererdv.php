@@ -18,6 +18,7 @@
             $typerdv_id = Set::extract( $criteresrdv, 'Critererdv.typerdv_id' );
             $structurereferente_id = Set::extract( $criteresrdv, 'Critererdv.structurereferente_id' );
             $referent_id = Set::extract( $criteresrdv, 'Critererdv.referent_id' );
+            $permanence_id = Set::extract( $criteresrdv, 'Critererdv.permanence_id' );
             $locaadr = Set::extract( $criteresrdv, 'Critererdv.locaadr' );
             $numcomptt = Set::extract( $criteresrdv, 'Critererdv.numcomptt' );
             $nom = Set::extract( $criteresrdv, 'Critererdv.nom' );
@@ -69,6 +70,11 @@
                 $conditions[] = 'Rendezvous.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
             }
 
+            /// Permanence
+            if( !empty( $permanence_id ) ) {
+                $conditions[] = 'Rendezvous.permanence_id = \''.Sanitize::clean( $permanence_id ).'\'';
+            }
+
             /// Type de rendez vous
             if( !empty( $typerdv_id ) ) {
                 $conditions[] = 'Rendezvous.typerdv_id = \''.Sanitize::clean( $typerdv_id ).'\'';
@@ -81,6 +87,7 @@
                     '"Rendezvous"."id"',
                     '"Rendezvous"."personne_id"',
                     '"Rendezvous"."referent_id"',
+                    '"Rendezvous"."permanence_id"',
                     '"Rendezvous"."structurereferente_id"',
                     '"Rendezvous"."typerdv_id"',
                     '"Rendezvous"."statutrdv"',
