@@ -33,3 +33,6 @@ ALTER TABLE rendezvous ADD COLUMN referent_id INT REFERENCES referents(id);
 CREATE INDEX rendezvous_referent_id_idx ON rendezvous (referent_id);
 
 ALTER TABLE actionsinsertion ADD COLUMN commentaire_action TEXT;
+
+--------------- Ajout du 12/10/2009 à 08h49 ------------------
+ALTER TABLE rendezvous ADD COLUMN permanence_id INTEGER REFERENCES permanences(id);
