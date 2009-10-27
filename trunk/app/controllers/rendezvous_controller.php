@@ -3,7 +3,7 @@
     {
 
         var $name = 'Rendezvous';
-        var $uses = array( 'Rendezvous', 'Option', 'Personne', 'Structurereferente', 'Typerdv', 'Referent' );
+        var $uses = array( 'Rendezvous', 'Option', 'Personne', 'Structurereferente', 'Typerdv', 'Referent', 'Permanence' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct' );
 
@@ -13,7 +13,8 @@
 
         function beforeFilter() {
             parent::beforeFilter();
-            // Staut RDV
+            $this->set( 'struct', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
+            $this->set( 'permanences', $this->Permanence->find( 'list' ) );
             $this->set( 'statutrdv', $this->Option->statutrdv() );
         }
 
@@ -60,6 +61,36 @@
 
 
         /** ********************************************************************
+        *   Ajax pour la permanence liée à la structure référente
+        *** *******************************************************************/
+        function _selectPermanences( $structurereferente_id ) {
+            $permanences = $this->Rendezvous->Structurereferente->Permanence->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Permanence.structurereferente_id' => $structurereferente_id
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+            return $permanences;
+
+        }
+
+        function ajaxperm() { // FIXME
+            Configure::write( 'debug', 0 );
+            $permanences = $this->_selectPermanences( Set::classicExtract( $this->data, 'Rendezvous.structurereferente_id' ) );
+
+            $options = array( '<option value=""></option>' );
+            foreach( $permanences as $permanence ) {
+                $options[] = '<option value="'.$permanence['Permanence']['id'].'">'.$permanence['Permanence']['libpermanence'].'</option>';
+            }
+            echo implode( '', $options );
+            $this->render( null, 'ajax' );
+        }
+
+        /** ********************************************************************
         *
         *** *******************************************************************/
 
@@ -68,8 +99,10 @@
 
             $rdvs = $this->Rendezvous->find( 'all', array( 'conditions' => array( 'Rendezvous.personne_id' => $personne_id ) ) );
             $this->set( 'rdvs', $rdvs );
+//             debug($rdvs);
             $this->set( 'personne_id', $personne_id );
         }
+
 
         /** ********************************************************************
         *
@@ -113,8 +146,7 @@
         function _add_edit( $id = null ) {
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
-            $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
-            $this->set( 'struct', $struct );
+
 
             $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
             $this->set( 'typerdv', $typerdv );

@@ -4,6 +4,7 @@
         var $name = 'Permanence';
 
         var $useTable = 'permanences';
+        var $displayField = 'libpermanence';
 
         var $belongsTo = array(
             'Structurereferente' => array(

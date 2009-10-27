@@ -38,6 +38,7 @@
             <tr>
                 <th>Nom/Prénom Allocataire</th>
                 <th>Structure référente</th>
+                <th>Permanence liée</th>
                 <th>Type de RDV</th>
                 <th>Statut du RDV</th>
                 <th>Date du RDV</th>
@@ -50,10 +51,12 @@
         <tbody>
             <?php
                 foreach( $rdvs as $rdv ) {
+
                     echo $html->tableCells(
                         array(
                             h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
-                            h( Set::extract( $rdv, 'Structurereferente.lib_struc' ) ),
+                            h( Set::extract( $struct, Set::extract( $rdv, 'Rendezvous.structurereferente_id' ) ) ),
+                            h( Set::extract( $permanences, Set::extract( $rdv, 'Rendezvous.permanence_id' ) ) ),
                             h( Set::extract( $rdv, 'Typerdv.libelle' ) ),
                             h( value( $statutrdv, Set::classicExtract( $rdv, 'Rendezvous.statutrdv' ) ) ),
                             h( date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) ) ),
