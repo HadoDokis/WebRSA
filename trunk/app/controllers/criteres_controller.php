@@ -33,7 +33,7 @@
             $this->set( 'typeorient', $this->Typeorient->listOptions() );
             $this->set( 'statuts', $this->Option->statut_orient() );
             $this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
-//             $this->set( 'typeservice', $this->Serviceinstructeur->listOptions());
+            $this->set( 'natpf', $this->Option->natpf() );
 
             return $return;
         }
