@@ -93,3 +93,11 @@ CREATE TABLE propospdos_typesnotifspdos (
     typenotifpdo_id     INTEGER NOT NULL REFERENCES typesnotifspdos(id),
     datenotifpdo        DATE
 );
+
+--------------- Ajout du 28/10/2009 à 12h00 ------------------
+CREATE TABLE statutsrdvs(
+    id                  SERIAL NOT NULL PRIMARY KEY,
+    libelle             VARCHAR(30)
+);
+
+ALTER TABLE rendezvous ADD COLUMN statutrdv_id INTEGER REFERENCES statutsrdvs(id);
