@@ -121,23 +121,21 @@
                                     <th>Date de naissance</th>
                                     <td>'.date_short( $dossier['Personne']['dtnai'] ).'</td>
                                 </tr>
-                               <!-- <tr>
-                                    <th>Etat du dossier</th>
-                                    <td>'.(array_key_exists( $dossier['Situationdossierrsa']['etatdosrsa'] ,$etatdosrsa ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null ).'</td>
-                                </tr> -->
+
                                 <tr>
                                     <th>Code INSEE</th>
                                     <td>'.$dossier['Adresse']['numcomptt'].'</td>
                                 </tr>
                             </tbody>
                         </table>';
-// debug( $dossier['Personne'] );
+
                         echo $html->tableCells(
                             array(
                                 h( $dossier['Dossier']['numdemrsa'] ),
                                 h( date_short( $dossier['Dossier']['dtdemrsa'] ) ),
                                 h( $dossier['Personne']['nir'] ),
-                                h( Set::classicExtract( $etatdosrsa, Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' ) ) ),
+                                h( isset( $etatdosrsa[Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' )] ) ? $etatdosrsa[Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' )] : '' ),
+
                                 implode(
                                     ' ',
                                     array(
