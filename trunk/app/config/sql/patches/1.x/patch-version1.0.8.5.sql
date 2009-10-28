@@ -102,3 +102,17 @@ CREATE TABLE statutsrdvs(
 
 ALTER TABLE rendezvous ADD COLUMN statutrdv_id INTEGER REFERENCES statutsrdvs(id);
 ALTER TABLE rendezvous DROP COLUMN statutrdv;
+
+
+CREATE TABLE infospoleemploi (
+    id                  SERIAL NOT NULL PRIMARY KEY,
+    personne_id         INTEGER NOT NULL REFERENCES personnes(id),
+    identifiantpe       VARCHAR(11),
+    dateinscription     DATE,
+    categoriepe         CHAR(1),
+    datecessation       DATE,
+    motifcessation      VARCHAR(100),
+    dateradiation        DATE,
+    motifradiation      VARCHAR(100)
+);
+CREATE INDEX infospoleemploi_personne_id_idx ON infospoleemploi (personne_id);
