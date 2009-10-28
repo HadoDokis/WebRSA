@@ -47,7 +47,7 @@
             <?php echo $form->input( 'Critererdv.locaadr', array( 'label' => __( 'locaadr', true ), 'type' => 'text' ) );?>
             <!-- <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
             <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-            <?php echo $form->input( 'Critererdv.statutrdv', array( 'label' => __( 'statutrdv', true ), 'type' => 'select' , 'options' => $statutrdv, 'empty' => true ) );?>
+            <?php echo $form->input( 'Critererdv.statutrdv_id', array( 'label' => __( 'statutrdv', true ), 'type' => 'select' , 'options' => $statutrdv, 'empty' => true ) );?>
             <?php echo $form->input( 'Critererdv.structurereferente_id', array( 'label' => __( 'lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Critererdv.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
             <?php echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
@@ -95,7 +95,7 @@
                     <th><?php echo $paginator->sort( 'Type de RDV', 'Rendezvous.typerdv_id' );?></th>
                     <th><?php echo $paginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
                     <th>Heure du RDV</th>
-                    <th><?php echo $paginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv' );?></th>
+                    <th><?php echo $paginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv_id' );?></th>
 
                     <!--<th>Objet du RDV</th>
                     <th>Commentaire suite au RDV</th>-->
@@ -134,7 +134,7 @@
                                 h( value( $typerdv, Set::extract( $rdv, 'Rendezvous.typerdv_id' ) ) ),
                                 h( $locale->date( 'Date::short', $rdv['Rendezvous']['daterdv'] ) ),
                                 h( $locale->date( 'Time::short', $rdv['Rendezvous']['heurerdv'] ) ),
-                                h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv' ) ) ),
+                                h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv_id' ) ) ),
 
 //                                 h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),
 //                                 h( Set::extract( $rdv, 'Rendezvous.commentairerdv' ) ),

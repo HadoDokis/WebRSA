@@ -101,3 +101,4 @@ CREATE TABLE statutsrdvs(
 );
 
 ALTER TABLE rendezvous ADD COLUMN statutrdv_id INTEGER REFERENCES statutsrdvs(id);
+ALTER TABLE rendezvous DROP COLUMN statutrdv;

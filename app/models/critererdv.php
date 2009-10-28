@@ -40,7 +40,7 @@
             }
             /// Statut RDV
             if( !empty( $statutrdv_id ) ) {
-                $conditions[] = 'Rendezvous.statutrdv_id ILIKE \'%'.Sanitize::clean( $statutrdv_id ).'%\'';
+                $conditions[] = 'Rendezvous.statutrdv_id = \''.Sanitize::clean( $statutrdv_id ).'\'';
             }
 
             /// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
@@ -94,9 +94,9 @@
                     '"Rendezvous"."personne_id"',
                     '"Rendezvous"."referent_id"',
                     '"Rendezvous"."permanence_id"',
+                    '"Rendezvous"."statutrdv_id"',
                     '"Rendezvous"."structurereferente_id"',
                     '"Rendezvous"."typerdv_id"',
-                    '"Rendezvous"."statutrdv"',
                     '"Rendezvous"."daterdv"',
                     '"Rendezvous"."heurerdv"',
                     '"Rendezvous"."objetrdv"',
@@ -132,6 +132,13 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Typerdv.id = Rendezvous.typerdv_id' ),
+                    ),
+                    array(
+                        'table'      => 'statutsrdvs',
+                        'alias'      => 'Statutrdv',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Statutrdv.id = Rendezvous.statutrdv_id' ),
                     ),
                     array(
                         'table'      => 'prestations',
