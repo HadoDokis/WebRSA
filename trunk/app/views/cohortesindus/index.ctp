@@ -45,6 +45,7 @@
     <fieldset>
         <legend>Recherche d'Indu</legend>
             <?php echo $form->input( 'Cohorteindu.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+            <?php echo $form->input( 'Cohorteindu.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
             <?php echo $form->input( 'Cohorteindu.natpfcre', array( 'label' => 'Type d\'indu', 'type' => 'select', 'options' => $natpfcre, 'empty' => true ) );?>
             <?php echo $form->input( 'Cohorteindu.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
             <!-- <?php echo $form->input( 'Cohorteindu.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
