@@ -32,7 +32,7 @@
             // FIXME: chemins
             $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo';
             $sMimeType  = "application/pdf";
-            $path_model = $phpGedooDir.'/../'.$model;
+            $path_model = $phpGedooDir.'/../modelesodt/'.$model;
 
             // Inclusion des fichiers nécessaires à GEDOOo
             // FIXME
@@ -531,7 +531,7 @@
             // FIXME: chemins
             $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo'; // FIXME: chemin
             $sMimeType  = "application/pdf";
-            $sModele = $phpGedooDir.'/../Orientation/notifications_cohorte.odt';
+            $sModele = $phpGedooDir.'/../modelesodt/Orientation/notifications_cohorte.odt';
 
             // Inclusion des fichiers nécessaires à GEDOOo
             // FIXME
@@ -734,7 +734,7 @@
             // FIXME: chemins
             $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo'; // FIXME: chemin
             $sMimeType  = "application/pdf";
-            $sModele = $phpGedooDir.'/../Relance/notifications_relances.odt';
+            $sModele = $phpGedooDir.'/../modelesodt/Relance/notifications_relances.odt';
 
             // Inclusion des fichiers nécessaires à GEDOOo
             // FIXME
