@@ -40,6 +40,7 @@
         <legend>Recherche par personne</legend>
         <?php echo $form->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Filtre.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
         <legend>Recherche par Contrat d'insertion</legend>

@@ -40,6 +40,7 @@
             $datevalidation_ci = Set::extract( $criteresci, 'Filtre.datevalidation_ci' );
             $locaadr = Set::extract( $criteresci, 'Filtre.locaadr' );
             $numcomptt = Set::extract( $criteresci, 'Filtre.numcomptt' );
+            $natpf = Set::extract( $criteresci, 'Filtre.natpf' );
             $personne_suivi = Set::extract( $criteresci, 'Filtre.pers_charg_suivi' );
             $forme_ci = Set::extract( $criteresci, 'Filtre.forme_ci' );
             $structurereferente_id = Set::extract( $criteresci, 'Filtre.structurereferente_id' );
@@ -77,6 +78,11 @@
             // Localité adresse
             if( !empty( $locaadr ) ) {
                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+            }
+
+            // Localité adresse
+            if( !empty( $natpf ) ) {
+                $conditions[] = 'Detailcalculdroitrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';
             }
 
             // Commune au sens INSEE
@@ -209,6 +215,20 @@ SELECT DISTINCT contratsinsertion.id
                         'foreignKey' => false,
                         'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )' )
                     ),
+                    array(
+                        'table'      => 'detailsdroitsrsa',
+                        'alias'      => 'Detaildroitrsa',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'detailscalculsdroitsrsa',
+                        'alias'      => 'Detailcalculdroitrsa',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
+                    )
 //                     array(
 //                         'table'      => 'structuresreferentes',
 //                         'alias'      => 'Structurereferente',

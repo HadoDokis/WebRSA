@@ -47,6 +47,7 @@
                 )
             );
             $this->set( 'personne_suivi', $personne_suivi );
+            $this->set( 'natpf', $this->Option->natpf() );
 
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             return $return;
