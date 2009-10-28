@@ -92,7 +92,7 @@
                     <th><?php echo $paginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' );?></th>
                     <th><?php echo $paginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
                     <th><?php echo $paginator->sort( 'Statut orientation', 'Orientstruct.statut_orient' );?></th>
-                    <th><?php echo $paginator->sort( 'Soumis à droit et devoir', 'Prestation.toppersdrodevorsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Soumis à droits et devoirs', 'Prestation.toppersdrodevorsa' );?></th>
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
