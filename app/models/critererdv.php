@@ -15,6 +15,7 @@
 
             /// Critères
             $statutrdv = Set::extract( $criteresrdv, 'Critererdv.statutrdv' );
+            $natpf = Set::extract( $criteresrdv, 'Critererdv.natpf' );
             $typerdv_id = Set::extract( $criteresrdv, 'Critererdv.typerdv_id' );
             $structurereferente_id = Set::extract( $criteresrdv, 'Critererdv.structurereferente_id' );
             $referent_id = Set::extract( $criteresrdv, 'Critererdv.referent_id' );
@@ -73,6 +74,11 @@
             /// Permanence
             if( !empty( $permanence_id ) ) {
                 $conditions[] = 'Rendezvous.permanence_id = \''.Sanitize::clean( $permanence_id ).'\'';
+            }
+
+            /// Nature de la prestation
+            if( !empty( $natpf ) ) {
+                $conditions[] = 'Detailcalculdroitrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';
             }
 
             /// Type de rendez vous
@@ -167,6 +173,20 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
                     ),
+                    array(
+                        'table'      => 'detailsdroitsrsa',
+                        'alias'      => 'Detaildroitrsa',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'detailscalculsdroitsrsa',
+                        'alias'      => 'Detailcalculdroitrsa',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
+                    )
                 ),
 //                 'group' => array(
 //                     'Totalisationacompte.type_totalisation',
