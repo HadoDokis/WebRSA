@@ -198,6 +198,18 @@
             );
         }
 
+        function categorie(){
+            return array(
+                '1' => 'Personnes sans emploi, immédiatement disponibles, tenues d\'accomplir des actes positifs de recherche d\'emploi, à la recherche d\'un emploi en CDI à plein temps.',
+                '2' => 'Personnes sans emploi, tenues d\'accomplir des actes positifs de recherche d\'emploi, à la recherche d\'un emploi en CDI à temps partiel.',
+                '3' => 'Personnes sans emploi, tenues d\'accomplir des actes positifs de recherche d\'emploi, à la recherche d\'un emploi en CDD, temporaire ou saisonnier, y compris de très courte durée.',
+                '4' => 'Personnes sans emploi, non immédiatement disponibles, à la recherche d\'un emploi ( arrêt maladie de plus de 15 jours, formation de plus de 40 heures...).',
+                '5' => 'Personnes pourvues d\'un emploi, à la recherche d\'un autre emploi ( salarié en préavis effectué ou non, CAE, bénévoles...).',
+                '6' => 'Personnes non immédiatement disponibles, à la recherche d\'un autre emploi en CDI à temps plein, tenues d\'accomplir des actes positifs de recherche d\'emploi.',
+                '7' => 'Personnes non immédiatement disponibles, à la recherche d\'un emploi en CDI à temps partiel, tenues d\'accomplir des actes positifs de recherche d\'emploi.',
+                '8' => 'Personnes non immédiatement disponibles, à la recherche d\'un autre emploi en CDI, temporaire ou saisonnier, y compris de très courte durée, tenues d\'accomplir des actes positifs de recherche d\'emploi.',
+            );
+        }
 
         function commission() { ///FIXME: ajout pour les PDO mais à voir
             return array(
