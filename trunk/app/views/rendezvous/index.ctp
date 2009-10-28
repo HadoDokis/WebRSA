@@ -58,7 +58,7 @@
                             h( Set::extract( $struct, Set::extract( $rdv, 'Rendezvous.structurereferente_id' ) ) ),
                             h( Set::extract( $permanences, Set::extract( $rdv, 'Rendezvous.permanence_id' ) ) ),
                             h( Set::extract( $rdv, 'Typerdv.libelle' ) ),
-                            h( value( $statutrdv, Set::classicExtract( $rdv, 'Rendezvous.statutrdv' ) ) ),
+                            h( value( $statutrdv, Set::classicExtract( $rdv, 'Rendezvous.statutrdv_id' ) ) ),
                             h( date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) ) ),
                             h( $locale->date( 'Time::short', Set::classicExtract( $rdv, 'Rendezvous.heurerdv' ) ) ),
                             h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),

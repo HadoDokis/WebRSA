@@ -46,10 +46,6 @@
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
-                ),
-                array(
-                    'rule' => 'date',
-                    'message' => 'Veuillez vérifier le format de la date.'
                 )
             ),
             'statutrdv' => array(

@@ -3,7 +3,7 @@
     {
 
         var $name = 'Rendezvous';
-        var $uses = array( 'Rendezvous', 'Option', 'Personne', 'Structurereferente', 'Typerdv', 'Referent', 'Permanence' );
+        var $uses = array( 'Rendezvous', 'Option', 'Personne', 'Structurereferente', 'Typerdv', 'Referent', 'Statutrdv', 'Permanence' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm' );
 
@@ -15,7 +15,7 @@
             parent::beforeFilter();
             $this->set( 'struct', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
             $this->set( 'permanences', $this->Permanence->find( 'list' ) );
-            $this->set( 'statutrdv', $this->Option->statutrdv() );
+            $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
         }
 
         /** ********************************************************************

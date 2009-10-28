@@ -6,7 +6,7 @@
     class CriteresrdvController extends AppController
     {
         var $name = 'Criteresrdv';
-        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Option', 'Typerdv', 'Referent', 'Permanence' );
+        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Option', 'Typerdv', 'Referent', 'Permanence', 'Statutrdv' );
         var $aucunDroit = array( 'constReq', 'ajaxreferent', 'ajaxperm' );
 
         var $helpers = array( 'Csv', 'Ajax' );
@@ -38,7 +38,7 @@
 
         function beforeFilter() {
             $return = parent::beforeFilter();
-            $this->set( 'statutrdv', $this->Option->statutrdv() );
+            $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
             $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
             $this->set( 'struct', $struct );
             $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );

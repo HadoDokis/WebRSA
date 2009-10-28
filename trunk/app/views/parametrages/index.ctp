@@ -79,6 +79,17 @@
                 );
                 echo $html->tableCells(
                     array(
+                        h( 'Statut des RDVs' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'statutsrdvs', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
                         h( 'Structures référentes' ),
                         $html->viewLink(
                             'Voir la table',

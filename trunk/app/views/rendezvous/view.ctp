@@ -40,7 +40,7 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'statutrdv' );?></th>
-                    <td><?php echo Set::classicExtract( $statutrdv, Set::classicExtract( $rendezvous, 'Rendezvous.statutrdv' ) );?></td>
+                    <td><?php echo Set::classicExtract( $statutrdv, Set::classicExtract( $rendezvous, 'Rendezvous.statutrdv_id' ) );?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'daterdv' );?></th>
