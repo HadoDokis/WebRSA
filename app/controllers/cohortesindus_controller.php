@@ -35,6 +35,7 @@
                 $this->set( 'natpfcre', $this->Option->natpfcre( 'autreannulation' ) );
                 $this->set( 'typeparte', $this->Option->typeparte() );
                 $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+                $this->set( 'natpf', $this->Option->natpf() );
                 $this->set( 'type_allocation', $this->Option->type_allocation() );
                 $this->set( 'dif', $this->Option->dif() );
             return $return;

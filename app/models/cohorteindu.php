@@ -67,6 +67,7 @@
             $locaadr = Set::extract( $criteresindu, 'Cohorteindu.locaadr' );
 //             $nom = Set::extract( $criteresindu, 'Cohorteindu.nom' );
             $typeparte = Set::extract( $criteresindu, 'Cohorteindu.typeparte' );
+            $natpf = Set::extract( $criteresindu, 'Cohorteindu.natpf' );
             $structurereferente_id = Set::extract( $criteresindu, 'Cohorteindu.structurereferente_id' );
             $mtmoucompta = Set::extract( $criteresindu, 'Cohorteindu.mtmoucompta' );
             $compare = Set::extract( $criteresindu, 'Cohorteindu.compare' );
@@ -89,10 +90,10 @@
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
-//             // Nom allocataire
-//             if( !empty( $nom ) ) {
-//                 $conditions[] = 'Personne.nom ILIKE \'%'.Sanitize::clean( $nom ).'%\'';
-//             }
+            // Commune au sens INSEE
+            if( !empty( $natpf ) ) {
+                $conditions[] = 'Detailcalculdroitrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';
+            }
 
             // Suivi
             if( !empty( $typeparte ) ) {
@@ -183,6 +184,20 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )' )
                     ),
+                    array(
+                        'table'      => 'detailsdroitsrsa',
+                        'alias'      => 'Detaildroitrsa',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'detailscalculsdroitsrsa',
+                        'alias'      => 'Detailcalculdroitrsa',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
+                    )
                 ),
                 'limit' => 10,
                 'conditions' => array()
