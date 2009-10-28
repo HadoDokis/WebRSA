@@ -44,6 +44,7 @@
             $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
             $this->set( 'typerdv', $typerdv );
             $this->set( 'permanences', $this->Permanence->find( 'list' ) );
+            $this->set( 'natpf', $this->Option->natpf() );
 /*
             $referents = $this->_selectReferents( Set::classicExtract( $this->data, 'Structurereferente.id' ) );
             $this->set( 'referents', $referents );*/
