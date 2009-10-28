@@ -14,7 +14,7 @@
             $conditions = array();
 
             /// Critères
-            $statutrdv = Set::extract( $criteresrdv, 'Critererdv.statutrdv' );
+            $statutrdv_id = Set::extract( $criteresrdv, 'Critererdv.statutrdv_id' );
             $natpf = Set::extract( $criteresrdv, 'Critererdv.natpf' );
             $typerdv_id = Set::extract( $criteresrdv, 'Critererdv.typerdv_id' );
             $structurereferente_id = Set::extract( $criteresrdv, 'Critererdv.structurereferente_id' );
@@ -39,8 +39,8 @@
                 }
             }
             /// Statut RDV
-            if( !empty( $statutrdv ) ) {
-                $conditions[] = 'Rendezvous.statutrdv ILIKE \'%'.Sanitize::clean( $statutrdv ).'%\'';
+            if( !empty( $statutrdv_id ) ) {
+                $conditions[] = 'Rendezvous.statutrdv_id ILIKE \'%'.Sanitize::clean( $statutrdv_id ).'%\'';
             }
 
             /// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
