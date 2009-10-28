@@ -28,6 +28,7 @@
             /// Critères
             $locaadr = Set::extract( $criteres, 'Critere.locaadr' );
             $numcomptt = Set::extract( $criteres, 'Critere.numcomptt' );
+            $natpf = Set::extract( $criteres, 'Critere.natpf' );
             $statut_orient = Set::extract( $criteres, 'Critere.statut_orient' );
             $etatdosrsa = Set::extract( $criteres, 'Critere.etatdosrsa' );
             $typeorient_id = Set::extract( $criteres, 'Critere.typeorient_id' );
@@ -76,6 +77,12 @@
             if( !empty( $statut_orient ) ) {
                 $conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statut_orient ).'\'';
             }
+
+            // ...
+            if( !empty( $natpf ) ) {
+                $conditions[] = 'Detailcalculdroitrsa.natpf = \''.Sanitize::clean( $natpf ).'\'';
+            }
+
 
             // ...
             if( !empty( $typeorient_id ) ) {
@@ -193,6 +200,20 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )' )
+                    ),
+                    array(
+                        'table'      => 'detailsdroitsrsa',
+                        'alias'      => 'Detaildroitrsa',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'detailscalculsdroitsrsa',
+                        'alias'      => 'Detailcalculdroitrsa',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
                     )
                 ),
                 'limit' => 10,
