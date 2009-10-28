@@ -89,12 +89,7 @@
                     $conditions[] = 'Propopdo.datedecisionpdo BETWEEN \''.implode( '-', array( $criterespdo['Cohortepdo']['datedecisionpdo_from']['year'], $criterespdo['Cohortepdo']['datedecisionpdo_from']['month'], $criterespdo['Cohortepdo']['datedecisionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdo['Cohortepdo']['datedecisionpdo_to']['year'], $criterespdo['Cohortepdo']['datedecisionpdo_to']['month'], $criterespdo['Cohortepdo']['datedecisionpdo_to']['day'] ) ).'\'';
                 }
             }
-            // Type de PDO
-//             if( !empty( $datedecisionpdo ) && dateComplete( $criterespdo, 'Cohortepdo.datedecisionpdo' ) ) {
-//                 $datedecisionpdo = $datedecisionpdo['year'].'-'.$datedecisionpdo['month'].'-'.$datedecisionpdo['day'];
-//                 $conditions[] = 'Propopdo.datedecisionpdo = \''.$datedecisionpdo.'\'';
-//             }
-// debug( $conditions );
+
             $query = array(
                 'fields' => array(
                     '"Propopdo"."id"',
@@ -122,34 +117,6 @@
                     '"Situationdossierrsa"."etatdosrsa"',
                 ),
                 'joins' => array(
-                    array(
-                        'table'      => 'propospdos',
-                        'alias'      => 'Propopdo',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Propopdo.dossier_rsa_id = Dossier.id' )
-                    ),
-                    array(
-                        'table'      => 'typesnotifspdos',
-                        'alias'      => 'Typenotifpdo',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Propopdo.typenotifpdo_id = Typenotifpdo.id' )
-                    ),
-                    array(
-                        'table'      => 'decisionspdos',
-                        'alias'      => 'Decisionpdo',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Propopdo.decisionpdo_id = Decisionpdo.id' )
-                    ),
-                    array(
-                        'table'      => 'typespdos',
-                        'alias'      => 'Typepdo',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Propopdo.typepdo_id = Typepdo.id' )
-                    ),
                     array(
                         'table'      => 'foyers',
                         'alias'      => 'Foyer',
@@ -199,7 +166,35 @@
                             'Situationdossierrsa.dossier_rsa_id = Dossier.id',
                             //'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' )' 
                         )
-                    )
+                    ),
+                    array(
+                        'table'      => 'propospdos',
+                        'alias'      => 'Propopdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.dossier_rsa_id = Dossier.id' )
+                    ),
+//                     array(
+//                         'table'      => 'typesnotifspdos',
+//                         'alias'      => 'Typenotifpdo',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Propopdo.typenotifpdo_id = Typenotifpdo.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'decisionspdos',
+//                         'alias'      => 'Decisionpdo',
+//                         'type'       => 'INNER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Propopdo.decisionpdo_id = Decisionpdo.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'typespdos',
+//                         'alias'      => 'Typepdo',
+//                         'type'       => 'INNER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Propopdo.typepdo_id = Typepdo.id' )
+//                     ),
                 ),
                 'recursive' => -1,
                 'conditions' => $conditions,
