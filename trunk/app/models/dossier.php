@@ -169,14 +169,19 @@
                 $conditions[] = "Dossier.numdemrsa ILIKE '%".Sanitize::paranoid( $params['Dossier']['numdemrsa'] )."%'";
             }
 
-            // Critères sur le dossier - matricule
+            /// Critères sur le dossier - matricule
             if( isset( $params['Dossier']['matricule'] ) && !empty( $params['Dossier']['matricule'] ) ) {
                 $conditions[] = "Dossier.matricule ILIKE '%".Sanitize::paranoid( $params['Dossier']['matricule'] )."%'";
             }
 
-            // Critères sur l'adresse - code insee
+            /// Critères sur l'adresse - code insee
             if( isset( $params['Adresse']['numcomptt'] ) && !empty( $params['Adresse']['numcomptt'] ) ) {
                 $conditions[] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $params['Adresse']['numcomptt'] )."%'";
+            }
+
+            /// Critères sur la nature de la prestation - natpf
+            if( isset( $params['Detailcalculdroitrsa']['natpf'] ) && !empty( $params['Detailcalculdroitrsa']['natpf'] ) ) {
+                $conditions[] = "Detailcalculdroitrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%'";
             }
 
             // Critères sur le dossier - date de demande
@@ -225,7 +230,8 @@
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."numcomptt"',
-                    '"Situationdossierrsa"."etatdosrsa"'
+                    '"Situationdossierrsa"."etatdosrsa"',
+                    '"Detailcalculdroitrsa"."natpf"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -275,6 +281,20 @@
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    ),
+                    array(
+                        'table'      => 'detailsdroitsrsa',
+                        'alias'      => 'Detaildroitrsa',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'detailscalculsdroitsrsa',
+                        'alias'      => 'Detailcalculdroitrsa',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
                     )
                 ),
                 'limit' => 10,
