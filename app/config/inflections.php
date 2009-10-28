@@ -121,7 +121,8 @@
         'typepdo' => 'typespdos',
         'piecepdo' => 'piecespdos',
         'propopdo_typenotifpdo' => 'propospdos_typesnotifspdos',
-        'statutrdv' => 'statutsrdvs'
+        'statutrdv' => 'statutsrdvs',
+        'infopoleemploi' => 'infospoleemploi'
      );
 /**
  * This is a key => value array of regex used to match words.

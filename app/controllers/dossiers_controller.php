@@ -35,6 +35,7 @@
             $this->set( 'typevoie', $this->Option->typevoie() );
             $this->set( 'sitfam', $this->Option->sitfam() );
             $this->set( 'couvsoc', $this->Option->couvsoc() );
+            $this->set( 'categorie', $this->Option->categorie() );
             return $return;
         }
 
@@ -211,7 +212,7 @@
             */
             $bindPrestation = $this->Personne->hasOne['Prestation'];
             $this->Personne->unbindModelAll();
-            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dspp', 'Prestation' => $bindPrestation ) ) );
+            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dspp', 'Infopoleemploi', 'Prestation' => $bindPrestation ) ) );
             $personnesFoyer = $this->Personne->find(
                 'all',
                 array(

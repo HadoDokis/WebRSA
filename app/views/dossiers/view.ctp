@@ -38,32 +38,69 @@
 <?php echo $this->element( 'dossier_menu', array( 'id' => $details['Dossier']['id'] ) );?>
 
 <div class="with_treemenu">
-    <h1>Dossier RSA <?php echo h( $details['Dossier']['numdemrsa'] );?></h1>
+    <h1>&nbsp;</h1> <!--FIXME: grugeage -->
 
 <div id="resumeDossier">
-    <table>
+    <table  id="ficheDossier">
         <tbody>
-            <tr class="odd">
-                <th>Numéro de dossier</th>
-                <td><?php echo h( $details['Dossier']['numdemrsa'] );?></td>
+            <tr>
+                <td>
+                    <h1>Dossier RSA <?php echo h( $details['Dossier']['numdemrsa'] );?></h1>
+                    <table>
+                        <tbody>
+                            <tr class="odd">
+                                <th>Numéro de dossier</th>
+                                <td><?php echo h( $details['Dossier']['numdemrsa'] );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Date de demande</th>
+                                <td><?php echo h( date_short( $details['Dossier']['dtdemrsa'] ) );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>État du dossier</th>
+                                <td><?php echo h( value( $etatdosrsa, Set::extract( 'Situationdossierrsa.etatdosrsa', $details ) ) );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Service instructeur</th>
+                                <td><?php echo h( value( $typeserins, Set::extract( 'Suiviinstruction.typeserins', $details ) ) );?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <h2>Orientation</h2>
+                    <table>
+                    <?php echo thead( 10 );?>
+                        <tbody>
+                            <tr class="odd">
+                                <th>Type d'orientation</th>
+                                <td><?php echo value( $typesorient, Set::extract( 'DEM.Orientstruct.derniere.typeorient_id', $details ) );?></td>
+                                <td><?php echo value( $typesorient, Set::extract( 'CJT.Orientstruct.derniere.typeorient_id', $details ) );?></td>                            </tr>
+                            <tr class="even">
+                                <th>Structure référente<!--Type de structure--></th>
+                                <td><?php echo value( $structuresreferentes, Set::extract( 'DEM.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
+                                <td><?php echo value( $structuresreferentes, Set::extract( 'CJT.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Date de l'orientation</th>
+                                <td><?php echo date_short( Set::extract( 'DEM.Orientstruct.derniere.date_valid', $details ) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Orientstruct.derniere.date_valid', $details ) );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Statut de l'orientation</th>
+                                <td><?php echo Set::extract( 'DEM.Orientstruct.derniere.statut_orient', $details );?></td>
+                                <td><?php echo Set::extract( 'CJT.Orientstruct.derniere.statut_orient', $details );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Référent en cours</th>
+                                <td><?php echo value( $structuresreferentes, Set::extract( 'DEM.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
+                                <td><?php echo value( $structuresreferentes, Set::extract( 'CJT.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
             </tr>
-            <tr class="even">
-                <th>Date de demande</th>
-                <td><?php echo h( date_short( $details['Dossier']['dtdemrsa'] ) );?></td>
-            </tr>
-            <tr class="odd">
-                <th>État du dossier</th>
-                <td><?php echo h( value( $etatdosrsa, Set::extract( 'Situationdossierrsa.etatdosrsa', $details ) ) );?></td>
-            </tr>
-            <tr class="even">
-                <th>Service instructeur</th>
-                <td><?php echo h( value( $typeserins, Set::extract( 'Suiviinstruction.typeserins', $details ) ) );?></td>
-            </tr>
-        </tbody>
-    </table>
 
-    <table id="ficheDossier">
-        <tbody>
             <tr>
                 <td>
                     <h2>Personnes</h2>
@@ -103,33 +140,42 @@
                     </table>
                 </td>
                 <td>
-                    <h2>Orientation</h2>
+                    <h2>Contrat d'insertion</h2>
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>
-                            <tr class="odd">
-                                <th>Type d'orientation</th>
-                                <td><?php echo value( $typesorient, Set::extract( 'DEM.Orientstruct.derniere.typeorient_id', $details ) );?></td>
-                                <td><?php echo value( $typesorient, Set::extract( 'CJT.Orientstruct.derniere.typeorient_id', $details ) );?></td>                            </tr>
                             <tr class="even">
-                                <th>Structure référente<!--Type de structure--></th>
-                                <td><?php echo value( $structuresreferentes, Set::extract( 'DEM.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
-                                <td><?php echo value( $structuresreferentes, Set::extract( 'CJT.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
+                                <th>Type de contrat</th>
+                                <td><?php echo value( $typoscontrat, Set::extract( 'DEM.Contratinsertion.typocontrat_id', $details) );?></td>
+                                <td><?php echo value( $typoscontrat, Set::extract( 'CJT.Contratinsertion.typocontrat_id', $details) );?></td>
                             </tr>
                             <tr class="odd">
-                                <th>Date de l'orientation</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Orientstruct.derniere.date_valid', $details ) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Orientstruct.derniere.date_valid', $details ) );?></td>
+                                <th>Date de début</th>
+                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.dd_ci', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.dd_ci', $details) );?></td>
                             </tr>
                             <tr class="even">
-                                <th>Statut de l'orientation</th>
-                                <td><?php echo Set::extract( 'DEM.Orientstruct.derniere.statut_orient', $details );?></td>
-                                <td><?php echo Set::extract( 'CJT.Orientstruct.derniere.statut_orient', $details );?></td>
+                                <th>Date de fin</th>
+                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.df_ci', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.df_ci', $details) );?></td>
                             </tr>
                             <tr class="odd">
-                                <th>Référent en cours</th>
-                                <td><?php echo value( $structuresreferentes, Set::extract( 'DEM.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
-                                <td><?php echo value( $structuresreferentes, Set::extract( 'CJT.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
+                                <th>Décision</th>
+                                <td>
+                                    <?php if(  Set::extract( 'DEM.Contratinsertion', $details) != null ):?>
+                                        <?php echo ( !empty( $deciD )  ) ? $decision_ci[$deciD] : $decision_ci[''] ;?>
+                                    <?php endif;?>
+                                </td>
+                                <td>
+                                    <?php if( Set::extract( 'CJT.Contratinsertion', $details) != null ):?>
+                                        <?php echo ( !empty( $deciC )  ) ? $decision_ci[$deciC] : $decision_ci[''] ;?>
+                                    <?php endif;?>
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <th>Date de décision</th>
+                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.datevalidation_ci', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.datevalidation_ci', $details) );?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -197,42 +243,44 @@
                     </table>
                 </td>
                 <td>
-                    <h2>Contrat d'insertion</h2>
+                    <h2>Informations Pôle Emploi</h2>
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>
                             <tr class="even">
-                                <th>Type de contrat</th>
-                                <td><?php echo value( $typoscontrat, Set::extract( 'DEM.Contratinsertion.typocontrat_id', $details) );?></td>
-                                <td><?php echo value( $typoscontrat, Set::extract( 'CJT.Contratinsertion.typocontrat_id', $details) );?></td>
+                                <th>Identifiant pôle-emploi</th>
+                                <td><?php echo Set::extract( 'DEM.Infopoleemploi.identifiantpe', $details);?></td>
+                                <td><?php echo Set::extract( 'CJT.Infopoleemploi.identifiantpe', $details);?></td>
                             </tr>
                             <tr class="odd">
-                                <th>Date de début</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.dd_ci', $details) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.dd_ci', $details) );?></td>
+                                <th>Date d'inscription</th>
+                                <td><?php echo date_short( Set::extract( 'DEM.Infopoleemploi.dateinscription', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Infopoleemploi.dateinscription', $details) );?></td>
                             </tr>
                             <tr class="even">
-                                <th>Date de fin</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.df_ci', $details) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.df_ci', $details) );?></td>
+                                <th>Catégorie</th>
+                                <td><?php echo isset( $categorie[Set::classicExtract( $details,  'DEM.Infopoleemploi.categoriepe' )] ) ? $categorie[Set::classicExtract( $details,  'DEM.Infopoleemploi.categoriepe' )] : '';?></td>
+                                <td><?php echo isset( $categorie[Set::classicExtract( $details,  'CJT.Infopoleemploi.categoriepe' )] ) ? $categorie[Set::classicExtract( $details,  'CJT.Infopoleemploi.categoriepe' )] : '';?></td>
                             </tr>
                             <tr class="odd">
-                                <th>Décision</th>
-                                <td>
-                                    <?php if(  Set::extract( 'DEM.Contratinsertion', $details) != null ):?>
-                                        <?php echo ( !empty( $deciD )  ) ? $decision_ci[$deciD] : $decision_ci[''] ;?>
-                                    <?php endif;?>
-                                </td>
-                                <td>
-                                    <?php if( Set::extract( 'CJT.Contratinsertion', $details) != null ):?>
-                                        <?php echo ( !empty( $deciC )  ) ? $decision_ci[$deciC] : $decision_ci[''] ;?>
-                                    <?php endif;?>
-                                </td>
+                                <th>Date de cessation</th>
+                                <td><?php echo date_short( Set::extract( 'DEM.Infopoleemploi.datecessation', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Infopoleemploi.datecessation', $details) );?></td>
                             </tr>
                             <tr class="even">
-                                <th>Date de décision</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.datevalidation_ci', $details) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.datevalidation_ci', $details) );?></td>
+                                <th>Motif de cessation</th>
+                                <td><?php echo Set::extract( 'DEM.Infopoleemploi.motifcessation', $details);?></td>
+                                <td><?php echo Set::extract( 'CJT.Infopoleemploi.motifcessation', $details);?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Date de radiation</th>
+                                <td><?php echo date_short( Set::extract( 'DEM.Infopoleemploi.dateradiation', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Infopoleemploi.dateradiation', $details) );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Motif de radiation</th>
+                                <td><?php echo Set::extract( 'DEM.Infopoleemploi.motifradiation', $details);?></td>
+                                <td><?php echo Set::extract( 'CJT.Infopoleemploi.motifradiation', $details);?></td>
                             </tr>
                         </tbody>
                     </table>
