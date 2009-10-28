@@ -92,6 +92,7 @@
                     <th><?php echo $paginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' );?></th>
                     <th><?php echo $paginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
                     <th><?php echo $paginator->sort( 'Statut orientation', 'Orientstruct.statut_orient' );?></th>
+                    <th><?php echo $paginator->sort( 'Soumis à droit et devoir', 'Prestation.toppersdrodevorsa' );?></th>
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -121,6 +122,7 @@
                         </table>';
 
                         echo $html->tableCells(
+
                             array(
                                 h( $orient['Dossier']['numdemrsa'] ),
                                 h( $orient['Personne']['qual'].' '.$orient['Personne']['nom'].' '.$orient['Personne']['prenom'] ),
@@ -130,6 +132,7 @@
                                 h( date_short( $orient['Orientstruct']['date_valid'] ) ),
                                 h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
                                 h( $orient['Orientstruct']['statut_orient'] ),
+                                $html->boolean( $orient['Prestation']['toppersdrodevorsa'] ),
                                 array(
                                     $html->viewLink(
                                         'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
