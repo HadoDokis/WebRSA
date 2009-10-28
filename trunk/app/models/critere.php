@@ -134,7 +134,8 @@
                     '"Modecontact"."numtel"',
                     '"Serviceinstructeur"."id"',
                     '"Serviceinstructeur"."lib_service"',
-                    '"Situationdossierrsa"."etatdosrsa"'
+                    '"Situationdossierrsa"."etatdosrsa"',
+                    '"Prestation"."toppersdrodevorsa"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -144,6 +145,13 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Personne.id = Orientstruct.personne_id' )
+                    ),
+                    array(
+                        'table'      => 'prestations',
+                        'alias'      => 'Prestation',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Prestation.personne_id = Personne.id' )
                     ),
                     array(
                         'table'      => 'foyers',
