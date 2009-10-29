@@ -12,8 +12,9 @@
         }
     }
 
-    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire',  'N° Téléphone', 'Commune de l\'allocataire', 'Date d\'ouverture de droit', 'Etat du droit', 'Date de l\'orientation', 'Structure référente', 'Statut de l\'orientation', 'Soumis à droits et devoirs' ) );
-
+    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire',  'N° Téléphone', 'Commune de l\'allocataire', 'Date d\'ouverture de droit', 'Etat du droit', 'Date de l\'orientation', 'Structure référente', 'Statut de l\'orientation', 'Soumis à droits et devoirs', 'Nature de la prestation' ) );
+// debug($orients);
+// die();
     foreach( $orients as $orient ) {
         $row = array(
             Set::extract( $orient, 'Dossier.numdemrsa' ),
@@ -25,7 +26,8 @@
             date_short( Set::extract( $orient, 'Orientstruct.date_valid' ) ),
             value( $sr, Set::extract( $orient, 'Orientstruct.structurereferente_id' ) ),
             Set::extract( $orient, 'Orientstruct.statut_orient' ),
-            ( Set::extract( $orient, 'Prestation.toppersdrodevorsa' ) ? 'Oui' : 'Non' )
+            ( Set::extract( $orient, 'Prestation.toppersdrodevorsa' ) ? 'Oui' : 'Non' ),
+            Set::extract( $natpf, Set::extract( $orient, 'Detailcalculdroitrsa.natpf' ) )
         );
         $csv->addRow($row);
     }
