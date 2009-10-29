@@ -148,7 +148,7 @@
                                     h( $personne['Dspp'] ? 'Oui' : 'Non' ),
 //                                     h( date_short( $personne['Dossier']['Situationdossierrsa']['dtclorsa'] ) ),
                                     h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
-                                    h( value( $typeserins, Set::classicExtract( $personne, 'Suiviinstruction.typeserins' ) ) ),
+                                    h( isset( $typeserins[Set::classicExtract( $personne, 'Suiviinstruction.typeserins')] ) ? $typeserins[Set::classicExtract( $personne, 'Suiviinstruction.typeserins')] : '' ),
                                     /*h(
                                         implode(
                                             ' ',
