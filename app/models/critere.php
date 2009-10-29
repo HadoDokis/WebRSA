@@ -135,7 +135,8 @@
                     '"Serviceinstructeur"."id"',
                     '"Serviceinstructeur"."lib_service"',
                     '"Situationdossierrsa"."etatdosrsa"',
-                    '"Prestation"."toppersdrodevorsa"'
+                    '"Prestation"."toppersdrodevorsa"',
+                    '"Detailcalculdroitrsa"."natpf"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
