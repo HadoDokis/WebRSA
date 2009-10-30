@@ -55,6 +55,9 @@
     $locales = array( 'fr_FR', 'fr_FR@euro', 'fr', 'fr_FR.UTF8' );
     setlocale( LC_ALL, $locales );
 
+    mb_internal_encoding( Configure::read( 'App.encoding' ) );
+    mb_regex_encoding( Configure::read( 'App.encoding' ) );
+
     function valid_int( $value ) {
         return !( !is_numeric( $value ) || !( (int)$value == $value ) );
     }
@@ -258,6 +261,53 @@
 		}
 		return $newArray;
 	}
+
+    /** ************************************************************************
+    *	Remplace les caractères accentués par des caractères non accentués
+	*	dans une chaîne de caractères
+	*	@param string $string chaîne de caractères à modifier
+	*	@return string chaîne de caractères sans accents
+	*	TODO: http://www.nabble.com/Accent-insensitive-search--td22583222.html
+	*		(liste des accents)
+    *** ***********************************************************************/
+
+    function replace_accents( $string ) {
+        $accents = array(
+			'[ÂÀ]',
+			'[âà]',
+			'[Ç]',
+			'[ç]',
+			'[ÉÊÈË]',
+			'[éêèë]',
+			'[ÎÏ]',
+			'[îï]',
+			'[ÔÖ]',
+			'[ôö]',
+			'[ÛÙ]',
+			'[ûù]'
+		);
+
+        $replace = array(
+			'A',
+			'a',
+			'C',
+			'c',
+			'E',
+			'e',
+			'I',
+			'i',
+			'O',
+			'o',
+			'U',
+			'u'
+		);
+
+        foreach( $accents as $key => $accent ) {
+            $string = mb_ereg_replace( $accent, $replace[$key], $string );
+        }
+
+        return $string;
+    }
 
     /** ************************************************************************
     *

@@ -47,7 +47,7 @@
             $filtersPersonne = array();
             foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
                 if( isset( $criteresrdv['Critererdv'][$criterePersonne] ) && !empty( $criteresrdv['Critererdv'][$criterePersonne] ) ) {
-                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.$criteresrdv['Critererdv'][$criterePersonne].'%\'';
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.replace_accents( $criteresrdv['Critererdv'][$criterePersonne] ).'%\'';
                 }
             }
 

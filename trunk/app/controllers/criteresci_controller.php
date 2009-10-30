@@ -9,18 +9,6 @@
         var $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
         var $helpers = array( 'Csv', 'Ajax' );
-        /**
-            INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
-        */
-
-
-//         var $paginate = array(
-//             // FIXME
-//             'limit' => 20,
-// //             'order' => array(
-// //                 'Criteresci.locaadr' => 'asc'
-// //             )
-//         );
 
         /**
         */

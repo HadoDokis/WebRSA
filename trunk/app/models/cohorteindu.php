@@ -41,7 +41,7 @@
 //         function mountComparator($data) {
 //             $compare = Set::extract( $this->data, 'Cohorteindu.compare' );
 //             $mtmoucompta = Set::extract( $this->data, 'Cohorteindu.mtmoucompta' );
-// 
+//
 //             return ( ( !empty( $compare ) && !empty( $mtmoucompta ) ) || ( empty( $compare ) && empty( $mtmoucompta ) ) );
 //         }
 
@@ -77,7 +77,7 @@
             $filtersPersonne = array();
             foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
                 if( isset( $criteresindu['Cohorteindu'][$criterePersonne] ) && !empty( $criteresindu['Cohorteindu'][$criterePersonne] ) ) {
-                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.$criteresindu['Cohorteindu'][$criterePersonne].'%\'';
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.replace_accents( $criteresindu['Cohorteindu'][$criterePersonne] ).'%\'';
                 }
             }
             // Localité adresse

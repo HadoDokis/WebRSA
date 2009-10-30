@@ -95,13 +95,14 @@
                 )
             ),
             'rgnai' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 ),
                 array(
                     'rule' => array('comparison', '>', 0 ),
-                    'message' => 'Veuillez entrer un nombre positif.'
+                    'message' => 'Veuillez entrer un nombre positif.',
+                    'allowEmpty' => true
                 ),
                 array(
                     'rule' => 'numeric',
@@ -110,43 +111,43 @@
                 )
             ),
             //
-            'nati' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            ),
+//             'nati' => array(
+//                 'rule' => 'notEmpty',
+//                 'message' => 'Champ obligatoire'
+//             ),
 //             'dtnati' => array(
 //                 'rule' => 'notEmpty',
 //                 'message' => 'Champ obligatoire'
 //             ),
-            'pieecpres' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            )
+//             'pieecpres' => array(
+//                 'rule' => 'notEmpty',
+//                 'message' => 'Champ obligatoire'
+//             )
         );
 
         //*********************************************************************
 
         function beforeSave( $options = array() ) {
-            parent::beforeSave( $options );
+            $return = parent::beforeSave( $options );
+
+			// Mise en majuscule de nom, prénom, nomnai
+			foreach( array( 'nom', 'prenom', 'prenom2', 'prenom3', 'nomnai' ) as $field ) {
+				if( !empty( $this->data['Personne'][$field] ) ) {
+					$this->data['Personne'][$field] = strtoupper( replace_accents( $this->data['Personne'][$field] ) );
+				}
+			}
 
             // Champs déduits
             if( !empty( $this->data['Personne']['qual'] ) ) {
                 $this->data['Personne']['sexe'] = ( $this->data['Personne']['qual'] == 'MR' ) ? 1 : 2;
             }
 
-            return true;
+            if( $this->data['Personne']['qual'] != 'MME' ) {
+                $this->data['Personne']['nomnai'] = $this->data['Personne']['nom'];
+            }
+
+            return $return;
         }
-
-        //*********************************************************************
-
-//         function afterSave( $created ) {
-//             $return = parent::afterSave( $created );
-//
-//             $thisPersonne = $this->findById( $this->data['Personne']['id'], null, null, -1 );
-//             $this->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
-//
-//             return $return;
-//         }
 
         //*********************************************************************
 
