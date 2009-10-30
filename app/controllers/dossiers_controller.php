@@ -40,7 +40,6 @@
         }
 
         /**
-            INFO: ILIKE et EXTRACT sont spécifiques à PostgreSQL
         */
         function index() {
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
@@ -185,7 +184,7 @@
             $tInfofinanciere = $this->Dossier->Infofinanciere->find(
                 'first',
                 array(
-                    'conditions' => array( 
+                    'conditions' => array(
                         'Infofinanciere.dossier_rsa_id' => $id,
                         'Infofinanciere.type_allocation' => 'IndusConstates'
                     ),

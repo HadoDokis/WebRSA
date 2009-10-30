@@ -52,7 +52,7 @@
             $filtersPersonne = array();
             foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
                 if( isset( $criterespdo['Cohortepdo'][$criterePersonne] ) && !empty( $criterespdo['Cohortepdo'][$criterePersonne] ) ) {
-                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.$criterespdo['Cohortepdo'][$criterePersonne].'%\'';
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.replace_accents( $criterespdo['Cohortepdo'][$criterePersonne] ).'%\'';
                 }
             }
 
@@ -164,7 +164,7 @@
                         'foreignKey' => false,
                         'conditions' => array(
                             'Situationdossierrsa.dossier_rsa_id = Dossier.id',
-                            //'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' )' 
+                            //'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' )'
                         )
                     ),
                     array(
