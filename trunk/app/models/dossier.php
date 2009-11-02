@@ -174,6 +174,11 @@
                 $conditions[] = "Dossier.matricule ILIKE '%".Sanitize::paranoid( $params['Dossier']['matricule'] )."%'";
             }
 
+            /// Critères sur la personne - nir
+            if( isset( $params['Personne']['nir'] ) && !empty( $params['Personne']['nir'] ) ) {
+                $conditions[] = "Personne.nir ILIKE '%".Sanitize::paranoid( $params['Personne']['nir'] )."%'";
+            }
+
             /// Critères sur l'adresse - code insee
             if( isset( $params['Adresse']['numcomptt'] ) && !empty( $params['Adresse']['numcomptt'] ) ) {
                 $conditions[] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $params['Adresse']['numcomptt'] )."%'";

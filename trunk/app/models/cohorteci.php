@@ -40,6 +40,7 @@
             $datevalidation_ci = Set::extract( $criteresci, 'Filtre.datevalidation_ci' );
             $locaadr = Set::extract( $criteresci, 'Filtre.locaadr' );
             $numcomptt = Set::extract( $criteresci, 'Filtre.numcomptt' );
+            $nir = Set::extract( $criteresci, 'Filtre.nir' );
             $natpf = Set::extract( $criteresci, 'Filtre.natpf' );
             $personne_suivi = Set::extract( $criteresci, 'Filtre.pers_charg_suivi' );
             $forme_ci = Set::extract( $criteresci, 'Filtre.forme_ci' );
@@ -83,6 +84,11 @@
             // Localité adresse
             if( !empty( $natpf ) ) {
                 $conditions[] = 'Detailcalculdroitrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';
+            }
+
+            // NIR
+            if( !empty( $nir ) ) {
+                $conditions[] = 'Personne.nir ILIKE \'%'.Sanitize::clean( $nir ).'%\'';
             }
 
             // Commune au sens INSEE

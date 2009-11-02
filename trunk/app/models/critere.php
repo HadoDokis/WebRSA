@@ -29,6 +29,7 @@
             $locaadr = Set::extract( $criteres, 'Critere.locaadr' );
             $numcomptt = Set::extract( $criteres, 'Critere.numcomptt' );
             $natpf = Set::extract( $criteres, 'Critere.natpf' );
+            $nir = Set::extract( $criteres, 'Critere.nir' );
             $statut_orient = Set::extract( $criteres, 'Critere.statut_orient' );
             $etatdosrsa = Set::extract( $criteres, 'Critere.etatdosrsa' );
             $typeorient_id = Set::extract( $criteres, 'Critere.typeorient_id' );
@@ -56,7 +57,7 @@
 
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
             $filtersPersonne = array();
-            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
+            foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
                 if( isset( $criteres['Critere'][$criterePersonne] ) && !empty( $criteres['Critere'][$criterePersonne] ) ) {
                     $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.replace_accents( $criteres['Critere'][$criterePersonne] ).'%\'';
                 }
@@ -82,6 +83,7 @@
             if( !empty( $natpf ) ) {
                 $conditions[] = 'Detailcalculdroitrsa.natpf = \''.Sanitize::clean( $natpf ).'\'';
             }
+
 
 
             // ...
@@ -126,6 +128,7 @@
                     '"Personne"."id"',
                     '"Personne"."nom"',
                     '"Personne"."prenom"',
+                    '"Personne"."nir"',
                     '"Personne"."dtnai"',
                     '"Personne"."qual"',
                     '"Personne"."nomcomnai"',
