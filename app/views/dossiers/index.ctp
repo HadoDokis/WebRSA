@@ -1,165 +1,199 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Gestion des indus';?>
+<?php $this->pageTitle = 'Recherche par dossier/allocataire';?>
 
-<h1>Recherche par Indus</h1>
+<h1>Recherche par dossier / allocataire</h1>
 
+<ul class="actionMenu">
+    <?php
+        if( $permissions->check( 'ajoutdossiers', 'wizard' ) ) {
+            echo '<li>'.$html->addLink(
+                'Ajouter un dossier',
+                array( 'controller' => 'ajoutdossiers', 'action' => 'wizard' )
+            ).' </li>';
+        }
 
-<?php
-    if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
-                'icons/application_form_magnify.png',
-                array( 'alt' => '' )
-            ).' Formulaire',
-            '#',
-            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
-        ).'</li></ul>';
-    }
+        if( $permissions->check( 'dossierssimplifies', 'add' ) ) {
+//        if( $session->read( 'Auth.User.username' ) == 'cg66' ) { // FIXME
 
-    //
+            echo '<li>'.$html->addSimpleLink(
+                'Ajouter une préconisation d\'orientation',
+                array( 'controller' => 'dossierssimplifies', 'action' => 'add' )
+            ).' </li>';
+//        }
+        }
 
-    if( isset( $cohorteindu ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
-        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        if( is_array( $this->data ) ) {
+            echo '<li>'.$html->link(
+                $html->image(
+                    'icons/application_form_magnify.png',
+                    array( 'alt' => '' )
+                ).' Formulaire',
+                '#',
+                array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+            ).'</li>';
+        }
+    ?>
+</ul>
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsetOnCheckbox( 'DossierDtdemrsa', $( 'DossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
+    });
+</script>
+<!-- FIXME le repasser en post ? -->
+<?php echo $form->create( 'Dossier', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 
-        $pages = $paginator->first( '<<' );
-        $pages .= $paginator->prev( '<' );
-        $pages .= $paginator->numbers();
-        $pages .= $paginator->next( '>' );
-        $pages .= $paginator->last( '>>' );
-
-        $pagination .= $html->tag( 'p', $pages );
-    }
-    else {
-        $pagination = '';
-    }
-?>
-
-<?php echo $form->create( 'Cohorteindu', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->data ) && empty( $this->validationErrors ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
-        <legend>Recherche par personne</legend>
-        <?php echo $form->input( 'Cohorteindu.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Cohorteindu.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Cohorteindu.nir', array( 'label' => 'NIR ', 'maxLength' => 15 ) );?>
+        <legend>Recherche par dossier</legend>
+        <?php echo $form->input( 'Dossier.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+        <?php echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA' ) );?>
+        <?php echo $form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF', 'maxlength' => 15 ) );?>
+        <?php echo $form->input( 'Detailcalculdroitrsa.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
+
+        <!--<?php echo $form->input( 'Dossier.numero_dossier_caf', array( 'label' => 'Numéro de dossier CAF' ) );?>-->
+        <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => 'Filtrer par date de demande', 'type' => 'checkbox' ) );?>
+        <fieldset>
+            <legend>Date de demande RSA</legend>
+            <?php
+                $dtdemrsa_from = Set::check( $this->data, 'Dossier.dtdemrsa_from' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_from' ) : strtotime( '-1 week' );
+                $dtdemrsa_to = Set::check( $this->data, 'Dossier.dtdemrsa_to' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_to' ) : strtotime( 'now' );
+            ?>
+            <?php echo $form->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );?>
+            <?php echo $form->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_to ) );?>
+        </fieldset>
     </fieldset>
     <fieldset>
-        <legend>Recherche d'Indu</legend>
-            <?php echo $form->input( 'Cohorteindu.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-            <?php echo $form->input( 'Cohorteindu.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
-            <?php echo $form->input( 'Cohorteindu.natpfcre', array( 'label' => 'Type d\'indu', 'type' => 'select', 'options' => $natpfcre, 'empty' => true ) );?>
-            <?php echo $form->input( 'Cohorteindu.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-            <!-- <?php echo $form->input( 'Cohorteindu.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
-            <?php echo $form->input( 'Cohorteindu.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-
-            <?php echo $form->input( 'Cohorteindu.typeparte', array( 'label' => 'Suivi', 'type' => 'select', 'options' => $typeparte, 'empty' => true ) ); ?>
-             <?php echo $form->input( 'Cohorteindu.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $sr , 'empty' => true )  ); ?> 
-            <?php
-                echo $form->input( 'Cohorteindu.compare', array( 'label' => 'Opérateurs', 'type' => 'select', 'options' => $comparators, 'empty' => true ) );
-                echo $form->input( 'Cohorteindu.mtmoucompta', array( 'label' => 'Montant de l\'indu', 'type' => 'text' ) );
-            ?>
+        <legend>Recherche par Adresse</legend>
+        <!-- <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
+        <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+    </fieldset>
+    <fieldset>
+        <legend>Recherche par allocataire<!--FIXME: personne du foyer--></legend>
+        <?php echo $form->input( 'Personne.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );?>
+        <?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom' ) );?>
+        <?php echo $form->input( 'Personne.nomnai', array( 'label' => 'Nom de jeune fille' ) );?>
+        <?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom' ) );?>
+        <?php echo $form->input( 'Personne.nir', array( 'label' => 'NIR', 'maxLength' => 15 ) );?>
     </fieldset>
 
     <div class="submit noprint">
-        <?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
-        <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+        <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+        <?php echo $form->button( 'Réinitialiser', array( 'type'=>'reset' ) );?>
     </div>
 <?php echo $form->end();?>
 
 <!-- Résultats -->
-<?php if( isset( $cohorteindu ) ):?>
-
+<?php if( isset( $dossiers ) ):?>
     <h2 class="noprint">Résultats de la recherche</h2>
 
-    <?php if( is_array( $cohorteindu ) && count( $cohorteindu ) > 0 ):?>
-        <?php echo $pagination;?>
-            <table id="searchResults" class="tooltips_oupas">
-                <thead>
-                    <tr>
-                        <th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
-                        <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                        <th><?php echo $paginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
-                        <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
+    <?php if( is_array( $dossiers ) && count( $dossiers ) > 0 ):?>
+        <?php require( 'index.pagination.ctp' )?>
+        <table id="searchResults" class="tooltips_oupas">
+            <thead>
+                <tr>
+                    <th><?php echo $paginator->sort( 'Numéro de dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de demande', 'Dossier.dtdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'NIR', 'Personne.nir' );?></th>
+                    <th><?php echo $paginator->sort( 'Etat du droit', 'Situationdossierrsa.etatdosrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Allocataire', 'Personne.nom' );?></th><!-- FIXME: qual/nom/prénom -->
+                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
 
-                        <th>Date indus</th><!-- FIXME -->
-
-                        <th><?php echo $paginator->sort( 'Allocation comptabilisée', 'AllocationsComptabilisees.mtmoucompta' );?></th>
-                        <th><?php echo $paginator->sort( 'Montant initial de l\'indu', 'IndusConstates.mtmoucompta' );?></th>
-                        <th><?php echo $paginator->sort( 'Montant transféré CG', 'IndusTransferesCG.mtmoucompta' );?></th>
-                        <th><?php echo $paginator->sort( 'Remise CG', 'RemisesIndus.mtmoucompta' );?></th>
-                        <th><?php echo $paginator->sort( 'Annulation faible montant', 'AnnulationsFaibleMontant.mtmoucompta' );?></th>
-                        <th><?php echo $paginator->sort( 'Autres montants', 'AutresAnnulations.mtmoucompta' );?></th>
-
-                        <th class="action">Action</th>
-                        <th class="innerTableHeader">Informations complémentaires</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach( $cohorteindu as $index => $indu ):?>
-                        <?php
+                    <!--
+                    <th>Date de demande</th> -->
+                    <!--<th>NIR</th>
+                    <th>Allocataire</th>
+                    <th>Commune de l'Allocataire</th>-->
+                    <th class="action noprint">Actions</th>
+                    <th class="action noprint">Verrouillé</th>
+                    <th class="innerTableHeader noprint">Informations complémentaires</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach( $dossiers as $index => $dossier ):?>
+                    <?php
+                        $title = $dossier['Dossier']['numdemrsa'];
+// debug( $dossier );
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
-                                <tr>
-                                    <th>Date naissance</th>
-                                    <td>'.h( date_short( $indu['Personne']['dtnai'] ) ).'</td>
+                               <tr>
+                                    <th>Numéro CAF</th>
+                                    <td>'.$dossier['Dossier']['matricule'].'</td>
                                 </tr>
                                 <tr>
-                                    <th>Numéro CAF</th>
-                                    <td>'.h( $indu['Dossier']['matricule'] ).'</td>
+                                    <th>Date de naissance</th>
+                                    <td>'.date_short( $dossier['Personne']['dtnai'] ).'</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Code INSEE</th>
+                                    <td>'.$dossier['Adresse']['numcomptt'].'</td>
                                 </tr>
                                 <tr>
                                     <th>NIR</th>
-                                    <td>'.h( $indu['Personne']['nir'] ).'</td>
-                                </tr>
-                                <tr>
-                                    <th>Code postal</th>
-                                    <td>'.h( $indu['Adresse']['codepos'] ).'</td>
-                                </tr>
-                                <tr>
-                                    <th>Code INSEE</th>
-                                    <td>'.h( $indu['Adresse']['numcomptt'] ).'</td>
+                                    <td>'.$dossier['Personne']['nir'].'</td>
                                 </tr>
                             </tbody>
                         </table>';
-                            $title = $indu['Dossier']['numdemrsa'];
 
-                            echo $html->tableCells(
-                                array(
-                                    h( $indu['Dossier']['numdemrsa'] ),
-                                    h( $indu['Personne']['nom'].' '.$indu['Personne']['prenom'] ),
-                                    h( $indu['Dossier']['typeparte'] ), //h( $typeparte[$indu['Dossier']['typeparte']] ),
-                                    h( $etatdosrsa[$indu['Situationdossierrsa']['etatdosrsa']] ),
-                                    $locale->date( 'Date::miniLettre', $indu[0]['moismoucompta'] ),
-                                    $locale->money( $indu[0]['mt_allocation_comptabilisee'] ),
-                                    $locale->money( $indu[0]['mt_indu_constate'] ),
-                                    $locale->money( $indu[0]['mt_indus_transferes_c_g'] ),
-                                    $locale->money( $indu[0]['mt_remises_indus'] ),
-                                    $locale->money( $indu[0]['mt_annulations_faible_montant'] ),
-                                    $locale->money( $indu[0]['mt_autre_annulation'] ),
-                                    $html->viewLink(
-                                        'Voir le contrat « '.$title.' »',
-                                        array( 'controller' => 'indus', 'action' => 'view', $indu['Dossier']['id'] )
-                                    ),
-                                    array( $innerTable, array( 'class' => 'innerTableCell' ) )
+                        echo $html->tableCells(
+                            array(
+                                h( $dossier['Dossier']['numdemrsa'] ),
+                                h( date_short( $dossier['Dossier']['dtdemrsa'] ) ),
+                                h( $dossier['Personne']['nir'] ),
+                                h( isset( $etatdosrsa[Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' )] ) ? $etatdosrsa[Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' )] : '' ),
+
+                                implode(
+                                    ' ',
+                                    array(
+                                        $dossier['Personne']['qual'],
+                                        $dossier['Personne']['nom'],
+                                        implode( ' ', array( $dossier['Personne']['prenom'], $dossier['Personne']['prenom2'], $dossier['Personne']['prenom3'] ) )
+                                    )
                                 ),
+                                h( Set::extract(  $dossier, 'Adresse.locaadr' ) ),
+                                //h( isset( $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null ),
+                                array(
+                                    $html->viewLink(
+                                        'Voir le dossier « '.$title.' »',
+                                        array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] )
+                                    ),
+                                    array( 'class' => 'noprint' )
+                                ),
+                                array(
+                                    ( $dossier['Dossier']['locked'] ?
+                                        $html->image(
+                                            'icons/lock.png',
+                                            array( 'alt' => '', 'title' => 'Dossier verrouillé' )
+                                        ) : null
+                                    ),
+                                    array( 'class' => 'noprint' )
+                                ),
+                                array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
+                            ),
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
                             array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
-                            );
-                        ?>
-                    <?php endforeach;?>
-                </tbody>
-            </table>
-
-    <?php echo $pagination;?>
-
+                        );
+                    ?>
+                <?php endforeach;?>
+            </tbody>
+        </table>
+        <?php if( Set::extract( $paginator, 'params.paging.Dossier.count' ) > 65000 ):?>
+            <p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $html->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
+        <?php endif;?>
        <ul class="actionMenu">
+            <li><?php
+                echo $html->printLinkJs(
+                    'Imprimer le tableau',
+                    array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+                );
+            ?></li>
             <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
-                    array( 'controller' => 'cohortesindus', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                    array( 'controller' => 'dossiers', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
             ?></li>
         </ul>
+        <?php require( 'index.pagination.ctp' )?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>
