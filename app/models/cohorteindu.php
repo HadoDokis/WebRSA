@@ -65,7 +65,7 @@
             /// Critères
             $natpfcre = Set::extract( $criteresindu, 'Cohorteindu.natpfcre' );
             $locaadr = Set::extract( $criteresindu, 'Cohorteindu.locaadr' );
-//             $nom = Set::extract( $criteresindu, 'Cohorteindu.nom' );
+            $nir = Set::extract( $criteresindu, 'Cohorteindu.nir' );
             $typeparte = Set::extract( $criteresindu, 'Cohorteindu.typeparte' );
             $natpf = Set::extract( $criteresindu, 'Cohorteindu.natpf' );
             $structurereferente_id = Set::extract( $criteresindu, 'Cohorteindu.structurereferente_id' );
@@ -75,7 +75,7 @@
 
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
             $filtersPersonne = array();
-            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
+            foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
                 if( isset( $criteresindu['Cohorteindu'][$criterePersonne] ) && !empty( $criteresindu['Cohorteindu'][$criterePersonne] ) ) {
                     $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.replace_accents( $criteresindu['Cohorteindu'][$criterePersonne] ).'%\'';
                 }

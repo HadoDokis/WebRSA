@@ -1,20 +1,15 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche par Rendez-vous';?>
+<?php  echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php $this->pageTitle = 'Recherche par Orientation';?>
 
-<h1>Recherche par Rendez-vous</h1>
+<h1>Recherche par Orientation</h1>
 
-<?php
-    function value( $array, $index ) {
-        $keys = array_keys( $array );
-        $index = ( ( $index == null ) ? '' : $index );
-        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-            return $array[$index];
-        }
-        else {
-            return null;
-        }
-    }
-?>
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsetOnCheckbox( 'CritereDateValid', $( 'CritereDateValidFromDay' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'CritereDtdemrsa', $( 'CritereDtdemrsaFromDay' ).up( 'fieldset' ), false );
+    });
+</script>
+
 <?php
     if( is_array( $this->data ) ) {
         echo '<ul class="actionMenu"><li>'.$html->link(
@@ -26,128 +21,129 @@
             array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
         ).'</li></ul>';
     }
-
 ?>
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        observeDisableFieldsetOnCheckbox( 'CritererdvDaterdv', $( 'CritererdvDaterdvFromDay' ).up( 'fieldset' ), false );
-    });
-</script>
 
-<?php echo $form->create( 'Critererdv', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
-        <legend>Recherche par personne</legend>
-        <?php echo $form->input( 'Critererdv.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Critererdv.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Critererdv.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
+        <legend>Recherche par dossier</legend>
+        <?php echo $form->input( 'Critere.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+        <?php echo $form->input( 'Critere.etatdosrsa', array( 'label' => 'Situation dossier rsa', 'type' => 'select', 'options' => $etatdosrsa, 'empty' => true ) );?>
+        <?php echo $form->input( 'Critere.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
+        <?php echo $form->input( 'Critere.dtdemrsa', array( 'label' => 'Filtrer par date d\'ouverture de droit', 'type' => 'checkbox' ) );?>
+        <fieldset>
+            <legend>Date de demande RSA</legend>
+            <?php
+                $dtdemrsa_from = Set::check( $this->data, 'Critere.dtdemrsa_from' ) ? Set::extract( $this->data, 'Critere.dtdemrsa_from' ) : strtotime( '-1 week' );
+                $dtdemrsa_to = Set::check( $this->data, 'Critere.dtdemrsa_to' ) ? Set::extract( $this->data, 'Critere.dtdemrsa_to' ) : strtotime( 'now' );
+            ?>
+            <?php echo $form->input( 'Critere.dtdemrsa_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );?>
+            <?php echo $form->input( 'Critere.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_to ) );?>
+        </fieldset>
     </fieldset>
     <fieldset>
-        <legend>Recherche par Contrat d'insertion</legend>
-            <?php echo $form->input( 'Critererdv.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-            <?php echo $form->input( 'Critererdv.locaadr', array( 'label' => __( 'locaadr', true ), 'type' => 'text' ) );?>
-            <!-- <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
-            <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-            <?php echo $form->input( 'Critererdv.statutrdv_id', array( 'label' => __( 'statutrdv', true ), 'type' => 'select' , 'options' => $statutrdv, 'empty' => true ) );?>
-            <?php echo $form->input( 'Critererdv.structurereferente_id', array( 'label' => __( 'lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
-            <?php echo $form->input( 'Critererdv.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
-            <?php echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
-
-            <!--  Ajout d'une permanence liée à une structurereferente  -->
-            <?php 
-                echo $form->input( 'Critererdv.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'empty' => true ) );
-                echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvPermanenceId', 'url' => Router::url( array( 'action' => 'ajaxperm' ), true ) ) );
-            ?>
-            <?php echo $form->input( 'Critererdv.typerdv_id', array( 'label' => __( 'lib_rdv', true ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) ); ?>
-            <?php echo $form->input( 'Critererdv.daterdv', array( 'label' => 'Filtrer par date de RDV', 'type' => 'checkbox' ) );?>
+        <legend>Recherche par personne</legend>
+        <?php echo $form->input( 'Critere.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Critere.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Critere.nir', array( 'label' => 'NIR', 'maxLength' => 15 ) );?>
+        <?php echo $form->input( 'Critere.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+        <!-- <?php echo $form->input( 'Critere.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?> -->
+        <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+    </fieldset>
+    <fieldset>
+        <legend>Recherche par orientation</legend>
+        <?php echo $form->input( 'Critere.date_valid', array( 'label' => 'Filtrer par date d\'orientation', 'type' => 'checkbox' ) );?>
             <fieldset>
-                <legend>Date de Rendez-vous</legend>
+                <legend>Date d'orientation</legend>
                 <?php
-                    $daterdv_from = Set::check( $this->data, 'Critererdv.daterdv_from' ) ? Set::extract( $this->data, 'Critererdv.daterdv_from' ) : strtotime( '-1 week' );
-                    $daterdv_to = Set::check( $this->data, 'Critererdv.daterdv_to' ) ? Set::extract( $this->data, 'Critererdv.daterdv_to' ) : strtotime( 'now' );
+                    $date_valid_from = Set::check( $this->data, 'Critere.date_valid_from' ) ? Set::extract( $this->data, 'Critere.date_valid_from' ) : strtotime( '-1 week' );
+                    $date_valid_to = Set::check( $this->data, 'Critere.date_valid_to' ) ? Set::extract( $this->data, 'Critere.date_valid_to' ) : strtotime( 'now' );
                 ?>
-                <?php echo $form->input( 'Critererdv.daterdv_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterdv_from ) );?>
-                <?php echo $form->input( 'Critererdv.daterdv_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterdv_to ) );?>
+                <?php echo $form->input( 'Critere.date_valid_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_from ) );?>
+                <?php echo $form->input( 'Critere.date_valid_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_to ) );?>
             </fieldset>
+
+        <?php echo $form->input( 'Critere.typeorient_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
+        <?php echo $form->input( 'Critere.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
+        <?php echo $form->input( 'Critere.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
+         <?php echo $form->input( 'Critere.serviceinstructeur_id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
     </fieldset>
 
     <div class="submit noprint">
         <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
-
 <?php echo $form->end();?>
 
 <!-- Résultats -->
-<?php if( isset( $rdvs ) ):?>
+<?php if( isset( $orients ) ):?>
 
     <h2 class="noprint">Résultats de la recherche</h2>
 
-    <?php if( is_array( $rdvs ) && count( $rdvs ) > 0  ):?>
+    <?php if( is_array( $orients ) && count( $orients ) > 0  ):?>
 
-        <?php /*require( 'index.pagination.ctp' )*/?>
+        <?php require( 'index.pagination.ctp' )?>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
-                <tr>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Structure référente', 'Rendezvous.structurereferente_id' );?></th>
-                    <th>Référent</th>
-                    <th><?php echo $paginator->sort( 'Type de RDV', 'Rendezvous.typerdv_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
-                    <th>Heure du RDV</th>
-                    <th><?php echo $paginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv_id' );?></th>
-
-                    <!--<th>Objet du RDV</th>
-                    <th>Commentaire suite au RDV</th>-->
-                    <th colspan="2" class="action noprint">Actions</th>
+                 <tr>
+                    <th><?php echo $paginator->sort( 'Numéro dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $paginator->sort( 'N° Téléphone', 'Modecontact.numtel' );?></th>
+                    <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $paginator->sort( 'Date d\'ouverture droits', 'Dossier.dtdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' );?></th>
+                    <th><?php echo $paginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
+                    <th><?php echo $paginator->sort( 'Statut orientation', 'Orientstruct.statut_orient' );?></th>
+                    <th><?php echo $paginator->sort( 'Soumis à droits et devoirs', 'Prestation.toppersdrodevorsa' );?></th>
+                    <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach( $rdvs as $index => $rdv ):?>
+                <?php foreach( $orients as $index => $orient ):?>
                     <?php
-                        $title = $rdv['Dossier']['numdemrsa'];
-
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
-                               <!-- <tr>
+                                <tr>
+                                    <th>Etat du droit</th>
+                                    <td>'.Set::classicExtract( $etatdosrsa, Set::classicExtract( $orient, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
+                                </tr>
+                                <tr>
                                     <th>Commune de naissance</th>
-                                    <td>'.$rdv['Personne']['nomcomnai'].'</td>
-                                </tr> -->
+                                    <td>'. $orient['Personne']['nomcomnai'].'</td>
+                                </tr>
                                 <tr>
                                     <th>Date de naissance</th>
-                                    <td>'.date_short( $rdv['Personne']['dtnai'] ).'</td>
+                                    <td>'.date_short( $orient['Personne']['dtnai']).'</td>
                                 </tr>
                                 <tr>
                                     <th>Code INSEE</th>
-                                    <td>'.$rdv['Adresse']['numcomptt'].'</td>
+                                    <td>'.$orient['Adresse']['numcomptt'].'</td>
+                                </tr>
+                                <tr>
+                                    <th>NIR</th>
+                                    <td>'.$orient['Personne']['nir'].'</td>
                                 </tr>
                             </tbody>
                         </table>';
 
                         echo $html->tableCells(
-                            array(
-                                h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
-                                h( Set::extract( $rdv, 'Adresse.locaadr' ) ),
-                                h( value( $struct, Set::extract( $rdv, 'Rendezvous.structurereferente_id' ) ) ),
-                                h(  value( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) ) ),
-                                h( value( $typerdv, Set::extract( $rdv, 'Rendezvous.typerdv_id' ) ) ),
-                                h( $locale->date( 'Date::short', $rdv['Rendezvous']['daterdv'] ) ),
-                                h( $locale->date( 'Time::short', $rdv['Rendezvous']['heurerdv'] ) ),
-                                h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv_id' ) ) ),
 
-//                                 h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),
-//                                 h( Set::extract( $rdv, 'Rendezvous.commentairerdv' ) ),
+                            array(
+                                h( $orient['Dossier']['numdemrsa'] ),
+                                h( $orient['Personne']['qual'].' '.$orient['Personne']['nom'].' '.$orient['Personne']['prenom'] ),
+                                h( $orient['Modecontact']['numtel'] ),
+                                h( $orient['Adresse']['locaadr'] ),
+                                h( date_short( $orient['Dossier']['dtdemrsa'] ) ),
+                                h( date_short( $orient['Orientstruct']['date_valid'] ) ),
+                                h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
+                                h( $orient['Orientstruct']['statut_orient'] ),
+                                $html->boolean( $orient['Prestation']['toppersdrodevorsa'] ),
                                 array(
                                     $html->viewLink(
-                                        'Voir le dossier « '.$title.' »',
-                                        array( 'controller' => 'rendezvous', 'action' => 'index', $rdv['Rendezvous']['personne_id'] )
+                                        'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
+                                        array( 'controller' => 'personnes', 'action' => 'view', $orient['Personne']['id'] )
                                     ),
                                     array( 'class' => 'noprint' )
-                                ),
-                                $html->printLink(
-                                    'Imprimer la notification',
-                                    array( 'controller' => 'gedooos', 'action' => 'rendezvous', $rdv['Rendezvous']['id'] )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
                             ),
@@ -158,6 +154,10 @@
                 <?php endforeach;?>
             </tbody>
         </table>
+
+        <?php if( Set::extract( $paginator, 'params.paging.Orientstruct.count' ) > 65000 ):?>
+            <p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $html->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
+        <?php endif;?>
         <ul class="actionMenu">
             <li><?php
                 echo $html->printLinkJs(
@@ -168,14 +168,12 @@
             <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
-                    array( 'controller' => 'criteresrdv', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                    array( 'controller' => 'criteres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
             ?></li>
         </ul>
-    <?php  /*require( 'index.pagination.ctp' )*/  ?>
-
+        <?php require( 'index.pagination.ctp' )?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>
-
 <?php endif?>

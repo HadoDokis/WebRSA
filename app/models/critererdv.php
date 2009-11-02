@@ -23,6 +23,7 @@
             $locaadr = Set::extract( $criteresrdv, 'Critererdv.locaadr' );
             $numcomptt = Set::extract( $criteresrdv, 'Critererdv.numcomptt' );
             $nom = Set::extract( $criteresrdv, 'Critererdv.nom' );
+            $nir = Set::extract( $criteresrdv, 'Critererdv.nir' );
 
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
@@ -106,6 +107,7 @@
                     '"Adresse"."numcomptt"',
                     '"Personne"."nom"',
                     '"Personne"."prenom"',
+                    '"Personne"."nir"',
                     '"Personne"."nomcomnai"',
                     '"Personne"."dtnai"',
                     '"Structurereferente"."lib_struc"'
