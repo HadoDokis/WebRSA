@@ -53,18 +53,23 @@
             'Personne' => array(
                 'classname' => 'Personne',
                 'foreignKey' => 'personne_id'
-            )
+            ),
+            'Referentapre'
+        );
+
+        var $hasOne = array(
+            'Formqualif'
         );
 
         var $hasMany = array(
-            'Referentapre' => array(
-                'classname' => 'Referentapre',
-                'foreignKey' => 'apre_id',
-            ),
-            'Natureaide' => array(
-                'classname' => 'Natureaide',
-                'foreignKey' => 'apre_id',
-            ),
+//             'Referentapre' => array(
+//                 'classname' => 'Referentapre',
+//                 'foreignKey' => 'apre_id',
+//             ),
+//             'Natureaide' => array(
+//                 'classname' => 'Natureaide',
+//                 'foreignKey' => 'apre_id',
+//             ),
             'Montantconsomme' => array(
                 'classname' => 'Montantconsomme',
                 'foreignKey' => 'apre_id',
@@ -135,6 +140,47 @@
                 return null;
             }
         }
-    }
 
+        /**
+        *
+        */
+
+        function afterFind( $results, $primary = false ) {
+            parent::afterFind( $results, $primary );
+
+            foreach( $results as $key => $result ) {
+
+                $results[$key]['Natureaide'] = array();
+                foreach( array( 'Formqualif' ) as $model ) {
+                    $results[$key]['Natureaide'][$model] = $this->{$model}->find(
+                        'count',
+                        array(
+                            'conditions' => array(
+                                "$model.apre_id" => Set::classicExtract( $result, 'Apre.id' )
+                            )
+                        )
+                    );
+                }
+            }
+
+            return $results;
+        }
+
+        /**
+        *
+        */
+
+        function beforeSave( $options = array() ) {
+            $return = parent::beforeSave( $options );
+
+            // FIXME: à mettre dans le behavior
+            foreach( array_keys( $this->enumFields ) as $enum ) {
+                if( empty( $this->data[$this->name][$enum] ) ) {
+                    $this->data[$this->name][$enum] = null;
+                }
+            }
+
+            return $return;
+        }
+    }
 ?>

@@ -60,7 +60,7 @@
                         h( 'Référents pour l\'APRE' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'referents', 'action' => 'index' )
+                            array( 'controller' => 'referentsapre', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),

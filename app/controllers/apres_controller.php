@@ -5,7 +5,7 @@
         var $name = 'Apres';
         var $uses = array( 'Apre', 'Option', 'Personne', 'Referentapre', 'Prestation', 'Dsp' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
-//         var $aucunDroit = array( );
+        var $aucunDroit = array( 'ajaxrefapre' );
 
         /** ********************************************************************
         *
@@ -20,6 +20,8 @@
             $this->set( 'typevoie', $this->Option->typevoie() );
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'sitfam', $this->Option->sitfam() );
+
+//             $this->set( 'refsapre', $this->Referentapre->find( 'list' ) );
         }
 
         /** ********************************************************************
@@ -31,8 +33,24 @@
 
             $apres = $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.personne_id' => $personne_id ) ) );
             $this->set( 'apres', $apres );
-// debug($apres);
+
+            $refsapre = $this->Referentapre->_referentsApre( Set::classicExtract( $apres, 'Apre.id' ) );
+            $this->set( 'refsapre', $refsapre );
             $this->set( 'personne_id', $personne_id );
+        }
+
+
+
+        /** ********************************************************************
+        *   Ajax pour les coordonnées du référent APRE
+        *** *******************************************************************/
+
+        function ajaxrefapre() { // FIXME
+            Configure::write( 'debug', 0 );
+            $refapre = $this->Apre->Referentapre->findbyId( Set::extract( $this->data, 'Apre.referentapre_id' ), null, null, -1 );
+
+            $this->set( 'refapre', $refapre );
+            $this->render( 'ajaxrefapre', 'ajax' );
         }
 
 
@@ -44,8 +62,8 @@
             $apre = $this->Apre->findById( $apre_id );
             $this->assert( !empty( $apre ), 'invalidParameter' );
 
-            $referentapre = $this->Referentapre->find( 'list', array( 'fields' => array( 'id', 'nom' ) ) );
-            $this->set( 'referentapre', $referentapre );
+            $refsapre = $this->Referentapre->_referentsApre( Set::classicExtract( $personne, 'Apre.id' ) );
+            $this->set( 'refsapre', $refsapre );
 
             $this->set( 'apre', $apre );
             $this->set( 'personne_id', $apre['Apre']['personne_id'] );
@@ -72,21 +90,27 @@
         function _add_edit( $id = null ) {
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
+            $this->Apre->begin();
+
             // Récupération des id afférents
             if( $this->action == 'add' ) {
                 $personne_id = $id;
                 $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
+
+                ///Création automatique du N° APRE de la forme : Année / Mois / N°
+                $numapre = date('Ym').sprintf( "%010s", $id /*$this->Apre->find( 'count' ) + 1*/ );
+                $this->set( 'numapre', $numapre);
             }
             else if( $this->action == 'edit' ) {
                 $apre_id = $id;
-                $apre = $this->Apre->findById( $apre_id, null, null, -1 );
+                $apre = $this->Apre->findById( $apre_id, null, null, 0 );
                 $this->assert( !empty( $apre ), 'invalidParameter' );
 
                 $personne_id = $apre['Apre']['personne_id'];
                 $dossier_rsa_id = $this->Apre->dossierId( $apre_id );
-            }
 
-            $this->Apre->begin();
+                $this->set( 'numapre', Set::extract( $apre, 'Apre.numeroapre' ) );
+            }
 
             $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
             $this->assert( !empty( $dossier_rsa_id ), 'invalidParameter' );
@@ -101,22 +125,24 @@
             $personne = $this->Apre->Personne->detailsApre( $personne_id );
             $this->set( 'personne', $personne );
 
-// debug($personne);
+            ///Nombre d'enfants par foyer
             $nbEnfants = $this->Apre->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
             $this->set( 'nbEnfants', $nbEnfants );
 
-            ///Création automatique du N° APRE de la forme : Année / Mois / N°
-            $numapre = date('Ym').sprintf("%05s\n",   $id);
-            $this->set( 'numapre', $numapre);
+            ///Récupération de la liste des référents liés à l'APRE
+            $refsapre = $this->Referentapre->_referentsApre( Set::classicExtract( $personne, 'Apre.id' ) );
+            $this->set( 'refsapre', $refsapre );
 
             if( !empty( $this->data ) ){
+
+$this->Apre->bindModel( array( 'hasOne' => array( 'Formqualif' ) ), false ); // FIXME!!!
+
                 if( $this->Apre->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     if( $this->Apre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-                        $numapre++;
                         $this->Jetons->release( $dossier_rsa_id );
                         $this->Apre->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array(  'controller' => 'apres','action' => 'index', $personne_id ) );
+//                         $this->redirect( array(  'controller' => 'apres','action' => 'index', $personne_id ) );
                     }
                     else {
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );

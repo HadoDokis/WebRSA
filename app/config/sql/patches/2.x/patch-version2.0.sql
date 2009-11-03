@@ -102,7 +102,8 @@ CREATE TYPE type_natureaide AS ENUM ( 'FQU', 'PCA', 'PCB', 'AAI', 'ACE', 'AMP', 
 CREATE TABLE apres (
     id                              SERIAL NOT NULL PRIMARY KEY,
     personne_id                     INTEGER NOT NULL REFERENCES personnes(id),
-    natureaide                      type_natureaide NOT NULL,
+    referentapre_id                 INTEGER NOT NULL REFERENCES referentsapre(id),
+--    natureaide                      type_natureaide NOT NULL,
     numeroapre                      NUMERIC(10),
     typedemandeapre                 type_typedemandeapre DEFAULT NULL,
     datedemandeapre                 DATE,
@@ -139,8 +140,7 @@ CREATE INDEX naturesaides_apre_id_idx ON naturesaides (apre_id);
 -- --------------------------------------------------------------------------------------------------------
 CREATE TABLE referentsapre (
     id                          SERIAL NOT NULL PRIMARY KEY,
-    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
-    qual                        CHAR(3),
+    qual                        VARCHAR(3),
     nom                         VARCHAR(28),
     prenom                      VARCHAR(32),
     adresse                     TEXT,
@@ -173,3 +173,13 @@ CREATE TABLE montantsconsommes (
 );
 CREATE INDEX montantsconsommes_apre_id_idx ON montantsconsommes (apre_id);
 
+-- --------------------------------------------------------------------------------------------------------
+--  ....
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE formsqualifs (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    intitule                    VARCHAR(250)
+);
+CREATE INDEX formsqualifs_apre_id_idx ON formsqualifs (apre_id);
