@@ -36,15 +36,12 @@
     <table class="tooltips">
         <thead>
             <tr>
+                <th>N° APRE</th>
                 <th>Nom/Prénom Allocataire</th>
-                <th>Structure référente</th>
-                <th>Permanence liée</th>
-                <th>Type de RDV</th>
-                <th>Statut du RDV</th>
-                <th>Date du RDV</th>
-                <th>Heure du RDV</th>
-                <th>Objet du RDV</th>
-                <th>Commentaire suite au RDV</th>
+                <th>Type de demande APRE</th>
+                <th>Référent APRE</th>
+                <th>Date demande APRE</th>
+                <th>Nature de la demande</th>
                 <th colspan="3" class="action">Actions</th>
             </tr>
         </thead>
@@ -54,15 +51,12 @@
 
                     echo $html->tableCells(
                         array(
+                            h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
                             h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ),
-                            h( Set::extract( $struct, Set::extract( $apre, 'Apre.structurereferente_id' ) ) ),
-                            h( Set::extract( $permanences, Set::extract( $apre, 'Apre.permanence_id' ) ) ),
-                            h( Set::extract( $apre, 'Typerdv.libelle' ) ),
-                            h( value( $statutrdv, Set::classicExtract( $apre, 'Apre.statutrdv_id' ) ) ),
-                            h( date_short( Set::extract( $apre, 'Apre.daterdv' ) ) ),
-                            h( $locale->date( 'Time::short', Set::classicExtract( $apre, 'Apre.heurerdv' ) ) ),
-                            h( Set::extract( $apre, 'Apre.objetrdv' ) ),
-                            h( Set::extract( $apre, 'Apre.commentairerdv' ) ) ,
+                            h( Set::classicExtract( $options['typedemandeapre'], Set::classicExtract( $apre, 'Apre.typedemandeapre' ) ) ),
+                            h( Set::classicExtract( $refsapre, Set::classicExtract( $apre, 'Apre.referentapre_id' ) ) ),
+                            h( date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ) ),
+                            h( Set::classicExtract( 'Formation qualifiante', Set::classicExtract( $apre, 'Natureaide.Formqualif' ) ) ),
                             $html->viewLink(
                                 'Voir le rendez-vous',
                                 array( 'controller' => 'apres', 'action' => 'view', $apre['Apre']['id'] ),

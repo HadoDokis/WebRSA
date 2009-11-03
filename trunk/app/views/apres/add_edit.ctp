@@ -26,6 +26,11 @@
             observeDisableFieldsOnValue( 'ApreActivitebeneficiaire' + letter, [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur' ],  letter, true );
         } );
         observeDisableFieldsOnValue( 'ApreActivitebeneficiaireE', [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur' ], 'E', false );
+
+        // ....
+        observeDisableFieldsetOnCheckbox( 'NatureaideFormqualif', $( 'Formqualif' ), false );
+//         observeDisableFieldsetOnCheckbox( 'ApreNatureaidePCA', $( 'Actprof' ), false );
+//         observeDisableFieldsetOnCheckbox( 'ApreNatureaidePCB', $( 'Permisb' ), false );
     });
 </script>
 
@@ -52,6 +57,7 @@
             <table class="wide noborder">
                 <tr>
                     <td class="mediumSize noborder">
+                        <?php echo $form->input( 'Apre.numeroapre', array( 'type' => 'hidden', 'value' => $numapre ) ); ?>
                         <strong>Numéro de l'APRE : </strong><?php echo $numapre; ?>
                     </td>
                     <td class="mediumSize noborder">
@@ -180,27 +186,57 @@
             <legend>Identité du référent</legend>
            <table class="wide noborder">
                 <tr>
-                    <td class="mediumSize noborder"><strong>Organisme</strong></td>
-                    <td class="mediumSize noborder"><?php echo $xform->input(  'Referentapre.organismeref', array( 'domain' => 'apre', 'label' => false ) );?></td>
+                    <td class="noborder">
+                        <strong>Référent de l'APRE</strong>
+                        <?php echo $xform->input( 'Apre.referentapre_id', array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $refsapre, 'empty' => true ) );?>
+                        <?php echo $ajax->observeField( 'ApreReferentapreId', array( 'update' => 'ReferentapreOrganismeref', 'url' => Router::url( array( 'action' => 'ajaxrefapre' ), true ) ) );?>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="mediumSize noborder"><strong>Nom du référent</strong></td>
-                    <td  class="mediumSize noborder"><?php echo $xform->input(  'Referentapre.nom', array( 'domain' => 'apre', 'label' => false ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumSize noborder"><strong>Prénom du référent</strong></td>
-                    <td  class="mediumSize noborder"><?php echo $xform->input(  'Referentapre.prenom', array( 'domain' => 'apre', 'label' => false ) );?></td>
-                </tr>
-                <tr>
-                     <td class="mediumSize noborder"><strong>Adresse du référent </strong></td>
-                     <td  class="mediumSize noborder"><?php echo $xform->input(  'Referentapre.adresse', array( 'domain' => 'apre', 'label' => false ) );?></td>
-                </tr>
-                <tr>
-                     <td  class="mediumSize noborder"><strong>N° Tél. </strong></td>
-                     <td  class="mediumSize noborder"><?php echo $xform->input(  'Referentapre.numtel', array( 'domain' => 'apre', 'label' => false, 'maxlength' => 10 ) );?></td>
+                    <td class="wide noborder"><div id="ReferentapreOrganismeref"></div></td>
                 </tr>
             </table>
         </fieldset>
+
+        <h2 class="center">Nature de la demande</h2>
+        <?php
+            /// Formation qualifiante
+            /*$tmp = $form->checkbox( null, array( 'id' => 'ApreNatureaideFQU', 'name' => 'data[Apre][natureaide][]', 'value' => 'FQU' ) );
+            $tmp .= $html->tag( 'label', 'Formation qualifiante', array( 'for' => 'ApreNatureaideFQU' ) );*/
+            $tmp = $form->checkbox( 'Natureaide.Formqualif' );
+            $tmp .= $html->tag( 'label', 'Formation qualifiante', array( 'for' => 'NatureaideFormqualif' ) );
+            echo $html->tag( 'h3', $tmp );
+        ?>
+        <fieldset id="Formqualif" class="invisible">
+            <?php
+                if( $this->action == 'edit' ) {
+                    echo $form->input( 'Formqualif.id', array( 'type' => 'hidden' ) );
+                }
+                echo $form->input( 'Formqualif.intitule' );
+            ?>
+        </fieldset>
+        <!--<?php
+            /// Action de professionnalisation
+            $tmp = $form->checkbox( null, array( 'id' => 'ApreNatureaidePCA', 'name' => 'data[Apre][natureaide][]', 'value' => 'PCA' ) );
+            $tmp .= $html->tag( 'label', 'Action de professionnalisation', array( 'for' => 'ApreNatureaidePCA' ) );
+            echo $html->tag( 'h3', $tmp );
+        ?>
+        <fieldset id="Actprof" class="invisible">
+            <?php
+                echo $form->input( 'Actprof.employeur' );
+            ?>
+        </fieldset>
+        <?php
+            /// Action de professionnalisation
+            $tmp = $form->checkbox( null, array( 'id' => 'ApreNatureaidePCB', 'name' => 'data[Apre][natureaide][]', 'value' => 'PCB' ) );
+            $tmp .= $html->tag( 'label', 'Permis de conduire B', array( 'for' => 'ApreNatureaidePCB' ) );
+            echo $html->tag( 'h3', $tmp );
+        ?>
+        <fieldset id="Permisb" class="invisible">
+            <?php
+                echo $form->input( 'Permisb.autoecole' );
+            ?>
+        </fieldset>-->
     </div>
 
         <?php echo $form->submit( 'Enregistrer' );?>

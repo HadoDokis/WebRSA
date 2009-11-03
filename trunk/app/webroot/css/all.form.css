@@ -89,3 +89,8 @@ fieldset.boolean {
 fieldset.boolean label {
     margin-right: 1em;
 }
+
+fieldset.invisible {
+    border: 0;
+    padding: 0;
+}
