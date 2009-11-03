@@ -89,3 +89,87 @@ CREATE TABLE parcours (
     numtelrvorgdeciorie         VARCHAR(10)
 );
 CREATE INDEX parcours_personne_id_idx ON parcours (personne_id);
+
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout de la table "apre" liée à 'personnes'
+-- --------------------------------------------------------------------------------------------------------
+CREATE TYPE type_typedemandeapre AS ENUM ( 'FO', 'AU' );
+CREATE TYPE type_naturelogement AS ENUM ( 'P', 'L', 'H', 'S', 'A' );
+CREATE TYPE type_activitebeneficiaire AS ENUM ( 'E', 'F', 'C' );
+CREATE TYPE type_typecontrat AS ENUM ( 'CDI', 'CDD', 'CON', 'AUT' );
+CREATE TYPE type_natureaide AS ENUM ( 'FQU', 'PCA', 'PCB', 'AAI', 'ACE', 'AMP', 'LVI' );
+
+CREATE TABLE apres (
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    personne_id                     INTEGER NOT NULL REFERENCES personnes(id),
+    natureaide                      type_natureaide NOT NULL,
+    numeroapre                      NUMERIC(10),
+    typedemandeapre                 type_typedemandeapre DEFAULT NULL,
+    datedemandeapre                 DATE,
+    naturelogement                  type_naturelogement DEFAULT NULL,
+    precisionsautrelogement         VARCHAR(20),
+    anciennetepoleemploi            VARCHAR(20),
+    projetprofessionnel             TEXT,
+    secteurprofessionnel            TEXT,
+    activitebeneficiaire            type_activitebeneficiaire DEFAULT NULL,
+    dateentreeemploi                DATE,
+    typecontrat                     type_typecontrat DEFAULT NULL,
+    precisionsautrecontrat          VARCHAR(50),
+    nbheurestravaillees             NUMERIC(4),
+    nomemployeur                    VARCHAR(50),
+    adresseemployeur                TEXT,
+    quota                           NUMERIC(10,2),
+    derogation                      NUMERIC(10,2),
+    avistechreferent                TEXT
+);
+CREATE INDEX apres_personne_id_idx ON apres (personne_id);
+
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout de la table "naturesaides" liée à 'apres'
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE naturesaides (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres (id),
+    natureaide                  type_natureaide NOT NULL
+);
+CREATE INDEX naturesaides_apre_id_idx ON naturesaides (apre_id);
+
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout de la table "referentsapre" liée à 'apres'
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE referentsapre (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    qual                        CHAR(3),
+    nom                         VARCHAR(28),
+    prenom                      VARCHAR(32),
+    adresse                     TEXT,
+    numtel                      VARCHAR(10),
+    email                       VARCHAR(78),
+    fonction                    VARCHAR(50),
+    organismeref                VARCHAR(50)
+);
+CREATE INDEX referentsapre_apre_id_idx ON referentsapre (apre_id);
+
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout de la table "avisref" liée à 'referentsapre'
+-- --------------------------------------------------------------------------------------------------------
+-- CREATE TABLE avisref (
+--     id                          SERIAL NOT NULL PRIMARY KEY,
+--     referentapre_id             INTEGER NOT NULL REFERENCES referentsapre (id),
+--     avistechreferent            TEXT
+-- );
+-- CREATE INDEX avisref_referentapre_id_idx ON avisref (referentapre_id);
+
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout de la table "montantsconsommes" liée à 'apres'
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE montantsconsommes (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    montantconso                NUMERIC(10,2),
+    dateconso                   DATE,
+    justifconso                 VARCHAR(50)
+);
+CREATE INDEX montantsconsommes_apre_id_idx ON montantsconsommes (apre_id);
+

@@ -102,24 +102,24 @@
                                                 ?>
                                             </li>
                                             <li><span>Accompagnement</span>
-                                               <!-- <ul>
-                                                    <li>
+                                                <ul>
+                                                    <!-- <li>
                                                         <?php
                                                             echo $html->link(
                                                                 'Actions /Partenaires /Bilan',
                                                                 '#'//array( 'controller' => 'actionsinsertion', 'action' => 'index', $personne['id'] )
                                                             );
                                                         ?>
-                                                    </li>
+                                                    </li> -->
                                                     <li>
                                                         <?php
                                                             echo $html->link(
                                                                 'Aides / APRE',
-                                                                '#'//array( 'controller' => 'aidesdirectes', 'action' => 'index', $personne['id'] )
+                                                                array( 'controller' => 'apres', 'action' => 'index', $personne['id'] )
                                                             );
                                                         ?>
                                                     </li>
-                                                    <li>
+                                                   <!-- <li>
                                                         <?php
                                                             echo $html->link(
                                                                 'Bilan de l\'accompagnement',
@@ -127,15 +127,15 @@
                                                             );
                                                         ?>
                                                     </li>
-                                                     <li>
+                                                        <li>
                                                         <?php
                                                             echo '<li>'.$html->link(
                                                                 'Suivis du parcours d\'insertion',
                                                                 array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Foyer']['id'] )
                                                             ).'</li>';
                                                         ?>
-                                                    </li> 
-                                                </ul> -->
+                                                    </li> -->
+                                                </ul> 
                                             </li>
                                         </ul>
                                     </li>

@@ -73,7 +73,8 @@
         }
 
         /** ********************************************************************
-        *
+        *   FIXME: en cas de fieldset (type => options), il n'y a pas de
+        *   traduction automatique
         ** ********************************************************************/
 
         function enum( $fieldName, $options = array() ) {

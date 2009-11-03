@@ -90,6 +90,20 @@
 
             $this->assert( !empty( $conditions ), 'invalidParameter' );
 
+            $this->Dossier->Foyer->bindModel(
+                array(
+                    'hasMany' => array(
+                        'Adressefoyer' => array(
+                            'classname'     => 'Adressefoyer',
+                            'foreignKey'    => 'foyer_id'
+                        ),
+                        'Personne' => array(
+                            'classname'     => 'Personne',
+                            'foreignKey'    => 'foyer_id'
+                        )
+                    )
+                )
+            );
             $dossier = $this->Dossier->find(
                 'first',
                 array(
@@ -97,7 +111,6 @@
                     'recursive'  => 2
                 )
             );
-
             $this->assert( !empty( $dossier ), 'invalidParameter' );
 
             usort( $dossier['Foyer']['Adressefoyer'], create_function( '$a,$b', 'return strcmp( $a["rgadr"], $b["rgadr"] );' ) );

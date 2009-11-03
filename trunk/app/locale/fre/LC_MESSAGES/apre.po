@@ -1,0 +1,126 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+
+###############################################################################
+# Apre
+###############################################################################
+msgid "Apre.numeroapre"
+msgstr "Numéro de l'APRE"
+
+msgid "Apre.typedemandeapre"
+msgstr "Type de demande d'APRE"
+
+msgid "Apre.datedemandeapre"
+msgstr "Date de l'envoi de la demande au CG "
+
+msgid "Apre.naturelogement"
+msgstr "Logement "
+
+msgid "Apre.precisionsautrelogement"
+msgstr "Si autres, préciser "
+
+msgid "Apre.anciennetepoleemploi"
+msgstr "Ancienneté pôle emploi "
+
+msgid "Apre.activitebeneficiaire"
+msgstr "Activité du bénéficiaire "
+
+msgid "Apre.projetprofessionnel"
+msgstr "Projet professionnel "
+
+msgid "Apre.secteurprofessionnel"
+msgstr "Secteur professionnel en lien avec la demande "
+###############################################################################
+# Enum Apre.natureaide
+###############################################################################
+msgid "ENUM::NATUREAIDE::FQU"
+msgstr "Formation qualifiante, permis C ou D + FIMO"
+
+msgid "ENUM::NATUREAIDE::PCA"
+msgstr "Professionnalisation des contrats aidés et salariés SIAE"
+
+msgid "ENUM::NATUREAIDE::PCB"
+msgstr "Permis de conduire B"
+
+msgid "ENUM::NATUREAIDE::AAI"
+msgstr "Aide à l'installation"
+
+msgid "ENUM::NATUREAIDE::ACE"
+msgstr "Accompagnement à la création d'entreprise"
+
+msgid "ENUM::NATUREAIDE::AMP"
+msgstr "Acquisition de matériels professionnels"
+
+msgid "ENUM::NATUREAIDE::LVI"
+msgstr "Aide à la location d'un véhicule d'insertion"
+
+###############################################################################
+# Enum Apre.typedemandeapre
+###############################################################################
+msgid "ENUM::TYPEDEMANDEAPRE::FO"
+msgstr "Formations"
+
+msgid "ENUM::TYPEDEMANDEAPRE::AU"
+msgstr "Autres"
+
+###############################################################################
+# Enum Apre.naturelogement
+###############################################################################
+msgid "ENUM::NATURELOGEMENT::P"
+msgstr "Propriétaire"
+
+msgid "ENUM::NATURELOGEMENT::L"
+msgstr "Locataire"
+
+msgid "ENUM::NATURELOGEMENT::H"
+msgstr "Hébergé"
+
+msgid "ENUM::NATURELOGEMENT::S"
+msgstr "SDF"
+
+msgid "ENUM::NATURELOGEMENT::A"
+msgstr "Autres"
+
+###############################################################################
+# Enum Apre.activitebeneficiaire
+###############################################################################
+msgid "ENUM::ACTIVITEBENEFICIAIRE::E"
+msgstr "Emploi"
+
+msgid "ENUM::ACTIVITEBENEFICIAIRE::F"
+msgstr "Formation"
+
+msgid "ENUM::ACTIVITEBENEFICIAIRE::C"
+msgstr "Création"
+
+###############################################################################
+# Enum Apre.typecontrat
+###############################################################################
+msgid "ENUM::TYPECONTRAT::CDI"
+msgstr "CDI"
+
+msgid "ENUM::TYPECONTRAT::CDD"
+msgstr "CDD"
+
+msgid "ENUM::TYPECONTRAT::CON"
+msgstr "Contrat Aidé"
+
+msgid "ENUM::TYPECONTRAT::AUT"
+msgstr "Autres"

@@ -42,7 +42,9 @@
         'avispcgdroitrsa',
         'recours',
         'rendezvous',
-        'parcours'
+        'parcours',
+        'permisb',
+        'avisref'
     );
 /**
  * This is a key => value array of plural irregular words.
@@ -95,7 +97,7 @@
         'regroupementzonegeo' => 'regroupementszonesgeo',
         'cohorteci' => 'cohortesci',
         'cohorteindu' => 'cohortesindus',
-        // Infos financières
+        /// Infos financières
         'allocation_comptabilisee' => 'allocations_comptabilisees',
         'indu_constate' => 'indus_constates',
         'indu_transfere_cg' => 'indus_transferes_cg',
@@ -103,7 +105,7 @@
         'annulation_faible_montant' => 'annulations_faible_montant',
         'autre_annulation' => 'autres_annulations',
         'dspp_nivetu' => 'dspps_nivetus',
-        //Parcours d'insertion
+        ///Parcours d'insertion
         'suiviinsertion' => 'suivisinsertion',
         'dossierpdo' => 'dossierspdo',
         'avispcgpersonne' => 'avispcgpersonnes',
@@ -115,14 +117,24 @@
         'transmissionflux' => 'transmissionsflux',
         'suiviappuiorientation' => 'suivisappuisorientation',
         'calculdroitrsa' => 'calculsdroitsrsa',
-        //PDOS
+        ///PDOS
         'typenotifpdo' => 'typesnotifspdos',
         'decisionpdo' => 'decisionspdos',
         'typepdo' => 'typespdos',
         'piecepdo' => 'piecespdos',
         'propopdo_typenotifpdo' => 'propospdos_typesnotifspdos',
         'statutrdv' => 'statutsrdvs',
-        'infopoleemploi' => 'infospoleemploi'
+        'infopoleemploi' => 'infospoleemploi',
+        ///APRE
+        'referentapre' => 'referentsapre',
+        'montantconsomme' => 'montantsconsommes',
+        'acqmatprof' => 'acqsmatsprofs',
+        'formqualif' => 'formsqualifs',
+        'actprof' => 'actsprofs',
+        'acccreaentr' => 'accscreaentr',
+        'amenaglogt' => 'amenagslogts',
+        'locvehicinsert' => 'locsvehicinsert',
+        'natureaide' => 'naturesaides'
      );
 /**
  * This is a key => value array of regex used to match words.
