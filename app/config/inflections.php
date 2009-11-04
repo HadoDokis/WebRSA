@@ -126,15 +126,31 @@
         'statutrdv' => 'statutsrdvs',
         'infopoleemploi' => 'infospoleemploi',
         ///APRE
+        'pieceapre' => 'piecesapre',
+        'apre_pieceapre' => 'apres_piecesapre',
+        'apre_pieceliee' => 'apres_piecesliees',
         'referentapre' => 'referentsapre',
         'montantconsomme' => 'montantsconsommes',
         'acqmatprof' => 'acqsmatsprofs',
-        'formqualif' => 'formsqualifs',
+        //Actprof
         'actprof' => 'actsprofs',
+        'pieceactprof' => 'piecesactsprofs',
+        'actprof_pieceactprof' => 'actsprofs_piecesactsprofs',
+        //Permisb
+        'piecepermisb' => 'piecespermisb',
+        'permisb_piecepermisb' => 'permisb_piecespermisb',
+        //Acccreaentr
         'acccreaentr' => 'accscreaentr',
+        //Amenaglogt
         'amenaglogt' => 'amenagslogts',
+        'pieceamenaglogt' => 'piecesamenagslogts',
+        'amenaglogt_pieceamenaglogt' => 'amenagslogts_piecesamenagslogts',
+
         'locvehicinsert' => 'locsvehicinsert',
-        'natureaide' => 'naturesaides'
+        //Formqualif
+        'formqualif' => 'formsqualifs',
+        'pieceformqualif' => 'piecesformsqualifs',
+        'formqualif_pieceformqualif' => 'formsqualifs_piecesformsqualifs'
      );
 /**
  * This is a key => value array of regex used to match words.

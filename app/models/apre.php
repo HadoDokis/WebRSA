@@ -2,7 +2,6 @@
     class Apre extends AppModel
     {
         var $name = 'Apre';
-        var $useTable = 'apres';
         var $actsAs = array( 'Enumerable' );
 
         var $validate = array(
@@ -58,21 +57,25 @@
         );
 
         var $hasOne = array(
-            'Formqualif'
+            'Formqualif',
+            'Actprof',
+            'Permisb',
+            'Amenaglogt'
         );
 
         var $hasMany = array(
-//             'Referentapre' => array(
-//                 'classname' => 'Referentapre',
-//                 'foreignKey' => 'apre_id',
-//             ),
-//             'Natureaide' => array(
-//                 'classname' => 'Natureaide',
-//                 'foreignKey' => 'apre_id',
-//             ),
             'Montantconsomme' => array(
                 'classname' => 'Montantconsomme',
                 'foreignKey' => 'apre_id',
+            )
+        );
+
+        var $hasAndBelongsToMany = array(
+            'Pieceapre' => array(
+                 'className'              => 'Pieceapre',
+                 'joinTable'              => 'apres_piecesapre',
+                 'foreignKey'             => 'apre_id',
+                'associationForeignKey'  => 'pieceapre_id'
             )
         );
 
