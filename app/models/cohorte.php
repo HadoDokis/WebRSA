@@ -19,7 +19,7 @@
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
                 $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
-                $conditions[] = 'adresses.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
+                $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
             }
 
             /// Dossiers lockés
@@ -50,16 +50,42 @@
 
             // Localité adresse
             if( !empty( $locaadr ) ) {
-                $conditions[] = 'adresses.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+                $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
             }
             // Commune au sens INSEE
             if( !empty( $numcomptt ) ) {
-                $conditions[] = 'adresses.numcomptt = \''.Sanitize::clean( $numcomptt ).'\'';
+                $conditions[] = 'Adresse.numcomptt = \''.Sanitize::clean( $numcomptt ).'\'';
             }
             // Code postal adresse
             if( !empty( $codepos ) ) {
-                $conditions[] = 'adresses.codepos = \''.Sanitize::clean( $codepos ).'\'';
+                $conditions[] = 'Adresse.codepos = \''.Sanitize::clean( $codepos ).'\'';
             }
+
+            /// Critères sur l'adresse - canton
+			if( Configure::read( 'CG.cantons' ) ) {
+				if( isset( $criteres['Canton']['canton'] ) && !empty( $criteres['Canton']['canton'] ) ) {
+					$this->Canton =& ClassRegistry::init( 'Canton' );
+					$tmpConditions = $this->Canton->queryConditions( $criteres['Canton']['canton'] );
+					$_conditions = array();
+					foreach( $tmpConditions['or'] as $tmpCondition ) {
+						$_condition = array();
+						foreach( $tmpCondition as $field => $value ) {
+							if( valid_int( $value ) ) {
+								$_condition[] = "$field = '".str_replace( "'", "\\'", $value )."'";
+							}
+							else {
+								$_condition[] = "$field '".str_replace( "'", "\\'", $value )."'";
+							}
+						}
+						if( !empty( $_condition ) ) {
+							$_conditions[] = '( '.implode( ') AND (', $_condition ).' )';
+						}
+					}
+					if( !empty( $_conditions ) ) {
+						$conditions[] = '( ( '.implode( ') OR (', $_conditions ).' ) )';
+					}
+				}
+			}
 
             // Date de demande
             if( !empty( $dtdemrsa ) && $dtdemrsa != 0 ) {
@@ -95,7 +121,7 @@
                         INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
                         INNER JOIN dossiers_rsa ON ( foyers.dossier_rsa_id = dossiers_rsa.id )
                         INNER JOIN adresses_foyers ON ( adresses_foyers.foyer_id = foyers.id AND adresses_foyers.rgadr = \'01\' )
-                        INNER JOIN adresses ON ( adresses_foyers.adresse_id = adresses.id)
+                        INNER JOIN adresses as Adresse ON ( adresses_foyers.adresse_id = Adresse.id)
                         INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
                         INNER JOIN detailsdroitsrsa ON ( detailsdroitsrsa.dossier_rsa_id = dossiers_rsa.id )
                         INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id AND ( situationsdossiersrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) ) )

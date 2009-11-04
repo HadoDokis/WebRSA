@@ -44,6 +44,11 @@
         <?php echo $form->input( 'Relance.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Relance.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Relance.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+        <?php
+			if( Configure::read( 'CG.cantons' ) ) {
+				echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+			}
+		?>
     </fieldset>
     <div class="noprint">
         <?php echo $form->input( 'Relance.daterelance', array( 'label' => 'Filtrer par date de relance', 'type' => 'checkbox' ) );?>
@@ -161,7 +166,7 @@
                         array_unisize( $this->data )
                     )
                 );
-            ?></li> 
+            ?></li>
         </ul>
     <?php endif;?>
 <?php endif;?>

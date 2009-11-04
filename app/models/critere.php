@@ -73,6 +73,13 @@
                 $conditions[] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $criteres['Adresse']['numcomptt'] )."%'";
             }
 
+            /// Critères sur l'adresse - canton
+			if( Configure::read( 'CG.cantons' ) ) {
+				if( isset( $criteres['Canton']['canton'] ) && !empty( $criteres['Canton']['canton'] ) ) {
+					$this->Canton =& ClassRegistry::init( 'Canton' );
+					$conditions[] = $this->Canton->queryConditions( $criteres['Canton']['canton'] );
+				}
+			}
 
             // ...
             if( !empty( $statut_orient ) ) {

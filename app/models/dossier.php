@@ -184,6 +184,14 @@
                 $conditions[] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $params['Adresse']['numcomptt'] )."%'";
             }
 
+            /// Critères sur l'adresse - canton
+			if( Configure::read( 'CG.cantons' ) ) {
+				if( isset( $params['Canton']['canton'] ) && !empty( $params['Canton']['canton'] ) ) {
+					$this->Canton =& ClassRegistry::init( 'Canton' );
+					$conditions[] = $this->Canton->queryConditions( $params['Canton']['canton'] );
+				}
+			}
+
             /// Critères sur la nature de la prestation - natpf
             if( isset( $params['Detailcalculdroitrsa']['natpf'] ) && !empty( $params['Detailcalculdroitrsa']['natpf'] ) ) {
                 $conditions[] = "Detailcalculdroitrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%'";

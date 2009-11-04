@@ -76,6 +76,14 @@
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
+            /// Critères sur l'adresse - canton
+			if( Configure::read( 'CG.cantons' ) ) {
+				if( isset( $criterespdo['Canton']['canton'] ) && !empty( $criterespdo['Canton']['canton'] ) ) {
+					$this->Canton =& ClassRegistry::init( 'Canton' );
+					$conditions[] = $this->Canton->queryConditions( $criterespdo['Canton']['canton'] );
+				}
+			}
+
             // Décision CG
             if( !empty( $decisionpdo_id ) ) {
                 $conditions[] = 'Propopdo.decisionpdo_id = \''.$decisionpdo_id.'\'';

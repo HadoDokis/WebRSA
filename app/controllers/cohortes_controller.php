@@ -5,7 +5,7 @@
     class CohortesController extends AppController
     {
         var $name = 'Cohortes';
-        var $uses = array( 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne', 'Orientstruct' );
+        var $uses = array( 'Canton', 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne', 'Orientstruct' );
         var $helpers = array( 'Csv', 'Paginator' );
 
         var $paginate = array(
@@ -123,6 +123,9 @@
             $this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );
             $this->set( 'printed', $this->Option->printed() );
             $this->set( 'structuresAutomatiques', $this->Cohorte->structuresAutomatiques() );
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', $this->Canton->selectList() );
+			}
             //-------------------------------------------------------------
 
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
