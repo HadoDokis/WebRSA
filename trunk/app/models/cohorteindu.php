@@ -90,6 +90,14 @@
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
+            /// Critères sur l'adresse - canton
+			if( Configure::read( 'CG.cantons' ) ) {
+				if( isset( $criteresindu['Canton']['canton'] ) && !empty( $criteresindu['Canton']['canton'] ) ) {
+					$this->Canton =& ClassRegistry::init( 'Canton' );
+					$conditions[] = $this->Canton->queryConditions( $criteresindu['Canton']['canton'] );
+				}
+			}
+
             // Commune au sens INSEE
             if( !empty( $natpf ) ) {
                 $conditions[] = 'Detailcalculdroitrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';

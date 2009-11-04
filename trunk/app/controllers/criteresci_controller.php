@@ -5,7 +5,7 @@
     class CriteresciController extends AppController
     {
         var $name = 'Criteresci';
-        var $uses = array(  'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typocontrat', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Cohorteci', 'Referent' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typocontrat', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Cohorteci', 'Referent' );
         var $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
         var $helpers = array( 'Csv', 'Ajax' );
@@ -79,6 +79,10 @@
         }
 
         function index() {
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', $this->Canton->selectList() );
+			}
+
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 

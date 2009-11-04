@@ -62,6 +62,14 @@
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
+            /// Critères sur l'adresse - canton
+			if( Configure::read( 'CG.cantons' ) ) {
+				if( isset( $criteresrdv['Canton']['canton'] ) && !empty( $criteresrdv['Canton']['canton'] ) ) {
+					$this->Canton =& ClassRegistry::init( 'Canton' );
+					$conditions[] = $this->Canton->queryConditions( $criteresrdv['Canton']['canton'] );
+				}
+			}
+
             /// Structure référente
             if( !empty( $structurereferente_id ) ) {
                 $conditions[] = 'Rendezvous.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';

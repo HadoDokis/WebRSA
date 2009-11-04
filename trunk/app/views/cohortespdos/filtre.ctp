@@ -31,9 +31,19 @@
         <?php if( $this->action == 'avisdemande' ):?>
             <?php echo $form->input( 'Cohortepdo.matricule', array( 'label' => 'N° CAF', 'type' => 'text', 'maxlength' => 15 ) );?>
             <?php echo $form->input( 'Cohortepdo.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+			<?php
+				if( Configure::read( 'CG.cantons' ) ) {
+					echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+				}
+			?>
         <?php else :?>
-         <?php echo $form->input( 'Cohortepdo.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+        <?php echo $form->input( 'Cohortepdo.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
         <?php
+			if( Configure::read( 'CG.cantons' ) ) {
+				echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+			}
+		?>
+		<?php
             echo $form->input( 'Cohortepdo.typepdo_id', array( 'label' =>  ( __( 'typepdo', true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );
             echo $form->input( 'Cohortepdo.decisionpdo_id', array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );
             echo $form->input( 'Cohortepdo.motifpdo', array( 'label' => __( 'motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) );
@@ -52,6 +62,6 @@
     </fieldset>
     <div class="submit noprint">
         <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
-         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?> 
+         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
 <?php echo $form->end();?>

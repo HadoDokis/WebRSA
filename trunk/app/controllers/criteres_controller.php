@@ -5,7 +5,7 @@
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
-        var $uses = array( 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Orientstruct', 'Critere', 'Zonegeographique' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Orientstruct', 'Critere', 'Zonegeographique' );
         //var $aucunDroit = array('index', 'menu', 'constReq');
         var $aucunDroit = array( 'constReq' );
         var $helpers = array( 'Csv' );
@@ -40,6 +40,10 @@
 
 
         function index() {
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', $this->Canton->selectList() );
+			}
+
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
             if( !empty( $this->data ) ) {

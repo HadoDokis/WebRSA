@@ -249,6 +249,14 @@
                 $conditions[] = 'Adresse.numcomptt = \''.Sanitize::clean( $numcomptt ).'\'';
             }
 
+            /// Critères sur l'adresse - canton
+			if( Configure::read( 'CG.cantons' ) ) {
+				if( isset( $criteresrelance['Canton']['canton'] ) && !empty( $criteresrelance['Canton']['canton'] ) ) {
+					$this->Canton =& ClassRegistry::init( 'Canton' );
+					$conditions[] = $this->Canton->queryConditions( $criteresrelance['Canton']['canton'] );
+				}
+			}
+
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
             $filtersPersonne = array();
             foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {

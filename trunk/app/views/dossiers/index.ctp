@@ -65,6 +65,11 @@
         <legend>Recherche par Adresse</legend>
         <!-- <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
         <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+        <?php
+			if( Configure::read( 'CG.cantons' ) ) {
+				echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+			}
+		?>
     </fieldset>
     <fieldset>
         <legend>Recherche par allocataire<!--FIXME: personne du foyer--></legend>
@@ -72,7 +77,7 @@
         <?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom' ) );?>
         <?php echo $form->input( 'Personne.nomnai', array( 'label' => 'Nom de jeune fille' ) );?>
         <?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom' ) );?>
-        <?php echo $form->input( 'Personne.nir', array( 'label' => 'NIR', 'maxLength' => 15 ) );?>
+        <?php echo $form->input( 'Personne.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );?>
     </fieldset>
 
     <div class="submit noprint">

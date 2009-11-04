@@ -48,13 +48,18 @@
             <?php echo $form->input( 'Critererdv.locaadr', array( 'label' => __( 'locaadr', true ), 'type' => 'text' ) );?>
             <!-- <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
             <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+			<?php
+				if( Configure::read( 'CG.cantons' ) ) {
+					echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+				}
+			?>
             <?php echo $form->input( 'Critererdv.statutrdv_id', array( 'label' => __( 'statutrdv', true ), 'type' => 'select' , 'options' => $statutrdv, 'empty' => true ) );?>
             <?php echo $form->input( 'Critererdv.structurereferente_id', array( 'label' => __( 'lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Critererdv.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
             <?php echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
 
             <!--  Ajout d'une permanence liée à une structurereferente  -->
-            <?php 
+            <?php
                 echo $form->input( 'Critererdv.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'empty' => true ) );
                 echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvPermanenceId', 'url' => Router::url( array( 'action' => 'ajaxperm' ), true ) ) );
             ?>

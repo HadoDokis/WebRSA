@@ -3,7 +3,7 @@
     {
 
         var $name = 'Relances';
-        var $uses = array( 'Orientstruct', 'Relance', 'Option', 'Personne', 'Structurereferente' );
+        var $uses = array( 'Canton', 'Orientstruct', 'Relance', 'Option', 'Personne', 'Structurereferente' );
         var $helpers = array( 'Csv', 'Paginator', 'Locale' );
         /**
         *
@@ -50,6 +50,10 @@
 
 
         function _index( $statutRelance = null ){
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', $this->Canton->selectList() );
+			}
+
             $this->assert( !empty( $statutRelance ), 'invalidParameter' );
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );

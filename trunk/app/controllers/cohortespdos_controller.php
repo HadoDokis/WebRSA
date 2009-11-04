@@ -1,9 +1,9 @@
-<?php 
+<?php
     App::import('Sanitize');
     class CohortespdosController extends AppController {
 
         var $name = 'Cohortespdos';
-        var $uses = array( 'Cohortepdo', 'Option', 'Dossier', 'Situationdossierrsa', 'Propopdo', 'Typenotifpdo', 'Typepdo', 'Decisionpdo' );
+        var $uses = array( 'Canton', 'Cohortepdo', 'Option', 'Dossier', 'Situationdossierrsa', 'Propopdo', 'Typenotifpdo', 'Typepdo', 'Decisionpdo' );
         var $helpers = array( 'Csv', 'Paginator' );
 
         var $paginate = array(
@@ -24,7 +24,7 @@
             parent::beforeFilter();
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
-            $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );;
+            $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
             $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
             $this->set( 'pieecpres', $this->Option->pieecpres() );
             $this->set( 'commission', $this->Option->commission() );
@@ -55,6 +55,9 @@
         //*********************************************************************
 
         function _index( $statutValidationAvis = null ) {
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', $this->Canton->selectList() );
+			}
             $this->assert( !empty( $statutValidationAvis ), 'invalidParameter' );
 
 //             $this->Cohortepdo->create( $this->data );
