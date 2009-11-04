@@ -29,8 +29,9 @@
 
         // ....
         observeDisableFieldsetOnCheckbox( 'NatureaideFormqualif', $( 'Formqualif' ), false );
-//         observeDisableFieldsetOnCheckbox( 'ApreNatureaidePCA', $( 'Actprof' ), false );
-//         observeDisableFieldsetOnCheckbox( 'ApreNatureaidePCB', $( 'Permisb' ), false );
+        observeDisableFieldsetOnCheckbox( 'NatureaideActprof', $( 'Actprof' ), false );
+        observeDisableFieldsetOnCheckbox( 'NatureaidePermisb', $( 'Permisb' ), false );
+        observeDisableFieldsetOnCheckbox( 'NatureaideAmenaglogt', $( 'Amenaglogt' ), false );
     });
 </script>
 
@@ -133,7 +134,7 @@
             <table class="wide noborder">
                 <tr>
                     <td class="mediumsize noborder"><strong>Date de dernière cessation d'activité : </strong></td>
-                    <td class="mediumsize noborder"><?php echo Set::classicExtract( $optionsdsps['cessderact'], Set::classicExtract( $personne, 'Dsp.cessderact' ) );?></td>
+                    <td class="mediumsize noborder"><?php echo Set::classicExtract( $personne, 'Dsp.cessderact' ) ? Set::classicExtract( $optionsdsps['cessderact'], Set::classicExtract( $personne, 'Dsp.cessderact' ) ) : null;?></td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Ancienneté pôle emploi </strong></td>
@@ -141,7 +142,7 @@
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Niveau d'étude </strong></td>
-                    <td class="mediumsize noborder"><?php echo Set::classicExtract( $optionsdsps['nivetu'], Set::classicExtract( $personne, 'Dsp.nivetu' ) );?></td>
+                    <td class="mediumsize noborder"><?php echo Set::classicExtract( $personne, 'Dsp.nivetu' ) ? Set::classicExtract( $optionsdsps['nivetu'], Set::classicExtract( $personne, 'Dsp.nivetu' ) ) : null;?></td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Projet professionnel </strong></td>
@@ -197,14 +198,16 @@
                 </tr>
             </table>
         </fieldset>
+        <fieldset>
+            <legend>Pièces jointes</legend>
+            <?php echo $xform->input( 'Pieceapre.Pieceapre', array( 'options' => $piecesapre, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+        </fieldset>
 
         <h2 class="center">Nature de la demande</h2>
         <?php
             /// Formation qualifiante
-            /*$tmp = $form->checkbox( null, array( 'id' => 'ApreNatureaideFQU', 'name' => 'data[Apre][natureaide][]', 'value' => 'FQU' ) );
-            $tmp .= $html->tag( 'label', 'Formation qualifiante', array( 'for' => 'ApreNatureaideFQU' ) );*/
             $tmp = $form->checkbox( 'Natureaide.Formqualif' );
-            $tmp .= $html->tag( 'label', 'Formation qualifiante', array( 'for' => 'NatureaideFormqualif' ) );
+            $tmp .= $html->tag( 'label', 'Formation qualifiante / Permis C ou D + FIMO', array( 'for' => 'NatureaideFormqualif' ) );
             echo $html->tag( 'h3', $tmp );
         ?>
         <fieldset id="Formqualif" class="invisible">
@@ -212,31 +215,100 @@
                 if( $this->action == 'edit' ) {
                     echo $form->input( 'Formqualif.id', array( 'type' => 'hidden' ) );
                 }
-                echo $form->input( 'Formqualif.intitule' );
+                echo $form->input( 'Formqualif.intituleform' );
+                echo $form->input( 'Formqualif.organismeform' );
+                echo $form->input( 'Formqualif.ddform' );
+                echo $form->input( 'Formqualif.dfform' );
+                echo $form->input( 'Formqualif.dureeform' );
+                echo $form->input( 'Formqualif.modevalidation' );
+                echo $form->input( 'Formqualif.coutform' );
+                echo $form->input( 'Formqualif.cofinanceurs' );
+                echo $form->input( 'Formqualif.montantaide' );
             ?>
+            <fieldset>
+                <legend>Pièces jointes</legend>
+                <?php echo $xform->input( 'Pieceformqualif.Pieceformqualif', array( 'options' => $piecesformqualif, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+            </fieldset>
         </fieldset>
-        <!--<?php
+        <?php
             /// Action de professionnalisation
-            $tmp = $form->checkbox( null, array( 'id' => 'ApreNatureaidePCA', 'name' => 'data[Apre][natureaide][]', 'value' => 'PCA' ) );
-            $tmp .= $html->tag( 'label', 'Action de professionnalisation', array( 'for' => 'ApreNatureaidePCA' ) );
+            $tmp = $form->checkbox( 'Natureaide.Actprof' );
+            $tmp .= $html->tag( 'label', 'Action de professionnalisation des contrats aides et salariés dans les SIAE', array( 'for' => 'NatureaideActprof' ) );
             echo $html->tag( 'h3', $tmp );
         ?>
         <fieldset id="Actprof" class="invisible">
             <?php
-                echo $form->input( 'Actprof.employeur' );
+                if( $this->action == 'edit' ) {
+                    echo $form->input( 'Actprof.id', array( 'type' => 'hidden' ) );
+                }
+                echo $form->input( 'Actprof.nomemployeur' );
+                echo $form->input( 'Actprof.adresseemployeur' );
+                echo $xform->enum( 'Actprof.typecontratact', array( 'div' => false, 'label' => false, 'legend' => false, 'type' => 'radio', /*'separator' => '<br />',*/ 'options' => $optionsacts['typecontratact'] ) );
+                echo $form->input( 'Actprof.ddconvention' );
+                echo $form->input( 'Actprof.dfconvention' );
+                echo $form->input( 'Actprof.intituleformation' );
+                echo $form->input( 'Actprof.ddform' );
+                echo $form->input( 'Actprof.dfform' );
+                echo $form->input( 'Actprof.dureeform' );
+                echo $form->input( 'Actprof.modevalidation' );
+                echo $form->input( 'Actprof.coutform' );
+                echo $form->input( 'Actprof.cofinanceurs' );
+                echo $form->input( 'Actprof.montantaide' );
             ?>
+            <fieldset>
+                <legend>Pièces jointes</legend>
+                <?php echo $xform->input( 'Pieceactprof.Pieceactprof', array( 'options' => $piecesactprof, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+            </fieldset>
         </fieldset>
         <?php
-            /// Action de professionnalisation
-            $tmp = $form->checkbox( null, array( 'id' => 'ApreNatureaidePCB', 'name' => 'data[Apre][natureaide][]', 'value' => 'PCB' ) );
-            $tmp .= $html->tag( 'label', 'Permis de conduire B', array( 'for' => 'ApreNatureaidePCB' ) );
+            /// Permis B
+            $tmp = $form->checkbox( 'Natureaide.Permisb' );
+            $tmp .= $html->tag( 'label', 'Permis de conduire B', array( 'for' => 'NatureaidePermisb' ) );
             echo $html->tag( 'h3', $tmp );
         ?>
         <fieldset id="Permisb" class="invisible">
             <?php
-                echo $form->input( 'Permisb.autoecole' );
+                if( $this->action == 'edit' ) {
+                    echo $form->input( 'Permisb.id', array( 'type' => 'hidden' ) );
+                }
+                echo $form->input( 'Permisb.nomautoecole' );
+                echo $form->input( 'Permisb.adresseautoecole' );
+                echo $form->input( 'Permisb.code',
+                    array( 'div' => false, 'label' => 'Code', 'legend' => 'Code', 'type' => 'checkbox' )
+                );
+                echo $form->input( 'Permisb.conduite',
+                    array( 'div' => false, 'label' => 'Conduite', 'legend' => false, 'type' => 'checkbox' )
+                );
+                echo $form->input( 'Permisb.dureeform' );
+                echo $form->input( 'Permisb.coutform' );
             ?>
-        </fieldset>-->
+            <fieldset>
+                <legend>Pièces jointes</legend>
+                <?php echo $xform->input( 'Piecepermisb.Piecepermisb', array( 'options' => $piecespermisb, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+            </fieldset>
+        </fieldset>
+        <?php
+            /// Amenagement logement
+            $tmp = $form->checkbox( 'Natureaide.Amenaglogt' );
+            $tmp .= $html->tag( 'label', 'Aide à l\'installation', array( 'for' => 'NatureaideAmenaglogt' ) );
+            echo $html->tag( 'h3', $tmp );
+        ?>
+        <fieldset id="Amenaglogt" class="invisible">
+            <?php
+                if( $this->action == 'edit' ) {
+                    echo $form->input( 'Amenaglogt.id', array( 'type' => 'hidden' ) );
+                }
+                echo $xform->enum( 'Amenaglogt.typeaidelogement', array( 'div' => false, 'label' => false, 'legend' => false, 'type' => 'radio', /*'separator' => '<br />',*/ 'options' => $optionslogts['typeaidelogement'] ) );
+                echo $form->input( 'Amenaglogt.besoins' );
+                echo $form->input( 'Amenaglogt.montantaide' );
+                echo $form->input( 'Amenaglogt.dureeform' );
+                echo $form->input( 'Amenaglogt.coutform' );
+            ?>
+            <fieldset>
+                <legend>Pièces jointes</legend>
+                <?php echo $xform->input( 'Pieceamenaglogt.Pieceamenaglogt', array( 'options' => $piecesamenaglogt, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+            </fieldset>
+        </fieldset>
     </div>
 
         <?php echo $form->submit( 'Enregistrer' );?>

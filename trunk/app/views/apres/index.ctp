@@ -48,7 +48,6 @@
         <tbody>
             <?php
                 foreach( $apres as $apre ) {
-
                     echo $html->tableCells(
                         array(
                             h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),

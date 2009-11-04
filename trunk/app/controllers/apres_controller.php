@@ -3,7 +3,7 @@
     {
 
         var $name = 'Apres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'Referentapre', 'Prestation', 'Dsp' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'Referentapre', 'Prestation', 'Dsp', 'Actprof', 'Permisb', 'Amenaglogt' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxrefapre' );
 
@@ -15,13 +15,15 @@
             parent::beforeFilter();
             $options = $this->Apre->allEnumLists();
             $this->set( 'options', $options );
+            $optionsacts = $this->Actprof->allEnumLists();
+            $this->set( 'optionsacts', $optionsacts );
             $optionsdsps = $this->Dsp->allEnumLists();
             $this->set( 'optionsdsps', $optionsdsps );
+            $optionslogts = $this->Amenaglogt->allEnumLists();
+            $this->set( 'optionslogts', $optionslogts );
             $this->set( 'typevoie', $this->Option->typevoie() );
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'sitfam', $this->Option->sitfam() );
-
-//             $this->set( 'refsapre', $this->Referentapre->find( 'list' ) );
         }
 
         /** ********************************************************************
@@ -62,7 +64,7 @@
             $apre = $this->Apre->findById( $apre_id );
             $this->assert( !empty( $apre ), 'invalidParameter' );
 
-            $refsapre = $this->Referentapre->_referentsApre( Set::classicExtract( $personne, 'Apre.id' ) );
+            $refsapre = $this->Referentapre->_referentsApre( Set::classicExtract( $apre, 'Apre.id' ) );
             $this->set( 'refsapre', $refsapre );
 
             $this->set( 'apre', $apre );
@@ -91,6 +93,26 @@
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
             $this->Apre->begin();
+
+            /// Pièces liées à l'APRE
+            $piecesapre = $this->Apre->Pieceapre->find( 'list' );
+            $this->set( 'piecesapre', $piecesapre );
+
+            /// Pièces liées à la Formqualif
+            $piecesformqualif = $this->Apre->Formqualif->Pieceformqualif->find( 'list' );
+            $this->set( 'piecesformqualif', $piecesformqualif );
+
+            /// Pièces liées à la Actprof
+            $piecesactprof = $this->Apre->Actprof->Pieceactprof->find( 'list' );
+            $this->set( 'piecesactprof', $piecesactprof );
+
+            /// Pièces liées au Permisb
+            $piecespermisb = $this->Apre->Permisb->Piecepermisb->find( 'list' );
+            $this->set( 'piecespermisb', $piecespermisb );
+
+            /// Pièces liées à Amenaglogt
+            $piecesamenaglogt = $this->Apre->Amenaglogt->Pieceamenaglogt->find( 'list' );
+            $this->set( 'piecesamenaglogt', $piecesamenaglogt );
 
             // Récupération des id afférents
             if( $this->action == 'add' ) {
@@ -134,13 +156,28 @@
             $this->set( 'refsapre', $refsapre );
 
             if( !empty( $this->data ) ){
-
-$this->Apre->bindModel( array( 'hasOne' => array( 'Formqualif' ) ), false ); // FIXME!!!
-
                 if( $this->Apre->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-                    if( $this->Apre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+                    $saved = $this->Apre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+                    $tablesLiees = array(
+                        'Formqualif' => 'Pieceformqualif',
+                        'Actprof' => 'Pieceactprof',
+                        'Permisb' => 'Piecepermisb',
+                        'Amenaglogt' => 'Pieceamenaglogt'
+                    );
+                    foreach( $tablesLiees as $model => $piecesLiees ) {
+                        if( !empty( $this->data[$piecesLiees] ) ) {
+                            $linkedData = array(
+                                $model => array(
+                                    'id' => $this->Apre->{$model}->id
+                                ),
+                                $piecesLiees => $this->data[$piecesLiees]
+                            );
+                            $saved = $this->Apre->{$model}->save( $linkedData ) && $saved;
+                        }
+                    }
+                    if( $saved ) {
                         $this->Jetons->release( $dossier_rsa_id );
-                        $this->Apre->commit();
+                        $this->Apre->rollback(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 //                         $this->redirect( array(  'controller' => 'apres','action' => 'index', $personne_id ) );
                     }
@@ -154,7 +191,7 @@ $this->Apre->bindModel( array( 'hasOne' => array( 'Formqualif' ) ), false ); // 
                     $this->data = $apre;
                 }
             }
-            $this->Apre->commit();
+            $this->Apre->rollback(); // FIXME
 
 
             $this->set( 'personne_id', $personne_id );

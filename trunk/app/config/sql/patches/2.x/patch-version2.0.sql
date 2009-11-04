@@ -97,14 +97,12 @@ CREATE TYPE type_typedemandeapre AS ENUM ( 'FO', 'AU' );
 CREATE TYPE type_naturelogement AS ENUM ( 'P', 'L', 'H', 'S', 'A' );
 CREATE TYPE type_activitebeneficiaire AS ENUM ( 'E', 'F', 'C' );
 CREATE TYPE type_typecontrat AS ENUM ( 'CDI', 'CDD', 'CON', 'AUT' );
-CREATE TYPE type_natureaide AS ENUM ( 'FQU', 'PCA', 'PCB', 'AAI', 'ACE', 'AMP', 'LVI' );
 
 CREATE TABLE apres (
     id                              SERIAL NOT NULL PRIMARY KEY,
     personne_id                     INTEGER NOT NULL REFERENCES personnes(id),
     referentapre_id                 INTEGER NOT NULL REFERENCES referentsapre(id),
---    natureaide                      type_natureaide NOT NULL,
-    numeroapre                      NUMERIC(10),
+    numeroapre                      VARCHAR(16),
     typedemandeapre                 type_typedemandeapre DEFAULT NULL,
     datedemandeapre                 DATE,
     naturelogement                  type_naturelogement DEFAULT NULL,
@@ -126,16 +124,6 @@ CREATE TABLE apres (
 CREATE INDEX apres_personne_id_idx ON apres (personne_id);
 
 -- --------------------------------------------------------------------------------------------------------
--- Ajout de la table "naturesaides" liée à 'apres'
--- --------------------------------------------------------------------------------------------------------
-CREATE TABLE naturesaides (
-    id                          SERIAL NOT NULL PRIMARY KEY,
-    apre_id                     INTEGER NOT NULL REFERENCES apres (id),
-    natureaide                  type_natureaide NOT NULL
-);
-CREATE INDEX naturesaides_apre_id_idx ON naturesaides (apre_id);
-
--- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "referentsapre" liée à 'apres'
 -- --------------------------------------------------------------------------------------------------------
 CREATE TABLE referentsapre (
@@ -151,15 +139,6 @@ CREATE TABLE referentsapre (
 );
 CREATE INDEX referentsapre_apre_id_idx ON referentsapre (apre_id);
 
--- --------------------------------------------------------------------------------------------------------
--- Ajout de la table "avisref" liée à 'referentsapre'
--- --------------------------------------------------------------------------------------------------------
--- CREATE TABLE avisref (
---     id                          SERIAL NOT NULL PRIMARY KEY,
---     referentapre_id             INTEGER NOT NULL REFERENCES referentsapre (id),
---     avistechreferent            TEXT
--- );
--- CREATE INDEX avisref_referentapre_id_idx ON avisref (referentapre_id);
 
 -- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "montantsconsommes" liée à 'apres'
@@ -177,9 +156,199 @@ CREATE INDEX montantsconsommes_apre_id_idx ON montantsconsommes (apre_id);
 --  ....
 -- --------------------------------------------------------------------------------------------------------
 
+CREATE TABLE piecesapre (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    libelle                     VARCHAR(250) NOT NULL
+);
+
+INSERT INTO piecesapre ( libelle ) VALUES
+    ( 'Formulaire de demande d''APRE normalisé du département dûment complété' ),
+    ( 'Justificatif d''entrée en formation ou de création d''entreprise' );
+
+
+CREATE TABLE apres_piecesapre (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    pieceapre_id                INTEGER NOT NULL REFERENCES piecesapre(id)
+);
+CREATE INDEX apres_piecesapre_apre_id_idx ON apres_piecesapre (apre_id);
+CREATE INDEX apres_piecesapre_pieceapre_id_idx ON apres_piecesapre (pieceapre_id);
+
+-- --------------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------
+--  ....Données nécessaire pour la table Formqualif 
+-- --------------------------------------------------------------------------------------------------------
+
 CREATE TABLE formsqualifs (
     id                          SERIAL NOT NULL PRIMARY KEY,
     apre_id                     INTEGER NOT NULL REFERENCES apres(id),
-    intitule                    VARCHAR(250)
+    intituleform                VARCHAR(100) NOT NULL,
+    organismeform               VARCHAR(100) NOT NULL,
+    ddform                      DATE,
+    dfform                      DATE,
+    dureeform                   INT4,
+    modevalidation              VARCHAR(30),
+    coutform                    DECIMAL(10,2),
+    cofinanceurs                VARCHAR(30),
+    montantaide                 DECIMAL(10,2)
 );
 CREATE INDEX formsqualifs_apre_id_idx ON formsqualifs (apre_id);
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces liées à formqualif
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE piecesformsqualifs (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    libelle                     VARCHAR(250) NOT NULL
+);
+
+INSERT INTO piecesformsqualifs ( libelle ) VALUES
+    ( 'Attestation d''entrée en formation' ),
+    ( 'Facture ou devis' );
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Formqualif avec ses pièces
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE formsqualifs_piecesformsqualifs (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    formqualif_id               INTEGER NOT NULL REFERENCES formsqualifs(id),
+    pieceformqualif_id          INTEGER NOT NULL REFERENCES piecesformsqualifs(id)
+);
+CREATE INDEX formsqualifs_piecesformsqualifs_formqualif_id_idx ON formsqualifs_piecesformsqualifs (formqualif_id);
+CREATE INDEX formsqualifs_piecesformsqualifs_pieceformqualif_id_idx ON formsqualifs_piecesformsqualifs (pieceformqualif_id);
+
+-- --------------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------
+--  ....Données nécessaire pour la table Actprof 
+-- --------------------------------------------------------------------------------------------------------
+CREATE TYPE type_typecontratact AS ENUM ( 'CI', 'CA', 'SA' );
+CREATE TABLE actsprofs (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    nomemployeur                VARCHAR (50),
+    adresseemployeur            VARCHAR (100),
+    typecontratact              type_typecontratact DEFAULT NULL,
+    ddconvention                DATE,
+    dfconvention                DATE,
+    intituleformation           VARCHAR (200),
+    ddform                      DATE,
+    dfform                      DATE,
+    dureeform                   INT4,
+    modevalidation              VARCHAR (30),
+    coutform                    DECIMAL (10, 2),
+    cofinanceurs                VARCHAR (30),
+    montantaide                 DECIMAL (10, 2)
+);
+CREATE INDEX actsprofs_apre_id_idx ON actsprofs (apre_id);
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces liées à formqualif
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE piecesactsprofs (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    libelle                     VARCHAR(250) NOT NULL
+);
+
+INSERT INTO piecesactsprofs ( libelle ) VALUES
+    ( 'Convention individuelle (pour les contrats aidés)' ),
+    ( 'Contrat de travail (pour les contrats SIAE)' ),
+    ( 'Facture ou devis' );
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Formqualif avec ses pièces
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE actsprofs_piecesactsprofs (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    actprof_id                  INTEGER NOT NULL REFERENCES actsprofs(id),
+    pieceactprof_id             INTEGER NOT NULL REFERENCES piecesactsprofs(id)
+);
+CREATE INDEX actsprofs_piecesactsprofs_actprof_id_idx ON actsprofs_piecesactsprofs (actprof_id);
+CREATE INDEX actsprofs_piecesactsprofs_pieceactprof_id_idx ON actsprofs_piecesactsprofs (pieceactprof_id);
+
+-- --------------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------
+--  ....Données nécessaire pour la table Permisb
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE permisb (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    nomautoecole                VARCHAR (50),
+    adresseautoecole            VARCHAR (100),
+    code                        CHAR (1),
+    conduite                    CHAR (1),
+    dureeform                   INT4,
+    coutform                    DECIMAL (10, 2)
+
+);
+CREATE INDEX permisb_apre_id_idx ON permisb (apre_id);
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces liées à permisb
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE piecespermisb (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    libelle                     TEXT NOT NULL
+);
+
+INSERT INTO piecespermisb ( libelle ) VALUES
+    ( 'Photocopie du permis de conduire' ),
+    ( 'Devis nominatif détaillé précisant l''intitulé de la formation, son lieu, dates prévisionnelles de début et fin d''action, durée en heure jours et mois, contenu (heures et modules), l''organisation de la formation, le coût global ainsi que la participation éventuelle du stagiaire.' ),
+    ( 'Evaluation des connaissances et compétences professionnelles (ECCP)' ),
+    ( 'Facture ou devis' ),
+    ( 'Attestation d''insdcription à l''auto-école' ),
+    ( 'Obtention du code' ),
+    ( 'Devis ou facture' );
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Permisb avec ses pièces
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE permisb_piecespermisb (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    permisb_id                  INTEGER NOT NULL REFERENCES permisb(id),
+    piecepermisb_id             INTEGER NOT NULL REFERENCES piecespermisb(id)
+);
+CREATE INDEX permisb_piecespermisb_permisb_id_idx ON permisb_piecespermisb (permisb_id);
+CREATE INDEX permisb_piecespermisb_piecepermisb_id_idx ON permisb_piecespermisb (piecepermisb_id);
+
+
+-- --------------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------
+--  ....Données nécessaire pour la table Permisb
+-- --------------------------------------------------------------------------------------------------------
+CREATE TYPE type_typeaidelogement AS ENUM ( 'AEL', 'AML' );
+CREATE TABLE amenagslogts (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    typeaidelogement            type_typeaidelogement DEFAULT NULL,
+    besoins                     VARCHAR (250),
+    montantaide                 DECIMAL (10, 2)
+);
+CREATE INDEX amenagslogts_apre_id_idx ON amenagslogts (apre_id);
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces liées à permisb
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE piecesamenagslogts (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    libelle                     TEXT NOT NULL
+);
+
+INSERT INTO piecesamenagslogts ( libelle ) VALUES
+    ( 'Bail ou contrat de location' ),
+    ( 'Document faisant état du montant de la dette pour le maintien au logement (compte locataire émis par le bialleur' ),
+    ( 'Devis pour les frais d''agence' ),
+    ( 'Devis ou facture frais de déménagement' ),
+    ( 'Contrat ou devis assurance habitation' ),
+    ( 'Facture ouverture compteurs EDF/GDF' ),
+    ( 'Facture' );
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Permisb avec ses pièces
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE amenagslogts_piecesamenagslogts (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    amenaglogt_id                  INTEGER NOT NULL REFERENCES amenagslogts(id),
+    pieceamenaglogt_id             INTEGER NOT NULL REFERENCES piecesamenagslogts(id)
+);
+CREATE INDEX amenagslogts_piecesamenagslogts_permisb_id_idx ON amenagslogts_piecesamenagslogts (amenaglogt_id);
+CREATE INDEX amenagslogts_piecesamenagslogts_piecepermisb_id_idx ON amenagslogts_piecesamenagslogts (pieceamenaglogt_id);
