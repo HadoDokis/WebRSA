@@ -86,7 +86,8 @@ function package() {
         mv "app/config/core.php" "app/config/core.php.default" && \
         echo -n "$version" > "app/VERSION.txt" && \
         sed -i "s/Configure::write *( *'debug' *, *[0-9] *) *;/Configure::write('debug', 0);/" "app/config/core.php.default" && \
-        sed -i "s/Configure::write *( *'Cache\.disable' *, *[^)]\+ *) *;/Configure::write('Cache.disable', false);/" "app/config/core.php.default"
+        sed -i "s/Configure::write *( *'Cache\.disable' *, *[^)]\+ *) *;/Configure::write('Cache.disable', false);/" "app/config/core.php.default" && \
+        sed -i "s/Configure::write *( *'CG\.cantons' *, *[^)]\+ *) *;/Configure::write('CG.cantons', false);/" "app/config/webrsa.inc.default"
     ) && \
     (
         cd "$WORK_DIR/package" >> "/dev/null" 2>&1 && \
