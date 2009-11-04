@@ -80,6 +80,10 @@ div.input.disabled, div.checkbox.disabled {
     color: silver;
 }
 
+.disabled * {
+    color: silver;
+}
+
 fieldset.boolean {
     border: 0;
     padding: 0;

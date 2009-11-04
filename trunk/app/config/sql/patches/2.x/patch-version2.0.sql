@@ -91,6 +91,22 @@ CREATE TABLE parcours (
 CREATE INDEX parcours_personne_id_idx ON parcours (personne_id);
 
 -- --------------------------------------------------------------------------------------------------------
+-- Ajout de la table "referentsapre" liée à 'apres'
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE referentsapre (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    qual                        VARCHAR(3),
+    nom                         VARCHAR(28),
+    prenom                      VARCHAR(32),
+    adresse                     TEXT,
+    numtel                      VARCHAR(10),
+    email                       VARCHAR(78),
+    fonction                    VARCHAR(50),
+    organismeref                VARCHAR(50)
+);
+-- CREATE INDEX referentsapre_apre_id_idx ON referentsapre (apre_id);
+
+-- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "apre" liée à 'personnes'
 -- --------------------------------------------------------------------------------------------------------
 CREATE TYPE type_typedemandeapre AS ENUM ( 'FO', 'AU' );
@@ -122,23 +138,6 @@ CREATE TABLE apres (
     avistechreferent                TEXT
 );
 CREATE INDEX apres_personne_id_idx ON apres (personne_id);
-
--- --------------------------------------------------------------------------------------------------------
--- Ajout de la table "referentsapre" liée à 'apres'
--- --------------------------------------------------------------------------------------------------------
-CREATE TABLE referentsapre (
-    id                          SERIAL NOT NULL PRIMARY KEY,
-    qual                        VARCHAR(3),
-    nom                         VARCHAR(28),
-    prenom                      VARCHAR(32),
-    adresse                     TEXT,
-    numtel                      VARCHAR(10),
-    email                       VARCHAR(78),
-    fonction                    VARCHAR(50),
-    organismeref                VARCHAR(50)
-);
-CREATE INDEX referentsapre_apre_id_idx ON referentsapre (apre_id);
-
 
 -- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "montantsconsommes" liée à 'apres'
@@ -176,7 +175,7 @@ CREATE INDEX apres_piecesapre_pieceapre_id_idx ON apres_piecesapre (pieceapre_id
 
 -- --------------------------------------------------------------------------------------------------------
 -- --------------------------------------------------------------------------------------------------------
---  ....Données nécessaire pour la table Formqualif 
+--  ....Données nécessaire pour la table Formqualif
 -- --------------------------------------------------------------------------------------------------------
 
 CREATE TABLE formsqualifs (
@@ -219,7 +218,7 @@ CREATE INDEX formsqualifs_piecesformsqualifs_pieceformqualif_id_idx ON formsqual
 
 -- --------------------------------------------------------------------------------------------------------
 -- --------------------------------------------------------------------------------------------------------
---  ....Données nécessaire pour la table Actprof 
+--  ....Données nécessaire pour la table Actprof
 -- --------------------------------------------------------------------------------------------------------
 CREATE TYPE type_typecontratact AS ENUM ( 'CI', 'CA', 'SA' );
 CREATE TABLE actsprofs (

@@ -1,15 +1,27 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
-<?php  $this->pageTitle = 'APRE';?>
-
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );?>
-
 <?php
+	echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+
+	$this->pageTitle = 'APRE';
+
+	echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );
+
     if( $this->action == 'add' ) {
         $this->pageTitle = 'Ajout APRE';
     }
     else {
         $this->pageTitle = 'Édition APRE';
+    }
+
+	// FIXME: mettre dans bootsrap.php et enlever la définition de la fonction de toutes les vues qui l'utilisent
+    function value( $array, $index ) {
+        $keys = array_keys( $array );
+        $index = ( ( $index == null ) ? '' : $index );
+        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
+            return $array[$index];
+        }
+        else {
+            return null;
+        }
     }
 ?>
 
@@ -28,10 +40,10 @@
         observeDisableFieldsOnValue( 'ApreActivitebeneficiaireE', [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur' ], 'E', false );
 
         // ....
-        observeDisableFieldsetOnCheckbox( 'NatureaideFormqualif', $( 'Formqualif' ), false );
-        observeDisableFieldsetOnCheckbox( 'NatureaideActprof', $( 'Actprof' ), false );
-        observeDisableFieldsetOnCheckbox( 'NatureaidePermisb', $( 'Permisb' ), false );
-        observeDisableFieldsetOnCheckbox( 'NatureaideAmenaglogt', $( 'Amenaglogt' ), false );
+        observeDisableFieldsetOnCheckbox( 'NatureaideFormqualif', $( 'Formqualif' ), false, true );
+        observeDisableFieldsetOnCheckbox( 'NatureaideActprof', $( 'Actprof' ), false, true );
+        observeDisableFieldsetOnCheckbox( 'NatureaidePermisb', $( 'Permisb' ), false, true );
+        observeDisableFieldsetOnCheckbox( 'NatureaideAmenaglogt', $( 'Amenaglogt' ), false, true );
     });
 </script>
 
@@ -39,11 +51,8 @@
     <h1><?php echo $this->pageTitle;?></h1>
 
     <?php
-        if( $this->action == 'add' ) {
-            echo $form->create( 'Apre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
-        }
-        else {
-            echo $form->create( 'Apre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre', 'url' => Router::url( null, true ) ) );
+        if( $this->action == 'edit' ) {
             echo '<div>';
             echo $form->input( 'Apre.id', array( 'type' => 'hidden' ) );
             echo '</div>';
@@ -107,7 +116,7 @@
                     <td class="mediumSize noborder">
                         <strong>N° matricule CAF : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.matricule' );?>
                         <br />
-                        <strong>Situation familiale : </strong><?php echo Set::classicExtract( $sitfam, Set::classicExtract( $personne, 'Foyer.sitfam' ) );?>
+                        <strong>Situation familiale : </strong><?php echo value( $sitfam, Set::classicExtract( $personne, 'Foyer.sitfam' ) );?>
                     </td>
                     <td class="wide noborder">
                         <strong>Nbre d'enfants : </strong><?php echo $nbEnfants;?>
@@ -115,7 +124,7 @@
                 </tr>
                 <tr>
                     <td class="mediumSize noborder">
-                        <?php echo $xform->enum( 'Apre.naturelogement', array( 'div' => false, 'label' => false, 'legend' => __d( 'apre', 'Apre.naturelogement', true ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['naturelogement'] ) );?>
+                        <?php echo $xform->enum( 'Apre.naturelogement', array( 'div' => false, 'legend' => __d( 'apre', 'Apre.naturelogement', true ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['naturelogement'] ) );?>
                     </td>
                     <td class="noborder">
                         <?php echo $xform->input( 'Apre.precisionsautrelogement', array( 'domain' => 'apre', 'type' => 'textarea' ) );?>
@@ -159,7 +168,7 @@
             <table class="wide noborder">
                 <tr>
                     <td class="mediumsize noborder"><strong>Type d'activité </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->enum( 'Apre.activitebeneficiaire', array( 'div' => false, 'label' => false, 'legend' => required( __d( 'apre', 'Apre.activitebeneficiaire', true ) ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['activitebeneficiaire'] ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->enum( 'Apre.activitebeneficiaire', array( 'div' => false, 'legend' => required( __d( 'apre', 'Apre.activitebeneficiaire', true ) ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['activitebeneficiaire'] ) );?></td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Date de l'emploi prévu </strong></td>
@@ -167,7 +176,7 @@
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Type de contrat </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->enum( 'Apre.typecontrat', array( 'div' => false, 'label' => false, 'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['typecontrat'] ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->enum( 'Apre.typecontrat', array( 'div' => false, 'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['typecontrat'] ) );?></td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Si autres, préciser  </strong></td>
@@ -243,7 +252,7 @@
                 }
                 echo $form->input( 'Actprof.nomemployeur' );
                 echo $form->input( 'Actprof.adresseemployeur' );
-                echo $xform->enum( 'Actprof.typecontratact', array( 'div' => false, 'label' => false, 'legend' => false, 'type' => 'radio', /*'separator' => '<br />',*/ 'options' => $optionsacts['typecontratact'] ) );
+                echo $xform->enum( 'Actprof.typecontratact', array( 'div' => false, 'legend' => false, 'type' => 'radio', /*'separator' => '<br />',*/ 'options' => $optionsacts['typecontratact'] ) );
                 echo $form->input( 'Actprof.ddconvention' );
                 echo $form->input( 'Actprof.dfconvention' );
                 echo $form->input( 'Actprof.intituleformation' );
@@ -274,10 +283,10 @@
                 echo $form->input( 'Permisb.nomautoecole' );
                 echo $form->input( 'Permisb.adresseautoecole' );
                 echo $form->input( 'Permisb.code',
-                    array( 'div' => false, 'label' => 'Code', 'legend' => 'Code', 'type' => 'checkbox' )
+                    array( 'div' => false, 'label' => 'Code', 'type' => 'checkbox' )
                 );
                 echo $form->input( 'Permisb.conduite',
-                    array( 'div' => false, 'label' => 'Conduite', 'legend' => false, 'type' => 'checkbox' )
+                    array( 'div' => false, 'label' => 'Conduite', 'type' => 'checkbox' )
                 );
                 echo $form->input( 'Permisb.dureeform' );
                 echo $form->input( 'Permisb.coutform' );
@@ -298,7 +307,7 @@
                 if( $this->action == 'edit' ) {
                     echo $form->input( 'Amenaglogt.id', array( 'type' => 'hidden' ) );
                 }
-                echo $xform->enum( 'Amenaglogt.typeaidelogement', array( 'div' => false, 'label' => false, 'legend' => false, 'type' => 'radio', /*'separator' => '<br />',*/ 'options' => $optionslogts['typeaidelogement'] ) );
+                echo $xform->enum( 'Amenaglogt.typeaidelogement', array( 'div' => false, 'legend' => false, 'type' => 'radio', /*'separator' => '<br />',*/ 'options' => $optionslogts['typeaidelogement'] ) );
                 echo $form->input( 'Amenaglogt.besoins' );
                 echo $form->input( 'Amenaglogt.montantaide' );
                 echo $form->input( 'Amenaglogt.dureeform' );
