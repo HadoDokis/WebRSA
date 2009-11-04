@@ -280,13 +280,19 @@ function observeDisableFieldsOnValue( selectId, fieldsIds, value, condition ) {
 
 //*****************************************************************************
 
-function disableFieldsetOnCheckbox( cbId, fieldsetId, condition ) {
+function disableFieldsetOnCheckbox( cbId, fieldsetId, condition, toggleVisibility ) {
+	toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+
     var cb = $( cbId );
     var checked = ( ( $F( cb ) == null ) ? false : true );
     var fieldset = $( fieldsetId );
 
     if( checked != condition ) {
         fieldset.removeClassName( 'disabled' );
+		if( toggleVisibility ) {
+			fieldset.show();
+		}
+
         $( fieldset ).getElementsBySelector( 'div.input', 'div.checkbox' ).each( function( elmt ) {
             elmt.removeClassName( 'disabled' );
         } );
@@ -297,6 +303,10 @@ function disableFieldsetOnCheckbox( cbId, fieldsetId, condition ) {
     }
     else {
         fieldset.addClassName( 'disabled' );
+		if( toggleVisibility ) {
+			fieldset.hide();
+		}
+
         $( fieldset ).getElementsBySelector( 'div.input', 'div.checkbox' ).each( function( elmt ) {
             elmt.addClassName( 'disabled' );
         } );
@@ -309,12 +319,14 @@ function disableFieldsetOnCheckbox( cbId, fieldsetId, condition ) {
 
 //-----------------------------------------------------------------------------
 
-function observeDisableFieldsetOnCheckbox( cbId, fieldsetId, condition ) {
-    disableFieldsetOnCheckbox( cbId, fieldsetId, condition );
+function observeDisableFieldsetOnCheckbox( cbId, fieldsetId, condition, toggleVisibility ) {
+	toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+
+    disableFieldsetOnCheckbox( cbId, fieldsetId, condition, toggleVisibility );
 
     var cb = $( cbId );
     $( cb ).observe( 'click', function( event ) { // FIXME change ?
-        disableFieldsetOnCheckbox( cbId, fieldsetId, condition );
+        disableFieldsetOnCheckbox( cbId, fieldsetId, condition, toggleVisibility );
     } );
 }
 
