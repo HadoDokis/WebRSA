@@ -116,3 +116,16 @@ CREATE TABLE infospoleemploi (
     motifradiation      VARCHAR(100)
 );
 CREATE INDEX infospoleemploi_personne_id_idx ON infospoleemploi (personne_id);
+
+--------------- Ajout du 29/10/2009 à 17h23 ------------------
+CREATE TABLE cantons (
+    id                  SERIAL NOT NULL PRIMARY KEY,
+	typevoie			VARCHAR(4),
+	nomvoie				VARCHAR(25),
+	locaadr				VARCHAR(26),
+	codepos				VARCHAR(5),
+	numcomptt			VARCHAR(5),
+	canton				VARCHAR(30)
+);
+
+CREATE INDEX cantons_canton_id_idx ON cantons(canton);
