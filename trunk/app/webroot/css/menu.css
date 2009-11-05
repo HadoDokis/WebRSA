@@ -136,6 +136,11 @@ li#menu4one :hover {
 
 li#menu5one :hover { 
     color:blue; 
+    background-color: #83c2e2
+}
+
+li#menu6one :hover { 
+    color:blue; 
 }
 
 .menu1 ul li ul {
