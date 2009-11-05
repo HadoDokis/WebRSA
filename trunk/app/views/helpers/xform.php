@@ -73,6 +73,21 @@
         }
 
         /** ********************************************************************
+        *
+        ** ********************************************************************/
+
+        function address( $fieldName, $options = array() ) {
+            $options['type'] = 'textarea';
+            $options['rows'] = ( isset( $options['rows'] ) ? $options['rows'] : '3' );
+            $options['label'] = false;
+            $options['div'] = false;
+
+            $label = $this->Html->tag( 'label', $this->_label( $fieldName, $options ) );
+            $textarea = $this->input( $fieldName, $options );
+            return $this->Html->tag( 'div', $label.$textarea, array( 'class' => 'input textarea address' ) );
+        }
+
+        /** ********************************************************************
         *   FIXME: en cas de fieldset (type => options), il n'y a pas de
         *   traduction automatique
         ** ********************************************************************/

@@ -49,6 +49,144 @@ msgid "Apre.secteurprofessionnel"
 msgstr "Secteur professionnel en lien avec la demande "
 
 ###############################################################################
+# Formqualif pour l'APRE
+###############################################################################
+msgid "Formqualif.intituleform"
+msgstr "Intitulé de la formation "
+
+msgid "Formqualif.organismeform"
+msgstr "Organisme de la formation "
+
+msgid "Formqualif.ddform"
+msgstr "Du "
+
+msgid "Formqualif.dfform"
+msgstr "Au "
+
+msgid "Formqualif.dureeform"
+msgstr "Durée (Heures) "
+
+msgid "Formqualif.modevalidation"
+msgstr "Mode de validation "
+
+msgid "Formqualif.modevalidation"
+msgstr "Mode de validation "
+
+msgid "Formqualif.coutform"
+msgstr "Coût de le formation "
+
+msgid "Formqualif.cofinanceurs"
+msgstr "Co-financeurs  "
+
+msgid "Formqualif.montantaide"
+msgstr "Montant "
+
+###############################################################################
+# Actprof pour l'APRE
+###############################################################################
+
+msgid "Actprof.nomemployeur"
+msgstr "Nom de l'employeur"
+
+msgid "Actprof.adresseemployeur"
+msgstr "Adresse de l'employeur"
+
+msgid "Actprof.ddconvention"
+msgstr "Du "
+
+msgid "Actprof.dfconvention"
+msgstr "Au "
+
+msgid "Actprof.intituleformation"
+msgstr "Intitulé de la formation"
+
+msgid "Actprof.ddform"
+msgstr "Du "
+
+msgid "Actprof.dfform"
+msgstr "Au "
+
+msgid "Actprof.dureeform"
+msgstr "Durée (Heures)"
+
+msgid "Actprof.modevalidation"
+msgstr "Mode de validation"
+
+msgid "Actprof.coutform"
+msgstr "Coût de la formation"
+
+msgid "Actprof.cofinanceurs"
+msgstr "Co-financeurs"
+
+msgid "Actprof.montantaide"
+msgstr "Montant "
+
+
+###############################################################################
+# Permisb pour l'APRE
+###############################################################################
+
+msgid "Permisb.nomautoecole"
+msgstr "Nom de l'auto-école"
+
+msgid "Permisb.adresseautoecole"
+msgstr "Adresse de l'auto-école"
+
+msgid "Permisb.dureeform"
+msgstr "Nombre d'heures "
+
+msgid "Permisb.coutform"
+msgstr "Coût de la formation"
+
+###############################################################################
+# Amenaglogt pour l'APRE
+###############################################################################
+
+msgid "Amenaglogt.besoins"
+msgstr "Besoins"
+
+msgid "Amenaglogt.montantaide"
+msgstr "Montant"
+
+###############################################################################
+# Acccreaentr pour l'APRE
+###############################################################################
+
+msgid "Acccreaentr.nacre"
+msgstr "Dispositif Nacre "
+
+msgid "Acccreaentr.microcredit"
+msgstr "Dispositif Micro-crédit "
+
+msgid "Acccreaentr.projet"
+msgstr "Projet "
+
+msgid "Acccreaentr.montantaide"
+msgstr "Montant "
+
+###############################################################################
+# Acqmatprof pour l'APRE
+###############################################################################
+
+msgid "Acqmatprof.besoins"
+msgstr "Besoins "
+
+msgid "Acqmatprof.montantaide"
+msgstr "Montant "
+
+###############################################################################
+# Locvehicinsert pour l'APRE
+###############################################################################
+
+msgid "Locvehicinsert.societelocation"
+msgstr "Société de location "
+
+msgid "Locvehicinsert.dureelocation"
+msgstr "Durée de location "
+
+msgid "Locvehicinsert.montantaide"
+msgstr "Montant "
+###############################################################################
 # Enum Apre.natureaide
 ###############################################################################
 msgid "ENUM::NATUREAIDE::FQU"

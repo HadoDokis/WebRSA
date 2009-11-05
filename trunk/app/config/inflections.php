@@ -129,28 +129,40 @@
         'pieceapre' => 'piecesapre',
         'apre_pieceapre' => 'apres_piecesapre',
         'apre_pieceliee' => 'apres_piecesliees',
-        'referentapre' => 'referentsapre',
-        'montantconsomme' => 'montantsconsommes',
-        'acqmatprof' => 'acqsmatsprofs',
-        //Actprof
+        ///->Formqualif
+        'formqualif' => 'formsqualifs',
+        'pieceformqualif' => 'piecesformsqualifs',
+        'formqualif_pieceformqualif' => 'formsqualifs_piecesformsqualifs',
+        ///->Actprof
         'actprof' => 'actsprofs',
         'pieceactprof' => 'piecesactsprofs',
         'actprof_pieceactprof' => 'actsprofs_piecesactsprofs',
-        //Permisb
+        ///->Permisb
         'piecepermisb' => 'piecespermisb',
         'permisb_piecepermisb' => 'permisb_piecespermisb',
-        //Acccreaentr
-        'acccreaentr' => 'accscreaentr',
-        //Amenaglogt
+        ///->Amenaglogt
         'amenaglogt' => 'amenagslogts',
         'pieceamenaglogt' => 'piecesamenagslogts',
         'amenaglogt_pieceamenaglogt' => 'amenagslogts_piecesamenagslogts',
-
+        ///->Acccreaentr
+        'acccreaentr' => 'accscreaentr',
+        'pieceacccreaentr' => 'piecesaccscreaentr',
+        'acccreaentr_pieceacccreaentr' => 'accscreaentr_piecesaccscreaentr',
+        ///->Acqmatprof
+        'acqmatprof' => 'acqsmatsprofs',
+        'pieceacqmatprof' => 'piecesacqsmatsprofs',
+        'acqmatprof_pieceacqmatprof' => 'acqsmatsprofs_piecesacqsmatsprofs',
+        ///->Locvehicinsert
         'locvehicinsert' => 'locsvehicinsert',
-        //Formqualif
-        'formqualif' => 'formsqualifs',
-        'pieceformqualif' => 'piecesformsqualifs',
-        'formqualif_pieceformqualif' => 'formsqualifs_piecesformsqualifs'
+        'piecelocvehicinsert' => 'pieceslocsvehicinsert',
+        'locvehicinsert_piecelocvehicinsert' => 'locsvehicinsert_pieceslocsvehicinsert',
+        'referentapre' => 'referentsapre',
+        'montantconsomme' => 'montantsconsommes',
+
+
+
+
+
      );
 /**
  * This is a key => value array of regex used to match words.

@@ -47,7 +47,7 @@
             foreach ($this->hasAndBelongsToMany as $model=>$info) {
                 $unbind['hasAndBelongsToMany'][] = $model;
             }
-            parent::unbindModel( $unbind, $reset );
+            return parent::unbindModel( $unbind, $reset );
         }
 
         // TODO: http://teknoid.wordpress.com/2008/09/29/dealing-with-calculated-fields-in-cakephps-find/

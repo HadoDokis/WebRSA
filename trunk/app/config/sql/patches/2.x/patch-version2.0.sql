@@ -157,12 +157,18 @@ CREATE INDEX montantsconsommes_apre_id_idx ON montantsconsommes (apre_id);
 
 CREATE TABLE piecesapre (
     id                          SERIAL NOT NULL PRIMARY KEY,
-    libelle                     VARCHAR(250) NOT NULL
+    libelle                     TEXT NOT NULL
 );
 
 INSERT INTO piecesapre ( libelle ) VALUES
     ( 'Formulaire de demande d''APRE normalisé du département dûment complété' ),
-    ( 'Justificatif d''entrée en formation ou de création d''entreprise' );
+    ( 'Justificatif d''entrée en formation ou de création d''entreprise' ),
+    ( 'Contrat de travail' ),
+    ( 'Contrat d''insertion validé par le Président du Conseil Général (sauf pour SIAE et titulaires de contrats aidés)' ),
+    ( 'Attestation CAF datant du dernier mois de prestation versée' ),
+    ( 'Curriculum vitae' ),
+    ( 'Lettre motivée de l''allocataire détaillant les besoins' ),
+    ( 'RIB de l''allocataire ou de l''organisme' );
 
 
 CREATE TABLE apres_piecesapre (
@@ -197,11 +203,12 @@ CREATE INDEX formsqualifs_apre_id_idx ON formsqualifs (apre_id);
 -- --------------------------------------------------------------------------------------------------------
 CREATE TABLE piecesformsqualifs (
     id                          SERIAL NOT NULL PRIMARY KEY,
-    libelle                     VARCHAR(250) NOT NULL
+    libelle                     TEXT NOT NULL
 );
 
 INSERT INTO piecesformsqualifs ( libelle ) VALUES
     ( 'Attestation d''entrée en formation' ),
+    ( 'Devis nominatif détaillé précisant l''intitulé de la formation, son lieu, dates prévisionnelles de début et fin d''action, durée en heure, jours et mois, contenu (heures et modules), l''organisation de la formation, le coût global ainsi que la participation éventuelle du stagiaire' ),
     ( 'Facture ou devis' );
 
 -- --------------------------------------------------------------------------------------------------------
@@ -240,11 +247,11 @@ CREATE TABLE actsprofs (
 );
 CREATE INDEX actsprofs_apre_id_idx ON actsprofs (apre_id);
 -- --------------------------------------------------------------------------------------------------------
---  ....Table des pièces liées à formqualif
+--  ....Table des pièces liées à Actprof
 -- --------------------------------------------------------------------------------------------------------
 CREATE TABLE piecesactsprofs (
     id                          SERIAL NOT NULL PRIMARY KEY,
-    libelle                     VARCHAR(250) NOT NULL
+    libelle                     TEXT NOT NULL
 );
 
 INSERT INTO piecesactsprofs ( libelle ) VALUES
@@ -253,7 +260,7 @@ INSERT INTO piecesactsprofs ( libelle ) VALUES
     ( 'Facture ou devis' );
 
 -- --------------------------------------------------------------------------------------------------------
---  ....Table liée Formqualif avec ses pièces
+--  ....Table liée Actprof avec ses pièces
 -- --------------------------------------------------------------------------------------------------------
 
 CREATE TABLE actsprofs_piecesactsprofs (
@@ -293,7 +300,7 @@ INSERT INTO piecespermisb ( libelle ) VALUES
     ( 'Devis nominatif détaillé précisant l''intitulé de la formation, son lieu, dates prévisionnelles de début et fin d''action, durée en heure jours et mois, contenu (heures et modules), l''organisation de la formation, le coût global ainsi que la participation éventuelle du stagiaire.' ),
     ( 'Evaluation des connaissances et compétences professionnelles (ECCP)' ),
     ( 'Facture ou devis' ),
-    ( 'Attestation d''insdcription à l''auto-école' ),
+    ( 'Attestation d''inscription à l''auto-école' ),
     ( 'Obtention du code' ),
     ( 'Devis ou facture' );
 
@@ -312,7 +319,7 @@ CREATE INDEX permisb_piecespermisb_piecepermisb_id_idx ON permisb_piecespermisb 
 
 -- --------------------------------------------------------------------------------------------------------
 -- --------------------------------------------------------------------------------------------------------
---  ....Données nécessaire pour la table Permisb
+--  ....Données nécessaire pour la table Amenaglogt
 -- --------------------------------------------------------------------------------------------------------
 CREATE TYPE type_typeaidelogement AS ENUM ( 'AEL', 'AML' );
 CREATE TABLE amenagslogts (
@@ -324,7 +331,7 @@ CREATE TABLE amenagslogts (
 );
 CREATE INDEX amenagslogts_apre_id_idx ON amenagslogts (apre_id);
 -- --------------------------------------------------------------------------------------------------------
---  ....Table des pièces liées à permisb
+--  ....Table des pièces liées à Amenaglogt
 -- --------------------------------------------------------------------------------------------------------
 CREATE TABLE piecesamenagslogts (
     id                          SERIAL NOT NULL PRIMARY KEY,
@@ -341,7 +348,7 @@ INSERT INTO piecesamenagslogts ( libelle ) VALUES
     ( 'Facture' );
 
 -- --------------------------------------------------------------------------------------------------------
---  ....Table liée Permisb avec ses pièces
+--  ....Table liée Amenaglogt avec ses pièces
 -- --------------------------------------------------------------------------------------------------------
 
 CREATE TABLE amenagslogts_piecesamenagslogts (
@@ -351,3 +358,114 @@ CREATE TABLE amenagslogts_piecesamenagslogts (
 );
 CREATE INDEX amenagslogts_piecesamenagslogts_permisb_id_idx ON amenagslogts_piecesamenagslogts (amenaglogt_id);
 CREATE INDEX amenagslogts_piecesamenagslogts_piecepermisb_id_idx ON amenagslogts_piecesamenagslogts (pieceamenaglogt_id);
+
+
+-- --------------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------
+--  ....Données nécessaire pour la table Acccreaentr
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE accscreaentr (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    nacre                       type_no DEFAULT NULL,
+    microcredit                 type_no DEFAULT NULL,
+    projet                      VARCHAR (250),
+    montantaide                 DECIMAL (10, 2)
+);
+CREATE INDEX accscreaentr_apre_id_idx ON accscreaentr (apre_id);
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces liées à Acccreaentr
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE piecesaccscreaentr (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    libelle                     TEXT NOT NULL
+);
+
+INSERT INTO piecesaccscreaentr ( libelle ) VALUES
+    ( 'Extrait du Kbis' ),
+    ( 'Facture' );
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Acccreaentr avec ses pièces
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE accscreaentr_piecesaccscreaentr (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    acccreaentr_id                  INTEGER NOT NULL REFERENCES accscreaentr(id),
+    pieceacccreaentr_id             INTEGER NOT NULL REFERENCES piecesaccscreaentr(id)
+);
+CREATE INDEX accscreaentr_piecesaccscreaentr_acccreaentr_id_idx ON accscreaentr_piecesaccscreaentr (acccreaentr_id);
+CREATE INDEX accscreaentr_piecesaccscreaentr_pieceacccreaentr_id_idx ON accscreaentr_piecesaccscreaentr (pieceacccreaentr_id);
+
+
+-- --------------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------
+--  ....Données nécessaire pour la table Acqmatprof
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE acqsmatsprofs (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    besoins                     VARCHAR(250),
+    montantaide                 DECIMAL (10, 2)
+);
+CREATE INDEX acqsmatsprofs_apre_id_idx ON acqsmatsprofs (apre_id);
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces liées à Acqmatprof
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE piecesacqsmatsprofs (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    libelle                     TEXT NOT NULL
+);
+
+INSERT INTO piecesacqsmatsprofs ( libelle ) VALUES
+    ( 'Attestation d''entrée en formation ou contrat de travail' ),
+    ( 'Facture ou devis (en rapport avec le poste de travail' ),
+    ( 'Justificatif de la liste de matériel nécessaire' );
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Acqmatprof avec ses pièces
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE acqsmatsprofs_piecesacqsmatsprofs (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    acqmatprof_id                  INTEGER NOT NULL REFERENCES acqsmatsprofs(id),
+    pieceacqmatprof_id             INTEGER NOT NULL REFERENCES piecesacqsmatsprofs(id)
+);
+CREATE INDEX acqsmatsprofs_piecesacqsmatsprofs_acqmatprof_id_idx ON acqsmatsprofs_piecesacqsmatsprofs (acqmatprof_id);
+CREATE INDEX acqsmatsprofs_piecesacqsmatsprofs_pieceacqmatprof_id_idx ON acqsmatsprofs_piecesacqsmatsprofs (pieceacqmatprof_id);
+
+
+-- --------------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------
+--  ....Données nécessaire pour la table Acqmatprof
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE locsvehicinsert (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    societelocation             VARCHAR(250),
+    dureelocation               VARCHAR(250),
+    montantaide                 DECIMAL (10, 2)
+);
+CREATE INDEX locsvehicinsert_apre_id_idx ON locsvehicinsert (apre_id);
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces liées à Acqmatprof
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE pieceslocsvehicinsert (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    libelle                     TEXT NOT NULL
+);
+
+INSERT INTO pieceslocsvehicinsert ( libelle ) VALUES
+    ( 'Facture' );
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Acqmatprof avec ses pièces
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE locsvehicinsert_pieceslocsvehicinsert (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    locvehicinsert_id                  INTEGER NOT NULL REFERENCES locsvehicinsert(id),
+    piecelocvehicinsert_id             INTEGER NOT NULL REFERENCES pieceslocsvehicinsert(id)
+);
+CREATE INDEX locsvehicinsert_pieceslocsvehicinsert_locvehicinsert_id_idx ON locsvehicinsert_pieceslocsvehicinsert (locvehicinsert_id);
+CREATE INDEX locsvehicinsert_pieceslocsvehicinsert_piecelocvehicinsert_id_idx ON locsvehicinsert_pieceslocsvehicinsert (piecelocvehicinsert_id);
