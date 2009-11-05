@@ -229,7 +229,7 @@
         <h2 class="center">Nature de la demande</h2>
         <?php
             /// Formation qualifiante
-            $tmp = $xform->checkbox( 'Natureaide.Formqualif' );
+            $tmp = $form->checkbox( 'Natureaide.Formqualif' );
             $tmp .= $html->tag( 'label', 'Formation qualifiante / Permis C ou D + FIMO', array( 'for' => 'NatureaideFormqualif' ) );
             echo $html->tag( 'h3', $tmp );
         ?>

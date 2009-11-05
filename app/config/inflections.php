@@ -158,11 +158,7 @@
         'locvehicinsert_piecelocvehicinsert' => 'locsvehicinsert_pieceslocsvehicinsert',
         'referentapre' => 'referentsapre',
         'montantconsomme' => 'montantsconsommes',
-
-
-
-
-
+        'critereapre' => 'criteresapres'
      );
 /**
  * This is a key => value array of regex used to match words.

@@ -98,8 +98,21 @@
                     </ul>
                 </li>
             <?php endif;?>
-            <?php if( $permissions->check( 'indicateursmensuels', 'index' ) ) :?>
+            <?php if( $permissions->check( 'criteresapres', 'index' ) ) :?>
                 <li id="menu3one" >
+                    <?php echo $html->link( 'APRE', '#' );?>
+                    <ul>
+                        <?php if( $permissions->check( 'criteresapres', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Liste des demandes d\'APRE', array( 'controller' => 'criteresapres', 'action' => 'index' ) );?></li>
+                        <?php endif;?>
+                        <!-- <?php if( $permissions->check( 'criteresapres', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Liste des demandes d\'APRE', array( 'controller' => 'criteresapres', 'action' => 'index' ) );?></li>
+                        <?php endif;?> -->
+                    </ul>
+                </li>
+            <?php endif;?>
+            <?php if( $permissions->check( 'indicateursmensuels', 'index' ) ) :?>
+                <li id="menu4one" >
                     <?php echo $html->link( 'Tableaux de bord', '#' );?>
                     <ul>
                         <?php if( $permissions->check( 'indicateursmensuels', 'index' ) ):?>
@@ -109,7 +122,7 @@
                 </li>
             <?php endif;?>
             <?php if(/* $permissions->check( 'droits', 'edit' ) || */$permissions->check( 'parametrages', 'index' ) || $permissions->check( 'infosfinancieres', 'indexdossier' ) || $permissions->check( 'totalisationsacomptes', 'index' ) ): ?>
-                    <li id="menu4one">
+                    <li id="menu5one">
                         <?php echo $html->link( 'Administration', '#' );?>
                         <ul>
                             <?php if( $permissions->check( 'droits', 'edit' ) ):?>
@@ -134,7 +147,7 @@
                         </ul>
                     </li>
             <?php endif;?>
-            <li id="menu5one"><?php echo $html->link( 'Déconnexion '.$session->read( 'Auth.User.username' ), array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
+            <li id="menu6one"><?php echo $html->link( 'Déconnexion '.$session->read( 'Auth.User.username' ), array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
             <?php else: ?>
                 <li><?php echo $html->link( 'Connexion', array( 'controller' => 'users', 'action' => 'login' ) );?></li>
             <?php endif; ?>
