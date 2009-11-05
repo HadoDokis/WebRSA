@@ -60,7 +60,10 @@
             'Formqualif',
             'Actprof',
             'Permisb',
-            'Amenaglogt'
+            'Amenaglogt',
+            'Acccreaentr',
+            'Acqmatprof',
+            'Locvehicinsert'
         );
 
         var $hasMany = array(

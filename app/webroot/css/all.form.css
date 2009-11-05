@@ -98,3 +98,12 @@ fieldset.invisible {
     border: 0;
     padding: 0;
 }
+
+div.textarea.address label, div.textarea.address textarea {
+    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;
+    width: 48%;
+    vertical-align: top;
+    cursor: pointer;
+}
