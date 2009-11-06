@@ -24,6 +24,17 @@
                 );
                 echo $html->tableCells(
                     array(
+                        h( 'Cantons' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'cantons', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
                         h( 'Groupes d\'utilisateurs' ),
                         $html->viewLink(
                             'Voir la table',
@@ -57,18 +68,7 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Référents pour l\'APRE' ),
-                        $html->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'referentsapre', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
-                echo $html->tableCells(
-                    array(
-                        h( 'Référents des Structures référentes' ),
+                        h( 'Référents' ),
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'referents', 'action' => 'index' )
