@@ -48,9 +48,11 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'statutrdv' => array(
+            'statutrdv_id' => array(
+                array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                )
             )
         );
 
