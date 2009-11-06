@@ -39,7 +39,7 @@
         <legend>Recherche par personne</legend>
         <?php echo $form->input( 'Critererdv.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Critererdv.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Critererdv.nir', array( 'label' => 'NIR ', 'maxLength' => 15 ) );?>
+        <?php echo $form->input( 'Critererdv.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Critererdv.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
