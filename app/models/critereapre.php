@@ -26,7 +26,8 @@
             $numcomptt = Set::extract( $criteresapres, 'Filtre.numcomptt' );
             $nir = Set::extract( $criteresapres, 'Filtre.nir' );
             $typedemandeapre = Set::extract( $criteresapres, 'Filtre.typedemandeapre' );
-
+            $activitebeneficiaire = Set::extract( $criteresapres, 'Filtre.activitebeneficiaire' );
+            $natureaidesapres = Set::extract( $criteresapres, 'Filtre.natureaidesapres' );
 
             /// Critères sur le CI - date de saisi contrat
             if( isset( $criteresapres['Filtre']['datedemandeapre'] ) && !empty( $criteresapres['Filtre']['datedemandeapre'] ) ) {
@@ -71,6 +72,17 @@
             //Type de demande
             if( !empty( $typedemandeapre ) ) {
                 $conditions[] = 'Apre.typedemandeapre = \''.Sanitize::clean( $typedemandeapre ).'\'';
+            }
+
+            //Activité du bénéficiaire
+            if( !empty( $activitebeneficiaire ) ) {
+                $conditions[] = 'Apre.activitebeneficiaire = \''.Sanitize::clean( $activitebeneficiaire ).'\'';
+            }
+
+            //Nature de l'aide
+            if( !empty( $natureaidesapres ) ) {
+                $table = Inflector::tableize( $natureaidesapres );
+                $conditions[] = "Apre.id IN ( SELECT $table.apre_id FROM $table )";
             }
 
             /// Requête

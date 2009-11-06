@@ -20,6 +20,7 @@
             'naturelogement' => array( 'type' => 'naturelogement', 'domain' => 'apre' ),
             'activitebeneficiaire' => array( 'type' => 'activitebeneficiaire', 'domain' => 'apre' ),
             'typecontrat' => array( 'type' => 'typecontrat', 'domain' => 'apre' ),
+//             'natureaide' => array( 'type' => 'natureaide', 'domain' => 'apre' )
         );
 
 

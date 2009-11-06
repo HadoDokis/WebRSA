@@ -172,7 +172,7 @@
             $this->set( 'refsapre', $refsapre );
 
             if( !empty( $this->data ) ){
-                $tablesLiees = array(
+                $tablesLiees = array( // FIXME: avec Options ?
                     'Formqualif' => 'Pieceformqualif',
                     'Actprof' => 'Pieceactprof',
                     'Permisb' => 'Piecepermisb',
