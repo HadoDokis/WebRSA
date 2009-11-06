@@ -41,7 +41,7 @@
         <legend>Recherche par personne</legend>
         <?php echo $form->input( 'Cohorteindu.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Cohorteindu.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Cohorteindu.nir', array( 'label' => 'NIR ', 'maxLength' => 15 ) );?>
+        <?php echo $form->input( 'Cohorteindu.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
     </fieldset>
     <fieldset>
         <legend>Recherche d'Indu</legend>
