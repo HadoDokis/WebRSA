@@ -18,6 +18,7 @@
             $return = parent::beforeFilter();
             $options = $this->Apre->allEnumLists();
             $this->set( 'options', $options );
+            $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
             return $return;
         }
 
@@ -52,7 +53,7 @@
             unset( $querydata['limit'] );
             $apres = $this->Apre->find( 'all', $querydata );
 
-            $this->layout = ''; // FIXME ?
+            $this->layout = '';
             $this->set( compact( 'apres' ) );
         }
     }

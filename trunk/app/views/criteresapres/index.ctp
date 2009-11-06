@@ -72,7 +72,9 @@
                 <?php echo $form->input( 'Filtre.datedemandeapre_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_from ) );?>
                 <?php echo $form->input( 'Filtre.datedemandeapre_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
             </fieldset>
-             <?php echo $xform->enum( 'Filtre.typedemandeapre', array(  'label' => 'Type de demande', 'options' => $options['typedemandeapre'] ) );?> 
+             <?php echo $xform->enum( 'Filtre.typedemandeapre', array(  'label' => 'Type de demande', 'options' => $options['typedemandeapre'] ) );?>
+             <?php echo $xform->enum( 'Filtre.activitebeneficiaire', array(  'label' => 'Activité du bénéficiaire', 'options' => $options['activitebeneficiaire'] ) );?>
+            <?php echo $xform->enum( 'Filtre.natureaidesapres', array(  'label' => 'Nature de l\'aide', 'options' => $natureAidesApres, 'empty' => true ) );?>
             <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
             <!-- <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
             <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
@@ -104,7 +106,9 @@
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
                     <th><?php echo $paginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
+                    <th>Nature de l'aide</th>
                     <th><?php echo $paginator->sort( 'Type de demande APRE', 'Apre.typedemandeapre' );?></th>
+                    <th><?php echo $paginator->sort( 'Activité du bénéficiaire', 'Apre.activitebeneficiaire' );?></th>
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -134,14 +138,21 @@
                                 </tr>
                             </tbody>
                         </table>';
-//                         debug( $apre );
+
+                        $naturesaide = array_keys( Set::classicExtract( $apre, 'Natureaide' ) );
+                        foreach( $naturesaide as $key => $natureaide ) {
+                            $naturesaide[$key] = Set::classicExtract( $natureAidesApres, $natureaide );
+                        }
+
                         echo $html->tableCells(
                             array(
                                 h( $apre['Dossier']['matricule'] ),
                                 h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ),
                                 h( $apre['Adresse']['locaadr'] ),
                                 h( $locale->date( 'Date::short', Set::extract( $apre, 'Apre.datedemandeapre' ) ) ),
+                                h( implode( ', ', $naturesaide ) ),
                                 h( Set::classicExtract( $options['typedemandeapre'], Set::classicExtract( $apre, 'Apre.typedemandeapre' ) ) ),
+                                h( Set::classicExtract( $options['activitebeneficiaire'], Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ) ) ),
                                 array(
                                     $html->viewLink(
                                         'Voir le dossier « '.$title.' »',
