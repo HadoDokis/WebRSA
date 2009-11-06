@@ -7,7 +7,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence' );
         var $component = array( 'Jetons' );
         var $helpers = array( 'Locale' );
 
@@ -834,6 +834,7 @@
                 )
             );
 
+
             ///Pour le choix entre les différentes notifications possibles
             $modele = $rdv['Typerdv']['modelenotifrdv'];
 
@@ -898,7 +899,18 @@
             $this->set( 'referents', $referents );
             $rdv['Rendezvous']['referent_id'] = Set::extract( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) );
 
-// debug( $rdv['Rendezvous']['daterdv']  );
+            ///Pour les permanences liées aux structures référentes
+            $perm = $this->Permanence->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Permanence.id' => Set::classicExtract( $rdv, 'Rendezvous.permanence_id' )
+                    )
+                )
+            );
+            $rdv['Permanence'] = $perm['Permanence'];
+            $rdv['Permanence']['typevoie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Permanence.typevoie' ) );
+// debug( $rdv  );
 // die();
 
             $this->_ged( $rdv, 'RDV/'.$modele.'.odt' );
