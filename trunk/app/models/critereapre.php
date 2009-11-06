@@ -25,6 +25,7 @@
             $locaadr = Set::extract( $criteresapres, 'Filtre.locaadr' );
             $numcomptt = Set::extract( $criteresapres, 'Filtre.numcomptt' );
             $nir = Set::extract( $criteresapres, 'Filtre.nir' );
+            $typedemandeapre = Set::extract( $criteresapres, 'Filtre.typedemandeapre' );
 
 
             /// Critères sur le CI - date de saisi contrat
@@ -65,6 +66,11 @@
             // Commune au sens INSEE
             if( !empty( $numcomptt ) ) {
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+            }
+
+            //Type de demande
+            if( !empty( $typedemandeapre ) ) {
+                $conditions[] = 'Apre.typedemandeapre = \''.Sanitize::clean( $typedemandeapre ).'\'';
             }
 
             /// Requête

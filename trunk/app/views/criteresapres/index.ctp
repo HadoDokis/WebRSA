@@ -1,7 +1,7 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Recherche d\'APREs';?>
 
-<h1>Recherche pour APRE</h1>
+<h1>Recherche de demande APRE</h1>
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
@@ -57,14 +57,14 @@
         <legend>Recherche par personne</legend>
         <?php echo $form->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Filtre.nir', array( 'label' => 'NIR ', 'maxLength' => 15 ) );?>
+        <?php echo $form->input( 'Filtre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
     </fieldset>
     <fieldset>
-        <legend>Recherche par Contrat d'insertion</legend>
+        <legend>Recherche par demande APRE</legend>
             <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
             <?php echo $form->input( 'Filtre.datedemandeapre', array( 'label' => 'Filtrer par date de demande APRE', 'type' => 'checkbox' ) );?>
             <fieldset>
-                <legend>Date de saisie du contrat</legend>
+                <legend>Date de la saisie de la demande</legend>
                 <?php
                     $datedemandeapre_from = Set::check( $this->data, 'Filtre.datedemandeapre_from' ) ? Set::extract( $this->data, 'Filtre.datedemandeapre_from' ) : strtotime( '-1 week' );
                     $datedemandeapre_to = Set::check( $this->data, 'Filtre.datedemandeapre_to' ) ? Set::extract( $this->data, 'Filtre.datedemandeapre_to' ) : strtotime( 'now' );
@@ -72,6 +72,7 @@
                 <?php echo $form->input( 'Filtre.datedemandeapre_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_from ) );?>
                 <?php echo $form->input( 'Filtre.datedemandeapre_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
             </fieldset>
+             <?php echo $xform->enum( 'Filtre.typedemandeapre', array(  'label' => 'Type de demande', 'options' => $options['typedemandeapre'] ) );?> 
             <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
             <!-- <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
             <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
@@ -103,6 +104,7 @@
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
                     <th><?php echo $paginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
+                    <th><?php echo $paginator->sort( 'Type de demande APRE', 'Apre.typedemandeapre' );?></th>
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -139,6 +141,7 @@
                                 h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ),
                                 h( $apre['Adresse']['locaadr'] ),
                                 h( $locale->date( 'Date::short', Set::extract( $apre, 'Apre.datedemandeapre' ) ) ),
+                                h( Set::classicExtract( $options['typedemandeapre'], Set::classicExtract( $apre, 'Apre.typedemandeapre' ) ) ),
                                 array(
                                     $html->viewLink(
                                         'Voir le dossier « '.$title.' »',
@@ -163,12 +166,12 @@
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
-           <!-- <li><?php
+            <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'criteresapres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
-            ?></li> -->
+            ?></li> 
         </ul>
 
 
