@@ -6,7 +6,7 @@
         var $name = 'Criteresapres';
         var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Critereapre', 'Apre', 'Option' );
 
-
+        var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         /**
         */
         function __construct() {
@@ -16,7 +16,8 @@
 
         function beforeFilter() {
             $return = parent::beforeFilter();
-/*            $this->set( 'decision_ci', $this->Option->decision_ci() );*/
+            $options = $this->Apre->allEnumLists();
+            $this->set( 'options', $options );
             return $return;
         }
 
@@ -49,10 +50,10 @@
 
             $querydata = $this->Critereapre->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
             unset( $querydata['limit'] );
-            $contrats = $this->Apre->find( 'all', $querydata );
+            $apres = $this->Apre->find( 'all', $querydata );
 
             $this->layout = ''; // FIXME ?
-            $this->set( compact( 'contrats' ) );
+            $this->set( compact( 'apres' ) );
         }
     }
 ?>

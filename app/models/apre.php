@@ -20,31 +20,6 @@
             'naturelogement' => array( 'type' => 'naturelogement', 'domain' => 'apre' ),
             'activitebeneficiaire' => array( 'type' => 'activitebeneficiaire', 'domain' => 'apre' ),
             'typecontrat' => array( 'type' => 'typecontrat', 'domain' => 'apre' ),
-            /*'drorsarmianta2' => array( 'type' => 'nos', 'domain' => 'default' ),
-            'topcouvsoc',
-            'accosocfam' => array( 'type' => 'nov', 'domain' => 'default' ),
-            'accosocindi' => array( 'type' => 'nov', 'domain' => 'default' ),
-            'soutdemarsoc' => array( 'type' => 'nov', 'domain' => 'default' ),
-            'nivetu',
-            'nivdipmaxobt',
-            'topqualipro' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
-            'topcompeextrapro' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
-            'topengdemarechemploi' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
-            'hispro',
-            'cessderact',
-            'topdomideract' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
-            'duractdomi',
-            'inscdememploi',
-            'topisogrorechemploi' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
-            'accoemploi',
-            'topprojpro' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
-            'topcreareprientre' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
-            'concoformqualiemploi' => array( 'type' => 'nos', 'domain' => 'default' ),
-            'topmoyloco' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
-            'toppermicondub' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
-            'topautrpermicondu' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
-            'natlog',
-            'demarlog'*/
         );
 
 
@@ -57,16 +32,44 @@
         );
 
         var $hasOne = array(
-            'Formqualif',
-            'Actprof',
-            'Permisb',
-            'Amenaglogt',
-            'Acccreaentr',
-            'Acqmatprof',
-            'Locvehicinsert'
+//             'Formqualif',
+//             'Actprof',
+//             'Permisb',
+//             'Amenaglogt',
+//             'Acccreaentr',
+//             'Acqmatprof',
+//             'Locvehicinsert'
         );
 
         var $hasMany = array(
+            'Formqualif' => array(
+                'classname' => 'Formqualif',
+                'foreignKey' => 'apre_id',
+            ),
+            'Actprof' => array(
+                'classname' => 'Actprof',
+                'foreignKey' => 'apre_id',
+            ),
+            'Permisb' => array(
+                'classname' => 'Permisb',
+                'foreignKey' => 'apre_id',
+            ),
+            'Amenaglogt' => array(
+                'classname' => 'Amenaglogt',
+                'foreignKey' => 'apre_id',
+            ),
+            'Acccreaentr' => array(
+                'classname' => 'Acccreaentr',
+                'foreignKey' => 'apre_id',
+            ),
+            'Acqmatprof' => array(
+                'classname' => 'Acqmatprof',
+                'foreignKey' => 'apre_id',
+            ),
+            'Locvehicinsert' => array(
+                'classname' => 'Locvehicinsert',
+                'foreignKey' => 'apre_id',
+            ),
             'Montantconsomme' => array(
                 'classname' => 'Montantconsomme',
                 'foreignKey' => 'apre_id',
