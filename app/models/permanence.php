@@ -50,12 +50,12 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'canton' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+//             'canton' => array(
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
             'ville' => array(
                 array(
                     'rule' => 'notEmpty',

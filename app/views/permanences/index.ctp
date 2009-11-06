@@ -28,7 +28,7 @@
                     <th>Nom de voie</th>
                     <th>Code postal</th>
                     <th>Ville</th>
-                    <th>Canton</th>
+                    <!-- <th>Canton</th> -->
                     <th colspan="2" class="action">Actions</th>
                 </tr>
             </thead>
@@ -44,7 +44,7 @@
                             h( Set::classicExtract( $permanence, 'Permanence.nomvoie' ) ),
                             h( Set::classicExtract( $permanence, 'Permanence.codepos' ) ),
                             h( Set::classicExtract( $permanence, 'Permanence.ville' ) ),
-                            h( Set::classicExtract( $permanence, 'Permanence.canton' ) ),
+//                             h( Set::classicExtract( $permanence, 'Permanence.canton' ) ),
                             $html->editLink(
                                 'Éditer la structure référente ',
                                 array( 'controller' => 'permanences', 'action' => 'edit', Set::classicExtract( $permanence, 'Permanence.id' ) )
