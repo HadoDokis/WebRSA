@@ -33,44 +33,46 @@
         );
 
         var $hasOne = array(
-//             'Formqualif',
-//             'Actprof',
-//             'Permisb',
-//             'Amenaglogt',
-//             'Acccreaentr',
-//             'Acqmatprof',
-//             'Locvehicinsert'
+            'Formqualif',
+            'Actprof',
+            'Permisb',
+            'Amenaglogt',
+            'Acccreaentr',
+            'Acqmatprof',
+            'Locvehicinsert'
         );
 
+        var $aidesApre = array( 'Formqualif', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' );
+
         var $hasMany = array(
-            'Formqualif' => array(
-                'classname' => 'Formqualif',
-                'foreignKey' => 'apre_id',
-            ),
-            'Actprof' => array(
-                'classname' => 'Actprof',
-                'foreignKey' => 'apre_id',
-            ),
-            'Permisb' => array(
-                'classname' => 'Permisb',
-                'foreignKey' => 'apre_id',
-            ),
-            'Amenaglogt' => array(
-                'classname' => 'Amenaglogt',
-                'foreignKey' => 'apre_id',
-            ),
-            'Acccreaentr' => array(
-                'classname' => 'Acccreaentr',
-                'foreignKey' => 'apre_id',
-            ),
-            'Acqmatprof' => array(
-                'classname' => 'Acqmatprof',
-                'foreignKey' => 'apre_id',
-            ),
-            'Locvehicinsert' => array(
-                'classname' => 'Locvehicinsert',
-                'foreignKey' => 'apre_id',
-            ),
+//             'Formqualif' => array(
+//                 'classname' => 'Formqualif',
+//                 'foreignKey' => 'apre_id',
+//             ),
+//             'Actprof' => array(
+//                 'classname' => 'Actprof',
+//                 'foreignKey' => 'apre_id',
+//             ),
+//             'Permisb' => array(
+//                 'classname' => 'Permisb',
+//                 'foreignKey' => 'apre_id',
+//             ),
+//             'Amenaglogt' => array(
+//                 'classname' => 'Amenaglogt',
+//                 'foreignKey' => 'apre_id',
+//             ),
+//             'Acccreaentr' => array(
+//                 'classname' => 'Acccreaentr',
+//                 'foreignKey' => 'apre_id',
+//             ),
+//             'Acqmatprof' => array(
+//                 'classname' => 'Acqmatprof',
+//                 'foreignKey' => 'apre_id',
+//             ),
+//             'Locvehicinsert' => array(
+//                 'classname' => 'Locvehicinsert',
+//                 'foreignKey' => 'apre_id',
+//             ),
             'Montantconsomme' => array(
                 'classname' => 'Montantconsomme',
                 'foreignKey' => 'apre_id',
@@ -161,7 +163,7 @@
             foreach( $results as $key => $result ) {
 
                 $results[$key]['Natureaide'] = array();
-                foreach( array( 'Formqualif' ) as $model ) {
+                foreach( $this->aidesApre as $model ) {
                     $results[$key]['Natureaide'][$model] = $this->{$model}->find(
                         'count',
                         array(

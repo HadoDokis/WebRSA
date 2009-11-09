@@ -228,7 +228,7 @@
         </fieldset>
 
         <h2 class="center">Nature de la demande</h2>
-        <?php
+        <!-- <?php
             /// Formation qualifiante
             $tmp = $form->checkbox( 'Natureaide.Formqualif' );
             $tmp .= $html->tag( 'label', 'Formation qualifiante / Permis C ou D + FIMO', array( 'for' => 'NatureaideFormqualif' ) );
@@ -257,12 +257,39 @@
                     echo $xform->input( 'Formqualif.'.$key.'.montantaide', array( 'domain' => 'apre' ) );
                 }
             ?>
-            <!--<fieldset>
+            <fieldset>
                 <legend>Pièces jointes</legend>
                 <?php echo $xform->input( 'Pieceformqualif.Pieceformqualif', array( 'options' => $piecesformqualif, 'multiple' => 'checkbox', 'label' => false ) ); ?>
-            </fieldset>-->
+            </fieldset>
+        </fieldset>-->
+        <?php
+            /// Formation qualifiante
+            $tmp = $form->checkbox( 'Natureaide.Formqualif' );
+            $tmp .= $html->tag( 'label', 'Formation qualifiante / Permis C ou D + FIMO', array( 'for' => 'NatureaideFormqualif' ) );
+            echo $html->tag( 'h3', $tmp );
+        ?>
+        <fieldset id="Formqualif" class="invisible">
+            <?php
+                $FormqualifId = Set::classicExtract( $this->data, 'Formqualif.id' );
+                if( $this->action == 'edit' && !empty( $FormqualifId ) ) {
+                    echo $form->input( 'Formqualif.id', array( 'type' => 'hidden' ) );
+                }
+                echo $xform->input( 'Formqualif.intituleform', array( 'domain' => 'apre' ) );
+                echo $xform->address( 'Formqualif.organismeform', array( 'domain' => 'apre' ) );
+                echo $xform->enum( 'Formqualif.ddform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                echo $xform->enum( 'Formqualif.dfform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                echo $xform->input( 'Formqualif.dureeform', array( 'domain' => 'apre' ) );
+                echo $xform->input( 'Formqualif.modevalidation', array( 'domain' => 'apre' ) );
+                echo $xform->input( 'Formqualif.coutform', array( 'domain' => 'apre' ) );
+                echo $xform->input( 'Formqualif.cofinanceurs', array( 'domain' => 'apre' ) );
+                echo $xform->input( 'Formqualif.montantaide', array( 'domain' => 'apre' ) );;
+            ?>
+            <fieldset>
+                <legend>Pièces jointes</legend>
+                <?php echo $xform->input( 'Pieceformqualif.Pieceformqualif', array( 'options' => $piecesformqualif, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+            </fieldset>
         </fieldset>
-        <!-- <?php
+        <?php
             /// Action de professionnalisation
             $tmp = $form->checkbox( 'Natureaide.Actprof' );
             $tmp .= $html->tag( 'label', 'Action de professionnalisation des contrats aides et salariés dans les SIAE', array( 'for' => 'NatureaideActprof' ) );
@@ -408,7 +435,7 @@
         <fieldset class="aere">
             <legend>Avis technique et motivé du référent (Article 5.1 relatif au règlement de l'APRE): </legend>
             <?php echo $xform->input(  'Apre.avistechreferent', array( 'domain' => 'apre', 'label' => false ) );?>
-        </fieldset> -->
+        </fieldset>
     </div>
 
         <?php echo $form->submit( 'Enregistrer' );?>
