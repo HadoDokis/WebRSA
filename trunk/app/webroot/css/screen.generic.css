@@ -834,3 +834,13 @@ fieldset.cnilci, fieldset.cnilci p {
 p.caution {
     font-size: 9px;
 }
+
+thead tr#datesApre th {
+    color: black;
+    background-color: #C2E0EF;
+}
+
+table#repddtefp tbody th {
+    color: black;
+    background-color: #C2E0EF;
+}
