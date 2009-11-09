@@ -25,6 +25,7 @@
             $this->set( 'optionscrea', $optionscrea );
             $this->set( 'typevoie', $this->Option->typevoie() );
             $this->set( 'qual', $this->Option->qual() );
+            $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
             $this->set( 'sitfam', $this->Option->sitfam() );
         }
 
@@ -172,54 +173,37 @@
             $this->set( 'refsapre', $refsapre );
 
             if( !empty( $this->data ) ){
-                $tablesLiees = array( // FIXME: avec Options ?
-                    'Formqualif' => 'Pieceformqualif',
-                    'Actprof' => 'Pieceactprof',
-                    'Permisb' => 'Piecepermisb',
-                    'Amenaglogt' => 'Pieceamenaglogt',
-                    'Acccreaentr' => 'Pieceacccreaentr',
-                    'Acqmatprof' => 'Pieceacqmatprof',
-                    'Locvehicinsert' => 'Piecelocvehicinsert'
-                );
+                // FIXME: pourquoi doit-on faire ceci ?
+                $this->Apre->bindModel( array( 'hasOne' => array( 'Formqualif', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' ) ), false );
 
-                $this->Apre->bindModel( array( 'hasMany' => array_keys( $tablesLiees ) ), false );
-                //$this->Apre->unbindModel( array( 'hasMany' => array_keys( $tablesLiees ) ), false );
-
-                $dataApre = Set::classicExtract( $this->data, 'Apre' ); // FIXME
-
-                $validates = $this->Apre->saveAll( $dataApre, array( 'validate' => 'only', 'atomic' => false ) );
-                foreach( array_keys( $tablesLiees ) as $model ) {
-                    $validates = $this->Apre->{$model}->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) && $validates;
-                }
-
-                if( $validates ) {
-                    $saved = $this->Apre->saveAll( $dataApre, array( 'validate' => 'first', 'atomic' => false ) );
-
-                    $this->data = Set::insert( $this->data, 'Formqualif.0.apre_id', $this->Apre->id ); // FIXME
-                    foreach( array_keys( $tablesLiees ) as $model ) {
-                        $data = array( $model => Set::classicExtract( $this->data, $model ) ); // FIXME
-                        debug( $data );
-                        $this->Apre->{$model}->create( $data );
-                        $saved = $this->Apre->{$model}->save( $data ) && $saved;
-                        //$saved = $this->Apre->{$model}->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
+                if( $this->Apre->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+                    $saved = $this->Apre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+                    $tablesLiees = array(
+                        'Formqualif' => 'Pieceformqualif',
+                        'Actprof' => 'Pieceactprof',
+                        'Permisb' => 'Piecepermisb',
+                        'Amenaglogt' => 'Pieceamenaglogt',
+                        'Acccreaentr' => 'Pieceacccreaentr',
+                        'Acqmatprof' => 'Pieceacqmatprof',
+                        'Locvehicinsert' => 'Piecelocvehicinsert'
+                    );
+                    foreach( $tablesLiees as $model => $piecesLiees ) {
+                        if( !empty( $this->data[$piecesLiees] ) ) {
+                            $linkedData = array(
+                                $model => array(
+                                    'id' => $this->Apre->{$model}->id
+                                ),
+                                $piecesLiees => $this->data[$piecesLiees]
+                            );
+                            $saved = $this->Apre->{$model}->save( $linkedData ) && $saved;
+                        }
                     }
-//                     foreach( $tablesLiees as $model => $piecesLiees ) {
-//                         if( !empty( $this->data[$piecesLiees] ) ) {
-//                             $linkedData = array(
-//                                 $model => array(
-//                                     'id' => $this->Apre->{$model}->id
-//                                 ),
-//                                 $piecesLiees => $this->data[$piecesLiees]
-//                             );
-//                             $saved = $this->Apre->{$model}->save( $linkedData ) && $saved;
-//                         }
-//                     }
                     if( $saved ) {
                         $this->Jetons->release( $dossier_rsa_id );
-                        $this->Apre->rollback(); // FIXME
-//                         $this->Apre->commit(); // FIXME
+//                         $this->Apre->rollback(); // FIXME
+                        $this->Apre->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-//                         $this->redirect( array(  'controller' => 'apres','action' => 'index', $personne_id ) );
+                        $this->redirect( array(  'controller' => 'apres','action' => 'index', $personne_id ) );
                     }
                     else {
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );

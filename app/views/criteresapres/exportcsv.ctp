@@ -16,9 +16,12 @@
 
     foreach( $apres as $apre ) {
 
-        $naturesaide = array_keys( Set::classicExtract( $apre, 'Natureaide' ) );
-        foreach( $naturesaide as $key => $natureaide ) {
-            $naturesaide[$key] = Set::classicExtract( $natureAidesApres, $natureaide );
+        $aidesApre = array();
+        $naturesaide = Set::classicExtract( $apre, 'Natureaide' );
+        foreach( $naturesaide as $natureaide => $nombre ) {
+            if( $nombre > 0 ) {
+                $aidesApre[] = Set::classicExtract( $natureAidesApres, $natureaide );
+            }
         }
 
         $row = array(
@@ -26,7 +29,7 @@
             Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom'),
             Set::classicExtract( $apre, 'Adresse.locaadr' ),
             date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ),
-            implode( ', ', $naturesaide ),
+            ( empty( $aidesApre ) ? null : implode( "\n", $aidesApre ) ),
             Set::classicExtract( $options['typedemandeapre'], Set::classicExtract( $apre, 'Apre.typedemandeapre' ) ),
             Set::classicExtract( $options['activitebeneficiaire'], Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ) ),
         );

@@ -139,9 +139,12 @@
                             </tbody>
                         </table>';
 
-                        $naturesaide = array_keys( Set::classicExtract( $apre, 'Natureaide' ) );
-                        foreach( $naturesaide as $key => $natureaide ) {
-                            $naturesaide[$key] = Set::classicExtract( $natureAidesApres, $natureaide );
+                        $aidesApre = array();
+                        $naturesaide = Set::classicExtract( $apre, 'Natureaide' );
+                        foreach( $naturesaide as $natureaide => $nombre ) {
+                            if( $nombre > 0 ) {
+                                $aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
+                            }
                         }
 
                         echo $html->tableCells(
@@ -150,7 +153,7 @@
                                 h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ),
                                 h( $apre['Adresse']['locaadr'] ),
                                 h( $locale->date( 'Date::short', Set::extract( $apre, 'Apre.datedemandeapre' ) ) ),
-                                h( implode( ', ', $naturesaide ) ),
+                                ( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
                                 h( Set::classicExtract( $options['typedemandeapre'], Set::classicExtract( $apre, 'Apre.typedemandeapre' ) ) ),
                                 h( Set::classicExtract( $options['activitebeneficiaire'], Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ) ) ),
                                 array(

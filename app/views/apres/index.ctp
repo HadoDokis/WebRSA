@@ -48,6 +48,14 @@
         <tbody>
             <?php
                 foreach( $apres as $apre ) {
+                    $aidesApre = array();
+                    $naturesaide = Set::classicExtract( $apre, 'Natureaide' );
+                    foreach( $naturesaide as $natureaide => $nombre ) {
+                        if( $nombre > 0 ) {
+                            $aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
+                        }
+                    }
+//debug($apres);
                     echo $html->tableCells(
                         array(
                             h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
@@ -55,7 +63,8 @@
                             h( Set::classicExtract( $options['typedemandeapre'], Set::classicExtract( $apre, 'Apre.typedemandeapre' ) ) ),
                             h( Set::classicExtract( $refsapre, Set::classicExtract( $apre, 'Apre.referentapre_id' ) ) ),
                             h( date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ) ),
-                            h( Set::classicExtract( 'Formation qualifiante', Set::classicExtract( $apre, 'Natureaide.Formqualif' ) ) ),
+                            ( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
+
                             $html->viewLink(
                                 'Voir le rendez-vous',
                                 array( 'controller' => 'apres', 'action' => 'view', $apre['Apre']['id'] ),
