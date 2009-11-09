@@ -98,16 +98,16 @@
                     </ul>
                 </li>
             <?php endif;?>
-            <?php if( $permissions->check( 'criteresapres', 'index' ) ) :?>
+            <?php if( $permissions->check( 'criteresapres', 'index' ) || $permissions->check( 'repsddtefp', 'index' ) ) :?>
                 <li id="menu3one" >
                     <?php echo $html->link( 'APRE', '#' );?>
                     <ul>
                         <?php if( $permissions->check( 'criteresapres', 'index' ) ):?>
                             <li><?php echo $html->link( 'Liste des demandes d\'APRE', array( 'controller' => 'criteresapres', 'action' => 'index' ) );?></li>
                         <?php endif;?>
-                        <!-- <?php if( $permissions->check( 'criteresapres', 'index' ) ):?>
-                            <li><?php echo $html->link( 'Liste des demandes d\'APRE', array( 'controller' => 'criteresapres', 'action' => 'index' ) );?></li>
-                        <?php endif;?> -->
+                        <?php if( $permissions->check( 'repsddtefp', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Reporting bi-mensuel DDTEFP', array( 'controller' => 'repsddtefp', 'action' => 'index' ) );?></li>
+                        <?php endif;?> 
                     </ul>
                 </li>
             <?php endif;?>

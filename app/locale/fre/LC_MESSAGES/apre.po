@@ -284,3 +284,33 @@ msgstr "Aide à l'entrée dans le logement"
 
 msgid "ENUM::TYPEAIDELOGEMENT::AML"
 msgstr "Aide au maintien au logement"
+
+###############################################################################
+# Enum Repddtefp.nbrHommesInstruits
+###############################################################################
+msgid "Repddtefp.nbrHommesInstruits"
+msgstr "Hommes"
+
+msgid "Repddtefp.nbrFemmesInstruits"
+msgstr "Femmes"
+
+msgid "Repddtefp.ville"
+msgstr "Ville du bénéficiaire"
+
+msgid "Repddtefp.nbr0_24Instruits"
+msgstr "Moins de 25 ans"
+
+msgid "Repddtefp.nbr25_34Instruits"
+msgstr "25-34 ans"
+
+msgid "Repddtefp.nbr35_44Instruits"
+msgstr "35-44 ans"
+
+msgid "Repddtefp.nbr45_54Instruits"
+msgstr "45-54 ans"
+
+msgid "Repddtefp.nbr55_59Instruits"
+msgstr "55-59 ans"
+
+msgid "Repddtefp.nbr60_200Instruits"
+msgstr "60 ans et +"
