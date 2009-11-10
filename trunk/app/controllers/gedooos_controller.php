@@ -7,7 +7,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact' );
         var $component = array( 'Jetons' );
         var $helpers = array( 'Locale' );
 
@@ -176,6 +176,7 @@
                 )
             );
             $this->set( 'tc', $tc );
+
             $sect_acti_emp = $this->Option->sect_acti_emp();
             $this->set( 'sect_acti_emp', $sect_acti_emp );
             $emp_occupe = $this->Option->emp_occupe();
@@ -194,9 +195,13 @@
             $typevoie = $this->Option->typevoie();
             $this->set( 'typevoie', $typevoie );
 
+            $rolepers = $this->Option->rolepers();
+            $this->set( 'rolepers', $rolepers );
+
             $act = $this->Option->act();
             $this->set( 'act', $act );
-
+            $soclmaj = $this->Option->natpfcre( 'soclmaj' );
+            $this->set( 'soclmaj', $soclmaj );
             $sitfam = $this->Option->sitfam();
             $this->set( 'sitfam', $sitfam );
             $typeocclog = $this->Option->typeocclog();
@@ -259,6 +264,41 @@
             );
             $contratinsertion['Foyer']['dossier_rsa_id'] = $dossier['Dossier']['id'];
             //////////////////////////////////////////////////////////////////////////
+            $modecontact = $this->Modecontact->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Modecontact.foyer_id' => $contratinsertion['Foyer']['id']
+                    )
+                )
+            );
+            $contratinsertion['Modecontact'] = $modecontact['Modecontact'];
+            //////////////////////////////////////////////////////////////////////////
+
+            $infofinanciere = $this->Infofinanciere->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Infofinanciere.dossier_rsa_id' => $contratinsertion['Foyer']['dossier_rsa_id']
+                    )
+                )
+            );
+            $contratinsertion['Infofinanciere'] = $infofinanciere['Infofinanciere'];
+
+            //////////////////////////////////////////////////////////////////////////
+            // Récupération de l'utilisateur
+            $user = $this->User->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'User.id' => $this->Session->read( 'Auth.User.id' )
+                    )
+                )
+            );
+            $contratinsertion['User'] = $user['User'];
+            $contratinsertion['Serviceinstructeur'] = $user['Serviceinstructeur'];
+// debug($contratinsertion);
+            //////////////////////////////////////////////////////////////////////////
             $dspp = $this->Dspp->find(
                 'first',
                 array(
@@ -269,6 +309,16 @@
             );
             $contratinsertion['Dspp']['personne_id'] = $dspp['Personne']['id'];
             //////////////////////////////////////////////////////////////////////////
+            $presta = $this->Prestation->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Prestation.personne_id' => $contratinsertion['Personne']['id']
+                    )
+                )
+            );
+            $contratinsertion['Prestation'] = $presta['Prestation'];
+        //////////////////////////////////////////////////////////////////////////
             $ddrsa = $this->Detaildroitrsa->find(
                 'first',
                 array(
@@ -291,7 +341,7 @@
             $contratinsertion['Activite'] = $activite['Activite'];
             //$contratinsertion['Activite']['act_anp'] = ( Set::classicExtract( $contratinsertion, 'Activite.act' ) == 'ANP' );
 
-            $contratinsertion['Activite']['act'] = ( ( $contratinsertion['Activite']['act'] == 'ANP' )  ? 'Oui' : 'Non' );
+//             $contratinsertion['Activite']['act'] = ( ( $contratinsertion['Activite']['act'] == 'ANP' )  ? 'Oui' : 'Non' );
 
             //////////////////////////////////////////////////////////////////////////
             // Affichage des données réelles et non leurs variables
@@ -301,11 +351,11 @@
 
             $contratinsertion['Contratinsertion']['datevalidation_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) );
             $contratinsertion['Contratinsertion']['date_saisi_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['date_saisi_ci'] ) );
-            $contratinsertion['Contratinsertion']['typocontrat_id'] = $tc[$contratinsertion['Contratinsertion']['typocontrat_id']];
+//             $contratinsertion['Contratinsertion']['typocontrat_id'] = $tc[$contratinsertion['Contratinsertion']['typocontrat_id']];
             $contratinsertion['Contratinsertion']['actions_prev'] = ( $contratinsertion['Contratinsertion']['actions_prev']  ? 'Oui' : 'Non' );
             $contratinsertion['Contratinsertion']['emp_trouv'] = ( $contratinsertion['Contratinsertion']['emp_trouv']  ? 'Oui' : 'Non' );
 
-            // Affichage de la date seulement en cas de " Validation à compter de "
+            /// Affichage de la date seulement en cas de " Validation à compter de "
             if( $contratinsertion['Contratinsertion']['decision_ci'] == 'V' ){
                 $contratinsertion['Contratinsertion']['decision_ci'] = $decision_ci[$contratinsertion['Contratinsertion']['decision_ci']].' '.$contratinsertion['Contratinsertion']['datevalidation_ci'];
             }
@@ -313,28 +363,34 @@
                 $contratinsertion['Contratinsertion']['decision_ci'] = $decision_ci[$contratinsertion['Contratinsertion']['decision_ci']];
             }
 
-            // Données Personne récupérées
+            /// Données Personne récupérées
             $contratinsertion['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Personne']['dtnai'] ) );
             $contratinsertion['Personne']['qual'] = ( isset( $qual[$contratinsertion['Personne']['qual']] ) ? $qual[$contratinsertion['Personne']['qual']] : null );
 
 
-            // Données Foyer récupérées
+            $contratinsertion['Contratinsertion']['dd_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['dd_ci'] ) );
+            $contratinsertion['Contratinsertion']['df_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) );
+
+
+            /// Données Foyer récupérées
             $contratinsertion['Foyer']['sitfam'] = ( isset( $sitfam[$foyer['Foyer']['sitfam']] ) ? $sitfam[$foyer['Foyer']['sitfam']] : null );
             $contratinsertion['Foyer']['typeocclog'] = ( isset( $typeocclog[$foyer['Foyer']['typeocclog']] ) ? $typeocclog[$foyer['Foyer']['typeocclog']] : null );
 
             $contratinsertion['Adresse']['typevoie'] = ( isset( $typevoie[$contratinsertion['Adresse']['typevoie']] ) ? $typevoie[$contratinsertion['Adresse']['typevoie']] : null );
-            // Données Dossier récupérées
+
 
             $contratinsertion['Structurereferente']['type_voie'] = ( isset( $typevoie[$contratinsertion['Structurereferente']['type_voie']] ) ? $typevoie[$contratinsertion['Structurereferente']['type_voie']] : null );
 
 
             $contratinsertion['Dossier']['matricule'] = ( isset( $dossier['Dossier']['matricule'] ) ? $dossier['Dossier']['matricule'] : null );
             $contratinsertion['Dossier']['dtdemrsa'] = strftime( '%d/%m/%Y', strtotime( $dossier['Dossier']['dtdemrsa'] ) );
+            $contratinsertion['Dossier']['numdemrsa'] = Set::classicExtract( $dossier, 'Dossier.numdemrsa' );
 
             $contratinsertion['Detaildroitrsa']['oridemrsa'] = isset( $oridemrsa[$ddrsa['Detaildroitrsa']['oridemrsa']] ) ? $oridemrsa[$ddrsa['Detaildroitrsa']['oridemrsa']] : null ;
 
-            // Données Dspp récupérées
+            /// Données Dspp récupérées
             $contratinsertion['Dspp']['couvsoc'] = ( isset( $dspp['Dspp']['couvsoc'] ) ? 'Oui' : 'Non' );
+
 
             /// Population du select référents liés aux structures
             $referent_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.referent_id' );
@@ -342,9 +398,24 @@
             $contratinsertion = Set::merge( $contratinsertion, $referent );
 
             /// Code des actions engagées
-            $codesaction = $this->Action->find( 'list', array( 'fields' => array( 'code', 'libelle' ) ) );
-            $codesaction = empty( $contratinsertion['Contratinsertion']['engag_object'] ) ? null : $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
-            $contratinsertion['Contratinsertion']['engag_object'] = $codesaction;
+            if( 'nom_form_ci_cg' == 'cg66' ){ ///FIXME : comment faire plus proprement
+                $contratinsertion['Contratinsertion']['engag_object'] = Set::classicExtract( $contratinsertion, 'Contratinsertion.engag_object' );
+            }
+            else if ( 'nom_form_ci_cg' == 'cg93' ){
+                $codesaction = $this->Action->find( 'list', array( 'fields' => array( 'code', 'libelle' ) ) );
+                $codesaction = empty( $contratinsertion['Contratinsertion']['engag_object'] ) ? null : $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
+                $contratinsertion['Contratinsertion']['engag_object'] = $codesaction;
+            }
+
+            ///Permet d'afficher le nb d'ouverture de droit de la personne
+            $contratinsertion['Dossier']['nbouv'] = count( Set::classicExtract( $contratinsertion, 'Dossier.dtdemrsa' ) );
+
+            ///Permet d'afficher si rsa majoré ou non
+            $soclmajValues = array_unique( Set::extract( $contratinsertion, '/Infofinanciere/natpfcre' ) );
+            $contratinsertion['Infofinanciere']['rsamaj'] = ( array_intersects( $soclmajValues, array_keys( $soclmaj ) ) ) ? 'Oui' : 'Non';
+
+
+
 // debug( $contratinsertion );
 // die();
 
