@@ -7,8 +7,8 @@
         var $name = 'Criteres';
         var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Orientstruct', 'Critere', 'Zonegeographique' );
         //var $aucunDroit = array('index', 'menu', 'constReq');
-        var $aucunDroit = array( 'constReq' );
-        var $helpers = array( 'Csv' );
+        var $aucunDroit = array( 'constReq', 'ajaxstruc' );
+        var $helpers = array( 'Csv', 'Ajax' );
 
 
         function __construct() {
@@ -36,6 +36,36 @@
             $this->set( 'natpf', $this->Option->natpf() );
 
             return $return;
+        }
+
+        /** ********************************************************************
+        *   Ajax pour la structure référente liée au type d'orientation
+        *** *******************************************************************/
+        function _selectStructs( $typeorientid ) {
+            $structs = $this->Orientstruct->Structurereferente->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Structurereferente.typeorient_id' => $typeorientid
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+            return $structs;
+
+        }
+
+        function ajaxstruc() { // FIXME
+            Configure::write( 'debug', 0 );
+            $structs = $this->_selectStructs( Set::classicExtract( $this->data, 'Critere.typeorient_id' ) );
+
+            $options = array( '<option value=""></option>' );
+            foreach( $structs as $struct ) {
+                $options[] = '<option value="'.$struct['Structurereferente']['id'].'">'.$struct['Structurereferente']['lib_struc'].'</option>';
+            }
+            echo implode( '', $options );
+            $this->render( null, 'ajax' );
         }
 
 
