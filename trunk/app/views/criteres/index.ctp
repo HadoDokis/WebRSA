@@ -68,7 +68,12 @@
             </fieldset>
 
         <?php echo $form->input( 'Critere.typeorient_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
+        
+        
         <?php echo $form->input( 'Critere.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
+    <?php echo $ajax->observeField( 'CritereTypeorientId', array( 'update' => 'CritereStructurereferenteId', 'url' => Router::url( array( 'action' => 'ajaxstruc' ), true ) ) );?>
+    
+    
         <?php echo $form->input( 'Critere.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
          <?php echo $form->input( 'Critere.serviceinstructeur_id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
     </fieldset>
