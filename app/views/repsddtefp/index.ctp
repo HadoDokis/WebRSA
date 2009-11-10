@@ -1,5 +1,5 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<h1><?php echo $this->pageTile = 'APRE: Reporting bi-mensuel DDTEFP';?></h1>
+<h1><?php echo $this->pageTitle='APRE: Reporting bi-mensuel DDTEFP';?></h1>
 
 <?php
     echo $form->create( 'Repddtefp', array( 'type' => 'post', 'url' => Router::url( null, true ), 'class' => 'noprint' ) );
@@ -28,10 +28,7 @@
         $annee = Set::extract( $this->data, 'Repddtefp.annee' );
         $semestre = Set::extract( $this->data, 'Repddtefp.semestre' );
         $ville = Set::extract( $this->data, 'Repddtefp.ville' );
-//         $types = array(
-//             'nbrHommesInstruits'          => array( 'type' => 'int', 'result' => 'sum' ),
-//             'nbrFemmesInstruits'          => array( 'type' => 'int', 'result' => 'sum' ),
-//         );
+
         //**************************************************************************
 
         function lastday($month = '', $year = '') {
