@@ -129,3 +129,13 @@ CREATE TABLE cantons (
 );
 
 CREATE INDEX cantons_canton_id_idx ON cantons(canton);
+
+--------------- Ajout du 06/11/2009 à 17h23  Tables necessaires a l'integration des fichiers CSV ------------------
+    CREATE TABLE tempinscriptions( id SERIAL NOT NULL PRIMARY KEY, nir VARCHAR(15), identifiantpe VARCHAR(11), nom VARCHAR(50), prenom VARCHAR(50), dtnai DATE, dateinscription DATE, categoriepe CHAR(1) );
+
+    CREATE TABLE tempcessations( id SERIAL NOT NULL PRIMARY KEY, nir VARCHAR(15), identifiantpe VARCHAR(11), nom VARCHAR(50), prenom VARCHAR(50), dtnai DATE, datecessation DATE, motifcessation CHAR(100) );
+
+    CREATE TABLE tempradiations( id SERIAL NOT NULL PRIMARY KEY, nir VARCHAR(15), identifiantpe VARCHAR(11), nom VARCHAR(50), prenom VARCHAR(50), dtnai DATE, dateradiation DATE, motifradiation CHAR(100) );
+
+--------------- Ajout du 10/11/2009 à 10h40  Champ manquant ds la table contratsinsertion ------------------
+    ALTER TABLE contratsinsertion ADD COLUMN current_action TEXT;
