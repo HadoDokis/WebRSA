@@ -126,14 +126,6 @@
                                                                 '#'//array( 'controller' => '', 'action' => 'index', $personne['id'] )
                                                             );
                                                         ?>
-                                                    </li>
-                                                        <li>
-                                                        <?php
-                                                            echo '<li>'.$html->link(
-                                                                'Suivis du parcours d\'insertion',
-                                                                array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Foyer']['id'] )
-                                                            ).'</li>';
-                                                        ?>
                                                     </li> -->
                                                 </ul> 
                                             </li>
@@ -274,7 +266,7 @@
             <?php
                 echo '<li>'.$html->link(
                     'Suivis du parcours d\'insertion',
-                    array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Foyer']['id'] )
+                    array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Dossier']['id'] )
                 ).'</li>';
             ?>
         <?php endif;?> 
