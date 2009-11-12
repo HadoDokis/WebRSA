@@ -16,7 +16,7 @@
 
                 $listeSexe = $this->Repddtefp->listeSexe( $annee, $semestre, $locaadr );
                 $listeAge = $this->Repddtefp->listeAge( $annee, $semestre, $locaadr );
-// debug($this->data);
+//                 $listetotale = $this->Repddtefp->listeTotale();
                 $this->set( compact( 'listeSexe', 'listeAge', 'locaadr' ) );
             }
         }

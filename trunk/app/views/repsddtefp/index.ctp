@@ -43,16 +43,12 @@
             return date('d', $result);
         }
 
-
         function lines( $results, $thisData, $locale ) {
             $rows = array();
             foreach( $results as $key => $repddtefp ) {
-                $row = array( '<td>'.__d( 'apre', 'Repddtefp.'.$key, true ).'</td>' );
-                /*$type = Set::extract( $types, $key.'.type' );
-                $result = Set::extract( $types, $key.'.result' );*/
+                $row = array();
                 for( $i = 1 ; $i <= 6 ; $i++ ) {
                     $mois = ( ( Set::classicExtract( $thisData, 'Repddtefp.semestre' ) - 1 ) * 6  ) + $i;
-
                     $total = 0;
                     foreach( array( 1, 2 ) as $quinzaine ) {
                         $indicateur = Set::extract( $results, "/{$key}[mois=$mois][quinzaine=$quinzaine]/indicateur" );
@@ -63,14 +59,42 @@
                             $indicateur = 0;
                         }
                         $total += $indicateur;
-                        $row[] = '<td class="number">'.$locale->number( $indicateur ).'</td>';
+                        $row[] = $indicateur;
                     }
-                    $row[] = '<td class="number">'.$locale->number( $total ).'</td>';
-                }
+                    $row[] = $total;
 
-                $rows[] = '<tr class="'.( ( ( count( $rows ) + 1 ) % 2 ) == 0 ? 'even' : 'odd' ).'">'.implode( '', $row ).'</tr>';
+                }
+                $rows[] = $row;
             }
-            return $rows;
+
+            // FIXME: $locale->number( ... ) Pour les indicateurs
+            $totaux = array();
+            foreach( $rows as $k => $row ) {
+                foreach( $row as $i => $value ) {
+                    if( !empty( $value ) ) {
+                        if( !isset( $totaux[$i] ) ) {
+                            $totaux[$i] = 0;
+                        }
+                        $totaux[$i] = $totaux[$i] + $value;
+                    }
+                    else {
+                        $rows[$k][$i] = null;
+                    }
+
+                    if( !isset( $totaux[$i] ) ) {
+                        $totaux[$i] = null;
+                    }
+                }
+            }
+
+            $ths = array_keys( $results );
+            $lines = array();
+            foreach( $rows as $i => $row ) {
+                $lines[] = $rows[] = '<tr class="'.( ( $i % 2 ) == 0 ? 'even' : 'odd' ).'"><td>'.h( __d( 'apre', 'Repddtefp.'.$ths[$i], true ) ).'</td><td class="number">'.implode( '</td><td class="number">', $row ).'</td></tr>';
+            }
+            $lines[] = $rows[] = '<tr class="total '.( ( ( $i + 1 ) % 2 ) == 0 ? 'even' : 'odd' ).'"><td>Total</td><td class="number">'.implode( '</td><td class="number">', $totaux ).'</td></tr>';
+
+            return $lines;
         }
 
         //**************************************************************************
