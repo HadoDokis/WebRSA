@@ -54,7 +54,7 @@
         /**
         *
         */
-///FIXME: Ajout des adresses
+
         function _nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, $ageMin, $ageMax, $locaadr ) {
             $sql = 'SELECT ( CASE WHEN ( EXTRACT( DAY FROM apres.datedemandeapre ) <= 15 ) THEN 1 ELSE 2 END ) AS quinzaine, EXTRACT(MONTH FROM apres.datedemandeapre) AS mois, EXTRACT(YEAR FROM apres.datedemandeapre) AS annee, COUNT(apres.*) AS indicateur
                         FROM apres
@@ -79,16 +79,23 @@
         function listeSexe( $annee, $semestre, $locaadr ) {
             $results['nbrHommesInstruits'] = $this->_nbrPersonnesInstruitesParSexe( $annee, $semestre, 1, $locaadr );
             $results['nbrFemmesInstruits'] = $this->_nbrPersonnesInstruitesParSexe( $annee, $semestre, 2, $locaadr );
+
+//             $results['nbrTotalInstruits'] = ( $results['nbrHommesInstruits'] + $results['nbrFemmesInstruits'] );
+
             return $results;
         }
 
+
         function listeAge( $annee, $semestre, $locaadr ) {
-            $results['nbr0_24Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 0, 24,$locaadr );
+            $results['nbr0_24Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 0, 24, $locaadr );
             $results['nbr25_34Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 25, 34, $locaadr );
-            $results['nbr35_44Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 35, 44,$locaadr );
-            $results['nbr45_54Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 45, 54,$locaadr );
-            $results['nbr55_59Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 55, 59,$locaadr );
-            $results['nbr60_200Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 60, 200,$locaadr );
+            $results['nbr35_44Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 35, 44, $locaadr );
+            $results['nbr45_54Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 45, 54, $locaadr );
+            $results['nbr55_59Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 55, 59, $locaadr );
+            $results['nbr60_200Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 60, 200, $locaadr );
+
+//             $results['nbrTotalAgesInstruits'] = ( $results['nbr0_24Instruits'] + $results['nbr25_34Instruits'] + $results['nbr35_44Instruits'] + $results['nbr35_44Instruits'] + $results['nbr45_54Instruits'] + $results['nbr55_59Instruits'] + $results['nbr60_200Instruits'] );
+
             return $results;
         }
 

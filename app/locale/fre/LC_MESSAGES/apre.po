@@ -294,6 +294,12 @@ msgstr "Hommes"
 msgid "Repddtefp.nbrFemmesInstruits"
 msgstr "Femmes"
 
+msgid "Repddtefp.nbrTotalInstruits"
+msgstr "Total"
+
+msgid "Repddtefp.nbrTotalAgesInstruits"
+msgstr "Total"
+
 msgid "Repddtefp.ville"
 msgstr "Ville du bénéficiaire"
 
