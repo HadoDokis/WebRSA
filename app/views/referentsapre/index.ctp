@@ -40,7 +40,8 @@
                                 h( Set::classicExtract( $referentapre, 'Referentapre.email' ) ),
                                 h( Set::classicExtract( $referentapre, 'Referentapre.fonction' ) ),
                                 h( Set::classicExtract( $referentapre, 'Referentapre.organismeref' ) ),
-                                h( Set::classicExtract( $options['spe'], Set::classicExtract( $referentapre, 'Referentapre.spe', 'enum' ) ) ),
+                                //h( Set::classicExtract( $options['spe'], Set::classicExtract( $referentapre, 'Referentapre.spe', 'enum' ) ) ),
+                                h( Set::enum( Set::classicExtract( $referentapre, 'Referentapre.spe', 'enum' ), $options['spe'] ) ),
                                 $html->editLink(
                                     'Éditer le référent APRE ',
                                     array( 'controller' => 'referentsapre', 'action' => 'edit', $referentapre['Referentapre']['id'] )

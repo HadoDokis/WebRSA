@@ -27,7 +27,7 @@
             value( $sr, Set::classicExtract( $orient, 'Orientstruct.structurereferente_id' ) ),
             Set::classicExtract( $orient, 'Orientstruct.statut_orient' ),
             ( Set::classicExtract( $orient, 'Prestation.toppersdrodevorsa' ) ? 'Oui' : 'Non' ),
-            value( $natpf, Set::classicExtract( $orient, 'Detailcalculdroitrsa.natpf' ) )
+            Set::enum( Set::classicExtract( $orient, 'Detailcalculdroitrsa.natpf' ), $natpf )
         );
         $csv->addRow($row);
     }
