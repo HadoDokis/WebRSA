@@ -3,8 +3,13 @@
     {
         var $name = 'Referentapre';
         var $useTable = 'referentsapre';
-//         var $displayField = 'nom';
+        var $actsAs = array( 'Enumerable' );
         var $order = 'Referentapre.id ASC';
+
+
+        var $enumFields = array(
+            'spe' => array( 'type' => 'no', 'domain' => 'default' )
+        );
 
         var $hasMany = array(
             'Apre' => array(
@@ -19,7 +24,35 @@
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
             ),
+            'qual' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
             'prenom' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'adresse' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'numtel' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'email' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'fonction' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'organismeref' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'spe' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
             )
