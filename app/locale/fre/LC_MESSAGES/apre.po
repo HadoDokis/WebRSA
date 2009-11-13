@@ -290,10 +290,10 @@ msgstr "Refusée"
 # Enum Apre.etatdossierapre
 ###############################################################################
 msgid "ENUM::ETATDOSSIERAPRE::COM"
-msgstr "Dossier complet"
+msgstr "Complet"
 
 msgid "ENUM::ETATDOSSIERAPRE::INC"
-msgstr "Dossier incomplet"
+msgstr "Incomplet"
 
 ###############################################################################
 # Enum Actprof.typecontratact
