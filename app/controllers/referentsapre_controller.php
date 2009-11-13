@@ -4,11 +4,13 @@
 
         var $name = 'Referentsapre';
         var $uses = array( 'Referentapre', 'Option' );
-
+        var $helpers = array( 'Xform' );
 
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'qual', $this->Option->qual() );
+            $options = $this->Referentapre->allEnumLists();
+            $this->set( 'options', $options );
         }
 
 

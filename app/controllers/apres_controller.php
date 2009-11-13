@@ -142,7 +142,7 @@
             }
             else if( $this->action == 'edit' ) {
                 $apre_id = $id;
-                $apre = $this->Apre->findById( $apre_id, null, null, 0 );
+                $apre = $this->Apre->findById( $apre_id, null, null, 1 );
                 $this->assert( !empty( $apre ), 'invalidParameter' );
 
                 $personne_id = $apre['Apre']['personne_id'];

@@ -24,6 +24,7 @@
                 <th>Email</th>
                 <th>Fonction</th>
                 <th>Organisme</th>
+                <th>Service pour le Pôle Emploi ?</th>
                 <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
@@ -39,6 +40,7 @@
                                 h( Set::classicExtract( $referentapre, 'Referentapre.email' ) ),
                                 h( Set::classicExtract( $referentapre, 'Referentapre.fonction' ) ),
                                 h( Set::classicExtract( $referentapre, 'Referentapre.organismeref' ) ),
+                                h( Set::classicExtract( $options['spe'], Set::classicExtract( $referentapre, 'Referentapre.spe', 'enum' ) ) ),
                                 $html->editLink(
                                     'Éditer le référent APRE ',
                                     array( 'controller' => 'referentsapre', 'action' => 'edit', $referentapre['Referentapre']['id'] )
