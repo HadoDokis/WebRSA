@@ -17,17 +17,17 @@
 // die();
     foreach( $orients as $orient ) {
         $row = array(
-            Set::extract( $orient, 'Dossier.numdemrsa' ),
-            Set::extract( $orient, 'Personne.nom' ).' '.Set::extract( $orient, 'Personne.prenom'),
-            Set::extract( $orient, 'Modecontact.numtel' ),
-            Set::extract( $orient, 'Adresse.locaadr' ),
-            date_short( Set::extract( $orient, 'Dossier.dtdemrsa' ) ),
-            Set::extract( $etatdosrsa, Set::extract( $orient, 'Situationdossierrsa.etatdosrsa' ) ),
-            date_short( Set::extract( $orient, 'Orientstruct.date_valid' ) ),
-            value( $sr, Set::extract( $orient, 'Orientstruct.structurereferente_id' ) ),
-            Set::extract( $orient, 'Orientstruct.statut_orient' ),
-            ( Set::extract( $orient, 'Prestation.toppersdrodevorsa' ) ? 'Oui' : 'Non' ),
-            Set::extract( $natpf, Set::extract( $orient, 'Detailcalculdroitrsa.natpf' ) )
+            Set::classicExtract( $orient, 'Dossier.numdemrsa' ),
+            Set::classicExtract( $orient, 'Personne.nom' ).' '.Set::classicExtract( $orient, 'Personne.prenom'),
+            Set::classicExtract( $orient, 'Modecontact.numtel' ),
+            Set::classicExtract( $orient, 'Adresse.locaadr' ),
+            date_short( Set::classicExtract( $orient, 'Dossier.dtdemrsa' ) ),
+            Set::classicExtract( $etatdosrsa, Set::classicExtract( $orient, 'Situationdossierrsa.etatdosrsa' ) ),
+            date_short( Set::classicExtract( $orient, 'Orientstruct.date_valid' ) ),
+            value( $sr, Set::classicExtract( $orient, 'Orientstruct.structurereferente_id' ) ),
+            Set::classicExtract( $orient, 'Orientstruct.statut_orient' ),
+            ( Set::classicExtract( $orient, 'Prestation.toppersdrodevorsa' ) ? 'Oui' : 'Non' ),
+            value( $natpf, Set::classicExtract( $orient, 'Detailcalculdroitrsa.natpf' ) )
         );
         $csv->addRow($row);
     }
