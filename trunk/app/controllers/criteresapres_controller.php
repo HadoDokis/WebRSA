@@ -79,7 +79,7 @@
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
-            $querydata = $this->Critereapre->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+            $querydata = $this->Critereapre->search( null, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
             unset( $querydata['limit'] );
             $apres = $this->Apre->find( 'all', $querydata );
 

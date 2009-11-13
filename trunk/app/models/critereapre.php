@@ -3,12 +3,22 @@
     {
         var $name = 'Critereapre';
         var $useTable = false;
+//         var $actsAs = array( 'Enumerable' );
 
-        function search( $mesCodesInsee, $filtre_zone_geo, $criteresapres, $lockedDossiers ) {
+        var $enumFields = array(
+            'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
+            'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' )
+        );
+
+        function search( $etatApre, $mesCodesInsee, $filtre_zone_geo, $criteresapres, $lockedDossiers ) {
             /// Conditions de base
             $conditions = array();
 
-
+            if( !empty( $etatApre ) ) {
+                if( $etatApre == 'Critereapre::incomplete' ) {
+                    $conditions[] = 'Apre.etatdossierapre = \'INC\'';
+                }
+            }
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
                 $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
@@ -98,6 +108,7 @@
                     '"Apre"."naturelogement"',
                     '"Apre"."anciennetepoleemploi"',
                     '"Apre"."activitebeneficiaire"',
+                    '"Apre"."etatdossierapre"',
                     '"Apre"."dateentreeemploi"',
                     '"Apre"."typecontrat"',
                     '"Dossier"."id"',

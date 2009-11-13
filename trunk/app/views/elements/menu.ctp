@@ -103,11 +103,37 @@
                     <?php echo $html->link( 'APRE', '#' );?>
                     <ul>
                         <?php if( $permissions->check( 'criteresapres', 'index' ) ):?>
-                            <li><?php echo $html->link( 'Liste des demandes d\'APRE', array( 'controller' => 'criteresapres', 'action' => 'index' ) );?></li>
+                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                <?php echo $html->link( 'Liste des demandes d\'APRE', '#');?>
+                                    <ul>
+                                        <?php if( $permissions->check( 'criteresapres', 'index' ) ): ?>
+                                            <li><?php echo $html->link( 'Toutes les APREs', array( 'controller' => 'criteresapres', 'action' => 'all' ) );?></li>
+                                        <?php endif;?>
+                                        <?php if( $permissions->check( 'criteresapres', 'index' ) ): ?>
+                                            <li><?php echo $html->link( 'APREs incomplètes', array( 'controller' => 'criteresapres', 'action' => 'incomplete' ) );?></li>
+                                        <?php endif;?>
+                                    </ul>
+                                </li>
                         <?php endif;?>
                         <?php if( $permissions->check( 'repsddtefp', 'index' ) ):?>
                             <li><?php echo $html->link( 'Reporting bi-mensuel DDTEFP', array( 'controller' => 'repsddtefp', 'action' => 'index' ) );?></li>
-                        <?php endif;?> 
+                        <?php endif;?>
+                        <!-- <?php if( $permissions->check( 'commissionsapre', 'nouvelles' ) || $permissions->check( 'commissionsapre', 'enattente' ) || $permissions->check( 'commissionsapre', 'valide' )):?>
+                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                <?php echo $html->link( 'Avis commission d\'attribution','#' );?>
+                                <ul>
+                                    <?php if( $permissions->check( 'commissionsapre', 'nouvelles' ) ): ?>
+                                        <li><?php echo $html->link( 'Nouvelles demandes', array( 'controller' => 'commissionsapre', 'action' => 'nouvelles' ), array( 'title' => 'Nouvelles demandes' )  );?></li>
+                                    <?php endif;?>
+                                    <?php if( $permissions->check( 'commissionsapre', 'enattente' ) ): ?>
+                                        <li><?php echo $html->link( 'En attente', array( 'controller' => 'commissionsapre', 'action' => 'enattente' ), array( 'title' => 'Demandes en attente' ) );?></li>
+                                    <?php endif;?>
+                                    <?php if( $permissions->check( 'commissionsapre', 'valide' ) ): ?>
+                                        <li><?php echo $html->link( 'Demandes validées', array( 'controller' => 'commissionsapre', 'action' => 'valide' ), array( 'title' => 'Demandes validées' ) );?></li>
+                                    <?php endif;?>
+                                </ul>
+                            </li>
+                        <?php endif;?> -->
                     </ul>
                 </li>
             <?php endif;?>

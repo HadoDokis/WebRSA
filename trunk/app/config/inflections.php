@@ -159,7 +159,9 @@
         'referentapre' => 'referentsapre',
         'montantconsomme' => 'montantsconsommes',
         'critereapre' => 'criteresapres',
-        'repddtefp' => 'repsddtefp'
+        'repddtefp' => 'repsddtefp',
+        ///commission d'APRE
+        'commissionapre' => 'commissionsapre'
      );
 /**
  * This is a key => value array of regex used to match words.
