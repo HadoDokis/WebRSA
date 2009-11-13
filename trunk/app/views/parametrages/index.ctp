@@ -68,10 +68,21 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Référents' ),
+                        h( 'Référents pour les structures' ),
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'referents', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
+                        h( 'Référents de l\'APRE' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'referentsapre', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),

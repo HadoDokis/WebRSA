@@ -22,7 +22,8 @@
         <?php echo $form->input( 'Referentapre.numtel', array( 'label' => required( __( 'numtel', true ) ), 'type' => 'text' ) );?>
         <?php echo $form->input( 'Referentapre.email', array( 'label' => required( __( 'email', true ) ), 'type' => 'text' ) );?>
         <?php echo $form->input( 'Referentapre.fonction', array( 'label' => required( __( 'fonction', true ) ), 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Referentapre.organismeref', array( 'label' => required( __( 'organismeref', true ) ), 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Referentapre.organismeref', array( 'label' => required( __d( 'apre', 'Referentapre.organismeref', true ) ), 'type' => 'text' ) );?>
+        <?php echo $xform->enum( 'Referentapre.spe', array(  'legend' => required( __d( 'apre', 'Referentapre.spe', true ) ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['spe'] ) );?>
     </fieldset>
 
         <?php echo $form->submit( 'Enregistrer' );?>
