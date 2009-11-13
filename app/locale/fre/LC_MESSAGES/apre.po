@@ -274,6 +274,28 @@ msgid "ENUM::TYPECONTRAT::AUT"
 msgstr "Autres"
 
 ###############################################################################
+# Enum Apre.statutapre
+###############################################################################
+
+msgid "ENUM::STATUTAPRE::ACC"
+msgstr "Accordée"
+
+msgid "ENUM::STATUTAPRE::ATT"
+msgstr "En attente"
+
+msgid "ENUM::STATUTAPRE::REF"
+msgstr "Refusée"
+
+###############################################################################
+# Enum Apre.etatdossierapre
+###############################################################################
+msgid "ENUM::ETATDOSSIERAPRE::COM"
+msgstr "Dossier complet"
+
+msgid "ENUM::ETATDOSSIERAPRE::INC"
+msgstr "Dossier incomplet"
+
+###############################################################################
 # Enum Actprof.typecontratact
 ###############################################################################
 msgid "ENUM::TYPECONTRATACT::CI"
