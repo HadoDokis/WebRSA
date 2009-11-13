@@ -7,7 +7,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre' );
         var $component = array( 'Jetons' );
         var $helpers = array( 'Locale' );
 
@@ -413,11 +413,6 @@
             ///Permet d'afficher si rsa majoré ou non
             $soclmajValues = array_unique( Set::extract( $contratinsertion, '/Infofinanciere/natpfcre' ) );
             $contratinsertion['Infofinanciere']['rsamaj'] = ( array_intersects( $soclmajValues, array_keys( $soclmaj ) ) ) ? 'Oui' : 'Non';
-
-
-
-// debug( $contratinsertion );
-// die();
 
             $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
         }
@@ -987,5 +982,93 @@
             $this->_ged( $rdv, 'RDV/'.$modele.'.odt' );
         }
 
+
+
+        /**
+        * Notification d'APRE
+        **/
+        function apre( $apre_id = null ) {
+            $qual = $this->Option->qual();
+            $this->set( 'qual', $qual );
+            $typevoie = $this->Option->typevoie();
+            $this->set( 'typevoie', $typevoie );
+
+            $apre = $this->Apre->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Apre.id' => $apre_id
+                    ),
+                    'recursive' => -1
+                )
+            );
+            /// Récupération de la personne lié à l'APRE
+            $personne = $this->Personne->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Personne.id' => Set::classicExtract( $apre, 'Apre.personne_id' )
+                    ),
+                    'recursive' => -1
+                )
+            );
+            $apre['Personne'] = $personne['Personne'];
+
+            /// Récupération de l'adresse liée à la personne
+            $this->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+            $adresse = $this->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => Set::classicExtract( $personne, 'Personne.foyer_id' ),
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $apre['Adresse'] = $adresse['Adresse'];
+
+            // Récupération de l'utilisateur
+            $user = $this->User->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'User.id' => $this->Session->read( 'Auth.User.id' )
+                    )
+                )
+            );
+            $apre['User'] = $user['User'];
+
+            // Récupération de la structure referente liée à la personne
+            $orientstruct = $this->Orientstruct->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.personne_id' => Set::classicExtract( $personne, 'Personne.id' )
+                    )
+                )
+            );
+            $apre['Orientstruct'] = $orientstruct['Orientstruct'];
+
+            $apre['Structurereferente'] = $orientstruct['Structurereferente'];
+            $apre['Personne']['qual'] = Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual );
+            $apre['Personne']['dtnai'] = date_short( Set::classicExtract( $apre, 'Personne.dtnai' ) );
+
+            $apre['Structurereferente']['type_voie'] =  Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie' ), $typevoie );
+
+            $apre['Adresse']['typevoie'] = Set::enum( Set::classicExtract( $apre, 'Adresse.typevoie' ), $typevoie );
+// debug($apre);
+// die();
+
+            $this->_ged( $apre, 'APRE/apre.odt' );
+        }
     }
 ?>
