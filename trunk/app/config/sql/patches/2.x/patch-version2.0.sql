@@ -469,3 +469,6 @@ CREATE TABLE locsvehicinsert_pieceslocsvehicinsert (
 );
 CREATE INDEX locsvehicinsert_pieceslocsvehicinsert_locvehicinsert_id_idx ON locsvehicinsert_pieceslocsvehicinsert (locvehicinsert_id);
 CREATE INDEX locsvehicinsert_pieceslocsvehicinsert_piecelocvehicinsert_id_idx ON locsvehicinsert_pieceslocsvehicinsert (piecelocvehicinsert_id);
+
+
+ALTER TABLE referentsapre ADD COLUMN spe type_no DEFAULT NULL;
