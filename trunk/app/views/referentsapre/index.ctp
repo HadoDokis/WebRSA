@@ -24,7 +24,7 @@
                 <th>Email</th>
                 <th>Fonction</th>
                 <th>Organisme</th>
-                <th>Service pour le Pôle Emploi ?</th>
+                <th>Employé au Service pour le Pôle Emploi ?</th>
                 <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>

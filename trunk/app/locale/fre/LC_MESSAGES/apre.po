@@ -53,7 +53,7 @@ msgstr "Secteur professionnel en lien avec la demande "
 ###############################################################################
 
 msgid "Referentapre.spe"
-msgstr "Etes-vous dépendant du Service pour le Pôle Emploi (SPE) ? "
+msgstr "Employé au Service pour le Pôle Emploi (SPE) ? "
 
 msgid "Referentapre.organismeref"
 msgstr "Organisme référent"

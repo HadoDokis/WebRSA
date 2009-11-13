@@ -6,11 +6,13 @@
     <?php 
         if( $this->action == 'add' ) {
             echo $form->create( 'Referentapre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
-            echo $form->input( 'Referentapre.id', array( 'type' => 'hidden', 'value' => '' ) );
+//             echo $form->input( 'Referentapre.id', array( 'type' => 'hidden', 'value' => '' ) );
         }
         else {
             echo $form->create( 'Referentapre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+            echo '<div>';
             echo $form->input( 'Referentapre.id', array( 'type' => 'hidden' ) );
+            echo '</div>';
         }
     ?>
 
@@ -23,10 +25,10 @@
         <?php echo $form->input( 'Referentapre.email', array( 'label' => required( __( 'email', true ) ), 'type' => 'text' ) );?>
         <?php echo $form->input( 'Referentapre.fonction', array( 'label' => required( __( 'fonction', true ) ), 'type' => 'text' ) );?>
         <?php echo $form->input( 'Referentapre.organismeref', array( 'label' => required( __d( 'apre', 'Referentapre.organismeref', true ) ), 'type' => 'text' ) );?>
-        <?php echo $xform->enum( 'Referentapre.spe', array(  'legend' => required( __d( 'apre', 'Referentapre.spe', true ) ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['spe'] ) );?>
+        <?php echo $xform->enum( 'Referentapre.spe', array( 'label' => required( __d( 'apre', 'Referentapre.spe', true ) ), 'type' => 'select', 'options' => $options['spe'], 'empty' => true ) );?>
     </fieldset>
 
-        <?php echo $form->submit( 'Enregistrer' );?>
-    <?php echo $form->end();?>
+    <?php echo $form->submit( 'Enregistrer' );?>
+<?php echo $form->end();?>
 
 <div class="clearer"><hr /></div>
