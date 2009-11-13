@@ -66,14 +66,19 @@
                             ( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
 
                             $html->viewLink(
-                                'Voir le rendez-vous',
+                                'Voir la demande APRE',
                                 array( 'controller' => 'apres', 'action' => 'view', $apre['Apre']['id'] ),
                                 $permissions->check( 'apres', 'view' )
                             ),
                             $html->editLink(
-                                'Editer le rendez-vous',
+                                'Editer la demande APRE',
                                 array( 'controller' => 'apres', 'action' => 'edit', $apre['Apre']['id'] ),
                                 $permissions->check( 'apres', 'edit' )
+                            ),
+                            $html->printLink(
+                                'Imprimer la demande APRE',
+                                array( 'controller' => 'gedooos', 'action' => 'apre', 'class' => 'external', $apre['Apre']['id'] ),
+                                $permissions->check( 'gedooos', 'apre' )
                             )
                         ),
                         array( 'class' => 'odd' ),
