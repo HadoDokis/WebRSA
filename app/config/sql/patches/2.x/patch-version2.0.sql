@@ -478,3 +478,4 @@ ALTER TABLE apres ADD COLUMN statutapre type_statutapre DEFAULT NULL;
 
 CREATE TYPE type_etatdossierapre AS ENUM ( 'COM', 'INC' );
 ALTER TABLE apres ADD COLUMN etatdossierapre type_etatdossierapre DEFAULT NULL;
+

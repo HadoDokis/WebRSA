@@ -165,9 +165,10 @@
             $this->set( 'personne', $personne );
 
             ///Nombre d'enfants par foyer
-            $nbEnfants = $this->Apre->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
+            $nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
             $this->set( 'nbEnfants', $nbEnfants );
 
+// debug($nbEnfants );
             ///Récupération de la liste des référents liés à l'APRE
             $refsapre = $this->Referentapre->_referentsApre( Set::classicExtract( $personne, 'Apre.id' ) );
             $this->set( 'refsapre', $refsapre );

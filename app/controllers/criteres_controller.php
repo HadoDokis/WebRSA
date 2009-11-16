@@ -1,7 +1,7 @@
 <?php
     App::import('Sanitize');
     @ini_set( 'max_execution_time', 0 );
-    @ini_set( 'memory_limit', '512M' );
+    @ini_set( 'memory_limit', '1024M' );
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
@@ -88,7 +88,13 @@
 
                 $this->set( 'orients', $orients );
             }
-            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+			}
         }
 
         /// Export du tableau en CSV

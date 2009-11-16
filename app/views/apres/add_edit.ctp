@@ -62,7 +62,7 @@
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
-<?php debug( $this->data );?>
+
     <?php
 		echo $form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre', 'url' => Router::url( null, true ) ) );
         $ApreId = Set::classicExtract( $this->data, 'Apre.id' );
