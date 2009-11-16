@@ -21,14 +21,16 @@
 
 		function _addValidationRule( &$model, $field ) {
 			$options = $this->enumOptions( $model, $field );
-			$model->validate[$field][] = array(
-				'rule'		 => array( 'inList', $options ),
-				'message'	 => sprintf(
-					__( $this->settings['validationRule'], true ),
-					implode( $this->settings['validationRuleSeparator'], $options )
-				),
-				'allowEmpty' => $this->settings['validationRuleAllowEmpty']
-			);
+			if( !empty( $options ) ) {
+				$model->validate[$field][] = array(
+					'rule'		 => array( 'inList', $options ),
+					'message'	 => sprintf(
+						__( $this->settings['validationRule'], true ),
+						implode( $this->settings['validationRuleSeparator'], $options )
+					),
+					'allowEmpty' => $this->settings['validationRuleAllowEmpty']
+				);
+			}
 		}
 
 		/**
@@ -166,14 +168,16 @@
 		function enumList( $model, $field ) {
 			$options = array();
 			$tmpOptions = self::enumOptions( $model, $field );
-			foreach( $tmpOptions as $key ) {
-				$domain = $model->enumFields[$field]['domain'];
-				$msgid = implode( '::', array( 'ENUM', $model->enumFields[$field]['type'], $key ) );
-				if( empty( $domain ) || ( $domain == 'default' ) ) {
-					$options[$key] = __( $msgid, true );
-				}
-				else {
-					$options[$key] = __d( $model->enumFields[$field]['domain'], $msgid, true );
+			if( !empty( $tmpOptions ) ) {
+				foreach( $tmpOptions as $key ) {
+					$domain = $model->enumFields[$field]['domain'];
+					$msgid = implode( '::', array( 'ENUM', $model->enumFields[$field]['type'], $key ) );
+					if( empty( $domain ) || ( $domain == 'default' ) ) {
+						$options[$key] = __( $msgid, true );
+					}
+					else {
+						$options[$key] = __d( $model->enumFields[$field]['domain'], $msgid, true );
+					}
 				}
 			}
 			return $options;
