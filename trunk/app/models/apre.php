@@ -89,44 +89,6 @@
             )
         );
 
-        function nbEnfants( $foyer_id ){
-            $this->unbindModelAll();
-            $this->bindModel(
-                array(
-                    'belongsTo' => array(
-                        'Personne' => array(
-                            'foreignKey' => false,
-                            'conditions' => array( 'Personne.id = Apre.personne_id' )
-                        )
-                    )
-                )
-            );
-
-            $this->Personne->Foyer->unbindModelAll();
-            $this->Personne->Foyer->bindModel(
-                array(
-                    'hasMany' => array(
-                        'Personne' => array(
-                            'classname'     => 'Personne',
-                            'foreignKey'    => 'foyer_id'
-                        )
-                    )
-                )
-            );
-            $foyer = $this->Personne->Foyer->find( 'first', array( 'conditions' => array( 'Foyer.id' => $foyer_id ), 'recursive' => 1 ) );
-
-            ///Nombre d'enfants dans le foyer
-            $nbEnfants = $this->Personne->Prestation->find(
-                'count',
-                array(
-                    'conditions' => array(
-                        'Personne.id' => Set::classicExtract( $foyer, 'Personne.{n}.id' ),
-                        'Prestation.rolepers' => 'ENF'
-                    )
-                )
-            );
-           return $nbEnfants;
-        }
 
         function dossierId( $apre_id ){
             $this->unbindModelAll();

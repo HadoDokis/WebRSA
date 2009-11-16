@@ -1,4 +1,4 @@
-<?php  $this->pageTitle = 'APRE liée la personne';?>
+<?php  $this->pageTitle = 'APRE liée à la personne';?>
 <?php  echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id) );?>
 
 <?php
@@ -77,7 +77,7 @@
                             ),
                             $html->printLink(
                                 'Imprimer la demande APRE',
-                                array( 'controller' => 'gedooos', 'action' => 'apre', 'class' => 'external', $apre['Apre']['id'] ),
+                                array( 'controller' => 'gedooos', 'action' => 'apre', $apre['Apre']['id'] ),
                                 $permissions->check( 'gedooos', 'apre' )
                             )
                         ),

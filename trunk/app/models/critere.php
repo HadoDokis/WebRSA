@@ -162,7 +162,10 @@
                         'alias'      => 'Prestation',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Prestation.personne_id = Personne.id' )
+                        'conditions' => array(
+                            'Prestation.personne_id = Personne.id',
+                            'Prestation.natprest = \'RSA\''
+                        )
                     ),
                     array(
                         'table'      => 'foyers',

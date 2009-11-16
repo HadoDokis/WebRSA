@@ -7,7 +7,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Dsp', 'Referentapre', 'Formqualif', 'Permisb' );
         var $component = array( 'Jetons' );
         var $helpers = array( 'Locale' );
 
@@ -58,6 +58,8 @@
             );
             $oMainPart = new GDO_PartType();
 
+$freu = array();
+
             // Définition des variables pour les modèles de doc
             foreach( $datas as $group => $details ) {
                 if( !empty( $details ) ) {
@@ -74,11 +76,13 @@
                                 $value,
                                 $type
                             )
-                        );
+                       );
+                       $freu[strtolower( $group ).'_'.strtolower( $key )] = $value;
                     }
                 }
             }
-
+// debug( $freu );
+// die();
             // fusion des documents
             $oFusion = new GDO_FusionType($oTemplate, $sMimeType, $oMainPart);
             $oFusion->process();
@@ -992,6 +996,10 @@
             $this->set( 'qual', $qual );
             $typevoie = $this->Option->typevoie();
             $this->set( 'typevoie', $typevoie );
+            $sitfam = $this->Option->sitfam();
+            $this->set( 'sitfam', $sitfam );
+            $optionsdsps = $this->Dsp->allEnumLists();
+            $this->set( 'optionsdsps', $optionsdsps );
 
             $apre = $this->Apre->find(
                 'first',
@@ -1002,6 +1010,33 @@
                     'recursive' => -1
                 )
             );
+
+            $refapre = $this->Referentapre->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Referentapre.id' => $apre['Apre']['referentapre_id']
+                    ),
+                    'recursive' => -1
+                )
+            );
+            $apre['Referentapre'] = $refapre['Referentapre'];
+
+            ///Aides liées à l'APRE
+            foreach( $this->Apre->aidesApre as $model ) {
+                $tables = $this->Apre->{$model}->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            "$model.apre_id" => $apre['Apre']['id']
+                        ),
+                        'recursive' => -1
+                    )
+                );
+                $apre[$model] = $tables[$model];
+            }
+// debug($tablesLiees);
+
             /// Récupération de la personne lié à l'APRE
             $personne = $this->Personne->find(
                 'first',
@@ -1013,6 +1048,17 @@
                 )
             );
             $apre['Personne'] = $personne['Personne'];
+
+            $dsp = $this->Dsp->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dsp.personne_id' => Set::classicExtract( $personne, 'Personne.id' )
+                    ),
+                    'recursive' => -1
+                )
+            );
+            $apre['Dsp'] = $dsp['Dsp'];
 
             /// Récupération de l'adresse liée à la personne
             $this->Adressefoyer->bindModel(
@@ -1036,7 +1082,7 @@
             );
             $apre['Adresse'] = $adresse['Adresse'];
 
-            // Récupération de l'utilisateur
+            /// Récupération de l'utilisateur
             $user = $this->User->find(
                 'first',
                 array(
@@ -1047,7 +1093,7 @@
             );
             $apre['User'] = $user['User'];
 
-            // Récupération de la structure referente liée à la personne
+            /// Récupération de la structure referente liée à la personne
             $orientstruct = $this->Orientstruct->find(
                 'first',
                 array(
@@ -1058,6 +1104,39 @@
             );
             $apre['Orientstruct'] = $orientstruct['Orientstruct'];
 
+            /// Récupération du dernier contrat dinsertion lié à la personne
+            $contrat = $this->Contratinsertion->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Contratinsertion.personne_id' => Set::classicExtract( $personne, 'Personne.id' )
+                    ),
+                    'order' => 'Contratinsertion.datevalidation_ci ASC',
+                    'recursive' => -1
+                )
+            );
+            $apre['Contratinsertion'] = $contrat['Contratinsertion'];
+
+            /// Récupération du dossier lié à la personne
+            $foyer = $this->Foyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Foyer.id' => $apre['Personne']['foyer_id']
+                    )
+                )
+            );
+            $apre['Foyer'] = $foyer['Foyer'];
+            $dossier = $this->Dossier->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossier.id' => $apre['Foyer']['dossier_rsa_id']
+                    )
+                )
+            );
+            $apre['Dossier'] = $dossier['Dossier'];
+
             $apre['Structurereferente'] = $orientstruct['Structurereferente'];
             $apre['Personne']['qual'] = Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual );
             $apre['Personne']['dtnai'] = date_short( Set::classicExtract( $apre, 'Personne.dtnai' ) );
@@ -1065,6 +1144,32 @@
             $apre['Structurereferente']['type_voie'] =  Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie' ), $typevoie );
 
             $apre['Adresse']['typevoie'] = Set::enum( Set::classicExtract( $apre, 'Adresse.typevoie' ), $typevoie );
+            $apre['Apre']['datedemandeapre'] = date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) );
+
+            $apre['Contratinsertion']['datevalidation_ci'] = date_short( Set::classicExtract( $apre, 'Contratinsertion.datevalidation_ci' ) );
+
+            $apre['Foyer']['sitfam'] = Set::enum( Set::classicExtract( $apre, 'Foyer.sitfam' ), $sitfam );
+
+            ///Nombre d'enfants par foyer
+            $nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $apre, 'Foyer.id' ) );
+            $apre['Foyer']['nbenfants'] = $nbEnfants;
+
+            ///Données propre aux Dsp de la personne
+            $apre['Dsp']['cessderact'] = Set::enum( Set::classicExtract( $apre, 'Dsp.cessderact' ), $optionsdsps['cessderact'] );
+            $apre['Dsp']['nivetu'] = Set::enum( Set::classicExtract( $apre, 'Dsp.nivetu' ), $optionsdsps['nivetu'] );
+
+            $apre['Referentapre']['qual'] = Set::enum( Set::classicExtract( $apre, 'Referentapre.qual' ), $qual );
+
+            ///Modification du format de la date pour les aides
+            foreach( $this->Apre->aidesApre as $model ) {
+                $apre[$model]['ddform'] = date_short( Set::classicExtract( $apre, "$model.ddform" ) );
+                $apre[$model]['dfform'] = date_short( Set::classicExtract( $apre, "$model.dfform" ) );
+            }
+            $apre['Actprof']['ddconvention'] = date_short( Set::classicExtract( $apre, 'Actprof.ddconvention' ) );
+            $apre['Actprof']['dfconvention'] = date_short( Set::classicExtract( $apre, 'Actprof.dfconvention' ) );
+            $apre['Apre']['dateentreeemploi'] = date_short( Set::classicExtract( $apre, 'Apre.dateentreeemploi' ) );
+
+
 // debug($apre);
 // die();
 
