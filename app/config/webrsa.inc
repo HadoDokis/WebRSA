@@ -4,4 +4,5 @@
     Configure::write(  'Utilisateurs.multilogin', false );
     Configure::write( 'nom_form_ci_cg', 'cg93' );
     Configure::write( 'CG.cantons', false );
+    Configure::write( 'Zonesegeographiques.CodesInsee', true );
 ?>
