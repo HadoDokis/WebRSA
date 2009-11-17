@@ -3,6 +3,14 @@
     {
         var $name = 'Acqmatprof';
 
+        var $validate = array(
+            'montantaide' => array(
+                'rule' => 'numeric',
+                'message' => 'Veuillez entrer une valeur numérique.',
+                'allowEmpty' => true
+            )
+        );
+
         var $hasAndBelongsToMany = array(
             'Pieceacqmatprof' => array(
                 'className'             => 'Pieceacqmatprof',

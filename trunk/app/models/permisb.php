@@ -4,6 +4,18 @@
         var $name = 'Permisb';
         var $actsAs = array( 'Enumerable' );
 
+        var $validate = array(
+            'coutform' => array(
+                'rule' => 'numeric',
+                'message' => 'Veuillez entrer une valeur numérique.',
+                'allowEmpty' => true
+            ),
+            'dureeform' => array(
+                'rule' => 'numeric',
+                'message' => 'Veuillez entrer une valeur numérique.',
+                'allowEmpty' => true
+            )
+        );
 
         var $hasAndBelongsToMany = array(
             'Piecepermisb' => array(
