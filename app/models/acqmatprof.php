@@ -3,6 +3,8 @@
     {
         var $name = 'Acqmatprof';
 
+        var $actsAs = array( 'Frenchfloat' => array( 'fields' => array( 'montantaide' ) ) );
+
         var $validate = array(
             'montantaide' => array(
                 'rule' => 'numeric',

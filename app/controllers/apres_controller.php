@@ -182,34 +182,36 @@
 
                 if( $this->Apre->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     $saved = $this->Apre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
-                    $tablesLiees = array(
-                        'Formqualif' => 'Pieceformqualif',
-                        'Actprof' => 'Pieceactprof',
-                        'Permisb' => 'Piecepermisb',
-                        'Amenaglogt' => 'Pieceamenaglogt',
-                        'Acccreaentr' => 'Pieceacccreaentr',
-                        'Acqmatprof' => 'Pieceacqmatprof',
-                        'Locvehicinsert' => 'Piecelocvehicinsert'
-                    );
-                    foreach( $tablesLiees as $model => $piecesLiees ) {
-                        if( !empty( $this->data[$piecesLiees] ) ) {
-                            $linkedData = array(
-                                $model => array(
-                                    'id' => $this->Apre->{$model}->id
-                                ),
-                                $piecesLiees => $this->data[$piecesLiees]
-                            );
-                            $saved = $this->Apre->{$model}->save( $linkedData ) && $saved;
+                    if( $saved ) {
+                        $tablesLiees = array(
+                            'Formqualif' => 'Pieceformqualif',
+                            'Actprof' => 'Pieceactprof',
+                            'Permisb' => 'Piecepermisb',
+                            'Amenaglogt' => 'Pieceamenaglogt',
+                            'Acccreaentr' => 'Pieceacccreaentr',
+                            'Acqmatprof' => 'Pieceacqmatprof',
+                            'Locvehicinsert' => 'Piecelocvehicinsert'
+                        );
+                        foreach( $tablesLiees as $model => $piecesLiees ) {
+                            if( !empty( $this->data[$piecesLiees] ) ) {
+                                $linkedData = array(
+                                    $model => array(
+                                        'id' => $this->Apre->{$model}->id
+                                    ),
+                                    $piecesLiees => $this->data[$piecesLiees]
+                                );
+                                $saved = $this->Apre->{$model}->save( $linkedData ) && $saved;
+                            }
                         }
                     }
                     if( $saved ) {
                         $this->Jetons->release( $dossier_rsa_id );
-//                         $this->Apre->rollback(); // FIXME
                         $this->Apre->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array(  'controller' => 'apres','action' => 'index', $personne_id ) );
                     }
                     else {
+                        $this->Apre->rollback();
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                     }
                 }

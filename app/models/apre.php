@@ -13,6 +13,10 @@
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
+            'referentapre_id' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
         );
 
         var $enumFields = array(

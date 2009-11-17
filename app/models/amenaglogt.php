@@ -2,7 +2,8 @@
     class Amenaglogt extends AppModel
     {
         var $name = 'Amenaglogt';
-        var $actsAs = array( 'Enumerable' );
+        var $actsAs = array( 'Enumerable', 'Frenchfloat' => array( 'fields' => array( 'montantaide' ) ) );
+
 
         var $validate = array(
             'montantaide' => array(

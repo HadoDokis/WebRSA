@@ -2,7 +2,7 @@
     class Permisb extends AppModel
     {
         var $name = 'Permisb';
-        var $actsAs = array( 'Enumerable' );
+        var $actsAs = array( 'Enumerable', 'Frenchfloat' => array( 'fields' => array( 'coutform', 'dureeform' ) ) );
 
         var $validate = array(
             'coutform' => array(
