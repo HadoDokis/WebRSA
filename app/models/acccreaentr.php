@@ -4,6 +4,14 @@
         var $name = 'Acccreaentr';
         var $actsAs = array( 'Enumerable' );
 
+        var $validate = array(
+            'montantaide' => array(
+                'rule' => 'numeric',
+                'message' => 'Veuillez entrer une valeur numérique.',
+                'allowEmpty' => true
+            )
+        );
+
         var $enumFields = array(
             'nacre' => array( 'type' => 'no', 'domain' => 'default' ),
             'microcredit' => array( 'type' => 'no', 'domain' => 'default' ),

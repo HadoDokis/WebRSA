@@ -3,6 +3,24 @@
     {
         var $name = 'Formqualif';
 
+        var $validate = array(
+            'montantaide' => array(
+                'rule' => 'numeric',
+                'message' => 'Veuillez entrer une valeur numérique.',
+                'allowEmpty' => true
+            ),
+            'coutform' => array(
+                'rule' => 'numeric',
+                'message' => 'Veuillez entrer une valeur numérique.',
+                'allowEmpty' => true
+            ),
+            'dureeform' => array(
+                'rule' => 'numeric',
+                'message' => 'Veuillez entrer une valeur numérique.',
+                'allowEmpty' => true
+            )
+        );
+
         var $hasAndBelongsToMany = array(
             'Pieceformqualif' => array(
                 'className'             => 'Pieceformqualif',
