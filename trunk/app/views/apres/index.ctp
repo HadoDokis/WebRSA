@@ -16,20 +16,27 @@
 
 <div class="with_treemenu">
     <h1>APRE</h1>
+    <?php if( empty( $contratinsertion )  ):?>
+        <p class="error">Impossible d'ajouter une demande d'APRE lorsqu'il n'existe pas de contrat d'insertion.</p>
 
-    <?php if( empty( $apres ) ):?>
-        <p class="notice">Cette personne ne possède pas encore d'aide personnalisée de retour à l'emploi (APRE).</p>
-    <?php endif;?>
+    <?php elseif( !empty( $contratinsertion ) && empty( $refsapre ) ):?>
+        <p class="error">Impossible d'ajouter une demande d'APRE lorsqu'il n'existe pas de référent pour l'APRE.</p>
 
+    <?php else:?>
+        <?php if( empty( $apres ) ):?>
+            <p class="notice">Cette personne ne possède pas encore d'aide personnalisée de retour à l'emploi (APRE).</p>
+        <?php endif;?>
 
-    <ul class="actionMenu">
-        <?php
-            echo '<li>'.$html->addLink(
-                'Ajouter APRE',
-                array( 'controller' => 'apres', 'action' => 'add', $personne_id )
-            ).' </li>';
-        ?>
-    </ul>
+        <?php if( $permissions->check( 'apres', 'add' ) ):?>
+            <ul class="actionMenu">
+                <?php
+                    echo '<li>'.$html->addLink(
+                        'Ajouter APRE',
+                        array( 'controller' => 'apres', 'action' => 'add', $personne_id )
+                    ).' </li>';
+                ?>
+            </ul>
+        <?php endif;?>
 
 
     <?php if( !empty( $apres ) ):?>
@@ -41,7 +48,7 @@
                 <th>Type de demande APRE</th>
                 <th>Référent APRE</th>
                 <th>Date demande APRE</th>
-                <th>Nature de la demande</th>
+                <th>Natures de la demande</th>
                 <th colspan="3" class="action">Actions</th>
             </tr>
         </thead>
@@ -89,7 +96,7 @@
         </tbody>
     </table>
     <?php  endif;?>
-
+<?php  endif;?>
 
 </div>
 <div class="clearer"><hr /></div>

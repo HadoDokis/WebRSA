@@ -3,7 +3,7 @@
     {
 
         var $name = 'Apres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'Referentapre', 'Prestation', 'Dsp', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'Referentapre', 'Prestation', 'Dsp', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxrefapre' );
 
@@ -38,6 +38,9 @@
 
             $apres = $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.personne_id' => $personne_id ) ) );
             $this->set( 'apres', $apres );
+
+            $contratinsertion = $this->Contratinsertion->find( 'first', array( 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ), 'order' => 'Contratinsertion.datevalidation_ci DESC' ) );
+            $this->set( 'contratinsertion', $contratinsertion );
 
             $refsapre = $this->Referentapre->_referentsApre( Set::classicExtract( $apres, 'Apre.id' ) );
             $this->set( 'refsapre', $refsapre );

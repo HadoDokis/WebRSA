@@ -1,7 +1,7 @@
 <?php $this->pageTitle = 'Paramétrage des référents APRE';?>
 
 <div>
-    <h1><?php echo 'Visualisation de la table  ';?></h1>
+    <h1><?php echo 'Visualisation de la table référent APRE ';?></h1>
 
     <ul class="actionMenu">
         <?php
@@ -11,6 +11,9 @@
             ).' </li>';
         ?>
     </ul>
+    <?php if( empty( $referentsapre ) ):?>
+        <p class="notice">Aucun référent présent pour le moment.</p>
+    <?php else:?>
     <div>
         <h2>Table des Référents APRE</h2>
         <table>
@@ -58,6 +61,7 @@
             <?php endforeach;?>
             </tbody>
         </table>
-</div>
+    </div>
+    <?php endif;?>
 </div>
 <div class="clearer"><hr /></div>
