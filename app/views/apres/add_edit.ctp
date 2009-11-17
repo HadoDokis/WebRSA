@@ -12,17 +12,6 @@
         $this->pageTitle = 'Édition APRE';
     }
 
-	// FIXME: mettre dans bootsrap.php et enlever la définition de la fonction de toutes les vues qui l'utilisent
-    function value( $array, $index ) {
-        $keys = array_keys( $array );
-        $index = ( ( $index == null ) ? '' : $index );
-        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-            return $array[$index];
-        }
-        else {
-            return null;
-        }
-    }
 ?>
 
 <script type="text/javascript">
@@ -132,7 +121,7 @@
                     <td class="mediumSize noborder">
                         <strong>N° matricule CAF : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.matricule' );?>
                         <br />
-                        <strong>Situation familiale : </strong><?php echo value( $sitfam, Set::classicExtract( $personne, 'Foyer.sitfam' ) );?>
+                        <strong>Situation familiale : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Foyer.sitfam' ), $sitfam );?>
                     </td>
                     <td class="wide noborder">
                         <strong>Nbre d'enfants : </strong><?php echo $nbEnfants;?>

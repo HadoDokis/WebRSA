@@ -12,7 +12,7 @@
 ?>
 
 <?php
-    echo $form->input( 'Repddtefp.ville', array( 'label' => __d( 'apre', 'Repddtefp.ville', true ) ) );
+    echo $form->input( 'Repddtefp.ville', array( 'label' => __d( 'apre', 'Repddtefp.ville', true ), 'type' => 'select', 'options' => $mesCodesInsee,  'empty' => true ) );
 
     echo $form->submit( 'Calculer' );
     echo $form->end();

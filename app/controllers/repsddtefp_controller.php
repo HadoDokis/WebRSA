@@ -9,6 +9,7 @@
         }
 
         function index() {
+
             if( !empty( $this->data ) ) {
                 $annee = Set::classicExtract( $this->data, 'Repddtefp.annee' );
                 $semestre = Set::classicExtract( $this->data, 'Repddtefp.semestre' );

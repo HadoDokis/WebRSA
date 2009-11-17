@@ -74,8 +74,9 @@
                 $ids = Set::extract( $refsapre, '/Referentapre/id' );
                 $values = Set::format( $refsapre, '{0} {1} {2}', array( '{n}.Referentapre.qual', '{n}.Referentapre.nom', '{n}.Referentapre.prenom' ) );
                 $referents = array_combine( $ids, $values );
+                return $referents;
             }
-            return $referents;
+
         }
     }
 ?>

@@ -29,9 +29,11 @@ USERNAME="webrsa"
 # \i /home/aauzolat/www/webrsa/trunk/app/config/sql/patches/1.x/patch-version1.0.8-20090907-11h31.sql
 # \i /home/aauzolat/www/webrsa/trunk/app/config/sql/patches/1.x/patch-version1.0.8.1-20090914-16h20.sql
 # \i /home/aauzolat/www/webrsa/trunk/app/config/sql/patches/1.x/patch-version1.0.8.2-20090918-14h48.sql
+# \i /home/aauzolat/www/webrsa/trunk/app/config/sql/patches/1.x/patch-version1.0.8.5.sql
 # \i /home/aauzolat/www/webrsa/trunk/app/config/sql/patches/1.x/patch_mise_a_niveau_des_id.sql
 # \i /home/aauzolat/www/webrsa/trunk/app/config/sql/patches/1.x/patch_script_index_table.sql
-# \i /home/aauzolat/www/webrsa/trunk/app/config/sql/patches/2.x/patch-version2.0-20091005-17h44.sql
+# \i /home/aauzolat/www/webrsa/trunk/app/config/sql/patches/2.x/patch-1.x-2.0.sql
+# \i /home/aauzolat/www/webrsa/trunk/app/config/sql/patches/2.x/patch-version2.0.sql
 
     SCRIPTS=( \
         'webrsa.SCHEMA-20090525.sql' \
