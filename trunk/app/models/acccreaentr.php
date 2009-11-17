@@ -2,7 +2,8 @@
     class Acccreaentr extends AppModel
     {
         var $name = 'Acccreaentr';
-        var $actsAs = array( 'Enumerable' );
+//         var $actsAs = array( 'Enumerable' );
+        var $actsAs = array( 'Enumerable', 'Frenchfloat' => array( 'fields' => array( 'montantaide' ) ) );
 
         var $validate = array(
             'montantaide' => array(

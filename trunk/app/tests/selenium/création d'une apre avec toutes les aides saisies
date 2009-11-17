@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>création d'une apre avec toutes les aides saisies</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">création d'une apre avec toutes les aides saisies</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/webrsa/trunk/apres/index/2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreTypedemandeapreFO</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreNaturelogementP</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreAnciennetepoleemploi</td>
+	<td>12mois</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreProjetprofessionnel</td>
+	<td>Projet professionnel </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreSecteurprofessionnel</td>
+	<td>Secteur professionnel en lien avec la demande </td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreActivitebeneficiaireF</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ApreReferentapreId</td>
+	<td>label=MR Buffin Christian</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre22</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre20</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre17</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>NatureaideFormqualif</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifIntituleform</td>
+	<td>formation </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifOrganismeform</td>
+	<td>Organisme de la formation </td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>FormqualifDfformDay</td>
+	<td>label=18</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifDureeform</td>
+	<td>14</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifModevalidation</td>
+	<td>Mode de validation </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifCoutform</td>
+	<td>14,41</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifCofinanceurs</td>
+	<td>Co-financeurs </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifMontantaide</td>
+	<td>100,35</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceformqualifPieceformqualif4</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceformqualifPieceformqualif5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>NatureaideActprof</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActprofNomemployeur</td>
+	<td>Nom de l'employeur</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActprofAdresseemployeur</td>
+	<td>Adresse de l'employeur</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ActprofTypecontratactCA</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ActprofDfconventionDay</td>
+	<td>label=18</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ActprofDfformDay</td>
+	<td>label=20</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActprofIntituleformation</td>
+	<td>Intituleformation</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActprofDureeform</td>
+	<td>24</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActprofModevalidation</td>
+	<td>Modevalidation</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActprofCoutform</td>
+	<td>21,41</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActprofCofinanceurs</td>
+	<td>Co-financeurs</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActprofMontantaide</td>
+	<td>140</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceactprofPieceactprof5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceactprofPieceactprof4</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>NatureaidePermisb</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//form[@id='Apre']/div[2]/h3[3]/label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbNomautoecole</td>
+	<td>Nom de l'auto-écol</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbAdresseautoecole</td>
+	<td>Adresse de l'auto-école</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PermisbConduite</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbDureeform</td>
+	<td>21</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbCoutform</td>
+	<td>241.41</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PiecepermisbPiecepermisb8</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PiecepermisbPiecepermisb9</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>NatureaideAmenaglogt</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>AmenaglogtTypeaidelogementAEL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AmenaglogtBesoins</td>
+	<td>esoins</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AmenaglogtMontantaide</td>
+	<td>142</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceamenaglogtPieceamenaglogt12</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceamenaglogtPieceamenaglogt10</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>NatureaideAcccreaentr</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>AcccreaentrNacreO</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>AcccreaentrMicrocreditN</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AcccreaentrProjet</td>
+	<td>Projet </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AcccreaentrMontantaide</td>
+	<td>241,5</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceacccreaentrPieceacccreaentr3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>NatureaideAcqmatprof</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AcqmatprofBesoins</td>
+	<td>Besoins </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AcqmatprofMontantaide</td>
+	<td>14,1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceacqmatprofPieceacqmatprof5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceacqmatprofPieceacqmatprof5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceacqmatprofPieceacqmatprof6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceacqmatprofPieceacqmatprof5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>NatureaideLocvehicinsert</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>LocvehicinsertSocietelocation</td>
+	<td>ciété de location </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>LocvehicinsertDureelocation</td>
+	<td>14</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>LocvehicinsertMontantaide</td>
+	<td>210</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PiecelocvehicinsertPiecelocvehicinsert2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreAvistechreferent</td>
+	<td> Avis technique et motivé du référent (Article 5.1 relatif au règlement de l'APRE):<br /></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Enregistrer']</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

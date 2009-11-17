@@ -3,6 +3,8 @@
     {
         var $name = 'Formqualif';
 
+        var $actsAs = array( 'Frenchfloat' => array( 'fields' => array( 'coutform', 'montantaide', 'dureeform' ) ) );
+
         var $validate = array(
             'montantaide' => array(
                 'rule' => 'numeric',

@@ -3,6 +3,9 @@
     {
         var $name = 'Locvehicinsert';
 
+        var $actsAs = array( 'Enumerable', 'Frenchfloat' => array( 'fields' => array( 'montantaide', 'dureelocation' ) ) );
+
+
         var $validate = array(
             'montantaide' => array(
                 'rule' => 'numeric',

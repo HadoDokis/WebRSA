@@ -2,7 +2,8 @@
     class Actprof extends AppModel
     {
         var $name = 'Actprof';
-        var $actsAs = array( 'Enumerable' );
+        var $actsAs = array( 'Enumerable', 'Frenchfloat' => array( 'fields' => array( 'montantaide', 'coutform', 'dureeform' ) ) );
+
 
         var $validate = array(
             'montantaide' => array(
