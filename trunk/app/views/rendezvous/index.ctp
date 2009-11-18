@@ -16,10 +16,23 @@
 
 <div class="with_treemenu">
     <h1>Rendez-vous</h1>
+    <?php if( empty( $orientstruct ) ):?>
+        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas d'orientation.</p>
 
-    <?php if( empty( $rdvs ) ):?>
-        <p class="notice">Cette personne ne possède pas encore de rendez-vous.</p>
-    <?php endif;?>
+    <?php elseif( !empty( $orientstruct ) && empty( $permanence )  ):?>
+        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas de permanence liée à la structure <?php echo '(' . $struct . ')';?></p>
+
+    <?php elseif( !empty( $orientstruct ) && !empty( $permanence ) && empty( $refrdv ) ):?>
+        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas de référent pour le RDV.</p>
+
+    <?php elseif( !empty( $orientstruct ) && !empty( $permanence ) && !empty( $refrdv ) && empty( $statutrdv ) ):?>
+        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas de statut pour le RDV.</p>
+
+    <?php else:?>
+
+        <?php if( empty( $rdvs ) ):?>
+            <p class="notice">Cette personne ne possède pas encore de rendez-vous.</p>
+        <?php endif;?>
 
     <?php if( $permissions->check( 'rendezvous', 'add' ) ):?>
         <ul class="actionMenu">
@@ -55,10 +68,10 @@
                     echo $html->tableCells(
                         array(
                             h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
-                            h( Set::extract( $struct, Set::extract( $rdv, 'Rendezvous.structurereferente_id' ) ) ),
+                            h( Set::enum( Set::extract( $rdv, 'Rendezvous.structurereferente_id' ), $sr ) ),
                             h( Set::extract( $permanences, Set::extract( $rdv, 'Rendezvous.permanence_id' ) ) ),
                             h( Set::extract( $rdv, 'Typerdv.libelle' ) ),
-                            h( value( $statutrdv, Set::classicExtract( $rdv, 'Rendezvous.statutrdv_id' ) ) ),
+                            h( Set::enum( Set::classicExtract( $rdv, 'Rendezvous.statutrdv_id' ), $statutrdv ) ),
                             h( date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) ) ),
                             h( $locale->date( 'Time::short', Set::classicExtract( $rdv, 'Rendezvous.heurerdv' ) ) ),
                             h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),
@@ -87,7 +100,7 @@
         </tbody>
     </table>
     <?php  endif;?>
-
+    <?php  endif;?>
 
 </div>
 <div class="clearer"><hr /></div>
