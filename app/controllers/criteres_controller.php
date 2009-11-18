@@ -26,8 +26,18 @@
             $typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
             $this->set( 'typeservice', $typeservice );
 
-            $sr = $this->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ) ) );
+            // Structures référentes
+            $datas = Set::merge( $this->data, array_multisize( $this->params['named'] ) );
+            $typeorient_id = Set::classicExtract( $datas, 'Critere.typeorient_id' );
+            $conditions = array();
+            if( !empty( $typeorient_id ) ) {
+                $conditions = array(
+                    'Structurereferente.typeorient_id' => $typeorient_id
+                );
+            }
+            $sr = $this->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ), 'conditions' => $conditions ) );
             $this->set( 'sr', $sr );
+
 
 
             $this->set( 'typeorient', $this->Typeorient->listOptions() );

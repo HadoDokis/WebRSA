@@ -1,7 +1,7 @@
 <?php $this->pageTitle = 'Paramétrage des statuts de rendez-vous';?>
 
 <div>
-    <h1><?php echo 'Visualisation de la table  ';?></h1>
+    <h1><?php echo 'Visualisation de la table Statut de RDV ';?></h1>
 
     <ul class="actionMenu">
         <?php
@@ -11,6 +11,9 @@
             ).' </li>';
         ?>
     </ul>
+    <?php if( empty( $statutsrdvs ) ):?>
+        <p class="notice">Aucun statut de RDV présent pour le moment.</p>
+    <?php else:?>
     <div>
         <h2>Table Statut de rendez-vous</h2>
         <table>
@@ -41,6 +44,7 @@
             <?php endforeach;?>
             </tbody>
         </table>
-</div>
+    </div>
+    <?php endif;?>
 </div>
 <div class="clearer"><hr /></div>

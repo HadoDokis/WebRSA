@@ -6,7 +6,7 @@
     class CriteresrdvController extends AppController
     {
         var $name = 'Criteresrdv';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Option', 'Typerdv', 'Referent', 'Permanence', 'Statutrdv' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Typeorient', 'Option', 'Typerdv', 'Referent', 'Permanence', 'Statutrdv' );
         var $aucunDroit = array( 'constReq', 'ajaxreferent', 'ajaxperm' );
 
         var $helpers = array( 'Csv', 'Ajax' );
@@ -27,15 +27,13 @@
         function beforeFilter() {
             $return = parent::beforeFilter();
             $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
-            $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
-            $this->set( 'struct', $struct );
+            $this->set( 'struct', $this->Structurereferente->listOptions() );
+
             $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
             $this->set( 'typerdv', $typerdv );
             $this->set( 'permanences', $this->Permanence->find( 'list' ) );
             $this->set( 'natpf', $this->Option->natpf() );
-/*
-            $referents = $this->_selectReferents( Set::classicExtract( $this->data, 'Structurereferente.id' ) );
-            $this->set( 'referents', $referents );*/
+
         }
 
 
@@ -110,7 +108,7 @@
         *
         ** ********************************************************************/
 
-        function index() {
+       function index() {
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', $this->Canton->selectList() );
 			}
@@ -127,7 +125,13 @@
                 $this->Dossier->commit();
                 $this->set( 'rdvs', $rdvs );
             }
-            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+// debug($this->data);
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+			}
 
             // Population du select référents liés aux structures
             $structurereferente_id = Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' );

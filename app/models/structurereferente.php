@@ -28,6 +28,34 @@
         }
 
 
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function listOptions() {
+            //$typesorients = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ), 'conditions' => array( 'Typeorient.parentid IS NULL' ), 'order' => array( 'Typeorient.lib_type_orient ASC' ) ) );
+
+            $list = array();
+            if( Configure::read( 'with_parentid' ) == true ) {
+                $typesorients = $this->Typeorient->find( 'all', array( 'conditions' => array( 'Typeorient.parentid IS NOT NULL' ), 'order' => array( 'Typeorient.lib_type_orient ASC' ) ) );
+            }
+            else {
+                $typesorients = $this->Typeorient->find( 'all', array( /*'conditions' => array( 'Typeorient.parentid IS NOT NULL' ),*/ 'order' => array( 'Typeorient.lib_type_orient ASC' ) ) );
+            }
+
+            foreach( $typesorients as $typeorient ) {
+                $optgroup = Set::classicExtract( $typeorient, 'Typeorient.lib_type_orient' );
+                $structures = Set::combine( $typeorient, 'Structurereferente.{n}.id', 'Structurereferente.{n}.lib_struc' );
+
+                if( !empty( $structures ) ) {
+                    if( !empty( $typeorient ) ) {
+                        $list[$optgroup] = $structures;
+                    }
+                }
+            }
+            return $list;
+
+        }
 
         var $hasAndBelongsToMany = array(
             'Zonegeographique' => array(
