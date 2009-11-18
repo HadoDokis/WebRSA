@@ -28,7 +28,7 @@
             $return = parent::beforeFilter();
             $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
             $this->set( 'struct', $this->Structurereferente->listOptions() );
-
+            $this->set( 'sr', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
             $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
             $this->set( 'typerdv', $typerdv );
             $this->set( 'permanences', $this->Permanence->find( 'list' ) );

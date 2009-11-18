@@ -139,12 +139,12 @@
                             array(
                                 h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
                                 h( Set::extract( $rdv, 'Adresse.locaadr' ) ),
-                                h( value( $struct, Set::extract( $rdv, 'Rendezvous.structurereferente_id' ) ) ),
-                                h(  value( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) ) ),
-                                h( value( $typerdv, Set::extract( $rdv, 'Rendezvous.typerdv_id' ) ) ),
+                                h( Set::enum( Set::extract( $rdv, 'Rendezvous.structurereferente_id' ), $sr ) ),
+                                h( Set::enum( Set::classicExtract( $rdv, 'Rendezvous.referent_id' ), $referents ) ),
+                                h( Set::enum( Set::extract( $rdv, 'Rendezvous.typerdv_id' ), $typerdv ) ),
                                 h( $locale->date( 'Date::short', $rdv['Rendezvous']['daterdv'] ) ),
                                 h( $locale->date( 'Time::short', $rdv['Rendezvous']['heurerdv'] ) ),
-                                h( value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv_id' ) ) ),
+                                h( Set::enum( Set::extract( $rdv, 'Rendezvous.statutrdv_id' ), $statutrdv ) ),
 
 //                                 h( Set::extract( $rdv, 'Rendezvous.objetrdv' ) ),
 //                                 h( Set::extract( $rdv, 'Rendezvous.commentairerdv' ) ),
