@@ -217,40 +217,6 @@
         </fieldset>
 
         <h2 class="center">Nature de la demande</h2>
-        <!-- <?php
-            /// Formation qualifiante
-            $tmp = $form->checkbox( 'Natureaide.Formqualif' );
-            $tmp .= $html->tag( 'label', 'Formation qualifiante / Permis C ou D + FIMO', array( 'for' => 'NatureaideFormqualif' ) );
-            echo $html->tag( 'h3', $tmp );
-        ?>
-        <fieldset id="Formqualif" class="invisible">
-            <?php
-                $formqualifs = Set::extract( $this->data, 'Formqualif' );
-                $formqualifs = ( !empty( $formqualifs ) ? $formqualifs : array( 0 => array() ) );
-
-                $FormsqualifsIds = Set::classicExtract( $this->data, 'Formqualif.{n}.id' );
-
-                foreach( $formqualifs as $key => $formqualif ) {
-                    if( $this->action == 'edit' && !empty( $FormqualifId ) && !empty( $ApreId ) ) {
-                        echo $xform->input( 'Formqualif.'.$key.'.id', array( 'type' => 'hidden' ) );
-                        echo $xform->input( 'Formqualif.'.$key.'.apre_id', array( 'type' => 'hidden' ) );
-                    }
-                    echo $xform->input( 'Formqualif.'.$key.'.intituleform', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Formqualif.'.$key.'.organismeform', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Formqualif.'.$key.'.ddform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
-                    echo $xform->input( 'Formqualif.'.$key.'.dfform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
-                    echo $xform->input( 'Formqualif.'.$key.'.dureeform', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Formqualif.'.$key.'.modevalidation', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Formqualif.'.$key.'.coutform', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Formqualif.'.$key.'.cofinanceurs', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Formqualif.'.$key.'.montantaide', array( 'domain' => 'apre' ) );
-                }
-            ?>
-            <fieldset>
-                <legend>Pièces jointes</legend>
-                <?php echo $xform->input( 'Pieceformqualif.Pieceformqualif', array( 'options' => $piecesformqualif, 'multiple' => 'checkbox', 'label' => false ) ); ?>
-            </fieldset>
-        </fieldset>-->
         <?php
             /// Formation qualifiante
             $tmp = $form->checkbox( 'Natureaide.Formqualif' );

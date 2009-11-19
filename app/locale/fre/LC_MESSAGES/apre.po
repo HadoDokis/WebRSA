@@ -57,6 +57,19 @@ msgstr "Employé au Service pour le Pôle Emploi (SPE) ? "
 
 msgid "Referentapre.organismeref"
 msgstr "Organisme référent"
+
+###############################################################################
+# Enum Referentapre.spe
+###############################################################################
+
+msgid "Relanceapre.daterelance"
+msgstr "Date de la relance "
+
+msgid "Relanceapre.etatdossierapre"
+msgstr "Etat du dossier APRE "
+
+msgid "Relanceapre.commentairerelance"
+msgstr "Commentaire "
 ###############################################################################
 # Formqualif pour l'APRE
 ###############################################################################

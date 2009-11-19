@@ -81,6 +81,10 @@
             'Montantconsomme' => array(
                 'classname' => 'Montantconsomme',
                 'foreignKey' => 'apre_id',
+            ),
+            'Relanceapre' => array(
+                'classname' => 'Relanceapre',
+                'foreignKey' => 'apre_id',
             )
         );
 
