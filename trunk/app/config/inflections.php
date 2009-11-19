@@ -161,7 +161,8 @@
         'critereapre' => 'criteresapres',
         'repddtefp' => 'repsddtefp',
         ///commission d'APRE
-        'commissionapre' => 'commissionsapre'
+        'commissionapre' => 'commissionsapre',
+        'relanceapre' => 'relancesapres'
      );
 /**
  * This is a key => value array of regex used to match words.

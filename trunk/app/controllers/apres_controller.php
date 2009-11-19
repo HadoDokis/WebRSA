@@ -3,7 +3,7 @@
     {
 
         var $name = 'Apres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'Referentapre', 'Prestation', 'Dsp', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'Referentapre', 'Prestation', 'Dsp', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxrefapre' );
 
@@ -27,6 +27,10 @@
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
             $this->set( 'sitfam', $this->Option->sitfam() );
+
+            /// Pièces liées à l'APRE
+            $piecesapre = $this->Apre->Pieceapre->find( 'list' );
+            $this->set( 'piecesapre', $piecesapre );
         }
 
         /** ********************************************************************
@@ -39,12 +43,16 @@
             $apres = $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.personne_id' => $personne_id ) ) );
             $this->set( 'apres', $apres );
 
-            $contratinsertion = $this->Contratinsertion->find( 'first', array( 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ), 'order' => 'Contratinsertion.datevalidation_ci DESC' ) );
+            $contratinsertion = $this->Contratinsertion->find( 'first', array( 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
             $this->set( 'contratinsertion', $contratinsertion );
 
             $refsapre = $this->Referentapre->_referentsApre( Set::classicExtract( $apres, 'Apre.id' ) );
             $this->set( 'refsapre', $refsapre );
             $this->set( 'personne_id', $personne_id );
+
+            $relancesapres = $this->Relanceapre->find( 'all', array( 'conditions' => array( 'Relanceapre.personne_id' => $personne_id ) ) );
+            $this->set( 'relancesapres', $relancesapres );
+
         }
 
 
@@ -103,8 +111,8 @@
             $this->Apre->begin();
 
             /// Pièces liées à l'APRE
-            $piecesapre = $this->Apre->Pieceapre->find( 'list' );
-            $this->set( 'piecesapre', $piecesapre );
+//             $piecesapre = $this->Apre->Pieceapre->find( 'list' );
+//             $this->set( 'piecesapre', $piecesapre );
 
             /// Pièces liées à la Formqualif
             $piecesformqualif = $this->Apre->Formqualif->Pieceformqualif->find( 'list' );

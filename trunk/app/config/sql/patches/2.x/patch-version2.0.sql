@@ -479,3 +479,16 @@ ALTER TABLE apres ADD COLUMN statutapre type_statutapre DEFAULT NULL;
 CREATE TYPE type_etatdossierapre AS ENUM ( 'COM', 'INC' );
 ALTER TABLE apres ADD COLUMN etatdossierapre type_etatdossierapre DEFAULT NULL;
 
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Relancesapres liée à l'APRE
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE relancesapres (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
+    daterelance                 DATE,
+    etatdossierapre             type_etatdossierapre DEFAULT NULL,
+    commentairerelance          TEXT
+);
+CREATE INDEX relancesapres_apre_id_idx ON relancesapres (apre_id);
+CREATE INDEX relancesapres_personne_id_idx ON relancesapres (personne_id);
