@@ -16,23 +16,10 @@
 
 <div class="with_treemenu">
     <h1>Rendez-vous</h1>
-    <?php if( empty( $orientstruct ) ):?>
-        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas d'orientation.</p>
 
-    <?php elseif( !empty( $orientstruct ) && empty( $permanence )  ):?>
-        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas de permanence liée à la structure <?php echo '(' . $struct . ')';?></p>
-
-    <?php elseif( !empty( $orientstruct ) && !empty( $permanence ) && empty( $refrdv ) ):?>
-        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas de référent pour le RDV.</p>
-
-    <?php elseif( !empty( $orientstruct ) && !empty( $permanence ) && !empty( $refrdv ) && empty( $statutrdv ) ):?>
-        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas de statut pour le RDV.</p>
-
-    <?php else:?>
-
-        <?php if( empty( $rdvs ) ):?>
-            <p class="notice">Cette personne ne possède pas encore de rendez-vous.</p>
-        <?php endif;?>
+    <?php if( empty( $rdvs ) ):?>
+        <p class="notice">Cette personne ne possède pas encore de rendez-vous.</p>
+    <?php endif;?>
 
     <?php if( $permissions->check( 'rendezvous', 'add' ) ):?>
         <ul class="actionMenu">
@@ -100,7 +87,7 @@
         </tbody>
     </table>
     <?php  endif;?>
-    <?php  endif;?>
+
 
 </div>
 <div class="clearer"><hr /></div>
