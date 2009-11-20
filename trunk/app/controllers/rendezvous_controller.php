@@ -114,9 +114,9 @@
                 )
             );
 
-
+/*
             $sr = $this->Rendezvous->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
-            $struct = Set::enum( Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' ), $sr );
+            $struct = Set::enum( Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' ), $sr );*/
 
 
             $rdvs = $this->Rendezvous->find( 'all', array( 'conditions' => array( 'Rendezvous.personne_id' => $personne_id ) ) );
