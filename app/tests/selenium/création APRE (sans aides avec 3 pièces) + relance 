@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>création APRE (sans aides avec 3 pièces) + relance </title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">création APRE (sans aides avec 3 pièces) + relance </td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/webrsa/trunk/apres/index/2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreTypedemandeapreFO</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreNaturelogementP</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreAnciennetepoleemploi</td>
+	<td>Ancienneté pôle empl</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreProjetprofessionnel</td>
+	<td>Projet professionnel </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreProjetprofessionnel</td>
+	<td>Projet professionnel Secteur professionnel en lien avec la demande </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreSecteurprofessionnel</td>
+	<td>Secteur professionnel en lien avec la demande </td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreActivitebeneficiaireF</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ApreReferentapreId</td>
+	<td>label=MLE buffin christian</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre7</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreAvistechreferent</td>
+	<td> Avis technique et motivé du référent (Article 5.1 relatif au règlement de l'APRE):<br /></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Enregistrer']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Relancer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>RelanceapreEtatdossierapre</td>
+	<td>label=Incomplet</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>RelanceapreCommentairerelance</td>
+	<td>Commentaire </td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Enregistrer']</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

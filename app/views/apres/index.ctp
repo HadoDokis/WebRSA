@@ -1,18 +1,6 @@
 <?php  $this->pageTitle = 'APRE liée à la personne';?>
 <?php  echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id) );?>
 
-<?php
-    function value( $array, $index ) {
-        $keys = array_keys( $array );
-        $index = ( ( $index == null ) ? '' : $index );
-        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-            return $array[$index];
-        }
-        else {
-            return null;
-        }
-    }
-?>
 
 <div class="with_treemenu">
     <h1>APRE</h1>
@@ -48,7 +36,8 @@
                 <th>Référent APRE</th>
                 <th>Date demande APRE</th>
                 <th>Natures de la demande</th>
-                <th colspan="3" class="action">Actions</th>
+                <th>Etat du dossier</th>
+                <th colspan="4" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -62,6 +51,7 @@
                             $aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
                         }
                     }
+                    $piecesManquantes = Set::extract( $apre, '/Relanceapre/Piecemanquante/libelle' );
 
                     echo $html->tableCells(
                         array(
@@ -81,6 +71,11 @@
                                 'Editer la demande APRE',
                                 array( 'controller' => 'apres', 'action' => 'edit', $apre['Apre']['id'] ),
                                 $permissions->check( 'apres', 'edit' )
+                            ),
+                            $html->relanceLink(
+                                'Relancer la demande APRE',
+                                array( 'controller' => 'relancesapres', 'action' => 'add', $apre['Apre']['id'] ),
+                                $permissions->check( 'apres', 'edit' ) && ( ( !empty( $piecesManquantes ) ) )
                             ),
                             $html->printLink(
                                 'Imprimer la demande APRE',
@@ -106,24 +101,14 @@
         <?php if( empty( $relancesapres ) ):?>
             <p class="notice">Cette personne ne possède pas encore de relances.</p>
         <?php endif;?>
-            <?php if( $permissions->check( 'relancesapres', 'add' ) ):?>
-                <ul class="actionMenu">
-                    <?php
-                        echo '<li>'.$html->addLink(
-                            'Ajouter Relance',
-                            array( 'controller' => 'relancesapres', 'action' => 'add', $personne_id )
-                        ).' </li>';
-                    ?>
-                </ul>
-            <?php endif;?>
+
         <?php if( !empty( $apres ) && !empty( $relancesapres ) ):?>
         <table class="tooltips">
             <thead>
                 <tr>
                     <th>N° Apre</th>
                     <th>Date de relance</th>
-                    <th>Etat du dossier</th>
-                    <th>Liste des pièces fournies mais il faut manquantes (FIXME)</th>
+                    <th>Liste des pièces manquantes</th>
                     <th>Commentaire</th>
                     <th colspan="3" class="action">Actions</th>
                 </tr>
@@ -131,20 +116,12 @@
             <tbody>
                 <?php
                     foreach( $relancesapres as $relanceapre ) {
-                        $piecesAbsentes = array();
-                        $piecesPresentesLibelle = Set::classicExtract( $apre, 'Pieceapre.{n}.id' );
 
-                        foreach(  $piecesPresentesLibelle as $pieceapre ) {
-                            if(  !empty( $pieceapre ) )  {
-                                $piecesAbsentes[] = Set::classicExtract( $piecesapre, $pieceapre );
-                            }
-                        }
-
+                        $piecesAbsentes = Set::extract( $relanceapre, '/Relanceapre/Piecemanquante/libelle' );
                         echo $html->tableCells(
                             array(
-                                h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
+                                h( Set::classicExtract( $relanceapre, 'Apre.numeroapre' ) ),
                                 h( date_short( Set::classicExtract( $relanceapre, 'Relanceapre.daterelance' ) ) ),
-                                h( Set::enum( Set::classicExtract( $relanceapre, 'Relanceapre.etatdossierapre' ), $options['etatdossierapre'] ) ),
                                 ( empty( $piecesAbsentes ) ? null :'<ul><li>'.implode( '</li><li>', $piecesAbsentes ).'</li></ul>' ),
                                 h( Set::classicExtract( $relanceapre, 'Relanceapre.commentairerelance' ) ),
                                 $html->viewLink(
