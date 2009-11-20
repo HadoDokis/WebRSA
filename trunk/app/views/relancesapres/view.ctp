@@ -39,7 +39,18 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Pièces manquantes' );?></th>
-                    <td><?php echo /*Set::classicExtract( $relanceapre, 'Relanceapre.etatdossierapre' )*/'';?></td>
+                    <td><?php
+                            $piecesAbsentes = array();
+                            $piecesPresentesLibelle = Set::classicExtract( $apre, 'Pieceapre.{n}.id' );
+
+                            foreach(  $piecesPresentesLibelle as $pieceapre ) {
+                                if(  !empty( $pieceapre ) )  {
+                                    $piecesAbsentes[] = Set::classicExtract( $piecesapre, $pieceapre );
+                                }
+                            };
+                            echo ( empty( $piecesAbsentes ) ? null :'<ul><li>'.implode( '</li><li>', $piecesAbsentes ).'</li></ul>' );
+                        ?>
+                    </td>
                 </tr>
             </tbody>
         </table>

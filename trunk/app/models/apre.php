@@ -131,18 +131,29 @@
         function afterFind( $results, $primary = false ) {
             parent::afterFind( $results, $primary );
 
-            foreach( $results as $key => $result ) {
+            if( !empty( $results ) ) {
+                $isArray = true;
+                if( isset( $results['id'] ) ) {
+                    $results = array( 'Apre' => array( $results ) );
+                    $isArray = false;
+                }
 
-                $results[$key]['Natureaide'] = array();
-                foreach( $this->aidesApre as $model ) {
-                    $results[$key]['Natureaide'][$model] = $this->{$model}->find(
-                        'count',
-                        array(
-                            'conditions' => array(
-                                "$model.apre_id" => Set::classicExtract( $result, 'Apre.id' )
+                foreach( $results as $key => $result ) {
+                    $results[$key]['Natureaide'] = array();
+                    foreach( $this->aidesApre as $model ) {
+                        $results[$key]['Natureaide'][$model] = $this->{$model}->find(
+                            'count',
+                            array(
+                                'conditions' => array(
+                                    "$model.apre_id" => Set::classicExtract( $result, 'Apre.id' )
+                                )
                             )
-                        )
-                    );
+                        );
+                    }
+                }
+
+                if( !$isArray ) {
+                    $results = $results['Apre'][0];
                 }
             }
 

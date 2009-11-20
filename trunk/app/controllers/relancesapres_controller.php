@@ -5,7 +5,7 @@
         var $name = 'Relancesapres';
         var $uses = array( 'Apre', 'Option', 'Personne', 'Referentapre', 'Prestation', 'Dsp', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Apre', 'Relanceapre' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
-
+        var $aucunDroit = array( 'ajaxpiece' );
 
         /** ********************************************************************
         *
@@ -17,6 +17,21 @@
             $this->set( 'options', $options );
             $piecesapre = $this->Apre->Pieceapre->find( 'list' );
             $this->set( 'piecesapre', $piecesapre );
+        }
+
+        /** ********************************************************************
+        *   Ajax pour les pièces liées à la bonne APRE
+        *** *******************************************************************/
+
+        function ajaxpiece( $apre_id = null ) { // FIXME
+            Configure::write( 'debug', 0 );
+            $dataApre_id = Set::extract( $this->data, 'Relanceapre.apre_id' );
+            $apre_id = ( empty( $apre_id ) && !empty( $dataApre_id ) ? $dataApre_id : $apre_id );
+
+            $apre = $this->Referentapre->Apre->findbyId( $apre_id, null, null, 1 );
+            $this->set( 'apre', $apre );
+
+            $this->render( 'ajaxpiece', 'ajax' );
         }
 
         /** ********************************************************************
@@ -43,19 +58,14 @@
 
             $this->Relanceapre->begin();
 
-
-
-
-
-
-
             // Récupération des id afférents
             if( $this->action == 'add' ) {
-                $personne_id = $id;
-                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
-                $apre = $this->Apre->find( 'first', array( 'conditions' => array( 'Apre.personne_id' => $id ) ) );
-                $this->set( 'apre', $apre ); //FIXME
-// debug($apre);
+                $apre_id = $id;
+
+                $apre = $this->Apre->find( 'first', array( 'conditions' => array( 'Apre.id' => $id ) ) );
+                $this->set( 'apre', $apre );
+
+                $dossier_rsa_id = $this->Personne->dossierId( Set::classicExtract( $apre, 'Apre.personne_id' ) );
             }
             else if( $this->action == 'edit' ) {
                 $relanceapre_id = $id;
@@ -65,14 +75,12 @@
                 $personne_id = Set::classicExtract( $relanceapre, 'Apre.personne_id' );
                 $apre = $this->Apre->find( 'first', array( 'conditions' => array( 'Apre.personne_id' => $personne_id ) ) );
                 $this->set( 'apre', $apre );
-                $dossier_rsa_id = $this->Apre->dossierId( $relanceapre_id );
-
+                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
             }
-
-            $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
 
             $this->assert( !empty( $dossier_rsa_id ), 'invalidParameter' );
             $this->set( 'dossier_id', $dossier_rsa_id );
+
 
             if( !$this->Jetons->check( $dossier_rsa_id ) ) {
                 $this->Relanceapre->rollback();
@@ -89,7 +97,7 @@
                         $this->Jetons->release( $dossier_rsa_id );
                         $this->Relanceapre->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array(  'controller' => 'apres','action' => 'index', $personne_id ) );
+                        $this->redirect( array(  'controller' => 'apres','action' => 'index', Set::classicExtract( $apre, 'Apre.personne_id' ) ) );
                     }
                     else {
                         $this->Relanceapre->rollback();
@@ -100,26 +108,11 @@
             else{
                 if( $this->action == 'edit' ) {
                     $this->data = $relanceapre;
-
-//                     $apre = $this->Apre->findByPersonneId( $personne_id, null, null, 1 );
-// // debug($apre);
-//                     if( empty( $apre ) ) {
-//                         $apre = array( 'Apre' => array( 'personne_id' => $personne_id ) );
-//                         $this->Apre->set( $apre );
-//                         if( $this->Apre->save( $apre ) ) {
-//                             $apre = $this->Apre->findByPersonneId( $personne_id, null, null, 1 );
-//                         }
-//                         else {
-//                             $this->cakeError( 'error500' );
-//                         }
-//                         $this->assert( !empty( $apre ), 'error500' );
-//                     }
                 }
             }
             $this->Relanceapre->commit();
 
 
-            $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, 'add_edit' );
         }
 

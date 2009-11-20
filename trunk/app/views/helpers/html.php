@@ -943,8 +943,31 @@ class HtmlHelper extends AppHelper {
             return '<span class="disabled">'.$content.'</span>';
         }
     }
-    //*************************************************************************
 
+    /**
+    *
+    **/
+    function relanceLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/hourglass.png',
+            array( 'alt' => '' )
+        ).' Relancer';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title , 'class' => 'internal' )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
+
+    /**
+    *
+    **/
     function boolean( $boolean ) {
         if( $boolean === true ) {
             $image = 'icons/accept.png';

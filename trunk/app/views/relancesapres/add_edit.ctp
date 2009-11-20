@@ -13,6 +13,18 @@
     }
 
 ?>
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        <?php
+            echo $ajax->remoteFunction(
+                array(
+                    'update' => 'PieceaprePieceapre',
+                    'url' => Router::url( array( 'action' => 'ajaxpiece', Set::extract( $this->data, 'Relanceapre.apre_id' ) ), true )
+                )
+            );
+        ?>
+    });
+</script>
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
@@ -21,7 +33,6 @@
             echo $form->create( 'Relanceapre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $form->input( 'Relanceapre.apre_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $apre, 'Apre.id' ) ) );
-            echo $form->input( 'Relanceapre.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
             echo '</div>';
         }
         else {
@@ -29,32 +40,30 @@
             echo '<div>';
             echo $form->input( 'Relanceapre.id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Relanceapre.apre_id', array( 'type' => 'hidden' ) );
-            echo $form->input( 'Relanceapre.personne_id', array( 'type' => 'hidden' ) );
             echo '</div>';
         }
     ?>
 
     <div class="aere">
-        <fieldset>
 
-            <?php
-                echo $xform->input( 'Relanceapre.daterelance', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
-                echo $xform->enum( 'Relanceapre.etatdossierapre', array(  'domain' => 'apre', 'options' => $options['etatdossierapre'] ) );
-                echo $xform->input( 'Relanceapre.commentairerelance', array( 'domain' => 'apre' ) );
-            ?>
-        </fieldset>
-        <fieldset>
-            <legend>Pièces jointes</legend>
-            <?php
-                $piecesPresentesId = Set::classicExtract( $apre, 'Pieceapre.{n}.id' );
-                if( empty( $piecesPresentesId ) ) {
-                    $piecesPresentesId = array_keys( $piecesapre );
-                }
-                echo $xform->input( 'Pieceapre.Pieceapre', array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $piecesapre, 'value' => $piecesPresentesId ) );
+    <fieldset>
+        <?php
+            $piecesManquantes = Set::extract( $apre, '/Relanceapre/Piecemanquante/libelle' );
+            echo $xform->input( 'Relanceapre.daterelance', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
+            echo $xform->input( 'Relanceapre.commentairerelance', array( 'domain' => 'apre' ) );
+        ?>
+    </fieldset>
+    <fieldset>
+        <legend>Pièces jointes manquantes</legend>
+        <?php
 
-            ?>
-        </fieldset>
+            if( !empty( $piecesManquantes ) ) {
+                echo '<ul><li>'.implode( '</li><li>', $piecesManquantes ).'</li></ul>';
+            }
+        ?>
+    </fieldset>
     </div>
+
     <?php echo $form->submit( 'Enregistrer' );?>
 <?php echo $form->end();?>
 </div>

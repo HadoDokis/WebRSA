@@ -50,9 +50,20 @@
             $this->set( 'refsapre', $refsapre );
             $this->set( 'personne_id', $personne_id );
 
-            $relancesapres = $this->Relanceapre->find( 'all', array( 'conditions' => array( 'Relanceapre.personne_id' => $personne_id ) ) );
+            if( !empty( $apres ) ) {
+                $relancesapres = $this->Relanceapre->find(
+                    'all',
+                    array(
+                        'conditions' => array( 'Relanceapre.apre_id' => Set::extract( $apres, '/Apre/id' ) ),
+                        'recursive' => 2
+                    )
+                );
+            }
+            else {
+                $relancesapres = array();
+            }
             $this->set( 'relancesapres', $relancesapres );
-
+// debug($relancesapres);
         }
 
 
@@ -148,7 +159,7 @@
                 $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
 
                 ///Création automatique du N° APRE de la forme : Année / Mois / N°
-                $numapre = date('Ym').sprintf( "%010s", $id /*$this->Apre->find( 'count' ) + 1*/ );
+                $numapre = date('Ym').sprintf( "%010s",  $this->Apre->find( 'count' ) + 1 );
                 $this->set( 'numapre', $numapre);
             }
             else if( $this->action == 'edit' ) {
@@ -179,7 +190,8 @@
             $nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
             $this->set( 'nbEnfants', $nbEnfants );
 
-// debug($nbEnfants );
+
+
             ///Récupération de la liste des référents liés à l'APRE
             $refsapre = $this->Referentapre->_referentsApre( Set::classicExtract( $personne, 'Apre.id' ) );
             $this->set( 'refsapre', $refsapre );
