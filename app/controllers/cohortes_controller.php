@@ -29,72 +29,6 @@
 
         //*********************************************************************
 
-        /**
-        *
-        * INFO: Préprofessionnelle => Socioprofessionnelle --> mettre un type dans la table ?
-        *
-        */
-
-        function _preOrientation( $element ) {
-            $propo_algo = null;
-
-            if( isset( $element['Dspp'] ) ) {
-                $accoemploiCodes = Set::extract( 'Dspp.Accoemploi.{n}.code', $element );
-
-                // Socioprofessionnelle, Social
-                // 1°) Passé professionnel ? -> Emploi
-                //     1901 : Vous avez toujours travaillé
-                //     1902 : Vous travaillez par intermittence
-                if( !empty( $element['Dspp']['hispro'] ) && ( $element['Dspp']['hispro'] == '1901' || $element['Dspp']['hispro'] == '1902' ) ) {
-                    $propo_algo = 'Emploi'; // Emploi (Pôle emploi)
-                }
-                // 2°) Etes-vous accompagné dans votre recherche d'emploi ?
-                //     1802 : Pôle Emploi
-                else if( empty( $propo_algo ) && !empty( $accoemploiCodes ) && in_array( '1802', $accoemploiCodes ) ) {
-                    $propo_algo = 'Emploi';
-                }
-                // 3°) Êtes-vous sans activité depuis moins de 24 mois ?
-                //     Date éventuelle de cessation d’activité ?
-                else if( empty( $propo_algo ) ) {
-                    $dfderact = null;
-                    if( !empty( $element['Dspp']['dfderact'] ) ) {
-                        list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
-                        $dfderact = mktime( 0, 0, 0, $month, $day, $year );
-                    }
-                    if( !empty( $dfderact ) && ( $dfderact > strtotime( '-24 months' ) ) ) {
-                        $propo_algo = 'Emploi';
-                    }
-                }
-
-                if( empty( $propo_algo ) && isset( $element['Foyer']['Dspf'] ) && !empty( $element['Foyer']['Dspf'] ) ) {
-                    $dspf = $this->Dossier->Foyer->Dspf->find(
-                        'first',
-                        array(
-                            'conditions' => array( 'Dspf.id' => $element['Foyer']['Dspf']['id'] )
-                        )
-                    );
-                    if( !empty( $dspf ) ) {
-                        // FIXME: grosse requête pour pas grand-chose
-                        if( $element['Foyer']['Dspf']['accosocfam'] == 'O' ) {
-                            $propo_algo = 'Social'; // SSD (Service Social Départemental)
-                        }
-                        else {
-                            $propo_algo = 'Socioprofessionnelle'; // PDV (Projet De Ville)
-                        }
-                    }
-                }
-            }
-
-            if( empty( $propo_algo ) ) {
-                $propo_algo = 'Emploi';
-            }
-
-
-            return $propo_algo;
-        }
-
-        //*********************************************************************
-
         function nouvelles() {
             $this->_index( 'Non orienté' );
         }
@@ -276,10 +210,10 @@
                         else {
                             $this->set( 'structuresReferentes', $this->Structurereferente->list1Options() );
 
-                            $cohorte[$key]['Orientstruct']['propo_algo_texte'] = $this->_preOrientation( $element );
+                            $cohorte[$key]['Orientstruct']['propo_algo_texte'] = $this->Cohorte->preOrientation( $element );
 
                             $tmp = array_flip( $typesOrient );
-                            $cohorte[$key]['Orientstruct']['propo_algo'] = $tmp[$cohorte[$key]['Orientstruct']['propo_algo_texte']];
+                            $cohorte[$key]['Orientstruct']['propo_algo'] = Set::enum( $cohorte[$key]['Orientstruct']['propo_algo_texte'], $tmp );
                             $cohorte[$key]['Orientstruct']['date_propo'] = date( 'Y-m-d' );
 
                             // Statut suivant ressource
@@ -310,7 +244,12 @@
 
             //-----------------------------------------------------------------
 
-            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+			}
 
             if( ( $statutOrientation == 'En attente' ) || ( $statutOrientation == 'Non orienté' ) ) {
                 // FIXME ?
