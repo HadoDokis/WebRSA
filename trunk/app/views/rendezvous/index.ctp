@@ -1,18 +1,6 @@
 <?php  $this->pageTitle = 'Rendez-vous de la personne';?>
 <?php  echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id) );?>
 
-<?php
-    function value( $array, $index ) {
-        $keys = array_keys( $array );
-        $index = ( ( $index == null ) ? '' : $index );
-        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-            return $array[$index];
-        }
-        else {
-            return null;
-        }
-    }
-?>
 
 <div class="with_treemenu">
     <h1>Rendez-vous</h1>
@@ -55,8 +43,8 @@
                     echo $html->tableCells(
                         array(
                             h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
-                            h( Set::enum( Set::extract( $rdv, 'Rendezvous.structurereferente_id' ), $sr ) ),
-                            h( Set::extract( $permanences, Set::extract( $rdv, 'Rendezvous.permanence_id' ) ) ),
+                            h( Set::enum( Set::classicExtract( $rdv, 'Rendezvous.structurereferente_id' ), $sr ) ),
+                            h( Set::enum( Set::classicExtract( $rdv, 'Rendezvous.permanence_id' ), $permanences ) ),
                             h( Set::extract( $rdv, 'Typerdv.libelle' ) ),
                             h( Set::enum( Set::classicExtract( $rdv, 'Rendezvous.statutrdv_id' ), $statutrdv ) ),
                             h( date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) ) ),

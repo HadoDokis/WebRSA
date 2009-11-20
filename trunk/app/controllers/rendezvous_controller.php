@@ -101,7 +101,7 @@
             $nbrPersonnes = $this->Rendezvous->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
-            ///S'il n'y a pas d'orientation, IMPOSSIBLE de créer un contrat
+
             $orientstruct = $this->Rendezvous->Structurereferente->Orientstruct->find(
                 'first',
                 array(
@@ -114,36 +114,10 @@
                 )
             );
 
-            if( !empty( $orientstruct ) ) {
-                ///S'il n'y a pas de permanence, IMPOSSIBLE de créer un RDV
-                $permanence = $this->Rendezvous->Structurereferente->Permanence->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Permanence.structurereferente_id' => Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' )
-                        )
-                    )
-                );
-                $this->set( 'permanence', $permanence );
 
-                $sr = $this->Rendezvous->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
-                $struct = Set::enum( Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' ), $sr );
+            $sr = $this->Rendezvous->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
+            $struct = Set::enum( Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' ), $sr );
 
-                ///S'il n'y a pas de référent lié, IMPOSSIBLE de créer un RDV
-                $refrdv = $this->Referent->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Referent.structurereferente_id' => Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' )
-                        ),
-                        'recursive' => -1
-                    )
-                );
-                $this->set( 'refrdv', $refrdv );
-// debug($orientstruct);
-                ///S'il n'y a pas de statut de RDV, IMPOSSIBLE de créer un RDV
-                $statutrdv = $this->Statutrdv->find( 'list' );
-            }
 
             $rdvs = $this->Rendezvous->find( 'all', array( 'conditions' => array( 'Rendezvous.personne_id' => $personne_id ) ) );
             $this->set( compact( 'orientstruct', 'rdvs' ) );
