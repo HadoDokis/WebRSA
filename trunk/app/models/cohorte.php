@@ -9,6 +9,74 @@
         var $name = 'Cohorte';
         var $useTable = false;
 
+        /**
+        *
+        * INFO: Préprofessionnelle => Socioprofessionnelle --> mettre un type dans la table ?
+        *
+        */
+
+        function preOrientation( $element ) {
+            $propo_algo = null;
+
+            if( isset( $element['Dspp'] ) ) {
+                $accoemploiCodes = Set::extract( 'Dspp.Accoemploi.{n}.code', $element );
+
+                // Socioprofessionnelle, Social
+                // 1°) Passé professionnel ? -> Emploi
+                //     1901 : Vous avez toujours travaillé
+                //     1902 : Vous travaillez par intermittence
+                if( !empty( $element['Dspp']['hispro'] ) && ( $element['Dspp']['hispro'] == '1901' || $element['Dspp']['hispro'] == '1902' ) ) {
+                    $propo_algo = 'Emploi'; // Emploi (Pôle emploi)
+                }
+                // 2°) Etes-vous accompagné dans votre recherche d'emploi ?
+                //     1802 : Pôle Emploi
+                else if( empty( $propo_algo ) && !empty( $accoemploiCodes ) && in_array( '1802', $accoemploiCodes ) ) {
+                    $propo_algo = 'Emploi';
+                }
+                // 3°) Êtes-vous sans activité depuis moins de 24 mois ?
+                //     Date éventuelle de cessation d’activité ?
+                else if( empty( $propo_algo ) ) {
+                    $dfderact = null;
+                    if( !empty( $element['Dspp']['dfderact'] ) ) {
+                        list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
+                        $dfderact = mktime( 0, 0, 0, $month, $day, $year );
+                    }
+                    if( !empty( $dfderact ) && ( $dfderact > strtotime( '-24 months' ) ) ) {
+                        $propo_algo = 'Emploi';
+                    }
+                }
+
+                if( empty( $propo_algo ) && isset( $element['Foyer']['Dspf'] ) && !empty( $element['Foyer']['Dspf'] ) ) {
+                    $dspf = Classregistry::init( 'Dossier' )->Foyer->Dspf->find(
+                        'first',
+                        array(
+                            'conditions' => array( 'Dspf.id' => $element['Foyer']['Dspf']['id'] )
+                        )
+                    );
+                    if( !empty( $dspf ) ) {
+                        // FIXME: grosse requête pour pas grand-chose
+                        if( $element['Foyer']['Dspf']['accosocfam'] == 'O' ) {
+                            $propo_algo = 'Social'; // SSD (Service Social Départemental)
+                        }
+                        else {
+                            $propo_algo = 'Socioprofessionnelle'; // PDV (Projet De Ville)
+                        }
+                    }
+                }
+            }
+
+            if( empty( $propo_algo ) ) {
+				$propo_algo = null;
+            }
+
+
+            return $propo_algo;
+        }
+
+		/**
+		*
+		*/
+
         function search( $statutOrientation, $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers, $limit = PHP_INT_MAX ) {
             /// Conditions de base
             $conditions = array(
