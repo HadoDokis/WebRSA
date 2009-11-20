@@ -330,30 +330,6 @@ table#ficheDossier table td { border-width: 1px; }
     color: black;
 }
 
-/*         Affichage index des PDOs            */
-#fichePDO table {
-    width: 350px;
-    margin: 0;
-}
-
-#fichePDO table tbody tr.even td {
-    background: white;
-    color: black;
-}
-
-#fichePDO tbody tr.odd td {
-    background: white;
-    color: black;
-}
-#fichePDO tbody tr.even th {
-    background: #83c2e2;
-    color: black;
-}
-
-#fichePDO tbody tr.odd th {
-    background: #a8dbef;
-    color: black;
-}
 
 /* Affichage vue Ressources */
 div#ficheRessTri table {
@@ -802,6 +778,14 @@ td.radioSize {
     width: 3%;
 }
 
+td.selectSize {
+    width: 30%;
+}
+
+td.selectSize label, td.selectSize div.input.select {
+    width: 100%!important;
+}
+
 td.radioSize div.input.radio, td.radioSize div.input.select {
     width: 70%;
 }
@@ -833,14 +817,4 @@ fieldset.cnilci, fieldset.cnilci p {
 
 p.caution {
     font-size: 9px;
-}
-
-thead tr#datesApre th {
-    color: black;
-    background-color: #C2E0EF;
-}
-
-table#repddtefp tbody th {
-    color: black;
-    background-color: #CFCFCF;
 }

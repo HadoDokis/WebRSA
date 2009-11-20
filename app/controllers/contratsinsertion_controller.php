@@ -11,7 +11,7 @@
     {
 
         var $name = 'Contratsinsertion';
-        var $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent'/*, 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'DsppNivetu'*/ );
+        var $uses = array( 'Contratinsertion', 'Option', 'Action'/*, 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'DsppNivetu'*/ );
         var $helpers = array( 'Ajax' );
         var $components = array( 'RequestHandler' );
         var $aucunDroit = array( 'ajax', 'ajaxreffonct', 'ajaxrefcoord', 'ajaxreferent' );
@@ -34,6 +34,7 @@
 
             if( in_array( $this->action, array( 'add', 'edit'/*, 'view'*/ ) ) ) {
                 $this->set( 'raison_ci', $this->Option->raison_ci() );
+                $this->set( 'avisraison_ci', $this->Option->avisraison_ci() );
                 $this->set( 'aviseqpluri', $this->Option->aviseqpluri() );
                 $this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
                 $this->set( 'emp_occupe', $this->Option->emp_occupe() );
@@ -137,37 +138,16 @@
             $nbrPersonnes = $this->Contratinsertion->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
-            ///S'il n'y a pas d'orientation, IMPOSSIBLE de créer un contrat
             $orientstruct = $this->Contratinsertion->Structurereferente->Orientstruct->find(
-                'first',
+                'all',
                 array(
                     'conditions' => array(
                         'Orientstruct.personne_id' => $personne_id,
                         'Orientstruct.typeorient_id IS NOT NULL',
                         'Orientstruct.statut_orient' => 'Orienté'
-                    ),
-                    'order' => 'Orientstruct.date_valid DESC'
+                    )
                 )
             );
-
-            if( !empty( $orientstruct ) ){
-                ///S'il n'y a pas de référents, IMPOSSIBLE de créer un contrat
-                $referents = $this->Referent->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Referent.structurereferente_id' => Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' )
-                        ),
-                        'recursive' => -1
-                    )
-                );
-                $this->set( 'referents', $referents );
-                $sr = $this->Contratinsertion->Structurereferente->find( 'list' );
-                $struct = Set::enum( Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' ), $sr );
-                $this->set( 'struct', $struct );
-            }
-
-// debug($orientstruct);
 
             $contratsinsertion = $this->Contratinsertion->find(
                 'all',
@@ -176,7 +156,8 @@
                         'Contratinsertion.personne_id' => $personne_id
                     )
                 )
-            );
+            ) ;
+
             $this->set( compact( 'orientstruct', 'contratsinsertion' ) );
             $this->set( 'personne_id', $personne_id );
         }

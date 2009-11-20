@@ -72,6 +72,9 @@
         Event.observe( $( 'ContratinsertionDureeEngag' ), 'change', function() {
             checkDatesToRefresh();
         } );
+
+        observeDisableFieldsOnValue( 'ContratinsertionRaisonCi', [ 'ContratinsertionAvisraisonCi' ], '', true );
+
     } );
 </script>
 
@@ -176,12 +179,14 @@
                 </td>
             </tr>
             <tr>
-                <td class="radioSize noborder">
-                    <?php echo $form->input( 'Contratinsertion.raison_ci', array( 'label' => false , 'type' => 'radio' , 'options' => $raison_ci, 'separator' => '<br />', 'legend' => false ) );?>
+                <td class="selectSize noborder">
+                    <?php echo $form->input( 'Contratinsertion.raison_ci', array( 'label' => 'Raison : ' , 'type' => 'select' , 'options' => $raison_ci, 'empty' => true ) );?>
                 </td>
-                <td class="radioSize noborder">
-                    L'avis de l'equipe pluridisciplinaire :
-                    <?php echo $form->input( 'Contratinsertion.aviseqpluri', array( 'label' => false , 'type' => 'radio' , 'options' => $aviseqpluri, 'separator' => '<br />', 'legend' => false ) );?>
+                <td class="selectSize noborder">
+                    <?php echo $form->input( 'Contratinsertion.avisraison_ci', array( 'label' => 'Avis : ' , 'type' => 'select' , 'options' => $avisraison_ci, 'empty' => true) );?>
+                </td>
+                <td class="selectSize noborder">
+                    <?php echo $form->input( 'Contratinsertion.aviseqpluri', array( 'label' => 'Avis équipe pluridisciplinaire :' , 'type' => 'select' , 'options' => $aviseqpluri, 'empty' => true ) );?>
                 </td>
             </tr>
         </table>

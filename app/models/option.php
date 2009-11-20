@@ -198,6 +198,13 @@
             );
         }
 
+        function avisraison_ci() {
+            return array(
+                'D' => 'Défaut de conclusion',
+                'N' => 'Non respect du contrat'
+            );
+        }
+
         function categorie(){
             return array(
                 '1' => 'Personnes sans emploi, immédiatement disponibles, tenues d\'accomplir des actes positifs de recherche d\'emploi, à la recherche d\'un emploi en CDI à plein temps.',
@@ -881,18 +888,6 @@
             );
         }
 
-        function natureAidesApres() {
-            return array(
-                'Formqualif'     => 'Formation qualifiante / Permis C ou D + FIMO',
-                'Actprof'        => 'Action de professionnalisation des contrats aides et SIAE',
-                'Permisb'        => 'Permis de conduire B',
-                'Amenaglogt'     => 'Aide à l\'installation',
-                'Acccreaentr'    => 'Accompagnement à la création d\'entreprise',
-                'Acqmatprof'     => 'Acquisition de matériels professionnels',
-                'Locvehicinsert' => 'Aide à la location d\'un véhicule d\'insertion'
-            );
-        }
-
         function numorg() {
             return array(
                '011' => 'CAF DE BOURG EN BRESSE',
@@ -1076,9 +1071,7 @@
         function raison_ci() {
             return array(
                 'S' => 'Suspension',
-                'R' => 'Radiation',
-                'D' => 'Défaut de conclusion',
-                'N' => 'Non respect du contrat'
+                'R' => 'Radiation'
             );
         }
 
