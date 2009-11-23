@@ -31,6 +31,7 @@ div.text input, div.password input, div.select select, div.input.text span.input
     display: inline-table;
     display: inline-block;
     width: 48%; /* Grrrr */
+	font-size: 1em;
 }
 
 td div.text input, td div.password input, td div.select select {
@@ -41,6 +42,10 @@ td div.text input, td div.password input, td div.select select {
 div.submit {
     text-align: center;
     padding: 0.5em;
+}
+
+div.submit input {
+    font-size: 1em;
 }
 
 abbr.required, acronym.required { color: #cc0000; border: 0; }

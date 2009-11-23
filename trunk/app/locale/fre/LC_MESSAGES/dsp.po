@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
-# Dsp
+# Dsp -> FIXME: vérifier la nomenclature
 ###############################################################################
 
 msgid "Dsp.sitpersdemrsa"
@@ -32,6 +32,11 @@ msgstr "Avez-vous bénéficié du rSa (RMI) ?"
 
 msgid "Dsp.drorsarmianta2"
 msgstr "Il y a plus de 2 ans ?"
+
+msgid "Dsp.topcouvsoc"
+msgstr "Bénéficiez vous d'une couverture sociale (y compris Cmu, Cmuc, mutuelle privée) ?"
+
+###############################################################################
 
 msgid "Dsp.accosocfam"
 msgstr "Votre famille fait-elle l'objet d'accompagnement social ?"
@@ -136,7 +141,7 @@ msgid "Dsp.libautrpermicondu"
 msgstr "Autres permis de conduire Précisez"
 
 msgid "Dsp.natlog"
-msgstr "Nature du logement ?"
+msgstr "Vous habitez dans un logement de type :"
 
 msgid "Dsp.demarlog"
 msgstr "Démarches entreprises en matière de logement ?"
@@ -161,7 +166,7 @@ msgid "ENUM::SITPERSDEMRSA::0105"
 msgstr "Attente de pension vieillesse ou invalidité ou d'allocation handicapé"
 
 msgid "ENUM::SITPERSDEMRSA::0106"
-msgstr "Personne isolée avec grossesse ou enfants à charge de moins de 6 ans"
+msgstr "Changement de situation familiale"
 
 msgid "ENUM::SITPERSDEMRSA::0107"
 msgstr "Faibles ressources"
@@ -336,7 +341,7 @@ msgid "ENUM::NATLOG::0908"
 msgstr "Logement temporaire : bail glissant"
 
 msgid "ENUM::NATLOG::0909"
-msgstr "Logement temporaire : par parent ou tiers"
+msgstr "Logement temporaire : chez parent ou tiers"
 
 msgid "ENUM::NATLOG::0910"
 msgstr "Logement précaire : caravane, bateau, ..."
@@ -362,3 +367,179 @@ msgstr "Maintien dans le logement"
 
 msgid "ENUM::DEMARLOG::1103"
 msgstr "Aucune"
+
+###############################################################################
+# Difsoc
+###############################################################################
+
+msgid "Difsoc.difsoc"
+msgstr "Rencontrez vous des difficultés sociales ?"
+
+msgid "Difsoc.libautrdifsoc"
+msgstr "Difficultés sociale autres Précision ?"
+
+###############################################################################
+
+msgid "ENUM::DIFSOC::0401"
+msgstr "Aucune difficulté"
+
+msgid "ENUM::DIFSOC::0402"
+msgstr "Santé"
+
+msgid "ENUM::DIFSOC::0403"
+msgstr "Reconnaissance de la qualité de travailleur handicapé"
+
+msgid "ENUM::DIFSOC::0404"
+msgstr "Lecture, écriture ou compréhension du français"
+
+msgid "ENUM::DIFSOC::0405"
+msgstr "Démarches et formalités administratives"
+
+msgid "ENUM::DIFSOC::0406"
+msgstr "Endettement"
+
+msgid "ENUM::DIFSOC::0407"
+msgstr "Autres"
+
+###############################################################################
+# Detailaccosocfam
+###############################################################################
+
+msgid "Detailaccosocfam.nataccosocfam"
+msgstr "Dans quel domaine accompagnement familial ?"
+
+msgid "Detailaccosocfam.libautraccosocfam"
+msgstr "Autre accompagnement familial"
+
+###############################################################################
+
+msgid "ENUM::NATACCOSOCFAM::0410"
+msgstr "Logement"
+
+msgid "ENUM::NATACCOSOCFAM::0411"
+msgstr "Endettement"
+
+msgid "ENUM::NATACCOSOCFAM::0412"
+msgstr "Familiale"
+
+msgid "ENUM::NATACCOSOCFAM::0413"
+msgstr "Autres"
+
+###############################################################################
+# Detailaccosocindi
+###############################################################################
+
+msgid "Detailaccosocindi.nataccosocindi"
+msgstr "Dans quel domaine accompagnement individuel ?"
+
+msgid "Detailaccosocindi.libautraccosocindi"
+msgstr "Autre nature d'accompagnement individuel ?"
+
+###############################################################################
+
+msgid "ENUM::NATACCOSOCINDI::0416"
+msgstr "Santé"
+
+msgid "ENUM::NATACCOSOCINDI::0417"
+msgstr "Emploi"
+
+msgid "ENUM::NATACCOSOCINDI::0418"
+msgstr "Insertion professionnelle"
+
+msgid "ENUM::NATACCOSOCINDI::0419"
+msgstr "Formation"
+
+msgid "ENUM::NATACCOSOCINDI::0420"
+msgstr "Autres"
+
+###############################################################################
+# Detailaccosocindi
+###############################################################################
+
+msgid "Detaildifdisp.difdisp"
+msgstr "Parmi les propositions suivantes certaines constituent elles des obstacles à une recherche d'emploi ?"
+
+###############################################################################
+
+msgid "ENUM::DIFDISP::0416"
+msgstr "Santé"
+
+msgid "ENUM::DIFDISP::0501"
+msgstr "Aucun obstacle"
+
+msgid "ENUM::DIFDISP::0502"
+msgstr "La garde d'enfant de moins de 6 ans"
+
+msgid "ENUM::DIFDISP::0503"
+msgstr "La garde d'enfant de plus de 6 ans"
+
+msgid "ENUM::DIFDISP::0504"
+msgstr "La garde d'enfant(s) ou de proche(s) invalide(s)"
+
+msgid "ENUM::DIFDISP::0505"
+msgstr "La charge de proche(s) dépendant(s)"
+
+msgid "ENUM::DIFDISP::0506"
+msgstr "L'éloignement de parent ou de conjoint causé par une hospitalisation longue durée ou incarcération"
+
+###############################################################################
+# Detailaccosocindi
+###############################################################################
+
+msgid "Detailnatmob.natmob"
+msgstr "Etes-vous mobile ?"
+
+###############################################################################
+
+msgid "ENUM::NATMOB::2504"
+msgstr "Non"
+
+msgid "ENUM::NATMOB::2501"
+msgstr "Sur la commune"
+
+msgid "ENUM::NATMOB::2502"
+msgstr "Sur le département"
+
+msgid "ENUM::NATMOB::2503"
+msgstr "Sur un autre département"
+
+###############################################################################
+# Detailaccosocindi
+###############################################################################
+
+msgid "Detaildiflog.diflog"
+msgstr "Difficultés logement ?"
+
+msgid "Detaildiflog.libautrdiflog"
+msgstr "Autres Difficultés de logement ?"
+
+###############################################################################
+
+msgid "ENUM::DIFLOG::1001"
+msgstr "Aucune difficulté de logement"
+
+msgid "ENUM::DIFLOG::1002"
+msgstr "Impayés de loyer ou de remboursement"
+
+msgid "ENUM::DIFLOG::1003"
+msgstr "Problèmes financiers"
+
+msgid "ENUM::DIFLOG::1004"
+msgstr "Logement insalubre ou Indécent"
+
+msgid "ENUM::DIFLOG::1005"
+msgstr "Logement géographiquement isolé ou absence de transport collectif"
+
+msgid "ENUM::DIFLOG::1006"
+msgstr "Fin de bail, expulsion"
+
+msgid "ENUM::DIFLOG::1007"
+msgstr "Logement surpeuplé"
+
+msgid "ENUM::DIFLOG::1008"
+msgstr "Eloignement entre le lieu de résidence et le lieu de travail"
+
+msgid "ENUM::DIFLOG::1009"
+msgstr "Autres situations particulières"
+
+

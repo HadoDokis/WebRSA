@@ -8,6 +8,8 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 -- *****************************************************************************
+-- INFO: version actuelle: rSa_Echange_Instruction_v20091112.xls -> VIRS0203 IRSA-v4
+-- *****************************************************************************
 -- DROP TYPE type_booleannumber;
 -- DROP TYPE type_no;
 -- DROP TYPE type_nos;
@@ -41,16 +43,19 @@ CREATE TYPE type_demarlog AS ENUM ( '1101', '1102', '1103' );
 CREATE TABLE dsps (
     id                      SERIAL NOT NULL PRIMARY KEY,
     personne_id             INTEGER NOT NULL REFERENCES personnes(id),
+	-- Généralités
     sitpersdemrsa   		type_sitpersdemrsa DEFAULT NULL,
     topisogroouenf   		type_booleannumber DEFAULT NULL,
-    topdrorsarmiant   		type_no DEFAULT NULL,
+    topdrorsarmiant   		type_booleannumber DEFAULT NULL,
     drorsarmianta2   		type_nos DEFAULT NULL,
-    topcouvsoc    			type_no DEFAULT NULL,
+    topcouvsoc    			type_booleannumber DEFAULT NULL,
+	-- SituationSociale - CommunSituationSociale
     accosocfam    			type_nov DEFAULT NULL,
     libcooraccosocfam  		VARCHAR(250) DEFAULT NULL,
     accosocindi    			type_nov DEFAULT NULL,
     libcooraccosocindi  	VARCHAR(250) DEFAULT NULL,
     soutdemarsoc   			type_nov DEFAULT NULL,
+	-- NiveauEtude
     nivetu     				type_nivetu DEFAULT NULL,
     nivdipmaxobt   			type_nivdipmaxobt DEFAULT NULL,
     annobtnivdipmax   		CHAR(4) DEFAULT NULL,
@@ -58,7 +63,9 @@ CREATE TABLE dsps (
     libautrqualipro   		VARCHAR(100) DEFAULT NULL,
     topcompeextrapro  		type_booleannumber DEFAULT NULL,
     libcompeextrapro  		VARCHAR(100) DEFAULT NULL,
+	-- DisponibiliteEmploi
     topengdemarechemploi	type_booleannumber DEFAULT NULL,
+	-- SituationProfessionnelle
     hispro     				type_hispro DEFAULT NULL,
     libderact    			VARCHAR(100) DEFAULT NULL,
     libsecactderact   		VARCHAR(100) DEFAULT NULL,
@@ -76,14 +83,94 @@ CREATE TABLE dsps (
     libsecactrech   		VARCHAR(250) DEFAULT NULL,
     topcreareprientre		type_booleannumber DEFAULT NULL,
     concoformqualiemploi 	type_nos DEFAULT NULL,
+	-- Mobilite - CommunMobilite
     topmoyloco    			type_booleannumber DEFAULT NULL,
     toppermicondub   		type_booleannumber DEFAULT NULL,
     topautrpermicondu  		type_booleannumber DEFAULT NULL,
     libautrpermicondu  		VARCHAR(100) DEFAULT NULL,
+	-- DifficulteLogement - CommunDifficulteLogement
     natlog     				type_natlog DEFAULT NULL,
     demarlog				type_demarlog DEFAULT NULL
 );
-CREATE /*UNIQUE*/ INDEX dsps_personne_id_idx ON dsps (personne_id);
+CREATE UNIQUE INDEX dsps_personne_id_idx ON dsps (personne_id);
+
+/*
+	0-n
+		- SituationSociale
+			* DetailDifficulteSituationSociale
+			* DetailAccompagnementSocialFamilial
+			* DetailAccompagnementSocialIndividuel
+			* DetailDifficulteDisponibilite
+		- Mobilite
+			* DetailMobilite
+		- DifficulteLogement
+			* DetailDifficulteLogement
+*/
+
+-- -----------------------------------------------------------------------------
+-- FIXME: nom de table et de modèle
+DROP TABLE difsocs CASCADE; -- FIXME
+CREATE TYPE type_difsoc AS ENUM ( '0401', '0402', '0403', '0404', '0405', '0406', '0407' );
+CREATE TABLE difsocs (
+    id      		SERIAL NOT NULL PRIMARY KEY,
+    dsp_id			INTEGER NOT NULL REFERENCES dsps(id),
+	difsoc			type_difsoc NOT NULL,
+	libautrdifsoc	VARCHAR(100) DEFAULT NULL
+);
+CREATE INDEX difsocs_dsp_id_idx ON difsocs (dsp_id);
+
+-- -----------------------------------------------------------------------------
+
+CREATE TYPE type_nataccosocfam AS ENUM ( '0410', '0411', '0412', '0413' );
+CREATE TABLE detailsaccosocfams (
+    id      			SERIAL NOT NULL PRIMARY KEY,
+    dsp_id				INTEGER NOT NULL REFERENCES dsps(id),
+	nataccosocfam		type_nataccosocfam NOT NULL,
+	libautraccosocfam	VARCHAR(100) DEFAULT NULL
+);
+CREATE INDEX detailsaccosocfams_dsp_id_idx ON detailsaccosocfams (dsp_id);
+
+-- -----------------------------------------------------------------------------
+
+CREATE TYPE type_nataccosocindi AS ENUM ( '0416', '0417', '0418', '0419', '0420' );
+CREATE TABLE detailsaccosocindis (
+    id      			SERIAL NOT NULL PRIMARY KEY,
+    dsp_id				INTEGER NOT NULL REFERENCES dsps(id),
+	nataccosocindi		type_nataccosocindi NOT NULL,
+	libautraccosocindi	VARCHAR(100) DEFAULT NULL
+);
+CREATE INDEX detailsaccosocindis_dsp_id_idx ON detailsaccosocindis (dsp_id);
+
+-- -----------------------------------------------------------------------------
+
+CREATE TYPE type_difdisp AS ENUM ( '0501', '0502', '0503', '0504', '0505', '0506' );
+CREATE TABLE detailsdifdisps (
+    id      	SERIAL NOT NULL PRIMARY KEY,
+    dsp_id		INTEGER NOT NULL REFERENCES dsps(id),
+	difdisp		type_difdisp NOT NULL
+);
+CREATE INDEX detailsdifdisps_dsp_id_idx ON detailsdifdisps (dsp_id);
+
+-- -----------------------------------------------------------------------------
+
+CREATE TYPE type_natmob AS ENUM ( '2504', '2501', '2502', '2503' );
+CREATE TABLE detailsnatmobs (
+    id      	SERIAL NOT NULL PRIMARY KEY,
+    dsp_id		INTEGER NOT NULL REFERENCES dsps(id),
+	natmob		type_natmob NOT NULL
+);
+CREATE INDEX detailsnatmobs_dsp_id_idx ON detailsnatmobs (dsp_id);
+
+-- -----------------------------------------------------------------------------
+
+CREATE TYPE type_diflog AS ENUM ( '1001', '1002', '1003', '1004', '1005', '1006', '1007', '1008', '1009' );
+CREATE TABLE detailsdiflogs (
+    id      		SERIAL NOT NULL PRIMARY KEY,
+    dsp_id			INTEGER NOT NULL REFERENCES dsps(id),
+	diflog			type_diflog NOT NULL,
+	libautrdiflog	VARCHAR(100) DEFAULT NULL
+);
+CREATE INDEX detailsdiflogs_dsp_id_idx ON detailsdiflogs (dsp_id);
 
 -- -----------------------------------------------------------------------------
 
@@ -149,7 +236,7 @@ CREATE /*UNIQUE*/ INDEX dsps_personne_id_idx ON dsps (personne_id);
 CREATE INDEX calculsdroitsrsa_personne_id_idx ON calculsdroitsrsa (personne_id);
 
 ALTER TABLE calculsdroitsrsa ADD COLUMN _tmp type_booleannumber DEFAULT NULL;
-UPDATE calculsdroitsrsa SET _tmp = CAST( ( CASE WHEN toppersdrodevorsa = true THEN '1' WHEN toppersdrodevorsa = false THEN '0' ELSE NULL END ) AS type_booleannumber ); -- FIXME: 
+UPDATE calculsdroitsrsa SET _tmp = CAST( ( CASE WHEN toppersdrodevorsa = true THEN '1' WHEN toppersdrodevorsa = false THEN '0' ELSE NULL END ) AS type_booleannumber ); -- FIXME:
 ALTER TABLE calculsdroitsrsa DROP COLUMN toppersdrodevorsa;
 ALTER TABLE calculsdroitsrsa RENAME _tmp TO toppersdrodevorsa;
 

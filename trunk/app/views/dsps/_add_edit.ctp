@@ -9,6 +9,8 @@
 	);
 
 	echo $this->element( 'dossier_menu', array( 'personne_id' => Set::extract( $dsp, 'Personne.id' ) ) );
+
+	$dsp_id = Set::classicExtract( $this->data, 'Dsp.id' );
 ?>
 
 <script type="text/javascript">
@@ -31,12 +33,34 @@
 		// Formulaire
 		echo $xform->create( null );
 
+		// FIXME: id / personne_id
 		$tmp = '';
-		$tmp .= $xform->input( 'Dsp.id', array( 'type' => 'hidden' ) );
+		if( !empty( $this->data['Dsp']['id'] ) ) {
+			$tmp .= $xform->input( 'Dsp.id', array( 'type' => 'hidden' ) );
+		}
 		$tmp .= $xform->input( 'Dsp.personne_id', array( 'type' => 'hidden', 'value' => Set::extract( $dsp, 'Personne.id' ) ) );
 		echo $html->tag( 'div', $tmp );
 
 		asort( $options['sitpersdemrsa'] );
+/*
+Plan:
+	- GeneraliteDSPP
+	- SituationSociale
+		* CommunSituationSociale
+		* DetailDifficulteSituationSociale (0-n)
+		* DetailAccompagnementSocialFamilial (0-n)
+		* DetailAccompagnementSocialIndividuel (0-n)
+		* DetailDifficulteDisponibilite (0-n)
+	- NiveauEtude
+	- DisponibiliteEmploi
+	- SituationProfessionnelle
+	- Mobilite
+		* CommunMobilite
+		* DetailMobilite (0-n)
+	- DifficulteLogement
+		* CommunDifficulteLogement
+		* DetailDifficulteLogement (0-n)
+*/
 	?>
 	<fieldset>
 		<legend>Généralités</legend>
@@ -45,6 +69,7 @@
 			echo $xform->enum( 'Dsp.topisogroouenf', array( 'options' => $options['topisogroouenf'] ) );
 			echo $xform->enum( 'Dsp.topdrorsarmiant', array( 'options' => $options['topdrorsarmiant'] ) );
 			echo $xform->enum( 'Dsp.drorsarmianta2', array( 'options' => $options['drorsarmianta2'] ) );
+			echo $xform->enum( 'Dsp.topcouvsoc', array( 'options' => $options['topcouvsoc'] ) );
 		?>
 	</fieldset>
 
@@ -60,17 +85,21 @@
 				echo $xform->enum( 'Dsp.soutdemarsoc', array( 'options' => $options['soutdemarsoc'] ) );
 			?>
 		</fieldset>
+
+		<?php
+			// SituationSociale - DetailDifficulteSituationSociale (0-n)
+			echo $dsphm->fieldset( 'Difsoc', 'difsoc', 'libautrdifsoc', $dsp_id, '0407', $options['difsoc'] );
+
+			// SituationSociale - DetailAccompagnementSocialFamilial (0-n)
+			echo $dsphm->fieldset( 'Detailaccosocfam', 'nataccosocfam', 'libautraccosocfam', $dsp_id, '0413', $options['nataccosocfam'] );
+
+			// SituationSociale - DetailAccompagnementSocialIndividuel (0-n)
+			echo $dsphm->fieldset( 'Detailaccosocindi', 'nataccosocindi', 'libautraccosocindi', $dsp_id, '0420', $options['nataccosocindi'] );
+
+			// SituationSociale - DetailDifficulteDisponibilite (0-n)
+			echo $dsphm->fieldset( 'Detaildifdisp', 'difdisp', null, $dsp_id, null, $options['difdisp'] );
+		?>
 	</fieldset>
-
-	<?php
-		// 	echo $html->tag( 'h3', 'Difficultés' );
-
-		// 	echo $html->tag( 'h3', 'Détails accompagnement social familial' );
-
-		// 	echo $html->tag( 'h3', 'Détails accompagnement social individuel' );
-
-		// 	echo $html->tag( 'h3', 'Difficultés de disponibilité' );
-	?>
 
 	<fieldset>
 		<legend>Niveau d'étude</legend>
@@ -117,11 +146,20 @@
 
 	<fieldset>
 		<legend>Mobilité</legend>
+
+		<fieldset>
+			<legend>Généralités</legend>
+			<?php
+				echo $xform->enum( 'Dsp.topmoyloco', array( 'options' => $options['topmoyloco'] ) );
+				echo $xform->enum( 'Dsp.toppermicondub', array( 'options' => $options['toppermicondub'] ) );
+				echo $xform->enum( 'Dsp.topautrpermicondu', array( 'options' => $options['topautrpermicondu'] ) );
+				echo $xform->input( 'Dsp.libautrpermicondu', array( 'domain' => 'dsp', 'type' => 'textarea' ) );
+			?>
+		</fieldset>
+
 		<?php
-			echo $xform->enum( 'Dsp.topmoyloco', array( 'options' => $options['topmoyloco'] ) );
-			echo $xform->enum( 'Dsp.toppermicondub', array( 'options' => $options['toppermicondub'] ) );
-			echo $xform->enum( 'Dsp.topautrpermicondu', array( 'options' => $options['topautrpermicondu'] ) );
-			echo $xform->input( 'Dsp.libautrpermicondu', array( 'domain' => 'dsp', 'type' => 'textarea' ) );
+			// Mobilite - DetailMobilite (0-n)
+			echo $dsphm->fieldset( 'Detailnatmob', 'natmob', null, $dsp_id, null, $options['natmob'] );
 		?>
 	</fieldset>
 
@@ -130,6 +168,11 @@
 		<?php
 			echo $xform->enum( 'Dsp.natlog', array( 'options' => $options['natlog'] ) );
 			echo $xform->enum( 'Dsp.demarlog', array( 'options' => $options['demarlog'] ) );
+		?>
+
+		<?php
+			// DifficulteLogement - DetailDifficulteLogement
+			echo $dsphm->fieldset( 'Detaildiflog', 'diflog', 'libautrdiflog', $dsp_id, '1009', $options['diflog'] );
 		?>
 	</fieldset>
 

@@ -162,7 +162,13 @@
         'repddtefp' => 'repsddtefp',
         ///commission d'APRE
         'commissionapre' => 'commissionsapre',
-        'relanceapre' => 'relancesapres'
+        'relanceapre' => 'relancesapres',
+		// Dsp
+		'detailaccosocfam' => 'detailsaccosocfams',
+		'detailaccosocindi' => 'detailsaccosocindis',
+		'detaildifdisp' => 'detailsdifdisps',
+		'detailnatmob' => 'detailsnatmobs',
+		'detaildiflog' => 'detailsdiflogs',
      );
 /**
  * This is a key => value array of regex used to match words.
