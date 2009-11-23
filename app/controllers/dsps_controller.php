@@ -3,9 +3,18 @@
 	{
 		var $name = 'Dsps';
 
-		var $helpers = array( 'Xform', 'Xhtml' );
+		var $helpers = array( 'Xform', 'Xhtml', 'Dsphm' );
 
 		var $components = array( 'Jetons' );
+
+		var $specialHasMany = array(
+			'Difsoc' => 'difsoc', // FIXME: Detaildifsoc
+			'Detailaccosocfam' => 'nataccosocfam',
+			'Detailaccosocindi' => 'nataccosocindi',
+			'Detaildifdisp' => 'difdisp',
+			'Detailnatmob' => 'natmob',
+			'Detaildiflog' => 'diflog',
+		);
 
 		/** ********************************************************************
 		*
@@ -15,6 +24,11 @@
 			$return = parent::beforeFilter();
 
 			$options = $this->Dsp->allEnumLists();
+
+			foreach( array_keys( $this->specialHasMany ) as $model ) {
+				$options = Set::merge( $options, $this->Dsp->{$model}->allEnumLists() );
+			}
+
 			$this->set( 'options', $options );
 
 			return $return;
@@ -66,7 +80,7 @@
 				$dsp = $this->Dsp->findById( $id );
 			}
 			else if( ( $this->action == 'add' ) && !empty( $id ) ) {
-				$dsp = $this->Dsp->Personne->findById( $id, null, null, -1 );
+				$dsp = $this->Dsp->Personne->findById( $id, null, null, 1 );
 			}
 
 			// Vérification indirecte de l'id
@@ -79,15 +93,46 @@
 
 			// Tentative d'enregistrement
 			if( !empty( $this->data ) ) {
-				$this->Dsp->create( $this->data );
-                $this->Dsp->nullify( array( 'exceptions' => array( 'Dsp.'.$this->Dsp->primaryKey ) ) );
-				if( $this->Dsp->save() ) {
-					$this->Session->setFlash( __( 'Enregistrement effectué', true ) );
-					// On enlève le jeton du dossier
-					$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) ); // FIXME: if -> error
-					// Fin de la transaction
-					$this->Dsp->commit();
-					$this->redirect( array( 'action' => 'view', Set::classicExtract( $this->data, 'Dsp.personne_id' ) ) );
+				$success = true;
+				$this->data['Dsp'] = Xset::nullify( $this->data['Dsp'] );
+				$dsp_id = Set::classicExtract( $this->data, 'Dsp.id' );
+
+				// début hasMany spéciaux
+				foreach( $this->specialHasMany as $model => $checkbox ) {
+					$values = Set::classicExtract( $this->data, "{$model}" );
+					foreach( $values as $key => $value ) {
+						$val = Set::classicExtract( $value, $checkbox );
+						if( empty( $val ) ) {
+							unset( $this->data[$model][$key] );
+						}
+					}
+
+					$ids = Set::extract( $this->data, "/{$model}/id" );
+					if( !empty( $dsp_id ) ) {
+						$conditions = array( "{$model}.dsp_id" => $dsp_id );
+						if( !empty( $ids ) ) {
+							$conditions[] = "{$model}.id NOT IN ( ".implode( ', ', $ids )." )";
+						}
+						$this->Dsp->{$model}->deleteAll( $conditions );
+					}
+				}
+
+				$this->data = Set::filter( $this->data );
+				// fin hasMany spéciaux
+
+				if( $success = $this->Dsp->saveAll( $this->data, array( 'atomic' => false, 'validate' => 'first' ) ) && $success ) {
+					if( $success ) {
+						$this->Session->setFlash( __( 'Enregistrement effectué', true ) );
+						// On enlève le jeton du dossier
+						$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) ); // FIXME: if -> error
+						// Fin de la transaction
+						$this->Dsp->commit();
+					}
+					else {
+						$this->Session->setFlash( __( 'Erreur lors de l\'enregistrement', true ) );
+						$this->Dsp->rollback();
+					}
+// 					$this->redirect( array( 'action' => 'view', Set::classicExtract( $this->data, 'Dsp.personne_id' ) ) );
 				}
 			}
 			// Affectation au formulaire

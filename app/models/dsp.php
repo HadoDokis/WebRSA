@@ -6,13 +6,21 @@
         var $actsAs = array( 'Enumerable' );
 
         var $belongsTo = array( 'Personne' );
+        var $hasMany = array(
+			'Difsoc',
+			'Detailaccosocfam',
+			'Detailaccosocindi',
+			'Detaildifdisp',
+			'Detailnatmob',
+			'Detaildiflog'
+		);
 
         var $enumFields = array(
             'sitpersdemrsa',
             'topisogroouenf' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
             'topdrorsarmiant' => array( 'type' => 'no', 'domain' => 'default' ),
             'drorsarmianta2' => array( 'type' => 'nos', 'domain' => 'default' ),
-            'topcouvsoc',
+            'topcouvsoc' => array( 'type' => 'booleannumber', 'domain' => 'default' ),
             'accosocfam' => array( 'type' => 'nov', 'domain' => 'default' ),
             'accosocindi' => array( 'type' => 'nov', 'domain' => 'default' ),
             'soutdemarsoc' => array( 'type' => 'nov', 'domain' => 'default' ),

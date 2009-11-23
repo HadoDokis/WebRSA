@@ -26,7 +26,7 @@
 			return $result;
 		}
 
-		if( empty( $dsp['Dsp'] ) ) {
+		if( empty( $dsp['Dsp']['id'] ) ) {
 			echo '<p class="notice">Cette personne ne possède pas encore de données socio-professionnelles.</p>';
 
 			if( $permissions->check( 'dsps', 'add' ) ) {
@@ -63,6 +63,10 @@
 				array(
 					__d( 'dsp', 'Dsp.drorsarmianta2', true ),
 					result( $dsp, 'Dsp.drorsarmianta2', 'enum', $options['drorsarmianta2'] ),
+				),
+				array(
+					__d( 'dsp', 'Dsp.topcouvsoc', true ),
+					result( $dsp, 'Dsp.topcouvsoc', 'enum', $options['topcouvsoc'] ),
 				)
 			);
 			$generalites = $xhtml->details( $generalites, array( 'type' => 'list', 'empty' => true ) );
@@ -71,8 +75,8 @@
 			}
 
 
-			// Situation sociale
-			// Situation sociale: généralités
+			// Situation SituationSociale
+			// SituationSociale - CommunSituationSociale
 			$rows = array(
 				array(
 					__d( 'dsp', 'Dsp.accosocfam', true ),
@@ -99,6 +103,22 @@
 			if( !empty( $generalites ) ) {
 				$generalites = $html->tag( 'h3', 'Généralités' ).$generalites;
 			}
+
+			// SituationSociale - DetailDifficulteSituationSociale (0-n)
+			$difficultes = $dsphm->details( $dsp, 'Difsoc', 'difsoc', 'libautrdifsoc', $options['difsoc'] );
+			$difficultes = $html->tag( 'h3', 'Difficultés sociales' ).$difficultes;
+
+			// SituationSociale - DetailAccompagnementSocialFamilial (0-n)
+			$accosocfam = $dsphm->details( $dsp, 'Detailaccosocfam', 'nataccosocfam', 'libautraccosocfam', $options['nataccosocfam'] );
+			$accosocfam = $html->tag( 'h3', 'Difficultés accompagnement social familial' ).$accosocfam;
+
+			// SituationSociale - DetailAccompagnementSocialIndividuel (0-n)
+			$accosocindi = $dsphm->details( $dsp, 'Detailaccosocindi', 'nataccosocindi', 'libautraccosocindi', $options['nataccosocindi'] );
+			$accosocindi = $html->tag( 'h3', 'Difficultés accompagnement social individuel' ).$accosocindi;
+
+			// SituationSociale - DetailDifficulteDisponibilite (0-n)
+			$difdisps = $dsphm->details( $dsp, 'Detaildifdisp', 'difdisp', null, $options['difdisp'] );
+			$difdisps = $html->tag( 'h3', 'Difficultés disponibilités' ).$difdisps;
 
 			// Niveau d'étude
 			$rows = array(
@@ -244,6 +264,11 @@
 				),
 			);
 			$mobilite = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
+
+			// Mobilite - DetailMobilite (0-n)
+			$natmobs = $dsphm->details( $dsp, 'Detailnatmob', 'natmob', null, $options['natmob'] );
+			$natmobs = $html->tag( 'h3', 'Code mobilité' ).$natmobs;
+
 			if( !empty( $mobilite ) ) {
 				$mobilite = $html->tag( 'h2', 'Mobilité' ).$mobilite;
 			}
@@ -272,7 +297,12 @@
 				$difficultesLogement = $html->tag( 'h2', 'Difficultés logement' ).$difficultesLogement;
 			}
 
-			$situationSolciale = implode( '', array( $generalites, $nivetus, $disponibilitésEmploi, $situationProfessionnelle, $mobilite, $difficultesLogement ) );
+			// DifficulteLogement - DetailDifficulteLogement
+			$diflogs = $dsphm->details( $dsp, 'Detaildiflog', 'diflog', 'libautrdiflog', $options['diflog'] );
+			$diflogs = $html->tag( 'h3', 'Détails difficultés logement' ).$diflogs;
+
+			$situationSolciale = array( $generalites, $difficultes, $accosocfam, $accosocindi, $difdisps, $nivetus, $disponibilitésEmploi, $situationProfessionnelle, $mobilite, $natmobs, $difficultesLogement, $diflogs );
+			$situationSolciale = implode( '', $situationSolciale );
 			if( !empty( $situationSolciale ) ) {
 				echo $html->tag( 'h2', 'Situation sociale' ).$situationSolciale;
 			}
