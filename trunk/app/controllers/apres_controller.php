@@ -63,7 +63,7 @@
                 $relancesapres = array();
             }
             $this->set( 'relancesapres', $relancesapres );
-// debug($relancesapres);
+// debug($apres);
         }
 
 
