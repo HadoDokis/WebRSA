@@ -19,8 +19,8 @@
         <?php echo $xform->input( 'Participantcomiteexamen.prenom', array( 'label' => required( __( 'prenom', true ) ), 'type' => 'text' ) );?>
         <?php echo $xform->input( 'Participantcomiteexamen.fonction', array( 'label' => required( __( 'Fonction du participant', true ) ), 'type' => 'text' ) );?>
         <?php echo $xform->input( 'Participantcomiteexamen.organisme', array( 'label' => required( __( 'Organisme du participant', true ) ), 'type' => 'text' ) );?>
-        <?php echo $xform->input( 'Participantcomiteexamen.numtel', array( 'label' => required( __( 'numtel', true ) ), 'type' => 'text', 'maxlength' => 10 ) );?>
-        <?php echo $xform->input( 'Participantcomiteexamen.mail', array( 'label' => required( __( 'email', true ) ), 'type' => 'text' ) );?>
+        <?php echo $xform->input( 'Participantcomiteexamen.numtel', array( 'label' =>  __( 'numtel', true ), 'type' => 'text', 'maxlength' => 10 ) );?>
+        <?php echo $xform->input( 'Participantcomiteexamen.mail', array( 'label' => __( 'email', true ), 'type' => 'text' ) );?>
     </fieldset>
 
     <?php echo $xform->submit( 'Enregistrer' );?>
