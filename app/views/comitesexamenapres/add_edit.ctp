@@ -1,5 +1,5 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Comités d\'examen APRE';?>
+<?php $this->pageTitle = 'Comité d\'examen APRE';?>
 
 <h1><?php echo $this->pageTitle;?></h1>
 

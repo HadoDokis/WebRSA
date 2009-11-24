@@ -3,7 +3,7 @@
     {
 
         var $name = 'Comitesexamenapres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'Comiteexamenapre');
+        var $uses = array( 'Apre', 'Option', 'Personne', 'Comiteexamenapre' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
 
         /** ********************************************************************
@@ -22,8 +22,8 @@
         function index( $comiteexamenapre_id = null ){
             $this->assert( valid_int( $comiteexamenapre_id ), 'invalidParameter' );
 
-            $comitesexamenapres = $this->Comiteexamenapre->find( 'all', array( 'conditions' => array( 'Comiteexamenapre.id' => $comiteexamenapre_id ) ) );
-            $this->set( 'comitesexamenapres', $comitesexamenapres );
+           $comiteexamenapre = $this->Comiteexamenapre->find( 'first', array( 'conditions' => array( 'Comiteexamenapre.id' => $comiteexamenapre_id ) ) );
+            $this->set( 'comiteexamenapre', $comiteexamenapre );
         }
 
         /** ********************************************************************
@@ -31,8 +31,8 @@
         *** *******************************************************************/
 
         function view( $comiteexamenapre_id = null ){
-            $comitesexamenapres = $this->Comiteexamenapre->find( 'all', array( 'conditions' => array( 'Comiteexamenapre.id' => $comiteexamenapre_id ) ) );
-            $this->set( 'comitesexamenapres', $comitesexamenapres );
+            $comiteexamenapre = $this->Comiteexamenapre->find( 'first', array( 'conditions' => array( 'Comiteexamenapre.id' => $comiteexamenapre_id ) ) );
+            $this->set( 'comiteexamenapre', $comiteexamenapre );
 
         }
         /** ********************************************************************
@@ -66,10 +66,7 @@
                 $comiteexamenapre = $this->Comiteexamenapre->findById( $comiteexamenapre_id, null, null, 1 );
                 $this->assert( !empty( $comiteexamenapre ), 'invalidParameter' );
 
-                $apre_id = $comiteexamenapre['Apre']['id'];
-                $dossier_rsa_id = $this->Apre->dossierId( $apre_id );
             }
-
 
             if( !empty( $this->data ) ){
 
