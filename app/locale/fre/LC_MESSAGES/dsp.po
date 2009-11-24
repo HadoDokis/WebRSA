@@ -369,13 +369,13 @@ msgid "ENUM::DEMARLOG::1103"
 msgstr "Aucune"
 
 ###############################################################################
-# Difsoc
+# Detaildifsoc
 ###############################################################################
 
-msgid "Difsoc.difsoc"
+msgid "Detaildifsoc.difsoc"
 msgstr "Rencontrez vous des difficultés sociales ?"
 
-msgid "Difsoc.libautrdifsoc"
+msgid "Detaildifsoc.libautrdifsoc"
 msgstr "Difficultés sociale autres Précision ?"
 
 ###############################################################################

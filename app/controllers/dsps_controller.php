@@ -8,7 +8,7 @@
 		var $components = array( 'Jetons' );
 
 		var $specialHasMany = array(
-			'Difsoc' => 'difsoc', // FIXME: Detaildifsoc
+			'Detaildifsoc' => 'difsoc',
 			'Detailaccosocfam' => 'nataccosocfam',
 			'Detailaccosocindi' => 'nataccosocindi',
 			'Detaildifdisp' => 'difdisp',

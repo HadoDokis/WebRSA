@@ -165,6 +165,7 @@
         'comiteexamenapre' => 'comitesexamenapres',
         'relanceapre' => 'relancesapres',
 		// Dsp
+		'detaildifsoc' => 'detailsdifsocs',
 		'detailaccosocfam' => 'detailsaccosocfams',
 		'detailaccosocindi' => 'detailsaccosocindis',
 		'detaildifdisp' => 'detailsdifdisps',
