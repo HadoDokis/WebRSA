@@ -1,73 +1,42 @@
-<?php  $this->pageTitle = 'Comité d\'examen APRE';?>
+<?php $this->pageTitle = 'Comité d\'examen pour l\'APRE';?>
+<h1>Détails Comité d'examen</h1>
+<?php if( $permissions->check( 'comitesexamenapres', 'add' ) ):?>
+    <ul class="actionMenu">
+        <?php
+            echo '<li>'.$html->editLink(
+                'Modifier Comité',
+                array( 'controller' => 'comitesexamenapres', 'action' => 'edit', Set::classicExtract( $comiteexamenapre, 'Comiteexamenapre.id' ) )
+            ).' </li>';
+        ?>
+    </ul>
+<?php endif;?>
 
 
-    <h1>Comité d'examen APRE</h1>
-
-        <?php if( empty( $comitesexamenapres ) ):?>
-            <p class="notice">Il n'existe pas encore de comité.</p>
-        <?php endif;?>
-
-        <?php if( $permissions->check( 'comitesexamenapres', 'add' ) ):?>
-            <ul class="actionMenu">
-                <?php
-                    echo '<li>'.$html->addLink(
-                        'Ajouter Comité',
-                        array( 'controller' => 'comitesexamenapres', 'action' => 'add', $personne_id )
-                    ).' </li>';
-                ?>
-            </ul>
-        <?php endif;?>
-
-    <?php if( !empty( $comitesexamenapres ) ):?>
-    <table class="tooltips">
-        <thead>
-            <tr>
-                <th>N° APRE</th>
-                <th>Nom/Prénom Allocataire</th>
-                <th>Type de demande APRE</th>
-                <th>Référent APRE</th>
-                <th>Date demande APRE</th>
-                <th>Natures de la demande</th>
-                <th>Etat du dossier</th>
-                <th colspan="5" class="action">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-                foreach( $comitesexamenapres as $comiteexamenapre ) {
-
-                    echo $html->tableCells(
-                        array(
-                            h( Set::classicExtract( $comiteexamenapre, 'Apre.numeroapre' ) ),
-                            h( $comiteexamenapre['Personne']['nom'].' '.$comiteexamenapre['Personne']['prenom'] ),
-                            h( Set::enum( Set::classicExtract( $comiteexamenapre, 'Apre.typedemandeapre' ), $options['typedemandeapre'] ) ),
-                            h( Set::enum( Set::classicExtract( $comiteexamenapre, 'Apre.referentapre_id' ), $refsapre ) ),
-                            h( date_short( Set::classicExtract( $comiteexamenapre, 'Apre.datedemandeapre' ) ) ),
-                            ( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
-                            h(  Set::enum( Set::classicExtract( $comiteexamenapre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ) ),
-                            $html->viewLink(
-                                'Voir la demande APRE',
-                                array( 'controller' => 'comitesexamenapres', 'action' => 'view', $comiteexamenapre['Apre']['id'] ),
-                                $permissions->check( 'comitesexamenapres', 'view' )
-                            ),
-                            $html->editLink(
-                                'Editer la demande APRE',
-                                array( 'controller' => 'comitesexamenapres', 'action' => 'edit', $comiteexamenapre['Apre']['id'] ),
-                                $permissions->check( 'comitesexamenapres', 'edit' )
-                            ),
-                            $html->printLink(
-                                'Imprimer la demande APRE',
-                                array( 'controller' => 'gedooos', 'action' => 'apre', $comiteexamenapre['Apre']['id'] ),
-                                $permissions->check( 'gedooos', 'apre' )
-                            )
-                        ),
-                        array( 'class' => 'odd' ),
-                        array( 'class' => 'even' )
-                    );
-                }
-            ?>
-        </tbody>
-    </table>
-    <?php  endif;?>
-
+<div id="ficheCI">
+        <table>
+            <tbody>
+                <tr class="even">
+                    <th><?php __( 'Date du comité');?></th>
+                    <td><?php echo date_short( Set::classicExtract( $comiteexamenapre, 'Comiteexamenapre.datecomite' ) );?></td>
+                </tr>
+                <tr class="odd">
+                    <th><?php __( 'Heure du comité' );?></th>
+                    <td><?php echo $locale->date( 'Time::short', Set::classicExtract( $comiteexamenapre, 'Comiteexamenapre.heurecomite' ) );?></td>
+                </tr>
+                <tr class="even">
+                    <th><?php __( 'Lieu du comité' );?></th>
+                    <td><?php echo Set::classicExtract( $comiteexamenapre, 'Comiteexamenapre.lieucomite' );?></td>
+                </tr>
+                <tr class="odd">
+                    <th><?php __( 'Intitulé du comité' );?></th>
+                    <td><?php echo Set::classicExtract( $comiteexamenapre, 'Comiteexamenapre.intitulecomite' );?></td>
+                </tr>
+                <tr class="even">
+                    <th><?php __( 'Observations du comité' );?></th>
+                    <td><?php echo Set::classicExtract( $comiteexamenapre, 'Comiteexamenapre.observationcomite' );?></td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+</div>
 <div class="clearer"><hr /></div>
