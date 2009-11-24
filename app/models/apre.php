@@ -96,11 +96,11 @@
                  'foreignKey'             => 'apre_id',
                 'associationForeignKey'  => 'pieceapre_id'
             ),
-            'Comiteexamenapre' => array(
-                'className'              => 'Comiteexamenapre',
-                'joinTable'              => 'apres_comitesexamenapres',
+            'Comiteapre' => array(
+                'className'              => 'Comiteapre',
+                'joinTable'              => 'apres_comitesapres',
                 'foreignKey'             => 'apre_id',
-                'associationForeignKey'  => 'comiteexamenapre_id'
+                'associationForeignKey'  => 'comiteapre_id'
             )
         );
 

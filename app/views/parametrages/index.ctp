@@ -49,7 +49,7 @@
                         h( 'Participants comités APRE' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'participantscomitesexamen', 'action' => 'index' )
+                            array( 'controller' => 'participantscomites', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),

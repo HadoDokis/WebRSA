@@ -496,7 +496,7 @@ CREATE INDEX relancesapres_personne_id_idx ON relancesapres (personne_id);
 -- --------------------------------------------------------------------------------------------------------
 --  ....Table liée Comitesapres liée à l'APRE
 -- --------------------------------------------------------------------------------------------------------
-CREATE TABLE comitesexamenapres (
+CREATE TABLE comitesapres (
     id                          SERIAL NOT NULL PRIMARY KEY,
     datecomite                  DATE,
     heurecomite                 TIME,
@@ -509,17 +509,17 @@ CREATE TABLE comitesexamenapres (
 --  ....Table liée Acqmatprof avec ses pièces
 -- --------------------------------------------------------------------------------------------------------
 
-CREATE TABLE apres_comitesexamenapres (
+CREATE TABLE apres_comitesapres (
     id                          SERIAL NOT NULL PRIMARY KEY,
     apre_id                     INTEGER NOT NULL REFERENCES apres(id),
-    comiteexamenapre_id         INTEGER NOT NULL REFERENCES comitesexamenapres(id)
+    comiteapre_id         INTEGER NOT NULL REFERENCES comitesapres(id)
 );
-CREATE INDEX apres_comitesexamenapres_apre_id_idx ON apres_comitesexamenapres (apre_id);
-CREATE INDEX apres_comitesexamenapres_comiteexamenapre_id_idx ON apres_comitesexamenapres (comiteexamenapre_id);
+CREATE INDEX apres_comitesapres_apre_id_idx ON apres_comitesapres (apre_id);
+CREATE INDEX apres_comitesapres_comiteapre_id_idx ON apres_comitesapres (comiteapre_id);
 -- --------------------------------------------------------------------------------------------------------
 --  ....Table liée Participantscomitesexamen liée au Comite d''examen
 -- --------------------------------------------------------------------------------------------------------
-CREATE TABLE participantscomitesexamen (
+CREATE TABLE participantscomites (
     id                          SERIAL NOT NULL PRIMARY KEY,
     qual                        VARCHAR(3),
     nom                         VARCHAR(50),
@@ -533,12 +533,12 @@ CREATE TABLE participantscomitesexamen (
 --  ....Table liée Comites avec ses Participants
 -- --------------------------------------------------------------------------------------------------------
 
-CREATE TABLE comitesexamenapres_participantscomitesexamen (
+CREATE TABLE comitesapres_participantscomites (
     id                          SERIAL NOT NULL PRIMARY KEY,
-    comiteexamenapre_id                  INTEGER NOT NULL REFERENCES comitesexamenapres(id),
-    participantcomiteexamen_id             INTEGER NOT NULL REFERENCES participantscomitesexamen(id)
+    comiteapre_id                  INTEGER NOT NULL REFERENCES comitesapres(id),
+    participantcomite_id             INTEGER NOT NULL REFERENCES participantscomites(id)
 );
-CREATE INDEX comitesexamenapres_participantscomitesexamen_comiteexamenapre_id_idx ON comitesexamenapres_participantscomitesexamen (comiteexamenapre_id);
-CREATE INDEX comitesexamenapres_participantscomitesexamen_participantcomiteexamen_id_idx ON comitesexamenapres_participantscomitesexamen (participantcomiteexamen_id);
+CREATE INDEX comitesapres_participantscomites_comiteapre_id_idx ON comitesapres_participantscomites (comiteapre_id);
+CREATE INDEX comitesapres_participantscomites_participantcomite_id_idx ON comitesapres_participantscomites (participantcomite_id);
 
 -- ALTER TABLE apres ADD COLUMN ajoutcomiteexamen type_no;

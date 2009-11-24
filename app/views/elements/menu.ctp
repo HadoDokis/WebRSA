@@ -98,7 +98,7 @@
                     </ul>
                 </li>
             <?php endif;?>
-            <?php if( $permissions->check( 'criteresapres', 'index' ) || $permissions->check( 'repsddtefp', 'index' ) || $permissions->check( 'criterescomitesexamenapres', 'index' ) ) :?>
+            <?php if( $permissions->check( 'criteresapres', 'index' ) || $permissions->check( 'repsddtefp', 'index' ) || $permissions->check( 'criterescomitesapres', 'index' ) ) :?>
                 <li id="menu3one" >
                     <?php echo $html->link( 'APRE', '#' );?>
                     <ul>
@@ -118,8 +118,8 @@
                         <?php if( $permissions->check( 'repsddtefp', 'index' ) ):?>
                             <li><?php echo $html->link( 'Reporting bi-mensuel DDTEFP', array( 'controller' => 'repsddtefp', 'action' => 'index' ) );?></li>
                         <?php endif;?>
-                        <?php if( $permissions->check( 'criterescomitesexamenapres', 'index' ) ):?>
-                            <li><?php echo $html->link( 'Comité d\'examen', array( 'controller' => 'criterescomitesexamenapres', 'action' => 'index' ) );?></li>
+                        <?php if( $permissions->check( 'comitesapres', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Comité d\'examen', array( 'controller' => 'comitesapres', 'action' => 'index' ) );?></li>
                         <?php endif;?>
                         <!-- <?php if( $permissions->check( 'commissionsapre', 'nouvelles' ) || $permissions->check( 'commissionsapre', 'enattente' ) || $permissions->check( 'commissionsapre', 'valide' )):?>
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
