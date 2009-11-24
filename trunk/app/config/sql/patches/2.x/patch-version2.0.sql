@@ -526,7 +526,7 @@ CREATE TABLE participantscomitesexamen (
     prenom                      VARCHAR(50),
     fonction                    TEXT,
     organisme                   TEXT,
-    numtel                      NUMERIC(10),
+    numtel                      VARCHAR(10),
     mail                        VARCHAR(78)
 );
 -- --------------------------------------------------------------------------------------------------------
