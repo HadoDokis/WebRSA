@@ -76,7 +76,7 @@
                     if( $saved ) {
                         $this->Comiteexamenapre->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array(  'controller' => 'comitesexamenapres','action' => 'view', $this->Comiteexamenapre->id ) );
+                        $this->redirect( array(  'controller' => 'comitesexamenapres','action' => 'index', $this->Comiteexamenapre->id ) );
                     }
                     else {
                         $this->Comiteexamenapre->rollback();
