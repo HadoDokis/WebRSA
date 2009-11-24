@@ -1,9 +1,9 @@
 <?php
 
-    class ParticipantscomitesexamenController extends AppController
+    class ParticipantscomitesController extends AppController
     {
-        var $name = 'Participantscomitesexamen';
-        var $uses = array( 'Participantcomiteexamen', 'Comiteexamenapre', 'Option' );
+        var $name = 'Participantscomites';
+        var $uses = array( 'Participantcomite', 'Comiteapre', 'Option' );
         var $helpers = array( 'Xform' );
 
         function beforeFilter() {
@@ -11,15 +11,15 @@
         }
 
         function index() {
-            $participants = $this->Participantcomiteexamen->find( 'all', array( 'recursive' => -1 ) );
+            $participants = $this->Participantcomite->find( 'all', array( 'recursive' => -1 ) );
             $this->set('participants', $participants );
         }
 
         function add() {
             if( !empty( $this->data ) ) {
-                if( $this->Participantcomiteexamen->saveAll( $this->data ) ) {
+                if( $this->Participantcomite->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'participantscomitesexamen', 'action' => 'index' ) );
+                    $this->redirect( array( 'controller' => 'participantscomites', 'action' => 'index' ) );
                 }
             }
             $this->render( $this->action, null, 'add_edit' );
@@ -29,17 +29,17 @@
             $this->assert( valid_int( $participant_id ) , 'invalidParameter' );
 
             if( !empty( $this->data ) ) {
-                if( $this->Participantcomiteexamen->saveAll( $this->data ) ) {
+                if( $this->Participantcomite->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'participantscomitesexamen', 'action' => 'index' ) );
+                    $this->redirect( array( 'controller' => 'participantscomites', 'action' => 'index' ) );
                 }
             }
             else {
-                $participant = $this->Participantcomiteexamen->find(
+                $participant = $this->Participantcomite->find(
                     'first',
                     array(
                         'conditions' => array(
-                            'Participantcomiteexamen.id' => $participant_id,
+                            'Participantcomite.id' => $participant_id,
                         )
                     )
                 );
@@ -57,9 +57,9 @@
             }
 
             // Recherche de la personne
-            $participant = $this->Participantcomiteexamen->find(
+            $participant = $this->Participantcomite->find(
                 'first',
-                array( 'conditions' => array( 'Participantcomiteexamen.id' => $participant_id )
+                array( 'conditions' => array( 'Participantcomite.id' => $participant_id )
                 )
             );
 
@@ -69,10 +69,11 @@
             }
 
             // Tentative de suppression ... FIXME
-            if( $this->Participantcomiteexamen->delete( array( 'Participantcomiteexamen.id' => $participant_id ) ) ) {
+            if( $this->Participantcomite->delete( array( 'Participantcomite.id' => $participant_id ) ) ) {
                 $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
-                $this->redirect( array( 'controller' => 'participantscomitesexamen', 'action' => 'index' ) );
+                $this->redirect( array( 'controller' => 'participantscomites', 'action' => 'index' ) );
             }
         }
+
     }
 ?>

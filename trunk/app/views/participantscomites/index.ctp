@@ -7,7 +7,7 @@
         <?php
             echo '<li>'.$html->addLink(
                 'Ajouter',
-                array( 'controller' => 'participantscomitesexamen', 'action' => 'add' )
+                array( 'controller' => 'participantscomites', 'action' => 'add' )
             ).' </li>';
         ?>
     </ul>
@@ -33,20 +33,20 @@
             <?php foreach( $participants as $participant ):?>
                 <?php echo $html->tableCells(
                             array(
-                                h( Set::classicExtract( $qual, Set::classicExtract( $participant, 'Participantcomiteexamen.qual' ) ) ),
-                                h( Set::classicExtract( $participant, 'Participantcomiteexamen.nom' ) ),
-                                h( Set::classicExtract( $participant, 'Participantcomiteexamen.prenom' ) ),
-                                h( Set::classicExtract( $participant, 'Participantcomiteexamen.fonction' ) ),
-                                h( Set::classicExtract( $participant, 'Participantcomiteexamen.organisme' ) ),
-                                h( Set::classicExtract( $participant, 'Participantcomiteexamen.numtel' ) ),
-                                h( Set::classicExtract( $participant, 'Participantcomiteexamen.mail' ) ),
+                                h( Set::classicExtract( $qual, Set::classicExtract( $participant, 'Participantcomite.qual' ) ) ),
+                                h( Set::classicExtract( $participant, 'Participantcomite.nom' ) ),
+                                h( Set::classicExtract( $participant, 'Participantcomite.prenom' ) ),
+                                h( Set::classicExtract( $participant, 'Participantcomite.fonction' ) ),
+                                h( Set::classicExtract( $participant, 'Participantcomite.organisme' ) ),
+                                h( Set::classicExtract( $participant, 'Participantcomite.numtel' ) ),
+                                h( Set::classicExtract( $participant, 'Participantcomite.mail' ) ),
                                 $html->editLink(
                                     'Éditer le participant ',
-                                    array( 'controller' => 'participantscomitesexamen', 'action' => 'edit', $participant['Participantcomiteexamen']['id'] )
+                                    array( 'controller' => 'participantscomites', 'action' => 'edit', $participant['Participantcomite']['id'] )
                                 ),
                                 $html->deleteLink(
                                     'Supprimer le participant ',
-                                    array( 'controller' => 'participantscomitesexamen', 'action' => 'delete', $participant['Participantcomiteexamen']['id'] )
+                                    array( 'controller' => 'participantscomites', 'action' => 'delete', $participant['Participantcomite']['id'] )
                                 )
                             ),
                             array( 'class' => 'odd' ),

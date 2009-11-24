@@ -1,16 +1,17 @@
 <?php
-    class Participantcomiteexamen extends AppModel
+    class Participantcomite extends AppModel
     {
-        var $name = 'Participantcomiteexamen';
-        var $useTable = 'participantscomitesexamen';
+        var $name = 'Participantcomite';
+        var $useTable = 'participantscomites';
         var $actsAs = array( 'Enumerable' );
+        var $displayField = 'nom';
 
         var $hasAndBelongsToMany = array(
-            'Comiteexamenapre' => array(
-                'className'              => 'Comiteexamenapre',
-                'joinTable'              => 'comitesexamenapres_participantscomitesexamen',
-                'foreignKey'             => 'comiteexamenapre_id',
-                'associationForeignKey'  => 'participantcomiteexamen_id'
+            'Comiteapre' => array(
+                'className'              => 'Comiteapre',
+                'joinTable'              => 'comitesapres_participantscomites',
+                'foreignKey'             => 'participantcomite_id',
+                'associationForeignKey'  => 'comiteapre_id'
             )
         );
 
