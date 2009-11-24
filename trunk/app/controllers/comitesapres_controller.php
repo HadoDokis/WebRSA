@@ -88,7 +88,7 @@
                     if( $saved ) {
                         $this->Comiteapre->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array(  'controller' => 'comitesapres','action' => 'index', $this->Comiteapre->id ) );
+                        $this->redirect( array(  'controller' => 'comitesapres','action' => 'view', $this->Comiteapre->id ) );
                     }
                     else {
                         $this->Comiteapre->rollback();
