@@ -88,7 +88,7 @@ Plan:
 
 		<?php
 			// SituationSociale - DetailDifficulteSituationSociale (0-n)
-			echo $dsphm->fieldset( 'Difsoc', 'difsoc', 'libautrdifsoc', $dsp_id, '0407', $options['difsoc'] );
+			echo $dsphm->fieldset( 'Detaildifsoc', 'difsoc', 'libautrdifsoc', $dsp_id, '0407', $options['difsoc'] );
 
 			// SituationSociale - DetailAccompagnementSocialFamilial (0-n)
 			echo $dsphm->fieldset( 'Detailaccosocfam', 'nataccosocfam', 'libautraccosocfam', $dsp_id, '0413', $options['nataccosocfam'] );

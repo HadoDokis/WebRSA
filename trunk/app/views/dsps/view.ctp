@@ -105,7 +105,7 @@
 			}
 
 			// SituationSociale - DetailDifficulteSituationSociale (0-n)
-			$difficultes = $dsphm->details( $dsp, 'Difsoc', 'difsoc', 'libautrdifsoc', $options['difsoc'] );
+			$difficultes = $dsphm->details( $dsp, 'Detaildifsoc', 'difsoc', 'libautrdifsoc', $options['difsoc'] );
 			$difficultes = $html->tag( 'h3', 'Difficultés sociales' ).$difficultes;
 
 			// SituationSociale - DetailAccompagnementSocialFamilial (0-n)

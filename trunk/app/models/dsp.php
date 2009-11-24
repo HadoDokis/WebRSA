@@ -7,7 +7,7 @@
 
         var $belongsTo = array( 'Personne' );
         var $hasMany = array(
-			'Difsoc',
+			'Detaildifsoc',
 			'Detailaccosocfam',
 			'Detailaccosocindi',
 			'Detaildifdisp',

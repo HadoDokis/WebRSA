@@ -108,16 +108,15 @@ CREATE UNIQUE INDEX dsps_personne_id_idx ON dsps (personne_id);
 */
 
 -- -----------------------------------------------------------------------------
--- FIXME: nom de table et de modèle à faire partout (detailsdifsocs) plutôt que supprimer difsocs
--- DROP TABLE difsocs CASCADE; -- FIXME
+
 CREATE TYPE type_difsoc AS ENUM ( '0401', '0402', '0403', '0404', '0405', '0406', '0407' );
-CREATE TABLE difsocs (
+CREATE TABLE detailsdifsocs (
     id      		SERIAL NOT NULL PRIMARY KEY,
     dsp_id			INTEGER NOT NULL REFERENCES dsps(id),
 	difsoc			type_difsoc NOT NULL,
 	libautrdifsoc	VARCHAR(100) DEFAULT NULL
 );
-CREATE INDEX difsocs_dsp_id_idx ON difsocs (dsp_id);
+CREATE INDEX detailsdifsocs_dsp_id_idx ON detailsdifsocs (dsp_id);
 
 -- -----------------------------------------------------------------------------
 

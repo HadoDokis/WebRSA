@@ -46,7 +46,13 @@ function changelog() {
 
         svn log $ASNV > $ChangeLogTmp
 
-        startrev=`svn ls --verbose $ASNV/tags | grep "$version" | sed -e 's/^ *//' | cut -d " " -f1`
+		# INFO: $version vide -> trunk
+		if [ "$version" != "" ]; then
+			startrev=`svn ls --verbose $ASNV/tags | grep "$version" | sed -e 's/^ *//' | cut -d " " -f1`
+		else
+			startrev=`svn ls --verbose $ASNV/trunk | grep "\./" | sed -e 's/^ *//' | cut -d " " -f1`
+		fi
+
         startline=`grep -n "^r$startrev" $ChangeLogTmp | cut -d ":" -f1`
         maxlines=`cat $ChangeLogTmp | wc -l`
         numlines=`expr $maxlines - $startline + 1`
@@ -101,6 +107,9 @@ function package() {
 # ------------------------------------------------------------------------------
 
 case $1 in
+    changelog)
+        changelog "$2" . # FIXME vérification argument
+    ;;
     clear)
         clearCache
         clearLogs
@@ -115,7 +124,7 @@ case $1 in
         package $2 # FIXME vérification argument
     ;;
     *)
-        echo "Usage: $ME {clearcache|clear|clearlogs|package}"
+        echo "Usage: $ME {changelog|clearcache|clear|clearlogs|package}"
         exit 1
     ;;
 esac
