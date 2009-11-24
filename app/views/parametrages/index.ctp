@@ -46,6 +46,17 @@
                 );
                 echo $html->tableCells(
                     array(
+                        h( 'Participants comités APRE' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'participantscomitesexamen', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
                         h( 'PDOs' ),
                         $html->viewLink(
                             'Voir la table',

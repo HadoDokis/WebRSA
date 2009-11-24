@@ -160,11 +160,12 @@
         'montantconsomme' => 'montantsconsommes',
         'critereapre' => 'criteresapres',
         'repddtefp' => 'repsddtefp',
-        ///commission d'APRE
+        ///Comité examen d'APRE
         'criterecomiteexamenapre' => 'criterescomitesexamenapres',
         'comiteexamenapre' => 'comitesexamenapres',
+        'participantcomiteexamen' => 'participantscomitesexamen',
         'relanceapre' => 'relancesapres',
-		// Dsp
+		/// Dsp
 		'detaildifsoc' => 'detailsdifsocs',
 		'detailaccosocfam' => 'detailsaccosocfams',
 		'detailaccosocindi' => 'detailsaccosocindis',

@@ -88,7 +88,7 @@
                                 h( Set::classicExtract( $comiteapre, 'Comiteexamenapre.intitulecomite' ) ),
                                 h( Set::classicExtract( $comiteapre, 'Comiteexamenapre.observationcomite' ) ),
                                 $html->viewLink(
-                                    'Voir la relance',
+                                    'Voir le comité',
                                     array( 'controller' => 'comitesexamenapres', 'action' => 'index', Set::classicExtract( $comiteapre, 'Comiteexamenapre.id' ) ),
                                     $permissions->check( 'comitesexamenapres', 'index' )
                                 ),
