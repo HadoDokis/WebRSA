@@ -492,3 +492,33 @@ CREATE TABLE relancesapres (
 );
 CREATE INDEX relancesapres_apre_id_idx ON relancesapres (apre_id);
 CREATE INDEX relancesapres_personne_id_idx ON relancesapres (personne_id);
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Comitesapres liée à l'APRE
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE comitesexamenapres (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    datecomite                  DATE,
+    heurecomite                 TIME,
+    lieucomite                  TEXT,
+    intitulecomite              TEXT,
+    observationcomite           TEXT
+);
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Participantscomitesexamen liée au Comite d''examen
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE participantscomitesexamen (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    qual                        VARCHAR(3),
+    nom                         VARCHAR(50),
+    prenom                      VARCHAR(50),
+    fonction                    TEXT,
+    organisme                   TEXT,
+    numtel                      NUMERIC(10),
+    mail                        VARCHAR(78)
+);
+
+ALTER TABLE apres ADD COLUMN ajoutcomiteexamen type_no;
+ALTER TABLE apres ADD COLUMN comiteexamenapre_id INTEGER REFERENCES comitesexamenapres(id);
+CREATE INDEX apres_comiteexamenapre_id_idx ON apres (comiteexamenapre_id);

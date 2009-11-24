@@ -48,6 +48,8 @@ msgstr "Projet professionnel "
 msgid "Apre.secteurprofessionnel"
 msgstr "Secteur professionnel en lien avec la demande "
 
+msgid "Apre.ajoutcomiteexamen"
+msgstr "Ajouter comité examen "
 ###############################################################################
 # Enum Referentapre.spe
 ###############################################################################

@@ -213,7 +213,17 @@
         </fieldset>
         <fieldset>
             <legend>Pièces jointes</legend>
-            <?php echo $xform->input( 'Pieceapre.Pieceapre', array( 'options' => $piecesapre, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+            <?php
+                echo $xform->input( 'Pieceapre.Pieceapre', array( 'options' => $piecesapre, 'multiple' => 'checkbox', 'label' => false ) );
+                $piecesManquantes = Set::extract( $this->data, '/Relanceapre/Piecemanquante/libelle' );
+
+                if( !empty( $piecesManquantes ) ){
+                    echo $form->input( 'Apre.etatdossierapre', array( 'type' => 'hidden', 'options' => $options['etatdossierapre'], 'value' => 'INC' ) );
+                }
+                else{
+                    echo $form->input( 'Apre.etatdossierapre', array( 'type' => 'hidden', 'options' => $options['etatdossierapre'], 'value' => 'COM' ) );
+                }
+            ?>
         </fieldset>
 
         <h2 class="center">Nature de la demande</h2>
@@ -241,7 +251,12 @@
             ?>
             <fieldset>
                 <legend>Pièces jointes</legend>
-                <?php echo $xform->input( 'Pieceformqualif.Pieceformqualif', array( 'options' => $piecesformqualif, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+                <?php
+                    echo $xform->input( 'Pieceformqualif.Pieceformqualif', array( 'options' => $piecesformqualif, 'multiple' => 'checkbox', 'label' => false ) );
+                    $piecesMissForm = Set::extract( $this->data, '/Formqualif/Piecemanquante/libelle' );
+//                     debug($piecesMissForm);
+
+                ?>
             </fieldset>
         </fieldset>
         <?php

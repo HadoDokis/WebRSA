@@ -25,6 +25,7 @@
             'activitebeneficiaire' => array( 'type' => 'activitebeneficiaire', 'domain' => 'apre' ),
             'typecontrat' => array( 'type' => 'typecontrat', 'domain' => 'apre' ),
             'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
+            'ajoutcomiteexamen' => array( 'type' => 'no', 'domain' => 'apre' ),
             'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' )
         );
 
@@ -130,16 +131,18 @@
 
         function afterFind( $results, $primary = false ) {
             parent::afterFind( $results, $primary );
-
+//     debug($results);
             if( !empty( $results ) ) {
                 $isArray = true;
                 if( isset( $results['id'] ) ) {
                     $results = array( 'Apre' => array( $results ) );
                     $isArray = false;
                 }
-
                 foreach( $results as $key => $result ) {
                     $results[$key]['Natureaide'] = array();
+
+                    /// Essaie de récupération des pièces des aides liées
+
                     foreach( $this->aidesApre as $model ) {
                         $results[$key]['Natureaide'][$model] = $this->{$model}->find(
                             'count',

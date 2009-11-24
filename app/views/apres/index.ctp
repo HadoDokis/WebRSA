@@ -37,7 +37,7 @@
                 <th>Date demande APRE</th>
                 <th>Natures de la demande</th>
                 <th>Etat du dossier</th>
-                <th colspan="4" class="action">Actions</th>
+                <th colspan="5" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -45,7 +45,7 @@
                 foreach( $apres as $apre ) {
                     $aidesApre = array();
                     $naturesaide = Set::classicExtract( $apre, 'Natureaide' );
-//                     debug($naturesaide);
+
                     foreach( $naturesaide as $natureaide => $nombre ) {
                         if( $nombre > 0 ) {
                             $aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
@@ -53,15 +53,25 @@
                     }
                     $piecesManquantes = Set::extract( $apre, '/Relanceapre/Piecemanquante/libelle' );
 
+                    ///Ajout au comité d'examen (oui/non)
+//                     $ajoutComite = Set::extract( $this->data, '/Apre/ajoutcomiteexamen' );
+//                     if( empty( $ajoutComite ) ){
+//                         echo $form->input( 'Apre.ajoutcomiteexamen', array( 'type' => 'hidden', 'options' => $options['ajoutcomiteexamen'], 'value' => 'O' ) );
+//                     }
+//                     else{
+//                         echo $form->input( 'Apre.ajoutcomiteexamen', array( 'type' => 'hidden', 'options' => $options['ajoutcomiteexamen'], 'value' => 'N' ) );
+//                     }
+
+
                     echo $html->tableCells(
                         array(
                             h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
                             h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ),
-                            h( Set::classicExtract( $options['typedemandeapre'], Set::classicExtract( $apre, 'Apre.typedemandeapre' ) ) ),
-                            h( Set::classicExtract( $refsapre, Set::classicExtract( $apre, 'Apre.referentapre_id' ) ) ),
+                            h( Set::enum( Set::classicExtract( $apre, 'Apre.typedemandeapre' ), $options['typedemandeapre'] ) ),
+                            h( Set::enum( Set::classicExtract( $apre, 'Apre.referentapre_id' ), $refsapre ) ),
                             h( date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ) ),
                             ( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
-
+                            h(  Set::enum( Set::classicExtract( $apre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ) ),
                             $html->viewLink(
                                 'Voir la demande APRE',
                                 array( 'controller' => 'apres', 'action' => 'view', $apre['Apre']['id'] ),
@@ -75,7 +85,11 @@
                             $html->relanceLink(
                                 'Relancer la demande APRE',
                                 array( 'controller' => 'relancesapres', 'action' => 'add', $apre['Apre']['id'] ),
-                                $permissions->check( 'apres', 'edit' ) && ( ( !empty( $piecesManquantes ) ) )
+                                $permissions->check( 'relancesapres', 'add' ) && ( ( !empty( $piecesManquantes ) ) )
+                            ),
+                            $html->ajoutcomiteLink(
+                                'Ajouter au comité',
+                                array( '#' )
                             ),
                             $html->printLink(
                                 'Imprimer la demande APRE',

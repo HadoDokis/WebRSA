@@ -161,7 +161,7 @@
         'critereapre' => 'criteresapres',
         'repddtefp' => 'repsddtefp',
         ///commission d'APRE
-        'commissionapre' => 'commissionsapre',
+        'comiteexamenapre' => 'comitesexamenapres',
         'relanceapre' => 'relancesapres',
 		// Dsp
 		'detailaccosocfam' => 'detailsaccosocfams',
