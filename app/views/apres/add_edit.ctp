@@ -252,10 +252,8 @@
             <fieldset>
                 <legend>Pièces jointes</legend>
                 <?php
-                    echo $xform->input( 'Pieceformqualif.Pieceformqualif', array( 'options' => $piecesformqualif, 'multiple' => 'checkbox', 'label' => false ) );
-                    $piecesMissForm = Set::extract( $this->data, '/Formqualif/Piecemanquante/libelle' );
-//                     debug($piecesMissForm);
-
+                    $selected = Set::extract( $this->data, '/Formqualif/Pieceformqualif/id' );
+                    echo $xform->input( 'Pieceformqualif.Pieceformqualif', array( 'options' => $piecesformqualif, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
                 ?>
             </fieldset>
         </fieldset>
@@ -287,7 +285,11 @@
             ?>
             <fieldset>
                 <legend>Pièces jointes</legend>
-                <?php echo $xform->input( 'Pieceactprof.Pieceactprof', array( 'options' => $piecesactprof, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+                <?php
+                    $selected = Set::extract( $this->data, '/Actprof/Pieceactprof/id' );
+                    echo $xform->input( 'Pieceactprof.Pieceactprof', array( 'options' => $piecesactprof, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                ?>
+                <?php  ?>
             </fieldset>
         </fieldset>
         <?php
@@ -315,7 +317,10 @@
             ?>
             <fieldset>
                 <legend>Pièces jointes</legend>
-                <?php echo $xform->input( 'Piecepermisb.Piecepermisb', array( 'options' => $piecespermisb, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+                <?php
+                    $selected = Set::extract( $this->data, '/Permisb/Piecepermisb/id' );
+                    echo $xform->input( 'Piecepermisb.Piecepermisb', array( 'options' => $piecespermisb, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                ?>
             </fieldset>
         </fieldset>
         <?php
@@ -336,7 +341,9 @@
             ?>
             <fieldset>
                 <legend>Pièces jointes</legend>
-                <?php echo $xform->input( 'Pieceamenaglogt.Pieceamenaglogt', array( 'options' => $piecesamenaglogt, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+                <?php
+                    $selected = Set::extract( $this->data, '/Amenaglogt/Pieceamenaglogt/id' );
+                    echo $xform->input( 'Pieceamenaglogt.Pieceamenaglogt', array( 'options' => $piecesamenaglogt, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) ); ?>
             </fieldset>
         </fieldset>
         <?php
@@ -358,7 +365,9 @@
             ?>
             <fieldset>
                 <legend>Pièces jointes</legend>
-                <?php echo $xform->input( 'Pieceacccreaentr.Pieceacccreaentr', array( 'options' => $piecesacccreaentr, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+                <?php
+                    $selected = Set::extract( $this->data, '/Acccreaentr/Pieceacccreaentr/id' );
+                    echo $xform->input( 'Pieceacccreaentr.Pieceacccreaentr', array( 'options' => $piecesacccreaentr, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) ); ?>
             </fieldset>
         </fieldset>
         <?php
@@ -378,7 +387,10 @@
             ?>
             <fieldset>
                 <legend>Pièces jointes</legend>
-                <?php echo $xform->input( 'Pieceacqmatprof.Pieceacqmatprof', array( 'options' => $piecesacqmatprof, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+                <?php
+                    $selected = Set::extract( $this->data, '/Acqmatprof/Pieceacqmatprof/id' );
+                    echo $xform->input( 'Pieceacqmatprof.Pieceacqmatprof', array( 'options' => $piecesacqmatprof, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                ?>
             </fieldset>
         </fieldset>
         <?php
@@ -399,12 +411,15 @@
             ?>
             <fieldset>
                 <legend>Pièces jointes</legend>
-                <?php echo $xform->input( 'Piecelocvehicinsert.Piecelocvehicinsert', array( 'options' => $pieceslocvehicinsert, 'multiple' => 'checkbox', 'label' => false ) ); ?>
+                <?php
+                    $selected = Set::extract( $this->data, '/Locvehicinsert/Piecelocvehicinsert/id' );
+                    echo $xform->input( 'Piecelocvehicinsert.Piecelocvehicinsert', array( 'options' => $pieceslocvehicinsert, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) ); ?>
             </fieldset>
         </fieldset>
         <fieldset class="aere">
             <legend>Avis technique et motivé du référent (Article 5.1 relatif au règlement de l'APRE): </legend>
-            <?php echo $xform->input(  'Apre.avistechreferent', array( 'domain' => 'apre', 'label' => false ) );?>
+            <?php
+                echo $xform->input(  'Apre.avistechreferent', array( 'domain' => 'apre', 'label' => false ) );?>
         </fieldset>
     </div>
 
