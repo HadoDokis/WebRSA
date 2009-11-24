@@ -268,6 +268,7 @@
                         else{
                             $this->data = $apre;
                         }
+//                         debug( $this->data );
                     }
 
                 }
