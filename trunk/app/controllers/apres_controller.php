@@ -164,7 +164,7 @@
             }
             else if( $this->action == 'edit' ) {
                 $apre_id = $id;
-                $apre = $this->Apre->findById( $apre_id, null, null, 1 );
+                $apre = $this->Apre->findById( $apre_id, null, null, 2 ); ///FIXME : recursivité à 2 afin d'essayer de voir les pièces manquantes des aides liées mais pas pour le moment
                 $this->assert( !empty( $apre ), 'invalidParameter' );
 
                 $personne_id = $apre['Apre']['personne_id'];
@@ -213,6 +213,7 @@
                             'Locvehicinsert' => 'Piecelocvehicinsert'
                         );
                         foreach( $tablesLiees as $model => $piecesLiees ) {
+
                             if( !empty( $this->data[$piecesLiees] ) ) {
                                 $linkedData = array(
                                     $model => array(
@@ -238,11 +239,40 @@
             }
             else{
                 if( $this->action == 'edit' ) {
-                    $this->data = $apre;
+//                 debug($apre);
+                ///FIXME: pour le moment on ne récupère que les pièces de la dernière aide enregistrée !!!
+                    $tablesLiees = array(
+                        'Formqualif' => 'Pieceformqualif',
+                        'Actprof' => 'Pieceactprof',
+                        'Permisb' => 'Piecepermisb',
+                        'Amenaglogt' => 'Pieceamenaglogt',
+                        'Acccreaentr' => 'Pieceacccreaentr',
+                        'Acqmatprof' => 'Pieceacqmatprof',
+                        'Locvehicinsert' => 'Piecelocvehicinsert'
+                    );
+                    foreach( $tablesLiees as $model => $piecesLiees ) {
+
+                        if( !empty( $apre[$model][$piecesLiees] ) ) {
+                            $linkedData = array(
+                                $model => array(
+                                    'id' => Set::classicExtract( $apre, "{$model}.id" ),
+                                ),
+                                $piecesLiees => $apre[$model][$piecesLiees]
+                            );
+
+                            $saved = $this->Apre->{$model}->{$piecesLiees}->save( $linkedData );
+                        }
+                        if( !empty( $linkedData ) ){
+                            $this->data = Set::merge( $apre, $linkedData );
+                        }
+                        else{
+                            $this->data = $apre;
+                        }
+                    }
+
                 }
             }
-//             $this->Apre->rollback(); // FIXME
-            $this->Apre->commit(); // FIXME
+            $this->Apre->commit();
 
 
             $this->set( 'personne_id', $personne_id );

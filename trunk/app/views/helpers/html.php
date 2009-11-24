@@ -781,6 +781,17 @@ class HtmlHelper extends AppHelper {
         );
     }
 
+    function ajoutcomiteLink( $title, $url ) {
+        return $this->link(
+            $this->image(
+                'icons/add.png',
+                array( 'alt' => '' )
+            ).' Ajout comité',
+            $url,
+            array( 'escape' => false, 'title' => $title )
+        );
+    }
+
     function attachLink( $title, $url, $enabled = true ){
         $content = $this->image(
             'icons/attach.png',
