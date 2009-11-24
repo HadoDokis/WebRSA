@@ -23,40 +23,40 @@
     });
 </script>
 
-<?php echo $form->create( 'Criterecomiteexamenapre', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $xform->create( 'Criterecomiteexamenapre', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
     <fieldset>
-            <?php echo $form->input( 'Criterecomiteexamenapre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+            <?php echo $xform->input( 'Criterecomiteexamenapre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 
-            <?php echo $form->input( 'Criterecomiteexamenapre.datecomite', array( 'label' => 'Filtrer par date de Comité d\'examen', 'type' => 'checkbox' ) );?>
+            <?php echo $xform->input( 'Criterecomiteexamenapre.datecomite', array( 'label' => 'Filtrer par date de Comité d\'examen', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de Comité</legend>
                 <?php
                     $datecomite_from = Set::check( $this->data, 'Criterecomiteexamenapre.datecomite_from' ) ? Set::extract( $this->data, 'Criterecomiteexamenapre.datecomite_from' ) : strtotime( '-1 week' );
                     $datecomite_to = Set::check( $this->data, 'Criterecomiteexamenapre.datecomite_to' ) ? Set::extract( $this->data, 'Criterecomiteexamenapre.datecomite_to' ) : strtotime( 'now' );
                 ?>
-                <?php echo $form->input( 'Criterecomiteexamenapre.datecomite_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_from ) );?>
-                <?php echo $form->input( 'Criterecomiteexamenapre.datecomite_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_to ) );?>
+                <?php echo $xform->input( 'Criterecomiteexamenapre.datecomite_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_from ) );?>
+                <?php echo $xform->input( 'Criterecomiteexamenapre.datecomite_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_to ) );?>
             </fieldset>
-            <?php echo $form->input( 'Criterecomiteexamenapre.heurecomite', array( 'label' => 'Filtrer par heure de Comité d\'examen', 'type' => 'checkbox' ) );?>
+            <!-- <?php echo $xform->input( 'Criterecomiteexamenapre.heurecomite', array( 'label' => 'Filtrer par heure de Comité d\'examen', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de Comité</legend>
                 <?php
                     $heurecomite_from = Set::check( $this->data, 'Criterecomiteexamenapre.heurecomite_from' ) ? Set::extract( $this->data, 'Criterecomiteexamenapre.heurecomite_from' ) : strtotime( '-1 hour' );
                     $heurecomite_to = Set::check( $this->data, 'Criterecomiteexamenapre.heurecomite_to' ) ? Set::extract( $this->data, 'Criterecomiteexamenapre.heurecomite_to' ) : strtotime( 'now' );
                 ?>
-                <?php echo $form->input( 'Criterecomiteexamenapre.heurecomite_from', array( 'label' =>  'De', 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5, 'hourRange' => array( 8, 19 ), 'selected' => $heurecomite_from ) );?>
-                <?php echo $form->input( 'Criterecomiteexamenapre.heurecomite_to', array( 'label' =>  'A ', 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5, 'hourRange' => array( 8, 19 ), 'selected' => $heurecomite_to ) );?>
-            </fieldset>
+                <?php echo $xform->input( 'Criterecomiteexamenapre.heurecomite_from', array( 'label' =>  'De', 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5, 'hourRange' => array( 8, 19 ), 'selected' => $heurecomite_from ) );?>
+                <?php echo $xform->input( 'Criterecomiteexamenapre.heurecomite_to', array( 'label' =>  'A ', 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5, 'hourRange' => array( 8, 19 ), 'selected' => $heurecomite_to ) );?>
+            </fieldset> -->
 
     </fieldset>
 
     <div class="submit noprint">
-        <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
-        <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+        <?php echo $xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+        <?php echo $xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
 
-<?php echo $form->end();?>
+<?php echo $xform->end();?>
 
 <!-- Résultats -->
 <?php if( isset( $comitesapres ) ):?>
@@ -89,8 +89,8 @@
                                 h( Set::classicExtract( $comiteapre, 'Comiteexamenapre.observationcomite' ) ),
                                 $html->viewLink(
                                     'Voir la relance',
-                                    array( 'controller' => 'comitesexamenapres', 'action' => 'view', Set::classicExtract( $comiteapre, 'Comiteexamenapre.id' ) ),
-                                    $permissions->check( 'comitesexamenapres', 'view' )
+                                    array( 'controller' => 'comitesexamenapres', 'action' => 'index', Set::classicExtract( $comiteapre, 'Comiteexamenapre.id' ) ),
+                                    $permissions->check( 'comitesexamenapres', 'index' )
                                 ),
                                 $html->editLink(
                                     'Editer la relance',
@@ -108,5 +108,16 @@
 
     <?php else:?>
         <p>Vos critères n'ont retourné aucun comité.</p>
+
     <?php endif?>
+    <?php if( $permissions->check( 'comitesexamenapres', 'add' ) ):?>
+    <ul class="actionMenu">
+        <?php
+            echo '<li>'.$html->addLink(
+                'Ajouter Comité',
+                array( 'controller' => 'comitesexamenapres', 'action' => 'add' )
+            ).' </li>';
+        ?>
+    </ul>
+    <?php endif;?>
 <?php endif?>

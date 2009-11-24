@@ -506,6 +506,17 @@ CREATE TABLE comitesexamenapres (
 );
 
 -- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Acqmatprof avec ses pièces
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE apres_comitesexamenapres (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    comiteexamenapre_id         INTEGER NOT NULL REFERENCES comitesexamenapres(id)
+);
+CREATE INDEX apres_comitesexamenapres_apre_id_idx ON apres_comitesexamenapres (apre_id);
+CREATE INDEX apres_comitesexamenapres_comiteexamenapre_id_idx ON apres_comitesexamenapres (comiteexamenapre_id);
+-- --------------------------------------------------------------------------------------------------------
 --  ....Table liée Participantscomitesexamen liée au Comite d''examen
 -- --------------------------------------------------------------------------------------------------------
 CREATE TABLE participantscomitesexamen (
@@ -518,7 +529,16 @@ CREATE TABLE participantscomitesexamen (
     numtel                      NUMERIC(10),
     mail                        VARCHAR(78)
 );
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Comites avec ses Participants
+-- --------------------------------------------------------------------------------------------------------
 
-ALTER TABLE apres ADD COLUMN ajoutcomiteexamen type_no;
-ALTER TABLE apres ADD COLUMN comiteexamenapre_id INTEGER REFERENCES comitesexamenapres(id);
-CREATE INDEX apres_comiteexamenapre_id_idx ON apres (comiteexamenapre_id);
+CREATE TABLE comitesexamenapres_participantscomitesexamen (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    comiteexamenapre_id                  INTEGER NOT NULL REFERENCES comitesexamenapres(id),
+    participantcomiteexamen_id             INTEGER NOT NULL REFERENCES participantscomitesexamen(id)
+);
+CREATE INDEX comitesexamenapres_participantscomitesexamen_comiteexamenapre_id_idx ON comitesexamenapres_participantscomitesexamen (comiteexamenapre_id);
+CREATE INDEX comitesexamenapres_participantscomitesexamen_participantcomiteexamen_id_idx ON comitesexamenapres_participantscomitesexamen (participantcomiteexamen_id);
+
+-- ALTER TABLE apres ADD COLUMN ajoutcomiteexamen type_no;
