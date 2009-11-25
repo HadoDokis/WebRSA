@@ -3,7 +3,7 @@
     {
 
         var $name = 'Comitesapres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre', 'Participantcomite', 'Apre' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre', 'Participantcomite', 'Apre', 'Referentapre' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
 
         /** ********************************************************************
@@ -12,6 +12,7 @@
 
         function beforeFilter() {
             parent::beforeFilter();
+            $this->set( 'referentapre', $this->Referentapre->find( 'list', array( 'fields' => array( 'nom' ) ) ) );
 
         }
 
@@ -40,9 +41,35 @@
         function view( $comiteapre_id = null ){
             $this->assert( valid_int( $comiteapre_id ), 'invalidParameter' );
 
-            $comiteapre = $this->Comiteapre->find( 'first', array( 'conditions' => array( 'Comiteapre.id' => $comiteapre_id ) ) );
+            $comiteapre = $this->Comiteapre->find(
+                'first',
+                array(
+                    'conditions' => array( 'Comiteapre.id' => $comiteapre_id )
+                )
+            );
+
+
+            foreach( $comiteapre['Apre'] as $key => $apre ) {
+                // Personne
+                $personne = $this->Apre->Personne->findById( $apre['personne_id'], null, null, -1 );
+                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $personne );
+
+                // Foyer
+                $foyer = $this->Apre->Personne->Foyer->findById( $personne['Personne']['foyer_id'], null, null, -1 );
+                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $foyer );
+
+                // Dossier
+                $dossier = $this->Apre->Personne->Foyer->Dossier->findById( $foyer['Foyer']['dossier_rsa_id'], null, null, -1 );
+                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $dossier );
+
+                // Adresse
+                $adresse = $this->Apre->Personne->Foyer->Adressefoyer->Adresse->findById( $foyer['Foyer']['id'], null, null, -1 );
+                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $adresse );
+            }
+
             $this->set( 'comiteapre', $comiteapre );
 // debug( $comiteapre );
+
             $participants = $this->Participantcomite->find( 'list' );
             $this->set( 'participants', $participants );
 

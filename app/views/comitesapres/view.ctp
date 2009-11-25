@@ -97,4 +97,69 @@
             </ul>
         <?php endif;?>
 <?php endif;?>
+
+<br />
+
+<?php if( isset( $comiteapre['Apre'] ) ):?>
+    <h1>Liste des APREs</h1>
+    <?php if( is_array( $comiteapre['Apre'] ) && count( $comiteapre['Apre'] ) > 0  ):?>
+        <ul class="actionMenu">
+            <?php
+                echo '<li>'.$html->editLink(
+                    'Modifier Liste APRES',
+                    array( 'controller' => 'apres_comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
+                ).' </li>';
+            ?>
+        </ul>
+    <div>
+        <table id="searchResults" class="tooltips_oupas">
+            <thead>
+                <tr>
+                    <th>N° demande RSA</th>
+                    <th>NIR</th>
+                    <th>Nom/Prénom</th>
+                    <th>Localité</th>
+                    <th>Préscripteur/Préinscripteur</th>
+                    <th>Date demande APRE</th>
+                    <th>Quota</th>
+                    <th class="action">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    foreach( $comiteapre['Apre'] as $apre ) {
+// debug($apre);
+                        echo $html->tableCells(
+                            array(
+                                h( Set::classicExtract( $apre, 'Dossier.numdemrsa' ) ),
+                                h( Set::classicExtract( $apre, 'Personne.nir' ) ),
+                                h( Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
+                                h( Set::classicExtract( $apre, 'Adresse.locaadr' ) ),
+                                h( Set::enum( Set::classicExtract( $apre, 'referentapre_id' ), $referentapre ) ),
+                                h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
+                                h( Set::classicExtract( $apre, 'quota' ) ),
+                                $html->viewLink(
+                                    'Voir les participants',
+                                    array( 'controller' => 'comitesapres', 'action' => 'index', Set::classicExtract( $apre, 'id' ) ),
+                                    $permissions->check( 'comitesapres', 'index' )
+                                )
+                            ),
+                            array( 'class' => 'odd' ),
+                            array( 'class' => 'even' )
+                        );
+                    }
+                ?>
+            </tbody>
+        </table>
+        <?php else:?>
+            <ul class="actionMenu">
+                <?php
+                    echo '<li>'.$html->editLink(
+                        'Modifier Liste APRE',
+                        array( 'controller' => 'apres_comitesapres', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
+                    ).' </li>';
+                ?>
+            </ul>
+        <?php endif;?>
+<?php endif;?>
 <div class="clearer"><hr /></div>

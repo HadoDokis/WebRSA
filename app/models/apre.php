@@ -3,6 +3,7 @@
     {
         var $name = 'Apre';
         var $actsAs = array( 'Enumerable' );
+        var $displayField = 'numeroapre';
 
         var $validate = array(
             'typedemandeapre' => array(
@@ -135,29 +136,63 @@
         *
         */
 
+        function _nbrNormalPieces() {
+            $nbNormalPieces = array();
+            $nbNormalPieces['Apre'] = $this->Pieceapre->find( 'count' );
+            foreach( $this->aidesApre as $model ) {
+                $nbNormalPieces[$model] = $this->{$model}->{'Piece'.strtolower( $model )}->find( 'count' );
+            }
+            return $nbNormalPieces;
+        }
+
+        /**
+        *
+        */
+
         function afterFind( $results, $primary = false ) {
             parent::afterFind( $results, $primary );
 //     debug($results);
             if( !empty( $results ) ) {
+
                 $isArray = true;
                 if( isset( $results['id'] ) ) {
                     $results = array( 'Apre' => array( $results ) );
                     $isArray = false;
                 }
+
+                // Nombre de pièces prévues pour l'APRE et chaque type d'aide
+                $nbNormalPieces = $this->_nbrNormalPieces();
+
                 foreach( $results as $key => $result ) {
-                    $results[$key]['Natureaide'] = array();
+                    if( !empty( $results[$key]['Apre'] ) ) {
+                        $results[$key]['Natureaide'] = array();
+                        $results[$key]['Piecemanquante'] = array();
 
-                    /// Essaie de récupération des pièces des aides liées
+                        // Nombre de pièces trouvées par-rapport au nombre de pièces prévues - Apre
+                        $nbPiecesapre = $this->AprePieceapre->find( 'count', array( 'conditions' => array( 'apre_id' => Set::classicExtract( $result, 'Apre.id' ) ) ) );
+                        $results[$key]['Piecemanquante']['Apre'] = abs( $nbPiecesapre - $nbNormalPieces['Apre'] );
 
-                    foreach( $this->aidesApre as $model ) {
-                        $results[$key]['Natureaide'][$model] = $this->{$model}->find(
-                            'count',
-                            array(
-                                'conditions' => array(
-                                    "$model.apre_id" => Set::classicExtract( $result, 'Apre.id' )
+                        /// Essaie de récupération des pièces des aides liées
+                        foreach( $this->aidesApre as $model ) {
+                            // Nombre de pièces trouvées par-rapport au nombre de pièces prévues pour chaque type d'aide
+                            $aides = $this->{$model}->find(
+                                'all',
+                                array(
+                                    'conditions' => array(
+                                        "$model.apre_id" => Set::classicExtract( $result, 'Apre.id' )
+                                    )
                                 )
-                            )
-                        );
+                            );
+
+                            // Combien d'aides liées à l'APRE sont présentes pour chaque type d'aide
+                            $results[$key]['Natureaide'][$model] = count( $aides );
+
+                            if( !empty( $aides ) ) {
+                                $results[$key]['Piecemanquante'][$model] = abs( $nbNormalPieces[$model] - count( Set::extract( $aides, '/Piece'.strtolower( $model ) ) ) );
+                            }
+                        }
+
+                        $results[$key]['Apre']['etatdossierapre'] = ( ( array_sum( $results[$key]['Piecemanquante'] ) == 0 ) ? 'COM' : 'INC' );
                     }
                 }
 
@@ -182,6 +217,45 @@
                     $this->data[$this->name][$enum] = null;
                 }
             }
+
+            return $return;
+        }
+
+        /**
+        *
+        */
+
+        function afterSave( $created ) {
+            $return = parent::afterSave( $created );
+
+            $nbNormalPieces = $this->_nbrNormalPieces();
+            $piecesmanquantes = array();
+
+            // Nombre de pièces trouvées par-rapport au nombre de pièces prévues - Apre
+            $nbPiecesapre = $this->AprePieceapre->find( 'count', array( 'conditions' => array( 'apre_id' => $this->id ) ) );
+            $piecesmanquantes['Apre'] = abs( $nbPiecesapre - $nbNormalPieces['Apre'] );
+
+            /// Essaie de récupération des pièces des aides liées
+            foreach( $this->aidesApre as $model ) {
+                // Nombre de pièces trouvées par-rapport au nombre de pièces prévues pour chaque type d'aide
+                $aides = $this->{$model}->find(
+                    'all',
+                    array(
+                        'conditions' => array(
+                            "$model.apre_id" => $this->id
+                        )
+                    )
+                );
+
+                if( !empty( $aides ) ) {
+                    $piecesmanquantes[$model] = abs( $nbNormalPieces[$model] - count( Set::extract( $aides, '/Piece'.strtolower( $model ) ) ) );
+                }
+            }
+
+            $dossiercomplet = ( ( array_sum( $piecesmanquantes ) == 0 ) ? 'COM' : 'INC' );
+
+            $this->query( "UPDATE apres SET etatdossierapre = '$dossiercomplet' WHERE id = {$this->id};" );
+//             debug( "UPDATE apres SET etatdossierapre = '$dossiercomplet' WHERE id = {$this->id};" );
 
             return $return;
         }

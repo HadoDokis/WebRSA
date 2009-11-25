@@ -62,7 +62,6 @@
 //                         echo $form->input( 'Apre.ajoutcomiteexamen', array( 'type' => 'hidden', 'options' => $options['ajoutcomiteexamen'], 'value' => 'N' ) );
 //                     }
 
-
                     echo $html->tableCells(
                         array(
                             h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
@@ -71,7 +70,7 @@
                             h( Set::enum( Set::classicExtract( $apre, 'Apre.referentapre_id' ), $refsapre ) ),
                             h( date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ) ),
                             ( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
-                            h(  Set::enum( Set::classicExtract( $apre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ) ),
+                            h( Set::enum( Set::classicExtract( $apre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ) ),
                             $html->viewLink(
                                 'Voir la demande APRE',
                                 array( 'controller' => 'apres', 'action' => 'view', $apre['Apre']['id'] ),
@@ -85,7 +84,7 @@
                             $html->relanceLink(
                                 'Relancer la demande APRE',
                                 array( 'controller' => 'relancesapres', 'action' => 'add', $apre['Apre']['id'] ),
-                                $permissions->check( 'relancesapres', 'add' ) && ( ( !empty( $piecesManquantes ) ) )
+                                $permissions->check( 'relancesapres', 'add' ) && ( $apre['Apre']['etatdossierapre'] == 'INC' )
                             ),
                             $html->ajoutcomiteLink(
                                 'Ajouter au comité',
