@@ -37,7 +37,7 @@
                 <th>Date demande APRE</th>
                 <th>Natures de la demande</th>
                 <th>Etat du dossier</th>
-                <th colspan="5" class="action">Actions</th>
+                <th colspan="4" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -85,10 +85,6 @@
                                 'Relancer la demande APRE',
                                 array( 'controller' => 'relancesapres', 'action' => 'add', $apre['Apre']['id'] ),
                                 $permissions->check( 'relancesapres', 'add' ) && ( $apre['Apre']['etatdossierapre'] == 'INC' )
-                            ),
-                            $html->ajoutcomiteLink(
-                                'Ajouter au comité',
-                                array( '#' )
                             ),
                             $html->printLink(
                                 'Imprimer la demande APRE',

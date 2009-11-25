@@ -3,9 +3,17 @@
     {
         var $name = 'Participantcomite';
         var $useTable = 'participantscomites';
-        var $actsAs = array( 'Enumerable' );
+//         var $actsAs = array( 'Enumerable' );
         var $displayField = 'nom';
         var $order = 'Participantcomite.id ASC';
+
+        var $actsAs = array(
+            'Enumerable',
+            'MultipleDisplayFields' => array(
+                'fields' => array( 'qual', 'nom', 'prenom' ),
+                'pattern' => '%s %s %s'
+            )
+        );
 
         var $hasAndBelongsToMany = array(
             'Comiteapre' => array(

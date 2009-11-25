@@ -3,7 +3,23 @@
     {
         var $name = 'Referentapre';
         var $useTable = 'referentsapre';
-        var $actsAs = array( 'Enumerable' );
+/*
+        var $actsAs = array(
+//             'Enumerable',
+            'MultipleDisplayFields' => array(
+                'fields' => array( 'qual', 'nom', 'prenom' )
+            )
+        );*/
+
+        var $displayField = 'full_name';
+
+        var $actsAs = array(
+            'MultipleDisplayFields' => array(
+                'fields' => array( 'qual', 'nom', 'prenom' ),
+                'pattern' => '%s %s %s'
+            )
+        );
+
         var $order = 'Referentapre.id ASC';
 
 

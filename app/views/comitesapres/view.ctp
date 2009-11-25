@@ -75,7 +75,7 @@
                                 h( Set::classicExtract( $participant, 'numtel' ) ),
                                 $html->viewLink(
                                     'Voir les participants',
-                                    array( 'controller' => 'comitesapres', 'action' => 'index', Set::classicExtract( $participant, 'id' ) ),
+                                    array( 'controller' => 'participantscomites', 'action' => 'index', Set::classicExtract( $participant, 'id' ) ),
                                     $permissions->check( 'comitesapres', 'index' )
                                 )
                             ),
@@ -139,8 +139,8 @@
                                 h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
                                 h( Set::classicExtract( $apre, 'quota' ) ),
                                 $html->viewLink(
-                                    'Voir les participants',
-                                    array( 'controller' => 'comitesapres', 'action' => 'index', Set::classicExtract( $apre, 'id' ) ),
+                                    'Voir les apres',
+                                    array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $apre, 'personne_id' ) ),
                                     $permissions->check( 'comitesapres', 'index' )
                                 )
                             ),

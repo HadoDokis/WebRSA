@@ -12,7 +12,7 @@
 
         function beforeFilter() {
             parent::beforeFilter();
-            $this->set( 'referentapre', $this->Referentapre->find( 'list', array( 'fields' => array( 'nom' ) ) ) );
+            $this->set( 'referentapre', $this->Referentapre->find( 'list' ) );
 
         }
 
@@ -44,10 +44,11 @@
             $comiteapre = $this->Comiteapre->find(
                 'first',
                 array(
-                    'conditions' => array( 'Comiteapre.id' => $comiteapre_id )
+                    'conditions' => array( 'Comiteapre.id' => $comiteapre_id ),
+                    'recursive' => 2
                 )
             );
-
+// debug( $comiteapre );
 
             foreach( $comiteapre['Apre'] as $key => $apre ) {
                 // Personne
