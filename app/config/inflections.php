@@ -165,6 +165,7 @@
         'comiteapre' => 'comitesapres',
         'participantcomite' => 'participantscomites',
         'relanceapre' => 'relancesapres',
+        'comiteapre_participantcomite' => 'comitesapres_participantscomites',
 		/// Dsp
 		'detaildifsoc' => 'detailsdifsocs',
 		'detailaccosocfam' => 'detailsaccosocfams',

@@ -43,22 +43,15 @@
 
 <?php if( isset( $comiteapre['Participantcomite'] ) ):?>
     <h1>Liste des participants</h1>
-    <ul class="actionMenu">
-        <?php
-            echo '<li>'.$html->editLink(
-                'Modifier Participant',
-                array( 'controller' => 'participantscomites', 'action' => 'add' )
-            ).' </li>';
-        ?>
-    </ul>
-    
-    
-    
-    <!-- <?php echo $xform->input( 'freu', array( 'label' => 'freu', 'type' => 'select', 'options' => $participants, 'multiple' => 'checkbox' ) ) ?> -->
-    
-    
-    
     <?php if( is_array( $comiteapre['Participantcomite'] ) && count( $comiteapre['Participantcomite'] ) > 0  ):?>
+        <ul class="actionMenu">
+            <?php
+                echo '<li>'.$html->editLink(
+                    'Modifier Liste des participants',
+                    array( 'controller' => 'comitesapres_participantscomites', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
+                ).' </li>';
+            ?>
+        </ul>
     <div>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
@@ -81,7 +74,7 @@
                                 h( Set::classicExtract( $participant, 'organisme' ) ),
                                 h( Set::classicExtract( $participant, 'numtel' ) ),
                                 $html->viewLink(
-                                    'Voir le comité',
+                                    'Voir les participants',
                                     array( 'controller' => 'comitesapres', 'action' => 'index', Set::classicExtract( $participant, 'id' ) ),
                                     $permissions->check( 'comitesapres', 'index' )
                                 )
@@ -93,6 +86,15 @@
                 ?>
             </tbody>
         </table>
+        <?php else:?>
+            <ul class="actionMenu">
+                <?php
+                    echo '<li>'.$html->editLink(
+                        'Modifier Participant',
+                        array( 'controller' => 'comitesapres_participantscomites', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
+                    ).' </li>';
+                ?>
+            </ul>
         <?php endif;?>
 <?php endif;?>
 <div class="clearer"><hr /></div>

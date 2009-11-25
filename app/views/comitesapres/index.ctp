@@ -108,7 +108,6 @@
 
     <?php else:?>
         <p>Vos critères n'ont retourné aucun comité.</p>
-
     <?php endif?>
     <?php if( $permissions->check( 'comitesapres', 'add' ) ):?>
     <ul class="actionMenu">
