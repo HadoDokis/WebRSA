@@ -93,6 +93,6 @@
             </tbody>
         </table>
         <?php  endif;?>
-
+    <?php endif;?>
 </div>
 <div class="clearer"><hr /></div>
