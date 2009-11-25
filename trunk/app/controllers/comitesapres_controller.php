@@ -42,7 +42,7 @@
 
             $comiteapre = $this->Comiteapre->find( 'first', array( 'conditions' => array( 'Comiteapre.id' => $comiteapre_id ) ) );
             $this->set( 'comiteapre', $comiteapre );
-
+// debug( $comiteapre );
             $participants = $this->Participantcomite->find( 'list' );
             $this->set( 'participants', $participants );
 

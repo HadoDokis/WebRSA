@@ -5,6 +5,7 @@
         var $useTable = 'participantscomites';
         var $actsAs = array( 'Enumerable' );
         var $displayField = 'nom';
+        var $order = 'Participantcomite.id ASC';
 
         var $hasAndBelongsToMany = array(
             'Comiteapre' => array(
