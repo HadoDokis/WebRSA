@@ -215,14 +215,6 @@
             <legend>Pièces jointes</legend>
             <?php
                 echo $xform->input( 'Pieceapre.Pieceapre', array( 'options' => $piecesapre, 'multiple' => 'checkbox', 'label' => false ) );
-                $piecesManquantes = Set::extract( $this->data, '/Relanceapre/Piecemanquante/libelle' );
-
-                if( !empty( $piecesManquantes ) ){
-                    echo $form->input( 'Apre.etatdossierapre', array( 'type' => 'hidden', 'options' => $options['etatdossierapre'], 'value' => 'INC' ) );
-                }
-                else{
-                    echo $form->input( 'Apre.etatdossierapre', array( 'type' => 'hidden', 'options' => $options['etatdossierapre'], 'value' => 'COM' ) );
-                }
             ?>
         </fieldset>
 

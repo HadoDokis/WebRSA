@@ -153,7 +153,7 @@
             parent::afterFind( $results, $primary );
 //     debug($results);
             if( !empty( $results ) ) {
-
+// debug( $results );
                 $isArray = true;
                 if( isset( $results['id'] ) ) {
                     $results = array( 'Apre' => array( $results ) );
@@ -164,7 +164,7 @@
                 $nbNormalPieces = $this->_nbrNormalPieces();
 
                 foreach( $results as $key => $result ) {
-                    if( !empty( $results[$key]['Apre'] ) ) {
+                    if( !empty( $result['Apre'] ) ) {
                         $results[$key]['Natureaide'] = array();
                         $results[$key]['Piecemanquante'] = array();
 
