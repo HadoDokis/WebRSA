@@ -50,6 +50,9 @@ msgstr "Secteur professionnel en lien avec la demande "
 
 msgid "Apre.ajoutcomiteexamen"
 msgstr "Ajouter comité examen "
+
+msgid "Apre.eligibiliteapre"
+msgstr "Eligibilité de l'APRE"
 ###############################################################################
 # Enum Referentapre.spe
 ###############################################################################
@@ -310,6 +313,14 @@ msgstr "Complet"
 msgid "ENUM::ETATDOSSIERAPRE::INC"
 msgstr "Incomplet"
 
+###############################################################################
+# Enum Apre.eligibiliteapre
+###############################################################################
+msgid "ENUM::ELIGIBILITEAPRE::N"
+msgstr "Non éligible"
+
+msgid "ENUM::ELIGIBILITEAPRE::O"
+msgstr "Eligible"
 ###############################################################################
 # Enum Actprof.typecontratact
 ###############################################################################
