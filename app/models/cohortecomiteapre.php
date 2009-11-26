@@ -1,4 +1,4 @@
-<?php 
+<?php
     class Cohortecomiteapre extends AppModel
     {
         var $name = 'Cohortescomitesapres';
@@ -19,6 +19,10 @@
                 }
             }
 
+            /// Critères sur le Comité - intitulé du comité
+            if( isset( $criterescomite['Cohortecomiteapre']['id'] ) && !empty( $criterescomite['Cohortecomiteapre']['id'] ) ) {
+				$conditions['Comiteapre.id'] = $criterescomite['Cohortecomiteapre']['id'];
+            }
 
             /// Critères sur le Comité - date du comité
             if( isset( $criterescomite['Cohortecomiteapre']['datecomite'] ) && !empty( $criterescomite['Cohortecomiteapre']['datecomite'] ) ) {
@@ -60,7 +64,12 @@
                     '"Personne"."nir"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."codepos"',
+                    '"Apre"."id"',
                     '"Apre"."datedemandeapre"',
+                    '"Apre"."statutapre"',
+//                     '"Apre"."comite_id"',
+//                     '"Apre"."montantdemande"',
+//                     '"Apre"."montantattribue"',
                 ),
                 'recursive' => -1,
                 'joins' => array(
