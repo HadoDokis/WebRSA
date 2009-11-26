@@ -16,7 +16,7 @@
         <p class="error">Impossible d'ajouter un contrat d'insertion lorsqu'il n'existe pas d'orientation.</p>
 
     <?php elseif( !empty( $orientstruct ) && empty( $referents ) ):?>
-        <p class="error">Impossible d'ajouter un contrat d'insertion lorsqu'il n'existe pas de référent lié à la structure d'orientation <?php echo '(' .$struct. ')';?>.</p>
+        <p class="error">Impossible d'ajouter un contrat d'insertion lorsqu'il n'existe pas de référent lié à la structure d'orientation <?php echo '(' .$sr. ')';?>.</p>
     <?php else:?>
         <?php if( empty( $contratsinsertion ) ):?>
             <p class="notice">Cette personne ne possède pas encore de contrat d'insertion.</p>

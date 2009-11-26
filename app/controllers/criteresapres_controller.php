@@ -36,6 +36,10 @@
         }
         //---------------------------------------------------------------------
 
+        function eligible() {
+            $this->_index( 'Critereapre::eligible' );
+        }
+        //---------------------------------------------------------------------
 
         function _index( $etatApre = null ){
             if( Configure::read( 'CG.cantons' ) ) {
@@ -70,6 +74,10 @@
                 case 'Critereapre::incomplete':
                     $this->set( 'pageTitle', 'APREs incomplètes' );
                     $this->render( $this->action, null, 'formulaire' );
+                    break;
+                case 'Critereapre::eligible':
+                    $this->set( 'pageTitle', 'Eligibilite des APREs' );
+                    $this->render( $this->action, null, 'visualisation' );
                     break;
             }
         }

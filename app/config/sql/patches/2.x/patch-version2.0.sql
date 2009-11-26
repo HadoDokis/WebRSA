@@ -117,7 +117,7 @@ CREATE TYPE type_typecontrat AS ENUM ( 'CDI', 'CDD', 'CON', 'AUT' );
 CREATE TABLE apres (
     id                              SERIAL NOT NULL PRIMARY KEY,
     personne_id                     INTEGER NOT NULL REFERENCES personnes(id),
-    referentapre_id                 INTEGER NOT NULL REFERENCES referentsapre(id),
+    referentapre_id                 INTEGER REFERENCES referentsapre(id),
     numeroapre                      VARCHAR(16),
     typedemandeapre                 type_typedemandeapre DEFAULT NULL,
     datedemandeapre                 DATE,

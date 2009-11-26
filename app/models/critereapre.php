@@ -18,6 +18,9 @@
                 if( $etatApre == 'Critereapre::incomplete' ) {
                     $conditions[] = 'Apre.etatdossierapre = \'INC\'';
                 }
+                else if( $etatApre == 'Critereapre::eligible'  ) {
+//                     $conditions[] = 'Apre.etatdossierapre = \'COM\'';
+                }
             }
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
@@ -124,7 +127,9 @@
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."codepos"',
-                    '"Adresse"."numcomptt"'
+                    '"Adresse"."numcomptt"',
+//                     '"Relanceapre"."daterelance"',
+//                     '"Comiteapre"."datecomite"',
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -135,6 +140,27 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Personne.id = Apre.personne_id' )
                     ),
+//                     array(
+//                         'table'      => 'apres_comitesapres',
+//                         'alias'      => 'ApreComiteapre',
+//                         'type'       => 'INNER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'comitesapres',
+//                         'alias'      => 'Comiteapre',
+//                         'type'       => 'INNER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'ApreComiteapre.comiteapre_id = Comiteapre.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'relancesapres',
+//                         'alias'      => 'Relanceapre',
+//                         'type'       => 'INNER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Relanceapre.apre_id = Apre.id' )
+//                     ),
                     array(
                         'table'      => 'prestations',
                         'alias'      => 'Prestation',
