@@ -541,4 +541,7 @@ CREATE TABLE comitesapres_participantscomites (
 CREATE INDEX comitesapres_participantscomites_comiteapre_id_idx ON comitesapres_participantscomites (comiteapre_id);
 CREATE INDEX comitesapres_participantscomites_participantcomite_id_idx ON comitesapres_participantscomites (participantcomite_id);
 
--- ALTER TABLE apres ADD COLUMN ajoutcomiteexamen type_no;
+-- --------------------------------------------------------------------------------------------------------
+--------------- Ajout du 26/11/2009 à 10h02 ------------------
+--------------------------------------------------------------------------------------------------------
+ALTER TABLE apres ADD COLUMN eligibiliteapre type_no;
