@@ -47,9 +47,6 @@
             $conditions = array(
             );
 
-            /// Critères
-            $conditions[] = 'Comiteapre.id IS NOT NULL';
-
             /// Critères sur le Comité - date du comité
             if( isset( $criterescomite['Comiteapre']['datecomite'] ) && !empty( $criterescomite['Comiteapre']['datecomite'] ) ) {
                 $valid_from = ( valid_int( $criterescomite['Comiteapre']['datecomite_from']['year'] ) && valid_int( $criterescomite['Comiteapre']['datecomite_from']['month'] ) && valid_int( $criterescomite['Comiteapre']['datecomite_from']['day'] ) );
@@ -78,9 +75,88 @@
                     '"Comiteapre"."heurecomite"',
                     '"Comiteapre"."lieucomite"',
                     '"Comiteapre"."intitulecomite"',
-                    '"Comiteapre"."observationcomite"'
+                    '"Comiteapre"."observationcomite"',
+//                     '"Dossier"."numdemrsa"',
+//                     '"Dossier"."matricule"',
+//                     '"Personne"."qual"',
+//                     '"Personne"."nom"',
+//                     '"Personne"."prenom"',
+//                     '"Personne"."dtnai"',
+//                     '"Personne"."nir"',
+//                     '"Adresse"."locaadr"',
+//                     '"Adresse"."codepos"',
+//                     '"Apre"."datedemandeapre"',
                 ),
                 'recursive' => -1,
+                /*'joins' => array(
+                    array(
+                        'table'      => 'apres_comitesapres',
+                        'alias'      => 'ApreComiteapre',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'ApreComiteapre.comiteapre_id = Comiteapre.id' )
+                    ),
+                    array(
+                        'table'      => 'apres',
+                        'alias'      => 'Apre',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
+                    ),
+//                     array(
+//                         'table'      => 'relancesapres',
+//                         'alias'      => 'Relanceapre',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Relanceapre.apre_id = Apre.id' )
+//                     ),
+                    array(
+                        'table'      => 'personnes',
+                        'alias'      => 'Personne',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.id = Apre.personne_id' )
+                    ),
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'dossiers_rsa',
+                        'alias'      => 'Dossier',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'prestations',
+                        'alias'      => 'Prestation',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Personne.id = Prestation.personne_id',
+                            'Prestation.natprest = \'RSA\'',
+                            '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+                        )
+                    ),
+                    array(
+                        'table'      => 'adresses_foyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    )
+                ),*/
                 'order' => array( '"Comiteapre"."datecomite" ASC' ),
                 'conditions' => $conditions
             );

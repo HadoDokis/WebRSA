@@ -1,7 +1,7 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Comité examen APRE';?>
 
-<h1>Recherche de Comité</h1>
+<h1>Recherche de Comité d'examen</h1>
 
 <?php
     if( is_array( $this->data ) ) {
@@ -68,11 +68,10 @@
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
+                    <th>Intitulé du comité</th>
+                    <th>Lieu du comité</th>
                     <th>Date du comité</th>
                     <th>Heure du comité</th>
-                    <th>Lieu du comité</th>
-                    <th>Intitulé du comité</th>
-                    <th>Observations du comité</th>
                     <th colspan="3" class="action">Actions</th>
                 </tr>
             </thead>
@@ -82,20 +81,24 @@
 
                         echo $html->tableCells(
                             array(
+                                h( Set::classicExtract( $comiteapre, 'Comiteapre.intitulecomite' ) ),
+                                h( Set::classicExtract( $comiteapre, 'Comiteapre.lieucomite' ) ),
                                 h( date_short( Set::classicExtract( $comiteapre, 'Comiteapre.datecomite' ) ) ),
                                 h( $locale->date( 'Time::short', Set::classicExtract( $comiteapre, 'Comiteapre.heurecomite' ) ) ),
-                                h( Set::classicExtract( $comiteapre, 'Comiteapre.lieucomite' ) ),
-                                h( Set::classicExtract( $comiteapre, 'Comiteapre.intitulecomite' ) ),
-                                h( Set::classicExtract( $comiteapre, 'Comiteapre.observationcomite' ) ),
                                 $html->viewLink(
                                     'Voir le comité',
                                     array( 'controller' => 'comitesapres', 'action' => 'view', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
                                     $permissions->check( 'comitesapres', 'index' )
                                 ),
-                                $html->editLink(
-                                    'Editer la relance',
+                                $html->decisionsApreLink(
+                                    'Décision',
                                     array( 'controller' => 'comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
                                     $permissions->check( 'comitesapres', 'edit' )
+                                ),
+                                $html->notificationsApreLink(
+                                    'Notifier la décision',
+                                    array( 'controller' => 'gedooos', 'action' => 'notifApre', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+                                    $permissions->check( 'gedooos', 'notifApre' )
                                 ),
                             ),
                             array( 'class' => 'odd' ),

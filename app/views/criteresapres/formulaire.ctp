@@ -52,48 +52,47 @@
 
 ?>
 
-<?php /*echo $form->create( 'Critereapre', array( 'type' => 'post', 'action' => '/formulaire/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );*/
-    echo $form->create( 'Critereapre', array( 'url'=> Router::url( null, true ), 'id' => 'Critereapre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php /*echo $xform->create( 'Critereapre', array( 'type' => 'post', 'action' => '/formulaire/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );*/
+    echo $xform->create( 'Critereapre', array( 'url'=> Router::url( null, true ), 'id' => 'Critereapre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
         <legend>Recherche par personne</legend>
-        <?php echo $form->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Filtre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
+        <?php echo $xform->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
+        <?php echo $xform->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+        <?php echo $xform->input( 'Filtre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
     </fieldset>
     <fieldset>
         <legend>Recherche par demande APRE</legend>
-            <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-            <?php echo $form->input( 'Filtre.datedemandeapre', array( 'label' => 'Filtrer par date de demande APRE', 'type' => 'checkbox' ) );?>
+            <?php echo $xform->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+            <?php echo $xform->input( 'Filtre.datedemandeapre', array( 'label' => 'Filtrer par date de demande APRE', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de la saisie de la demande</legend>
                 <?php
                     $datedemandeapre_from = Set::check( $this->data, 'Filtre.datedemandeapre_from' ) ? Set::extract( $this->data, 'Filtre.datedemandeapre_from' ) : strtotime( '-1 week' );
                     $datedemandeapre_to = Set::check( $this->data, 'Filtre.datedemandeapre_to' ) ? Set::extract( $this->data, 'Filtre.datedemandeapre_to' ) : strtotime( 'now' );
                 ?>
-                <?php echo $form->input( 'Filtre.datedemandeapre_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_from ) );?>
-                <?php echo $form->input( 'Filtre.datedemandeapre_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
+                <?php echo $xform->input( 'Filtre.datedemandeapre_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_from ) );?>
+                <?php echo $xform->input( 'Filtre.datedemandeapre_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
             </fieldset>
 
             <?php echo $xform->enum( 'Filtre.etatdossierapre', array(  'label' => 'Etat du dossier APRE', 'options' => $options['etatdossierapre'] ) );?>
             <?php echo $xform->enum( 'Filtre.typedemandeapre', array(  'label' => 'Type de demande', 'options' => $options['typedemandeapre'] ) );?>
-            <?php echo $xform->enum( 'Filtre.typedemandeapre', array(  'label' => 'Type de demande', 'options' => $options['typedemandeapre'] ) );?>
             <?php echo $xform->enum( 'Filtre.activitebeneficiaire', array(  'label' => 'Activité du bénéficiaire', 'options' => $options['activitebeneficiaire'] ) );?>
             <?php echo $xform->enum( 'Filtre.natureaidesapres', array(  'label' => 'Nature de l\'aide', 'options' => $natureAidesApres, 'empty' => true ) );?>
-            <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-            <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+            <?php echo $xform->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+            <?php echo $xform->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
             <?php
                 if( Configure::read( 'CG.cantons' ) ) {
-                    echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+                    echo $xform->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
                 }
             ?>
     </fieldset>
 
     <div class="submit noprint">
-        <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
-        <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+        <?php echo $xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+        <?php echo $xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
 
-<?php echo $form->end();?>
+<?php echo $xform->end();?>
 
 <!-- Résultats -->
 <?php if( isset( $apres ) ):?>
