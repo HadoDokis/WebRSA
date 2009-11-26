@@ -28,10 +28,11 @@
                 $comitesapres['limit'] = 10;
                 $this->paginate = $comitesapres;
                 $comitesapres = $this->paginate( 'Comiteapre' );
-
+// debug($comitesapres);
                 $this->Dossier->commit();
                 $this->set( 'comitesapres', $comitesapres );
             }
+
         }
 
         /** ********************************************************************
@@ -48,7 +49,6 @@
                     'recursive' => 2
                 )
             );
-// debug( $comiteapre );
 
             foreach( $comiteapre['Apre'] as $key => $apre ) {
                 // Personne

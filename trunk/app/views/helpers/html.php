@@ -900,6 +900,49 @@ class HtmlHelper extends AppHelper {
         }
     }
 
+    /**
+    **  Liens nécessaires pour les décisions et notification de l'APRE
+    **/
+    //Lien pour les notifications d'APRE
+    function notificationsApreLink( $title, $url, $enabled = true ){
+        $content = $this->image(
+            'icons/application_view_list.png',
+            array( 'alt' => '' )
+        ).' Notifications';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
+
+    //Lien pour les décisions d'APRE
+    function decisionsApreLink( $title, $url, $enabled = true ){
+        $content = $this->image(
+            'icons/page_attach.png',
+            array( 'alt' => '' )
+        ).' Décisions';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
+    /**
+    **
+    **/
     ///Boutons à utiliser pour les détails des indus
     function remiseLink( $title, $url, $enabled = true ) {
         $content = $this->image(

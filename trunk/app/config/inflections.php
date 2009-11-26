@@ -167,6 +167,7 @@
         'relanceapre' => 'relancesapres',
         'comiteapre_participantcomite' => 'comitesapres_participantscomites',
         'apre_comiteapre' => 'apres_comitesapres',
+        'cohortecomiteapre' => 'cohortescomitesapres',
 		/// Dsp
 		'detaildifsoc' => 'detailsdifsocs',
 		'detailaccosocfam' => 'detailsaccosocfams',

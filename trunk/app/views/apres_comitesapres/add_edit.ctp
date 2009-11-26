@@ -17,7 +17,7 @@
     <?php echo $xform->create( 'ApreComiteapre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) ); ?>
         <div class="aere">
             <fieldset>
-                <legend>APREs à traiter furant le comité</legend>
+                <legend>APREs à traiter durant le comité</legend>
                 <?php echo $xform->input( 'Comiteapre.id', array( 'label' => false, 'type' => 'hidden' ) ) ;?>
                 <?php echo $xform->input( 'Apre.Apre', array( 'label' =>  false, 'type' => 'select', 'options' => $apre, 'multiple' => 'checkbox' ) );?>
             </fieldset>
