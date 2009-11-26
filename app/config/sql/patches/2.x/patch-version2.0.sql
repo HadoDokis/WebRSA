@@ -545,3 +545,6 @@ CREATE INDEX comitesapres_participantscomites_participantcomite_id_idx ON comite
 --------------- Ajout du 26/11/2009 à 10h02 ------------------
 --------------------------------------------------------------------------------------------------------
 ALTER TABLE apres ADD COLUMN eligibiliteapre type_no;
+
+ALTER TABLE apres ADD COLUMN mtforfait DECIMAL (10, 2) DEFAULT NULL;
+ALTER TABLE apres ADD COLUMN nenfants INTEGER DEFAULT NULL;
