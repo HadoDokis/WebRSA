@@ -10,20 +10,6 @@ SET default_with_oids = false;
 -- *****************************************************************************
 -- INFO: version actuelle: rSa_Echange_Instruction_v20091112.xls -> VIRS0203 IRSA-v4
 -- *****************************************************************************
--- DROP TYPE type_booleannumber;
--- DROP TYPE type_no;
--- DROP TYPE type_nos;
--- DROP TYPE type_nov;
--- DROP TYPE type_sitpersdemrsa;
--- DROP TYPE type_nivetu;
--- DROP TYPE type_nivdipmaxobt;
--- DROP TYPE type_hispro;
--- DROP TYPE type_cessderact;
--- DROP TYPE type_duractdomi;
--- DROP TYPE type_inscdememploi;
--- DROP TYPE type_accoemploi;
--- DROP TYPE type_natlog;
--- DROP TYPE type_demarlog;
 
 CREATE TYPE type_booleannumber AS ENUM ( '0', '1' );
 CREATE TYPE type_no AS ENUM ( 'N', 'O' );
@@ -93,19 +79,6 @@ CREATE TABLE dsps (
     demarlog				type_demarlog DEFAULT NULL
 );
 CREATE UNIQUE INDEX dsps_personne_id_idx ON dsps (personne_id);
-
-/*
-	0-n
-		- SituationSociale
-			* DetailDifficulteSituationSociale
-			* DetailAccompagnementSocialFamilial
-			* DetailAccompagnementSocialIndividuel
-			* DetailDifficulteDisponibilite
-		- Mobilite
-			* DetailMobilite
-		- DifficulteLogement
-			* DetailDifficulteLogement
-*/
 
 -- -----------------------------------------------------------------------------
 
@@ -255,3 +228,82 @@ INSERT INTO calculsdroitsrsa ( personne_id, toppersdrodevorsa, mtpersressmenrsa,
       WHERE prestations.natprest = 'RSA' AND prestations.rolepers IN ( 'DEM', 'CJT' )
       GROUP BY prestations.personne_id, prestations.toppersdrodevorsa, ressources.mtpersressmenrsa, ressourcesmensuelles.ressource_id;
 
+-- --------------------------------------------------------------------------------------------------------
+-- Modifications / ajouts de tables -> TODO: INDEXES
+-- --------------------------------------------------------------------------------------------------------
+
+-- Foyers
+ALTER TABLE foyers ADD COLUMN mtestrsa NUMERIC(9,2) DEFAULT NULL;
+
+-- --------------------------------------------------------------------------------------------------------
+
+-- Suivis instruction
+ALTER TABLE suivisinstruction ADD COLUMN suiirsa CHAR(2) DEFAULT NULL;
+-- TODO: récupération des données + suppression de la colonne etatirsa
+
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE orientations (
+    id      		SERIAL NOT NULL PRIMARY KEY,
+	personne_id     INTEGER NOT NULL REFERENCES personnes(id),
+	raisocorgorie	VARCHAR(60) DEFAULT NULL,
+	numvoie			VARCHAR(6) DEFAULT NULL,
+	typevoie		VARCHAR(4)  DEFAULT NULL,
+	nomvoie			VARCHAR(25) DEFAULT NULL,
+	complideadr		VARCHAR(38) DEFAULT NULL,
+	compladr		VARCHAR(26) DEFAULT NULL,
+	lieudist		VARCHAR(32) DEFAULT NULL,
+	codepos			VARCHAR(5) DEFAULT NULL,
+	locaadr			VARCHAR(26) DEFAULT NULL,
+	numtelorgorie	VARCHAR(10) DEFAULT NULL,
+	dtrvorgorie		DATE DEFAULT NULL,
+	hrrvorgorie		TIME DEFAULT NULL,
+	libadrrvorgorie	VARCHAR(160) DEFAULT NULL,
+	numtelrvorgorie	VARCHAR(10) DEFAULT NULL
+);
+CREATE UNIQUE INDEX orientations_personne_id_idx ON orientations (personne_id);
+
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TYPE type_natparco AS ENUM ( 'AS', 'PP', 'PS' );
+CREATE TYPE type_motimodparco AS ENUM ( 'CL', 'EA' );
+
+CREATE TABLE parcours (
+    id      			SERIAL NOT NULL PRIMARY KEY,
+	personne_id     	INTEGER NOT NULL REFERENCES personnes(id),
+	natparcocal			type_natparco DEFAULT NULL,
+	natparcomod			type_natparco DEFAULT NULL,
+	toprefuparco		type_booleannumber DEFAULT NULL,
+	motimodparco		type_motimodparco DEFAULT NULL,
+	raisocorgdeciorie	VARCHAR(60) DEFAULT NULL,
+	numvoie				VARCHAR(6) DEFAULT NULL,
+	typevoie			VARCHAR(4) DEFAULT NULL,
+	nomvoie				VARCHAR(25) DEFAULT NULL,
+	complideadr			VARCHAR(38) DEFAULT NULL,
+	compladr			VARCHAR(26) DEFAULT NULL,
+	lieudist			VARCHAR(32) DEFAULT NULL,
+	codepos				VARCHAR(5) DEFAULT NULL,
+	locaadr				VARCHAR(26) DEFAULT NULL,
+	numtelorgdeciorie	VARCHAR(10) DEFAULT NULL,
+	dtrvorgdeciorie		DATE DEFAULT NULL,
+	hrrvorgdeciorie		TIME DEFAULT NULL,
+	libadrrvorgdeciorie	VARCHAR(160) DEFAULT NULL,
+	numtelrvorgdeciorie	VARCHAR(10) DEFAULT NULL
+);
+CREATE UNIQUE INDEX parcours_personne_id_idx ON parcours (personne_id);
+
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TYPE type_sitperssocpro AS ENUM ( 'AF', 'EF', 'RE' );
+
+CREATE TABLE suivisappuisorientation (
+    id      		SERIAL NOT NULL PRIMARY KEY,
+	personne_id     INTEGER NOT NULL REFERENCES personnes(id),
+	topoblsocpro	type_booleannumber DEFAULT NULL,
+	topsouhsocpro	type_booleannumber DEFAULT NULL,
+	sitperssocpro	type_sitperssocpro DEFAULT NULL,
+	dtenrsocpro		DATE DEFAULT NULL,
+	dtenrparco		DATE DEFAULT NULL,
+	dtenrorie		DATE DEFAULT NULL
+);
+CREATE UNIQUE INDEX suivisappuisorientation_personne_id_idx ON suivisappuisorientation (personne_id);
