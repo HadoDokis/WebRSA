@@ -7,19 +7,23 @@
 
         var $enumFields = array(
             'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
-            'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' )
+            'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' ),
+            'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' )
         );
 
         function search( $etatApre, $mesCodesInsee, $filtre_zone_geo, $criteresapres, $lockedDossiers ) {
             /// Conditions de base
-            $conditions = array();
+            $conditions = array(
+            );
 
             if( !empty( $etatApre ) ) {
-                if( $etatApre == 'Critereapre::incomplete' ) {
+                if( $etatApre == 'Critereapre::all' ) {
+                }
+                else if( $etatApre == 'Critereapre::incomplete' ) {
                     $conditions[] = 'Apre.etatdossierapre = \'INC\'';
                 }
                 else if( $etatApre == 'Critereapre::eligible'  ) {
-//                     $conditions[] = 'Apre.etatdossierapre = \'COM\'';
+//                     $conditions[] = 'Contratinsertion.personne_id IS NOT NULL';
                 }
             }
             /// Filtre zone géographique
@@ -39,6 +43,8 @@
             $numcomptt = Set::extract( $criteresapres, 'Filtre.numcomptt' );
             $nir = Set::extract( $criteresapres, 'Filtre.nir' );
             $typedemandeapre = Set::extract( $criteresapres, 'Filtre.typedemandeapre' );
+            $etatdossierapre = Set::extract( $criteresapres, 'Filtre.etatdossierapre' );
+            $eligibiliteapre = Set::extract( $criteresapres, 'Filtre.eligibiliteapre' );
             $activitebeneficiaire = Set::extract( $criteresapres, 'Filtre.activitebeneficiaire' );
             $natureaidesapres = Set::extract( $criteresapres, 'Filtre.natureaidesapres' );
 
@@ -92,6 +98,16 @@
                 $conditions[] = 'Apre.activitebeneficiaire = \''.Sanitize::clean( $activitebeneficiaire ).'\'';
             }
 
+            //Etat du dossier apre
+            if( !empty( $etatdossierapre ) ) {
+                $conditions[] = 'Apre.etatdossierapre = \''.Sanitize::clean( $etatdossierapre ).'\'';
+            }
+
+            //Eligibilité du dossier apre
+            if( !empty( $eligibiliteapre ) ) {
+                $conditions[] = 'Apre.eligibiliteapre = \''.Sanitize::clean( $eligibiliteapre ).'\'';
+            }
+
             //Nature de l'aide
             if( !empty( $natureaidesapres ) ) {
                 $table = Inflector::tableize( $natureaidesapres );
@@ -140,27 +156,36 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Personne.id = Apre.personne_id' )
                     ),
+                    array(
+                        'table'      => 'contratsinsertion',
+                        'alias'      => 'Contratinsertion',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Contratinsertion.personne_id = Personne.id'
+                        )
+                    ),
 //                     array(
 //                         'table'      => 'apres_comitesapres',
 //                         'alias'      => 'ApreComiteapre',
-//                         'type'       => 'INNER',
+//                         'type'       => 'LEFT OUTER',
 //                         'foreignKey' => false,
 //                         'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
 //                     ),
 //                     array(
 //                         'table'      => 'comitesapres',
 //                         'alias'      => 'Comiteapre',
-//                         'type'       => 'INNER',
+//                         'type'       => 'LEFT OUTER',
 //                         'foreignKey' => false,
 //                         'conditions' => array( 'ApreComiteapre.comiteapre_id = Comiteapre.id' )
 //                     ),
-//                     array(
-//                         'table'      => 'relancesapres',
-//                         'alias'      => 'Relanceapre',
-//                         'type'       => 'INNER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'Relanceapre.apre_id = Apre.id' )
-//                     ),
+                    array(
+                        'table'      => 'relancesapres',
+                        'alias'      => 'Relanceapre',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Relanceapre.apre_id = Apre.id' )
+                    ),
                     array(
                         'table'      => 'prestations',
                         'alias'      => 'Prestation',
