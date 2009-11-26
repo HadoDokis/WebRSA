@@ -59,14 +59,14 @@
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
+                    <th><?php echo $paginator->sort( 'N° demande RSA', 'Dossier.numdemrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'N° CAF/MSA', 'Dossier.matricule' );?></th>
-                    <th><?php echo $paginator->sort( 'Ville', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de la demande RSA', 'Dossier.dtdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.decisionpdo_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.datedecisionpdo' );?></th>
-                    <th><?php echo $paginator->sort( 'Motif', 'Propopdo.motifpdo' );?></th>
+                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
+                    <th>Décision comité examen</th>
+                    <th><?php echo $paginator->sort( 'Date de décision comité', 'Comiteapre.datecomite' );?></th>
+                    <th>Montant attribué</th>
+                    <th>Observations</th>
 
                     <th class="action">Action</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
@@ -96,17 +96,17 @@
 
                     echo $html->tableCells(
                         array(
+                            h( Set::extract( $comite, 'Dossier.numdemrsa' ) ),
                             h( $comite['Personne']['nom'].' '.$comite['Personne']['prenom'] ),
-                            h( Set::extract( $comite, 'Dossier.matricule' ) ),
                             h( Set::extract( $comite, 'Adresse.locaadr' ) ),
-                            h( date_short( Set::extract( $comite, 'Dossier.dtdemrsa' ) ) ),
-                            h( value( $typepdo, Set::extract( 'Propopdo.typepdo_id', $comite ) ) ),
-                            h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo_id', $comite ) ) ),
-                            h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $comite ) ) ),
-                            h( value( $motifpdo, Set::extract( 'Propopdo.motifpdo', $comite ) ) ),
-                            $html->viewLink(
-                                'Voir le contrat « '.$title.' »',
-                                array( 'controller' => 'dossierspdo', 'action' => 'index', $comite['Dossier']['id'] )
+                            h( date_short( Set::extract( $comite, 'Apre.datedemandeapre' ) ) ),
+                            h( value( $typepdo, Set::extract( 'Comiteapre.decision', $comite ) ) ),
+                            h( date_short( Set::extract( 'Comiteapre.datecomite', $comite ) ) ),
+                            h( Set::extract( 'Comiteapre.montantattribue', $comite ) ),
+                            h( Set::extract( 'Comiteapre.observationcomite', $comite ) ),
+                            $html->printLink(
+                                'Imprimer',
+                                array( 'controller' => 'gedooos', 'action' => 'index', $comite['Dossier']['id'] )
                             ),
                             array( $innerTable, array( 'class' => 'innerTableCell' ) )
                         ),
