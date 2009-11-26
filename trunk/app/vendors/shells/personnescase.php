@@ -1,31 +1,31 @@
 <?php
 	// http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-1.TXT
 
-    function replace_accents( $string ) {
-        $accents = array(
-			'[âàÂÀ]',
-			'[çÇ]',
-			'[éêèëÉÊÈË]',
-			'[îïÎÏ]',
-			'[ôöÔÖ]',
-			'[ûùÛÙ]'
-		);
-
-        $replace = array(
-			'a',
-			'c',
-			'e',
-			'i',
-			'o',
-			'u'
-		);
-
-        foreach( $accents as $key => $accent ) {
-            $string = mb_ereg_replace( $accent, $replace[$key], $string );
-        }
-
-        return $string;
-    }
+//     function replace_accents( $string ) {
+//         $accents = array(
+// 			'[âàÂÀ]',
+// 			'[çÇ]',
+// 			'[éêèëÉÊÈË]',
+// 			'[îïÎÏ]',
+// 			'[ôöÔÖ]',
+// 			'[ûùÛÙ]'
+// 		);
+//
+//         $replace = array(
+// 			'a',
+// 			'c',
+// 			'e',
+// 			'i',
+// 			'o',
+// 			'u'
+// 		);
+//
+//         foreach( $accents as $key => $accent ) {
+//             $string = mb_ereg_replace( $accent, $replace[$key], $string );
+//         }
+//
+//         return $string;
+//     }
 
 	//echo strtoupper( replace_accents( $result['nom'].' '.$result['prenom']."\n" ) );
 
