@@ -34,7 +34,7 @@
         *** *******************************************************************/
 
         function _index( $avisComite = null ){
-			$this->set( 'comitesapre', $this->Comiteapre->find( 'list' ) );
+            $this->set( 'comitesapre', $this->Comiteapre->find( 'list' ) );
 
             if( !empty( $this->data ) ) {
                 $this->Dossier->begin(); // Pour les jetons

@@ -21,7 +21,7 @@
 
             /// Critères sur le Comité - intitulé du comité
             if( isset( $criterescomite['Cohortecomiteapre']['id'] ) && !empty( $criterescomite['Cohortecomiteapre']['id'] ) ) {
-				$conditions['Comiteapre.id'] = $criterescomite['Cohortecomiteapre']['id'];
+                $conditions['Comiteapre.id'] = $criterescomite['Cohortecomiteapre']['id'];
             }
 
             /// Critères sur le Comité - date du comité
