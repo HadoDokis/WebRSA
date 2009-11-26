@@ -112,6 +112,9 @@
                                         <?php if( $permissions->check( 'criteresapres', 'index' ) ): ?>
                                             <li><?php echo $html->link( 'APREs incomplètes', array( 'controller' => 'criteresapres', 'action' => 'incomplete' ) );?></li>
                                         <?php endif;?>
+                                        <?php if( $permissions->check( 'criteresapres', 'index' ) ): ?>
+                                            <li><?php echo $html->link( 'Eligibilité des APREs', array( 'controller' => 'criteresapres', 'action' => 'eligible' ) );?></li>
+                                        <?php endif;?>
                                     </ul>
                                 </li>
                         <?php endif;?>

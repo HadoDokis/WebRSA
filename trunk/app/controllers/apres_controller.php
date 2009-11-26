@@ -43,9 +43,9 @@
             $apres = $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.personne_id' => $personne_id ) ) );
             $this->set( 'apres', $apres );
 
-            $contratinsertion = $this->Contratinsertion->find( 'first', array( 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
-            $this->set( 'contratinsertion', $contratinsertion );
-
+//             $contratinsertion = $this->Contratinsertion->find( 'first', array( 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
+//             $this->set( 'contratinsertion', $contratinsertion );
+// 
             $refsapre = $this->Referentapre->_referentsApre( Set::classicExtract( $apres, 'Apre.id' ) );
             $this->set( 'refsapre', $refsapre );
             $this->set( 'personne_id', $personne_id );

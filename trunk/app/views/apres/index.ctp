@@ -4,13 +4,13 @@
 
 <div class="with_treemenu">
     <h1>APRE</h1>
-    <?php if( empty( $contratinsertion )  ):?>
+<!--    <?php /*if( empty( $contratinsertion )  ):?>
         <p class="error">Impossible d'ajouter une demande d'APRE lorsqu'il n'existe pas de contrat d'insertion.</p>
 
     <?php elseif( !empty( $contratinsertion ) && empty( $refsapre ) ):?>
         <p class="error">Impossible d'ajouter une demande d'APRE lorsqu'il n'existe pas de référent pour l'APRE.</p>
 
-    <?php else:?>
+    <?php else: */?> -->
         <?php if( empty( $apres ) ):?>
             <p class="notice">Cette personne ne possède pas encore d'aide personnalisée de retour à l'emploi (APRE).</p>
         <?php endif;?>
@@ -53,14 +53,6 @@
                     }
                     $piecesManquantes = Set::extract( $apre, '/Relanceapre/Piecemanquante/libelle' );
 
-                    ///Ajout au comité d'examen (oui/non)
-//                     $ajoutComite = Set::extract( $this->data, '/Apre/ajoutcomiteexamen' );
-//                     if( empty( $ajoutComite ) ){
-//                         echo $form->input( 'Apre.ajoutcomiteexamen', array( 'type' => 'hidden', 'options' => $options['ajoutcomiteexamen'], 'value' => 'O' ) );
-//                     }
-//                     else{
-//                         echo $form->input( 'Apre.ajoutcomiteexamen', array( 'type' => 'hidden', 'options' => $options['ajoutcomiteexamen'], 'value' => 'N' ) );
-//                     }
 
                     echo $html->tableCells(
                         array(
@@ -100,7 +92,7 @@
         </tbody>
     </table>
     <?php  endif;?>
-<?php  endif;?>
+<!-- <?php  /*endif;*/?> -->
 
 <br />
 
