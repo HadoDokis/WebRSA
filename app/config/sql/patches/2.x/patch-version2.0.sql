@@ -23,72 +23,72 @@ CREATE INDEX transmissionsflux_identificationflux_idx ON transmissionsflux (iden
 -- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "suivisappuisorientation" liée à 'personnes'
 -- --------------------------------------------------------------------------------------------------------
-CREATE TYPE type_sitperssocpro AS ENUM ( 'AF', 'EF', 'RE' );
-CREATE TABLE suivisappuisorientation (
-    id                          SERIAL NOT NULL PRIMARY KEY,
-    personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
-    topoblsocpro                type_booleannumber DEFAULT NULL,
-    topsouhsocpro               type_booleannumber DEFAULT NULL,
-    sitperssocpro               type_sitperssocpro DEFAULT NULL,
-    dtenrsocpro                 DATE,
-    dtenrparco                  DATE,
-    dtenrorie                   DATE
-);
-CREATE INDEX suivisappuisorientation_personne_id_idx ON suivisappuisorientation (personne_id);
+-- CREATE TYPE type_sitperssocpro AS ENUM ( 'AF', 'EF', 'RE' );
+-- CREATE TABLE suivisappuisorientation (
+--     id                          SERIAL NOT NULL PRIMARY KEY,
+--     personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
+--     topoblsocpro                type_booleannumber DEFAULT NULL,
+--     topsouhsocpro               type_booleannumber DEFAULT NULL,
+--     sitperssocpro               type_sitperssocpro DEFAULT NULL,
+--     dtenrsocpro                 DATE,
+--     dtenrparco                  DATE,
+--     dtenrorie                   DATE
+-- );
+-- CREATE INDEX suivisappuisorientation_personne_id_idx ON suivisappuisorientation (personne_id);
 
 -- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "orientations" liée à 'personnes'
 -- --------------------------------------------------------------------------------------------------------
-CREATE  TABLE orientations (
-    id                          SERIAL NOT NULL PRIMARY KEY,
-    personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
-    raisocorgorie               VARCHAR(60),
-    numvoie                     VARCHAR(6),
-    typevoie                    CHAR(4),
-    nomvoie                     VARCHAR(25),
-    complideadr                 VARCHAR(38),
-    compladr                    VARCHAR(26),
-    lieudist                    VARCHAR(32),
-    codepos                     CHAR(5),
-    locaadr                     VARCHAR(26),
-    numtelorgorie               VARCHAR(10),
-    dtrvorgorie                 DATE,
-    hrrvorgorie                 TIME,
-    libadrrvorgorie             TEXT,
-    numtelrvorgorie             VARCHAR(10)
-);
-CREATE INDEX orientations_personne_id_idx ON orientations (personne_id);
+-- CREATE  TABLE orientations (
+--     id                          SERIAL NOT NULL PRIMARY KEY,
+--     personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
+--     raisocorgorie               VARCHAR(60),
+--     numvoie                     VARCHAR(6),
+--     typevoie                    CHAR(4),
+--     nomvoie                     VARCHAR(25),
+--     complideadr                 VARCHAR(38),
+--     compladr                    VARCHAR(26),
+--     lieudist                    VARCHAR(32),
+--     codepos                     CHAR(5),
+--     locaadr                     VARCHAR(26),
+--     numtelorgorie               VARCHAR(10),
+--     dtrvorgorie                 DATE,
+--     hrrvorgorie                 TIME,
+--     libadrrvorgorie             TEXT,
+--     numtelrvorgorie             VARCHAR(10)
+-- );
+-- CREATE INDEX orientations_personne_id_idx ON orientations (personne_id);
 
 -- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "parcours" liée à 'personnes'
 -- --------------------------------------------------------------------------------------------------------
-CREATE TYPE type_natparcocal AS ENUM ( 'AS', 'PP', 'PS' );
-CREATE TYPE type_natparcomod AS ENUM ( 'AS', 'PP', 'PS' );
-CREATE TYPE type_motimodparco AS ENUM ( 'CL', 'EA' );
-
-CREATE TABLE parcours (
-    id                          SERIAL NOT NULL PRIMARY KEY,
-    personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
-    natparcocal                 type_natparcocal DEFAULT NULL,
-    natparcomod                 type_natparcomod DEFAULT NULL,
-    toprefuparco                type_booleannumber DEFAULT NULL,
-    motimodparco                type_motimodparco DEFAULT NULL,
-    raisocorgdeciorie           VARCHAR(60),
-    numvoie                     VARCHAR(6),
-    typevoie                    CHAR(4),
-    nomvoie                     VARCHAR(25),
-    complideadr                 VARCHAR(38),
-    compladr                    VARCHAR(26),
-    lieudist                    VARCHAR(32),
-    codepos                     CHAR(5),
-    locaadr                     VARCHAR(26),
-    numtelorgdeciorie           VARCHAR(10),
-    dtrvorgdeciorie             DATE,
-    hrrvorgdeciorie             TIME,
-    libadrrvorgdeciorie         TEXT,
-    numtelrvorgdeciorie         VARCHAR(10)
-);
-CREATE INDEX parcours_personne_id_idx ON parcours (personne_id);
+-- CREATE TYPE type_natparcocal AS ENUM ( 'AS', 'PP', 'PS' );
+-- CREATE TYPE type_natparcomod AS ENUM ( 'AS', 'PP', 'PS' );
+-- CREATE TYPE type_motimodparco AS ENUM ( 'CL', 'EA' );
+--
+-- CREATE TABLE parcours (
+--     id                          SERIAL NOT NULL PRIMARY KEY,
+--     personne_id                 INTEGER NOT NULL REFERENCES personnes(id),
+--     natparcocal                 type_natparcocal DEFAULT NULL,
+--     natparcomod                 type_natparcomod DEFAULT NULL,
+--     toprefuparco                type_booleannumber DEFAULT NULL,
+--     motimodparco                type_motimodparco DEFAULT NULL,
+--     raisocorgdeciorie           VARCHAR(60),
+--     numvoie                     VARCHAR(6),
+--     typevoie                    CHAR(4),
+--     nomvoie                     VARCHAR(25),
+--     complideadr                 VARCHAR(38),
+--     compladr                    VARCHAR(26),
+--     lieudist                    VARCHAR(32),
+--     codepos                     CHAR(5),
+--     locaadr                     VARCHAR(26),
+--     numtelorgdeciorie           VARCHAR(10),
+--     dtrvorgdeciorie             DATE,
+--     hrrvorgdeciorie             TIME,
+--     libadrrvorgdeciorie         TEXT,
+--     numtelrvorgdeciorie         VARCHAR(10)
+-- );
+-- CREATE INDEX parcours_personne_id_idx ON parcours (personne_id);
 
 -- --------------------------------------------------------------------------------------------------------
 -- Ajout de la table "referentsapre" liée à 'apres'

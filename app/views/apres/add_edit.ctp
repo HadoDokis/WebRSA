@@ -29,13 +29,13 @@
         observeDisableFieldsOnValue( 'ApreActivitebeneficiaireE', [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur' ], 'E', false );
 
         // ....
-        observeDisableFieldsetOnCheckbox( 'NatureaideFormqualif', $( 'Formqualif' ), false, true );
-        observeDisableFieldsetOnCheckbox( 'NatureaideActprof', $( 'Actprof' ), false, true );
-        observeDisableFieldsetOnCheckbox( 'NatureaidePermisb', $( 'Permisb' ), false, true );
-        observeDisableFieldsetOnCheckbox( 'NatureaideAmenaglogt', $( 'Amenaglogt' ), false, true );
-        observeDisableFieldsetOnCheckbox( 'NatureaideAcccreaentr', $( 'Acccreaentr' ), false, true );
-        observeDisableFieldsetOnCheckbox( 'NatureaideAcqmatprof', $( 'Acqmatprof' ), false, true );
-        observeDisableFieldsetOnCheckbox( 'NatureaideLocvehicinsert', $( 'Locvehicinsert' ), false, true );
+        observeDisableFieldsetOnCheckbox( 'ApreNatureaideFormqualif', $( 'Formqualif' ), false, true );
+        observeDisableFieldsetOnCheckbox( 'ApreNatureaideActprof', $( 'Actprof' ), false, true );
+        observeDisableFieldsetOnCheckbox( 'ApreNatureaidePermisb', $( 'Permisb' ), false, true );
+        observeDisableFieldsetOnCheckbox( 'ApreNatureaideAmenaglogt', $( 'Amenaglogt' ), false, true );
+        observeDisableFieldsetOnCheckbox( 'ApreNatureaideAcccreaentr', $( 'Acccreaentr' ), false, true );
+        observeDisableFieldsetOnCheckbox( 'ApreNatureaideAcqmatprof', $( 'Acqmatprof' ), false, true );
+        observeDisableFieldsetOnCheckbox( 'ApreNatureaideLocvehicinsert', $( 'Locvehicinsert' ), false, true );
 
         <?php
             echo $ajax->remoteFunction(
@@ -221,7 +221,7 @@
         <h2 class="center">Nature de la demande</h2>
         <?php
             /// Formation qualifiante
-            $tmp = $form->checkbox( 'Natureaide.Formqualif' );
+            $tmp = $form->checkbox( 'Apre.Natureaide.Formqualif' );
             $tmp .= $html->tag( 'label', 'Formation qualifiante / Permis C ou D + FIMO', array( 'for' => 'NatureaideFormqualif' ) );
             echo $html->tag( 'h3', $tmp );
         ?>
@@ -251,7 +251,7 @@
         </fieldset>
         <?php
             /// Action de professionnalisation
-            $tmp = $form->checkbox( 'Natureaide.Actprof' );
+            $tmp = $form->checkbox( 'Apre.Natureaide.Actprof' );
             $tmp .= $html->tag( 'label', 'Action de professionnalisation des contrats aides et salariés dans les SIAE', array( 'for' => 'NatureaideActprof' ) );
             echo $html->tag( 'h3', $tmp );
         ?>
@@ -286,7 +286,7 @@
         </fieldset>
         <?php
             /// Permis B
-            $tmp = $form->checkbox( 'Natureaide.Permisb' );
+            $tmp = $form->checkbox( 'Apre.Natureaide.Permisb' );
             $tmp .= $html->tag( 'label', 'Permis de conduire B', array( 'for' => 'NatureaidePermisb' ) );
             echo $html->tag( 'h3', $tmp );
         ?>
@@ -317,7 +317,7 @@
         </fieldset>
         <?php
             /// Amenagement logement
-            $tmp = $form->checkbox( 'Natureaide.Amenaglogt' );
+            $tmp = $form->checkbox( 'Apre.Natureaide.Amenaglogt' );
             $tmp .= $html->tag( 'label', 'Aide à l\'installation', array( 'for' => 'NatureaideAmenaglogt' ) );
             echo $html->tag( 'h3', $tmp );
         ?>
@@ -340,7 +340,7 @@
         </fieldset>
         <?php
             /// Accompagnement à la création d'entreprise
-            $tmp = $form->checkbox( 'Natureaide.Acccreaentr' );
+            $tmp = $form->checkbox( 'Apre.Natureaide.Acccreaentr' );
             $tmp .= $html->tag( 'label', 'Accompagnement à la création d\'entreprise', array( 'for' => 'NatureaideAcccreaentr' ) );
             echo $html->tag( 'h3', $tmp );
         ?>
@@ -364,7 +364,7 @@
         </fieldset>
         <?php
             /// Acquisition de matériels professionnels
-            $tmp = $form->checkbox( 'Natureaide.Acqmatprof' );
+            $tmp = $form->checkbox( 'Apre.Natureaide.Acqmatprof' );
             $tmp .= $html->tag( 'label', 'Acquisition de matériels professionnels', array( 'for' => 'NatureaideAcqmatprof' ) );
             echo $html->tag( 'h3', $tmp );
         ?>
@@ -387,7 +387,7 @@
         </fieldset>
         <?php
             /// Aide à la location d'un véhicule d'insertion
-            $tmp = $form->checkbox( 'Natureaide.Locvehicinsert' );
+            $tmp = $form->checkbox( 'Apre.Natureaide.Locvehicinsert' );
             $tmp .= $html->tag( 'label', 'Aide à la location d\'un véhicule d\'insertion', array( 'for' => 'NatureaideLocvehicinsert' ) );
             echo $html->tag( 'h3', $tmp );
         ?>

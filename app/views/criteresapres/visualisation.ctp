@@ -144,7 +144,7 @@
                         </table>';
 
                         $aidesApre = array();
-                        $naturesaide = Set::classicExtract( $apre, 'Natureaide' );
+                        $naturesaide = Set::classicExtract( $apre, 'Apre.Natureaide' );
                         foreach( $naturesaide as $natureaide => $nombre ) {
                             if( $nombre > 0 ) {
                                 $aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
