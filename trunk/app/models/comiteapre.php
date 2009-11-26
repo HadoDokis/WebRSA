@@ -1,8 +1,10 @@
-<?php 
+<?php
     class Comiteapre extends AppModel
     {
         var $name = 'Comiteapre';
         var $actsAs = array( 'Enumerable' );
+        var $displayField = 'intitulecomite';
+        //var $order = array( '' ); // <-- TODO
 
         var $hasAndBelongsToMany = array(
             'Participantcomite' => array(
