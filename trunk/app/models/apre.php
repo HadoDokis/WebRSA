@@ -27,7 +27,8 @@
             'typecontrat' => array( 'type' => 'typecontrat', 'domain' => 'apre' ),
             'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
             'ajoutcomiteexamen' => array( 'type' => 'no', 'domain' => 'apre' ),
-            'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' )
+            'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' ),
+            'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' )
         );
 
 
