@@ -4,6 +4,7 @@
         var $name = 'Cohortescomitesapres';
         var $useTable = false;
 
+
         function search( $avisComite, $criterescomite ) {
             /// Conditions de base
             $conditions = array(

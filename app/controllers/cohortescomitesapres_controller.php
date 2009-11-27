@@ -23,6 +23,29 @@
                     'REF' => __d( 'apre', 'ENUM::DECISIONCOMITE::REF', true ),
                 )
             );
+            $this->Apre->ApreComiteapre->validate = array(
+                'decisioncomite' => array(
+                    array(
+                        'rule'      => array( 'inList', array( 'AJ', 'ACC', 'REF' ) ),
+                        'message'   => 'Veuillez choisir une valeur.',
+                        'allowEmpty' => false
+                    )
+                ),
+                'montantattribue' => array(
+                    array(
+                        'rule' => 'numeric',
+                        'message' => 'Veuillez entrer une valeur numérique.',
+                        'allowEmpty' => false,
+                        'required' => false
+                    ),
+                    array(
+                        'rule' => array( 'between', 0, 4 ),
+                        'message' => 'Veuillez entrer une valeur entre 0 et 9999.',
+                        'allowEmpty' => false,
+                        'required' => false
+                    ),
+                ),
+            );
             $this->set( 'options', $options );
         }
 
@@ -56,7 +79,7 @@
 
                         $saved = $this->ApreComiteapre->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
 //                 debug($saved);
-                        if( array_search( 0, $saved ) == false ) {
+                        if( $saved && empty( $this->Apre->ApreComiteapre->validationErrors ) ) {
                             $this->ApreComiteapre->commit();
                             $this->redirect( array( 'action' => 'aviscomite' ) ); // FIXME
                         }
