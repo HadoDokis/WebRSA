@@ -115,9 +115,6 @@
                                     </ul>
                                 </li>
                         <?php endif;?>
-                        <?php if( $permissions->check( 'repsddtefp', 'index' ) ):?>
-                            <li><?php echo $html->link( 'Reporting bi-mensuel DDTEFP', array( 'controller' => 'repsddtefp', 'action' => 'index' ) );?></li>
-                        <?php endif;?>
                         <?php if( $permissions->check( 'comitesapres', 'index' ) || $permissions->check( 'cohortescomitesapres', 'index' ) ):?>
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                                 <?php echo $html->link( 'Comité d\'examen', '#');?>
@@ -133,6 +130,9 @@
                                     <?php endif;?>
                                 </ul>
                             </li>
+                        <?php endif;?>
+                        <?php if( $permissions->check( 'repsddtefp', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Reporting bi-mensuel DDTEFP', array( 'controller' => 'repsddtefp', 'action' => 'index' ) );?></li>
                         <?php endif;?>
                         <!-- <?php if( $permissions->check( 'commissionsapre', 'nouvelles' ) || $permissions->check( 'commissionsapre', 'enattente' ) || $permissions->check( 'commissionsapre', 'valide' )):?>
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">

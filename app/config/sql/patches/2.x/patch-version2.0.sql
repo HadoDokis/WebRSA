@@ -555,3 +555,9 @@ ALTER TABLE apres ADD COLUMN nenfants INTEGER DEFAULT NULL;
 ALTER TABLE apres_comitesapres ADD COLUMN montantattribue DECIMAL (10, 2) DEFAULT NULL;
 ALTER TABLE apres_comitesapres ADD COLUMN observationcomite TEXT;
 ALTER TABLE apres_comitesapres ADD COLUMN decisioncomite type_decisioncomite;
+
+--------------- Ajout du 27/11/2009 à 16h46 ------------------
+ALTER TABLE apres_comitesapres ADD COLUMN recoursapre type_no DEFAULT NULL;
+ALTER TABLE apres_comitesapres ADD COLUMN decisionrecours type_decisioncomite;
+ALTER TABLE apres_comitesapres ADD COLUMN observationrecours TEXT;
+ALTER TABLE apres_comitesapres ADD COLUMN daterecours DATE;

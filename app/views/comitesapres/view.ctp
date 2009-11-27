@@ -53,7 +53,7 @@
             ?>
         </ul>
     <div>
-        <table id="searchResults" class="tooltips_oupas">
+        <table class="tooltips_oupas">
             <thead>
                 <tr>
                     <th>Nom/Prénom</th>
@@ -96,6 +96,7 @@
                 ?>
             </ul>
         <?php endif;?>
+    </div>
 <?php endif;?>
 
 <br />
@@ -161,5 +162,6 @@
                 ?>
             </ul>
         <?php endif;?>
+    </div>
 <?php endif;?>
 <div class="clearer"><hr /></div>
