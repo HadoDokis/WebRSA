@@ -260,5 +260,18 @@
 
             return $return;
         }
+
+        /** ********************************************************************
+        *   AfterSave
+        *** *******************************************************************/
+        function afterSave( $created ) {
+            $return = parent::afterSave( $created );
+
+            $return = $this->query( "UPDATE apres SET eligibiliteapre = 'O' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'COM';" ) && $return;
+
+            $return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'INC';" ) && $return;
+
+            return $return;
+        }
     }
 ?>

@@ -229,7 +229,7 @@
                         $this->Jetons->release( $dossier_rsa_id );
                         $this->Apre->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array(  'controller' => 'apres','action' => 'index', $personne_id ) );
+//                         $this->redirect( array(  'controller' => 'apres','action' => 'index', $personne_id ) );
                     }
                     else {
                         $this->Apre->rollback();

@@ -238,7 +238,12 @@
             $return = parent::afterSave( $created );
 
 			$details = $this->_details( $this->id );
-			$this->query( "UPDATE apres SET etatdossierapre = '".$details['etatdossierapre']."' WHERE id = {$this->id};" );
+			$this->query( "UPDATE apres SET etatdossierapre = '".$details['etatdossierapre']."' WHERE id = {$this->id};" ) && $return;
+
+            $return = $this->query( "UPDATE apres SET eligibiliteapre = 'O' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'COM' AND ( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = ".$this->data[$this->name]['personne_id']." ) > 0;" ) && $return;
+            
+            $return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND NOT ( apres.etatdossierapre = 'COM' AND ( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = ".$this->data[$this->name]['personne_id']." ) > 0 );" ) && $return;
+
 			// FIXME: return ?
             return $return;
         }
