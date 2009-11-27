@@ -74,27 +74,27 @@
                         $title = $comite['Dossier']['numdemrsa'];
 
 
-//                     $dossier_rsa_id = $comite['Dossier']['id'];
-//                     $comite_id = Set::extract( $comite, 'Cohortecomiteapre.id');
+                    $apre_id = Set::extract( $comite, 'Apre.id');
+                    $aprecomite_id = Set::extract( $comite, 'Aprecomiteapre.id');
 // debug($comite);
                     echo $html->tableCells(
                         array(
-                            h( $comite['Dossier']['numdemrsa'] ),
-                            h( $comite['Personne']['qual'].' '.$comite['Personne']['nom'].' '.$comite['Personne']['prenom'] ),
-                            h( $comite['Adresse']['locaadr'] ),
+                            h( Set::classicExtract( $comite, 'Dossier.numdemrsa') ),
+                            h( Set::classicExtract( $comite, 'Personne.qual').' '.Set::classicExtract( $comite, 'Personne.nom').' '.Set::classicExtract( $comite, 'Personne.prenom') ),
+                            h( Set::classicExtract( $comite, 'Adresse.locaadr') ),
                             h( $locale->date( 'Date::short', Set::extract( $comite, 'Apre.datedemandeapre' ) ) ),
 
-                            $xform->input( 'Comiteapre.'.$index.'.statutapre', array( 'label' => false, 'type' => 'select', 'options' => $statutapre, 'empty' => true ) ).
+                            $xform->enum( 'ApreComiteapre.'.$index.'.decisioncomite', array( 'label' => false, 'type' => 'select', 'options' => $options['statutapre'], 'empty' => true ) ).
 //                             $xform->input( 'Comiteapre.'.$index.'.apre_id', array( 'label' => false, 'div' => false, 'value' => $apre_id, 'type' => 'hidden' ) ).
-                            $xform->input( 'Comiteapre.'.$index.'.id', array( 'label' => false, 'div' => false, 'value' => $comite_id, 'type' => 'hidden' ) ).
-                            $xform->input( 'Comiteapre.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $comite['Dossier']['id'] ) ),
+                            $xform->input( 'ApreComiteapre.'.$index.'.id', array( 'label' => false, 'div' => false, 'value' => $aprecomite_id, 'type' => 'hidden' ) ).
+                            $xform->input( 'ApreComiteapre.'.$index.'.comiteapre_id', array( 'label' => false, 'type' => 'hidden', 'value' => $comite['Comiteapre']['id'] ) ),
 
 
                             h( $locale->date( 'Date::short', Set::extract( $comite, 'Comiteapre.datecomite' ) ) ),
-
-                            $xform->input( 'Comiteapre.'.$index.'.montantdemande', array( 'label' => false, 'type' => 'select', 'options' => $montantdemande, 'empty' => true ) ),
-                            $xform->input( 'Comiteapre.'.$index.'.montantattribue', array( 'label' => false, 'type' => 'select', 'options' => $montantattribue, 'empty' => true ) ),
-                            $xform->input( 'Comiteapre.'.$index.'.observationcomite', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
+                            h( Set::classicExtract( $comite, 'Apre.mtforfait') ),
+//                             $xform->input( 'ApreComiteapre.'.$index.'.montantdemande', array( 'label' => false, 'type' => 'text' ) ),
+                            $xform->input( 'ApreComiteapre.'.$index.'.montantattribue', array( 'label' => false, 'type' => 'text' ) ),
+                            $xform->input( 'ApreComiteapre.'.$index.'.observationcomite', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
                             $html->viewLink(
                                 'Voir le comite « '.Set::extract( $comite, 'Comiteapre.id' ).' »',
                                 array( 'controller' => 'comitesapres', 'action' => 'view', Set::extract( $comite, 'Comiteapre.id' ) ),

@@ -5,6 +5,10 @@
         var $useTable = false;
         var $actsAs = array( 'Enumerable' );
 
+        var $enumFields = array(
+            'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
+        );
+
         function search( $avisComite, $criterescomite ) {
             /// Conditions de base
             $conditions = array(
@@ -21,7 +25,7 @@
 
             /// Critères sur le Comité - intitulé du comité
             if( isset( $criterescomite['Cohortecomiteapre']['id'] ) && !empty( $criterescomite['Cohortecomiteapre']['id'] ) ) {
-                $conditions['Comiteapre.id'] = $criterescomite['Cohortecomiteapre']['id'];
+				$conditions['Comiteapre.id'] = $criterescomite['Cohortecomiteapre']['id'];
             }
 
             /// Critères sur le Comité - date du comité
@@ -55,6 +59,9 @@
                     '"Comiteapre"."observationcomite"',
                     '"ApreComiteapre"."apre_id"',
                     '"ApreComiteapre"."comiteapre_id"',
+                    '"ApreComiteapre"."decisioncomite"',
+                    '"ApreComiteapre"."montantattribue"',
+                    '"ApreComiteapre"."observationcomite"',
                     '"Dossier"."numdemrsa"',
                     '"Dossier"."matricule"',
                     '"Personne"."qual"',
@@ -68,7 +75,7 @@
                     '"Apre"."datedemandeapre"',
                     '"Apre"."statutapre"',
 //                     '"Apre"."comite_id"',
-//                     '"Apre"."montantdemande"',
+                    '"Apre"."mtforfait"',
 //                     '"Apre"."montantattribue"',
                 ),
                 'recursive' => -1,

@@ -4,17 +4,6 @@
 <h1>Notification des Comités</h1>
 
 <?php
-//     if( !empty( $this->data ) ) {
-//         echo '<ul class="actionMenu"><li>'.$html->link(
-//             $html->image(
-//                 'icons/application_form_magnify.png',
-//                 array( 'alt' => '' )
-//             ).' Formulaire',
-//             '#',
-//             array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Cohortepdo' ).toggle(); return false;" )
-//         ).'</li></ul>';
-//     }
-
     function value( $array, $index ) {
         $keys = array_keys( $array );
         $index = ( ( $index == null ) ? '' : $index );
@@ -100,7 +89,7 @@
                             h( $comite['Personne']['nom'].' '.$comite['Personne']['prenom'] ),
                             h( Set::extract( $comite, 'Adresse.locaadr' ) ),
                             h( date_short( Set::extract( $comite, 'Apre.datedemandeapre' ) ) ),
-                            h( value( $typepdo, Set::extract( 'Comiteapre.decision', $comite ) ) ),
+                            h( Set::enum( Set::extract( 'Comiteapre.decision', $comite ), $typepdo ) ),
                             h( date_short( Set::extract( 'Comiteapre.datecomite', $comite ) ) ),
                             h( Set::extract( 'Comiteapre.montantattribue', $comite ) ),
                             h( Set::extract( 'Comiteapre.observationcomite', $comite ) ),
