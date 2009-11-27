@@ -13,7 +13,8 @@
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'referentapre', $this->Referentapre->find( 'list' ) );
-
+            $options = $this->Apre->allEnumLists();
+            $this->set( 'options', $options );
         }
 
         /** ********************************************************************
