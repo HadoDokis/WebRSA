@@ -82,20 +82,20 @@
                         </table>';
                         $title = $comite['Dossier']['numdemrsa'];
 
-
+// debug($comite);
                     echo $html->tableCells(
                         array(
-                            h( Set::extract( $comite, 'Dossier.numdemrsa' ) ),
-                            h( $comite['Personne']['nom'].' '.$comite['Personne']['prenom'] ),
-                            h( Set::extract( $comite, 'Adresse.locaadr' ) ),
-                            h( date_short( Set::extract( $comite, 'Apre.datedemandeapre' ) ) ),
-                            h( Set::enum( Set::extract( 'Comiteapre.decision', $comite ), $typepdo ) ),
-                            h( date_short( Set::extract( 'Comiteapre.datecomite', $comite ) ) ),
-                            h( Set::extract( 'Comiteapre.montantattribue', $comite ) ),
-                            h( Set::extract( 'Comiteapre.observationcomite', $comite ) ),
+                            h( Set::classicExtract( $comite, 'Dossier.numdemrsa' ) ),
+                            h( Set::classicExtract( $comite, 'Personne.qual' ).' '.Set::classicExtract( $comite, 'Personne.nom' ).' '.Set::classicExtract( $comite, 'Personne.prenom' ) ),
+                            h( Set::classicExtract( $comite, 'Adresse.locaadr' ) ),
+                            h( $locale->date( 'Date::short', Set::classicExtract( $comite, 'Apre.datedemandeapre' ) ) ),
+                            h( Set::enum( Set::classicExtract( $comite, 'ApreComiteapre.decisioncomite' ), $options['decisioncomite'] ) ),
+                            h( $locale->date( 'Date::short', Set::classicExtract( $comite, 'Comiteapre.datecomite' ) ) ),
+                            h( Set::classicExtract( $comite, 'ApreComiteapre.montantattribue' ) ),
+                            h( Set::classicExtract( $comite, 'ApreComiteapre.observationcomite' ) ),
                             $html->printLink(
                                 'Imprimer',
-                                array( 'controller' => 'gedooos', 'action' => 'index', $comite['Dossier']['id'] )
+                                array( 'controller' => 'gedooos', 'action' => 'index', Set::classicExtract( $comite, 'Comiteapre.id' ) )
                             ),
                             array( $innerTable, array( 'class' => 'innerTableCell' ) )
                         ),

@@ -473,8 +473,8 @@ CREATE INDEX locsvehicinsert_pieceslocsvehicinsert_piecelocvehicinsert_id_idx ON
 --------------- Ajout du 13/11/2009 à 14h00 ------------------
 ALTER TABLE referentsapre ADD COLUMN spe type_no DEFAULT NULL;
 
-CREATE TYPE type_statutapre AS ENUM ( 'REF', 'ACC', 'ATT' );
-ALTER TABLE apres ADD COLUMN statutapre type_statutapre DEFAULT NULL;
+CREATE TYPE type_decisioncomite AS ENUM ( 'REF', 'ACC', 'AJ' );
+--ALTER TABLE apres ADD COLUMN statutapre type_statutapre DEFAULT NULL;
 
 CREATE TYPE type_etatdossierapre AS ENUM ( 'COM', 'INC' );
 ALTER TABLE apres ADD COLUMN etatdossierapre type_etatdossierapre DEFAULT NULL;
@@ -554,4 +554,4 @@ ALTER TABLE apres ADD COLUMN nenfants INTEGER DEFAULT NULL;
 --------------------------------------------------------------------------------------------------------
 ALTER TABLE apres_comitesapres ADD COLUMN montantattribue DECIMAL (10, 2) DEFAULT NULL;
 ALTER TABLE apres_comitesapres ADD COLUMN observationcomite TEXT;
-ALTER TABLE apres_comitesapres ADD COLUMN decisioncomite VARCHAR(3);
+ALTER TABLE apres_comitesapres ADD COLUMN decisioncomite type_decisioncomite;

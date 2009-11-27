@@ -3,11 +3,6 @@
     {
         var $name = 'Cohortescomitesapres';
         var $useTable = false;
-        var $actsAs = array( 'Enumerable' );
-
-        var $enumFields = array(
-            'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
-        );
 
         function search( $avisComite, $criterescomite ) {
             /// Conditions de base
@@ -16,10 +11,10 @@
 
             if( !empty( $avisComite ) ) {
                 if( $avisComite == 'Cohortecomiteapre::aviscomite' ) {
-//                     $conditions[] = 'Apre.id NOT IN ApreComiteapre.apre_id';
+                    $conditions[] = 'ApreComiteapre.decisioncomite IS NULL';
                 }
-                else if( $avisComite == 'Cohortecomiteapre::notificationscomite' ) {
-//                     $conditions[] = 'Apre.etatdossierapre = \'INC\'';
+                else {
+                    $conditions[] = 'ApreComiteapre.decisioncomite IS NOT NULL';
                 }
             }
 
@@ -57,6 +52,7 @@
                     '"Comiteapre"."lieucomite"',
                     '"Comiteapre"."intitulecomite"',
                     '"Comiteapre"."observationcomite"',
+                    '"ApreComiteapre"."id"',
                     '"ApreComiteapre"."apre_id"',
                     '"ApreComiteapre"."comiteapre_id"',
                     '"ApreComiteapre"."decisioncomite"',
