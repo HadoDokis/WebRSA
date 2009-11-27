@@ -10,7 +10,7 @@
         /**
         */
         function __construct() {
-//             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'formulare' ) ) ) );
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'all', 'eligible' ) ) ) );
             parent::__construct();
         }
 
@@ -31,9 +31,9 @@
 
         //---------------------------------------------------------------------
 
-        function incomplete() {
-            $this->_index( 'Critereapre::incomplete' );
-        }
+//         function incomplete() {
+//             $this->_index( 'Critereapre::incomplete' );
+//         }
         //---------------------------------------------------------------------
 
         function eligible() {
@@ -71,10 +71,6 @@
                     $this->set( 'pageTitle', 'Toutes les APREs' );
                     $this->render( $this->action, null, 'formulaire' );
                     break;
-                case 'Critereapre::incomplete':
-                    $this->set( 'pageTitle', 'APREs incomplètes' );
-                    $this->render( $this->action, null, 'formulaire' );
-                    break;
                 case 'Critereapre::eligible':
                     $this->set( 'pageTitle', 'Eligibilite des APREs' );
                     $this->render( $this->action, null, 'visualisation' );
@@ -83,16 +79,24 @@
         }
 
         /// Export du tableau en CSV
-        function exportcsv() {
+        function exportcsv( $action = 'all' ) {
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
-            $querydata = $this->Critereapre->search( null, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+            $querydata = $this->Critereapre->search( "Critereapre::{$action}", $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
             unset( $querydata['limit'] );
             $apres = $this->Apre->find( 'all', $querydata );
 
             $this->layout = '';
             $this->set( compact( 'apres' ) );
+
+            switch( $action ) {
+                case 'all':
+                    $this->render( $this->action, null, 'exportcsv' );
+                    break;
+                default:
+                    $this->render( $this->action, null, 'exportcsveligible' );
+            }
         }
     }
 ?>

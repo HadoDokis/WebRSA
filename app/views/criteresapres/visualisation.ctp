@@ -10,19 +10,9 @@
 </script>
 
 <?php
-    function value( $array, $index ) {
-        $keys = array_keys( $array );
-        $index = ( ( $index == null ) ? '' : $index );
-        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-            return $array[$index];
-        }
-        else {
-            return null;
-        }
-    }
 
     if( isset( $apres ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        $paginator->options( array( 'url' => $this->params['named'] ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
 
@@ -52,7 +42,7 @@
 
 ?>
 
-<?php /*echo $xform->create( 'Critereapre', array( 'type' => 'post', 'action' => '/formulaire/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );*/
+<?php
     echo $xform->create( 'Critereapre', array( 'url'=> Router::url( null, true ), 'id' => 'Critereapre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
         <legend>Recherche par personne</legend>
@@ -187,12 +177,12 @@
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
-            <!-- <li><?php
+            <li><?php
                 echo $html->exportLink(
                     'Télécharger le tableau',
-                    array( 'controller' => 'criteresapres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                    array( 'controller' => 'criteresapres', 'action' => 'exportcsv', $this->action, implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
-            ?></li> -->
+            ?></li>
         </ul>
 
 

@@ -134,5 +134,14 @@
             $this->render( $this->action, null, 'add_edit' );
         }
 
+        function exportcsv() {
+            $querydata = $this->Comiteapre->search( array_multisize( $this->params['named'] ) );
+            unset( $querydata['limit'] );
+            $comitesapres = $this->Comiteapre->find( 'all', $querydata );
+
+            $this->layout = '';
+            $this->set( compact( 'comitesapres' ) );
+        }
+
     }
 ?>
