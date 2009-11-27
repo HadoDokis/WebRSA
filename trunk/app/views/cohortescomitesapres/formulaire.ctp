@@ -1,10 +1,19 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Décisions des comités';?>
 
+<?php if( isset( $comitesapres ) && is_array( $comitesapres ) && count( $comitesapres ) > 0 ):?>
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        <?php for( $i = 0 ; $i < count( $comitesapres ) ; $i++ ):?>
+        observeDisableFieldsOnValue( 'ApreComiteapre<?php echo $i;?>Decisioncomite', [ 'ApreComiteapre<?php echo $i;?>Montantattribue' ], 'ACC', false );
+        <?php endfor;?>
+    });
+</script>
+<?php endif;?>
+
 <h1>Décisions Comité</h1>
 
 <?php
-
     if( isset( $comitesapres ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
@@ -96,7 +105,7 @@
                             h( $locale->date( 'Date::short', Set::extract( $comite, 'Comiteapre.datecomite' ) ) ),
                             h( Set::classicExtract( $comite, 'Apre.mtforfait') ),
 //                             $xform->input( 'ApreComiteapre.'.$index.'.montantdemande', array( 'label' => false, 'type' => 'text' ) ),
-                            $xform->input( 'ApreComiteapre.'.$index.'.montantattribue', array( 'label' => false, 'type' => 'text' ) ),
+                            $xform->input( 'ApreComiteapre.'.$index.'.montantattribue', array( 'label' => false, 'type' => 'text', 'maxlength' => 4 ) ),
                             $xform->input( 'ApreComiteapre.'.$index.'.observationcomite', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
                             $html->viewLink(
                                 'Voir le comite « '.Set::extract( $comite, 'Comiteapre.id' ).' »',
