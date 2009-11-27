@@ -6,6 +6,12 @@
         var $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Cohortecomiteapre', 'Comiteapre', 'Participantcomite', 'Apre', 'Referentapre' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
 
+        function __construct() {
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'aviscomite', 'notificationscomite' ) ) ) );
+            parent::__construct();
+        }
+
+
         /** ********************************************************************
         *
         *** *******************************************************************/
@@ -68,17 +74,13 @@
 
         function _index( $avisComite = null ){
             $this->set( 'comitesapre', $this->Comiteapre->find( 'list' ) );
+
             $this->Dossier->begin(); // Pour les jetons
             if( !empty( $this->data ) ) {
-
                 if( !empty( $this->data['ApreComiteapre'] ) ) {
-// debug($this->data);
                     $data = Set::extract( $this->data, '/ApreComiteapre' );
-
                     if( $this->ApreComiteapre->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-
                         $saved = $this->ApreComiteapre->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
-//                 debug($saved);
                         if( $saved && empty( $this->Apre->ApreComiteapre->validationErrors ) ) {
                             $this->ApreComiteapre->commit();
                             $this->redirect( array( 'action' => 'aviscomite' ) ); // FIXME
@@ -93,7 +95,6 @@
                 $comitesapres['limit'] = 10;
                 $this->paginate = $comitesapres;
                 $comitesapres = $this->paginate( 'Comiteapre' );
-// debug($comitesapres);
 
                 $this->set( 'comitesapres', $comitesapres );
             }
@@ -110,6 +111,17 @@
             }
 
             $this->Dossier->commit(); //FIXME
+        }
+
+        function exportcsv() {
+
+            $querydata = $this->Cohortecomiteapre->search( null, array_multisize( $this->params['named'] ) );
+            unset( $querydata['limit'] );
+            $decisionscomites = $this->Comiteapre->find( 'all', $querydata );
+
+            $this->layout = '';
+            $this->set( compact( 'decisionscomites' ) );
+
         }
 
     }

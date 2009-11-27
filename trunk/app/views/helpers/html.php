@@ -658,6 +658,25 @@ class HtmlHelper extends AppHelper {
         }
     }
 
+    //Bouton ajouter pour les nouveaux comités
+    function addComiteLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+                'icons/add.png',
+                array( 'alt' => '' )
+            ).' Ajouter un nouveau Comité';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
+
     function addSimpleLink( $title, $url ) {
         return $this->link(
             $this->image(

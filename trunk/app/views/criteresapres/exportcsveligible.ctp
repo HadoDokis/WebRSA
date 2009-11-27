@@ -1,7 +1,7 @@
 <?php
     $csv->preserveLeadingZerosInExcel = true;
 
-    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire',  'Commune de l\'allocataire', 'Date de demande d\'APRE', 'Nature de l\'aide', 'Type de demande APRE', 'Activité du bénéficiaire' ) );
+    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire',  'Commune de l\'allocataire', 'Date de demande d\'APRE', 'Eligibilité', 'Etat du dossier APRE', 'Date de relance', 'Date du comité examen' ) );
 
     foreach( $apres as $apre ) {
 
@@ -17,10 +17,11 @@
             Set::classicExtract( $apre, 'Dossier.numdemrsa' ),
             Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom'),
             Set::classicExtract( $apre, 'Adresse.locaadr' ),
-            date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ),
-            ( empty( $aidesApre ) ? null : implode( "\n", $aidesApre ) ),
-            Set::classicExtract( $options['typedemandeapre'], Set::classicExtract( $apre, 'Apre.typedemandeapre' ) ),
-            Set::classicExtract( $options['activitebeneficiaire'], Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ) ),
+            $locale->date( 'Date::short', Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ),
+            Set::enum( Set::classicExtract( $apre, 'Apre.eligibiliteapre' ), $options['eligibiliteapre'] ),
+            Set::enum( Set::classicExtract( $apre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ),
+            $locale->date( 'Date::short', Set::classicExtract( $apre, 'Relanceapre.daterelance' ) ),
+            $locale->date( 'Date::short', Set::classicExtract( $apre, 'Comiteapre.datecomite' ) ),
         );
         $csv->addRow($row);
     }

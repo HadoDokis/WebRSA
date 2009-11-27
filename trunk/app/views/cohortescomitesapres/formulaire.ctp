@@ -15,7 +15,7 @@
 
 <?php
     if( isset( $comitesapres ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        $paginator->options( array( 'url' => $this->params['named'] ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
 
