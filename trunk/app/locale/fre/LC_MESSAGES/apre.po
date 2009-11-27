@@ -295,14 +295,14 @@ msgstr "Autres"
 # Enum Apre.statutapre
 ###############################################################################
 
-msgid "ENUM::STATUTAPRE::ACC"
-msgstr "Accordée"
+msgid "ENUM::DECISIONCOMITE::ACC"
+msgstr "Accord"
 
-msgid "ENUM::STATUTAPRE::ATT"
-msgstr "En attente"
+msgid "ENUM::DECISIONCOMITE::AJ"
+msgstr "Ajournement"
 
-msgid "ENUM::STATUTAPRE::REF"
-msgstr "Refusée"
+msgid "ENUM::DECISIONCOMITE::REF"
+msgstr "Refus"
 
 ###############################################################################
 # Enum Apre.etatdossierapre
