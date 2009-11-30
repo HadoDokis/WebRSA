@@ -115,10 +115,6 @@
                 ?>
             </tbody>
         </table>
-
-    <?php else:?>
-        <p>Vos critères n'ont retourné aucun comité.</p>
-    <?php endif?>
     <ul class="actionMenu">
         <li><?php
             echo $html->exportLink(
@@ -127,5 +123,7 @@
             );
         ?></li>
     </ul>
-
+    <?php else:?>
+        <p>Vos critères n'ont retourné aucun comité.</p>
+    <?php endif?>
 <?php endif?>

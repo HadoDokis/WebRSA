@@ -8,8 +8,9 @@
 
         function beforeFilter(){
             parent::beforeFilter();
-            $this->set( 'apre', $this->Apre->find( 'list' ) );
+//             $this->set( 'apre', $this->Apre->find( 'list' ) );
             $this->set( 'apres', $this->Apre->find( 'all' ) );
+
         }
 
         /** ********************************************************************
@@ -48,6 +49,7 @@
                     )
                 );
                 $this->assert( !empty( $aprecomite ), 'invalidParameter' );
+
             }
 
             if( !empty( $this->data ) ) {
@@ -72,6 +74,7 @@
                             'Apre' => Set::extract( $aprecomite, '/ApreComiteapre/apre_id' )
                         )
                     );
+
                 }
                 else {
                     $this->data['Comiteapre']['id'] = $comiteapre_id;
