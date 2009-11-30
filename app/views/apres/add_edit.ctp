@@ -30,6 +30,7 @@
 
         // ....
         observeDisableFieldsetOnCheckbox( 'ApreNatureaideFormqualif', $( 'Formqualif' ), false, true );
+        observeDisableFieldsetOnCheckbox( 'ApreNatureaideFormpermfimo', $( 'Formpermfimo' ), false, true );
         observeDisableFieldsetOnCheckbox( 'ApreNatureaideActprof', $( 'Actprof' ), false, true );
         observeDisableFieldsetOnCheckbox( 'ApreNatureaidePermisb', $( 'Permisb' ), false, true );
         observeDisableFieldsetOnCheckbox( 'ApreNatureaideAmenaglogt', $( 'Amenaglogt' ), false, true );
@@ -219,193 +220,239 @@
         </fieldset>
 
         <h2 class="center">Nature de la demande</h2>
-        <?php
-            /// Formation qualifiante
-            $tmp = $form->checkbox( 'Apre.Natureaide.Formqualif' );
-            $tmp .= $html->tag( 'label', 'Formation qualifiante / Permis C ou D + FIMO', array( 'for' => 'NatureaideFormqualif' ) );
-            echo $html->tag( 'h3', $tmp );
-        ?>
-        <fieldset id="Formqualif" class="invisible">
+        <fieldset>
             <?php
-                $FormqualifId = Set::classicExtract( $this->data, 'Formqualif.id' );
-                if( $this->action == 'edit' && !empty( $FormqualifId ) ) {
-                    echo $form->input( 'Formqualif.id', array( 'type' => 'hidden' ) );
-                }
-                echo $xform->input( 'Formqualif.intituleform', array( 'domain' => 'apre' ) );
-                echo $xform->address( 'Formqualif.organismeform', array( 'domain' => 'apre' ) );
-                echo $xform->enum( 'Formqualif.ddform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
-                echo $xform->enum( 'Formqualif.dfform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
-                echo $xform->input( 'Formqualif.dureeform', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Formqualif.modevalidation', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Formqualif.coutform', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Formqualif.cofinanceurs', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Formqualif.montantaide', array( 'domain' => 'apre' ) );;
+                /// Formation qualifiante
+                $tmp = $form->checkbox( 'Apre.Natureaide.Formqualif' );
+                $tmp .= $html->tag( 'label', 'Formations individuelles qualifiantes', array( 'for' => 'NatureaideFormqualif' ) );
+                echo $html->tag( 'h3', $tmp );
             ?>
-            <fieldset>
-                <legend>Pièces jointes</legend>
+            <fieldset id="Formqualif" class="invisible">
                 <?php
-                    $selected = Set::extract( $this->data, '/Formqualif/Pieceformqualif/id' );
-                    echo $xform->input( 'Pieceformqualif.Pieceformqualif', array( 'options' => $piecesformqualif, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                    $FormqualifId = Set::classicExtract( $this->data, 'Formqualif.id' );
+                    if( $this->action == 'edit' && !empty( $FormqualifId ) ) {
+                        echo $form->input( 'Formqualif.id', array( 'type' => 'hidden' ) );
+                    }
+                    echo $xform->input( 'Formqualif.intituleform', array( 'domain' => 'apre' ) );
+                    echo $xform->address( 'Formqualif.organismeform', array( 'domain' => 'apre' ) );
+                    echo $xform->enum( 'Formqualif.ddform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->enum( 'Formqualif.dfform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Formqualif.dureeform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formqualif.modevalidation', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formqualif.coutform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formqualif.cofinanceurs', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formqualif.montantaide', array( 'domain' => 'apre' ) );;
                 ?>
+                <fieldset>
+                    <legend>Pièces jointes</legend>
+                    <?php
+                        $selected = Set::extract( $this->data, '/Formqualif/Pieceformqualif/id' );
+                        echo $xform->input( 'Pieceformqualif.Pieceformqualif', array( 'options' => $piecesformqualif, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                    ?>
+                </fieldset>
             </fieldset>
         </fieldset>
-        <?php
-            /// Action de professionnalisation
-            $tmp = $form->checkbox( 'Apre.Natureaide.Actprof' );
-            $tmp .= $html->tag( 'label', 'Action de professionnalisation des contrats aides et salariés dans les SIAE', array( 'for' => 'NatureaideActprof' ) );
-            echo $html->tag( 'h3', $tmp );
-        ?>
-        <fieldset id="Actprof" class="invisible">
+        <fieldset>
             <?php
-                $ActprofId = Set::classicExtract( $this->data, 'Actprof.id' );
-                if( $this->action == 'edit' && !empty( $ActprofId ) ) {
-                    echo $form->input( 'Actprof.id', array( 'type' => 'hidden' ) );
-                }
-                echo $xform->input( 'Actprof.nomemployeur', array( 'domain' => 'apre' ) );
-                echo $xform->address( 'Actprof.adresseemployeur', array( 'domain' => 'apre' ) );
-                echo $xform->enum( 'Actprof.typecontratact', array( 'div' => false, 'legend' => 'Type de contrat', 'type' => 'radio', 'options' => $optionsacts['typecontratact'] ) );
-                echo $xform->input( 'Actprof.ddconvention', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
-                echo $xform->input( 'Actprof.dfconvention', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
-                echo $xform->input( 'Actprof.intituleformation', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Actprof.ddform', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
-                echo $xform->input( 'Actprof.dfform', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
-                echo $xform->input( 'Actprof.dureeform', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Actprof.modevalidation', array( 'domain' => 'apre' ) );;
-                echo $xform->input( 'Actprof.coutform', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Actprof.cofinanceurs', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Actprof.montantaide', array( 'domain' => 'apre' ) );
+                /// Formation qualifiante
+                $tmp = $form->checkbox( 'Apre.Natureaide.Formpermfimo' );
+                $tmp .= $html->tag( 'label', 'Formation permis de conduire Poids Lourd + FIMO', array( 'for' => 'NatureaideFormpermfimo' ) );
+                echo $html->tag( 'h3', $tmp );
             ?>
-            <fieldset>
-                <legend>Pièces jointes</legend>
+            <fieldset id="Formpermfimo" class="invisible">
                 <?php
-                    $selected = Set::extract( $this->data, '/Actprof/Pieceactprof/id' );
-                    echo $xform->input( 'Pieceactprof.Pieceactprof', array( 'options' => $piecesactprof, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                    $FormpermfimoId = Set::classicExtract( $this->data, 'Formpermfimo.id' );
+                    if( $this->action == 'edit' && !empty( $FormpermfimoId ) ) {
+                        echo $form->input( 'Formpermfimo.id', array( 'type' => 'hidden' ) );
+                    }
+                    echo $xform->input( 'Formpermfimo.intituleform', array( 'domain' => 'apre' ) );
+                    echo $xform->address( 'Formpermfimo.organismeform', array( 'domain' => 'apre' ) );
+                    echo $xform->enum( 'Formpermfimo.ddform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->enum( 'Formpermfimo.dfform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Formpermfimo.dureeform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formpermfimo.modevalidation', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formpermfimo.coutform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formpermfimo.cofinanceurs', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formpermfimo.montantaide', array( 'domain' => 'apre' ) );;
                 ?>
-                <?php  ?>
+                <fieldset>
+                    <legend>Pièces jointes</legend>
+                    <?php
+                        $selected = Set::extract( $this->data, '/Formpermfimo/Pieceformpermfimo/id' );
+                        echo $xform->input( 'Pieceformpermfimo.Pieceformpermfimo', array( 'options' => $piecesformpermfimo, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                    ?>
+                </fieldset>
             </fieldset>
         </fieldset>
-        <?php
-            /// Permis B
-            $tmp = $form->checkbox( 'Apre.Natureaide.Permisb' );
-            $tmp .= $html->tag( 'label', 'Permis de conduire B', array( 'for' => 'NatureaidePermisb' ) );
-            echo $html->tag( 'h3', $tmp );
-        ?>
-        <fieldset id="Permisb" class="invisible">
+        <fieldset>
             <?php
-                $PermisbId = Set::classicExtract( $this->data, 'Permisb.id' );
-                if( $this->action == 'edit' && !empty( $PermisbId ) ) {
-                    echo $form->input( 'Permisb.id', array( 'type' => 'hidden' ) );
-                }
-                echo $xform->input( 'Permisb.nomautoecole', array( 'domain' => 'apre' ) );
-                echo $xform->address( 'Permisb.adresseautoecole', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Permisb.code',
-                    array( 'div' => false, 'label' => 'Code', 'type' => 'checkbox' )
-                );
-                echo $xform->input( 'Permisb.conduite',
-                    array( 'div' => false, 'label' => 'Conduite', 'type' => 'checkbox' )
-                );
-                echo $xform->input( 'Permisb.dureeform', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Permisb.coutform', array( 'domain' => 'apre' ) );
+                /// Action de professionnalisation
+                $tmp = $form->checkbox( 'Apre.Natureaide.Actprof' );
+                $tmp .= $html->tag( 'label', 'Action de professionnalisation des contrats aides et salariés dans les SIAE', array( 'for' => 'NatureaideActprof' ) );
+                echo $html->tag( 'h3', $tmp );
             ?>
-            <fieldset>
-                <legend>Pièces jointes</legend>
+            <fieldset id="Actprof" class="invisible">
                 <?php
-                    $selected = Set::extract( $this->data, '/Permisb/Piecepermisb/id' );
-                    echo $xform->input( 'Piecepermisb.Piecepermisb', array( 'options' => $piecespermisb, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                    $ActprofId = Set::classicExtract( $this->data, 'Actprof.id' );
+                    if( $this->action == 'edit' && !empty( $ActprofId ) ) {
+                        echo $form->input( 'Actprof.id', array( 'type' => 'hidden' ) );
+                    }
+                    echo $xform->input( 'Actprof.nomemployeur', array( 'domain' => 'apre' ) );
+                    echo $xform->address( 'Actprof.adresseemployeur', array( 'domain' => 'apre' ) );
+                    echo $xform->enum( 'Actprof.typecontratact', array( 'div' => false, 'legend' => 'Type de contrat', 'type' => 'radio', 'options' => $optionsacts['typecontratact'] ) );
+                    echo $xform->input( 'Actprof.ddconvention', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Actprof.dfconvention', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Actprof.intituleformation', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Actprof.ddform', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Actprof.dfform', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Actprof.dureeform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Actprof.modevalidation', array( 'domain' => 'apre' ) );;
+                    echo $xform->input( 'Actprof.coutform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Actprof.cofinanceurs', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Actprof.montantaide', array( 'domain' => 'apre' ) );
                 ?>
+                <fieldset>
+                    <legend>Pièces jointes</legend>
+                    <?php
+                        $selected = Set::extract( $this->data, '/Actprof/Pieceactprof/id' );
+                        echo $xform->input( 'Pieceactprof.Pieceactprof', array( 'options' => $piecesactprof, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                    ?>
+                    <?php  ?>
+                </fieldset>
             </fieldset>
         </fieldset>
-        <?php
-            /// Amenagement logement
-            $tmp = $form->checkbox( 'Apre.Natureaide.Amenaglogt' );
-            $tmp .= $html->tag( 'label', 'Aide à l\'installation', array( 'for' => 'NatureaideAmenaglogt' ) );
-            echo $html->tag( 'h3', $tmp );
-        ?>
-        <fieldset id="Amenaglogt" class="invisible">
+        <fieldset>
             <?php
-                $AmenaglogtId = Set::classicExtract( $this->data, 'Amenaglogt.id' );
-                if( $this->action == 'edit' && !empty( $AmenaglogtId ) ) {
-                    echo $form->input( 'Amenaglogt.id', array( 'type' => 'hidden' ) );
-                }
-                echo $xform->enum( 'Amenaglogt.typeaidelogement', array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $optionslogts['typeaidelogement'] ) );
-                echo $xform->address( 'Amenaglogt.besoins', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Amenaglogt.montantaide', array( 'domain' => 'apre' ) );
+                /// Permis B
+                $tmp = $form->checkbox( 'Apre.Natureaide.Permisb' );
+                $tmp .= $html->tag( 'label', 'Permis de conduire B', array( 'for' => 'NatureaidePermisb' ) );
+                echo $html->tag( 'h3', $tmp );
             ?>
-            <fieldset>
-                <legend>Pièces jointes</legend>
+            <fieldset id="Permisb" class="invisible">
                 <?php
-                    $selected = Set::extract( $this->data, '/Amenaglogt/Pieceamenaglogt/id' );
-                    echo $xform->input( 'Pieceamenaglogt.Pieceamenaglogt', array( 'options' => $piecesamenaglogt, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) ); ?>
-            </fieldset>
-        </fieldset>
-        <?php
-            /// Accompagnement à la création d'entreprise
-            $tmp = $form->checkbox( 'Apre.Natureaide.Acccreaentr' );
-            $tmp .= $html->tag( 'label', 'Accompagnement à la création d\'entreprise', array( 'for' => 'NatureaideAcccreaentr' ) );
-            echo $html->tag( 'h3', $tmp );
-        ?>
-        <fieldset id="Acccreaentr" class="invisible">
-            <?php
-                $AcccreaentrId = Set::classicExtract( $this->data, 'Acccreaentr.id' );
-                if( $this->action == 'edit' && !empty( $AcccreaentrId ) ) {
-                    echo $form->input( 'Acccreaentr.id', array( 'type' => 'hidden' ) );
-                }
-                echo $xform->enum( 'Acccreaentr.nacre', array( 'legend' => 'Dispositif Nacre', 'div' => false, 'type' => 'radio', 'options' => $optionscrea['nacre'] ) );
-                echo $xform->enum( 'Acccreaentr.microcredit', array( 'legend' => 'Dispositif Micro-crédit', 'div' => false, 'type' => 'radio', 'options' => $optionscrea['microcredit'] ) );
-                echo $xform->address( 'Acccreaentr.projet', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Acccreaentr.montantaide', array( 'domain' => 'apre' ) );
-            ?>
-            <fieldset>
-                <legend>Pièces jointes</legend>
-                <?php
-                    $selected = Set::extract( $this->data, '/Acccreaentr/Pieceacccreaentr/id' );
-                    echo $xform->input( 'Pieceacccreaentr.Pieceacccreaentr', array( 'options' => $piecesacccreaentr, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) ); ?>
-            </fieldset>
-        </fieldset>
-        <?php
-            /// Acquisition de matériels professionnels
-            $tmp = $form->checkbox( 'Apre.Natureaide.Acqmatprof' );
-            $tmp .= $html->tag( 'label', 'Acquisition de matériels professionnels', array( 'for' => 'NatureaideAcqmatprof' ) );
-            echo $html->tag( 'h3', $tmp );
-        ?>
-        <fieldset id="Acqmatprof" class="invisible">
-            <?php
-                $AcqmatprofId = Set::classicExtract( $this->data, 'Acqmatprof.id' );
-                if( $this->action == 'edit' && !empty( $AcqmatprofId ) ) {
-                    echo $form->input( 'Acqmatprof.id', array( 'type' => 'hidden' ) );
-                }
-                echo $xform->address( 'Acqmatprof.besoins', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Acqmatprof.montantaide', array( 'domain' => 'apre' ) );
-            ?>
-            <fieldset>
-                <legend>Pièces jointes</legend>
-                <?php
-                    $selected = Set::extract( $this->data, '/Acqmatprof/Pieceacqmatprof/id' );
-                    echo $xform->input( 'Pieceacqmatprof.Pieceacqmatprof', array( 'options' => $piecesacqmatprof, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                    $PermisbId = Set::classicExtract( $this->data, 'Permisb.id' );
+                    if( $this->action == 'edit' && !empty( $PermisbId ) ) {
+                        echo $form->input( 'Permisb.id', array( 'type' => 'hidden' ) );
+                    }
+                    echo $xform->input( 'Permisb.nomautoecole', array( 'domain' => 'apre' ) );
+                    echo $xform->address( 'Permisb.adresseautoecole', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Permisb.code',
+                        array( 'div' => false, 'label' => 'Code', 'type' => 'checkbox' )
+                    );
+                    echo $xform->input( 'Permisb.conduite',
+                        array( 'div' => false, 'label' => 'Conduite', 'type' => 'checkbox' )
+                    );
+                    echo $xform->input( 'Permisb.dureeform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Permisb.coutform', array( 'domain' => 'apre' ) );
                 ?>
+                <fieldset>
+                    <legend>Pièces jointes</legend>
+                    <?php
+                        $selected = Set::extract( $this->data, '/Permisb/Piecepermisb/id' );
+                        echo $xform->input( 'Piecepermisb.Piecepermisb', array( 'options' => $piecespermisb, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                    ?>
+                </fieldset>
             </fieldset>
         </fieldset>
-        <?php
-            /// Aide à la location d'un véhicule d'insertion
-            $tmp = $form->checkbox( 'Apre.Natureaide.Locvehicinsert' );
-            $tmp .= $html->tag( 'label', 'Aide à la location d\'un véhicule d\'insertion', array( 'for' => 'NatureaideLocvehicinsert' ) );
-            echo $html->tag( 'h3', $tmp );
-        ?>
-        <fieldset id="Locvehicinsert" class="invisible">
+        <fieldset>
             <?php
-                $LocvehicinsertId = Set::classicExtract( $this->data, 'Locvehicinsert.id' );
-                if( $this->action == 'edit' && !empty( $LocvehicinsertId ) ) {
-                    echo $form->input( 'Locvehicinsert.id', array( 'type' => 'hidden' ) );
-                }
-                echo $xform->input( 'Locvehicinsert.societelocation', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Locvehicinsert.dureelocation', array( 'domain' => 'apre' ) );
-                echo $xform->input( 'Locvehicinsert.montantaide', array( 'domain' => 'apre' ) );
+                /// Amenagement logement
+                $tmp = $form->checkbox( 'Apre.Natureaide.Amenaglogt' );
+                $tmp .= $html->tag( 'label', 'Aide à l\'installation', array( 'for' => 'NatureaideAmenaglogt' ) );
+                echo $html->tag( 'h3', $tmp );
             ?>
-            <fieldset>
-                <legend>Pièces jointes</legend>
+            <fieldset id="Amenaglogt" class="invisible">
                 <?php
-                    $selected = Set::extract( $this->data, '/Locvehicinsert/Piecelocvehicinsert/id' );
-                    echo $xform->input( 'Piecelocvehicinsert.Piecelocvehicinsert', array( 'options' => $pieceslocvehicinsert, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) ); ?>
+                    $AmenaglogtId = Set::classicExtract( $this->data, 'Amenaglogt.id' );
+                    if( $this->action == 'edit' && !empty( $AmenaglogtId ) ) {
+                        echo $form->input( 'Amenaglogt.id', array( 'type' => 'hidden' ) );
+                    }
+                    echo $xform->enum( 'Amenaglogt.typeaidelogement', array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $optionslogts['typeaidelogement'] ) );
+                    echo $xform->address( 'Amenaglogt.besoins', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Amenaglogt.montantaide', array( 'domain' => 'apre' ) );
+                ?>
+                <fieldset>
+                    <legend>Pièces jointes</legend>
+                    <?php
+                        $selected = Set::extract( $this->data, '/Amenaglogt/Pieceamenaglogt/id' );
+                        echo $xform->input( 'Pieceamenaglogt.Pieceamenaglogt', array( 'options' => $piecesamenaglogt, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) ); ?>
+                </fieldset>
+            </fieldset>
+        </fieldset>
+        <fieldset>
+            <?php
+                /// Accompagnement à la création d'entreprise
+                $tmp = $form->checkbox( 'Apre.Natureaide.Acccreaentr' );
+                $tmp .= $html->tag( 'label', 'Accompagnement à la création d\'entreprise', array( 'for' => 'NatureaideAcccreaentr' ) );
+                echo $html->tag( 'h3', $tmp );
+            ?>
+            <fieldset id="Acccreaentr" class="invisible">
+                <?php
+                    $AcccreaentrId = Set::classicExtract( $this->data, 'Acccreaentr.id' );
+                    if( $this->action == 'edit' && !empty( $AcccreaentrId ) ) {
+                        echo $form->input( 'Acccreaentr.id', array( 'type' => 'hidden' ) );
+                    }
+                    echo $xform->enum( 'Acccreaentr.nacre', array( 'legend' => 'Dispositif Nacre', 'div' => false, 'type' => 'radio', 'options' => $optionscrea['nacre'] ) );
+                    echo $xform->enum( 'Acccreaentr.microcredit', array( 'legend' => 'Dispositif Micro-crédit', 'div' => false, 'type' => 'radio', 'options' => $optionscrea['microcredit'] ) );
+                    echo $xform->address( 'Acccreaentr.projet', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Acccreaentr.montantaide', array( 'domain' => 'apre' ) );
+                ?>
+                <fieldset>
+                    <legend>Pièces jointes</legend>
+                    <?php
+                        $selected = Set::extract( $this->data, '/Acccreaentr/Pieceacccreaentr/id' );
+                        echo $xform->input( 'Pieceacccreaentr.Pieceacccreaentr', array( 'options' => $piecesacccreaentr, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) ); ?>
+                </fieldset>
+            </fieldset>
+        </fieldset>
+        <fieldset>
+            <?php
+                /// Acquisition de matériels professionnels
+                $tmp = $form->checkbox( 'Apre.Natureaide.Acqmatprof' );
+                $tmp .= $html->tag( 'label', 'Acquisition de matériels professionnels', array( 'for' => 'NatureaideAcqmatprof' ) );
+                echo $html->tag( 'h3', $tmp );
+            ?>
+            <fieldset id="Acqmatprof" class="invisible">
+                <?php
+                    $AcqmatprofId = Set::classicExtract( $this->data, 'Acqmatprof.id' );
+                    if( $this->action == 'edit' && !empty( $AcqmatprofId ) ) {
+                        echo $form->input( 'Acqmatprof.id', array( 'type' => 'hidden' ) );
+                    }
+                    echo $xform->address( 'Acqmatprof.besoins', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Acqmatprof.montantaide', array( 'domain' => 'apre' ) );
+                ?>
+                <fieldset>
+                    <legend>Pièces jointes</legend>
+                    <?php
+                        $selected = Set::extract( $this->data, '/Acqmatprof/Pieceacqmatprof/id' );
+                        echo $xform->input( 'Pieceacqmatprof.Pieceacqmatprof', array( 'options' => $piecesacqmatprof, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) );
+                    ?>
+                </fieldset>
+            </fieldset>
+        </fieldset>
+        <fieldset>
+            <?php
+                /// Aide à la location d'un véhicule d'insertion
+                $tmp = $form->checkbox( 'Apre.Natureaide.Locvehicinsert' );
+                $tmp .= $html->tag( 'label', 'Aide à la location d\'un véhicule d\'insertion', array( 'for' => 'NatureaideLocvehicinsert' ) );
+                echo $html->tag( 'h3', $tmp );
+            ?>
+            <fieldset id="Locvehicinsert" class="invisible">
+                <?php
+                    $LocvehicinsertId = Set::classicExtract( $this->data, 'Locvehicinsert.id' );
+                    if( $this->action == 'edit' && !empty( $LocvehicinsertId ) ) {
+                        echo $form->input( 'Locvehicinsert.id', array( 'type' => 'hidden' ) );
+                    }
+                    echo $xform->input( 'Locvehicinsert.societelocation', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Locvehicinsert.dureelocation', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Locvehicinsert.montantaide', array( 'domain' => 'apre' ) );
+                ?>
+                <fieldset>
+                    <legend>Pièces jointes</legend>
+                    <?php
+                        $selected = Set::extract( $this->data, '/Locvehicinsert/Piecelocvehicinsert/id' );
+                        echo $xform->input( 'Piecelocvehicinsert.Piecelocvehicinsert', array( 'options' => $pieceslocvehicinsert, 'multiple' => 'checkbox', 'label' => false, 'selected' => $selected ) ); ?>
+                </fieldset>
             </fieldset>
         </fieldset>
         <fieldset class="aere">

@@ -63,10 +63,11 @@
             }
 
             if( !empty( $this->data ) ) {
-
-                foreach( $this->data['Apre']['Apre'] as $i => $apreId ) {
-                    if( empty( $apreId ) ) {
-                        unset( $this->data['Apre']['Apre'][$i] );
+                if( isset( $this->data['Apre'] ) && isset( $this->data['Apre']['Apre'] ) ) {
+                    foreach( $this->data['Apre']['Apre'] as $i => $apreId ) {
+                        if( empty( $apreId ) ) {
+                            unset( $this->data['Apre']['Apre'][$i] );
+                        }
                     }
                 }
 

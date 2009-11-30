@@ -161,10 +161,9 @@ CREATE TABLE piecesapre (
 );
 
 INSERT INTO piecesapre ( libelle ) VALUES
-    ( 'Formulaire de demande d''APRE normalisé du département dûment complété' ),
-    ( 'Justificatif d''entrée en formation ou de création d''entreprise' ),
-    ( 'Contrat de travail' ),
-    ( 'Contrat d''insertion validé par le Président du Conseil Général (sauf pour SIAE et titulaires de contrats aidés)' ),
+    ( 'Justificatif d''entrée en formation ou de création d''entreprise *' ),
+    ( 'Contrat de travail *' ),
+    ( 'Contrat d''insertion validé par le Président du Conseil Général (sauf pour SIAE et titulaires de contrats aidés) *' ),
     ( 'Attestation CAF datant du dernier mois de prestation versée' ),
     ( 'Curriculum vitae' ),
     ( 'Lettre motivée de l''allocataire détaillant les besoins' ),
@@ -255,8 +254,8 @@ CREATE TABLE piecesactsprofs (
 );
 
 INSERT INTO piecesactsprofs ( libelle ) VALUES
-    ( 'Convention individuelle (pour les contrats aidés)' ),
-    ( 'Contrat de travail (pour les contrats SIAE)' ),
+    ( 'Convention individuelle (pour les contrats aidés) *' ),
+    ( 'Contrat de travail (pour les contrats SIAE) *' ),
     ( 'Facture ou devis' );
 
 -- --------------------------------------------------------------------------------------------------------
@@ -296,12 +295,7 @@ CREATE TABLE piecespermisb (
 );
 
 INSERT INTO piecespermisb ( libelle ) VALUES
-    ( 'Photocopie du permis de conduire' ),
-    ( 'Devis nominatif détaillé précisant l''intitulé de la formation, son lieu, dates prévisionnelles de début et fin d''action, durée en heure jours et mois, contenu (heures et modules), l''organisation de la formation, le coût global ainsi que la participation éventuelle du stagiaire.' ),
-    ( 'Evaluation des connaissances et compétences professionnelles (ECCP)' ),
-    ( 'Facture ou devis' ),
-    ( 'Attestation d''inscription à l''auto-école' ),
-    ( 'Obtention du code' ),
+    ( 'Attestation sur l’honneur ou Cerfa 02' ),
     ( 'Devis ou facture' );
 
 -- --------------------------------------------------------------------------------------------------------
@@ -340,11 +334,11 @@ CREATE TABLE piecesamenagslogts (
 
 INSERT INTO piecesamenagslogts ( libelle ) VALUES
     ( 'Bail ou contrat de location' ),
-    ( 'Document faisant état du montant de la dette pour le maintien au logement (compte locataire émis par le bialleur' ),
     ( 'Devis pour les frais d''agence' ),
     ( 'Devis ou facture frais de déménagement' ),
     ( 'Contrat ou devis assurance habitation' ),
     ( 'Facture ouverture compteurs EDF/GDF' ),
+    ( 'Versement caution logement' ),
     ( 'Facture' );
 
 -- --------------------------------------------------------------------------------------------------------
@@ -382,7 +376,7 @@ CREATE TABLE piecesaccscreaentr (
 );
 
 INSERT INTO piecesaccscreaentr ( libelle ) VALUES
-    ( 'Extrait du Kbis' ),
+    ( 'Extrait du Kbis du registre du commerce' ),
     ( 'Facture' );
 
 -- --------------------------------------------------------------------------------------------------------
@@ -456,7 +450,8 @@ CREATE TABLE pieceslocsvehicinsert (
 );
 
 INSERT INTO pieceslocsvehicinsert ( libelle ) VALUES
-    ( 'Facture' );
+    ( 'Facture' ),
+    ( 'Photocopie du permis de conduire B' );
 
 -- --------------------------------------------------------------------------------------------------------
 --  ....Table liée Acqmatprof avec ses pièces
@@ -561,3 +556,50 @@ ALTER TABLE apres_comitesapres ADD COLUMN recoursapre type_no DEFAULT NULL;
 ALTER TABLE apres_comitesapres ADD COLUMN decisionrecours type_decisioncomite;
 ALTER TABLE apres_comitesapres ADD COLUMN observationrecours TEXT;
 ALTER TABLE apres_comitesapres ADD COLUMN daterecours DATE;
+
+
+-- -------------------------- Ajout du 30/11/2009 à 16h46 ------------------
+---------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------
+--  ....Données nécessaire pour la table Formqualif
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE formspermsfimo (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    intituleform                VARCHAR(100) NOT NULL,
+    organismeform               VARCHAR(100) NOT NULL,
+    ddform                      DATE,
+    dfform                      DATE,
+    dureeform                   INT4,
+    modevalidation              VARCHAR(30),
+    coutform                    DECIMAL(10,2),
+    cofinanceurs                VARCHAR(30),
+    montantaide                 DECIMAL(10,2)
+);
+CREATE INDEX formspermsfimo_apre_id_idx ON formspermsfimo (apre_id);
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces liées à formpermfimo
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE piecesformspermsfimo (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    libelle                     TEXT NOT NULL
+);
+
+INSERT INTO piecesformspermsfimo ( libelle ) VALUES
+    ( 'Photocopie du permis de conduire' ),
+    ( 'Devis nominatif détaillé précisant l''intitulé de la formation, son lieu, dates prévisionnelles de début et fin d''action, durée en heure jours et mois, contenu (heures et modules), l''organisation de la formation, le coût global ainsi que la participation éventuelle du stagiaire.' ),
+    ( 'Evaluation des connaissances et compétences professionnelles (ECCP)' ),
+    ( 'Facture ou devis' );
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table liée Formqualif avec ses pièces
+-- --------------------------------------------------------------------------------------------------------
+
+CREATE TABLE formspermsfimo_piecesformspermsfimo (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    formpermfimo_id               INTEGER NOT NULL REFERENCES formspermsfimo(id),
+    pieceformpermfimo_id          INTEGER NOT NULL REFERENCES piecesformspermsfimo(id)
+);
+CREATE INDEX formspermsfimo_piecesformspermsfimo_formpermfimo_id_idx ON formspermsfimo_piecesformspermsfimo (formpermfimo_id);
+CREATE INDEX formspermsfimo_piecesformspermsfimo_pieceformpermfimo_id_idx ON formspermsfimo_piecesformspermsfimo (pieceformpermfimo_id);

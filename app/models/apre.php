@@ -42,6 +42,7 @@
 
         var $hasOne = array(
             'Formqualif',
+            'Formpermfimo',
             'Actprof',
             'Permisb',
             'Amenaglogt',
@@ -50,7 +51,7 @@
             'Locvehicinsert'
         );
 
-        var $aidesApre = array( 'Formqualif', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' );
+        var $aidesApre = array( 'Formqualif', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' );
 
         var $hasMany = array(
 //             'Formqualif' => array(
@@ -158,6 +159,17 @@
 			// Nombre de pièces trouvées par-rapport au nombre de pièces prévues - Apre
 			$details['Piecepresente']['Apre'] = $this->AprePieceapre->find( 'count', array( 'conditions' => array( 'apre_id' => $apre_id ) ) );
 			$details['Piecemanquante']['Apre'] = abs( $details['Piecepresente']['Apre'] - $nbNormalPieces['Apre'] );
+
+            // Quelles sont les pièces manquantes
+            $piecesPresentes = Set::extract( $this->AprePieceapre->find( 'all', array( 'conditions' => array( 'apre_id' => $apre_id ) ) ), '/AprePieceapre/pieceapre_id' );
+            $conditions = array();
+            if( !empty( $piecesPresentes ) ) {
+                $conditions['Pieceapre.id NOT'] = $piecesPresentes;
+            }
+            $piecesAbsentes = $this->Pieceapre->find( 'list', array( 'conditions' => $conditions, 'recursive' => -1 ) );
+            $details['Piece']['Manquante']['Apre'] = $piecesAbsentes;
+
+// debug( $details );
 
 			/// Essaie de récupération des pièces des aides liées
 			foreach( $this->aidesApre as $model ) {

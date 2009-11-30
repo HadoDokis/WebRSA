@@ -3,6 +3,6 @@
     {
         var $name = 'Pieceformqualif';
         var $displayField = 'libelle';
-        var $order = array( 'Pieceformqualif.libelle ASC' );
+//         var $order = array( 'Pieceformqualif.libelle ASC' );
     }
 ?>

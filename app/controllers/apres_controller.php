@@ -3,7 +3,7 @@
     {
 
         var $name = 'Apres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'Referentapre', 'Prestation', 'Dsp', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'Referentapre', 'Prestation', 'Dsp', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxrefapre' );
 
@@ -129,6 +129,10 @@
             $piecesformqualif = $this->Apre->Formqualif->Pieceformqualif->find( 'list' );
             $this->set( 'piecesformqualif', $piecesformqualif );
 
+            /// Pièces liées à la Formpermfimo
+            $piecesformpermfimo = $this->Apre->Formpermfimo->Pieceformpermfimo->find( 'list' );
+            $this->set( 'piecesformpermfimo', $piecesformpermfimo );
+
             /// Pièces liées à la Actprof
             $piecesactprof = $this->Apre->Actprof->Pieceactprof->find( 'list' );
             $this->set( 'piecesactprof', $piecesactprof );
@@ -198,13 +202,14 @@
 
             if( !empty( $this->data ) ){
                 // FIXME: pourquoi doit-on faire ceci ?
-                $this->Apre->bindModel( array( 'hasOne' => array( 'Formqualif', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' ) ), false );
+                $this->Apre->bindModel( array( 'hasOne' => array( 'Formqualif', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' ) ), false );
 
                 if( $this->Apre->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     $saved = $this->Apre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
                     if( $saved ) {
                         $tablesLiees = array(
                             'Formqualif' => 'Pieceformqualif',
+                            'Formpermfimo' => 'Pieceformpermfimo',
                             'Actprof' => 'Pieceactprof',
                             'Permisb' => 'Piecepermisb',
                             'Amenaglogt' => 'Pieceamenaglogt',
@@ -243,6 +248,7 @@
                 ///FIXME: pour le moment on ne récupère que les pièces de la dernière aide enregistrée !!!
                     $tablesLiees = array(
                         'Formqualif' => 'Pieceformqualif',
+                        'Formpermfimo' => 'Pieceformpermfimo',
                         'Actprof' => 'Pieceactprof',
                         'Permisb' => 'Piecepermisb',
                         'Amenaglogt' => 'Pieceamenaglogt',

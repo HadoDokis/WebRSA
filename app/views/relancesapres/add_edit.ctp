@@ -48,9 +48,9 @@
 
     <fieldset>
         <?php
-            $piecesManquantes = Set::extract( $apre, 'Apre.Piecemanquante' );
-//             debug($piecesManquantes);
-//             debug($apre);
+            $piecesManquantes = array();
+            $piecesManquantes = Set::classicExtract( $apre, 'Apre.Piece.Manquante.Apre' );
+
             echo $xform->input( 'Relanceapre.daterelance', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
             echo $xform->input( 'Relanceapre.commentairerelance', array( 'domain' => 'apre' ) );
         ?>
