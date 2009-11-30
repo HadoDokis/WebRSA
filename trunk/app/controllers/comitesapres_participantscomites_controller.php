@@ -8,7 +8,7 @@
 
         function beforeFilter(){
             parent::beforeFilter();
-            $this->set( 'participantcomite', $this->Participantcomite->find( 'list' ) );
+            $this->set( 'participants', $this->Participantcomite->find( 'all' ) );
         }
 
         /** ********************************************************************
@@ -50,6 +50,11 @@
             }
 
             if( !empty( $this->data ) ) {
+                foreach( $this->data['Participantcomite']['Participantcomite'] as $i => $participantcomiteId ) {
+                    if( empty( $participantcomiteId ) ) {
+                        unset( $this->data['Participantcomite']['Participantcomite'][$i] );
+                    }
+                }
                 if( $this->Comiteapre->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'comitesapres', 'action' => 'view', $comiteapre_id ) );

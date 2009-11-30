@@ -19,7 +19,41 @@
             <fieldset>
                 <legend>Participants au comité</legend>
                 <?php echo $xform->input( 'Comiteapre.id', array( 'label' => false, 'type' => 'hidden' ) ) ;?>
-                <?php echo $xform->input( 'Participantcomite.Participantcomite', array( 'label' =>  false, 'type' => 'select', 'options' => $participantcomite, 'multiple' => 'checkbox' ) );?>
+               <!-- <?php /*echo $xform->input( 'Participantcomite.Participantcomite', array( 'label' =>  false, 'type' => 'select', 'options' => $participantcomite, 'multiple' => 'checkbox' ) );*/?> -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom/Prénom</th>
+                            <th>Fonction</th>
+                            <th>Organisme</th>
+                            <th>N° Téléphone</th>
+                            <th>Email</th>
+                            <th>Sélectionner</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                            foreach( $participants as $i => $participant ) {
+//                             debug($participant);
+                                echo $html->tableCells(
+                                    array(
+                                        h( Set::classicExtract( $participant, 'Participantcomite.nom' ) ),
+                                        h( Set::classicExtract( $participant, 'Participantcomite.fonction' ) ),
+                                        h( Set::classicExtract( $participant, 'Participantcomite.organisme' ) ),
+                                        h( Set::classicExtract( $participant, 'Participantcomite.numtel' ) ),
+                                        h( Set::classicExtract( $participant, 'Participantcomite.mail' ) ),
+
+                                        $xform->checkbox( 'Participantcomite.Participantcomite.'.$i, array( 'value' => $participant['Participantcomite']['id'], 'id' => 'ParticipantcomiteParticipantcomite'.$participant['Participantcomite']['id'] , 'checked' => in_array( $participant['Participantcomite']['id'], $this->data['Participantcomite']['Participantcomite'] ) ) ),
+                                    ),
+                                    array( 'class' => 'odd' ),
+                                    array( 'class' => 'even' )
+                                );
+                            }
+
+                        ?>
+                    </tbody>
+                </table>
             </fieldset>
         </div>
 

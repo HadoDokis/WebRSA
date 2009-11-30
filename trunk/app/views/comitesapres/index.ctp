@@ -99,13 +99,13 @@
                                 ),
                                 $html->decisionsApreLink(
                                     'Décision',
-                                    array( 'controller' => 'comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
-                                    $permissions->check( 'comitesapres', 'edit' )
+                                    array( 'controller' => 'cohortescomitesapres', 'action' => 'aviscomite', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+                                    $permissions->check( 'cohortescomitesapres', 'aviscomite' )
                                 ),
                                 $html->notificationsApreLink(
                                     'Notifier la décision',
-                                    array( 'controller' => 'gedooos', 'action' => 'notifApre', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
-                                    $permissions->check( 'gedooos', 'notifApre' )
+                                    array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomite', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+                                    $permissions->check( 'cohortescomitesapres', 'notificationscomite' )
                                 ),
                             ),
                             array( 'class' => 'odd' ),
