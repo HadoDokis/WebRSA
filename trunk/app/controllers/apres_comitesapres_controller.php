@@ -8,8 +8,18 @@
 
         function beforeFilter(){
             parent::beforeFilter();
-//             $this->set( 'apre', $this->Apre->find( 'list' ) );
-            $this->set( 'apres', $this->Apre->find( 'all' ) );
+
+            $apres = $this->Apre->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Apre.id NOT IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite IS NOT NULL )'
+                    ),
+                    'recursive' => 0
+                )
+            );
+// debug( $apres );
+            $this->set( 'apres', $apres );
 
         }
 
@@ -53,12 +63,13 @@
             }
 
             if( !empty( $this->data ) ) {
+
                 foreach( $this->data['Apre']['Apre'] as $i => $apreId ) {
                     if( empty( $apreId ) ) {
                         unset( $this->data['Apre']['Apre'][$i] );
                     }
                 }
-// debug( $this->data );
+
                 if( $this->Comiteapre->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'comitesapres', 'action' => 'view', $comiteapre_id ) );
