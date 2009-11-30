@@ -4,6 +4,7 @@
         var $name = 'ApreComiteapre';
         var $actsAs = array( 'Enumerable' );
 
+
         var $validate = array(
             'decisioncomite' => array(
                 array(
@@ -20,15 +21,6 @@
                 ),
             ),
         );
-
-//                 $model->validate[$field][] = array(
-//                     'rule'       => array( 'inList', $options ),
-//                     'message'    => sprintf(
-//                         __( $this->settings['validationRule'], true ),
-//                         implode( $this->settings['validationRuleSeparator'], $options )
-//                     ),
-//                     'allowEmpty' => $this->settings['validationRuleAllowEmpty']
-//                 );
 
         var $enumFields = array(
             'decisioncomite' => array( 'type' => 'decisioncomite', 'domain' => 'apre' ),

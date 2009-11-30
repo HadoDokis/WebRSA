@@ -24,7 +24,7 @@
  <fieldset class= "noprint">
         <legend>Recherche Comités</legend>
         <?php echo $xform->input( 'Cohortecomiteapre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-            <?php echo $xform->input( 'Cohortecomiteapre.id', array( 'label' => 'Intitulé du comité', 'options' => $comitesapre, 'empty' => true ) );?>
+            <?php echo $xform->input( 'Cohortecomiteapre.id', array( 'label' => 'Intitulé du comité', 'options' => $comitesapre ) );?>
             <?php echo $xform->input( 'Cohortecomiteapre.datecomite', array( 'label' => 'Filtrer par date de comités', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de saisie du contrat</legend>

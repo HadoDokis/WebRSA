@@ -86,6 +86,7 @@
                 ?>
             </tbody>
         </table>
+    </div>
         <?php else:?>
             <ul class="actionMenu">
                 <?php
@@ -96,7 +97,7 @@
                 ?>
             </ul>
         <?php endif;?>
-    </div>
+
 <?php endif;?>
 
 <br />
@@ -152,6 +153,7 @@
                 ?>
             </tbody>
         </table>
+    </div>
         <?php else:?>
             <ul class="actionMenu">
                 <?php
@@ -162,6 +164,6 @@
                 ?>
             </ul>
         <?php endif;?>
-    </div>
+
 <?php endif;?>
 <div class="clearer"><hr /></div>

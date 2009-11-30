@@ -4,7 +4,7 @@
         var $name = 'Comiteapre';
         var $actsAs = array( 'Enumerable' );
         var $displayField = 'intitulecomite';
-        //var $order = array( '' ); // <-- TODO
+        var $order = array( 'datecomite ASC' ); // <-- TODO
 
         var $hasAndBelongsToMany = array(
             'Participantcomite' => array(
@@ -35,10 +35,6 @@
                 'message' => 'Champ obligatoire'
             ),
             'intitulecomite' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            ),
-            'observationcomite' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             )
