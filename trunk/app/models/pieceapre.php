@@ -3,6 +3,6 @@
     {
         var $name = 'Pieceapre';
         var $displayField = 'libelle';
-        var $order = array( 'Pieceapre.libelle ASC' );
+//         var $order = array( 'Pieceapre.libelle ASC' );
     }
 ?>

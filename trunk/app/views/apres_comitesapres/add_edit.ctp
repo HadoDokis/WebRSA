@@ -14,6 +14,9 @@
 
     <h1><?php echo $this->pageTitle;?></h1>
 
+    <?php if( empty( $apres ) ):?>
+        <p class="notice">Il ne reste plus d'APREs à traiter.</p>
+    <?php else:?>
     <?php echo $xform->create( 'ApreComiteapre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) ); ?>
         <div class="aere">
             <fieldset>
@@ -32,7 +35,11 @@
                         <?php
 
                             foreach( $apres as $i => $apre ) {
-// debug( Set::extract( $apre, '/Comiteapre/ApreComiteapre' ) );
+
+                                $apreApre = Set::extract( $this->data, 'Apre.Apre' );
+                                if( empty( $apreApre ) ) {
+                                    $apreApre = array();
+                                }
 
                                 echo $html->tableCells(
                                     array(
@@ -40,7 +47,7 @@
                                         h( Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
                                         h( $locale->date( 'Date::short', Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ) ),
 
-                                        $xform->checkbox( 'Apre.Apre.'.$i, array( 'value' => Set::classicExtract( $apre, 'Apre.id' ), 'id' => 'ApreApre'.Set::classicExtract( $apre, 'Apre.id' ), 'checked' => in_array( Set::classicExtract( $apre, 'Apre.id' ), $this->data['Apre']['Apre'] ) ) ),
+                                        $xform->checkbox( 'Apre.Apre.'.$i, array( 'value' => Set::classicExtract( $apre, 'Apre.id' ), 'id' => 'ApreApre'.Set::classicExtract( $apre, 'Apre.id' ), 'checked' => in_array( Set::classicExtract( $apre, 'Apre.id' ), $apreApre ) ) ),
                                     ),
                                     array( 'class' => 'odd' ),
                                     array( 'class' => 'even' )
@@ -52,7 +59,8 @@
                 </table>
             </fieldset>
         </div>
+
         <?php echo $xform->submit( 'Enregistrer' );?>
     <?php echo $xform->end();?>
-
+        <?php endif;?>
 <div class="clearer"><hr /></div>

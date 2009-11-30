@@ -156,6 +156,11 @@
         'locvehicinsert' => 'locsvehicinsert',
         'piecelocvehicinsert' => 'pieceslocsvehicinsert',
         'locvehicinsert_piecelocvehicinsert' => 'locsvehicinsert_pieceslocsvehicinsert',
+        ///->Formpermfimo
+        'formpermfimo' => 'formspermsfimo',
+        'pieceformpermfimo' => 'piecesformspermsfimo',
+        'formpermfimo_pieceformpermfimo' => 'formspermsfimo_piecesformspermsfimo',
+
         'referentapre' => 'referentsapre',
         'montantconsomme' => 'montantsconsommes',
         'critereapre' => 'criteresapres',
