@@ -35,7 +35,7 @@
                         <?php
 
                             foreach( $participants as $i => $participant ) {
-//                             debug($participant);
+
                                 echo $html->tableCells(
                                     array(
                                         h( Set::classicExtract( $participant, 'Participantcomite.nom' ) ),

@@ -32,13 +32,15 @@
                         <?php
 
                             foreach( $apres as $i => $apre ) {
+// debug( Set::extract( $apre, '/Comiteapre/ApreComiteapre' ) );
+
                                 echo $html->tableCells(
                                     array(
                                         h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
                                         h( Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
                                         h( $locale->date( 'Date::short', Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ) ),
 
-                                        $xform->checkbox( 'Apre.Apre.'.$i, array( 'value' => $apre['Apre']['id'], 'id' => 'ApreApre'.$apre['Apre']['id'] , 'checked' => in_array( $apre['Apre']['id'], $this->data['Apre']['Apre'] ) ) ),
+                                        $xform->checkbox( 'Apre.Apre.'.$i, array( 'value' => Set::classicExtract( $apre, 'Apre.id' ), 'id' => 'ApreApre'.Set::classicExtract( $apre, 'Apre.id' ), 'checked' => in_array( Set::classicExtract( $apre, 'Apre.id' ), $this->data['Apre']['Apre'] ) ) ),
                                     ),
                                     array( 'class' => 'odd' ),
                                     array( 'class' => 'even' )

@@ -117,7 +117,7 @@
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <th>N° demande RSA</th>
+                    <th>N° demande APRE</th>
                     <th>NIR</th>
                     <th>Nom/Prénom</th>
                     <th>Localité</th>
@@ -133,7 +133,7 @@
 // debug($apre);
                         echo $html->tableCells(
                             array(
-                                h( Set::classicExtract( $apre, 'Dossier.numdemrsa' ) ),
+                                h( Set::classicExtract( $apre, 'numeroapre' ) ),
                                 h( Set::classicExtract( $apre, 'Personne.nir' ) ),
                                 h( Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
                                 h( Set::classicExtract( $apre, 'Adresse.locaadr' ) ),
