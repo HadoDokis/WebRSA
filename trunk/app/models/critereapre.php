@@ -171,7 +171,10 @@
                     '"Adresse"."numcomptt"',
 //                     '"Relanceapre"."id"',
 //                     '"Relanceapre"."daterelance"',
-//                     '"Comiteapre"."datecomite"',
+                    '"ApreComiteapre"."comiteapre_id"',
+                    '"ApreComiteapre"."apre_id"',
+                    '"ApreComiteapre"."decisioncomite"',
+                    '"Comiteapre"."datecomite"',
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -191,20 +194,20 @@
                             'Contratinsertion.personne_id = Personne.id'
                         )
                     ),
-//                     array(
-//                         'table'      => 'apres_comitesapres',
-//                         'alias'      => 'ApreComiteapre',
-//                         'type'       => 'LEFT OUTER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
-//                     ),
-//                     array(
-//                         'table'      => 'comitesapres',
-//                         'alias'      => 'Comiteapre',
-//                         'type'       => 'LEFT OUTER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'ApreComiteapre.comiteapre_id = Comiteapre.id' )
-//                     ),
+                    array(
+                        'table'      => 'apres_comitesapres',
+                        'alias'      => 'ApreComiteapre',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
+                    ),
+                    array(
+                        'table'      => 'comitesapres',
+                        'alias'      => 'Comiteapre',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'ApreComiteapre.comiteapre_id = Comiteapre.id' )
+                    ),
                     array(
                         'table'      => 'relancesapres',
                         'alias'      => 'Relanceapre',

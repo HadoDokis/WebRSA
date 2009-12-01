@@ -28,6 +28,7 @@
     else {
         $pagination = '';
     }
+
 ?>
 <?php
     if( is_array( $this->data ) ) {
@@ -104,7 +105,10 @@
 
 <!-- Résultats -->
 <?php if( isset( $apres ) ):?>
-
+<?php
+          echo sprintf( 'Nombre total d\'APREs: %s, dont %d en attente de décision et %d en attente de traitement', $locale->number( $countApre ), $locale->number( $countDecision ), $locale->number( $countTraitement ) );
+//           echo 'Nombre total d\'APREs: '.$countApre.', dont '.$countDecision.' en attente de décision et '.$countTraitement.' en attente de traitement';
+?>
     <h2 class="noprint">Résultats de la recherche</h2>
     <?php echo $pagination;?>
     <?php if( is_array( $apres ) && count( $apres ) > 0  ):?>

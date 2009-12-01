@@ -303,11 +303,13 @@ msgid "ENUM::ACTIVITEBENEFICIAIRE::E"
 msgstr "Emploi"
 
 msgid "ENUM::ACTIVITEBENEFICIAIRE::F"
-msgstr "Formation"
+msgstr "Formation Qualifiante"
 
 msgid "ENUM::ACTIVITEBENEFICIAIRE::C"
-msgstr "Création"
+msgstr "Création d'Entreprise"
 
+msgid "ENUM::ACTIVITEBENEFICIAIRE::P"
+msgstr "Formation Pré-qualifiante"
 ###############################################################################
 # Enum Apre.typecontrat
 ###############################################################################

@@ -112,6 +112,7 @@ CREATE TABLE referentsapre (
 CREATE TYPE type_typedemandeapre AS ENUM ( 'FO', 'AU' );
 CREATE TYPE type_naturelogement AS ENUM ( 'P', 'L', 'H', 'S', 'A' );
 CREATE TYPE type_activitebeneficiaire AS ENUM ( 'E', 'F', 'C' );
+
 CREATE TYPE type_typecontrat AS ENUM ( 'CDI', 'CDD', 'CON', 'AUT' );
 
 CREATE TABLE apres (
@@ -608,3 +609,5 @@ CREATE INDEX formspermsfimo_piecesformspermsfimo_pieceformpermfimo_id_idx ON for
 -- -------------------------- Ajout du 01/12/2009 à 9h10 ------------------
 ALTER TABLE apres ADD COLUMN secteuractivite CHAR(1);
 ALTER TABLE apres ADD COLUMN nbenf12 INTEGER;
+-- DROP TYPE type_activitebeneficiaire CASCADE;
+-- CREATE TYPE type_activitebeneficiaire AS ENUM ( 'E', 'F', 'C', 'P' );

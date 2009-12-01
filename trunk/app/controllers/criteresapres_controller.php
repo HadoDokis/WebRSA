@@ -59,9 +59,41 @@
                 $this->paginate['limit'] = 10;
                 $apres = $this->paginate( 'Apre' );
 
+                // Nb d'APREs présentes
+                $countApre = count( Set::extract( $apres, '/Apre/id' ) );
+                $this->set( 'countApre', $countApre );
+
                 $this->Dossier->commit();
 
                 $this->set( 'apres', $apres );
+
+                ///Nb d'APREs passées en comité et dont la décision a été / va être prise
+                $countDecision = 0;
+                ///Nb d'APREs en attente de traitement
+                $countTraitement = 0;
+
+                foreach( $apres as $apre ){
+                    $attenteDecision = Set::classicExtract( $apre, 'ApreComiteapre.apre_id' );
+                    $decisionComite = Set::classicExtract( $apre, 'ApreComiteapre.decisioncomite' );
+
+                    if( empty( $attenteDecision ) && empty( $decisionComite ) ){
+//                         $countDecision++;
+                        $countTraitement = $countApre - $countDecision;
+                    }
+                    else if( !empty( $attenteDecision ) && empty( $decisionComite ) ) {
+                        $countDecision++;
+                        $countTraitement = $countApre - $countDecision;
+                    }
+                    else if( !empty( $attenteDecision ) && !empty( $decisionComite ) ) {
+                        $countDecision = count( $decisionComite ) - $countDecision;
+                        $countTraitement = $countApre - count( $decisionComite );
+                    }
+                    $this->set( 'countDecision', $countDecision );
+                    $this->set( 'countTraitement', $countTraitement );
+                }
+
+
+
             }
 
             $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
