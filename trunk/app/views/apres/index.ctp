@@ -9,7 +9,7 @@
             $mtpaye = 400;
             foreach( $apres as $apre ) {
                 $nbenfants = Set::classicExtract( $apre, 'Apre.nbenf12' );
-                if( !empty( $nbenfants ) && ( $nbenfants < 5 ) ){ //FIXME: voir si possibilité faire autrement
+                if( ( $nbenfants < 5 ) ){ //FIXME: voir si possibilité faire autrement
                     $mtpaye = $mtpaye + ( 100 * $nbenfants );
                 }
                 else{
