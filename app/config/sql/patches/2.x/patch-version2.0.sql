@@ -603,3 +603,7 @@ CREATE TABLE formspermsfimo_piecesformspermsfimo (
 );
 CREATE INDEX formspermsfimo_piecesformspermsfimo_formpermfimo_id_idx ON formspermsfimo_piecesformspermsfimo (formpermfimo_id);
 CREATE INDEX formspermsfimo_piecesformspermsfimo_pieceformpermfimo_id_idx ON formspermsfimo_piecesformspermsfimo (pieceformpermfimo_id);
+
+
+-- -------------------------- Ajout du 01/12/2009 à 9h10 ------------------
+ALTER TABLE apres ADD COLUMN secteuractivite CHAR(1);

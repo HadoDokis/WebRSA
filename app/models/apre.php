@@ -14,7 +14,11 @@
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
-            'referentapre_id' => array(
+//             'referentapre_id' => array(
+//                 'rule' => 'notEmpty',
+//                 'message' => 'Champ obligatoire'
+//             ),
+            'secteurprofessionnel' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),

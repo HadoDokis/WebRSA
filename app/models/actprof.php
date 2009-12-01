@@ -6,21 +6,75 @@
 
 
         var $validate = array(
+            'nomemployeur' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'adresseemployeur' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'typecontratact' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'intituleformation' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
             'montantaide' => array(
-                'rule' => 'numeric',
-                'message' => 'Veuillez entrer une valeur numérique.',
-                'allowEmpty' => true
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.',
+                    'allowEmpty' => true
+                )
             ),
             'coutform' => array(
-                'rule' => 'numeric',
-                'message' => 'Veuillez entrer une valeur numérique.',
-                'allowEmpty' => true
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.',
+                    'allowEmpty' => true
+                )
             ),
             'dureeform' => array(
-                'rule' => 'numeric',
-                'message' => 'Veuillez entrer une valeur numérique.',
-                'allowEmpty' => true
-            )
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.',
+                    'allowEmpty' => true
+                )
+            ),
+            'ddform' => array(
+                array(
+                    'rule' => 'date',
+                    'message' => 'Veuillez vérifier le format de la date.'
+                ),
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'dfform' => array(
+                array(
+                    'rule' => 'date',
+                    'message' => 'Veuillez vérifier le format de la date.'
+                ),
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
         );
 
         var $enumFields = array(

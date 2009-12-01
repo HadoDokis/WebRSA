@@ -7,9 +7,15 @@
 
         var $validate = array(
             'montantaide' => array(
-                'rule' => 'numeric',
-                'message' => 'Veuillez entrer une valeur numérique.',
-                'allowEmpty' => true
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.',
+                    'allowEmpty' => true
+                )
             )
         );
 

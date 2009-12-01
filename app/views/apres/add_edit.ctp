@@ -24,9 +24,9 @@
 
         //Données pour le type d'activité du bénéficiare
         ['F', 'C'].each( function( letter ) {
-            observeDisableFieldsOnValue( 'ApreActivitebeneficiaire' + letter, [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur' ],  letter, true );
+            observeDisableFieldsOnValue( 'ApreActivitebeneficiaire' + letter, [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur', 'ApreSecteuractivite' ],  letter, true );
         } );
-        observeDisableFieldsOnValue( 'ApreActivitebeneficiaireE', [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur' ], 'E', false );
+        observeDisableFieldsOnValue( 'ApreActivitebeneficiaireE', [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur', 'ApreSecteuractivite' ], 'E', false );
 
         // ....
         observeDisableFieldsetOnCheckbox( 'ApreNatureaideFormqualif', $( 'Formqualif' ), false, true );
@@ -37,6 +37,7 @@
         observeDisableFieldsetOnCheckbox( 'ApreNatureaideAcccreaentr', $( 'Acccreaentr' ), false, true );
         observeDisableFieldsetOnCheckbox( 'ApreNatureaideAcqmatprof', $( 'Acqmatprof' ), false, true );
         observeDisableFieldsetOnCheckbox( 'ApreNatureaideLocvehicinsert', $( 'Locvehicinsert' ), false, true );
+
 
         <?php
             echo $ajax->remoteFunction(
@@ -164,8 +165,8 @@
                     <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.projetprofessionnel', array( 'domain' => 'apre', 'label' => false ) );?></td>
                 </tr>
                 <tr>
-                    <td class="mediumsize noborder"><strong>Secteur professionnel en lien avec la demande </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.secteurprofessionnel', array( 'domain' => 'apre', 'label' => false ) );?></td>
+                    <td class="mediumsize noborder"><strong>Secteur professionnel en lien avec la demande *</strong></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.secteurprofessionnel', array( 'domain' => 'apre', 'legend' => required( __d( 'apre', 'Apre.secteurprofessionnel', true ) ), 'label' => false ) );?></td>
                 </tr>
             </table>
         </fieldset>
@@ -187,6 +188,10 @@
                 <tr>
                     <td class="mediumsize noborder"><strong>Si autres, préciser  </strong></td>
                     <td class="mediumsize noborder"><?php echo $xform->input( 'Apre.precisionsautrecontrat', array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
+                </tr>
+                <tr>
+                    <td class="activiteSize noborder"><strong>Secteur d'activité  </strong></td>
+                    <td class="activiteSize noborder"><?php echo $xform->input( 'Apre.secteuractivite', array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'class' => 'activiteSize', 'options' => $sect_acti_emp, 'empty' => true ) );?></td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Nombres d'heures travaillées </strong></td>
@@ -233,15 +238,15 @@
                     if( $this->action == 'edit' && !empty( $FormqualifId ) ) {
                         echo $form->input( 'Formqualif.id', array( 'type' => 'hidden' ) );
                     }
-                    echo $xform->input( 'Formqualif.intituleform', array( 'domain' => 'apre' ) );
-                    echo $xform->address( 'Formqualif.organismeform', array( 'domain' => 'apre' ) );
-                    echo $xform->enum( 'Formqualif.ddform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
-                    echo $xform->enum( 'Formqualif.dfform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
-                    echo $xform->input( 'Formqualif.dureeform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formqualif.intituleform', array(  'required' => true, 'domain' => 'apre' ) );
+                    echo $xform->address( 'Formqualif.organismeform', array( 'required' => true, 'domain' => 'apre' ) );
+                    echo $xform->enum( 'Formqualif.ddform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->enum( 'Formqualif.dfform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Formqualif.dureeform', array( 'required' => true, 'domain' => 'apre' ) );
                     echo $xform->input( 'Formqualif.modevalidation', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Formqualif.coutform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formqualif.coutform', array( 'required' => true, 'domain' => 'apre' ) );
                     echo $xform->input( 'Formqualif.cofinanceurs', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Formqualif.montantaide', array( 'domain' => 'apre' ) );;
+                    echo $xform->input( 'Formqualif.montantaide', array( 'required' => true, 'domain' => 'apre' ) );;
                 ?>
                 <fieldset>
                     <legend>Pièces jointes</legend>
@@ -265,15 +270,15 @@
                     if( $this->action == 'edit' && !empty( $FormpermfimoId ) ) {
                         echo $form->input( 'Formpermfimo.id', array( 'type' => 'hidden' ) );
                     }
-                    echo $xform->input( 'Formpermfimo.intituleform', array( 'domain' => 'apre' ) );
-                    echo $xform->address( 'Formpermfimo.organismeform', array( 'domain' => 'apre' ) );
-                    echo $xform->enum( 'Formpermfimo.ddform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
-                    echo $xform->enum( 'Formpermfimo.dfform', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
-                    echo $xform->input( 'Formpermfimo.dureeform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formpermfimo.intituleform', array( 'required' => true, 'domain' => 'apre' ) );
+                    echo $xform->address( 'Formpermfimo.organismeform', array( 'required' => true, 'domain' => 'apre' ) );
+                    echo $xform->enum( 'Formpermfimo.ddform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->enum( 'Formpermfimo.dfform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Formpermfimo.dureeform', array( 'required' => true, 'domain' => 'apre' ) );
                     echo $xform->input( 'Formpermfimo.modevalidation', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Formpermfimo.coutform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Formpermfimo.coutform', array( 'required' => true, 'domain' => 'apre' ) );
                     echo $xform->input( 'Formpermfimo.cofinanceurs', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Formpermfimo.montantaide', array( 'domain' => 'apre' ) );;
+                    echo $xform->input( 'Formpermfimo.montantaide', array( 'required' => true, 'domain' => 'apre' ) );;
                 ?>
                 <fieldset>
                     <legend>Pièces jointes</legend>
@@ -297,19 +302,19 @@
                     if( $this->action == 'edit' && !empty( $ActprofId ) ) {
                         echo $form->input( 'Actprof.id', array( 'type' => 'hidden' ) );
                     }
-                    echo $xform->input( 'Actprof.nomemployeur', array( 'domain' => 'apre' ) );
-                    echo $xform->address( 'Actprof.adresseemployeur', array( 'domain' => 'apre' ) );
-                    echo $xform->enum( 'Actprof.typecontratact', array( 'div' => false, 'legend' => 'Type de contrat', 'type' => 'radio', 'options' => $optionsacts['typecontratact'] ) );
-                    echo $xform->input( 'Actprof.ddconvention', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
-                    echo $xform->input( 'Actprof.dfconvention', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
-                    echo $xform->input( 'Actprof.intituleformation', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Actprof.ddform', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
-                    echo $xform->input( 'Actprof.dfform', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
-                    echo $xform->input( 'Actprof.dureeform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Actprof.nomemployeur', array( 'required' => true, 'domain' => 'apre' ) );
+                    echo $xform->address( 'Actprof.adresseemployeur', array( 'required' => true, 'domain' => 'apre' ) );
+                    echo $xform->enum( 'Actprof.typecontratact', array( 'required' => true, 'div' => false, 'legend' => 'Type de contrat', 'type' => 'radio', 'options' => $optionsacts['typecontratact'] ) );
+                    echo $xform->input( 'Actprof.ddconvention', array( 'required' => true, 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Actprof.dfconvention', array( 'required' => true, 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Actprof.intituleformation', array( 'required' => true, 'domain' => 'apre' ) );
+                    echo $xform->input( 'Actprof.ddform', array( 'required' => true, 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Actprof.dfform', array( 'required' => true, 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Actprof.dureeform', array( 'required' => true, 'domain' => 'apre' ) );
                     echo $xform->input( 'Actprof.modevalidation', array( 'domain' => 'apre' ) );;
-                    echo $xform->input( 'Actprof.coutform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Actprof.coutform', array('required' => true,  'domain' => 'apre' ) );
                     echo $xform->input( 'Actprof.cofinanceurs', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Actprof.montantaide', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Actprof.montantaide', array( 'required' => true, 'domain' => 'apre' ) );
                 ?>
                 <fieldset>
                     <legend>Pièces jointes</legend>
@@ -334,16 +339,16 @@
                     if( $this->action == 'edit' && !empty( $PermisbId ) ) {
                         echo $form->input( 'Permisb.id', array( 'type' => 'hidden' ) );
                     }
-                    echo $xform->input( 'Permisb.nomautoecole', array( 'domain' => 'apre' ) );
-                    echo $xform->address( 'Permisb.adresseautoecole', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Permisb.nomautoecole', array( 'required' => true, 'domain' => 'apre' ) );
+                    echo $xform->address( 'Permisb.adresseautoecole', array( 'required' => true, 'domain' => 'apre' ) );
                     echo $xform->input( 'Permisb.code',
                         array( 'div' => false, 'label' => 'Code', 'type' => 'checkbox' )
                     );
                     echo $xform->input( 'Permisb.conduite',
                         array( 'div' => false, 'label' => 'Conduite', 'type' => 'checkbox' )
                     );
-                    echo $xform->input( 'Permisb.dureeform', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Permisb.coutform', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Permisb.dureeform', array( 'required' => true, 'domain' => 'apre' ) );
+                    echo $xform->input( 'Permisb.coutform', array( 'required' => true, 'domain' => 'apre' ) );
                 ?>
                 <fieldset>
                     <legend>Pièces jointes</legend>
@@ -367,9 +372,9 @@
                     if( $this->action == 'edit' && !empty( $AmenaglogtId ) ) {
                         echo $form->input( 'Amenaglogt.id', array( 'type' => 'hidden' ) );
                     }
-                    echo $xform->enum( 'Amenaglogt.typeaidelogement', array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $optionslogts['typeaidelogement'] ) );
+                    echo $xform->enum( 'Amenaglogt.typeaidelogement', array( 'required' => true, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $optionslogts['typeaidelogement'] ) );
                     echo $xform->address( 'Amenaglogt.besoins', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Amenaglogt.montantaide', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Amenaglogt.montantaide', array( 'required' => true, 'domain' => 'apre' ) );
                 ?>
                 <fieldset>
                     <legend>Pièces jointes</legend>
@@ -392,10 +397,10 @@
                     if( $this->action == 'edit' && !empty( $AcccreaentrId ) ) {
                         echo $form->input( 'Acccreaentr.id', array( 'type' => 'hidden' ) );
                     }
-                    echo $xform->enum( 'Acccreaentr.nacre', array( 'legend' => 'Dispositif Nacre', 'div' => false, 'type' => 'radio', 'options' => $optionscrea['nacre'] ) );
-                    echo $xform->enum( 'Acccreaentr.microcredit', array( 'legend' => 'Dispositif Micro-crédit', 'div' => false, 'type' => 'radio', 'options' => $optionscrea['microcredit'] ) );
+                    echo $xform->enum( 'Acccreaentr.nacre', array( 'required' => true, 'legend' => 'Dispositif Nacre', 'div' => false, 'type' => 'radio', 'options' => $optionscrea['nacre'] ) );
+                    echo $xform->enum( 'Acccreaentr.microcredit', array( 'required' => true, 'legend' => 'Dispositif Micro-crédit', 'div' => false, 'type' => 'radio', 'options' => $optionscrea['microcredit'] ) );
                     echo $xform->address( 'Acccreaentr.projet', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Acccreaentr.montantaide', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Acccreaentr.montantaide', array( 'required' => true, 'domain' => 'apre' ) );
                 ?>
                 <fieldset>
                     <legend>Pièces jointes</legend>
@@ -419,7 +424,7 @@
                         echo $form->input( 'Acqmatprof.id', array( 'type' => 'hidden' ) );
                     }
                     echo $xform->address( 'Acqmatprof.besoins', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Acqmatprof.montantaide', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Acqmatprof.montantaide', array( 'required' => true, 'domain' => 'apre' ) );
                 ?>
                 <fieldset>
                     <legend>Pièces jointes</legend>
@@ -443,9 +448,9 @@
                     if( $this->action == 'edit' && !empty( $LocvehicinsertId ) ) {
                         echo $form->input( 'Locvehicinsert.id', array( 'type' => 'hidden' ) );
                     }
-                    echo $xform->input( 'Locvehicinsert.societelocation', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Locvehicinsert.dureelocation', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Locvehicinsert.montantaide', array( 'domain' => 'apre' ) );
+                    echo $xform->input( 'Locvehicinsert.societelocation', array('required' => true,  'domain' => 'apre' ) );
+                    echo $xform->input( 'Locvehicinsert.dureelocation', array( 'required' => true, 'domain' => 'apre' ) );
+                    echo $xform->input( 'Locvehicinsert.montantaide', array('required' => true,  'domain' => 'apre' ) );
                 ?>
                 <fieldset>
                     <legend>Pièces jointes</legend>

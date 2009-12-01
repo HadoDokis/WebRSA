@@ -100,7 +100,7 @@ msgid "Formqualif.modevalidation"
 msgstr "Mode de validation "
 
 msgid "Formqualif.coutform"
-msgstr "Coût de le formation "
+msgstr "Coût de la formation "
 
 msgid "Formqualif.cofinanceurs"
 msgstr "Co-financeurs  "
@@ -108,6 +108,38 @@ msgstr "Co-financeurs  "
 msgid "Formqualif.montantaide"
 msgstr "Montant "
 
+###############################################################################
+# Formpermfimo pour l'APRE
+###############################################################################
+msgid "Formpermfimo.intituleform"
+msgstr "Intitulé de la formation "
+
+msgid "Formpermfimo.organismeform"
+msgstr "Organisme de la formation "
+
+msgid "Formpermfimo.ddform"
+msgstr "Du "
+
+msgid "Formpermfimo.dfform"
+msgstr "Au "
+
+msgid "Formpermfimo.dureeform"
+msgstr "Durée (Heures) "
+
+msgid "Formpermfimo.modevalidation"
+msgstr "Mode de validation "
+
+msgid "Formpermfimo.modevalidation"
+msgstr "Mode de validation "
+
+msgid "Formpermfimo.coutform"
+msgstr "Coût de la formation "
+
+msgid "Formpermfimo.cofinanceurs"
+msgstr "Co-financeurs  "
+
+msgid "Formpermfimo.montantaide"
+msgstr "Montant "
 ###############################################################################
 # Actprof pour l'APRE
 ###############################################################################
