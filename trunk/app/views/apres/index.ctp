@@ -4,6 +4,36 @@
 
 <div class="with_treemenu">
     <h1>APRE</h1>
+    <?php if( !empty( $apres ) ):?>
+        <?php
+            $mtpaye = 400;
+            foreach( $apres as $apre ) {
+                $nbenfants = Set::classicExtract( $apre, 'Apre.nbenf12' );
+                if( !empty( $nbenfants ) && ( $nbenfants < 5 ) ){ //FIXME: voir si possibilité faire autrement
+                    $mtpaye = $mtpaye + ( 100 * $nbenfants );
+                }
+                else{
+                    $mtpaye = 800;
+                }
+            }
+        ?>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Forfait théorique payé</td>
+                        <td><?php echo $mtpaye;?></td>
+                    </tr>
+                    <tr>
+                        <td>Montants consommés (APRE Complémentaire)</td>
+                        <td><?php echo ''/*$mtconsomme*/;?></td>
+                    </tr>
+                    <tr>
+                        <td>Reste APRE Complémentaire</td>
+                        <td><?php echo ''/*$reste*/;?></td>
+                    </tr>
+                </thead>
+            </table>
+    <?php endif;?>
 <!--    <?php /*if( empty( $contratinsertion )  ):?>
         <p class="error">Impossible d'ajouter une demande d'APRE lorsqu'il n'existe pas de contrat d'insertion.</p>
 

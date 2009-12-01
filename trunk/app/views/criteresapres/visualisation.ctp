@@ -6,6 +6,8 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsetOnCheckbox( 'FiltreDatedemandeapre', $( 'FiltreDatedemandeapreFromDay' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'FiltreDaterelance', $( 'FiltreDaterelanceFromDay' ).up( 'fieldset' ), false );
+
     });
 </script>
 
@@ -47,6 +49,8 @@
     <fieldset>
         <legend>Recherche par personne</legend>
         <?php echo $xform->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Filtre.numdemrsa', array( 'label' => 'N° dossier RSA ', 'type' => 'text', 'maxlength' => 11 ) );?>
+        <?php echo $form->input( 'Filtre.matricule', array( 'label' => 'N° CAF ', 'type' => 'text'/*, 'maxlength' => 11*/ ) );?>
         <?php echo $xform->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
         <?php echo $xform->input( 'Filtre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
     </fieldset>
@@ -64,18 +68,33 @@
                 <?php echo $xform->input( 'Filtre.datedemandeapre_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
             </fieldset>
                 <?php echo $xform->enum( 'Filtre.eligibiliteapre', array(  'label' => 'Eligibilité de l\'APRE', 'options' => $options['eligibiliteapre'] ) );?>
-                <?php echo $xform->enum( 'Filtre.etatdossierapre', array(  'label' => 'Etat du dossier APRE', 'options' => $options['etatdossierapre'] ) );?>
+
              <?php echo $xform->enum( 'Filtre.typedemandeapre', array(  'label' => 'Type de demande', 'options' => $options['typedemandeapre'] ) );?>
              <?php echo $xform->enum( 'Filtre.activitebeneficiaire', array(  'label' => 'Activité du bénéficiaire', 'options' => $options['activitebeneficiaire'] ) );?>
             <?php echo $xform->enum( 'Filtre.natureaidesapres', array(  'label' => 'Nature de l\'aide', 'options' => $natureAidesApres, 'empty' => true ) );?>
-            <?php echo $xform->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-            <!-- <?php echo $xform->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
+
             <?php echo $xform->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
             <?php
                 if( Configure::read( 'CG.cantons' ) ) {
                     echo $xform->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
                 }
             ?>
+    </fieldset>
+    <fieldset>
+        <legend>Recherche par Relance</legend>
+        <?php echo $xform->input( 'Filtre.daterelance', array( 'label' => 'Filtrer par date de relance', 'type' => 'checkbox' ) );?>
+            <fieldset>
+                <legend>Date de la saisie de la relance</legend>
+                <?php
+                    $daterelance_from = Set::check( $this->data, 'Filtre.daterelance_from' ) ? Set::extract( $this->data, 'Filtre.daterelance_from' ) : strtotime( '-1 week' );
+                    $daterelance_to = Set::check( $this->data, 'Filtre.daterelance_to' ) ? Set::extract( $this->data, 'Filtre.daterelance_to' ) : strtotime( 'now' );
+                ?>
+                <?php echo $xform->input( 'Filtre.daterelance_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_from ) );?>
+                <?php echo $xform->input( 'Filtre.daterelance_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_to ) );?>
+            </fieldset>
+
+            <?php echo $xform->enum( 'Filtre.etatdossierapre', array(  'label' => 'Etat du dossier APRE', 'options' => $options['etatdossierapre'] ) );?>
+            <?php echo $xform->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
     </fieldset>
 
     <div class="submit noprint">
@@ -95,8 +114,8 @@
         <table id="searchResults" class="tooltips_oupas">
             <thead>
                 <tr>
-                    <!-- <th><?php echo $paginator->sort( 'N° CAF', 'Dossier.matricule' );?></th> -->
-                    <th><?php echo $paginator->sort( 'N° APRE', 'Apre.numeroapre' );?></th>
+                    <th><?php echo $paginator->sort( 'N° Dossier RSA', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
                     <th><?php echo $paginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
@@ -145,7 +164,8 @@
 // debug($apre);
                         echo $html->tableCells(
                             array(
-                                h( $apre['Apre']['numeroapre'] ),
+                                h( Set::classicExtract( $apre, 'Dossier.numdemrsa' ) ),
+                                h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
                                 h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ),
                                 h( $apre['Adresse']['locaadr'] ),
                                 h( $locale->date( 'Date::short', Set::extract( $apre, 'Apre.datedemandeapre' ) ) ),

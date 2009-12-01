@@ -40,8 +40,11 @@
 
             /// Critères
             $datedemandeapre = Set::extract( $criteresapres, 'Filtre.datedemandeapre' );
+            $daterelance = Set::extract( $criteresapres, 'Filtre.daterelance' );
             $locaadr = Set::extract( $criteresapres, 'Filtre.locaadr' );
             $numcomptt = Set::extract( $criteresapres, 'Filtre.numcomptt' );
+            $numdemrsa = Set::extract( $criteresapres, 'Filtre.numdemrsa' );
+            $matricule = Set::extract( $criteresapres, 'Filtre.matricule' );
             $nir = Set::extract( $criteresapres, 'Filtre.nir' );
             $typedemandeapre = Set::extract( $criteresapres, 'Filtre.typedemandeapre' );
             $etatdossierapre = Set::extract( $criteresapres, 'Filtre.etatdossierapre' );
@@ -49,7 +52,7 @@
             $activitebeneficiaire = Set::extract( $criteresapres, 'Filtre.activitebeneficiaire' );
             $natureaidesapres = Set::extract( $criteresapres, 'Filtre.natureaidesapres' );
 
-            /// Critères sur le CI - date de saisi contrat
+            /// Critères sur la demande APRE - date de demande
             if( isset( $criteresapres['Filtre']['datedemandeapre'] ) && !empty( $criteresapres['Filtre']['datedemandeapre'] ) ) {
                 $valid_from = ( valid_int( $criteresapres['Filtre']['datedemandeapre_from']['year'] ) && valid_int( $criteresapres['Filtre']['datedemandeapre_from']['month'] ) && valid_int( $criteresapres['Filtre']['datedemandeapre_from']['day'] ) );
                 $valid_to = ( valid_int( $criteresapres['Filtre']['datedemandeapre_to']['year'] ) && valid_int( $criteresapres['Filtre']['datedemandeapre_to']['month'] ) && valid_int( $criteresapres['Filtre']['datedemandeapre_to']['day'] ) );
@@ -57,6 +60,16 @@
                     $conditions[] = 'Apre.datedemandeapre BETWEEN \''.implode( '-', array( $criteresapres['Filtre']['datedemandeapre_from']['year'], $criteresapres['Filtre']['datedemandeapre_from']['month'], $criteresapres['Filtre']['datedemandeapre_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresapres['Filtre']['datedemandeapre_to']['year'], $criteresapres['Filtre']['datedemandeapre_to']['month'], $criteresapres['Filtre']['datedemandeapre_to']['day'] ) ).'\'';
                 }
             }
+
+            /// Critères sur la relance d'APRE - date de relance
+            if( isset( $criteresapres['Filtre']['daterelance'] ) && !empty( $criteresapres['Filtre']['daterelance'] ) ) {
+                $valid_from = ( valid_int( $criteresapres['Filtre']['daterelance_from']['year'] ) && valid_int( $criteresapres['Filtre']['daterelance_from']['month'] ) && valid_int( $criteresapres['Filtre']['daterelance_from']['day'] ) );
+                $valid_to = ( valid_int( $criteresapres['Filtre']['daterelance_to']['year'] ) && valid_int( $criteresapres['Filtre']['daterelance_to']['month'] ) && valid_int( $criteresapres['Filtre']['daterelance_to']['day'] ) );
+                if( $valid_from && $valid_to ) {
+                    $conditions[] = 'Relance.daterelance BETWEEN \''.implode( '-', array( $criteresapres['Filtre']['daterelance_from']['year'], $criteresapres['Filtre']['daterelance_from']['month'], $criteresapres['Filtre']['daterelance_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresapres['Filtre']['daterelance_to']['year'], $criteresapres['Filtre']['daterelance_to']['month'], $criteresapres['Filtre']['daterelance_to']['day'] ) ).'\'';
+                }
+            }
+
 
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
             $filtersPersonne = array();
@@ -87,6 +100,16 @@
             // Commune au sens INSEE
             if( !empty( $numcomptt ) ) {
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+            }
+
+            // N° Dossier RSA
+            if( !empty( $numdemrsa ) ) {
+                $conditions[] = 'Dossier.numdemrsa ILIKE \'%'.Sanitize::clean( $numdemrsa ).'%\'';
+            }
+
+            // N° CAF
+            if( !empty( $matricule ) ) {
+                $conditions[] = 'Dossier.matricule ILIKE \'%'.Sanitize::clean( $matricule ).'%\'';
             }
 
             //Type de demande
@@ -146,6 +169,7 @@
                     '"Adresse"."locaadr"',
                     '"Adresse"."codepos"',
                     '"Adresse"."numcomptt"',
+//                     '"Relanceapre"."id"',
 //                     '"Relanceapre"."daterelance"',
 //                     '"Comiteapre"."datecomite"',
                 ),
