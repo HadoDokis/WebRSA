@@ -1148,7 +1148,7 @@
                 'Q' => 'Santé humaine et action sociale',
                 'R' => 'Arts, spectacles et activités récréatives',
                 'S' => 'Autres activités de services',
-                'T' => 'Activités des ménages en tant qu\'employeurs ; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre',
+                'T' => 'Activités des ménages en tant qu\'employeurs; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre',
                 'U' => 'Activités extra-territoriales'
             );
         }

@@ -5,16 +5,36 @@
         var $actsAs = array( 'Enumerable', 'Frenchfloat' => array( 'fields' => array( 'coutform', 'dureeform' ) ) );
 
         var $validate = array(
+            'nomautoecole' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'adresseautoecole' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
             'coutform' => array(
-                'rule' => 'numeric',
-                'message' => 'Veuillez entrer une valeur numérique.',
-                'allowEmpty' => true
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.',
+                    'allowEmpty' => true
+                )
             ),
             'dureeform' => array(
-                'rule' => 'numeric',
-                'message' => 'Veuillez entrer une valeur numérique.',
-                'allowEmpty' => true
-            )
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.',
+                    'allowEmpty' => true
+                )
+            ),
         );
 
         var $hasAndBelongsToMany = array(

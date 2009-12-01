@@ -828,3 +828,10 @@ table#repddtefp tbody th {
     color: black;
     background-color: #CFCFCF;
 }
+/** Selcteur d'activité pour le bénéficiaire APRE**/
+td.activiteSize {
+    width: 30%!important;
+}
+select.activiteSize {
+    width: 100%!important;
+}
