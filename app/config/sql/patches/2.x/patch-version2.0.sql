@@ -607,3 +607,4 @@ CREATE INDEX formspermsfimo_piecesformspermsfimo_pieceformpermfimo_id_idx ON for
 
 -- -------------------------- Ajout du 01/12/2009 à 9h10 ------------------
 ALTER TABLE apres ADD COLUMN secteuractivite CHAR(1);
+ALTER TABLE apres ADD COLUMN nbenf12 INTEGER;

@@ -62,6 +62,10 @@
 //                 'classname' => 'Formqualif',
 //                 'foreignKey' => 'apre_id',
 //             ),
+//             'Formpermfimo' => array(
+//                 'classname' => 'Formpermfimo',
+//                 'foreignKey' => 'apre_id',
+//             ),
 //             'Actprof' => array(
 //                 'classname' => 'Actprof',
 //                 'foreignKey' => 'apre_id',
@@ -101,7 +105,7 @@
                  'className'              => 'Pieceapre',
                  'joinTable'              => 'apres_piecesapre',
                  'foreignKey'             => 'apre_id',
-                'associationForeignKey'  => 'pieceapre_id'
+                 'associationForeignKey'  => 'pieceapre_id'
             ),
             'Comiteapre' => array(
                 'className'              => 'Comiteapre',
