@@ -29,6 +29,7 @@
     else {
         $pagination = '';
     }
+
 ?>
 <?php
     if( is_array( $this->data ) ) {

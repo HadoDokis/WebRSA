@@ -52,8 +52,8 @@
 </script>
 
 <div class="with_treemenu">
-    <h1><?php echo $this->pageTitle;?></h1>
-
+    <h1>Formulaire de demande de l'APRE COMPLÉMENTAIRE</h1>
+<br />
     <?php
 		echo $form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre', 'url' => Router::url( null, true ) ) );
         $ApreId = Set::classicExtract( $this->data, 'Apre.id' );
@@ -96,7 +96,7 @@
                 </tr>
             </table>
         </fieldset>
-        <h1>Demande d'Aide Personnalisee de Retour a  l'Emploi (APRE)</h1>
+
         <fieldset>
             <legend>Identité du beneficiaire de la demande</legend>
             <table class="wide noborder">
@@ -166,7 +166,7 @@
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Secteur professionnel en lien avec la demande *</strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.secteurprofessionnel', array( 'domain' => 'apre', 'legend' => required( __d( 'apre', 'Apre.secteurprofessionnel', true ) ), 'label' => false ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.secteurprofessionnel', array( 'domain' => 'apre', 'label' => false ) );?></td>
                 </tr>
             </table>
         </fieldset>
