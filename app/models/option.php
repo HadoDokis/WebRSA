@@ -890,7 +890,8 @@
 
         function natureAidesApres() {
             return array(
-                'Formqualif'     => 'Formation qualifiante / Permis C ou D + FIMO',
+                'Formqualif'     => 'Formations individuelles qualifiantes',
+                'Formpermfimo'   => 'Formation Permis Poids Lourd + FIMO',
                 'Actprof'        => 'Action de professionnalisation des contrats aides et SIAE',
                 'Permisb'        => 'Permis de conduire B',
                 'Amenaglogt'     => 'Aide à l\'installation',
