@@ -39,11 +39,11 @@
                     <th><?php echo $paginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
+                    <th><?php echo $paginator->sort( 'Date demande APRE', 'Apre.datedemandeapre' );?></th>
                     <th><?php echo $paginator->sort( 'Décision comité examen', 'ApreComiteapre.decisioncomite' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de décision comité', 'Comiteapre.datecomite' );?></th>
+                    <th><?php echo $paginator->sort( 'Date décision comité', 'Comiteapre.datecomite' );?></th>
                     <th>Demande de recours</th>
-                    <th>Date demande de recours</th>
+                    <th>Date recours</th>
                     <th>Observations</th>
 
                     <th class="action">Action</th>
