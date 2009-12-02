@@ -79,13 +79,11 @@
         function address( $fieldName, $options = array() ) {
             $options['type'] = 'textarea';
             $options['rows'] = ( isset( $options['rows'] ) ? $options['rows'] : '3' );
-            $options['label'] = false;
-            $options['div'] = false;
-            $options['required'] = ( isset( $options['required'] ) ? $options['required'] : false );
-
-            $label = $this->Html->tag( 'label', $this->_label( $fieldName, $options ) );
-            $textarea = $this->input( $fieldName, $options );
-            return $this->Html->tag( 'div', $label.$textarea, array( 'class' => 'input textarea address' ) );
+            $options['class'] = 'input textarea address';
+            $options['label'] = $this->_label( $fieldName, $options );
+            unset( $options['required'] );
+            unset( $options['domain'] );
+            return parent::input( $fieldName, $options );
         }
 
         /** ********************************************************************
@@ -98,9 +96,10 @@
 			$defaultOptions = array(
 				'domain' => $domain,
 				'type' => 'select',
-                'required' => false,
 				'empty' => ''
 			);
+            unset( $options['required'] );
+            unset( $options['domain'] );
             return self::input( $fieldName, Set::merge( $defaultOptions, $options ) );
         }
 

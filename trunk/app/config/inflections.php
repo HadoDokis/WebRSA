@@ -173,6 +173,8 @@
         'comiteapre_participantcomite' => 'comitesapres_participantscomites',
         'apre_comiteapre' => 'apres_comitesapres',
         'cohortecomiteapre' => 'cohortescomitesapres',
+        ///Recours pour les APREs
+        'recoursapre' => 'recoursapres',
 		/// Dsp
 		'detaildifsoc' => 'detailsdifsocs',
 		'detailaccosocfam' => 'detailsaccosocfams',

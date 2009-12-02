@@ -190,8 +190,10 @@
                     <td class="mediumsize noborder"><?php echo $xform->input( 'Apre.precisionsautrecontrat', array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
                 </tr>
                 <tr>
-                    <td class="activiteSize noborder"><strong>Secteur d'activité  </strong></td>
-                    <td class="activiteSize noborder"><?php echo $xform->input( 'Apre.secteuractivite', array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'class' => 'activiteSize', 'options' => $sect_acti_emp, 'empty' => true ) );?></td>
+                    <td class="activiteSize noborder" colspan="2"><strong>Secteur d'activité  </strong></td>
+                </tr>
+                <tr>
+                    <td class="activiteSize noborder" colspan="2"><?php echo $xform->input( 'Apre.secteuractivite', array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'class' => 'activiteSize', 'options' => $sect_acti_emp, 'empty' => true ) );?></td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Nombres d'heures travaillées </strong></td>
@@ -229,7 +231,7 @@
             <?php
                 /// Formation qualifiante
                 $tmp = $form->checkbox( 'Apre.Natureaide.Formqualif' );
-                $tmp .= $html->tag( 'label', 'Formations individuelles qualifiantes', array( 'for' => 'NatureaideFormqualif' ) );
+                $tmp .= $html->tag( 'label', 'Formations individuelles qualifiantes', array( 'for' => 'ApreNatureaideFormqualif' ) );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Formqualif" class="invisible">
@@ -240,8 +242,8 @@
                     }
                     echo $xform->input( 'Formqualif.intituleform', array(  'required' => true, 'domain' => 'apre' ) );
                     echo $xform->address( 'Formqualif.organismeform', array( 'required' => true, 'domain' => 'apre' ) );
-                    echo $xform->enum( 'Formqualif.ddform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
-                    echo $xform->enum( 'Formqualif.dfform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Formqualif.ddform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Formqualif.dfform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
                     echo $xform->input( 'Formqualif.dureeform', array( 'required' => true, 'domain' => 'apre' ) );
                     echo $xform->input( 'Formqualif.modevalidation', array( 'domain' => 'apre' ) );
                     echo $xform->input( 'Formqualif.coutform', array( 'required' => true, 'domain' => 'apre' ) );
@@ -261,7 +263,7 @@
             <?php
                 /// Formation qualifiante
                 $tmp = $form->checkbox( 'Apre.Natureaide.Formpermfimo' );
-                $tmp .= $html->tag( 'label', 'Formation permis de conduire Poids Lourd + FIMO', array( 'for' => 'NatureaideFormpermfimo' ) );
+                $tmp .= $html->tag( 'label', 'Formation permis de conduire Poids Lourd + FIMO', array( 'for' => 'ApreNatureaideFormpermfimo' ) );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Formpermfimo" class="invisible">
@@ -272,8 +274,8 @@
                     }
                     echo $xform->input( 'Formpermfimo.intituleform', array( 'required' => true, 'domain' => 'apre' ) );
                     echo $xform->address( 'Formpermfimo.organismeform', array( 'required' => true, 'domain' => 'apre' ) );
-                    echo $xform->enum( 'Formpermfimo.ddform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
-                    echo $xform->enum( 'Formpermfimo.dfform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Formpermfimo.ddform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
+                    echo $xform->input( 'Formpermfimo.dfform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
                     echo $xform->input( 'Formpermfimo.dureeform', array( 'required' => true, 'domain' => 'apre' ) );
                     echo $xform->input( 'Formpermfimo.modevalidation', array( 'domain' => 'apre' ) );
                     echo $xform->input( 'Formpermfimo.coutform', array( 'required' => true, 'domain' => 'apre' ) );
@@ -293,7 +295,7 @@
             <?php
                 /// Action de professionnalisation
                 $tmp = $form->checkbox( 'Apre.Natureaide.Actprof' );
-                $tmp .= $html->tag( 'label', 'Action de professionnalisation des contrats aides et salariés dans les SIAE', array( 'for' => 'NatureaideActprof' ) );
+                $tmp .= $html->tag( 'label', 'Action de professionnalisation des contrats aides et salariés dans les SIAE', array( 'for' => 'ApreNatureaideActprof' ) );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Actprof" class="invisible">
@@ -330,7 +332,7 @@
             <?php
                 /// Permis B
                 $tmp = $form->checkbox( 'Apre.Natureaide.Permisb' );
-                $tmp .= $html->tag( 'label', 'Permis de conduire B', array( 'for' => 'NatureaidePermisb' ) );
+                $tmp .= $html->tag( 'label', 'Permis de conduire B', array( 'for' => 'ApreNatureaidePermisb' ) );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Permisb" class="invisible">
@@ -363,7 +365,7 @@
             <?php
                 /// Amenagement logement
                 $tmp = $form->checkbox( 'Apre.Natureaide.Amenaglogt' );
-                $tmp .= $html->tag( 'label', 'Aide à l\'installation', array( 'for' => 'NatureaideAmenaglogt' ) );
+                $tmp .= $html->tag( 'label', 'Aide à l\'installation', array( 'for' => 'ApreNatureaideAmenaglogt' ) );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Amenaglogt" class="invisible">
@@ -372,7 +374,7 @@
                     if( $this->action == 'edit' && !empty( $AmenaglogtId ) ) {
                         echo $form->input( 'Amenaglogt.id', array( 'type' => 'hidden' ) );
                     }
-                    echo $xform->enum( 'Amenaglogt.typeaidelogement', array( 'required' => true, 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $optionslogts['typeaidelogement'] ) );
+                    echo $xform->enum( 'Amenaglogt.typeaidelogement', array( 'required' => true, /*'div' => false, 'legend' => false, */'type' => 'radio', 'options' => $optionslogts['typeaidelogement'] ) );
                     echo $xform->address( 'Amenaglogt.besoins', array( 'domain' => 'apre' ) );
                     echo $xform->input( 'Amenaglogt.montantaide', array( 'required' => true, 'domain' => 'apre' ) );
                 ?>
@@ -388,7 +390,7 @@
             <?php
                 /// Accompagnement à la création d'entreprise
                 $tmp = $form->checkbox( 'Apre.Natureaide.Acccreaentr' );
-                $tmp .= $html->tag( 'label', 'Accompagnement à la création d\'entreprise', array( 'for' => 'NatureaideAcccreaentr' ) );
+                $tmp .= $html->tag( 'label', 'Accompagnement à la création d\'entreprise', array( 'for' => 'ApreNatureaideAcccreaentr' ) );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Acccreaentr" class="invisible">
@@ -414,7 +416,7 @@
             <?php
                 /// Acquisition de matériels professionnels
                 $tmp = $form->checkbox( 'Apre.Natureaide.Acqmatprof' );
-                $tmp .= $html->tag( 'label', 'Acquisition de matériels professionnels', array( 'for' => 'NatureaideAcqmatprof' ) );
+                $tmp .= $html->tag( 'label', 'Acquisition de matériels professionnels', array( 'for' => 'ApreNatureaideAcqmatprof' ) );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Acqmatprof" class="invisible">
@@ -439,7 +441,7 @@
             <?php
                 /// Aide à la location d'un véhicule d'insertion
                 $tmp = $form->checkbox( 'Apre.Natureaide.Locvehicinsert' );
-                $tmp .= $html->tag( 'label', 'Aide à la location d\'un véhicule d\'insertion', array( 'for' => 'NatureaideLocvehicinsert' ) );
+                $tmp .= $html->tag( 'label', 'Aide à la location d\'un véhicule d\'insertion', array( 'for' => 'ApreNatureaideLocvehicinsert' ) );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Locvehicinsert" class="invisible">

@@ -339,6 +339,29 @@ msgid "ENUM::DECISIONCOMITE::REF"
 msgstr "Refus"
 
 ###############################################################################
+# Enum ApreComiteapre.decisionrecours
+###############################################################################
+
+msgid "ENUM::DECISIONRECOURS::ACC"
+msgstr "Accord"
+
+msgid "ENUM::DECISIONRECOURS::AJ"
+msgstr "Ajournement"
+
+msgid "ENUM::DECISIONRECOURS::REF"
+msgstr "Refus"
+
+###############################################################################
+# Enum ApreComiteapre.recoursapre
+###############################################################################
+
+msgid "ENUM::RECOURSAPRE::N"
+msgstr "Non"
+
+msgid "ENUM::RECOURSAPRE::O"
+msgstr "Oui"
+
+###############################################################################
 # Enum Apre.etatdossierapre
 ###############################################################################
 msgid "ENUM::ETATDOSSIERAPRE::COM"
