@@ -67,31 +67,40 @@
 
                 $this->set( 'apres', $apres );
 
-                ///Nb d'APREs passées en comité et dont la décision a été / va être prise
-                $countDecision = 0;
-                ///Nb d'APREs en attente de traitement
-                $countTraitement = 0;
+                ///Nb d'APREs appartenant à un comité et dont la décision a été/va être prise
+                $attenteDecisionsApres = count( $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.id IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite IS NULL )' ), 'recursive' => 0 ) ) );
 
-                foreach( $apres as $apre ){
-                    $attenteDecision = Set::classicExtract( $apre, 'ApreComiteapre.apre_id' );
-                    $decisionComite = Set::classicExtract( $apre, 'ApreComiteapre.decisioncomite' );
+                ///Nb d'APREs en attente de traitement(n'appartenant à aucun comité et n'ayant aucune décision de prise)
+                $attenteTraitementApres = count( $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.id NOT IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres  )' ), 'recursive' => 0 ) ) );
 
-                    if( empty( $attenteDecision ) && empty( $decisionComite ) ){
+                ///Nb d'APREs dont la décision a été prise
+                $decisionsPrisesApres = count( $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.id IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite IS NOT NULL )' ), 'recursive' => 0 ) ) );
+
+                $this->set( 'attenteDecisionsApres', $attenteDecisionsApres );
+                $this->set( 'attenteTraitementApres', $attenteTraitementApres );
+                $this->set( 'decisionsPrisesApres', $decisionsPrisesApres );
+// debug(count($attenteDecisionsApres));
+//                 foreach( $apres as $apre ){
+//                     $attenteDecision = Set::classicExtract( $apre, 'ApreComiteapre.apre_id' );
+// 
+//                     $decisionComite = Set::classicExtract( $apre, 'ApreComiteapre.decisioncomite' );
+// 
+//                     if( empty( $attenteDecision ) && empty( $decisionComite ) ){
+// //                         $countDecision++;
+//                         $countTraitement = $countApre - $countDecision;
+//                     }
+//                     else if( !empty( $attenteDecision ) && empty( $decisionComite ) ) {
 //                         $countDecision++;
-                        $countTraitement = $countApre - $countDecision;
-                    }
-                    else if( !empty( $attenteDecision ) && empty( $decisionComite ) ) {
-                        $countDecision++;
-                        $countTraitement = $countApre - $countDecision;
-                    }
-                    else if( !empty( $attenteDecision ) && !empty( $decisionComite ) ) {
-                        $countDecision = count( $decisionComite ) - $countDecision;
-                        $countTraitement = $countApre - count( $decisionComite );
-                    }
-                    $this->set( 'countDecision', $countDecision );
-                    $this->set( 'countTraitement', $countTraitement );
-                }
-
+//                         $countTraitement = $countApre - $countDecision;
+//                     }
+//                     else if( !empty( $attenteDecision ) && !empty( $decisionComite ) ) {
+//                         $countDecision = count( $decisionComite ) - $countDecision;
+//                         $countTraitement = $countApre - count( $decisionComite );
+//                     }
+//                     $this->set( 'countDecision', $countDecision );
+//                     $this->set( 'countTraitement', $countTraitement );
+//                 }
+// 
 
 
             }
