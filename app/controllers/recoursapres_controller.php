@@ -24,8 +24,9 @@
                     'O' => __d( 'apre', 'ENUM::RECOURSAPRE::O', true )
                 )
             );
-            $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
             $this->set( 'options', $options );
+
+            $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
         }
 
         /** ********************************************************************

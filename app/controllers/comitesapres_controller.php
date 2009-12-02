@@ -13,7 +13,18 @@
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'referentapre', $this->Referentapre->find( 'list' ) );
-
+            $options = array(
+                'decisioncomite' => array(
+                    'ACC' => __d( 'apre', 'ENUM::DECISIONCOMITE::ACC', true ),
+                    'AJ' => __d( 'apre', 'ENUM::DECISIONCOMITE::AJ', true ),
+                    'REF' => __d( 'apre', 'ENUM::DECISIONCOMITE::REF', true ),
+                ),
+                'recoursapre' => array(
+                    'N' => __d( 'apre', 'ENUM::RECOURSAPRE::N', true ),
+                    'O' => __d( 'apre', 'ENUM::RECOURSAPRE::O', true )
+                )
+            );
+            $this->set( 'options', $options );
         }
 
         /** ********************************************************************
@@ -28,7 +39,7 @@
                 $comitesapres['limit'] = 10;
                 $this->paginate = $comitesapres;
                 $comitesapres = $this->paginate( 'Comiteapre' );
-// debug($comitesapres);
+
                 $this->Dossier->commit();
                 $this->set( 'comitesapres', $comitesapres );
             }
@@ -69,7 +80,6 @@
             }
 
             $this->set( 'comiteapre', $comiteapre );
-// debug( $comiteapre );
 
             $participants = $this->Participantcomite->find( 'list' );
             $this->set( 'participants', $participants );

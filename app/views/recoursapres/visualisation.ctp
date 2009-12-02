@@ -1,7 +1,7 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Visualisation des décisions des recours';?>
 
-<h1>Décision des recours</h1>
+<h1>Décisions des recours</h1>
 
 <?php
     if( isset( $recoursapres ) ) {
@@ -116,6 +116,6 @@
 
 
     <?php else:?>
-        <p>Aucune APRE en recours présente dans la cohorte.</p>
+        <p>Aucune demande de recours présente.</p>
     <?php endif?>
 <?php endif?>

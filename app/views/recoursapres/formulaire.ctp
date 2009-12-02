@@ -1,8 +1,8 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Décisions des recours';?>
+<?php $this->pageTitle = 'Demandes de recours';?>
 
 
-<h1>Décisions Recours</h1>
+<h1>Demandes de Recours</h1>
 
 <?php
     if( isset( $recoursapres ) ) {
@@ -118,6 +118,6 @@
 
 
     <?php else:?>
-        <p>Aucune APRE en recours présente.</p>
+        <p>Aucune demande de recours présente dans la cohorte.</p>
     <?php endif?>
 <?php endif?>
