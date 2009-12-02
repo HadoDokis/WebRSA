@@ -114,6 +114,6 @@
 
 
     <?php else:?>
-        <p>Aucune notification dans la cohorte.</p>
+        <p>Aucune notification présente dans la cohorte.</p>
     <?php endif?>
 <?php endif?>

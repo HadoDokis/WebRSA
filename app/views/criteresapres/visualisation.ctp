@@ -208,7 +208,7 @@
 
 
     <?php else:?>
-        <p>Vos critères n'ont retourné aucun dossier.</p>
+        <p>Vos critères n'ont retourné aucune demande d'APRE.</p>
     <?php endif?>
 
 <?php endif?>

@@ -128,6 +128,6 @@
 
 
     <?php else:?>
-        <p>Aucun Comité d'examen dans la cohorte.</p>
+        <p>Aucune APRE présente pour ce Comité d'examen.</p>
     <?php endif?>
 <?php endif?>
