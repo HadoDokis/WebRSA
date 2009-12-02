@@ -98,7 +98,7 @@
                     </ul>
                 </li>
             <?php endif;?>
-            <?php if( $permissions->check( 'criteresapres', 'index' ) || $permissions->check( 'repsddtefp', 'index' ) || $permissions->check( 'comitesapres', 'index' ) ) :?>
+            <?php if( $permissions->check( 'criteresapres', 'index' ) || $permissions->check( 'repsddtefp', 'index' ) || $permissions->check( 'comitesapres', 'index' ) || $permissions->check( 'recoursapres', 'index' ) ) :?>
                 <li id="menu3one" >
                     <?php echo $html->link( 'APRE', '#' );?>
                     <ul>
@@ -111,6 +111,12 @@
                                         <?php endif;?>
                                         <?php if( $permissions->check( 'criteresapres', 'index' ) ): ?>
                                             <li><?php echo $html->link( 'Eligibilité des APREs', array( 'controller' => 'criteresapres', 'action' => 'eligible' ) );?></li>
+                                        <?php endif;?>
+                                        <?php if( $permissions->check( 'recoursapres', 'index' ) ): ?>
+                                            <li><?php echo $html->link( 'Demande de recours', array( 'controller' => 'recoursapres', 'action' => 'demande' ) );?></li>
+                                        <?php endif;?>
+                                        <?php if( $permissions->check( 'recoursapres', 'index' ) ): ?>
+                                            <li><?php echo $html->link( 'Visualisation des recours', array( 'controller' => 'recoursapres', 'action' => 'visualisation' ) );?></li>
                                         <?php endif;?>
                                     </ul>
                                 </li>

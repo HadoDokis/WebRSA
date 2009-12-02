@@ -553,7 +553,7 @@ ALTER TABLE apres_comitesapres ADD COLUMN observationcomite TEXT;
 ALTER TABLE apres_comitesapres ADD COLUMN decisioncomite type_decisioncomite;
 
 --------------- Ajout du 27/11/2009 à 16h46 ------------------
-ALTER TABLE apres_comitesapres ADD COLUMN recoursapre type_no DEFAULT NULL;
+ALTER TABLE apres_comitesapres ADD COLUMN recoursapre type_no DEFAULT 'N';
 ALTER TABLE apres_comitesapres ADD COLUMN decisionrecours type_decisioncomite;
 ALTER TABLE apres_comitesapres ADD COLUMN observationrecours TEXT;
 ALTER TABLE apres_comitesapres ADD COLUMN daterecours DATE;
@@ -609,5 +609,5 @@ CREATE INDEX formspermsfimo_piecesformspermsfimo_pieceformpermfimo_id_idx ON for
 -- -------------------------- Ajout du 01/12/2009 à 9h10 ------------------
 ALTER TABLE apres ADD COLUMN secteuractivite CHAR(1);
 ALTER TABLE apres ADD COLUMN nbenf12 INTEGER;
--- DROP TYPE type_activitebeneficiaire CASCADE;
--- CREATE TYPE type_activitebeneficiaire AS ENUM ( 'E', 'F', 'C', 'P' );
+DROP TYPE type_activitebeneficiaire CASCADE;
+CREATE TYPE type_activitebeneficiaire AS ENUM ( 'E', 'F', 'C', 'P' );

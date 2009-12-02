@@ -27,7 +27,7 @@
             <?php echo $xform->input( 'Cohortecomiteapre.id', array( 'label' => 'Intitulé du comité', 'options' => $comitesapre ) );?>
             <?php echo $xform->input( 'Cohortecomiteapre.datecomite', array( 'label' => 'Filtrer par date de comités', 'type' => 'checkbox' ) );?>
             <fieldset>
-                <legend>Date de saisie du contrat</legend>
+                <legend>Date de saisie du comité</legend>
                 <?php
                     $datecomite_from = Set::check( $this->data, 'Cohortecomiteapre.datecomite_from' ) ? Set::extract( $this->data, 'Cohortecomiteapre.datecomite_from' ) : strtotime( '-1 week' );
                     $datecomite_to = Set::check( $this->data, 'Cohortecomiteapre.datecomite_to' ) ? Set::extract( $this->data, 'Cohortecomiteapre.datecomite_to' ) : strtotime( 'now' );
