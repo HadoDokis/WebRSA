@@ -92,24 +92,14 @@
         }
 
         /// Export du tableau en CSV
-        function exportcsv( $action = 'all' ) {
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+        function exportcsv() {
 
-            $querydata = $this->Recoursapre->search( "Recoursapre::{$action}", $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+            $querydata = $this->Recoursapre->search( "Recoursapre::visualisation", array_multisize( $this->params['named'] ) );
             unset( $querydata['limit'] );
-            $apres = $this->Apre->find( 'all', $querydata );
+            $recoursapres = $this->ApreComiteapre->find( 'all', $querydata );
 
             $this->layout = '';
-            $this->set( compact( 'apres' ) );
-
-            switch( $action ) {
-                case 'all':
-                    $this->render( $this->action, null, 'exportcsv' );
-                    break;
-                default:
-                    $this->render( $this->action, null, 'exportcsveligible' );
-            }
+            $this->set( compact( 'recoursapres' ) );
         }
     }
 ?>
