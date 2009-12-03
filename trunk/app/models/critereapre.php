@@ -66,7 +66,7 @@
                 $valid_from = ( valid_int( $criteresapres['Filtre']['daterelance_from']['year'] ) && valid_int( $criteresapres['Filtre']['daterelance_from']['month'] ) && valid_int( $criteresapres['Filtre']['daterelance_from']['day'] ) );
                 $valid_to = ( valid_int( $criteresapres['Filtre']['daterelance_to']['year'] ) && valid_int( $criteresapres['Filtre']['daterelance_to']['month'] ) && valid_int( $criteresapres['Filtre']['daterelance_to']['day'] ) );
                 if( $valid_from && $valid_to ) {
-                    $conditions[] = 'Relance.daterelance BETWEEN \''.implode( '-', array( $criteresapres['Filtre']['daterelance_from']['year'], $criteresapres['Filtre']['daterelance_from']['month'], $criteresapres['Filtre']['daterelance_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresapres['Filtre']['daterelance_to']['year'], $criteresapres['Filtre']['daterelance_to']['month'], $criteresapres['Filtre']['daterelance_to']['day'] ) ).'\'';
+                    $conditions[] = 'Relanceapre.daterelance BETWEEN \''.implode( '-', array( $criteresapres['Filtre']['daterelance_from']['year'], $criteresapres['Filtre']['daterelance_from']['month'], $criteresapres['Filtre']['daterelance_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresapres['Filtre']['daterelance_to']['year'], $criteresapres['Filtre']['daterelance_to']['month'], $criteresapres['Filtre']['daterelance_to']['day'] ) ).'\'';
                 }
             }
 
@@ -169,8 +169,8 @@
                     '"Adresse"."locaadr"',
                     '"Adresse"."codepos"',
                     '"Adresse"."numcomptt"',
-//                     '"Relanceapre"."id"',
-//                     '"Relanceapre"."daterelance"',
+                    '"Relanceapre"."id"',
+                    '"Relanceapre"."daterelance"',
                     '"ApreComiteapre"."comiteapre_id"',
                     '"ApreComiteapre"."apre_id"',
                     '"ApreComiteapre"."decisioncomite"',
@@ -211,7 +211,7 @@
                     array(
                         'table'      => 'relancesapres',
                         'alias'      => 'Relanceapre',
-                        'type'       => 'LEFT OUTER',
+                        'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Relanceapre.apre_id = Apre.id' )
                     ),

@@ -37,10 +37,15 @@
                     }
 
                     foreach( $results['Relanceapre'] as $key => $result ) {
+                        $conditions = array();
+                        if( isset( $result['apre_id'] ) &&  !empty( $result['apre_id'] ) ) {
+                            $conditions = array( 'AprePieceapre.apre_id' => $result['apre_id'] );
+                        }
+
                         $piecesPresentes = $this->Apre->AprePieceapre->find(
                             'all',
                             array(
-                                'conditions' => array( 'AprePieceapre.apre_id' => $result['apre_id'] ),
+                                'conditions' => $conditions,
                                 'recursive' => -1
                             )
                         );
