@@ -613,5 +613,5 @@ DROP TYPE type_activitebeneficiaire CASCADE;
 CREATE TYPE type_activitebeneficiaire AS ENUM ( 'E', 'F', 'C', 'P' );
 
 -- -------------------------- Ajout du 02/12/2009 à 17h10 ------------------
-DROP COLUMN decisionrecours;
+ALTER TABLE apres_comitesapres DROP COLUMN decisionrecours;
 ALTER TABLE apres_comitesapres ADD COLUMN comite_pcd_id INTEGER NULL;
