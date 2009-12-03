@@ -204,6 +204,28 @@
 			return $details;
 		}
 
+//         function beforeFind( $queryData ) {
+//             $return = parent::beforeFind( $queryData );
+// 
+//             if( in_array( $this->findQueryType, array( 'all', 'first', 'last' ) ) ) {
+//                 if( empty( $queryData['fields'] ) ) {
+//                     $queryData['fields'][] = '"Apre"."*"';
+//                 }
+// 
+//                 $countAidesComplementaires = array();
+//                 foreach( $this->aidesApre as $model ) {
+//                     $table = Inflector::tableize( $model );
+//                     $countAidesComplementaires[] = '( SELECT COUNT( '.$table.'.id ) FROM '.$table.' WHERE '.$table.'.apre_id = "Apre"."id" )';
+//                 }
+// 
+//                 $queryData['fields'][] = '( SELECT COALESCE( '.implode( ', ', $countAidesComplementaires ).' ) ) AS "Apre__Coalesce"';
+// 
+//                 debug( $queryData );
+//             }
+// 
+//             return $queryData;
+//         }
+
         /**
         *
         */

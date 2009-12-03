@@ -44,6 +44,16 @@
                     'recursive' => 0
                 )
             );
+
+
+            $hasAide = Set::extract( $apres, '/Apre/Natureaide' );
+            foreach( $hasAide as $key => $hasAideComplementaire ){
+                $sumAides = ( array_sum( $hasAideComplementaire['Natureaide'] ) );
+                if( $sumAides == 0 ){
+                    unset( $apres[$key] );
+                }
+            }
+// debug($apres);
             $this->set( 'apres', $apres );
 
             if( $this->action == 'add' ) {
