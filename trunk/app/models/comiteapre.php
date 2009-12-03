@@ -23,8 +23,14 @@
 
         var $validate = array(
             'datecomite' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'isUnique',
+                    'message' => 'Un comité d\'examen existe déjà à cette date.'
+                )
             ),
             'heurecomite' => array(
                 'rule' => 'notEmpty',
