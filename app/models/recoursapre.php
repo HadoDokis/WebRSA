@@ -19,7 +19,6 @@
             if( !empty( $avisRecours ) ) {
                 if( $avisRecours == 'Recoursapre::demande' ) {
                     $conditions[] = 'ApreComiteapre.decisioncomite = \'REF\'';
-                    $conditions[] = 'ApreComiteapre.decisionrecours IS NULL';
                     $conditions[] = 'ApreComiteapre.recoursapre = \'N\'';
                 }
                 else {

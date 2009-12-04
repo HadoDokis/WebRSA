@@ -33,8 +33,11 @@
                     </thead>
                     <tbody>
                         <?php
-
                             foreach( $participants as $i => $participant ) {
+                                $pcPc = Set::extract( $this->data, 'Participantcomite.Participantcomite' );
+                                if( empty( $pcPc ) ) {
+                                    $pcPc = array();
+                                }
 
                                 echo $html->tableCells(
                                     array(
@@ -44,7 +47,7 @@
                                         h( Set::classicExtract( $participant, 'Participantcomite.numtel' ) ),
                                         h( Set::classicExtract( $participant, 'Participantcomite.mail' ) ),
 
-                                        $xform->checkbox( 'Participantcomite.Participantcomite.'.$i, array( 'value' => $participant['Participantcomite']['id'], 'id' => 'ParticipantcomiteParticipantcomite'.$participant['Participantcomite']['id'] , 'checked' => in_array( $participant['Participantcomite']['id'], $this->data['Participantcomite']['Participantcomite'] ) ) ),
+                                        $xform->checkbox( 'Participantcomite.Participantcomite.'.$i, array( 'value' => $participant['Participantcomite']['id'], 'id' => 'ParticipantcomiteParticipantcomite'.$participant['Participantcomite']['id'] , 'checked' => in_array( $participant['Participantcomite']['id'], $pcPc )  ) ),
                                     ),
                                     array( 'class' => 'odd' ),
                                     array( 'class' => 'even' )

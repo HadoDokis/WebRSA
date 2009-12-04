@@ -162,7 +162,7 @@
                                 $aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
                             }
                         }
-// debug($apre);
+
                         echo $html->tableCells(
                             array(
                                 h( Set::classicExtract( $apre, 'Dossier.numdemrsa' ) ),
@@ -172,7 +172,7 @@
                                 h( $locale->date( 'Date::short', Set::extract( $apre, 'Apre.datedemandeapre' ) ) ),
                                 h( Set::enum( Set::classicExtract( $apre, 'Apre.eligibiliteapre' ), $options['eligibiliteapre'] ) ),
                                 h( Set::enum( Set::classicExtract( $apre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ) ),
-                                h( $locale->date( 'Date::short', Set::classicExtract( $apre, 'Relanceapre.daterelance' ), $options['activitebeneficiaire'] ) ),
+                                h( $locale->date( 'Date::short', Set::classicExtract( $apre, 'Relanceapre.daterelance' ) ) ),
                                 h( $locale->date( 'Date::short', Set::classicExtract( $apre, 'Comiteapre.datecomite' ) ) ),
                                 array(
                                     $html->viewLink(

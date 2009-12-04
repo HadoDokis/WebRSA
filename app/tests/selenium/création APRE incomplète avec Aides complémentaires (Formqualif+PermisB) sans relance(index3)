@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>création APRE incomplète avec Aides complémentaires (Formqualif+PermisB) sans relance(index3)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">création APRE incomplète avec Aides complémentaires (Formqualif+PermisB) sans relance(index3)</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/webrsa/trunk/apres/index/2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreTypedemandeapreFO</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreNaturelogementL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreAnciennetepoleemploi</td>
+	<td>12mois</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreProjetprofessionnel</td>
+	<td>rojet professionnel </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreProjetprofessionnel</td>
+	<td>rojet professionnel Secteur professionnel en lien avec la demande *&nbsp;&nbsp;	<br /></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreSecteurprofessionnel</td>
+	<td>Secteur professionnel en lien avec la demande *&nbsp;&nbsp;	<br /></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreActivitebeneficiaireP</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ApreReferentapreId</td>
+	<td>label=MLE buffin christian</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre11</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre12</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre13</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreNatureaidePermisb</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbNomautoecole</td>
+	<td>Nom de l'auto-écol</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbAdresseautoecole</td>
+	<td>Adresse de l'auto-école *</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PermisbConduite</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbDureeform</td>
+	<td>14</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbCoutform</td>
+	<td>142</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PiecepermisbPiecepermisb8</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PiecepermisbPiecepermisb9</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreAvistechreferent</td>
+	<td>vis technique et motivé du référent </td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Enregistrer']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Relancer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>RelanceapreCommentairerelance</td>
+	<td>Test avec Aide PermisB</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Enregistrer']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreTypedemandeapreFO</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreNaturelogementH</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreAnciennetepoleemploi</td>
+	<td>21</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreProjetprofessionnel</td>
+	<td>Projet professionnel </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreSecteurprofessionnel</td>
+	<td>ofessionnel en lien avec la demande</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreActivitebeneficiaireE</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ApreDateentreeemploiDay</td>
+	<td>label=2</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ApreDateentreeemploiMonth</td>
+	<td>label=février</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ApreDateentreeemploiYear</td>
+	<td>label=2013</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreTypecontratCDD</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ApreSecteuractivite</td>
+	<td>label=Production et distribution d'électricité, de gaz, de vapeur et d'air conditionné</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreNbheurestravaillees</td>
+	<td>14</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreNomemployeur</td>
+	<td>Nom de l'employeur</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreAdresseemployeur</td>
+	<td>adresse employeur</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ApreReferentapreId</td>
+	<td>label=MLE Duny Virginie</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre11</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre12</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre13</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre14</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreNatureaideFormqualif</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifIntituleform</td>
+	<td>Intitulé de la formatio</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifOrganismeform</td>
+	<td>Organisme de la formation *OrgOrganisme de la formation *anisme de la formation *</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>FormqualifDfformDay</td>
+	<td>label=1</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>FormqualifDfformDay</td>
+	<td>label=4</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifDureeform</td>
+	<td>35</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifModevalidation</td>
+	<td>Mode de validation </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifCoutform</td>
+	<td>120</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifCofinanceurs</td>
+	<td>Co-financeurs </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifMontantaide</td>
+	<td>100.35</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceformqualifPieceformqualif7</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceformqualifPieceformqualif8</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceformqualifPieceformqualif9</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceformqualifPieceformqualif9</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceformqualifPieceformqualif9</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreNatureaidePermisb</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbNomautoecole</td>
+	<td>Nom de l'auto-écol</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbAdresseautoecole</td>
+	<td>dresse de l'auto-école *</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PermisbConduite</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbDureeform</td>
+	<td>35</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>PermisbCoutform</td>
+	<td>241.41</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PiecepermisbPiecepermisb8</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PiecepermisbPiecepermisb9</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreAvistechreferent</td>
+	<td>otivé du référent (Ar</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Enregistrer']</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

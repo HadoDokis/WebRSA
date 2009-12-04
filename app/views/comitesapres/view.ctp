@@ -102,9 +102,31 @@
 
 <br />
 
-<?php if( isset( $comiteapre['Apre'] ) ):?>
+<?php
+    /**
+        $apresSansRecours = Set::extract( $comiteapre, '/Apre/ApreComiteapre[id=/[^(159|160)]/]' );
+        debug( $apresSansRecours );
+    */
+
+    $apresAvecRecours = array();
+    $apresSansRecours = array();
+
+    foreach( $comiteapre['Apre'] as $apre ) {
+        $comite_pcd_id = Set::classicExtract( $apre, 'ApreComiteapre.comite_pcd_id' );
+        if( !empty( $comite_pcd_id ) ) {
+            $apresAvecRecours[] = array( 'Apre' => $apre );
+        }
+        else {
+            $apresSansRecours[] = array( 'Apre' => $apre );
+        }
+    }
+
+?>
+
+<?php if( isset( $apresSansRecours ) ):?>
     <h1>Liste des APREs</h1>
-    <?php if( is_array( $comiteapre['Apre'] ) && count( $comiteapre['Apre'] ) > 0  ):?>
+        <?php if( is_array( $apresSansRecours ) && count( $apresSansRecours ) > 0  ):?>
+
         <ul class="actionMenu">
             <?php
                 echo '<li>'.$html->editLink(
@@ -113,6 +135,7 @@
                 ).' </li>';
             ?>
         </ul>
+
     <div>
         <table id="searchResults" class="tooltips_oupas">
             <thead>
@@ -129,10 +152,11 @@
             </thead>
             <tbody>
                 <?php
-                    foreach( $comiteapre['Apre'] as $apre ) {
+                    foreach( $apresSansRecours as $apre ) {
+                        $apre = $apre['Apre'];
                         $isRecours = Set::classicExtract( $apre, 'ApreComiteapre.comite_pcd_id' );
                         $isRecours = !empty( $isRecours );
-
+// debug($apre);
                         if( !$isRecours ) {
                             echo $html->tableCells(
                                 array(
@@ -167,15 +191,16 @@
                     ).' </li>';
                 ?>
             </ul>
+            <p class="notice">Aucune demande d'APRE  présente.</p>
         <?php endif;?>
 
 <?php endif;?>
 
 <br />
 
-<?php if( isset( $comiteapre['Apre'] ) ):?>
+<?php if( isset( $apresAvecRecours ) ):?>
     <h1>Liste des APREs en Recours</h1>
-    <?php if( is_array( $comiteapre['Apre'] ) && count( $comiteapre['Apre'] ) > 0  ):?>
+    <?php if( is_array( $apresAvecRecours ) && count( $apresAvecRecours ) > 0 ):?>
         <ul class="actionMenu">
             <?php
                 echo '<li>'.$html->editLink(
@@ -185,7 +210,7 @@
             ?>
         </ul>
     <div>
-        <table id="searchResults" class="tooltips_oupas">
+        <table  class="tooltips_oupas">
             <thead>
                 <tr>
                     <th>N° demande APRE</th>
@@ -200,7 +225,8 @@
             </thead>
             <tbody>
                 <?php
-                    foreach( $comiteapre['Apre'] as $apre ) {
+                    foreach( $apresAvecRecours as $apre ) {
+                        $apre = $apre['Apre'];
                         $isRecours = Set::classicExtract( $apre, 'ApreComiteapre.comite_pcd_id' );
                         $isRecours = !empty( $isRecours );
 
@@ -238,6 +264,7 @@
                     ).' </li>';
                 ?>
             </ul>
+            <p class="notice">Aucune demande d'APRE en Recours présente.</p>
         <?php endif;?>
 
 <?php endif;?>

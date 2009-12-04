@@ -53,11 +53,12 @@
                     unset( $apres[$key] );
                 }
             }
-// debug($apres);
+//     debug($apres);
             $this->set( 'apres', $apres );
 
             if( $this->action == 'add' ) {
                 $comiteapre_id = $id;
+
                 $nbrComites = $this->Comiteapre->find( 'count', array( 'conditions' => array( 'Comiteapre.id' => $comiteapre_id ), 'recursive' => -1 ) );
                 $this->assert( ( $nbrComites == 1 ), 'invalidParameter' );
             }

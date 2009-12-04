@@ -211,7 +211,7 @@
                     array(
                         'table'      => 'relancesapres',
                         'alias'      => 'Relanceapre',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Relanceapre.apre_id = Apre.id' )
                     ),
