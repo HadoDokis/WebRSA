@@ -60,7 +60,7 @@
                     'recursive' => 2
                 )
             );
-
+// debug($comiteapre);
             foreach( $comiteapre['Apre'] as $key => $apre ) {
                 // Personne
                 $personne = $this->Apre->Personne->findById( $apre['personne_id'], null, null, -1 );

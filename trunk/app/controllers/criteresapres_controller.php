@@ -55,6 +55,15 @@
 
                 $this->Dossier->begin(); // Pour les jetons
 
+                ///Nb d'APREs appartenant à un comité et dont la décision a été/va être prise
+                $attenteDecisionsApres = count( $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.id IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite IS NULL )' ), 'recursive' => 0 ) ) );
+
+                ///Nb d'APREs en attente de traitement(n'appartenant à aucun comité et n'ayant aucune décision de prise)
+                $attenteTraitementApres = count( $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.id NOT IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres  )' ), 'recursive' => 0 ) ) );
+
+                $this->set( 'attenteDecisionsApres', $attenteDecisionsApres );
+                $this->set( 'attenteTraitementApres', $attenteTraitementApres );
+
                 $this->paginate = $this->Critereapre->search( $etatApre, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
                 $this->paginate['limit'] = 10;
                 $apres = $this->paginate( 'Apre' );
@@ -63,46 +72,9 @@
                 $countApre = count( Set::extract( $apres, '/Apre/id' ) );
                 $this->set( 'countApre', $countApre );
 
-                $this->Dossier->commit();
-
                 $this->set( 'apres', $apres );
 
-                ///Nb d'APREs appartenant à un comité et dont la décision a été/va être prise
-                $attenteDecisionsApres = count( $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.id IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite IS NULL )' ), 'recursive' => 0 ) ) );
-
-                ///Nb d'APREs en attente de traitement(n'appartenant à aucun comité et n'ayant aucune décision de prise)
-                $attenteTraitementApres = count( $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.id NOT IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres  )' ), 'recursive' => 0 ) ) );
-
-                ///Nb d'APREs dont la décision a été prise
-                $decisionsPrisesApres = count( $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.id IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite IS NOT NULL )' ), 'recursive' => 0 ) ) );
-
-                $this->set( 'attenteDecisionsApres', $attenteDecisionsApres );
-                $this->set( 'attenteTraitementApres', $attenteTraitementApres );
-                $this->set( 'decisionsPrisesApres', $decisionsPrisesApres );
-// debug(count($attenteDecisionsApres));
-//                 foreach( $apres as $apre ){
-//                     $attenteDecision = Set::classicExtract( $apre, 'ApreComiteapre.apre_id' );
-// 
-//                     $decisionComite = Set::classicExtract( $apre, 'ApreComiteapre.decisioncomite' );
-// 
-//                     if( empty( $attenteDecision ) && empty( $decisionComite ) ){
-// //                         $countDecision++;
-//                         $countTraitement = $countApre - $countDecision;
-//                     }
-//                     else if( !empty( $attenteDecision ) && empty( $decisionComite ) ) {
-//                         $countDecision++;
-//                         $countTraitement = $countApre - $countDecision;
-//                     }
-//                     else if( !empty( $attenteDecision ) && !empty( $decisionComite ) ) {
-//                         $countDecision = count( $decisionComite ) - $countDecision;
-//                         $countTraitement = $countApre - count( $decisionComite );
-//                     }
-//                     $this->set( 'countDecision', $countDecision );
-//                     $this->set( 'countTraitement', $countTraitement );
-//                 }
-// 
-
-
+                $this->Dossier->commit();
             }
 
             $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );

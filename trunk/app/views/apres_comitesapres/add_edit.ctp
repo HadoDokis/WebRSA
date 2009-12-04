@@ -1,13 +1,13 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php  $this->pageTitle = 'Ajout d\'APRES au comité d\'examen';?>
-
 <?php
-    if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout APRE';
+    $isRecours = Set::classicExtract( $this->params, 'named.recours' );
+
+    if( $isRecours ) {
+        $this->pageTitle = 'Modification de la liste des APREs en Recours pour le comité d\'examen';
     }
     else {
-        $this->pageTitle = 'Édition APRE';
+        $this->pageTitle = 'Modification de la liste des APREs pour le comité d\'examen';
     }
 ?>
 
@@ -15,7 +15,7 @@
     <h1><?php echo $this->pageTitle;?></h1>
 
     <?php if( empty( $apres ) ):?>
-        <p class="notice">Il ne reste plus d'APREs à traiter.</p>
+        <p class="notice">Aucune demande d'APRE en Recours présente.</p>
     <?php else:?>
     <?php echo $xform->create( 'ApreComiteapre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) ); ?>
         <div class="aere">
@@ -33,9 +33,9 @@
                     </thead>
                     <tbody>
                         <?php
-
+// debug($apres);
                             foreach( $apres as $i => $apre ) {
-
+// debug($apre);
                                 $apreApre = Set::extract( $this->data, 'Apre.Apre' );
                                 if( empty( $apreApre ) ) {
                                     $apreApre = array();

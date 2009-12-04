@@ -6,7 +6,7 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsetOnCheckbox( 'FiltreDatedemandeapre', $( 'FiltreDatedemandeapreFromDay' ).up( 'fieldset' ), false );
-        observeDisableFieldsetOnCheckbox( 'FiltreDaterelanceapre', $( 'FiltreDaterelanceapreFromDay' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'FiltreDaterelance', $( 'FiltreDaterelanceFromDay' ).up( 'fieldset' ), false );
     });
 </script>
 
