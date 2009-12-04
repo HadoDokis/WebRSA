@@ -361,6 +361,20 @@ msgstr "Non"
 msgid "ENUM::RECOURSAPRE::O"
 msgstr "Oui"
 
+
+###############################################################################
+# Enum ComiteapreParticipantcomite.presence
+###############################################################################
+
+msgid "ENUM::PRESENCE::PRE"
+msgstr "Présent"
+
+msgid "ENUM::PRESENCE::ABS"
+msgstr "Absent"
+
+msgid "ENUM::PRESENCE::EXC"
+msgstr "Excusé"
+
 ###############################################################################
 # Enum Apre.etatdossierapre
 ###############################################################################

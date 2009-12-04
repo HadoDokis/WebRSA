@@ -74,6 +74,9 @@
 //                     '"Apre"."comite_id"',
                     '"Apre"."mtforfait"',
 //                     '"Apre"."montantattribue"',
+//                     '"ComiteapreParticipantcomite"."id"',
+//                     '"ComiteapreParticipantcomite"."comiteapre_id"',
+//                     '"ComiteapreParticipantcomite"."participantcomite_id"',
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -98,6 +101,20 @@
                         'foreignKey' => false,
                         'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
                     ),
+//                     array(
+//                         'table'      => 'comitesapres_participantscomites',
+//                         'alias'      => 'ComiteapreParticipantcomite',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'ComiteapreParticipantcomite.comiteapre_id = Comiteapre.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'participantscomites',
+//                         'alias'      => 'Participantcomite',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'ComiteapreParticipantcomite.participantcomite_id = Participantcomite.id' )
+//                     ),
                     array(
                         'table'      => 'personnes',
                         'alias'      => 'Personne',

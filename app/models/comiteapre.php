@@ -2,7 +2,6 @@
     class Comiteapre extends AppModel
     {
         var $name = 'Comiteapre';
-        var $actsAs = array( 'Enumerable' );
         var $displayField = 'intitulecomite';
         var $order = array( 'datecomite ASC' ); // <-- TODO
 
@@ -46,7 +45,7 @@
             )
         );
 
-        function search( $criterescomite ) {
+        function search( $display, $criterescomite ) {
             /// Conditions de base
             $conditions = array(
             );
@@ -80,6 +79,7 @@
                     '"Comiteapre"."lieucomite"',
                     '"Comiteapre"."intitulecomite"',
                     '"Comiteapre"."observationcomite"',
+//                     '"Participantcomite"."id"',
 //                     '"Dossier"."numdemrsa"',
 //                     '"Dossier"."matricule"',
 //                     '"Personne"."qual"',
@@ -92,7 +92,22 @@
 //                     '"Apre"."datedemandeapre"',
                 ),
                 'recursive' => -1,
-                /*'joins' => array(
+                'joins' => array(
+//                     array(
+//                         'table'      => 'comitesapres_participantscomites',
+//                         'alias'      => 'ComiteapreParticipantcomite',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'ComiteapreParticipantcomite.comiteapre_id = Comiteapre.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'participantscomites',
+//                         'alias'      => 'Participantcomite',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'ComiteapreParticipantcomite.participantcomite_id = Participantcomite.id' )
+//                     ),
+                    /*
                     array(
                         'table'      => 'apres_comitesapres',
                         'alias'      => 'ApreComiteapre',
@@ -159,13 +174,79 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                    )
-                ),*/
+                    )*/
+                ),
                 'order' => array( '"Comiteapre"."datecomite" ASC' ),
                 'conditions' => $conditions
             );
 
             return $query;
+        }
+
+
+        /**
+        *
+        */
+
+        function _nbTotalParticipants() {
+            $nbTotalParticipants = array();
+            $nbTotalParticipants['Comiteapre'] = $this->Participantcomite->find( 'count' );
+
+            return $nbTotalParticipants;
+        }
+
+
+        function _details( $comiteapre_id ) {
+            $nbTotalParticipants = $this->_nbTotalParticipants();
+            $details['Participantpresent'] = array();
+            $details['Participantabsent'] = array();
+
+            // Nombre de participants trouvées par-rapport au nombre de participants
+            $details['Participantpresent']['Comiteapre'] = $this->ComiteapreParticipantcomite->find( 'count', array( 'conditions' => array( 'comiteapre_id' => $comiteapre_id ) ) );
+            $details['Participantabsent']['Comiteapre'] = abs( $details['Participantpresent']['Comiteapre'] - $nbTotalParticipants['Comiteapre'] );
+
+
+            // Quelles sont les participants absents
+            $participantsPresents = Set::extract( $this->ComiteapreParticipantcomite->find( 'all', array( 'conditions' => array( 'comiteapre_id' => $comiteapre_id ) ) ), '/ComiteapreParticipantcomite/participantcomite_id' );
+            $conditions = array();
+            if( !empty( $participantsPresents ) ) {
+                $conditions['Participantcomite.id NOT'] = $participantsPresents;
+            }
+            $participantsAbsents = $this->Participantcomite->find( 'list', array( 'conditions' => $conditions, 'recursive' => -1 ) );
+            $details['Participant']['Absent']['Comiteapre'] = $participantsAbsents;
+
+// debug( $participantsAbsents );
+
+            return $details;
+        }
+
+        /**
+        *
+        */
+
+        function afterFind( $results, $primary = false ) {
+            parent::afterFind( $results, $primary );
+
+            if( !empty( $results ) && Set::check( $results, '0.Comiteapre' ) ) {
+                foreach( $results as $key => $result ) {
+                    if( isset( $result['Comiteapre']['id'] ) ) {
+                        $results[$key]['Comiteapre'] = Set::merge(
+                            $results[$key]['Comiteapre'],
+                            $this->_details( $result['Comiteapre']['id'] )
+                        );
+                    }
+                    else if( isset( $result['Comiteapre'][0]['id'] ) ) {
+                        foreach( $result['Comiteapre'] as $key2 => $result2 ) {
+                            $results[$key]['Comiteapre'][$key2] = Set::merge(
+                                $results[$key]['Comiteapre'][$key2],
+                                $this->_details( $result2['id'] )
+                            );
+                        }
+                    }
+                }
+            }
+
+            return $results;
         }
 
 

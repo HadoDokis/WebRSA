@@ -3,7 +3,7 @@
     class CohortescomitesapresController extends AppController
     {
         var $name = 'Cohortescomitesapres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Cohortecomiteapre', 'Comiteapre', 'Participantcomite', 'Apre', 'Referentapre' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Cohortecomiteapre', 'Comiteapre', 'Participantcomite', 'Apre', 'Referentapre', 'ComiteapreParticipantcomite' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
 
         function __construct() {
@@ -68,6 +68,7 @@
         function notificationscomite() {
             $this->_index( 'Cohortecomiteapre::notificationscomite' );
         }
+
         /** ********************************************************************
         *
         *** *******************************************************************/
@@ -96,6 +97,7 @@
                 $this->paginate = $comitesapres;
                 $comitesapres = $this->paginate( 'Comiteapre' );
 
+
                 $this->set( 'comitesapres', $comitesapres );
             }
 
@@ -112,6 +114,7 @@
 
             $this->Dossier->commit(); //FIXME
         }
+
 
         function exportcsv() {
 

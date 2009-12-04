@@ -32,7 +32,8 @@
             'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
             'ajoutcomiteexamen' => array( 'type' => 'no', 'domain' => 'apre' ),
             'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' ),
-            'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' )
+            'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' ),
+            'presence' => array( 'type' => 'presence', 'domain' => 'apre' )
         );
 
 

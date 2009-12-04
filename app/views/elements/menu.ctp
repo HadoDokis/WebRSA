@@ -134,6 +134,9 @@
                                     <?php if( $permissions->check( 'cohortescomitesapres', 'index' ) ): ?>
                                         <li><?php echo $html->link( 'Notifications décisions Comité', array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomite' ) );?></li>
                                     <?php endif;?>
+                                    <?php if( $permissions->check( 'comitesapres', 'liste' ) ): ?>
+                                        <li><?php echo $html->link( 'Liste des Comités', array( 'controller' => 'comitesapres', 'action' => 'liste' ) );?></li>
+                                    <?php endif;?>
                                 </ul>
                             </li>
                         <?php endif;?>

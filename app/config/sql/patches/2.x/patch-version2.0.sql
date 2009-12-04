@@ -609,9 +609,13 @@ CREATE INDEX formspermsfimo_piecesformspermsfimo_pieceformpermfimo_id_idx ON for
 -- -------------------------- Ajout du 01/12/2009 à 9h10 ------------------
 ALTER TABLE apres ADD COLUMN secteuractivite CHAR(1);
 ALTER TABLE apres ADD COLUMN nbenf12 INTEGER;
-DROP TYPE type_activitebeneficiaire CASCADE;
+ALTER TABLE apres DROP TYPE type_activitebeneficiaire CASCADE;
 CREATE TYPE type_activitebeneficiaire AS ENUM ( 'E', 'F', 'C', 'P' );
 
 -- -------------------------- Ajout du 02/12/2009 à 17h10 ------------------
 ALTER TABLE apres_comitesapres DROP COLUMN decisionrecours;
 ALTER TABLE apres_comitesapres ADD COLUMN comite_pcd_id INTEGER NULL;
+
+-- -------------------------- Ajout du 04/12/2009 à 15h40 ------------------
+CREATE TYPE type_presence AS ENUM ( 'PRE', 'ABS', 'EXC' );
+ALTER TABLE comitesapres_participantscomites ADD COLUMN presence type_presence;

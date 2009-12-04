@@ -29,6 +29,8 @@
             $this->Comiteapre->begin();
 
             $isRecours = Set::classicExtract( $this->params, 'named.recours' );
+            $isRapport = Set::classicExtract( $this->params, 'named.rapport' );
+
 
             if( $isRecours ) {
                 $conditions = array( 'Apre.id IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite = \'REF\' ) AND Apre.id NOT IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.comite_pcd_id IS NOT NULL )' );
@@ -138,7 +140,12 @@
 
                     if( $success ) {
                         $this->Comiteapre->commit();
-                        $this->redirect( array( 'controller' => 'comitesapres', 'action' => 'view', $comiteapre_id ) );
+                        if( !$isRapport ){
+                            $this->redirect( array( 'controller' => 'comitesapres', 'action' => 'view', $comiteapre_id ) );
+                        }
+                        else if( $isRapport ){
+                            $this->redirect( array( 'controller' => 'comitesapres', 'action' => 'rapport', $comiteapre_id ) );
+                        }
                     }
                     else {
                         $this->Comiteapre->rollback();
