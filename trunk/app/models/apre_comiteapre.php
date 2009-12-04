@@ -24,7 +24,6 @@
 
         var $enumFields = array(
             'decisioncomite' => array( 'type' => 'decisioncomite', 'domain' => 'apre' ),
-            'decisionrecours' => array( 'type' => 'decisionrecours', 'domain' => 'apre' ),
             'recoursapre' => array( 'type' => 'recoursapre', 'domain' => 'apre' ),
         );
     }

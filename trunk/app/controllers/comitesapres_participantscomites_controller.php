@@ -3,12 +3,15 @@
     {
 
         var $name = 'ComitesapresParticipantscomites';
-        var $uses = array( 'ComiteapreParticipantcomite', 'Participantcomite', 'Comiteapre' );
+        var $uses = array( 'ComiteapreParticipantcomite', 'Apre', 'Participantcomite', 'Comiteapre' );
         var $helpers = array( 'Xform' );
 
         function beforeFilter(){
             parent::beforeFilter();
             $this->set( 'participants', $this->Participantcomite->find( 'all' ) );
+            $options = $this->ComiteapreParticipantcomite->allEnumLists();
+            $this->set( 'options', $options );
+            //$this->set( 'options', $options );
         }
 
         /** ********************************************************************
@@ -27,7 +30,7 @@
         }
 
         /** ********************************************************************
-        *
+        *   Ajout et Modification des participants à un comité donné
         *** *******************************************************************/
 
         function _add_edit( $id = null ){
@@ -76,6 +79,47 @@
                 }
             }
             $this->render( $this->action, null, 'add_edit' );
+        }
+
+
+        /** ********************************************************************
+        *   Recensement de la présence des participants au comité
+        *** *******************************************************************/
+
+        function rapport( $comiteapre_id = null ){
+
+            $comiteparticipant = $this->ComiteapreParticipantcomite->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'ComiteapreParticipantcomite.comiteapre_id' => $comiteapre_id
+                    )
+                )
+            );
+            $this->assert( !empty( $comiteparticipant ), 'invalidParameter' );
+            $this->set( 'participants', $comiteparticipant );
+
+            if( !empty( $this->data ) ) {
+                $this->ComiteapreParticipantcomite->begin();
+                $success = true;
+                foreach( $this->data['ComiteapreParticipantcomite'] as $item ) {
+//                     debug( $item );
+                    $success = $this->ComiteapreParticipantcomite->create( array( 'ComiteapreParticipantcomite' => $item ) ) && $success;
+                    $this->ComiteapreParticipantcomite->save();
+                }
+
+                if( $success ) {
+                    $this->ComiteapreParticipantcomite->commit();
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array( 'controller' => 'comitesapres', 'action' => 'rapport', $comiteapre_id ) );
+                }
+                else {
+                    $this->ComiteapreParticipantcomite->rollback();
+                }
+            }
+            else {
+                $this->data = $comiteparticipant;
+            }
         }
     }
 ?>

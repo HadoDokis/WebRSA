@@ -942,11 +942,11 @@ class HtmlHelper extends AppHelper {
     }
 
     //Lien pour les décisions d'APRE
-    function decisionsApreLink( $title, $url, $enabled = true ){
+    function rapportLink( $title, $url, $enabled = true ){
         $content = $this->image(
             'icons/page_attach.png',
             array( 'alt' => '' )
-        ).' Décisions';
+        ).' Rapport';
 
         if( $enabled ) {
             return $this->link(
