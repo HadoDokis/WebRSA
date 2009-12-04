@@ -22,6 +22,10 @@
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.',
                     'allowEmpty' => true
+                ),
+                array(
+                    'rule' => array( 'range', -1, 1000 ),
+                    'message' => 'Veuillez saisir un montant compris entre 0 et 1000€ maximum.'
                 )
             ),
             'dureeform' => array(
