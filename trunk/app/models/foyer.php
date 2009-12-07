@@ -63,30 +63,14 @@
 
         function nbEnfants( $foyer_id ){
 
-            $this->unbindModelAll();
-            $this->bindModel(
-                array(
-                    'hasMany' => array(
-                        'Personne' => array(
-                            'classname'     => 'Personne',
-                            'foreignKey'    => 'foyer_id'
-                        )
-                    )
-                )
-            );
-            $foyer = $this->find( 'first', array( 'conditions' => array( 'Foyer.id' => $foyer_id ), 'recursive' => 1 ) );
-
-            ///Nombre d'enfants dans le foyer
-            $nbEnfants = $this->Personne->Prestation->find(
-                'count',
-                array(
-                    'conditions' => array(
-                        'Personne.id' => Set::classicExtract( $foyer, 'Personne.{n}.id' ),
-                        'Prestation.rolepers' => 'ENF'
-                    )
-                )
-            );
-           return $nbEnfants;
+            $sql = "SELECT COUNT(Prestation.id)
+                        FROM prestations AS Prestation
+                            INNER JOIN personnes AS Personne ON Personne.id = Prestation.personne_id
+                        WHERE Personne.foyer_id = {$foyer_id}
+                            AND Prestation.natprest = 'RSA'
+                            AND Prestation.rolepers = 'ENF'";
+            $result = $this->Personne->query( $sql );
+           return $result[0][0]['count'];
         }
 //         function refreshRessources( $foyer_id ) {
 //             $this->Personne->bindModel(
