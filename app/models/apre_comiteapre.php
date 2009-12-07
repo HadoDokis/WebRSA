@@ -5,6 +5,11 @@
         var $actsAs = array( 'Enumerable' );
 
 
+        var $enumFields = array(
+            'decisioncomite' => array( 'type' => 'decisioncomite', 'domain' => 'apre' ),
+            'recoursapre' => array( 'type' => 'recoursapre', 'domain' => 'apre' ),
+        );
+
         var $validate = array(
             'decisioncomite' => array(
                 array(
@@ -22,9 +27,5 @@
             ),
         );
 
-        var $enumFields = array(
-            'decisioncomite' => array( 'type' => 'decisioncomite', 'domain' => 'apre' ),
-            'recoursapre' => array( 'type' => 'recoursapre', 'domain' => 'apre' ),
-        );
     }
 ?>

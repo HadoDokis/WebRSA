@@ -17,16 +17,13 @@
             $conditions = array(
             );
 
-//             if( !empty( $etatApre ) ) {
-//                 if( $etatApre == 'Critereapre::all' ) {
-//                 }
-//                 else if( $etatApre == 'Critereapre::incomplete' ) {
-//                     $conditions[] = 'Apre.etatdossierapre = \'INC\'';
-//                 }
-//                 else if( $etatApre == 'Critereapre::eligible'  ) {
-// //                     $conditions[] = 'Contratinsertion.personne_id IS NOT NULL';
-//                 }
-//             }
+            if( !empty( $etatApre ) ) {
+                if( $etatApre == 'Critereapre::all' ) {
+                }
+                else if( $etatApre == 'Critereapre::eligible'  ) {
+//                     $conditions[] = 'Contratinsertion.personne_id IS NOT NULL';
+                }
+            }
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
                 $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
@@ -206,7 +203,9 @@
                         'alias'      => 'Comiteapre',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'ApreComiteapre.comiteapre_id = Comiteapre.id' )
+                        'conditions' => array(
+                            'ApreComiteapre.comiteapre_id = Comiteapre.id'
+                        )
                     ),
                     array(
                         'table'      => 'relancesapres',
@@ -277,7 +276,7 @@
                     )*/
                 ),
                 'limit' => 10,
-                'conditions' => $conditions
+                'conditions' => $conditions,
             );
 
             return $query;

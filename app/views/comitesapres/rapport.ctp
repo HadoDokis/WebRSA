@@ -73,7 +73,7 @@
                                 h( Set::classicExtract( $participant, 'fonction' ) ),
                                 h( Set::classicExtract( $participant, 'organisme' ) ),
                                 h( Set::classicExtract( $participant, 'numtel' ) ),
-                                h( /*Set::enum( $options['presence'],*/ Set::classicExtract( $participant, 'ComiteapreParticipantcomite.presence' ) /*)*/ ),
+                                h( Set::enum( Set::classicExtract( $participant, 'ComiteapreParticipantcomite.presence' ),$options['presence'] ) ),
                             ),
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )
@@ -120,14 +120,14 @@
 ?>
 
 <?php if( isset( $comiteapre['Apre'] ) ):?>
-    <h1>Liste des APREs</h1>
+    <h1>Décision des APREs</h1>
         <?php if( is_array( $comiteapre['Apre'] ) && count( $comiteapre['Apre'] ) > 0  ):?>
 
         <ul class="actionMenu">
             <?php
                 echo '<li>'.$html->editLink(
                     'Modifier Liste APRES',
-                    array( 'controller' => 'apres_comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'rapport' => 1 )
+                    array( 'controller' => 'cohortescomitesapres', 'action' => 'aviscomite', 'Cohortecomiteapre__id' => Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'rapport' => 1 )
                 ).' </li>';
             ?>
         </ul>
@@ -142,37 +142,35 @@
                     <th>Localité</th>
                     <th>Préscripteur/Préinscripteur</th>
                     <th>Date demande APRE</th>
-                    <th>Quota</th>
+                    <th>Demande de recours</th>
+                    <th>Décision comité</th>
                     <th class="action">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                     foreach( $comiteapre['Apre'] as $apre ) {
-//                         $apre = $apre['Apre'];
-                        $isRecours = Set::classicExtract( $apre, 'ApreComiteapre.comite_pcd_id' );
-                        $isRecours = !empty( $isRecours );
+
 // debug($apre);
-                        if( !$isRecours ) {
-                            echo $html->tableCells(
-                                array(
-                                    h( Set::classicExtract( $apre, 'numeroapre' ) ),
-                                    h( Set::classicExtract( $apre, 'Personne.nir' ) ),
-                                    h( Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
-                                    h( Set::classicExtract( $apre, 'Adresse.locaadr' ) ),
-                                    h( Set::enum( Set::classicExtract( $apre, 'referentapre_id' ), $referentapre ) ),
-                                    h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
-                                    h( Set::classicExtract( $apre, 'quota' ) ),
-                                    $html->viewLink(
-                                        'Voir les apres',
-                                        array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $apre, 'personne_id' ) ),
-                                        $permissions->check( 'comitesapres', 'index' )
-                                    )
-                                ),
-                                array( 'class' => 'odd' ),
-                                array( 'class' => 'even' )
-                            );
-                        }
+                        echo $html->tableCells(
+                            array(
+                                h( Set::classicExtract( $apre, 'numeroapre' ) ),
+                                h( Set::classicExtract( $apre, 'Personne.nir' ) ),
+                                h( Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
+                                h( Set::classicExtract( $apre, 'Adresse.locaadr' ) ),
+                                h( Set::enum( Set::classicExtract( $apre, 'referentapre_id' ), $referentapre ) ),
+                                h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
+                                h( Set::enum( Set::classicExtract( $apre, 'ApreComiteapre.recoursapre' ), $options['recoursapre'] ) ),
+                                h( Set::enum( Set::classicExtract( $apre, 'ApreComiteapre.decisioncomite' ), $options['decisioncomite'] ) ),
+                                $html->viewLink(
+                                    'Voir les apres',
+                                    array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $apre, 'personne_id' ) ),
+                                    $permissions->check( 'comitesapres', 'index' )
+                                )
+                            ),
+                            array( 'class' => 'odd' ),
+                            array( 'class' => 'even' )
+                        );
                     }
                 ?>
             </tbody>

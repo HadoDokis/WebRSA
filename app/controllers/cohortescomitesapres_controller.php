@@ -76,6 +76,9 @@
         function _index( $avisComite = null ){
             $this->set( 'comitesapre', $this->Comiteapre->find( 'list' ) );
 
+            $isRapport = ( Set::classicExtract( $this->params, 'named.rapport' ) == 1 );
+            $idRapport = Set::classicExtract( $this->params, 'named.Cohortecomiteapre__id' );
+
             $this->Dossier->begin(); // Pour les jetons
             if( !empty( $this->data ) ) {
                 if( !empty( $this->data['ApreComiteapre'] ) ) {
@@ -84,7 +87,12 @@
                         $saved = $this->ApreComiteapre->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
                         if( $saved && empty( $this->Apre->ApreComiteapre->validationErrors ) ) {
                             $this->ApreComiteapre->commit();
-                            $this->redirect( array( 'action' => 'aviscomite' ) ); // FIXME
+                            if( !$isRapport ){
+                                $this->redirect( array( 'action' => 'aviscomite' ) ); // FIXME
+                            }
+                            else if( $isRapport ) {
+                                $this->redirect( array(  'controller' => 'comitesapres', 'action' => 'rapport', $idRapport ) );
+                            }
                         }
                         else {
                             $this->ApreComiteapre->rollback();

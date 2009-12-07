@@ -10,6 +10,17 @@
         *
         *** *******************************************************************/
 
+        function beforeFilter() {
+            parent::beforeFilter();
+            $options = $this->ApreComiteapre->allEnumLists();
+//             debug( $options );
+            $this->set( 'options', $options );
+        }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         public function add() {
             $args = func_get_args();
             call_user_func_array( array( $this, '_add_edit' ), $args );

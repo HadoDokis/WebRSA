@@ -2,7 +2,14 @@
 <?php $this->pageTitle = 'Comité examen APRE';?>
 
 <h1>Recherche de Comité d'examen</h1>
-
+    <ul class="actionMenu">
+        <?php
+            echo '<li>'.$html->addComiteLink(
+                'Ajouter Comité',
+                array( 'controller' => 'comitesapres', 'action' => 'add' )
+            ).' </li>';
+        ?>
+    </ul>
 <?php
     if( is_array( $this->data ) ) {
         echo '<ul class="actionMenu"><li>'.$html->link(
@@ -62,14 +69,7 @@
 <?php if( isset( $comitesapres ) ):?>
 
     <h2 class="noprint">Résultats de la recherche</h2>
-    <ul class="actionMenu">
-        <?php
-            echo '<li>'.$html->addComiteLink(
-                'Ajouter Comité',
-                array( 'controller' => 'comitesapres', 'action' => 'add' )
-            ).' </li>';
-        ?>
-    </ul>
+
     <?php if( is_array( $comitesapres ) && count( $comitesapres ) > 0  ):?>
 
         <table id="searchResults" class="tooltips_oupas">

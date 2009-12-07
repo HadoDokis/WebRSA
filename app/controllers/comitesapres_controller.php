@@ -3,7 +3,7 @@
     {
 
         var $name = 'Comitesapres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre', 'ComiteapreParticipantcomite', 'Participantcomite', 'Apre', 'Referentapre' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre'/*, 'ComiteapreParticipantcomite'*/, 'Participantcomite', 'Apre', 'Referentapre' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
 
         /** ********************************************************************
@@ -13,11 +13,9 @@
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'referentapre', $this->Referentapre->find( 'list' ) );
-//             $options = $this->Comiteapre->allEnumLists();
-//             $this->set( 'options', $options );
-            $options = $this->ComiteapreParticipantcomite->allEnumLists();
-            debug( $options );
-//             $this->set( 'options', $options );
+            $options = $this->Comiteapre->ApreComiteapre->allEnumLists();
+            $options = Set::merge( $options, $this->Comiteapre->ComiteapreParticipantcomite->allEnumLists() );
+            $this->set( 'options', $options );
         }
 
         /** ********************************************************************
