@@ -124,11 +124,13 @@
             $relanceapre = $this->Relanceapre->findById( $relanceapre_id );
             $this->assert( !empty( $relanceapre ), 'invalidParameter' );
 
-            $apre = $this->Apre->findByPersonneId( Set::classicExtract( $relanceapre, 'Relanceapre.personne_id' ) );
+            $apre = $this->Apre->findByPersonneId( Set::classicExtract( $relanceapre, 'Relanceapre.apre_id' ) );
             $this->set( 'apre', $apre );
 
+
             $this->set( 'relanceapre', $relanceapre );
-            $this->set( 'personne_id', Set::classicExtract( $relanceapre, 'Relanceapre.personne_id' ) );
+            $this->set( 'personne_id', Set::classicExtract( $relanceapre, 'Relanceapre.apre_id' ) );
+
         }
     }
 ?>
