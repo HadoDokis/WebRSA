@@ -95,7 +95,7 @@
                     '"Adresse"."codepos"',
                     '"Apre"."id"',
                     '"Apre"."datedemandeapre"',
-                    '"Apre"."statutapre"',
+//                     '"Apre"."statutapre"',
                     '"Apre"."numeroapre"',
                     '"Apre"."mtforfait"',
 //                     '"Apre"."montantattribue"',

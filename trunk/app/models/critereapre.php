@@ -182,15 +182,15 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Personne.id = Apre.personne_id' )
                     ),
-                    array(
-                        'table'      => 'contratsinsertion',
-                        'alias'      => 'Contratinsertion',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array(
-                            'Contratinsertion.personne_id = Personne.id'
-                        )
-                    ),
+//                     array(
+//                         'table'      => 'contratsinsertion',
+//                         'alias'      => 'Contratinsertion',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array(
+//                             'Contratinsertion.personne_id = Personne.id'
+//                         )
+//                     ),
                     array(
                         'table'      => 'apres_comitesapres',
                         'alias'      => 'ApreComiteapre',
