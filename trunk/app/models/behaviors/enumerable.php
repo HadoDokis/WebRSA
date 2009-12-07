@@ -167,6 +167,7 @@
 
 		function enumList( $model, $field ) {
 			$options = array();
+
 			$tmpOptions = self::enumOptions( $model, $field );
 			if( !empty( $tmpOptions ) ) {
 				foreach( $tmpOptions as $key ) {
@@ -188,6 +189,7 @@
 		*/
 
 		function allEnumLists( $model ) {
+
 			$options = array();
 			if( !empty( $model->enumFields ) ) {
 				foreach( $model->enumFields as $field => $data ) {

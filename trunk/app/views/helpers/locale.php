@@ -9,7 +9,7 @@
 
         function date( $format, $date ) {
             //return h( ( empty( $date ) ) ? null : $this->Time->format( __( $format, true ), $date ) );
-            return h( ( empty( $date ) ) ? null : strftime( __( $format, true ), strtotime( $date ) ) );
+            return h( ( empty( $date ) || !is_string( $date ) ) ? null : strftime( __( $format, true ), strtotime( $date ) ) );
         }
 
         /** ********************************************************************

@@ -20,7 +20,8 @@
                 'className'              => 'Comiteapre',
                 'joinTable'              => 'comitesapres_participantscomites',
                 'foreignKey'             => 'participantcomite_id',
-                'associationForeignKey'  => 'comiteapre_id'
+                'associationForeignKey'  => 'comiteapre_id',
+                'with'                   => 'ComiteapreParticipantcomite'
             )
         );
 

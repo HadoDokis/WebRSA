@@ -9,7 +9,12 @@
         );
 
         var $belongsTo = array(
-            'Participantcomite'
+            'Participantcomite',
+            'Comiteapre'
+        );
+
+        var $validate = array(
+            'id' => array( 'rule' => 'notEmpty' )
         );
     }
 ?>

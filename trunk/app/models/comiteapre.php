@@ -5,18 +5,21 @@
         var $displayField = 'intitulecomite';
         var $order = array( 'datecomite ASC' ); // <-- TODO
 
+
         var $hasAndBelongsToMany = array(
             'Participantcomite' => array(
                 'className'              => 'Participantcomite',
                 'joinTable'              => 'comitesapres_participantscomites',
                 'foreignKey'             => 'comiteapre_id',
-                'associationForeignKey'  => 'participantcomite_id'
+                'associationForeignKey'  => 'participantcomite_id',
+                'with'                   => 'ComiteapreParticipantcomite',
             ),
             'Apre' => array(
                 'className'              => 'Apre',
                 'joinTable'              => 'apres_comitesapres',
                 'foreignKey'             => 'comiteapre_id',
-                'associationForeignKey'  => 'apre_id'
+                'associationForeignKey'  => 'apre_id',
+                'with'                   => 'ApreComiteapre'
             )
         );
 
@@ -188,7 +191,7 @@
         *
         */
 
-        function _nbTotalParticipants() {
+        /*function _nbTotalParticipants() {
             $nbTotalParticipants = array();
             $nbTotalParticipants['Comiteapre'] = $this->Participantcomite->find( 'count' );
 
@@ -218,7 +221,7 @@
 // debug( $participantsAbsents );
 
             return $details;
-        }
+        }*/
 
         /**
         *
@@ -227,7 +230,7 @@
         function afterFind( $results, $primary = false ) {
             parent::afterFind( $results, $primary );
 
-            if( !empty( $results ) && Set::check( $results, '0.Comiteapre' ) ) {
+            /*if( !empty( $results ) && Set::check( $results, '0.Comiteapre' ) ) {
                 foreach( $results as $key => $result ) {
                     if( isset( $result['Comiteapre']['id'] ) ) {
                         $results[$key]['Comiteapre'] = Set::merge(
@@ -244,7 +247,9 @@
                         }
                     }
                 }
-            }
+debug( $results );
+die();
+            }*/
 
             return $results;
         }
