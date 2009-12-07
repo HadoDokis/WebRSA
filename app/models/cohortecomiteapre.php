@@ -70,7 +70,7 @@
                     '"Adresse"."codepos"',
                     '"Apre"."id"',
                     '"Apre"."datedemandeapre"',
-                    '"Apre"."statutapre"',
+//                     '"Apre"."statutapre"',
 //                     '"Apre"."comite_id"',
                     '"Apre"."mtforfait"',
 //                     '"Apre"."montantattribue"',
