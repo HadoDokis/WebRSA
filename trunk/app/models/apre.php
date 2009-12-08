@@ -288,6 +288,8 @@
 
             $return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND NOT ( apres.etatdossierapre = 'COM' AND ( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = ".$this->data[$this->name]['personne_id']." ) > 0 );" ) && $return;
 
+            $return = $this->query( "UPDATE apres SET statutapre = 'C' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id'].";" ) && $return;
+
 			// FIXME: return ?
             return $return;
         }

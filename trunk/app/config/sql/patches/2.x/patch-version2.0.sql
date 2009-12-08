@@ -619,3 +619,7 @@ ALTER TABLE apres_comitesapres ADD COLUMN comite_pcd_id INTEGER NULL;
 -- -------------------------- Ajout du 04/12/2009 à 15h40 ------------------
 CREATE TYPE type_presence AS ENUM ( 'PRE', 'ABS', 'EXC' );
 ALTER TABLE comitesapres_participantscomites ADD COLUMN presence type_presence;
+
+-- -------------------------- Ajout du 08/12/2009 à 9h10 ------------------
+CREATE TYPE type_statutapre AS ENUM ( 'C', 'F' );
+ALTER TABLE apres ADD COLUMN statutapre type_statutapre DEFAULT 'F';
