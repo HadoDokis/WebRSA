@@ -7,7 +7,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Dsp', 'Referentapre', 'Formqualif', 'Permisb' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'Dsp', 'Referentapre', 'Formqualif', 'Permisb' );
         var $component = array( 'Jetons' );
         var $helpers = array( 'Locale' );
 
@@ -1169,11 +1169,116 @@ $freu = array();
             $apre['Actprof']['dfconvention'] = date_short( Set::classicExtract( $apre, 'Actprof.dfconvention' ) );
             $apre['Apre']['dateentreeemploi'] = date_short( Set::classicExtract( $apre, 'Apre.dateentreeemploi' ) );
 
-
+unset( $apre['Apre']['Piecepresente'] );
+unset( $apre['Apre']['Piece'] );
+unset( $apre['Apre']['Piecemanquante'] );
+unset( $apre['Apre']['Natureaide'] );
 // debug($apre);
 // die();
 
             $this->_ged( $apre, 'APRE/apre.odt' );
         }
+
+        /**
+        * Notification de Relance d'APRE
+        **/
+        function relanceapre( $relanceapre_id = null ) {
+            // TODO: error404/error500 si on ne trouve pas les données
+            $qual = $this->Option->qual();
+            $typevoie = $this->Option->typevoie();
+
+            $relanceapre = $this->Relanceapre->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Relanceapre.id' => $relanceapre_id
+                    )
+                )
+            );
+
+unset( $relanceapre['Apre']['Piecepresente'] );
+unset( $relanceapre['Apre']['Piece'] );
+unset( $relanceapre['Apre']['Piecemanquante'] );
+unset( $relanceapre['Apre']['Natureaide'] );
+
+            $referentapre = $this->Apre->Referentapre->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Referentapre.id' => Set::classicExtract( $relanceapre, 'Apre.referentapre_id' )
+                    )
+                )
+            );
+            $relanceapre['Referentapre'] = $referentapre['Referentapre'];
+
+            $relanceapre['Relanceapre']['Piecemanquante'] = Set::extract( $relanceapre, '/Relanceapre/Piecemanquante/libelle' );
+
+            if( !empty( $relanceapre['Relanceapre']['Piecemanquante'] ) ) {
+                $relanceapre['Relanceapre']['Piecemanquante'] = '  - '.implode( "\n  - ", $relanceapre['Relanceapre']['Piecemanquante'] )."\n";
+            }
+
+
+// debug( $relanceapre  );
+// die();
+
+
+            $personne = $this->Personne->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Personne.id' => Set::classicExtract( $relanceapre, 'Apre.personne_id' )
+                    )
+                )
+            );
+            $relanceapre['Personne'] = $personne['Personne'];
+
+            $this->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+
+            $adresse = $this->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => Set::classicExtract( $relanceapre, 'Personne.foyer_id' ),
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $relanceapre['Adresse'] = $adresse['Adresse'];
+
+
+            $dossier = $this->Dossier->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossier.id' => Set::classicExtract( $relanceapre, 'Personne.foyer_id' )
+                    )
+                )
+            );
+            $relanceapre['Dossier_RSA'] = $dossier['Dossier'];
+
+
+            ///Pour la qualité de la personne
+            $relanceapre['Personne']['qual'] = Set::extract( $qual, Set::extract( $relanceapre, 'Personne.qual' ) );
+
+            ///Pour la date de relance
+            $relanceapre['Relanceapre']['daterelance'] =  $this->Locale->date( '%d/%m/%Y', Set::classicExtract( $relanceapre, 'Relanceapre.daterelance' ) );
+
+            ///Pour l'adresse de la personne
+            $relanceapre['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $relanceapre, 'Adresse.typevoie' ) );
+
+
+
+            $this->_ged( $relanceapre, 'APRE/Relanceapre/relanceapre.odt' );
+        }
+
     }
 ?>
