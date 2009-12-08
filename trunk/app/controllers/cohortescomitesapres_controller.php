@@ -3,8 +3,9 @@
     class CohortescomitesapresController extends AppController
     {
         var $name = 'Cohortescomitesapres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Cohortecomiteapre', 'Comiteapre', 'Participantcomite', 'Apre', 'Referentapre', 'ComiteapreParticipantcomite' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Cohortecomiteapre', 'Comiteapre', 'Participantcomite', 'Apre', 'Referentapre', 'ComiteapreParticipantcomite', 'Adressefoyer' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
+        var $components = array( 'Gedooo' );
 
         function __construct() {
             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'aviscomite', 'notificationscomite' ) ) ) );
@@ -135,5 +136,111 @@
 
         }
 
+        /**
+        * Notifications des Comités d'examen
+        **/
+
+        function notificationscomitegedooo( $apre_id = null ) {
+            // TODO: error404/error500 si on ne trouve pas les données
+            $qual = $this->Option->qual();
+            $typevoie = $this->Option->typevoie();
+            $natureAidesApres = $this->Option->natureAidesApres();
+            $options = $this->ApreComiteapre->allEnumLists();
+            $this->set( 'options', $options );
+
+            $apre = $this->Apre->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Apre.id' => $apre_id
+                    )
+                )
+            );
+
+            unset( $apre['Apre']['Piecemanquante'] );
+            unset( $apre['Apre']['Piecepresente'] );
+            unset( $apre['Apre']['Piece'] );
+            unset( $apre['Pieceapre'] );
+            unset( $apre['Comiteapre'] );
+            unset( $apre['Relanceapre'] );
+
+            ///Données nécessaire pour savoir quelles sont les aides liées à l'APRE Complémentaire
+            foreach( $this->Apre->aidesApre as $model ) {
+                if( ( $apre['Apre']['Natureaide'][$model] == 0 ) ){
+                   unset( $apre['Apre']['Natureaide'][$model] );
+
+                }
+            }
+            $apre['Apre']['Natureaide'] = array_keys( $apre['Apre']['Natureaide'] );
+
+            foreach( $apre['Apre']['Natureaide'] as $i => $aides ){
+                $apre['Apre']['Natureaide'][$i] = Set::enum( $aides, $natureAidesApres );
+            }
+
+            $apre['Apre']['Natureaide'] = '  - '.implode( "\n  - ", $apre['Apre']['Natureaide'] )."\n";
+
+            ///Données faisant le lien entre l'APRE et son comité
+            $aprecomiteapre = $this->ApreComiteapre->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'ApreComiteapre.apre_id' => $apre_id
+                    )
+                )
+            );
+            $apre['ApreComiteapre'] = $aprecomiteapre['ApreComiteapre'];
+
+            ///Données concernant le comité de l'APRE
+            $comiteapre = $this->Comiteapre->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Comiteapre.id' => Set::classicExtract( $apre, 'ApreComiteapre.comiteapre_id' )
+                    )
+                )
+            );
+            $apre['Comiteapre'] = $comiteapre['Comiteapre'];
+            ///Pour la date du comité
+            $apre['Comiteapre']['datecomite'] =  date_short( Set::classicExtract( $apre, 'Comiteapre.datecomite' ) );
+
+            ///Données nécessaire pour obtenir l'adresse du bénéficiaire
+            $this->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+
+            $adresse = $this->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => Set::classicExtract( $apre, 'Personne.foyer_id' ),
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $apre['Adresse'] = $adresse['Adresse'];
+
+            ///Paramètre nécessaire pour savoir quelle décision le comité a prise
+            $typedecision = Set::enum( Set::classicExtract( $apre, 'ApreComiteapre.decisioncomite' ), $options['decisioncomite'] );
+            $this->set( 'typedecision', $typedecision );
+
+            ///Pour la qualité des Personnes  Personne + Référent APRE
+            $apre['Referentapre']['qual'] = Set::extract( $qual, Set::extract( $apre, 'Referentapre.qual' ) );
+            $apre['Personne']['qual'] = Set::extract( $qual, Set::extract( $apre, 'Personne.qual' ) );
+
+            ///Paramètre nécessaire pour le bon choix du document à éditer
+            $dest = Set::classicExtract( $this->params, 'named.dest' );
+/*
+debug($apre);
+die();*/
+
+            $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/refus'.$dest.'.odt' );
+        }
     }
 ?>
