@@ -236,9 +236,9 @@
 
             ///Paramètre nécessaire pour le bon choix du document à éditer
             $dest = Set::classicExtract( $this->params, 'named.dest' );
-/*
-debug($apre);
-die();*/
+
+// debug($apre);
+// die();
 
             $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/refus'.$dest.'.odt' );
         }
