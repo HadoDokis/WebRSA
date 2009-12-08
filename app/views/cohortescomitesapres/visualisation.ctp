@@ -45,7 +45,8 @@
                     <th>Montant attribué</th>
                     <th>Observations</th>
 
-                    <th class="action">Action</th>
+                    <th class="action">Notification Bénéficiaire</th>
+                    <th class="action">Notification Référent</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
@@ -82,8 +83,14 @@
                             h( Set::classicExtract( $comite, 'ApreComiteapre.montantattribue' ) ),
                             h( Set::classicExtract( $comite, 'ApreComiteapre.observationcomite' ) ),
                             $html->printLink(
-                                'Imprimer',
-                                array( 'controller' => 'gedooos', 'action' => 'index', Set::classicExtract( $comite, 'Comiteapre.id' ) )
+                                'Imprimer pour le bénéficiaire',
+                                array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', Set::classicExtract( $comite, 'ApreComiteapre.apre_id' ), 'dest' => 'beneficiaire' ),
+                                $permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
+                            ),
+                            $html->printLink(
+                                'Imprimer pour le référent',
+                                array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', Set::classicExtract( $comite, 'ApreComiteapre.apre_id' ), 'dest' => 'referent' ),
+                                $permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
                             ),
                             array( $innerTable, array( 'class' => 'innerTableCell' ) )
                         ),
