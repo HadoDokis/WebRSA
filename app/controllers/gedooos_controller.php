@@ -8,7 +8,7 @@
     {
         var $name = 'Gedooos';
         var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'Dsp', 'Referentapre', 'Formqualif', 'Permisb' );
-        var $component = array( 'Jetons' );
+        var $components = array( 'Jetons', 'Gedooo' );
         var $helpers = array( 'Locale' );
 
         function beforeFilter() {
@@ -28,7 +28,8 @@
         }
 
         function _ged( $datas, $model ) {
-            // Définition des variables & maccros
+            $this->Gedooo->generate( $datas, $model );
+            /*// Définition des variables & maccros
             // FIXME: chemins
             $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo';
             $sMimeType  = "application/pdf";
@@ -58,7 +59,7 @@
             );
             $oMainPart = new GDO_PartType();
 
-$freu = array();
+// $freu = array();
 
             // Définition des variables pour les modèles de doc
             foreach( $datas as $group => $details ) {
@@ -83,13 +84,14 @@ $freu = array();
             }
 // debug( $freu );
 // die();
+
             // fusion des documents
             $oFusion = new GDO_FusionType($oTemplate, $sMimeType, $oMainPart);
             $oFusion->process();
             $oFusion->SendContentToClient();
 
             // Possibilité de récupérer la fusion dans un fichier
-            // $oFusion->SendContentToFile($path.$nomFichier);
+            // $oFusion->SendContentToFile($path.$nomFichier);*/
         }
 
         function notification_structure( $personne_id = null ) {
