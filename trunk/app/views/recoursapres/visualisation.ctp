@@ -46,7 +46,8 @@
                     <th>Date recours</th>
                     <th>Observations</th>
 
-                    <th class="action">Action</th>
+                    <th class="action">Notification Bénéficiaire</th>
+                    <th class="action">Notification Référent</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
@@ -83,9 +84,15 @@
                             h( Set::enum( Set::classicExtract( $recours, 'ApreComiteapre.recoursapre' ), $options['recoursapre'] ) ),
                             h( $locale->date( 'Date::short', Set::classicExtract( $recours, 'ApreComiteapre.daterecours' ) ) ),
                             h( Set::classicExtract( $recours, 'ApreComiteapre.observationrecours' ) ),
-                            $html->viewLink(
-                                'Voir',
-                                array( 'controller' => 'comitesapres', 'action' => 'index', Set::classicExtract( $recours, 'Comiteapre.id' ) )
+                            $html->printLink(
+                                'Imprimer pour le bénéficiaire',
+                                array( 'controller' => 'recoursapres', 'action' => 'notificationsrecoursgedooo', Set::classicExtract( $recours, 'ApreComiteapre.apre_id' ), 'dest' => 'beneficiaire' ),
+                                $permissions->check( 'recoursapres', 'notificationsrecoursgedooo' )
+                            ),
+                            $html->printLink(
+                                'Imprimer pour le référent',
+                                array( 'controller' => 'recoursapres', 'action' => 'notificationsrecoursgedooo', Set::classicExtract( $recours, 'ApreComiteapre.apre_id' ), 'dest' => 'referent' ),
+                                $permissions->check( 'recoursapres', 'notificationsrecoursgedooo' )
                             ),
                             array( $innerTable, array( 'class' => 'innerTableCell' ) )
                         ),
