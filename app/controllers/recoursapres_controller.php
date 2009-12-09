@@ -196,42 +196,6 @@
             );
             $apre['Adresse'] = $adresse['Adresse'];
 
-            ///Paramètre nécessaire pour savoir quelle décision le comité a prise
-//             $typedecision = Set::enum( Set::classicExtract( $apre, 'ApreComiteapre.decisioncomite' ), $options['decisioncomite'] );
-//             $this->set( 'typedecision', $typedecision );
-// 
-//             ///Paramètre nécessaire pour connaitre l'ancien comité de cette APRE ( si elle bénéficie d'un recours )
-//             $comite_pcd_id = Set::classicExtract( $apre, 'ApreComiteapre.comite_pcd_id' );
-//             if( !empty( $comite_pcd_id ) ) {
-//                 $isRecours = 'Oui';
-//             }
-//             else {
-//                 $isRecours = 'Non';
-//             }
-// 
-//             $comite_pcd = $this->Comiteapre->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array(
-//                         'Comiteapre.id' => $comite_pcd_id
-//                     )
-//                 )
-//             );
-//             unset( $comite_pcd['Apre'] );
-//             unset( $comite_pcd['Participantcomite'] );
-//             ///Données faisant le lien entre l'APRE et son ancien comité
-//             $aprecomiteapre = $this->ApreComiteapre->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array(
-//                         'ApreComiteapre.comiteapre_id' => $comite_pcd_id
-//                     )
-//                 )
-//             );
-//             $comite_pcd['ApreComiteapre'] = $aprecomiteapre['ApreComiteapre'];
-// 
-//             $apre['ApreComiteapre'] = $comite_pcd['ApreComiteapre']; //Afin d'obtenir date de recours lié à l'ancien comité
-// debug($comite_pcd);
             ///Pour la qualité des Personnes  Personne + Référent APRE
             $apre['Referentapre']['qual'] = Set::extract( $qual, Set::extract( $apre, 'Referentapre.qual' ) );
             $apre['Personne']['qual'] = Set::extract( $qual, Set::extract( $apre, 'Personne.qual' ) );

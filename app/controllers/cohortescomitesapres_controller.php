@@ -234,13 +234,33 @@
             $apre['Referentapre']['qual'] = Set::extract( $qual, Set::extract( $apre, 'Referentapre.qual' ) );
             $apre['Personne']['qual'] = Set::extract( $qual, Set::extract( $apre, 'Personne.qual' ) );
 
+            ///Pour l'adresse de la structure référente
+            $apre['Adresse']['typevoie'] = Set::extract( $typevoie, Set::classicExtract( $apre, 'Adresse.typevoie' ) );
+
             ///Paramètre nécessaire pour le bon choix du document à éditer
             $dest = Set::classicExtract( $this->params, 'named.dest' );
 
+            ///Paramètre nécessaire pour connaitre le type de formation du bénéficiaire (Formation / Hors Formation
+//             $typeformation = array( 'Formation', 'HorsFormation' ); //FIXME
+                $typeformation = 'Formation';
+
+            ///Paramètre nécessaire pour connaitre le type de paiement au tiers (total/ pluisieurs versements )
+//             $typepaiement = array( 'Direct', 'Versement' ); //FIXME
+                $typepaiement = 'Versement';
 // debug($apre);
 // die();
-
-            $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/refus'.$dest.'.odt' );
+            if( $dest == 'beneficiaire' && $typedecision == 'Refus' ) {
+                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$dest.'.odt' );
+            }
+            else if( $dest == 'beneficiaire' && $typedecision == 'Accord' ) {
+                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$typeformation.''.$dest.'.odt' );
+            }
+            else if( $dest == 'referent' ) {
+                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$dest.'.odt' );
+            }
+            else if ( $dest == 'tiers' ) {
+                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$typepaiement.''.$dest.'.odt' );
+            }
         }
     }
 ?>
