@@ -209,7 +209,7 @@
         }
 
         function exportcsv() {
-            $querydata = $this->Comiteapre->search( array_multisize( $this->params['named'] ) );
+            $querydata = $this->Comiteapre->search( 'Comiteapre::index', array_multisize( $this->params['named'] ) );
             unset( $querydata['limit'] );
             $comitesapres = $this->Comiteapre->find( 'all', $querydata );
 
