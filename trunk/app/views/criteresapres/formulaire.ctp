@@ -81,6 +81,7 @@
     </fieldset>
     <fieldset>
         <legend>Recherche par Relance</legend>
+        <?php echo $xform->enum( 'Filtre.statutapre', array(  'label' => 'Statut de l\'APRE', 'options' => $options['statutapre'], 'empty' => false  ) );?>
         <?php echo $xform->input( 'Filtre.daterelance', array( 'label' => 'Filtrer par date de relance', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de la saisie de la relance</legend>
