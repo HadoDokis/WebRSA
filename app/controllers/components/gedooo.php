@@ -83,5 +83,15 @@
             // Possibilité de récupérer la fusion dans un fichier
             // $oFusion->SendContentToFile($path.$nomFichier);
         }
+
+        /** *******************************************************************
+            The beforeRedirect method is invoked when the controller's redirect method
+            is called but before any further action. If this method returns false the
+            controller will not continue on to redirect the request.
+            The $url, $status and $exit variables have same meaning as for the controller's method.
+        ******************************************************************** */
+        function beforeRedirect( &$controller, $url, $status = null, $exit = true ) {
+            parent::beforeRedirect( $controller, $url, $status , $exit );
+        }
     }
 ?>
