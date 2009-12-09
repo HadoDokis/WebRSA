@@ -32,31 +32,48 @@
             );
             $oMainPart = new GDO_PartType();
 
-// $freu = array();
+            $fieldList = array();
+            foreach( Set::flatten( $datas, '_' )  as $key => $value ) {
+                $type = 'text';
+                if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
+                    $type = 'date';
+                }
+
+                $oMainPart->addElement(
+                    new GDO_FieldType(
+                        strtolower( $key ),
+                        $value,
+                        $type
+                    )
+                );
+
+                $fieldList[] = strtolower( $key );
+            }
+
+            // Pour avoir le nom des champs passés à Gedooo
+//             debug( $fieldList );
+//             die();
 
             // Définition des variables pour les modèles de doc
-            foreach( $datas as $group => $details ) {
-                if( !empty( $details ) ) {
-                    foreach( $details as $key => $value ) {
-
-                        $type = 'text';
-                        if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
-                            $type = 'date';
-                        }
-
-                        $oMainPart->addElement(
-                            new GDO_FieldType(
-                                strtolower( $group ).'_'.strtolower( $key ),
-                                $value,
-                                $type
-                            )
-                       );
-                       $freu[strtolower( $group ).'_'.strtolower( $key )] = $value;
-                    }
-                }
-            }
-// debug( $freu );
-// die();
+//             foreach( $datas as $group => $details ) {
+//                 if( !empty( $details ) ) {
+//                     foreach( $details as $key => $value ) {
+// 
+//                         $type = 'text';
+//                         if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
+//                             $type = 'date';
+//                         }
+// 
+//                         $oMainPart->addElement(
+//                             new GDO_FieldType(
+//                                 strtolower( $group ).'_'.strtolower( $key ),
+//                                 $value,
+//                                 $type
+//                             )
+//                        );
+//                     }
+//                 }
+//             }
 
             // fusion des documents
             $oFusion = new GDO_FusionType($oTemplate, $sMimeType, $oMainPart);

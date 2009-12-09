@@ -47,6 +47,7 @@
 
                     <th class="action">Notification Bénéficiaire</th>
                     <th class="action">Notification Référent</th>
+                    <th class="action">Notification Tiers prestataire</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
             </thead>
@@ -71,6 +72,14 @@
                         </table>';
                         $title = $comite['Dossier']['numdemrsa'];
 
+                        //Pour masquer les champs imprimer en cas de Non accord
+                        $typedecision = ( Set::enum( Set::classicExtract( $comite, 'ApreComiteapre.decisioncomite' ), $options['decisioncomite'] ) );
+                        // debug($typedecision);
+                        $isTiers = false;
+                        if( $typedecision == 'Accord' ) {
+                            $isTiers = true;
+
+                        }
 // debug($comite);
                     echo $html->tableCells(
                         array(
@@ -90,6 +99,12 @@
                             $html->printLink(
                                 'Imprimer pour le référent',
                                 array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', Set::classicExtract( $comite, 'ApreComiteapre.apre_id' ), 'dest' => 'referent' ),
+                                $permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
+                            ),
+                            $html->printLink(
+                                'Imprimer pour le tiers prestataire',
+                                array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', Set::classicExtract( $comite, 'ApreComiteapre.apre_id' ), 'dest' => 'tiers' ),
+                                $isTiers,
                                 $permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
                             ),
                             array( $innerTable, array( 'class' => 'innerTableCell' ) )
