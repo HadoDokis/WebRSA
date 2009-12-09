@@ -279,6 +279,15 @@ msgid "ENUM::TYPEDEMANDEAPRE::AU"
 msgstr "Autres"
 
 ###############################################################################
+# Enum Apre.typedemandeapre
+###############################################################################
+msgid "ENUM::STATUTAPRE::C"
+msgstr "Complémentaire"
+
+msgid "ENUM::STATUTAPRE::F"
+msgstr "Forfaitaire"
+
+###############################################################################
 # Enum Apre.naturelogement
 ###############################################################################
 msgid "ENUM::NATURELOGEMENT::P"
@@ -326,7 +335,7 @@ msgid "ENUM::TYPECONTRAT::AUT"
 msgstr "Autres"
 
 ###############################################################################
-# Enum Apre.statutapre
+# Enum Apre.DECISIONCOMITE
 ###############################################################################
 
 msgid "ENUM::DECISIONCOMITE::ACC"

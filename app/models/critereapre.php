@@ -3,13 +3,7 @@
     {
         var $name = 'Critereapre';
         var $useTable = false;
-//         var $actsAs = array( 'Enumerable' );
 
-        var $enumFields = array(
-            'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
-            'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' ),
-            'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' )
-        );
 
         function search( $etatApre, $mesCodesInsee, $filtre_zone_geo, $criteresapres, $lockedDossiers ) {
 
@@ -48,6 +42,7 @@
             $eligibiliteapre = Set::extract( $criteresapres, 'Filtre.eligibiliteapre' );
             $activitebeneficiaire = Set::extract( $criteresapres, 'Filtre.activitebeneficiaire' );
             $natureaidesapres = Set::extract( $criteresapres, 'Filtre.natureaidesapres' );
+            $statutapre = Set::extract( $criteresapres, 'Filtre.statutapre' );
 
             /// Critères sur la demande APRE - date de demande
             if( isset( $criteresapres['Filtre']['datedemandeapre'] ) && !empty( $criteresapres['Filtre']['datedemandeapre'] ) ) {
@@ -129,6 +124,11 @@
                 $conditions[] = 'Apre.eligibiliteapre = \''.Sanitize::clean( $eligibiliteapre ).'\'';
             }
 
+            //Eligibilité du dossier apre
+            if( !empty( $statutapre ) ) {
+                $conditions[] = 'Apre.statutapre = \''.Sanitize::clean( $statutapre ).'\'';
+            }
+
             //Nature de l'aide
             if( !empty( $natureaidesapres ) ) {
                 $table = Inflector::tableize( $natureaidesapres );
@@ -152,6 +152,7 @@
                     '"Apre"."dateentreeemploi"',
                     '"Apre"."eligibiliteapre"',
                     '"Apre"."typecontrat"',
+                    '"Apre"."statutapre"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
                     '"Dossier"."dtdemrsa"',
