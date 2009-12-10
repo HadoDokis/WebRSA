@@ -106,9 +106,12 @@
 
 <!-- Résultats -->
 <?php if( isset( $apres ) ):?>
-    <?php if( !empty( $countApre ) ):?>
+    <?php
+        $totalCount = Set::classicExtract( $paginator->params, 'paging.Apre.count' );
+    ?>
+    <?php if( !empty( $totalCount ) ):?>
         <?php
-            echo sprintf( 'Nombre total d\'APREs: %d, dont %d en attente de décision et %d en attente de traitement', $locale->number( $countApre ), $locale->number( $attenteDecisionsApres ), $locale->number( $attenteTraitementApres ) );
+            echo sprintf( 'Nombre total d\'APREs: %d, dont %d en attente de décision et %d en attente de traitement', $locale->number( $totalCount ), $locale->number( $attenteDecisionsApres ), $locale->number( $attenteTraitementApres ) );
         ?>
     <?php endif;?>
 
