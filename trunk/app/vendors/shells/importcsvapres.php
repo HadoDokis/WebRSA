@@ -24,14 +24,16 @@
 			'banreact' => 14,
 			'guireact' => 15,
 			'ncptreac' => 16,
-			'cribreac' => 17
+			'cribreac' => 17,
+			'datedemandeapre' => 18
 		);
 		var $script = null;
 		var $debug = null;
 		var $config = array();
 		var $defaultConfig = array(
 			'headers' => true,
-			'separator' => ';'
+			'separator' => ';',
+			'date' => true
 		);
 		var $outfile = null;
 		var $output = '';
@@ -83,7 +85,8 @@
 				$this->out( "Paramètres possibles:" );
 				$this->out( "\t-headers\tvaleurs possibles: true ou false (par défaut true)" );
 				$this->out( "\t-separator\tle caractère utilisé comme séparateur (par défaut ;)" );
-				$this->out( "Exemple: cake/console/cake {$scriptName} /tmp/APRE_stock-Juin-Oct_v2.csv -headers true -separator \";\"" );
+				$this->out( "\t-date\tvaleurs possibles: true ou false (par défaut true)" );
+				$this->out( "Exemple: cake/console/cake {$scriptName} /tmp/APRE_stock-Juin-Oct_v2.csv -headers true -separator \";\" -date true" );
 				exit( 0 );
 			}
 
@@ -108,11 +111,21 @@
 			}
 
 			$this->debug = ( Configure::read( 'debug' ) > 0 );
-			$this->config = Set::merge( $this->defaultConfig, array_filter_keys( $this->params, array( 'headers', 'separator' ) ) );
+			$this->config = Set::merge( $this->defaultConfig, array_filter_keys( $this->params, array( 'headers', 'separator', 'date' ) ) );
 
 			if( !is_string( $this->config['separator'] ) ) {
 				$this->err( "Le séparateur n'est pas correct (valeur actuelle: {$this->config['separator']}); n'oubliez pas d'échapper le caractère (par exemple: \";\" plutôt que ;)" );
 				exit( 1 );
+			}
+
+			foreach( array( 'headers', 'date' ) as $f ) {
+				if( isset( $this->config[$f] ) && is_string( $this->config[$f] ) ) {
+					$this->config[$f] = ( $this->config[$f] == 'true' ? true : false );
+				}
+			}
+
+			if( !$this->config['date'] ) {
+				unset( $this->fields['datedemandeapre'] );
 			}
 
 			$this->outfile = APP_DIR.sprintf( '/tmp/logs/%s-%s.log', $this->script, date( 'Ymd-His' ) );
@@ -134,7 +147,45 @@
             if( $this->encoding != 'UTF-8' ) {
                 $fileLines = mb_convert_encoding( $fileLines, 'UTF-8', $this->encoding );
             }
+
 			$lines = explode( "\n", $fileLines );
+
+			// Vérifications générales de bon formattage du fichier
+			$datesErrors = array();
+			$formatErrors = array();
+			foreach( $lines as $nLigne => $line ) {
+				if( !$this->config['headers'] || ( $nLigne != 0 ) ) {
+					if( preg_match( '/'.$this->config['separator'].'[0-9,\.]+E\+[0-9]+'.$this->config['separator'].'/i', $line, $matches ) ) {
+						$formatErrors[] = "ligne {$nLigne}, \"{$matches[0]}\"";
+					}
+					if( $this->config['date'] ) {
+						/// FIXME: dans quel format les reçoit-on ?
+						if( !preg_match( '/'.$this->config['separator'].'[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/i', $line, $matches ) ) {
+							$tmp = explode( $this->config['separator'], $line );
+							if( !empty( $tmp ) ) {
+								$tmp = trim( $tmp[count($tmp)-1] );
+								if( !empty( $tmp ) ) {
+									$datesErrors[] = "ligne {$nLigne}, \"$tmp\"";
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// Rapport d'erreur en cas de mauvais formattage
+			if( ( count( $formatErrors ) > 0 ) || ( count( $datesErrors ) > 0 ) ) {
+				if( count( $formatErrors ) ) {
+					$this->err( count( $formatErrors )." erreurs de format détectées:\n  * ".implode( "\n  * ", $formatErrors ) );
+				}
+				if( count( $datesErrors ) ) {
+					$this->err( count( $datesErrors )." erreurs de dates détectées (les dates doivent se trouver dans la dernière colonne au format JJ/MM/AAAA - exemple: 01/01/2010)\n  * ".implode( "\n  * ", $datesErrors ) );
+				}
+
+				$this->exportlog();
+				return 2;
+			}
+
 
 			foreach( $lines as $nLigne => $line ) {
 				$line = trim( $line );
@@ -147,7 +198,7 @@
 							$this->out( "Traitement de la ligne $nLigne" );
 						}
 
-						if( count( $parts ) == 18 ) {
+						if( count( $parts ) == count( $this->fields ) ) {
 							$numdemrsa = trim( $parts[$this->fields['nudemrsa']], '"' );
 
 							// Recherche ou ajout Paiementfoyer
@@ -165,6 +216,16 @@
 							$guiban = str_pad( $guiban, 5, '0', STR_PAD_LEFT);
 							$numcomptban= str_pad( $numcomptban, 11, '0', STR_PAD_LEFT);
 							$clerib = str_pad( $clerib, 2, '0', STR_PAD_LEFT);
+
+							//date -> FIXME MM/AAAA
+							$datedemandeapre = mktime();
+							if( isset( $this->fields['datedemandeapre'] ) ) {
+								$datedemandeapre = trim( $parts[$this->fields['datedemandeapre']], '"' );
+								// FIXME: transformation
+							}
+// debug( $datedemandeapre );
+// debug( strtotime( $datedemandeapre ) );
+// die();
 
 							$validRib = validRib( $etaban, $guiban, $numcomptban, $clerib );
 							$dossier = $this->Apre->Personne->Foyer->Dossier->findByNumdemrsa( $numdemrsa, null, null, -1 );
@@ -189,6 +250,8 @@
 										)
 									);
 									$this->Apre->Personne->bindModel( $prestation );
+									// Conditions pour le message d'erreur
+									$conditionsBeneficiaire = "Personne.foyer_id = '{$foyer['Foyer']['id']}' AND ( Personne.nir = '{$nir}' OR ( Personne.nom ILIKE '".strtoupper( replace_accents( $nom ) )."' AND Personne.prenom ILIKE '".strtoupper( replace_accents( $prenom ) )."' ) )";
 									$beneficiaire = $this->Apre->Personne->find(
 										'first',
 										array(
@@ -215,7 +278,7 @@
 												'personne_id' => $beneficiaire['Personne']['id'],
 												'numeroapre' => date('Ym').sprintf( "%010s",  $this->Apre->find( 'count' ) + 1 ), // FIXME
 												'typedemandeapre' => 'AU',
-												'datedemandeapre' => date( 'Y-m-d' ),
+												'datedemandeapre' => date( 'Y-m-d', $datedemandeapre ),
 												'mtforfait' => ( 400 + min( array( 400, ( 100 * $nbenf12 ) ) ) ), // FIXME
 												'statutapre' => 'F',
 												'nbenf12' => $nbenf12,
@@ -294,7 +357,7 @@
                                         }
 									}
 									else {
-										$errMsg = "Bénéficiaire de l'APRE non trouvé";
+										$errMsg = "Bénéficiaire de l'APRE non trouvé ({$conditionsBeneficiaire})";
 										$this->err( "{$errMsg} (ligne {$nLigne}): {$line}" );
 										$this->rejects[] = "{$line};{$errMsg}";
 									}
@@ -320,7 +383,7 @@
 						}
 						else {
 							$errMsg = "Ligne mal formée";
-							$this->err( "{$errMsg}, ".count( $parts )." parties au lieu des 18 attendues (ligne {$nLigne}): {$line}" );
+							$this->err( "{$errMsg}, ".count( $parts )." parties au lieu des ".count( $this->fields )." attendues (ligne {$nLigne}): {$line}" );
 							$this->rejects[] = "{$line};{$errMsg}";
 						}
 					}
