@@ -1,0 +1,124 @@
+<?php $this->pageTitle = 'Dossier RSA '.$details['Dossier']['numdemrsa'];?>
+
+<?php echo $this->element( 'dossier_menu', array( 'id' => $details['Dossier']['id'] ) );?>
+
+<div class="with_treemenu">
+    <h1>Informations complémentaires</h1> <!--FIXME: grugeage -->
+
+<div id="resumeDossier">
+    <table  id="ficheDossier">
+        <tbody>
+            <tr>
+                <td>
+                    <h2>Personne</h2>
+                    <?php
+                        echo $theme->tableDemandeurConjoint(
+                            $details,
+                            array(
+                                'Personne.qual' => array( 'options' => $qual ),
+                                'Personne.nom',
+                                'Personne.prenom'
+                            ),
+                            array(
+                                'id' => 'personnes'
+                            )
+                        );
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Activité</h2>
+                    <?php
+                        echo $theme->tableDemandeurConjoint(
+                            $details,
+                            array(
+                                'Activite.reg' => array( 'options' => $reg ),
+                                'Activite.act' => array( 'options' => $act ),
+                                'Activite.paysact' => array( 'options' => $paysact ),
+                                'Activite.ddact',
+                                'Activite.dfact',
+                            )
+                        );
+                    ?>
+                </td>
+                <td>
+                    <h2>Titre de séjour</h2>
+                    <?php
+                        echo $theme->tableDemandeurConjoint(
+                            $details,
+                            array(
+                                'TitreSejour.dtentfra',
+                                'TitreSejour.nattitsej',
+                                'TitreSejour.menttitsej',
+                                'TitreSejour.ddtitsej',
+                                'TitreSejour.dftitsej',
+                                'TitreSejour.numtitsej',
+                                'TitreSejour.numduptitsej'
+                            )
+                        );
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Dossier CAF</h2>
+                    <?php
+                        echo $theme->tableDemandeurConjoint(
+                            $details,
+                            array(
+                                'Dossiercaf.ddratdos',
+                                'Dossiercaf.dfratdos',
+                                'Dossiercaf.toprespdos',
+                                'Dossiercaf.numdemrsaprece',
+                            )
+                        );
+                    ?>
+                </td>
+                <td>
+                    <h2>Allocation soutien familial</h2>
+                    <?php
+                        echo $theme->tableDemandeurConjoint(
+                            $details,
+                            array(
+                                'Allocationsoutienfamilial.sitasf' => array( 'options' => $sitasf ),
+                                'Allocationsoutienfamilial.parassoasf' => array( 'options' => $parassoasf ),
+                                'Allocationsoutienfamilial.ddasf',
+                                'Allocationsoutienfamilial.dfasf'
+                            )
+                        );
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <h2>Créances alimentaires</h2>
+                    <?php
+                        echo $theme->tableDemandeurConjoint(
+                            $details,
+                            array(
+                                'Creancealimentaire.etatcrealim' => array( 'options' => $etatcrealim ),
+                                'Creancealimentaire.ddcrealim',
+                                'Creancealimentaire.dfcrealim',
+                                'Creancealimentaire.orioblalim' => array( 'options' => $orioblalim ),
+                                'Creancealimentaire.motidiscrealim' => array( 'options' => $motidiscrealim ),
+                                'Creancealimentaire.commcrealim',
+                                'Creancealimentaire.mtsancrealim',
+                                'Creancealimentaire.topdemdisproccrealim' => array( 'options' => $topdemdisproccrealim ),
+                                'Creancealimentaire.engproccrealim' => array( 'options' => $engproccrealim ),
+                                'Creancealimentaire.verspa' => array( 'options' => $verspa ),
+                                'Creancealimentaire.topjugpa'
+                            ),
+                            array(
+                                'id' => 'creancesalimentaires'
+                            )
+                        );
+                    ?>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+<div class="clearer"><hr /></div>
+<?php /*debug( $details );*/?>

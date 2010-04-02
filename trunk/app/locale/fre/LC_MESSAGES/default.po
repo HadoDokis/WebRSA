@@ -1,0 +1,1107 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+# Dates
+###############################################################################
+msgid "January"
+msgstr "janvier"
+
+msgid "February"
+msgstr "février"
+
+msgid "March"
+msgstr "mars"
+
+msgid "April"
+msgstr "avril"
+
+msgid "May"
+msgstr "mai"
+
+msgid "June"
+msgstr "juin"
+
+msgid "July"
+msgstr "juillet"
+
+msgid "August"
+msgstr "août"
+
+msgid "September"
+msgstr "septembre"
+
+msgid "October"
+msgstr "octobre"
+
+msgid "November"
+msgstr "novembre"
+
+msgid "December"
+msgstr "décembre"
+
+###############################################################################
+# Locale
+###############################################################################
+
+msgid "Yes"
+msgstr "Oui"
+
+msgid "No"
+msgstr "Non"
+
+msgid "Locale->time"
+msgstr "%H:%M"
+
+msgid "Locale->date"
+msgstr "%d/%m/%Y"
+
+msgid "Locale->datetime"
+msgstr "%d/%m/%Y %H:%M"
+
+msgid "Locale->dateFormat"
+msgstr "DMY"
+
+msgid "Date::short"
+msgstr "%d/%m/%Y"
+
+msgid "Date::mini"
+msgstr "%m/%Y"
+
+msgid "Datetime::short"
+msgstr "%d/%m/%Y %H:%M:%S"
+
+msgid "Time::short"
+msgstr "%Hh%M"
+
+msgid "Date::miniLettre"
+msgstr "%B %Y"
+
+###############################################################################
+# Save / Delete
+###############################################################################
+
+msgid "Save->success"
+msgstr "Enregistrement effectué"
+
+msgid "Save->error"
+msgstr "Erreur lors de l'enregistrement"
+
+msgid "Delete->error"
+msgstr "Erreur lors de la suppression"
+
+msgid "Delete->success"
+msgstr "Suppression effectuée"
+
+# FIXME -> Save / Operation ? / Add->cancel - Edit->cancel - Foo->cancel
+msgid "Save->cancel"
+msgstr "Opération annulée"
+
+###############################################################################
+# Validate
+###############################################################################
+
+msgid "Validate::notEmpty"
+msgstr "Champ obligatoire"
+
+msgid "Validate::maxLength"
+msgstr "Maximum %s caractères"
+
+msgid "Validate::minLength"
+msgstr "Minimum %s caractères"
+
+msgid "Validate::email"
+msgstr "Veuillez saisir une adresse de courrier électronique valide"
+
+msgid "Validate::phoneFr"
+msgstr "Veuillez entrer un n° de téléphone français"
+
+msgid "Validate::url"
+msgstr "Veuillez entrer une URL valide"
+
+msgid "Validate::isUnique"
+msgstr "Valeur déjà utilisée"
+
+msgid "Validate::integer"
+msgstr "Veuillez entrer un nombre entier"
+
+msgid "Validate::numeric"
+msgstr "Veuillez entrer une valeur numérique"
+
+###############################################################################
+# Forms/Index
+###############################################################################
+
+msgid "Results %start% - %end% out of %count%."
+msgstr "Résultats %start% à %end% sur un total de %count%."
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "View"
+msgstr "Voir"
+
+msgid "Edit"
+msgstr "Modifier"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Search"
+msgstr "Rechercher"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Reset"
+msgstr "Remise à zéro"
+
+###############################################################################
+# Donnees socioprofessionnelles personnes
+###############################################################################
+
+msgid "drorsarmiant"
+msgstr "Avez-vous bénéficié du RSA (RMI) ?"
+
+msgid "drorsarmianta2"
+msgstr "Il y a plus de 2 ans ?"
+
+msgid "couvsoc"
+msgstr "Bénéficiez-vous d'une couverture sociale (y compris CMU, CMUC, mutuelle privée) ?"
+
+msgid "libautrdifsoc"
+msgstr "Difficultés sociales autres, précision ?"
+
+msgid "elopersdifdisp"
+msgstr "Avez-vous des difficultés de disponibilité du fait de l'éloignement d'enfant,<br /> de parent ou de conjoint (hospitalisation, incarcération) ?"
+
+msgid "obstemploidifdisp"
+msgstr "Ces différentes difficultés constituent-elles un obstacle insurmontable à votre accès à l'emploi ?"
+
+msgid "soutdemarsoc"
+msgstr "Etes-vous soutenu par votre entourage dans vos démarches ?"
+
+msgid "libautraccosocindi"
+msgstr "Autre nature d'accompagnement individuel ?"
+
+msgid "libcooraccosocindi"
+msgstr "Coordonnées et adresse de l'organisme ?"
+
+msgid "difsoc"
+msgstr "Rencontrez-vous des difficultés sociales ?"
+
+msgid "nataccosocindi"
+msgstr "Bénéficiez-vous d'un accompagnement individuel ?"
+
+msgid "difdisp"
+msgstr "Avez-vous des difficultés de disponibilité liées à ?"
+
+msgid "annderdipobt"
+msgstr "Année d'obtention du dernier diplôme ?"
+
+msgid "rappemploiquali"
+msgstr "L'emploi recherché est-il en rapport avec votre qualification ?"
+
+msgid "rappemploiform"
+msgstr "Le niveau de formation est-il en concordance avec l'emploi recherché ?"
+
+msgid "libautrqualipro"
+msgstr "Autres qualifications ou certificats professionnels. Précisez "
+
+msgid "permicondub"
+msgstr "Permis de conduire catégorie B ?"
+
+# FIXME
+msgid "libautrpermicondu"
+msgstr "Autres qualifications ou certificats professionnels. Précisez "
+
+msgid "libcompeextrapro"
+msgstr "Compétences ou activités extraprofessionnelles: Précisez "
+
+msgid "nivetu"
+msgstr "Diplômes"
+
+msgid "persisogrorechemploi"
+msgstr "Personne isolée en état de grossesse ou avec enfant à charge: Etes-vous en recherche d'emploi?"
+
+msgid "accoemploi"
+msgstr "Etes-vous accompagné dans votre recherche d'emploi ?"
+
+msgid "libcooraccoemploi"
+msgstr "Si pôle emploi ou autre, remplir pour les coordonnées de l'organisme ?"
+
+msgid "hispro"
+msgstr "Passé professionnel ?"
+
+msgid "libderact"
+msgstr "Quelle est votre dernière activité professionnelle ?"
+
+msgid "libsecactderact"
+msgstr "Dans quel secteur d'activité l'avez-vous exercée ?"
+
+msgid "dfderact"
+msgstr "Date éventuelle de cessation de cette activité ?"
+
+msgid "domideract"
+msgstr "Est-ce votre activité professionnelle dominante ?"
+
+msgid "libactdomi"
+msgstr "Précisez quelle a été l'activité professionnelle dominante ?"
+
+msgid "libsecactdomi"
+msgstr "Dans quel secteur d'activité avez-vous exercé votre activité professionnelle dominante ?"
+
+msgid "duractdomi"
+msgstr "Quelle est la durée de votre activité dominante ?"
+
+msgid "libemploirech"
+msgstr "Précisez le métier recherché ?"
+
+msgid "libsecactrech"
+msgstr "Précisez le secteur d'activité ?"
+
+msgid "creareprisentrrech"
+msgstr "Etes-vous créateur ou repreneur d'entreprise ?"
+
+msgid "moyloco"
+msgstr "Disposez-vous d'un moyen de transport collectif ou individuel ?"
+
+msgid "natmob"
+msgstr "Etes-vous mobile ?"
+
+msgid "dipfra"
+msgstr "Diplôme Français/Etranger"
+
+msgid "toppersdrodevorsa"
+msgstr "Personne soumise à droits et devoirs ?"
+###############################################################################
+# Adresses du foyer
+###############################################################################
+
+msgid "numvoie"
+msgstr "Numéro de voie"
+
+msgid "typevoie"
+msgstr "Type de voie"
+
+msgid "nomvoie"
+msgstr "Nom de voie"
+
+msgid "complideadr"
+msgstr "Complément identification adresse"
+
+msgid "compladr"
+msgstr "Complément d'adresse"
+
+msgid "lieudist"
+msgstr "Lieu de distribution"
+
+msgid "numcomrat"
+msgstr "Numéro de commune"
+
+msgid "numcomptt"
+msgstr "Numéro de commune sens INSEE"
+
+msgid "codepos"
+msgstr "Code postal"
+
+msgid "locaadr"
+msgstr "Localité adresse"
+
+msgid "pays"
+msgstr "Code Pays"
+
+msgid "rgadr"
+msgstr "Rang Adresse"
+
+msgid "dtemm"
+msgstr "Date emménagement"
+
+msgid "typeadr"
+msgstr "Code nature adresse"
+
+msgid "canton"
+msgstr "Code Canton"
+
+msgid "sitfam"
+msgstr "Situation de famille"
+
+msgid "typeocclog"
+msgstr "Conditions de logement"
+###############################################################################
+# Personne
+###############################################################################
+
+msgid "rolepers"
+msgstr "Rôle personne"
+
+msgid "qual"
+msgstr "Qualité"
+
+msgid "nom"
+msgstr "Nom"
+
+msgid "nomnai"
+msgstr "Nom de  naissance"
+
+msgid "prenom"
+msgstr "Prénom"
+
+msgid "prenom2"
+msgstr "2ème prénom"
+
+msgid "prenom3"
+msgstr "3ème prénom"
+
+msgid "nomcomnai"
+msgstr "Commune de naissance"
+
+msgid "dtnai"
+msgstr "Date naissance"
+
+msgid "rgnai"
+msgstr "Rang naissance"
+
+msgid "typedtnai"
+msgstr "Type date de naissance"
+
+msgid "nir"
+msgstr "N° national d'identification (SECU)"
+
+msgid "topvalec"
+msgstr "Certification de l'état civil de la personne"
+
+msgid "sexe"
+msgstr "Sexe"
+
+msgid "nati"
+msgstr "Nationalité"
+
+msgid "dtnati"
+msgstr "Date Nationalité"
+
+msgid "pieecpres"
+msgstr "Pièce d'état civil présentée"
+
+###############################################################################
+# Donnees socioprofessionnelles Foyers
+###############################################################################
+msgid "motidemrsa"
+msgstr "Quel est le motif de votre demande de RSA ?"
+
+msgid "accosocfam"
+msgstr "Votre famille fait-elle l'objet d'accompagnement social ?"
+
+msgid "libautraccosocfam"
+msgstr "Autre"
+
+msgid "libcooraccosocfam"
+msgstr "Coordonnées et adresse de l'organisme ?"
+
+msgid "nataccosocfam"
+msgstr "Quelle nature ?"
+
+msgid "natlog"
+msgstr "Nature du logement ?"
+
+msgid "libautrdiflog"
+msgstr "Difficultés de logement ?"
+
+msgid "demarlog"
+msgstr "Démarches entreprises en matière de logement ?"
+
+msgid "diflog"
+msgstr "Difficultés logement ?"
+
+###############################################################################
+# Contrat d'insertion
+###############################################################################
+
+msgid "dd_ci"
+msgstr "Date de début du contrat ?"
+
+msgid "df_ci"
+msgstr "Date de fin du contrat ?"
+
+msgid "niv_etude"
+msgstr "Niveau d'études ? "
+
+msgid "diplomes"
+msgstr "Diplômes (scolaires, universitaires et/ou professionnels)"
+
+msgid "expr_prof"
+msgstr "Quelles expériences professionnelles avez-vous ( emploi occupé, dates, ...) ?"
+
+msgid "form_compl"
+msgstr "Autres expériences, savoir, connaissances"
+
+msgid "type_ci"
+msgstr "Type de contrat d\'insertion "
+
+msgid "rg_ci"
+msgstr "Rang du présent contrat "
+
+msgid "actions_prev"
+msgstr "Avez-vous pu réaliser les actions prévues dans votre contrat précédent ? "
+
+msgid "obsta_renc"
+msgstr "Si vous n\'avez pas pu les réaliser, quels obstacles avez-vous rencontrés ? "
+
+msgid "service_soutien"
+msgstr "Le présent contrat a été établi avec le soutien du service: (désignation, adresse, téléphone)"
+
+msgid "pers_charg_suivi"
+msgstr "Personne chargée du suivi"
+
+msgid "objectifs_fixes"
+msgstr "Quels objectifs vous fixez-vous pour les mois à venir"
+
+msgid "engag_object"
+msgstr "Que prévoyez-vous de faire pour atteindre ces objectifs (démarches d\'insertion dans les domaines de la santé, du logement et de la vie sociale et quotidienne, de la formation, de la recherche d\'emploi,...)"
+
+msgid "emp_trouv"
+msgstr "Avez-vous trouvé un emploi ? "
+
+msgid "sect_acti_emp"
+msgstr "Le secteur d\'activité"
+
+msgid "emp_occupe"
+msgstr "L\'emploi occupé"
+
+msgid "duree_hebdo_emp"
+msgstr "La durée hebdomadaire de travail"
+
+msgid "nat_cont_trav"
+msgstr "La nature du contrat de travail"
+
+msgid "duree_cdd"
+msgstr "S\'il s\'agit d\'un CDD, sa durée"
+
+msgid "duree_engag"
+msgstr "Engagement sur une durée de  (en mois)"
+
+msgid "nature_projet"
+msgstr "Nature du projet "
+
+msgid "observ_ci"
+msgstr "Observations"
+
+msgid "decision_ci"
+msgstr "Décision "
+
+msgid "typocontrat"
+msgstr "Typologie du contrat"
+
+msgid "referent"
+msgstr "Référent du contrat"
+
+msgid "date_propo"
+msgstr "Date de la demande"
+
+msgid "date_valid"
+msgstr "Date de l'orientation"
+
+msgid "lieu_saisi_ci"
+msgstr "Réalisé à "
+
+msgid "date_saisi_ci"
+msgstr "Le "
+
+msgid "forme_ci"
+msgstr "Forme du contrat "
+
+msgid "commentaire_action"
+msgstr "Commentaire concernant l'action "
+###############################################################################
+# Actions d'insertion
+###############################################################################
+msgid "code_action"
+msgstr "Code de l'action"
+
+msgid "lib_action"
+msgstr "Libellé de l'action"
+
+msgid "type_action"
+msgstr "Type d'action"
+
+msgid "dd_action"
+msgstr "Date de début de l'action"
+
+msgid "df_action"
+msgstr "Date de fin de l'action"
+
+msgid "lib_aide"
+msgstr "Libellé de l'aide"
+
+msgid "date_aide"
+msgstr "A partir de quelle date cette aide prend-elle effet"
+
+msgid "lib_presta"
+msgstr "Libellé de la prestation"
+
+msgid "typo_aide"
+msgstr "Type d'aide"
+
+msgid "date_presta"
+msgstr "A partir de quelle date cette prestation prend-elle effet"
+
+msgid "nomrefpresta"
+msgstr "Nom du référent de la prestation"
+
+msgid "prenomrefpresta"
+msgstr "Prénom du référent de la prestation"
+
+###############################################################################
+# Ressources
+###############################################################################
+
+msgid "topressnul"
+msgstr "Percevez-vous des ressources ? "
+
+msgid "topressnotnul"
+msgstr "Percevez-vous des ressources ? "
+
+msgid "mtpersressmenrsa"
+msgstr "Montant des ressources mensuelles prises en compte pour le RSA "
+
+msgid "ddress"
+msgstr "Date de début de la période correspondant à la DTR RSA "
+
+msgid "dfress"
+msgstr "Date de fin  de la période correspondant à la DTR RSA "
+
+msgid "abaneu"
+msgstr "Abattement / Neutralisation "
+
+msgid "natress"
+msgstr "Nature de la ressource "
+
+msgid "mtnatressmen"
+msgstr "Montant de la ressource selon la nature "
+
+msgid "topprevsubsress"
+msgstr "Percevez-vous des revenus de substitution ? "
+
+msgid "dfpercress"
+msgstr "Date de fin de perception des ressources "
+
+msgid "moisress"
+msgstr "Mois des ressources déclarées "
+
+msgid "nbheumentra"
+msgstr "Nombre d'heures mensuelles effectuées "
+
+msgid "mtabaneu"
+msgstr "Montant d\'abattement / neutralisation "
+
+###############################################################################
+# Adresses
+###############################################################################
+
+msgid "dtemm"
+msgstr "Date d\'emménagement"
+
+###############################################################################
+# Informations financières
+##############################################################################
+msgid "dtdemrsa"
+msgstr "Date d'ouverture des droits"
+
+msgid "moismoucompta"
+msgstr "Mois du mouvement comptable"
+
+msgid "type_allocation"
+msgstr "Type d\'allocation"
+
+msgid "natpfcre"
+msgstr "Nature de la prestation pour la créance"
+
+msgid "rgcre"
+msgstr "Rang de la créance"
+
+msgid "numintmoucompta"
+msgstr "Numéro interne du mouvement comptable"
+
+msgid "typeopecompta"
+msgstr "Type d\'opération comptable"
+
+msgid "sensopecompta"
+msgstr "Signification/sens de l\'opération comptable"
+
+msgid "mtmoucompta"
+msgstr "Montant du mouvement comptable"
+
+msgid "ddregu"
+msgstr "Date pour la régulation"
+
+msgid "dttraimoucompta"
+msgstr "Date de traitement du mouvement comptable"
+
+msgid "heutraimoucompta"
+msgstr "Heure de traitement du mouvement comptable"
+
+###############################################################################
+# Totalisation acompte / Identification flux
+##############################################################################
+msgid "mttotsoclrsa"
+msgstr "Montant total pour le  Rsa socle"
+
+msgid "mttotsoclmajorsa"
+msgstr "Montant total pour le  Rsa socle majoré"
+
+msgid "mttotlocalrsa"
+msgstr "Montant total pour le Rsa local"
+
+msgid "mttotrsa"
+msgstr "Montant total pour le Rsa"
+######
+msgid "applieme"
+msgstr "Code de l'application émettrice"
+
+msgid "numversionapplieme"
+msgstr "Numéro de version de l'application émettrice"
+
+msgid "typeflux"
+msgstr "Type de fréquence du flux Xml"
+
+msgid "natflux"
+msgstr "Nature du flux Xml"
+
+msgid "dtcreaflux"
+msgstr "Date de création du flux Xml"
+
+msgid "heucreaflux"
+msgstr "Heure de création du flux Xml"
+
+msgid "dtref"
+msgstr "Mois de référence du flux Xml"
+
+###############################################################################
+# Suivi instruction
+##############################################################################
+msgid "etatirsa"
+msgstr "Code état de l'instruction RSA :"
+
+msgid "date_etat_instruction"
+msgstr "Date de l'état de l'instruction"
+
+msgid "nomins"
+msgstr "Nom de l'agent instructeur"
+
+msgid "prenomins"
+msgstr "Prénom de l'agent instructeur"
+
+msgid "numdepins"
+msgstr "Numéro du département du service instructeur"
+
+msgid "typeserins"
+msgstr "Type de service instructeur"
+
+msgid "numcomins"
+msgstr "Numéro de la commune du service instructeur"
+
+msgid "numagrins"
+msgstr "Numero d'agréement du service instructeur"
+
+###############################################################################
+# Situation dossier rsa
+##############################################################################
+
+msgid "etatdosrsa"
+msgstr "Etat du dossier"
+
+msgid "dtrefursa"
+msgstr "Date de refus"
+
+msgid "dtclorsa"
+msgstr "Date de fin des droits"
+
+msgid "moticlorsa"
+msgstr "Motif de fin des droits"
+###############################################################################
+# Srucuture referente
+##############################################################################
+
+msgid "lib_type_orient"
+msgstr "Type d'orientation"
+
+msgid "lib_struc"
+msgstr "Type de structure"
+
+msgid "structure_referente"
+msgstr "Zone géographique"
+
+msgid "contratengagement"
+msgstr "Gestion des Contrats d'engagement"
+
+msgid "apre"
+msgstr "Gestion des APREs"
+###############################################################################
+# Paramétrage des tables
+##############################################################################
+
+msgid "date_naissance"
+msgstr "Date de naissance"
+
+msgid "username"
+msgstr "Nom d'utilisateur"
+
+msgid "date_deb_hab"
+msgstr "Date de début d'habilitation"
+
+msgid "date_fin_hab"
+msgstr "Date de fin d'habilitation"
+
+msgid "codeinsee"
+msgstr "Code insee"
+
+msgid "libelle"
+msgstr "Libellé de la zone géographique"
+
+msgid "id"
+msgstr "ID"
+
+msgid "parentid"
+msgstr "ID parent"
+
+msgid "parent_id"
+msgstr "Parent"
+
+msgid "modele_notif"
+msgstr "Modèle de notification"
+
+msgid "modele_notif_cohorte"
+msgstr "Modèle de notification pour les cohortes"
+
+msgid "numero_poste"
+msgstr "Numéro de poste"
+
+msgid "fonction"
+msgstr "Fonction du référent"
+
+msgid "password"
+msgstr "Mot de passe"
+
+msgid "type_voie"
+msgstr "Type de voie"
+
+msgid "num_voie"
+msgstr "Numéro de voie"
+
+msgid "nom_voie"
+msgstr "Nom de voie"
+
+msgid "code_postal"
+msgstr "Code postal"
+
+msgid "ville"
+msgstr "Ville"
+
+msgid "code_insee"
+msgstr "Code INSEE"
+
+msgid "name"
+msgstr "Nom du groupe"
+
+msgid "lib_service"
+msgstr "Nom du service instructeur"
+
+msgid "num_rue"
+msgstr "Numéro de rue"
+
+msgid "nom_rue"
+msgstr "Nom de rue"
+
+msgid "complement_adr"
+msgstr "Complément d'adresse"
+
+msgid "email"
+msgstr "Email"
+
+msgid "lib_typo"
+msgstr "Type de contrat d'insertion"
+
+msgid "rang"
+msgstr "Rang du contrat d'insertion"
+
+msgid "adresse"
+msgstr "Adresse"
+
+msgid "numtel"
+msgstr "Numéro de téléphone"
+
+###############################################################################
+# Auth
+###############################################################################
+msgid "Login failed. Invalid username or password."
+msgstr "Échec de la connexion. Identifiant ou mot de passe invalide."
+
+###############################################################################
+# Paramétrage région (regroupementzonegeo)
+###############################################################################
+msgid "lib_rgpt"
+msgstr "Libellé de la région"
+
+###############################################################################
+# Modes de contact
+###############################################################################
+msgid "numposte"
+msgstr "Numéro de poste"
+
+msgid "nattel"
+msgstr "Nature du téléphone"
+
+msgid "matetel"
+msgstr "Type de téléphone"
+
+msgid "autorutitel"
+msgstr "Autorisation d'utiliser le numéro de téléphone pour contacter le demandeur"
+
+msgid "adrelec"
+msgstr "Adresse électronique"
+
+msgid "autorutiadrelec"
+msgstr "Autorisation d'utiliser l'adresse électronique pour contacter le demandeur"
+
+###############################################################################
+# Grossesses
+###############################################################################
+msgid "ddgro"
+msgstr "Date de début de grossesse"
+
+msgid "dfgro"
+msgstr "Date de fin de grossesse"
+
+msgid "dtdeclgro"
+msgstr "Date de déclaration de grossesse"
+
+msgid "natfingro"
+msgstr "Motif de fin de grossesse"
+
+###############################################################################
+# Dérogation
+###############################################################################
+msgid "numdero"
+msgstr "Numéro de dérogation"
+
+msgid "typedero"
+msgstr "Type de dérogation"
+
+msgid "avisdero"
+msgstr "Décision du Conseil Général"
+
+msgid "ddavisdero"
+msgstr "Date soumission CAF"
+
+msgid "dfavisdero"
+msgstr "Date de fin dérogation"
+
+msgid "motidempdo"
+msgstr "Motif de la demande dérogation"
+
+msgid "commentdero"
+msgstr "Commentaires"
+
+msgid "ressdero"
+msgstr "Moyenne des ressources mensuelles"
+
+msgid "motideccg"
+msgstr "Motif de la décision CG"
+
+msgid "commission"
+msgstr "Type de commission"
+
+###############################################################################
+# Indicateurs mensuels
+###############################################################################
+
+msgid "Indicateurmensuel.annee"
+msgstr "Recherche indicateurs pour l'année"
+
+msgid "Indicateurmensuel.nbrDossiersInstruits"
+msgstr "Nombre de dossiers instruits"
+
+msgid "Indicateurmensuel.nbrDossiersRejetesCaf"
+msgstr "Nombre de dossiers rejetés par la CAF"
+
+msgid "Indicateurmensuel.nbrOuverturesDroits"
+msgstr "Nombre d'ouvertures de droits"
+
+msgid "Indicateurmensuel.nbrAllocatairesDroitsEtDevoirs"
+msgstr "Nombre d'allocataires en droits et devoirs"
+
+msgid "Indicateurmensuel.nbrPreorientationsEmploi"
+msgstr "Nombre de préorientations vers l'emploi"
+
+msgid "Indicateurmensuel.nbrPreorientationsSocial"
+msgstr "Nombre de préorientations vers le SSD"
+
+msgid "Indicateurmensuel.nbrPreorientationsSocioprofessionnelle"
+msgstr "Nombre de préorientations vers le PDV RMI"
+
+msgid "Indicateurmensuel.delaiOuvertureNotification"
+msgstr "Délai entre l'ouverture de droit et la notification d'orientation"
+
+msgid "Indicateurmensuel.delaiNotificationSignature"
+msgstr "Délai entre la notification d'orientation et la signature du contrat"
+
+msgid "Indicateurmensuel.montantsIndusConstates"
+msgstr "Montant des indus constatés"
+
+msgid "Indicateurmensuel.montantsIndusTransferes"
+msgstr "Montant des indus transférés"
+
+msgid "Indicateurmensuel.nbrCiNouveauxEntrantsCg"
+msgstr "Nombre de contrats d'insertion pour les nouveaux entrants CG"
+
+msgid "Indicateurmensuel.nbrSuspensionsDroits"
+msgstr "Nombre de suspensions de droits"
+
+###############################################################################
+# PDOs
+###############################################################################
+msgid "typepdo"
+msgstr "Type de PDO"
+
+msgid "commentairepdo"
+msgstr "Commentaires PDO"
+
+msgid "decisionpdo"
+msgstr "Décision CG"
+
+msgid "datedecisionpdo"
+msgstr "Date de décision PDO"
+
+msgid "motifpdo"
+msgstr "Motif de la PDO"
+###############################################################################
+# Rendez-vous
+###############################################################################
+msgid "statutrdv"
+msgstr "Statut du RDV"
+
+msgid "lib_rdv"
+msgstr "Objet du RDV"
+
+msgid "commentairerdv"
+msgstr "Commentaires suite au RDV"
+
+msgid "objetrdv"
+msgstr "Objectif du RDV"
+
+msgid "daterdv"
+msgstr "Date du RDV"
+
+msgid "heurerdv"
+msgstr "Heure du RDV"
+
+msgid "lib_struct"
+msgstr "Structure référente"
+
+msgid "modelenotifrdv"
+msgstr "Modèle de notification lié au type de RDV"
+
+###############################################################################
+# Formulaires
+###############################################################################
+
+msgid "Form::Save"
+msgstr "Enregistrer"
+
+###############################################################################
+# Enums généraux
+###############################################################################
+
+msgid "ENUM::BOOLEANNUMBER::0"
+msgstr "Non"
+
+msgid "ENUM::BOOLEANNUMBER::1"
+msgstr "Oui"
+
+###############################################################################
+
+msgid "ENUM::NO::N"
+msgstr "Non"
+
+msgid "ENUM::NO::O"
+msgstr "Oui"
+
+###############################################################################
+
+msgid "ENUM::NOS::N"
+msgstr "Non"
+
+msgid "ENUM::NOS::O"
+msgstr "Oui"
+
+msgid "ENUM::NOS::S"
+msgstr "Ne sait pas"
+
+###############################################################################
+
+msgid "ENUM::NOV::N"
+msgstr "Non"
+
+msgid "ENUM::NOV::O"
+msgstr "Oui"
+
+msgid "ENUM::NOV::V"
+msgstr "Ne veut pas répondre"
+
+###############################################################################
+# Enums
+###############################################################################
+
+msgid "ENUM::PRESENCE::absent"
+msgstr "Absent"
+
+msgid "ENUM::PRESENCE::present"
+msgstr "Présent"
+
+msgid "ENUM::PRESENCE::remplace"
+msgstr "Remplacé par"
+
+msgid "ENUM::PRESENCE::excuse"
+msgstr "Excusé"
+
+###############################################################################
+
+msgid "ENUM::NO::N"
+msgstr "Non"
+
+msgid "ENUM::NO::O"
+msgstr "Oui"
+
+###############################################################################
+
+msgid "ENUM::BOOLEANNUMBER::0"
+msgstr "Non"
+
+msgid "ENUM::BOOLEANNUMBER::1"
+msgstr "Oui"
+
+
+msgid "ENUM::BILANVENU::VEN"
+msgstr "Venu(e)"
+
+msgid "ENUM::BILANVENU::NVE"
+msgstr "Non Venu(e)"

@@ -1,0 +1,47 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+
+msgid "Rolespartseps::add"
+msgstr "Ajout d'un rôle pour les participants"
+
+msgid "Rolepartep::add"
+msgstr "Ajouter un rôle pour les participants"
+
+msgid "Rolespartseps::index"
+msgstr "Liste des rôles pour les participants"
+
+msgid "Rolepartep::delete"
+msgstr "Suppression du rôle"
+
+msgid "Rolespartseps::edit"
+msgstr "Modification du rôle"
+
+msgid "Rolepartep::edit"
+msgstr "Modifier le rôle"
+
+msgid "Rolepartep::delete::confirm"
+msgstr "Confirmer la suppression ?"
+
+msgid "Rolepartep::index::empty"
+msgstr "Aucun rôle pour les participants présent"
+
+msgid "Rolepartep.name"
+msgstr "Nom du rôle"
