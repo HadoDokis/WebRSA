@@ -50,6 +50,10 @@
                 array(
                     'rule' => 'isUnique',
                     'message' => 'Ce numéro SIRET existe déjà'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Le numéro SIRET est composé de 14 chiffres'
                 )
             ),
 //             'numvoie' => array(
@@ -73,13 +77,20 @@
                     'message' => 'Champ obligatoire'
             ),
             'numtel' => array(
+                array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => array( 'between', 10, 14 ),
+                    'message' => 'Le numéro de téléphone est composé de 10 chiffres'
+                )
             ),
-//             'adrelec' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//             ),
+            'adrelec' => array(
+                'rule' => 'email',
+                'message' => 'Email non valide',
+                'allowEmpty' => true
+            ),
             'nomtiturib' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
@@ -97,8 +108,14 @@
                     'message' => 'Champ obligatoire'
             ),
             'clerib' => array(
+                array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'La clé RIB est composée de 2 chiffres'
+                )
             ),
             'aidesliees' => array(
                     'rule' => 'notEmpty',
