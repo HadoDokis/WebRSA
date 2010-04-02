@@ -5,6 +5,21 @@
         var $name = 'Referent';
         var $useTable = 'referents';
 
+        var $displayField = 'full_name';
+
+        var $actsAs = array(
+            'MultipleDisplayFields' => array(
+                'fields' => array( 'qual', 'nom', 'prenom' ),
+                'pattern' => '%s %s %s'
+            )
+        );
+
+        var $hasAndBelongsToMany = array(
+            'Actioncandidat' => array( 'with' => 'ActioncandidatPersonne' ),
+//             'Personne' => array( 'with' => 'ActioncandidatPersonne' ), // FIXME
+            'Personne' => array( 'with' => 'PersonneReferent' )
+        );
+
         var $belongsTo = array(
             'Structurereferente' => array(
                 'classname'     => 'Structurereferente',
@@ -12,15 +27,51 @@
             )
         );
 
+        var $hasMany = array(
+            'Demandereorient' => array(
+				'foreignKey' => 'reforigine_id'
+			)
+        );
+
+        public $virtualFields = array(
+            'nom_complet' => array(
+                'type'      => 'string',
+                'postgres'  => '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
+            ),
+        );
+
+        function listOptions() {
+            $tmp = $this->find(
+                'all',
+                array (
+                    'fields' => array(
+                        'Referent.id',
+                        'Referent.structurereferente_id',
+                        'Referent.qual',
+                        'Referent.nom',
+                        'Referent.prenom'
+                    ),
+                    'recursive' => -1,
+                    'order' => 'Referent.nom ASC',
+                )
+            );
+
+            $return = array();
+            foreach( $tmp as $key => $value ) {
+                $return[$value['Referent']['structurereferente_id'].'_'.$value['Referent']['id']] = $value['Referent']['qual'].' '.$value['Referent']['nom'].' '.$value['Referent']['prenom'];
+            }
+            return $return;
+        }
+
         var $validate = array(
             'numero_poste' => array(
-//                 array(
-//                     'rule' => 'isUnique',
-//                     'message' => 'Ce N° de téléphone est déjà utilisé'
-//                 ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Le numéro de téléphone est composé de chiffres'
+                ),
                 array(
                     'rule' => array( 'between', 10, 14 ),
-                    'message' => 'Le N° de poste est composé de 10 chiffres'
+                    'message' => 'Le N° de poste doit être composé de 10 chiffres'
                 ),
                 array(
                     'rule' => 'notEmpty',
@@ -48,8 +99,14 @@
                 'message' => 'Champ obligatoire'
             ),
             'email' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'email',
+                    'message' => 'Veuillez entrer une adresse email valide'
+                )
             ),
             'structurereferente_id' => array(
                 'rule' => 'notEmpty',
@@ -63,7 +120,7 @@
         *   Retourne la liste des Referents
         ** ********************************************************************/
 
-        function _referentsListe( $structurereferente_id = null ) {
+        function referentsListe( $structurereferente_id = null ) {
             // Population du select référents liés aux structures
             $conditions = array();
             if( !empty( $structurereferente_id ) ) {

@@ -35,6 +35,9 @@
             $typeorient_id = Set::extract( $criteres, 'Critere.typeorient_id' );
             $structurereferente_id = Set::extract( $criteres, 'Critere.structurereferente_id' );
             $serviceinstructeur_id = Set::extract( $criteres, 'Critere.serviceinstructeur_id' );
+            $referent_id = Set::extract( $criteres, 'Critere.referent_id' );
+            $dtnai = Set::extract( $criteres, 'Critere.dtnai' );
+            $matricule = Set::extract( $criteres, 'Critere.matricule' );
 
 
             /// Critères sur l'orientation - date d'orientation
@@ -60,6 +63,19 @@
             foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
                 if( isset( $criteres['Critere'][$criterePersonne] ) && !empty( $criteres['Critere'][$criterePersonne] ) ) {
                     $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.replace_accents( $criteres['Critere'][$criterePersonne] ).'%\'';
+                }
+            }
+
+            // Critères sur une personne du foyer - date de naissance -> FIXME: seulement demandeur pour l'instant
+            if( isset( $criteres['Critere']['dtnai'] ) && !empty( $criteres['Critere']['dtnai'] ) ) {
+                if( valid_int( $criteres['Critere']['dtnai']['year'] ) ) {
+                    $conditions[] = 'EXTRACT(YEAR FROM Personne.dtnai) = '.$criteres['Critere']['dtnai']['year'];
+                }
+                if( valid_int( $criteres['Critere']['dtnai']['month'] ) ) {
+                    $conditions[] = 'EXTRACT(MONTH FROM Personne.dtnai) = '.$criteres['Critere']['dtnai']['month'];
+                }
+                if( valid_int( $criteres['Critere']['dtnai']['day'] ) ) {
+                    $conditions[] = 'EXTRACT(DAY FROM Personne.dtnai) = '.$criteres['Critere']['dtnai']['day'];
                 }
             }
 
@@ -91,7 +107,10 @@
                 $conditions[] = 'Detailcalculdroitrsa.natpf = \''.Sanitize::clean( $natpf ).'\'';
             }
 
-
+            // ...
+            if( !empty( $matricule ) ) {
+                $conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
+            }
 
             // ...
             if( !empty( $typeorient_id ) ) {
@@ -109,8 +128,12 @@
                 $conditions[] = 'Serviceinstructeur.id = \''.Sanitize::clean( $serviceinstructeur_id ).'\'';
             }
 
+            if( !empty( $referent_id ) ) {
+                $conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
+            }
+
             // ...
-            if( !empty( $etatdosrsa ) ) {
+            if( !empty( $etatdosrsa ) || is_numeric( $etatdosrsa ) ) {
                 $conditions[] = 'Situationdossierrsa.etatdosrsa = \''.Sanitize::clean( $etatdosrsa ).'\'';
             }
 
@@ -131,6 +154,7 @@
                     '"Orientstruct"."date_impression"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
+                    '"Dossier"."matricule"',
                     '"Dossier"."dtdemrsa"',
                     '"Personne"."id"',
                     '"Personne"."nom"',
@@ -139,6 +163,12 @@
                     '"Personne"."dtnai"',
                     '"Personne"."qual"',
                     '"Personne"."nomcomnai"',
+                    '"Adresse"."numvoie"',
+                    '"Adresse"."nomvoie"',
+                    '"Adresse"."complideadr"',
+                    '"Adresse"."compladr"',
+                    '"Adresse"."typevoie"',
+                    '"Adresse"."codepos"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."numcomptt"',
                     '"Modecontact"."numtel"',
@@ -146,7 +176,8 @@
                     '"Serviceinstructeur"."lib_service"',
                     '"Situationdossierrsa"."etatdosrsa"',
                     '"Prestation"."toppersdrodevorsa"',
-                    '"Detailcalculdroitrsa"."natpf"'
+                    '"Detailcalculdroitrsa"."natpf"',
+                    '"PersonneReferent"."referent_id"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -221,7 +252,7 @@
                         'alias'      => 'Situationdossierrsa',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )' )
+                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id /*AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )*/' )
                     ),
                     array(
                         'table'      => 'detailsdroitsrsa',
@@ -236,7 +267,21 @@
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
-                    )
+                    ),
+                    array(
+                        'table'      => 'personnes_referents',
+                        'alias'      => 'PersonneReferent',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.id = PersonneReferent.personne_id' )
+                    ),
+                    array(
+                        'table'      => 'referents',
+                        'alias'      => 'Referent',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Referent.id = PersonneReferent.referent_id' )
+                    ),
                 ),
                 'limit' => 10,
                 'conditions' => $conditions

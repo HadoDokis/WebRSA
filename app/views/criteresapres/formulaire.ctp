@@ -7,6 +7,10 @@
     document.observe("dom:loaded", function() {
         observeDisableFieldsetOnCheckbox( 'FiltreDatedemandeapre', $( 'FiltreDatedemandeapreFromDay' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnCheckbox( 'FiltreDaterelance', $( 'FiltreDaterelanceFromDay' ).up( 'fieldset' ), false );
+
+        observeDisableFieldsOnValue( 'FiltreStatutapre', [ 'FiltreTiersprestataire' ], 'F', true );
+
+
     });
 </script>
 
@@ -17,11 +21,11 @@
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
 
-        $pages = $paginator->first( '<<' );
-        $pages .= $paginator->prev( '<' );
+        $pages = $paginator->first( '<< ' );
+        $pages .= $paginator->prev( '< ' );
         $pages .= $paginator->numbers();
-        $pages .= $paginator->next( '>' );
-        $pages .= $paginator->last( '>>' );
+        $pages .= $paginator->next( ' >' );
+        $pages .= $paginator->last( ' >>' );
 
         $pagination .= $html->tag( 'p', $pages );
     }
@@ -57,6 +61,8 @@
     <fieldset>
         <legend>Recherche par demande APRE</legend>
             <?php echo $xform->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+            <?php echo $xform->enum( 'Filtre.statutapre', array(  'label' => 'Statut de l\'APRE', 'options' => $options['statutapre'], 'empty' => false  ) );?>
+            <?php echo $xform->enum( 'Filtre.tiersprestataire', array(  'label' => 'Tiers prestataire', 'options' => $tiers, 'empty' => true  ) );?>
             <?php echo $xform->input( 'Filtre.datedemandeapre', array( 'label' => 'Filtrer par date de demande APRE', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de la saisie de la demande</legend>
@@ -81,7 +87,7 @@
     </fieldset>
     <fieldset>
         <legend>Recherche par Relance</legend>
-        <?php echo $xform->enum( 'Filtre.statutapre', array(  'label' => 'Statut de l\'APRE', 'options' => $options['statutapre'], 'empty' => false  ) );?>
+
         <?php echo $xform->input( 'Filtre.daterelance', array( 'label' => 'Filtrer par date de relance', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de la saisie de la relance</legend>
@@ -106,6 +112,7 @@
 
 <!-- Résultats -->
 <?php if( isset( $apres ) ):?>
+
     <?php
         $totalCount = Set::classicExtract( $paginator->params, 'paging.Apre.count' );
     ?>
@@ -120,7 +127,7 @@
     <?php echo $pagination;?>
     <?php if( is_array( $apres ) && count( $apres ) > 0  ):?>
 
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'N° Dossier RSA', 'Dossier.numdemrsa' );?></th>

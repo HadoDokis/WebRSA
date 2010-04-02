@@ -61,6 +61,7 @@
                     '"ApreComiteapre"."observationcomite"',
                     '"Dossier"."numdemrsa"',
                     '"Dossier"."matricule"',
+                    '"Personne"."id"',
                     '"Personne"."qual"',
                     '"Personne"."nom"',
                     '"Personne"."prenom"',
@@ -70,23 +71,11 @@
                     '"Adresse"."codepos"',
                     '"Apre"."id"',
                     '"Apre"."datedemandeapre"',
-//                     '"Apre"."statutapre"',
-//                     '"Apre"."comite_id"',
                     '"Apre"."mtforfait"',
-//                     '"Apre"."montantattribue"',
-//                     '"ComiteapreParticipantcomite"."id"',
-//                     '"ComiteapreParticipantcomite"."comiteapre_id"',
-//                     '"ComiteapreParticipantcomite"."participantcomite_id"',
+//                     '"Apre"."montanttotal"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
-//                     array(
-//                         'table'      => 'comitesapres',
-//                         'alias'      => 'Comiteapre',
-//                         'type'       => 'LEFT OUTER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'ApreComiteapre.comiteapre_id = Comiteapre.id' )
-//                     ),
                     array(
                         'table'      => 'apres_comitesapres',
                         'alias'      => 'ApreComiteapre',
@@ -101,20 +90,6 @@
                         'foreignKey' => false,
                         'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
                     ),
-//                     array(
-//                         'table'      => 'comitesapres_participantscomites',
-//                         'alias'      => 'ComiteapreParticipantcomite',
-//                         'type'       => 'LEFT OUTER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'ComiteapreParticipantcomite.comiteapre_id = Comiteapre.id' )
-//                     ),
-//                     array(
-//                         'table'      => 'participantscomites',
-//                         'alias'      => 'Participantcomite',
-//                         'type'       => 'LEFT OUTER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'ComiteapreParticipantcomite.participantcomite_id = Participantcomite.id' )
-//                     ),
                     array(
                         'table'      => 'personnes',
                         'alias'      => 'Personne',
@@ -166,9 +141,14 @@
                 'conditions' => $conditions
             );
 
+
+            /// Création du champ virtuel montant total pour connaître les montants attribués à une APRE complémentaire
+            $this->Apre =& ClassRegistry::init( 'Apre' );
+            $query['fields'][] = $this->Apre->sousRequeteMontantTotal().' AS "Apre__montanttotal"';
+            $query['joins'] = array_merge( $query['joins'], $this->Apre->joinsAidesLiees() );
+
             return $query;
         }
-
 
     }
 ?>

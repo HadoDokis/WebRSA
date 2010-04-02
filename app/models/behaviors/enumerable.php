@@ -11,7 +11,16 @@
 
 	class EnumerableBehavior extends ModelBehavior
 	{
-		var $settings = array();
+		public $settings = array();
+
+		public $defaultSettings = array(
+			// FIXME: en Anglais
+			'validationRule' => 'Veuillez entrer une valeur parmi %s',
+			'addValidation' => true,
+			'validationRuleSeparator' => ', ',
+			'validationRuleAllowEmpty' => true,
+			'fields' => array()
+		);
 
 		/**
 		*
@@ -25,10 +34,10 @@
 				$model->validate[$field][] = array(
 					'rule'		 => array( 'inList', $options ),
 					'message'	 => sprintf(
-						__( $this->settings['validationRule'], true ),
-						implode( $this->settings['validationRuleSeparator'], $options )
+						__( $this->settings[$model->alias]['validationRule'], true ),
+						implode( $this->settings[$model->alias]['validationRuleSeparator'], $options )
 					),
-					'allowEmpty' => $this->settings['validationRuleAllowEmpty']
+					'allowEmpty' => $this->settings[$model->alias]['validationRuleAllowEmpty']
 				);
 			}
 		}
@@ -41,38 +50,61 @@
 
 		function setup( &$model, $settings ) {
 			// Setup ... FIXME: case insensitive
-			$default = array(
+			/*$default = array(
 				// FIXME: en Anglais
 				'validationRule' => 'Veuillez entrer une valeur parmi %s',
+				'validationDomain' => 'default',
 				'addValidation' => true,
 				'validationRuleSeparator' => ', ',
 				'validationRuleAllowEmpty' => true
+			);*/
+			$settings = Set::merge( $this->defaultSettings, $settings );
+
+			if (!isset($this->settings[$model->alias])) {
+				$this->settings[$model->alias] = array();
+			}
+
+			$settings = Set::normalize( $settings );
+			$this->settings[$model->alias] = array_merge(
+				$this->settings[$model->alias],
+				(array) $settings
 			);
-			$this->settings = Set::merge( $default, $settings );
 
 			// Setup fields
-			if( !empty( $model->enumFields ) ) {
+			if( !empty( $this->settings[$model->alias]['fields'] ) ) {
 				$enumFields = array();
-				foreach( $model->enumFields as $field => $options ) {
-					if( valid_int( $field ) && !empty( $options ) && is_string( $options ) ) {
+				foreach( $this->settings[$model->alias]['fields'] as $field => $options ) {
+					if( is_int( $field ) && !empty( $options ) && is_string( $options ) ) {
 						$field = $options;
 						$options = array();
+					}
+					else if( is_string( $field ) && is_string( $options ) ) {
+						$options = array( 'type' => $options );
 					}
 
 					$default = array(
 						'type' => $field,
-						'domain' => strtolower( $model->name )
+						'domain' => Inflector::underscore( Inflector::variable( $model->name ) )
 					);
 
 					$enumFields[$field] = Set::merge( $default, $options );
+
+					/// Load from config
+					if( Set::check( $enumFields[$field], 'type' ) ) {
+						$config = Configure::read( "Enumerable.{$enumFields[$field]['type']}" );
+						if( is_array( $config ) && !empty( $config ) ) {
+							$enumFields[$field] = Set::merge( $enumFields[$field], $config );
+						}
+					}
+
 					$enumFields[$field]['type'] = strtoupper( $enumFields[$field]['type'] );
 				}
-				$model->enumFields = $enumFields;
+				$this->settings[$model->alias]['fields'] = $enumFields;
 			}
 
 			// Add validation rules if needed
-			if( $this->settings['addValidation'] && !empty( $model->enumFields ) ) {
-				foreach( $model->enumFields as $field => $data ) {
+			if( $this->settings[$model->alias]['addValidation'] && !empty( $this->settings[$model->alias]['fields'] ) ) {
+				foreach( $this->settings[$model->alias]['fields'] as $field => $data ) {
 					$this->_addValidationRule( $model, $field );
 				}
 			}
@@ -114,15 +146,15 @@
 			$enumType = $model->query( $sql );
 			if(!empty($enumType)) {
 				$enumType = Set::extract( $enumType, '0.0.udt_name' );
-
-				$sql = "SELECT enum_range(null::$enumType);";
-				$enumData = $model->query($sql);
-				if(!empty($enumData)) {
-					$patterns = array( '{', '}' );
-					$enumData = r( $patterns, '', Set::extract( $enumData, '0.0.enum_range' ) );
-					$options = explode( ',', $enumData );
+				if( $enumType != 'text' ) {
+					$sql = "SELECT enum_range(null::$enumType);";
+					$enumData = $model->query($sql);
+					if(!empty($enumData)) {
+						$patterns = array( '{', '}' );
+						$enumData = r( $patterns, '', Set::extract( $enumData, '0.0.enum_range' ) );
+						$options = explode( ',', $enumData );
+					}
 				}
-
 			}
 			return $options;
 		}
@@ -138,6 +170,10 @@
 		function enumOptions( $model, $field ) {
 			$cacheKey = $model->alias . '_' . $field . '_enum_options';
 			$options = Cache::read($cacheKey);
+
+			if( !$options ) {
+				$options = Set::extract( $this->settings, "{$model->name}.fields.{$field}.values" );
+			}
 
 			if( !$options ) {
 				$options = false;
@@ -167,17 +203,16 @@
 
 		function enumList( $model, $field ) {
 			$options = array();
-
 			$tmpOptions = self::enumOptions( $model, $field );
 			if( !empty( $tmpOptions ) ) {
 				foreach( $tmpOptions as $key ) {
-					$domain = $model->enumFields[$field]['domain'];
-					$msgid = implode( '::', array( 'ENUM', $model->enumFields[$field]['type'], $key ) );
+					$domain = $this->settings[$model->alias]['fields'][$field]['domain'];
+					$msgid = implode( '::', array( 'ENUM', $this->settings[$model->alias]['fields'][$field]['type'], $key ) );
 					if( empty( $domain ) || ( $domain == 'default' ) ) {
 						$options[$key] = __( $msgid, true );
 					}
 					else {
-						$options[$key] = __d( $model->enumFields[$field]['domain'], $msgid, true );
+						$options[$key] = __d( $this->settings[$model->alias]['fields'][$field]['domain'], $msgid, true );
 					}
 				}
 			}
@@ -189,14 +224,27 @@
 		*/
 
 		function allEnumLists( $model ) {
-
 			$options = array();
-			if( !empty( $model->enumFields ) ) {
-				foreach( $model->enumFields as $field => $data ) {
+			if( !empty( $this->settings[$model->alias]['fields'] ) ) {
+				foreach( $this->settings[$model->alias]['fields'] as $field => $data ) {
 					$options[$field] = $this->enumList( $model, $field );
 				}
 			}
 			return $options;
+		}
+
+		/**
+		* 	Fetches the enum lists for all the $enumFields of the model
+		*/
+
+		function enums( $model ) {
+			$options = array();
+			if( !empty( $this->settings[$model->alias]['fields'] ) ) {
+				foreach( $this->settings[$model->alias]['fields'] as $field => $data ) {
+					$options[$field] = $this->enumList( $model, $field );
+				}
+			}
+			return array( $model->alias => $options );
 		}
 	}
 ?>

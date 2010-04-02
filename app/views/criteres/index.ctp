@@ -11,6 +11,17 @@
 </script>
 
 <?php
+    function value( $array, $index ) {
+        $keys = array_keys( $array );
+        $index = ( ( $index == null ) ? '' : $index );
+        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
+            return $array[$index];
+        }
+        else {
+            return null;
+        }
+    }
+
     if( is_array( $this->data ) ) {
         echo '<ul class="actionMenu"><li>'.$html->link(
             $html->image(
@@ -44,7 +55,9 @@
         <legend>Recherche par personne</legend>
         <?php echo $form->input( 'Critere.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Critere.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Critere.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 80, 'maxYear' => date( 'Y' ), 'empty' => true ) );?>
         <?php echo $form->input( 'Critere.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );?>
+        <?php echo $form->input( 'Critere.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Critere.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
         <!-- <?php echo $form->input( 'Critere.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?> -->
         <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
@@ -74,6 +87,7 @@
     <?php echo $ajax->observeField( 'CritereTypeorientId', array( 'update' => 'CritereStructurereferenteId', 'url' => Router::url( array( 'action' => 'ajaxstruc' ), true ) ) );?>
     
     
+        <?php echo $form->input( 'Critere.referent_id', array( 'label' => 'Nom du référent', 'type' => 'select' , 'options' => $referents, 'empty' => true  ) );?>
         <?php echo $form->input( 'Critere.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
          <?php echo $form->input( 'Critere.serviceinstructeur_id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
     </fieldset>
@@ -92,7 +106,7 @@
     <?php if( is_array( $orients ) && count( $orients ) > 0  ):?>
 
         <?php require( 'index.pagination.ctp' )?>
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                  <tr>
                     <th><?php echo $paginator->sort( 'Numéro dossier', 'Dossier.numdemrsa' );?></th>
@@ -115,7 +129,7 @@
                             <tbody>
                                 <tr>
                                     <th>Etat du droit</th>
-                                    <td>'.Set::classicExtract( $etatdosrsa, Set::classicExtract( $orient, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
+                                    <td>'.value( $etatdosrsa, Set::classicExtract( $orient, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
                                 </tr>
                                 <tr>
                                     <th>Commune de naissance</th>

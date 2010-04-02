@@ -48,10 +48,10 @@
                 $this->paginate['limit'] = 15;
                 $infosfinancieres = $this->paginate( 'Infofinanciere' );
 
-                $this->Dossier->commit();
-
                 $this->set( 'infosfinancieres', $infosfinancieres );
+                $this->set( 'annees', $this->Infofinanciere->range() );
 
+                $this->Dossier->commit();
             }
         }
 

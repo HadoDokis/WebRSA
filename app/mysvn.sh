@@ -9,8 +9,8 @@ cd "$f"
 # TODO: nettoyer /home/cbuffin/www/webrsa/app/tmp/cache (sauf les empty)
 rm tmp/logs/debug.log.*
 rm tmp/logs/error.log.*
-echo "" > tmp/logs/debug.log
-echo "" > tmp/logs/error.log
+rm tmp/logs/debug.log
+rm tmp/logs/error.log
 
 # http://snipt.net/nick/svn-delete-all-files-marked-for-deletion/
 svn status |grep '^!' |sed 's/^!      /svn delete "/g' | sed 's/$/"/g' | sh
@@ -37,8 +37,8 @@ svn propset svn:keywords "Date Author Revision" views/elements/footer.ctp
 ######## Ajout de la branche 1.0.7 pour les patchs #####################
 
 # svn copy \
-# svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/tags/1.0.8.1/ \
-# svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/branches/1.0.8/ \
-# -m "Création de la branche 1.0.8"
+# svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/tags/1.0.7/ \
+# svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/branches/1.0.7/ \
+# -m "Création de la branche 1.0.7"
 # 
-# svn checkout svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/branches/1.0.8/
+# svn checkout svn+ssh://arnauz@svn.adullact.net/svnroot/webrsa/branches/1.0.7/

@@ -74,7 +74,12 @@
     <?php else:?>
         <p><?php echo sprintf( 'Nombre de pages: %s - Nombre de résultats: %s.', $locale->number( $pages ), $locale->number( $count ) );?></p>
         <?php echo $form->create( 'NouvellesDemandes', array( 'url'=> Router::url( null, true ) ) );?>
-            <table class="tooltips_oupas">
+        <?php
+            foreach( Set::flatten( $this->data['Filtre'], '.' ) as $key => $value ) {
+                echo '<div>'.$form->input( "Filtre.{$key}", array( 'type' => 'hidden', 'value' => $value ) ).'</div>';
+            }
+        ?>
+            <table class="tooltips">
                 <thead>
                     <tr>
                         <th>Commune</th>

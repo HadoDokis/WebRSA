@@ -1,29 +1,20 @@
 <?php
     $csv->preserveLeadingZerosInExcel = true;
 
-    function value( $array, $index ) {
-        $keys = array_keys( $array );
-        $index = ( ( $index == null ) ? '' : $index );
-        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-            return $array[$index];
-        }
-        else {
-            return null;
-        }
-    }
-
-    $csv->addRow( array( 'Nom/Prénom allocataire', 'Suivi', 'Situation des droits', 'Type de PDO', 'Date de soumission PDO', 'Décision PDO', 'Commentaires PDO' ) );
+    $csv->addRow( array( 'N° demande RSA', 'Date demande RSA', 'Nom/Prénom allocataire', 'Date de naissance', 'Commune', 'Type de PDO', 'Date de soumission PDO', 'Décision PDO', 'Motif PDO', 'Commentaires PDO' ) );
 
     foreach( $pdos as $pdo ) {
         $row = array(
-
-            Set::extract( $pdo, 'Personne.nom' ).' '.Set::extract( $pdo, 'Personne.prenom'),
-            Set::extract( $pdo, 'Dossier.typeparte' ),
-            value( $etatdosrsa, Set::extract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ),
-            value( $typepdo, Set::extract( $pdo, 'Propopdo.typepdo' ) ),
-            date_short( Set::extract( $pdo, 'Propopdo.datedecisionpdo' ) ),
-            value( $decisionpdo, Set::extract( $pdo, 'Propopdo.decisionpdo' ) ),
-            Set::extract( $pdo, 'Propopdo.commentairepdo' )
+            Set::classicExtract( $pdo, 'Dossier.numdemrsa' ),
+            $locale->date( 'Date::short', Set::classicExtract( $pdo, 'Dossier.dtdemrsa' ) ),
+            Set::classicExtract( $pdo, 'Personne.nom' ).' '.Set::classicExtract( $pdo, 'Personne.prenom'),
+            $locale->date( 'Date::short', Set::classicExtract( $pdo, 'Personne.dtnai' ) ),
+            Set::classicExtract( $pdo, 'Adresse.locaadr' ),
+            Set::enum( Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ), $typepdo ),
+            $locale->date( 'Date::short', Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ),
+            Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ),
+            Set::enum( Set::classicExtract( $pdo, 'Propopdo.motifpdo' ), $motifpdo ),
+            Set::classicExtract( $pdo, 'Propopdo.commentairepdo' )
         );
         $csv->addRow($row);
     }

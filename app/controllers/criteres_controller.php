@@ -5,7 +5,7 @@
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Orientstruct', 'Critere', 'Zonegeographique' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Orientstruct', 'Critere', 'Zonegeographique', 'Referent' );
         //var $aucunDroit = array('index', 'menu', 'constReq');
         var $aucunDroit = array( 'constReq', 'ajaxstruc' );
         var $helpers = array( 'Csv', 'Ajax' );
@@ -26,17 +26,17 @@
             $typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
             $this->set( 'typeservice', $typeservice );
 
-            // Structures référentes
-            $datas = Set::merge( $this->data, array_multisize( $this->params['named'] ) );
-            $typeorient_id = Set::classicExtract( $datas, 'Critere.typeorient_id' );
-            $conditions = array();
-            if( !empty( $typeorient_id ) ) {
-                $conditions = array(
-                    'Structurereferente.typeorient_id' => $typeorient_id
-                );
-            }
-            $sr = $this->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ), 'conditions' => $conditions ) );
-            $this->set( 'sr', $sr );
+			// Structures référentes
+			$datas = Set::merge( $this->data, array_multisize( $this->params['named'] ) );
+			$typeorient_id = Set::classicExtract( $datas, 'Critere.typeorient_id' );
+			$conditions = array();
+			if( !empty( $typeorient_id ) ) {
+				$conditions = array(
+					'Structurereferente.typeorient_id' => $typeorient_id
+				);
+			}
+			$sr = $this->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ), 'conditions' => $conditions ) );
+			$this->set( 'sr', $sr );
 
 
 
@@ -45,19 +45,27 @@
             $this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
             $this->set( 'natpf', $this->Option->natpf() );
 
+            $this->set( 'referents', $this->Referent->find( 'list' ) );
+
             return $return;
         }
 
         /** ********************************************************************
         *   Ajax pour la structure référente liée au type d'orientation
         *** *******************************************************************/
-        function _selectStructs( $typeorientid ) {
+        function _selectStructs( $typeorientid = null ) {
+			$conditions = array();
+
+			if( !empty( $typeorientid ) ) {
+				$conditions = array(
+					'Structurereferente.typeorient_id' => $typeorientid
+				);
+			}
+
             $structs = $this->Orientstruct->Structurereferente->find(
                 'all',
                 array(
-                    'conditions' => array(
-                        'Structurereferente.typeorient_id' => $typeorientid
-                    ),
+                    'conditions' => $conditions,
                     'recursive' => -1
                 )
             );
@@ -111,6 +119,7 @@
         function exportcsv() {
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+            $this->set( 'typevoie', $this->Option->typevoie() );
 
             $querydata = $this->Critere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 

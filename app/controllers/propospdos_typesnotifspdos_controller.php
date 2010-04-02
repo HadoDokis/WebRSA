@@ -3,12 +3,35 @@
     {
 
         var $name = 'PropospdosTypesnotifspdos';
-        var $uses = array( 'PropopdoTypenotifpdo', 'Typenotifpdo', 'Propopdo' );
+        var $uses = array( 'PropopdoTypenotifpdo', 'Typenotifpdo', 'Propopdo'/*, 'Dossier'*/ );
 
 
         function beforeFilter(){
             parent::beforeFilter();
             $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
+        }
+
+
+        function index( $pdo_id = null ) {
+            $this->assert( valid_int( $pdo_id ), 'invalidParameter' );
+            $dossier_id = $this->Propopdo->dossierId( $pdo_id );
+
+            // Retour à la liste en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'dossierspdo', 'action' => 'index', $dossier_id ) );
+            }
+
+
+            $notifs = $this->PropopdoTypenotifpdo->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'PropopdoTypenotifpdo.propopdo_id' => $pdo_id
+                    )
+                )
+            );
+            $this->set( compact( 'notifs', 'dossier_id' ) );
+// debug($notifs);
         }
 
         /** ********************************************************************
@@ -34,8 +57,8 @@
 
             if( $this->action == 'add' ) {
                 $pdo_id = $id;
-                $nbrPdos = $this->Propopdo->find( 'count', array( 'conditions' => array( 'Propopdo.id' => $pdo_id ), 'recursive' => -1 ) );
-                $this->assert( ( $nbrPdos == 1 ), 'invalidParameter' );
+//                 $nbrPdos = $this->Propopdo->find( 'count', array( 'conditions' => array( 'Propopdo.id' => $pdo_id ), 'recursive' => -1 ) );
+//                 $this->assert( ( $nbrPdos == 1 ), 'invalidParameter' );
             }
             else if( $this->action == 'edit' ) {
                 $propotype_id = $id;
@@ -51,7 +74,7 @@
             if( !empty( $this->data ) ) {
                 if( $this->PropopdoTypenotifpdo->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'dossierspdo', 'action' => 'index', $dossier_rsa_id ) );
+                    $this->redirect( array( 'controller' => 'propospdos_typesnotifspdos', 'action' => 'index', $id ) );
                 }
             }
             else {

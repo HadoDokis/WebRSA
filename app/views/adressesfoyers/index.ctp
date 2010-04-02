@@ -17,7 +17,7 @@
     <?php endif;?>
 
     <?php if( !empty( $adresses ) ):?>
-        <table class="tooltips_oupas">
+        <table class="tooltips">
             <thead>
                 <tr>
                     <th><?php __( 'rgadr' );?></th>

@@ -252,5 +252,26 @@
             return $query;
 
         }
+
+        /**
+        *
+        * @return array contenant les clés minYear et maxYear
+        * @access public
+        */
+
+        function range() {
+            $first = $this->find( 'first', array( 'order' => 'moismoucompta ASC', 'recursive' => -1 ) );
+            $last = $this->find( 'first', array( 'order' => 'moismoucompta DESC', 'recursive' => -1 ) );
+
+            if( !empty( $first ) && !empty( $last ) ) {
+                list( $yearFirst, ,  ) = explode( '-', $first[$this->name]['moismoucompta'] );
+                list( $yearLast, ,  ) = explode( '-', $last[$this->name]['moismoucompta'] );
+
+                return array( 'minYear' => $yearFirst, 'maxYear' => $yearLast );
+            }
+            else {
+                return array( 'minYear' => date( 'Y' ), 'maxYear' => date( 'Y' ) );
+            }
+        }
     }
 ?>

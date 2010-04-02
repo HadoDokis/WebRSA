@@ -12,7 +12,7 @@
 //         $pages .= $paginator->numbers();
 //         $pages .= $paginator->next( '>' );
 //         $pages .= $paginator->last( '>>' );
-// 
+//
 //         $pagination .= $html->tag( 'p', $pages );
     }
     else {
@@ -40,7 +40,7 @@
     <?php if( is_array( $orientsstructs ) && count( $orientsstructs ) > 0 ):?>
         <?php echo $form->create( 'RelanceOrient', array( 'url'=> Router::url( null, true ) ) );?>
         <?php echo $pagination;?>
-        <table class="tooltips_oupas">
+        <table class="tooltips" style="width: 100%;">
             <thead>
                 <tr>
                     <th>N° Dossier</th>
@@ -48,7 +48,7 @@
                     <th>Nom / Prénom Allocataire</th>
                     <th>Date orientation</th>
                     <th style="width:2em">Nb jours depuis orientation</th>
-                    <th style="width:16em">Date de relance</th>
+                    <th style="width:20em">Date de relance</th>
                     <th>Statut relance</th>
                     <!--<th class="action">Action</th>-->
                     <th class="innerTableHeader">Informations complémentaires</th>

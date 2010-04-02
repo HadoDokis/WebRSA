@@ -197,8 +197,27 @@
             $apre['Adresse'] = $adresse['Adresse'];
 
             ///Pour la qualité des Personnes  Personne + Référent APRE
-            $apre['Referentapre']['qual'] = Set::extract( $qual, Set::extract( $apre, 'Referentapre.qual' ) );
-            $apre['Personne']['qual'] = Set::extract( $qual, Set::extract( $apre, 'Personne.qual' ) );
+			foreach( array( 'Referent.qual', 'Personne.qual' ) as $enumpath ) {
+				if( Set::check( $apre, $enumpath ) ) {
+					$value = Set::classicExtract( $apre, $enumpath );
+					if( !empty( $value ) ) {
+						$apre = Set::insert( $apre, $enumpath, Set::enum( $value, $qual ) );
+					}
+				}
+			}
+
+            ///Pour l'adresse de la personne
+			if( !empty( $apre['Adresse']['typevoie'] ) ) {
+				$apre['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $apre, 'Adresse.typevoie' ) );
+			}
+
+            ///Pour l'adresse de la structure référente
+			if( !empty( $apre['Structurereferente']['type_voie'] ) ) {
+				$apre['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $apre, 'Structurereferente.type_voie' ) );
+			}
+
+            /*$apre['Referent']['qual'] = Set::extract( $qual, Set::extract( $apre, 'Referent.qual' ) );
+            $apre['Personne']['qual'] = Set::extract( $qual, Set::extract( $apre, 'Personne.qual' ) );*/
 
             ///Paramètre nécessaire pour le bon choix du document à éditer
             $dest = Set::classicExtract( $this->params, 'named.dest' );
@@ -209,8 +228,8 @@
 
             ///Pour la date du comité
             $apre['ApreComiteapre']['daterecours'] =  date_short( Set::classicExtract( $apre, 'ApreComiteapre.daterecours' ) );
-// debug($apre);
-// die();
+/*debug($apre);
+die();*/
             if( $dest == 'beneficiaire' ) {
                 $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Recours/recours'.$recoursapre.''.$dest.'.odt' );
             }

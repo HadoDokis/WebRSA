@@ -1,5 +1,5 @@
 <?php $this->pageTitle = 'Paramétrage des référents';?>
-
+<?php echo $xform->create( 'Referent' );?>
 <div>
     <h1><?php echo 'Visualisation de la table référents ';?></h1>
 
@@ -61,4 +61,11 @@
     </div>
 <?php endif?>
 </div>
+    <div class="submit">
+        <?php
+            echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+
 <div class="clearer"><hr /></div>
+<?php echo $xform->end();?>

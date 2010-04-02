@@ -91,10 +91,15 @@
                                 <td><?php echo Set::extract( 'DEM.Orientstruct.derniere.statut_orient', $details );?></td>
                                 <td><?php echo Set::extract( 'CJT.Orientstruct.derniere.statut_orient', $details );?></td>
                             </tr>
-                            <tr class="odd">
+                            <!-- <tr class="odd">
                                 <th>Référent en cours</th>
                                 <td><?php echo value( $structuresreferentes, Set::extract( 'DEM.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
                                 <td><?php echo value( $structuresreferentes, Set::extract( 'CJT.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
+                            </tr> -->
+                            <tr class="odd">
+                                <th>Référent en cours</th>
+                                <td><?php echo value( $referents, Set::extract( 'DEM.PersonneReferent.dernier.referent_id', $details ) );?></td>
+                                <td><?php echo value( $referents, Set::extract( 'CJT.PersonneReferent.dernier.referent_id', $details ) );?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -140,7 +145,7 @@
                     </table>
                 </td>
                 <td>
-                    <h2>Contrat d'insertion</h2>
+                    <h2>Contrat d'Engagement réciproque</h2>
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>

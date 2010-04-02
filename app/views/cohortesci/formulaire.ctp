@@ -27,18 +27,20 @@
         <?php /*require( 'index.pagination.ctp' )*/?>
         <?php echo $form->create( 'GestionContrat', array( 'url'=> Router::url( null, true ) ) );?>
         <?php
-            echo $form->input( 'Filtre.date_saisi_ci', array( 'type' => 'hidden' ) );
-            echo $form->input( 'Filtre.date_saisi_ci_from', array( 'type' => 'hidden' ) );
-            echo $form->input( 'Filtre.date_saisi_ci_to', array( 'type' => 'hidden' ) );
-            echo $form->input( 'Filtre.locaadr', array( 'type' => 'hidden' ) );
-            echo $form->input( 'Filtre.numcomptt', array( 'type' => 'hidden' ) );
-            echo $form->input( 'Filtre.pers_charg_suivi', array( 'type' => 'hidden' ) );
-            echo $form->input( 'Filtre.decision_ci', array( 'type' => 'hidden' ) ); 
-            echo $form->input( 'Filtre.datevalidation_ci', array( 'type' => 'hidden' )  ); 
-            echo $form->input( 'Filtre.forme_ci', array( 'type' => 'hidden' ) );
+            echo '<div>';
+            echo $form->input( 'Filtre.date_saisi_ci', array( 'type' => 'hidden', 'id' => 'FiltreDateSaisiCi2' ) );
+            echo $form->input( 'Filtre.date_saisi_ci_from', array( 'type' => 'hidden', 'id' => 'FiltreDateSaisiCiFrom2' ) );
+            echo $form->input( 'Filtre.date_saisi_ci_to', array( 'type' => 'hidden', 'id' => 'FiltreDateSaisiCiTo2' ) );
+            echo $form->input( 'Filtre.locaadr', array( 'type' => 'hidden', 'id' => 'FiltreLocaadr2' ) );
+            echo $form->input( 'Filtre.numcomptt', array( 'type' => 'hidden', 'id' => 'FiltreNumcomptt2' ) );
+            echo $form->input( 'Filtre.pers_charg_suivi', array( 'type' => 'hidden', 'id' => 'FiltrePersChargSuivi2' ) );
+            echo $form->input( 'Filtre.decision_ci', array( 'type' => 'hidden', 'id' => 'FiltreDecisionCi2' ) ); 
+            echo $form->input( 'Filtre.datevalidation_ci', array( 'type' => 'hidden', 'id' => 'FiltreDatevalidationCi2' )  );
+            echo $form->input( 'Filtre.forme_ci', array( 'type' => 'hidden', 'id' => 'FiltreFormeCi2' ) );
+            echo '</div>';
         ?>
 
-            <table id="searchResults" class="tooltips_oupas">
+            <table id="searchResults" class="tooltips">
                 <thead>
                     <tr>
                         <th>N° Dossier</th>
@@ -99,6 +101,9 @@
 
                             $array2 = array(
                                 $form->input( 'Contratinsertion.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $contrat['Contratinsertion']['id'] ) ).
+
+                                $form->input( 'Contratinsertion.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $contrat['Contratinsertion']['personne_id'] ) ).
+
                                     $form->input( 'Contratinsertion.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $contrat['Dossier']['id'] ) ).
                                     $form->input( 'Contratinsertion.'.$index.'.decision_ci', array( 'label' => false, 'type' => 'select', 'options' => $decision_ci, 'value' => $contrat['Contratinsertion']['proposition_decision_ci'] ) ),
                                 h( date_short( $contrat['Contratinsertion']['proposition_datevalidation_ci'] ) ).

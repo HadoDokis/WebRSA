@@ -4,7 +4,7 @@
     class CriteresapresController extends AppController
     {
         var $name = 'Criteresapres';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Critereapre', 'Apre', 'Option' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Critereapre', 'Apre', 'Tiersprestataireapre', 'Option',  );
 
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         /**
@@ -19,6 +19,10 @@
             $options = $this->Apre->allEnumLists();
             $this->set( 'options', $options );
             $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
+
+            /// Liste des tiers prestataires
+            $this->set( 'tiers', $this->Tiersprestataireapre->find( 'list' ) );
+
             return $return;
         }
 
@@ -46,13 +50,32 @@
                 $this->set( 'cantons', $this->Canton->selectList() );
             }
 
+/*
+            foreach( $this->Apre->modelsFormation as $model ) {
+                $aides = $this->Apre->{$model}->find(
+                    'list',
+                    array(
+                        'fields' => array(
+                           "$model.tiersprestataireapre_id"
+                        )
+                    )
+                );
+                $this->set( 'aides', $aides );
+
+            }*/
+
+
+
+
+
+
             $this->assert( !empty( $etatApre ), 'invalidParameter' );
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
             $params = $this->data;
             if( !empty( $params ) ) {
-
+// debug($params);
                 $this->Dossier->begin(); // Pour les jetons
 
                 $queryData = $this->Critereapre->search( $etatApre, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
@@ -102,7 +125,17 @@
             switch( $etatApre ) {
                 case 'Critereapre::all':
                     $this->set( 'pageTitle', 'Toutes les APREs' );
-                    $this->render( $this->action, null, 'formulaire' );
+                    $statutApre = Set::classicExtract( $this->data, 'Filtre.statutapre' );
+                    if( $statutApre == 'F' ) {
+                        $this->render( $this->action, null, 'forfaitaire' );
+                    }
+                    else {
+                        $this->render( $this->action, null, 'formulaire' );
+                    }
+                    break;
+                case 'Critereapre::forfaitaire':
+                    $this->set( 'pageTitle', 'APREs forfaitaires' );
+                    $this->render( $this->action, null, 'forfaitaire' );
                     break;
                 case 'Critereapre::eligible':
                     $this->set( 'pageTitle', 'Eligibilite des APREs' );

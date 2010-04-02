@@ -24,6 +24,7 @@
             $numcomptt = Set::extract( $criteresrdv, 'Critererdv.numcomptt' );
             $nom = Set::extract( $criteresrdv, 'Critererdv.nom' );
             $nir = Set::extract( $criteresrdv, 'Critererdv.nir' );
+            $matricule = Set::extract( $criteresrdv, 'Critererdv.matricule' );
 
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
@@ -62,6 +63,11 @@
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
+            /// N° CAF
+            if( !empty( $matricule ) ) {
+                $conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
+            }
+
             /// Critères sur l'adresse - canton
 			if( Configure::read( 'CG.cantons' ) ) {
 				if( isset( $criteresrdv['Canton']['canton'] ) && !empty( $criteresrdv['Canton']['canton'] ) ) {
@@ -90,7 +96,7 @@
                 $conditions[] = 'Detailcalculdroitrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';
             }
 
-            /// Type de rendez vous
+            /// Objet du rendez vous
             if( !empty( $typerdv_id ) ) {
                 $conditions[] = 'Rendezvous.typerdv_id = \''.Sanitize::clean( $typerdv_id ).'\'';
             }
@@ -139,14 +145,14 @@
                     array(
                         'table'      => 'typesrdv',
                         'alias'      => 'Typerdv',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Typerdv.id = Rendezvous.typerdv_id' ),
                     ),
                     array(
                         'table'      => 'statutsrdvs',
                         'alias'      => 'Statutrdv',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Statutrdv.id = Rendezvous.statutrdv_id' ),
                     ),
@@ -205,10 +211,6 @@
                         'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
                     )
                 ),
-//                 'group' => array(
-//                     'Totalisationacompte.type_totalisation',
-//                     'Totalisationacompte.id'
-//                 ),
                 'order' => array( '"Rendezvous"."daterdv" ASC' ),
                 'conditions' => $conditions
             );

@@ -3,22 +3,9 @@
     {
 
         var $name = 'Orientsstructs';
-        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente');
+        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Demandereorient' );
 
-        var $helpers = array( 'Paginator' );
-
-        var $paginate = array(
-            // FIXME
-            'limit' => 20
-        );
-
-        /**
-        */
-        function __construct() {
-            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-            parent::__construct();
-        }
-
+        var $helpers = array( 'Default' );
         /**
         *
         *
@@ -31,6 +18,17 @@
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
+
+            $options = array();
+            foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
+                $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
+            }
+            foreach( array( 'Demandereorient' ) as $linkedModel ) {
+                $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
+                $options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
+            }
+            $this->set( compact( 'options' ) );
+
             return $return;
         }
 
@@ -42,7 +40,7 @@
 
         function index( $personne_id = null ){
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
-
+/*
             $orientstructs = $this->Orientstruct->find(
                 'all',
                 array(
@@ -53,7 +51,44 @@
                 )
             );
 
+            $dossier_rsa_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_rsa_id' );*/
+
+            $orientstructs = $this->Orientstruct->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.personne_id' => $personne_id
+                    ),
+                    'recursive' => 0
+                )
+            );
+
             $dossier_rsa_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_rsa_id' );
+
+            $demandesreorients = $this->Demandereorient->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Demandereorient.personne_id' => $personne_id
+                    )
+                )
+            );
+            $this->set( 'demandesreorients', $demandesreorients );
+
+            /*if( !empty( $orientstructs ) ) {
+// debug($orientstructs);
+                foreach( $orientstructs as $orientstruct ) {
+                    $demandesreorients = $this->Demandereorient->find(
+                        'all',
+                        array(
+                            'conditions' => array(
+                                'Demandereorient.orientstruct_id' => Set::classicExtract( $orientstruct, 'Orientstruct.id' )
+                            )
+                        )
+                    );
+                    $this->set( 'demandesreorients', $demandesreorients );
+                }
+            }*/
 
             $this->set( 'droitsouverts', $this->Dossier->Situationdossierrsa->droitsOuverts( $dossier_rsa_id ) );
             $this->set( 'orientstructs', $orientstructs );

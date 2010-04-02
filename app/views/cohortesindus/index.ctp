@@ -42,6 +42,7 @@
         <?php echo $form->input( 'Cohorteindu.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Cohorteindu.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Cohorteindu.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
+        <?php echo $form->input( 'Cohorteindu.matricule', array( 'label' => 'N° CAF ', 'maxlength' => 15 ) );?>
     </fieldset>
     <fieldset>
         <legend>Recherche d'Indu</legend>
@@ -78,7 +79,7 @@
 
     <?php if( is_array( $cohorteindu ) && count( $cohorteindu ) > 0 ):?>
         <?php echo $pagination;?>
-            <table id="searchResults" class="tooltips_oupas">
+            <table id="searchResults" class="tooltips">
                 <thead>
                     <tr>
                         <th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
@@ -88,12 +89,12 @@
 
                         <th>Date indus</th><!-- FIXME -->
 
-                        <th><?php echo $paginator->sort( 'Allocation comptabilisée', 'AllocationsComptabilisees.mtmoucompta' );?></th>
+                        <!-- <th><?php echo $paginator->sort( 'Allocation comptabilisée', 'AllocationsComptabilisees.mtmoucompta' );?></th> -->
                         <th><?php echo $paginator->sort( 'Montant initial de l\'indu', 'IndusConstates.mtmoucompta' );?></th>
                         <th><?php echo $paginator->sort( 'Montant transféré CG', 'IndusTransferesCG.mtmoucompta' );?></th>
                         <th><?php echo $paginator->sort( 'Remise CG', 'RemisesIndus.mtmoucompta' );?></th>
-                        <th><?php echo $paginator->sort( 'Annulation faible montant', 'AnnulationsFaibleMontant.mtmoucompta' );?></th>
-                        <th><?php echo $paginator->sort( 'Autres montants', 'AutresAnnulations.mtmoucompta' );?></th>
+                        <!-- <th><?php echo $paginator->sort( 'Annulation faible montant', 'AnnulationsFaibleMontant.mtmoucompta' );?></th>
+                        <th><?php echo $paginator->sort( 'Autres montants', 'AutresAnnulations.mtmoucompta' );?></th> -->
 
                         <th class="action">Action</th>
                         <th class="innerTableHeader">Informations complémentaires</th>
@@ -135,12 +136,12 @@
                                     h( $indu['Dossier']['typeparte'] ), //h( $typeparte[$indu['Dossier']['typeparte']] ),
                                     h( $etatdosrsa[$indu['Situationdossierrsa']['etatdosrsa']] ),
                                     $locale->date( 'Date::miniLettre', $indu[0]['moismoucompta'] ),
-                                    $locale->money( $indu[0]['mt_allocation_comptabilisee'] ),
-                                    $locale->money( $indu[0]['mt_indu_constate'] ),
-                                    $locale->money( $indu[0]['mt_indus_transferes_c_g'] ),
-                                    $locale->money( $indu[0]['mt_remises_indus'] ),
-                                    $locale->money( $indu[0]['mt_annulations_faible_montant'] ),
-                                    $locale->money( $indu[0]['mt_autre_annulation'] ),
+//                                     $locale->money( $indu[0]['mt_allocation_comptabilisee'] ),
+                                    $html->tag( 'span', $locale->money( $indu[0]['mt_indu_constate'] ), array( 'class' => 'number' ) ),
+                                    $html->tag( 'span', $locale->money( $indu[0]['mt_indus_transferes_c_g'] ), array( 'class' => 'number' ) ),
+                                    $html->tag( 'span', $locale->money( $indu[0]['mt_remises_indus'] ), array( 'class' => 'number' ) ),
+//                                     $locale->money( $indu[0]['mt_annulations_faible_montant'] ),
+//                                     $locale->money( $indu[0]['mt_autre_annulation'] ),
                                     $html->viewLink(
                                         'Voir le contrat « '.$title.' »',
                                         array( 'controller' => 'indus', 'action' => 'view', $indu['Dossier']['id'] )

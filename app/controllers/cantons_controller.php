@@ -3,6 +3,7 @@
 	{
 		var $name = 'Cantons';
 		var $uses = array( 'Canton', 'Option' );
+        var $helpers = array( 'Xform' );
 		var $paginate = array(
 			'limit' => 20,
 			'recursive' => -1,
@@ -26,6 +27,11 @@
 		*/
 
 		function index() {
+            // Retour à la liste en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
+            }
+
 			$cantons = $this->paginate( $this->modelClass );
 			$this->set( compact( 'cantons' ) );
 		}

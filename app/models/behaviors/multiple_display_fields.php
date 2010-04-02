@@ -18,30 +18,32 @@
         }
 
         function afterFind(&$model, $results) {
-            // if displayFields is set, attempt to populate
-            foreach ($results as $key => $val) {
-                $displayFieldValues = array();
+//             if( !empty( $results ) ) {
+                // if displayFields is set, attempt to populate
+                foreach ($results as $key => $val) {
+                    $displayFieldValues = array();
 
-                if (isset($val[$model->name])) {
-                    // ensure all fields are present
-                    $fields_present = true;
-                    foreach ($this->config[$model->name]['fields'] as $field) {
-                        if (array_key_exists($field,$val[$model->name])) {
-                            $fields_present = $fields_present && true;
-                            $displayFieldValues[] = $val[$model->name][$field]; // capture field values
-                        } else {
-                            $fields_present = false;
-                            break;
+                    if (isset($val[$model->name])) {
+                        // ensure all fields are present
+                        $fields_present = true;
+                        foreach ($this->config[$model->name]['fields'] as $field) {
+                            if (array_key_exists($field,$val[$model->name])) {
+                                $fields_present = $fields_present && true;
+                                $displayFieldValues[] = $val[$model->name][$field]; // capture field values
+                            } else {
+                                $fields_present = false;
+                                break;
+                            }
+                        }
+
+                        // if all fields are present then set displayField based on $displayFieldValues and displayFieldPattern
+                        if ($fields_present) {
+                            $params = array_merge(array($this->config[$model->name]['pattern']), $displayFieldValues);
+                            $results[$key][$model->name][$model->displayField] = call_user_func_array('sprintf', $params );
                         }
                     }
-
-                    // if all fields are present then set displayField based on $displayFieldValues and displayFieldPattern
-                    if ($fields_present) {
-                        $params = array_merge(array($this->config[$model->name]['pattern']), $displayFieldValues);
-                        $results[$key][$model->name][$model->displayField] = call_user_func_array('sprintf', $params );
-                    }
                 }
-            }
+//             }
             return $results;
         }
 

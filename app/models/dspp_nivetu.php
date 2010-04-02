@@ -13,7 +13,7 @@
             'nivetu_id' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
-            )
+            ),
             'dspp_id' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'

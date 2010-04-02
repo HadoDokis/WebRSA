@@ -24,9 +24,14 @@
     class ChangematrixShell extends Shell
     {
         function main() {
+//             if( empty( $this->args ) ) {
+//                 $matrixType = 'SVN '.strftime( '%d/%m/%Y %H:%M' );
+//                 $svnUrl = 'svn://svn.adullact.net/svnroot/webrsa/trunk/app';
+//             }
+			// TODO: meilleurs paramétrages
             if( empty( $this->args ) ) {
                 $matrixType = 'SVN '.strftime( '%d/%m/%Y %H:%M' );
-                $svnUrl = 'svn://svn.adullact.net/svnroot/webrsa/trunk/app';
+                $svnUrl = 'svn://svn.adullact.net/svnroot/webrsa/branches/1.0.8/app';
             }
             else {
                 $matrixType = 'version '.$this->args[0];

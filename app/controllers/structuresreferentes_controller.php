@@ -3,15 +3,24 @@
     {
 
         var $name = 'Structuresreferentes';
-        var $uses = array( 'Structurereferente', 'Referent', 'Orientstruct', 'Typeorient', 'Zonegeographique', 'Option' );
+        var $uses = array( 'Structurereferente', 'Referent', 'Orientstruct', 'Typeorient', 'Zonegeographique', 'Apre', 'Option' );
+        var $helpers = array( 'Xform' );
 
          function beforeFilter() {
             parent::beforeFilter();
-                $this->set( 'typevoie', $this->Option->typevoie() );
+            $this->set( 'typevoie', $this->Option->typevoie() );
+
+            $optionsradio = $this->Structurereferente->allEnumLists();
+            $this->set( 'optionsradio', $optionsradio );
         }
 
 
         function index() {
+            // Retour à la liste en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
+            }
+
             $type = $this->Typeorient->find(
                 'list',
                 array(
@@ -21,6 +30,8 @@
                 )
             );
             $this->set( 'type', $type );
+
+
             $structuresreferentes = $this->Structurereferente->find(
                 'all',
                 array(

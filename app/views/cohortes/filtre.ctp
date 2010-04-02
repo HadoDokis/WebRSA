@@ -3,6 +3,7 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsetOnCheckbox( 'FiltreDtdemrsa', $( 'FiltreDtdemrsaFromDay' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'FiltreDatePrint', $( 'FiltreDateImpressionFromDay' ).up( 'fieldset' ), false );
     });
 </script>
 
@@ -18,7 +19,7 @@
         <?php echo $form->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
     </fieldset>
-<!-- <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ) ) );?> -->
+
     <fieldset>
         <legend>Code origine demande Rsa</legend>
         <?php echo $form->input( 'Filtre.oridemrsa', array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $oridemrsa, 'empty' => false, 'value' => $oridemrsaCochees ) );?>
@@ -41,16 +42,39 @@
         <fieldset>
             <legend>Imprimé/Non imprimé</legend>
             <?php echo $form->input( 'Filtre.date_impression', array( 'label' => 'Filtrer par impression', 'type' => 'select', 'options' => $printed, 'empty' => true ) );?>
+
+        <?php echo $form->input( 'Filtre.date_print', array( 'label' => 'Filtrer par date d\'impression', 'type' => 'checkbox' ) );?>
+        <fieldset>
+            <legend>Date d'impression</legend>
+            <?php
+                $dateImpressionFromSelected = array();
+                if( !dateComplete( $this->data, 'Filtre.date_impression_from' ) ) {
+                    $dateImpressionFromSelected = array( 'selected' => strtotime( '-1 week' ) );
+                }
+                echo $form->input( 'Filtre.date_impression_from', Set::merge( array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 5 ), $dateImpressionFromSelected ) );
+
+                echo $form->input( 'Filtre.date_impression_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 5 ) );
+            ?>
+        </fieldset>
         </fieldset>
     <?php endif;?>
 
     <?php echo $form->input( 'Filtre.dtdemrsa', array( 'label' => 'Filtrer par date de demande', 'type' => 'checkbox' ) );?>
     <fieldset>
         <legend>Date de demande RSA</legend>
-        <?php echo $form->input( 'Filtre.dtdemrsa_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => strtotime( '-1 week' ) ) );?>
-        <?php echo $form->input( 'Filtre.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ) );?>
-    </fieldset>
+        <?php
+            $dtdemrsaFromSelected = array();
+            if( !dateComplete( $this->data, 'Filtre.dtdemrsa_from' ) ) {
+                $dtdemrsaFromSelected = array( 'selected' => strtotime( '-1 week' ) );
+            }
+            echo $form->input( 'Filtre.dtdemrsa_from', Set::merge( array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ), $dtdemrsaFromSelected ) );
 
+            echo $form->input( 'Filtre.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ) );
+        ?>
+    </fieldset>
+    <fieldset>
+        <?php echo $form->input( 'Filtre.typeorient', array( 'label' => __( 'Type d\'orientation', true ), 'type' => 'select', 'options' => $modeles, 'empty' => true ) );?>
+    </fieldset>
     <div class="submit">
         <?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
         <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>

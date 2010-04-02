@@ -3,14 +3,17 @@
     {
         var $name = 'Formpermfimo';
 
-        var $actsAs = array( 'Frenchfloat' => array( 'fields' => array( 'coutform', 'montantaide', 'dureeform' ) ) );
+        var $actsAs = array(
+            'Aideapre',
+            'Frenchfloat' => array( 'fields' => array( 'coutform', 'montantaide', 'dureeform' ) )
+        );
 
         var $validate = array(
             'intituleform' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
-            'organismeform' => array(
+            'tiersprestataireapre_id' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
@@ -25,7 +28,7 @@
                     'allowEmpty' => true
                 ),
                 array(
-                    'rule' => array( 'range', -1, 2000 ),
+                    'rule' => array( 'range', -1, 2001 ),
                     'message' => 'Veuillez saisir un montant compris entre 0 et 2000€ maximum.'
                 )
             ),

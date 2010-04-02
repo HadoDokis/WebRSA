@@ -36,7 +36,7 @@
         <fieldset>
             <?php
                 echo $form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'lib_struct', true ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
-                echo $form->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+                echo $form->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
                 ///Ajax
                 echo $ajax->observeField( 'RendezvousStructurereferenteId', array( 'update' => 'RendezvousReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
 
@@ -55,7 +55,7 @@
                 echo $form->input( 'Rendezvous.typerdv_id', array( 'label' =>  required( __( 'lib_rdv', true ) ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
             ?>
             <?php echo $form->input( 'Rendezvous.statutrdv_id', array( 'label' =>  required( __( 'statutrdv', true ) ), 'type' => 'select', 'options' => $statutrdv, 'empty' => true ) );?>
-            <?php echo $form->input( 'Rendezvous.daterdv', array( 'label' =>  required( __( 'daterdv', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 ) );?>
+            <?php echo $form->input( 'Rendezvous.daterdv', array( 'label' =>  required( __( 'daterdv', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+1, 'minYear'=>date('Y')-1 ) );?>
             <?php
                 echo $xform->input( 'Rendezvous.heurerdv', array( 'label' =>  required( __( 'heurerdv', true ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ) ) );
             ?>
@@ -63,8 +63,10 @@
             <?php echo $form->input( 'Rendezvous.commentairerdv', array( 'label' =>  ( __( 'commentairerdv', true ) ), 'type' => 'text', 'rows' => 3, 'empty' => true ) );?>
         </fieldset>
     </div>
-
-        <?php echo $form->submit( 'Enregistrer' );?>
+    <div class="submit">
+        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+        <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+    </div>
     <?php echo $form->end();?>
 </div>
 <div class="clearer"><hr /></div>

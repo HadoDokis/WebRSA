@@ -6,7 +6,7 @@
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent' );
         var $aucunDroit = array( 'menu' );
         var $helpers = array( 'Csv' );
 
@@ -36,6 +36,11 @@
             $this->set( 'sitfam', $this->Option->sitfam() );
             $this->set( 'couvsoc', $this->Option->couvsoc() );
             $this->set( 'categorie', $this->Option->categorie() );
+            $typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
+            $this->set( 'typeservice', $typeservice );
+            $typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
+            $this->set( 'typesorient', $typesorient );
+            $this->set( 'referents', $this->Referent->find( 'list' ) );
             return $return;
         }
 
@@ -61,7 +66,13 @@
                 $this->set( 'dossiers', $dossiers );
 
             }
-            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+			}
         }
 
         /**
@@ -115,6 +126,7 @@
                     'recursive'  => 2
                 )
             );
+
             $this->assert( !empty( $dossier ), 'invalidParameter' );
 
             usort( $dossier['Foyer']['Adressefoyer'], create_function( '$a,$b', 'return strcmp( $a["rgadr"], $b["rgadr"] );' ) );
@@ -242,6 +254,16 @@
 
             $roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
             foreach( $roles as $index => $role ) {
+                $tPersReferent = $this->PersonneReferent->find(
+                    'first',
+                    array(
+                        'conditions' => array( 'PersonneReferent.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+                        'recursive' => -1,
+                        'order' => array( 'PersonneReferent.dddesignation DESC' )
+                    )
+                );
+                $personnesFoyer[$index]['PersonneReferent']['dernier'] = $tPersReferent['PersonneReferent'];
+
                 $tContratinsertion = $this->Contratinsertion->find(
                     'first',
                     array(
@@ -289,10 +311,8 @@
             $this->set( 'typesorient', $typesorient );
             $this->set( 'typoscontrat', $typoscontrat );
 
-
+// debug($details);
             $this->set( 'details', $details );
-
-// debug( $details );
         }
 
         /// Export du tableau en CSV
@@ -300,11 +320,16 @@
         function exportcsv() {
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
             $querydata = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ) );
             unset( $querydata['limit'] );
+
             $dossiers = $this->Dossier->find( 'all', $querydata );
+
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'headers', 'dossiers' ) );
+//             debug($dossiers);
+//             die();
         }
     }
 ?>

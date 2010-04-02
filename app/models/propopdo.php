@@ -1,8 +1,16 @@
-<?php 
+<?php
 
     class Propopdo extends AppModel
     {
         var $name = 'Propopdo';
+
+        var $actsAs = array(
+            'Enumerable' => array(
+				'fields' => array(
+					'statutdecision' => array( 'type' => 'statutdecision', 'domain' => 'propopdo' ),
+				)
+            )
+        );
 
         var $belongsTo = array(
             'Dossier' => array(
@@ -24,7 +32,9 @@
                 'joinTable' => 'propospdos_typesnotifspdos',
                 'foreignKey' => 'propopdo_id',
                 'associationForeignKey' => 'typenotifpdo_id'
-            )
+            ),
+            'Situationpdo' => array( 'with' => 'PropopdoSituationpdo' ),
+            'Statutpdo' => array( 'with' => 'PropopdoStatutpdo' )
         );
 
         var $validate = array(

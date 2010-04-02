@@ -2,8 +2,17 @@
     class Acccreaentr extends AppModel
     {
         var $name = 'Acccreaentr';
-//         var $actsAs = array( 'Enumerable' );
-        var $actsAs = array( 'Enumerable', 'Frenchfloat' => array( 'fields' => array( 'montantaide' ) ) );
+
+        var $actsAs = array(
+            'Aideapre',
+            'Enumerable' => array(
+                'fields' => array(
+                    'nacre' => array( 'type' => 'no', 'domain' => 'default' ),
+                    'microcredit' => array( 'type' => 'no', 'domain' => 'default' ),
+                )
+            ),
+            'Frenchfloat' => array( 'fields' => array( 'montantaide' ) )
+        );
 
         var $validate = array(
             'nacre' => array(
@@ -25,16 +34,12 @@
                     'allowEmpty' => true
                 ),
                 array(
-                    'rule' => array( 'range', -1, 2000 ),
+                    'rule' => array( 'range', -1, 2001 ),
                     'message' => 'Veuillez saisir un montant compris entre 0 et 2000€ maximum.'
                 )
             )
         );
 
-        var $enumFields = array(
-            'nacre' => array( 'type' => 'no', 'domain' => 'default' ),
-            'microcredit' => array( 'type' => 'no', 'domain' => 'default' ),
-        );
 
         var $hasAndBelongsToMany = array(
             'Pieceacccreaentr' => array(

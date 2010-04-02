@@ -1,5 +1,5 @@
 <?php $this->pageTitle = 'Paramétrage des Structures référentes';?>
-
+<?php echo $xform->create( 'Structurereferente' );?>
 <div>
     <h1><?php echo 'Visualisation de la table  ';?></h1>
 
@@ -40,7 +40,7 @@
                                 h( $structurereferente['Structurereferente']['code_postal'] ),
                                 h( $structurereferente['Structurereferente']['ville'] ),
                                 h( $structurereferente['Structurereferente']['code_insee'] ),
-                                h( $type[$structurereferente['Structurereferente']['typeorient_id']] ),
+                                h( Set::enum( Set::classicExtract( $structurereferente, 'Structurereferente.typeorient_id' ), $type ) ),
                                 $html->editLink(
                                     'Éditer la structure référente ',
                                     array( 'controller' => 'structuresreferentes', 'action' => 'edit', $structurereferente['Structurereferente']['id'] )
@@ -59,4 +59,11 @@
         </table>
 </div>
 </div>
+    <div class="submit">
+        <?php
+            echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+
 <div class="clearer"><hr /></div>
+<?php echo $xform->end();?>

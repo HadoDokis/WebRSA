@@ -24,10 +24,12 @@
             'Aidedirecte' => array(
                 'classname' => 'Aidedirecte',
                 'foreignKey' => 'actioninsertion_id',
+                'dependent' => true
             ),
             'Prestform' => array(
                 'classname' => 'Prestform',
                 'foreignKey' => 'actioninsertion_id',
+                'dependent' => true
             )
         );
 

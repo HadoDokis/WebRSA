@@ -22,7 +22,7 @@
 <?php echo $form->create( 'Infosfinancieres', array( 'type' => 'post', 'action' => '/indexdossier/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
         <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-        <?php echo $form->input( 'Filtre.moismoucompta', array( 'label' => 'Recherche des paiements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) ) );?>
+        <?php echo $form->input( 'Filtre.moismoucompta', array( 'label' => 'Recherche des paiements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => $annees['maxYear'], 'minYear' => $annees['minYear'] ) );?>
         <?php echo $form->input( 'Filtre.type_allocation', array( 'label' => 'Type d\'allocation', 'type' => 'select', 'options' => $type_allocation, 'empty' => true ) ); ?>
         <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire', 'type' => 'text' ) ); ?>
         <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Code INSEE', 'type' => 'text', 'maxlength' => 5 ) ); ?>
@@ -43,7 +43,7 @@
     <?php if( is_array( $infosfinancieres ) && count( $infosfinancieres ) > 0  ):?>
     <?php /*echo $pagination;*/?>
     <?php require( 'index.pagination.ctp' )?>
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>

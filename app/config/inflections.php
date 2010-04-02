@@ -97,7 +97,7 @@
         'regroupementzonegeo' => 'regroupementszonesgeo',
         'cohorteci' => 'cohortesci',
         'cohorteindu' => 'cohortesindus',
-        /// Infos financières
+        // Infos financières
         'allocation_comptabilisee' => 'allocations_comptabilisees',
         'indu_constate' => 'indus_constates',
         'indu_transfere_cg' => 'indus_transferes_cg',
@@ -105,7 +105,7 @@
         'annulation_faible_montant' => 'annulations_faible_montant',
         'autre_annulation' => 'autres_annulations',
         'dspp_nivetu' => 'dspps_nivetus',
-        ///Parcours d'insertion
+        //Parcours d'insertion
         'suiviinsertion' => 'suivisinsertion',
         'dossierpdo' => 'dossierspdo',
         'avispcgpersonne' => 'avispcgpersonnes',
@@ -117,7 +117,7 @@
         'transmissionflux' => 'transmissionsflux',
         'suiviappuiorientation' => 'suivisappuisorientation',
         'calculdroitrsa' => 'calculsdroitsrsa',
-        ///PDOS
+        //PDOS
         'typenotifpdo' => 'typesnotifspdos',
         'decisionpdo' => 'decisionspdos',
         'typepdo' => 'typespdos',
@@ -125,10 +125,13 @@
         'propopdo_typenotifpdo' => 'propospdos_typesnotifspdos',
         'statutrdv' => 'statutsrdvs',
         'infopoleemploi' => 'infospoleemploi',
-        ///APRE
+		// Apre
+		'integrationfichierapre' => 'integrationfichiersapre',
         'pieceapre' => 'piecesapre',
         'apre_pieceapre' => 'apres_piecesapre',
         'apre_pieceliee' => 'apres_piecesliees',
+        'apre_etatliquidatif' => 'apres_etatsliquidatifs',
+        'domiciliationbancaire' => 'domiciliationsbancaires',
         ///->Formqualif
         'formqualif' => 'formsqualifs',
         'pieceformqualif' => 'piecesformsqualifs',
@@ -161,7 +164,6 @@
         'pieceformpermfimo' => 'piecesformspermsfimo',
         'formpermfimo_pieceformpermfimo' => 'formspermsfimo_piecesformspermsfimo',
 
-        'referentapre' => 'referentsapre',
         'montantconsomme' => 'montantsconsommes',
         'critereapre' => 'criteresapres',
         'repddtefp' => 'repsddtefp',
@@ -173,17 +175,51 @@
         'comiteapre_participantcomite' => 'comitesapres_participantscomites',
         'apre_comiteapre' => 'apres_comitesapres',
         'cohortecomiteapre' => 'cohortescomitesapres',
+        ///Tiers prestatire lié à l'APRE
+        'tiersprestataireapre' => 'tiersprestatairesapres',
         ///Recours pour les APREs
         'recoursapre' => 'recoursapres',
-		/// Dsp
-		'detaildifsoc' => 'detailsdifsocs',
-		'detailaccosocfam' => 'detailsaccosocfams',
-		'detailaccosocindi' => 'detailsaccosocindis',
-		'detaildifdisp' => 'detailsdifdisps',
-		'detailnatmob' => 'detailsnatmobs',
-		'detaildiflog' => 'detailsdiflogs',
 		/// Paiement foyer
 		'paiementfoyer' => 'paiementsfoyers',
+		'etatliquidatif' => 'etatsliquidatifs',
+		'budgetapre' => 'budgetsapres',
+		'parametrefinancier' => 'parametresfinanciers',
+        ///Personnes chargées du suivi des aides APREs
+        'suiviaideapre' => 'suivisaidesapres',
+        'suiviaideapretypeaide' => 'suivisaidesaprestypesaides',
+        'personne_referent' => 'personnes_referents',
+        'jetonfonction' => 'jetonsfonctions',
+        ///Informations complémentaires sur la personne
+        'infocomplementaire' => 'infoscomplementaires',
+        'creancealimentaire' =>'creancesalimentaires',
+        'allocationsoutienfamilial' => 'allocationssoutienfamilial',
+        'foyer_evenement' => 'foyers_evenements',
+        ///Informations pour les fiches de candidatures
+        'actioncandidat' => 'actionscandidats',
+        'actioncandidat_personne' => 'actionscandidats_personnes',
+        'contactpartenaire' => 'contactspartenaires',
+        'contactpartenaire_partenaire' => 'contactspartenaires_partenaires',
+        'actioncandidat_partenaire' => 'actionscandidats_partenaires',
+        ///PDOs
+        'originepdo' => 'originespdos',
+        'statutpdo' => 'statutspdos',
+        'situationpdo' => 'situationspdos',
+        'propopdo_situationpdo' => 'propospdos_situationspdos',
+        'propopdo_statutpdo' => 'propospdos_statutspdos',
+		/// Équipes pluridisciplinaires
+		'partep' => 'partseps',
+		'rolepartep' => 'rolespartseps',
+		'ep_partep' => 'eps_partseps',
+		// Demandes de réorientation
+		'motifdemreorient' => 'motifsdemsreorients',
+		'demandereorient' => 'demandesreorient',
+		'precoreorient' => 'precosreorients',
+		// Détection des parcours
+// 		'parcoursdetecte' => 'parcoursdetectes',
+		'decisionparcours' => 'decisionsparcours',
+        	'ep_theme' => 'eps_themes',
+		/// Table de connexion ajoutée par gaëtan
+		'aro_aco' => 'aros_acos',
      );
 /**
  * This is a key => value array of regex used to match words.

@@ -41,6 +41,10 @@
             'Infofinanciere' => array(
                 'classname' => 'Infofinanciere',
                 'foreignKey' => 'dossier_rsa_id'
+            ),
+            'Propopdo' => array(
+                'classname' => 'Propopdo',
+                'foreignKey' => 'dossier_rsa_id'
             )
         );
 
@@ -161,7 +165,7 @@
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
                 $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : array( null ) );
-                $conditions[] = '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) AND ( Situationdossierrsa.etatdosrsa = \'Z\' ) )'; ///FIXME: passage de OR à AND car les dossier sà Z mais non présents dans le code insee apparaissaient !!!!!!!
+                $conditions[] = '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) /*OR ( Situationdossierrsa.etatdosrsa = \'Z\' ) */ )'; ///FIXME: passage de OR à AND car les dossiers à Z mais non présents dans le code insee apparaissaient !!!!!!!
             }
 
             // Critères sur le dossier - numéro de dossier
@@ -179,6 +183,11 @@
                 $conditions[] = "Personne.nir ILIKE '%".Sanitize::paranoid( $params['Personne']['nir'] )."%'";
             }
 
+            /// Critères sur l'adresse - nom de commune
+            if( isset( $params['Adresse']['locaadr'] ) && !empty( $params['Adresse']['locaadr'] ) ) {
+                $conditions[] = "Adresse.locaadr ILIKE '%".Sanitize::paranoid( $params['Adresse']['locaadr'] )."%'";
+            }
+
             /// Critères sur l'adresse - code insee
             if( isset( $params['Adresse']['numcomptt'] ) && !empty( $params['Adresse']['numcomptt'] ) ) {
                 $conditions[] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $params['Adresse']['numcomptt'] )."%'";
@@ -194,7 +203,7 @@
 
             /// Critères sur la nature de la prestation - natpf
             if( isset( $params['Detailcalculdroitrsa']['natpf'] ) && !empty( $params['Detailcalculdroitrsa']['natpf'] ) ) {
-                $conditions[] = "Detailcalculdroitrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%'";
+                $conditions[] = "Dossier.id IN ( SELECT detailsdroitsrsa.dossier_rsa_id FROM detailsdroitsrsa INNER JOIN detailscalculsdroitsrsa ON detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id WHERE detailscalculsdroitsrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%' )";
             }
 
             // Critères sur le dossier - date de demande
@@ -227,6 +236,16 @@
                 }
             }
 
+            /// FIXME: Critères sur le dossier - service instructeur
+            if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) ) {
+                $conditions[] = "Dossier.id IN ( SELECT suivisinstruction.dossier_rsa_id FROM suivisinstruction INNER JOIN servicesinstructeurs ON suivisinstruction.numdepins = servicesinstructeurs.numdepins AND suivisinstruction.typeserins = servicesinstructeurs.typeserins AND suivisinstruction.numcomins = servicesinstructeurs.numcomins AND suivisinstruction.numagrins = servicesinstructeurs.numagrins WHERE servicesinstructeurs.id = '".Sanitize::paranoid( $params['Serviceinstructeur']['id'] )."' )";
+                //$conditions[] = 'Serviceinstructeur.id = \''.Sanitize::paranoid( $params['Serviceinstructeur']['id'] ).'\'';
+            }
+
+
+
+
+
             $query = array(
                 'fields' => array(
                     '"Dossier"."id"',
@@ -240,11 +259,15 @@
                     '"Personne"."prenom2"',
                     '"Personne"."prenom3"',
                     '"Personne"."dtnai"',
+                    '"Personne"."idassedic"',
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."numcomptt"',
                     '"Situationdossierrsa"."etatdosrsa"',
-                    '"Detailcalculdroitrsa"."natpf"'
+//                    '"Detailcalculdroitrsa"."natpf"',///FIXME
+//                     '"Serviceinstructeur"."id"',
+//                     '"Serviceinstructeur"."lib_service"',
+//                     '"Orientstruct"."typeorient_id"',
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -274,6 +297,13 @@
                             'Prestation.natprest = \'RSA\''
                         )
                     ),
+                    /*array(
+                        'table'      => 'orientsstructs',
+                        'alias'      => 'Orientstruct',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.id = Orientstruct.personne_id' )
+                    ),*/
                     array(
                         'table'      => 'situationsdossiersrsa',
                         'alias'      => 'Situationdossierrsa',
@@ -302,13 +332,27 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
                     ),
-                    array(
+                    /*array(
                         'table'      => 'detailscalculsdroitsrsa',
                         'alias'      => 'Detailcalculdroitrsa',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
-                    )
+                    ),*/ ///FIXME
+                    /*array(
+                        'table'      => 'suivisinstruction',
+                        'alias'      => 'Suiviinstruction',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
+                    ),
+                    array(
+                        'table'      => 'servicesinstructeurs',
+                        'alias'      => 'Serviceinstructeur',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+                    ),*/
                 ),
                 'limit' => 10,
                 'conditions' => $conditions

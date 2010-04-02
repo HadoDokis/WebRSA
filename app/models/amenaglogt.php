@@ -2,7 +2,15 @@
     class Amenaglogt extends AppModel
     {
         var $name = 'Amenaglogt';
-        var $actsAs = array( 'Enumerable', 'Frenchfloat' => array( 'fields' => array( 'montantaide' ) ) );
+        var $actsAs = array(
+            'Aideapre',
+            'Enumerable' => array(
+                'fields' => array(
+                    'typeaidelogement' => array( 'type' => 'typeaidelogement', 'domain' => 'apre' ),
+                )
+            ),
+            'Frenchfloat' => array( 'fields' => array( 'montantaide' ) )
+        );
 
 
         var $validate = array(
@@ -21,15 +29,12 @@
                     'allowEmpty' => true
                 ),
                 array(
-                    'rule' => array( 'range', -1, 2000 ),
+                    'rule' => array( 'range', -1, 2001 ),
                     'message' => 'Veuillez saisir un montant compris entre 0 et 2000€ maximum.'
                 )
             )
         );
 
-        var $enumFields = array(
-            'typeaidelogement' => array( 'type' => 'typeaidelogement', 'domain' => 'apre' ),
-        );
 
         var $hasAndBelongsToMany = array(
             'Pieceamenaglogt' => array(

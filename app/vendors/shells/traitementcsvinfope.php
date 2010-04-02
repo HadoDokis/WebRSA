@@ -29,7 +29,7 @@
 
         function startup() {
             if( ( count( $this->args ) != 1 ) || ( !in_array( $this->args[0], array( 'c', 'i', 'r', 'C', 'I', 'R' ) ) ) ) {
-                echo "Veuillez rentrer en paramètre i pour ... ou c pour ... ou r pour ...\n";
+                echo "Veuillez rentrer en paramètre i pour inscription, c pour cessation ou r pour radiation\n";
                 exit( 1 );
             }
 

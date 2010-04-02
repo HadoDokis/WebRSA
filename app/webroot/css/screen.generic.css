@@ -299,11 +299,19 @@ div#ficheAdresse h2 {
 
 table#ficheDossier tbody, table#ficheDossier td { border-width: 0; background: transparent; }
 table#ficheDossier table td { border-width: 1px; }
+table#ficheDossier table tbody tr.even td {
+    background: #e6eef2;
+}
+
 
 /* Affichage vue Dossier */
 #resumeDossier table {
     width: 350px;
     margin-bottom: 1em;
+}
+
+#resumeDossier table#creancesalimentaires, table#personnes {
+    width: 100%;
 }
 
 #resumeDossier tbody th {
@@ -320,12 +328,12 @@ table#ficheDossier table td { border-width: 1px; }
     color: black;
 }
 
-#resumeDossier tbody tr.even th {
+#resumeDossier tbody tr.even th, table.demcjt tbody tr.even th {
     background: #83c2e2;
     color: black;
 }
 
-#resumeDossier tbody tr.odd th {
+#resumeDossier tbody tr.odd th, table.demcjt tbody tr.odd th {
     background: #a8dbef;
     color: black;
 }
@@ -614,6 +622,34 @@ ul.actionMenu a {
     color: black;
 }
 
+
+/*****************************************************************************/
+/***** Ajout Arnaud pour les nouveaux boutons du Helper Default.php  *********/
+/*****************************************************************************/
+
+p.actions {
+    margin: 0.75em 0;
+    padding: 0;
+    list-style: none;
+}
+
+p.actions li {
+    margin: 0 0.5em 0 0;
+    padding: 0;
+    display: inline;
+}
+
+p.actions a {
+    padding: 0.33em 0.5em;
+    border: 1px solid #235f7d;
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+}
+/*****************************************************************************/
+/*****************************************************************************/
+
+
 /*table a {
     display: inline-block;
 }*/
@@ -685,7 +721,7 @@ ul.actionMenu a {
 
 /*#pageMenu li ul ul
 {
-        margin    : -22px 0 0 144px ; 
+        margin    : -22px 0 0 144px ;
         border-left     : 1px solid #fff ;
 }*/
 
@@ -750,6 +786,9 @@ td.aere, th.aere{
     width: 15em;
 }
 
+div.aere {
+    margin-bottom:1.5em;
+}
 /*****************************************************************************/
 /*Pour le dossier_menu dans l'entête*/
 p.etatDossier {
@@ -834,4 +873,58 @@ td.activiteSize {
 }
 select.activiteSize {
     width: 100%!important;
+}
+
+/*****************************************************************************/
+
+div.demi {
+    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;
+    width: 50%;
+/*     margin-bottom: 1.5em; */
+}
+
+div.demi div.checkbox {
+    display: inline;
+}
+
+/*******************************************************************************
+*	Onglets
+*******************************************************************************/
+
+.tab.title.hidden {
+	display: none;
+}
+
+div.tab {
+    border: 1px solid silver;
+    padding: 1em;
+    margin-top: 0.5em;
+    padding-top: 1.5em;
+}
+
+ul.ui-tabs-nav {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.ui-tabs-nav li {
+    padding: 0;
+    margin: 0;
+    display: inline;
+}
+
+ul.ui-tabs-nav a {
+    border: 1px solid silver;
+    padding: 0.5em;
+    background: #ddd;
+}
+
+ul.ui-tabs-nav a.active {
+    border: 1px solid silver;
+    border-bottom: 1px solid white;
+    background: white;
 }

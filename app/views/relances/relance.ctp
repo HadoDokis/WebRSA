@@ -77,7 +77,7 @@
         <p class="notice">Aucun dossier relancé n'est présent.</p>
     <?php else:?>
             <?php echo $pagination;?>
-        <table class="tooltips_oupas">
+        <table class="tooltips">
             <thead>
                 <tr>
                     <th>N° Dossier</th>

@@ -26,7 +26,7 @@
             if( $permissions->check( 'dossierspdo', 'edit' ) ) {
                 echo '<li>'.$html->editLink(
                     'Éditer PDO',
-                    array( 'controller' => 'dossierspdo', 'action' => 'edit', $dossier_rsa_id )
+                    array( 'controller' => 'dossierspdo', 'action' => 'edit', Set::classicExtract( $pdo, 'Propopdo.id' ) )
                 ).' </li>';
             }
         ?>
@@ -53,7 +53,7 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Type de notification' );?></th>
-                    <td><?php echo Set::classicExtract( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' ) ) ;?></td>
+                    <td><?php echo Set::enum( Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' ),  $typenotifpdo ) ;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Date de notification' );?></th>

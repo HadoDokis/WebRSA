@@ -4,7 +4,7 @@
     class CohortesciController extends AppController
     {
         var $name = 'Cohortesci';
-        var $uses = array( 'Canton', 'Cohorteci', 'Option', 'Contratinsertion', 'Typeorient', 'Orientstruct', 'Accoemploi', 'Adresse', 'Serviceinstructeur', 'Suiviinstruction', 'Referent', 'Structurereferente' );
+        var $uses = array( 'Canton', 'Cohorteci', 'Option', 'Contratinsertion', 'Typeorient', 'Action', 'Orientstruct', 'Accoemploi', 'Adresse', 'Serviceinstructeur', 'Suiviinstruction', 'Referent', 'Structurereferente' );
         var $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
         var $helpers = array( 'Csv', 'Ajax' );
@@ -29,6 +29,10 @@
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
             $this->set( 'struct', $struct );
+            $this->set( 'tc', $this->Contratinsertion->Typocontrat->find( 'list' ) );
+            $this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
+
+            $this->set( 'action', $this->Contratinsertion->Actioninsertion->find( 'list' ) );
             return $return;
         }
 
@@ -178,11 +182,16 @@
 
             }
 
-            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+			}
 
             /// Population du select référents liés aux structures
             $structurereferente_id = Set::classicExtract( $this->data, 'Filtre.structurereferente_id' );
-            $referents = $this->Referent->_referentsListe( $structurereferente_id );
+            $referents = $this->Referent->referentsListe( $structurereferente_id );
             $this->set( 'referents', $referents );
 
             switch( $statutValidation ) {
@@ -213,9 +222,13 @@
 
             /// Population du select référents liés aux structures
             $structurereferente_id = Set::classicExtract( $this->data, 'Contratinsertion.structurereferente_id' );
-            $referents = $this->Referent->_referentsListe( $structurereferente_id );
+            $referents = $this->Referent->referentsListe( $structurereferente_id );
             $this->set( 'referents', $referents );
 
+
+
+// debug($orients);
+// die();
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'contrats' ) );
         }

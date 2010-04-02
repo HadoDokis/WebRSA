@@ -2,11 +2,19 @@
     class Actprof extends AppModel
     {
         var $name = 'Actprof';
-        var $actsAs = array( 'Enumerable', 'Frenchfloat' => array( 'fields' => array( 'montantaide', 'coutform', 'dureeform' ) ) );
+        var $actsAs = array(
+            'Aideapre',
+            'Enumerable' => array(
+                'fields' => array(
+                    'typecontratact' => array( 'type' => 'typecontratact', 'domain' => 'apre' ),
+                )
+            ),
+            'Frenchfloat' => array( 'fields' => array( 'montantaide', 'coutform', 'dureeform' ) )
+        );
 
 
         var $validate = array(
-            'nomemployeur' => array(
+            'tiersprestataireapre_id' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
@@ -33,7 +41,7 @@
                     'allowEmpty' => true
                 ),
                 array(
-                    'rule' => array( 'range', -1, 2000 ),
+                    'rule' => array( 'range', -1, 2001 ),
                     'message' => 'Veuillez saisir un montant compris entre 0 et 2000€ maximum.'
                 )
             ),
@@ -79,10 +87,6 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-        );
-
-        var $enumFields = array(
-            'typecontratact' => array( 'type' => 'typecontratact', 'domain' => 'apre' ),
         );
 
         var $hasAndBelongsToMany = array(

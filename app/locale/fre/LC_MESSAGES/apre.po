@@ -21,6 +21,7 @@ msgstr ""
 ###############################################################################
 # Apre
 ###############################################################################
+
 msgid "Apre.numeroapre"
 msgstr "N° du dossier APRE "
 
@@ -53,6 +54,35 @@ msgstr "Ajouter comité examen "
 
 msgid "Apre.eligibiliteapre"
 msgstr "Eligibilité de l'APRE"
+
+###############################################################################
+# Nom des aides
+###############################################################################
+
+msgid "Amenaglogt"
+msgstr "Aide à l'installation"
+
+msgid "Formqualif"
+msgstr "Formations individuelles qualifiantes"
+
+msgid "Formpermfimo"
+msgstr "Formation Permis Poids Lourd + FIMO"
+
+msgid "Actprof"
+msgstr "Action de professionnalisation des contrats aides et SIAE"
+
+msgid "Permisb"
+msgstr "Permis de conduire B"
+
+msgid "Acccreaentr"
+msgstr "Accompagnement à la création d'entreprise"
+
+msgid "Acqmatprof"
+msgstr "Acquisition de matériels professionnels"
+
+msgid "Locvehicinsert"
+msgstr "Aide à la location d'un véhicule d'insertion"
+
 ###############################################################################
 # Enum Referentapre.spe
 ###############################################################################
@@ -188,6 +218,9 @@ msgstr "Montant "
 msgid "Permisb.nomautoecole"
 msgstr "Nom de l'auto-école"
 
+msgid "Permisb.montantaide"
+msgstr "Montant de l'aide"
+
 msgid "Permisb.adresseautoecole"
 msgstr "Adresse de l'auto-école"
 
@@ -206,6 +239,9 @@ msgstr "Besoins"
 
 msgid "Amenaglogt.montantaide"
 msgstr "Montant"
+
+msgid "Amenaglogt.typeaidelogement"
+msgstr "Type d'aide au logement"
 
 ###############################################################################
 # Acccreaentr pour l'APRE
@@ -279,7 +315,7 @@ msgid "ENUM::TYPEDEMANDEAPRE::AU"
 msgstr "Autres"
 
 ###############################################################################
-# Enum Apre.typedemandeapre
+# Enum Apre.statutapre
 ###############################################################################
 msgid "ENUM::STATUTAPRE::C"
 msgstr "Complémentaire"
@@ -401,6 +437,19 @@ msgstr "Non éligible"
 
 msgid "ENUM::ELIGIBILITEAPRE::O"
 msgstr "Eligible"
+
+###############################################################################
+# Enum Apre.justificatif
+###############################################################################
+msgid "ENUM::JUSTIFICATIF::CREA"
+msgstr "Justificatif d'entrée en formation ou de création d'entreprise"
+
+msgid "ENUM::JUSTIFICATIF::CDT"
+msgstr "Contrat de travail"
+
+msgid "ENUM::JUSTIFICATIF::CINS"
+msgstr "Contrat d'insertion validé par le Président du Conseil Général (sauf pour SIAE et titulaires de contrats aidés)"
+
 ###############################################################################
 # Enum Actprof.typecontratact
 ###############################################################################
@@ -457,3 +506,155 @@ msgstr "55-59 ans"
 
 msgid "Repddtefp.nbr60_200Instruits"
 msgstr "60 ans et +"
+
+###############################################################################
+# Paramètres financiers pour la gestion de l'APRE
+###############################################################################
+
+msgid "Parametrefinancier.entitefi"
+msgstr "Entité financière"
+
+msgid "Parametrefinancier.engagement"
+msgstr "Engagement"
+
+msgid "Parametrefinancier.tiers"
+msgstr "Tiers"
+
+msgid "Parametrefinancier.codecdr"
+msgstr "Code CDR"
+
+msgid "Parametrefinancier.libellecdr"
+msgstr "Libellé CDR"
+
+msgid "Parametrefinancier.natureanalytique"
+msgstr "Code nature analytique"
+
+msgid "Parametrefinancier.programme"
+msgstr "Programme"
+
+msgid "Parametrefinancier.lib_programme"
+msgstr "Libellé programme"
+
+msgid "Parametrefinancier.apreforfait"
+msgstr "Identification tranche APRE forfaitaire"
+
+msgid "Parametrefinancier.aprecomplem"
+msgstr "Identification tranche APRE complémentaire"
+
+msgid "Parametrefinancier.natureimput"
+msgstr "Nature imputation"
+
+msgid "Parametrefinancier.lib_natureanalytique"
+msgstr "Libellé nature analytique"
+
+###############################################################################
+# États liquidatifs
+###############################################################################
+
+msgid "Etatliquidatif.budgetapre_id"
+msgstr "Budget"
+
+msgid "Etatliquidatif.typeapre"
+msgstr "Type d'APREs traitées"
+
+msgid "Etatliquidatif.commentaire"
+msgstr "Commentaire"
+
+###############################################################################
+# Budgets APREs
+###############################################################################
+
+msgid "Budgetapre.exercicebudgetai"
+msgstr "Exercice budgétaire"
+
+msgid "Budgetapre.montantattretat"
+msgstr "Montant attribué par l'état"
+
+msgid "Budgetapre.ddexecutionbudge"
+msgstr "Date de début d'exécution budgétaire"
+
+msgid "Budgetapre.dfexecutionbudge"
+msgstr "Date de fin d'exécution budgétaire"
+
+###############################################################################
+# Domiciliations bancaires
+###############################################################################
+
+msgid "Domiciliationbancaire.codebanque"
+msgstr "Code banque"
+
+msgid "Domiciliationbancaire.codeagence"
+msgstr "Code agence"
+
+msgid "Domiciliationbancaire.libelledomiciliation"
+msgstr "Libellé domiciliation"
+
+###############################################################################
+# Table Tiersprestataire
+###############################################################################
+
+msgid "Tiersprestataireapre.nomtiers"
+msgstr "Organisme prestataire"
+
+msgid "Tiersprestataireapre.siret"
+msgstr "N° Siret"
+
+msgid "Tiersprestataireapre.numvoie"
+msgstr "N° de voie"
+
+msgid "Tiersprestataireapre.typevoie"
+msgstr "Type de voie"
+
+msgid "Tiersprestataireapre.nomvoie"
+msgstr "Nom de voie"
+
+msgid "Tiersprestataireapre.compladr"
+msgstr "Complément adresse"
+
+msgid "Tiersprestataireapre.codepos"
+msgstr "Code postal"
+
+msgid "Tiersprestataireapre.ville"
+msgstr "Ville"
+
+msgid "Tiersprestataireapre.canton"
+msgstr "Canton"
+
+msgid "Tiersprestataireapre.numtel"
+msgstr "N° de téléphone"
+
+msgid "Tiersprestataireapre.adrelec"
+msgstr "Email"
+
+msgid "Tiersprestataireapre.nomtiturib"
+msgstr "Nom du titulaire du RIB"
+
+msgid "Tiersprestataireapre.etaban"
+msgstr "Etablissement bancaire"
+
+msgid "Tiersprestataireapre.guiban"
+msgstr "N° du guichet banque"
+
+msgid "Tiersprestataireapre.numcomptban"
+msgstr "N° compte bancaire"
+
+msgid "Tiersprestataireapre.clerib"
+msgstr "Clé RIB"
+
+msgid "Tiersprestataireapre.aidesliees"
+msgstr "Tiers prestataire lié à quelle formation ?"
+###############################################################################
+# Lien entre Table Tiersprestataire et les Aides de Formation
+###############################################################################
+msgid "Formqualif.tiersprestataireapre_id"
+msgstr "Organisme de formation"
+
+msgid "Formpermfimo.tiersprestataireapre_id"
+msgstr "Organisme de formation"
+
+msgid "Actprof.tiersprestataireapre_id"
+msgstr "Nom de l'employeur"
+
+msgid "Permisb.tiersprestataireapre_id"
+msgstr "Nom de l'auto-école"
+

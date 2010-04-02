@@ -244,6 +244,7 @@
             $this->set( 'structures',   $this->Structurereferente->list1Options()  );
             $this->set( 'numdossierrsa',  $dossimple['Dossier']['numdemrsa']  );
             $this->set( 'datdemdossrsa',  $dossimple['Dossier']['dtdemrsa'] );
+            $this->set( 'matricule',  $dossimple['Dossier']['matricule'] );
             $this->set( 'orient_id', $personne['Orientstruct'][0]['typeorient_id']);
             $this->set( 'structure_id', $personne['Orientstruct'][0]['structurereferente_id']);
 

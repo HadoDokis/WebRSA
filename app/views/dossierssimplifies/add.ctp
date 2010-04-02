@@ -31,6 +31,7 @@
             <h2>Dossier RSA</h2>
             <?php echo $form->input( 'Dossier.numdemrsa', array( 'label' => required( 'Numéro de demande RSA' ) ) );?>
             <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => required( 'Date de demande' ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1 ) );?>
+            <?php echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF' ) );?>
             <div><?php echo $form->input( 'Foyer.id', array( 'label' => required( __( 'id', true ) ), 'type' => 'hidden') );?></div>
         </fieldset>
         <fieldset>

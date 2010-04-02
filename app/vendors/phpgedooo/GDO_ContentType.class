@@ -151,7 +151,7 @@ header("Content-type: $sMimeType");
 header("Content-disposition: attachment; filename=".$sFileName);
 header("Content-length: " . strlen($bContent));
 
-echo $bContent;
+die($bContent);
     }
 
 

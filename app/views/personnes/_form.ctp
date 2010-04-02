@@ -25,7 +25,7 @@
             <?php echo $form->input( 'Personne.prenom2', array( 'label' => __( 'prenom2', true ) ) );?>
             <?php echo $form->input( 'Personne.prenom3', array( 'label' => __( 'prenom3', true ) ) );?>
             <?php echo $form->input( 'Personne.typedtnai', array( 'label' => __( 'typedtnai', true ), 'type' => 'select', 'options' => $typedtnai, 'empty' => true ) );?>
-            <?php echo $form->input( 'Personne.dtnai', array( 'label' => required( __( 'dtnai', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
+            <?php echo $form->input( 'Personne.dtnai', array( 'label' => required( __( 'dtnai', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
             <?php echo $form->input( 'Personne.nomcomnai', array( 'label' => __( 'nomcomnai', true ) ) );?>
             <?php echo $form->input( 'Personne.rgnai', array( 'label' => __( 'rgnai', true ), 'maxlength' => 2) );?>
             <?php echo $form->input( 'Personne.nir', array( 'label' =>  __( 'nir', true ) ) );?>

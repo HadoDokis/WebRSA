@@ -16,6 +16,24 @@
     }
 ?>
 <?php
+    if( isset( $rdvs ) ) {
+        $paginator->options( array( 'url' => $this->passedArgs ) );
+        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+
+        $pages = $paginator->first( '<<' );
+        $pages .= $paginator->prev( '<' );
+        $pages .= $paginator->numbers();
+        $pages .= $paginator->next( '>' );
+        $pages .= $paginator->last( '>>' );
+
+        $pagination .= $html->tag( 'p', $pages );
+    }
+    else {
+        $pagination = '';
+    }
+?>
+<?php
     if( is_array( $this->data ) ) {
         echo '<ul class="actionMenu"><li>'.$html->link(
             $html->image(
@@ -40,6 +58,7 @@
         <?php echo $form->input( 'Critererdv.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Critererdv.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Critererdv.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
+        <?php echo $form->input( 'Critererdv.matricule', array( 'label' => 'N° CAF ', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Critererdv.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
@@ -55,6 +74,7 @@
 			?>
             <?php echo $form->input( 'Critererdv.statutrdv_id', array( 'label' => __( 'statutrdv', true ), 'type' => 'select' , 'options' => $statutrdv, 'empty' => true ) );?>
             <?php echo $form->input( 'Critererdv.structurereferente_id', array( 'label' => __( 'lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
+
             <?php echo $form->input( 'Critererdv.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
             <?php echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
 
@@ -90,15 +110,15 @@
 
     <?php if( is_array( $rdvs ) && count( $rdvs ) > 0  ):?>
 
-        <?php /*require( 'index.pagination.ctp' )*/?>
-        <table id="searchResults" class="tooltips_oupas">
+        <?php echo $pagination;?>
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
                     <th><?php echo $paginator->sort( 'Structure référente', 'Rendezvous.structurereferente_id' );?></th>
                     <th>Référent</th>
-                    <th><?php echo $paginator->sort( 'Type de RDV', 'Rendezvous.typerdv_id' );?></th>
+                    <th><?php echo $paginator->sort( 'Objet du RDV', 'Rendezvous.typerdv_id' );?></th>
                     <th><?php echo $paginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
                     <th>Heure du RDV</th>
                     <th><?php echo $paginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv_id' );?></th>
@@ -182,7 +202,7 @@
                 );
             ?></li>
         </ul>
-    <?php  /*require( 'index.pagination.ctp' )*/  ?>
+     <?php echo $pagination;?>
 
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>

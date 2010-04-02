@@ -45,13 +45,14 @@
 			$nLignesPresentes = 0;
 			$success = true;
 
-			$this->schema = array_keys( $this->Canton->schema() );
+			$this->schema = $this->Canton->schema();
 			$lines = explode( "\n", $this->csv->read() );
 
 			foreach( $lines as $line ) {
 				$nLignes++;
 				$parts = explode( ';', $line );
 				$cleanedParts = Set::filter( $parts );
+
 				if( !empty( $cleanedParts ) ) {
 					if( $nLignes == 1 ) {
 						foreach( $parts as $key => $part ) {
@@ -62,7 +63,7 @@
 						$canton = array( 'Canton' => array() );
 
 						foreach( $parts as $key => $part ) {
-							if( in_array( $fields[$key], $this->schema ) ) {
+							if( in_array( $fields[$key], array_keys( $this->schema ) ) ) {
 								$canton['Canton'][$fields[$key]] = $part;
 							}
 						}
@@ -70,21 +71,46 @@
 						$cleanedCanton = Set::filter( $canton['Canton'] );
 
 						if( !empty( $cleanedCanton ) ) {
+							// Mise en majuscules et suppression des accents
+							foreach( $this->schema as $field => $infos ) {
+								if( Set::classicExtract( $infos, 'type' ) == 'string' ) {
+									$canton['Canton'][$field] = strtoupper( replace_accents( $canton['Canton'][$field] ) );
+								}
+							}
+
 							// Si cette entrée n'est pas encore présente, on l'insère
 							if( $this->Canton->find( 'count', array( 'conditions' => array( $canton['Canton'] ) ) ) == 0 ) {
 								$this->Canton->create( $canton );
-								if( $tmpSuccess = $this->Canton->save() ) {
-									$nLignesTraitees++;
+								if( $tmpSuccess = $this->Canton->validates() ) {
+									if( $tmpSuccess = $this->Canton->save() ) {
+										$nLignesTraitees++;
+									}
+									$success =  $tmpSuccess && $success;
 								}
-								$success =  $tmpSuccess && $success;
+
+								// Si la sauvegarde n'a pas eu lieu, on affiche les erreurs
+								if( !$tmpSuccess ) {
+									echo "Sauvegarde échouée (ligne $nLignes): $line\n";
+									foreach( $this->Canton->validationErrors as $field => $error ) {
+										echo "\t$field ('".Set::classicExtract( $canton, "Canton.$field" )."') => $error\n";
+									}
+								}
 							}
 							else {
 								$nLignesPresentes++;
 							}
 						}
+						else {
+							echo "Ligne non traitée (ligne $nLignes): $line\n";
+						}
 					}
 				}
+				else {
+					echo "Ligne non traitée (ligne $nLignes): $line\n";
+				}
 			}
+
+			$this->hr();
 
             $message = "%s: $nLignes lignes trouvées, $nLignesTraitees lignes traitées, $nLignesPresentes lignes déjà présentes.\n";
 

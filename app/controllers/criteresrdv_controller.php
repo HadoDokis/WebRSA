@@ -9,7 +9,7 @@
         var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Typeorient', 'Option', 'Typerdv', 'Referent', 'Permanence', 'Statutrdv' );
         var $aucunDroit = array( 'constReq', 'ajaxreferent', 'ajaxperm' );
 
-        var $helpers = array( 'Csv', 'Ajax' );
+        var $helpers = array( 'Csv', 'Ajax', 'Paginator' );
 
         /** ********************************************************************
         *
@@ -108,7 +108,7 @@
         *
         ** ********************************************************************/
 
-       function index() {
+        function index() {
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', $this->Canton->selectList() );
 			}
@@ -118,8 +118,9 @@
             if( !empty( $this->data ) ) {
                 $this->Dossier->begin(); // Pour les jetons
 
-                $this->paginate = $this->Critererdv->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
-                $this->paginate['limit'] = 10;
+                $queryData = $this->Critererdv->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+                $queryData['limit'] = 10;
+                $this->paginate['Rendezvous'] = $queryData;
                 $rdvs = $this->paginate( 'Rendezvous' );
 
                 $this->Dossier->commit();
@@ -135,7 +136,7 @@
 
             // Population du select référents liés aux structures
             $structurereferente_id = Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' );
-            $referents = $this->Referent->_referentsListe( $structurereferente_id );
+            $referents = $this->Referent->referentsListe( $structurereferente_id );
             $this->set( 'referents', $referents );
         }
 
@@ -149,7 +150,7 @@
 
             // Population du select référents liés aux structures
             $structurereferente_id = Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' );
-            $referents = $this->Referent->_referentsListe( $structurereferente_id );
+            $referents = $this->Referent->referentsListe( $structurereferente_id );
             $this->set( 'referents', $referents );
 
             $this->layout = ''; // FIXME ?

@@ -2,6 +2,7 @@
 
 <?php
 
+
     if( !empty( $this->data ) ) {
         echo '<ul class="actionMenu"><li>'.$html->link(
             $html->image(
@@ -26,7 +27,24 @@
     }
 
 ?>
-
+<?php
+//     if( isset( $cohorte ) ) {
+//         $paginator->options( array( 'url' => $this->params['named'] ) );
+//         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+//         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+// 
+//         $pages = $paginator->first( '<< ' );
+//         $pages .= $paginator->prev( ' < ' );
+//         $pages .= $paginator->numbers();
+//         $pages .= $paginator->next( ' > ' );
+//         $pages .= $paginator->last( ' >>' );
+// 
+//         $pagination .= $html->tag( 'p', $pages );
+//     }
+//     else {
+//         $pagination = '';
+//     }
+?>
 <?php require_once( 'filtre.ctp' );?>
 
 <?php if( !empty( $this->data ) ):?>
@@ -43,8 +61,8 @@
         <p class="notice"><?php echo $message;?></p>
     <?php else:?>
         <p><?php echo sprintf( 'Nombre de pages: %s - Nombre de résultats: %s.', $locale->number( $pages ), $locale->number( $count ) );?></p>
-        <?php /*echo $pagination;*/ ?>
-        <table class="tooltips_oupas">
+        <?php /* echo $pagination;*/ ?>
+        <table class="tooltips">
             <thead>
                 <tr>
                     <!-- <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
@@ -134,8 +152,8 @@
                                 h( date_short( $personne['Contratinsertion']['dd_ci'] ) ),
                                 $html->printLink(
                                     'Imprimer la notification',
-                                    array( 'controller' => 'gedooos', 'action' => 'notification_structure', $personne['Personne']['id'] ),
-                                    $permissions->check( 'gedooos', 'notification_structure' )
+                                    array( 'controller' => 'gedooos', 'action' => 'orientstruct', $personne['Orientstruct']['id'] ),
+                                    $permissions->check( 'gedooos', 'orientstruct' )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),
@@ -147,19 +165,54 @@
             </tbody>
         </table>
         <?php /*echo $pagination;*/ ?>
+        <?php
+            $typeorientation = Set::classicExtract( $this->data, 'Filtre.typeorient' );
+
+            if( empty( $typeorientation ) ):?>
+
+            <p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $html->image( 'icons/error.png' );?> <strong>Attention</strong>, si vous souhaitez imprimer en cohorte, veuillez saisir un type d'orientation dans le formulaire ci-dessus.</p>
+        <?php else:?>
+
+        <?php echo $this->element( 'popup' );?>
+
+        <?php
+            /*echo $popup->link(
+                'click me',
+                array(
+                    'content' => 'Edition en cours ... <br /> Une fois terminée, veuillez cliquer ici afin de fermer cette fenêtre.'
+                )
+            );*/
+        ?>
+
         <ul class="actionMenu">
             <li><?php
-                echo $html->printCohorteLink(
+                echo $default->button(
+                    'printcohorte',
+                    Set::merge(
+                        array(
+                            'controller' => 'cohortes',
+                            'action'     => 'cohortegedooo'
+                        ),
+                        array_unisize( $this->data )
+                    ),
+                    array(
+                        'id' => 'Cohorteoriente',
+                        'onclick' => 'impressionCohorte( this );'
+                    )
+                );
+                /*echo $html->printCohorteLink(
                     'Imprimer la cohorte',
                     Set::merge(
                         array(
-                            'controller' => 'gedooos',
-                            'action'     => 'notifications_cohortes'
+                            'controller' => 'cohortes',
+                            'action'     => 'cohortegedooo',
+                            'id' => 'Cohorteoriente'
                         ),
                         array_unisize( $this->data )
                     )
-                );
+                );*/
             ?></li>
+
 
             <!--<li><?php
                 echo $html->exportLink(
@@ -170,5 +223,6 @@
                 );
             ?></li>-->
         </ul>
+        <?php endif;?>
     <?php endif;?>
 <?php endif;?>

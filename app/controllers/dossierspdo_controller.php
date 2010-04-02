@@ -3,7 +3,9 @@
     class DossierspdoController extends AppController{
 
         var $name = 'Dossierspdo';
-        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction', 'Piecepdo', 'PropopdoTypenotifpdo' );
+        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction', 'Piecepdo', 'PropopdoTypenotifpdo', 'Originepdo',  'Statutpdo', 'Situationpdo' );
+
+        var $helpers = array( 'Default' );
 
         function beforeFilter(){
             parent::beforeFilter();
@@ -16,6 +18,14 @@
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
             $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
+            $this->set( 'originepdo', $this->Originepdo->find( 'list' ) );
+
+            $this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
+            $this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
+
+            $options = $this->Propopdo->allEnumLists();
+            $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
+            $this->set( compact( 'options' ) );
         }
 
 
@@ -36,22 +46,22 @@
 
             /// Récupération des listes des PDO
             $options = $this->Dossierpdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
-            $pdo = $this->Propopdo->find( 'first', $options );
+            $pdos = $this->Propopdo->find( 'all', $options );
 
-            if( !empty( $pdo ) ){
+            if( !empty( $pdos ) ){
                 /// Récupération des Types de notification liées à la PDO
-                $notifs = $this->PropopdoTypenotifpdo->find( 'all', array( 'conditions' => array( 'PropopdoTypenotifpdo.propopdo_id' => Set::classicExtract( $pdo, 'Propopdo.id' )  ) ) );
+                $notifs = $this->PropopdoTypenotifpdo->find( 'all', array( 'conditions' => array( 'PropopdoTypenotifpdo.propopdo_id' => Set::extract( $pdos, '/Propopdo/id' )  ) ) );
 
                 /// Récupération des Pièces liées à la PDO
-                $piecespdos = $this->Piecepdo->find( 'all', array( 'conditions' => array( 'Piecepdo.propopdo_id' => Set::classicExtract( $pdo, 'Propopdo.id' )  ), 'order' => 'Piecepdo.dateajout DESC' ) );
-// debug($piecespdos);
+                $piecespdos = $this->Piecepdo->find( 'all', array( 'conditions' => array( 'Piecepdo.propopdo_id' => Set::extract( $pdos, '/Propopdo/id' )  ), 'order' => 'Piecepdo.dateajout DESC' ) );
+// debug($notifs);
                 $this->set( 'notifs', $notifs );
                 $this->set( 'piecespdos', $piecespdos );
             }
 
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
-            $this->set( 'pdo', $pdo );
-
+            $this->set( 'pdos', $pdos );
+// debug($pdos);
             $this->set( 'details', $details );
         }
 
@@ -92,16 +102,32 @@
         function _add_edit( $id = null ) {
             if( $this->action == 'add' ) {
                 $dossier_rsa_id = $id;
-                $nbrDossiers = $this->Dossier->find( 'count', array( 'conditions' => array( 'Dossier.id' => $dossier_rsa_id ), 'recursive' => -1 ) );
-                $this->assert( ( $nbrDossiers == 1 ), 'invalidParameter' );
+//                 $nbrDossiers = $this->Dossier->find( 'count', array( 'conditions' => array( 'Dossier.id' => $dossier_rsa_id ), 'recursive' => -1 ) );
+//                 debug($nbrDossiers);
+//                 $this->assert( ( $nbrDossiers == 0 ), 'invalidParameter' );
             }
             else if( $this->action == 'edit' ) {
                 $pdo_id = $id;
-                $pdo = $this->Propopdo->findById( $pdo_id, null, null, -1 );
+                $pdo = $this->Propopdo->findById( $pdo_id, null, null, 1 );
 //                 $typenotifpdo = $this->Typenotifpdo->Propopdo->findById( $pdo_id, null, null, -1 );
                 $this->assert( !empty( $pdo ), 'invalidParameter' );
                 $dossier_rsa_id = Set::classicExtract( $pdo, 'Propopdo.dossier_rsa_id' );
             }
+
+            $this->Dossier->Suiviinstruction->order = 'Suiviinstruction.id DESC';
+            $dossier = $this->Dossier->findById( $dossier_rsa_id, null, null, -1 );
+            // Recherche de la dernière entrée des suivis instruction  associée au dossier
+            $suiviinstruction = $this->Dossier->Suiviinstruction->find(
+                'first',
+                array(
+                    'conditions' => array( 'Suiviinstruction.dossier_rsa_id' => $dossier_rsa_id ),
+                    'order' => array( 'Suiviinstruction.date_etat_instruction DESC' ),
+                    'recursive' => -1
+                )
+            );
+            $dossier = Set::merge( $dossier, $suiviinstruction );
+
+            $this->set( compact( 'dossier' ) );
 
             $this->Propopdo->begin();
             if( !$this->Jetons->check( $dossier_rsa_id ) ) {
@@ -128,14 +154,17 @@
             }
             //Affichage des données
             else {
-                $this->data = $this->Propopdo->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
+                if( $this->action == 'edit' ) {
+                    $this->data = $pdo;
+                }
+                // $this->Propopdo->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
 
-                if( $this->action == 'add' ) {
-                    $this->assert( empty( $this->data ), 'invalidParameter' );
-                }
-                else if( $this->action == 'edit' ) {
-                    $this->assert( !empty( $this->data ), 'invalidParameter' );
-                }
+//                 if( $this->action == 'add' ) {
+//                     $this->assert( empty( $this->data ), 'invalidParameter' );
+//                 }
+//                 else if( $this->action == 'edit' ) {
+//                     $this->assert( !empty( $this->data ), 'invalidParameter' );
+//                 }
             }
             $this->Propopdo->commit();
 

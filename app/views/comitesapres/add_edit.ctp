@@ -14,8 +14,8 @@
 ?>
 
     <fieldset>
-        <?php echo $xform->input( 'Comiteapre.datecomite', array( 'label' => required( __( 'Date du comité', true ) ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ) );?>
-        <?php echo $xform->input( 'Comiteapre.heurecomite', array( 'label' => required( __( 'Heure du comité', true ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5, 'hourRange' => array( 8, 19 ), 'empty' => true ) );?>
+        <?php echo $xform->input( 'Comiteapre.datecomite', array( 'label' => required( __( 'Date du comité', true ) ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1 ) );?>
+        <?php echo $xform->input( 'Comiteapre.heurecomite', array( 'label' => required( __( 'Heure du comité', true ) ), 'type' => 'time', 'timeFormat' => '24', 'minuteInterval'=> 5, 'hourRange' => array( 8, 19 ), 'empty' => true ) );?>
         <?php echo $xform->input( 'Comiteapre.lieucomite', array( 'label' => required( __( 'Lieu du comité', true ) ), 'type' => 'text' ) );?> 
         <?php echo $xform->input( 'Comiteapre.intitulecomite', array( 'label' => required( __( 'Intitulé du comité', true ) ), 'type' => 'text' ) );?>
         <?php echo $xform->input( 'Comiteapre.observationcomite', array( 'label' => __( 'Observation du comité', true ), 'type' => 'text' ) );?>

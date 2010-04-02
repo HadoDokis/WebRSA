@@ -134,7 +134,7 @@
         * @return array $newArray
     */
 
-    function array_filter_keys( array $array, array $filterKeys, $remove = false ) { // FIXME ?
+    /*function array_filter_keys( array $array, array $filterKeys, $remove = false ) { // FIXME ?
         $newArray = array();
         foreach( $array as $key => $value) {
             if( $remove && !in_array( $key, $filterKeys ) ) {
@@ -145,7 +145,7 @@
             }
         }
         return $newArray;
-    }
+    }*/
 
 
     /**
@@ -309,17 +309,55 @@
         return $string;
     }
 
+	/**
+	* Retourne true pour un RIB bien formé, false pour un RIB mal formé
+	* INFO: http://fr.wikipedia.org/wiki/Cl%C3%A9_RIB#Algorithme_de_calcul_qui_fonctionne_avec_des_entiers_32_bits
+	*/
+
+	function validRib( $etaban, $guiban, $numcomptban, $clerib ) {
+		$replacements = array(
+			1 => array( 'A', 'J' ),
+			2 => array( 'B', 'K', 'S' ),
+			3 => array( 'C', 'L', 'T' ),
+			4 => array( 'D', 'M', 'U' ),
+			5 => array( 'E', 'N', 'V' ),
+			6 => array( 'F', 'O', 'W' ),
+			7 => array( 'G', 'P', 'X' ),
+			8 => array( 'H', 'Q', 'Y' ),
+			9 => array( 'I', 'R', 'Z' )
+		);
+
+		foreach( $replacements as $number =>  $letters ) {
+			foreach( $letters as $letter ) {
+				$numcomptban = str_replace( $letter, $number, $numcomptban );
+			}
+		}
+
+		$numcomptban1 = substr( $numcomptban, 0, 6 );
+		$numcomptban2 = substr( $numcomptban, 6, 5 );
+
+		return ( (int) $clerib == ( 97 - ( (89 * $etaban + 15 * $guiban + 76 * $numcomptban1 + 3 * $numcomptban2 ) % 97 ) ) );
+	}
+
+	/**
+	* Calcul l'âge en années à partir de la date de naissance.
+	* @param string $date date de naissance au format yyyy-mm-dd
+	* @return integer âge en années
+	*/
+
+    function age( $date ) {
+        list( $year, $month, $day ) = explode( '-', $date );
+        $today = time();
+        return date( 'Y', $today ) - $year + ( ( ( $month > date( 'm', $today ) ) || ( $month == date( 'm', $today ) && $day > date( 'd', $today ) ) ) ? -1 : 0 );
+    }
+
     /** ************************************************************************
     *
     *** ***********************************************************************/
 
     require_once( 'webrsa.inc' );
-
-    /** ************************************************************************
-    *
-    *** ***********************************************************************/
-
-    require_once( 'libs/xset.php' );
+    require_once( 'lib.basics.php' );
+    require_once( 'lib.xset.php' );
 
     /** ************************************************************************
     *
@@ -338,5 +376,62 @@
         $version = explode( '.', $versionData[count( $versionData) - 1] );
         return implode( '.', $version );
     }
+
+    /**
+    * @param array $array
+    * @param array $replacements
+    * @return array
+    */
+
+    /*function recursive_key_value_preg_replace( array $array, array $replacements ) {
+        $newArray = array();
+        foreach( $array as $key => $value ) {
+            foreach( $replacements as $pattern => $replacement ) {
+                $key = preg_replace( $pattern, $replacement, $key );
+            }
+
+            if( is_array( $value ) ) {
+                $value = recursive_key_value_preg_replace( $value, $replacements );
+            }
+            else {
+                foreach( $replacements as $pattern => $replacement ) {
+                    $value = preg_replace( $pattern, $replacement, $value );
+                }
+            }
+            $newArray[$key] = $value;
+        }
+        return $newArray;
+    }*/
+
+    /**
+    * INFO: http://fr.php.net/manual/fr/function.strpos.php#49739
+    */
+
+    /*function strallpos( $pajar, $aguja, $offset = 0, &$count = null ) {
+        if( $offset > strlen( $pajar ) ) {
+            trigger_error("strallpos(): Offset not contained in string.", E_USER_WARNING);
+        }
+        $match = array();
+        for( $count = 0; ( ( $pos = strpos( $pajar, $aguja, $offset ) ) !== false ); $count++ ) {
+            $match[] = $pos;
+            $offset = $pos + strlen( $aguja );
+        }
+        return $match;
+    }*/
+
+	require_once( 'app.enumerable.php' );
+	/// TODO: options par défaut pour dans les vues -> Configure::read( 'View.display.phone' );
+
+	Configure::write( 'Typeable.phone', array( 'country' => 'fr', 'maxlength' => 14/*, 'rule' => 'phoneFr'*/ ) );
+	Configure::write( 'Typeable.amount', array( 'currency' => 'EUR' ) );
+	Configure::write( 'Typeable.date', array( 'dateFormat' => 'DMY' ) );
+	Configure::write( 'Typeable.enum::presence',
+		array(
+			'type' => 'enum',
+			'domain' => 'default',
+			'options' => array( 'absent', 'present', 'excuse', 'remplace' )
+		)
+	);
+	Configure::write( 'Typeable.email', array( 'rule' => 'email' ) );
 //EOF
 ?>

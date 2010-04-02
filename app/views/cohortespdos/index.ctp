@@ -50,8 +50,8 @@
         <legend>Recherche PDO</legend>
         <?php echo $form->input( 'Cohortepdo.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
          <?php echo $form->input( 'Cohortepdo.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-        <?php echo $form->input( 'Cohortepdo.typepdo', array( 'label' => __( 'typepdo', true ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );?>
-        <?php echo $form->input( 'Cohortepdo.decisionpdo', array( 'label' => __( 'decisionpdo', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );?>
+        <?php echo $form->input( 'Cohortepdo.typepdo_id', array( 'label' => __( 'typepdo', true ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );?>
+        <?php echo $form->input( 'Cohortepdo.decisionpdo_id', array( 'label' => __( 'decisionpdo', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );?>
         <?php echo $form->input( 'Cohortepdo.datedecisionpdo', array( 'label' => __( 'datedecisionpdo', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80, 'empty' => true ) );?>
     </fieldset>
     <div class="submit noprint">
@@ -69,15 +69,15 @@
     <?php if( is_array( $cohortepdo ) && count( $cohortepdo ) > 0 ):?>
         <?php echo $form->create( 'GestionPDO', array( 'url'=> Router::url( null, true ) ) );?>
    <!-- <?php /*echo $pagination;*/?> -->
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'N° PDO', 'Pdo.id' );?></th>
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
                     <th><?php echo $paginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
                     <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Type de PDO', 'Pdo.typepdo' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Pdo.decisionpdo' );?></th>
+                    <th><?php echo $paginator->sort( 'Type de PDO', 'Pdo.typepdo_id' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Pdo.decisionpdo_id' );?></th>
                     <th><?php echo $paginator->sort( 'Décision PDO', 'Pdo.datedecisionpdo' );?></th>
                     <th class="action">Action</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
@@ -116,9 +116,9 @@
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
                             h( $pdo['Dossier']['typeparte'] ),
                             h( value( $etatdosrsa, Set::extract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
-                            h( value( $typedero, Set::extract( 'Pdo.typepdo', $pdo ) ) ),
+                            h( value( $typepdo, Set::extract( 'Pdo.typepdo_id', $pdo ) ) ),
                             h( date_short( Set::extract( 'Pdo.datedecisionpdo', $pdo ) ) ),
-                            h( value( $avisdero, Set::extract( 'Pdo.decisionpdo', $pdo ) ) ),
+                            h( value( $decisionpdo, Set::extract( 'Pdo.decisionpdo_id', $pdo ) ) ),
 
                             $html->viewLink(
                                 'Voir le contrat « '.$title.' »',

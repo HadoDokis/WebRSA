@@ -332,7 +332,16 @@
             );
         }
 
-        function duree_engag() {
+        function duree_engag_cg66() {
+            return array(
+                '1' => '3 mois',
+                '2' => '6 mois',
+                '3' => '9 mois',
+                '4' => '12 mois'
+            );
+        }
+
+        function duree_engag_cg93() {
             return array(
                 '1' => '3 mois',
                 '2' => '6 mois',
@@ -451,6 +460,37 @@
             );
         }
 
+        function fg() {
+            return array(
+                'SUS' => 'suspension',
+                'DESALL' => 'désignation allocataire',
+                'SITPRO' => 'situation professionnelle',
+                'INTGRO' => 'interruption grossesse',
+                'ETACIV' => 'état civil',
+                'SITENFAUT' => 'situation enfant/aut',
+                'RESTRIRSA' => 'ressources trimestrielles RSA',
+                'SITFAM' => 'situation famille',
+                'DECDEMPCG' => 'décision du Président du CG',
+                'CARRSA' => 'caractéristiques RSA',
+                'PROPCG' => 'proposition au Président CG',
+                'HOSPLA'  => 'hospitalisation placement',
+                'CIRMA' => 'Cirma ou Cav',
+                'SUIRMA' => 'Suivi de Cirma ou de Cav',
+                'RECPEN' => 'récépissé pension',
+                'TITPEN'  => 'titre de pension',
+                'REA' => 'réaffiliation (Fait générateur générique)',
+                'DERPRE'  => 'Dérogation du Président du CG',
+                'ABANEURES'  => 'abattement ou neuratisation de ressource',
+                'DEMRSA'  => 'demande de RSA (Fait générateur générique)',
+                'CREALI' => 'créance alimentaire',
+                'ASF'  => 'demande ASF',
+                'EXCPRE' => 'exclusion Prestation',
+                'ADR' => 'Adresse',
+                'RAD' => 'Radiation du dossier',
+                'MUT' => 'Mutation du dossier'
+            );
+        }
+
         function fonction_pers() {
             return array(
                 'ADM' => 'Administrateur',
@@ -510,6 +550,16 @@
 
         }
 
+        function motidiscrealim() {
+            return array(
+                'AVA' => 'Avantage en nature autre que le logement',
+                'LOG' => 'Logement fourni par les parents',
+                'PAM' => 'Pension à l\'amiable',
+                'PHE' => 'Parent hors d\'état ou décédé',
+                'AUT' => 'Autre motif de dispense'
+            );
+
+        }
 //         function motideccg() { ///FIXME: ajout pour les PDO mais à voir
 //             return array(
 //                 'E' => 'En attente de justificatif',
@@ -1048,13 +1098,35 @@
             );
         }
 
+        function orioblalim() {
+            return array(
+                'CJT' => 'Obligation ex-conjoint',
+                'PAR' => 'Obligation parent(s)'
+            );
+        }
 
-
+        function parassoasf() {
+            return array(
+                'P' => 'Père',
+                'M' => 'Mère'
+            );
+        }
 
         function pays() {
             return array(
                 'FRA' => 'France',
                 'HOR' => 'Hors de France'
+            );
+        }
+
+        function paysact() {
+            return array(
+                'FRA' => 'France',
+                'LUX' => 'Luxembourg',
+                'CEE' => 'Communauté Européenne (sauf France, et  Luxembourg)',
+                'ACE' => 'Assimilé à la Communauté Européenne',
+                'CNV' => 'Pays avec convention sauf CEE',
+                'AUT' => 'Autres pays'
             );
         }
 
@@ -1081,10 +1153,44 @@
             );
         }
 
+        ///FIXME: voir si on peut mieux faire, vu que pour les mois de 30 jours ou Fevrier ça pose problème
+        function quinzaine() {
+            return array(
+                '1' => 'Première quinzaine',
+                '2' => 'Deuxième quinzaine'
+            );
+        }
+
         function raison_ci() {
             return array(
                 'S' => 'Suspension',
                 'R' => 'Radiation'
+            );
+        }
+
+        function reg() {
+            return array(
+                'AA' => 'ARTISTE/AUTEUR/COMPOSITEUR',
+                'AD' => 'PF DUES PAR ADMINIS. (NON RETRAITE)',
+                'AG' => 'AGRICOLE',
+                'AL' => 'PF DUES PAR ADMINIS. SAUF AL',
+                'AM' => 'ADMINIS. DROIT PF CAF (NON RETRAITE)',
+                'CL' => 'COLLECT. LOCALE/HOPIT (NON RETRAITE)',
+                'EF' => 'EDF - GDF',
+                'EN' => 'EDUCATION NATIONALE',
+                'FP' => 'FONCTION PUBLIC HORS EDUC. NAT.',
+                'FT' => 'FRANCE TELECOM',
+                'GE' => 'GENERAL',
+                'MC' => 'MARIN DE COMMERCE',
+                'MI' => 'MINES - REGIME MINIER',
+                'MO' => 'MINES - REGIME GENERAL',
+                'NI'  => 'NAVIGATION INTERIEURE',
+                'PM' => 'PECHE',
+                'PT'  => 'LA POSTE',
+                'RE' => 'RETRAITE ETAB. INDUSTRIEL ETAT',
+                'RL'  => 'RETRAITE COLLECT. LOCALE/HOPIT.',
+                'RP' => 'PERSONNEL RATP',
+                'SN'  => 'S.N.C.F.'
             );
         }
 
@@ -1168,6 +1274,21 @@
             );
         }
 
+        function sitasf(){
+            return array(
+                'DC' => 'HORS D\'ETAT',
+                'NR' => 'ENFANT NON RECONNU',
+                'HB' => 'HORS D\'ETAT',
+                'OE' => 'ABANDON - SANS JUGEMENT',
+                'PA' => 'ABANDON - JUGEMENT SANS PENSION',
+                'TP' => 'ABANDON - PENSION FIXEE',
+                'AS' => 'SITUATION NON DROIT',
+                'AD' => 'ALLOCATION ADOPTION',
+                'RS' => 'ASF SUITE A RSA'
+            );
+       }
+
+
         function sitfam(){
             return array(
                 'ABA' => 'Disparu (jugement d\'absence)',
@@ -1236,6 +1357,7 @@
             );
         }
 
+
         function statutrdv() {
             return array(
                 'P' => 'Prévu',
@@ -1266,6 +1388,13 @@
             );
         }
 
+        function topdemdisproccrealim() {
+            return array(
+                '1' => 'Demande de dispense',
+                '0' => 'Pas de demande de dispense'
+            );
+        }
+
         function topcreaentre() {
             return array(
                 '1' => 'Créateur d\'entreprise',
@@ -1291,6 +1420,13 @@
             return array(
                 '1' => 'le foyer est soumis à Droits et devoirs (le montant des ressources d\'acitivtés (MTRESSMENRSA) pris en compte pour le rSa est inférieur  au montant du revenu minimum garanti  rSa (MTREVMINGARASA)',
                 '0' =>  'le foyer n\'est pas soumis à Droits et devoirs (le montant des ressources d\'acitivtés (MTRESSMENRSA) pris en compte pour le rSa est supérieur ou égale au montant du revenu minimum garanti  rSa (MTREVMINGARASA)'
+            );
+        }
+
+        function topjugpa() {
+            return array(
+                '1' => 'Jugement fixant une pension alimentaire',
+                '0' => 'Pas de jugement fixant une pension alimentaire'
             );
         }
 

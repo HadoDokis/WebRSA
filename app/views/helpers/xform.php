@@ -1,43 +1,77 @@
 <?php
 	App::import( 'Helper', 'Form' );
- 	//define( 'REQUIRED_MARK', '<abbr class="required" title="Champ obligatoire">*</abbr>' );
+
+	if( !defined( 'REQUIRED_MARK' ) ) {
+		define( 'REQUIRED_MARK', '<abbr class="required" title="'.__( 'Validate::notEmpty', true ).'">*</abbr>' );
+	}
 
     class XformHelper extends FormHelper
     {
+
+		/**
+		* FIXME docs
+		*
+		* @access public
+		*/
+
         var $helpers = array( 'Html' );
 
-        /** ********************************************************************
-        *
-        ** ********************************************************************/
+
+		/**
+		* FIXME docs
+		*
+		* @access public
+		*/
+
+		var $inputDefaults = array();
+
+
+		/**
+		* FIXME docs
+		*
+		* @access public
+		*/
 
 		function create( $model = null, $options = array() ) {
-			if( !array_any_key_exists( array( 'url', 'controller', 'action' ), $options ) ) {
+			if( !Xset::anykey( array( 'url', 'controller', 'action' ), $options ) ) {
 				$options['url'] = Router::url( null, true );
 			}
+
+			$this->inputDefaults = Set::merge( $this->inputDefaults, Set::classicExtract( $options, 'inputDefaults' ) );
+            unset( $options['inputDefaults'] );
 			return parent::create( $model, $options );
 		}
 
-        /** ********************************************************************
-        *
-        ** ********************************************************************/
+		/**
+		* FIXME docs
+		*
+		* @access public
+		*/
 
 		function submit( $caption = null, $options = array() ) {
 			return parent::submit( __( $caption, true ), $options );
 		}
 
-        /** ********************************************************************
-        *
-        ** ********************************************************************/
+		/**
+		* FIXME docs
+		*
+		* @access public
+		*/
 
 		function required( $label ) {
 			return h( $label ).' '.REQUIRED_MARK;
 		}
 
-        /** ********************************************************************
-        *
-        ** ********************************************************************/
+		/**
+		* FIXME docs
+		*
+		* @access public
+		*/
 
         function _label( $label, $options ) {
+			// FIXME
+			$options = Set::merge( $this->inputDefaults, $options );
+
             $type = Set::extract( $options, 'type' );
             if( $type == 'hidden' ) {
                 return false;
@@ -61,20 +95,227 @@
 			return $label;
         }
 
-        /** ********************************************************************
-        *
-        ** ********************************************************************/
+		/**
+		* FIXME docs
+		*
+		* @access protected
+		*/
 
-        function input( $fieldName, $options = array() ) {
-            $defaultOptions['label'] = $this->_label( $fieldName, $options );
+        function _input( $fieldName, $options = array() ) {
+			$options = Set::merge( $this->inputDefaults, $options );
+
+			if( !isset( $options['label'] ) ) {
+				$options['label'] = $this->_label( $fieldName, $options );
+			}
+
+			if( isset( $options['multiple'] ) && !empty( $options['multiple'] ) ) {
+				if( !empty( $options['label'] ) && !isset( $options['legend'] ) ) {
+					$options['legend'] = $options['label'];
+				}
+				$options['label'] = false;
+			}
+
             unset( $options['required'] );
 			unset( $options['domain'] );
-            return parent::input( $fieldName, Set::merge( $defaultOptions, $options ) );
+
+            return parent::input( $fieldName, $options );
         }
 
-        /** ********************************************************************
+		/**
+		* FIXME docs
+		*
+		* @access public
+		*/
+
+        function input( $fieldName, $options = array() ) {
+// 			$options = Set::merge( $this->inputDefaults, $options );
+//
+//             $defaultOptions['label'] = $this->_label( $fieldName, $options );
+//             unset( $options['required'] );
+// 			unset( $options['domain'] );
+//
+// 			$options = Set::merge( $defaultOptions, $options );
+//
+// 			if( isset( $options['multiple'] ) && !empty( $options['multiple'] ) ) {
+// 				if( isset( $options['label'] ) && !isset( $options['legend'] ) ) {
+// 					$options['legend'] = $options['label'];
+// 					$options['label'] = false;
+// 				}
+// 			}
+
+			if( isset( $options['multiple'] ) && !empty( $options['multiple'] ) ) {
+				return $this->multiple( $fieldName, $options );
+			}
+
+            return $this->_input( $fieldName, $options );
+        }
+
+		/**
+		* FIXME docs
+		*
+		* @access public
+		*/
+
+        function multiple( $fieldName, $options = array() ) {
+            $errors = Set::extract( $this->validationErrors, $fieldName );
+            $htmlAttributes = array( 'class' => 'multiple' );
+            if( !empty( $errors ) ) {
+                $htmlAttributes['class'] = $htmlAttributes['class'].' error';
+            }
+
+			// FIXME: legend
+            $label = Set::extract( $options, 'label' );
+            if( empty( $label ) ) {
+                $label =  $this->_label( $fieldName, $options );
+            }
+
+			unset( $options['label'] );
+
+            return $this->Html->tag(
+                'fieldset',
+                $this->Html->tag( 'legend', $label ).
+					// /*Set::merge( $options, array( 'label' => false, 'div' => false, 'multiple' => 'multiple' ) )*/
+                    $this->_input( $fieldName, $options ),
+                $htmlAttributes
+            );
+        }
+
+		/**
+		* INFO: day/month/year -> permet d'envoyer un formulaire de recherche
+		* en prg avec des champs date_from et date_to sans erreur
+		*/
+
+		/**
+		* Returns a SELECT element for days.
+		*
+		* @param string $fieldName Prefix name for the SELECT element
+		* @param string $selected Option which is selected.
+		* @param array	 $attributes HTML attributes for the select element
+		* @param mixed $showEmpty Show/hide the empty select option
+		* @return string
+		*/
+
+		function day($fieldName, $selected = null, $attributes = array(), $showEmpty = true) {
+			if ((empty($selected) || $selected === true) && $value = $this->value($fieldName)) {
+				if (is_array($value)) {
+					/*extract($value);
+					$selected = $day;*/
+					$selected = Set::classicExtract( $value, 'day' );
+				} else {
+					if (empty($value)) {
+						if (!$showEmpty) {
+							$selected = 'now';
+						}
+					} else {
+						$selected = $value;
+					}
+				}
+			}
+
+			if (strlen($selected) > 2) {
+				$selected = date('d', strtotime($selected));
+			} elseif ($selected === false) {
+				$selected = null;
+			}
+			return $this->select(
+				$fieldName . ".day", $this->__generateOptions('day'), $selected, $attributes, $showEmpty
+			);
+		}
+
+		/**
+		* Returns a SELECT element for years
+		*
+		* @param string $fieldName Prefix name for the SELECT element
+		* @param integer $minYear First year in sequence
+		* @param integer $maxYear Last year in sequence
+		* @param string $selected Option which is selected.
+		* @param array $attributes Attribute array for the select elements.
+		* @param boolean $showEmpty Show/hide the empty select option
+		* @return string
+		*/
+
+		function year($fieldName, $minYear = null, $maxYear = null, $selected = null, $attributes = array(), $showEmpty = true) {
+			if ((empty($selected) || $selected === true) && $value = $this->value($fieldName)) {
+				if (is_array($value)) {
+					/*extract($value);
+					$selected = $year;*/
+					$selected = Set::classicExtract( $value, 'year' );
+				} else {
+					if (empty($value)) {
+						if (!$showEmpty && !$maxYear) {
+							$selected = 'now';
+
+						} elseif (!$showEmpty && $maxYear && !$selected) {
+							$selected = $maxYear;
+						}
+					} else {
+						$selected = $value;
+					}
+				}
+			}
+
+			if (strlen($selected) > 4 || $selected === 'now') {
+				$selected = date('Y', strtotime($selected));
+			} elseif ($selected === false) {
+				$selected = null;
+			}
+			$yearOptions = array('min' => $minYear, 'max' => $maxYear);
+			return $this->select(
+				$fieldName . ".year", $this->__generateOptions('year', $yearOptions),
+				$selected, $attributes, $showEmpty
+			);
+		}
+		/**
+		* Returns a SELECT element for months.
+		*
+		* Attributes:
+		*
+		* - 'monthNames' is set and false 2 digit numbers will be used instead of text.
+		*
+		* @param string $fieldName Prefix name for the SELECT element
+		* @param string $selected Option which is selected.
+		* @param array $attributes Attributes for the select element
+		* @param boolean $showEmpty Show/hide the empty select option
+		* @return string
+		*/
+
+		function month($fieldName, $selected = null, $attributes = array(), $showEmpty = true) {
+			if ((empty($selected) || $selected === true) && $value = $this->value($fieldName)) {
+				if (is_array($value)) {
+					/*extract($value);
+					$selected = $month;*/
+					$selected = Set::classicExtract( $value, 'month' );
+				} else {
+					if (empty($value)) {
+						if (!$showEmpty) {
+							$selected = 'now';
+						}
+					} else {
+						$selected = $value;
+					}
+				}
+			}
+
+			if (strlen($selected) > 2) {
+				$selected = date('m', strtotime($selected));
+			} elseif ($selected === false) {
+				$selected = null;
+			}
+			$defaults = array('monthNames' => true);
+			$attributes = array_merge($defaults, (array) $attributes);
+			$monthNames = $attributes['monthNames'];
+			unset($attributes['monthNames']);
+
+			return $this->select(
+				$fieldName . ".month",
+				$this->__generateOptions('month', array('monthNames' => $monthNames)),
+				$selected, $attributes, $showEmpty
+			);
+		}
+
+        /**
         *
-        ** ********************************************************************/
+        */
 
         function address( $fieldName, $options = array() ) {
             $options['type'] = 'textarea';
@@ -86,45 +327,21 @@
             return parent::input( $fieldName, $options );
         }
 
-        /** ********************************************************************
+        /**
         *   FIXME: en cas de fieldset (type => options), il n'y a pas de
         *   traduction automatique
-        ** ********************************************************************/
+        */
 
         function enum( $fieldName, $options = array() ) {
-			$domain = strtolower( preg_replace( '/^([^\.]+)\..*$/', '\1', $fieldName ) );
-			$defaultOptions = array(
-				'domain' => $domain,
-				'type' => 'select',
-				'empty' => ''
-			);
-            unset( $options['required'] );
-            unset( $options['domain'] );
-            return self::input( $fieldName, Set::merge( $defaultOptions, $options ) );
-        }
-
-        /** ********************************************************************
-        *
-        ** ********************************************************************/
-
-        function multiple( $fieldName, $options = array() ) {
-            $errors = Set::extract( parent::validationErrors, $fieldName );
-            $htmlAttributes = array( 'class' => 'multiple' );
-            if( !empty( $errors ) ) {
-                $htmlAttributes['class'] = $htmlAttributes['class'].' error';
-            }
-
-            $label = Set::extract( $options, 'label' );
-            if( empty( $label ) ) {
-                $label =  $this->_label( $fieldName, $options );
-            }
-
-            return $this->Html->tag(
-                'fieldset',
-                $this->Html->tag( 'legend', $label ).
-                    $this->input( $fieldName,  Set::merge( $options, array( 'label' => false, 'div' => false, 'multiple' => 'multiple' ) ) ),
-                $htmlAttributes
+            $domain = strtolower( preg_replace( '/^([^\.]+)\..*$/', '\1', $fieldName ) );
+            $defaultOptions = array(
+                'domain' => $domain,
+                'type' => 'select',
+                'empty' => ''
             );
+//             unset( $options['required'] );
+//             unset( $options['domain'] );
+            return self::input( $fieldName, Set::merge( $defaultOptions, $options ) );
         }
 
         /** ********************************************************************

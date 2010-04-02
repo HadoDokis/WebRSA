@@ -10,7 +10,7 @@
         <p class="notice">Ce dossier ne possède pas d'indus.</p>
 
     <?php else:?>
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th>NIR</th>

@@ -3,7 +3,7 @@
     {
 
         var $name = 'Relancesapres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'Referentapre', 'Prestation', 'Dsp', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Apre', 'Relanceapre' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'Prestation'/*, 'Dsp'*/, 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Apre', 'Relanceapre' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxpiece' );
 
@@ -17,6 +17,7 @@
             $this->set( 'options', $options );
             $piecesapre = $this->Apre->Pieceapre->find( 'list' );
             $this->set( 'piecesapre', $piecesapre );
+            $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
         }
 
         /** ********************************************************************
@@ -28,7 +29,7 @@
             $dataApre_id = Set::extract( $this->data, 'Relanceapre.apre_id' );
             $apre_id = ( empty( $apre_id ) && !empty( $dataApre_id ) ? $dataApre_id : $apre_id );
 
-            $apre = $this->Referentapre->Apre->findbyId( $apre_id, null, null, 1 );
+            $apre = $this->Apre->findbyId( $apre_id, null, null, 1 );
             $this->set( 'apre', $apre );
 
             $this->render( 'ajaxpiece', 'ajax' );

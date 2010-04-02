@@ -1,7 +1,7 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche par contrats d\'insertion';?>
+<?php $this->pageTitle = 'Recherche par contrats d\'engagement réciproque';?>
 
-<h1>Recherche par Contrat d'insertion</h1>
+<h1>Recherche par Contrat d'engagement réciproque</h1>
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
@@ -41,10 +41,11 @@
         <?php echo $form->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Filtre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
+        <?php echo $form->input( 'Filtre.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Filtre.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
-        <legend>Recherche par Contrat d'insertion</legend>
+        <legend>Recherche par Contrat d'engagement réciproque</legend>
             <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
             <?php echo $form->input( 'Filtre.date_saisi_ci', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
             <fieldset>
@@ -87,12 +88,12 @@
     <?php if( is_array( $contrats ) && count( $contrats ) > 0  ):?>
 
         <?php require( 'index.pagination.ctp' )?>
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Référent lié', 'Contratinsertion.referent_id' );?></th>
+                    <th><?php echo $paginator->sort( 'Référent lié', 'PersonneReferent.referent_id' );?></th>
                     <th><?php echo $paginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
                     <th><?php echo $paginator->sort( 'Date de saisie du contrat', 'Contratinsertion.date_saisi_ci' );?></th>
                     <th><?php echo $paginator->sort( 'Rang du contrat', 'Contratinsertion.rg_ci' );?></th>
@@ -131,7 +132,7 @@
                             array(
                                 h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
                                 h( $contrat['Adresse']['locaadr'] ),
-                                h( value( $referents, Set::classicExtract( $contrat, 'Contratinsertion.referent_id' ) ) ),
+                                h( value( $referents, Set::classicExtract( $contrat, 'PersonneReferent.referent_id' ) ) ),
                                 h( $contrat['Dossier']['matricule'] ),
                                 h( $locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.date_saisi_ci' ) ) ),//date_short( $contrat['Contratinsertion']['date_saisi_ci'] ) ),
                                 h( $contrat['Contratinsertion']['rg_ci'] ),

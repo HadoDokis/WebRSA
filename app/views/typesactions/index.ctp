@@ -1,5 +1,5 @@
 <?php $this->pageTitle = 'Paramétrage des types d\'actions d\'insertion';?>
-
+<?php echo $xform->create( 'Typeaction' );?>
 <div>
     <h1><?php echo 'Visualisation de la table  ';?></h1>
 
@@ -44,4 +44,11 @@
         </table>
 </div>
 </div>
+    <div class="submit">
+        <?php
+            echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+
 <div class="clearer"><hr /></div>
+<?php echo $xform->end();?>

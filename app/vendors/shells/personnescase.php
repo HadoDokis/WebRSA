@@ -1,108 +1,223 @@
 <?php
-	// http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-1.TXT
-
-//     function replace_accents( $string ) {
-//         $accents = array(
-// 			'[âàÂÀ]',
-// 			'[çÇ]',
-// 			'[éêèëÉÊÈË]',
-// 			'[îïÎÏ]',
-// 			'[ôöÔÖ]',
-// 			'[ûùÛÙ]'
-// 		);
-//
-//         $replace = array(
-// 			'a',
-// 			'c',
-// 			'e',
-// 			'i',
-// 			'o',
-// 			'u'
-// 		);
-//
-//         foreach( $accents as $key => $accent ) {
-//             $string = mb_ereg_replace( $accent, $replace[$key], $string );
-//         }
-//
-//         return $string;
-//     }
-
-	//echo strtoupper( replace_accents( $result['nom'].' '.$result['prenom']."\n" ) );
-
-	// *************************************************************************
-
     class PersonnescaseShell extends Shell
     {
         var $uses = array( 'Personne' );
+		var $updateIds = true;
+		var $logfile = 'logfile-%s.txt';
+		var $debug = '';
+		var $doDebug = true;
+
+		var $tables = array( 'personnes_referents', 'activites', 'allocationssoutienfamilial', 'avispcgpersonnes', 'calculsdroitsrsa', 'contratsinsertion', 'creancesalimentaires', /*'creancesalimentaires_personnes',*/ 'dossierscaf', 'dspps', 'grossesses', 'informationseti', 'infosagricoles', 'orientsstructs', 'prestations', 'rattachements', 'rendezvous', 'ressources', 'titres_sejour' );
+		var $dependances = array(
+				'dspps' => array(
+					'dspps_accoemplois',
+					'dspps_difdisps',
+					'dspps_difsocs',
+					'dspps_nataccosocindis',
+					'dspps_natmobs',
+					'dspps_nivetus'
+				)
+			);
+
+		/**
+		*
+		*/
+
+		function cleanRecords( $table, $personneAppliId, $personneXmlId ) {
+			$success = true;
+			$sql = "SELECT * FROM $table WHERE personne_id = $personneAppliId";
+			$recordsAppli = $this->Personne->query( $sql );
+
+			$sql = "SELECT * FROM $table WHERE personne_id = $personneXmlId";
+			$recordsXml = $this->Personne->query( $sql );
+
+			if( !( empty( $recordsAppli ) && empty( $recordsXml ) ) ) {
+				if( empty( $recordsAppli ) ) {
+					$pIdToKeep = $personneXmlId;
+					$pIdToDelete = $personneAppliId;
+				}
+				else if( empty( $recordsXml ) ) {
+					$pIdToKeep = $personneAppliId;
+					$pIdToDelete = $personneXmlId;
+				}
+				else {
+					// FIXME: voir quelles entrées sont bonnes
+					if( in_array( $table, array( 'creancesalimentaires', 'dspps', 'orientsstructs' ) ) ) {
+						$pIdToKeep = $personneAppliId;
+						$pIdToDelete = $personneXmlId;
+					}
+					else {
+						$pIdToKeep = $personneXmlId;
+						$pIdToDelete = $personneAppliId;
+					}
+				}
+
+				///
+				if( $pIdToKeep == $personneXmlId ) {
+					$recordsToUpdate = $recordsXml;
+					$recordsToDelete = $recordsAppli;
+				}
+				else {
+					$recordsToUpdate = $recordsAppli;
+					$recordsToDelete = $recordsXml;
+				}
+
+				///
+				if( !empty( $recordsToDelete ) ) {
+					if( $table == 'dspps' ) {
+						if( isset( $this->dependances[$table] ) ) {
+							$fk = strtolower( Inflector::classify( $table ) ).'_id';
+
+							foreach( $this->dependances[$table] as $tableLiee ) {
+								$sql = "DELETE FROM $tableLiee WHERE $fk = ( SELECT id FROM $table WHERE personne_id = ".$pIdToDelete." );";
+								if( $this->doDebug ) $this->debug .= $sql."\n";
+								$this->Personne->query( $sql );
+							}
+						}
+					}
+
+					$sql = "DELETE FROM $table WHERE personne_id = ".$pIdToDelete.";";
+					if( $this->doDebug ) $this->debug .= $sql."\n";
+					$this->Personne->query( $sql );
+				}
+
+				if( !empty( $recordsToUpdate ) && ( $personneXmlId != $pIdToKeep ) ) {
+					$sql = "UPDATE $table SET personne_id = ".$personneXmlId." WHERE personne_id = ".$pIdToKeep.";";
+					if( $this->doDebug ) $this->debug .= $sql."\n";
+					$this->Personne->query( $sql );
+				}
+
+				if( $this->doDebug ) {
+					ob_start();
+					debug(
+						array(
+							$recordsAppli,
+							$recordsXml
+						)
+					);
+					$this->debug .= "\n".ob_get_clean()."\n";
+				}
+			}
+			return $success; // FIXME
+		}
+
+		/**
+		*
+		*/
+
+        function startup() {
+			$this->logfile = APP_DIR.'/tmp/logs/'.str_replace( 'shell', '', strtolower( $this->name ) ).'-%s.txt';
+		}
+
+		/**
+		*
+		*/
 
         function main() {
-            /** ****************************************************************
-            *   Démarrage du script
-            *** ***************************************************************/
-
+            ///   Démarrage du script
             $this_start = microtime( true );
             echo "Demarrage du script: ".date( 'Y-m-d H:i:s' )."\n";
 
 			$this->Personne->begin();
             $success = true;
-
-            /** ****************************************************************
-			*
-            *** ***************************************************************/
-
 			$doublons = 0;
 			$changements = 0;
-			$sql = "SELECT * FROM personnes WHERE nom !~ '^([A-Z]|-| |\')+$' OR  prenom !~ '^([A-Z]|-| |\')+$' OR nomnai IS NULL OR nomnai = '';";
-			$results = $this->Personne->query( $sql );
+			//$countXml = array();
 
-			echo sprintf( "%s personnes à traiter\n", count( $results ) );
+			/// Recherche des personnes rentrées à la main
+			//$exemple = array( 1463, 58679 );
+// 			$exemple = array( 1463, 58679 );
+			$sql = "SELECT * FROM personnes WHERE ( nom !~ '^([A-Z]|-| |\')+$' OR  prenom !~ '^([A-Z]|-| |\')+$' OR nomnai IS NULL OR nomnai = '' );";
+			// /* AND personnes.id IN ( ".implode( ", ", $exemple )." )*/ LIMIT 5 OFFSET 10
+			$personneApplis = $this->Personne->query( $sql );
 
-			foreach( $results as $result ) {
-				$result = $result[0];
-				$resultXml = $this->Personne->find(
+			echo sprintf( "%s personnes à traiter\n", count( $personneApplis ) );
+
+            /**
+                // Voir les autres doublons ... problème: quel tuple doit-on garder ?
+                SELECT p1.*
+                    FROM personnes AS p1, personnes AS p2
+                    WHERE p1.nir = p2.nir
+                        AND p1.id <> p2.id
+                        AND p1.foyer_id = p2.foyer_id
+                        AND p1.nir <> '' AND p1.nir IS NOT NULL
+                    ORDER BY p1.nom ASC, p1.prenom ASC, p1.id ASC
+            */
+
+			$this->hr();
+
+			if( $this->updateIds ) {
+				echo "Mise à jour des ids\n";
+			}
+
+			/// Mise à jour des ids
+			foreach( $personneApplis as $personneAppli ) {
+				$personneAppli = $personneAppli[0];
+
+				if( $this->doDebug ) {
+					$sql = "SELECT * FROM personnes WHERE id <> ".$personneAppli['id'].
+								" AND nom = '".strtoupper( $personneAppli['nom'] )."'".
+								" AND prenom = '".strtoupper( $personneAppli['prenom'] )."'".
+								" AND dtnai = '".date( 'Y-m-d',  strtotime( $personneAppli['dtnai'] ) )."'".
+								" AND foyer_id = '".$personneAppli['foyer_id']."';";
+					$this->debug .= $sql."\n";
+				}
+
+				$personneXml = $this->Personne->find(
 					'first',
 					array(
 						'conditions' => array(
-							'Personne.id <>' => $result['id'],
-							'Personne.nom' => strtoupper( $result['nom'] ),
-							'Personne.prenom' => strtoupper( $result['prenom'] ),
-							'Personne.dtnai' => $result['dtnai']
+							'Personne.id <>' => $personneAppli['id'],
+							'Personne.nom' => strtoupper( $personneAppli['nom'] ),
+							'Personne.prenom' => strtoupper( $personneAppli['prenom'] ),
+							'Personne.dtnai' => date( 'Y-m-d',  strtotime( $personneAppli['dtnai'] ) ),
+							'Personne.foyer_id' => $personneAppli['foyer_id']
 						),
 						'recursive' => -1
 					)
 				);
-				if( !empty( $resultXml ) ) {
-					$doublons++;
+				$personneXml = $personneXml['Personne'];
 
-					$tables = array( 'activites', 'allocationssoutienfamilial', 'avispcgpersonnes', 'calculsdroitsrsa', 'contratsinsertion', 'creancesalimentaires', 'dossierscaf', 'dspps', 'grossesses', 'informationseti', 'infosagricoles', 'orientsstructs', 'prestations', 'rendezvous', 'ressources', 'titres_sejour' );
-					foreach( $tables as $table ) {
-						$nombre = $this->Personne->query( "SELECT COUNT(id) FROM $table WHERE personne_id = ".$result['id'].";" );
-						if( Set::classicExtract( $nombre, '0.0.count' ) > 0 ) {
-							$this->Personne->query( "UPDATE $table SET personne_id = ".$resultXml['Personne']['id']." WHERE personne_id = ".$result['id'].";" );
+				if( $this->updateIds ) {
+					if( !empty( $personneXml ) ) {
+						$doublons++;
+
+						foreach( $this->tables as $table ) {
+							$success = $this->cleanRecords( $table, $personneAppli['id'], $personneXml['id'] ) && $success;
 						}
-					}
-					$success = $this->Personne->delete( $result['id'] ) && $success;
-					if( !$success ) { debug( !$success ); }
-				}
-				else {
-					$changements++;
 
-					$personne = array( 'Personne' => Set::filter( $result ) ); // FIXME ?
-					$personne['Personne']['nom'] = strtoupper( replace_accents( $personne['Personne']['nom'] ) );
-					$personne['Personne']['prenom'] = strtoupper( replace_accents( $personne['Personne']['prenom'] ) );
-					if( empty( $personne['Personne']['nomnai'] ) ) {
-						$personne['Personne']['nomnai'] = $personne['Personne']['nom'];
+						$sql = "DELETE FROM personnes WHERE id = ".$personneAppli['id'].";";
+						if( $this->doDebug ) $this->debug .= $sql."\n";
+
+						$success = $this->Personne->delete( $personneAppli['id'] ) && $success;
+						if( !$success ) die();
 					}
+					// Mise en majuscule de nom, prénom, et remplissage de nomnai
 					else {
-						$personne['Personne']['nomnai'] = strtoupper( replace_accents( $personne['Personne']['nomnai'] ) );
+						$changements++;
+
+						$personne = array( 'Personne' => Set::filter( $personneAppli ) ); // FIXME ?
+						$personne['Personne']['nom'] = strtoupper( replace_accents( $personne['Personne']['nom'] ) );
+						$personne['Personne']['prenom'] = strtoupper( replace_accents( $personne['Personne']['prenom'] ) );
+						if( empty( $personne['Personne']['nomnai'] ) ) {
+							$personne['Personne']['nomnai'] = $personne['Personne']['nom'];
+						}
+						else {
+							$personne['Personne']['nomnai'] = strtoupper( replace_accents( $personne['Personne']['nomnai'] ) );
+						}
+
+						$this->Personne->validate = null;
+						$this->Personne->create( $personne );
+						$success = $this->Personne->save() && $success;
+						if( !$success ) die();
 					}
-					$this->Personne->validate = null;
-					$this->Personne->create( $personne );
-					$success = $this->Personne->save() && $success;
 				}
 			}
 
-            $this->hr();
+			if( $this->updateIds ) {
+				$this->hr();
+			}
+
 			echo sprintf( "%s doublons, %s changements.\n", $doublons, $changements );
 
             /** ****************************************************************
@@ -110,6 +225,8 @@
             *** ***************************************************************/
 
             $this->hr();
+
+			file_put_contents( sprintf( $this->logfile, date( 'Ymd-His' ) ), $this->debug );
 
             if( $success ) {
 				$this->Personne->commit();
@@ -121,7 +238,6 @@
                 echo "Script termine avec erreurs: ".date( 'Y-m-d H:i:s' ).'( en '.number_format( microtime( true ) - $this_start, 2 ).' secondes )'."\n";
                 return 1;
             }
-
         }
     }
 ?>

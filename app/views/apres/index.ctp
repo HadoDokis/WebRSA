@@ -1,98 +1,147 @@
-<?php  $this->pageTitle = 'APRE liée à la personne';?>
+<?php $this->pageTitle = sprintf( 'APREs liées à %s', $personne['Personne']['nom_complet'] );?>
+
 <?php  echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id) );?>
 
-
 <div class="with_treemenu">
-    <h1>APRE</h1>
-    <?php if( !empty( $apres ) ):?>
-        <?php
-            $mtpaye = 400;
-            foreach( $apres as $apre ) {
-                $nbenfants = Set::classicExtract( $apre, 'Apre.nbenf12' );
-                if( ( $nbenfants < 5 ) ){ //FIXME: voir si possibilité faire autrement
-                    $mtpaye = $mtpaye + ( 100 * $nbenfants );
-                }
-                else{
-                    $mtpaye = 800;
-                }
-            }
-        ?>
-            <table>
-                <thead>
-                    <tr>
-                        <td>Forfait théorique payé</td>
-                        <td><?php echo $mtpaye;?></td>
-                    </tr>
-                    <tr>
-                        <td>Montants consommés (APRE Complémentaire)</td>
-                        <td><?php echo ''/*$mtconsomme*/;?></td>
-                    </tr>
-                    <tr>
-                        <td>Reste APRE Complémentaire</td>
-                        <td><?php echo ''/*$reste*/;?></td>
-                    </tr>
-                </thead>
-            </table>
-    <?php endif;?>
-<!--    <?php /*if( empty( $contratinsertion )  ):?>
-        <p class="error">Impossible d'ajouter une demande d'APRE lorsqu'il n'existe pas de contrat d'insertion.</p>
+    <h1><?php echo $this->pageTitle;?></h1>
 
-    <?php elseif( !empty( $contratinsertion ) && empty( $refsapre ) ):?>
-        <p class="error">Impossible d'ajouter une demande d'APRE lorsqu'il n'existe pas de référent pour l'APRE.</p>
+    <!-- Données concernant le CG93 -->
+        <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ):?>
+            <?php if( empty( $apres ) ):?>
+                <p class="error">Cette personne ne possède pas encore d'APRE forfaitaire, il n'est donc pas possible de créer une APRE Complémentaire.</p>
+            <?php endif;?>
 
-    <?php else: */?> -->
-        <?php if( empty( $apres ) ):?>
-            <p class="notice">Cette personne ne possède pas encore d'aide personnalisée de retour à l'emploi (APRE).</p>
+            <?php if( $permissions->check( 'apres', 'add' ) && ( $apre_forfait > 0 ) ):?>
+                <ul class="actionMenu">
+                    <?php
+                        echo '<li>'.$html->addLink(
+                            'Ajouter APRE',
+                            array( 'controller' => 'apres', 'action' => 'add', $personne_id )
+                        ).' </li>';
+                    ?>
+                </ul>
+            <?php endif;?>
         <?php endif;?>
-
-        <?php if( $permissions->check( 'apres', 'add' ) ):?>
-            <ul class="actionMenu">
-                <?php
-                    echo '<li>'.$html->addLink(
-                        'Ajouter APRE',
-                        array( 'controller' => 'apres', 'action' => 'add', $personne_id )
-                    ).' </li>';
-                ?>
-            </ul>
+    <!-- Fin des Données concernant le CG93 -->
+<!-- .................................................................................... -->
+    <!-- Données concernant le CG66 -->
+        <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg66' ):?>
+            <?php if( empty( $apres ) ):?>
+                <p class="notice">Cette personne ne possède pas encore d'APRE.</p>
+            <?php endif;?>
+            <?php if( $permissions->check( 'apres', 'add' ) ):?>
+                <ul class="actionMenu">
+                    <?php
+                        echo '<li>'.$html->addLink(
+                            'Ajouter APRE',
+                            array( 'controller' => 'apres', 'action' => 'add', $personne_id )
+                        ).' </li>';
+                    ?>
+                </ul>
+            <?php endif;?>
         <?php endif;?>
+    <!-- Fin des Données concernant le CG66 -->
 
     <?php if( !empty( $apres ) ):?>
+	<?php
+		if( $alerteMontantAides ) {
+			echo $html->tag(
+				'p',
+				$html->image( 'icons/error.png', array( 'alt' => 'Remarque' ) ).' '.sprintf( 'Cette personne risque de bénéficier de plus de %s € d\'aides complémentaires au cours des %s derniers mois', Configure::read( 'Apre.montantMaxComplementaires' ), Configure::read( 'Apre.periodeMontantMaxComplementaires' ) ),
+				array( 'class' => 'error' )
+			);
+		}
+	?>
     <table class="tooltips">
         <thead>
             <tr>
-                <th>N° APRE</th>
-                <th>Nom/Prénom Allocataire</th>
-                <th>Type de demande APRE</th>
-                <th>Référent APRE</th>
+                <th>Statut de l'APRE</th>
                 <th>Date demande APRE</th>
-                <th>Natures de la demande</th>
                 <th>Etat du dossier</th>
+                <th>Montant demandé</th>
+                <th>Montant attribué</th>
                 <th colspan="4" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
             <?php
-                foreach( $apres as $apre ) {
+                foreach( $apres as $index => $apre ) {
                     $aidesApre = array();
+                    $buttonEnabled = null;
+                    $mtforfait = null;
+                    $mtattribue = null;
                     $naturesaide = Set::classicExtract( $apre, 'Apre.Natureaide' );
 
                     foreach( $naturesaide as $natureaide => $nombre ) {
                         if( $nombre > 0 ) {
                             $aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
+                            ///Calcul des montants versés pour les aides d'une APRE complémentaire
+                            $montantaide = Set::classicExtract( $apre, "$natureaide.montantaide" );
+                            $mtforfait += $montantaide;
                         }
                     }
+
                     $piecesManquantes = Set::extract( $apre, '/Relanceapre/Piecemanquante/libelle' );
 
+                    /**
+                    **  Mise en place de l'impossibilité de modifier/relancer/imprimer les APREs forfaitaires
+                    **  +
+                    **  Conditionnement des éléments à afficher selon le statut de l'APRE
+                    **/
+                    $statutApre = Set::classicExtract( $apre, 'Apre.statutapre' );
+                    if( $statutApre == 'C' ) {
+                        $etat = Set::enum( Set::classicExtract( $apre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] );
+                        $mtforfait = $mtforfait;
+                        $buttonEnabled = true;
+                        if( $etat == 'Complet' ){
+                            $buttonEnabledInc = false;
+                        }
+                        else{
+                            $buttonEnabledInc = true;
+                        }
+
+						// Calcul des montants attribués
+						$montantsAttribues = Set::extract( $apre, '/Comiteapre/ApreComiteapre[decisioncomite=ACC]/montantattribue' );
+						$mtattribue = ( ( is_array( $montantsAttribues ) && !empty( $montantsAttribues ) ) ? array_sum( $montantsAttribues ) : null );
+                    }
+                    else if( $statutApre == 'F' ) {
+                        $etat = null;
+                        $mtforfait = Set::classicExtract( $apre, 'Apre.mtforfait' );
+                        $buttonEnabled = false;
+                        $buttonEnabledInc = false;
+
+						// Calcul des montants attribués
+						$mtattribue = $mtforfait;
+                    }
+
+					$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+						<tbody>
+							<tr>
+								<th>N° APRE</th>
+								<td>'.h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ).'</td>
+							</tr>
+							<tr>
+								<th>Nom/Prénom Allocataire</th>
+								<td>'.h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ).'</td>
+							</tr>
+							<tr>
+								<th>Référent APRE</th>
+								<td>'.h( Set::enum( Set::classicExtract( $apre, 'Apre.referent_id' ), $referents ) ).'</td>
+							</tr>
+							<tr>
+								<th>Natures de la demande</th>
+								<td>'.( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ).'</td>
+							</tr>
+						</tbody>
+					</table>';
 
                     echo $html->tableCells(
                         array(
-                            h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
-                            h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ),
-                            h( Set::enum( Set::classicExtract( $apre, 'Apre.typedemandeapre' ), $options['typedemandeapre'] ) ),
-                            h( Set::enum( Set::classicExtract( $apre, 'Apre.referentapre_id' ), $refsapre ) ),
+                            h( Set::enum( $statutApre, $options['statutapre'] ) ),
                             h( date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ) ),
-                            ( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
-                            h( Set::enum( Set::classicExtract( $apre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ) ),
+                            h( $etat ),
+                            h( $locale->money( $mtforfait ) ),
+                            h( $locale->money( $mtattribue ) ),
                             $html->viewLink(
                                 'Voir la demande APRE',
                                 array( 'controller' => 'apres', 'action' => 'view', $apre['Apre']['id'] ),
@@ -101,28 +150,31 @@
                             $html->editLink(
                                 'Editer la demande APRE',
                                 array( 'controller' => 'apres', 'action' => 'edit', $apre['Apre']['id'] ),
+                                $buttonEnabled,
                                 $permissions->check( 'apres', 'edit' )
                             ),
                             $html->relanceLink(
                                 'Relancer la demande APRE',
                                 array( 'controller' => 'relancesapres', 'action' => 'add', $apre['Apre']['id'] ),
+                                $buttonEnabledInc,
                                 $permissions->check( 'relancesapres', 'add' ) && ( $apre['Apre']['etatdossierapre'] == 'INC' )
                             ),
                             $html->printLink(
                                 'Imprimer la demande APRE',
                                 array( 'controller' => 'gedooos', 'action' => 'apre', $apre['Apre']['id'] ),
+                                $buttonEnabled,
                                 $permissions->check( 'gedooos', 'apre' )
-                            )
+                            ),
+							array( $innerTable, array( 'class' => 'innerTableCell' ) )
                         ),
-                        array( 'class' => 'odd' ),
-                        array( 'class' => 'even' )
+						array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+						array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
                     );
                 }
             ?>
         </tbody>
     </table>
-    <?php  endif;?>
-<!-- <?php  /*endif;*/?> -->
+<?php endif;?>
 
 <br />
 
@@ -147,13 +199,21 @@
             <tbody>
                 <?php
                     foreach( $relancesapres as $relanceapre ) {
-
                         $piecesAbsentes = Set::extract( $relanceapre, '/Relanceapre/Piecemanquante/libelle' );
+                        $piecesManquantesAides = Set::classicExtract( $relanceapre, "Apre.Piece.Manquante" );
+
+                        $textePiecesManquantes = '';
+                        foreach( $piecesManquantesAides as $model => $pieces ) {
+                            if( !empty( $pieces ) ) {
+                                $textePiecesManquantes .= $html->tag( 'h3', __d( 'apre', $model, true ) ).'<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
+                            }
+                        }
+
                         echo $html->tableCells(
                             array(
                                 h( Set::classicExtract( $relanceapre, 'Apre.numeroapre' ) ),
                                 h( date_short( Set::classicExtract( $relanceapre, 'Relanceapre.daterelance' ) ) ),
-                                ( empty( $piecesAbsentes ) ? null :'<ul><li>'.implode( '</li><li>', $piecesAbsentes ).'</li></ul>' ),
+                                $textePiecesManquantes,
                                 h( Set::classicExtract( $relanceapre, 'Relanceapre.commentairerelance' ) ),
                                 $html->viewLink(
                                     'Voir la relance',

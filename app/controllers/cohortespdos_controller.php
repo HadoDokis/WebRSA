@@ -15,7 +15,7 @@
         */
 
         function __construct() {
-            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'valide' ) ) ) );
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( /* 'avisdemande',*/ 'valide' ) ) ) );
             parent::__construct();
             $this->components[] = 'Jetons';
         }
@@ -65,19 +65,36 @@
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
+            $this->Dossier->begin();
             if( !empty( $this->data ) ) {
                 if( !empty( $this->data['Propopdo'] ) ) {
-                    $this->Dossier->begin();
-                    $data = Set::extract( $this->data, '/Propopdo' );
-                    if( $this->Propopdo->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-                        $saved = $this->Propopdo->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
-                        if( array_search( 0, $saved ) == false ) {
-                            //FIXME ?
+                    $valid = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'only', 'atomic' => false ) );
+//                     $data = Set::extract( $this->data, '/Propopdo' );
+//                     if( $this->Propopdo->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+//                         $saved = $this->Propopdo->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
+//                         if( array_search( 0, $saved ) == false ) {
+//                             //FIXME ?
+//                             foreach( array_unique( Set::extract( $this->data, 'Propopdo.{n}.dossier_id' ) ) as $dossier_id ) {
+//                                 $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
+//                             }
+// 
+//                             $this->Dossier->commit();
+// //                             $this->data = array();
+//                         }
+//                         else {
+//                             $this->Dossier->rollback();
+//                         }
+//                     }
+                    if( $valid ) {
+                        $this->Dossier->begin();
+                        $saved = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'first', 'atomic' => false ) );
+                        if( $saved ) {
+                            // FIXME ?
                             foreach( array_unique( Set::extract( $this->data, 'Propopdo.{n}.dossier_id' ) ) as $dossier_id ) {
                                 $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
                             }
                             $this->Dossier->commit();
-//                             $this->data = array();
+                            $this->data['Propopdo'] = array(); //FIXME: voir si on peut mieux faire
                         }
                         else {
                             $this->Dossier->rollback();
@@ -88,9 +105,10 @@
                 if( ( $statutValidationAvis == 'Decisionpdo::nonvalide' ) || ( ( $statutValidationAvis == 'Decisionpdo::valide' ) && !empty( $this->data ) ) || ( ( $statutValidationAvis == 'Decisionpdo::enattente' ) && !empty( $this->data ) ) ) {
                     $this->Dossier->begin(); // Pour les jetons
 
-                    $this->paginate = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                    $queryData = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
     //                 $_limit = 10;
-                    $this->paginate['limit'] = 10;
+                    $queryData['limit'] = 10;
+                    $this->paginate['Dossier'] = $queryData;
                     $cohortepdo = $this->paginate( 'Dossier' );
 
     //                 $count = count( $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() ) );
@@ -103,8 +121,12 @@
                 }
             }
 
-            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+			}
 
             switch( $statutValidationAvis ) {
                 case 'Decisionpdo::nonvalide':

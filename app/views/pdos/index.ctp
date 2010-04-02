@@ -24,6 +24,39 @@
                 );
                 echo $html->tableCells(
                     array(
+                        h( 'Origine PDOs' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'originespdos', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
+                        h( 'Situation PDOs' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'situationspdos', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
+                        h( 'Statut PDOs' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'statutspdos', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
                         h( 'Type de notification' ),
                         $html->viewLink(
                             'Voir la table',
@@ -47,4 +80,9 @@
             ?>
         </tbody>
     </table>
+    <div class="submit">
+        <?php
+            echo $form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
 <?php echo $form->end();?>

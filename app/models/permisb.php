@@ -2,10 +2,14 @@
     class Permisb extends AppModel
     {
         var $name = 'Permisb';
-        var $actsAs = array( 'Enumerable', 'Frenchfloat' => array( 'fields' => array( 'coutform', 'dureeform' ) ) );
+        var $actsAs = array(
+            'Aideapre',
+            'Enumerable', // FIXME ?
+            'Frenchfloat' => array( 'fields' => array( 'coutform', 'dureeform' ) )
+        );
 
         var $validate = array(
-            'nomautoecole' => array(
+            'tiersprestataireapre_id' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
@@ -21,10 +25,10 @@
                 array(
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.',
-                    'allowEmpty' => true
+//                     'allowEmpty' => true
                 ),
                 array(
-                    'rule' => array( 'range', -1, 1000 ),
+                    'rule' => array( 'range', -1, 1001 ),
                     'message' => 'Veuillez saisir un montant compris entre 0 et 1000€ maximum.'
                 )
             ),
@@ -36,7 +40,17 @@
                 array(
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.',
-                    'allowEmpty' => true
+//                     'allowEmpty' => true
+                )
+            ),
+            'montantaide' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.'
                 )
             ),
         );

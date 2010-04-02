@@ -1,5 +1,5 @@
 <?php $this->pageTitle = 'Paramétrage des statuts de rendez-vous';?>
-
+<?php echo $xform->create( 'StatutRDV' );?>
 <div>
     <h1><?php echo 'Visualisation de la table Statut de RDV ';?></h1>
 
@@ -47,4 +47,11 @@
     </div>
     <?php endif;?>
 </div>
+    <div class="submit">
+        <?php
+            echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+
 <div class="clearer"><hr /></div>
+<?php echo $xform->end();?>

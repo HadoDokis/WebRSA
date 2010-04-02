@@ -24,6 +24,39 @@
                 );
                 echo $html->tableCells(
                     array(
+                        h( 'APREs' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'apres', 'action' => 'indexparams' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
+                        h( 'Equipes pluridisciplinaires' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'eps', 'action' => 'indexparams' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
+                        h( 'Fiches de Candidature' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'actionscandidats_personnes', 'action' => 'indexparams' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
                         h( 'Cantons' ),
                         $html->viewLink(
                             'Voir la table',
@@ -46,10 +79,10 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Participants comités APRE' ),
+                        h( 'Objets du rendez-vous' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'participantscomites', 'action' => 'index' )
+                            array( 'controller' => 'typesrdv', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),
@@ -83,17 +116,6 @@
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'referents', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
-                echo $html->tableCells(
-                    array(
-                        h( 'Référents de l\'APRE' ),
-                        $html->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'referentsapre', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),
@@ -143,28 +165,18 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
-                    array(
-                        h( 'Types de contrats d\'insertion' ),
-                        $html->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'typoscontrats', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
-                echo $html->tableCells(
-                    array(
-                        h( 'Types de rendez-vous' ),
-                        $html->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'typesrdv', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
+//                 echo $html->tableCells(
+//                     array(
+//                         h( 'Types de contrats d\'insertion' ),
+//                         $html->viewLink(
+//                             'Voir la table',
+//                             array( 'controller' => 'typoscontrats', 'action' => 'index' )
+//                         )
+//                     ),
+//                     array( 'class' => 'odd' ),
+//                     array( 'class' => 'even' )
+//                 );
+
                 echo $html->tableCells(
                     array(
                         h( 'Types d\'orientations' ),

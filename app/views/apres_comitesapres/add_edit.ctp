@@ -13,7 +13,19 @@
 
 
     <h1><?php echo $this->pageTitle;?></h1>
-
+    <?php
+        ///
+        echo $html->tag(
+            'ul',
+            implode(
+                '',
+                array(
+                    $html->tag( 'li', $html->link( 'Tout sélectionner', '#', array( 'onclick' => 'allCheckboxes( true ); return false;' ) ) ),
+                    $html->tag( 'li', $html->link( 'Tout désélectionner', '#', array( 'onclick' => 'allCheckboxes( false ); return false;' ) ) ),
+                )
+            )
+        );
+    ?>
     <?php if( empty( $apres ) ):?>
         <p class="notice">Aucune demande d'APRE en Recours présente.</p>
     <?php else:?>
@@ -27,13 +39,15 @@
                         <tr>
                             <th>N° APRE</th>
                             <th>Nom/Prénom</th>
-                            <th>Date de mande APRE</th>
+                            <th>Date demande APRE</th>
                             <th>Sélectionner</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <?php
 // debug($apres);
+
                             foreach( $apres as $i => $apre ) {
 // debug($apre);
                                 $apreApre = Set::extract( $this->data, 'Apre.Apre' );
@@ -47,7 +61,7 @@
                                         h( Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
                                         h( $locale->date( 'Date::short', Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ) ),
 
-                                        $xform->checkbox( 'Apre.Apre.'.$i, array( 'value' => Set::classicExtract( $apre, 'Apre.id' ), 'id' => 'ApreApre'.Set::classicExtract( $apre, 'Apre.id' ), 'checked' => in_array( Set::classicExtract( $apre, 'Apre.id' ), $apreApre ) ) ),
+                                        $xform->checkbox( 'Apre.Apre.'.$i, array( 'value' => Set::classicExtract( $apre, 'Apre.id' ), 'id' => 'ApreApre'.Set::classicExtract( $apre, 'Apre.id' ), 'checked' => in_array( Set::classicExtract( $apre, 'Apre.id' ), $apreApre ), 'class' => 'checkbox' ) ),
                                     ),
                                     array( 'class' => 'odd' ),
                                     array( 'class' => 'even' )
@@ -63,4 +77,14 @@
         <?php echo $xform->submit( 'Enregistrer' );?>
     <?php echo $xform->end();?>
         <?php endif;?>
+<script type="text/javascript">
+//<![CDATA[
+    function allCheckboxes( checked ) {
+        $$('input.checkbox').each( function ( checkbox ) {
+            $( checkbox ).checked = checked;
+        } );
+        return false;
+    }
+//]]>
+</script>
 <div class="clearer"><hr /></div>

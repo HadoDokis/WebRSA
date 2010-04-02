@@ -1,5 +1,5 @@
 <?php $this->pageTitle = 'Paramétrage des Groupes d\'utilisateurs';?>
-
+<?php echo $xform->create( 'Group' );?>
 <div>
     <h1><?php echo 'Visualisation de la table  ';?></h1>
 
@@ -45,4 +45,11 @@
         </table>
 </div>
 </div>
+    <div class="submit">
+        <?php
+            echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+
 <div class="clearer"><hr /></div>
+<?php echo $xform->end();?>

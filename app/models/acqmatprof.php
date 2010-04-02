@@ -3,7 +3,10 @@
     {
         var $name = 'Acqmatprof';
 
-        var $actsAs = array( 'Frenchfloat' => array( 'fields' => array( 'montantaide' ) ) );
+        var $actsAs = array(
+            'Aideapre',
+            'Frenchfloat' => array( 'fields' => array( 'montantaide' ) )
+        );
 
         var $validate = array(
             'montantaide' => array(
@@ -17,7 +20,7 @@
                     'allowEmpty' => true
                 ),
                 array(
-                    'rule' => array( 'range', -1, 2000 ),
+                    'rule' => array( 'range', -1, 2001 ),
                     'message' => 'Veuillez saisir un montant compris entre 0 et 2000€ maximum.'
                 )
             )

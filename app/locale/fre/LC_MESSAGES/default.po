@@ -60,6 +60,24 @@ msgstr "décembre"
 # Locale
 ###############################################################################
 
+msgid "Yes"
+msgstr "Oui"
+
+msgid "No"
+msgstr "Non"
+
+msgid "Locale->time"
+msgstr "%H:%M"
+
+msgid "Locale->date"
+msgstr "%d/%m/%Y"
+
+msgid "Locale->datetime"
+msgstr "%d/%m/%Y %H:%M"
+
+msgid "Locale->dateFormat"
+msgstr "DMY"
+
 msgid "Date::short"
 msgstr "%d/%m/%Y"
 
@@ -74,6 +92,88 @@ msgstr "%Hh%M"
 
 msgid "Date::miniLettre"
 msgstr "%B %Y"
+
+###############################################################################
+# Save / Delete
+###############################################################################
+
+msgid "Save->success"
+msgstr "Enregistrement effectué"
+
+msgid "Save->error"
+msgstr "Erreur lors de l'enregistrement"
+
+msgid "Delete->error"
+msgstr "Erreur lors de la suppression"
+
+msgid "Delete->success"
+msgstr "Suppression effectuée"
+
+# FIXME -> Save / Operation ? / Add->cancel - Edit->cancel - Foo->cancel
+msgid "Save->cancel"
+msgstr "Opération annulée"
+
+###############################################################################
+# Validate
+###############################################################################
+
+msgid "Validate::notEmpty"
+msgstr "Champ obligatoire"
+
+msgid "Validate::maxLength"
+msgstr "Maximum %s caractères"
+
+msgid "Validate::minLength"
+msgstr "Minimum %s caractères"
+
+msgid "Validate::email"
+msgstr "Veuillez saisir une adresse de courrier électronique valide"
+
+msgid "Validate::phoneFr"
+msgstr "Veuillez entrer un n° de téléphone français"
+
+msgid "Validate::url"
+msgstr "Veuillez entrer une URL valide"
+
+msgid "Validate::isUnique"
+msgstr "Valeur déjà utilisée"
+
+msgid "Validate::integer"
+msgstr "Veuillez entrer un nombre entier"
+
+msgid "Validate::numeric"
+msgstr "Veuillez entrer une valeur numérique"
+
+###############################################################################
+# Forms/Index
+###############################################################################
+
+msgid "Results %start% - %end% out of %count%."
+msgstr "Résultats %start% à %end% sur un total de %count%."
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "View"
+msgstr "Voir"
+
+msgid "Edit"
+msgstr "Modifier"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Search"
+msgstr "Rechercher"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Reset"
+msgstr "Remise à zéro"
 
 ###############################################################################
 # Donnees socioprofessionnelles personnes
@@ -210,7 +310,7 @@ msgid "complideadr"
 msgstr "Complément identification adresse"
 
 msgid "compladr"
-msgstr "Complement adresse"
+msgstr "Complément d'adresse"
 
 msgid "lieudist"
 msgstr "Lieu de distribution"
@@ -406,7 +506,7 @@ msgid "observ_ci"
 msgstr "Observations"
 
 msgid "decision_ci"
-msgstr "Décisions du Président du Conseil Général"
+msgstr "Décision "
 
 msgid "typocontrat"
 msgstr "Typologie du contrat"
@@ -650,6 +750,11 @@ msgstr "Type de structure"
 msgid "structure_referente"
 msgstr "Zone géographique"
 
+msgid "contratengagement"
+msgstr "Gestion des Contrats d'engagement"
+
+msgid "apre"
+msgstr "Gestion des APREs"
 ###############################################################################
 # Paramétrage des tables
 ##############################################################################
@@ -683,6 +788,9 @@ msgstr "Parent"
 
 msgid "modele_notif"
 msgstr "Modèle de notification"
+
+msgid "modele_notif_cohorte"
+msgstr "Modèle de notification pour les cohortes"
 
 msgid "numero_poste"
 msgstr "Numéro de poste"
@@ -892,13 +1000,13 @@ msgid "statutrdv"
 msgstr "Statut du RDV"
 
 msgid "lib_rdv"
-msgstr "Type de RDV"
+msgstr "Objet du RDV"
 
 msgid "commentairerdv"
 msgstr "Commentaires suite au RDV"
 
 msgid "objetrdv"
-msgstr "Objet du RDV"
+msgstr "Objectif du RDV"
 
 msgid "daterdv"
 msgstr "Date du RDV"
@@ -958,3 +1066,42 @@ msgstr "Oui"
 
 msgid "ENUM::NOV::V"
 msgstr "Ne veut pas répondre"
+
+###############################################################################
+# Enums
+###############################################################################
+
+msgid "ENUM::PRESENCE::absent"
+msgstr "Absent"
+
+msgid "ENUM::PRESENCE::present"
+msgstr "Présent"
+
+msgid "ENUM::PRESENCE::remplace"
+msgstr "Remplacé par"
+
+msgid "ENUM::PRESENCE::excuse"
+msgstr "Excusé"
+
+###############################################################################
+
+msgid "ENUM::NO::N"
+msgstr "Non"
+
+msgid "ENUM::NO::O"
+msgstr "Oui"
+
+###############################################################################
+
+msgid "ENUM::BOOLEANNUMBER::0"
+msgstr "Non"
+
+msgid "ENUM::BOOLEANNUMBER::1"
+msgstr "Oui"
+
+
+msgid "ENUM::BILANVENU::VEN"
+msgstr "Venu(e)"
+
+msgid "ENUM::BILANVENU::NVE"
+msgstr "Non Venu(e)"

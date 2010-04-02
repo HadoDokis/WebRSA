@@ -13,9 +13,10 @@
 
         function beforeFilter() {
             parent::beforeFilter();
-            $this->set( 'struct', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
-//             $this->set( 'struct', $this->Structurereferente->listOptions() );
+//             $this->set( 'struct', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
+            $this->set( 'struct', $this->Structurereferente->listOptions() );
             $this->set( 'sr', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
+            $this->set( 'referent', $this->Referent->find( 'list', array( 'recursive' => 1 ) ) );
             $this->set( 'permanences', $this->Permanence->find( 'list' ) );
             $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
         }
@@ -101,7 +102,6 @@
             $nbrPersonnes = $this->Rendezvous->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
-
             $orientstruct = $this->Rendezvous->Structurereferente->Orientstruct->find(
                 'first',
                 array(
@@ -115,13 +115,40 @@
             );
 
 /*
-            $sr = $this->Rendezvous->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
-            $struct = Set::enum( Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' ), $sr );*/
+            if( !empty( $orientstruct ) ) {
+                ///S'il n'y a pas de permanence, IMPOSSIBLE de créer un RDV
+                $permanence = $this->Rendezvous->Structurereferente->Permanence->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Permanence.structurereferente_id' => Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' )
+                        )
+                    )
+                );
+                $this->set( 'permanence', $permanence );*/
 
+//                 $sr = $this->Rendezvous->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
+//                 $struct = Set::enum( Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' ), $sr );
+// 
+//                 ///S'il n'y a pas de référent lié, IMPOSSIBLE de créer un RDV
+//                 $refrdv = $this->Referent->find(
+//                     'first',
+//                     array(
+//                         'conditions' => array(
+//                             'Referent.structurereferente_id' => Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' )
+//                         ),
+//                         'recursive' => -1
+//                     )
+//                 );
+//                 $this->set( 'refrdv', $refrdv );
+
+            ///S'il n'y a pas de statut de RDV, IMPOSSIBLE de créer un RDV
+            $statutrdv = $this->Statutrdv->find( 'list' );
+//             }
 
             $rdvs = $this->Rendezvous->find( 'all', array( 'conditions' => array( 'Rendezvous.personne_id' => $personne_id ) ) );
-            $this->set( compact( 'orientstruct', 'rdvs' ) );
 
+            $this->set( compact( 'orientstruct', 'rdvs' ) );
             $this->set( 'personne_id', $personne_id );
         }
 
@@ -167,6 +194,11 @@
 
         function _add_edit( $id = null ) {
             $this->assert( valid_int( $id ), 'invalidParameter' );
+
+            // Retour à la liste en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index', $id ) );
+            }
 
             $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
             $this->set( 'typerdv', $typerdv );
@@ -218,7 +250,7 @@
             $this->Rendezvous->commit();
 
             ///Récupération des référents liés aux structures référentes
-            $refrdv = $this->Rendezvous->Structurereferente->Referent->find( 'all', array( 'recursive' => -1, 'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom', 'Referent.fonction' ) ) );
+            $refrdv = $this->Rendezvous->Structurereferente->Referent->find( 'all', array( 'order' => 'Referent.nom ASC', 'recursive' => -1, 'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom', 'Referent.fonction' ) ) );
             $ids = Set::extract( $refrdv, '/Referent/id' );
             $values = Set::format( $refrdv, '{0} {1}', array( '{n}.Referent.nom', '{n}.Referent.prenom' ) );
             $refrdv = array_combine( $ids, $values );

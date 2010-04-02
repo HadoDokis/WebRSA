@@ -1,60 +1,90 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Contrats d\'insertion';?>
+<?php $this->pageTitle = 'Contrats d\'engagement réciproque';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
 
 <?php
     if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout d\'un contrat d\'insertion';
+        $this->pageTitle = 'Ajout d\'un contrat d\'engagement réciproque';
     }
     else {
-        $this->pageTitle = 'Édition d\'un contrat d\'insertion';
+        $this->pageTitle = 'Édition d\'un contrat d\'engagement réciproque';
     }
 ?>
 
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        observeDisableFieldsOnValue( 'ContratinsertionRgCi', [ 'ContratinsertionTypocontratId1' ], 1, true );
-    });
-</script>
-
+<?php
+    function value( $array, $index ) {
+        $keys = array_keys( $array );
+        $index = ( ( $index == null ) ? '' : $index );
+        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
+            return $array[$index];
+        }
+        else {
+            return null;
+        }
+    }
+?>
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 
-    <?php 
+    <?php
         if( $this->action == 'add' ) {
 
-            echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+            echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
-            echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Structurereferente.id' ) ) );
+            if( empty( $orientstruct ) && empty( $personne_referent ) ) {
+                echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden', 'id' => 'structId', 'value' => Set::classicExtract( $this->data, 'Structurereferente.id' ) ) );
+            }
+            else{
+                echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden', 'id' => 'structId', 'value' => Set::classicExtract( $struct, 'Structurereferente.id' ) ) );
+            }
+
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
             echo $form->input( 'Contratinsertion.rg_ci', array( 'type' => 'hidden'/*, 'value' => '' */) );
             echo '</div>';
 
         }
         else {
-            echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+            echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );
 
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
-
+            //echo $form->input( 'Suspensiondroit.id', array( 'type' => 'hidden' ) );
+//             echo $form->input( 'Suspensiondroit.dossier_rsa_id', array( 'type' => 'hidden', 'value' => $dossier_id ) );
             echo '</div>';
         }
 
 
     ?>
+
 <!--/************************************************************************/ -->
 
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsOnValue( 'ContratinsertionRgCi', [ 'ContratinsertionTypocontratId' ], 1, true );
+    });
+</script>
+<!--/************************************************************************/ -->
+    <?php echo $javascript->link( 'dependantselect.js' ); ?>
+    <script type="text/javascript">
+        document.observe("dom:loaded", function() {
+            dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
+        });
+    </script>
+<!--/************************************************************************/ -->
 <script type="text/javascript">
     function checkDatesToRefresh() {
         if( ( $F( 'ContratinsertionDdCiMonth' ) ) && ( $F( 'ContratinsertionDdCiYear' ) ) && ( $F( 'ContratinsertionDureeEngag' ) ) ) {
             var correspondances = new Array();
             // FIXME: voir pour les array associatives
-            <?php foreach( $duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
+             //$duree_engag_cg66
+            <?php
+                $duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
+                foreach( $$duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
 
-            setDateInterval( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
+            setDateInterval2( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], true );
         }
     }
 
@@ -73,7 +103,46 @@
             checkDatesToRefresh();
         } );
 
-        observeDisableFieldsOnValue( 'ContratinsertionRaisonCi', [ 'ContratinsertionAvisraisonCi' ], '', true );
+// form, radioName, fieldsetId, value, condition, toggleVisibility
+            observeDisableFieldsetOnRadioValue(
+                'testform',
+                'data[Contratinsertion][forme_ci]',
+                $( 'Contratsuite' ),
+                'C',
+                false,
+                true
+            );
+
+		observeDisableFieldsOnRadioValue(
+			'testform',
+			'data[Contratinsertion][raison_ci]',
+			[
+				'SituationdossierrsaDtclorsaDay',
+				'SituationdossierrsaDtclorsaMonth',
+				'SituationdossierrsaDtclorsaYear',
+				'SituationdossierrsaId',
+				'SituationdossierrsaDossierRsaId',
+				'ContratinsertionAvisraisonRadiationCiD',
+				'ContratinsertionAvisraisonRadiationCiN'
+			],
+			'R',
+			true
+		);
+
+		observeDisableFieldsOnRadioValue(
+			'testform',
+			'data[Contratinsertion][raison_ci]',
+			[
+				'ContratinsertionAvisraisonSuspensionCiD',
+				'ContratinsertionAvisraisonSuspensionCiN',
+				'SuspensiondroitDdsusdrorsaDay',
+				'SuspensiondroitDdsusdrorsaMonth',
+				'SuspensiondroitDdsusdrorsaYear',
+				'SuspensiondroitSituationdossierrsaId'
+			],
+			'S',
+			true
+		);
 
     } );
 </script>
@@ -84,14 +153,14 @@
             <td class="mediumSize noborder">
                 <strong>Statut de la personne : </strong><?php echo Set::extract( $rolepers, Set::extract( $personne, 'Prestation.rolepers' ) ); ?>
                 <br />
-                <strong>Nom : </strong><?php echo Set::classicExtract( $personne, 'Personne.qual' ).' '.Set::classicExtract( $personne, 'Personne.nom' );?>
+                <strong>Nom : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Personne.qual') , $qual ).' '.Set::classicExtract( $personne, 'Personne.nom' );?>
                 <br />
                 <strong>Prénom : </strong><?php echo Set::classicExtract( $personne, 'Personne.prenom' );?>
                 <br />
                 <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
             </td>
             <td class="mediumSize noborder">
-                <strong>N° Service instructeur : </strong><?php echo Set::extract( 'Serviceinstructeur.lib_service', $typeservice );?>
+                <strong>N° Service instructeur : </strong><?php echo Set::classicExtract( $personne, 'Serviceinstructeur.lib_service');?>
                 <br />
                 <strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.numdemrsa' );?>
                 <br />
@@ -110,21 +179,16 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" class="mediumSize noborder">
+            <td class="mediumSize noborder">
                 <strong>Adresse : </strong><br /><?php echo Set::extract( $personne, 'Adresse.numvoie' ).' '.Set::extract( $typevoie, Set::extract( $personne, 'Adresse.typevoie' ) ).' '.Set::extract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::extract( $personne, 'Adresse.codepos' ).' '.Set::extract( $personne, 'Adresse.locaadr' );?>
             </td>
-        </tr>
-        <tr>
             <td class="mediumSize noborder">
-                <strong>Tél. fixe : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?>
-            </td>
-            <td class="mediumSize noborder">
-                <strong>Tél. portable : </strong><?php echo ''/*.Set::extract( $foyer, 'Modecontact.0.numtel' );*/?>
+                <strong>Téléphone : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?>
             </td>
         </tr>
         <tr>
             <td colspan="2" class="mediumSize noborder">
-                <strong>Adresse mail : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?> <!-- FIXME -->
+                <strong>Adresse mail : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.adrelec' );?> <!-- FIXME -->
             </td>
         </tr>
     </table>
@@ -135,7 +199,14 @@
         <table class="wide noborder">
             <tr>
                 <td class="noborder">
-                    <?php echo $form->input( 'Contratinsertion.forme_ci', array( 'label' => false, 'type' => 'radio' , 'options' => array( 'S' => 'Simple', 'C' => 'Complexe' ), 'legend' => required( __( 'forme_ci', true ) ) ) );?>
+                    <?php
+                        $error = Set::classicExtract( $this->validationErrors, 'Contratinsertion.forme_ci' );
+                        $class = 'radio'.( !empty( $error ) ? ' error' : '' );
+
+                        $input =  $form->input( 'Contratinsertion.forme_ci', array( 'type' => 'radio' , 'options' => $forme_ci, 'div' => false, 'legend' => required( __( 'forme_ci', true )  ), 'value' => $valueFormeci/*( empty( $forme_ci ) ? $forme_ci : 'S' )*/ ) );
+
+                        echo $html->tag( 'div', $input, array( 'class' => $class ) );
+                    ?>
                 </td>
             </tr>
             <tr>
@@ -160,11 +231,14 @@
             </tr>
             <tr>
                 <td class="noborder">
-                    <?php if( $this->data['Contratinsertion']['typocontrat_id'] == 1 ):?>
-                        <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false, 'type' => 'hidden', 'id' => 'freu' ) );?>
-                    <?php endif;?>
+                    <?php /*if( $this->data['Contratinsertion']['typocontrat_id'] == 1 ):?>
+                        <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false, 'type' => 'hidden', 'id' => 'first' ) );?>
+                    <?php endif;*/?>
                     <?php
-                        echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false , 'type' => 'radio' , 'options' => $tc, 'legend' => false ) );
+                        echo $xform->input( 'Contratinsertion.numcontrat', array( 'label' => false , 'type' => 'hidden', 'value' => $tc ) );
+                        echo $tc;
+//                         echo Set::classicExtract( $this->data, 'Contratinsertion.numcontrat' );
+//                         echo $tc;/*$form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false , 'type' => 'select', 'options' => $tc, 'empty' => true /*, 'legend' => false ) );*/
                     ?>
                 </td>
                 <td class="noborder">
@@ -172,21 +246,52 @@
                 </td>
             </tr>
         </table>
+    </fieldset>
+    <fieldset id="Contratsuite">
         <table class="wide noborder">
             <tr>
-                <td colspan="3" class="noborder center">
+                <td colspan="2" class="noborder center">
                     <em>Ce contrat fait suite à : </em>
                 </td>
             </tr>
             <tr>
-                <td class="selectSize noborder">
-                    <?php echo $form->input( 'Contratinsertion.raison_ci', array( 'label' => 'Raison : ' , 'type' => 'select' , 'options' => $raison_ci, 'empty' => true ) );?>
+                <td colspan="2" class="noborder">
+                    <div class="demi"><?php echo $form->input( 'Contratinsertion.raison_ci', array( 'label' => 'Raison : ' , 'type' => 'radio', 'div' => false, 'separator' => '</div><div class="demi">', 'options' => $raison_ci, 'legend' => false ) );?></div>
                 </td>
-                <td class="selectSize noborder">
-                    <?php echo $form->input( 'Contratinsertion.avisraison_ci', array( 'label' => 'Avis : ' , 'type' => 'select' , 'options' => $avisraison_ci, 'empty' => true) );?>
+            </tr>
+            <tr>
+                <td class="noborder">
+                    <?php
+                        $suspensiondroit_id = Set::classicExtract( $this->data, 'Suspensiondroit.id' );
+                        if( !empty( $suspensiondroit_id ) ) {
+                            echo $form->input( 'Suspensiondroit.id', array( 'type' => 'hidden' ) );
+                        }
+
+                        echo $form->input( 'Suspensiondroit.situationdossierrsa_id', array( 'type' => 'hidden', 'value' => $situationdossierrsa_id ) );
+
+                        echo $form->input( 'Suspensiondroit.ddsusdrorsa', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
+                    ?>
                 </td>
-                <td class="selectSize noborder">
-                    <?php echo $form->input( 'Contratinsertion.aviseqpluri', array( 'label' => 'Avis équipe pluridisciplinaire :' , 'type' => 'select' , 'options' => $aviseqpluri, 'empty' => true ) );?>
+                <td class="noborder">
+                    <?php
+                        echo $form->input( 'Situationdossierrsa.id', array( 'type' => 'hidden', 'value' => $situationdossierrsa_id ) );
+                        echo $form->input( 'Situationdossierrsa.dossier_rsa_id', array( 'type' => 'hidden', 'value' => $dossier_id ) );
+
+                        echo $form->input( 'Situationdossierrsa.dtclorsa', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="noborder">
+                    <?php echo $form->input( 'Contratinsertion.avisraison_suspension_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false,   ) );?>
+                </td>
+                <td class="noborder">
+                    <?php echo $form->input( 'Contratinsertion.avisraison_radiation_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false ) );?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="noborder center">
+                    <em><strong>Lorsque le contrat conditionne l'ouverture du droit, il ne sera effectif qu'après décision du Président du Conseil Général</strong></em>
                 </td>
             </tr>
         </table>
@@ -197,56 +302,129 @@
         <table class="wide noborder">
             <tr>
                 <td class="mediumSize noborder" colspan="3">
-                    <strong>Type d'orientation:</strong> <?php echo $typeOrientation ; ?>
+                    <strong>Type d'orientation:</strong>
+                    <?php
+                        if( !empty( $orientstruct ) ) {
+                            echo $typeOrientation;
+                        }
+
+                        //echo Set::classicExtract( $struct, 'Structurereferente.typeorient_id' );
+
+                    ?>
                 </td>
             </tr>
             <tr>
                 <td class="noborder" colspan="2">
-                   <!-- <?php 
-                        echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __( '<em>Nom de l\'organisme de suivi </em>', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );
-                    ?> -->
-                    <strong>Nom de l'organisme de suivi :</strong> <?php echo Set::classicExtract( $personne, 'Structurereferente.lib_struc' ); ?>
+                   <?php
+                        if( empty( $orientstruct ) && !empty( $personne_referent ) ){
+                            echo '<strong>Nom de l\'organisme de suivi '.REQUIRED_MARK.':</strong><br />'. value( $sr, Set::classicExtract( $personne_referent, 'PersonneReferent.structurereferente_id' ) );
+                        }
+                        else if( empty( $orientstruct ) && empty( $personne_referent ) ) {
+                            echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __( '<em>Nom de l\'organisme de suivi '.REQUIRED_MARK.'</em>', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );
+                        }
+                    ?>
+                    <?php if( !empty( $orientstruct ) ):?>
+                        <strong>Nom de l'organisme de suivi :</strong>
+                            <?php
+                                echo Set::classicExtract( $struct, 'Structurereferente.lib_struc' );
+                            ?>
+                    <?php endif;?>
                 </td>
                 <td class="noborder">
-                    <?php 
+<!--<<<<<<< .mine
+                    <?php
                         echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
+					?>
+=======-->
+                    <?php
+                        if( empty( $personne_referent ) && $this->action == 'add' ){
+                            echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $refstruct, 'empty' => true ) );
+                        }
+                        else if( empty( $personne_referent ) && $this->action == 'edit' ){
+                            echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $refstruct, 'selected' => $struct_id.'_'.$referent_id, 'empty' => true ) );
+                        }
                     ?>
+                    <?php if( !empty( $personne_referent ) ):?>
+                        <strong>Nom du référent chargé du suivi :</strong> <br />
+                            <?php
+                                echo value( $refs, Set::classicExtract( $personne, 'PersonneReferent.referent_id' ) );
+                            ?>
+                    <?php endif;?>
                 </td>
             </tr>
             <tr>
                 <td class="textArea noborder">
                     <?php
-                        echo $html->tag(
-                            'p',
-                            $html->tag( 'em', 'Coordonnées de l\'organisme' ).'<br />'.
-                            Set::classicExtract( $personne, 'Structurereferente.num_voie' ).' '.
-                            Set::classicExtract( $typevoie, Set::classicExtract( $personne, 'Structurereferente.type_voie' ) ).' '.
-                            Set::classicExtract( $personne, 'Structurereferente.nom_voie' ).'<br />'.
-                            Set::classicExtract( $personne, 'Structurereferente.code_postal' ).' '.
-                            Set::classicExtract( $personne, 'Structurereferente.ville' )
-                        );
-                    ?>
-                </td>
-                <td class="textArea noborder">
-                    <?php
-                        //echo $form->input( 'Referent.email', array( 'label' => '<em>Coordonnées du référent</em>', 'type' => 'textarea', 'rows' => 3 )  );
-                        echo $html->tag(
-                            'p',
-                            $html->tag( 'em', 'Coordonnées du référent' ).'<br />'.
-                            $html->tag( 'span', ( isset( $ReferentEmail ) ? $ReferentEmail : ' ' ), array( 'id' => 'ReferentEmail' ) )
-                        );
-                        echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentEmail', 'url' => Router::url( array( 'action' => 'ajaxrefcoord' ), true ) ) );
+                        if( empty( $orientstruct ) && empty( $personne_referent ) ){
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Coordonnées de l\'organisme' ).'<br />'.
+                                $html->tag( 'span', ( isset( $StructureAdresse ) ? $StructureAdresse : ' ' ), array( 'id' => 'StructureAdresse' ) )
+                            );
+                            echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructureAdresse', 'url' => Router::url( array( 'action' => 'ajaxstructadr' ), true ) ) );
+                        }
+                        else if( empty( $orientstruct ) && !empty( $personne_referent ) ){
 
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Coordonnées de l\'organisme' ).'<br />'.
+                                Set::classicExtract( $struct, 'Structurereferente.num_voie' ).' '.
+                                Set::classicExtract( $typevoie, Set::classicExtract( $struct, 'Structurereferente.type_voie' ) ).' '.
+                                Set::classicExtract( $struct, 'Structurereferente.nom_voie' ).'<br />'.
+                                Set::classicExtract( $struct, 'Structurereferente.code_postal' ).' '.
+                                Set::classicExtract( $struct, 'Structurereferente.ville' )
+                            );
+                        }
+                        else if( !empty( $orientstruct ) ){
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Coordonnées de l\'organisme' ).'<br />'.
+                                Set::classicExtract( $struct, 'Structurereferente.num_voie' ).' '.
+                                Set::classicExtract( $typevoie, Set::classicExtract( $struct, 'Structurereferente.type_voie' ) ).' '.
+                                Set::classicExtract( $struct, 'Structurereferente.nom_voie' ).'<br />'.
+                                Set::classicExtract( $struct, 'Structurereferente.code_postal' ).' '.
+                                Set::classicExtract( $struct, 'Structurereferente.ville' )
+                            );
+                        }
+                    ?>
+                    <?php echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructureAdresse', 'url' => Router::url( array( 'action' => 'ajaxstructadr' ), true ) ) );?>
+                </td>
+                <td class="textArea noborder">
+                    <?php
+                        if( empty( $personne_referent ) ){
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Coordonnées du référent' ).'<br />'.
+                                $html->tag( 'span', ( isset( $ReferentEmail ) ? $ReferentEmail : ' ' ), array( 'id' => 'ReferentEmail' ) )
+                            );
+                            echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentEmail', 'url' => Router::url( array( 'action' => 'ajaxrefcoord' ), true ) ) );
+                        }
+                        else{
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Coordonnées du référent' ).'<br />'.
+                                Set::classicExtract( $referent, 'Referent.email' ). '<br/>' .Set::classicExtract( $referent, 'Referent.numero_poste')
+                            );
+                        }
                     ?>
                 </td>
                 <td class="textArea noborder">
                     <?php
-                        echo $html->tag(
-                            'p',
-                            $html->tag( 'em', 'Fonction du référent' ).'<br />'.
-                            $html->tag( 'span', ( isset( $ReferentFonction ) ? $ReferentFonction : ' ' ), array( 'id' => 'ReferentFonction' ) )
-                        );
-                       echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
+                        if( empty( $personne_referent ) ) {
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Fonction du référent' ).'<br />'.
+                                $html->tag( 'span', ( isset( $ReferentFonction ) ? $ReferentFonction : ' ' ), array( 'id' => 'ReferentFonction' ) )
+                            );
+                            echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
+                       }
+                        else{
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Fonction du référent' ).'<br />'.
+                                Set::classicExtract( $referent, 'Referent.fonction' )
+                            );
+                        }
                     ?>
                 </td>
             </tr>
@@ -254,7 +432,7 @@
 </fieldset>
 <fieldset class="loici">
     <p>
-        Loi N°2008-1249 du 1er Décembre, généralisant le revenu de solidarité active et réformant les politiques d'insertion : <strong>Contrat librement débattu avec engagements réciproques</strong> ( articles L.263.35 et L.262.36 )<br />
+        Loi N°2008-1249 du 1er Décembre, généralisant le revenu de solidarité active et réformant les politiques d'engagement réciproque : <strong>Contrat librement débattu avec engagements réciproques</strong> ( articles L.263.35 et L.262.36 )<br />
         <strong>Respect du Contrat</strong> ( Article L-262-37 1° et 2° ) :<br />
         <em>"Sauf décision prise au regard de la situation particulière du bénéficiaire, le versement du revenu de solidarité active est suspendu, en tout ou partie, par le Président du Conseil Général :<br />
         lorsque, du fait du bénéficiaire et sans motif légitime, le projet personnalisé d'accès à l'emploi ou l'un des contrats mentionnés aux articles L.262-35 et L.262-36 ne sont pas établis dans les délais prévus ou ne sont pas renouvelés.<br />
@@ -268,11 +446,13 @@
 
 <fieldset class="cnilci">
     <p>
-        <em>Conformément à la loi "Informatique et liberté" n°78-17 du 06 janvier 1978 relative à l'informatique, aux fichiers et aux libertés nous nous engageons à prendre toutes les précautions afin de préserver la sécurité de ces informations et notamment empêcher qu'elles soient déformées, endommagées ou communiquées à des tiers. Les coordonnées informations liées à l'adresse, téléphone et mail seront utilisées uniquement pour permettre la prise de contact, dans le cadre du parcours d'insertion.</em>
+        <em>Conformément à la loi "Informatique et liberté" n°78-17 du 06 janvier 1978 relative à l'informatique, aux fichiers et aux libertés nous nous engageons à prendre toutes les précautions afin de préserver la sécurité de ces informations et notamment empêcher qu'elles soient déformées, endommagées ou communiquées à des tiers. Les coordonnées informations liées à l'adresse, téléphone et mail seront utilisées uniquement pour permettre la prise de contact, dans le cadre du parcours d'engagement réciproque.</em>
     </p>
 </fieldset>
-
-        <?php echo $form->submit( 'Enregistrer' );?>
+    <div class="submit">
+        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+        <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+    </div>
     <?php echo $form->end();?>
 </div>
 

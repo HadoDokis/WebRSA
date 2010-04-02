@@ -44,6 +44,12 @@
                         case 'lockedDossier':
                             $method = 'lockedDossier';
                         break;
+                        case 'lockedAction':
+                            $method = 'lockedAction';
+                        break;
+                        case 'incompleteStructure':
+                            $method = 'incompleteStructure';
+                        break;
                         case 'error403':
                             $method = 'error403';
                         break;
@@ -107,6 +113,52 @@
         *
         *** *******************************************************************/
 
+        function incompleteApre( $params ) {
+            extract( $params, EXTR_OVERWRITE );
+
+            if (!isset($url)) {
+                $url = $this->controller->here;
+            }
+            $url = Router::normalize($url);
+            header("HTTP/1.0 401 Unauthorized");
+            $this->controller->set(array(
+                'code' => '401',
+                'name' => __( 'Unauthorized', true ),
+                'message' => $url,
+                'base' => $this->controller->base,
+                'params' => $params
+            ));
+            $this->_outputMessage( 'incomplete_apre' );
+        }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function incompleteStructure( $params ) {
+            extract( $params, EXTR_OVERWRITE );
+
+            if (!isset($url)) {
+                $url = $this->controller->here;
+            }
+            $url = Router::normalize($url);
+            header("HTTP/1.0 401 Unauthorized");
+            $this->controller->set(
+                array(
+                    'code' => '401',
+                    'name' => __( 'Unauthorized', true ),
+                    'message' => $url,
+                    'base' => $this->controller->base,
+                    'params' => $params,
+                    'structures' => $structures
+                )
+            );
+            $this->_outputMessage( 'incomplete_structure' );
+        }
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
         function lockedDossier( $params ) {
             extract( $params, EXTR_OVERWRITE );
 
@@ -123,6 +175,28 @@
                 'params' => $params
             ));
             $this->_outputMessage( 'locked_dossier' );
+        }
+
+        /**
+        *
+        */
+
+        function lockedAction( $params ) {
+            extract( $params, EXTR_OVERWRITE );
+
+            if (!isset($url)) {
+                $url = $this->controller->here;
+            }
+            $url = Router::normalize($url);
+            header("HTTP/1.0 401 Unauthorized");
+            $this->controller->set(array(
+                'code' => '401',
+                'name' => __('Unauthorized', true),
+                'message' => $url,
+                'base' => $this->controller->base,
+                'params' => $params
+            ));
+            $this->_outputMessage( 'locked_action' );
         }
 
         /** ********************************************************************

@@ -55,7 +55,7 @@
 
     <?php if( is_array( $criteres ) && count( $criteres ) > 0 ):?>
         <?php //require( 'index.pagination.ctp' )?>
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th>Numéro dossier</th>

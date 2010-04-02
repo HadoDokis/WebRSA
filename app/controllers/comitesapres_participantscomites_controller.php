@@ -4,6 +4,7 @@
 
         var $name = 'ComitesapresParticipantscomites';
         var $uses = array( 'ComiteapreParticipantcomite', 'Apre', 'Participantcomite', 'Comiteapre' );
+        var $components = array( 'Jetonsfonctions' );
         var $helpers = array( 'Xform' );
 
         function beforeFilter(){
@@ -34,51 +35,63 @@
         *** *******************************************************************/
 
         function _add_edit( $id = null ){
-            if( $this->action == 'add' ) {
-                $comiteapre_id = $id;
-                $nbrComites = $this->Comiteapre->find( 'count', array( 'conditions' => array( 'Comiteapre.id' => $comiteapre_id ), 'recursive' => -1 ) );
-                $this->assert( ( $nbrComites == 1 ), 'invalidParameter' );
-            }
-            else if( $this->action == 'edit' ) {
-                $comiteapre_id = $id;
-                $comiteparticipant = $this->ComiteapreParticipantcomite->find(
-                    'all',
-                    array(
-                        'conditions' => array(
-                            'ComiteapreParticipantcomite.comiteapre_id' => $comiteapre_id
-                        )
-                    )
-                );
-                $this->assert( !empty( $comiteparticipant ), 'invalidParameter' );
-            }
 
-            if( !empty( $this->data ) ) {
-                foreach( $this->data['Participantcomite']['Participantcomite'] as $i => $participantcomiteId ) {
-                    if( empty( $participantcomiteId ) ) {
-                        unset( $this->data['Participantcomite']['Participantcomite'][$i] );
-                    }
+            $this->Comiteapre->begin();
+
+            if( $this->Jetonsfonctions->get( $this->name, $this->action ) ) {
+
+                if( $this->action == 'add' ) {
+                    $comiteapre_id = $id;
+                    $nbrComites = $this->Comiteapre->find( 'count', array( 'conditions' => array( 'Comiteapre.id' => $comiteapre_id ), 'recursive' => -1 ) );
+                    $this->assert( ( $nbrComites == 1 ), 'invalidParameter' );
                 }
-                if( $this->Comiteapre->saveAll( $this->data ) ) {
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'comitesapres', 'action' => 'view', $comiteapre_id ) );
-                }
-            }
-            else {
-                if( $this->action == 'edit' ) {
-                    $this->data = array(
-                        'Comiteapre' => array(
-                            'id' => $comiteapre_id,
-                        ),
-                        'Participantcomite' => array(
-                            'Participantcomite' => Set::extract( $comiteparticipant, '/ComiteapreParticipantcomite/participantcomite_id' )
+                else if( $this->action == 'edit' ) {
+                    $comiteapre_id = $id;
+                    $comiteparticipant = $this->ComiteapreParticipantcomite->find(
+                        'all',
+                        array(
+                            'conditions' => array(
+                                'ComiteapreParticipantcomite.comiteapre_id' => $comiteapre_id
+                            )
                         )
                     );
+                    $this->assert( !empty( $comiteparticipant ), 'invalidParameter' );
+                }
+
+                if( !empty( $this->data ) ) {
+                    foreach( $this->data['Participantcomite']['Participantcomite'] as $i => $participantcomiteId ) {
+                        if( empty( $participantcomiteId ) ) {
+                            unset( $this->data['Participantcomite']['Participantcomite'][$i] );
+                        }
+                    }
+                    $this->Jetonsfonctions->release( $this->name, $this->action );
+                    $this->Comiteapre->commit();
+                    if( $this->Comiteapre->saveAll( $this->data ) ) {
+                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                        $this->redirect( array( 'controller' => 'comitesapres', 'action' => 'view', $comiteapre_id ) );
+                    }
+                    else{
+                        $this->Comiteapre->rollback();
+                    }
                 }
                 else {
-                    $this->data['Comiteapre']['id'] = $comiteapre_id;
+                    if( $this->action == 'edit' ) {
+                        $this->data = array(
+                            'Comiteapre' => array(
+                                'id' => $comiteapre_id,
+                            ),
+                            'Participantcomite' => array(
+                                'Participantcomite' => Set::extract( $comiteparticipant, '/ComiteapreParticipantcomite/participantcomite_id' )
+                            )
+                        );
+                    }
+                    else {
+                        $this->data['Comiteapre']['id'] = $comiteapre_id;
+                    }
                 }
+                $this->Comiteapre->commit();
+                $this->render( $this->action, null, 'add_edit' );
             }
-            $this->render( $this->action, null, 'add_edit' );
         }
 
 

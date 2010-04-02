@@ -24,6 +24,12 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
+            'modele_notif_cohorte' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
         );
 
         /** ********************************************************************
@@ -46,7 +52,7 @@
             if( $this->find( 'count', array( 'conditions' => array( 'Typeorient.parentid NOT' => NULL ) ) ) > 0 ) {
                 $list = array();
                 foreach( $options as $key => $option ) {
-                    $innerOptions = $this->find( 
+                    $innerOptions = $this->find(
                         'list',
                         array (
                             'fields' => array(
@@ -65,6 +71,41 @@
             else {
                 return $options;
             }
+        }
+
+        /**
+        *
+        */
+
+        function occurences() {
+			// Orientstruct
+			$queryData = array(
+				'fields' => array(
+					'"Typeorient"."id"',
+					'COUNT("Structurereferente"."id") + COUNT("Orientstruct"."id") AS "Typeorient__occurences"',
+				),
+				'joins' => array(
+                    array(
+                        'table'      => 'structuresreferentes',
+                        'alias'      => 'Structurereferente',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Structurereferente.typeorient_id = Typeorient.id' )
+                    ),
+                    array(
+                        'table'      => 'orientsstructs',
+                        'alias'      => 'Orientstruct',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Orientstruct.typeorient_id = Typeorient.id' )
+                    ),
+				),
+				'recursive' => -1,
+				'group' => array( '"Typeorient"."id"' )
+			);
+			$results = $this->find( 'all', $queryData );
+
+			return Set::combine( $results, '{n}.Typeorient.id', '{n}.Typeorient.occurences' );
         }
 
         /** ********************************************************************

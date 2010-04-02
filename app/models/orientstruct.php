@@ -6,6 +6,37 @@
 
         // ********************************************************************
 
+        var $actsAs = array(
+//             'Autovalidate',
+            'Enumerable' => array(
+                'fields' => array(
+                    'accordbenef' => array(
+                        'values' => array( 0, 1 )
+                    ),
+                    'urgent' => array(
+                        'values' => array( 0, 1 )
+                    ),
+                    /*'accordrefaccueil' => array(
+                        'values' => array( 0, 1 )
+                    ),
+                    'decisionep' => array(
+                        'values' => array( 0, 1 )
+                    ),
+                    'decisioncg' => array(
+                        'values' => array( 0, 1 )
+                    ),*/
+                )
+            )
+        );
+
+
+        var $hasMany = array(
+            'Demandereorient' => array(
+                'classname'     => 'Demandereorient',
+                'foreignKey'    => 'orientstruct_id'
+            )
+        );
+
         var $belongsTo = array(
             'Personne' => array(
                 'classname'     => 'Personne',

@@ -1,5 +1,5 @@
 <?php $this->pageTitle = 'Paramétrage des participants au Comité de l\'APRE';?>
-
+<?php echo $form->create( 'Paramsparticipants', array( 'url'=> Router::url( null, true ) ) );?>
 <div>
     <h1><?php echo 'Visualisation de la table participant au comité APRE ';?></h1>
 
@@ -58,5 +58,11 @@
         </table>
     </div>
     <?php endif;?>
+    <div class="submit">
+        <?php
+            echo $form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
 </div>
 <div class="clearer"><hr /></div>
+<?php echo $form->end();?>

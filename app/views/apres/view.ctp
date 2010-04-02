@@ -13,6 +13,12 @@
 <div class="with_treemenu">
     <h1><?php echo 'APRE  ';?></h1>
 
+<?php
+    $montantrestant = null;
+    $montantaverser = Set::classicExtract( $apre, 'Apre.montantaverser' );
+    $montantdejaverse = Set::classicExtract( $apre, 'Apre.montantdejaverse' );
+    $montantrestant = ( $montantaverser - $montantdejaverse );
+?>
 
 <div id="ficheCI">
         <table>
@@ -33,8 +39,33 @@
                     <th><?php __( 'Date de demande au CG' );?></th>
                     <td><?php echo date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) );?></td>
                 </tr>
+                <tr class="even">
+                    <th><?php __( 'Montant aide complémentaire demandée');?></th>
+                    <td><?php echo Set::classicExtract( $apre, 'Apre.montantaverser' );?></td>
+                </tr>
+                <tr class="odd">
+                    <th><?php __( 'Avis du comité d\'examen' );?></th>
+                    <td><?php echo Set::classicExtract( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ), $optionsaprecomite['decisioncomite'] );?></td>
+                </tr>
+                <tr class="even">
+                    <th><?php __( 'Montant aide complémentaire accordée' );?></th>
+                    <td><?php echo Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.montantattribue' );?></td>
+                </tr>
+                <tr class="odd">
+                    <th><?php __( 'Montant aide complémentaire déjà versé' );?></th>
+                    <td><?php echo Set::classicExtract( $apre, 'Apre.montantdejaverse' );?></td>
+                </tr>
+                <tr class="even">
+                    <th><?php __( 'Date du versement' );?></th>
+                    <td><?php echo date_short( Set::classicExtract( $apre, 'Comiteapre.decisioncomite' ) );?></td>
+                </tr>
+                <tr class="odd">
+                    <th><?php __( 'Montant restant à payer' );?></th>
+                    <td><?php echo $montantrestant;?></td>
+                </tr>
             </tbody>
         </table>
 </div>
+
 </div>
 <div class="clearer"><hr /></div>

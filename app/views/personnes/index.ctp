@@ -17,7 +17,7 @@
     <?php endif;?>
 
     <?php if( !empty( $personnes ) ):?>
-        <table class="tooltips_oupas">
+        <table class="tooltips">
             <thead>
                 <tr>
                     <th>Rôle</th>

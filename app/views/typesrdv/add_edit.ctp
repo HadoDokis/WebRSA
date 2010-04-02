@@ -1,5 +1,5 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Type de rendez-vous';?>
+<?php $this->pageTitle = 'Objet du rendez-vous';?>
 
 <h1><?php echo $this->pageTitle;?></h1>
 

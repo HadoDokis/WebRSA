@@ -1,8 +1,14 @@
-<?php 
+<?php
     class Relanceapre extends AppModel
     {
         var $name = 'Relanceapre';
-        var $actsAs = array( 'Enumerable' );
+        var $actsAs = array(
+            'Enumerable' => array(
+				'fields' => array(
+					'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' )
+				)
+            )
+        );
 
         var $validate = array(
             'etatdossierapre' => array(
@@ -11,9 +17,6 @@
             ),
         );
 
-        var $enumFields = array(
-            'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' )
-        );
 
 
         var $belongsTo = array(
@@ -49,20 +52,26 @@
                                 'recursive' => -1
                             )
                         );
-                        $piecesAbsentes = $this->Apre->Pieceapre->find(
-                            'all',
-                            array(
-                                'conditions' => array( 'Pieceapre.id NOT' => Set::extract( $piecesPresentes, '/AprePieceapre/pieceapre_id' ) ),
-                                'recursive' => -1
-                            )
-                        );
 
-                        $results['Relanceapre'][$key] ['Piecemanquante'] = Set::classicExtract( $piecesAbsentes, '{n}.Pieceapre' );
+                        $conditions = array();
+                        $piecesApreIds = Set::extract( $piecesPresentes, '/AprePieceapre/pieceapre_id' );
+                        if( !empty( $piecesApreIds ) ) {
+                            $conditions['Pieceapre.id NOT'] = $piecesApreIds;
+                        }
+                        $piecesAbsentes = $this->Apre->Pieceapre->find( 'all', array( 'conditions' => $conditions, 'recursive' => -1 ) );
+
+                        $results['Relanceapre'][$key]['Piecemanquante'] = Set::classicExtract( $piecesAbsentes, '{n}.Pieceapre' );
+//                         if( array_sum( $results['Relanceapre'][$key]['Piecemanquante'] ) == 0 ) {
+// //                             debug($results);
+//                         }
+
                     }
 
                     if( !$isArray ) {
                         $results['Relanceapre'] = $results['Relanceapre'][0];
                     }
+
+
 
                     $resultset[$i] = $results;
                 }

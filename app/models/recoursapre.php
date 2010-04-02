@@ -4,11 +4,16 @@
         var $name = 'Recoursapre';
         var $useTable = false;
 
-        var $enumFields = array(
-            'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
-            'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' ),
-            'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' )
+        var $actsAs = array(
+            'Enumerable' => array(
+				'fields' => array(
+					'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
+					'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' ),
+					'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' )
+				)
+            )
         );
+
 
         function search( $avisRecours, $criteresrecours ) {
 

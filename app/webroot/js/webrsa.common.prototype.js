@@ -165,20 +165,32 @@ function make_treemenus( absoluteBaseUrl ) {
 
 function mkTooltipTables() {
     var tips = new Array();
-    $$( 'table.tooltips_oupas' ).each( function( table ) {
+    $$( 'table.tooltips' ).each( function( table ) {
         var actionPositions = new Array();
-        var iPosition = 0;
-        $( table ).getElementsBySelector( 'thead tr th' ).each( function ( th ) {
+//         var iPosition = 0;
+		var trs = $( table ).getElementsBySelector( 'thead tr' );
+
+		var headRow = undefined;
+		if( trs.length > 1 ) {
+			headRow = trs[0];
+		}
+		else { // FIXME
+			headRow = trs[0];
+		}
+
+		var realPosition = 0;
+        $( headRow ).getElementsBySelector( 'th' ).each( function ( th ) {
             var colspan = ( $( th ).readAttribute( 'colspan' ) != undefined ) ? $( th ).readAttribute( 'colspan' ) : 1;
             if( $( th ).hasClassName( 'action' ) ) {
-                for( k = 0 ; k < colspan ; k++ ) {
-                    actionPositions.push( iPosition + k );
+                for( var k = 0 ; k < colspan ; k++ ) {
+                    actionPositions.push( realPosition + k );
                 }
             }
             if( $( th ).hasClassName( 'innerTableHeader' ) ) {
                 $( th ).addClassName( 'dynamic' );
             }
-            iPosition++;
+//             iPosition++;
+			realPosition = ( parseInt( realPosition ) + parseInt( colspan ) );
         } );
 
         var iPosition = 0;
@@ -396,4 +408,174 @@ function setDateInterval( masterPrefix, slavePrefix, nMonths, firstDay ) {
     var month = d.getMonth() + 1;
     $( slavePrefix + 'Month' ).value = ( month < 10 ) ? '0' + month : month;
     $( slavePrefix + 'Year' ).value = d.getFullYear();
+}
+
+//-----------------------------------------------------------------------------
+
+function setDateInterval2( masterPrefix, slavePrefix, nMonths, firstDay ) {
+    // Initialisation
+    var d = new Date();
+    d.setDate( 1 );
+    d.setMonth( $F( masterPrefix + 'Month' ) - 1 );
+    d.setYear( $F( masterPrefix + 'Year' ) );
+
+    // Ajout de trois mois, et retour au dernier jour du mois précédent
+    d.setDate( d.getDate() + ( nMonths * 31 ) );
+    d.setDate( 1 );
+    if( !firstDay ) {
+        d.setDate( d.getDate() - 1 );
+    }
+
+
+    // Assignation
+    var day = d.getDate();
+    $( slavePrefix + 'Day' ).value =  $( masterPrefix + 'Day' ).value;//( day < 10 ) ? '0' + day : day;
+    var month = d.getMonth() + 1;
+    $( slavePrefix + 'Month' ).value = ( month < 10 ) ? '0' + month : month;
+    $( slavePrefix + 'Year' ).value = d.getFullYear();
+
+	// Calcul du dernier jour du mois
+	var slaveDate = new Date();
+    slaveDate.setDate( 1 );
+    slaveDate.setMonth( $( slavePrefix + 'Month' ).value ); // FIXME ?
+    slaveDate.setYear( $( slavePrefix + 'Year' ).value );
+	slaveDate.setDate( slaveDate.getDate() - 1 );
+	if( slaveDate.getDate() < $( slavePrefix + 'Day' ).value ) {
+		$( slavePrefix + 'Day' ).value = slaveDate.getDate();
+	}
+}
+
+//==============================================================================
+
+function disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition ) {
+	var v = $( form ).getInputs( 'radio', radioName );
+	var currentValue = undefined;
+	$( v ).each( function( radio ) {
+		if( radio.checked ) {
+			currentValue = radio.value;
+		}
+	} );
+
+
+	var disabled = !( ( currentValue == value ) == condition );
+
+	fieldsIds.each( function ( fieldId ) {
+		var field = $( fieldId );
+		if( !disabled ) {
+			field.enable();
+			if( input = field.up( 'div.input' ) )
+				input.removeClassName( 'disabled' );
+			else if( input = field.up( 'div.checkbox' ) )
+				input.removeClassName( 'disabled' );
+		}
+		else {
+			field.disable();
+			if( input = field.up( 'div.input' ) )
+				input.addClassName( 'disabled' );
+			else if( input = field.up( 'div.checkbox' ) )
+				input.addClassName( 'disabled' );
+		}
+	} );
+}
+
+//-----------------------------------------------------------------------------
+
+function observeDisableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition ) {
+    disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition );
+
+	var v = $( form ).getInputs( 'radio', radioName );
+	var currentValue = undefined;
+	$( v ).each( function( radio ) {
+		$( radio ).observe( 'change', function( event ) {
+			disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition );
+		} );
+	} );
+}
+
+
+//*****************************************************************************
+
+function disableFieldsetOnRadioValue( form, radioName, fieldsetId, value, condition, toggleVisibility ) {
+    toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+
+//     var checked = ( ( $F( fieldset ) == null ) ? false : true );
+
+
+    var v = $( form ).getInputs( 'radio', radioName );
+    var fieldset = $( fieldsetId );
+    var currentValue = undefined;
+
+    $( v ).each( function( radio ) {
+        if( radio.checked ) {
+            currentValue = radio.value;
+        }
+    } );
+
+    var disabled = !( ( currentValue == value ) == condition );
+
+    if( disabled != condition ) {
+        fieldset.removeClassName( 'disabled' );
+        if( toggleVisibility ) {
+            fieldset.show();
+        }
+
+        $( fieldset ).getElementsBySelector( 'div.input', 'radio' ).each( function( elmt ) {
+            elmt.removeClassName( 'disabled' );
+        } );
+
+        $( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
+            elmt.enable();
+        } );
+    }
+    else {
+        fieldset.addClassName( 'disabled' );
+        if( toggleVisibility ) {
+            fieldset.hide();
+        }
+
+        $( fieldset ).getElementsBySelector( 'div.input', 'radio' ).each( function( elmt ) {
+            elmt.addClassName( 'disabled' );
+        } );
+
+        $( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
+            elmt.disable();
+        } );
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+function observeDisableFieldsetOnRadioValue( form, radioName, fieldsetId, value, condition, toggleVisibility ) {
+    toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+
+    disableFieldsetOnRadioValue( form, radioName, fieldsetId, value, condition, toggleVisibility );
+
+    var v = $( form ).getInputs( 'radio', radioName );
+
+    var currentValue = undefined;
+
+    $( v ).each( function( radio ) {
+        $( radio ).observe( 'change', function( event ) {
+            disableFieldsetOnRadioValue( form, radioName, fieldsetId, value, condition, toggleVisibility );
+        } );
+    } );
+}
+
+//-----------------------------------------------------------------------------
+
+function makeTabbed( wrapperId, titleLevel ) {
+	var ul = new Element( 'ul', { 'class' : 'ui-tabs-nav' } );
+	$$( '#' + wrapperId + ' h' + titleLevel + '.title' ).each( function( title ) {
+		var parent = title.up();
+		var li = new Element( 'li', { 'class' : 'tab' } ).update(
+			new Element( 'a', { href: '#' + parent.id } ).update( title.innerHTML )
+		);
+		ul.appendChild( li );
+		parent.addClassName( 'tab' );
+		title.addClassName( 'tab hidden' );
+	} );
+
+	$( wrapperId ).insert( { 'before' : ul } );
+
+	new Control.Tabs( ul );
 }

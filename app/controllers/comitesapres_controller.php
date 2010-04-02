@@ -3,8 +3,9 @@
     {
 
         var $name = 'Comitesapres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre'/*, 'ComiteapreParticipantcomite'*/, 'Participantcomite', 'Apre', 'Referentapre' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre'/*, 'ComiteapreParticipantcomite'*/, 'Participantcomite', 'Apre', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
+        var $components = array( 'Prg' => array( 'actions' => array( 'index', 'liste' ) ) );
 
         /** ********************************************************************
         *
@@ -12,7 +13,7 @@
 
         function beforeFilter() {
             parent::beforeFilter();
-            $this->set( 'referentapre', $this->Referentapre->find( 'list' ) );
+            $this->set( 'referent', $this->Referent->find( 'list' ) );
             $options = $this->Comiteapre->ApreComiteapre->allEnumLists();
             $options = Set::merge( $options, $this->Comiteapre->ComiteapreParticipantcomite->allEnumLists() );
             $this->set( 'options', $options );
@@ -67,8 +68,6 @@
         *** *************************************************************************************/
 
         function view( $comiteapre_id = null ){
-            $this->assert( valid_int( $comiteapre_id ), 'invalidParameter' );
-
             $comiteapre = $this->Comiteapre->find(
                 'first',
                 array(
@@ -76,6 +75,7 @@
                     'recursive' => 2
                 )
             );
+            $this->assert( !empty( $comiteapre ), 'invalidParameter' );
 
             foreach( $comiteapre['Apre'] as $key => $apre ) {
                 // Personne

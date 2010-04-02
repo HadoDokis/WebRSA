@@ -3,18 +3,42 @@
     {
 
         var $name = 'Referents';
-        var $uses = array( 'Referent', 'Structurereferente', 'Option' );
+        var $uses = array( 'Referent', 'Structurereferente', 'Option', 'Precoreorient' );
+        var $helpers = array( 'Xform' );
+
+
+        public $components = array(
+            'Prg' => array(
+                'actions' => array( 'liste_demande_reorient' )
+            )
+        );
 
 
         function beforeFilter() {
             $return = parent::beforeFilter();
+
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'fonction_pers', $this->Option->fonction_pers() );
+            $this->set( 'referent', $this->Referent->find( 'list' ) );
+
+            $options = array();
+            foreach( array( 'Structurereferente' ) as $linkedModel ) {
+                $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
+                $options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
+            }
+
+            $this->set( compact( 'options' ) );
+
             return $return;
         }
 
 
         function index() {
+            // Retour à la liste en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
+            }
+
             $sr = $this->Structurereferente->find(
                 'list',
                 array(
@@ -31,11 +55,48 @@
                 )
 
             );
-
             $this->set('referents', $referents);
         }
 
-        function add() {
+		/**
+		*
+		*/
+
+        public function add() {
+            $args = func_get_args();
+            call_user_func_array( array( $this, '_add_edit' ), $args );
+        }
+
+		/**
+		*
+		*/
+
+        public function edit() {
+            $args = func_get_args();
+            call_user_func_array( array( $this, '_add_edit' ), $args );
+        }
+
+		/**
+		*
+		*/
+
+        function _add_edit() {
+            $sr = $this->Structurereferente->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Structurereferente.lib_struc'
+                    ),
+                )
+            );
+            $this->set( 'sr', $sr );
+
+            $args = func_get_args();
+			//$this->Default->{$this->action}( $args );
+			call_user_func_array( array( $this->Default, $this->action ), $args );
+		}
+
+        /*function add() {
             $sr = $this->Structurereferente->find(
                 'list',
                 array(
@@ -49,7 +110,7 @@
             if( !empty( $this->data ) ) {
                 if( $this->Referent->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'referents', 'action' => 'index' ) );
+//                     $this->redirect( array( 'controller' => 'referents', 'action' => 'index' ) );
                 }
             }
 
@@ -92,7 +153,7 @@
             }
 
             $this->render( $this->action, null, 'add_edit' );
-        }
+        }*/
 
         function delete( $referent_id = null ) {
             // Vérification du format de la variable
@@ -118,6 +179,82 @@
                 $this->redirect( array( 'controller' => 'referents', 'action' => 'index' ) );
             }
         }
+
+		/**
+		* FIXME: à mettre dans le modèle
+		*/
+
+        /**
+        *   Liste des demandes de réorientation par référents
+        */
+
+        public function liste_demande_reorient( $operations = array() ) {
+            if( !empty( $this->data ) ) {
+                $referents = $this->Default->search( $operations, $this->data );
+            }
+        }
+
+		protected function _demandes_reorient( $conditions ) {
+			$this->{$this->modelClass}->Demandereorient->Ep->unbindModelAll();
+			$demandes = $this->{$this->modelClass}->Demandereorient->find(
+				'all',
+				array(
+					'conditions' => $conditions,
+					'recursive' => 2
+				)
+			);
+
+			if( !empty( $demandes ) ) {
+				foreach( Set::flatten( $demandes ) as $path => $value ) {
+					if( !empty( $value ) && preg_match( "/(?<!\w)(Structurereferente)(\.|\.[0-9]+\.)(typeorient_id)$/", $path, $matches ) ) {
+						$newPath = preg_replace( "/(?<!\w)(Structurereferente)(\.|\.[0-9]+\.)(typeorient_id)$/", 'Typeorient', $path );
+						$typeorient = $this->{$this->modelClass}->Structurereferente->Typeorient->findById( $value, null, null, -1 );
+						$demandes = Set::insert( $demandes, $newPath, Set::extract( $typeorient, 'Typeorient' ) );
+					}
+				}
+			}
+
+			return $demandes;
+		}
+
+		public function demandes_reorient( $referent_id ) {
+			$demandes_origine = $this->_demandes_reorient(
+				array(
+					'Demandereorient.reforigine_id' => $referent_id,
+					'Demandereorient.statut <' => 3,
+				)
+			);
+
+			//
+			$precosreorient = $this->Precoreorient->find(
+				'list',
+				array(
+					'fields' => array(
+						'Precoreorient.id',
+						'Precoreorient.demandereorient_id',
+					),
+					'conditions' => array(
+						'OR' => array(
+							'Demandereorient.reforigine_id' => $referent_id,
+							'Precoreorient.referent_id' => $referent_id,
+						),
+						'OR' => array(
+							'Precoreorient.rolereorient' => 'equipe',
+							'Precoreorient.rolereorient' => 'conseil'
+						)
+					),
+					'recursive' => 0
+				)
+			);
+// debug( $precosreorient );
+			$demandes_destination = array();
+			if( !empty( $precosreorient ) ) {
+				$demandes_destination = $this->_demandes_reorient( array( 'Demandereorient.id IN ( '.implode( ', ', array_values( $precosreorient ) ).' )' ) );
+			}
+
+			//
+			$this->set( compact( 'demandes_origine', 'demandes_destination' ) );
+		}
     }
 
 ?>

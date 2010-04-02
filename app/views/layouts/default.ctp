@@ -107,6 +107,9 @@
                 <?php echo $content_for_layout;?>
             </div>
             <?php echo $this->element( 'footer' );?>
+			<?php if( ( Configure::read( 'debug' ) > 0 ) && ( date( 'm' ) == 12 ) ):?>
+				<div style="position: absolute; top: 80px; right: 20px;"><?php echo $html->image( 'easteregg-noel.gif' );?></div>
+			<?php endif;?>
 <?php /*echo session_id();*/?>
 <?php /*debug( $session->id() );*/?>
 <?php /*debug( session_get_cookie_params() );*/?>

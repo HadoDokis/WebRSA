@@ -32,7 +32,7 @@
         <?php echo $pagination;?>
         <?php echo $xform->create( 'Recoursapre', array( 'url'=> Router::url( null, true ) ) );?>
 
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
@@ -86,7 +86,7 @@
                             h( Set::classicExtract( $recours, 'Personne.qual').' '.Set::classicExtract( $recours, 'Personne.nom').' '.Set::classicExtract( $recours, 'Personne.prenom') ),
                             h( Set::classicExtract( $recours, 'Adresse.locaadr') ),
                             h( $locale->date( 'Date::short', Set::extract( $recours, 'Apre.datedemandeapre' ) ) ),
-                            h( Set::classicExtract( $recours, 'ApreComiteapre.decisioncomite') ),
+                            h( Set::enum( Set::classicExtract( $recours, 'ApreComiteapre.decisioncomite'), $options['decisioncomite'] ) ),
                             h( $locale->date( 'Date::short', Set::extract( $recours, 'Comiteapre.datecomite' ) ) ),
                             $xform->enum( 'ApreComiteapre.'.$index.'.recoursapre', array( 'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['recoursapre'], 'value' => ( !empty( $valueRecourapre ) ? $valueRecourapre : 'N' ) ) ).
                             $xform->input( 'ApreComiteapre.'.$index.'.apre_id', array( 'label' => false, 'div' => false, 'value' => $apre_id, 'type' => 'hidden' ) ).

@@ -32,7 +32,7 @@
         </tbody>
     </table>
     </fieldset>
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th>Mois des mouvements</th>

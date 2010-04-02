@@ -23,6 +23,11 @@
             )
         );
 
+
+        /**
+        *
+        **/
+
         var $validate = array(
             'datecomite' => array(
                 array(
@@ -32,7 +37,11 @@
                 array(
                     'rule' => 'isUnique',
                     'message' => 'Un comité d\'examen existe déjà à cette date.'
-                )
+                )/*,
+                array(
+                    'rule' => 'futureDate',
+                    'message' => 'Impossible de créer un comité avec une date antérieure à celle du jour'
+                )*/
             ),
             'heurecomite' => array(
                 'rule' => 'notEmpty',

@@ -13,7 +13,7 @@
             if( !empty( $statutValidationAvis ) ) {
                 if( $statutValidationAvis == 'Decisionpdo::nonvalide' ) {
                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
-                    $conditions[] = 'Situationdossierrsa.dossier_rsa_id NOT IN ( SELECT propospdos.dossier_rsa_id FROM propospdos /*WHERE propospdos.decisionpdo = \'P\'*/ )';
+                    $conditions[] = 'Situationdossierrsa.dossier_rsa_id NOT IN ( SELECT propospdos.dossier_rsa_id FROM propospdos )';
                 }
                 else if( $statutValidationAvis == 'Decisionpdo::enattente' ) {
                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
@@ -21,11 +21,9 @@
 //                     $conditions[] = 'Propopdo.decisionpdo_id = \'E\'';
                 }
                 else if( $statutValidationAvis == 'Decisionpdo::valide' ) {
-                    $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
-//                     $conditions[] = 'Propopdo.decisionpdo IS NOT NULL';
+//                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
                     $conditions[] = 'Propopdo.motifpdo <> \'E\'';
                     $conditions[] = 'Propopdo.decisionpdo_id IS NOT NULL';
-//                     $conditions[] = 'Propopdo.decisionpdo_id <> \'E\'';
                 }
             }
 
@@ -182,27 +180,27 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Propopdo.dossier_rsa_id = Dossier.id' )
                     ),
-//                     array(
-//                         'table'      => 'typesnotifspdos',
-//                         'alias'      => 'Typenotifpdo',
-//                         'type'       => 'LEFT OUTER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'Propopdo.typenotifpdo_id = Typenotifpdo.id' )
-//                     ),
-//                     array(
-//                         'table'      => 'decisionspdos',
-//                         'alias'      => 'Decisionpdo',
-//                         'type'       => 'INNER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'Propopdo.decisionpdo_id = Decisionpdo.id' )
-//                     ),
-//                     array(
-//                         'table'      => 'typespdos',
-//                         'alias'      => 'Typepdo',
-//                         'type'       => 'INNER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'Propopdo.typepdo_id = Typepdo.id' )
-//                     ),
+                    array(
+                        'table'      => 'typesnotifspdos',
+                        'alias'      => 'Typenotifpdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.typenotifpdo_id = Typenotifpdo.id' )
+                    ),
+                    array(
+                        'table'      => 'decisionspdos',
+                        'alias'      => 'Decisionpdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.decisionpdo_id = Decisionpdo.id' )
+                    ),
+                    array(
+                        'table'      => 'typespdos',
+                        'alias'      => 'Typepdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.typepdo_id = Typepdo.id' )
+                    ),
                 ),
                 'recursive' => -1,
                 'conditions' => $conditions,

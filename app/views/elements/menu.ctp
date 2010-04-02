@@ -4,12 +4,12 @@
         <?php if( $session->check( 'Auth.User' ) ): ?>
             <?php if( $permissions->check( 'cohortes', 'index' ) ) : ?>
                 <li id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                    <?php echo $html->link( 'Gestion des cohortes', '#' );?>
+                    <?php echo $html->link( 'Cohortes', '#' );?>
                     <ul>
                         <?php if( $permissions->check( 'cohortesci', 'nouveaux' ) || $permissions->check( 'cohortesci', 'valides' ) || $permissions->check( 'cohortesci', 'enattente' ) ):?>
-                            <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
+                            <!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                                <?php  echo $html->link( 'Contrat insertion', '#' );?>
+                                <?php  echo $html->link( 'Contrat d\'engagement ', '#' );?>
                                     <ul>
                                         <?php if( $permissions->check( 'cohortesci', 'nouveaux' ) ): ?>
                                             <li><?php echo $html->link( 'Contrats à valider', array( 'controller' => 'cohortesci', 'action' => 'nouveaux' ), array( 'title' => 'Contrats à valider' ) );?></li>
@@ -77,7 +77,7 @@
             <?php endif;?>
             <?php if( $permissions->check( 'dossiers', 'index' ) || $permissions->check( 'criteres', 'index' ) || $permissions->check( 'criteresci', 'index' ) ) :?>
                 <li id="menu2one" >
-                    <?php echo $html->link( 'Recherche multicritères', '#' );?>
+                    <?php echo $html->link( 'Recherches', '#' );?>
                     <ul>
                         <?php if( $permissions->check( 'dossiers', 'index' ) ):?>
                             <li><?php echo $html->link( 'Par dossier / allocataire', array( 'controller' => 'dossiers', 'action' => 'index' ) );?></li>
@@ -86,7 +86,14 @@
                             <li><?php echo $html->link( 'Par Orientation', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
                         <?php endif;?>
                         <?php if( $permissions->check( 'criteresci', 'index' ) ):?>
-                            <li><?php echo $html->link( 'Par Contrat insertion',  array( 'controller' => 'criteresci', 'action' => 'index'  ) );?></li>
+                            <li>
+                                <?php echo $html->link( 'Par Contrats', '#' );?>
+                                <ul>
+                                    <li>
+                                        <?php echo $html->link( 'Par Contrat d\'engagement',  array( 'controller' => 'criteresci', 'action' => 'index'  ) );?>
+                                    </li>
+                                </ul>
+                            </li>
                         <?php endif;?>
                         <?php if( $permissions->check( 'cohortesindus', 'index' ) ): ?>
                             <li><?php echo $html->link( 'Par Indus', array( 'controller' => 'cohortesindus', 'action' => 'index' ) );?>
@@ -140,30 +147,105 @@
                                 </ul>
                             </li>
                         <?php endif;?>
-                        <?php if( $permissions->check( 'repsddtefp', 'index' ) ):?>
-                            <li><?php echo $html->link( 'Reporting bi-mensuel DDTEFP', array( 'controller' => 'repsddtefp', 'action' => 'index' ) );?></li>
-                        <?php endif;?>
-                        <!-- <?php if( $permissions->check( 'commissionsapre', 'nouvelles' ) || $permissions->check( 'commissionsapre', 'enattente' ) || $permissions->check( 'commissionsapre', 'valide' )):?>
+                        <?php if( $permissions->check( 'repsddtefp', 'index' ) || $permissions->check( 'repsddtefp', 'suivicontrole' ) ):?>
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                                <?php echo $html->link( 'Avis commission d\'attribution','#' );?>
+                                <?php echo $html->link( 'Reporting bi-mensuel', '#' );?>
                                 <ul>
-                                    <?php if( $permissions->check( 'commissionsapre', 'nouvelles' ) ): ?>
-                                        <li><?php echo $html->link( 'Nouvelles demandes', array( 'controller' => 'commissionsapre', 'action' => 'nouvelles' ), array( 'title' => 'Nouvelles demandes' )  );?></li>
+                                    <?php if( $permissions->check( 'repsddtefp', 'index' ) ):?>
+                                        <li><?php echo $html->link( 'Reporting bi-mensuel DDTEFP', array( 'controller' => 'repsddtefp', 'action' => 'index' ) );?></li>
                                     <?php endif;?>
-                                    <?php if( $permissions->check( 'commissionsapre', 'enattente' ) ): ?>
-                                        <li><?php echo $html->link( 'En attente', array( 'controller' => 'commissionsapre', 'action' => 'enattente' ), array( 'title' => 'Demandes en attente' ) );?></li>
-                                    <?php endif;?>
-                                    <?php if( $permissions->check( 'commissionsapre', 'valide' ) ): ?>
-                                        <li><?php echo $html->link( 'Demandes validées', array( 'controller' => 'commissionsapre', 'action' => 'valide' ), array( 'title' => 'Demandes validées' ) );?></li>
+                                    <?php if( $permissions->check( 'repsddtefp', 'suivicontrole' ) ):?>
+                                        <li><?php echo $html->link( 'Suivi et contrôle de l\'enveloppe APRE', array( 'controller' => 'repsddtefp', 'action' => 'suivicontrole' ) );?></li>
                                     <?php endif;?>
                                 </ul>
                             </li>
-                        <?php endif;?> -->
+                        <?php endif;?>
+                        <?php if( $permissions->check( 'integrationfichiersapre', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Journal d\'intégration des fichiers CSV', array( 'controller' => 'integrationfichiersapre', 'action' => 'index' ) );?></li>
+                        <?php endif;?>
+                        <?php if( $permissions->check( 'etatsliquidatifs', 'index' ) ):?>
+                            <li><?php echo $html->link( 'États liquidatifs APRE', array( 'controller' => 'etatsliquidatifs', 'action' => 'index' ) );?></li>
+                        <?php endif;?>
+                        <?php if( $permissions->check( 'budgetsapres', 'index' ) ):?>
+                            <li><?php echo $html->link( 'Budgets APRE', array( 'controller' => 'budgetsapres', 'action' => 'index' ) );?></li>
+                        <?php endif;?>
                     </ul>
                 </li>
             <?php endif;?>
+
+            <!-- Début du Nouveau menu pour les Equipes pluridisciplinaires -->
+
+            <?php if( $permissions->check( 'eps', 'liste' ) /*|| $permissions->check( 'referents', 'demandes_reorient' ) || $permissions->check( 'demandesreorient', 'index' ) || $permissions->check( 'parcoursdetectes', 'index' ) || $permissions->check( 'precosreorients', 'index' ) || $permissions->check( 'parcoursdetectes', 'equipe' ) || $permissions->check( 'precosreorients', 'conseil' ) || $permissions->check( 'parcoursdetectes', 'conseil' ) || $permissions->check( 'partseps', 'index' ) || $permissions->check( 'rolespartseps', 'index' ) */ ) :?>
+            <li id="menu4one">
+                <?php echo $html->link( 'Eq. Pluri.', '#' );?>
+                <ul>
+                    <li>
+                        <?php echo $html->link( 'Parcours', '#' );?>
+                        <ul>
+                            <li>
+                                <?php echo $html->link( 'Détection de parcours', array( 'controller' => 'parcoursdetectes', 'action' => 'detecte' ) );?>
+                            </li>
+                            <li>
+                                <?php echo $html->link( 'Parcours détectés', array( 'controller' => 'parcoursdetectes', 'action' => 'index' ) );?>
+                            </li>
+                        </ul>
+                    </li>
+                    <?php if( $permissions->check( 'eps', 'liste' ) ):?>
+                        <li>
+                            <?php echo $html->link( 'Liste des équipes', array( 'controller' => 'eps', 'action' => 'liste' ) );?>
+                        </li>
+                    <?php endif;?>
+                    <?php if( $permissions->check( 'eps', 'liste' ) ):?>
+                        <!-- <li>
+                            <?php echo $html->link( 'Liste des équipes', array( 'controller' => 'eps', 'action' => 'liste' ) );?>
+                            <ul>
+                                <li>
+                                    <?php /*echo $html->link( 'Gestion des demandes de réorientation', array( 'controller' => 'eps', 'action' => 'liste' ) );?>
+                                </li>
+                                <li>
+                                    <?php echo $html->link( 'Gestion des parcours détectés', array( 'controller' => 'eps', 'action' => 'detection' ) );*/?>
+                                </li>
+                            </ul> 
+                        </li> -->
+
+                        <li>
+                            <?php echo $html->link( 'Demandes de réorientation par référents', array( 'controller' => 'referents', 'action' => 'liste_demande_reorient' ) );?>
+                        </li>
+                    <?php endif;?>
+                   <!-- <?php if( $permissions->check( 'precosreorients', 'conseil' ) || $permissions->check( 'parcoursdetectes', 'conseil' ) ) :?>
+                        <li>
+                            <?php echo $html->link( 'Conseil général', '#' );?>
+                            <ul>
+                                <li><?php echo $html->link( 'Cohorte demandes de réorientation', array( 'controller' => 'precosreorients', 'action' => 'conseil' ) );?></li>
+                                <li><?php echo $html->link( 'Cohorte parcours', array( 'controller' => 'parcoursdetectes', 'action' => 'conseil' ) );?></li>
+                            </ul>
+                        </li>
+                    <?php endif;?>
+                    <?php if( $permissions->check( 'referents', 'demandes_reorient' ) ) :?>
+                        <li>
+                            <?php echo $html->link( 'Référents', '#' );?>
+                            <ul>
+                                <li><?php echo $html->link( 'Synthèse référent 1', array( 'controller' => 'referents', 'action' => 'demandes_reorient' ) );?></li>
+                                <li><?php echo $html->link( 'Synthèse référent 2', array( 'controller' => 'referents', 'action' => 'demandes_reorient' ) );?></li>
+                            </ul>
+                        </li>
+                    <?php endif;?>
+                    <?php if( $permissions->check( 'demandesreorient', 'index' ) || $permissions->check( 'parcoursdetectes', 'index' )) :?>
+                        <li>
+                            <?php echo $html->link( 'Listes', '#' );?>
+                            <ul>
+                                <li><?php echo $html->link( 'Demandes de réorientation', array( 'controller' => 'demandesreorient', 'action' => 'indexparams' ) );?></li>
+                                <li><?php echo $html->link( 'Parcours', array( 'controller' => 'parcoursdetectes', 'action' => 'index' ) );?></li>
+                            </ul>
+                        </li>
+                    <?php endif;?> -->
+                </ul>
+            </li>
+            <?php endif;?>
+            <!-- Fin du Nouveau menu pour les Equipes pluridisciplinaires -->
+
             <?php if( $permissions->check( 'indicateursmensuels', 'index' ) ) :?>
-                <li id="menu4one" >
+                <li id="menu5one" >
                     <?php echo $html->link( 'Tableaux de bord', '#' );?>
                     <ul>
                         <?php if( $permissions->check( 'indicateursmensuels', 'index' ) ):?>
@@ -173,7 +255,7 @@
                 </li>
             <?php endif;?>
             <?php if(/* $permissions->check( 'droits', 'edit' ) || */$permissions->check( 'parametrages', 'index' ) || $permissions->check( 'infosfinancieres', 'indexdossier' ) || $permissions->check( 'totalisationsacomptes', 'index' ) ): ?>
-                    <li id="menu5one">
+                    <li id="menu6one">
                         <?php echo $html->link( 'Administration', '#' );?>
                         <ul>
                             <?php if( $permissions->check( 'droits', 'edit' ) ):?>
@@ -198,7 +280,7 @@
                         </ul>
                     </li>
             <?php endif;?>
-            <li id="menu6one"><?php echo $html->link( 'Déconnexion '.$session->read( 'Auth.User.username' ), array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
+            <li id="menu7one"><?php echo $html->link( 'Déconnexion '.$session->read( 'Auth.User.username' ), array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
             <?php else: ?>
                 <li><?php echo $html->link( 'Connexion', array( 'controller' => 'users', 'action' => 'login' ) );?></li>
             <?php endif; ?>

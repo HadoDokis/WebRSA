@@ -15,7 +15,7 @@
         *
         */
 
-        function preOrientation( $element ) {
+        /*function preOrientation( $element ) {
             $propo_algo = null;
 
             if( isset( $element['Dspp'] ) ) {
@@ -71,7 +71,115 @@
 
 
             return $propo_algo;
-        }
+        }*/
+
+		/**
+		*
+		*/
+
+        function preOrientation( $element ) {
+            $propo_algo = null;
+
+			/// Ajout des informations liées aux Dspf
+			$dspf = Classregistry::init( 'Dossier' )->Foyer->Dspf->find(
+				'first',
+				array(
+					'conditions' => array( 'Dspf.foyer_id' => $element['Foyer']['id'] )
+				)
+			);
+			$element['Foyer'] = Set::merge( $element['Foyer'], $dspf );
+
+			/// Règles de gestion
+
+			// Règle 1 (Prioritaire) : Code XML instruction : « NATLOG ». Nature du logement ?
+			// 0904 = Logement d'urgence : CHRS → Orientation vers le Social
+			// 0911 = Logement précaire : résidence sociale → Orientation vers le Social
+			$natlog = Set::classicExtract( $element, 'Foyer.Dspf.natlog' );
+			if( empty( $propo_algo ) && !empty( $natlog ) ) {
+				if( in_array( $natlog, array( '0904', '0911' ) ) ) {
+					$propo_algo = 'Social';
+				}
+			}
+
+			// Règle 2 (Prioritaire)  : Code XML instruction : « DIFLOG ». Difficultés logement ?
+			// 1006 = Fin de bail, expulsion → Orientation vers le Service Social
+			$diflog = Set::extract( $element, 'Foyer.Diflog.{n}.code' );
+			if( empty( $propo_algo ) && !empty( $diflog ) ) {
+				if( in_array( '1006', $diflog ) ) {
+					$propo_algo = 'Social';
+				}
+			}
+
+			//
+			// Règle 3 (Prioritaire)  : Code XML instruction : « MOTIDEMRSA ». "Quel est le motif de votre demande de rSa ?"
+			// 0102 = Fin de droits AAH → Orientation vers le Social
+			// 0105 = Attente de pension vieillesse ou invalidité‚ ou d'allocation handicap → Orientation vers le Social
+			// 0109 = Fin d'études → Orientation vers le Pôle Emploi
+			// 0101 = Fin de droits ASSEDIC → Orientation vers le Pôle Emploi
+			$motidemrsa = Set::extract( $element, 'Foyer.Dspf.motidemrsa' );
+			if( empty( $propo_algo ) && !empty( $motidemrsa ) ) {
+				if( in_array( $motidemrsa, array( '0102', '0105' ) ) ) {
+					$propo_algo = 'Social';
+				}
+				else if( in_array( $motidemrsa, array( '0109', '0101' ) ) ) {
+					$propo_algo = 'Emploi';
+				}
+			}
+
+			// Règle 4 : Code XML instruction : « DTNAI ». Date de Naissance.
+			$dtnai = Set::extract( $element, 'Personne.dtnai' );
+			$dfderact = Set::extract( $element, 'Dspp.dfderact' );
+
+			// Si la date«DFDERACT»  n'est pas renseignée : Règle 5
+			if( empty( $propo_algo ) && !empty( $dfderact ) ) {
+				$age = age( $dtnai );
+				$age_dfderact = age( $dfderact );
+
+				// + 57 Ans ( Date du jour) :
+				// Code XML instruction : « DFDERACT » (Date éventuelle de cessation de cette activité) = -1ans ( Date du jour) → Orientation vers le PDV
+				// Code XML instruction : « DFDERACT» (Date éventuelle de cessation de cette activité) = +1ans ( Date du jour) → Orientation vers le Service Social
+				if( $age >= 57 ) {
+					if( $age_dfderact < 1 ) {
+						$propo_algo = 'Socioprofessionnelle';
+					}
+					else {
+						$propo_algo = 'Social';
+					}
+				}
+				// -57 Ans ( Date du jour) :
+				// Code XML instruction : « DFDERACT» (Date éventuelle de cessation de cette activité) = -1ans ( Date du jour)→ Orientation vers le Pôle Emploi
+				// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = entre 1 et 5 ans ( Date du jour) → Orientation vers le PDV
+				// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = +5 ans ( Date du jour) → Orientation vers le Service Social
+				else {
+					if( $age_dfderact < 1 ) {
+						$propo_algo = 'Emploi';
+					}
+					else if( $age_dfderact < 5 ) {
+						$propo_algo = 'Socioprofessionnelle';
+					}
+					else {
+						$propo_algo = 'Social';
+					}
+				}
+			}
+
+			// Règle 5 : Code XML instruction : « HISPRO ». Question : Passé professionnel ?
+			// 1901 = Oui → Orientation vers le Pôle Emploi
+			// 1902 = Oui → Orientation vers le PDV
+			// 1903 = Oui → Orientation vers le PDV
+			// 1904 = Oui → Orientation vers le PDV
+			$hispro = Set::extract( $element, 'Dspp.hispro' );
+			if( empty( $propo_algo ) && !empty( $hispro ) ) {
+				if( $hispro == '1901' ) {
+					$propo_algo = 'Emploi';
+				}
+				else if( in_array( $hispro, array( '1902', '1903', '1904' ) ) ) {
+					$propo_algo = 'Socioprofessionnelle';
+				}
+			}
+
+            return $propo_algo;
+		}
 
 		/**
 		*
@@ -102,6 +210,26 @@
             $codepos = Set::extract( $criteres, 'Filtre.codepos' );
             $dtdemrsa = Set::extract( $criteres, 'Filtre.dtdemrsa' );
             $date_impression = Set::extract( $criteres, 'Filtre.date_impression' );
+            $date_print = Set::extract( $criteres, 'Filtre.date_print' );
+            $modeles = Set::extract( $criteres, 'Filtre.typeorient' );
+            //-------------------------------------------------------
+            $cantons = Set::extract( $criteres, 'Filtre.cantons' );
+
+
+            /// FIXME: dans le modèle
+            $typeorient = Set::classicExtract( $criteres, 'Filtre.typeorient' );
+            if( !empty( $typeorient ) ) {
+                if( Configure::read( 'with_parentid' ) ) {
+                    $conditions[] = 'orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.parentid = \''.Sanitize::clean( $typeorient ).'\' )';
+                }
+                else {
+                    $conditions[] = 'orientsstructs.typeorient_id = \''.Sanitize::clean( $typeorient ).'\'';
+                }
+            }
+            /*if( !empty( $modeles ) ) {
+                $conditions[] = 'orientsstructs.typeorient_id = \''.Sanitize::clean( $modeles ).'\'';
+            }*/
+            //-------------------------------------------------------
 
             // Origine de la demande
             if( !empty( $oridemrsa ) ) {
@@ -159,7 +287,7 @@
             if( !empty( $dtdemrsa ) && $dtdemrsa != 0 ) {
                 $dtdemrsa_from = Set::extract( $criteres, 'Filtre.dtdemrsa_from' );
                 $dtdemrsa_to = Set::extract( $criteres, 'Filtre.dtdemrsa_to' );
-                // FIXME: vérifier le bon formattage des dates
+                // FIXME: vérifier le bon formatage des dates
                 $dtdemrsa_from = $dtdemrsa_from['year'].'-'.$dtdemrsa_from['month'].'-'.$dtdemrsa_from['day'];
                 $dtdemrsa_to = $dtdemrsa_to['year'].'-'.$dtdemrsa_to['month'].'-'.$dtdemrsa_to['day'];
 
@@ -174,6 +302,17 @@
                 else {
                     $conditions[] = 'orientsstructs.date_impression IS NULL';
                 }
+            }
+
+            // Date d'impression
+            if( !empty( $date_print ) && $date_print != 0 ) {
+                $date_impression_from = Set::extract( $criteres, 'Filtre.date_impression_from' );
+                $date_impression_to = Set::extract( $criteres, 'Filtre.date_impression_to' );
+                // FIXME: vérifier le bon formatage des dates
+                $date_impression_from = $date_impression_from['year'].'-'.$date_impression_from['month'].'-'.$date_impression_from['day'];
+                $date_impression_to = $date_impression_to['year'].'-'.$date_impression_to['month'].'-'.$date_impression_to['day'];
+
+                $conditions[] = 'orientsstructs.date_impression BETWEEN \''.$date_impression_from.'\' AND \''.$date_impression_to.'\'';
             }
 
             /// Requête

@@ -30,19 +30,26 @@
                 <th>Date d'orientation</th>
                 <th>Préconisation d'orientation</th>
                 <th>Structure référente</th>
-                <th colspan="2" class="action">Actions</th>
+                <th colspan="3" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
             <?php
+
                 foreach( $orientstructs as $orientstruct ) {
+
+                    $isOrient = false;
+                    if( isset( $orientstruct['Orientstruct']['date_propo'] ) ){
+                        $isOrient = true;
+                    }
+
                     echo $html->tableCells(
                         array(
                             h( $orientstruct['Personne']['nom']),
                             h( $orientstruct['Personne']['prenom'] ),
                             h( date_short( $orientstruct['Orientstruct']['date_propo'] ) ),
                             h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
-                            h( isset( $orientstruct['Structurereferente']['Typeorient']['lib_type_orient'] ) ? $orientstruct['Structurereferente']['Typeorient']['lib_type_orient'] : null ) ,
+                            h( Set::classicExtract( $orientstruct, 'Typeorient.lib_type_orient' ) ) ,
                             h( $orientstruct['Structurereferente']['lib_struc']  ),
                             $html->editLink(
                                 'Editer l\'orientation',
@@ -54,6 +61,7 @@
                                 array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
                                 $permissions->check( 'gedooos', 'orientstruct' )
                             ),
+                            $html->reorientLink( 'Réorientation', array( 'controller' => 'demandesreorient', 'action' => 'add', $orientstruct['Orientstruct']['id'] ), $isOrient )
                         ),
                         array( 'class' => 'odd' ),
                         array( 'class' => 'even' )
@@ -64,6 +72,31 @@
     </table>
     <?php  endif;?>
 
+<br />
 
+<?php  if( !empty( $demandesreorients ) ):?>
+    <h2>Réorientation</h2>
+    <?php
+        echo $default->index(
+            $demandesreorients,
+            array(
+                'Reforigine.nom_complet' => array( 'domain' => 'referent' ), // FIXME
+                'Motifdemreorient.name',
+                'Demandereorient.urgent' => array( 'type' => 'boolean' ),
+                'Demandereorient.created',
+                'Ep.name',
+            ),
+            array(
+                'actions' => array(
+                    'Demandereorient.view',
+                    'Demandereorient.edit',
+                    'Demandereorient.delete',
+                ),
+                'add' => array( 'Demandereorient.add' => $this->params['pass'][0] ),
+                'options' => $options
+            )
+        );
+    ?>
+<?php endif;?>
 </div>
 <div class="clearer"><hr /></div>

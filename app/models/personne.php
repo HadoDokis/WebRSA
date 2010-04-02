@@ -4,15 +4,17 @@
         var $name = 'Personne';
         var $useTable = 'personnes';
 
+        var $actsAs = array( 'ValidateTranslate' );
         //---------------------------------------------------------------------
 
         var $hasOne = array(
             'TitreSejour',
             'Dspp',
-            'Dsp',
+//             'Dsp',
             'Infopoleemploi',
             'Dossiercaf',
-            'Avispcgpersonne',
+//             'Avispcgpersonne', // Commentée car problème au niveau de l'ajout de nouveau RDV à une personne
+                                    // on se retrouve avec un count(nbPersonnes) > 1 --> invalidParameter
             'Prestation' => array(
                 'foreignKey' => 'personne_id',
                 'conditions' => array (
@@ -24,6 +26,11 @@
 
         var $belongsTo = array(
             'Foyer'
+        );
+
+        var $hasAndBelongsToMany = array(
+            'Actioncandidat' => array( 'with' => 'ActioncandidatPersonne' ),
+            'Referent' => array( 'with' => 'ActioncandidatPersonne' )
         );
 
         var $hasMany = array(
@@ -46,6 +53,14 @@
             'Apre' => array(
                 'classname' => 'Apre',
                 'foreignKey' => 'personne_id',
+            ),
+            'Creancealimentaire' => array(
+                'classname' => 'Creancealimentaire',
+                'foreignKey' => 'personne_id',
+            ),
+            'Allocationsoutienfamilial' => array(
+                'classname' => 'Allocationsoutienfamilial',
+                'foreignKey' => 'personne_id',
             )
         );
 
@@ -53,42 +68,29 @@
 
         var $validate = array(
             // Qualité
-            'qual' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'nom' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'prenom' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            ),
-//             'nir' => array(
+            'qual' => array( array( 'rule' => 'notEmpty' ) ),
+            'nom' => array( array( 'rule' => 'notEmpty' ) ),
+            'prenom' => array( array( 'rule' => 'notEmpty' ) ),
+            'nir' => array(
 //                 array(
 //                     'rule' => 'isUnique',
 //                     'message' => 'Ce NIR est déjà utilisé'
 //                 ),
-//                 array(
-//                     'rule' => array( 'between', 15, 15 ),
-//                     'message' => 'Le NIR est composé de 15 chiffres'
-//                 ),
-//                 array(
-//                     'rule' => 'numeric',
-//                     'message' => 'Veuillez entrer une valeur numérique.',
-//                     'allowEmpty' => true
-//                 ),
-//                 array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//                 // TODO: format NIR
-//             ),
+                array(
+                    'rule' => array( 'between', 15, 15 ),
+                    'message' => 'Le NIR est composé de 15 chiffres'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.',
+                    'allowEmpty' => true
+                )/*,
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )*/
+                // TODO: format NIR
+            ),
             'dtnai' => array(
                 array(
                     'rule' => 'date',
@@ -292,15 +294,42 @@
 
             $personne = $this->findById( $personne_id, null, null, 2 );
 
-            /// Recherche des informations financières
-            $infofinancieres = $this->Foyer->Dossier->Infofinanciere->find(
-                'all',
+            // Récupération du service instructeur
+            $suiviinstruction = $this->Foyer->Dossier->Suiviinstruction->find(
+                'first',
                 array(
+                    'fields' => array_keys( // INFO: champs des tables Suiviinstruction et Serviceinstructeur
+                        Set::merge(
+                            Set::flatten( array( 'Suiviinstruction' => Set::normalize( array_keys( $this->Foyer->Dossier->Suiviinstruction->schema() ) ) ) ),
+                            Set::flatten( array( 'Serviceinstructeur' => Set::normalize( array_keys( ClassRegistry::init( 'Serviceinstructeur' )->schema() ) ) ) )
+                        )
+                    ),
                     'recursive' => -1,
-                    'order' => array( 'Infofinanciere.moismoucompta DESC' )
+                    'conditions' => array(
+                        'Suiviinstruction.dossier_rsa_id' => $personne['Foyer']['dossier_rsa_id']
+                    ),
+                    'joins' => array(
+                        array(
+                            'table'      => 'servicesinstructeurs',
+                            'alias'      => 'Serviceinstructeur',
+                            'type'       => 'LEFT OUTER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+                        )
+                    )
                 )
             );
-            $personne['Foyer']['Dossier']['Infofinanciere'] = Set::classicExtract( $infofinancieres, '{n}.Infofinanciere' );
+            $personne = Set::merge( $personne, $suiviinstruction );
+
+            /// Recherche des informations financières
+//             $infofinancieres = $this->Foyer->Dossier->Infofinanciere->find(
+//                 'all',
+//                 array(
+//                     'recursive' => -1,
+//                     'order' => array( 'Infofinanciere.moismoucompta DESC' )
+//                 )
+//             );
+//             $personne['Foyer']['Dossier']['Infofinanciere'] = Set::classicExtract( $infofinancieres, '{n}.Infofinanciere' );
 
 //             $detaildroitrsa = $this->Foyer->Dossier->Detaildroitrsa->find(
 //                 'first',
@@ -315,14 +344,25 @@
             $modecontact = $this->Foyer->Modecontact->find(
                 'all',
                 array(
-                    'recursive' => -1,
                     'conditions' => array(
                         'Modecontact.foyer_id' => $personne['Foyer']['id']
-                    )
+                    ),
+                    'recursive' => -1,
+                    'order' => 'Modecontact.nattel ASC'
                 )
             );
-            $personne['Foyer']['Modecontact'] = Set::extract( $modecontact, '/Modecontact' );
 
+            foreach( $modecontact as $index => $value ) {
+                if( ( ( Set::extract( $value, 'Modecontact.autorutitel' ) != 'R' ) /*|| ( Set::extract( $value, 'Modecontact.autorutitel' ) != 'R' )*/ ) && ( Set::extract( $value, 'Modecontact.nattel' ) == 'D' ) ) {
+                    $personne['Foyer'] = Set::merge( $personne['Foyer'], array( 'Modecontact' => Set::extract( $modecontact, '{n}.Modecontact' ) ) );
+                }
+            }
+
+//             if( Set::extract(  ) )
+            //$personne['Foyer']['Modecontact'] = Set::extract( $modecontact, '/Modecontact' );
+//             $personne['Foyer'] = Set::merge( $personne['Foyer'], array( 'Modecontact' => Set::extract( $modecontact, '{n}.Modecontact' ) ) );
+
+// debug($modecontact);
             /// Récupération de l'adresse lié à la personne
             $this->Foyer->Adressefoyer->bindModel(
                 array(
@@ -360,7 +400,7 @@
                     'recursive' => 0
                 )
             );
-
+// debug($personne);
             if( !empty( $orientstruct ) ) {
                 $personne = Set::merge( $personne, $orientstruct );
             }
@@ -377,7 +417,7 @@
             ///Recup personne
             $this->unbindModel(
                 array(
-                    'hasOne' => array( 'TitreSejour', 'Avispcgpersonne', 'Dossiercaf', 'Dsp' ),
+                    'hasOne' => array( 'TitreSejour', 'Avispcgpersonne', 'Dossiercaf'/*, 'Dsp'*/ ),
                     'hasMany' => array( 'Rendezvous', 'Activite', 'Contratinsertion', 'Orientstruct' , 'Apre' )
                 )
             );
@@ -391,19 +431,19 @@
             $this->Foyer->Dossier->unbindModelAll();
             $this->Prestation->unbindModelAll();
             $this->Dspp->unbindModelAll();
-            $this->Dsp->unbindModelAll();
+//             $this->Dsp->unbindModelAll();
 
             $personne = $this->findById( $personne_id, null, null, 2 );
 
             /// Recherche des informations financières
-            $infofinancieres = $this->Foyer->Dossier->Infofinanciere->find(
-                'all',
-                array(
-                    'recursive' => -1,
-                    'order' => array( 'Infofinanciere.moismoucompta DESC' )
-                )
-            );
-            $personne['Foyer']['Dossier']['Infofinanciere'] = Set::classicExtract( $infofinancieres, '{n}.Infofinanciere' );
+//             $infofinancieres = $this->Foyer->Dossier->Infofinanciere->find(
+//                 'all',
+//                 array(
+//                     'recursive' => -1,
+//                     'order' => array( 'Infofinanciere.moismoucompta DESC' )
+//                 )
+//             );
+//             $personne['Foyer']['Dossier']['Infofinanciere'] = Set::classicExtract( $infofinancieres, '{n}.Infofinanciere' );
 
             // FIXME -> comment distinguer ? + FIXME autorutitel / autorutiadrelec
             $modecontact = $this->Foyer->Modecontact->find(
@@ -485,20 +525,40 @@
             $personne['Contratinsertion']['dernier'] = $contrat['Contratinsertion'];
 
             ///Récupération des données Dsp
-            $dsp = $this->Dsp->find(
+//             $dsp = $this->Dsp->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Dsp.personne_id' => $personne_id
+//                     ),
+//                     'recursive' => -1
+//                 )
+//             );
+//             $personne['Dsp'] = $dsp['Dsp'];
+            $dspp = $this->Dspp->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Dsp.personne_id' => $personne_id
+                        'Dspp.personne_id' => $personne_id
                     ),
                     'recursive' => -1
                 )
             );
-            $personne['Dsp'] = $dsp['Dsp'];
-
+            $personne['Dspp'] = $dspp['Dspp'];
 
 
             return $personne;
         }
+
+		/**
+		*
+		*/
+
+		public $virtualFields = array(
+			'nom_complet' => array(
+				'type'		=> 'string',
+				'postgres'	=> '( "%s"."nom" || \' \' || "%s"."prenom" )'
+			),
+		);
     }
 ?>

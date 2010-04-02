@@ -112,3 +112,11 @@ div.textarea.address label, div.textarea.address textarea {
     vertical-align: top;
     cursor: pointer;
 }
+
+/*********************************************************************/
+
+fieldset.partenaire.bilan div.radio {
+    display: block;
+    width: 50%;
+    float: left;
+}

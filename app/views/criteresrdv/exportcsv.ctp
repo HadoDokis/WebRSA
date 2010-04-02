@@ -12,7 +12,7 @@
         }
     }
 
-    $csv->addRow( array( 'Nom/Prénom allocataire', 'Commune de l\'allocataire', 'Structure référente', 'Référent', 'Type de RDV', 'Statut du RDV', 'Date du RDV', 'Heure du RDV', 'Objet du RDV', 'Commentaire suite RDV' ) );
+    $csv->addRow( array( 'Nom/Prénom allocataire', 'Commune de l\'allocataire', 'Structure référente', 'Référent', 'Objet du RDV', 'Statut du RDV', 'Date du RDV', 'Heure du RDV', 'Objectif du RDV', 'Commentaire suite RDV' ) );
 
     foreach( $rdvs as $rdv ) {
         $row = array(

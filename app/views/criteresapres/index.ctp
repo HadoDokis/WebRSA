@@ -100,7 +100,7 @@
     <?php echo $pagination;?>
     <?php if( is_array( $apres ) && count( $apres ) > 0  ):?>
 
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>

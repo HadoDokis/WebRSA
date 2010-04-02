@@ -1,5 +1,5 @@
 <?php $this->pageTitle = 'Paramétrage des Permanences';?>
-
+<?php echo $xform->create( 'Permanence' );?>
 <h1><?php echo 'Visualisation de la table  ';?></h1>
 
     <ul class="actionMenu">
@@ -64,4 +64,11 @@
         <?php endif;?>
     </div>
 
+    <div class="submit">
+        <?php
+            echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+
 <div class="clearer"><hr /></div>
+<?php echo $xform->end();?>

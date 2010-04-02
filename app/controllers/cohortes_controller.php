@@ -1,12 +1,16 @@
 <?php
     @set_time_limit( 0 );
-    @ini_set( 'memory_limit', '128M' );
+    //@ini_set( 'memory_limit', '128M' ); // INFO: à 100, ça casse -> headers 000
+    //@ini_set( 'memory_limit', '256M' ); // INFO: à 100, ça casse -> headers 000
+    @ini_set( 'memory_limit', '512M' );
     App::import('Sanitize');
     class CohortesController extends AppController
     {
         var $name = 'Cohortes';
-        var $uses = array( 'Canton', 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne', 'Orientstruct' );
-        var $helpers = array( 'Csv', 'Paginator' );
+        var $uses = array( 'Canton', 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne', 'Orientstruct', 'PersonneReferent', 'Referent' );
+        var $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default' );
+        var $components = array( 'Gedooo' );
+        var $aucunDroit = array( 'progression' );
 
         var $paginate = array(
             // FIXME
@@ -60,10 +64,22 @@
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', $this->Canton->selectList() );
 			}
+
+            $this->set(
+                'modeles',
+                $this->Typeorient->find(
+                    'list',
+                    array(
+                        'fields' => array( 'lib_type_orient' ),
+                        'conditions' => array( 'Typeorient.parentid IS NULL' )
+                    )
+                )
+            );
             //-------------------------------------------------------------
 
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
 
             // Un des formulaires a été renvoyé
             if( !empty( $this->data ) ) {
@@ -81,8 +97,6 @@
                     )
                 );
                 $this->set( 'typesOrient', $typesOrient );
-
-
                 // --------------------------------------------------------
 
                 if( !empty( $this->data ) ) { // FIXME: déjà fait plus haut ?
@@ -119,6 +133,7 @@
                     $this->Dossier->begin(); // Pour les jetons
 
                     $_limit = 10;
+
                     $cohorte = $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids(), $_limit );
 
                     $count = count( $this->Cohorte->search( $statutOrientation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() ) );
@@ -129,17 +144,19 @@
                         $this->Jetons->get( array( 'Dossier.id' => $this->Dossier->Foyer->Personne->dossierId( $personne_id ) ) );
                     }
 
-                    $this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp', 'Orientstruct' ), 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
-                    $cohorte = $this->Dossier->Foyer->Personne->find(
-                        'all',
-                        array(
-                            'conditions' => array(
-                                'Personne.id' => ( !empty( $cohorte ) ? $cohorte : null )
-                            ),
-                            'recursive' => 2,
-                            'limit'     => $_limit
-                        )
-                    );
+					if( !empty( $cohorte ) ) {
+						$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp', 'Orientstruct' ), 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
+						$cohorte = $this->Dossier->Foyer->Personne->find(
+							'all',
+							array(
+								'conditions' => array(
+									'Personne.id' => $cohorte
+								),
+								'recursive' => 2,
+								'limit'     => $_limit
+							)
+						);
+					}
 
                     // --------------------------------------------------------
 
@@ -279,30 +296,6 @@
 /************************************* Export des données en Xls *******************************/
 
 
-        /*function exportcsv() {
-            $headers = array( 'Commune', 'Qual', 'Nom', 'Prénom', 'Date demande', 'Date ouverture', 'Service instructeur', 'Préorientation', 'Orientation', 'Structure', 'Décision', 'Date proposition', 'Date dernier CI' );
-
-            $dataPers = $this->Personne->find( 'all', array( 'fields' => array( 'qual', 'nom', 'prenom' ), 'limit' => 20, 'recursive' => -1 ) );
-            $dataPers = Set::extract( $dataPers, '{n}.Personne' );
-
-            $dataDos = $this->Dossier->find( 'all', array( 'fields' => array( 'dtdemrsa', 'numdemrsa' ), 'limit' => 20, 'recursive' => -1 ) );
-            $dataDos = Set::extract( $dataDos, '{n}.Dossier' );
-
-            $dataAdr = $this->Adresse->find( 'all', array( 'fields' => array( 'locaadr' ), 'limit' => 20, 'recursive' => -1 ) );
-            $dataAdr = Set::extract( $dataAdr, '{n}.Adresse' );
-
-            $dataOri = $this->Orientstruct->find( 'all', array( 'fields' => array( 'structurereferente_id', 'propo_algo', 'date_propo', 'statut_orient' ), 'limit' => 20, 'recursive' => -1 ) );
-            $dataOri = Set::extract( $dataOri, '{n}.Orientstruct' );
-
-//             $dataStr = $this->Structurereferente->find( 'all', array( 'fields' => array( 'structure', 'date_propo', 'statut_orient' ), 'limit' => 20, 'recursive' => -1 ) );
-//             $dataStr = Set::extract( $dataStr, '{n}.Structurereferente' );
-
-            $this->layout = '';
-            $data = $this->set( compact( 'dataPers', 'dataDos', 'dataAdr', 'dataOri' ) );
-
-            $this->set( 'dataToExport', $data );
-        } */
-
       function exportcsv(){
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
@@ -313,9 +306,280 @@
             unset( $params['limit'] );
             $cohortes = $this->Dossier->find( 'all', $params );
 
-
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'cohortes' ) );
         }
+
+
+        function _get( $personne_id ) {
+            $this->Personne->unbindModel(
+                array(
+                    'hasMany' => array(
+                        'Contratinsertion', 'Rendezvous', 'Referent'
+                    ),
+                    'hasAndBelongsToMany' => array(
+                        'PersonneReferent'
+                    )
+                )
+            );
+//             $this->Personne->unbindModel(
+//                 array(
+//                     'hasMany' => array( 'Contratinsertion', 'Rendezvous' ),
+//                     'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
+//                 )
+//             );
+            $personne = $this->Personne->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Personne.id' => $personne_id
+                    )
+                )
+            );
+
+            $contratinsertion = $this->Personne->Contratinsertion->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Contratinsertion.personne_id' => $personne_id
+                    ),
+                    'order' => array(
+                        'Contratinsertion.dd_ci DESC'
+                    ),
+                    'recursive' => -1
+                )
+            );
+            $personne = Set::merge( $personne, $contratinsertion );
+
+            // Récupération de l'adresse lié à la personne
+            $this->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+            $adresse = $this->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => $personne['Personne']['foyer_id'],
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $personne['Adresse'] = $adresse['Adresse'];
+
+            // Récupération de l'utilisateur
+            $user = $this->User->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'User.id' => $this->Session->read( 'Auth.User.id' )
+                    )
+                )
+            );
+            $personne['User'] = $user['User'];
+
+            // Récupération de la structure referente liée à la personne
+            $orientstruct = $this->Orientstruct->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        // 'Orientstruct.id' => $personne['Orientstruct']['id']
+                        'Orientstruct.personne_id' => $personne['Personne']['id'] // FIXME
+                    )
+                )
+            );
+            $personne['Orientstruct'] = $orientstruct['Orientstruct'];
+            $personne['Structurereferente'] = $orientstruct['Structurereferente'];
+
+            //Ajout pour le numéro de poste du référent de la structure
+            $referent = $this->Referent->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Referent.structurereferente_id' => $personne['Structurereferente']['id']
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+            if( !empty( $referent['Referent'] ) ) {
+                $personne['Referent'] = $referent['Referent'];
+            }
+            else if( !Set::check( $personne, 'Referent' ) ) {
+                $personne['Referent'] = Set::normalize( array_keys( $this->Referent->schema() ) );
+            }
+
+            $personne_referent = $this->PersonneReferent->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'PersonneReferent.personne_id' => Set::classicExtract( $orientstruct, 'Personne.id' )
+                    )
+                )
+            );
+            $personne = Set::merge( $personne, $personne_referent );
+
+			// ----------------------------------------------------
+
+			// Dossier
+			$dossier = $this->Dossier->find(
+				'first',
+				array(
+					'conditions' => array( 'Dossier.id' => $personne['Foyer']['dossier_rsa_id'] ),
+					'recursive' => -1
+				)
+			);
+
+            $personne = Set::merge( $personne, $dossier );
+
+			// ----------------------------------------------------
+
+            return $personne;
+
+        }
+
+        /**
+        *
+        */
+/*
+        function progression() { // FIXME: pas de droits
+            include ( 'vendors/progressbar.php' );
+            Initialize( 200, 100, 200, 30, '#000000', '#FFCC00', '#006699' );
+            ProgressBar( 100, 'Chargement des documents à éditer' );
+
+            $indix = 10;
+            for( $cpt = 1 ; $cpt <= $indix ; $cpt++ ) {
+                $cpt++;
+                $indice = $cpt*(100/$indix);
+                if( $indice != null ){
+                    ProgressBar( $indice, 'Edition de '.$indix.' fichiers' );
+                }
+            }
+
+            Configure::write( 'debug', 0 );
+            $this->render( 'visualisation', 'ajax' );
+        }*/
+
+        /**
+        *
+        */
+
+        function cohortegedooo( $personne_id = null ) {
+
+            // Initialisation de la progressBar
+//             include ('vendors/progressbar.php');
+//             Initialize( 200, 100, 200, 30, '#000000', '#FFCC00', '#006699' );
+//             ProgressBar( 100, 'Chargement des documents à éditer' );
+
+// $this->progression();
+            $AuthZonegeographique = $this->Session->read( 'Auth.Zonegeographique' );
+            if( !empty( $AuthZonegeographique ) ) {
+                $AuthZonegeographique = array_values( $AuthZonegeographique );
+            }
+            else {
+                $AuthZonegeographique = array();
+            }
+
+            $limit = Configure::read( 'nb_limit_print' );
+
+            $cohorte = $this->Cohorte->search( 'Orienté', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids(), $limit );
+            $qual = $this->Option->qual();
+            $typevoie = $this->Option->typevoie();
+
+            $cohorteDatas = array();
+
+//             $indix = count( $cohorte );
+//             $cpt = 0;
+
+            $orientstructs_update = array();
+
+            foreach( $cohorte as $personne_id ) {
+                //Barre de chargement
+//                 $cpt++;
+//                 $indice = $cpt*(100/$indix);
+//                 if( $indice != null ){
+//                     ProgressBar( $indice, 'Edition de '.$indix.' fichiers' );
+//                 }
+
+
+                $datas = $this->_get( $personne_id );
+                $datas['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $datas, 'Personne.qual' ) );
+                $datas['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $datas, 'Adresse.typevoie' ) );
+
+                if( empty( $datas['Orientstruct']['date_impression'] ) ) {
+                    $orientstructs_update[] = array(
+                        'Orientstruct' => array(
+                            'id' => $datas['Orientstruct']['id'],
+                            'date_impression' => strftime( '%Y-%m-%d', mktime() )
+                        )
+                    );
+                }
+
+                /*$typeorient = $this->Structurereferente->Typeorient->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Typeorient.id' => $datas['Orientstruct']['typeorient_id'] // FIXME structurereferente_id
+                        )
+                    )
+                );
+                $modele = $typeorient['Typeorient']['modele_notif_cohorte'];
+
+                ///FIXME: pas assez générique, trouver une meilleure solution
+                if( $modele == 'proposition_orientation_vers_pole_emploi_cohorte' ) {
+                    $section = 'emploi';
+                }
+                else if( $modele == 'proposition_orientation_vers_SS_ou_PDV_cohorte' ){
+                    $section = 'pdv';
+                }*/
+
+                $datas['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, set::classicExtract( $datas, 'Structurereferente.type_voie' ) );
+
+                unset($datas['Apre']);
+                unset($datas['Creancealimentaire']);
+
+                $cohorteDatas[] = $datas;
+            }
+
+// debug($cohorteDatas);
+// die();
+			// Sélection du modèle de document à partir du champ modele_notif_cohorte de Typeorient
+			$typeorient = $this->Structurereferente->Typeorient->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Typeorient.id' => Set::classicExtract( $this->params['named'], 'Filtre__typeorient' ) // FIXME structurereferente_id
+					)
+				)
+			);
+			$modele = $typeorient['Typeorient']['modele_notif_cohorte'];
+
+			///FIXME: pas assez générique, trouver une meilleure solution
+			if( $modele == 'proposition_orientation_vers_pole_emploi_cohorte' ) {
+				$section = 'emploi';
+			}
+			else if( $modele == 'proposition_orientation_vers_SS_ou_PDV_cohorte' ){
+				$section = 'pdv';
+			}
+			else {
+				debug( "Le modèle de document pour le type d'orientation {$typeorient['Typeorient']['lib_type_orient']} n'est pas paramétré dans la base de données." );
+			}
+// debug( $cohorteDatas );
+            ///Si gedooo nous renvoie OK, on modifie la date d'impression dans la table orientsstructs
+            if( $this->Gedooo->generateCohorte( $section, $cohorteDatas, 'Orientation/'.$modele.'.odt', null ) ) {
+                foreach( array( 'date_propo', 'date_valid' ) as $key ) {
+                    unset( $this->Orientstruct->validate[$key] );
+                }
+                $this->Orientstruct->saveAll( $orientstructs_update );
+            }
+        }
+
+
     }
 ?>

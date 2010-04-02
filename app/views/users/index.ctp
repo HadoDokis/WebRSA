@@ -1,5 +1,5 @@
 <?php $this->pageTitle = 'Paramétrage des utilisateurs';?>
-
+<?php echo $xform->create( 'User' );?>
 <div>
     <h1><?php echo 'Visualisation de la table  ';?></h1>
 
@@ -59,4 +59,11 @@
         </table>
 </div>
 </div>
+    <div class="submit">
+        <?php
+            echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+
 <div class="clearer"><hr /></div>
+<?php echo $xform->end();?>

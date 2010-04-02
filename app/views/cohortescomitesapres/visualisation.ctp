@@ -32,8 +32,8 @@
 
     <?php if( is_array( $comitesapres ) && count( $comitesapres ) > 0 ):?>
         <?php echo $form->create( 'NotifComite', array( 'url'=> Router::url( null, true ) ) );?>
-    <?php echo $pagination;?> 
-        <table id="searchResults" class="tooltips_oupas">
+    <?php echo $pagination;?>
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'N° demande RSA', 'Dossier.numdemrsa' );?></th>
@@ -70,17 +70,37 @@
                                 </tr>
                             </tbody>
                         </table>';
-                        $title = $comite['Dossier']['numdemrsa'];
+                    $title = $comite['Dossier']['numdemrsa'];
 
-                        //Pour masquer les champs imprimer en cas de Non accord
-                        $typedecision = ( Set::enum( Set::classicExtract( $comite, 'ApreComiteapre.decisioncomite' ), $options['decisioncomite'] ) );
-                        // debug($typedecision);
-                        $isTiers = false;
-                        if( $typedecision == 'Accord' ) {
-                            $isTiers = true;
+                ///FIXME:::::Doublon avec le contrôleur cohortecomiteapre
+                    //Pour masquer les champs imprimer en cas de Non accord
+                    $typedecision = ( Set::enum( Set::classicExtract( $comite, 'ApreComiteapre.decisioncomite' ), $options['decisioncomite'] ) );
 
+
+                    //Pour masquer les champs imprimer en cas de HorsFormation
+                    $modelFormation = array( 'Formqualif', 'Formpermfimo', 'Permisb', 'Actprof' );
+                    foreach( $comite['Apre']['Natureaide'] as $model => $value ) {
+                        if( $value == 0 ){
+                            unset( $comite['Apre']['Natureaide'][$model] );
                         }
-// debug($comite);
+                    }
+
+                    if( array_any_key_exists( $modelFormation, $comite['Apre']['Natureaide'] ) ) {
+                        $typeformation = 'Formation';
+                    }
+                    else {
+                        $typeformation = 'HorsFormation';
+                    }
+
+
+
+                    $isTiers = false;
+                    if( $typedecision == 'Accord' && $typeformation == 'Formation' ) {
+                        $isTiers = true;
+                    }
+
+					$apreComiteapreId = Set::classicExtract( $comite, 'ApreComiteapre.id' );
+
                     echo $html->tableCells(
                         array(
                             h( Set::classicExtract( $comite, 'Dossier.numdemrsa' ) ),
@@ -93,17 +113,17 @@
                             h( Set::classicExtract( $comite, 'ApreComiteapre.observationcomite' ) ),
                             $html->printLink(
                                 'Imprimer pour le bénéficiaire',
-                                array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', Set::classicExtract( $comite, 'ApreComiteapre.apre_id' ), 'dest' => 'beneficiaire' ),
+                                array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', $apreComiteapreId, 'dest' => 'beneficiaire' ),
                                 $permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
                             ),
                             $html->printLink(
                                 'Imprimer pour le référent',
-                                array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', Set::classicExtract( $comite, 'ApreComiteapre.apre_id' ), 'dest' => 'referent' ),
+                                array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', $apreComiteapreId, 'dest' => 'referent' ),
                                 $permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
                             ),
                             $html->printLink(
                                 'Imprimer pour le tiers prestataire',
-                                array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', Set::classicExtract( $comite, 'ApreComiteapre.apre_id' ), 'dest' => 'tiers' ),
+                                array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', $apreComiteapreId, 'dest' => 'tiers' ),
                                 $isTiers,
                                 $permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
                             ),

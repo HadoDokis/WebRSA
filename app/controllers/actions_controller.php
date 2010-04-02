@@ -5,6 +5,7 @@
 
         var $name = 'Actions';
         var $uses = array( 'Actioninsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action', 'Typeaction' );
+        var $helpers = array( 'Xform' );
 
 
          function beforeFilter() {
@@ -14,6 +15,11 @@
         }
 
         function index() {
+            // Retour à la liste en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
+            }
+
             $actions = $this->Action->find(
                 'all',
                 array(
@@ -70,6 +76,36 @@
                 $this->data = $action;
             }
             $this->render( $this->action, null, 'add_edit' );
+        }
+
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function delete( $action_id = null ) {
+            // Vérification du format de la variable
+            if( !valid_int( $action_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Recherche de la personne
+            $action = $this->Action->find(
+                'first',
+                array( 'conditions' => array( 'Action.id' => $action_id )
+                )
+            );
+
+            // Mauvais paramètre
+            if( empty( $action_id ) ) {
+                $this->cakeError( 'error404' );
+            }
+
+            // Tentative de suppression ... FIXME
+            if( $this->Action->deleteAll( array( 'Action.id' => $action_id ), true ) ) {
+                $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+                $this->redirect( array( 'controller' => 'actions', 'action' => 'index' ) );
+            }
         }
     }
 ?>

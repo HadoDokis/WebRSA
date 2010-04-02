@@ -6,6 +6,16 @@
         var $displayField = 'lib_struc';
         var $order = array( 'lib_struc ASC' );
 
+        var $actsAs = array(
+            'Enumerable' => array(
+				'fields' => array(
+					'contratengagement' => array( 'type' => 'no', 'domain' => 'default' ),
+					'apre' => array( 'type' => 'no', 'domain' => 'default' ),
+				)
+            )
+        );
+
+
         function list1Options() {
             $tmp = $this->find(
                 'all',
@@ -125,8 +135,50 @@
             'typeorient_id'=> array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+            ),
+            'apre' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'contratengagement' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
             )
         );
+
+        /**
+        *
+        */
+
+        function listePourApre() {
+            ///Récupération de la liste des référents liés à l'APRE
+            $structsapre = $this->Structurereferente->find( 'list', array( 'conditions' => array( 'Structurereferente.apre' => 'O' ) ) );
+            $this->set( 'structsapre', $structsapre );
+        }
+
+        /**
+        *   Retourne la liste des structures référentes filtrée selon un type donné
+        * @param array $types ( array( 'apre' => true, 'contratengagement' => true ) )
+        * par défaut, toutes les clés sont considérées commen étant à false
+        */
+
+        function listeParType( $types ) {
+//             $connection = ConnectionManager::getInstance();
+//             $dbo = $connection->getDataSource( $this->useDbConfig );
+//             $SQ = $dbo->startQuote;
+//             $EQ = $dbo->endQuote;
+
+            $conditions = array();
+
+            foreach( array( 'apre', 'contratengagement' ) as $type ) {
+                $bool = Set::classicExtract( $types, $type );
+                if( !empty( $bool ) ) {
+                    $conditions[] = "Structurereferente.{$type} = 'O'";
+                }
+            }
+
+            return $this->find( 'list', array( 'conditions' => $conditions, 'recursive' => -1 ) );
+        }
     }
 
 ?>

@@ -2,12 +2,12 @@
 
     function Initialize($gauche,$haut,$largeur,$hauteur,$bord_col,$txt_col,$bg_col) {
         $tailletxt=$hauteur-10;
-       
+
         echo '<div id="contTemp" style="position:absolute;top:0;left:0px;';
-	echo 'background-image:url(../../../img/header.png);';
+        echo 'background-image:url(../../../img/header.png);';
         echo 'width:1000px; height:250px; margin-left: 0px; padding: 0px;">';
 
-	echo '<div id="pourcentage" style="position:absolute;top:'.$haut;
+        echo '<div id="pourcentage" style="position:absolute;top:'.$haut;
         echo ';left:'.$gauche;
         echo ';width:'.$largeur.'px';
         echo ';height:'.$hauteur.'px;border:1px solid '.$bord_col.';font-family:Tahoma;font-weight:bold';
@@ -33,7 +33,7 @@
         echo "document.getElementById(\"affiche\").innerHTML='".$affiche."';";
         echo "document.getElementById('progrbar').style.width=".($indice*2).";";
         echo "</script>";
-        flush(); 
+        flush();
     }
 
-?> 
+?>

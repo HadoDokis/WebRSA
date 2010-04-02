@@ -32,12 +32,12 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'numvoie' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+//             'numvoie' => array(
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
             'nomvoie' => array(
                 array(
                     'rule' => 'notEmpty',

@@ -26,6 +26,7 @@
             <h2>Dossier RSA</h2>
             <p><?php echo "Numéro de demande RSA : $numdossierrsa";?></p>
             <p><?php echo "Date de demande du dossier : $datdemdossrsa";?></p>
+            <p><?php echo "N° CAF : $matricule";?></p>
         </fieldset>
         <fieldset>
             <h2>Personne orientée</h2>

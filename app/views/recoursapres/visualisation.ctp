@@ -33,7 +33,7 @@
     <?php if( is_array( $recoursapres ) && count( $recoursapres ) > 0 ):?>
         <?php echo $form->create( 'RecoursApre', array( 'url'=> Router::url( null, true ) ) );?>
     <?php echo $pagination;?> 
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>

@@ -21,13 +21,13 @@
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
 
-        $pages = $paginator->first( '<<' );
-        $pages .= $paginator->prev( '<' );
-        $pages .= $paginator->numbers();
-        $pages .= $paginator->next( '>' );
-        $pages .= $paginator->last( '>>' );
-
-        $pagination .= $html->tag( 'p', $pages );
+//         $pages = $paginator->first( '<<' );
+//         $pages .= $paginator->prev( '<' );
+//         $pages .= $paginator->numbers();
+//         $pages .= $paginator->next( '>' );
+//         $pages .= $paginator->last( '>>' );
+// 
+//         $pagination .= $html->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -43,7 +43,7 @@
         <?php echo $pagination;?>
         <?php echo $form->create( 'Propopdo', array( 'url'=> Router::url( null, true ) ) );?>
 
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <!-- <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
@@ -98,6 +98,7 @@
                     $dossier_rsa_id = $pdo['Dossier']['id'];//Set::extract( $pdo, 'Propopdo.dossier_rsa_id');
                     $pdo_id = Set::extract( $pdo, 'Propopdo.id');
 // debug($pdo);
+// die();
                     echo $html->tableCells(
                         array(
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),

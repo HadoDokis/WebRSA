@@ -29,7 +29,7 @@
 
 <?php echo $form->create( 'Totalisationsacomptes', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
         <fieldset>
-            <?php echo $form->input( 'Filtre.dtcreaflux', array( 'label' => 'Recherche des versements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) ) );?>
+            <?php echo $form->input( 'Filtre.dtcreaflux', array( 'label' => 'Recherche des versements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 1 ) );?>
     </fieldset>
 
     <div class="submit noprint">
@@ -48,7 +48,7 @@
     <?php if( is_array( $totsacoms ) && count( $totsacoms ) > 0  ):?>
         <?php $sommeFlux = $sommeCalculee = 0; ?>
 
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <?php foreach( $totsacoms as $totacom ) :?>
                <!-- <?php
                     /*foreach( array( 'mttotsoclrsa', 'mttotsoclmajorsa', 'mttotlocalrsa' ) as $typemontant ) {

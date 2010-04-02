@@ -1,6 +1,5 @@
 <?php $this->pageTitle = 'Relances pour l\'APRE';?>
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
-
 <?php
     if( $this->action == 'add' ) {
         $this->pageTitle = 'Ajout d\'une relance';

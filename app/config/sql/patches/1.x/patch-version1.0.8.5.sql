@@ -73,7 +73,7 @@ CREATE TABLE typesnotifspdos (
 ALTER TABLE propospdos DROP COLUMN decisionpdo;
 ALTER TABLE propospdos DROP COLUMN typepdo;
 
-ALTER TABLE propospdos ADD COLUMN typepdo_id INTEGER NOT NULL REFERENCES typespdos(id);
+ALTER TABLE propospdos ADD COLUMN typepdo_id INTEGER REFERENCES typespdos(id);
 ALTER TABLE propospdos ADD COLUMN decisionpdo_id INTEGER REFERENCES decisionspdos(id);
 ALTER TABLE propospdos ADD COLUMN typenotifpdo_id INTEGER REFERENCES typesnotifspdos(id);
 

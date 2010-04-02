@@ -15,7 +15,7 @@
         echo $form->create( 'Referent', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
         echo '<div>';
         echo $form->input( 'Referent.id', array( 'type' => 'hidden' ) );
-        echo $form->input( 'Referent.structurereferente_id', array( 'type' => 'hidden' ) );
+//         echo $form->input( 'Referent.structurereferente_id', array( 'type' => 'hidden' ) );
         echo '</div>';
     }
 ?>

@@ -85,9 +85,14 @@
         */
 
         function add( $personne_id = null ) {
-            // Vérification du format de la variable
 
+            // Vérification du format de la variable
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
+
+            // Retour à la liste en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'view', $personne_id ) );
+            }
 
             $dossier_id = $this->Personne->dossierId( $personne_id );
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -141,6 +146,11 @@
         function edit( $personne_id = null ) {
             // Vérification du format de la variable
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
+
+            // Retour à la liste en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'view', $personne_id ) );
+            }
 
             $dossier_id = $this->Personne->dossierId( $personne_id );
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );

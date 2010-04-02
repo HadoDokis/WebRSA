@@ -1,5 +1,5 @@
 <?php $this->pageTitle = 'Paramétrage des actions d\'insertion';?>
-
+<?php echo $xform->create( 'Action' );?>
 <div>
     <h1><?php echo 'Visualisation de la table  ';?></h1>
 
@@ -45,6 +45,13 @@
             <?php endforeach;?>
             </tbody>
         </table>
+    </div>
 </div>
-</div>
+    <div class="submit">
+        <?php
+            echo $form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+
 <div class="clearer"><hr /></div>
+<?php echo $form->end();?>

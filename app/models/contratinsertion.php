@@ -34,12 +34,13 @@
             'Actioninsertion' => array(
                 'classname' => 'Actioninsertion',
                 'foreignKey' => 'contratinsertion_id',
+				'dependent' => true
             )
         );
 
 
         var $validate = array(
-            'referent_id' => array(
+            'actions_prev' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
@@ -69,12 +70,12 @@
                     'message' => 'Veuillez entrer une date valide'
                 )
             ),
-            'diplomes' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+//             'diplomes' => array(
+//                 'notEmpty' => array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
             'aut_expr_prof' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
@@ -133,12 +134,12 @@
                             'message' => 'Veuillez entrer une valeur numérique.'
                 )
             ),
-//             'nature_projet' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
+            'nature_projet' => array(
+                'notEmpty' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
             'decision_ci' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
@@ -151,13 +152,40 @@
                     'message' => 'Veuillez entrer une date valide',
                     'allowEmpty'    => true
                 )
-            )/*,
+            ),
             'lieu_saisi_ci' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 )
-            )*/
+            ),
+            /**
+            * Régle ajoutée suite à la demande du CG66
+            */
+            'sitfam_ci' => array(
+                'maxLength' => array(
+                    'rule' => array( 'maxLength', 500 ),
+                    'message' => '500 carac. max'
+                )
+            ),
+            'sitpro_ci' => array(
+                'maxLength' => array(
+                    'rule' => array( 'maxLength', 500 ),
+                    'message' => '500 carac. max'
+                )
+            ),
+            'observ_benef' => array(
+                'maxLength' => array(
+                    'rule' => array( 'maxLength', 500 ),
+                    'message' => '500 carac. max'
+                )
+            ),
+            'nature_projet' => array(
+                'maxLength' => array(
+                    'rule' => array( 'maxLength', 500 ),
+                    'message' => '500 carac. max'
+                )
+            )
         );
 
         // ********************************************************************
@@ -257,6 +285,37 @@
             if( array_key_exists( $this->name, $this->data ) && array_key_exists( 'structurereferente_id', $this->data[$this->name] ) ) {
                 $this->data[$this->name]['structurereferente_id'] = suffix( $this->data[$this->name]['structurereferente_id'] ) ;
             }
+
+            ///Ajout pour obtenir referent lié à structure
+            $hasMany = ( array_depth( $this->data ) > 2 );
+
+            if( !$hasMany ) { // INFO: 1 seul enregistrement
+                if( array_key_exists( 'referent_id', $this->data[$this->name] ) ) {
+                    $this->data[$this->name]['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data[$this->name]['referent_id'] );
+                }
+            }
+            else { // INFO: plusieurs enregistrements
+                foreach( $this->data[$this->name] as $key => $value ) {
+                    if( is_array( $value ) && array_key_exists( 'referent_id', $value ) ) {
+                        $this->data[$this->name][$key]['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $value['referent_id'] );
+                    }
+                }
+            }
+            ///Fin ajout pour récupération referent lié a structure
+
+            /// FIXME: faire un behavior
+            foreach( array( 'actions_prev' ) as $key ) {
+                if( isset( $this->data[$this->name][$key] ) ) {
+                    $this->data[$this->name][$key] = Set::enum( $this->data[$this->name][$key], array( 'O' => '1', 'N' => '0' ) );
+                }
+            }
+
+            foreach( array( 'emp_trouv' ) as $key ) {
+                if( isset( $this->data[$this->name][$key] ) ) {
+                    $this->data[$this->name][$key] = Set::enum( $this->data[$this->name][$key], array( 'O' => true, 'N' => false ) );
+                }
+            }
+
 
             return $return;
         }

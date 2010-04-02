@@ -38,3 +38,12 @@
     <legend>Types d'orientations</legend>
     <?php echo $form->input( 'Structurereferente.typeorient_id', array( 'label' => required( false ), 'type' => 'select' , 'options' => $options, 'empty' => true ) );?>
 </fieldset>
+
+<fieldset class="col2">
+    <legend><?php echo required( 'Gère les Contrats d\'engagement ?' );?></legend>
+    <?php echo $xform->enum( 'Structurereferente.contratengagement', array(  'legend' => false, /*'div' => false, */ 'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $optionsradio['contratengagement'] ) );?>
+</fieldset>
+<fieldset class="col2">
+    <legend><?php echo required( 'Gère les APREs ?' );?></legend>
+    <?php echo $xform->enum( 'Structurereferente.apre', array(  'legend' => false,/* 'div' => false,*/  'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $optionsradio['apre'] ) );?>
+</fieldset>

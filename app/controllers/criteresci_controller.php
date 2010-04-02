@@ -5,7 +5,7 @@
     class CriteresciController extends AppController
     {
         var $name = 'Criteresci';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typocontrat', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Cohorteci', 'Referent' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse',  'Action', 'Personne', 'Typocontrat', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Cohorteci', 'Referent' );
         var $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
         var $helpers = array( 'Csv', 'Ajax' );
@@ -38,6 +38,11 @@
             $this->set( 'natpf', $this->Option->natpf() );
 
             $this->set( 'decision_ci', $this->Option->decision_ci() );
+            $this->set( 'tc', $this->Contratinsertion->Typocontrat->find( 'list' ) );
+            $this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
+
+            $this->set( 'action', $this->Action->find( 'list' ) );
+
             return $return;
         }
 
@@ -99,7 +104,13 @@
 
                 $this->set( 'contrats', $contrats );
             }
-            $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+			}
 
             /// Population du select référents liés aux structures
             $conditions = array();
@@ -138,9 +149,11 @@
 
             /// Population du select référents liés aux structures
             $structurereferente_id = Set::classicExtract( $this->data, 'Contratinsertion.structurereferente_id' );
-            $referents = $this->Referent->_referentsListe( $structurereferente_id );
+            $referents = $this->Referent->referentsListe( $structurereferente_id );
             $this->set( 'referents', $referents );
 
+// debug($contrats);
+// die();
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'contrats' ) );
         }

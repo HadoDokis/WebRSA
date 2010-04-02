@@ -49,7 +49,10 @@
         <tbody>
             <tr class="odd">
                 <th ><?php __( 'drorsarmiant' );?></th>
-                <td><?php echo ( isset( $drorsarmiant[$dspp['Dspp']['drorsarmiant']] ) ? $drorsarmiant[$dspp['Dspp']['drorsarmiant']] : null );?></td>
+                <td><?php
+                    echo ( isset( $drorsarmiant[$dspp['Dspp']['drorsarmiant']] ) ? $drorsarmiant[$dspp['Dspp']['drorsarmiant']] : null );
+                    ?>
+                </td>
             </tr>
             <tr class="even">
                 <th><?php __( 'drorsarmianta2' );?></th>
@@ -151,11 +154,11 @@
             </tr>
             <tr class="even">
                 <th><?php __( 'rappemploiquali' );?></th>
-                <td><?php echo ( $dspp['Dspp']['rappemploiquali'] ? 'Oui' : 'Non' );?></td>
+                <td><?php echo $html->boolean( Set::classicExtract( $dspp, 'Dspp.rappemploiquali' ) );?></td>
             </tr>
             <tr class="odd">
                 <th><?php __( 'rappemploiform' );?></th>
-                <td><?php echo ( $dspp['Dspp']['rappemploiform'] ? 'Oui' : 'Non' );?></td>
+                <td><?php echo $html->boolean( Set::classicExtract( $dspp, 'Dspp.rappemploiform' ) );?></td>
             </tr>
             <tr class="even">
                 <th><?php __( 'libautrqualipro' );?></th>
@@ -163,7 +166,7 @@
             </tr>
             <tr class="odd">
                 <th><?php __( 'permicondub' );?></th>
-                <td><?php echo ( $dspp['Dspp']['permicondub'] ? 'Oui' : 'Non' );?></td>
+                <td><?php echo  $html->boolean( Set::classicExtract( $dspp, 'Dspp.permicondub' ) );?></td>
             </tr>
             <tr class="even">
                 <th><?php __( 'libautrpermicondu' );?></th>
@@ -260,11 +263,11 @@
             </tr>
             <tr class="even">
                 <th><?php __( 'moyloco' );?></th>
-                <td><?php echo ( $dspp['Dspp']['moyloco'] ? 'Oui' : 'Non' );?></td>
+                <td><?php echo  $html->boolean( Set::classicExtract( $dspp, 'Dspp.moyloco' ) );?></td>
             </tr>
             <tr class="odd">
                 <th><?php __( 'persisogrorechemploi' );?></th>
-                <td><?php echo ( $dspp['Dspp']['persisogrorechemploi'] ? 'Oui' : 'Non' );?></td>
+                <td><?php echo  $html->boolean( Set::classicExtract( $dspp, 'Dspp.persisogrorechemploi' ) );?></td>
             </tr>
         </tbody>
 </table>

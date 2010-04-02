@@ -2,7 +2,7 @@
     <?php echo $form->input( 'Referent.qual', array( 'label' => required( __( 'qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
     <?php echo $form->input( 'Referent.nom', array( 'label' => required( __( 'nom', true ) ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'Referent.prenom', array( 'label' => required( __( 'prenom', true ) ), 'type' => 'text' ) );?>    <?php echo $form->input( 'Referent.fonction', array( 'label' => required( __( 'fonction', true ) ), 'type' => 'text' ) );?>
-    <?php echo $form->input( 'Referent.numero_poste', array( 'label' => required( __( 'numero_poste', true ) ), 'type' => 'text', 'maxLength' => 10 ) );?>
+    <?php echo $form->input( 'Referent.numero_poste', array( 'label' => required( __( 'numero_poste', true ) ), 'type' => 'text', 'maxlength' => 10 ) );?>
     <?php echo $form->input( 'Referent.email', array( 'label' => required( __( 'email', true ) ), 'type' => 'text' ) );?> 
 </fieldset>
 <fieldset class="col2">

@@ -1,13 +1,38 @@
 <?php  $this->pageTitle = 'Rendez-vous de la personne';?>
 <?php  echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id) );?>
 
+<?php
+    function value( $array, $index ) {
+        $keys = array_keys( $array );
+        $index = ( ( $index == null ) ? '' : $index );
+        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
+            return $array[$index];
+        }
+        else {
+            return null;
+        }
+    }
+?>
 
 <div class="with_treemenu">
     <h1>Rendez-vous</h1>
+    <!-- <?php /*if( empty( $orientstruct ) ):?>
+        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas d'orientation.</p>
 
-    <?php if( empty( $rdvs ) ):?>
-        <p class="notice">Cette personne ne possède pas encore de rendez-vous.</p>
-    <?php endif;?>
+    <?php elseif( !empty( $orientstruct ) && empty( $permanence )  ):?>
+        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas de permanence liée à la structure <?php echo '(' . $struct . ')';?></p>
+
+    <?php elseif( !empty( $orientstruct ) && !empty( $permanence ) && empty( $refrdv ) ):?>
+        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas de référent pour le RDV.</p>
+
+    <?php elseif( !empty( $orientstruct ) && !empty( $permanence ) && !empty( $refrdv ) && empty( $statutrdv ) ):?>
+        <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas de statut pour le RDV.</p>
+
+    <?php else:*/?> -->
+
+        <?php if( empty( $rdvs ) ):?>
+            <p class="notice">Cette personne ne possède pas encore de rendez-vous.</p>
+        <?php endif;?>
 
     <?php if( $permissions->check( 'rendezvous', 'add' ) ):?>
         <ul class="actionMenu">
@@ -26,6 +51,7 @@
             <tr>
                 <th>Nom/Prénom Allocataire</th>
                 <th>Structure référente</th>
+                <th>Nom de l'agent / du référent</th>
                 <th>Permanence liée</th>
                 <th>Type de RDV</th>
                 <th>Statut du RDV</th>
@@ -43,8 +69,9 @@
                     echo $html->tableCells(
                         array(
                             h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
-                            h( Set::enum( Set::classicExtract( $rdv, 'Rendezvous.structurereferente_id' ), $sr ) ),
-                            h( Set::enum( Set::classicExtract( $rdv, 'Rendezvous.permanence_id' ), $permanences ) ),
+                            h( Set::enum( Set::extract( $rdv, 'Rendezvous.structurereferente_id' ), $sr ) ),
+                            h( Set::enum( Set::extract( $rdv, 'Rendezvous.referent_id' ), $referent ) ),
+                            h( Set::enum( Set::extract( $rdv, 'Rendezvous.permanence_id' ), $permanences ) ),
                             h( Set::extract( $rdv, 'Typerdv.libelle' ) ),
                             h( Set::enum( Set::classicExtract( $rdv, 'Rendezvous.statutrdv_id' ), $statutrdv ) ),
                             h( date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) ) ),

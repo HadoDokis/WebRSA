@@ -1,13 +1,3 @@
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET escape_string_warning = off;
-SET search_path = public, pg_catalog;
-SET default_tablespace = '';
-SET default_with_oids = false;
-
--- *****************************************************************************
 SELECT pg_catalog.setval('accoemplois_id_seq', ( SELECT max(accoemplois.id) + 1 FROM accoemplois ), false);
 SELECT pg_catalog.setval('acos_id_seq', ( SELECT max(acos.id) + 1 FROM acos ), false);
 SELECT pg_catalog.setval('actions_id_seq', ( SELECT max(actions.id) + 1 FROM actions ), false);

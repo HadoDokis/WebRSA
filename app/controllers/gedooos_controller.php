@@ -7,13 +7,13 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'Dsp', 'Referentapre', 'Formqualif', 'Permisb' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent' );
         var $components = array( 'Jetons', 'Gedooo' );
         var $helpers = array( 'Locale' );
 
         function beforeFilter() {
             App::import( 'Helper', 'Locale' );
-            $this->Locale = new LocaleHelper(); 
+            $this->Locale = new LocaleHelper();
         }
 
         function _value( $array, $index ) {
@@ -100,6 +100,16 @@
             $typevoie = $this->Option->typevoie();
             $this->set( 'typevoie', $typevoie );
 
+            $typeorient = $this->Structurereferente->Typeorient->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Typeorient.id' => $orientstruct['Orientstruct']['typeorient_id'] // FIXME structurereferente_id
+                    )
+                )
+            );
+            $modele = $typeorient['Typeorient']['modele_notif'];
+
             // TODO: error404/error500 si on ne trouve pas les données
             $personne = $this->Personne->find(
                 'first',
@@ -168,8 +178,12 @@
 
             unset( $personne['Contratinsertion'] ); // FIXME: faire un unbindModel
 
-            $this->_ged( $personne, 'Orientation/notification_structure.odt' );
+            $this->_ged( $personne, 'Orientation/'.$modele.'.odt' );
         }
+
+		/**
+		*
+		*/
 
         function contratinsertion( $contratinsertion_id = null ) {
             // TODO: error404/error500 si on ne trouve pas les données
@@ -345,9 +359,6 @@
                 )
             );
             $contratinsertion['Activite'] = $activite['Activite'];
-            //$contratinsertion['Activite']['act_anp'] = ( Set::classicExtract( $contratinsertion, 'Activite.act' ) == 'ANP' );
-
-//             $contratinsertion['Activite']['act'] = ( ( $contratinsertion['Activite']['act'] == 'ANP' )  ? 'Oui' : 'Non' );
 
             //////////////////////////////////////////////////////////////////////////
             // Affichage des données réelles et non leurs variables
@@ -397,11 +408,23 @@
             /// Données Dspp récupérées
             $contratinsertion['Dspp']['couvsoc'] = ( isset( $dspp['Dspp']['couvsoc'] ) ? 'Oui' : 'Non' );
 
+            /// Données Référent lié à la personne récupérées
+            $personne_referent = $this->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $contratinsertion['Personne']['id'] ) ) );
+            $contratinsertion['PersonneReferent'] = $personne_referent['PersonneReferent'];
 
-            /// Population du select référents liés aux structures
-            $referent_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.referent_id' );
-            $referent = $this->Referent->findById( $referent_id, null, null, -1 );
-            $contratinsertion = Set::merge( $contratinsertion, $referent );
+            $referentId = null;
+            if( !empty( $personne_referent ) ){
+                $referentId = Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' );
+            }
+            else{
+                /// Population du select référents liés aux structures
+                $referentId = Set::classicExtract( $contratinsertion, 'Contratinsertion.referent_id' );
+            }
+
+			if( !empty( $referentId ) ) {
+                $referent = $this->Referent->findById( $referentId, null, null, -1 );
+				$contratinsertion = Set::merge( $contratinsertion, $referent );
+			}
 
             /// Code des actions engagées
             if( 'nom_form_ci_cg' == 'cg66' ){ ///FIXME : comment faire plus proprement
@@ -420,11 +443,19 @@
             $soclmajValues = array_unique( Set::extract( $contratinsertion, '/Infofinanciere/natpfcre' ) );
             $contratinsertion['Infofinanciere']['rsamaj'] = ( array_intersects( $soclmajValues, array_keys( $soclmaj ) ) ) ? 'Oui' : 'Non';
 
+
+
+// debug( $contratinsertion );
+// die();
+
             $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
         }
 
         function orientstruct( $orientstruct_id = null ) {
             // TODO: error404/error500 si on ne trouve pas les données
+            $qual = $this->Option->qual();
+            $typevoie = $this->Option->typevoie();
+
 
             $orientstruct = $this->Orientstruct->find(
                 'first',
@@ -443,9 +474,12 @@
                     )
                 )
             );
+//             debug($typeorient);
+//             die();
             // FIXME: seulement pour le cg66 ?
             $modele = $typeorient['Typeorient']['modele_notif'];
-
+// debug($modele);
+// die();
             $this->Adressefoyer->bindModel(
                 array(
                     'belongsTo' => array(
@@ -478,20 +512,55 @@
             );
             $orientstruct['User'] = $user['User'];
 
+			// Recherche des informations du dossier
+            $foyer = $this->Dossier->Foyer->findById( $orientstruct['Personne']['foyer_id'], null, null, -1 );
             $dossier = $this->Dossier->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Dossier.id' => $orientstruct['Personne']['foyer_id']
-                    )
+                        'Dossier.id' => $foyer['Foyer']['dossier_rsa_id']
+                    ),
+					'recursive' => -1
                 )
             );
-            $orientstruct['Dossier_RSA'] = $dossier['Dossier'];
 
+            $orientstruct['Dossier'] = $dossier['Dossier'];
+
+            //Ajout pour le numéro de poste du référent de la structure
+            $referent = $this->Referent->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Referent.structurereferente_id' => $orientstruct['Structurereferente']['id']
+                    ),
+                    'recursive' => -1
+                )
+            );
+            $orientstruct['Referent'] = $referent['Referent'];
+// debug($orientstruct);
+// die();
             // FIXME
 
             $orientstruct['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $orientstruct['Personne']['dtnai'] ) );
+            $orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );
+            $orientstruct['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Adresse.typevoie' ) );
+            $orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
 
+
+            $personne_referent = $this->PersonneReferent->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'PersonneReferent.personne_id' => Set::classicExtract( $orientstruct, 'Personne.id' )
+                    )
+                )
+            );
+
+            if( !empty( $personne_referent ) ){
+                $orientstruct = Set::merge( $orientstruct, $personne_referent );
+            }
+// debug($orientstruct);
+// die();
             $this->_ged( $orientstruct, 'Orientation/'.$modele.'.odt' );
         }
 
@@ -584,7 +653,7 @@
         *
         */
 
-        function notifications_cohortes() {
+     /*   function notifications_cohortes() {
 //             $qual = $this->Option->qual();
 //             $this->set( 'qual', $qual );
 //             $typevoie = $this->Option->typevoie();
@@ -599,11 +668,13 @@
             }
             $cohorte = $this->Cohorte->search( 'Orienté', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 
+
+
             // Définition des variables & maccros
             // FIXME: chemins
             $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo'; // FIXME: chemin
             $sMimeType  = "application/pdf";
-            $sModele = $phpGedooDir.'/../modelesodt/Orientation/notifications_cohorte.odt';
+
 
             // Inclusion des fichiers nécessaires à GEDOOo
             // FIXME
@@ -623,7 +694,7 @@
             //
             $u = new GDO_Utility();
             $oMainPart = new GDO_PartType();
-            $oIteration = new GDO_IterationType( "notification" );
+            $oIteration = new GDO_IterationType( "emploi" );
 
             $qual = $this->Option->qual();
             $typevoie = $this->Option->typevoie();
@@ -633,21 +704,23 @@
 
                 $datas = $this->_get( $personne_id );
 
-                $datas['Personne']['qual'] = $qual[$datas['Personne']['qual']];
-                $datas['Adresse']['typevoie'] = $typevoie[$datas['Adresse']['typevoie']];
 
-                foreach( $datas as $group => $details ) {
-                    if( !empty( $details ) ) {
-                        foreach( $details as $key => $value ) {
+                $datas['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $datas, 'Personne.qual' ) );
+                $datas['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $datas, 'Adresse.typevoie' ) );
+
+
+                foreach( Set::flatten( $datas, '_' ) as $group => $details ) {
+//                     if( !empty( $details ) ) {
+//                         foreach( $details as $key => $value ) {
                             $oDevPart->addElement(
                                 new GDO_FieldType(
                                     strtolower( $group ).'_'.strtolower( $key ),
-                                    $value,
+                                    $details,
                                     'text'
                                 )
                             );
-                        }
-                    }
+//                         }
+//                     }
                 }
 
                 $oIteration->addPart($oDevPart);
@@ -663,9 +736,8 @@
                         )
                     )
                 );
-
-//                 $orientstruct['Adresse']['typevoie'] = ( isset( $typevoie[$orientstruct['Adresse']['typevoie']] ) ? $typevoie[$orientstruct['Adresse']['typevoie']] : null );
-// debug( $orientstruct['Personne']['qual'] );
+// debug($datas);
+// die();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 if( empty( $personne['Orientstruct']['date_impression'] ) ){
@@ -674,8 +746,22 @@
                     $this->Orientstruct->set( $orientstruct['Orientstruct'] );
                     $this->Orientstruct->save( $orientstruct['Orientstruct'] );
                 }
-
+                $typeorient = $this->Structurereferente->Typeorient->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Typeorient.id' => $orientstruct['Orientstruct']['typeorient_id'] // FIXME structurereferente_id
+                        )
+                    )
+                );
+                $modele = $typeorient['Typeorient']['modele_notif'];
+                $orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
+//             debug($orientstruct);
+//             die();
             }
+// debug();
+// die();
+            $sModele = $phpGedooDir.'/../modelesodt/Orientation/'.$modele.'.odt';
             $oMainPart->addElement($oIteration);
 
             $bTemplate = $u->ReadFile($sModele);
@@ -690,7 +776,7 @@
             $oFusion = new GDO_FusionType( $oTemplate, $sMimeType, $oMainPart );
             $oFusion->process();
             $oFusion->SendContentToClient();
-        }
+        } */
 
 
 /******************************************************************************/
@@ -942,6 +1028,7 @@
                 )
             );
             $rdv['User'] = $user['User'];
+            $rdv['Serviceinstructeur'] = $user['Serviceinstructeur'];
 
             $dossier = $this->Dossier->find(
                 'first',
@@ -967,7 +1054,7 @@
 
             ///Pour le référent lié au RDV
             $structurereferente_id = Set::classicExtract( $rdv, 'Structurereferente.id' );
-            $referents = $this->Referent->_referentsListe( $structurereferente_id );
+            $referents = $this->Referent->referentsListe( $structurereferente_id );
             $this->set( 'referents', $referents );
             $rdv['Rendezvous']['referent_id'] = Set::extract( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) );
 
@@ -981,7 +1068,9 @@
                 )
             );
             $rdv['Permanence'] = $perm['Permanence'];
-            $rdv['Permanence']['typevoie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Permanence.typevoie' ) );
+            if( !empty( $perm ) ){
+                $rdv['Permanence']['typevoie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Permanence.typevoie' ) );
+            }
 // debug( $rdv  );
 // die();
 
@@ -1000,8 +1089,8 @@
             $this->set( 'typevoie', $typevoie );
             $sitfam = $this->Option->sitfam();
             $this->set( 'sitfam', $sitfam );
-            $optionsdsps = $this->Dsp->allEnumLists();
-            $this->set( 'optionsdsps', $optionsdsps );
+//             $optionsdsps = $this->Dsp->allEnumLists();
+//             $this->set( 'optionsdsps', $optionsdsps );
 
             $apre = $this->Apre->find(
                 'first',
@@ -1012,17 +1101,6 @@
                     'recursive' => -1
                 )
             );
-
-            $refapre = $this->Referentapre->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Referentapre.id' => $apre['Apre']['referentapre_id']
-                    ),
-                    'recursive' => -1
-                )
-            );
-            $apre['Referentapre'] = $refapre['Referentapre'];
 
             ///Aides liées à l'APRE
             foreach( $this->Apre->aidesApre as $model ) {
@@ -1051,16 +1129,16 @@
             );
             $apre['Personne'] = $personne['Personne'];
 
-            $dsp = $this->Dsp->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dsp.personne_id' => Set::classicExtract( $personne, 'Personne.id' )
-                    ),
-                    'recursive' => -1
-                )
-            );
-            $apre['Dsp'] = $dsp['Dsp'];
+//             $dsp = $this->Dsp->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Dsp.personne_id' => Set::classicExtract( $personne, 'Personne.id' )
+//                     ),
+//                     'recursive' => -1
+//                 )
+//             );
+//             $apre['Dsp'] = $dsp['Dsp'];
 
             /// Récupération de l'adresse liée à la personne
             $this->Adressefoyer->bindModel(
@@ -1157,10 +1235,10 @@
             $apre['Foyer']['nbenfants'] = $nbEnfants;
 
             ///Données propre aux Dsp de la personne
-            $apre['Dsp']['cessderact'] = Set::enum( Set::classicExtract( $apre, 'Dsp.cessderact' ), $optionsdsps['cessderact'] );
-            $apre['Dsp']['nivetu'] = Set::enum( Set::classicExtract( $apre, 'Dsp.nivetu' ), $optionsdsps['nivetu'] );
+//             $apre['Dsp']['cessderact'] = Set::enum( Set::classicExtract( $apre, 'Dsp.cessderact' ), $optionsdsps['cessderact'] );
+//             $apre['Dsp']['nivetu'] = Set::enum( Set::classicExtract( $apre, 'Dsp.nivetu' ), $optionsdsps['nivetu'] );
 
-            $apre['Referentapre']['qual'] = Set::enum( Set::classicExtract( $apre, 'Referentapre.qual' ), $qual );
+            $apre['Referent']['qual'] = Set::enum( Set::classicExtract( $apre, 'Referent.qual' ), $qual );
 
             ///Modification du format de la date pour les aides
             foreach( $this->Apre->aidesApre as $model ) {
@@ -1171,10 +1249,11 @@
             $apre['Actprof']['dfconvention'] = date_short( Set::classicExtract( $apre, 'Actprof.dfconvention' ) );
             $apre['Apre']['dateentreeemploi'] = date_short( Set::classicExtract( $apre, 'Apre.dateentreeemploi' ) );
 
-unset( $apre['Apre']['Piecepresente'] );
-unset( $apre['Apre']['Piece'] );
-unset( $apre['Apre']['Piecemanquante'] );
-unset( $apre['Apre']['Natureaide'] );
+            unset( $apre['Apre']['Piecepresente'] );
+            unset( $apre['Apre']['Piece'] );
+            unset( $apre['Apre']['Piecemanquante'] );
+            unset( $apre['Apre']['Natureaide'] );
+
 // debug($apre);
 // die();
 
@@ -1198,28 +1277,40 @@ unset( $apre['Apre']['Natureaide'] );
                 )
             );
 
-unset( $relanceapre['Apre']['Piecepresente'] );
-unset( $relanceapre['Apre']['Piece'] );
-unset( $relanceapre['Apre']['Piecemanquante'] );
-unset( $relanceapre['Apre']['Natureaide'] );
+            unset( $relanceapre['Apre']['Piecepresente'] );
+            unset( $relanceapre['Apre']['Piece'] );
+            unset( $relanceapre['Apre']['Piecemanquante'] );
+            unset( $relanceapre['Apre']['Natureaide'] );
 
-            $referentapre = $this->Apre->Referentapre->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Referentapre.id' => Set::classicExtract( $relanceapre, 'Apre.referentapre_id' )
-                    )
-                )
-            );
-            $relanceapre['Referentapre'] = $referentapre['Referentapre'];
-
+/*
             $relanceapre['Relanceapre']['Piecemanquante'] = Set::extract( $relanceapre, '/Relanceapre/Piecemanquante/libelle' );
 
             if( !empty( $relanceapre['Relanceapre']['Piecemanquante'] ) ) {
                 $relanceapre['Relanceapre']['Piecemanquante'] = '  - '.implode( "\n  - ", $relanceapre['Relanceapre']['Piecemanquante'] )."\n";
+            }*/
+
+            /**
+            *   Données propre de l'APRE
+            **/
+            $apre = $this->Apre->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Apre.id' => $relanceapre['Apre']['id']
+                    )
+                )
+            );
+            $piecesManquantesAides = Set::classicExtract( $apre, "Apre.Piece.Manquante" );
+
+            $textePiecesManquantes = '';
+            $relanceapre['Relanceapre']['Piecemanquante'] = '';;
+            foreach( $piecesManquantesAides as $model => $pieces ) {
+                if( !empty( $pieces ) ) {
+                    $relanceapre['Relanceapre']['Piecemanquante'] .= __d( 'apre', $model, true )."\n" .'  - '.implode( "\n  - ", $pieces )."\n";
+                }
             }
 
-
+// debug($apre);
 // debug( $relanceapre  );
 // die();
 
@@ -1257,17 +1348,6 @@ unset( $relanceapre['Apre']['Natureaide'] );
             $relanceapre['Adresse'] = $adresse['Adresse'];
 
 
-            $dossier = $this->Dossier->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dossier.id' => Set::classicExtract( $relanceapre, 'Personne.foyer_id' )
-                    )
-                )
-            );
-            $relanceapre['Dossier_RSA'] = $dossier['Dossier'];
-
-
             ///Pour la qualité de la personne
             $relanceapre['Personne']['qual'] = Set::extract( $qual, Set::extract( $relanceapre, 'Personne.qual' ) );
 
@@ -1281,6 +1361,5 @@ unset( $relanceapre['Apre']['Natureaide'] );
 
             $this->_ged( $relanceapre, 'APRE/Relanceapre/relanceapre.odt' );
         }
-
     }
 ?>

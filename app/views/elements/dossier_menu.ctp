@@ -65,7 +65,7 @@
                                     <li>
                                         <?php
                                             echo $html->link(
-                                                h( 'Données socio-professionnelles' ),
+                                                h( 'DSP CAF' ),
                                                 array( 'controller' => 'dspps', 'action' => 'view', $personne['id'] )
                                             );?>
                                     </li>
@@ -82,9 +82,17 @@
                                     </li>
                                 <?php endif;?>
 
-                                <?php if( $permissions->check( 'rendezvous', 'index' ) || $permissions->check( 'contratsinsertion', 'index' ) ):?>
+                                <?php if( $permissions->check( 'personnes_referents', 'index' ) || $permissions->check( 'rendezvous', 'index' ) || $permissions->check( 'contratsinsertion', 'index' ) ):?>
                                     <li><span>Parcours</span>
                                         <ul>
+                                            <li>
+                                                <?php
+                                                    echo $html->link(
+                                                        h( 'Référent du parcours' ),
+                                                        array( 'controller' => 'personnes_referents', 'action' => 'index', $personne['id'] )
+                                                    );
+                                                ?>
+                                            </li>
                                             <li>
                                                 <?php
                                                     echo $html->link(
@@ -96,12 +104,20 @@
                                             <li>
                                                 <?php
                                                     echo $html->link(
-                                                        'Contrats d\'insertion',
+                                                        'Contrats',
                                                         array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne['id'] )
                                                     );
                                                 ?>
                                             </li>
-                                            <li><span>Accompagnement</span>
+                                            <li>
+                                                <?php
+                                                    echo $html->link(
+                                                        'Candidatures',
+                                                        array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne['id'] )
+                                                    );
+                                                ?>
+                                            </li>
+                                            <li><span>Suivi</span>
                                                 <ul>
                                                     <!-- <li>
                                                         <?php
@@ -122,7 +138,7 @@
                                                    <!-- <li>
                                                         <?php
                                                             echo $html->link(
-                                                                'Bilan de l\'accompagnement',
+                                                                'Bilan du parcours d\'insertion',
                                                                 '#'//array( 'controller' => '', 'action' => 'index', $personne['id'] )
                                                             );
                                                         ?>
@@ -196,6 +212,17 @@
                     </li>
                 <?php endif;?>
 
+                <?php /*if( $permissions->check( 'foyers_evenements', 'index' ) ):*/?>
+                    <li>
+                        <?php
+                            echo $html->link(
+                                'Evènements',
+                                array( 'controller' => 'foyers_evenements', 'action' => 'index', $dossier['Foyer']['id'] )
+                            );
+                        ?>
+                    </li>
+                <?php /* endif;*/?>
+
                 <?php if( $permissions->check( 'modescontact', 'index' ) ):?>
                     <li>
                         <?php
@@ -256,8 +283,17 @@
         <?php if( $permissions->check( 'dspfs', 'edit' ) ):?>
             <?php
                 echo '<li>'.$html->link(
-                    'Données socio-professionnelles',
+                    'DSP CAF',
                     array( 'controller' => 'dspfs', 'action' => 'view', $dossier['Foyer']['id'] )
+                ).'</li>';
+            ?>
+        <?php endif;?>
+
+        <?php if( $permissions->check( 'infoscomplementaires', 'view' ) ):?>
+            <?php
+                echo '<li>'.$html->link(
+                    'Informations complémentaires',
+                    array( 'controller' => 'infoscomplementaires', 'action' => 'view', $dossier['Dossier']['id'] )
                 ).'</li>';
             ?>
         <?php endif;?>
@@ -265,7 +301,7 @@
          <?php if( $permissions->check( 'suivisinsertion', 'index' ) ):?>
             <?php
                 echo '<li>'.$html->link(
-                    'Suivis du parcours d\'insertion',
+                    'Synthèse du parcours d\'insertion',
                     array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Dossier']['id'] )
                 ).'</li>';
             ?>

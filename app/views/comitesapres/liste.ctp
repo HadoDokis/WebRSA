@@ -23,6 +23,24 @@
     });
 </script>
 
+<?php
+    if( isset( $comitesapres ) ) {
+        $paginator->options( array( 'url' => $this->params['named'] ) );
+        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+
+        $pages = $paginator->first( '<< ' );
+        $pages .= $paginator->prev( ' < ' );
+        $pages .= $paginator->numbers();
+        $pages .= $paginator->next( ' > ' );
+        $pages .= $paginator->last( ' >>' );
+
+        $pagination .= $html->tag( 'p', $pages );
+    }
+    else {
+        $pagination = '';
+    }
+?>
 <?php echo $xform->create( 'Comiteapre', array( 'type' => 'post', 'action' => '/liste/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
     <fieldset>
@@ -54,8 +72,8 @@
     <h2 class="noprint">Résultats de la recherche</h2>
 
     <?php if( is_array( $comitesapres ) && count( $comitesapres ) > 0  ):?>
-
-        <table id="searchResults" class="tooltips_oupas">
+<?php echo $pagination;?>
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th>Intitulé du comité</th>
@@ -86,7 +104,7 @@
                                 h( Set::classicExtract( $comiteapre, 'ApreComiteapre.observationcomite' ) ),
                                 $html->viewLink(
                                     'Voir le comité',
-                                    array( 'controller' => 'comitesapres', 'action' => 'view', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+                                    array( 'controller' => 'comitesapres', 'action' => 'view', Set::classicExtract( $comiteapre, 'id' ) ),
                                     $permissions->check( 'comitesapres', 'index' )
                                 )
                             ),
@@ -97,6 +115,7 @@
                 ?>
             </tbody>
         </table>
+    <?php echo $pagination;?>
     <ul class="actionMenu">
         <li><?php
             echo $html->exportLink(

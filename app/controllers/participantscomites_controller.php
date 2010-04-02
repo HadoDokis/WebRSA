@@ -11,6 +11,11 @@
         }
 
         function index() {
+            // Retour à la liste en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'apres', 'action' => 'indexparams' ) );
+            }
+
             $participants = $this->Participantcomite->find( 'all', array( 'recursive' => -1 ) );
             $this->set('participants', $participants );
         }

@@ -71,13 +71,12 @@
             ),
         );
 
-
-        function listeCodesInsee() {
-            $queryData = array(
-                'fields' => array(
-                    "DISTINCT {$this->name}.numcomptt",
-                    "{$this->name}.locaadr",
-                ),
+		function listeCodesInsee() {
+			$queryData = array(
+				'fields' => array(
+					"DISTINCT {$this->name}.numcomptt",
+					"{$this->name}.locaadr",
+				),
                 'joins' => array(
                     array(
                         'table'      => 'adresses_foyers',
@@ -85,33 +84,33 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array(
-                            'Adressefoyer.rgadr = \'01\'',
-                            'Adressefoyer.adresse_id = Adresse.id'
-                        )
+							'Adressefoyer.rgadr = \'01\'',
+							'Adressefoyer.adresse_id = Adresse.id'
+						)
                     )
-                ),
-                'conditions' => array(
-                    "{$this->name}.locaadr IS NOT NULL",
-                    "{$this->name}.locaadr <> ''",
-                    "{$this->name}.numcomptt IS NOT NULL",
-                    "{$this->name}.numcomptt <> ''"
-                ),
-                'sort' => array(
-                    "{$this->name}.numcomptt ASC",
-                    "{$this->name}.locaadr ASC"
-                ),
-                'recursive' => -1
-            );
-            $tResults = $this->find( 'all', $queryData );
+				),
+				'conditions' => array(
+					"{$this->name}.locaadr IS NOT NULL",
+					"{$this->name}.locaadr <> ''",
+					"{$this->name}.numcomptt IS NOT NULL",
+					"{$this->name}.numcomptt <> ''"
+				),
+				'sort' => array(
+					"{$this->name}.numcomptt ASC",
+					"{$this->name}.locaadr ASC"
+				),
+				'recursive' => -1
+			);
+			$tResults = $this->find( 'all', $queryData );
 
-            $results = array();
-            foreach( $tResults as $key => $result ) {
-                $locaadr = Set::classicExtract( $result, 'Adresse.locaadr' );
-                $numcomptt = Set::classicExtract( $result, 'Adresse.numcomptt' );
-                $results[$numcomptt] = "$numcomptt $locaadr";
-            }
+			$results = array();
+			foreach( $tResults as $key => $result ) {
+				$locaadr = Set::classicExtract( $result, 'Adresse.locaadr' );
+				$numcomptt = Set::classicExtract( $result, 'Adresse.numcomptt' );
+				$results[$numcomptt] = "$numcomptt $locaadr";
+			}
 
-            return $results;
-        }
+			return $results;
+		}
     }
 ?>

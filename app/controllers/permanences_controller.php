@@ -4,6 +4,7 @@
 
         var $name = 'Permanences';
         var $uses = array( 'Permanence', 'Structurereferente', 'Option' );
+        var $helpers = array( 'Xform' );
 
          function beforeFilter() {
             parent::beforeFilter();
@@ -13,6 +14,12 @@
 
 
         function index() {
+            // Retour à la liste en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
+            }
+
+
             $permanences = $this->Permanence->find(
                 'all',
                 array(

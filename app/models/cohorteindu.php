@@ -72,6 +72,7 @@
             $mtmoucompta = Set::extract( $criteresindu, 'Cohorteindu.mtmoucompta' );
             $compare = Set::extract( $criteresindu, 'Cohorteindu.compare' );
             $numcomptt = Set::extract( $criteresindu, 'Cohorteindu.numcomptt' );
+            $matricule = Set::extract( $criteresindu, 'Cohorteindu.matricule' );
 
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
             $filtersPersonne = array();
@@ -83,6 +84,11 @@
             // Localité adresse
             if( !empty( $locaadr ) ) {
                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+            }
+
+            // ...
+            if( !empty( $matricule ) ) {
+                $conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
             }
 
             // Commune au sens INSEE
@@ -211,7 +217,7 @@
                 'conditions' => array()
             );
 
-            $typesAllocation = array( 'AllocationsComptabilisees', 'IndusConstates', 'IndusTransferesCG', 'RemisesIndus', 'AnnulationsFaibleMontant', 'AutresAnnulations' );
+            $typesAllocation = array( /*'AllocationsComptabilisees', */'IndusConstates', 'IndusTransferesCG', 'RemisesIndus',/* 'AnnulationsFaibleMontant', 'AutresAnnulations'*/ );
             $conditionsNotNull = array();
             $conditionsComparator = array();
             $conditionsNat = array();

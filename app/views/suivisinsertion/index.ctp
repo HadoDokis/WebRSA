@@ -1,6 +1,6 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php  $this->pageTitle = 'Suivi du parcours d\'insertion';?>
+<?php  $this->pageTitle = 'Synthèse du parcours d\'insertion';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
 
@@ -61,25 +61,28 @@
         <table>
             <thead>
                 <tr class="odd">
-                    <th colspan="4">Parcours Demandeur</th>
-                    <th colspan="4">Parcours Conjoint</th>
+                    <th colspan="5">Parcours Demandeur</th>
+                    <th colspan="5">Parcours Conjoint</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="odd">
-                    <th style="width=250px">Structure référente</th>
-                    <th style="width=250px">Date d'orientation</th>
-                    <th style="width=250px">Réalisé</th>
+                    <th style="width=200px">Structure référente</th>
+                    <th style="width=200px">Date d'orientation</th>
+                    <th style="width=200px">Date de relance</th>
+                    <th style="width=200px">Réalisé</th>
                     <th class="action">Action</th>
 
-                    <th style="width=250px">Structure référente</th>
-                    <th style="width=250px">Date d'orientation</th>
-                    <th style="width=250px">Réalisé</th>
+                    <th style="width=200px">Structure référente</th>
+                    <th style="width=200px">Date d'orientation</th>
+                    <th style="width=200px">Date de relance</th>
+                    <th style="width=200px">Réalisé</th>
                     <th class="action">Action</th>
                 </tr>
                 <tr>
                     <td><?php echo value( $structuresreferentes, Set::extract( 'DEM.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
                     <td><?php echo date_short( Set::extract( 'DEM.Orientstruct.derniere.date_valid', $details ) );?></td>
+                    <td><?php echo date_short( Set::extract( 'DEM.Orientstruct.derniere.daterelance', $details ) );?></td>
                     <td><?php echo $html->boolean( !empty( $details['DEM']['Orientstruct']['derniere']['date_valid'] ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Orientstruct']['derniere']['structurereferente_id'] ) ){
@@ -93,6 +96,7 @@
 
                     <td><?php echo value( $structuresreferentes, Set::extract( 'CJT.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
                     <td><?php echo date_short( Set::extract( 'CJT.Orientstruct.derniere.date_valid', $details ) );?></td>
+                    <td><?php echo date_short( Set::extract( 'CJT.Orientstruct.derniere.daterelance', $details ) );?></td>
                     <td><?php echo $html->boolean( !empty( $details['CJT']['Orientstruct']['derniere']['date_valid'] ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Orientstruct']['derniere']['structurereferente_id'] ) ){
@@ -108,7 +112,7 @@
         </table>
 
         <!-- Etape 3 : Affichage des entretiens avec les structures référentes -->
-        <h2>Etape 3: Entretien Structure Référente</h2>
+        <h2>Etape 3: Rendez-vous référent</h2>
         <table>
             <thead>
                 <tr class="odd">
@@ -118,11 +122,11 @@
             </thead>
             <tbody>
                 <tr class="odd">
-                    <th>Date de l'entretien</th>
+                    <th>Date du dernier RDV</th>
                     <th colspan="2">Réalisé</th>
                     <th class="action">Action</th>
 
-                    <th>Date de l'entretien</th>
+                    <th>Date du dernier RDV</th>
                     <th colspan="2">Réalisé</th>
                     <th class="action">Action</th>
                 </tr>
@@ -154,8 +158,8 @@
             </tbody>
         </table>
 
-        <!-- Etape 4 : Affichage des derniers enregistrements des contrats insertion -->
-        <h2>Etape 4: Enregistrement Contrat d'Insertion</h2>
+        <!-- Etape 4 : Affichage des derniers enregistrements des contrats engagements -->
+        <h2>Etape 4: Enregistrement Contrat d'Engagement Réciproque</h2>
         <table>
             <thead>
                 <tr class="odd">
@@ -201,8 +205,8 @@
             </tbody>
         </table>
 
-        <!-- Etape 5 : Affichage des validations des contrats insertion -->
-        <h2>Etape 5: Validation Contrat d'Insertion</h2>
+        <!-- Etape 5 : Affichage des validations des contrats d'Engagement -->
+        <h2>Etape 5: Validation Contrat d'Engagement Réciproque</h2>
         <table>
             <thead>
                 <tr class="odd">
@@ -299,7 +303,7 @@
         </table>
 
         <!-- Etape 7 : Affichage des bilans de fin de Contrat d'insertion -->
-        <h2>Etape 7: Bilan de fin de Contrat</h2>
+        <h2>Etape 7: Bilan de fin de Contrat d'Engagement Réciproque</h2>
         <table>
             <thead>
                 <tr class="odd">

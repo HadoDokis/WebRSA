@@ -1,6 +1,8 @@
 <?php
 	$this->pageTitle = 'Liste des cantons';
 
+    echo $xform->create( 'Canton' );
+
 	echo $html->tag( 'h1', $this->pageTitle );
 
 	///
@@ -60,4 +62,9 @@
 	else {
 		echo $html->tag( 'p', 'Aucun canton n\'est renseigné pour l\'instant.', array( 'class' => 'notice' ) );
 	}
+
+    echo '<div class="submit">';
+    echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+    echo '</div>';
+    echo $xform->end();
 ?>

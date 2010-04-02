@@ -28,7 +28,11 @@
                 <?php echo $form->input( 'Contratinsertion.pcg ', array( 'label' => 'Le Président du Conseil Général : ', 'type' => 'text')  ); ?> -->
         </fieldset>
 
-        <?php echo $form->submit( 'Enregistrer' );?>
+        <?php /*echo $form->submit( 'Enregistrer' );?> <?php echo $form->submit( 'Annuler' );*/?>
+    <div class="submit">
+        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+        <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+    </div>
     <?php echo $form->end();?>
 </div>
 

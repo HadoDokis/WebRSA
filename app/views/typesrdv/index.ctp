@@ -1,5 +1,5 @@
-<?php $this->pageTitle = 'Paramétrage des types de rendez-vous';?>
-
+<?php $this->pageTitle = 'Paramétrage des objets du rendez-vous';?>
+<?php echo $xform->create( 'Rendezvous' );?>
 <div>
     <h1><?php echo 'Visualisation de la table  ';?></h1>
 
@@ -12,11 +12,11 @@
         ?>
     </ul>
     <div>
-        <h2>Table Type de rendez-vous</h2>
+        <h2>Table Objet du rendez-vous</h2>
         <table>
         <thead>
             <tr>
-                <th>Type de rendez-vous</th>
+                <th>Objet du rendez-vous</th>
                 <th>Modèle de notification de RDV</th>
                 <th colspan="2" class="action">Actions</th>
             </tr>
@@ -45,4 +45,11 @@
         </table>
 </div>
 </div>
+    <div class="submit">
+        <?php
+            echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+
 <div class="clearer"><hr /></div>
+<?php echo $xform->end();?>

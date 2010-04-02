@@ -1,9 +1,9 @@
 <?php
     class AppController extends Controller
     {
-        var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons' );
-        var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale' );
-        var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User', 'Zonegeographique', 'Connection', 'User', 'Serviceinstructeur' );
+        var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons'/*, 'Xcontroller'*/, 'Default' );
+        var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default' );
+        var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User', 'Zonegeographique', 'Connection', 'User', 'Serviceinstructeur', 'Structurereferente' );
 
         //*********************************************************************
 
@@ -55,6 +55,7 @@
                         $permissions[$key] = ( $permission != -1 );
                     }
                     $this->Session->write( 'Auth.Permissions', $permissions );
+// debug( $this->Session->read() );
                 }
             }
         }
@@ -82,6 +83,146 @@
         }
 
         //*********************************************************************
+
+        /**
+        * Vérifie si on est dans un contrôleur de paramétrage ou non.
+        * @return boolean true si on est dans une action d'administration, false sinon
+        * @access protected
+        */
+
+        function _isAdminAction() {
+			$adminActions = array(
+				'apres', 'parametresfinanciers', 'tiersprestatairesapres',
+                'droits',
+                'parametrages',
+                'servicesinstructeurs',
+                'users',
+                'structuresreferentes'
+			);
+
+            $name = Inflector::underscore( $this->name );
+
+			return ( Configure::read( 'Admin.unlockall' ) || in_array( $name, $adminActions ) );
+        }
+
+        /**
+        * Vérifie que pour toutes les structures référentes, le fait qu'elles gèrent
+        * ou non l'Apre ou le contrat d'engagement soit décidé.
+        * Si la décision n'a pas été prise pour au moins une structure, on bloque
+        * l'utilisateur avec une erreur 401 et un message d'erreur approprié.
+        * @access protected
+        */
+
+        function _checkDecisionsStructures() {
+            if( !$this->_isAdminAction() ) {
+                $structsSansApre = $this->Structurereferente->find(
+                    'list',
+                    array(
+                        'conditions' => array(
+                            'Structurereferente.apre' => NULL,
+                        )
+                    )
+                );
+
+                $structsSansContrat = $this->Structurereferente->find(
+                    'list',
+                    array(
+                        'conditions' => array(
+                            'Structurereferente.contratengagement' => NULL,
+                        )
+                    )
+                );
+
+                $missing = array(
+                    'structurereferente' => array(
+                        __( 'apre', true )                   => ( count( $structsSansApre ) > 0 ),
+                        __( 'contratengagement', true )      => ( count( $structsSansContrat ) > 0 )
+                    )
+                );
+
+                if( ( count( $structsSansApre ) + count( $structsSansContrat ) ) > 0/*( array_search( true, $missing['structurereferente'] ) !== false )*/ ) {
+                    $this->cakeError(
+                        'incompleteStructure',
+                        array(
+                            'missing' => $missing,
+                            'structures' => array_unique( Set::merge( $structsSansApre, $structsSansContrat ) )
+                        )
+                    );
+                }
+            }
+        }
+
+        /**
+        * @access protected
+        */
+
+        function _checkDonneesUtilisateursEtServices( $user ) {
+            if( !$this->_isAdminAction() ) {
+                $service = $this->Serviceinstructeur->findById( $user['User']['serviceinstructeur_id'] );
+                $missing = array(
+                    'user' => array(
+                        __( 'nom', true )                   => empty( $user['User']['nom'] ),
+                        __( 'prenom', true )                => empty( $user['User']['prenom'] ),
+                        __( 'service instructeur', true )   => empty( $user['User']['serviceinstructeur_id'] ),
+                        __( 'date_deb_hab', true )          => empty( $user['User']['date_deb_hab'] ),
+                        __( 'date_fin_hab', true )          => empty( $user['User']['date_fin_hab'] )
+                    ),
+                    'serviceinstructeur' => array(
+                        __( 'lib_service', true )           => empty( $service['Serviceinstructeur']['lib_service'] ),
+                        __( 'numdepins', true )             => empty( $service['Serviceinstructeur']['numdepins'] ),
+                        __( 'typeserins', true )            => empty( $service['Serviceinstructeur']['typeserins'] ),
+                        __( 'numcomins', true )             => empty( $service['Serviceinstructeur']['numcomins'] ),
+                        __( 'numagrins', true )             => empty( $service['Serviceinstructeur']['numagrins'] ),
+                    )
+                );
+
+                if( ( array_search( true, $missing['user'] ) !== false ) || ( array_search( true, $missing['serviceinstructeur'] ) !== false ) ) {
+                    $this->cakeError( 'incompleteUser', array( 'missing' => $missing ) );
+                }
+            }
+        }
+
+        /**
+        * @access protected
+        */
+
+        function _checkHabilitations() {
+            if( !$this->_isAdminAction() ) {
+                $habilitations = array(
+                    'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
+                    'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' ),
+                );
+
+                if( !empty( $habilitations['date_deb_hab'] ) && ( strtotime( $habilitations['date_deb_hab'] ) >= mktime() ) ) {
+                    $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
+                }
+
+                if( !empty( $habilitations['date_fin_hab'] ) && ( strtotime( $habilitations['date_fin_hab'] ) < mktime() ) ) {
+                    $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
+                }
+            }
+        }
+
+		/**
+		*
+		*/
+
+        function _checkDonneesApre() {
+            if( !$this->_isAdminAction() ) {
+				$montantMaxComplementaires = Configure::read( 'Apre.montantMaxComplementaires' );
+				$periodeMontantMaxComplementaires = Configure::read( 'Apre.periodeMontantMaxComplementaires' );
+
+				if( empty( $montantMaxComplementaires ) || empty( $periodeMontantMaxComplementaires ) ) {
+                    $this->cakeError(
+						'incompleteApre',
+						array(
+							'montantMaxComplementaires' => $montantMaxComplementaires,
+							'periodeMontantMaxComplementaires' => $periodeMontantMaxComplementaires
+						)
+					);
+				}
+			}
+		}
 
         /**
         *
@@ -129,47 +270,17 @@
                     $this->assert( !empty( $service ), 'error500' ); // FIXME: erreur de boulet -> en créer un nouveau type
                     $this->Session->write( 'Auth.Serviceinstructeur', $service['Serviceinstructeur'] );
 
-                    // Données utilisateur et service instructeur correctement remplies
-                    $name = Inflector::underscore( $this->name );
-                    if( ( $name != 'droits' ) && ( $name != 'parametrages' ) && ( $name != 'servicesinstructeurs' ) && ( $name != 'users' ) ) {
-                        $service = $this->Serviceinstructeur->findById( $user['User']['serviceinstructeur_id'] );
-                        $missing = array(
-                            'user' => array(
-                                __( 'nom', true )                   => empty( $user['User']['nom'] ),
-                                __( 'prenom', true )                => empty( $user['User']['prenom'] ),
-                                __( 'service instructeur', true )   => empty( $user['User']['serviceinstructeur_id'] ),
-                                __( 'date_deb_hab', true )          => empty( $user['User']['date_deb_hab'] ),
-                                __( 'date_fin_hab', true )          => empty( $user['User']['date_fin_hab'] )
-                            ),
-                            'serviceinstructeur' => array(
-                                __( 'lib_service', true )           => empty( $service['Serviceinstructeur']['lib_service'] ),
-                                __( 'numdepins', true )             => empty( $service['Serviceinstructeur']['numdepins'] ),
-                                __( 'typeserins', true )            => empty( $service['Serviceinstructeur']['typeserins'] ),
-                                __( 'numcomins', true )             => empty( $service['Serviceinstructeur']['numcomins'] ),
-                                __( 'numagrins', true )             => empty( $service['Serviceinstructeur']['numagrins'] ),
-                            )
-                        );
+                    // Vérifications de l'état complet de certaines données dans la base
+                    $this->_checkDecisionsStructures();
+                    $this->_checkDonneesUtilisateursEtServices( $user );
+                    $this->_checkHabilitations();
+					$this->_checkDonneesApre();
 
-                        if( ( array_search( true, $missing['user'] ) !== false ) || ( array_search( true, $missing['serviceinstructeur'] ) !== false ) ) {
-                            $this->cakeError( 'incompleteUser', array( 'missing' => $missing ) );
-                        }
-
-                        // Habilitations -> FIXME!
-                        $habilitations = array(
-                            'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
-                            'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' ),
-                        );
-                        if( !empty( $habilitations['date_deb_hab'] ) && ( strtotime( $habilitations['date_deb_hab'] ) >= mktime() ) ) {
-                            $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
-                        }
-                        if( !empty( $habilitations['date_fin_hab'] ) && ( strtotime( $habilitations['date_fin_hab'] ) < mktime() ) ) {
-                            $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
-                        }
+					// Vérification des droits d'accès à la page
+                    if( $this->name != 'Pages' ) {
+                        $controllerAction = $this->name . ':' . $this->action;
+                        $this->assert( $this->Droits->check( $user['User']['aroAlias'], $controllerAction ), 'error403' );
                     }
-
-                    // Vérification des droits d'accès à la page
-                    $controllerAction = $this->name . ':' . ($this->name == 'Pages' ? $this->params['pass'][0] : $this->action);
-                    $this->assert( $this->Droits->check( $user['User']['aroAlias'], $controllerAction ), 'error403' );
                 }
             }
             $this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
@@ -401,6 +512,66 @@
             }
             return $results;
         }
+
+        /**
+        *   Ajout à la suite de l'utilisation des nouveaux helpers
+        *   - default.php
+        *   - theme.php
+        */
+
+//         public function index() {
+//             $this->set(
+//                 Inflector::tableize( $this->modelClass ),
+//                 $this->paginate( $this->modelClass )
+//             );
+//         }
+//
+//         /**
+//         *
+//         */
+//
+//         public function add() {
+//             $args = func_get_args();
+//             call_user_func_array( array( $this, '_add_edit' ), $args );
+//         }
+//
+//         /**
+//         *
+//         */
+//
+//         public function edit() {
+//             $args = func_get_args();
+//             call_user_func_array( array( $this, '_add_edit' ), $args );
+//         }
+//
+//         /**
+//         *
+//         */
+//
+//         function _add_edit(){
+//             $args = func_get_args();
+//             $this->Xcontroller->{$this->action}( $args );
+//         }
+//
+//         /**
+//         *
+//         */
+//
+//         public function delete( $id ) {
+//             $this->Xcontroller->delete( $id );
+//         }
+//
+//         /**
+//         *
+//         */
+//
+//         public function view( $id ) {
+// //          debug( $this->{$this->modelClass}->getColumnType( 'count_posts', true ) );
+// //          debug( $this->{$this->modelClass}->getColumnTypes( true ) );
+// //          debug( $this->{$this->modelClass}->findById( $id, null, null, 2 ) ); // FIXME: virtual fields avec recursive => 2
+//             $this->Xcontroller->view( $id );
+//         }
+
 
 
     }

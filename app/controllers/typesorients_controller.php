@@ -4,18 +4,23 @@
 
         var $name = 'Typesorients';
         var $uses = array( 'Typeorient', 'Structurereferente');
+        var $helpers = array( 'Xform' );
 
         function index() {
+            // Retour à la liste en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
+            }
 
             $typesorients = $this->Typeorient->find(
                 'all',
                 array(
                     'recursive' => -1
                 )
-
             );
 
-            $this->set('typesorients', $typesorients);
+			$this->set( 'occurences', $this->Typeorient->occurences() );
+            $this->set( 'typesorients', $typesorients );
         }
 
         function add() {
@@ -75,7 +80,10 @@
                         'Typeorient.id',
                         'Typeorient.lib_type_orient',
                     ),
-                    'conditions' => array( 'Typeorient.parentid' => null )
+                    'conditions' => array(
+						'Typeorient.parentid' => null,
+						'Typeorient.id <>' => $typeorient_id,
+					)
                 )
             );
             $this->set( 'parentid', $parentid );
@@ -128,6 +136,16 @@
             // Mauvais paramètre
             if( empty( $typeorient_id ) ) {
                 $this->cakeError( 'error404' );
+            }
+
+			$occurences = $this->Typeorient->occurences();
+			$nbOccurences = Set::enum( $typeorient['Typeorient']['id'], $occurences );
+			$nbOccurences = ( is_numeric( $nbOccurences ) ? $nbOccurences : 0 );
+
+            // Tentative de suppression ... FIXME
+            if( $nbOccurences != 0 ) {
+                $this->Session->setFlash( 'Impossible de supprimer un type d\'orientation utilisé dans l\'application', 'flash/error' );
+                $this->redirect( array( 'controller' => 'typesorients', 'action' => 'index' ) );
             }
 
             // Tentative de suppression ... FIXME

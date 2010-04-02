@@ -33,7 +33,7 @@
         <p class="notice"><?php echo $message;?></p>
     <?php else:?>
         <?php echo $pagination;?>
-        <table class="tooltips_oupas">
+        <table class="tooltips">
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>

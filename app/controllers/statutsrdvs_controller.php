@@ -5,9 +5,15 @@
 
         var $name = 'Statutsrdvs';
         var $uses = array( 'Rendezvous', 'Option', 'Statutrdv' );
+        var $helpers = array( 'Xform' );
 
 
         function index() {
+            // Retour à la liste en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
+            }
+
             $statutsrdvs = $this->Statutrdv->find(
                 'all',
                 array(

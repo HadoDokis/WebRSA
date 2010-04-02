@@ -4,7 +4,6 @@
         var $name = 'Critereapre';
         var $useTable = false;
 
-
         function search( $etatApre, $mesCodesInsee, $filtre_zone_geo, $criteresapres, $lockedDossiers ) {
 
             /// Conditions de base
@@ -14,8 +13,8 @@
             if( !empty( $etatApre ) ) {
                 if( $etatApre == 'Critereapre::all' ) {
                 }
-                else if( $etatApre == 'Critereapre::eligible'  ) {
-//                     $conditions[] = 'Contratinsertion.personne_id IS NOT NULL';
+                else if( $etatApre == 'Critereapre::forfaitaire'  ) {
+                    $conditions[] = 'Apre.statutapre = \'F\'';
                 }
             }
             /// Filtre zone géographique
@@ -43,6 +42,7 @@
             $activitebeneficiaire = Set::extract( $criteresapres, 'Filtre.activitebeneficiaire' );
             $natureaidesapres = Set::extract( $criteresapres, 'Filtre.natureaidesapres' );
             $statutapre = Set::extract( $criteresapres, 'Filtre.statutapre' );
+            $tiers = Set::extract( $criteresapres, 'Filtre.tiersprestataire' );
 
             /// Critères sur la demande APRE - date de demande
             if( isset( $criteresapres['Filtre']['datedemandeapre'] ) && !empty( $criteresapres['Filtre']['datedemandeapre'] ) ) {
@@ -153,6 +153,8 @@
                     '"Apre"."eligibiliteapre"',
                     '"Apre"."typecontrat"',
                     '"Apre"."statutapre"',
+                    '"Apre"."mtforfait"',
+                    '"Apre"."nbenf12"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
                     '"Dossier"."dtdemrsa"',
@@ -253,7 +255,16 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                    )/*,
+                    ),
+                    /*array(
+                        'table'      => 'tiersprestatairesapres',
+                        'alias'      => 'Tiersprestataireapre',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                             "Tiersprestataireapre.id = {$model}.tiersprestataireapre_id"
+                        )
+                    )*//*,
                     array(
                         'table'      => 'situationsdossiersrsa',
                         'alias'      => 'Situationdossierrsa',
@@ -279,6 +290,28 @@
                 'limit' => 10,
                 'conditions' => $conditions,
             );
+
+            ///Tiers prestataire lié à l'apre
+            /// FIXME: à la mode CakePHP ?
+            if( !empty( $tiers ) ) {
+                $subQueries = array();
+                $this->Apre =& ClassRegistry::init( 'Apre' );
+                foreach( $this->Apre->modelsFormation as $model ) {
+                    $table = Inflector::tableize( $model );
+
+                    $query['joins'][] = array(
+                        'table'      => $table,
+                        'alias'      => $model,
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( "{$model}.apre_id = Apre.id" )
+                    );
+
+                    $subQueries[] = "( SELECT COUNT(tiersprestatairesapres.id) FROM tiersprestatairesapres WHERE tiersprestatairesapres.aidesliees = '$model' AND tiersprestatairesapres.id = $tiers AND $model.tiersprestataireapre_id = tiersprestatairesapres.id ) > 0";
+                }
+
+                $query['conditions'][] = array( 'or' => $subQueries );
+            }
 
             return $query;
         }

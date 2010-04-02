@@ -11,7 +11,7 @@
 
             if( !empty( $statutValidation ) ) {
                 if( $statutValidation == 'Decisionci::nonvalide' ) {
-                    $conditions[] = '( ( Contratinsertion.decision_ci <> \'V\' ) AND ( Contratinsertion.decision_ci <> \'E\' ) ) OR ( Contratinsertion.decision_ci IS NULL )';
+                    $conditions[] = '( ( Contratinsertion.decision_ci <> \'V\' ) AND /*( Contratinsertion.decision_ci <> \'E\' ) ) OR ( */Contratinsertion.decision_ci IS NOT NULL )'; ///FIXME: pourquoi avoir mis <>E !!!
                 }
                 else if( $statutValidation == 'Decisionci::enattente' ) {
                     $conditions[] = 'Contratinsertion.decision_ci = \'E\'';
@@ -46,6 +46,7 @@
             $forme_ci = Set::extract( $criteresci, 'Filtre.forme_ci' );
             $structurereferente_id = Set::extract( $criteresci, 'Filtre.structurereferente_id' );
             $referent_id = Set::extract( $criteresci, 'Filtre.referent_id' );
+            $matricule = Set::extract( $criteresci, 'Filtre.matricule' );
 
 
             /// Critères sur le CI - date de saisi contrat
@@ -81,7 +82,12 @@
                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
             }
 
-            // Localité adresse
+            // ...
+            if( !empty( $matricule ) ) {
+                $conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
+            }
+
+            // Nature de la prestation
             if( !empty( $natpf ) ) {
                 $conditions[] = 'Detailcalculdroitrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';
             }
@@ -120,8 +126,9 @@
             }
 
             /// Référent
+//             debug($referent_id);
             if( !empty( $referent_id ) ) {
-                $conditions[] = 'Contratinsertion.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
+                $conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
             }
 
 /**
@@ -155,6 +162,7 @@ SELECT DISTINCT contratsinsertion.id
                     '"Contratinsertion"."dd_ci"',
                     '"Contratinsertion"."df_ci"',
                     '"Contratinsertion"."datevalidation_ci"',
+                    '"Contratinsertion"."duree_engag"',
                     '"Contratinsertion"."date_saisi_ci"',
                     '"Contratinsertion"."pers_charg_suivi"',
                     '"Contratinsertion"."observ_ci"',
@@ -171,7 +179,8 @@ SELECT DISTINCT contratsinsertion.id
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."codepos"',
-                    '"Adresse"."numcomptt"'
+                    '"Adresse"."numcomptt"',
+                    '"PersonneReferent"."referent_id"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -242,7 +251,14 @@ SELECT DISTINCT contratsinsertion.id
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
-                    )
+                    ),
+                    array(
+                        'table'      => 'personnes_referents',
+                        'alias'      => 'PersonneReferent',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'PersonneReferent.personne_id = Personne.id' )
+                    ),
 //                     array(
 //                         'table'      => 'structuresreferentes',
 //                         'alias'      => 'Structurereferente',

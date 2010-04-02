@@ -41,7 +41,7 @@
         <?php echo $pagination;?>
         <?php echo $xform->create( 'Cohortecomiteapre', array( 'url'=> Router::url( null, true ) ) );?>
 
-        <table id="searchResults" class="tooltips_oupas">
+        <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
                     <th><?php echo $paginator->sort( 'N° demande RSA', 'Dossier.numdemrsa' );?></th>
@@ -103,13 +103,13 @@
 
 
                             h( $locale->date( 'Date::short', Set::extract( $comite, 'Comiteapre.datecomite' ) ) ),
-                            h( Set::classicExtract( $comite, 'Apre.mtforfait') ),
+                            h( Set::classicExtract( $comite, 'Apre.montanttotal') ),
 //                             $xform->input( 'ApreComiteapre.'.$index.'.montantdemande', array( 'label' => false, 'type' => 'text' ) ),
-                            $xform->input( 'ApreComiteapre.'.$index.'.montantattribue', array( 'label' => false, 'type' => 'text', 'maxlength' => 4 ) ),
+                            $xform->input( 'ApreComiteapre.'.$index.'.montantattribue', array( 'label' => false, 'type' => 'text', 'maxlength' => 4, 'value' => Set::classicExtract( $comite, 'Apre.montanttotal' ) ) ),
                             $xform->input( 'ApreComiteapre.'.$index.'.observationcomite', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
                             $html->viewLink(
-                                'Voir le comite « '.Set::extract( $comite, 'Comiteapre.id' ).' »',
-                                array( 'controller' => 'comitesapres', 'action' => 'view', Set::extract( $comite, 'Comiteapre.id' ) ),
+                                'Voir l\'APRE',
+                                array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $comite, 'Personne.id' ) ),
                                 true,
                                 true
                             ),
