@@ -286,9 +286,15 @@
                 }
 //                 $queryDataTmp['fields'][] = 'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( '.implode( ', 0 ) + COALESCE( ', $fieldTotal ).', 0 ) ) AS "Apre__montantconsomme"';
                 $queryDataTmp['fields'][] = 'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( "Apre"."montantdejaverse", 0 ) ) AS "Apre__montantconsomme"';
+
+                $queryDataTmp['group'] = array(
+                    'EXTRACT(YEAR FROM Apre.datedemandeapre )',
+                    'Apre.datedemandeapre'
+                );
+
                 $montantconsomme = $this->Apre->find( 'all', $queryDataTmp );
                 $result["montantconsomme{$suffix}"] = Set::classicExtract( $montantconsomme, '0.Apre.montantconsomme' );
-// debug($montantconsomme);
+
                 // Nombre de bénéficiaires
                 $queryDataTmp['fields'][] = 'COUNT( DISTINCT( "Apre"."personne_id" ) ) AS "Apre__nombre_beneficiaires"';
                 $nombre_beneficiaires = $this->Apre->find( 'all', $queryDataTmp );
