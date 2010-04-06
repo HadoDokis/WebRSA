@@ -38,7 +38,7 @@
         observeDisableFieldsOnValue( 'ApreNaturelogementA', [ 'AprePrecisionsautrelogement' ], 'A', false );
 
         //Données pour le type d'activité du bénéficiare
-        ['F', 'C', 'P'].each( function( letter ) {
+        ['F', 'C'].each( function( letter ) {
             observeDisableFieldsOnValue( 'ApreActivitebeneficiaire' + letter, [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur', 'ApreSecteuractivite' ],  letter, true );
         } );
         observeDisableFieldsOnValue( 'ApreActivitebeneficiaireE', [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur', 'ApreSecteuractivite' ], 'E', false );
@@ -48,12 +48,12 @@
 //         observeDisableFieldsetOnCheckbox( 'ApreNatureaideFormpermfimo', $( 'Formpermfimo' ), false, true );
 //         observeDisableFieldsetOnCheckbox( 'ApreNatureaideActprof', $( 'Actprof' ), false, true );
 //         observeDisableFieldsetOnCheckbox( 'ApreNatureaidePermisb', $( 'Permisb' ), false, true );
-        observeDisableFieldsetOnCheckbox( 'ApreNatureaideAmenaglogt', $( 'Amenaglogt' ), false, true );
-        observeDisableFieldsetOnCheckbox( 'ApreNatureaideAcccreaentr', $( 'Acccreaentr' ), false, true );
-        observeDisableFieldsetOnCheckbox( 'ApreNatureaideAcqmatprof', $( 'Acqmatprof' ), false, true );
-        observeDisableFieldsetOnCheckbox( 'ApreNatureaideLocvehicinsert', $( 'Locvehicinsert' ), false, true );
+//         observeDisableFieldsetOnCheckbox( 'ApreNatureaideAmenaglogt', $( 'Amenaglogt' ), false, true );
+//         observeDisableFieldsetOnCheckbox( 'ApreNatureaideAcccreaentr', $( 'Acccreaentr' ), false, true );
+//         observeDisableFieldsetOnCheckbox( 'ApreNatureaideAcqmatprof', $( 'Acqmatprof' ), false, true );
+//         observeDisableFieldsetOnCheckbox( 'ApreNatureaideLocvehicinsert', $( 'Locvehicinsert' ), false, true );
 
-        ['Formqualif', 'Formpermfimo', 'Actprof', 'Permisb'].each( function( formation ) {
+        ['Formqualif', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' ].each( function( formation ) {
             observeDisableFieldsetOnRadioValue(
                 'Apre',
                 'data[Apre][Natureaide]',

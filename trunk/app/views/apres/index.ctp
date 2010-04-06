@@ -215,11 +215,11 @@
                                 h( date_short( Set::classicExtract( $relanceapre, 'Relanceapre.daterelance' ) ) ),
                                 $textePiecesManquantes,
                                 h( Set::classicExtract( $relanceapre, 'Relanceapre.commentairerelance' ) ),
-                                $html->viewLink(
-                                    'Voir la relance',
-                                    array( 'controller' => 'relancesapres', 'action' => 'view', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
-                                    $permissions->check( 'relancesapres', 'view' )
-                                ),
+//                                 $html->viewLink(
+//                                     'Voir la relance',
+//                                     array( 'controller' => 'relancesapres', 'action' => 'view', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
+//                                     $permissions->check( 'relancesapres', 'view' )
+//                                 ),
                                 $html->editLink(
                                     'Editer la relance',
                                     array( 'controller' => 'relancesapres', 'action' => 'edit', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
