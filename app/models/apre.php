@@ -3,7 +3,7 @@
     {
         var $name = 'Apre';
 
-        var $order = array( 'Apre.datedemandeapre ASC' );
+//         var $order = array( 'Apre.datedemandeapre ASC' );
 
         var $actsAs = array(
             'Enumerable' => array(
@@ -61,10 +61,10 @@
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
-            'referent_id' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            ),
+//             'referent_id' => array(
+//                 'rule' => 'notEmpty',
+//                 'message' => 'Champ obligatoire'
+//             ),
         );
 
         var $belongsTo = array(
