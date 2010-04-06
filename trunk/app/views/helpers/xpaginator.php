@@ -71,6 +71,7 @@
 		function paginationBlock( $classname, $urlOptions, $format = 'Results %start% - %end% out of %count%.' ) {
 			$this->options( array( 'url' => $urlOptions ) );
 			$pagination = null;
+//             debug( $this->params );
 			if( Set::classicExtract( $this->params, "paging.{$classname}.pageCount" ) >= 1 ) {
 				$pagination = $this->Html->tag ( 'p', $this->counter( array( 'format' => __( $format, true ) ) ), array( 'class' => 'pagination counter' ) );
 				$links = implode(

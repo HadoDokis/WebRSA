@@ -10,11 +10,11 @@
 </script>
 <!--/************************************************************************/ -->
 <?php
-    if( isset( $apres ) ) {
+    /*if( isset( $apres ) ) {
 		// FIXME: utiliser xpaginator ?
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $html->tag( 'p', $paginator->counter( $params ), array( 'class' => 'pagination' ) );
 
         $pages = implode(
 			'&nbsp;&nbsp;',
@@ -27,11 +27,12 @@
 			)
 		);
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $html->tag( 'p', $pages, array( 'class' => 'pagination' ) );
     }
     else {
         $pagination = '';
-    }
+    }*/
+    $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 ?>
 <?php
     if( is_array( $this->data ) ) {
