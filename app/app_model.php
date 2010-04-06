@@ -653,13 +653,13 @@
 		*/
 
 		function inclusiveRange($check, $lower = null, $upper = null ) {
-			if (!is_numeric($check)) {
-				return false;
+            $return = true;
+            foreach( $check as $field => $value ) {
+				if (isset($lower) && isset($upper)) {
+					$return = ( $value >= $lower && $value <= $upper ) && $return;
+				}
 			}
-			if (isset($lower) && isset($upper)) {
-				return ($check >= $lower && $check <= $upper);
-			}
-			return is_finite($check);
+			return $return;
 		}
     }
 ?>
