@@ -28,7 +28,7 @@
 //                     'allowEmpty' => true
                 ),
                 array(
-                    'rule' => array( 'range', -1, 1001 ),
+                    'rule' => array( 'inclusiveRange', 0, 1000 ),
                     'message' => 'Veuillez saisir un montant compris entre 0 et 1000€ maximum.'
                 )
             ),

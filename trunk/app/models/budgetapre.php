@@ -18,7 +18,7 @@
             ),
             'montantattretat' => array(
                 array(
-                    'rule' => array( 'range', -1, 99999999 ),
+                    'rule' => array( 'inclusiveRange', 0, 99999999 ),
                     'message' => 'Veuillez saisir un montant compris entre 0 et 99 999 999 € maximum.'
                 ),
                 array(
