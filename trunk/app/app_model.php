@@ -639,5 +639,27 @@
 
             return $return;
         }
+
+		/**
+		* Validate that a number is in specified range.
+		* if $lower and $upper are not set, will return true if
+		* $check is a legal finite on this platform
+		*
+		* @param string $check Value to check
+		* @param integer $lower Lower limit
+		* @param integer $upper Upper limit
+		* @return boolean Success
+		* @access public
+		*/
+
+		function inclusiveRange($check, $lower = null, $upper = null ) {
+			if (!is_numeric($check)) {
+				return false;
+			}
+			if (isset($lower) && isset($upper)) {
+				return ($check >= $lower && $check <= $upper);
+			}
+			return is_finite($check);
+		}
     }
 ?>
