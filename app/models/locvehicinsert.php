@@ -26,7 +26,7 @@
                     'allowEmpty' => true
                 ),
                 array(
-                    'rule' => array( 'range', -1, 701 ),
+                    'rule' => array( 'inclusiveRange', 0, 700 ),
                     'message' => 'Veuillez saisir un montant compris entre 0 et 700€ / 6 mois maximum.'
                 )
             ),

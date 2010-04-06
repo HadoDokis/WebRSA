@@ -644,6 +644,7 @@
 		* Validate that a number is in specified range.
 		* if $lower and $upper are not set, will return true if
 		* $check is a legal finite on this platform
+		* FIXME: signature + retour
 		*
 		* @param string $check Value to check
 		* @param integer $lower Lower limit
