@@ -56,7 +56,8 @@
                         $conditions = array();
                         $piecesApreIds = Set::extract( $piecesPresentes, '/AprePieceapre/pieceapre_id' );
                         if( !empty( $piecesApreIds ) ) {
-                            $conditions['Pieceapre.id NOT'] = $piecesApreIds;
+                            $conditions = array( 'NOT' => array( 'Pieceapre.id' => $piecesApreIds ) );
+//                             $conditions['Pieceapre.id NOT'] = $piecesApreIds;
                         }
                         $piecesAbsentes = $this->Apre->Pieceapre->find( 'all', array( 'conditions' => $conditions, 'recursive' => -1 ) );
 
