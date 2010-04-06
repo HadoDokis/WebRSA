@@ -280,6 +280,7 @@
                         $piecesAidesAbsentes = array();
                         $conditions = array();
                         if( !empty( $piecesAidesPresentes ) ) {
+//                         debug( $piecesAidesPresentes );
                             $conditions = array( 'NOT' => array( 'Piece'.strtolower( $model ).'.id' => $piecesAidesPresentes ) );
                         }
                         $piecesAidesAbsentes = $this->{$model}->{'Piece'.strtolower( $model )}->find( 'list', array( 'recursive' => -1, 'conditions' => $conditions ) );
