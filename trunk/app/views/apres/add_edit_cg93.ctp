@@ -43,16 +43,7 @@
         } );
         observeDisableFieldsOnValue( 'ApreActivitebeneficiaireE', [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur', 'ApreSecteuractivite' ], 'E', false );
 
-        // ....
-//         observeDisableFieldsetOnCheckbox( 'ApreNatureaideFormqualif', $( 'Formqualif' ), false, true );
-//         observeDisableFieldsetOnCheckbox( 'ApreNatureaideFormpermfimo', $( 'Formpermfimo' ), false, true );
-//         observeDisableFieldsetOnCheckbox( 'ApreNatureaideActprof', $( 'Actprof' ), false, true );
-//         observeDisableFieldsetOnCheckbox( 'ApreNatureaidePermisb', $( 'Permisb' ), false, true );
-//         observeDisableFieldsetOnCheckbox( 'ApreNatureaideAmenaglogt', $( 'Amenaglogt' ), false, true );
-//         observeDisableFieldsetOnCheckbox( 'ApreNatureaideAcccreaentr', $( 'Acccreaentr' ), false, true );
-//         observeDisableFieldsetOnCheckbox( 'ApreNatureaideAcqmatprof', $( 'Acqmatprof' ), false, true );
-//         observeDisableFieldsetOnCheckbox( 'ApreNatureaideLocvehicinsert', $( 'Locvehicinsert' ), false, true );
-
+        // Javascript pour les aides liées à l'APRE
         ['Formqualif', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' ].each( function( formation ) {
             observeDisableFieldsetOnRadioValue(
                 'Apre',

@@ -287,10 +287,10 @@
 //                 $queryDataTmp['fields'][] = 'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( '.implode( ', 0 ) + COALESCE( ', $fieldTotal ).', 0 ) ) AS "Apre__montantconsomme"';
                 $queryDataTmp['fields'][] = 'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( "Apre"."montantdejaverse", 0 ) ) AS "Apre__montantconsomme"';
 
-                $queryDataTmp['group'] = array(
-                    'EXTRACT(YEAR FROM Apre.datedemandeapre )',
-                    'Apre.datedemandeapre'
-                );
+//                 $queryDataTmp['group'] = array(
+//                     'EXTRACT(YEAR FROM Apre.datedemandeapre )',
+//                     'Apre.datedemandeapre'
+//                 );
 
                 $montantconsomme = $this->Apre->find( 'all', $queryDataTmp );
                 $result["montantconsomme{$suffix}"] = Set::classicExtract( $montantconsomme, '0.Apre.montantconsomme' );

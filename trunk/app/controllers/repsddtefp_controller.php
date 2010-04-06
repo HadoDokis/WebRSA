@@ -6,7 +6,7 @@
     {
         var $name = 'Repsddtefp';
         var $uses = array( 'Apre', 'Repddtefp', 'Option', 'Budgetapre', 'Etatliquidatif' );
-        var $helpers = array( 'Xform', 'Paginator', 'Locale' );
+        var $helpers = array( 'Xform', 'Paginator', 'Locale', 'Xpaginator' );
 
         function __construct() {
             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'suivicontrole' ) ) ) );
