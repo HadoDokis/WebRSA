@@ -212,6 +212,14 @@
 								FIXME: les calculs ne sont pas justes avec cette condition,
 								par rapport à ce que l'on a dans la table etatsliquidatifs
 								ou dans la table apres -> c'est sensé être fait ailleurs
+
+								Requête permettant de trouver lesquels:
+								SELECT *
+									FROM apres
+									INNER JOIN personnes ON apres.personne_id = personnes.id
+									INNER JOIN prestations ON personnes.id = prestations.personne_id
+										AND prestations.natprest = 'RSA'
+										AND prestations.rolepers NOT IN ( 'DEM', 'CJT' );
 							*/
 //                             '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
                         )
