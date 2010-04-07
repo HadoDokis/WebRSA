@@ -208,7 +208,12 @@
                         'conditions' => array(
                             'Personne.id = Prestation.personne_id',
                             'Prestation.natprest = \'RSA\'',
-                            '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+							/**
+								FIXME: les calculs ne sont pas justes avec cette condition,
+								par rapport à ce que l'on a dans la table etatsliquidatifs
+								ou dans la table apres -> c'est sensé être fait ailleurs
+							*/
+//                             '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
                         )
                     ),
                     array(
