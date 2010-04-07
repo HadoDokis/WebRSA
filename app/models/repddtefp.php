@@ -158,7 +158,15 @@
 									FROM etatsliquidatifs
 									WHERE '.implode( ' AND ', $this->_conditionsApresEtatsliquidatifs( $criteresrepddtefp ) ).'
 							)
-				)'
+							AND (
+								"Apre"."statutapre" = \'F\'
+								OR (
+									"Apre"."statutapre" = \'C\'
+									AND apres_etatsliquidatifs.montantattribue IS NOT NULL
+								)
+							)
+				)',
+// 				'"Apre"."etatdossierapre" = \'COM\''
             );
 
             $numcomptt = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.numcomptt' );
