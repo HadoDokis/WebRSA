@@ -180,7 +180,7 @@
                             h( Set::enum( Set::classicExtract( $apre, 'Personne.sexe' ), $sexe ) ),
                             h( $age ),
                             h( Set::classicExtract( $apre, 'Adresse.locaadr' ) ),
-                            h( $locale->money( Set::classicExtract( $apre, 'Apre.mtforfait' ) + Set::classicExtract( $apre, 'Apre.montantdejaverse' ) ) ),
+                            h( $locale->money( Set::classicExtract( $apre, 'Apre.mtforfait' ) + Set::classicExtract( $apre, 'Apre.montantaides' ) ) ),
                             ( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
                             h( Set::enum( Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ), $options['activitebeneficiaire'] ) ),
                             h( Set::enum( Set::classicExtract( $apre, 'Apre.secteuractivite' ), $sect_acti_emp ) ),

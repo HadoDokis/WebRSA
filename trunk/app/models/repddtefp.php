@@ -101,6 +101,48 @@
             return $results;
         }
 
+		/**
+		*
+		*/
+
+		function _conditionsApresEtatsliquidatifs( $criteresrepddtefp ) {
+			$conditionsApresEtatsliquidatifs = array(
+				'etatsliquidatifs.datecloture IS NOT NULL'
+			);
+
+            $annee = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.annee' );
+            $mois = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.mois.month' );
+            $quinzaine = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.quinzaine' );
+            $statutapre = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.statutapre' );
+
+            /// Année de demande APRE
+            if( !empty( $annee ) ) {
+                $conditionsApresEtatsliquidatifs[] = 'EXTRACT(YEAR FROM etatsliquidatifs.datecloture ) = '.$annee;
+            }
+
+            /// Mois de demande APRE
+            if( !empty( $mois ) ) {
+                $conditionsApresEtatsliquidatifs[] = 'EXTRACT(MONTH FROM etatsliquidatifs.datecloture ) = '.$mois;
+            }
+
+            /// Quinzaine du mois de demande APRE
+            if( !empty( $quinzaine ) ) {
+                if( $quinzaine == 1 ) {
+                    $conditionsApresEtatsliquidatifs[] = 'EXTRACT( DAY FROM etatsliquidatifs.datecloture ) < 15';
+                }
+                else if( $quinzaine == 2 ) {
+                    $conditionsApresEtatsliquidatifs[] = 'EXTRACT( DAY FROM etatsliquidatifs.datecloture ) >= 15';
+                }
+            }
+
+            /// Statut de l'APRE
+            if( !empty( $statutapre ) ) {
+                $conditionsApresEtatsliquidatifs[] = 'etatsliquidatifs.typeapre = \''.( $statutapre == 'C' ? 'complementaire' : 'forfaitaire' ).'\'';
+            }
+
+			return $conditionsApresEtatsliquidatifs;
+		}
+
         /**
         *   Critères de recherche envoyés par le contrôleur + jointure
         */
@@ -108,39 +150,18 @@
         function _queryData( $criteresrepddtefp ) {
             /// Conditions de base
             $conditions = array(
+				'"Apre"."id" IN (
+						SELECT apres_etatsliquidatifs.apre_id
+							FROM apres_etatsliquidatifs
+							WHERE apres_etatsliquidatifs.etatliquidatif_id IN (
+								SELECT etatsliquidatifs.id
+									FROM etatsliquidatifs
+									WHERE '.implode( ' AND ', $this->_conditionsApresEtatsliquidatifs( $criteresrepddtefp ) ).'
+							)
+				)'
             );
 
-            $annee = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.annee' );
-            $mois = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.mois.month' );
-            $quinzaine = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.quinzaine' );
             $numcomptt = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.numcomptt' );
-            $statutapre = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.statutapre' );
-
-
-            /// Année de demande APRE
-            if( !empty( $annee ) ) {
-                $conditions[] = 'EXTRACT(YEAR FROM Apre.datedemandeapre ) = '.$annee;
-            }
-
-            /// Mois de demande APRE
-            if( !empty( $mois ) ) {
-                $conditions[] = 'EXTRACT(MONTH FROM Apre.datedemandeapre ) = '.$mois;
-            }
-
-            /// Quinzaine du mois de demande APRE
-            if( !empty( $quinzaine ) ) {
-                if( $quinzaine == 1 ) {
-                    $conditions[] = 'EXTRACT( DAY FROM Apre.datedemandeapre ) < 15';
-                }
-                else if( $quinzaine == 2 ) {
-                    $conditions[] = 'EXTRACT( DAY FROM Apre.datedemandeapre ) >= 15';
-                }
-            }
-
-            /// Statut de l'APRE
-            if( !empty( $statutapre ) ) {
-                $conditions[] = 'Apre.statutapre = \''.Sanitize::clean( $statutapre ).'\'';
-            }
 
             /// Localité adresse
             if( !empty( $numcomptt ) ) {
@@ -215,6 +236,23 @@
             return $queryData;
         }
 
+        /**
+        * Champ calculé des aides effectivement versées
+        */
+
+        function _apreMontantAidesVersees( $criteresrepddtefp ) {
+			return '(
+					SELECT SUM( apres_etatsliquidatifs.montantattribue )
+						FROM apres_etatsliquidatifs
+						WHERE apres_etatsliquidatifs.apre_id = "Apre"."id"
+							AND apres_etatsliquidatifs.etatliquidatif_id IN (
+								SELECT etatsliquidatifs.id
+									FROM etatsliquidatifs
+									WHERE '.implode( ' AND ', $this->_conditionsApresEtatsliquidatifs( $criteresrepddtefp ) ).'
+							)
+				)';
+        }
+
 
         /**
         *   Donnéees que l'on affiche dans la vue
@@ -243,18 +281,24 @@
                 '"Personne"."nir"',
                 '"Adresse"."locaadr"',
                 '"Adresse"."codepos"',
-                '"Adresse"."numcomptt"'
+                '"Adresse"."numcomptt"',
+				$this->_apreMontantAidesVersees( $criteresrepddtefp ).' AS "Apre__montantaides"'
+            );
+
+            $queryData['order'] = array(
+				'Personne.nom',
+				'Personne.prenom',
             );
 
             ///
-            $this->Apre =& ClassRegistry::init( 'Apre' );
+            /*$this->Apre =& ClassRegistry::init( 'Apre' );
 
             $fieldTotal = array();
             foreach( $this->Apre->aidesApre as $modelAide ) {
                 $fieldTotal[] = "\"{$modelAide}\".\"montantaide\"";
             }
 //             $queryData['fields'][] = '( COALESCE( '.implode( ', 0 ) + COALESCE( ', $fieldTotal ).', 0 ) ) AS "Apre__montanttotal"';
-            $queryData['fields'][] = '( COALESCE( "Apre"."montantdejaverse" ) ) AS "Apre__montanttotal"';
+            $queryData['fields'][] = '( COALESCE( "Apre"."montantdejaverse" ) ) AS "Apre__montanttotal"';*/
 
             return $queryData;
         }
@@ -285,7 +329,8 @@
                     $fieldTotal[] = "\"{$modelAide}\".\"montantaide\"";
                 }
 //                 $queryDataTmp['fields'][] = 'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( '.implode( ', 0 ) + COALESCE( ', $fieldTotal ).', 0 ) ) AS "Apre__montantconsomme"';
-                $queryDataTmp['fields'][] = 'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( "Apre"."montantdejaverse", 0 ) ) AS "Apre__montantconsomme"';
+                //$queryDataTmp['fields'][] = 'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( "Apre"."montantdejaverse", 0 ) ) AS "Apre__montantconsomme"';
+                $queryDataTmp['fields'][] = 'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( '.$this->_apreMontantAidesVersees( $criteresrepddtefp ).', 0 ) ) AS "Apre__montantconsomme"';
 
 //                 $queryDataTmp['group'] = array(
 //                     'EXTRACT(YEAR FROM Apre.datedemandeapre )',
