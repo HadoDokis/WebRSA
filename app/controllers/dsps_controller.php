@@ -14,8 +14,8 @@
 		var $specialHasMany = array(
 			'Detaildifsoc' => 'difsoc',
 			'Detailaccosocfam' => 'nataccosocfam',
-// 			'Detailaccosocindi' => 'nataccosocindi', // FIXME: ajouter les autres modèles depuis branches/trunk.bak
-// 			'Detaildifdisp' => 'difdisp',
+			'Detailaccosocindi' => 'nataccosocindi', // FIXME: ajouter les autres modèles depuis branches/trunk.bak
+			'Detaildifdisp' => 'difdisp',
 // 			'Detailnatmob' => 'natmob',
 // 			'Detaildiflog' => 'diflog',
 		);

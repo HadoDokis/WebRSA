@@ -10,9 +10,9 @@
         var $hasMany = array(
 			'Detaildifsoc',
 			'Detailaccosocfam',
-// 			'Detailaccosocindi', // FIXME: ajouter les autres modèles depuis branches/trunk.bak
-// 			'Detaildifdisp',
-// 			'Detailnatmob',
+			'Detailaccosocindi',
+			'Detaildifdisp',
+// 			'Detailnatmob', // FIXME: ajouter les autres modèles depuis branches/trunk.bak
 // 			'Detaildiflog'
 		);
 

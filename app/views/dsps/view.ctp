@@ -84,7 +84,7 @@
 
 			// Situation SituationSociale
 			// SituationSociale - CommunSituationSociale
-			$rows = array(
+			/*$rows = array(
 				array(
 					__d( 'dsp', 'Dsp.accosocfam', true ),
 					result( $dsp, 'Dsp.accosocfam', 'enum', $options['Dsp']['accosocfam'] ),
@@ -109,26 +109,48 @@
 			$generalites = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
 			if( !empty( $generalites ) ) {
 				$generalites = $html->tag( 'h3', 'Généralités' ).$generalites;
-			}
+			}*/
 
 			// SituationSociale - DetailDifficulteSituationSociale (0-n)
 			$difficultes = $dsphm->details( $dsp, 'Detaildifsoc', 'difsoc', 'libautrdifsoc', $options['Detaildifsoc']['difsoc'] );
 			$difficultes = $html->tag( 'h3', 'Difficultés sociales' ).$difficultes;
-debug( $difficultes );
+
 			// SituationSociale - DetailAccompagnementSocialFamilial (0-n)
 			$accosocfam = $dsphm->details( $dsp, 'Detailaccosocfam', 'nataccosocfam', 'libautraccosocfam', $options['Detailaccosocfam']['nataccosocfam'] );
 			$accosocfam = $html->tag( 'h3', 'Difficultés accompagnement social familial' ).$accosocfam;
-debug( $accosocfam );
+
 			// SituationSociale - DetailAccompagnementSocialIndividuel (0-n)
-			$accosocindi = $dsphm->details( $dsp, 'Detailaccosocindi', 'nataccosocindi', 'libautraccosocindi', $options['Dsp']['nataccosocindi'] );
+			$accosocindi = $dsphm->details( $dsp, 'Detailaccosocindi', 'nataccosocindi', 'libautraccosocindi', $options['Detailaccosocindi']['nataccosocindi'] );
 			$accosocindi = $html->tag( 'h3', 'Difficultés accompagnement social individuel' ).$accosocindi;
 
 			// SituationSociale - DetailDifficulteDisponibilite (0-n)
-			$difdisps = $dsphm->details( $dsp, 'Detaildifdisp', 'difdisp', null, $options['Dsp']['difdisp'] );
+			$difdisps = $dsphm->details( $dsp, 'Detaildifdisp', 'difdisp', null, $options['Detaildifdisp']['difdisp'] );
 			$difdisps = $html->tag( 'h3', 'Difficultés disponibilités' ).$difdisps;
 
+// debug( array_keys( $options ) );
+
+			$nivetus = $default->view(
+				$dsp,
+				array(
+					'Dsp.nivetu',
+					'Dsp.nivdipmaxobt',
+					'Dsp.annobtnivdipmax',
+					'Dsp.topqualipro',
+					'Dsp.libautrqualipro',
+					'Dsp.topcompeextrapro',
+					'Dsp.libcompeextrapro'
+				),
+				array(
+					'options' => $options
+				)
+			);
+
+			if( !empty( $nivetus ) ) {
+				$nivetus = $html->tag( 'h2', 'Niveau d\'étude' ).$nivetus;
+			}
+
 			// Niveau d'étude
-			$rows = array(
+			/*$rows = array(
 				array(
 					__d( 'dsp', 'Dsp.nivetu', true ),
 					result( $dsp, 'Dsp.nivetu', 'enum', $options['Dsp']['nivetu'] ),
@@ -161,22 +183,65 @@ debug( $accosocfam );
 			$nivetus = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
 			if( !empty( $nivetus ) ) {
 				$nivetus = $html->tag( 'h2', 'Niveau d\'étude' ).$nivetus;
-			}
+			}*/
 
 			// Disponibilités emploi
-			$disponibilitésEmploi = array(
+			$disponibilitésEmploi = $default->view(
+				$dsp,
+				array(
+					'Dsp.topengdemarechemploi'
+				),
+				array(
+					'options' => $options
+				)
+			);
+
+			if( !empty( $disponibilitésEmploi ) ) {
+				$disponibilitésEmploi = $html->tag( 'h2', 'Disponibilités emploi' ).$disponibilitésEmploi;
+			}
+
+			/*$disponibilitésEmploi = array(
 				array(
 					__d( 'dsp', 'Dsp.topengdemarechemploi', true ),
 					result( $dsp, 'Dsp.topengdemarechemploi', 'enum', $options['Dsp']['topengdemarechemploi'] ),
 				)
 			);
-			$disponibilitésEmploi = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
+			$disponibilitésEmploi = $xhtml->details( $disponibilitésEmploi, array( 'type' => 'list', 'empty' => true ) );
 			if( !empty( $disponibilitésEmploi ) ) {
 				$disponibilitésEmploi = $html->tag( 'h2', 'Disponibilités emploi' ).$disponibilitésEmploi;
-			}
+			}*/
 
 			// Situation professionnelle
-			$rows = array(
+			$situationProfessionnelle = $default->view(
+				$dsp,
+				array(
+					'Dsp.hispro',
+					'Dsp.libderact',
+					'Dsp.libsecactderact',
+					'Dsp.cessderact',
+					'Dsp.topdomideract',
+					'Dsp.libactdomi',
+					'Dsp.libsecactdomi',
+					'Dsp.duractdomi',
+					'Dsp.inscdememploi',
+					'Dsp.topisogrorechemploi',
+					'Dsp.accoemploi',
+					'Dsp.libcooraccoemploi',
+					'Dsp.topprojpro',
+					'Dsp.libemploirech',
+					'Dsp.libsecactrech',
+					'Dsp.topcreareprientre',
+					'Dsp.concoformqualiemploi'
+				),
+				array(
+					'options' => $options
+				)
+			);
+
+			if( !empty( $situationProfessionnelle ) ) {
+				$situationProfessionnelle = $html->tag( 'h2', 'Situation professionnelle' ).$situationProfessionnelle;
+			}
+			/*$rows = array(
 				array(
 					__d( 'dsp', 'Dsp.hispro', true ),
 					result( $dsp, 'Dsp.hispro', 'enum', $options['Dsp']['hispro'] ),
@@ -249,10 +314,26 @@ debug( $accosocfam );
 			$situationProfessionnelle = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
 			if( !empty( $situationProfessionnelle ) ) {
 				$situationProfessionnelle = $html->tag( 'h2', 'Situation professionnelle' ).$situationProfessionnelle;
-			}
+			}*/
 
 			// Mobilité
-			$rows = array(
+			$mobilite = $default->view(
+				$dsp,
+				array(
+					'Dsp.topmoyloco',
+					'Dsp.toppermicondub',
+					'Dsp.topautrpermicondu',
+					'Dsp.libautrpermicondu'
+				),
+				array(
+					'options' => $options
+				)
+			);
+			if( !empty( $mobilite ) ) {
+				$mobilite = $html->tag( 'h2', 'Mobilité' ).$mobilite;
+			}
+
+			/*$rows = array(
 				array(
 					__d( 'dsp', 'Dsp.topmoyloco', true ),
 					result( $dsp, 'Dsp.topmoyloco', 'enum', $options['Dsp']['topmoyloco'] ),
@@ -271,17 +352,34 @@ debug( $accosocfam );
 				),
 			);
 			$mobilite = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
+			if( !empty( $mobilite ) ) {
+				$mobilite = $html->tag( 'h2', 'Mobilité' ).$mobilite;
+			}*/
 
 			// Mobilite - DetailMobilite (0-n)
 			$natmobs = $dsphm->details( $dsp, 'Detailnatmob', 'natmob', null, $options['Dsp']['natmob'] );
 			$natmobs = $html->tag( 'h3', 'Code mobilité' ).$natmobs;
 
-			if( !empty( $mobilite ) ) {
-				$mobilite = $html->tag( 'h2', 'Mobilité' ).$mobilite;
-			}
 
 			// Difficultés logement
-			$rows = array(
+			$difficultesLogement = $default->view(
+				$dsp,
+				array(
+					'Dsp.natlog',
+					'Dsp.demarlog',
+					// FIXME
+// 					'Dsp.topautrpermicondu',
+// 					'Dsp.libautrpermicondu'
+				),
+				array(
+					'options' => $options
+				)
+			);
+			if( !empty( $difficultesLogement ) ) {
+				$difficultesLogement = $html->tag( 'h2', 'Difficultés logement' ).$difficultesLogement;
+			}
+
+			/*$rows = array(
 				array(
 					__d( 'dsp', 'Dsp.natlog', true ),
 					result( $dsp, 'Dsp.natlog', 'enum', $options['Dsp']['natlog'] ),
@@ -302,7 +400,7 @@ debug( $accosocfam );
 			$difficultesLogement = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
 			if( !empty( $difficultesLogement ) ) {
 				$difficultesLogement = $html->tag( 'h2', 'Difficultés logement' ).$difficultesLogement;
-			}
+			}*/
 
 			// DifficulteLogement - DetailDifficulteLogement
 			$diflogs = $dsphm->details( $dsp, 'Detaildiflog', 'diflog', 'libautrdiflog', $options['Dsp']['diflog'] );

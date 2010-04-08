@@ -1,15 +1,15 @@
 <?php
-    class Detailaccosocfam extends AppModel
+    class Detaildifdisp extends AppModel
     {
-        var $name = 'Detailaccosocfam';
+        var $name = 'Detaildifdisp';
 
         var $belongsTo = array( 'Dsp' );
 
         var $actsAs = array(
             'Enumerable' => array(
                 'fields' => array(
-                    'nataccosocfam' => array(
-						'type' => 'nataccosocfam', 'domain' => 'dsp'
+                    'difdisp' => array(
+						'type' => 'difdisp', 'domain' => 'dsp'
 					),
 				)
 			)

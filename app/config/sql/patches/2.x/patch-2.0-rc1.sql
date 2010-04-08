@@ -369,6 +369,29 @@ INSERT INTO detailsdifsocs (dsp_id, difsoc, libautrdifsoc)
 			INNER JOIN dspps ON dspps.id = dspps_difsocs.dspp_id
 			INNER JOIN dsps ON dspps.personne_id = dsps.personne_id;
 
+-- INFO: le choix "Autres" n'était pas toujours coché, alors qu'on avait un libellé pour lui
+-- FIXME: ????
+
+-- INSERT INTO detailsdifsocs (dsp_id, difsoc, libautrdifsoc)
+-- 	SELECT
+-- 			dsps.id AS dsp_id,
+-- 			CAST( '0407' AS type_difsoc ) AS difsoc,
+-- 			dspps.libautrdifsoc
+-- 		FROM dspps
+-- 			INNER JOIN dsps ON dspps.personne_id = dsps.personne_id
+-- 		WHERE libautrdifsoc IS NOT NULL OR TRIM(libautrdifsoc) <> ''
+-- 			AND dspps.id NOT IN (
+-- 				SELECT dspps_difsocs.dspp_id
+-- 					FROM dspps_difsocs
+-- 						INNER JOIN difsocs ON dspps_difsocs.dspp_id = difsocs.id
+-- 					WHERE difsocs.code = '0407'
+-- 			)
+-- 			AND dsps.id NOT IN (
+-- 				SELECT detailsdifsocs.dsp_id
+-- 					FROM detailsdifsocs
+-- 					WHERE detailsdifsocs.difsoc = '0407'
+-- 			);
+
 -- -----------------------------------------------------------------------------
 
 INSERT INTO detailsaccosocfams (dsp_id, nataccosocfam, libautraccosocfam)
@@ -383,31 +406,77 @@ INSERT INTO detailsaccosocfams (dsp_id, nataccosocfam, libautraccosocfam)
 			INNER JOIN dsps ON personnes.id = dsps.personne_id;
 
 -- INFO: le choix "Autres" n'était pas toujours coché, alors qu'on avait un libellé pour lui
+-- FIXME: ????
 
-INSERT INTO detailsaccosocfams (dsp_id, nataccosocfam, libautraccosocfam)
+-- INSERT INTO detailsaccosocfams (dsp_id, nataccosocfam, libautraccosocfam)
+-- 	SELECT
+-- 			dsps.id AS dsp_id,
+-- 			CAST( '0413' AS type_nataccosocfam ) AS nataccosocfam,
+-- 			dspfs.libautraccosocfam
+-- 		FROM dspfs
+-- 			INNER JOIN personnes ON dspfs.foyer_id = personnes.foyer_id
+-- 			INNER JOIN dsps ON personnes.id = dsps.personne_id
+-- 		WHERE libautraccosocfam IS NOT NULL OR TRIM(libautraccosocfam) <> ''
+-- 			AND dspfs.id NOT IN (
+-- 				SELECT dspfs_nataccosocfams.dspf_id
+-- 					FROM dspfs_nataccosocfams
+-- 						INNER JOIN nataccosocfams ON dspfs_nataccosocfams.nataccosocfam_id = nataccosocfams.id
+-- 					WHERE nataccosocfams.code = '0413'
+-- 			)
+-- 			AND dsps.id NOT IN (
+-- 				SELECT detailsaccosocfams.dsp_id
+-- 					FROM detailsaccosocfams
+-- 					WHERE detailsaccosocfams.nataccosocfam = '0413'
+-- 			);
+
+-- -----------------------------------------------------------------------------
+
+INSERT INTO detailsaccosocindis (dsp_id, nataccosocindi, libautraccosocindi)
 	SELECT
 			dsps.id AS dsp_id,
-			CAST( '0413' AS type_nataccosocfam ) AS nataccosocfam,
-			dspfs.libautraccosocfam
-		FROM dspfs
-			INNER JOIN personnes ON dspfs.foyer_id = personnes.foyer_id
-			INNER JOIN dsps ON personnes.id = dsps.personne_id
-		WHERE libautraccosocfam IS NOT NULL OR TRIM(libautraccosocfam) <> ''
-			AND dspfs.id NOT IN (
-				SELECT dspfs_nataccosocfams.dspf_id
-					FROM dspfs_nataccosocfams
-						INNER JOIN nataccosocfams ON dspfs_nataccosocfams.nataccosocfam_id = nataccosocfams.id
-					WHERE nataccosocfams.code = '0413'
-			)
-			AND dsps.id NOT IN (
-				SELECT detailsaccosocfams.dsp_id
-					FROM detailsaccosocfams
-					WHERE detailsaccosocfams.nataccosocfam = '0413'
-			);
+			CAST( nataccosocindis.code AS type_nataccosocindi ) AS nataccosocindi,
+			( CASE WHEN nataccosocindis.code = '0420' THEN dspps.libautraccosocindi ELSE NULL END ) AS libautraccosocindi
+		FROM dspps_nataccosocindis
+			INNER JOIN nataccosocindis ON dspps_nataccosocindis.nataccosocindi_id = nataccosocindis.id
+			INNER JOIN dspps ON dspps.id = dspps_nataccosocindis.dspp_id
+			INNER JOIN dsps ON dspps.personne_id = dsps.personne_id
+		WHERE nataccosocindis.code <> '0415';
+
+-- INFO: le choix "Autres" n'était pas toujours coché, alors qu'on avait un libellé pour lui
+-- FIXME: ????
+
+-- INSERT INTO detailsaccosocindis (dsp_id, nataccosocindi, libautraccosocindi)
+-- 	SELECT
+-- 			dsps.id AS dsp_id,
+-- 			CAST( '0420' AS type_nataccosocindi ) AS nataccosocindi,
+-- 			dspps.libautraccosocindi
+-- 		FROM dspps
+-- 			INNER JOIN dsps ON dspps.personne_id = dsps.personne_id
+-- 		WHERE libautraccosocindi IS NOT NULL OR TRIM(libautraccosocindi) <> ''
+-- 			AND dspps.id NOT IN (
+-- 				SELECT dspps_nataccosocindis.dspp_id
+-- 					FROM dspps_nataccosocindis
+-- 						INNER JOIN nataccosocindis ON dspps_nataccosocindis.nataccosocindi_id = nataccosocindis.id
+-- 					WHERE nataccosocindis.code = '0420'
+-- 			)
+-- 			AND dsps.id NOT IN (
+-- 				SELECT detailsaccosocindis.dsp_id
+-- 					FROM detailsaccosocindis
+-- 					WHERE detailsaccosocindis.nataccosocindi = '0420'
+-- 			);
+
+-- -----------------------------------------------------------------------------
+
+INSERT INTO detailsdifdisps (dsp_id, difdisp)
+	SELECT
+			dsps.id AS dsp_id,
+			CAST( difdisps.code AS type_difdisp ) AS difdisp
+		FROM dspps_difdisps
+			INNER JOIN difdisps ON dspps_difdisps.difdisp_id = difdisps.id
+			INNER JOIN dspps ON dspps.id = dspps_difdisps.dspp_id
+			INNER JOIN dsps ON dspps.personne_id = dsps.personne_id;
 
 -- FIXME:
--- 'Detailaccosocindi',
--- 'Detaildifdisp',
 -- 'Detailnatmob',
 -- 'Detaildiflog'
 
