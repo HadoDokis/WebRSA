@@ -107,11 +107,7 @@ CREATE TABLE dsps (
     natlog     				type_natlog DEFAULT NULL,
     demarlog				type_demarlog DEFAULT NULL
 );
-CREATE /*UNIQUE*/ INDEX dsps_personne_id_idx ON dsps (personne_id); -- FIXME
-/*id	id	personne_id
-109
-110
-235334*/
+CREATE UNIQUE INDEX dsps_personne_id_idx ON dsps (personne_id);
 
 -- -----------------------------------------------------------------------------
 
@@ -213,6 +209,14 @@ DELETE FROM dspps_nataccosocindis WHERE dspps_nataccosocindis.dspp_id IN(
 			AND d1.id > d2.id
 );
 
+DELETE FROM dspps_natmobs WHERE dspps_natmobs.dspp_id IN(
+	SELECT d1.id
+		FROM dspps AS d1,
+			dspps AS d2
+		WHERE d1.personne_id = d2.personne_id
+			AND d1.id > d2.id
+);
+
 DELETE FROM dspps_nivetus WHERE dspps_nivetus.dspp_id IN(
 	SELECT d1.id
 		FROM dspps AS d1,
@@ -233,7 +237,22 @@ DELETE FROM dspps WHERE dspps.id IN(
 -- INFO: suppression des doublons sur foyer_id dans dspfs (FIXME: on garde le 1er?)
 -- -----------------------------------------------------------------------------
 
--- FIXME: tables liées
+DELETE FROM dspfs_diflogs WHERE dspfs_diflogs.dspf_id IN(
+	SELECT d1.id
+		FROM dspfs AS d1,
+			dspfs AS d2
+		WHERE d1.foyer_id = d2.foyer_id
+			AND d1.id > d2.id
+);
+
+DELETE FROM dspfs_nataccosocfams WHERE dspfs_nataccosocfams.dspf_id IN(
+	SELECT d1.id
+		FROM dspfs AS d1,
+			dspfs AS d2
+		WHERE d1.foyer_id = d2.foyer_id
+			AND d1.id > d2.id
+);
+
 DELETE FROM dspfs WHERE dspfs.id IN(
 	SELECT d1.id
 		FROM dspfs AS d1,
