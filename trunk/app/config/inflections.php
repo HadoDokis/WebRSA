@@ -220,6 +220,13 @@
         	'ep_theme' => 'eps_themes',
 		/// Table de connexion ajoutée par gaëtan
 		'aro_aco' => 'aros_acos',
+		/// Dsp, v 2
+		'detaildifsoc' => 'detailsdifsocs',
+		'detailaccosocfam' => 'detailsaccosocfams',
+		'detailaccosocindi' => 'detailsaccosocindis',
+		'detaildifdisp' => 'detailsdifdisps',
+		'detailnatmob' => 'detailsnatmobs',
+		'detaildiflog' => 'detailsdiflogs',
      );
 /**
  * This is a key => value array of regex used to match words.

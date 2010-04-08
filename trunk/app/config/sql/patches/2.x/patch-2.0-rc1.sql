@@ -308,6 +308,9 @@ UPDATE dspfs SET demarlog = NULL WHERE TRIM(demarlog) = '';
 
 -- -----------------------------------------------------------------------------
 
+-- FIXME: pourquoi perd-on les entrées de personnes_id 174448 à 174536
+-- IDÉE: INNER JOIN dspfs
+
 INSERT INTO dsps (personne_id, sitpersdemrsa, topdrorsarmiant, drorsarmianta2, topcouvsoc, accosocfam, libcooraccosocfam, accosocindi, libcooraccosocindi, soutdemarsoc, libautrqualipro, libcompeextrapro, nivetu, annobtnivdipmax, topisogrorechemploi, accoemploi, libcooraccoemploi, hispro, libderact, libsecactderact, cessderact, topdomideract, libactdomi, libsecactdomi, duractdomi, libemploirech, libsecactrech, topcreareprientre, natlog, demarlog, topmoyloco, toppermicondub, libautrpermicondu)
 	SELECT	dspps.personne_id AS personne_id,
 			CAST( dspfs.motidemrsa AS type_sitpersdemrsa) AS sitpersdemrsa,
@@ -353,6 +356,60 @@ INSERT INTO dsps (personne_id, sitpersdemrsa, topdrorsarmiant, drorsarmianta2, t
 			LEFT OUTER JOIN accoemplois ON dspps_accoemplois.accoemploi_id = accoemplois.id
 		GROUP BY dspps_nataccosocindis.dspp_id, dspps.id, dspps.personne_id,
 			dspfs.motidemrsa, dspps.drorsarmiant, dspps.drorsarmianta2, dspps.couvsoc, dspfs.accosocfam, dspfs.libcooraccosocfam, dspps.soutdemarsoc, dspps.libcooraccosocindi, dspps.libautrqualipro, dspps.libcompeextrapro, dspps_nivetus.dspp_id, dspps.annderdipobt, dspps.persisogrorechemploi, dspps.libcooraccoemploi, dspps.hispro, dspps.libderact, dspps.libsecactderact, dspps.dfderact, dspps.domideract, dspps.libactdomi, dspps.libsecactdomi, dspps.duractdomi, dspps.libemploirech, dspps.libsecactrech, dspps.creareprisentrrech, dspps_accoemplois.dspp_id, dspfs.natlog, dspfs.demarlog, dspps_nataccosocindis.dspp_id, dspps.moyloco, dspps.permicondub, dspps.libautrpermicondu;
+
+-- -----------------------------------------------------------------------------
+
+INSERT INTO detailsdifsocs (dsp_id, difsoc, libautrdifsoc)
+	SELECT
+			dsps.id,
+			CAST( difsocs.code AS type_difsoc ) AS difsoc,
+			( CASE WHEN difsocs.code = '0407' THEN dspps.libautrdifsoc ELSE NULL END ) AS libautrdifsoc
+		FROM dspps_difsocs
+			INNER JOIN difsocs ON dspps_difsocs.difsoc_id = difsocs.id
+			INNER JOIN dspps ON dspps.id = dspps_difsocs.dspp_id
+			INNER JOIN dsps ON dspps.personne_id = dsps.personne_id;
+
+-- -----------------------------------------------------------------------------
+
+INSERT INTO detailsaccosocfams (dsp_id, nataccosocfam, libautraccosocfam)
+	SELECT
+			dsps.id AS dsp_id,
+			CAST( nataccosocfams.code AS type_nataccosocfam ) AS nataccosocfam,
+			( CASE WHEN nataccosocfams.code = '0413' THEN dspfs.libautraccosocfam ELSE NULL END ) AS libautraccosocfam
+		FROM dspfs_nataccosocfams
+			INNER JOIN dspfs ON dspfs.id = dspfs_nataccosocfams.dspf_id
+			INNER JOIN nataccosocfams ON dspfs_nataccosocfams.nataccosocfam_id = nataccosocfams.id
+			INNER JOIN personnes ON dspfs.foyer_id = personnes.foyer_id
+			INNER JOIN dsps ON personnes.id = dsps.personne_id;
+
+-- INFO: le choix "Autres" n'était pas toujours coché, alors qu'on avait un libellé pour lui
+
+INSERT INTO detailsaccosocfams (dsp_id, nataccosocfam, libautraccosocfam)
+	SELECT
+			dsps.id AS dsp_id,
+			CAST( '0413' AS type_nataccosocfam ) AS nataccosocfam,
+			dspfs.libautraccosocfam
+		FROM dspfs
+			INNER JOIN personnes ON dspfs.foyer_id = personnes.foyer_id
+			INNER JOIN dsps ON personnes.id = dsps.personne_id
+		WHERE libautraccosocfam IS NOT NULL OR TRIM(libautraccosocfam) <> ''
+			AND dspfs.id NOT IN (
+				SELECT dspfs_nataccosocfams.dspf_id
+					FROM dspfs_nataccosocfams
+						INNER JOIN nataccosocfams ON dspfs_nataccosocfams.nataccosocfam_id = nataccosocfams.id
+					WHERE nataccosocfams.code = '0413'
+			)
+			AND dsps.id NOT IN (
+				SELECT detailsaccosocfams.dsp_id
+					FROM detailsaccosocfams
+					WHERE detailsaccosocfams.nataccosocfam = '0413'
+			);
+
+-- FIXME:
+-- 'Detailaccosocindi',
+-- 'Detaildifdisp',
+-- 'Detailnatmob',
+-- 'Detaildiflog'
 
 -- -----------------------------------------------------------------------------
 --
