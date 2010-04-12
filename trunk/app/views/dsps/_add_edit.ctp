@@ -23,6 +23,9 @@
 		observeDisableFieldsOnValue( 'DspHispro', [ 'DspLibderact', 'DspLibsecactderact', 'DspCessderact', 'DspTopdomideract', 'DspLibactdomi', 'DspLibsecactdomi', 'DspDuractdomi' ], '1904', true );
 		observeDisableFieldsOnValue( 'DspAccoemploi', [ 'DspLibcooraccoemploi' ], [ '1802', '1803' ], false );
 		observeDisableFieldsOnValue( 'DspTopautrpermicondu', [ 'DspLibautrpermicondu' ], '1', false );
+
+		// FIXME
+		//observeDisableFieldsOnValue( 'Detailnatmob0Natmob', [ 'Detailnatmob1Natmob', 'Detailnatmob2Natmob', 'Detailnatmob3Natmob' ], '1', true );
 	} );
 </script>
 
@@ -112,43 +115,89 @@ Plan:
 
 		<?php
 			// SituationSociale - DetailDifficulteSituationSociale (0-n)
-			echo $dsphm->fieldset( 'Detaildifsoc', 'difsoc', 'libautrdifsoc', $dsp_id, '0407', $options['difsoc'] );
+			echo $dsphm->fieldset( 'Detaildifsoc', 'difsoc', 'libautrdifsoc', $dsp_id, '0407', $options['Detaildifsoc']['difsoc'] );
 
 			// SituationSociale - DetailAccompagnementSocialFamilial (0-n)
-			echo $dsphm->fieldset( 'Detailaccosocfam', 'nataccosocfam', 'libautraccosocfam', $dsp_id, '0413', $options['nataccosocfam'] );
+			echo $dsphm->fieldset( 'Detailaccosocfam', 'nataccosocfam', 'libautraccosocfam', $dsp_id, '0413', $options['Detailaccosocfam']['nataccosocfam'] );
 
 			// SituationSociale - DetailAccompagnementSocialIndividuel (0-n)
-			echo $dsphm->fieldset( 'Detailaccosocindi', 'nataccosocindi', 'libautraccosocindi', $dsp_id, '0420', $options['nataccosocindi'] );
+			echo $dsphm->fieldset( 'Detailaccosocindi', 'nataccosocindi', 'libautraccosocindi', $dsp_id, '0420', $options['Detailaccosocindi']['nataccosocindi'] );
 
 			// SituationSociale - DetailDifficulteDisponibilite (0-n)
-			echo $dsphm->fieldset( 'Detaildifdisp', 'difdisp', null, $dsp_id, null, $options['difdisp'] );
+			echo $dsphm->fieldset( 'Detaildifdisp', 'difdisp', null, $dsp_id, null, $options['Detaildifdisp']['difdisp'] );
 		?>
 	</fieldset>
 
 	<fieldset>
 		<legend>Niveau d'étude</legend>
 		<?php
-			echo $xform->enum( 'Dsp.nivetu', array( 'options' => $options['nivetu'] ) );
+			echo $default->subform(
+				array(
+					'Dsp.nivetu',
+					'Dsp.nivdipmaxobt',
+					'Dsp.annobtnivdipmax',
+					'Dsp.topqualipro',
+					'Dsp.libautrqualipro',
+					'Dsp.topcompeextrapro',
+					'Dsp.libcompeextrapro'
+				),
+				array(
+					'options' => $options
+				)
+			);
+			/*echo $xform->enum( 'Dsp.nivetu', array( 'options' => $options['nivetu'] ) );
 			echo $xform->enum( 'Dsp.nivdipmaxobt', array( 'options' => $options['nivdipmaxobt'] ) );
 			echo $xform->input( 'Dsp.annobtnivdipmax', array( 'domain' => 'dsp', 'type' => 'select', 'options' => array_range( date( 'Y' ), 1900 ), 'empty' => '' ) );
 			echo $xform->enum( 'Dsp.topqualipro', array( 'options' => $options['topqualipro'] ) );
 			echo $xform->input( 'Dsp.libautrqualipro', array( 'domain' => 'dsp', 'type' => 'textarea' ) );
 			echo $xform->enum( 'Dsp.topcompeextrapro', array( 'options' => $options['topcompeextrapro'] ) );
-			echo $xform->input( 'Dsp.libcompeextrapro', array( 'domain' => 'dsp', 'type' => 'textarea' ) );
+			echo $xform->input( 'Dsp.libcompeextrapro', array( 'domain' => 'dsp', 'type' => 'textarea' ) );*/
 		?>
 	</fieldset>
 
 	<fieldset>
 		<legend>Disponibilités emploi</legend>
 		<?php
-			echo $xform->enum( 'Dsp.topengdemarechemploi', array( 'options' => $options['topengdemarechemploi'] ) );
+			echo $default->subform(
+				array(
+					'Dsp.topengdemarechemploi'
+				),
+				array(
+					'options' => $options
+				)
+			);
+// 			echo $xform->enum( 'Dsp.topengdemarechemploi', array( 'options' => $options['topengdemarechemploi'] ) );
 		?>
 	</fieldset>
 
 	<fieldset>
 		<legend>Situation professionnelle</legend>
 		<?php
-			echo $xform->enum( 'Dsp.hispro', array( 'options' => $options['hispro'] ) );
+			echo $default->subform(
+				array(
+					'Dsp.hispro',
+					'Dsp.libderact',
+					'Dsp.libsecactderact',
+					'Dsp.cessderact',
+					'Dsp.topdomideract',
+					'Dsp.libactdomi',
+					'Dsp.libsecactdomi',
+					'Dsp.duractdomi',
+					'Dsp.inscdememploi',
+					'Dsp.topisogrorechemploi',
+					'Dsp.accoemploi',
+					'Dsp.libcooraccoemploi',
+					'Dsp.topprojpro',
+					'Dsp.libemploirech',
+					'Dsp.libsecactrech',
+					'Dsp.topcreareprientre',
+					'Dsp.concoformqualiemploi'
+				),
+				array(
+					'options' => $options
+				)
+			);
+			/*echo $xform->enum( 'Dsp.hispro', array( 'options' => $options['hispro'] ) );
 			echo $xform->input( 'Dsp.libderact', array( 'domain' => 'dsp' ) );
 			echo $xform->input( 'Dsp.libsecactderact', array( 'domain' => 'dsp' ) );
 			echo $xform->enum( 'Dsp.cessderact', array( 'options' => $options['cessderact'] ) );
@@ -164,7 +213,7 @@ Plan:
 			echo $xform->input( 'Dsp.libemploirech', array( 'domain' => 'dsp' ) );
 			echo $xform->input( 'Dsp.libsecactrech', array( 'domain' => 'dsp' ) );
 			echo $xform->enum( 'Dsp.topcreareprientre', array( 'options' => $options['topcreareprientre'] ) );
-			echo $xform->enum( 'Dsp.concoformqualiemploi', array( 'options' => $options['concoformqualiemploi'] ) );
+			echo $xform->enum( 'Dsp.concoformqualiemploi', array( 'options' => $options['concoformqualiemploi'] ) );*/
 		?>
 	</fieldset>
 
@@ -174,29 +223,49 @@ Plan:
 		<fieldset>
 			<legend>Généralités</legend>
 			<?php
-				echo $xform->enum( 'Dsp.topmoyloco', array( 'options' => $options['topmoyloco'] ) );
+				echo $default->subform(
+					array(
+						'Dsp.topmoyloco',
+						'Dsp.toppermicondub',
+						'Dsp.topautrpermicondu',
+						'Dsp.libautrpermicondu'
+					),
+					array(
+						'options' => $options
+					)
+				);
+				/*echo $xform->enum( 'Dsp.topmoyloco', array( 'options' => $options['topmoyloco'] ) );
 				echo $xform->enum( 'Dsp.toppermicondub', array( 'options' => $options['toppermicondub'] ) );
 				echo $xform->enum( 'Dsp.topautrpermicondu', array( 'options' => $options['topautrpermicondu'] ) );
-				echo $xform->input( 'Dsp.libautrpermicondu', array( 'domain' => 'dsp', 'type' => 'textarea' ) );
+				echo $xform->input( 'Dsp.libautrpermicondu', array( 'domain' => 'dsp', 'type' => 'textarea' ) );*/
 			?>
 		</fieldset>
 
 		<?php
 			// Mobilite - DetailMobilite (0-n)
-			echo $dsphm->fieldset( 'Detailnatmob', 'natmob', null, $dsp_id, null, $options['natmob'] );
+			echo $dsphm->fieldset( 'Detailnatmob', 'natmob', null, $dsp_id, null, $options['Detailnatmob']['natmob'] );
 		?>
 	</fieldset>
 
 	<fieldset>
 		<legend>Difficultés logement</legend>
 		<?php
-			echo $xform->enum( 'Dsp.natlog', array( 'options' => $options['natlog'] ) );
-			echo $xform->enum( 'Dsp.demarlog', array( 'options' => $options['demarlog'] ) );
+			echo $default->subform(
+				array(
+					'Dsp.natlog',
+					'Dsp.demarlog'
+				),
+				array(
+					'options' => $options
+				)
+			);
+			/*echo $xform->enum( 'Dsp.natlog', array( 'options' => $options['natlog'] ) );
+			echo $xform->enum( 'Dsp.demarlog', array( 'options' => $options['demarlog'] ) );*/
 		?>
 
 		<?php
 			// DifficulteLogement - DetailDifficulteLogement
-			echo $dsphm->fieldset( 'Detaildiflog', 'diflog', 'libautrdiflog', $dsp_id, '1009', $options['diflog'] );
+			echo $dsphm->fieldset( 'Detaildiflog', 'diflog', 'libautrdiflog', $dsp_id, '1009', $options['Detaildiflog']['diflog'] );
 		?>
 	</fieldset>
 

@@ -162,5 +162,25 @@
 
 			return $return;
 		}*/
+
+		/**
+		*	TODO: docs
+		*	TODO: recursive
+		*	TODO: corriger dans webrsa
+		*	FIXME: trim ?
+		*/
+
+		function nullify( array $array ) {
+			$newArray = array();
+			foreach( $array as $key => $value ) {
+				if( ( is_string( $value ) && strlen( trim( $value ) ) == 0 ) || ( !is_string( $value ) && !is_bool( $value )  && !is_numeric( $value ) && empty( $value ) ) ) {
+					$newArray[$key] = null;
+				}
+				else {
+					$newArray[$key] = $value;
+				}
+			}
+			return $newArray;
+		}
 	}
 ?>

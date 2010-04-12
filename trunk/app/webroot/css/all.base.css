@@ -327,3 +327,22 @@ table#dossierInfosOrganisme th, table#dossierInfosOrganisme td {
     padding: 0.25em 0;
 }
 
+/**
+* Dsps
+*/
+
+#dsps dt, #dsps dd {
+	font-weight: bold;
+}
+
+#dsps dt.empty, #dsps dd.empty {
+	font-weight: normal;
+}
+
+#dsps dt.empty {
+	margin-bottom: 0.5em;
+}
+
+#dsps dd.empty {
+	display: none;
+}

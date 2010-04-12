@@ -761,12 +761,6 @@
 					$columnOptions['currency']
 				);
 
-				$line = $this->Html->tag(
-					( ( $widget == 'table' ) ? 'th' : 'dt' ),
-					$this->label( $column, $labelOptions ),
-					$columnOptions
-				);
-
 				$params = array( 'tag' => ( ( $widget == 'table' ) ? 'td' : 'dd' ) );
 				foreach( array( 'options', 'type', 'class', 'domain' ) as $optionsKey ) {
 					if( isset( $columnOptions[$optionsKey] ) ) {
@@ -785,7 +779,21 @@
 				$params = Set::merge( $params, $formatOptions );
 				unset( $params['null'], $params['country'], $params['length'] );
 
-				$line .= $this->Type->format( $item, $column, $params );
+// 				$line .= $this->Type->format( $item, $column, $params );
+				$tmpLine = $this->Type->format( $item, $column, $params );
+
+				// Empty ?
+				if( preg_match( "/class=\".*(?<!\w)empty(?!\w).*\"/", $tmpLine ) ) {
+					$columnOptions = $this->addClass( $columnOptions, 'empty' );
+				}
+
+				$line = $this->Html->tag(
+					( ( $widget == 'table' ) ? 'th' : 'dt' ),
+					$this->label( $column, $labelOptions ),
+					$columnOptions
+				);
+
+				$line .= $tmpLine;
 
 				if( $widget == 'table' ) {
 					$rows[] = $this->Html->tag( 'tr', $line, array( 'class' => $params['class'] ) );

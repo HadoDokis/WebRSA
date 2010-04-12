@@ -476,9 +476,46 @@ INSERT INTO detailsdifdisps (dsp_id, difdisp)
 			INNER JOIN dspps ON dspps.id = dspps_difdisps.dspp_id
 			INNER JOIN dsps ON dspps.personne_id = dsps.personne_id;
 
--- FIXME:
--- 'Detailnatmob',
--- 'Detaildiflog'
+-- INFO: le choix "Autres" n'était pas toujours coché, alors qu'on avait un libellé pour lui
+-- FIXME: ????
+
+-- -----------------------------------------------------------------------------
+
+INSERT INTO detailsnatmobs (dsp_id, natmob)
+	SELECT
+			dsps.id AS dsp_id,
+			CAST( natmobs.code AS type_natmob ) AS natmob
+		FROM dspps_natmobs
+			INNER JOIN natmobs ON dspps_natmobs.natmob_id = natmobs.id
+			INNER JOIN dspps ON dspps.id = dspps_natmobs.dspp_id
+			INNER JOIN dsps ON dspps.personne_id = dsps.personne_id;
+
+-- -----------------------------------------------------------------------------
+
+/*
+CREATE TYPE type_diflog AS ENUM ( '1001', '1002', '1003', '1004', '1005', '1006', '1007', '1008', '1009' );
+CREATE TABLE detailsdiflogs (
+    id      		SERIAL NOT NULL PRIMARY KEY,
+    dsp_id			INTEGER NOT NULL REFERENCES dsps(id),
+	diflog			type_diflog NOT NULL,
+	libautrdiflog	VARCHAR(100) DEFAULT NULL
+);
+CREATE INDEX detailsdiflogs_dsp_id_idx ON detailsdiflogs (dsp_id);
+*/
+
+INSERT INTO detailsdiflogs (dsp_id, diflog, libautrdiflog)
+	SELECT
+			dsps.id AS dsp_id,
+			CAST( diflogs.code AS type_diflog ) AS diflog,
+			( CASE WHEN diflogs.code = '1009' THEN dspfs.libautrdiflog ELSE NULL END ) AS libautrdiflog
+		FROM dspfs_diflogs
+			INNER JOIN dspfs ON dspfs.id = dspfs_diflogs.dspf_id
+			INNER JOIN diflogs ON dspfs_diflogs.diflog_id = diflogs.id
+			INNER JOIN personnes ON dspfs.foyer_id = personnes.foyer_id
+			INNER JOIN dsps ON personnes.id = dsps.personne_id;
+
+-- INFO: le choix "Autres" n'était pas toujours coché, alors qu'on avait un libellé pour lui
+-- FIXME: ????
 
 -- -----------------------------------------------------------------------------
 --

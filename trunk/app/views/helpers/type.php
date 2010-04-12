@@ -203,17 +203,23 @@
 					break;
 				case 'string':
 				case 'text':
-					$value = ( !empty( $value ) ? $value : '&nbsp' );
+					$value = ( !empty( $value ) ? $value : '&nbsp;' );
 					break;
 				default:
 					if( preg_match( '/^enum(\W)*.*$/', $params['type'] ) ) {
 						$classes[] = 'enum string'; // FIXME: class enum::presence
-						$value = ( !empty( $value ) ? $value : '&nbsp' );
+						$value = ( !empty( $value ) ? $value : '&nbsp;' );
 					}
 					else {
 						trigger_error( "Unrecognized type {$params['type']}", E_USER_WARNING );
 						return null;
 					}
+			}
+
+			// Empty ?
+			$checkValue = htmlentities( trim( str_replace( '&nbsp;', ' ', $value ) ) ); // FIXME ?
+			if( empty( $checkValue ) && !is_numeric( $checkValue ) ) {
+				$classes[] = 'empty';
 			}
 
 			// Add non breakable spaces to numeric output if inside a tag

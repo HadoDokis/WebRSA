@@ -16,8 +16,8 @@
 			'Detailaccosocfam' => 'nataccosocfam',
 			'Detailaccosocindi' => 'nataccosocindi', // FIXME: ajouter les autres modèles depuis branches/trunk.bak
 			'Detaildifdisp' => 'difdisp',
-// 			'Detailnatmob' => 'natmob',
-// 			'Detaildiflog' => 'diflog',
+			'Detailnatmob' => 'natmob',
+			'Detaildiflog' => 'diflog'
 		);
 
 		/**
@@ -126,17 +126,17 @@
 
 				if( $success = $this->Dsp->saveAll( $this->data, array( 'atomic' => false, 'validate' => 'first' ) ) && $success ) {
 					if( $success ) {
-						$this->Session->setFlash( __( 'Enregistrement effectué', true ) );
+						$this->Session->setFlash( __( 'Enregistrement effectué', true ), 'flash/success' );
 						// On enlève le jeton du dossier
 						$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) ); // FIXME: if -> error
 						// Fin de la transaction
 						$this->Dsp->commit();
+						$this->redirect( array( 'action' => 'view', Set::classicExtract( $this->data, 'Dsp.personne_id' ) ) );
 					}
 					else {
-						$this->Session->setFlash( __( 'Erreur lors de l\'enregistrement', true ) );
+						$this->Session->setFlash( __( 'Erreur lors de l\'enregistrement', true ), 'flash/error' );
 						$this->Dsp->rollback();
 					}
-// 					$this->redirect( array( 'action' => 'view', Set::classicExtract( $this->data, 'Dsp.personne_id' ) ) );
 				}
 			}
 			// Affectation au formulaire
