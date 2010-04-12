@@ -47,6 +47,17 @@
 							).' </li></ul>';
 				}
 
+				echo $form->input(
+					'Dsp.hideempty',
+					array(
+						'type' => 'checkbox',
+						'label' => 'Cacher les questions sans réponse',
+						'onclick' => 'if( $( \'DspHideempty\' ).checked ) {
+							$$( \'.empty\' ).each( function( elmt ) { elmt.hide() } );
+						} else { $$( \'.empty\' ).each( function( elmt ) { elmt.show() } ); }'
+					)
+				);
+
 				$generalites = $default->view(
 					$dsp,
 					array(

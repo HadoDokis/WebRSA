@@ -61,6 +61,17 @@
                                         </ul>
                                     </li>
                                 <?php endif;?>
+
+                                <?php if( $permissions->check( 'dsps', 'view' ) ):?>
+                                    <li>
+                                        <?php
+                                            echo $html->link(
+                                                h( 'DSP CAF (NEW)' ),
+                                                array( 'controller' => 'dsps', 'action' => 'view', $personne['id'] )
+                                            );?>
+                                    </li>
+                                <?php endif;?>
+
                                 <?php if( $permissions->check( 'dspps', 'view' ) ):?>
                                     <li>
                                         <?php
@@ -143,7 +154,7 @@
                                                             );
                                                         ?>
                                                     </li> -->
-                                                </ul> 
+                                                </ul>
                                             </li>
                                         </ul>
                                     </li>
@@ -305,7 +316,7 @@
                     array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Dossier']['id'] )
                 ).'</li>';
             ?>
-        <?php endif;?> 
+        <?php endif;?>
 
         <?php if( $permissions->check( 'dossierssimplifies', 'edit' ) ):?>
             <li><span>Préconisation d'orientation</span>
