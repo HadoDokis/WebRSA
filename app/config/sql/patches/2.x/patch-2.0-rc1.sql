@@ -614,3 +614,10 @@ CREATE INDEX orientations_personne_id ON orientations (personne_id);
 COMMIT;
 
 -- *****************************************************************************
+
+
+
+--------------- Ajout du 12/04/2010 à 10h50 ------------------
+
+ALTER TABLE evenements ALTER COLUMN heuliq TYPE timestamp with time zone;
+ALTER TABLE evenements ALTER COLUMN heuliq TYPE time;
