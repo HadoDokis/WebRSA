@@ -34,7 +34,7 @@ msgid "Dsp.drorsarmianta2"
 msgstr "Il y a plus de 2 ans ?"
 
 msgid "Dsp.topcouvsoc"
-msgstr "Bénéficiez vous d'une couverture sociale (y compris Cmu, Cmuc, mutuelle privée) ?"
+msgstr "Bénéficiez vous d'une couverture sociale (y compris CMU, CMUC, mutuelle privée) ?"
 
 ###############################################################################
 
