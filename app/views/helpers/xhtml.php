@@ -30,6 +30,11 @@
                     if( $allowEmpty || ( !empty( $row[1] ) || valid_int( $row[1] ) ) ) {
 						// TODO ?
 						$currentOptions = ( ( $class == 'even' ) ? $evenOptions : $oddOptions );
+
+						if( ( empty( $row[1] ) && !valid_int( $row[1] ) ) ) {
+							$currentOptions = $this->addClass( $currentOptions, 'empty' );
+						}
+
 						$classes = Set::classicExtract( $currentOptions, 'class' );
 						if( ( !empty( $row[1] ) || valid_int( $row[1] ) ) ) {
 							$currentOptions['class'] = implode( ' ', Set::merge( $classes, array( 'answered' ) ) );
