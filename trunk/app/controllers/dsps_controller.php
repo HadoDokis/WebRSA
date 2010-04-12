@@ -14,11 +14,22 @@
 		var $specialHasMany = array(
 			'Detaildifsoc' => 'difsoc',
 			'Detailaccosocfam' => 'nataccosocfam',
-			'Detailaccosocindi' => 'nataccosocindi', // FIXME: ajouter les autres modèles depuis branches/trunk.bak
+			'Detailaccosocindi' => 'nataccosocindi',
 			'Detaildifdisp' => 'difdisp',
 			'Detailnatmob' => 'natmob',
 			'Detaildiflog' => 'diflog'
 		);
+
+		// FIXME: dans les modèles ?
+		var $valuesNone = array(
+			'Detaildifsoc' => '0401',
+			'Detailaccosocfam' => null,
+			'Detailaccosocindi' => null,
+			'Detaildifdisp' => '0501',
+			'Detailnatmob' => '2504',
+			'Detaildiflog' => '1001'
+		);
+
 
 		/**
 		*
@@ -98,31 +109,59 @@
 			// Tentative d'enregistrement
 			if( !empty( $this->data ) ) {
 				$success = true;
-				$this->data['Dsp'] = Xset::nullify( $this->data['Dsp'] );
-				$dsp_id = Set::classicExtract( $this->data, 'Dsp.id' );
 
-				// début hasMany spéciaux
-				foreach( $this->specialHasMany as $model => $checkbox ) {
-					$values = Set::classicExtract( $this->data, "{$model}" );
-					foreach( $values as $key => $value ) {
-						$val = Set::classicExtract( $value, $checkbox );
-						if( empty( $val ) ) {
-							unset( $this->data[$model][$key] );
-						}
-					}
+				// Nettoyage des Dsp
+				$keys = array_keys( $this->Dsp->schema() );
+				$defaults = array_combine( $keys, array_fill( 0, count( $keys ), null ) );
+				unset( $defaults['id'] );
 
-					$ids = Set::extract( $this->data, "/{$model}/id" );
-					if( !empty( $dsp_id ) ) {
-						$conditions = array( "{$model}.dsp_id" => $dsp_id );
-						if( !empty( $ids ) ) {
-							$conditions[] = "{$model}.id NOT IN ( ".implode( ', ', $ids )." )";
-						}
-						$this->Dsp->{$model}->deleteAll( $conditions );
+				$this->data['Dsp'] = Set::merge( $defaults, $this->data['Dsp'] );
+				foreach( $this->data['Dsp'] as $key => $value ) {
+					if( strlen( trim( $value ) ) == 0 ) {
+						$this->data['Dsp'][$key] = null;
 					}
 				}
 
-				$this->data = Set::filter( $this->data );
+				// Modèles liés, début hasMany spéciaux
+				$deleteConditions = array();
+				foreach( $this->specialHasMany as $model => $checkbox ) {
+					$values = Set::classicExtract( $this->data, "{$model}" );
+
+					if( isset( $this->valuesNone[$model] ) ) {
+						$tmpValues = Set::extract( $values, "/{$this->specialHasMany['Detaildifsoc']}" );
+						$cKey = array_search( $this->valuesNone[$model], $tmpValues );
+						$tmpValues = $values;
+						if( $cKey !== false ) {
+							unset( $tmpValues[$cKey] );// FIXME
+							$ids = Set::extract( $tmpValues, '/id' );
+							foreach( $ids as $id ) {
+								$deleteConditions[$model][] = "{$model}.id = {$id}";
+							}
+						}
+						// FIXME: s'assurer que les autres soient à 0 ?
+					}
+
+
+					foreach( $values as $key => $value ) {
+						$val = Set::classicExtract( $value, $checkbox );
+						if( empty( $val ) ) {
+							if( isset( $value['id'] ) ) {
+								$deleteConditions[$model][] = "{$model}.id = {$value['id']}";
+							}
+							unset( $this->data[$model][$key] );
+						}
+					}
+				}
+
+				foreach( $deleteConditions as $model => $values ) {
+					if( !empty( $values ) ) {
+						$this->Dsp->{$model}->deleteAll( array( 'or' => $values ) );
+					}
+				}
 				// fin hasMany spéciaux
+
+				$dsp_id = Set::classicExtract( $this->data, 'Dsp.id' );
+				$this->data = Set::filter( $this->data );
 
 				if( $success = $this->Dsp->saveAll( $this->data, array( 'atomic' => false, 'validate' => 'first' ) ) && $success ) {
 					if( $success ) {
