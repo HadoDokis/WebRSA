@@ -4,6 +4,14 @@
 -- elles être complétées et utilisées par l'appli ?
 -- *****************************************************************************
 
+-- DROP DATABASE webrsa_trunk;
+-- CREATE DATABASE webrsa_trunk OWNER webrsa ENCODING 'UTF8';
+-- psql -U webrsa -d webrsa_trunk
+-- \i /home/cbuffin/Desktop/Adullact/webrsa/basewebrsaprod_qual.sql
+-- \i /home/cbuffin/projets/htdocs/adullact/webrsa/trunk/app/config/sql/patches/1.x/patch-version-1.3.sql
+-- \i /home/cbuffin/projets/htdocs/adullact/webrsa/trunk/app/config/sql/patches/1.x/patch-version-1.3rc2.sql
+-- UPDATE users SET password='83a98ed2a57ad9734eb0a1694293d03c74ae8a57' WHERE username='trobert';
+
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
@@ -174,7 +182,7 @@ CREATE TABLE detailsdiflogs (
 CREATE INDEX detailsdiflogs_dsp_id_idx ON detailsdiflogs (dsp_id);
 
 -- -----------------------------------------------------------------------------
--- INFO: suppression des doublons sur personne_id dans dspps (FIXME: on garde le 1er?)
+-- INFO: suppression des doublons sur personne_id dans dspps (INFO: on garde le dernier)
 -- -----------------------------------------------------------------------------
 
 DELETE FROM dspps_accoemplois WHERE dspps_accoemplois.dspp_id IN(
@@ -182,7 +190,8 @@ DELETE FROM dspps_accoemplois WHERE dspps_accoemplois.dspp_id IN(
 		FROM dspps AS d1,
 			dspps AS d2
 		WHERE d1.personne_id = d2.personne_id
-			AND d1.id > d2.id
+			AND d1.id < d2.id
+		ORDER BY d1.id, d2.id
 );
 
 DELETE FROM dspps_difdisps WHERE dspps_difdisps.dspp_id IN(
@@ -190,7 +199,8 @@ DELETE FROM dspps_difdisps WHERE dspps_difdisps.dspp_id IN(
 		FROM dspps AS d1,
 			dspps AS d2
 		WHERE d1.personne_id = d2.personne_id
-			AND d1.id > d2.id
+			AND d1.id < d2.id
+		ORDER BY d1.id, d2.id
 );
 
 DELETE FROM dspps_difsocs WHERE dspps_difsocs.dspp_id IN(
@@ -198,7 +208,8 @@ DELETE FROM dspps_difsocs WHERE dspps_difsocs.dspp_id IN(
 		FROM dspps AS d1,
 			dspps AS d2
 		WHERE d1.personne_id = d2.personne_id
-			AND d1.id > d2.id
+			AND d1.id < d2.id
+		ORDER BY d1.id, d2.id
 );
 
 DELETE FROM dspps_nataccosocindis WHERE dspps_nataccosocindis.dspp_id IN(
@@ -206,7 +217,8 @@ DELETE FROM dspps_nataccosocindis WHERE dspps_nataccosocindis.dspp_id IN(
 		FROM dspps AS d1,
 			dspps AS d2
 		WHERE d1.personne_id = d2.personne_id
-			AND d1.id > d2.id
+			AND d1.id < d2.id
+		ORDER BY d1.id, d2.id
 );
 
 DELETE FROM dspps_natmobs WHERE dspps_natmobs.dspp_id IN(
@@ -214,7 +226,8 @@ DELETE FROM dspps_natmobs WHERE dspps_natmobs.dspp_id IN(
 		FROM dspps AS d1,
 			dspps AS d2
 		WHERE d1.personne_id = d2.personne_id
-			AND d1.id > d2.id
+			AND d1.id < d2.id
+		ORDER BY d1.id, d2.id
 );
 
 DELETE FROM dspps_nivetus WHERE dspps_nivetus.dspp_id IN(
@@ -222,7 +235,8 @@ DELETE FROM dspps_nivetus WHERE dspps_nivetus.dspp_id IN(
 		FROM dspps AS d1,
 			dspps AS d2
 		WHERE d1.personne_id = d2.personne_id
-			AND d1.id > d2.id
+			AND d1.id < d2.id
+		ORDER BY d1.id, d2.id
 );
 
 DELETE FROM dspps WHERE dspps.id IN(
@@ -230,11 +244,12 @@ DELETE FROM dspps WHERE dspps.id IN(
 		FROM dspps AS d1,
 			dspps AS d2
 		WHERE d1.personne_id = d2.personne_id
-			AND d1.id > d2.id
+			AND d1.id < d2.id
+		ORDER BY d1.id, d2.id
 );
 
 -- -----------------------------------------------------------------------------
--- INFO: suppression des doublons sur foyer_id dans dspfs (FIXME: on garde le 1er?)
+-- INFO: suppression des doublons sur foyer_id dans dspfs (INFO: on garde le dernier)
 -- -----------------------------------------------------------------------------
 
 DELETE FROM dspfs_diflogs WHERE dspfs_diflogs.dspf_id IN(
@@ -242,7 +257,8 @@ DELETE FROM dspfs_diflogs WHERE dspfs_diflogs.dspf_id IN(
 		FROM dspfs AS d1,
 			dspfs AS d2
 		WHERE d1.foyer_id = d2.foyer_id
-			AND d1.id > d2.id
+			AND d1.id < d2.id
+		ORDER BY d1.id, d2.id
 );
 
 DELETE FROM dspfs_nataccosocfams WHERE dspfs_nataccosocfams.dspf_id IN(
@@ -250,7 +266,8 @@ DELETE FROM dspfs_nataccosocfams WHERE dspfs_nataccosocfams.dspf_id IN(
 		FROM dspfs AS d1,
 			dspfs AS d2
 		WHERE d1.foyer_id = d2.foyer_id
-			AND d1.id > d2.id
+			AND d1.id < d2.id
+		ORDER BY d1.id, d2.id
 );
 
 DELETE FROM dspfs WHERE dspfs.id IN(
@@ -258,7 +275,8 @@ DELETE FROM dspfs WHERE dspfs.id IN(
 		FROM dspfs AS d1,
 			dspfs AS d2
 		WHERE d1.foyer_id = d2.foyer_id
-			AND d1.id > d2.id
+			AND d1.id < d2.id
+		ORDER BY d1.id, d2.id
 );
 
 -- -----------------------------------------------------------------------------
@@ -307,9 +325,9 @@ UPDATE dspfs SET libautrdiflog = NULL WHERE TRIM(libautrdiflog) = '';
 UPDATE dspfs SET demarlog = NULL WHERE TRIM(demarlog) = '';
 
 -- -----------------------------------------------------------------------------
-
--- FIXME: pourquoi perd-on les entrées de personnes_id 174448 à 174536
--- IDÉE: INNER JOIN dspfs
+-- SELECT COUNT(*) FROM dspps; -> 13029
+-- SELECT COUNT(*) FROM dspfs; -> 2076
+-- SELECT COUNT(*) FROM dspps INNER JOIN personnes ON dspps.personne_id = personnes.id LEFT OUTER JOIN dspfs ON dspfs.foyer_id = personnes.foyer_id; -> 13029
 
 INSERT INTO dsps (personne_id, sitpersdemrsa, topdrorsarmiant, drorsarmianta2, topcouvsoc, accosocfam, libcooraccosocfam, accosocindi, libcooraccosocindi, soutdemarsoc, libautrqualipro, libcompeextrapro, nivetu, annobtnivdipmax, topisogrorechemploi, accoemploi, libcooraccoemploi, hispro, libderact, libsecactderact, cessderact, topdomideract, libactdomi, libsecactdomi, duractdomi, libemploirech, libsecactrech, topcreareprientre, natlog, demarlog, topmoyloco, toppermicondub, libautrpermicondu)
 	SELECT	dspps.personne_id AS personne_id,
@@ -347,8 +365,9 @@ INSERT INTO dsps (personne_id, sitpersdemrsa, topdrorsarmiant, drorsarmianta2, t
 			dspps.libautrpermicondu AS libautrpermicondu
 		FROM dspps
 			INNER JOIN personnes ON personnes.id = dspps.personne_id
-			INNER JOIN foyers ON personnes.foyer_id = foyers.id
-			INNER JOIN dspfs ON dspfs.foyer_id = foyers.id
+			-- INNER JOIN foyers ON personnes.foyer_id = foyers.id
+			-- LEFT OUTER JOIN dspfs ON dspfs.foyer_id = foyers.id
+			LEFT OUTER JOIN dspfs ON dspfs.foyer_id = personnes.foyer_id
 			LEFT OUTER JOIN dspps_nataccosocindis ON dspps_nataccosocindis.dspp_id = dspps.id
 			LEFT OUTER JOIN dspps_nivetus ON dspps_nivetus.dspp_id = dspps.id
 			LEFT OUTER JOIN nivetus ON dspps_nivetus.nivetu_id = nivetus.id
@@ -356,6 +375,8 @@ INSERT INTO dsps (personne_id, sitpersdemrsa, topdrorsarmiant, drorsarmianta2, t
 			LEFT OUTER JOIN accoemplois ON dspps_accoemplois.accoemploi_id = accoemplois.id
 		GROUP BY dspps_nataccosocindis.dspp_id, dspps.id, dspps.personne_id,
 			dspfs.motidemrsa, dspps.drorsarmiant, dspps.drorsarmianta2, dspps.couvsoc, dspfs.accosocfam, dspfs.libcooraccosocfam, dspps.soutdemarsoc, dspps.libcooraccosocindi, dspps.libautrqualipro, dspps.libcompeextrapro, dspps_nivetus.dspp_id, dspps.annderdipobt, dspps.persisogrorechemploi, dspps.libcooraccoemploi, dspps.hispro, dspps.libderact, dspps.libsecactderact, dspps.dfderact, dspps.domideract, dspps.libactdomi, dspps.libsecactdomi, dspps.duractdomi, dspps.libemploirech, dspps.libsecactrech, dspps.creareprisentrrech, dspps_accoemplois.dspp_id, dspfs.natlog, dspfs.demarlog, dspps_nataccosocindis.dspp_id, dspps.moyloco, dspps.permicondub, dspps.libautrpermicondu;
+
+-- SELECT COUNT(*) FROM dsps; -> 13029
 
 -- -----------------------------------------------------------------------------
 
@@ -379,17 +400,19 @@ INSERT INTO detailsdifsocs (dsp_id, difsoc, libautrdifsoc)
 -- 			dspps.libautrdifsoc
 -- 		FROM dspps
 -- 			INNER JOIN dsps ON dspps.personne_id = dsps.personne_id
--- 		WHERE libautrdifsoc IS NOT NULL OR TRIM(libautrdifsoc) <> ''
+-- 		WHERE TRIM(dspps.libautrdifsoc) <> '' AND dspps.libautrdifsoc IS NOT NULL
 -- 			AND dspps.id NOT IN (
 -- 				SELECT dspps_difsocs.dspp_id
 -- 					FROM dspps_difsocs
 -- 						INNER JOIN difsocs ON dspps_difsocs.dspp_id = difsocs.id
 -- 					WHERE difsocs.code = '0407'
 -- 			)
--- 			AND dsps.id NOT IN (
--- 				SELECT detailsdifsocs.dsp_id
--- 					FROM detailsdifsocs
+-- 			AND dspps.personne_id NOT IN (
+-- 				SELECT dsps.personne_id
+-- 					FROM dsps
+-- 						INNER JOIN detailsdifsocs ON detailsdifsocs.dsp_id = dsps.id
 -- 					WHERE detailsdifsocs.difsoc = '0407'
+-- 						AND detailsdifsocs.difsoc IS NOT NULL
 -- 			);
 
 -- -----------------------------------------------------------------------------
@@ -406,28 +429,7 @@ INSERT INTO detailsaccosocfams (dsp_id, nataccosocfam, libautraccosocfam)
 			INNER JOIN dsps ON personnes.id = dsps.personne_id;
 
 -- INFO: le choix "Autres" n'était pas toujours coché, alors qu'on avait un libellé pour lui
--- FIXME: ????
-
--- INSERT INTO detailsaccosocfams (dsp_id, nataccosocfam, libautraccosocfam)
--- 	SELECT
--- 			dsps.id AS dsp_id,
--- 			CAST( '0413' AS type_nataccosocfam ) AS nataccosocfam,
--- 			dspfs.libautraccosocfam
--- 		FROM dspfs
--- 			INNER JOIN personnes ON dspfs.foyer_id = personnes.foyer_id
--- 			INNER JOIN dsps ON personnes.id = dsps.personne_id
--- 		WHERE libautraccosocfam IS NOT NULL OR TRIM(libautraccosocfam) <> ''
--- 			AND dspfs.id NOT IN (
--- 				SELECT dspfs_nataccosocfams.dspf_id
--- 					FROM dspfs_nataccosocfams
--- 						INNER JOIN nataccosocfams ON dspfs_nataccosocfams.nataccosocfam_id = nataccosocfams.id
--- 					WHERE nataccosocfams.code = '0413'
--- 			)
--- 			AND dsps.id NOT IN (
--- 				SELECT detailsaccosocfams.dsp_id
--- 					FROM detailsaccosocfams
--- 					WHERE detailsaccosocfams.nataccosocfam = '0413'
--- 			);
+-- FIXME: ???? voir plus haut (detailsdifsocs)
 
 -- -----------------------------------------------------------------------------
 
@@ -443,27 +445,7 @@ INSERT INTO detailsaccosocindis (dsp_id, nataccosocindi, libautraccosocindi)
 		WHERE nataccosocindis.code <> '0415';
 
 -- INFO: le choix "Autres" n'était pas toujours coché, alors qu'on avait un libellé pour lui
--- FIXME: ????
-
--- INSERT INTO detailsaccosocindis (dsp_id, nataccosocindi, libautraccosocindi)
--- 	SELECT
--- 			dsps.id AS dsp_id,
--- 			CAST( '0420' AS type_nataccosocindi ) AS nataccosocindi,
--- 			dspps.libautraccosocindi
--- 		FROM dspps
--- 			INNER JOIN dsps ON dspps.personne_id = dsps.personne_id
--- 		WHERE libautraccosocindi IS NOT NULL OR TRIM(libautraccosocindi) <> ''
--- 			AND dspps.id NOT IN (
--- 				SELECT dspps_nataccosocindis.dspp_id
--- 					FROM dspps_nataccosocindis
--- 						INNER JOIN nataccosocindis ON dspps_nataccosocindis.nataccosocindi_id = nataccosocindis.id
--- 					WHERE nataccosocindis.code = '0420'
--- 			)
--- 			AND dsps.id NOT IN (
--- 				SELECT detailsaccosocindis.dsp_id
--- 					FROM detailsaccosocindis
--- 					WHERE detailsaccosocindis.nataccosocindi = '0420'
--- 			);
+-- FIXME: ???? voir plus haut (detailsdifsocs)
 
 -- -----------------------------------------------------------------------------
 
@@ -477,7 +459,7 @@ INSERT INTO detailsdifdisps (dsp_id, difdisp)
 			INNER JOIN dsps ON dspps.personne_id = dsps.personne_id;
 
 -- INFO: le choix "Autres" n'était pas toujours coché, alors qu'on avait un libellé pour lui
--- FIXME: ????
+-- FIXME: ???? voir plus haut (detailsdifsocs)
 
 -- -----------------------------------------------------------------------------
 
@@ -492,17 +474,6 @@ INSERT INTO detailsnatmobs (dsp_id, natmob)
 
 -- -----------------------------------------------------------------------------
 
-/*
-CREATE TYPE type_diflog AS ENUM ( '1001', '1002', '1003', '1004', '1005', '1006', '1007', '1008', '1009' );
-CREATE TABLE detailsdiflogs (
-    id      		SERIAL NOT NULL PRIMARY KEY,
-    dsp_id			INTEGER NOT NULL REFERENCES dsps(id),
-	diflog			type_diflog NOT NULL,
-	libautrdiflog	VARCHAR(100) DEFAULT NULL
-);
-CREATE INDEX detailsdiflogs_dsp_id_idx ON detailsdiflogs (dsp_id);
-*/
-
 INSERT INTO detailsdiflogs (dsp_id, diflog, libautrdiflog)
 	SELECT
 			dsps.id AS dsp_id,
@@ -515,7 +486,7 @@ INSERT INTO detailsdiflogs (dsp_id, diflog, libautrdiflog)
 			INNER JOIN dsps ON personnes.id = dsps.personne_id;
 
 -- INFO: le choix "Autres" n'était pas toujours coché, alors qu'on avait un libellé pour lui
--- FIXME: ????
+-- FIXME: ???? voir plus haut (detailsdifsocs)
 
 -- -----------------------------------------------------------------------------
 --
@@ -621,3 +592,5 @@ COMMIT;
 
 ALTER TABLE evenements ALTER COLUMN heuliq TYPE timestamp with time zone;
 ALTER TABLE evenements ALTER COLUMN heuliq TYPE time;
+
+-- FIXME: le commit après toutes les modifs
