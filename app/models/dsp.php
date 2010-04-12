@@ -3,17 +3,17 @@
     {
         var $name = 'Dsp';
 
-//         var $actsAs = array( 'Enumerable' );
-
-        var $belongsTo = array( 'Personne' );
+        var $belongsTo = array(
+			'Personne'
+		);
 
         var $hasMany = array(
 			'Detaildifsoc',
 			'Detailaccosocfam',
 			'Detailaccosocindi',
 			'Detaildifdisp',
-// 			'Detailnatmob', // FIXME: ajouter les autres modèles depuis branches/trunk.bak
-// 			'Detaildiflog'
+			'Detailnatmob',
+			'Detaildiflog'
 		);
 
         var $actsAs = array(

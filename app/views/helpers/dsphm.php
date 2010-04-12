@@ -44,7 +44,7 @@
 			$answers = array();
 
 			$items = Set::extract( $dsp, "/{$model}/{$code}" );
-			$libautrdifsocs = Set::filter( Set::extract( $dsp, "/{$model}/{$libdetails}" ) );
+			$libautrdifs = Set::filter( Set::extract( $dsp, "/{$model}/{$libdetails}" ) );
 
 			if( !empty( $items ) ) {
 				$ul = array();
@@ -62,7 +62,7 @@
 				if( !empty( $libdetails ) ) {
 					$answers[] = array(
 						__d( 'dsp', "{$model}.{$libdetails}", true ),
-						h( implode( '', $libautrdifsocs ) )
+						h( implode( '', $libautrdifs ) )
 					);
 				}
 			}
