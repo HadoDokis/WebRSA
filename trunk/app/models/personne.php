@@ -9,8 +9,7 @@
 
         var $hasOne = array(
             'TitreSejour',
-            'Dspp',
-//             'Dsp',
+            'Dsp',
             'Infopoleemploi',
             'Dossiercaf',
 //             'Avispcgpersonne', // Commentée car problème au niveau de l'ajout de nouveau RDV à une personne
@@ -182,7 +181,7 @@
                         )
                     ),
                     'hasOne' => array(
-                        'Dspp',
+                        'Dsp',
                         'Prestation' => array(
                             'foreignKey' => 'personne_id',
                             'conditions' => array (
@@ -213,13 +212,13 @@
                     }
                 }
 
-                $dspp = array_filter( array( 'Dspp' => $personne['Dspp'] ) );
-                $hispro = Set::extract( $dspp, 'Dspp.hispro' );
+                $dsp = array_filter( array( 'Dsp' => $personne['Dsp'] ) );
+                $hispro = Set::extract( $dsp, 'Dsp.hispro' );
                 if( $hispro !== NULL ) {
                     // Passé professionnel ? -> Emploi
                     //     1901 : Vous avez toujours travaillé
                     //     1902 : Vous travaillez par intermittence
-                    if( $dspp['Dspp']['hispro'] == '1901' || $dspp['Dspp']['hispro'] == '1902' ) {
+                    if( $dsp['Dsp']['hispro'] == '1901' || $dsp['Dsp']['hispro'] == '1902' ) {
                         return false;
                     }
                     else {
@@ -285,12 +284,12 @@
             $this->Foyer->unbindModel(
                 array(
                     'hasMany' => array( 'Personne', 'Modecontact', 'Adressefoyer' ),
-                    'hasOne' => array( 'Dspf' ), 'hasAndBelongsToMany' => array( 'Creance' )
+                    'hasAndBelongsToMany' => array( 'Creance' )
                 )
             );
             $this->Foyer->Dossier->unbindModelAll();
             $this->Prestation->unbindModelAll();
-            $this->Dspp->unbindModelAll();
+            $this->Dsp->unbindModelAll();
 
             $personne = $this->findById( $personne_id, null, null, 2 );
 
@@ -417,7 +416,7 @@
             ///Recup personne
             $this->unbindModel(
                 array(
-                    'hasOne' => array( 'TitreSejour', 'Avispcgpersonne', 'Dossiercaf'/*, 'Dsp'*/ ),
+                    'hasOne' => array( 'TitreSejour', 'Avispcgpersonne', 'Dossiercaf', 'Dsp' ),
                     'hasMany' => array( 'Rendezvous', 'Activite', 'Contratinsertion', 'Orientstruct' , 'Apre' )
                 )
             );
@@ -425,13 +424,12 @@
             $this->Foyer->unbindModel(
                 array(
                     'hasMany' => array( 'Personne', 'Modecontact', 'Adressefoyer' ),
-                    'hasOne' => array( 'Dspf' ), 'hasAndBelongsToMany' => array( 'Creance' )
+                    'hasAndBelongsToMany' => array( 'Creance' )
                 )
             );
             $this->Foyer->Dossier->unbindModelAll();
             $this->Prestation->unbindModelAll();
-            $this->Dspp->unbindModelAll();
-//             $this->Dsp->unbindModelAll();
+            $this->Dsp->unbindModelAll();
 
             $personne = $this->findById( $personne_id, null, null, 2 );
 
@@ -525,26 +523,16 @@
             $personne['Contratinsertion']['dernier'] = $contrat['Contratinsertion'];
 
             ///Récupération des données Dsp
-//             $dsp = $this->Dsp->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array(
-//                         'Dsp.personne_id' => $personne_id
-//                     ),
-//                     'recursive' => -1
-//                 )
-//             );
-//             $personne['Dsp'] = $dsp['Dsp'];
-            $dspp = $this->Dspp->find(
+            $dsp = $this->Dsp->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Dspp.personne_id' => $personne_id
+                        'Dsp.personne_id' => $personne_id
                     ),
                     'recursive' => -1
                 )
             );
-            $personne['Dspp'] = $dspp['Dspp'];
+            $personne['Dsp'] = $dsp['Dsp'];
 
 
             return $personne;

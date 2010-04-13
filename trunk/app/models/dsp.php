@@ -1,4 +1,9 @@
 <?php
+	// FIXME: possible de faire plus "proprement" qu'avec des define ?
+	define( 'ANNOBTNIVDIPMAX_MIN_YEAR', ( date( 'Y' ) - 100 ) );
+	define( 'ANNOBTNIVDIPMAX_MAX_YEAR', date( 'Y' ) );
+	define( 'ANNOBTNIVDIPMAX_MESSAGE', 'Veuillez entrer une année comprise entre '.ANNOBTNIVDIPMAX_MIN_YEAR.' et '.ANNOBTNIVDIPMAX_MAX_YEAR.' .' );
+
     class Dsp extends AppModel
     {
         var $name = 'Dsp';
@@ -16,7 +21,16 @@
 			'Detaildiflog'
 		);
 
+		var $validate = array(
+			'annobtnivdipmax' => array(
+				'rule' => array( 'inclusiveRange', ANNOBTNIVDIPMAX_MIN_YEAR, ANNOBTNIVDIPMAX_MAX_YEAR ),
+				'message' => ANNOBTNIVDIPMAX_MESSAGE,
+				'allowEmpty' => true
+			)
+		);
+
         var $actsAs = array(
+			'Autovalidate',
             'Enumerable' => array(
                 'fields' => array(
                     'sitpersdemrsa' => array(
