@@ -39,7 +39,7 @@ OK -> app/views/dspfs/view.ctp:87:                    <td><?php echo ( isset( $n
 OK -> app/views/dspfs/view.ctp:91:                    <td><?php echo ( $dsp['foyer']['Dspf']['libautrdiflog'] );?></td>
 OK -> app/views/dspfs/view.ctp:95:                    <td><?php echo ( isset( $demarlog[$dsp['foyer']['Dspf']['demarlog']] ) ? $demarlog[$dsp['foyer']['Dspf']['demarlog']] : null );?></td>
 OK -> app/controllers/cohortes_controller.php:10:        var $uses = array( 'Canton', 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne', 'Orientstruct', 'PersonneReferent', 'Referent' );
-app/controllers/dossiers_controller.php:9:        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent' );
+OK -> app/controllers/dossiers_controller.php:9:        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent' );
 OK -> app/controllers/dspfs_controller.php:6:        var $uses = array( 'Dspf', 'Nataccosocfam', 'Diflog', 'Personne', 'Option' , 'Nivetu', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Foyer', 'Dspp', 'Accoemploi');
 OK -> app/controllers/dspfs_controller.php:51:            $dsp['foyer'] = $this->Dspf->find(
 OK -> app/controllers/dspfs_controller.php:55:                        'Dspf.foyer_id' => $foyer_id
@@ -59,25 +59,25 @@ OK -> app/controllers/dspfs_controller.php:174:                            'Dspf
 OK -> app/controllers/dspfs_controller.php:178:                $this->assert( !empty( $dspf ), 'error404' );
 OK -> app/controllers/dspfs_controller.php:179:                $this->data = $dspf;
 OK -> app/controllers/dspfs_controller.php:182:            $this->Dspf->commit();
-app/models/cohorte.php:49:                if( empty( $propo_algo ) && isset( $element['Foyer']['Dspf'] ) && !empty( $element['Foyer']['Dspf'] ) ) {
-app/models/cohorte.php:50:                    $dspf = Classregistry::init( 'Dossier' )->Foyer->Dspf->find(
-app/models/cohorte.php:53:                            'conditions' => array( 'Dspf.id' => $element['Foyer']['Dspf']['id'] )
-app/models/cohorte.php:56:                    if( !empty( $dspf ) ) {
-app/models/cohorte.php:58:                        if( $element['Foyer']['Dspf']['accosocfam'] == 'O' ) {
-app/models/cohorte.php:84:			$dspf = Classregistry::init( 'Dossier' )->Foyer->Dspf->find(
-app/models/cohorte.php:87:					'conditions' => array( 'Dspf.foyer_id' => $element['Foyer']['id'] )
-app/models/cohorte.php:90:			$element['Foyer'] = Set::merge( $element['Foyer'], $dspf );
-app/models/cohorte.php:97:			$natlog = Set::classicExtract( $element, 'Foyer.Dspf.natlog' );
-app/models/cohorte.php:119:			$motidemrsa = Set::extract( $element, 'Foyer.Dspf.motidemrsa' );
-app/models/foyer.php:7:            'Dspf'
+OK -> app/models/cohorte.php:49:                if( empty( $propo_algo ) && isset( $element['Foyer']['Dspf'] ) && !empty( $element['Foyer']['Dspf'] ) ) {
+OK -> app/models/cohorte.php:50:                    $dspf = Classregistry::init( 'Dossier' )->Foyer->Dspf->find(
+OK -> app/models/cohorte.php:53:                            'conditions' => array( 'Dspf.id' => $element['Foyer']['Dspf']['id'] )
+OK -> app/models/cohorte.php:56:                    if( !empty( $dspf ) ) {
+OK -> app/models/cohorte.php:58:                        if( $element['Foyer']['Dspf']['accosocfam'] == 'O' ) {
+OK -> app/models/cohorte.php:84:			$dspf = Classregistry::init( 'Dossier' )->Foyer->Dspf->find(
+OK -> app/models/cohorte.php:87:					'conditions' => array( 'Dspf.foyer_id' => $element['Foyer']['id'] )
+OK -> app/models/cohorte.php:90:			$element['Foyer'] = Set::merge( $element['Foyer'], $dspf );
+OK -> app/models/cohorte.php:97:			$natlog = Set::classicExtract( $element, 'Foyer.Dspf.natlog' );
+OK -> app/models/cohorte.php:119:			$motidemrsa = Set::extract( $element, 'Foyer.Dspf.motidemrsa' );
+OK -> app/models/foyer.php:7:            'Dspf'
 OK -> app/models/dspf.php:2:    class Dspf extends AppModel
 OK -> app/models/dspf.php:4:        var $name = 'Dspf';
 OK -> app/models/dspf.php:19:                'foreignKey' => 'dspf_id',
 OK -> app/models/dspf.php:25:                'foreignKey' => 'dspf_id',
 OK -> app/models/personne.php:288:                    'hasOne' => array( 'Dspf' ), 'hasAndBelongsToMany' => array( 'Creance' )
 OK -> app/models/personne.php:428:                    'hasOne' => array( 'Dspf' ), 'hasAndBelongsToMany' => array( 'Creance' )
-app/vendors/shells/refresh.php:251:					$this->Foyer->bindModel( array( 'hasOne' => array( 'Dspf' ) ) );
-app/vendors/shells/refresh.php:252:					$this->Foyer->Dspf->unbindModelAll();
+OK -> app/vendors/shells/refresh.php:251:					$this->Foyer->bindModel( array( 'hasOne' => array( 'Dspf' ) ) );
+OK -> app/vendors/shells/refresh.php:252:					$this->Foyer->Dspf->unbindModelAll();
 OK -> app/webroot/css/screen.generic.css:235:/* Affichage vue Dspf */
 ---------------------------------------------------------------------
 dspfs_diflogs
@@ -97,7 +97,7 @@ DspfNataccosocfam
 dspps_accoemplois
 ---------------------------------------------------------------------
 OK -> app/models/dspp.php:49:                'joinTable' => 'dspps_accoemplois',
-app/vendors/shells/personnescase.php:13:					'dspps_accoemplois',
+OK -> app/vendors/shells/personnescase.php:13:					'dspps_accoemplois',
 ---------------------------------------------------------------------
 DsppAccoemploi
 ---------------------------------------------------------------------
@@ -105,7 +105,7 @@ DsppAccoemploi
 dspps_difdisps
 ---------------------------------------------------------------------
 OK -> app/models/dspp.php:30:                'joinTable' => 'dspps_difdisps',
-app/vendors/shells/personnescase.php:14:					'dspps_difdisps',
+OK -> app/vendors/shells/personnescase.php:14:					'dspps_difdisps',
 ---------------------------------------------------------------------
 DsppDifdisp
 ---------------------------------------------------------------------
@@ -120,13 +120,13 @@ OK -> app/views/dspps/view.ctp:21:        <?php if( $permissions->check( 'dspps'
 OK -> app/views/dspps/view.ctp:26:                        array( 'controller' => 'dspps', 'action' => 'add', $personne_id )
 OK -> app/views/dspps/view.ctp:34:        <?php if( $permissions->check( 'dspps', 'edit' ) ):?>
 OK -> app/views/dspps/view.ctp:39:                        array( 'controller' => 'dspps', 'action' => 'edit', $personne_id )
-app/config/inflections.php:107:        'dspp_nivetu' => 'dspps_nivetus',
+OK -> app/config/inflections.php:107:        'dspp_nivetu' => 'dspps_nivetus',
 app/controllers/contratsinsertion_controller.php:493:                                'joinTable' => 'dspps_nivetus',
 OK -> app/controllers/dsps_controller.php:3:		http://localhost/adullact/webrsa/trunk/dspps/view/174537
 OK -> app/controllers/dspps_controller.php:5:        var $name = 'Dspps';
 OK -> app/controllers/dspps_controller.php:114:                        $this->redirect( array( 'controller' => 'dspps', 'action' => 'view', $personne_id ) );
 OK -> app/controllers/dspps_controller.php:172:                        $this->redirect( array( 'controller' => 'dspps', 'action' => 'view', $personne_id ) );
-app/models/cohorte.php:327:                        '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dspps ON ( dspps.personne_id = personnes.id )' : '' ).'
+OK -> app/models/cohorte.php:327:                        '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dspps ON ( dspps.personne_id = personnes.id )' : '' ).'
 OK -> app/models/dspp_nivetu.php:6:        var $usetable = 'dspps_nivetus';
 OK -> app/models/dspp.php:6:        var $useTable = 'dspps';
 OK -> app/models/dspp.php:18:                'joinTable' => 'dspps_difsocs',
@@ -135,16 +135,16 @@ OK -> app/models/dspp.php:30:                'joinTable' => 'dspps_difdisps',
 OK -> app/models/dspp.php:36:                'joinTable' => 'dspps_natmobs',
 OK -> app/models/dspp.php:43:                'joinTable' => 'dspps_nivetus',
 OK -> app/models/dspp.php:49:                'joinTable' => 'dspps_accoemplois',
-app/vendors/shells/personnescase.php:10:		var $tables = array( 'personnes_referents', 'activites', 'allocationssoutienfamilial', 'avispcgpersonnes', 'calculsdroitsrsa', 'contratsinsertion', 'creancesalimentaires', /*'creancesalimentaires_personnes',*/ 'dossierscaf', 'dspps', 'grossesses', 'informationseti', 'infosagricoles', 'orientsstructs', 'prestations', 'rattachements', 'rendezvous', 'ressources', 'titres_sejour' );
-app/vendors/shells/personnescase.php:12:				'dspps' => array(
-app/vendors/shells/personnescase.php:13:					'dspps_accoemplois',
-app/vendors/shells/personnescase.php:14:					'dspps_difdisps',
-app/vendors/shells/personnescase.php:15:					'dspps_difsocs',
-app/vendors/shells/personnescase.php:16:					'dspps_nataccosocindis',
-app/vendors/shells/personnescase.php:17:					'dspps_natmobs',
-app/vendors/shells/personnescase.php:18:					'dspps_nivetus'
-app/vendors/shells/personnescase.php:45:					if( in_array( $table, array( 'creancesalimentaires', 'dspps', 'orientsstructs' ) ) ) {
-app/vendors/shells/personnescase.php:67:					if( $table == 'dspps' ) {
+OK -> app/vendors/shells/personnescase.php:10:		var $tables = array( 'personnes_referents', 'activites', 'allocationssoutienfamilial', 'avispcgpersonnes', 'calculsdroitsrsa', 'contratsinsertion', 'creancesalimentaires', /*'creancesalimentaires_personnes',*/ 'dossierscaf', 'dspps', 'grossesses', 'informationseti', 'infosagricoles', 'orientsstructs', 'prestations', 'rattachements', 'rendezvous', 'ressources', 'titres_sejour' );
+OK -> app/vendors/shells/personnescase.php:12:				'dspps' => array(
+OK -> app/vendors/shells/personnescase.php:13:					'dspps_accoemplois',
+OK -> app/vendors/shells/personnescase.php:14:					'dspps_difdisps',
+OK -> app/vendors/shells/personnescase.php:15:					'dspps_difsocs',
+OK -> app/vendors/shells/personnescase.php:16:					'dspps_nataccosocindis',
+OK -> app/vendors/shells/personnescase.php:17:					'dspps_natmobs',
+OK -> app/vendors/shells/personnescase.php:18:					'dspps_nivetus'
+OK -> app/vendors/shells/personnescase.php:45:					if( in_array( $table, array( 'creancesalimentaires', 'dspps', 'orientsstructs' ) ) ) {
+OK -> app/vendors/shells/personnescase.php:67:					if( $table == 'dspps' ) {
 ---------------------------------------------------------------------
 Dspp
 ---------------------------------------------------------------------
@@ -298,16 +298,14 @@ OK -> app/views/dspps/view.ctp:266:                <td><?php echo  $html->boolea
 OK -> app/views/dspps/view.ctp:270:                <td><?php echo  $html->boolean( Set::classicExtract( $dspp, 'Dspp.persisogrorechemploi' ) );?></td>
 OK -> app/views/dspps/view.ctp:280:                    <?php if( !empty( $dspp['Natmob'] ) ):?>
 OK -> app/views/dspps/view.ctp:282:                            <?php foreach( $dspp['Natmob'] as $natmob ):?>
-app/views/dossiers/view.ctp:217:                                <td><?php echo h( isset( $details['Dspp']['id'] ) ? 'Oui' : 'Non');?></td>
-app/views/cohortes/formulaire.ctp:153:                                    h( $personne['Dspp'] ? 'Oui' : 'Non' ),
-app/views/cohortes/visualisation.ctp:145:                                h( $personne['Dspp'] ? 'Oui' : 'Non' ),
-app/views/contratsinsertion/add_edit.ctp.bak:154:        <?php echo $form->input( 'Dspp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
-app/views/contratsinsertion/add_edit.ctp.bak:156:        <?php echo $form->input( 'Dspp.id', array( 'type' => 'hidden' ) );?>
+OK -> app/views/dossiers/view.ctp:217:                                <td><?php echo h( isset( $details['Dspp']['id'] ) ? 'Oui' : 'Non');?></td>
+OK -> app/views/cohortes/formulaire.ctp:153:                                    h( $personne['Dspp'] ? 'Oui' : 'Non' ),
+OK -> app/views/cohortes/visualisation.ctp:145:                                h( $personne['Dspp'] ? 'Oui' : 'Non' ),
 app/views/contratsinsertion/add_edit_specif_cg93.ctp:44:        <?php echo $form->input( 'Dspp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
 app/views/contratsinsertion/add_edit_specif_cg93.ctp:45:        <?php echo $form->input( 'Dspp.personne_id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
 app/views/contratsinsertion/_form.ctp:106:        <?php echo $form->input( 'Dspp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
 app/views/contratsinsertion/_form.ctp:108:        <?php echo $form->input( 'Dspp.id', array( 'type' => 'hidden' ) );?>
-app/config/inflections.php:107:        'dspp_nivetu' => 'dspps_nivetus',
+OK -> app/config/inflections.php:107:        'dspp_nivetu' => 'dspps_nivetus',
 app/controllers/contratsinsertion_controller.php:18:        var $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'DsppNivetu', 'PersonneReferent' );
 app/controllers/contratsinsertion_controller.php:56:                $this->set( 'nivetus', $this->Contratinsertion->Personne->Dspp->Nivetu->find( 'list' ) );
 app/controllers/contratsinsertion_controller.php:403:                $valid = $this->Contratinsertion->Personne->Dspp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
@@ -332,17 +330,17 @@ OK -> app/controllers/cohortes_controller.php:192:                        $dspp 
 OK -> app/controllers/cohortes_controller.php:196:                                    'Dspp.personne_id' => $element['Personne']['id']
 OK -> app/controllers/cohortes_controller.php:200:                        $cohorte[$key] = Set::merge( $cohorte[$key], array( 'Dspp' => $dspp ) );
 OK -> app/controllers/cohortes_controller.php:328://                     'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
-app/controllers/suivisinsertion_controller.php:47:            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dspp', 'Prestation' => $bindPrestation ) ) );
-app/controllers/dossiers_controller.php:9:        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent' );
-app/controllers/dossiers_controller.php:243:            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dspp', 'Infopoleemploi', 'Prestation' => $bindPrestation ) ) );
-app/controllers/gedooos_controller.php:10:        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent' );
-app/controllers/gedooos_controller.php:322:            $dspp = $this->Dspp->find(
-app/controllers/gedooos_controller.php:326:                        'Dspp.personne_id' => $contratinsertion['Personne']['id']
-app/controllers/gedooos_controller.php:330:            $contratinsertion['Dspp']['personne_id'] = $dspp['Personne']['id'];
-app/controllers/gedooos_controller.php:408:            /// Données Dspp récupérées
-app/controllers/gedooos_controller.php:409:            $contratinsertion['Dspp']['couvsoc'] = ( isset( $dspp['Dspp']['couvsoc'] ) ? 'Oui' : 'Non' );
-app/controllers/gedooos_controller.php:572://                     'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
-app/controllers/gedooos_controller.php:797:                    'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
+OK -> app/controllers/suivisinsertion_controller.php:47:            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dspp', 'Prestation' => $bindPrestation ) ) );
+OK -> app/controllers/dossiers_controller.php:9:        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent' );
+OK -> app/controllers/dossiers_controller.php:243:            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dspp', 'Infopoleemploi', 'Prestation' => $bindPrestation ) ) );
+OK -> app/controllers/gedooos_controller.php:10:        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent' );
+OK -> app/controllers/gedooos_controller.php:322:            $dspp = $this->Dspp->find(
+OK -> app/controllers/gedooos_controller.php:326:                        'Dspp.personne_id' => $contratinsertion['Personne']['id']
+OK -> app/controllers/gedooos_controller.php:330:            $contratinsertion['Dspp']['personne_id'] = $dspp['Personne']['id'];
+OK -> app/controllers/gedooos_controller.php:408:            /// Données Dspp récupérées
+OK -> app/controllers/gedooos_controller.php:409:            $contratinsertion['Dspp']['couvsoc'] = ( isset( $dspp['Dspp']['couvsoc'] ) ? 'Oui' : 'Non' );
+OK -> app/controllers/gedooos_controller.php:572://                     'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
+OK -> app/controllers/gedooos_controller.php:797:                    'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
 OK -> app/controllers/dspfs_controller.php:6:        var $uses = array( 'Dspf', 'Nataccosocfam', 'Diflog', 'Personne', 'Option' , 'Nivetu', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Foyer', 'Dspp', 'Accoemploi');
 OK -> app/controllers/dspfs_controller.php:74:                $dsp_personne = $this->Dspp->findByPersonneId( $personneFoyer['Personne']['id'], null, null, 2 );
 OK -> app/controllers/dspfs_controller.php:79:                    unset( $dsp[$personneFoyer['Prestation']['rolepers']]['Dspp'] );
@@ -368,13 +366,13 @@ OK -> app/controllers/dspps_controller.php:183:                        'conditio
 OK -> app/controllers/dspps_controller.php:186:                $this->data = $dspp;
 OK -> app/controllers/dspps_controller.php:200:                $this->data['Dspp']['diplomes'] = $contrat['Contratinsertion']['diplomes'];
 OK -> app/controllers/dspps_controller.php:203:            $this->Dspp->commit();
-app/models/cohorte.php:21:            if( isset( $element['Dspp'] ) ) {
-app/models/cohorte.php:22:                $accoemploiCodes = Set::extract( 'Dspp.Accoemploi.{n}.code', $element );
-app/models/cohorte.php:28:                if( !empty( $element['Dspp']['hispro'] ) && ( $element['Dspp']['hispro'] == '1901' || $element['Dspp']['hispro'] == '1902' ) ) {
-app/models/cohorte.php:40:                    if( !empty( $element['Dspp']['dfderact'] ) ) {
-app/models/cohorte.php:41:                        list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
-app/models/cohorte.php:131:			$dfderact = Set::extract( $element, 'Dspp.dfderact' );
-app/models/cohorte.php:171:			$hispro = Set::extract( $element, 'Dspp.hispro' );
+OK -> app/models/cohorte.php:21:            if( isset( $element['Dspp'] ) ) {
+OK -> app/models/cohorte.php:22:                $accoemploiCodes = Set::extract( 'Dspp.Accoemploi.{n}.code', $element );
+OK -> app/models/cohorte.php:28:                if( !empty( $element['Dspp']['hispro'] ) && ( $element['Dspp']['hispro'] == '1901' || $element['Dspp']['hispro'] == '1902' ) ) {
+OK -> app/models/cohorte.php:40:                    if( !empty( $element['Dspp']['dfderact'] ) ) {
+OK -> app/models/cohorte.php:41:                        list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
+OK -> app/models/cohorte.php:131:			$dfderact = Set::extract( $element, 'Dspp.dfderact' );
+OK -> app/models/cohorte.php:171:			$hispro = Set::extract( $element, 'Dspp.hispro' );
 OK -> app/models/dspp_nivetu.php:17:            'dspp_id' => array(
 OK -> app/models/dspp.php:2:    class Dspp extends AppModel
 OK -> app/models/dspp.php:4:        var $name = 'Dspp';
@@ -394,52 +392,52 @@ OK -> app/models/personne.php:433:            $this->Dspp->unbindModelAll();
 OK -> app/models/personne.php:538:            $dspp = $this->Dspp->find(
 OK -> app/models/personne.php:542:                        'Dspp.personne_id' => $personne_id
 OK -> app/models/personne.php:547:            $personne['Dspp'] = $dspp['Dspp'];
-app/vendors/shells/anomaliesbdd.php:102:			'# DSPP',
-app/vendors/shells/anomaliesbdd.php:247:				$dspp = Set::classicExtract( $p, 'Dspp' );
-app/vendors/shells/anomaliesbdd.php:249:					unset( $dspp[$rField] );
-app/vendors/shells/anomaliesbdd.php:251:				$row[] = count( Set::filter( $dspp ) );
-app/vendors/shells/refresh.php:248:					$this->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp' ), 'belongsTo' => array( 'Foyer' ) ) );
-app/vendors/shells/refresh.php:249:					$this->Foyer->Personne->Dspp->unbindModelAll();
-app/vendors/shells/refresh.php:285:								'Dspp.id',
-app/vendors/shells/refresh.php:286:								'Dspp.personne_id',
-app/vendors/shells/refresh.php:287:								'Dspp.drorsarmiant',
-app/vendors/shells/refresh.php:288:								'Dspp.drorsarmianta2',
-app/vendors/shells/refresh.php:289:								'Dspp.couvsoc',
-app/vendors/shells/refresh.php:290:								'Dspp.libautrdifsoc',
-app/vendors/shells/refresh.php:291:								'Dspp.elopersdifdisp',
-app/vendors/shells/refresh.php:292:								'Dspp.obstemploidifdisp',
-app/vendors/shells/refresh.php:293:								'Dspp.soutdemarsoc',
-app/vendors/shells/refresh.php:294:								'Dspp.libautraccosocindi',
-app/vendors/shells/refresh.php:295:								'Dspp.libcooraccosocindi',
-app/vendors/shells/refresh.php:296:								'Dspp.annderdipobt',
-app/vendors/shells/refresh.php:297:								'Dspp.rappemploiquali',
-app/vendors/shells/refresh.php:298:								'Dspp.rappemploiform',
-app/vendors/shells/refresh.php:299:								'Dspp.libautrqualipro',
-app/vendors/shells/refresh.php:300:								'Dspp.permicondub',
-app/vendors/shells/refresh.php:301:								'Dspp.libautrpermicondu',
-app/vendors/shells/refresh.php:302:								'Dspp.libcompeextrapro',
-app/vendors/shells/refresh.php:303:								'Dspp.persisogrorechemploi',
-app/vendors/shells/refresh.php:304:								'Dspp.libcooraccoemploi',
-app/vendors/shells/refresh.php:305:								'Dspp.hispro',
-app/vendors/shells/refresh.php:306:								'Dspp.libderact',
-app/vendors/shells/refresh.php:307:								'Dspp.libsecactderact',
-app/vendors/shells/refresh.php:308:								'Dspp.dfderact',
-app/vendors/shells/refresh.php:309:								'Dspp.domideract',
-app/vendors/shells/refresh.php:310:								'Dspp.libactdomi',
-app/vendors/shells/refresh.php:311:								'Dspp.libsecactdomi',
-app/vendors/shells/refresh.php:312:								'Dspp.duractdomi',
-app/vendors/shells/refresh.php:313:								'Dspp.libemploirech',
-app/vendors/shells/refresh.php:314:								'Dspp.libsecactrech',
-app/vendors/shells/refresh.php:315:								'Dspp.creareprisentrrech',
-app/vendors/shells/refresh.php:316:								'Dspp.moyloco',
-app/vendors/shells/refresh.php:317:								'Dspp.diplomes',
-app/vendors/shells/refresh.php:318:								'Dspp.dipfra',
+OK -> app/vendors/shells/anomaliesbdd.php:102:			'# DSPP',
+OK -> app/vendors/shells/anomaliesbdd.php:247:				$dspp = Set::classicExtract( $p, 'Dspp' );
+OK -> app/vendors/shells/anomaliesbdd.php:249:					unset( $dspp[$rField] );
+OK -> app/vendors/shells/anomaliesbdd.php:251:				$row[] = count( Set::filter( $dspp ) );
+OK -> app/vendors/shells/refresh.php:248:					$this->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp' ), 'belongsTo' => array( 'Foyer' ) ) );
+OK -> app/vendors/shells/refresh.php:249:					$this->Foyer->Personne->Dspp->unbindModelAll();
+OK -> app/vendors/shells/refresh.php:285:								'Dspp.id',
+OK -> app/vendors/shells/refresh.php:286:								'Dspp.personne_id',
+OK -> app/vendors/shells/refresh.php:287:								'Dspp.drorsarmiant',
+OK -> app/vendors/shells/refresh.php:288:								'Dspp.drorsarmianta2',
+OK -> app/vendors/shells/refresh.php:289:								'Dspp.couvsoc',
+OK -> app/vendors/shells/refresh.php:290:								'Dspp.libautrdifsoc',
+OK -> app/vendors/shells/refresh.php:291:								'Dspp.elopersdifdisp',
+OK -> app/vendors/shells/refresh.php:292:								'Dspp.obstemploidifdisp',
+OK -> app/vendors/shells/refresh.php:293:								'Dspp.soutdemarsoc',
+OK -> app/vendors/shells/refresh.php:294:								'Dspp.libautraccosocindi',
+OK -> app/vendors/shells/refresh.php:295:								'Dspp.libcooraccosocindi',
+OK -> app/vendors/shells/refresh.php:296:								'Dspp.annderdipobt',
+OK -> app/vendors/shells/refresh.php:297:								'Dspp.rappemploiquali',
+OK -> app/vendors/shells/refresh.php:298:								'Dspp.rappemploiform',
+OK -> app/vendors/shells/refresh.php:299:								'Dspp.libautrqualipro',
+OK -> app/vendors/shells/refresh.php:300:								'Dspp.permicondub',
+OK -> app/vendors/shells/refresh.php:301:								'Dspp.libautrpermicondu',
+OK -> app/vendors/shells/refresh.php:302:								'Dspp.libcompeextrapro',
+OK -> app/vendors/shells/refresh.php:303:								'Dspp.persisogrorechemploi',
+OK -> app/vendors/shells/refresh.php:304:								'Dspp.libcooraccoemploi',
+OK -> app/vendors/shells/refresh.php:305:								'Dspp.hispro',
+OK -> app/vendors/shells/refresh.php:306:								'Dspp.libderact',
+OK -> app/vendors/shells/refresh.php:307:								'Dspp.libsecactderact',
+OK -> app/vendors/shells/refresh.php:308:								'Dspp.dfderact',
+OK -> app/vendors/shells/refresh.php:309:								'Dspp.domideract',
+OK -> app/vendors/shells/refresh.php:310:								'Dspp.libactdomi',
+OK -> app/vendors/shells/refresh.php:311:								'Dspp.libsecactdomi',
+OK -> app/vendors/shells/refresh.php:312:								'Dspp.duractdomi',
+OK -> app/vendors/shells/refresh.php:313:								'Dspp.libemploirech',
+OK -> app/vendors/shells/refresh.php:314:								'Dspp.libsecactrech',
+OK -> app/vendors/shells/refresh.php:315:								'Dspp.creareprisentrrech',
+OK -> app/vendors/shells/refresh.php:316:								'Dspp.moyloco',
+OK -> app/vendors/shells/refresh.php:317:								'Dspp.diplomes',
+OK -> app/vendors/shells/refresh.php:318:								'Dspp.dipfra',
 OK -> app/webroot/css/screen.generic.css:139:/* Affichage vue Dspp  */
 ---------------------------------------------------------------------
 dspps_difsocs
 ---------------------------------------------------------------------
 OK -> app/models/dspp.php:18:                'joinTable' => 'dspps_difsocs',
-app/vendors/shells/personnescase.php:15:					'dspps_difsocs',
+OK -> app/vendors/shells/personnescase.php:15:					'dspps_difsocs',
 ---------------------------------------------------------------------
 DsppDifsoc
 ---------------------------------------------------------------------
@@ -447,7 +445,7 @@ DsppDifsoc
 dspps_nataccosocindis
 ---------------------------------------------------------------------
 OK -> app/models/dspp.php:24:                'joinTable' => 'dspps_nataccosocindis',
-app/vendors/shells/personnescase.php:16:					'dspps_nataccosocindis',
+OK -> app/vendors/shells/personnescase.php:16:					'dspps_nataccosocindis',
 ---------------------------------------------------------------------
 DsppNataccosocindi
 ---------------------------------------------------------------------
@@ -455,18 +453,18 @@ DsppNataccosocindi
 dspps_natmobs
 ---------------------------------------------------------------------
 OK -> app/models/dspp.php:36:                'joinTable' => 'dspps_natmobs',
-app/vendors/shells/personnescase.php:17:					'dspps_natmobs',
+OK -> app/vendors/shells/personnescase.php:17:					'dspps_natmobs',
 ---------------------------------------------------------------------
 DsppNatmob
 ---------------------------------------------------------------------
 ---------------------------------------------------------------------
 dspps_nivetus
 ---------------------------------------------------------------------
-app/config/inflections.php:107:        'dspp_nivetu' => 'dspps_nivetus',
+OK -> app/config/inflections.php:107:        'dspp_nivetu' => 'dspps_nivetus',
 app/controllers/contratsinsertion_controller.php:493:                                'joinTable' => 'dspps_nivetus',
 OK -> app/models/dspp_nivetu.php:6:        var $usetable = 'dspps_nivetus';
 OK -> app/models/dspp.php:43:                'joinTable' => 'dspps_nivetus',
-app/vendors/shells/personnescase.php:18:					'dspps_nivetus'
+OK -> app/vendors/shells/personnescase.php:18:					'dspps_nivetus'
 ---------------------------------------------------------------------
 DsppNivetu
 ---------------------------------------------------------------------

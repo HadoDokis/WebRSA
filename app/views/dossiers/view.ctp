@@ -213,34 +213,30 @@
                                 <td><?php echo Set::extract( 'Dossier.numdemrsa', $details );?></td>
                             </tr>
                             <tr class="odd">
-                                <th>DSP</th>
-                                <td><?php echo h( isset( $details['Dspp']['id'] ) ? 'Oui' : 'Non');?></td>
-                            </tr>
-                            <tr class="even">
                                 <th>Montant RSA</th>
                                 <td><?php echo $locale->money( Set::extract( 'Detailcalculdroitrsa.0.mtrsavers', $details ) ); ?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Date dernier montant</th>
                                 <td><?php echo date_short( Set::extract( 'Detailcalculdroitrsa.0.dtderrsavers', $details ) );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Motif</th>
                                 <td><?php echo value( $natpf, Set::extract( 'Detailcalculdroitrsa.0.natpf', $details ) );?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Montant INDUS</th>
                                 <td><?php echo $locale->money( Set::extract( 'Infofinanciere.mtmoucompta', $details ) );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Motif</th>
                                 <td><?php echo h( Set::extract( 'Creance.motiindu', $details ) );?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Début du traitement CAF</th>
                                 <td><?php echo $locale->date( 'Date::short', Set::extract( 'DEM.Dossiercaf.ddratdos', $details ) );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Fin du traitement CAF</th>
                                 <td><?php echo h(  date_short( Set::extract( 'DEM.Dossiercaf.dfratdos', $details ) ) );?></td>
                             </tr>

@@ -3,10 +3,6 @@
     {
         var $name = 'Foyer';
 
-        var $hasOne = array(
-            'Dspf'
-        );
-
         var $belongsTo = array(
             'Dossier' => array(
                 'classname'     => 'Dossier',

@@ -245,11 +245,8 @@
 				if( $this->preorientation == true ) {
 					$tPreorientation0 = microtime( true );
 					$this->Foyer->Personne->unbindModelAll();
-					$this->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp' ), 'belongsTo' => array( 'Foyer' ) ) );
-					$this->Foyer->Personne->Dspp->unbindModelAll();
+					$this->Foyer->Personne->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) );
 					$this->Foyer->unbindModelAll();
-					$this->Foyer->bindModel( array( 'hasOne' => array( 'Dspf' ) ) );
-					$this->Foyer->Dspf->unbindModelAll();
 
 					$personnes = $this->Foyer->Personne->find(
 						'all',
@@ -282,40 +279,6 @@
 								'Foyer.mtvallocterr',
 								'Foyer.mtvalloclog',
 								'Foyer.contefichliairsa',
-								'Dspp.id',
-								'Dspp.personne_id',
-								'Dspp.drorsarmiant',
-								'Dspp.drorsarmianta2',
-								'Dspp.couvsoc',
-								'Dspp.libautrdifsoc',
-								'Dspp.elopersdifdisp',
-								'Dspp.obstemploidifdisp',
-								'Dspp.soutdemarsoc',
-								'Dspp.libautraccosocindi',
-								'Dspp.libcooraccosocindi',
-								'Dspp.annderdipobt',
-								'Dspp.rappemploiquali',
-								'Dspp.rappemploiform',
-								'Dspp.libautrqualipro',
-								'Dspp.permicondub',
-								'Dspp.libautrpermicondu',
-								'Dspp.libcompeextrapro',
-								'Dspp.persisogrorechemploi',
-								'Dspp.libcooraccoemploi',
-								'Dspp.hispro',
-								'Dspp.libderact',
-								'Dspp.libsecactderact',
-								'Dspp.dfderact',
-								'Dspp.domideract',
-								'Dspp.libactdomi',
-								'Dspp.libsecactdomi',
-								'Dspp.duractdomi',
-								'Dspp.libemploirech',
-								'Dspp.libsecactrech',
-								'Dspp.creareprisentrrech',
-								'Dspp.moyloco',
-								'Dspp.diplomes',
-								'Dspp.dipfra',
 								'Orientstruct.id',
 								'Orientstruct.personne_id',
 								'Orientstruct.typeorient_id',

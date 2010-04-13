@@ -6,7 +6,7 @@
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dsp', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent' );
         var $aucunDroit = array( 'menu' );
         var $helpers = array( 'Csv' );
 
@@ -183,7 +183,7 @@
                     OK -> Prestation
                     OK -> Orientstruct (premier/dernier)
                         //Typeorient
-                    OK -> Dspp
+                    OK -> Dsp
                     OK -> Contratinsertion
             */
             $details = array();
@@ -240,7 +240,7 @@
             */
             $bindPrestation = $this->Personne->hasOne['Prestation'];
             $this->Personne->unbindModelAll();
-            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dspp', 'Infopoleemploi', 'Prestation' => $bindPrestation ) ) );
+            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Infopoleemploi', 'Prestation' => $bindPrestation ) ) );
             $personnesFoyer = $this->Personne->find(
                 'all',
                 array(

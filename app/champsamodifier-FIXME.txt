@@ -1,0 +1,33 @@
+1°) FIXME: models/cohorte.php, motidemrsa n'existe plus
+			// Règle 3 (Prioritaire)  : Code XML instruction : « MOTIDEMRSA ». "Quel est le motif de votre demande de rSa ?"
+			// 0102 = Fin de droits AAH → Orientation vers le Social
+			// 0105 = Attente de pension vieillesse ou invalidité‚ ou d'allocation handicap → Orientation vers le Social
+			// 0109 = Fin d'études → Orientation vers le Pôle Emploi
+			// 0101 = Fin de droits ASSEDIC → Orientation vers le Pôle Emploi
+			$motidemrsa = Set::extract( $element, 'Dsp.motidemrsa' );
+			if( empty( $propo_algo ) && !empty( $motidemrsa ) ) {
+				if( in_array( $motidemrsa, array( '0102', '0105' ) ) ) {
+					$propo_algo = 'Social';
+				}
+				else if( in_array( $motidemrsa, array( '0109', '0101' ) ) ) {
+					$propo_algo = 'Emploi';
+				}
+			}
+2°) INFO: models/cohorte.php, dfderact a été remplacé par dsps.cessderact -> pb de mise à jour ?
+			// Règle 4 : Code XML instruction : « DTNAI ». Date de Naissance.
+			$dtnai = Set::extract( $element, 'Personne.dtnai' );
+			$dfderact = Set::extract( $element, 'Dspp.dfderact' );
+
+			// Si la date«DFDERACT»  n'est pas renseignée : Règle 5
+
+3°) INFO: vendors/shells/personnescase.php
+	une fois que les tables dspps et les tables liées seront supprimées, à nettoyer
+
+4°) INFO: config/inflections.php
+	une fois que les tables dspps, dspfs et les tables liées seront supprimées, à nettoyer
+
+5°) INFO: views/dossiers/view.ctp
+	Suppression du block DSP (car liées au foyer), partie "Informations CAF"
+
+5°) FIXME: controllers/gedooos_controller.php (function contratinsertion, notification_relance)
+	Transformation des Dspp en Dsp -> modifier le fichier excel des champs disponibles + les modèles liés + transformation de valeurs ?

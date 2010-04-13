@@ -99,7 +99,7 @@
 			'# contrats',
 			'# orientstructs',
 			'# RDV',
-			'# DSPP',
+			'# DSP',
 			'Titre séjour',
 			'# grossesses',
 			'# activités',
@@ -244,11 +244,11 @@
 				}
 				$row[] = count( $orientstructs ); // FIXME: rempli ou pas ?
 				$row[] = count( Set::classicExtract( $p, 'Rendezvous' ) );
-				$dspp = Set::classicExtract( $p, 'Dspp' );
+				$dsp = Set::classicExtract( $p, 'Dsp' );
 				foreach( array( 'id', 'personne_id' ) as $rField ) {
-					unset( $dspp[$rField] );
+					unset( $dsp[$rField] );
 				}
-				$row[] = count( Set::filter( $dspp ) );
+				$row[] = count( Set::filter( $dsp ) );
 
 				$TitreSejour = Set::filter( Set::classicExtract( $p, 'TitreSejour' ) );
 				$row[] = ( empty( $TitreSejour ) ? 0 : 1 );
