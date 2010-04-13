@@ -38,7 +38,7 @@ OK -> app/views/dspfs/view.ctp:66:                    <td><?php echo ( $dsp['foy
 OK -> app/views/dspfs/view.ctp:87:                    <td><?php echo ( isset( $natlog[$dsp['foyer']['Dspf']['natlog']] ) ? $natlog[$dsp['foyer']['Dspf']['natlog']] : null );?></td>
 OK -> app/views/dspfs/view.ctp:91:                    <td><?php echo ( $dsp['foyer']['Dspf']['libautrdiflog'] );?></td>
 OK -> app/views/dspfs/view.ctp:95:                    <td><?php echo ( isset( $demarlog[$dsp['foyer']['Dspf']['demarlog']] ) ? $demarlog[$dsp['foyer']['Dspf']['demarlog']] : null );?></td>
-app/controllers/cohortes_controller.php:10:        var $uses = array( 'Canton', 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne', 'Orientstruct', 'PersonneReferent', 'Referent' );
+OK -> app/controllers/cohortes_controller.php:10:        var $uses = array( 'Canton', 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne', 'Orientstruct', 'PersonneReferent', 'Referent' );
 app/controllers/dossiers_controller.php:9:        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent' );
 OK -> app/controllers/dspfs_controller.php:6:        var $uses = array( 'Dspf', 'Nataccosocfam', 'Diflog', 'Personne', 'Option' , 'Nivetu', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Foyer', 'Dspp', 'Accoemploi');
 OK -> app/controllers/dspfs_controller.php:51:            $dsp['foyer'] = $this->Dspf->find(
@@ -326,12 +326,12 @@ app/controllers/contratsinsertion_controller.php:511:                    $this->
 app/controllers/contratsinsertion_controller.php:513:                //$this->assert( !empty( $dspp ), 'error500' ); // FIXME -> error code
 app/controllers/contratsinsertion_controller.php:515:                $this->data['Dspp'] = array( 'id' => $dspp['Dspp']['id'], 'personne_id' => $dspp['Dspp']['personne_id'] );
 app/controllers/contratsinsertion_controller.php:516:                $this->data['Nivetu'] = ( ( isset( $dspp['Nivetu'] ) ) ? $dspp['Nivetu'] : array() );
-app/controllers/cohortes_controller.php:148:						$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp', 'Orientstruct' ), 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
-app/controllers/cohortes_controller.php:191:                        // Dspp ?
-app/controllers/cohortes_controller.php:192:                        $dspp = $this->Dossier->Foyer->Personne->Dspp->find(
-app/controllers/cohortes_controller.php:196:                                    'Dspp.personne_id' => $element['Personne']['id']
-app/controllers/cohortes_controller.php:200:                        $cohorte[$key] = Set::merge( $cohorte[$key], array( 'Dspp' => $dspp ) );
-app/controllers/cohortes_controller.php:328://                     'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
+OK -> app/controllers/cohortes_controller.php:148:						$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp', 'Orientstruct' ), 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
+OK -> app/controllers/cohortes_controller.php:191:                        // Dspp ?
+OK -> app/controllers/cohortes_controller.php:192:                        $dspp = $this->Dossier->Foyer->Personne->Dspp->find(
+OK -> app/controllers/cohortes_controller.php:196:                                    'Dspp.personne_id' => $element['Personne']['id']
+OK -> app/controllers/cohortes_controller.php:200:                        $cohorte[$key] = Set::merge( $cohorte[$key], array( 'Dspp' => $dspp ) );
+OK -> app/controllers/cohortes_controller.php:328://                     'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
 app/controllers/suivisinsertion_controller.php:47:            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dspp', 'Prestation' => $bindPrestation ) ) );
 app/controllers/dossiers_controller.php:9:        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dspp', 'Dspf', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent' );
 app/controllers/dossiers_controller.php:243:            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dspp', 'Infopoleemploi', 'Prestation' => $bindPrestation ) ) );

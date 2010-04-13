@@ -7,7 +7,7 @@
     class CohortesController extends AppController
     {
         var $name = 'Cohortes';
-        var $uses = array( 'Canton', 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dspf', 'Accoemploi', 'Personne', 'Orientstruct', 'PersonneReferent', 'Referent' );
+        var $uses = array( 'Canton', 'Cohorte', 'Dossier', 'Structurereferente', 'Option', 'Ressource', 'Adresse', 'Typeorient', 'Structurereferente', 'Contratinsertion', 'Detaildroitrsa', 'Zonegeographique', 'Adressefoyer', 'Dsp', 'Accoemploi', 'Personne', 'Orientstruct', 'PersonneReferent', 'Referent' );
         var $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default' );
         var $components = array( 'Gedooo' );
         var $aucunDroit = array( 'progression' );
@@ -145,7 +145,7 @@
                     }
 
 					if( !empty( $cohorte ) ) {
-						$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dspp', 'Orientstruct' ), 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
+						$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dsp', 'Orientstruct' ), 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
 						$cohorte = $this->Dossier->Foyer->Personne->find(
 							'all',
 							array(
@@ -188,16 +188,16 @@
 
                         // ----------------------------------------------------
 
-                        // Dspp ?
-                        $dspp = $this->Dossier->Foyer->Personne->Dspp->find(
+                        // Dsp ?
+                        $dsp = $this->Dossier->Foyer->Personne->Dsp->find(
                             'count',
                             array(
                                 'conditions' => array(
-                                    'Dspp.personne_id' => $element['Personne']['id']
+                                    'Dsp.personne_id' => $element['Personne']['id']
                                 )
                             )
                         );
-                        $cohorte[$key] = Set::merge( $cohorte[$key], array( 'Dspp' => $dspp ) );
+                        $cohorte[$key] = Set::merge( $cohorte[$key], array( 'Dsp' => $dsp ) );
 
                         // ----------------------------------------------------
                         // TODO: continuer le nettoyage à partir d'ici
@@ -325,7 +325,7 @@
 //             $this->Personne->unbindModel(
 //                 array(
 //                     'hasMany' => array( 'Contratinsertion', 'Rendezvous' ),
-//                     'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
+//                     'hasOne' => array( 'Avispcgpersonne', 'Dsp', 'Dossiercaf', 'TitreSejour' )
 //                 )
 //             );
             $personne = $this->Personne->find(
