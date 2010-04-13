@@ -103,10 +103,10 @@
 <fieldset >
     <legend> FORMATION ET EXPERIENCE </legend>
     <?php if( $this->action != 'edit' ) :?>
-        <?php echo $form->input( 'Dspp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
+        <?php echo $form->input( 'Dsp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
     <?php endif;?>
-        <?php echo $form->input( 'Dspp.id', array( 'type' => 'hidden' ) );?>
-        <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
+        <?php echo $form->input( 'Dsp.id', array( 'type' => 'hidden' ) );?>
+        <?php echo $form->input( 'Dsp.nivetu', array( 'label' => __d( 'dsp', 'Dsp.nivetu', true ), 'options' => $nivetus, 'empty' => true ) );?>
         <?php echo $form->input( 'Contratinsertion.diplomes', array( 'label' => required( __( 'diplomes', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __( 'expr_prof', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' =>  __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
@@ -141,7 +141,7 @@
         <?php echo $form->input( 'Contratinsertion.objectifs_fixes', array( 'label' => __( 'objectifs_fixes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 
         <!-- <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __( 'engag_object', true ), 'type' => 'textarea', 'rows' => 4)  ); ?> -->
-        <?php 
+        <?php
             echo $form->input( 'Action.id', array( 'type' => 'hidden' ) );
             echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
             echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __( 'engag_object', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  );

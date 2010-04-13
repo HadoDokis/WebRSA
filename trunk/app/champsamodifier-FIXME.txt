@@ -27,7 +27,16 @@
 	une fois que les tables dspps, dspfs et les tables liées seront supprimées, à nettoyer
 
 5°) INFO: views/dossiers/view.ctp
-	Suppression du block DSP (car liées au foyer), partie "Informations CAF"
+	Suppression du block DSP (car liées au foyer), partie "Informations CAF" (c'était Dspp, d'ailleurs)
 
 5°) FIXME: controllers/gedooos_controller.php (function contratinsertion, notification_relance)
 	Transformation des Dspp en Dsp -> modifier le fichier excel des champs disponibles + les modèles liés + transformation de valeurs ?
+
+6°) INFO: models/dspfs.php, models/dspfs_diflogs.php, models/dspfs_nataccosocfams.php, models/dspps_accoemplois.php, models/dspps_difdisps.php, models/dspps.php, models/dspps_difsocs.php, models/dspps_nataccosocindis.php, models/dspps_natmobs.php, models/dspps_nivetus.php
+	une fois que les tables dspps et les tables liées seront supprimées, à supprimer, ainsi que les contrôleurs et vues associés
+
+7°) TODO: contrôler si on n'affecte pas d'autres modèles dans les anciens modèles (beforeSave) et contrôleurs dspp/dspf + règles de validation
+
+8°) TODO: voir pour les autres changements de la v2
+
+9°) TODO: Comparer la base trunk actualle avec celle de Michel

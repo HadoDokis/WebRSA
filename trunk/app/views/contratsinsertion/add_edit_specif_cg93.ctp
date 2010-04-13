@@ -38,13 +38,15 @@
         <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => required( __( 'duree_engag', true ) ), 'type' => 'select', 'options' => $duree_engag_cg93, 'empty' => true )  ); ?>
         <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true ) ) ;?>
 </fieldset>
+
 <fieldset >
     <legend> FORMATION ET EXPERIENCE </legend>
     <?php if( $this->action != 'edit' ) :?>
-        <?php echo $form->input( 'Dspp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
-        <?php echo $form->input( 'Dspp.personne_id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
+        <?php echo $form->input( 'Dsp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
+        <?php echo $form->input( 'Dsp.personne_id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
     <?php endif;?>
-        <?php echo $form->input( 'Nivetu.Nivetu', array( 'label' => false, 'div' => false,  'multiple' => 'checkbox', 'options' => $nivetus ) );?>
+        <?php echo $form->input( 'Dsp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
+        <?php echo $form->input( 'Dsp.nivetu', array( 'label' => __d( 'dsp', 'Dsp.nivetu', true ), 'options' => $nivetus, 'empty' => true ) );?>
         <?php echo $form->input( 'Contratinsertion.diplomes', array( 'label' => required( __( 'diplomes', true ) ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __( 'expr_prof', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
         <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' =>  __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>

@@ -21,13 +21,25 @@
 			'Detaildiflog'
 		);
 
-		var $validate = array(
+        var $validate = array(
+            'hispro' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
 			'annobtnivdipmax' => array(
 				'rule' => array( 'inclusiveRange', ANNOBTNIVDIPMAX_MIN_YEAR, ANNOBTNIVDIPMAX_MAX_YEAR ),
 				'message' => ANNOBTNIVDIPMAX_MESSAGE,
 				'allowEmpty' => true
-			)
-		);
+			),
+            'personne_id' => array( // FIXME: Autovalidate ne le fait pas ? -> contratsinsertion/edit/10630
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            )
+        );
 
         var $actsAs = array(
 			'Autovalidate',

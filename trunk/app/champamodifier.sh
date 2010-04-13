@@ -12,7 +12,8 @@ function grepLines() {
         grep -nRi --exclude="*\.svn*" --exclude="*\.sql"  "[^A-Z]$champ[^A-Z]" app/ \
 			| grep -v "tests\/" \
 			| grep -v "\/config\/sql\/" \
-			| grep -v "champamodifier\.sh"
+			| grep -v "champamodifier\.sh" \
+			| grep -v "champsamodifier.*\.txt"
     done
 }
 
@@ -96,7 +97,7 @@ tablesSupprimees=( \
 )
 
 echo "==============================================================================="
-echo "Tables supprimés"
+echo "Tables supprimées"
 echo "==============================================================================="
 grepLines "${tablesSupprimees[@]}"
 
