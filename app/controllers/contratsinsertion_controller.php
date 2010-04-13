@@ -15,7 +15,7 @@
     {
 
         var $name = 'Contratsinsertion';
-        var $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Typocontrat', 'Nivetu', 'Dspp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'DsppNivetu', 'PersonneReferent' );
+        var $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Typocontrat', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'PersonneReferent' );
         var $helpers = array( 'Ajax' );
         var $components = array( 'RequestHandler' );
         var $aucunDroit = array( 'ajax', 'ajaxreffonct', 'ajaxrefcoord', 'ajaxreferent', 'ajaxstructadr', 'ajaxraisonci' );
@@ -53,7 +53,7 @@
                 $this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
                 $this->set( 'typevoie', $this->Option->typevoie() );
                 $this->set( 'fonction_pers', $this->Option->fonction_pers() );
-                $this->set( 'nivetus', $this->Contratinsertion->Personne->Dspp->Nivetu->find( 'list' ) );
+                $this->set( 'nivetus', $this->Contratinsertion->Personne->Dsp->enumList( 'nivetu' ) );
                 $this->set( 'lib_action', $this->Option->lib_action() );
                 $this->set( 'typo_aide', $this->Option->typo_aide() );
                 $this->set( 'soclmaj', $this->Option->natpfcre( 'soclmaj' ) );
@@ -400,7 +400,7 @@
                 $this->Contratinsertion->set( $this->data );
                 $valid = $this->Contratinsertion->validates();
                 $valid = $this->Contratinsertion->Actioninsertion->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
-                $valid = $this->Contratinsertion->Personne->Dspp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
+                $valid = $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
                 //FIXME
                     $valid = $this->Contratinsertion->Structurereferente->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
                 //
@@ -409,7 +409,7 @@
 
                 if( $valid ) {
                     $saved = true;
-                    $this->Contratinsertion->Personne->Dspp->create();
+                    $this->Contratinsertion->Personne->Dsp->create();
                     $this->Contratinsertion->Actioninsertion->create();
                     //FIXME
                         $this->Contratinsertion->Structurereferente->create();
@@ -417,7 +417,7 @@
                     $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->create();
                     $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->create();
 
-                    $saved = $this->Contratinsertion->Personne->Dspp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
+                    $saved = $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
                     $saved = $this->Contratinsertion->Actioninsertion->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
                     //FIXME
                         $saved = $this->Contratinsertion->Structurereferente->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
@@ -484,36 +484,24 @@
                 }
 
                 /// Récupération des données socio pro (notamment Niveau etude) lié au contrat
-                $this->Contratinsertion->Personne->Dspp->unbindModelAll();
-                $this->Contratinsertion->Personne->Dspp->bindModel(
-                    array(
-                        'hasAndBelongsToMany' => array(
-                            'Nivetu' => array(
-                                'classname' => 'Nivetu',
-                                'joinTable' => 'dspps_nivetus',
-                                'foreignKey' => 'dspp_id',
-                                'associationForeignKey' => 'nivetu_id'
-                            )
-                        )
-                    )
-                );
-                $dspp = $this->Contratinsertion->Personne->Dspp->findByPersonneId( $personne_id, null, null, 1 );
+                $this->Contratinsertion->Personne->Dsp->unbindModelAll();
+                $dsp = $this->Contratinsertion->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
 
-                if( empty( $dspp ) ) {
-                    $dspp = array( 'Dspp' => array( 'personne_id' => $personne_id ) );
-                    $this->Contratinsertion->Personne->Dspp->set( $dspp );
-                    if( $this->Contratinsertion->Personne->Dspp->save( $dspp ) ) {
-                        $dspp = $this->Contratinsertion->Personne->Dspp->findByPersonneId( $personne_id, null, null, 1 );
+                if( empty( $dsp ) ) {
+                    $dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
+                    $this->Contratinsertion->Personne->Dsp->set( $dsp );
+                    if( $this->Contratinsertion->Personne->Dsp->save( $dsp ) ) {
+                        $dsp = $this->Contratinsertion->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
                     }
                     else {
                         $this->cakeError( 'error500' );
                     }
-                    $this->assert( !empty( $dspp ), 'error500' );
+                    $this->assert( !empty( $dsp ), 'error500' );
                 }
-                //$this->assert( !empty( $dspp ), 'error500' ); // FIXME -> error code
+                //$this->assert( !empty( $dsp ), 'error500' ); // FIXME -> error code
 
-                $this->data['Dspp'] = array( 'id' => $dspp['Dspp']['id'], 'personne_id' => $dspp['Dspp']['personne_id'] );
-                $this->data['Nivetu'] = ( ( isset( $dspp['Nivetu'] ) ) ? $dspp['Nivetu'] : array() );
+                $this->data['Dsp'] = array( 'id' => $dsp['Dsp']['id'], 'personne_id' => $dsp['Dsp']['personne_id'] );
+                $this->data['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );
 
                 /// Récupération du services instructeur lié au contrat
                 $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
