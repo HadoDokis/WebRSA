@@ -23,7 +23,7 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'lib_typo' );?></th>
-                    <td><?php echo ( $tc[$contratinsertion['Contratinsertion']['typocontrat_id']] );?></td>
+                    <td><?php echo ( $contratinsertion['Contratinsertion']['numcontrat'] );?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'dd_ci' );?></th>
