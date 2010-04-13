@@ -32,13 +32,13 @@
 //         $paginator->options( array( 'url' => $this->params['named'] ) );
 //         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
 //         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
-// 
+//
 //         $pages = $paginator->first( '<< ' );
 //         $pages .= $paginator->prev( ' < ' );
 //         $pages .= $paginator->numbers();
 //         $pages .= $paginator->next( ' > ' );
 //         $pages .= $paginator->last( ' >>' );
-// 
+//
 //         $pagination .= $html->tag( 'p', $pages );
 //     }
 //     else {
@@ -87,7 +87,7 @@
                     <th>Structure</th>
                     <th>Décision</th>
                     <th>Date proposition</th>
-                    <th>Date dernier CI</th> 
+                    <th>Date dernier CI</th>
                     <th class="action">Action</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
@@ -142,7 +142,7 @@
                                 h( $personne['Adresse']['locaadr'] ),
                                 h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
                                 h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
-                                h( $personne['Dspp'] ? 'Oui' : 'Non' ),
+                                h( $personne['Dsp'] ? 'Oui' : 'Non' ),
                                 h( value( $typeserins, Set::classicExtract( $personne, 'Suiviinstruction.typeserins') ) ),
                                 h( isset( $typesOrient[$personne['Orientstruct']['propo_algo']] ) ? $typesOrient[$personne['Orientstruct']['propo_algo']] : null),
                                 h( $typesOrient[$personne['Orientstruct']['typeorient_id']] ),

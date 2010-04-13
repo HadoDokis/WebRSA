@@ -150,7 +150,7 @@
 
                                     h( $personne['Adresse']['locaadr'] ),
                                     h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
-                                    h( $personne['Dspp'] ? 'Oui' : 'Non' ),
+                                    h( $personne['Dsp'] ? 'Oui' : 'Non' ),
 //                                     h( date_short( $personne['Dossier']['Situationdossierrsa']['dtclorsa'] ) ),
                                     h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
                                     h( isset( $typeserins[Set::classicExtract( $personne, 'Suiviinstruction.typeserins')] ) ? $typeserins[Set::classicExtract( $personne, 'Suiviinstruction.typeserins')] : '' ),

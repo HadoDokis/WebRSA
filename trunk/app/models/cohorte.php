@@ -9,70 +9,6 @@
         var $name = 'Cohorte';
         var $useTable = false;
 
-        /**
-        *
-        * INFO: Préprofessionnelle => Socioprofessionnelle --> mettre un type dans la table ?
-        *
-        */
-
-        /*function preOrientation( $element ) {
-            $propo_algo = null;
-
-            if( isset( $element['Dspp'] ) ) {
-                $accoemploiCodes = Set::extract( 'Dspp.Accoemploi.{n}.code', $element );
-
-                // Socioprofessionnelle, Social
-                // 1°) Passé professionnel ? -> Emploi
-                //     1901 : Vous avez toujours travaillé
-                //     1902 : Vous travaillez par intermittence
-                if( !empty( $element['Dspp']['hispro'] ) && ( $element['Dspp']['hispro'] == '1901' || $element['Dspp']['hispro'] == '1902' ) ) {
-                    $propo_algo = 'Emploi'; // Emploi (Pôle emploi)
-                }
-                // 2°) Etes-vous accompagné dans votre recherche d'emploi ?
-                //     1802 : Pôle Emploi
-                else if( empty( $propo_algo ) && !empty( $accoemploiCodes ) && in_array( '1802', $accoemploiCodes ) ) {
-                    $propo_algo = 'Emploi';
-                }
-                // 3°) Êtes-vous sans activité depuis moins de 24 mois ?
-                //     Date éventuelle de cessation d’activité ?
-                else if( empty( $propo_algo ) ) {
-                    $dfderact = null;
-                    if( !empty( $element['Dspp']['dfderact'] ) ) {
-                        list( $year, $month, $day ) = explode( '-', $element['Dspp']['dfderact'] );
-                        $dfderact = mktime( 0, 0, 0, $month, $day, $year );
-                    }
-                    if( !empty( $dfderact ) && ( $dfderact > strtotime( '-24 months' ) ) ) {
-                        $propo_algo = 'Emploi';
-                    }
-                }
-
-                if( empty( $propo_algo ) && isset( $element['Foyer']['Dspf'] ) && !empty( $element['Foyer']['Dspf'] ) ) {
-                    $dspf = Classregistry::init( 'Dossier' )->Foyer->Dspf->find(
-                        'first',
-                        array(
-                            'conditions' => array( 'Dspf.id' => $element['Foyer']['Dspf']['id'] )
-                        )
-                    );
-                    if( !empty( $dspf ) ) {
-                        // FIXME: grosse requête pour pas grand-chose
-                        if( $element['Foyer']['Dspf']['accosocfam'] == 'O' ) {
-                            $propo_algo = 'Social'; // SSD (Service Social Départemental)
-                        }
-                        else {
-                            $propo_algo = 'Socioprofessionnelle'; // PDV (Projet De Ville)
-                        }
-                    }
-                }
-            }
-
-            if( empty( $propo_algo ) ) {
-				$propo_algo = null;
-            }
-
-
-            return $propo_algo;
-        }*/
-
 		/**
 		*
 		*/
@@ -80,21 +16,25 @@
         function preOrientation( $element ) {
             $propo_algo = null;
 
-			/// Ajout des informations liées aux Dspf
-			$dspf = Classregistry::init( 'Dossier' )->Foyer->Dspf->find(
+			/// Dsp
+			$this->Dsp = Classregistry::init( 'Dsp' );
+			$this->Dsp->unbindModel( array( 'belongsTo' => array( 'Personne' ) ) );
+			$dsp = $this->Dsp->find(
 				'first',
 				array(
-					'conditions' => array( 'Dspf.foyer_id' => $element['Foyer']['id'] )
+					'conditions' => array( 'Dsp.personne_id' => 174537/*$element['Personne']['id']*/ ),
+					'recursive' => 1
 				)
 			);
-			$element['Foyer'] = Set::merge( $element['Foyer'], $dspf );
+
+// 			$element['Personne'] = Set::merge( $element['Personne'], $dsp );
 
 			/// Règles de gestion
 
 			// Règle 1 (Prioritaire) : Code XML instruction : « NATLOG ». Nature du logement ?
 			// 0904 = Logement d'urgence : CHRS → Orientation vers le Social
 			// 0911 = Logement précaire : résidence sociale → Orientation vers le Social
-			$natlog = Set::classicExtract( $element, 'Foyer.Dspf.natlog' );
+			$natlog = Set::classicExtract( $dsp, 'Dsp.natlog' );
 			if( empty( $propo_algo ) && !empty( $natlog ) ) {
 				if( in_array( $natlog, array( '0904', '0911' ) ) ) {
 					$propo_algo = 'Social';
@@ -103,7 +43,7 @@
 
 			// Règle 2 (Prioritaire)  : Code XML instruction : « DIFLOG ». Difficultés logement ?
 			// 1006 = Fin de bail, expulsion → Orientation vers le Service Social
-			$diflog = Set::extract( $element, 'Foyer.Diflog.{n}.code' );
+			$diflog = Set::extract( $dsp, '/Detaildiflog/diflog' );
 			if( empty( $propo_algo ) && !empty( $diflog ) ) {
 				if( in_array( '1006', $diflog ) ) {
 					$propo_algo = 'Social';
@@ -116,7 +56,8 @@
 			// 0105 = Attente de pension vieillesse ou invalidité‚ ou d'allocation handicap → Orientation vers le Social
 			// 0109 = Fin d'études → Orientation vers le Pôle Emploi
 			// 0101 = Fin de droits ASSEDIC → Orientation vers le Pôle Emploi
-			$motidemrsa = Set::extract( $element, 'Foyer.Dspf.motidemrsa' );
+			/// FIXME: n'existe plus
+			/*$motidemrsa = Set::extract( $dsp, 'Dsp.motidemrsa' );
 			if( empty( $propo_algo ) && !empty( $motidemrsa ) ) {
 				if( in_array( $motidemrsa, array( '0102', '0105' ) ) ) {
 					$propo_algo = 'Social';
@@ -124,22 +65,22 @@
 				else if( in_array( $motidemrsa, array( '0109', '0101' ) ) ) {
 					$propo_algo = 'Emploi';
 				}
-			}
+			}*/
 
 			// Règle 4 : Code XML instruction : « DTNAI ». Date de Naissance.
 			$dtnai = Set::extract( $element, 'Personne.dtnai' );
-			$dfderact = Set::extract( $element, 'Dspp.dfderact' );
+			/// FIXME: change chaque année ...
+			$cessderact = Set::extract( $dsp, 'Dsp.cessderact' );
 
 			// Si la date«DFDERACT»  n'est pas renseignée : Règle 5
-			if( empty( $propo_algo ) && !empty( $dfderact ) ) {
+			if( empty( $propo_algo ) && !empty( $cessderact ) ) {
 				$age = age( $dtnai );
-				$age_dfderact = age( $dfderact );
 
 				// + 57 Ans ( Date du jour) :
 				// Code XML instruction : « DFDERACT » (Date éventuelle de cessation de cette activité) = -1ans ( Date du jour) → Orientation vers le PDV
 				// Code XML instruction : « DFDERACT» (Date éventuelle de cessation de cette activité) = +1ans ( Date du jour) → Orientation vers le Service Social
 				if( $age >= 57 ) {
-					if( $age_dfderact < 1 ) {
+					if( $cessderact < 1 ) {
 						$propo_algo = 'Socioprofessionnelle';
 					}
 					else {
@@ -151,10 +92,10 @@
 				// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = entre 1 et 5 ans ( Date du jour) → Orientation vers le PDV
 				// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = +5 ans ( Date du jour) → Orientation vers le Service Social
 				else {
-					if( $age_dfderact < 1 ) {
+					if( $cessderact < 1 ) {
 						$propo_algo = 'Emploi';
 					}
-					else if( $age_dfderact < 5 ) {
+					else if( $cessderact < 5 ) {
 						$propo_algo = 'Socioprofessionnelle';
 					}
 					else {
@@ -168,7 +109,7 @@
 			// 1902 = Oui → Orientation vers le PDV
 			// 1903 = Oui → Orientation vers le PDV
 			// 1904 = Oui → Orientation vers le PDV
-			$hispro = Set::extract( $element, 'Dspp.hispro' );
+			$hispro = Set::extract( $dsp, 'Dsp.hispro' );
 			if( empty( $propo_algo ) && !empty( $hispro ) ) {
 				if( $hispro == '1901' ) {
 					$propo_algo = 'Emploi';
@@ -324,7 +265,7 @@
             $sql = 'SELECT DISTINCT personnes.id
                     FROM personnes
                         INNER JOIN prestations ON ( prestations.personne_id = personnes.id AND prestations.natprest = \'RSA\' AND ( prestations.rolepers = \'DEM\' OR prestations.rolepers = \'CJT\' ) )
-                        '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dspps ON ( dspps.personne_id = personnes.id )' : '' ).'
+                        '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dsps ON ( dsps.personne_id = personnes.id )' : '' ).'
                         INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
                         INNER JOIN dossiers_rsa ON ( foyers.dossier_rsa_id = dossiers_rsa.id )
                         INNER JOIN adresses_foyers ON ( adresses_foyers.foyer_id = foyers.id AND adresses_foyers.rgadr = \'01\' )

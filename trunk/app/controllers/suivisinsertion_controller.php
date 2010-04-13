@@ -44,7 +44,7 @@
             */
             $bindPrestation = $this->Personne->hasOne['Prestation'];
             $this->Personne->unbindModelAll();
-            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dspp', 'Prestation' => $bindPrestation ) ) );
+            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Prestation' => $bindPrestation ) ) );
             $personnesFoyer = $this->Personne->find(
                 'all',
                 array(

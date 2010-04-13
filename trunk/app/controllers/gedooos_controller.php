@@ -7,7 +7,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dspp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dsp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent' );
         var $components = array( 'Jetons', 'Gedooo' );
         var $helpers = array( 'Locale' );
 
@@ -319,15 +319,15 @@
             $contratinsertion['Serviceinstructeur'] = $user['Serviceinstructeur'];
 // debug($contratinsertion);
             //////////////////////////////////////////////////////////////////////////
-            $dspp = $this->Dspp->find(
+            $dsp = $this->Dsp->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Dspp.personne_id' => $contratinsertion['Personne']['id']
+                        'Dsp.personne_id' => $contratinsertion['Personne']['id']
                     )
                 )
             );
-            $contratinsertion['Dspp']['personne_id'] = $dspp['Personne']['id'];
+            $contratinsertion['Dsp']['personne_id'] = $dsp['Personne']['id'];
             //////////////////////////////////////////////////////////////////////////
             $presta = $this->Prestation->find(
                 'first',
@@ -405,8 +405,8 @@
 
             $contratinsertion['Detaildroitrsa']['oridemrsa'] = isset( $oridemrsa[$ddrsa['Detaildroitrsa']['oridemrsa']] ) ? $oridemrsa[$ddrsa['Detaildroitrsa']['oridemrsa']] : null ;
 
-            /// Données Dspp récupérées
-            $contratinsertion['Dspp']['couvsoc'] = ( isset( $dspp['Dspp']['couvsoc'] ) ? 'Oui' : 'Non' );
+            /// Données Dsp récupérées
+            $contratinsertion['Dsp']['topcouvsoc'] = ( ( isset( $dsp['Dsp']['topcouvsoc'] ) && ( $dsp['Dsp']['topcouvsoc'] == '1' ) ) ? 'Oui' : 'Non' );
 
             /// Données Référent lié à la personne récupérées
             $personne_referent = $this->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $contratinsertion['Personne']['id'] ) ) );
@@ -566,12 +566,6 @@
 
         function _get( $personne_id ) {
             $this->Personne->unbindModel( array( 'hasMany' => array( 'Contratinsertion', 'Rendezvous'/*, 'Orientstruct'*/ ) ) );
-//             $this->Personne->unbindModel(
-//                 array(
-//                     'hasMany' => array( 'Contratinsertion', 'Rendezvous' ),
-//                     'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
-//                 )
-//             );
             $personne = $this->Personne->find(
                 'first',
                 array(
@@ -794,7 +788,7 @@
             $this->Personne->unbindModel(
                 array(
                     'hasMany' => array( 'Contratinsertion', 'Rendezvous' ),
-                    'hasOne' => array( 'Avispcgpersonne', 'Dspp', 'Dossiercaf', 'TitreSejour' )
+                    'hasOne' => array( 'Avispcgpersonne', 'Dsp', 'Dossiercaf', 'TitreSejour' )
                 )
             );
             // TODO: error404/error500 si on ne trouve pas les données
@@ -1089,8 +1083,6 @@
             $this->set( 'typevoie', $typevoie );
             $sitfam = $this->Option->sitfam();
             $this->set( 'sitfam', $sitfam );
-//             $optionsdsps = $this->Dsp->allEnumLists();
-//             $this->set( 'optionsdsps', $optionsdsps );
 
             $apre = $this->Apre->find(
                 'first',
@@ -1128,17 +1120,6 @@
                 )
             );
             $apre['Personne'] = $personne['Personne'];
-
-//             $dsp = $this->Dsp->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array(
-//                         'Dsp.personne_id' => Set::classicExtract( $personne, 'Personne.id' )
-//                     ),
-//                     'recursive' => -1
-//                 )
-//             );
-//             $apre['Dsp'] = $dsp['Dsp'];
 
             /// Récupération de l'adresse liée à la personne
             $this->Adressefoyer->bindModel(
@@ -1233,10 +1214,6 @@
             ///Nombre d'enfants par foyer
             $nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $apre, 'Foyer.id' ) );
             $apre['Foyer']['nbenfants'] = $nbEnfants;
-
-            ///Données propre aux Dsp de la personne
-//             $apre['Dsp']['cessderact'] = Set::enum( Set::classicExtract( $apre, 'Dsp.cessderact' ), $optionsdsps['cessderact'] );
-//             $apre['Dsp']['nivetu'] = Set::enum( Set::classicExtract( $apre, 'Dsp.nivetu' ), $optionsdsps['nivetu'] );
 
             $apre['Referent']['qual'] = Set::enum( Set::classicExtract( $apre, 'Referent.qual' ), $qual );
 

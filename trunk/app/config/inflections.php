@@ -104,7 +104,6 @@
         'remise_indu' => 'remises_indus',
         'annulation_faible_montant' => 'annulations_faible_montant',
         'autre_annulation' => 'autres_annulations',
-        'dspp_nivetu' => 'dspps_nivetus',
         //Parcours d'insertion
         'suiviinsertion' => 'suivisinsertion',
         'dossierpdo' => 'dossierspdo',
@@ -220,6 +219,8 @@
         	'ep_theme' => 'eps_themes',
 		/// Table de connexion ajoutée par gaëtan
 		'aro_aco' => 'aros_acos',
+		/// Dsp, v 1
+        'dspp_nivetu' => 'dspps_nivetus',
 		/// Dsp, v 2
 		'detaildifsoc' => 'detailsdifsocs',
 		'detailaccosocfam' => 'detailsaccosocfams',
