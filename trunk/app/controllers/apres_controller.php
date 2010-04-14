@@ -53,6 +53,8 @@
             if( isset( $this->params['form']['Cancel'] ) ) {
                 $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
             }
+
+            $this->render( $this->action, null, 'indexparams_'.Configure::read( 'nom_form_apre_cg' ) );
         }
 
         /** ********************************************************************
