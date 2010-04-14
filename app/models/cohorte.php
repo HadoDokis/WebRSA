@@ -51,21 +51,20 @@
 			}
 
 			//
-			// Règle 3 (Prioritaire)  : Code XML instruction : « MOTIDEMRSA ». "Quel est le motif de votre demande de rSa ?"
+			// Règle 3 (Prioritaire)  : Code XML instruction : « sitpersdemrsa ». "Quel est le motif de votre demande de rSa ?"
 			// 0102 = Fin de droits AAH → Orientation vers le Social
 			// 0105 = Attente de pension vieillesse ou invalidité‚ ou d'allocation handicap → Orientation vers le Social
 			// 0109 = Fin d'études → Orientation vers le Pôle Emploi
 			// 0101 = Fin de droits ASSEDIC → Orientation vers le Pôle Emploi
-			/// FIXME: n'existe plus
-			/*$motidemrsa = Set::extract( $dsp, 'Dsp.motidemrsa' );
-			if( empty( $propo_algo ) && !empty( $motidemrsa ) ) {
-				if( in_array( $motidemrsa, array( '0102', '0105' ) ) ) {
+			$sitpersdemrsa = Set::extract( $dsp, 'Dsp.sitpersdemrsa' );
+			if( empty( $propo_algo ) && !empty( $sitpersdemrsa ) ) {
+				if( in_array( $sitpersdemrsa, array( '0102', '0105' ) ) ) {
 					$propo_algo = 'Social';
 				}
-				else if( in_array( $motidemrsa, array( '0109', '0101' ) ) ) {
+				else if( in_array( $sitpersdemrsa, array( '0109', '0101' ) ) ) {
 					$propo_algo = 'Emploi';
 				}
-			}*/
+			}
 
 			// Règle 4 : Code XML instruction : « DTNAI ». Date de Naissance.
 			$dtnai = Set::extract( $element, 'Personne.dtnai' );
@@ -80,7 +79,7 @@
 				// Code XML instruction : « DFDERACT » (Date éventuelle de cessation de cette activité) = -1ans ( Date du jour) → Orientation vers le PDV
 				// Code XML instruction : « DFDERACT» (Date éventuelle de cessation de cette activité) = +1ans ( Date du jour) → Orientation vers le Service Social
 				if( $age >= 57 ) {
-					if( $cessderact < 1 ) {
+					if( $cessderact == '2701' ) {
 						$propo_algo = 'Socioprofessionnelle';
 					}
 					else {
@@ -92,12 +91,13 @@
 				// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = entre 1 et 5 ans ( Date du jour) → Orientation vers le PDV
 				// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = +5 ans ( Date du jour) → Orientation vers le Service Social
 				else {
-					if( $cessderact < 1 ) {
+					if( $cessderact == '2701' ) {
 						$propo_algo = 'Emploi';
 					}
-					else if( $cessderact < 5 ) {
+					// FIXME: on ne peut plus savoir avec les nouvelles DSP
+					/*else if( $cessderact < 5 ) {
 						$propo_algo = 'Socioprofessionnelle';
-					}
+					}*/
 					else {
 						$propo_algo = 'Social';
 					}
