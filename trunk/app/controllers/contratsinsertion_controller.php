@@ -15,7 +15,7 @@
     {
 
         var $name = 'Contratsinsertion';
-        var $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Typocontrat', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'PersonneReferent' );
+        var $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'PersonneReferent' );
         var $helpers = array( 'Ajax' );
         var $components = array( 'RequestHandler' );
         var $aucunDroit = array( 'ajax', 'ajaxreffonct', 'ajaxrefcoord', 'ajaxreferent', 'ajaxstructadr', 'ajaxraisonci' );
@@ -28,7 +28,6 @@
         function beforeFilter() {
             parent::beforeFilter();
             if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
-                $this->set( 'tc', $this->Contratinsertion->Typocontrat->find( 'list' ) );
                 $this->set( 'decision_ci', $this->Option->decision_ci() );
             }
 
@@ -223,8 +222,6 @@
             $contratinsertion = $this->Contratinsertion->findById( $contratinsertion_id );
             $this->assert( !empty( $contratinsertion ), 'invalidParameter' );
 
-            $this->set( 'tc', $this->Contratinsertion->Typocontrat->find( 'list' ) );
-
             $codesaction = $this->Action->find( 'list', array( 'fields' => array( 'code', 'libelle' ) ) );
             $codesaction = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.engag_object' ), $codesaction );
 //             $codesaction = empty( $contratinsertion['Contratinsertion']['engag_object'] ) ? null : $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
@@ -258,15 +255,6 @@
             if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
                 $this->redirect( array( 'action' => 'index', $id ) );
             }
-
-// 			$tc = $this->Contratinsertion->Typocontrat->find( 'list' );
-// 			$premierContratKey = array_search( 'Premier contrat', $tc );
-//
-// 			if( !empty( $premierContratKey ) ) {
-// 				$tcPremierContrat = array( $premierContratKey => $tc[$premierContratKey] );
-// 				$tcAutresContrats = $tc;
-// 				unset( $tcAutresContrats[$premierContratKey] );
-// 			}
 
             $valueFormeci = null;
             if( $this->action == 'add' ) {
@@ -515,14 +503,7 @@
 
                 /// Si on est en présence d'un deuxième contrat -> Alors renouvellement
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
-/*
-                if( $this->data['Contratinsertion']['rg_ci'] > 1 ){
 
-                     $this->data['Contratinsertion']['typocontrat_id'] = 2; ///FIXME: nb magique !!!
-                }
-                else {
-                    $this->data['Contratinsertion']['typocontrat_id'] = 1;
-                }*/
             }
 
             $struct_id = Set::classicExtract( $this->data, 'Contratinsertion.structurereferente_id' );

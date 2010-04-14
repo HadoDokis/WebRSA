@@ -5,7 +5,7 @@
     class CriteresciController extends AppController
     {
         var $name = 'Criteresci';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse',  'Action', 'Personne', 'Typocontrat', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Cohorteci', 'Referent' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse',  'Action', 'Personne', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Cohorteci', 'Referent' );
         var $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
         var $helpers = array( 'Csv', 'Ajax' );
@@ -38,7 +38,6 @@
             $this->set( 'natpf', $this->Option->natpf() );
 
             $this->set( 'decision_ci', $this->Option->decision_ci() );
-            $this->set( 'tc', $this->Contratinsertion->Typocontrat->find( 'list' ) );
             $this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
 
             $this->set( 'action', $this->Action->find( 'list' ) );

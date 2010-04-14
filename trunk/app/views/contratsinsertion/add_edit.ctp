@@ -231,14 +231,10 @@
             </tr>
             <tr>
                 <td class="noborder">
-                    <?php /*if( $this->data['Contratinsertion']['typocontrat_id'] == 1 ):?>
-                        <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false, 'type' => 'hidden', 'id' => 'first' ) );?>
-                    <?php endif;*/?>
                     <?php
                         echo $xform->input( 'Contratinsertion.numcontrat', array( 'label' => false , 'type' => 'hidden', 'value' => $tc ) );
                         echo $tc;
-//                         echo Set::classicExtract( $this->data, 'Contratinsertion.numcontrat' );
-//                         echo $tc;/*$form->input( 'Contratinsertion.typocontrat_id', array( 'label' => false , 'type' => 'select', 'options' => $tc, 'empty' => true /*, 'legend' => false ) );*/
+
                     ?>
                 </td>
                 <td class="noborder">

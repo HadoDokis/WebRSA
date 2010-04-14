@@ -18,7 +18,6 @@
                 <?php echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden'/*, 'value' => $personne_id*/ ) );?>
                 <?php echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );?>
                 <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden' ) );?>
-                <?php echo $form->input( 'Contratinsertion.typocontrat_id', array( 'type' => 'hidden' ) );?>
 
                 <?php echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __( 'observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
                 <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __( 'decision_ci', true ), 'type' => 'select', 'options' => $decision_ci ) ); ?>

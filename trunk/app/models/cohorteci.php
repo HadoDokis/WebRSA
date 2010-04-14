@@ -154,7 +154,7 @@ SELECT DISTINCT contratsinsertion.id
                 'fields' => array(
                     '"Contratinsertion"."id"',
                     '"Contratinsertion"."personne_id"',
-                    '"Contratinsertion"."typocontrat_id"',
+                    '"Contratinsertion"."numcontrat"',
                     '"Contratinsertion"."referent_id"',
                     '"Contratinsertion"."structurereferente_id"',
                     '"Contratinsertion"."rg_ci"',

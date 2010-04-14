@@ -29,7 +29,6 @@
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
             $this->set( 'struct', $struct );
-            $this->set( 'tc', $this->Contratinsertion->Typocontrat->find( 'list' ) );
             $this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
 
             $this->set( 'action', $this->Contratinsertion->Actioninsertion->find( 'list' ) );
