@@ -6,7 +6,7 @@
 		var $csvFile = null;
 		var $schema = array();
 		var $rejects = array();
-		var $fields = array(
+		var $defaultFields = array(
 			'matricul' => 0,
 			'respdos' => 1,
 			'nomrespd' => 2,
@@ -25,8 +25,9 @@
 			'guireact' => 15,
 			'ncptreac' => 16,
 			'cribreac' => 17,
-			'datedemandeapre' => 18
+			'date' => 18
 		);
+		var $fields = array();
 		var $script = null;
 		var $debug = null;
 		var $config = array();
@@ -125,7 +126,7 @@
 			}
 
 			if( !$this->config['date'] ) {
-				unset( $this->fields['datedemandeapre'] );
+				unset( $this->fields['date'] );
 			}
 
 			$this->outfile = APP_DIR.sprintf( '/tmp/logs/%s-%s.log', $this->script, date( 'Ymd-His' ) );
@@ -139,6 +140,7 @@
 			$this->Apre->begin();
 
 			$fields = array();
+			$nLignesVides = 0;
 			$nLignes = 0;
 			$nLignesTraitees = 0;
 			$success = true;
@@ -150,55 +152,41 @@
 
 			$lines = explode( "\n", $fileLines );
 
-			// Vérifications générales de bon formattage du fichier
-			$datesErrors = array();
-			$formatErrors = array();
-			foreach( $lines as $nLigne => $line ) {
-				if( !$this->config['headers'] || ( $nLigne != 0 ) ) {
-					if( preg_match( '/'.$this->config['separator'].'[0-9,\.]+E\+[0-9]+'.$this->config['separator'].'/i', $line, $matches ) ) {
-						$formatErrors[] = "ligne {$nLigne}, \"{$matches[0]}\"";
-					}
-					if( $this->config['date'] ) {
-						/// FIXME: dans quel format les reçoit-on ?
-						if( !preg_match( '/'.$this->config['separator'].'[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/i', $line, $matches ) ) {
-							$tmp = explode( $this->config['separator'], $line );
-							if( !empty( $tmp ) ) {
-								$tmp = trim( $tmp[count($tmp)-1] );
-								if( !empty( $tmp ) ) {
-									$datesErrors[] = "ligne {$nLigne}, \"$tmp\"";
-								}
-							}
-						}
-					}
-				}
-			}
-
-			// Rapport d'erreur en cas de mauvais formattage
-			if( ( count( $formatErrors ) > 0 ) || ( count( $datesErrors ) > 0 ) ) {
-				if( count( $formatErrors ) ) {
-					$this->err( count( $formatErrors )." erreurs de format détectées:\n  * ".implode( "\n  * ", $formatErrors ) );
-				}
-				if( count( $datesErrors ) ) {
-					$this->err( count( $datesErrors )." erreurs de dates détectées (les dates doivent se trouver dans la dernière colonne au format JJ/MM/AAAA - exemple: 01/01/2010)\n  * ".implode( "\n  * ", $datesErrors ) );
-				}
-
-				$this->exportlog();
-				return 2;
-			}
-
-
 			foreach( $lines as $nLigne => $line ) {
 				$line = trim( $line );
 				$parts = explode( $this->config['separator'], $line );
 				$cleanedParts = Set::filter( $parts );
 				$nLignes++;
 				if( !empty( $cleanedParts ) ) {
+					if( $this->config['headers'] && ( $nLigne == 0 ) ) {
+						foreach( $parts as $offset => $title ) {
+							$this->fields[strtolower( trim(  trim( trim( $title ), '"' ) ) )] = $offset;
+						}
+						$diff = array_diff( $this->fields, $this->defaultFields );
+						if( !empty( $diff ) ) {
+							$errMsg = "En-têtes de colonnes mal formés (reçu ".implode( ", ", $this->fields )." - attendu ".implode( ", ", $this->defaultFields )." )";
+							$this->err( "{$errMsg}, ".count( $parts )." parties au lieu des ".count( $this->fields )." attendues (ligne {$nLigne}): {$line}" );
+							exit( 2 );
+						}
+					}
+					else if( !$this->config['headers'] && ( $nLigne == 0 ) ) {
+						$this->fields = $this->defaultFields;
+					}
+
 					if( !$this->config['headers'] || ( $nLigne != 0 ) ) {
 						if( $this->debug ) {
 							$this->out( "Traitement de la ligne $nLigne" );
 						}
 
-						if( count( $parts ) == count( $this->fields ) ) {
+						if( preg_match( '/'.$this->config['separator'].'[0-9,\.]+E\+[0-9]+'.$this->config['separator'].'/i', $line, $matches ) ) {
+							$errMsg = "Erreur de format";
+							$this->err( "{$errMsg} (ligne {$nLigne}): \"{$matches[0]}\"" );
+						}
+						else if( $this->config['date'] && !preg_match( '/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/i', $parts[$this->fields['date']], $matches ) ) {
+							$errMsg = "Erreur de format";
+							$this->err( "{$errMsg} (ligne {$nLigne}): \"{$parts[$this->fields['nudemrsa']]}\"" );
+						}
+						else if( count( $parts ) == count( $this->fields ) ) {
 							$numdemrsa = trim( $parts[$this->fields['nudemrsa']], '"' );
 
 							// Recherche ou ajout Paiementfoyer
@@ -218,14 +206,12 @@
 							$clerib = str_pad( $clerib, 2, '0', STR_PAD_LEFT);
 
 							//date -> FIXME MM/AAAA
-							$datedemandeapre = mktime();
-							if( isset( $this->fields['datedemandeapre'] ) ) {
-								$datedemandeapre = trim( $parts[$this->fields['datedemandeapre']], '"' );
-								// FIXME: transformation
+							$date = mktime();
+							if( isset( $this->fields['date'] ) ) {
+								$date = trim( $parts[$this->fields['date']], '"' );
+								list( $jour, $mois, $annee ) = explode( '/', $date );
+								$date = strtotime( "{$annee}-{$mois}-{$jour}" );
 							}
-// debug( $datedemandeapre );
-// debug( strtotime( $datedemandeapre ) );
-// die();
 
 							$validRib = validRib( $etaban, $guiban, $numcomptban, $clerib );
 							$dossier = $this->Apre->Personne->Foyer->Dossier->findByNumdemrsa( $numdemrsa, null, null, -1 );
@@ -278,7 +264,7 @@
 												'personne_id' => $beneficiaire['Personne']['id'],
 												'numeroapre' => date('Ym').sprintf( "%010s",  $this->Apre->find( 'count' ) + 1 ), // FIXME
 												'typedemandeapre' => 'AU',
-												'datedemandeapre' => date( 'Y-m-d', $datedemandeapre ),
+												'datedemandeapre' => date( 'Y-m-d', $date ),
 												'mtforfait' => ( 400 + min( array( 400, ( 100 * $nbenf12 ) ) ) ), // FIXME
 												'statutapre' => 'F',
 												'nbenf12' => $nbenf12,
@@ -294,7 +280,7 @@
 												'conditions' => array(
 													'personne_id' => $beneficiaire['Personne']['id'],
 													'statutapre' => 'F',
-													'datedemandeapre BETWEEN \''.date( 'Y-m-d', ( strtotime( '-1 year' ) ) ).'\' AND \''.date( 'Y-m-d' ).'\''
+													'datedemandeapre BETWEEN \''.date( 'Y-m-d', ( strtotime( '-1 year', $date ) ) ).'\' AND \''.date( 'Y-m-d', $date ).'\''
 												)
 											)
 										);
@@ -351,32 +337,32 @@
 											$nLignesTraitees++;
                                         }
                                         else {
-											$errMsg = "Demande d'APRE forfaitaire datant de moins de 12 mois trouvée pour la personne";
-                                            $this->err( "{$errMsg} {$beneficiaire['Personne']['nom']} {$beneficiaire['Personne']['prenom']} ({$beneficiaire['Personne']['nir']})" );
+											$errMsg = "Demande d'APRE forfaitaire datant de moins de 12 mois trouvée pour la date d'importation du ".date( 'd/m/Y', $date )." et pour la personne ";
+                                            $this->err( "{$errMsg}: {$beneficiaire['Personne']['nom']} {$beneficiaire['Personne']['prenom']} (nir: {$beneficiaire['Personne']['nir']})" );
                                             $this->rejects[] = "{$line};{$errMsg}";
                                         }
 									}
 									else {
-										$errMsg = "Bénéficiaire de l'APRE non trouvé ({$conditionsBeneficiaire})";
+										$errMsg = "Bénéficiaire de l'APRE non trouvé au sein du dossier de demande RSA n°{$numdemrsa} ({$conditionsBeneficiaire})";
 										$this->err( "{$errMsg} (ligne {$nLigne}): {$line}" );
 										$this->rejects[] = "{$line};{$errMsg}";
 									}
 								}
 								else {
-									$errMsg = "Foyer non trouvé";
+									$errMsg = "Foyer non trouvé pour le dossier de demande RSA n°{$numdemrsa}";
 									$this->err( "{$errMsg} (ligne {$nLigne}): {$line}" );
 									$this->rejects[] = "{$line};{$errMsg}";
 								}
 							}
 							else {
 								if( !$validRib ) {
-									$errMsg = "RIB non valide";
-									$this->err( "{$line} (ligne {$nLigne}): {$line}" );
+									$errMsg = "RIB non valide (".implode( "-", array( $etaban, $guiban, $numcomptban, $clerib ) ).")";
+									$this->err( "{$errMsg} (ligne {$nLigne}): {$line}" );
 								}
 
 								if( empty( $dossier ) ) {
-									$errMsg = "Dossier non trouvé";
-									$this->err( "{$line} (ligne {$nLigne}): {$line}" );
+									$errMsg = "Dossier de demande RSA n°{$numdemrsa} non trouvé";
+									$this->err( "{$errMsg} (ligne {$nLigne}): {$line}" );
 								}
 								$this->rejects[] = "{$line};{$errMsg}";
 							}
@@ -388,14 +374,20 @@
 						}
 					}
 				}
+				else {
+					$nLignesVides++;
+				}
 			}
+
+			$nLignesATraiter = $nLignes - $nLignesVides - ( $this->config['headers'] ? 1 : 0 );
+			$nLignesEnRejet = max( 0, count( $this->rejects ) );
 
 			$integrationfichierapre = array(
 				'Integrationfichierapre' => array(
 					'date_integration' => date( 'Y-m-d  H:i:s' ),
-					'nbr_atraiter' => ( $nLignes - 1 ),
+					'nbr_atraiter' => $nLignesATraiter,
 					'nbr_succes' => $nLignesTraitees,
-					'nbr_erreurs' => max( 0, count( $this->rejects ) - 1 ),
+					'nbr_erreurs' => $nLignesEnRejet,
 					'fichier_in' => basename( $this->csvFile ),
 					'erreurs' => implode( "\n", $this->rejects )
 				)
@@ -408,7 +400,7 @@
 			}
 			$success = $tmpSuccess && $success;
 
-            $message = "%s: ".( $nLignes - 1 )." lignes à traiter, $nLignesTraitees lignes traitées, ".max( 0, count( $this->rejects ) - 1 )." lignes rejetées.";
+            $message = "%s: ".$nLignesATraiter." lignes à traiter, $nLignesTraitees lignes traitées, ".$nLignesEnRejet." lignes rejetées.";
             /// Fin de la transaction
             if( $success ) {
                 $this->out( sprintf( $message, "Script terminé avec succès" ) );
