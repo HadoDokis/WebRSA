@@ -175,7 +175,7 @@
 							INNER JOIN foyers ON foyers.id = personnes.foyer_id
 							INNER JOIN dossiers_rsa ON dossiers_rsa.id = foyers.dossier_rsa_id
 						WHERE ( AGE( contratsinsertion.date_saisi_ci, dossiers_rsa.dtdemrsa ) <= INTERVAL \'2 months\' )
-							AND contratsinsertion.typocontrat_id = 1
+							AND contratsinsertion.numcontrat = \'Premier contrat\'
 							AND contratsinsertion.rg_ci = 1
 							AND contratsinsertion.date_saisi_ci IS NOT NULL
 							AND EXTRACT(YEAR FROM contratsinsertion.date_saisi_ci) = '.Sanitize::clean( $annee ).'

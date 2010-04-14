@@ -22,7 +22,7 @@
             Set::classicExtract( $contrat, 'Adresse.locaadr' ),
             value( $referents, Set::classicExtract( $contrat, 'PersonneReferent.referent_id' ) ),
             value( $struct, Set::classicExtract( $contrat, 'Contratinsertion.structurereferente_id' ) ),
-            value( $tc, Set::classicExtract( $contrat, 'Contratinsertion.typocontrat_id' ) ),
+            Set::classicExtract( $contrat, 'Contratinsertion.numcontrat' ),
             $locale->date( 'Date::short', Set::classicExtract( $contrat, 'Contratinsertion.dd_ci' ) ),
             Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.duree_engag' ), $duree_engag_cg93 ),
             $locale->date( 'Date::short', Set::classicExtract( $contrat, 'Contratinsertion.df_ci' ) ),

@@ -26,8 +26,8 @@
     }
 
     /////  Récupération données du Contratinsertion pour le DEM et le CJT
-    $DT = Set::extract( 'DEM.Contratinsertion.typocontrat_id', $details);
-    $CT = Set::extract( 'CJT.Contratinsertion.typocontrat_id', $details);
+    $DT = Set::extract( 'DEM.Contratinsertion.numcontrat', $details);
+    $CT = Set::extract( 'CJT.Contratinsertion.numcontrat', $details);
 
     $deciD = Set::extract( 'DEM.Contratinsertion.decision_ci', $details);
     $deciC = Set::extract( 'CJT.Contratinsertion.decision_ci', $details);
@@ -151,8 +151,8 @@
                         <tbody>
                             <tr class="even">
                                 <th>Type de contrat</th>
-                                <td><?php echo value( $typoscontrat, Set::extract( 'DEM.Contratinsertion.typocontrat_id', $details) );?></td>
-                                <td><?php echo value( $typoscontrat, Set::extract( 'CJT.Contratinsertion.typocontrat_id', $details) );?></td>
+                                <td><?php echo Set::classicExtract( $details, 'DEM.Contratinsertion.numcontrat' );?></td>
+                                <td><?php echo Set::classicExtract( $details, 'CJT.Contratinsertion.numcontrat' );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date de début</th>
@@ -213,30 +213,34 @@
                                 <td><?php echo Set::extract( 'Dossier.numdemrsa', $details );?></td>
                             </tr>
                             <tr class="odd">
+                                <th>DSP</th>
+                                <td><?php echo h( isset( $details['Dspp']['id'] ) ? 'Oui' : 'Non');?></td>
+                            </tr>
+                            <tr class="even">
                                 <th>Montant RSA</th>
                                 <td><?php echo $locale->money( Set::extract( 'Detailcalculdroitrsa.0.mtrsavers', $details ) ); ?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Date dernier montant</th>
                                 <td><?php echo date_short( Set::extract( 'Detailcalculdroitrsa.0.dtderrsavers', $details ) );?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Motif</th>
                                 <td><?php echo value( $natpf, Set::extract( 'Detailcalculdroitrsa.0.natpf', $details ) );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Montant INDUS</th>
                                 <td><?php echo $locale->money( Set::extract( 'Infofinanciere.mtmoucompta', $details ) );?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Motif</th>
                                 <td><?php echo h( Set::extract( 'Creance.motiindu', $details ) );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Début du traitement CAF</th>
                                 <td><?php echo $locale->date( 'Date::short', Set::extract( 'DEM.Dossiercaf.ddratdos', $details ) );?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Fin du traitement CAF</th>
                                 <td><?php echo h(  date_short( Set::extract( 'DEM.Dossiercaf.dfratdos', $details ) ) );?></td>
                             </tr>

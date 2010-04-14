@@ -22,7 +22,7 @@
             Set::extract( $contrat, 'Adresse.locaadr' ),
             value( $referents, Set::extract( $contrat, 'PersonneReferent.referent_id' ) ),
             value( $struct, Set::extract( $contrat, 'Contratinsertion.structurereferente_id' ) ),
-            value( $tc, Set::extract( $contrat, 'Contratinsertion.typocontrat_id' ) ),
+            Set::extract( $contrat, 'Contratinsertion.numcontrat' ),
             $locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.dd_ci' ) ),
             Set::enum( Set::extract( $contrat, 'Contratinsertion.duree_engag' ), $duree_engag_cg93 ),
             $locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.df_ci' ) ),

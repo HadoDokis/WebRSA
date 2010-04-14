@@ -13,11 +13,7 @@
             'Structurereferente' => array(
                 'classname' => 'Structurereferente',
                 'foreignKey' => 'structurereferente_id'
-            ),
-            'Typocontrat' => array(
-                'classname' => 'Typocontrat',
-                'foreignKey' => 'typocontrat_id'
-                )
+            )
         );
 
         var $hasAndBelongsToMany = array(
@@ -46,12 +42,6 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'typocontrat_id' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
             'structurereferente_id' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
@@ -70,12 +60,6 @@
                     'message' => 'Veuillez entrer une date valide'
                 )
             ),
-//             'diplomes' => array(
-//                 'notEmpty' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
             'aut_expr_prof' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
@@ -195,7 +179,7 @@
                 'fields' => array(
                     '"Contratinsertion"."id"',
                     '"Contratinsertion"."personne_id"',
-                    '"Contratinsertion"."typocontrat_id"',
+                    '"Contratinsertion"."numcontrat"',
                     '"Contratinsertion"."structurereferente_id"',
                     '"Contratinsertion"."rg_ci"',
                     '"Contratinsertion"."decision_ci"',
@@ -264,13 +248,6 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                    ),
-                    array(
-                        'table'      => 'typoscontrats',
-                        'alias'      => 'Typocontrat',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Typocontrat.id = Contratinsertion.typocontrat_id' )
                     )
                 )
             )
