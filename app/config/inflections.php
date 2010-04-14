@@ -228,6 +228,12 @@
 		'detaildifdisp' => 'detailsdifdisps',
 		'detailnatmob' => 'detailsnatmobs',
 		'detaildiflog' => 'detailsdiflogs',
+
+        ///Table pour l'APRE 66
+        'aideapre66' => 'aidesapres66',
+        'themeapre66' => 'themesapres66',
+        'pieceaide66' => 'piecesaides66',
+        'aideapre66_pieceaide66' => 'aidesapres66_piecesaides66',
      );
 /**
  * This is a key => value array of regex used to match words.
