@@ -1,4 +1,4 @@
-1°) FIXME: models/cohorte.php, motidemrsa n'existe plus
+1°) INFO: models/cohorte.php, motidemrsa n'existe plus -> sitpersdemrsa
 			// Règle 3 (Prioritaire)  : Code XML instruction : « MOTIDEMRSA ». "Quel est le motif de votre demande de rSa ?"
 			// 0102 = Fin de droits AAH → Orientation vers le Social
 			// 0105 = Attente de pension vieillesse ou invalidité‚ ou d'allocation handicap → Orientation vers le Social
@@ -13,7 +13,7 @@
 					$propo_algo = 'Emploi';
 				}
 			}
-2°) INFO: models/cohorte.php, dfderact a été remplacé par dsps.cessderact -> pb de mise à jour ?
+2°) FIXME: models/cohorte.php, dfderact a été remplacé par dsps.cessderact -> pb de mise à jour ? + moins ou plus d'un an
 			// Règle 4 : Code XML instruction : « DTNAI ». Date de Naissance.
 			$dtnai = Set::extract( $element, 'Personne.dtnai' );
 			$dfderact = Set::extract( $element, 'Dspp.dfderact' );
