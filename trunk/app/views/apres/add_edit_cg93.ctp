@@ -1,53 +1,11 @@
-<?php
-	echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-
-	$this->pageTitle = 'APRE';
-
-	echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );
-
-    if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout APRE';
-    }
-    else {
-        $this->pageTitle = 'Édition APRE';
-    }
-
-    function radioApre( $view, $path, $value, $label ) {
-        $name = 'data['.implode( '][', explode( '.', $path ) ).']';
-        $notEmptyValues = Set::filter( Set::classicExtract( $view->data, $value ) );
-        $checked = ( ( !empty( $notEmptyValues ) ) ? 'checked="checked"' : '' );
-        return "<label><input type=\"radio\" name=\"{$name}\" value=\"{$value}\" {$checked} />{$label}</label>";
-        //$form->radio( 'Apre.Natureaide', array( 'Formqualif' ), array( 'id' => 'ApreNatureaide0', 'legend' => false, 'div' => false ) );
-
-    }
-?>
-<!--/************************************************************************/ -->
-    <?php echo $javascript->link( 'dependantselect.js' ); ?>
-    <script type="text/javascript">
-        document.observe("dom:loaded", function() {
-            dependantSelect( 'ApreReferentId', 'ApreStructurereferenteId' );
-        });
-    </script>
-<!--/************************************************************************/ -->
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        //Données pour la nature du logement
-        ['P', 'L', 'H', 'S'].each( function( letter ) {
-            observeDisableFieldsOnValue( 'ApreNaturelogement' + letter, [ 'AprePrecisionsautrelogement' ],  letter, true );
-        } );
-        observeDisableFieldsOnValue( 'ApreNaturelogementA', [ 'AprePrecisionsautrelogement' ], 'A', false );
-
-        //Données pour le type d'activité du bénéficiare
-        ['F', 'C'].each( function( letter ) {
-            observeDisableFieldsOnValue( 'ApreActivitebeneficiaire' + letter, [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur', 'ApreSecteuractivite' ],  letter, true );
-        } );
-        observeDisableFieldsOnValue( 'ApreActivitebeneficiaireE', [ 'ApreDateentreeemploiDay', 'ApreDateentreeemploiMonth', 'ApreDateentreeemploiYear', 'ApreTypecontratCDI', 'ApreTypecontratCDD', 'ApreTypecontratCON', 'ApreTypecontratAUT', 'AprePrecisionsautrecontrat', 'ApreNbheurestravaillees', 'ApreNomemployeur', 'ApreAdresseemployeur', 'ApreSecteuractivite' ], 'E', false );
 
         // Javascript pour les aides liées à l'APRE
         ['Formqualif', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' ].each( function( formation ) {
             observeDisableFieldsetOnRadioValue(
-                'Apre',
-                'data[Apre][Natureaide]',
+                '<?php echo $this->modelClass;?>',
+                'data[<?php echo $this->modelClass;?>][Natureaide]',
                 $( formation ),
                 formation,
                 false,
@@ -57,18 +15,6 @@
 
 
         <?php
-            echo $ajax->remoteFunction(
-                array(
-                    'update' => 'StructurereferenteRef',
-                    'url' => Router::url( array( 'action' => 'ajaxstruct', Set::extract( $this->data, 'Apre.structurereferente_id' ) ), true )
-                )
-            ).';';
-            echo $ajax->remoteFunction(
-                array(
-                    'update' => 'ReferentRef',
-                    'url' => Router::url( array( 'action' => 'ajaxref', Set::extract( $this->data, 'Apre.referent_id' ) ), true )
-                )
-            ).';';
             echo $ajax->remoteFunction(
                 array(
                     'update' => 'FormqualifCoordonnees',
@@ -98,186 +44,10 @@
     });
 </script>
 
-<div class="with_treemenu">
-    <h1>Formulaire de demande de l'APRE COMPLÉMENTAIRE</h1>
-<br />
-    <?php
-		echo $form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre', 'url' => Router::url( null, true ) ) );
-        $ApreId = Set::classicExtract( $this->data, 'Apre.id' );
-        if( $this->action == 'edit' ) {
-            echo '<div>';
-            echo $form->input( 'Apre.id', array( 'type' => 'hidden' ) );
-            echo '</div>';
-        }
-        echo '<div>';
-        echo $form->input( 'Apre.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
-        echo '</div>';
-    ?>
-
-    <div class="aere">
-        <fieldset>
-            <table class="wide noborder">
-                <tr>
-                    <td class="mediumSize noborder">
-                        <?php echo $form->input( 'Apre.numeroapre', array( 'type' => 'hidden', 'value' => $numapre ) ); ?>
-                        <strong>Numéro de l'APRE : </strong><?php echo $numapre; ?>
-                    </td>
-                    <td class="mediumSize noborder">
-                        <?php echo $xform->enum( 'Apre.typedemandeapre', array(  'legend' => required( __d( 'apre', 'Apre.typedemandeapre', true ) ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['typedemandeapre'] ) );?>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-        <fieldset>
-           <table class="wide noborder">
-                <tr>
-                    <td class="mediumSize noborder">
-
-                    </td>
-
-                </tr>
-                <tr>
-                    <td colspan="2" class="wide noborder">
-                        <?php echo $xform->input( 'Apre.datedemandeapre', array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 ) );?>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-
-        <fieldset>
-            <legend>Identité du beneficiaire de la demande</legend>
-            <table class="wide noborder">
-                <tr>
-                    <td class="mediumSize noborder">
-                        <strong>Civilité : </strong><?php echo Set::classicExtract( $qual, Set::classicExtract( $personne, 'Personne.qual' ) );?>
-                        <br />
-                        <strong>Nom : </strong><?php echo Set::classicExtract( $personne, 'Personne.nom' );?>
-                        <br />
-                        <strong>Prénom : </strong><?php echo Set::classicExtract( $personne, 'Personne.prenom' );?>
-                        <br />
-                        <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
-                    </td>
-                    <td class="mediumSize noborder">
-                        <strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::classicExtract( $typevoie, Set::classicExtract( $personne, 'Adresse.typevoie' ) ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-        <fieldset>
-            <legend>Situation administrative du bénéficiaire</legend>
-            <table class="wide noborder">
-                <tr>
-                    <td class="mediumSize noborder">
-                        <strong>N° matricule CAF : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.matricule' );?>
-                        <br />
-                        <strong>Situation familiale : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Foyer.sitfam' ), $sitfam );?>
-                    </td>
-                    <td class="wide noborder">
-                        <strong>Nbre d'enfants : </strong><?php echo $nbEnfants;?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="mediumSize noborder">
-                        <?php echo $xform->enum( 'Apre.naturelogement', array( 'div' => false, 'legend' => __d( 'apre', 'Apre.naturelogement', true ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['naturelogement'] ) );?>
-                    </td>
-                    <td class="noborder">
-                        <?php echo $xform->input( 'Apre.precisionsautrelogement', array( 'domain' => 'apre', 'type' => 'textarea' ) );?>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="mediumSize noborder">
-                        <strong>Date de validation du contrat d'insertion par le Président du Conseil Général  </strong> <?php echo date_short( Set::classicExtract( $personne, 'Contratinsertion.dernier.datevalidation_ci' ) );?>
-                        <br />(joindre obligatoirement la copie du contrat d'insertion)
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-         <fieldset>
-            <legend>Parcours du bénéficiaire</legend>
-            <table class="wide noborder">
-                <tr>
-                    <td class="mediumsize noborder"><strong>Date de dernière cessation d'activité : </strong></td>
-                    <td class="mediumsize noborder"><?php echo Set::classicExtract( $personne, 'Dsp.cessderact' ) ? Set::classicExtract( $optionsdsps['cessderact'], Set::classicExtract( $personne, 'Dsp.cessderact' ) ) : null;?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Ancienneté pôle emploi </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.anciennetepoleemploi', array( 'domain' => 'apre', 'label' => false ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Niveau d'étude </strong></td>
-                    <td class="mediumsize noborder"><?php echo Set::classicExtract( $personne, 'Dsp.nivetu' ) ? Set::classicExtract( $optionsdsps['nivetu'], Set::classicExtract( $personne, 'Dsp.nivetu' ) ) : null;?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Projet professionnel </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.projetprofessionnel', array( 'domain' => 'apre', 'label' => false ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Secteur professionnel en lien avec la demande *</strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.secteurprofessionnel', array( 'domain' => 'apre', 'label' => false ) );?></td>
-                </tr>
-            </table>
-        </fieldset>
-         <fieldset>
-            <legend>Activité du bénéficiaire</legend>
-            <table class="wide noborder">
-                <tr>
-                    <td class="mediumsize noborder"><strong>Type d'activité </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->enum( 'Apre.activitebeneficiaire', array( 'legend' => required( __d( 'apre', 'Apre.activitebeneficiaire', true ) ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['activitebeneficiaire'] ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Date de l'emploi prévu </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input( 'Apre.dateentreeemploi', array( 'domain' => 'apre', 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Type de contrat </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->enum( 'Apre.typecontrat', array( 'div' => false, 'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['typecontrat'] ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Si autres, préciser  </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input( 'Apre.precisionsautrecontrat', array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
-                </tr>
-                <tr>
-                    <td class="activiteSize noborder" colspan="2"><strong>Secteur d'activité  </strong></td>
-                </tr>
-                <tr>
-                    <td class="activiteSize noborder" colspan="2"><?php echo $xform->input( 'Apre.secteuractivite', array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'class' => 'activiteSize', 'options' => $sect_acti_emp, 'empty' => true ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Nombres d'heures travaillées </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.nbheurestravaillees', array( 'domain' => 'apre', 'label' => false ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Nom et adresse de l'employeur </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.nomemployeur', array( 'domain' => 'apre', 'label' => false ) );?><?php echo $xform->input(  'Apre.adresseemployeur', array( 'domain' => 'apre', 'label' => false ) );?></td>
-                </tr>
-            </table>
-        </fieldset>
-        <fieldset>
-            <legend>Structure référente</legend>
-            <table class="wide noborder">
-                <tr>
-                    <td class="noborder">
-                        <strong>Nom de l'organisme</strong>
-                        <?php echo $xform->input( 'Apre.structurereferente_id', array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $structs, 'empty' => true ) );?>
-                        <?php echo $ajax->observeField( 'ApreStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?> 
-                    </td>
-                    <td class="noborder">
-                        <strong>Nom du référent</strong>
-                        <?php echo $xform->input( 'Apre.referent_id', array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $referents, 'empty' => true ) );?>
-                        <?php echo $ajax->observeField( 'ApreReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?> 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="wide noborder"><div id="StructurereferenteRef"></div></td>
-
-                    <td class="wide noborder"><div id="ReferentRef"></div></td>
-                </tr>
-            </table>
-        </fieldset>
         <fieldset class="wide">
             <legend>Justificatif</legend>
             <?php
-                echo $xform->enum( 'Apre.justificatif', array(  'legend' => false, 'div' => false,  'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['justificatif'] ) );
+                echo $xform->enum( "{$this->modelClass}.justificatif", array(  'legend' => false, 'div' => false,  'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['justificatif'] ) );
             ?>
         </fieldset>
             <?php
@@ -290,7 +60,7 @@
         <fieldset>
             <?php
                 /// Formation qualifiante
-                $tmp = radioApre( $this, 'Apre.Natureaide', 'Formqualif', 'Formations individuelles qualifiantes' );
+                $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Formqualif', 'Formations individuelles qualifiantes' );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Formqualif" class="invisible">
@@ -324,11 +94,9 @@
         <fieldset>
             <?php
                 /// Formation qualifiante Perm FIMO
-                $tmp = radioApre( $this, 'Apre.Natureaide', 'Formpermfimo', 'Formation permis de conduire Poids Lourd + FIMO' );
+                $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Formpermfimo', 'Formation permis de conduire Poids Lourd + FIMO' );
                 echo $html->tag( 'h3', $tmp );
-                /*$tmp = $form->radio( 'Apre.Natureaide', array( 'Formpermfimo' ), array( 'id' => 'ApreNatureaide1' ) );
-                $tmp .= $html->tag( 'label', 'Formation permis de conduire Poids Lourd + FIMO', array( 'for' => 'ApreNatureaideFormpermfimo' ) );
-                echo $html->tag( 'h3', $tmp );*/
+
             ?>
             <fieldset id="Formpermfimo" class="invisible">
                 <?php
@@ -362,11 +130,9 @@
         <fieldset>
             <?php
                 /// Action de professionnalisation
-                $tmp = radioApre( $this, 'Apre.Natureaide', 'Actprof', 'Action de professionnalisation des contrats aides et salariés dans les SIAE' );
+                $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Actprof', 'Action de professionnalisation des contrats aides et salariés dans les SIAE' );
                 echo $html->tag( 'h3', $tmp );
-                /*$tmp = $form->checkbox( 'Apre.Natureaide.Actprof' );
-                $tmp .= $html->tag( 'label', 'Action de professionnalisation des contrats aides et salariés dans les SIAE', array( 'for' => 'ApreNatureaideActprof' ) );
-                echo $html->tag( 'h3', $tmp );*/
+
             ?>
             <fieldset id="Actprof" class="invisible">
                 <?php
@@ -403,11 +169,9 @@
         <fieldset>
             <?php
                 /// Permis B
-                $tmp = radioApre( $this, 'Apre.Natureaide', 'Permisb', 'Permis de conduire B' );
+                $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Permisb', 'Permis de conduire B' );
                 echo $html->tag( 'h3', $tmp );
-                /*$tmp = $form->checkbox( 'Apre.Natureaide.Permisb' );
-                $tmp .= $html->tag( 'label', 'Permis de conduire B', array( 'for' => 'ApreNatureaidePermisb' ) );
-                echo $html->tag( 'h3', $tmp );*/
+
             ?>
             <fieldset id="Permisb" class="invisible">
                 <?php
@@ -444,10 +208,8 @@
         <fieldset>
             <?php
                 /// Amenagement logement
-//                 $tmp = $form->checkbox( 'Apre.Natureaide.Amenaglogt' );
-//                 $tmp .= $html->tag( 'label', 'Aide à l\'installation', array( 'for' => 'ApreNatureaideAmenaglogt' ) );
-//                 echo $html->tag( 'h3', $tmp );
-                $tmp = radioApre( $this, 'Apre.Natureaide', 'Amenaglogt', 'Aide à l\'installation' );
+
+                $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Amenaglogt', 'Aide à l\'installation' );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Amenaglogt" class="invisible">
@@ -475,10 +237,8 @@
         <fieldset>
             <?php
                 /// Accompagnement à la création d'entreprise
-//                 $tmp = $form->checkbox( 'Apre.Natureaide.Acccreaentr' );
-//                 $tmp .= $html->tag( 'label', 'Accompagnement à la création d\'entreprise', array( 'for' => 'ApreNatureaideAcccreaentr' ) );
-//                 echo $html->tag( 'h3', $tmp );
-                $tmp = radioApre( $this, 'Apre.Natureaide', 'Acccreaentr', 'Accompagnement à la création d\'entreprise' );
+
+                $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Acccreaentr', 'Accompagnement à la création d\'entreprise' );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Acccreaentr" class="invisible">
@@ -501,10 +261,8 @@
         <fieldset>
             <?php
                 /// Acquisition de matériels professionnels
-//                 $tmp = $form->checkbox( 'Apre.Natureaide.Acqmatprof' );
-//                 $tmp .= $html->tag( 'label', 'Acquisition de matériels professionnels', array( 'for' => 'ApreNatureaideAcqmatprof' ) );
-//                 echo $html->tag( 'h3', $tmp );
-                $tmp = radioApre( $this, 'Apre.Natureaide', 'Acqmatprof', 'Acquisition de matériels professionnels' );
+
+                $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Acqmatprof', 'Acquisition de matériels professionnels' );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Acqmatprof" class="invisible">
@@ -526,10 +284,8 @@
         <fieldset>
             <?php
                 /// Aide à la location d'un véhicule d'insertion
-//                 $tmp = $form->checkbox( 'Apre.Natureaide.Locvehicinsert' );
-//                 $tmp .= $html->tag( 'label', 'Aide à la location d\'un véhicule d\'insertion', array( 'for' => 'ApreNatureaideLocvehicinsert' ) );
-//                 echo $html->tag( 'h3', $tmp );
-                $tmp = radioApre( $this, 'Apre.Natureaide', 'Locvehicinsert', 'Aide à la location d\'un véhicule d\'insertion' );
+
+                $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Locvehicinsert', 'Aide à la location d\'un véhicule d\'insertion' );
                 echo $html->tag( 'h3', $tmp );
             ?>
             <fieldset id="Locvehicinsert" class="invisible">
@@ -548,17 +304,3 @@
                 ?>
             </fieldset>
         </fieldset>
-        <fieldset class="aere">
-            <legend>Avis technique et motivé du référent (Article 5.1 relatif au règlement de l'APRE): </legend>
-            <?php
-                echo $xform->input(  'Apre.avistechreferent', array( 'domain' => 'apre', 'label' => false ) );?>
-        </fieldset>
-    </div>
-
-    <div class="submit">
-        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
-        <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-    </div>
-    <?php echo $form->end();?>
-</div>
-<div class="clearer"><hr /></div>

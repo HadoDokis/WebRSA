@@ -108,13 +108,13 @@
 
 			/// Input
 			if( $mode == 'input' ) {
-				if( preg_match( '/^enum::/', $params['type'] ) ) {
+				if( isset( $params['type'] ) && preg_match( '/^enum::/', $params['type'] ) ) {
 					$params['type'] = 'select';
 				}
 				if( !Set::check( $params, 'empty' ) ) {
 					$params['empty'] = true;
 				}
-                if( Set::check( $params, 'options' ) && in_array( $params['type'], array( 'textarea', 'input' ) ) ) {
+                if( Set::check( $params, 'options' ) && isset( $params['type'] ) && in_array( $params['type'], array( 'textarea', 'input' ) ) ) {
                     $params['type'] = 'select';
                 }
 			}
@@ -272,7 +272,7 @@
 					$params['default']
 				);
 
-			if( Set::check( $params, 'options' ) && ( in_array( $params['type'], array( 'text', 'integer' ) ) ) ) {
+			if( Set::check( $params, 'options' ) && ( isset( $params['type'] ) && in_array( $params['type'], array( 'text', 'integer' ) ) ) ) {
 				$params['type'] = 'select';
 			}
 			return $this->Xform->input( $path, $params );

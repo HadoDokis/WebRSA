@@ -570,12 +570,12 @@
 
 			foreach( $fields as $path => $params ) {
 				list( $fieldModelName, $fieldModelfield ) = model_field( $path );
-				/*$modelClass = ClassRegistry::init( $fieldModelName );
+				$modelClass = ClassRegistry::init( $fieldModelName );
 
 				$required = ( count( Set::extract( $modelClass->validate, "/{$fieldModelfield}[rule=notEmpty]" ) ) > 0 );
 				$params = Set::merge( array( 'required' => $required ), $params );
 
-				if( !Set::check( $params, 'options' ) && Set::check( $formParams, "options.{$fieldModelName}.{$fieldModelfield}" ) ) {
+				/*if( !Set::check( $params, 'options' ) && Set::check( $formParams, "options.{$fieldModelName}.{$fieldModelfield}" ) ) {
 					$params['options'] = Set::classicExtract( $formParams, "options.{$fieldModelName}.{$fieldModelfield}" );
 					if( !Set::check( $params, 'empty' ) ) {
 						$params['empty'] = true;

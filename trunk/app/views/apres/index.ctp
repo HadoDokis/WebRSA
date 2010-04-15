@@ -1,4 +1,7 @@
-<?php $this->pageTitle = sprintf( 'APREs liées à %s', $personne['Personne']['nom_complet'] );?>
+<?php
+    $this->pageTitle = sprintf( 'APREs liées à %s', $personne['Personne']['nom_complet'] );
+    $this->modelClass = $this->params['models'][0];
+?>
 
 <?php  echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id) );?>
 
@@ -11,12 +14,12 @@
                 <p class="error">Cette personne ne possède pas encore d'APRE forfaitaire, il n'est donc pas possible de créer une APRE Complémentaire.</p>
             <?php endif;?>
 
-            <?php if( $permissions->check( 'apres', 'add' ) && ( $apre_forfait > 0 ) ):?>
+            <?php if( $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'add' ) && ( $apre_forfait > 0 ) ):?>
                 <ul class="actionMenu">
                     <?php
                         echo '<li>'.$html->addLink(
                             'Ajouter APRE',
-                            array( 'controller' => 'apres', 'action' => 'add', $personne_id )
+                            array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'add', $personne_id )
                         ).' </li>';
                     ?>
                 </ul>
@@ -29,12 +32,12 @@
             <?php if( empty( $apres ) ):?>
                 <p class="notice">Cette personne ne possède pas encore d'APRE.</p>
             <?php endif;?>
-            <?php if( $permissions->check( 'apres', 'add' ) ):?>
+            <?php if( $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'add' ) ):?>
                 <ul class="actionMenu">
                     <?php
                         echo '<li>'.$html->addLink(
                             'Ajouter APRE',
-                            array( 'controller' => 'apres', 'action' => 'add', $personne_id )
+                            array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'add', $personne_id )
                         ).' </li>';
                     ?>
                 </ul>
@@ -70,14 +73,16 @@
                     $buttonEnabled = null;
                     $mtforfait = null;
                     $mtattribue = null;
-                    $naturesaide = Set::classicExtract( $apre, 'Apre.Natureaide' );
+                    $naturesaide = Set::classicExtract( $apre, "{$this->modelClass}.Natureaide" );
 
-                    foreach( $naturesaide as $natureaide => $nombre ) {
-                        if( $nombre > 0 ) {
-                            $aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
-                            ///Calcul des montants versés pour les aides d'une APRE complémentaire
-                            $montantaide = Set::classicExtract( $apre, "$natureaide.montantaide" );
-                            $mtforfait += $montantaide;
+                    if( !empty( $naturesaide ) ) {
+                        foreach( $naturesaide as $natureaide => $nombre ) {
+                            if( $nombre > 0 ) {
+                                $aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
+                                ///Calcul des montants versés pour les aides d'une APRE complémentaire
+                                $montantaide = Set::classicExtract( $apre, "$natureaide.montantaide" );
+                                $mtforfait += $montantaide;
+                            }
                         }
                     }
 
@@ -88,9 +93,9 @@
                     **  +
                     **  Conditionnement des éléments à afficher selon le statut de l'APRE
                     **/
-                    $statutApre = Set::classicExtract( $apre, 'Apre.statutapre' );
+                    $statutApre = Set::classicExtract( $apre, "{$this->modelClass}.statutapre" );
                     if( $statutApre == 'C' ) {
-                        $etat = Set::enum( Set::classicExtract( $apre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] );
+                        $etat = Set::enum( Set::classicExtract( $apre, "{$this->modelClass}.etatdossierapre" ), $options['etatdossierapre'] );
                         $mtforfait = $mtforfait;
                         $buttonEnabled = true;
                         if( $etat == 'Complet' ){
@@ -106,7 +111,7 @@
                     }
                     else if( $statutApre == 'F' ) {
                         $etat = null;
-                        $mtforfait = Set::classicExtract( $apre, 'Apre.mtforfait' );
+                        $mtforfait = Set::classicExtract( $apre, "{$this->modelClass}.mtforfait" );
                         $buttonEnabled = false;
                         $buttonEnabledInc = false;
 
@@ -118,7 +123,7 @@
 						<tbody>
 							<tr>
 								<th>N° APRE</th>
-								<td>'.h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ).'</td>
+								<td>'.h( Set::classicExtract( $apre, "{$this->modelClass}.numeroapre" ) ).'</td>
 							</tr>
 							<tr>
 								<th>Nom/Prénom Allocataire</th>
@@ -126,7 +131,7 @@
 							</tr>
 							<tr>
 								<th>Référent APRE</th>
-								<td>'.h( Set::enum( Set::classicExtract( $apre, 'Apre.referent_id' ), $referents ) ).'</td>
+								<td>'.h( Set::enum( Set::classicExtract( $apre, "{$this->modelClass}.referent_id" ), $referents ) ).'</td>
 							</tr>
 							<tr>
 								<th>Natures de la demande</th>
@@ -138,30 +143,30 @@
                     echo $html->tableCells(
                         array(
                             h( Set::enum( $statutApre, $options['statutapre'] ) ),
-                            h( date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ) ),
+                            h( date_short( Set::classicExtract( $apre, "{$this->modelClass}.datedemandeapre" ) ) ),
                             h( $etat ),
                             h( $locale->money( $mtforfait ) ),
                             h( $locale->money( $mtattribue ) ),
                             $html->viewLink(
                                 'Voir la demande APRE',
-                                array( 'controller' => 'apres', 'action' => 'view', $apre['Apre']['id'] ),
-                                $permissions->check( 'apres', 'view' )
+                                array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'view', $apre[$this->modelClass]['id'] ),
+                                $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'view' )
                             ),
                             $html->editLink(
                                 'Editer la demande APRE',
-                                array( 'controller' => 'apres', 'action' => 'edit', $apre['Apre']['id'] ),
+                                array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'edit', $apre[$this->modelClass]['id'] ),
                                 $buttonEnabled,
-                                $permissions->check( 'apres', 'edit' )
+                                $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'edit' )
                             ),
                             $html->relanceLink(
                                 'Relancer la demande APRE',
-                                array( 'controller' => 'relancesapres', 'action' => 'add', $apre['Apre']['id'] ),
+                                array( 'controller' => 'relancesapres', 'action' => 'add', $apre[$this->modelClass]['id'] ),
                                 $buttonEnabledInc,
-                                $permissions->check( 'relancesapres', 'add' ) && ( $apre['Apre']['etatdossierapre'] == 'INC' )
+                                $permissions->check( 'relancesapres', 'add' ) && ( $apre[$this->modelClass]['etatdossierapre'] == 'INC' )
                             ),
                             $html->printLink(
                                 'Imprimer la demande APRE',
-                                array( 'controller' => 'gedooos', 'action' => 'apre', $apre['Apre']['id'] ),
+                                array( 'controller' => 'gedooos', 'action' => 'apre', $apre[$this->modelClass]['id'] ),
                                 $buttonEnabled,
                                 $permissions->check( 'gedooos', 'apre' )
                             ),
@@ -200,7 +205,7 @@
                 <?php
                     foreach( $relancesapres as $relanceapre ) {
                         $piecesAbsentes = Set::extract( $relanceapre, '/Relanceapre/Piecemanquante/libelle' );
-                        $piecesManquantesAides = Set::classicExtract( $relanceapre, "Apre.Piece.Manquante" );
+                        $piecesManquantesAides = Set::classicExtract( $relanceapre, "{$this->modelClass}.Piece.Manquante" );
 
                         $textePiecesManquantes = '';
                         foreach( $piecesManquantesAides as $model => $pieces ) {
@@ -211,7 +216,7 @@
 
                         echo $html->tableCells(
                             array(
-                                h( Set::classicExtract( $relanceapre, 'Apre.numeroapre' ) ),
+                                h( Set::classicExtract( $relanceapre, "{$this->modelClass}.numeroapre" ) ),
                                 h( date_short( Set::classicExtract( $relanceapre, 'Relanceapre.daterelance' ) ) ),
                                 $textePiecesManquantes,
                                 h( Set::classicExtract( $relanceapre, 'Relanceapre.commentairerelance' ) ),
