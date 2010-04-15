@@ -38,6 +38,7 @@
         *** *******************************************************************/
 
         function indexdossier() {
+            $this->set( 'annees', $this->Infofinanciere->range() );
             if( !empty( $this->data ) ) {
                 $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
                 $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
@@ -49,7 +50,7 @@
                 $infosfinancieres = $this->paginate( 'Infofinanciere' );
 
                 $this->set( 'infosfinancieres', $infosfinancieres );
-                $this->set( 'annees', $this->Infofinanciere->range() );
+
 
                 $this->Dossier->commit();
             }
