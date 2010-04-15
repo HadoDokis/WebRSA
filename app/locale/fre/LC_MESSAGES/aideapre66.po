@@ -1,0 +1,53 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+
+msgid "Aideapre66::index::empty"
+msgstr "Aucune aide pour l'APRE présente"
+
+msgid "Aidesapres66::index"
+msgstr "Intitulé des aides de l'APRE"
+
+msgid "Aidesapres66::add"
+msgstr "Ajout d'aide"
+
+msgid "Aideapre66::add"
+msgstr "Ajouter une aide"
+
+msgid "Aideapre66::edit"
+msgstr "Modifier l'aide"
+
+msgid "Aideapre66::delete"
+msgstr "Supprimer l'aide"
+
+msgid "Aidesapres66::edit"
+msgstr "Modification de l'aide"
+
+msgid "Aideapre66.name"
+msgstr "Intitulé de l'aide"
+
+msgid "Aideapre66.themeapre66_id"
+msgstr "Thème auquel l'aide est lié"
+
+msgid "Aideapre66.plafond"
+msgstr "Plafond de l'aide"
+
+msgid "Aideapre66::delete::confirm"
+msgstr "Confirmer la suppression ?"
