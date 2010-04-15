@@ -8,7 +8,7 @@
     Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
     Configure::write( 'Zonesegeographiques.CodesInsee', true );
     //Configure::write( 'Etatliquidatif.limit', 1000 ); // INFO: commenter pour ne pas avoir de limite
-    Configure::write( 'nom_form_apre_cg', 'cg66' );
+    Configure::write( 'nom_form_apre_cg', 'cg93' );
 
     // Limit pour le nombre de documents à éditer dans la cohorte par orientation
     Configure::write( 'nb_limit_print', 300 );// INFO: Au delà de 50, risque de cassure,
@@ -40,5 +40,5 @@
     * FIXME: merci Arnaud
     * @default: vide (pour le CG93), sinon '66' pour le CG66
     */
-    Configure::write( 'Apre.suffixe', '66' );
+    Configure::write( 'Apre.suffixe', '' );
 ?>

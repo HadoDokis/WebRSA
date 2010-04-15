@@ -79,9 +79,9 @@
                 )
             );
             /// FIXME: {$this->modelClass} partout
-// debug( $apres );
+
             $montantComplementaires = 0;
-            if( $montantComplementaires > Configure::read( 'Apre.montantMaxComplementaires' ) ) {
+            if( $montantComplementaires > Configure::read( "{$this->modelClass}.montantMaxComplementaires" ) ) {
                 $alerteMontantAides = true;
             }
             $this->set( 'alerteMontantAides', $alerteMontantAides );
@@ -216,12 +216,12 @@
             if( !empty( $this->data ) ){
 
                 ///Mise en place lors de la sauvegarde du statut de l'APRE à Complémentaire
-                $this->data['Apre']['statutapre'] = 'C';
+                $this->data[$this->modelClass]['statutapre'] = 'C';
 
                 if( $this->{$this->modelClass}->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     $saved = $this->{$this->modelClass}->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
                     if( $saved ) {
-                        $this->{$this->modelClass}->supprimeFormationsObsoletes( $this->data );
+//                         $this->{$this->modelClass}->supprimeFormationsObsoletes( $this->data );
                         $this->Jetons->release( $dossier_rsa_id );
                         $this->{$this->modelClass}->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
