@@ -446,7 +446,7 @@
                                 Set::extract( $this->data, 'Apre.structurereferente_id' ).'_'.Set::extract( $this->data, 'Apre.referent_id' )
                             );
                         }
-//                         debug( $this->data );
+
                     }
                 }
             }

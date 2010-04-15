@@ -110,14 +110,14 @@
 <br />
     <?php
 		echo $form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre', 'url' => Router::url( null, true ) ) );
-        $ApreId = Set::classicExtract( $this->data, 'Apre.id' );
+        $ApreId = Set::classicExtract( $this->data, "{$this->modelClass}.id" );
         if( $this->action == 'edit' ) {
             echo '<div>';
-            echo $form->input( 'Apre.id', array( 'type' => 'hidden' ) );
+            echo $form->input( "{$this->modelClass}.id", array( 'type' => 'hidden' ) );
             echo '</div>';
         }
         echo '<div>';
-        echo $form->input( 'Apre.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
+        echo $form->input( "{$this->modelClass}.personne_id", array( 'type' => 'hidden', 'value' => $personne_id ) );
         echo '</div>';
     ?>
 
@@ -126,7 +126,7 @@
             <table class="wide noborder">
                 <tr>
                     <td class="mediumSize noborder">
-                        <?php echo $form->input( 'Apre.numeroapre', array( 'type' => 'hidden', 'value' => $numapre ) ); ?>
+                        <?php echo $form->input( "{$this->modelClass}.numeroapre", array( 'type' => 'hidden', 'value' => $numapre ) ); ?>
                         <strong>Numéro de l'APRE : </strong><?php echo $numapre; ?>
                     </td>
                     <td class="mediumSize noborder">
