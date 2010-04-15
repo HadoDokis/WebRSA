@@ -27,10 +27,10 @@
 <?php
     echo $default->form(
         array(
-            'Aideapre66.themeapre66_id' => array( 'required' => true ),
-            'Aideapre66.name' => array('required' => true),
-            'Aideapre66.plafond' => array('required' => true, 'rows' => 1),
-            'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces à fournir', 'multiple' => 'checkbox' , 'options' => $pieceliste )
+            'Aideapre66.themeapre66_id',
+            'Aideapre66.name',
+            'Aideapre66.plafond' => array( 'rows' => 1 ),
+            'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces à fournir', 'multiple' => 'checkbox' , 'options' => $pieceliste, 'empty' => false )
         ),
         array(
             'options' => $options

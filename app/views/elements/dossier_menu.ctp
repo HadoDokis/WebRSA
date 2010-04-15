@@ -142,7 +142,7 @@
                                                         <?php
                                                             echo $html->link(
                                                                 'Aides / APRE',
-                                                                array( 'controller' => 'apres', 'action' => 'index', $personne['id'] )
+                                                                array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $personne['id'] )
                                                             );
                                                         ?>
                                                     </li>
