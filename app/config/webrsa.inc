@@ -13,7 +13,7 @@
     * Champs spécifique selon le CG pour le formulaire de l'APRE
     * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
     */
-    Configure::write( 'nom_form_apre_cg', 'cg66' );
+    Configure::write( 'nom_form_apre_cg', 'cg93' );
 
     // Limit pour le nombre de documents à éditer dans la cohorte par orientation
     Configure::write( 'nb_limit_print', 300 );// INFO: Au delà de 50, risque de cassure,
@@ -45,5 +45,5 @@
     * Paramètre à renseigner pour l'utilisation du bon MVC
     * @default: vide (pour le CG93), sinon '66' pour le CG66
     */
-    Configure::write( 'Apre.suffixe', '66' );
+    Configure::write( 'Apre.suffixe', '' );
 ?>
