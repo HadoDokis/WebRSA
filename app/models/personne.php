@@ -189,19 +189,15 @@
 //                                 'Prestation.natprest' => array( 'RSA', 'PFA' )
                                 'Prestation.natprest' => array( 'RSA' )
                             )
-                        )
+                        ),
+						'Calculdroitrsa'
                     )
                 )
             );
 
             $personne = $this->findById( $personne_id, null, null, 1 );
             if( isset( $personne['Prestation'] ) && ( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ) ) {
-                if( isset( $personne['Ressource'] ) && isset( $personne['Ressource'][0] ) && isset( $personne['Ressource'][0]['mtpersressmenrsa'] ) ) {
-                    $montant = $personne['Ressource'][0]['mtpersressmenrsa'];
-                }
-                else {
-                    $montant = 0;
-                }
+				$montant = Set::classicExtract( $personne, 'Calculdroitrsa.mtpersressmenrsa' );
 
                 if( $montant < 500 ) {
                     return true;
