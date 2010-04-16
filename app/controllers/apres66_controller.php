@@ -2,7 +2,7 @@
     class Apres66Controller extends AppController
     {
         var $name = 'Apres66';
-        var $uses = array( 'Apre66', 'Option', 'Personne', 'ApreComiteapre', 'Prestation'/*, 'Dsp'*/, 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent' );
+        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Option', 'Personne', 'ApreComiteapre', 'Prestation'/*, 'Dsp'*/, 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb' );
 
@@ -23,6 +23,19 @@
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
 // debug( $this->modelClass );
+            $this->set( 'typesaides', $this->Typeaideapre66->find( 'list' ) );
+
+            $pieceliste = $this->Pieceaide66->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Pieceaide66.id',
+                        'Pieceaide66.name'
+                    )
+                )
+            );
+            $this->set( 'pieceliste', $pieceliste );
+
         }
 
         /** ********************************************************************

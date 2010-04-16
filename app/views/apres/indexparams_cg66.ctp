@@ -16,7 +16,7 @@
                         h( 'Liste des aides de l\'APRE' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'aidesapres66', 'action' => 'index' )
+                            array( 'controller' => 'typesaidesapres66', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),

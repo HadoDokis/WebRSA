@@ -1,22 +1,22 @@
 <?php
     echo $html->tag(
         'h1',
-        $this->pageTitle = __d( 'aideapre66', "Aidesapres66::{$this->action}", true )
+        $this->pageTitle = __d( 'typeaideapre66', "Typesaidesapres66::{$this->action}", true )
     )
 ?>
 <?php
     echo $default->index(
-        $aidesapres66s,
+        $typesaidesapres66s,
         array(
             'Themeapre66.name',
-            'Aideapre66.name',
+            'Typeaideapre66.name',
         ),
         array(
             'actions' => array(
-                'Aideapre66.edit',
-                'Aideapre66.delete'
+                'Typeaideapre66.edit',
+                'Typeaideapre66.delete'
             ),
-            'add' => 'Aideapre66.add'
+            'add' => 'Typeaideapre66.add'
         )
     );
 

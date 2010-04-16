@@ -1,7 +1,7 @@
 <?php
     echo $html->tag(
         'h1',
-        $this->pageTitle = __d( 'aideapre66', "Aidesapres66::{$this->action}", true )
+        $this->pageTitle = __d( 'typeaideapre66', "Typesaidesapres66::{$this->action}", true )
     )
 ?>
 
@@ -27,9 +27,9 @@
 <?php
     echo $default->form(
         array(
-            'Aideapre66.themeapre66_id',
-            'Aideapre66.name',
-            'Aideapre66.plafond' => array( 'rows' => 1 ),
+            'Typeaideapre66.themeapre66_id',
+            'Typeaideapre66.name',
+            'Typeaideapre66.plafond' => array( 'rows' => 1 ),
             'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces à fournir', 'multiple' => 'checkbox' , 'options' => $pieceliste, 'empty' => false )
         ),
         array(

@@ -606,14 +606,14 @@ COMMENT ON TABLE themesapres66 IS 'Liste des types d''aides pour l''APRE CG66';
 -- --------------------------------------------------------------------------------------------------------
 --  ....Table des aides liées à l'APRE
 -- --------------------------------------------------------------------------------------------------------
-CREATE TABLE aidesapres66 (
+CREATE TABLE typesaidesapres66 (
     id                      SERIAL NOT NULL PRIMARY KEY,
     themeapre66_id          INTEGER NOT NULL REFERENCES themesapres66(id),
     name                    VARCHAR(200) NOT NULL,
     plafond                 DECIMAL(10,2) NOT NULL
 );
-CREATE INDEX aidesapres66_themeapre66_id_idx ON aidesapres66 (themeapre66_id);
-COMMENT ON TABLE aidesapres66 IS 'Table pour les aides liées à l''APRE CG66';
+CREATE INDEX typesaidesapres66_themeapre66_id_idx ON typesaidesapres66 (themeapre66_id);
+COMMENT ON TABLE typesaidesapres66 IS 'Table pour le paramétrage des aides liées à l''APRE CG66';
 
 -- --------------------------------------------------------------------------------------------------------
 --  ....Table des pièces pour les types d'aides de l'APRE
@@ -627,6 +627,39 @@ COMMENT ON TABLE piecesaides66 IS 'Table pour les pièces liées aux aides de l'
 -- --------------------------------------------------------------------------------------------------------
 --  ....Table des pièces liées aux aides de l'APRE
 -- --------------------------------------------------------------------------------------------------------
+CREATE TABLE typesaidesapres66_piecesaides66 (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    typeaideapre66_id           INTEGER NOT NULL REFERENCES typesaidesapres66(id),
+    pieceaide66_id              INTEGER NOT NULL REFERENCES piecesaides66(id)
+);
+CREATE INDEX typesaidesapres66_piecesaides66_typeaideapre66_id_idx ON typesaidesapres66_piecesaides66 (typeaideapre66_id);
+CREATE INDEX typesaidesapres66_piecesaides66_pieceaide66_id_idx ON typesaidesapres66_piecesaides66 (pieceaide66_id);
+COMMENT ON TABLE typesaidesapres66_piecesaides66 IS 'Table pour lier les aides de l''APRE CG66 à leurs pièces';
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des aides liées à une APRE
+-- --------------------------------------------------------------------------------------------------------
+CREATE TYPE type_virement AS ENUM ( 'RIB', 'CHE' );
+CREATE TYPE type_versement AS ENUM ( 'DEM', 'TIE' );
+
+CREATE TABLE aidesapres66 (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    typeaideapre66_id             INTEGER NOT NULL REFERENCES typesaidesapres66(id),
+    montantaide                 DECIMAL(10,2),
+    motivdem                    TEXT,
+    virement                    type_virement DEFAULT NULL,
+    versement                   type_versement DEFAULT NULL,
+    autorisationvers            type_no DEFAULT NULL,
+    datedemande                 DATE
+);
+CREATE INDEX aidesapres66_apre_id_idx ON aidesapres66 (apre_id);
+COMMENT ON TABLE aidesapres66 IS 'Table pour les aides liées à l''APRE CG66';
+
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces liées aux aides de l'APRE
+-- --------------------------------------------------------------------------------------------------------
 CREATE TABLE aidesapres66_piecesaides66 (
     id                          SERIAL NOT NULL PRIMARY KEY,
     aideapre66_id               INTEGER NOT NULL REFERENCES aidesapres66(id),
@@ -634,7 +667,7 @@ CREATE TABLE aidesapres66_piecesaides66 (
 );
 CREATE INDEX aidesapres66_piecesaides66_aideapre66_id_idx ON aidesapres66_piecesaides66 (aideapre66_id);
 CREATE INDEX aidesapres66_piecesaides66_pieceaide66_id_idx ON aidesapres66_piecesaides66 (pieceaide66_id);
-COMMENT ON TABLE aidesapres66_piecesaides66 IS 'Table pour les pièces liées aux aides de l''APRE CG66';
+COMMENT ON TABLE aidesapres66_piecesaides66 IS 'Table pour connaître les pièces liées aux aides d''une APRE donnée';
 
 -- -----------------------------------------------------------------------------
 COMMIT;
