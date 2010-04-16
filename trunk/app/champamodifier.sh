@@ -73,27 +73,46 @@ function grepLines() {
 # echo "==============================================================================="
 # grepLines "${champsSupprimes[@]}"
 
+# tablesSupprimees=( \
+# 	'dspfs' \
+# 	'Dspf' \
+# 	'dspfs_diflogs' \
+# 	'DspfDiflog' \
+# 	'dspfs_nataccosocfams' \
+# 	'DspfNataccosocfam' \
+# 	'dspps_accoemplois' \
+# 	'DsppAccoemploi' \
+# 	'dspps_difdisps' \
+# 	'DsppDifdisp' \
+# 	'dspps' \
+# 	'Dspp' \
+# 	'dspps_difsocs' \
+# 	'DsppDifsoc' \
+# 	'dspps_nataccosocindis' \
+# 	'DsppNataccosocindi' \
+# 	'dspps_natmobs' \
+# 	'DsppNatmob' \
+# 	'dspps_nivetus' \
+# 	'DsppNivetu' \
+# )
+
+# echo "==============================================================================="
+# echo "Tables supprimées"
+# echo "==============================================================================="
+# grepLines "${tablesSupprimees[@]}"
+
+# foyers.mtestrsa -> nouveau
+# calculsdroitsrsa.toppersdrodevorsa -> bougé
+# suivisinstruction.suiirsa (à la place de suivisinstruction.etatirsa)
+
+
 tablesSupprimees=( \
-	'dspfs' \
-	'Dspf' \
-	'dspfs_diflogs' \
-	'DspfDiflog' \
-	'dspfs_nataccosocfams' \
-	'DspfNataccosocfam' \
-	'dspps_accoemplois' \
-	'DsppAccoemploi' \
-	'dspps_difdisps' \
-	'DsppDifdisp' \
-	'dspps' \
-	'Dspp' \
-	'dspps_difsocs' \
-	'DsppDifsoc' \
-	'dspps_nataccosocindis' \
-	'DsppNataccosocindi' \
-	'dspps_natmobs' \
-	'DsppNatmob' \
-	'dspps_nivetus' \
-	'DsppNivetu' \
+# 	'Suiviinstruction' \
+# 	'suivisinstruction' \
+# 	'etatirsa' \
+	'Prestation' \
+	'prestations' \
+	'toppersdrodevorsa' \
 )
 
 echo "==============================================================================="

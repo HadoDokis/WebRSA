@@ -452,11 +452,15 @@
             );
         }
 
-        function etatirsa() {
+        function suiirsa() {
             return array(
-                '03' => 'Instruction administrative confirmée',
-                '05' => 'Recueil des données socio-profesionnelles validé partiellement',
-                '06' => 'Recueil des données socio-profesionnelles validé en totalité'
+				'01' => 'Données administratives',
+				'11' => 'Données socio-profesionnelles du demandeur',
+				'12' => 'Données socio-profesionnelles du conjoint',
+				'21' => 'Données parcours du demandeur',
+				'22' => 'Données parcours du conjoint',
+				'31' => 'Données orientation du demandeur',
+				'32' => 'Données orientation du conjoint'
             );
         }
 

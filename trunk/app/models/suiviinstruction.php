@@ -14,7 +14,7 @@
 
 
         var $validate = array(
-            'etatirsa' => array(
+            'suiirsa' => array(
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'

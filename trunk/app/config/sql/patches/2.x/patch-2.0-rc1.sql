@@ -43,8 +43,13 @@ CREATE INDEX transmissionsflux_identificationflux_id ON transmissionsflux (ident
 -- -----------------------------------------------------------------------------
 
 -- FIXME: correspondance / pas de correspondance ?
+-- INFO: pas d'entrées dans cette table, autres que 3 enregistrement de test de J. Rasoa ?
+-- INFO: on garde la colonne temporairement
+-- INFO: valeur utilisée dans ajoutdossiers_controller lorsqu'on insère un nouveau dossier -> 01
 ALTER TABLE suivisinstruction ADD COLUMN suiirsa CHAR(2) DEFAULT NULL;
-ALTER TABLE suivisinstruction DROP COLUMN etatirsa;
+ALTER TABLE suivisinstruction ALTER COLUMN etatirsa DROP NOT NULL;
+ALTER TABLE suivisinstruction ALTER COLUMN etatirsa SET DEFAULT NULL;
+-- ALTER TABLE suivisinstruction DROP COLUMN etatirsa;
 
 -- -----------------------------------------------------------------------------
 -- Dsp / Dspps, Dspfs

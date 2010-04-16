@@ -698,8 +698,8 @@ msgstr "Mois de référence du flux Xml"
 ###############################################################################
 # Suivi instruction
 ##############################################################################
-msgid "etatirsa"
-msgstr "Code état de l'instruction RSA :"
+msgid "suiirsa"
+msgstr "Suivi de l'instruction @RSA"
 
 msgid "date_etat_instruction"
 msgstr "Date de l'état de l'instruction"
