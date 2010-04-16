@@ -17,6 +17,25 @@
             )
         );
 
+        function listOptions() {
+            $tmp = $this->find(
+                'all',
+                array (
+                    'fields' => array(
+                        'Typeaideapre66.id',
+                        'Typeaideapre66.themeapre66_id',
+                        'Typeaideapre66.name'
+                    ),
+                    'recursive' => -1,
+                    'order' => 'Typeaideapre66.name ASC',
+                )
+            );
 
+            $return = array();
+            foreach( $tmp as $key => $value ) {
+                $return[$value['Typeaideapre66']['themeapre66_id'].'_'.$value['Typeaideapre66']['id']] = $value['Typeaideapre66']['name'];
+            }
+            return $return;
+        }
     }
 ?>

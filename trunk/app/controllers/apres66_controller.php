@@ -2,7 +2,7 @@
     class Apres66Controller extends AppController
     {
         var $name = 'Apres66';
-        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Option', 'Personne', 'ApreComiteapre', 'Prestation'/*, 'Dsp'*/, 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent' );
+        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Contratinsertion',  'Structurereferente', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb' );
 
@@ -14,8 +14,7 @@
             parent::beforeFilter();
             $options = $this->{$this->modelClass}->allEnumLists();
             $this->set( 'options', $options );
-            $optionsacts = $this->Actprof->allEnumLists();
-            $this->set( 'optionsacts', $optionsacts );
+
             $this->set( 'typevoie', $this->Option->typevoie() );
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'sitfam', $this->Option->sitfam() );
@@ -23,7 +22,8 @@
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
 // debug( $this->modelClass );
-            $this->set( 'typesaides', $this->Typeaideapre66->find( 'list' ) );
+//             $this->set( 'typesaides', $this->Typeaideapre66->find( 'list' ) );
+            $this->set( 'themes', $this->Themeapre66->find( 'list' ) );
 
             $pieceliste = $this->Pieceaide66->find(
                 'list',
@@ -224,21 +224,42 @@
             ///Récupération de la liste des référents liés à l'APRE
             $referents = $this->Referent->listOptions();
             $this->set( 'referents', $referents );
-
+            ///Récupération de la liste des référents liés à l'APRE
+//             $typesaides = $this->Typeaideapre66->listOptions();
+            $typesaides = $this->Typeaideapre66->find( 'list' );
+            $this->set( 'typesaides', $typesaides );
 
             if( !empty( $this->data ) ){
+//                 if( isset( $this->data['Aideapre66'] ) ){
+//                     $success = true;
+//                     $aideapre66 = array(
+//                         'Aideapre66' => array(
+//                             'apre_id' => $this->{$this->modelClass}->id,
+//                             'typeaideapre66_id' => Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' ),
+//                             'themeapre66_id' => Set::classicExtract( $this->data, 'Aideapre66.themeapre66_id' ),
+//                         )
+//                     );
+//                     $this->Aideapre66->validate = array();
+//                     $this->Aideapre66->create( $aideapre66 );
+//                     $this->Aideapre66->save();
+// 
+//                     debug( $this->{$this->modelClass}->id);
+//                 }
+                //FIXME: doit on faire ça et pq ?
+//                 $this->{$this->modelClass}->bindModel( array( 'hasOne' => array( 'Aideapre66' ) ), false );
 
                 ///Mise en place lors de la sauvegarde du statut de l'APRE à Complémentaire
                 $this->data[$this->modelClass]['statutapre'] = 'C';
 
                 if( $this->{$this->modelClass}->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+
                     $saved = $this->{$this->modelClass}->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+
                     if( $saved ) {
-//                         $this->{$this->modelClass}->supprimeFormationsObsoletes( $this->data );
                         $this->Jetons->release( $dossier_rsa_id );
                         $this->{$this->modelClass}->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-//                         debug( $this->data );
+
                         $this->redirect( array(  'controller' => 'apres'.Configure::read( 'Apre.suffixe' ),'action' => 'index', $personne_id ) );
                     }
                     else {
@@ -246,6 +267,7 @@
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                     }
                 }
+
             }
             else{
                 if( $this->action == 'edit' ) {
@@ -255,6 +277,10 @@
                     $this->data = Set::insert(
                         $this->data, "{$this->modelClass}.referent_id",
                         Set::extract( $this->data, "{$this->modelClass}.structurereferente_id" ).'_'.Set::extract( $this->data, "{$this->modelClass}.referent_id" )
+                    );
+                    $this->data = Set::insert(
+                        $this->data, 'Aideapre66.typeaideapre66_id',
+                        Set::extract( $this->data, 'Aideapre66.themeapre66_id' ).'_'.Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' )
                     );
                 }
             }

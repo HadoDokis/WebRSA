@@ -19,17 +19,35 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Aideapre66.name"
+msgid "Typeaideapre66::index::empty"
+msgstr "Aucune aide pour l'APRE présente"
+
+msgid "Typesaidesapres66::index"
+msgstr "Intitulé des aides de l'APRE"
+
+msgid "Typesaidesapres66::add"
+msgstr "Ajout d'aide"
+
+msgid "Typeaideapre66::add"
+msgstr "Ajouter une aide"
+
+msgid "Typeaideapre66::edit"
+msgstr "Modifier l'aide"
+
+msgid "Typeaideapre66::delete"
+msgstr "Supprimer l'aide"
+
+msgid "Typesaidesapres66::edit"
+msgstr "Modification de l'aide"
+
+msgid "Typeaideapre66.name"
 msgstr "Intitulé de l'aide"
 
-msgid "Aideapre66.typeaideapre66_id"
-msgstr "Intitulé de l'aide"
+msgid "Typeaideapre66.themeapre66_id"
+msgstr "Thème auquel l'aide est lié"
 
-msgid "Aideapre66.themeapre66_id"
-msgstr "Thème de l'aide"
+msgid "Typeaideapre66.plafond"
+msgstr "Plafond de l'aide"
 
-msgid "Aideapre66.montantaide"
-msgstr "Montant demandé"
-
-msgid "Aideapre66.motivdem"
-msgstr "Motivation de la demande"
+msgid "Typeaideapre66::delete::confirm"
+msgstr "Confirmer la suppression ?"

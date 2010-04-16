@@ -651,7 +651,8 @@ CREATE TYPE type_versement AS ENUM ( 'DEM', 'TIE' );
 CREATE TABLE aidesapres66 (
     id                          SERIAL NOT NULL PRIMARY KEY,
     apre_id                     INTEGER NOT NULL REFERENCES apres(id),
-    typeaideapre66_id             INTEGER NOT NULL REFERENCES typesaidesapres66(id),
+    themeapre66_id              INTEGER NOT NULL REFERENCES themesapres66(id),
+    typeaideapre66_id           INTEGER NOT NULL REFERENCES typesaidesapres66(id),
     montantaide                 DECIMAL(10,2),
     motivdem                    TEXT,
     virement                    type_virement DEFAULT NULL,
@@ -659,7 +660,10 @@ CREATE TABLE aidesapres66 (
     autorisationvers            type_no DEFAULT NULL,
     datedemande                 DATE
 );
+
 CREATE INDEX aidesapres66_apre_id_idx ON aidesapres66 (apre_id);
+CREATE INDEX aidesapres66_themeapre66_id_idx ON aidesapres66 (themeapre66_id);
+CREATE INDEX aidesapres66_typeaideapre66_id_idx ON aidesapres66 (typeaideapre66_id);
 COMMENT ON TABLE aidesapres66 IS 'Table pour les aides liées à l''APRE CG66';
 
 

@@ -246,7 +246,11 @@
         </fieldset>
 
         <fieldset>
+        <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg66' ):?>
             <legend>Prescripteur</legend>
+        <?php elseif( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ):?>
+            <legend>Structure référente</legend>
+        <?php endif;?>
             <table class="wide noborder">
                 <tr>
                     <td class="noborder">
