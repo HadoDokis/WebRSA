@@ -734,8 +734,9 @@ INSERT INTO calculsdroitsrsa (personne_id, toppersdrodevorsa, mtpersressmenrsa, 
 -- -----------------------------------------------------------------------------
 
 ALTER TABLE prestations DROP COLUMN toppersdrodevorsa;
-ALTER TABLE ressources DROP COLUMN mtpersressmenrsa;
-ALTER TABLE ressourcesmensuelles DROP COLUMN mtabaneu;
+-- INFO si on supprime, on perd l'historique
+-- ALTER TABLE ressources DROP COLUMN mtpersressmenrsa;
+-- ALTER TABLE ressourcesmensuelles DROP COLUMN mtabaneu;
 
 -- -----------------------------------------------------------------------------
 

@@ -31,7 +31,7 @@
 //                 'rule' => 'notEmpty',
 //                 'message' => 'Champ obligatoire'
 //             ),
-            'mtpersressmenrsa' => array(
+            /*'mtpersressmenrsa' => array(
                 array(
                     // FIXME INFO ailleurs aussi => 123,25 ne passe pas
                     'rule' => 'numeric',
@@ -41,7 +41,7 @@
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
                 ),
-            ),
+            ),*/
             'ddress' => array(
                 'rule' => 'date',
                 'message' => 'Veuillez entrer une date valide'

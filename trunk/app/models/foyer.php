@@ -207,11 +207,14 @@
             $this->Personne->unbindModelAll();
             $this->Personne->bindModel(
                 array(
-                    'hasMany' => array(
+                    /*'hasMany' => array(
                         'Ressource' => array(
                             'order' => array( 'dfress DESC' )
                         )
-                    )
+                    )*/
+                    'hasOne' => array(
+                        'Calculdroitrsa'
+					)
                 )
             );
 
@@ -224,17 +227,14 @@
 
             // a) Si 1 foyer = 1 personne, montant forfaitaire = F (= 454,63 EUR)
             if( count( $personnes ) == 1 ) {
-                $mtpersressmenrsa = Set::extract( $personnes, '{0}.Ressource.{0}.mtpersressmenrsa' );
-                $montant = ( ( isset( $mtpersressmenrsa[0] ) && isset( $mtpersressmenrsa[0][0] ) ) ? $mtpersressmenrsa[0][0] : 0 );
+                $mtpersressmenrsa = Set::extract( $personnes, '/Calculdroitrsa/mtpersressmenrsa' );
+                $montant = array_sum( Set::filter( $mtpersressmenrsa ) );
                 return ( $montant < $F );
             }
             // b) Si 1 foyer = 2 personnes, montant forfaitaire = 150% F
             else if( count( $personnes ) == 2 ) {
-                $mtpersressmenrsa = Set::extract( $personnes, '{n}.Ressource.{n}.mtpersressmenrsa' );
-                $montant = 0;
-                foreach( $mtpersressmenrsa as $mntPersonne ) {
-                    $montant += ( isset( $mntPersonne[0] ) ? $mntPersonne[0] : 0 );
-                }
+                $mtpersressmenrsa = Set::extract( $personnes, '/Calculdroitrsa/mtpersressmenrsa' );
+                $montant = array_sum( Set::filter( $mtpersressmenrsa ) );
                 return ( $montant < ( $F * 1.5 ) );
             }
             else {
@@ -254,9 +254,8 @@
                         $Y++;
                     }
 
-                    if( isset( $personne['Ressource'] ) && isset( $personne['Ressource'][0] ) && isset( $personne['Ressource'][0]['mtpersressmenrsa'] ) ) {
-                        $montant += $personne['Ressource'][0]['mtpersressmenrsa'];
-                    }
+					$mtpersressmenrsa = Set::extract( $personnes, '/Calculdroitrsa/mtpersressmenrsa' );
+					$montant += array_sum( Set::filter( $mtpersressmenrsa ) );
                 }
 
                 // c) Si 1 foyer = X personnes de plus de 25 ans + Y personnes de moins de 25 ans et X+Y>2 et Y=<2 , montant forfaitaire = 150% F + 30%F(X-2)
