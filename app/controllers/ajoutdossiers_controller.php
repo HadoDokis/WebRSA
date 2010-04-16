@@ -483,7 +483,7 @@
                 $suiviinstruction = array(
                     'Suiviinstruction' => array(
                         'dossier_rsa_id'           => $this->Dossier->id,
-                        'etatirsa'                 => '03',
+                        'suiirsa'                  => '01',
                         'date_etat_instruction'    => strftime( '%Y-%m-%d' ),
                         'nomins'                   => $user['User']['nom'],
                         'prenomins'                => $user['User']['prenom'],

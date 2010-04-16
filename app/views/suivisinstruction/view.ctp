@@ -9,8 +9,8 @@
         <table>
             <tbody>
                 <tr class="even">
-                    <th ><?php __( 'etatirsa' );?></th>
-                    <td><?php echo  h( $etatirsa[$suiviinstruction['Suiviinstruction']['etatirsa']] );?></td>
+                    <th ><?php __( 'suiirsa' );?></th>
+                    <td><?php echo  h( $suiirsa[$suiviinstruction['Suiviinstruction']['suiirsa']] );?></td>
                 </tr>
                 <tr class="odd">
                     <th ><?php __( 'date_etat_instruction' );?></th>

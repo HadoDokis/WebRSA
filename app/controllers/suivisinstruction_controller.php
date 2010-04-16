@@ -7,7 +7,7 @@
 
         function beforeFilter() {
             parent::beforeFilter();
-            $this->set( 'etatirsa', $this->Option->etatirsa() );
+            $this->set( 'suiirsa', $this->Option->suiirsa() );
             $this->set( 'typeserins', $this->Option->typeserins() );
 
         }

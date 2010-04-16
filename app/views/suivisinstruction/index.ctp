@@ -27,7 +27,7 @@
                 <?php foreach( $suivisinstruction as $suiviinstruction ):?>
                     <?php
                         $title = implode( ' ', array(
-                            $suiviinstruction['Suiviinstruction']['etatirsa'] ,
+                            $suiviinstruction['Suiviinstruction']['suiirsa'] ,
                             $suiviinstruction['Suiviinstruction']['date_etat_instruction'],
                             $suiviinstruction['Suiviinstruction']['nomins'] ,
                             $suiviinstruction['Suiviinstruction']['prenomins'] ,
@@ -39,7 +39,7 @@
 
                         echo $html->tableCells(
                             array(
-                                h( $etatirsa[$suiviinstruction['Suiviinstruction']['etatirsa']]),
+                                h( $suiirsa[$suiviinstruction['Suiviinstruction']['suiirsa']]),
                                 h( date_short($suiviinstruction['Suiviinstruction']['date_etat_instruction'] ) ) ,
                                 h( $suiviinstruction['Suiviinstruction']['nomins']),
                                 h( $suiviinstruction['Suiviinstruction']['numdepins']),
