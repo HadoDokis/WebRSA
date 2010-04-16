@@ -10,7 +10,8 @@
         var $useTable = false;
 
 		/**
-		*
+		* Dernière version des règles de préorientation (changement règle 4):
+		* 16/04/2010, par mail
 		*/
 
         function preOrientation( $element ) {
@@ -71,11 +72,35 @@
 			/// FIXME: change chaque année ...
 			$cessderact = Set::extract( $dsp, 'Dsp.cessderact' );
 
-			// Si la date«DFDERACT»  n'est pas renseignée : Règle 5
+			// Si le code CESSDERACT n'est pas renseigné : Règle 5
 			if( empty( $propo_algo ) && !empty( $cessderact ) ) {
 				$age = age( $dtnai );
 
-				// + 57 Ans ( Date du jour) :
+				// Si - de 57 a :
+				// "2701" : Encore en activité ou cessation depuis moins d'un an ->Pôle Emploi
+				// "2702" : Cessation d'activité depuis plus d'un an -> PDV
+				if( $age < 57 ) {
+					if( $cessderact == '2701' ) {
+						$propo_algo = 'Emploi';
+					}
+					else if( $cessderact == '2702' ) {
+						$propo_algo = 'Socioprofessionnelle';
+					}
+				}
+
+				// Si + de 57 a :
+				// "2701" : Encore en activité ou cessation depuis moins d'un an -> PDV
+				// "2702" : Cessation d'activité depuis plus d'un an ->Service Social
+				else if( $age >= 57 ) {
+					if( $cessderact == '2701' ) {
+						$propo_algo = 'Socioprofessionnelle';
+					}
+					else if( $cessderact == '2702' ) {
+						$propo_algo = 'Social';
+					}
+				}
+
+				/*// + 57 Ans ( Date du jour) :
 				// Code XML instruction : « DFDERACT » (Date éventuelle de cessation de cette activité) = -1ans ( Date du jour) → Orientation vers le PDV
 				// Code XML instruction : « DFDERACT» (Date éventuelle de cessation de cette activité) = +1ans ( Date du jour) → Orientation vers le Service Social
 				if( $age >= 57 ) {
@@ -95,13 +120,13 @@
 						$propo_algo = 'Emploi';
 					}
 					// FIXME: on ne peut plus savoir avec les nouvelles DSP
-					/*else if( $cessderact < 5 ) {
-						$propo_algo = 'Socioprofessionnelle';
-					}*/
-					else {
-						$propo_algo = 'Social';
-					}
-				}
+					// else if( $cessderact < 5 ) {
+					// 	$propo_algo = 'Socioprofessionnelle';
+					// }
+					// else {
+					// 	$propo_algo = 'Social';
+					// }
+				}*/
 			}
 
 			// Règle 5 : Code XML instruction : « HISPRO ». Question : Passé professionnel ?
