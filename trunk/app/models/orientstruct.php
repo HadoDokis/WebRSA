@@ -71,12 +71,6 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'toppersdrodevorsa' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
             'date_propo' => array(
                 'notEmpty' => array(
                     'rule' => 'date',

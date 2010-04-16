@@ -103,7 +103,7 @@
 
             if( !empty( $this->data ) ) {
                 if( ( $this->data['Prestation']['rolepers'] == 'DEM' ) || ( $this->data['Prestation']['rolepers'] == 'CJT' ) ) {
-                    $this->data['Prestation']['toppersdrodevorsa'] = true;
+                    $this->data['Calculdroitrsa']['toppersdrodevorsa'] = true;
                 }
 
                 if( $this->Personne->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {

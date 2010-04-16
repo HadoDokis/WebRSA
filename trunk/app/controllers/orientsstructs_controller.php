@@ -137,7 +137,7 @@
                     $this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
                     $this->data['Orientstruct']['statut_orient'] = 'Orienté';
 
-                    $saved = $this->Orientstruct->Personne->Prestation->save( $this->data );
+                    $saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data );
                     $saved = $this->Orientstruct->save( $this->data['Orientstruct'] ) && $saved;
 
                     if( $saved ) {
@@ -153,7 +153,7 @@
             }
             else {
                 $personne = $this->Personne->findByid( $personne_id, null, null, 0 );
-                $this->data['Prestation'] = $personne['Prestation'];
+                $this->data['Calculdroitrsa'] = $personne['Calculdroitrsa'];
             }
 
             //$this->Orientstruct->commit();
@@ -188,12 +188,12 @@
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
                 $this->Orientstruct->set( $this->data );
-                $this->Orientstruct->Personne->Prestation->set( $this->data );
-                $valid = $this->Orientstruct->Personne->Prestation->validates();
+                $this->Orientstruct->Personne->Calculdroitrsa->set( $this->data );
+                $valid = $this->Orientstruct->Personne->Calculdroitrsa->validates();
                 $valid = $this->Orientstruct->validates() && $valid;
 
                 if( $valid ) {
-                    if( $this->Orientstruct->Personne->Prestation->save( $this->data ) && $this->Orientstruct->save( $this->data ) ) {
+                    if( $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data ) && $this->Orientstruct->save( $this->data ) ) {
                         $this->Jetons->release( $dossier_id );
                         $this->Orientstruct->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -208,7 +208,7 @@
             // Afficage des données
             else {
                 // Assignation au formulaire
-                $this->data = Set::merge( array( 'Orientstruct' => $orientstruct['Orientstruct'] ), array( 'Prestation' => $orientstruct['Personne']['Prestation'] ) );
+                $this->data = Set::merge( array( 'Orientstruct' => $orientstruct['Orientstruct'] ), array( 'Calculdroitrsa' => $orientstruct['Personne']['Calculdroitrsa'] ) );
             }
 
             $this->Orientstruct->commit();

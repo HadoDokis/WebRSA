@@ -20,7 +20,8 @@
                     'Prestation.natprest' => array( 'RSA' )
 //                     'Prestation.natprest' => array( 'RSA', 'PFA' )
                 )
-            )
+            ),
+            'Calculdroitrsa'
         );
 
         var $belongsTo = array(

@@ -7,7 +7,7 @@
             // Masquage des champs select si Statut = non orienté
         observeDisableFieldsOnValue( 'Orientstruct0StatutOrient', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId' ], 'Non orienté', true );
         observeDisableFieldsOnValue( 'Orientstruct1StatutOrient', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId' ], 'Non orienté', true );
-        observeDisableFieldsOnValue( 'PrestationToppersdrodevorsa', [ /*'TypeorientParentId', */'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId' ], 0, true );
+        observeDisableFieldsOnValue( 'CalculdroitrsaToppersdrodevorsa', [ /*'TypeorientParentId', */'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId' ], 0, true );
 
     });
 </script>
@@ -45,7 +45,8 @@
             <?php echo $form->input( 'Personne.prenom', array( 'label' => required( __( 'prenom', true ) ) ) );?>
             <?php echo $form->input( 'Personne.nir', array( 'label' =>  __( 'nir', true ) ) );?>
             <?php echo $form->input( 'Personne.dtnai', array( 'label' => required( __( 'dtnai', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
-            <?php echo $form->input( 'Prestation.toppersdrodevorsa', array(  'label' =>  required( __( 'toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
+			<div><?php echo $form->input( 'Calculdroitrsa.id', array( 'label' => false, 'type' => 'hidden') );?></div>
+            <?php echo $form->input( 'Calculdroitrsa.toppersdrodevorsa', array(  'label' =>  required( __( 'toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
         </fieldset>
         <fieldset>
             <h3>Orientation</h3>

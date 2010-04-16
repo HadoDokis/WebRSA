@@ -185,6 +185,7 @@
                         //Typeorient
                     OK -> Dsp
                     OK -> Contratinsertion
+                    Calculsdroitrsa
             */
             $details = array();
 
@@ -240,7 +241,7 @@
             */
             $bindPrestation = $this->Personne->hasOne['Prestation'];
             $this->Personne->unbindModelAll();
-            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Infopoleemploi', 'Prestation' => $bindPrestation ) ) );
+            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Infopoleemploi', 'Calculdroitrsa', 'Prestation' => $bindPrestation ) ) );
             $personnesFoyer = $this->Personne->find(
                 'all',
                 array(

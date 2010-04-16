@@ -67,11 +67,13 @@
 						FROM prestations
 							INNER JOIN personnes
 								ON  prestations.personne_id = personnes.id
+							INNER JOIN calculsdroitsrsa
+								ON  calculsdroitsrsa.personne_id = personnes.id
 							INNER JOIN foyers
 								ON  personnes.foyer_id = foyers.id
 							INNER JOIN dossiers_rsa
 								ON  foyers.dossier_rsa_id = dossiers_rsa.id
-						WHERE prestations.toppersdrodevorsa = true
+						WHERE calculsdroitsrsa.toppersdrodevorsa = \'1\'
 							AND prestations.natprest = \'RSA\'
 							AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
 							AND EXTRACT(YEAR FROM dossiers_rsa.dtdemrsa) = '.Sanitize::clean( $annee ).'

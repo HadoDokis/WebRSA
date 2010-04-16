@@ -138,8 +138,8 @@
                             </tr>
                             <tr class="even">
                                 <th>Soumis à droits et devoirs</th>
-                                <td><?php echo value( $toppersdrodevorsa, Set::extract( 'DEM.Prestation.toppersdrodevorsa', $details ) );?></td>
-                                <td><?php echo value( $toppersdrodevorsa, Set::extract( 'CJT.Prestation.toppersdrodevorsa', $details ) );?></td>
+                                <td><?php echo value( $toppersdrodevorsa, Set::extract( 'DEM.Calculdroitrsa.toppersdrodevorsa', $details ) );?></td>
+                                <td><?php echo value( $toppersdrodevorsa, Set::extract( 'CJT.Calculdroitrsa.toppersdrodevorsa', $details ) );?></td>
                             </tr>
                         </tbody>
                     </table>
