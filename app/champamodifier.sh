@@ -110,9 +110,15 @@ tablesSupprimees=( \
 # 	'Suiviinstruction' \
 # 	'suivisinstruction' \
 # 	'etatirsa' \
-	'Prestation' \
-	'prestations' \
+# 	'Prestation' \
+# 	'prestations' \
 	'toppersdrodevorsa' \
+# 	'Ressource' \
+# 	'ressources' \
+	'mtpersressmenrsa' \
+# 	'Ressourcesmensuelle' \
+# 	'ressourcesmensuelles' \
+	'mtabaneu' \
 )
 
 echo "==============================================================================="

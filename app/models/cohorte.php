@@ -154,7 +154,7 @@
         function search( $statutOrientation, $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers, $limit = PHP_INT_MAX ) {
             /// Conditions de base
             $conditions = array(
-                'prestations.toppersdrodevorsa = true',
+                'calculsdroitsrsa.toppersdrodevorsa = \'1\'',
                 'orientsstructs.statut_orient = \''.Sanitize::clean( $statutOrientation ).'\''
             );
 
@@ -290,6 +290,7 @@
             $sql = 'SELECT DISTINCT personnes.id
                     FROM personnes
                         INNER JOIN prestations ON ( prestations.personne_id = personnes.id AND prestations.natprest = \'RSA\' AND ( prestations.rolepers = \'DEM\' OR prestations.rolepers = \'CJT\' ) )
+                        INNER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
                         '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dsps ON ( dsps.personne_id = personnes.id )' : '' ).'
                         INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
                         INNER JOIN dossiers_rsa ON ( foyers.dossier_rsa_id = dossiers_rsa.id )

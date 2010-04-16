@@ -175,7 +175,7 @@
                     '"Serviceinstructeur"."id"',
                     '"Serviceinstructeur"."lib_service"',
                     '"Situationdossierrsa"."etatdosrsa"',
-                    '"Prestation"."toppersdrodevorsa"',
+                    '"Calculdroitrsa"."toppersdrodevorsa"',
                     '"Detailcalculdroitrsa"."natpf"',
                     '"PersonneReferent"."referent_id"'
                 ),
@@ -197,6 +197,13 @@
                             'Prestation.personne_id = Personne.id',
                             'Prestation.natprest = \'RSA\''
                         )
+                    ),
+                    array(
+                        'table'      => 'calculsdroitsrsa',
+                        'alias'      => 'Calculdroitrsa',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Calculdroitrsa.personne_id = Personne.id' )
                     ),
                     array(
                         'table'      => 'foyers',

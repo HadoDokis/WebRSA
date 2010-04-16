@@ -8,8 +8,8 @@
         observeDisableFieldsOnValue( 'Orientstruct0StatutOrient', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId' ], 'Non orienté', true );
         observeDisableFieldsOnValue( 'Orientstruct1StatutOrient', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId' ], 'Non orienté', true );
         // Masquage des champs select si non droit et devoir
-        observeDisableFieldsOnValue( 'Prestation0Toppersdrodevorsa', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId', 'Orientstruct0StatutOrient' ], 0, true );
-        observeDisableFieldsOnValue( 'Prestation1Toppersdrodevorsa', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId', 'Orientstruct1StatutOrient' ], 0, true );
+        observeDisableFieldsOnValue( 'Calculdroitrsa0Toppersdrodevorsa', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId', 'Orientstruct0StatutOrient' ], 0, true );
+        observeDisableFieldsOnValue( 'Calculdroitrsa1Toppersdrodevorsa', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId', 'Orientstruct1StatutOrient' ], 0, true );
         ///
 
     });
@@ -48,7 +48,7 @@
             <?php echo $form->input( 'Personne.0.prenom', array( 'label' => required( __( 'prenom', true ) ) ) );?>
             <?php echo $form->input( 'Personne.0.nir', array( 'label' => __( 'nir', true ) ) );?>
             <?php echo $form->input( 'Personne.0.dtnai', array( 'label' => required( __( 'dtnai', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
-            <?php echo $form->input( 'Prestation.0.toppersdrodevorsa', array(  'label' =>  required( __( 'toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
+            <?php echo $form->input( 'Calculdroitrsa.0.toppersdrodevorsa', array(  'label' =>  required( __( 'toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
         </fieldset>
         <fieldset>
             <h3>Orientation</h3>
@@ -71,7 +71,7 @@
             <?php echo $form->input( 'Personne.1.prenom', array( 'label' =>  __( 'prenom', true  ) ) );?>
             <?php echo $form->input( 'Personne.1.nir', array( 'label' =>  __( 'nir', true ) ) );?>
             <?php echo $form->input( 'Personne.1.dtnai', array( 'label' =>  __( 'dtnai', true  ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
-            <?php echo $form->input( 'Prestation.1.toppersdrodevorsa', array(  'label' =>   __( 'toppersdrodevorsa', true ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
+            <?php echo $form->input( 'Calculdroitrsa.1.toppersdrodevorsa', array(  'label' =>   __( 'toppersdrodevorsa', true ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
         </fieldset>
         <fieldset>
             <h3>Orientation</h3>

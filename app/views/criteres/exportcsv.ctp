@@ -16,6 +16,18 @@
 // debug($orients);
 // die();
     foreach( $orients as $orient ) {
+		$toppersdrodevorsa = Set::classicExtract( $orient, 'Calculdroitrsa.toppersdrodevorsa' );
+		switch( $toppersdrodevorsa ) {
+			case '0':
+				$toppersdrodevorsa = 'Non';
+				break;
+			case '1':
+				$toppersdrodevorsa = 'Oui';
+				break;
+			default:
+				$toppersdrodevorsa = 'Non défini';
+				break;
+		}
         $row = array(
             Set::classicExtract( $orient, 'Dossier.numdemrsa' ),
             Set::classicExtract( $orient, 'Personne.nom' ).' '.Set::classicExtract( $orient, 'Personne.prenom'),
@@ -32,7 +44,7 @@
             date_short( Set::classicExtract( $orient, 'Orientstruct.date_valid' ) ),
             Set::enum( Set::classicExtract( $orient, 'Orientstruct.structurereferente_id' ), $sr ),
             Set::classicExtract( $orient, 'Orientstruct.statut_orient' ),
-            ( Set::classicExtract( $orient, 'Prestation.toppersdrodevorsa' ) ? 'Oui' : 'Non' ),
+            $toppersdrodevorsa,
             Set::enum( Set::classicExtract( $orient, 'Detailcalculdroitrsa.natpf' ), $natpf )
         );
         $csv->addRow($row);

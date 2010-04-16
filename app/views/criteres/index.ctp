@@ -81,12 +81,12 @@
             </fieldset>
 
         <?php echo $form->input( 'Critere.typeorient_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
-        
-        
+
+
         <?php echo $form->input( 'Critere.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
     <?php echo $ajax->observeField( 'CritereTypeorientId', array( 'update' => 'CritereStructurereferenteId', 'url' => Router::url( array( 'action' => 'ajaxstruc' ), true ) ) );?>
-    
-    
+
+
         <?php echo $form->input( 'Critere.referent_id', array( 'label' => 'Nom du référent', 'type' => 'select' , 'options' => $referents, 'empty' => true  ) );?>
         <?php echo $form->input( 'Critere.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
          <?php echo $form->input( 'Critere.serviceinstructeur_id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
@@ -117,7 +117,7 @@
                     <th><?php echo $paginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' );?></th>
                     <th><?php echo $paginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
                     <th><?php echo $paginator->sort( 'Statut orientation', 'Orientstruct.statut_orient' );?></th>
-                    <th><?php echo $paginator->sort( 'Soumis à droits et devoirs', 'Prestation.toppersdrodevorsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Soumis à droits et devoirs', 'Calculdroitrsa.toppersdrodevorsa' );?></th>
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -161,7 +161,7 @@
                                 h( date_short( $orient['Orientstruct']['date_valid'] ) ),
                                 h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
                                 h( $orient['Orientstruct']['statut_orient'] ),
-                                $html->boolean( $orient['Prestation']['toppersdrodevorsa'] ),
+                                $html->boolean( $orient['Calculdroitrsa']['toppersdrodevorsa'] ),
                                 array(
                                     $html->viewLink(
                                         'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',

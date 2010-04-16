@@ -172,11 +172,13 @@
                             $saved = $this->Personne->save() && $saved;
                             $personneId = $this->Personne->id;
 
-                            // Prestation
-                            $this->Personne->Prestation->create();
-                            $this->data['Prestation'][$key]['personne_id'] = $personneId;
-                            $this->Personne->Prestation->set( $this->data['Prestation'][$key] );
-                            $saved = $this->Personne->Prestation->save( $this->data['Prestation'][$key] ) && $saved;
+                            // Prestation, Calculdroitrsa
+                            foreach( array( 'Prestation', 'Calculdroitrsa' ) as $tmpModel ) {
+								$this->Personne->{$tmpModel}->create();
+								$this->data[$tmpModel][$key]['personne_id'] = $personneId;
+								$this->Personne->{$tmpModel}->set( $this->data[$tmpModel][$key] );
+								$saved = $this->Personne->{$tmpModel}->save( $this->data['Prestation'][$key] ) && $saved;
+							}
 
                             // Orientation
                             $tOrientstruct = Set::extract( $this->data, 'Orientstruct.'.$key );
