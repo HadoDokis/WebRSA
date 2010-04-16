@@ -17,6 +17,19 @@
             )
         );
 
+        /**
+        *
+        */
 
+        function beforeSave( $options = array() ) {
+    debug($options);
+            $return = parent::beforeSave( $options );
+debug($return);
+            if( array_key_exists( $this->name, $this->data ) && array_key_exists( 'typeaideapre66_id', $this->data[$this->name] ) ) {
+                $this->data = Set::insert( $this->data, "{$this->alias}.typeaideapre66_id", suffix( Set::extract( $this->data, "{$this->alias}.typeaideapre66_id" ) ) );
+            }
+debug($return);
+            return $return;
+        }
     }
 ?>

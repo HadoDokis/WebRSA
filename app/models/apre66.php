@@ -63,7 +63,8 @@
         );
 
         var $hasOne = array(
-            'Aideapre66'
+            'Aideapre66'/*,
+            'Themeapre66'*/
         );
 
         var $belongsTo = array(
@@ -74,19 +75,12 @@
 
 
         var $hasAndBelongsToMany = array(
-            'Pieceapre' => array(
-                 'className'              => 'Pieceapre',
-                 'joinTable'              => 'apres_piecesapre',
-                 'foreignKey'             => 'apre_id',
-                 'associationForeignKey'  => 'pieceapre_id'
-            ),
-            'Comiteapre' => array(
-                'className'              => 'Comiteapre',
-                'joinTable'              => 'apres_comitesapres',
-                'foreignKey'             => 'apre_id',
-                'associationForeignKey'  => 'comiteapre_id',
-                'with'                   => 'ApreComiteapre'
-            )
+//             'Pieceaide66' => array(
+//                  'className'              => 'Pieceaide66',
+//                  'joinTable'              => 'apres_piecesaides66',
+//                  'foreignKey'             => 'apre_id',
+//                  'associationForeignKey'  => 'pieceapre_id'
+//             )
         );
 
         function dossierId( $apre_id ){
