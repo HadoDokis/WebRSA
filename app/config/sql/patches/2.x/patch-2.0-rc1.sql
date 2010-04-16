@@ -11,6 +11,7 @@
 -- \i /home/cbuffin/projets/htdocs/adullact/webrsa/trunk/app/config/sql/patches/1.x/patch-version-1.3.sql
 -- \i /home/cbuffin/projets/htdocs/adullact/webrsa/trunk/app/config/sql/patches/1.x/patch-version-1.3rc2.sql
 -- UPDATE users SET password='83a98ed2a57ad9734eb0a1694293d03c74ae8a57' WHERE username='trobert';
+-- \i /home/cbuffin/projets/htdocs/adullact/webrsa/trunk/app/config/sql/patches/2.x/patch-2.0-rc1.sql
 
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
@@ -675,4 +676,63 @@ CREATE INDEX aidesapres66_piecesaides66_pieceaide66_id_idx ON aidesapres66_piece
 COMMENT ON TABLE aidesapres66_piecesaides66 IS 'Table pour connaître les pièces liées aux aides d''une APRE donnée';
 
 -- -----------------------------------------------------------------------------
+-- Passage v1 -> v2:
+-- -----------------------------------------------------------------------------
+
+-- INFO: fait dans le patch 1.0.8
+/*CREATE TABLE calculsdroitsrsa (
+    id					SERIAL NOT NULL PRIMARY KEY,
+    personne_id			INTEGER NOT NULL REFERENCES personnes(id),
+    mtpersressmenrsa	NUMERIC(9,2) DEFAULT NULL,
+    mtpersabaneursa		NUMERIC(9,2) DEFAULT NULL,
+    toppersdrodevorsa	type_booleannumber DEFAULT NULL
+);*/
+
+-- Modification du type de la colonne
+ALTER TABLE calculsdroitsrsa ADD COLUMN new_toppersdrodevorsa type_booleannumber DEFAULT NULL;
+UPDATE calculsdroitsrsa SET new_toppersdrodevorsa = CAST ( ( CASE WHEN toppersdrodevorsa = true THEN '1' WHEN toppersdrodevorsa = false THEN '0' ELSE null END ) AS type_booleannumber );
+ALTER TABLE calculsdroitsrsa DROP COLUMN toppersdrodevorsa;
+ALTER TABLE calculsdroitsrsa RENAME COLUMN new_toppersdrodevorsa TO toppersdrodevorsa;
+
+CREATE INDEX calculsdroitsrsa_personne_id_idx ON calculsdroitsrsa (personne_id);
+CREATE INDEX calculsdroitsrsa_toppersdrodevorsa_idx ON calculsdroitsrsa (toppersdrodevorsa);
+
+-- -----------------------------------------------------------------------------
+-- prestations.toppersdrodevorsa -> calculsdroitsrsa.toppersdrodevorsa (0-1 personnes lorsque prestations.natprest = 'RSA')
+-- ressourcesmensuelles.mtabaneu -> calculsdroitsrsa.mtpersabaneursa (0-3 -> 0-1)
+-- ressources.mtpersressmenrsa -> calculsdroitsrsa.mtpersressmenrsa (0-1 personnes)
+
+INSERT INTO calculsdroitsrsa (personne_id, toppersdrodevorsa, mtpersressmenrsa, mtpersabaneursa)
+	SELECT prestations.personne_id AS personne_id,
+			CAST( ( CASE WHEN prestations.toppersdrodevorsa = true THEN '1' WHEN prestations.toppersdrodevorsa = false THEN '0' ELSE null END ) AS type_booleannumber) AS toppersdrodevorsa,
+			ressources.mtpersressmenrsa AS mtpersressmenrsa,
+			SUM( COALESCE( ressourcesmensuelles.mtabaneu, 0 ) ) AS mtpersabaneursa
+		FROM prestations
+			INNER JOIN personnes ON (
+				prestations.personne_id = personnes.id
+				AND prestations.natprest = 'RSA'
+			)
+			INNER JOIN ressources ON ( ressources.personne_id = personnes.id )
+			INNER JOIN ressourcesmensuelles ON (ressources.id = ressourcesmensuelles.ressource_id)
+		WHERE ressources.id IN (
+			SELECT tmpressources.id FROM (
+				SELECT ressources.id, MAX(ressources.dfress)
+					FROM ressources
+					GROUP BY ressources.personne_id, ressources.id
+			) AS tmpressources
+		)
+		GROUP BY ressourcesmensuelles.ressource_id,
+			prestations.personne_id,
+			prestations.toppersdrodevorsa,
+			ressources.mtpersressmenrsa,
+			ressourcesmensuelles.mtabaneu;
+
+-- -----------------------------------------------------------------------------
+
+ALTER TABLE prestations DROP COLUMN toppersdrodevorsa;
+ALTER TABLE ressources DROP COLUMN mtpersressmenrsa;
+ALTER TABLE ressourcesmensuelles DROP COLUMN mtabaneu;
+
+-- -----------------------------------------------------------------------------
+
 COMMIT;
