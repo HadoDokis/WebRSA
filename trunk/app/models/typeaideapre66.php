@@ -1,7 +1,7 @@
 <?php
-    class Aideapre66 extends AppModel
+    class Typeaideapre66 extends AppModel
     {
-        public $name = 'Aideapre66';
+        public $name = 'Typeaideapre66';
 
         var $belongsTo = array( 'Themeapre66' );
 
@@ -10,10 +10,10 @@
         var $hasAndBelongsToMany = array(
             'Pieceaide66' => array(
                 'classname'             => 'Pieceaide66',
-                'joinTable'             => 'aidesapres66_piecesaides66',
-                'foreignKey'            => 'aideapre66_id',
+                'joinTable'             => 'typesaidesapres66_piecesaides66',
+                'foreignKey'            => 'typeaideapre66_id',
                 'associationForeignKey' => 'pieceaide66_id',
-                'with'                  => 'Aideapre66Pieceaide66'
+                'with'                  => 'Typeaideapre66Pieceaide66'
             )
         );
 

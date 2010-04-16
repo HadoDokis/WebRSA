@@ -63,7 +63,7 @@
         );
 
         var $hasOne = array(
-//             'Aideapre66'
+            'Aideapre66'
         );
 
         var $belongsTo = array(

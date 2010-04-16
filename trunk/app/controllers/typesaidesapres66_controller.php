@@ -1,9 +1,9 @@
 <?php
-    class Aidesapres66Controller extends AppController
+    class Typesaidesapres66Controller extends AppController
     {
-        public $name = 'Aidesapres66';
+        public $name = 'Typesaidesapres66';
 
-        var $uses = array( 'Aideapre66', 'Themeapre66', 'Pieceaide66' );
+        var $uses = array( 'Typeaideapre66', 'Themeapre66', 'Pieceaide66' );
 
         /**
         *
@@ -14,7 +14,7 @@
 
             $options = array();
 
-            foreach( array( 'Themeapre66', 'Typeaideapre66' ) as $linkedModel ) {
+            foreach( array( 'Themeapre66' ) as $linkedModel ) {
                 $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
             }
