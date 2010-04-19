@@ -5,7 +5,12 @@
 
         var $belongsTo = array( 'Themeapre66' );
 
-        var $actsAs = array( 'Autovalidate' );
+        var $actsAs = array(
+			'Autovalidate',
+			'Formattable' => array(
+				'suffix' => array( 'typeaideapre66_id' ),
+			)
+		);
 
         var $hasAndBelongsToMany = array(
             'Pieceaide66' => array(
@@ -21,7 +26,7 @@
         *
         */
 
-        function beforeSave( $options = array() ) {
+        /*function beforeSave( $options = array() ) {
 
             $return = parent::beforeSave( $options );
 
@@ -33,6 +38,6 @@
             }
 
             return $return;
-        }
+        }*/
     }
 ?>
