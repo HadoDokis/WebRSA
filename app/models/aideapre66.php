@@ -12,7 +12,14 @@
 			'Autovalidate',
 			'Formattable' => array(
 				'suffix' => array( 'typeaideapre66_id' ),
-			)
+			),
+            'Enumerable' => array(
+                'fields' => array(
+                    'virement' => array( 'type' => 'virement', 'domain' => 'aideapre66' ),
+                    'versement' => array( 'type' => 'versement', 'domain' => 'aideapre66' ),
+                    'autorisationvers' => array( 'type' => 'no', 'domain' => 'aideapre66' ),
+                )
+            )
 		);
 
         var $hasAndBelongsToMany = array(

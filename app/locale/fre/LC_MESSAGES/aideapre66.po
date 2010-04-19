@@ -33,3 +33,27 @@ msgstr "Montant demandé"
 
 msgid "Aideapre66.motivdem"
 msgstr "Motivation de la demande"
+
+msgid "Aideapre66.virement"
+msgstr "Type de virement"
+
+msgid "Aideapre66.versement"
+msgstr "Type de versement"
+
+msgid "Aideapre66.datedemande"
+msgstr "Date de la demande"
+
+msgid "Aideapre66.autorisationvers"
+msgstr "Autorisation de versement"
+
+msgid "ENUM::VIREMENT::RIB"
+msgstr "Virement bancaire RIB"
+
+msgid "ENUM::VIREMENT::CHE"
+msgstr "Virement par chèque"
+
+msgid "ENUM::VERSEMENT::DEM"
+msgstr "Au demandeur"
+
+msgid "ENUM::VERSEMENT::TIE"
+msgstr "Au tiers"

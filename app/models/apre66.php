@@ -73,8 +73,8 @@
         );
 
         var $hasOne = array(
-            'Aideapre66'/*,
-            'Themeapre66'*/
+            'Aideapre66',
+            'Fraisdeplacement66'
         );
 
         var $belongsTo = array(

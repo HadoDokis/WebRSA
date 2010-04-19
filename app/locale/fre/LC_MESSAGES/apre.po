@@ -22,6 +22,9 @@ msgstr ""
 # Apre
 ###############################################################################
 
+msgid "Apre66.datedemandeapre"
+msgstr "Date de demande de l'APRE "
+
 msgid "Apre.numeroapre"
 msgstr "N° du dossier APRE "
 
