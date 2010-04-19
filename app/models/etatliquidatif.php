@@ -376,7 +376,7 @@
                     'Personne.prenom',
                     'Dossier.numdemrsa',
                     'Dossier.matricule',
-                    'Adresse.typevoie',
+//                     'Adresse.typevoie',
                     'Paiementfoyer.titurib',
                     'Paiementfoyer.nomprenomtiturib',
                     'Paiementfoyer.etaban',
@@ -415,7 +415,7 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
                     ),
-                    array(
+                    /*array(
                         'table'      => 'adresses_foyers',
                         'alias'      => 'Adressefoyer',
                         'type'       => 'INNER',
@@ -428,7 +428,7 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                    ),
+                    ),*/
                     array(
                         'table'      => 'apres_etatsliquidatifs',
                         'alias'      => 'ApreEtatliquidatif',
@@ -449,7 +449,7 @@
                 ),
                 'recursive' => 1,
                 'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => Sanitize::clean( $id ) ),
-                'order' => array( 'Dossier.matricule ASC' )
+                'order' => array( 'Paiementfoyer.nomprenomtiturib ASC' )
             );
 
             $this->Apre =& ClassRegistry::init( 'Apre' );
