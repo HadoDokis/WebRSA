@@ -27,7 +27,7 @@
 
         echo $default->subform(
             array(
-                'Aideapre66.apre_id' => array( 'type' => 'hidden', 'value' => Set::classicExtract( $this->data, "{$this->modelClass}.id" ) ),
+                //'Aideapre66.apre_id' => array( 'type' => 'hidden', 'value' => Set::classicExtract( $this->data, "{$this->modelClass}.id" ) ),
                 'Aideapre66.themeapre66_id' => array( 'options' => $themes ),
                 'Aideapre66.typeaideapre66_id' => array( 'options' => $typesaides ),
                 'Aideapre66.motivdem',
@@ -42,7 +42,7 @@
     ?>
 </fieldset>
 
-<!-- 
+<!--
 <fieldset>
         <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg66' ):?>
             <legend>Prescripteur</legend>

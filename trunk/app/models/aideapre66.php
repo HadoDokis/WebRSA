@@ -3,7 +3,10 @@
     {
         public $name = 'Aideapre66';
 
-        var $belongsTo = array( 'Themeapre66' );
+        var $belongsTo = array(
+			'Typeaideapre66'
+			/*'Themeapre66'*/
+		);
 
         var $actsAs = array(
 			'Autovalidate',
@@ -20,6 +23,14 @@
                 'associationForeignKey' => 'pieceaide66_id',
                 'with'                  => 'Aideapre66Pieceaide66'
             )
+        );
+
+        var $validate = array(
+			'themeapre66_id' => array(
+				array(
+					'rule' => 'notEmpty'
+				)
+			)
         );
 
         /**
