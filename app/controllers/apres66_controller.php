@@ -141,25 +141,6 @@
 
 
         /**
-        *   Ajax pour les pièces liées aux aides
-        */
-
-        function ajaxtypeaide( $typeaideapre66_id = null ) { // FIXME
-            Configure::write( 'debug', 0 );
-            if( !empty( $typeaideapre66_id ) ) {
-                $typeaideapre66_id = suffix( $typeaideapre66_id );
-
-            }
-            else {
-                $typeaideapre66_id = suffix( Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' ) );
-            }
-
-            $typeaideapre66 = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findbyId( $typeaideapre66_id, null, null, -1 );
-            $this->set( 'typeaideapre66', $typeaideapre66 );
-            $this->render( $this->action, 'ajax', '/apres/ajaxtypeaide' );
-        }
-
-        /**
         * Visualisation de l'APRE
         */
 
