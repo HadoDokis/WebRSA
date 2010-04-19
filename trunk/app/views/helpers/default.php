@@ -555,7 +555,8 @@
 		}
 
 		/**
-		*
+		* FIXME: corriger affichage des montants lorsque le champ est DECIMAL(10,2)
+        *           TEXTAREA au lieu de champ text : 'type' => 'text' corrige le problème
 		*/
 
 		public function subform( $fields, $formParams = array() ) {

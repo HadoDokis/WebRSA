@@ -1,12 +1,12 @@
 <!--/************************************************************************/ -->
     <?php echo $javascript->link( 'dependantselect.js' ); ?>
     <script type="text/javascript">
-//         document.observe("dom:loaded", function() {
-//             dependantSelect(
-//                 'Aideapre66Typeaideapre66Id',
-//                 'Aideapre66Themeapre66Id'
-//             );
-//         });
+        document.observe("dom:loaded", function() {
+            dependantSelect(
+                'Aideapre66Typeaideapre66Id',
+                'Aideapre66Themeapre66Id'
+            );
+        });
     </script>
 <!--/************************************************************************/ -->
 
@@ -17,7 +17,7 @@
 
         $Aideapre66Id = Set::classicExtract( $this->data, 'Aideapre66.id' );
         $ApreId = Set::classicExtract( $this->data, "{$this->modelClass}.id" );
-// debug($this->data);
+
 
         if( $this->action == 'edit' && !empty( $Aideapre66Id ) ) {
             echo $form->input( 'Aideapre66.id', array( 'type' => 'hidden' ) );
@@ -31,14 +31,15 @@
                 'Aideapre66.themeapre66_id' => array( 'options' => $themes ),
                 'Aideapre66.typeaideapre66_id' => array( 'options' => $typesaides ),
                 'Aideapre66.motivdem',
-                'Aideapre66.montantaide' => array( 'rows' => 1 ),
+                'Aideapre66.montantaide' => array( 'type' => 'text' ),
                 'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces à fournir', 'multiple' => 'checkbox' , 'options' => $pieceliste, 'empty' => false )
             ),
             array(
                 'options' => $options
             )
         );
-//         debug($options);
+//         echo $ajax->observeField( 'Aideapre66Typeaideapre66Id', array( 'update' => 'Pieceaide66Pieceaide66', 'url' => Router::url( array( 'action' => 'ajaxtypeaide' ), true ) ) );
+
     ?>
 </fieldset>
 

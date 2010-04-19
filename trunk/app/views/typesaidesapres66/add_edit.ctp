@@ -29,7 +29,7 @@
         array(
             'Typeaideapre66.themeapre66_id',
             'Typeaideapre66.name',
-            'Typeaideapre66.plafond' => array( 'rows' => 1 ),
+            'Typeaideapre66.plafond' => array( 'type' => 'text' ),
             'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces à fournir', 'multiple' => 'checkbox' , 'options' => $pieceliste, 'empty' => false )
         ),
         array(
