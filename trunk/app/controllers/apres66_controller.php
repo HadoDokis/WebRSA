@@ -2,7 +2,7 @@
     class Apres66Controller extends AppController
     {
         var $name = 'Apres66';
-        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Aideapre66Pieceaide66',  'Structurereferente', 'Referent' );
+        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Aideapre66Pieceaide66', 'Fraisdeplacement66',  'Structurereferente', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxtypeaide' );
 
@@ -13,7 +13,7 @@
         function beforeFilter() {
             parent::beforeFilter();
             $options = $this->{$this->modelClass}->allEnumLists();
-            $this->set( 'options', $options );
+
 
             $this->set( 'typevoie', $this->Option->typevoie() );
             $this->set( 'qual', $this->Option->qual() );
@@ -21,10 +21,13 @@
             $this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
-// debug( $this->modelClass );
-//             $this->set( 'typesaides', $this->Typeaideapre66->find( 'list' ) );
-            $this->set( 'themes', $this->Themeapre66->find( 'list' ) );
 
+            $this->set( 'themes', $this->Themeapre66->find( 'list' ) );
+            $this->set( 'nomsTypeaide', $this->Typeaideapre66->find( 'list' ) );
+
+            $options = Set::merge( $options, $this->{$this->modelClass}->Aideapre66->allEnumLists() );
+// debug($options);
+            $this->set( 'options', $options );
             $pieceliste = $this->Pieceaide66->find(
                 'list',
                 array(
@@ -214,6 +217,17 @@
                 $personne_id = $apre[$this->modelClass]['personne_id'];
                 $dossier_rsa_id = $this->{$this->modelClass}->dossierId( $apre_id );
 
+//                 $listApres = $this->{$this->modelClass}->find(
+//                     'all',
+//                     array(
+//                         'conditions' => array(
+//                             "{$this->modelClass}.id" => $apre_id
+//                         ),
+//                         'recursive' => -1
+//                     )
+//                 );
+//                 $this->set( compact( 'listApres' ) );
+
                 $this->set( 'numapre', Set::extract( $apre, "{$this->modelClass}.numeroapre" ) );
             }
 
@@ -231,6 +245,22 @@
             $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
 
 
+
+            /**
+            *   Liste des APREs de la personne pour l'affichage de l'historique
+            *   lors de l'add/edit
+            **/
+            $listApres = $this->{$this->modelClass}->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        "{$this->modelClass}.personne_id" => $personne_id
+                    ),
+                    'recursive' => 0                )
+            );
+            $this->set( compact( 'listApres' ) );
+
+// debug($listApres);
             $personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id );
             $this->set( 'personne', $personne );
 
@@ -257,10 +287,17 @@
 
 				// Tentative d'enregistrement de l'aide liée à l'APRE complémentaire
 				$this->{$this->modelClass}->Aideapre66->create( $this->data );
+                if( !empty( $this->data['Fraisdeplacement66'] ) ){
+                    $this->{$this->modelClass}->Fraisdeplacement66->create( $this->data );
+                }
 				if( $this->action == 'add' ) {
 					$this->{$this->modelClass}->Aideapre66->set( 'apre_id', $this->{$this->modelClass}->getLastInsertID( ) );
+                    if( !empty( $this->data['Fraisdeplacement66'] ) ){
+                        $this->{$this->modelClass}->Fraisdeplacement66->set( 'apre_id', $this->{$this->modelClass}->getLastInsertID( ) );
+                    }
 				}
 				$success = $this->{$this->modelClass}->Aideapre66->save() && $success;
+                $success = $this->{$this->modelClass}->Fraisdeplacement66->save() && $success;
 
 				if( $success ) {
 					$this->Jetons->release( $dossier_rsa_id );
@@ -313,7 +350,7 @@
                         $this->data, "{$this->modelClass}.referent_id",
                         Set::extract( $this->data, "{$this->modelClass}.structurereferente_id" ).'_'.Set::extract( $this->data, "{$this->modelClass}.referent_id" )
                     );
-
+// debug($apre);
                     /*$this->data = Set::insert(
                         $this->data, 'Aideapre66.typeaideapre66_id',
                         Set::extract( $this->data, 'Aideapre66.themeapre66_id' ).'_'.Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' )
@@ -324,7 +361,7 @@
 
 					$this->data = Set::insert( $this->data, 'Aideapre66.themeapre66_id', $themeapre66_id );
 					$this->data = Set::insert( $this->data, 'Aideapre66.typeaideapre66_id', "{$themeapre66_id}_{$typeaideapre66_id}" );
-
+// debug($this->data);
                 }
             }
             $this->{$this->modelClass}->commit();

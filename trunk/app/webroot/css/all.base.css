@@ -346,3 +346,7 @@ table#dossierInfosOrganisme th, table#dossierInfosOrganisme td {
 #dsps dd.empty {
 	display: none;
 }
+
+form#Apre  td.test input {
+    width: 30%;
+}

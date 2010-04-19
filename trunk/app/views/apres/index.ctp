@@ -97,6 +97,9 @@
                     if( $statutApre == 'C' ) {
                         $etat = Set::enum( Set::classicExtract( $apre, "{$this->modelClass}.etatdossierapre" ), $options['etatdossierapre'] );
                         $mtforfait = $mtforfait;
+                        if( Configure::read( 'nom_form_apre_cg' ) == 'cg66' ){
+                            $mtforfait = Set::classicExtract( $apre, 'Aideapre66.montantaide' );
+                        }
                         $buttonEnabled = true;
                         if( $etat == 'Complet' ){
                             $buttonEnabledInc = false;
