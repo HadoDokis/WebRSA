@@ -2,9 +2,9 @@
     class Apres66Controller extends AppController
     {
         var $name = 'Apres66';
-        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Contratinsertion',  'Structurereferente', 'Referent' );
+        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Aideapre66Pieceaide66',  'Structurereferente', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
-        var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb' );
+        var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxtypeaide' );
 
         /** ********************************************************************
         *
@@ -136,6 +136,26 @@
             $this->render( $this->action, 'ajax', '/apres/ajaxref' );
         }
 
+
+        /**
+        *   Ajax pour les pièces liées aux aides
+        */
+
+        function ajaxtypeaide( $typeaideapre66_id = null ) { // FIXME
+            Configure::write( 'debug', 0 );
+            if( !empty( $typeaideapre66_id ) ) {
+                $typeaideapre66_id = suffix( $typeaideapre66_id );
+
+            }
+            else {
+                $typeaideapre66_id = suffix( Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' ) );
+            }
+
+            $typeaideapre66 = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findbyId( $typeaideapre66_id, null, null, -1 );
+            $this->set( 'typeaideapre66', $typeaideapre66 );
+            $this->render( $this->action, 'ajax', '/apres/ajaxtypeaide' );
+        }
+
         /**
         * Visualisation de l'APRE
         */
@@ -225,8 +245,8 @@
             $referents = $this->Referent->listOptions();
             $this->set( 'referents', $referents );
             ///Récupération de la liste des référents liés à l'APRE
-//             $typesaides = $this->Typeaideapre66->listOptions();
-            $typesaides = $this->Typeaideapre66->find( 'list' );
+            $typesaides = $this->Typeaideapre66->listOptions();
+//             $typesaides = $this->Typeaideapre66->find( 'list' );
             $this->set( 'typesaides', $typesaides );
 
             if( !empty( $this->data ) ){
@@ -259,13 +279,13 @@
 
                 /*///Mise en place lors de la sauvegarde du statut de l'APRE à Complémentaire
                 $this->data[$this->modelClass]['statutapre'] = 'C';
-                if( isset( $this->data['Aideapre66'] ) ){
-                    $success = true;
-//                     $this->data['Aideapre66']['apre_id'] = $this->{$this->modelClass}->id;
-                    $this->Aideapre66->validate = array();
-                    $this->Aideapre66->create( $this->data );
-                    $this->Aideapre66->save();
-                }
+//                 if( isset( $this->data['Aideapre66'] ) ){
+//                     $success = true;
+// //                     $this->data['Aideapre66']['apre_id'] = $this->{$this->modelClass}->id;
+//                     $this->Aideapre66->validate = array();
+//                     $this->Aideapre66->create( $this->data );
+//                     $this->Aideapre66->save();
+//                 }
 
                 if( $this->{$this->modelClass}->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     $saved = $this->{$this->modelClass}->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
