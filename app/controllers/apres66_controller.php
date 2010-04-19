@@ -230,29 +230,21 @@
             $this->set( 'typesaides', $typesaides );
 
             if( !empty( $this->data ) ){
-//                 if( isset( $this->data['Aideapre66'] ) ){
-//                     $success = true;
-//                     $aideapre66 = array(
-//                         'Aideapre66' => array(
-//                             'apre_id' => $this->{$this->modelClass}->id,
-//                             'typeaideapre66_id' => Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' ),
-//                             'themeapre66_id' => Set::classicExtract( $this->data, 'Aideapre66.themeapre66_id' ),
-//                         )
-//                     );
-//                     $this->Aideapre66->validate = array();
-//                     $this->Aideapre66->create( $aideapre66 );
-//                     $this->Aideapre66->save();
-// 
-//                     debug( $this->{$this->modelClass}->id);
-//                 }
+
                 //FIXME: doit on faire ça et pq ?
 //                 $this->{$this->modelClass}->bindModel( array( 'hasOne' => array( 'Aideapre66' ) ), false );
 
                 ///Mise en place lors de la sauvegarde du statut de l'APRE à Complémentaire
                 $this->data[$this->modelClass]['statutapre'] = 'C';
+                if( isset( $this->data['Aideapre66'] ) ){
+                    $success = true;
+//                     $this->data['Aideapre66']['apre_id'] = $this->{$this->modelClass}->id;
+                    $this->Aideapre66->validate = array();
+                    $this->Aideapre66->create( $this->data );
+                    $this->Aideapre66->save();
+                }
 
                 if( $this->{$this->modelClass}->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-
                     $saved = $this->{$this->modelClass}->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 
                     if( $saved ) {

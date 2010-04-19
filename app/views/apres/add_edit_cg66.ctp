@@ -16,17 +16,18 @@
     <?php
 
         $Aideapre66Id = Set::classicExtract( $this->data, 'Aideapre66.id' );
-//         $ApreId = Set::classicExtract( $this->data, "{$this->modelClass}.id" );
-//         debug($ApreId);
-//         $Aideapre66ApreId = Set::classicExtract( $this->data, 'Aideapre66.apreid' );
+        $ApreId = Set::classicExtract( $this->data, "{$this->modelClass}.id" );
+// debug($this->data);
 
-            if( $this->action == 'edit' && !empty( $Aideapre66Id ) ) {
-                echo $form->input( 'Aideapre66.id', array( 'type' => 'hidden' ) );
+        if( $this->action == 'edit' && !empty( $Aideapre66Id ) ) {
+            echo $form->input( 'Aideapre66.id', array( 'type' => 'hidden' ) );
+            echo $form->input( 'Aideapre66.apre_id', array( 'type' => 'hidden', 'value' => $ApreId ) );
 
-            }
+        }
+
         echo $default->subform(
             array(
-                'Aideapre66.apre_id' => array( 'type' => 'hidden', 'value' => 14 ),
+                'Aideapre66.apre_id' => array( 'type' => 'hidden', 'value' => Set::classicExtract( $this->data, "{$this->modelClass}.id" ) ),
                 'Aideapre66.themeapre66_id' => array( 'options' => $themes ),
                 'Aideapre66.typeaideapre66_id' => array( 'options' => $typesaides ),
                 'Aideapre66.motivdem',
