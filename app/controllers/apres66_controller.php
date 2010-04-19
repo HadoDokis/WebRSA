@@ -230,11 +230,34 @@
             $this->set( 'typesaides', $typesaides );
 
             if( !empty( $this->data ) ){
+				// Tentative d'enregistrement de l'APRE complémentaire
+				$this->{$this->modelClass}->create( $this->data );
+				$this->{$this->modelClass}->set( 'statutapre', 'C' );
+				$success = $this->{$this->modelClass}->save();
+
+				// Tentative d'enregistrement de l'aide liée à l'APRE complémentaire
+				$this->{$this->modelClass}->Aideapre66->create( $this->data );
+				if( $this->action == 'add' ) {
+					$this->{$this->modelClass}->Aideapre66->set( 'apre_id', $this->{$this->modelClass}->getLastInsertID( ) );
+				}
+				$success = $this->{$this->modelClass}->Aideapre66->save() && $success;
+
+				if( $success ) {
+					$this->Jetons->release( $dossier_rsa_id );
+					$this->{$this->modelClass}->commit(); // FIXME
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+
+					$this->redirect( array(  'controller' => 'apres'.Configure::read( 'Apre.suffixe' ),'action' => 'index', $personne_id ) );
+				}
+				else {
+					$this->{$this->modelClass}->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
 
                 //FIXME: doit on faire ça et pq ?
 //                 $this->{$this->modelClass}->bindModel( array( 'hasOne' => array( 'Aideapre66' ) ), false );
 
-                ///Mise en place lors de la sauvegarde du statut de l'APRE à Complémentaire
+                /*///Mise en place lors de la sauvegarde du statut de l'APRE à Complémentaire
                 $this->data[$this->modelClass]['statutapre'] = 'C';
                 if( isset( $this->data['Aideapre66'] ) ){
                     $success = true;
@@ -252,13 +275,13 @@
                         $this->{$this->modelClass}->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
-                        $this->redirect( array(  'controller' => 'apres'.Configure::read( 'Apre.suffixe' ),'action' => 'index', $personne_id ) );
+//                         $this->redirect( array(  'controller' => 'apres'.Configure::read( 'Apre.suffixe' ),'action' => 'index', $personne_id ) );
                     }
                     else {
                         $this->{$this->modelClass}->rollback();
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                     }
-                }
+                }*/
 
             }
             else{
@@ -270,10 +293,18 @@
                         $this->data, "{$this->modelClass}.referent_id",
                         Set::extract( $this->data, "{$this->modelClass}.structurereferente_id" ).'_'.Set::extract( $this->data, "{$this->modelClass}.referent_id" )
                     );
-                    $this->data = Set::insert(
+
+                    /*$this->data = Set::insert(
                         $this->data, 'Aideapre66.typeaideapre66_id',
                         Set::extract( $this->data, 'Aideapre66.themeapre66_id' ).'_'.Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' )
-                    );
+                    );*/
+
+					$typeaideapre66_id = Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' );
+					$themeapre66_id = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->field( 'themeapre66_id', array( 'id' => $typeaideapre66_id ) );
+
+					$this->data = Set::insert( $this->data, 'Aideapre66.themeapre66_id', $themeapre66_id );
+					$this->data = Set::insert( $this->data, 'Aideapre66.typeaideapre66_id', "{$themeapre66_id}_{$typeaideapre66_id}" );
+
                 }
             }
             $this->{$this->modelClass}->commit();

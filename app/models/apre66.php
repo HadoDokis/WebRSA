@@ -26,23 +26,31 @@
                     'montantdejaverse'
                 )
             ),
-            'Formattable'
+			'Formattable' => array(
+				'suffix' => array( 'referent_id' ),
+			)
         );
 
         var $displayField = 'numeroapre';
 
         var $validate = array(
             'typedemandeapre' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
             ),
             'activitebeneficiaire' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
             ),
             'secteurprofessionnel' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
             ),
             'montantaverser' => array(
                 array(
@@ -57,8 +65,10 @@
                 ),
             ),
             'structurereferente_id' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
             )
         );
 
@@ -114,14 +124,14 @@
         *
         */
 
-        function beforeSave( $options = array() ) {
+        /*function beforeSave( $options = array() ) {
             $return = parent::beforeSave( $options );
-
+debug( $return );
             if( array_key_exists( $this->name, $this->data ) && array_key_exists( 'referent_id', $this->data[$this->name] ) ) {
                 $this->data = Set::insert( $this->data, "{$this->alias}.referent_id", suffix( Set::extract( $this->data, "{$this->alias}.referent_id" ) ) );
             }
 
             return $return;
-        }
+        }*/
     }
 ?>
