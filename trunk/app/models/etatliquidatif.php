@@ -533,7 +533,15 @@
                             'alias'      => 'Paiementfoyer',
                             'type'       => 'LEFT OUTER',
                             'foreignKey' => false,
-                            'conditions' => array( 'Paiementfoyer.foyer_id = Foyer.id' )
+                            'conditions' => array(
+								'Paiementfoyer.foyer_id = Foyer.id',
+								// FIXME: voir ailleurs, quand on utilise paiementsfoyers
+								// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
+								'Paiementfoyer.id IN ( SELECT MAX(paiementsfoyers.id)
+									FROM paiementsfoyers
+									GROUP BY paiementsfoyers.foyer_id
+								)'
+							)
                         ),
                         array(
                             'table'      => 'apres_etatsliquidatifs',
