@@ -355,7 +355,7 @@
 
                     ///FIXME: doit faire autrement
                     $this->data['Fraisdeplacement66'] = $this->data['Aideapre66']['Fraisdeplacement66'];
-
+// debug($this->data);
                 }
             }
             $this->{$this->modelClass}->commit();
