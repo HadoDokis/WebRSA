@@ -189,6 +189,7 @@
                 $numapre = date('Ym').sprintf( "%010s",  $this->{$this->modelClass}->find( 'count' ) + 1 );
                 $this->set( 'numapre', $numapre);
 
+
             }
             else if( $this->action == 'edit' ) {
                 $apre_id = $id;
@@ -197,17 +198,6 @@
 
                 $personne_id = $apre[$this->modelClass]['personne_id'];
                 $dossier_rsa_id = $this->{$this->modelClass}->dossierId( $apre_id );
-
-//                 $listApres = $this->{$this->modelClass}->find(
-//                     'all',
-//                     array(
-//                         'conditions' => array(
-//                             "{$this->modelClass}.id" => $apre_id
-//                         ),
-//                         'recursive' => -1
-//                     )
-//                 );
-//                 $this->set( compact( 'listApres' ) );
 
                 $this->set( 'numapre', Set::extract( $apre, "{$this->modelClass}.numeroapre" ) );
             }
@@ -227,6 +217,7 @@
 
 
 
+
             /**
             *   Liste des APREs de la personne pour l'affichage de l'historique
             *   lors de l'add/edit
@@ -237,11 +228,11 @@
                     'conditions' => array(
                         "{$this->modelClass}.personne_id" => $personne_id
                     ),
-                    'recursive' => 0                )
+                    'recursive' => 0
+                )
             );
             $this->set( compact( 'listApres' ) );
 
-// debug($listApres);
             $personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id );
             $this->set( 'personne', $personne );
 
@@ -257,7 +248,6 @@
             $this->set( 'referents', $referents );
             ///Récupération de la liste des référents liés à l'APRE
             $typesaides = $this->Typeaideapre66->listOptions();
-//             $typesaides = $this->Typeaideapre66->find( 'list' );
             $this->set( 'typesaides', $typesaides );
 
             if( !empty( $this->data ) ){
@@ -268,17 +258,25 @@
 
 				// Tentative d'enregistrement de l'aide liée à l'APRE complémentaire
 				$this->{$this->modelClass}->Aideapre66->create( $this->data );
-                if( !empty( $this->data['Fraisdeplacement66'] ) ){
-                    $this->{$this->modelClass}->Fraisdeplacement66->create( $this->data );
+
+                $Fraisdeplacement66 = Set::filter( $this->data['Fraisdeplacement66'] );
+                if( !empty( $Fraisdeplacement66 ) ){
+                    $this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->create( $this->data );
                 }
+
 				if( $this->action == 'add' ) {
 					$this->{$this->modelClass}->Aideapre66->set( 'apre_id', $this->{$this->modelClass}->getLastInsertID( ) );
-                    if( !empty( $this->data['Fraisdeplacement66'] ) ){
-                        $this->{$this->modelClass}->Fraisdeplacement66->set( 'apre_id', $this->{$this->modelClass}->getLastInsertID( ) );
-                    }
 				}
 				$success = $this->{$this->modelClass}->Aideapre66->save() && $success;
-                $success = $this->{$this->modelClass}->Fraisdeplacement66->save() && $success;
+
+                if( $this->action == 'add' ) {
+                    if( !empty( $Fraisdeplacement66 ) ){
+                        $this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->set( 'aideapre66_id', $this->{$this->modelClass}->Aideapre66->getLastInsertID() );
+                    }
+                }
+                if( !empty( $Fraisdeplacement66 ) ){
+                    $success = $this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->save() && $success;
+                }
 
 				if( $success ) {
 					$this->Jetons->release( $dossier_rsa_id );
@@ -291,36 +289,6 @@
 					$this->{$this->modelClass}->rollback();
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
-
-                //FIXME: doit on faire ça et pq ?
-//                 $this->{$this->modelClass}->bindModel( array( 'hasOne' => array( 'Aideapre66' ) ), false );
-
-                /*///Mise en place lors de la sauvegarde du statut de l'APRE à Complémentaire
-                $this->data[$this->modelClass]['statutapre'] = 'C';
-//                 if( isset( $this->data['Aideapre66'] ) ){
-//                     $success = true;
-// //                     $this->data['Aideapre66']['apre_id'] = $this->{$this->modelClass}->id;
-//                     $this->Aideapre66->validate = array();
-//                     $this->Aideapre66->create( $this->data );
-//                     $this->Aideapre66->save();
-//                 }
-
-                if( $this->{$this->modelClass}->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-                    $saved = $this->{$this->modelClass}->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
-
-                    if( $saved ) {
-                        $this->Jetons->release( $dossier_rsa_id );
-                        $this->{$this->modelClass}->commit(); // FIXME
-                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-
-//                         $this->redirect( array(  'controller' => 'apres'.Configure::read( 'Apre.suffixe' ),'action' => 'index', $personne_id ) );
-                    }
-                    else {
-                        $this->{$this->modelClass}->rollback();
-                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                    }
-                }*/
-
             }
             else{
                 if( $this->action == 'edit' ) {
@@ -331,18 +299,16 @@
                         $this->data, "{$this->modelClass}.referent_id",
                         Set::extract( $this->data, "{$this->modelClass}.structurereferente_id" ).'_'.Set::extract( $this->data, "{$this->modelClass}.referent_id" )
                     );
-// debug($apre);
-                    /*$this->data = Set::insert(
-                        $this->data, 'Aideapre66.typeaideapre66_id',
-                        Set::extract( $this->data, 'Aideapre66.themeapre66_id' ).'_'.Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' )
-                    );*/
 
 					$typeaideapre66_id = Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' );
 					$themeapre66_id = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->field( 'themeapre66_id', array( 'id' => $typeaideapre66_id ) );
 
 					$this->data = Set::insert( $this->data, 'Aideapre66.themeapre66_id', $themeapre66_id );
 					$this->data = Set::insert( $this->data, 'Aideapre66.typeaideapre66_id', "{$themeapre66_id}_{$typeaideapre66_id}" );
-// debug($this->data);
+
+                    ///FIXME: doit faire autrement
+                    $this->data['Fraisdeplacement66'] = $this->data['Aideapre66']['Fraisdeplacement66'];
+
                 }
             }
             $this->{$this->modelClass}->commit();

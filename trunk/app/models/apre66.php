@@ -73,24 +73,13 @@
         );
 
         var $hasOne = array(
-            'Aideapre66',
-            'Fraisdeplacement66'
+            'Aideapre66'
         );
 
         var $belongsTo = array(
             'Personne',
             'Structurereferente',
             'Referent'
-        );
-
-
-        var $hasAndBelongsToMany = array(
-//             'Pieceaide66' => array(
-//                  'className'              => 'Pieceaide66',
-//                  'joinTable'              => 'apres_piecesaides66',
-//                  'foreignKey'             => 'apre_id',
-//                  'associationForeignKey'  => 'pieceapre_id'
-//             )
         );
 
         function dossierId( $apre_id ){

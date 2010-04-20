@@ -4,9 +4,11 @@
         public $name = 'Aideapre66';
 
         var $belongsTo = array(
-			'Typeaideapre66'
-			/*'Themeapre66'*/
+			'Typeaideapre66',
+            'Apre66'
 		);
+
+        var $hasOne = array( 'Fraisdeplacement66' );
 
         var $actsAs = array(
 			'Autovalidate',
@@ -18,6 +20,7 @@
                     'virement' => array( 'type' => 'virement', 'domain' => 'aideapre66' ),
                     'versement' => array( 'type' => 'versement', 'domain' => 'aideapre66' ),
                     'autorisationvers' => array( 'type' => 'no', 'domain' => 'aideapre66' ),
+                    'decisionapre' => array( 'type' => 'decisionapre', 'domain' => 'aideapre66' ),
                 )
             )
 		);

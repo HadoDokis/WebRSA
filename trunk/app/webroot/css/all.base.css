@@ -347,6 +347,6 @@ table#dossierInfosOrganisme th, table#dossierInfosOrganisme td {
 	display: none;
 }
 
-form#Apre  td.test input {
+form#Apre  td.fraisdepct input {
     width: 30%;
 }

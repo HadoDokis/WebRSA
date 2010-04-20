@@ -11,10 +11,10 @@ SET default_with_oids = false;
 BEGIN;
 
 -- -----------------------------------------------------------------------------
-DROP TABLE fraisdeplacements66;
+-- DROP TABLE fraisdeplacements66;
 CREATE TABLE fraisdeplacements66 (
     id                          SERIAL NOT NULL PRIMARY KEY,
-    apre_id                     INTEGER NOT NULL REFERENCES apres(id),
+    aideapre66_id               INTEGER NOT NULL REFERENCES aidesapres66(id),
     lieuresidence               VARCHAR(100),
     destination                 VARCHAR(100),
     --partie véhicule personnel
@@ -28,14 +28,25 @@ CREATE TABLE fraisdeplacements66 (
     totaltranspub               DECIMAL(10,2),
     --partie hébergement
     nbnuithebergt               DECIMAL(10,2),
-    totalhebergt                DECIMAL(10,2),.
+    totalhebergt                DECIMAL(10,2),
     -- partie repas
     nbrepas                     DECIMAL(10,2),
     totalrepas                  DECIMAL(10,2)
 );
 
-CREATE INDEX fraisdeplacements66_apre_id_idx ON fraisdeplacements66 (apre_id);
+CREATE INDEX fraisdeplacements66_aideapre66_id_idx ON fraisdeplacements66 (aideapre66_id);
 COMMENT ON TABLE fraisdeplacements66 IS 'Table pour les frais de déplacements liés à l''APRE CG66';
 -- -----------------------------------------------------------------------------
+
+ALTER TABLE aidesapres66 ADD COLUMN motifrejet TEXT;
+ALTER TABLE aidesapres66 ADD COLUMN montantpropose DECIMAL(10,2);
+ALTER TABLE aidesapres66 ADD COLUMN datemontantpropose DATE;
+
+CREATE TYPE type_decisionapre AS ENUM ( 'ACC', 'REF' );
+ALTER TABLE aidesapres66 ADD COLUMN decisionapre type_decisionapre;
+ALTER TABLE aidesapres66 ADD COLUMN montantaccorde DECIMAL(10,2);
+ALTER TABLE aidesapres66 ADD COLUMN datemontantaccorde DATE;
+
+ALTER TABLE aidesapres66 ADD COLUMN creancier VARCHAR (250);
 
 COMMIT;

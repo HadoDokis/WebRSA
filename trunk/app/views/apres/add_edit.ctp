@@ -274,16 +274,6 @@
 
         <?php include( 'add_edit_'.configure::read( 'nom_form_apre_cg' ).'.ctp' );?><!-- FIXME -->
 
-
-        <fieldset class="aere">
-            <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg66' ):?>
-                <legend>Observations du référent</legend>
-            <?php elseif( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ):?>
-                <legend>Avis technique et motivé du référent (Article 5.1 relatif au règlement de l'APRE): </legend>
-            <?php endif;?>
-            <?php
-                echo $xform->input(  "{$this->modelClass}.avistechreferent", array( 'domain' => 'apre', 'label' => false ) );?>
-        </fieldset>
     </div>
 
     <div class="submit">
