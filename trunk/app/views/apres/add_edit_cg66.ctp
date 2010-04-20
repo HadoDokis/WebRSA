@@ -91,12 +91,11 @@
     ?>
 </fieldset>
 <?php
-    $apresPassees = Set::extract( $listApres, '/Aideapre66' );
-//     debug($listApres);
+    $Aideapre66Id = Set::extract( $listesAidesSelonApre, '/Aideapre66/apre_id' );
 ?>
 <fieldset>
     <legend>Attributions antérieures de l'APRE</legend>
-    <?php if( !empty( $apresPassees ) ):?>
+    <?php if( !empty( $listesAidesSelonApre ) ):?>
         <table>
             <thead>
                 <tr>
@@ -108,10 +107,21 @@
             </thead>
             <tbody>
                 <?php
-                    foreach( $listApres as $i => $liste ){
+                    foreach( $listesAidesSelonApre as $i => $liste ){
+                    ///FIXME: voir comment mieux faire pour enlever l'APRE du tableau
+                    /// des APREs antérieures lorqu'on est en train de l'éditer
+                        if( $liste['Aideapre66']['apre_id'] == $this->params['pass'][0] ){
+                            unset( $liste['Aideapre66']['id'] );
+                            unset( $liste['Aideapre66']['apre_id'] );
+                            unset( $liste['Aideapre66']['datedemande'] );
+                            unset( $liste['Aideapre66']['themeapre66_id'] );
+                            unset( $liste['Aideapre66']['typeaideapre66_id'] );
+                            unset( $liste['Aideapre66']['montantaide'] );
+                        }
+
                         echo $html->tableCells(
                             array(
-                                h( date_short( Set::classicExtract( $liste, "{$this->modelClass}.datedemandeapre" ) ) ),
+                                h( date_short( Set::classicExtract( $liste, 'Aideapre66.datedemande' ) ) ),
                                 h( Set::enum( Set::classicExtract( $liste, 'Aideapre66.themeapre66_id' ), $themes ) ),
                                 h( Set::enum( Set::classicExtract( $liste, 'Aideapre66.typeaideapre66_id' ), $nomsTypeaide ) ),
                                 h( $locale->money( Set::classicExtract( $liste, 'Aideapre66.montantaide' ) ) ),

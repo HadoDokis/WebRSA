@@ -215,9 +215,6 @@
             }
             $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
 
-
-
-
             /**
             *   Liste des APREs de la personne pour l'affichage de l'historique
             *   lors de l'add/edit
@@ -228,10 +225,22 @@
                     'conditions' => array(
                         "{$this->modelClass}.personne_id" => $personne_id
                     ),
-                    'recursive' => 0
+                    'recursive' => -1
                 )
             );
             $this->set( compact( 'listApres' ) );
+            if( !empty( $listApres ) ){
+                $listesAidesSelonApre = $this->{$this->modelClass}->Aideapre66->find(
+                    'all',
+                    array(
+                        'conditions' => array(
+                            'Aideapre66.apre_id' => Set::extract( $listApres, "/{$this->modelClass}/id" )
+                        ),
+                        'recursive' => -1
+                    )
+                );
+                $this->set( compact( 'listesAidesSelonApre' ) );
+            }
 
             $personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id );
             $this->set( 'personne', $personne );
