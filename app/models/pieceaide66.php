@@ -4,12 +4,12 @@
         public $name = 'Pieceaide66';
 
         var $hasAndBelongsToMany = array(
-            'Aideapre66' => array(
-                'classname'             => 'Aideapre66',
-                'joinTable'             => 'aidesapres66_piecesaides66',
+            'Typeaideapre66' => array(
+                'classname'             => 'Typeaideapre66',
+                'joinTable'             => 'typesaidesapres66_piecesaides66',
                 'foreignKey'            => 'pieceaide66_id',
-                'associationForeignKey' => 'aideapre66_id',
-                'with'                  => 'Aideapre66Pieceaide66'
+                'associationForeignKey' => 'typeaideapre66_id',
+                'with'                  => 'Typeaideapre66Pieceaide66'
             )
         );
 

@@ -49,4 +49,5 @@ ALTER TABLE aidesapres66 ADD COLUMN datemontantaccorde DATE;
 
 ALTER TABLE aidesapres66 ADD COLUMN creancier VARCHAR (250);
 
+DROP TABLE aidesapres66_piecesaides66;
 COMMIT;
