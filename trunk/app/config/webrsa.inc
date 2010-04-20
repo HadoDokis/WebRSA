@@ -46,4 +46,12 @@
     * @default: vide (pour le CG93), sinon '66' pour le CG66
     */
     Configure::write( 'Apre.suffixe', '' );
+
+    /**
+    * Paramètres à renseigner pour les APRE's forfaitaires
+	* FIXME: doc
+    */
+    Configure::write( 'Apre.forfaitaire.montantbase', 400 );
+    Configure::write( 'Apre.forfaitaire.montantenfant12', 100 );
+    Configure::write( 'Apre.forfaitaire.nbenfant12max', 4 );
 ?>
