@@ -98,14 +98,25 @@
                     array(
                         'table'      => 'adresses_foyers',
                         'alias'      => 'Adressefoyer',
-                        'type'       => 'INNER',
+//                         'type'       => 'INNER',
+						'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                        'conditions' => array(
+							'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
+							// FIXME: voir ailleurs, quand on utilise adresses_foyers
+							// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
+							'Adressefoyer.id IN ( SELECT MAX(adresses_foyers.id)
+								FROM adresses_foyers
+								WHERE adresses_foyers.rgadr = \'01\'
+								GROUP BY adresses_foyers.foyer_id
+							)'
+						)
                     ),
                     array(
                         'table'      => 'adresses',
                         'alias'      => 'Adresse',
-                        'type'       => 'INNER',
+//                         'type'       => 'INNER',
+						'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
                     ),
@@ -406,7 +417,27 @@
                         'alias'      => 'Paiementfoyer',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Paiementfoyer.foyer_id = Foyer.id' )
+                        'conditions' => array(
+							'Paiementfoyer.foyer_id = Foyer.id',
+							// FIXME: voir ailleurs, quand on utilise paiementsfoyers
+							// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
+							// FIXME: à faire dans importcsvapres
+							// FIXME: DEM ou CJT
+							'Paiementfoyer.id IN ( SELECT MAX(paiementsfoyers.id)
+								FROM paiementsfoyers
+								WHERE paiementsfoyers.topribconj = (
+									CASE WHEN (
+										SELECT prestations.rolepers
+											FROM prestations
+											WHERE prestations.personne_id = "Personne"."id"
+												AND prestations.natprest = \'RSA\'
+												AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+									)
+									= \'DEM\' THEN false ELSE true END
+								)
+								GROUP BY paiementsfoyers.foyer_id
+							)'
+						)
                     ),
                     array(
                         'table'      => 'dossiers_rsa',
@@ -449,7 +480,7 @@
                 ),
                 'recursive' => 1,
                 'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => Sanitize::clean( $id ) ),
-                'order' => array( 'Paiementfoyer.nomprenomtiturib ASC' )
+                'order' => array( 'Paiementfoyer.nomprenomtiturib ASC', 'Foyer.id ASC' )
             );
 
             $this->Apre =& ClassRegistry::init( 'Apre' );
@@ -482,6 +513,7 @@
                 'all',
                 array(
                     'fields' => array(
+                        'Personne.id',
                         'Paiementfoyer.titurib',
                         'Paiementfoyer.nomprenomtiturib', // FIXME ?
                         'Adresse.numvoie',
@@ -519,7 +551,16 @@
                             'alias'      => 'Adressefoyer',
                             'type'       => 'INNER',
                             'foreignKey' => false,
-                            'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                            'conditions' => array(
+								'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
+								// FIXME: voir ailleurs, quand on utilise adresses_foyers
+								// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
+								'Adressefoyer.id IN ( SELECT MAX(adresses_foyers.id)
+									FROM adresses_foyers
+									WHERE adresses_foyers.rgadr = \'01\'
+									GROUP BY adresses_foyers.foyer_id
+								)'
+							)
                         ),
                         array(
                             'table'      => 'adresses',
@@ -532,13 +573,26 @@
                             'table'      => 'paiementsfoyers',
                             'alias'      => 'Paiementfoyer',
                             'type'       => 'LEFT OUTER',
+// 							'type'       => 'INNER',
                             'foreignKey' => false,
                             'conditions' => array(
 								'Paiementfoyer.foyer_id = Foyer.id',
 								// FIXME: voir ailleurs, quand on utilise paiementsfoyers
 								// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
+								// FIXME: à faire dans importcsvapres
+								// FIXME: DEM ou CJT
 								'Paiementfoyer.id IN ( SELECT MAX(paiementsfoyers.id)
 									FROM paiementsfoyers
+									WHERE paiementsfoyers.topribconj = (
+										CASE WHEN (
+											SELECT prestations.rolepers
+												FROM prestations
+												WHERE prestations.personne_id = "Personne"."id"
+													AND prestations.natprest = \'RSA\'
+													AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+										)
+										= \'DEM\' THEN false ELSE true END
+									)
 									GROUP BY paiementsfoyers.foyer_id
 								)'
 							)
@@ -563,7 +617,7 @@
                     ),
                     'recursive' => 1,
                     'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => Sanitize::clean( $id ) ),
-                    'order' => array( 'Paiementfoyer.nomprenomtiturib ASC' )
+                    'order' => array( 'Paiementfoyer.nomprenomtiturib ASC', 'Foyer.id ASC' )
                 )
             );
         }

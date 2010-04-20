@@ -457,7 +457,7 @@
 
             //------------------------------------------------------------------
 // $dests = ( Set::extract( $apres, '/Apre/paiement' ) );
-// 
+//
 // debug($typeapre);
 // die();
             if( $typeapre  == 'F' ) {
@@ -615,7 +615,7 @@
                 /*$apre['Apre']['montantaverser'] = */$apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] = 40 * ( Set::classicExtract( $apre, 'Apre.montantaverser' ) ) / 100;
             }
 
-            $nbpaiementsouhait = array( '1' => 1, '2' => 2 );// FIXME: dans le modèle et au pluriel 
+            $nbpaiementsouhait = array( '1' => 1, '2' => 2 );// FIXME: dans le modèle et au pluriel
 
             $apre = Set::merge( $apre, $apre_etatliquidatif );
             $this->set( 'apre', $apre );

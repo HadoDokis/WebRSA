@@ -1,7 +1,7 @@
 <?php
     class ImportcsvapresShell extends Shell
     {
-        var $uses = array( 'Apre', 'Integrationfichierapre' );
+        var $uses = array( 'Apre', 'Integrationfichierapre', 'Domiciliationbancaire' );
 		var $csv = null;
 		var $csvFile = null;
 		var $schema = array();
@@ -190,6 +190,7 @@
 							$numdemrsa = trim( $parts[$this->fields['nudemrsa']], '"' );
 
 							// Recherche ou ajout Paiementfoyer
+							/// FIXME: dem ou cjt
 							$titurib = trim( trim( $parts[$this->fields['titureac']], '"' ) );
 							$nomprenomtiturib = trim( trim( $parts[$this->fields['nptireac']], '"' ) );
 							$etaban = trim( trim( $parts[$this->fields['banreact']], '"' ) );
@@ -225,22 +226,30 @@
 									$nir = trim( $parts[$this->fields['nir']], '"' );
 
 									$this->Apre->Personne->unbindModelAll();
-									$prestation = array(
+									/*$prestation = array(
 										'hasOne' => array(
 											'Prestation' => array(
 												'foreignKey' => 'personne_id',
 												'conditions' => array (
-													'Prestation.natprest' => array( 'RSA' )
+													'Prestation.natprest' => array( 'RSA' ),
+													'Prestation.rolepers' => array( 'DEM', 'CJT' )
 												)
 											)
 										)
 									);
-									$this->Apre->Personne->bindModel( $prestation );
+									$this->Apre->Personne->bindModel( $prestation );*/
+
+									$fields = Set::merge(
+										array_keys( Set::flatten( array( 'Personne' => Set::normalize( array_keys( $this->Apre->Personne->schema() ) ) ) ) ),
+										array_keys( Set::flatten( array( 'Prestation' => Set::normalize( array_keys( $this->Apre->Personne->Prestation->schema() ) ) ) ) )
+									);
+
 									// Conditions pour le message d'erreur
 									$conditionsBeneficiaire = "Personne.foyer_id = '{$foyer['Foyer']['id']}' AND ( Personne.nir = '{$nir}' OR ( Personne.nom ILIKE '".strtoupper( replace_accents( $nom ) )."' AND Personne.prenom ILIKE '".strtoupper( replace_accents( $prenom ) )."' ) )";
 									$beneficiaire = $this->Apre->Personne->find(
 										'first',
 										array(
+											'fields' => $fields,
 											'conditions' => array(
 												'Personne.foyer_id' => $foyer['Foyer']['id'],
 												'or' => array(
@@ -248,6 +257,19 @@
 													'and' => array(
 														'Personne.nom ILIKE' => strtoupper( replace_accents( $nom ) ),
 														'Personne.prenom ILIKE' => strtoupper( replace_accents( $prenom ) ),
+													)
+												)
+											),
+											'joins' => array(
+												array(
+													'table'      => 'prestations',
+													'alias'      => 'Prestation',
+													'type'       => 'INNER',
+													'foreignKey' => false,
+													'conditions' => array(
+														'Prestation.personne_id = Personne.id',
+														'Prestation.natprest' => array( 'RSA' ),
+														'Prestation.rolepers' => array( 'DEM', 'CJT' )
 													)
 												)
 											),
@@ -285,62 +307,81 @@
 											)
 										);
 
-										if( $nbApresPrec == 0 ) {
-											$this->Apre->create( $apre );
-											$tmpSuccess = $this->Apre->save();
-											if( !$tmpSuccess && $this->debug ) {
-												debug( $this->Apre->validationErrors );
+										$nDomiciliationbancaire = $this->Domiciliationbancaire->find(
+											'count',
+											array(
+												'conditions' => array(
+													'codebanque' => $etaban,
+													'codeagence' => $guiban
+												)
+											)
+										);
+
+										if( $nDomiciliationbancaire == 1 ) {
+											if( $nbApresPrec == 0 ) {
+												$this->Apre->create( $apre );
+												$tmpSuccess = $this->Apre->save();
+
+												if( !$tmpSuccess && $this->debug ) {
+													debug( $this->Apre->validationErrors );
+												}
+												$success = $tmpSuccess && $success;
+
+												// Recherche ou ajout Paiementfoyer
+												$topribconj = ( ( Set::classicExtract( $beneficiaire, 'Prestation.rolepers' ) == 'CJT' ) ? true : false );
+
+												$paiementfoyer = $this->Apre->Personne->Foyer->Paiementfoyer->find(
+													'first',
+													array(
+														'conditions' => array(
+															'foyer_id' => $foyer['Foyer']['id'],
+															'etaban' => $etaban,
+															'guiban' => $guiban,
+															'numcomptban' => $numcomptban,
+															'topribconj' => $topribconj,
+															'clerib' => $clerib,
+														),
+														'recursive' => -1
+													)
+												);
+
+												// Mise à jour du paiement foyers
+												$paiementfoyer['Paiementfoyer'] = Set::merge(
+													$paiementfoyer['Paiementfoyer'],
+													array(
+														'foyer_id' => $foyer['Foyer']['id'],
+														'titurib' => $titurib,
+														'nomprenomtiturib' => $nomprenomtiturib,
+														'etaban' => $etaban,
+														'guiban' => $guiban,
+														'numcomptban' => $numcomptban,
+														'clerib' => $clerib,
+														'topribconj' => $topribconj,
+														'modepai' => $modpaiac
+													)
+												);
+
+												$this->Apre->Personne->Foyer->Paiementfoyer->create( $paiementfoyer );
+												$tmpSuccess = $this->Apre->Personne->Foyer->Paiementfoyer->save();
+
+												if( !$tmpSuccess && $this->debug ) {
+													debug( $this->Apre->Personne->Foyer->Paiementfoyer->validationErrors );
+												}
+												$success = $tmpSuccess && $success;
+
+												$nLignesTraitees++;
 											}
-											$success = $tmpSuccess && $success;
-
-                                            // Recherche ou ajout Paiementfoyer
-                                            $topribconj = ( ( Set::classicExtract( $beneficiaire, 'Prestation.rolepers' ) == 'CJT' ) ? true : false );
-
-                                            $nPaiementfoyer = $this->Apre->Personne->Foyer->Paiementfoyer->find(
-                                                'count',
-                                                array(
-                                                    'conditions' => array(
-                                                        'foyer_id' => $foyer['Foyer']['id'],
-                                                        'etaban' => $etaban,
-                                                        'guiban' => $guiban,
-                                                        'numcomptban' => $numcomptban,
-                                                        'clerib' => $clerib,
-                                                    ),
-                                                    'recursive' => -1
-                                                )
-                                            );
-
-                                            if( $nPaiementfoyer == 0 ) {
-                                                // FIXME: vérification n° compte
-                                                $paiementfoyer = array(
-                                                    'Paiementfoyer' => array(
-                                                        'foyer_id' => $foyer['Foyer']['id'],
-                                                        'titurib' => $titurib,
-                                                        'nomprenomtiturib' => $nomprenomtiturib,
-                                                        'etaban' => $etaban,
-                                                        'guiban' => $guiban,
-                                                        'numcomptban' => $numcomptban,
-                                                        'clerib' => $clerib,
-                                                        'topribconj' => $topribconj,
-                                                        'modepai' => $modpaiac
-                                                    )
-                                                );
-
-                                                $this->Apre->Personne->Foyer->Paiementfoyer->create( $paiementfoyer );
-                                                $tmpSuccess = $this->Apre->Personne->Foyer->Paiementfoyer->save();
-                                                if( !$tmpSuccess && $this->debug ) {
-                                                    debug( $this->Apre->Personne->Foyer->Paiementfoyer->validationErrors );
-                                                }
-                                                $success = $tmpSuccess && $success;
-                                            }
-
-											$nLignesTraitees++;
-                                        }
-                                        else {
-											$errMsg = "Demande d'APRE forfaitaire datant de moins de 12 mois trouvée pour la date d'importation du ".date( 'd/m/Y', $date )." et pour la personne ";
-                                            $this->err( "{$errMsg}: {$beneficiaire['Personne']['nom']} {$beneficiaire['Personne']['prenom']} (nir: {$beneficiaire['Personne']['nir']})" );
-                                            $this->rejects[] = "{$line};{$errMsg}";
-                                        }
+											else {
+												$errMsg = "Demande d'APRE forfaitaire datant de moins de 12 mois trouvée pour la date d'importation du ".date( 'd/m/Y', $date )." et pour la personne ";
+												$this->err( "{$errMsg}: {$beneficiaire['Personne']['nom']} {$beneficiaire['Personne']['prenom']} (nir: {$beneficiaire['Personne']['nir']})" );
+												$this->rejects[] = "{$line};{$errMsg}";
+											}
+										}
+										else {
+											$errMsg = "Demande d'APRE forfaitaire rejetée pour cause d'entrée non trouvée dans la table domiciliationsbancaires (codebanque = {$etaban} et codeagence = {$guiban}) pour la personne ";
+											$this->err( "{$errMsg}: {$beneficiaire['Personne']['nom']} {$beneficiaire['Personne']['prenom']} (nir: {$beneficiaire['Personne']['nir']})" );
+											$this->rejects[] = "{$line};{$errMsg}";
+										}
 									}
 									else {
 										$errMsg = "Bénéficiaire de l'APRE non trouvé au sein du dossier de demande RSA n°{$numdemrsa} ({$conditionsBeneficiaire})";
