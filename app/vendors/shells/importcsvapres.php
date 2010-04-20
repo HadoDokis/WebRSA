@@ -181,10 +181,12 @@
 						if( preg_match( '/'.$this->config['separator'].'[0-9,\.]+E\+[0-9]+'.$this->config['separator'].'/i', $line, $matches ) ) {
 							$errMsg = "Erreur de format";
 							$this->err( "{$errMsg} (ligne {$nLigne}): \"{$matches[0]}\"" );
+							$this->rejects[] = "{$line};{$errMsg}";
 						}
 						else if( $this->config['date'] && !preg_match( '/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/i', $parts[$this->fields['date']], $matches ) ) {
 							$errMsg = "Erreur de format";
 							$this->err( "{$errMsg} (ligne {$nLigne}): \"{$parts[$this->fields['nudemrsa']]}\"" );
+							$this->rejects[] = "{$line};{$errMsg}";
 						}
 						else if( count( $parts ) == count( $this->fields ) ) {
 							$numdemrsa = trim( $parts[$this->fields['nudemrsa']], '"' );
