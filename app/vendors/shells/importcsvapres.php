@@ -80,6 +80,22 @@
         */
 
         function startup() {
+			// A-t'on tous les paramètres dont on a besoin ?
+			$settingsOk = true;
+			$settings = array( 'Apre.forfaitaire.montantbase', 'Apre.forfaitaire.montantenfant12', 'Apre.forfaitaire.nbenfant12max' );
+			foreach( $settings as $path ) {
+				$setting = Configure::read( $path );
+				if( empty( $setting ) ) {
+					$this->err( "Veuillez renseigner une valeur pour {$path} dans le fichier app/config/webrsa.inc" );
+					$settingsOk = false;
+				}
+
+				if( !$settingsOk ) {
+					exit( 3 );
+				}
+			}
+
+			// Fonctionnement normal du script
 			$this->script = $scriptName = strtolower( preg_replace( '/Shell$/', '', $this->name ) );
 
 			if( Set::classicExtract( $this->params, '?' ) ) {
@@ -289,7 +305,13 @@
 												'numeroapre' => date('Ym').sprintf( "%010s",  $this->Apre->find( 'count' ) + 1 ), // FIXME
 												'typedemandeapre' => 'AU',
 												'datedemandeapre' => date( 'Y-m-d', $date ),
-												'mtforfait' => ( 400 + min( array( 400, ( 100 * $nbenf12 ) ) ) ), // FIXME
+												//'mtforfait' => ( 400 + min( array( 400, ( 100 * $nbenf12 ) ) ) ), // FIXME
+												'mtforfait' => (
+													Configure::read( 'Apre.forfaitaire.montantbase' ) + (
+														Configure::read( 'Apre.forfaitaire.montantenfant12' )
+														* min( $nbenf12, Configure::read( 'Apre.forfaitaire.nbenfant12max' ) )
+													)
+												),
 												'statutapre' => 'F',
 												'nbenf12' => $nbenf12,
 												'etatdossierapre' => 'COM',

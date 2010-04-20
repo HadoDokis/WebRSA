@@ -105,7 +105,7 @@
 		<?php endforeach;?>
 		<tr>
 			<th colspan="8">Total</th>
-			<td class="number" colspan="2"><?php echo str_replace( ' ', '&nbsp;', $etatliquidatif['Etatliquidatif']['montanttotalapre'] );?></td>
+			<td class="number" colspan="2"><?php echo str_replace( ' ', '&nbsp;', $locale->money( array_sum( Set::extract( $elements, '/Apre/allocation' ) ) ) );?></td>
 		</tr>
 	</tbody>
 </table>
