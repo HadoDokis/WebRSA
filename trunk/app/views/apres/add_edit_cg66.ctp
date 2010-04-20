@@ -38,6 +38,23 @@
 
 
         });
+
+
+
+    <?php
+        echo $ajax->remoteFunction(
+            array(
+                'update' => 'Piece66',
+                'url' => Router::url(
+                    array(
+                        'action' => 'ajaxpiece',
+                        Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' )
+                    ),
+                    true
+                )
+            )
+        );
+    ?>
     </script>
 
 <!--/************************************************************************/ -->
@@ -62,12 +79,24 @@
 
         echo $default->subform(
             array(
-                //'Aideapre66.apre_id' => array( 'type' => 'hidden', 'value' => Set::classicExtract( $this->data, "{$this->modelClass}.id" ) ),
                 'Aideapre66.themeapre66_id' => array( 'options' => $themes ),
-                'Aideapre66.typeaideapre66_id' => array( 'options' => $typesaides ),
+                'Aideapre66.typeaideapre66_id' => array( 'options' => $typesaides )
+            ),
+            array(
+                'options' => $options
+            )
+        );
+
+        echo $ajax->observeField( 'Aideapre66Typeaideapre66Id', array( 'update' => 'Piece66', 'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ) ) );
+
+        echo $html->tag( 'div', null, array( 'id' => 'Piece66' ) );
+        echo $html->tag( '/div' );
+
+
+        echo $default->subform(
+            array(
                 'Aideapre66.motivdem',
                 'Aideapre66.montantaide' => array( 'type' => 'text' ),
-                'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces à fournir', 'multiple' => 'checkbox' , 'options' => $pieceliste, 'empty' => false ),
                 'Aideapre66.virement' => array( 'domain' => 'aideapre66', 'type' => 'radio', 'options' => $options['virement'], 'separator' => '<br />' ),
                 'Aideapre66.versement' => array( 'domain' => 'aideapre66', 'type' => 'radio', 'options' => $options['versement'], 'separator' => '<br />' ),
                 'Aideapre66.autorisationvers' => array( 'legend' => 'Autorisation de paiement au tiers', 'domain' => 'aideapre66', 'options' => $options['autorisationvers'], 'type' => 'radio', 'separator' => '<br />' )
@@ -91,7 +120,9 @@
     ?>
 </fieldset>
 <?php
-    $Aideapre66Id = Set::extract( $listesAidesSelonApre, '/Aideapre66/apre_id' );
+    if( !empty( $listApres ) ) {
+        $Aideapre66Id = Set::extract( $listesAidesSelonApre, '/Aideapre66/apre_id' );
+    }
 ?>
 <fieldset>
     <legend>Attributions antérieures de l'APRE</legend>

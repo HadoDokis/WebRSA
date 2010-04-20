@@ -2,9 +2,9 @@
     class Apres66Controller extends AppController
     {
         var $name = 'Apres66';
-        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Aideapre66Pieceaide66', 'Fraisdeplacement66',  'Structurereferente', 'Referent' );
+        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Typeaideapre66Pieceaide66', 'Fraisdeplacement66',  'Structurereferente', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
-        var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxtypeaide' );
+        var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece' );
 
         /** ********************************************************************
         *
@@ -139,6 +139,44 @@
             $this->render( $this->action, 'ajax', '/apres/ajaxref' );
         }
 
+        /**
+        *   Ajax pour les coordonnées du référent APRE
+        */
+
+        function ajaxpiece( $typeaideapre66_id = null ) { // FIXME
+            Configure::write( 'debug', 0 );
+            if( !empty( $typeaideapre66_id ) ) {
+                $typeaideapre66_id = suffix( $typeaideapre66_id );
+
+            }
+            else {
+                $typeaideapre66_id = suffix( Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' ) );
+            }
+
+            $pieces = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Pieceaide66->find(
+                'list',
+                array(
+                    'fields' => array( 'Pieceaide66.id', 'Pieceaide66.name' ),
+                    'joins' => array(
+                        array(
+                            'table'      => 'typesaidesapres66_piecesaides66',
+                            'alias'      => 'Typeaideapre66Pieceaide66',
+                            'type'       => 'INNER',
+                            'foreignKey' => false,
+                            'conditions' => array(
+                                'Typeaideapre66Pieceaide66.pieceaide66_id = Pieceaide66.id',
+                                'Typeaideapre66Pieceaide66.typeaideapre66_id' => $typeaideapre66_id,
+                            )
+                        )
+                    ),
+                    'order' => array( 'Pieceaide66.name' ),
+                    'recursive' => -1
+                )
+            );
+
+            $this->set( 'pieces', $pieces );
+            $this->render( $this->action, 'ajax', '/apres/ajaxpiece' );
+        }
 
         /**
         * Visualisation de l'APRE
