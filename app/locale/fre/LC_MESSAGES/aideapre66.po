@@ -46,6 +46,33 @@ msgstr "Date de la demande"
 msgid "Aideapre66.autorisationvers"
 msgstr "Autorisation de versement"
 
+msgid "Aideapre66.motifrejet"
+msgstr "Motif du rejet ou de la modification du montant"
+
+msgid "Aideapre66.montantpropose"
+msgstr "Montant proposé par le référent"
+
+msgid "Aideapre66.datemontantpropose"
+msgstr "Le "
+
+msgid "Aideapre66.creancier"
+msgstr "créancier "
+
+msgid "Aideapre66.decisionapre"
+msgstr "Décision et engagement financier de l'équipe de direction"
+
+msgid "Aideapre66.montantaccorde"
+msgstr "Montant accordé"
+
+msgid "Aideapre66.datemontantaccorde"
+msgstr "Le "
+
+msgid "ENUM::DECISIONAPRE::ACC"
+msgstr "Accord"
+
+msgid "ENUM::DECISIONAPRE::REF"
+msgstr "Refus"
+
 msgid "ENUM::VIREMENT::RIB"
 msgstr "Virement bancaire RIB"
 

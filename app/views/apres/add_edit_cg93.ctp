@@ -304,3 +304,8 @@
                 ?>
             </fieldset>
         </fieldset>
+        <fieldset class="aere">
+                <legend>Avis technique et motivé du référent (Article 5.1 relatif au règlement de l'APRE): </legend>
+            <?php
+                echo $xform->input(  "{$this->modelClass}.avistechreferent", array( 'domain' => 'apre', 'label' => false ) );?>
+        </fieldset>

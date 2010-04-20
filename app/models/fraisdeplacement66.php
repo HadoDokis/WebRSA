@@ -3,9 +3,9 @@
     {
         public $name = 'Fraisdeplacement66';
 
-//         var $belongsTo = array(
-//             'Apre66'
-//         );
+        var $belongsTo = array(
+            'Aideapre66'
+        );
 
         var $actsAs = array(
             'Autovalidate',
@@ -23,7 +23,7 @@
         );
 
         var $validate = array(
-            'apre_id' => array(
+            'aideapre66_id' => array(
                 array(
                     'rule' => 'notEmpty'
                 )
