@@ -288,6 +288,9 @@ DELETE FROM dspfs WHERE dspfs.id IN(
 -- -----------------------------------------------------------------------------
 -- INFO: mise à NULL de tous les champs vides
 -- -----------------------------------------------------------------------------
+-- FIXME: Correction après release 2.0-rc1
+UPDATE dspfs SET accosocfam = 'O' WHERE accosocfam = '0';
+-- FIXME: Fin de correction après release 2.0-rc1
 
 -- dspps
 UPDATE dspps SET drorsarmiant = NULL WHERE TRIM(drorsarmiant) = '';
@@ -677,7 +680,7 @@ CREATE TABLE aidesapres66_piecesaides66 (
 );
 CREATE INDEX aidesapres66_piecesaides66_aideapre66_id_idx ON aidesapres66_piecesaides66 (aideapre66_id);
 CREATE INDEX aidesapres66_piecesaides66_pieceaide66_id_idx ON aidesapres66_piecesaides66 (pieceaide66_id);
-COMMENT ON TABLE aidesapres66_piecesaides66 IS 'Table pour connaître les pièces liées aux aides d''une APRE donnée';
+COMMENT ON TABLE aidesapres66_piecesaides66 IS 'Table pour connaître les pièces liées à une APRE pour une aide donnée';
 
 -- -----------------------------------------------------------------------------
 -- Passage v1 -> v2:

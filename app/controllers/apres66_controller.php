@@ -2,7 +2,7 @@
     class Apres66Controller extends AppController
     {
         var $name = 'Apres66';
-        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Typeaideapre66Pieceaide66', 'Fraisdeplacement66',  'Structurereferente', 'Referent' );
+        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Typeaideapre66Pieceaide66', /*'Aideapre66Pieceaide66', */'Fraisdeplacement66',  'Structurereferente', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece' );
 
@@ -324,6 +324,24 @@
                 if( !empty( $Fraisdeplacement66 ) ){
                     $success = $this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->save() && $success;
                 }
+
+
+
+
+
+                // Tentative d'enregistrement des pièces liées à une APRE selon ne aide donnée
+//                 if( !empty( $this->data['Pieceaide66'] ) ) {
+//                     $linkedData = array(
+//                         'Aideapre66' => array(
+//                             'id' => $this->{$this->modelClass}->Aideapre66->id
+//                         ),
+//                         'Pieceaide66' => $this->data['Pieceaide66']
+//                     );
+//                     $saved = $this->{$this->modelClass}->Aideapre66->save( $linkedData ) && $saved;
+//                 }
+
+
+
 
 				if( $success ) {
 					$this->Jetons->release( $dossier_rsa_id );
