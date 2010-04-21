@@ -82,6 +82,16 @@
             'Referent'
         );
 
+//         var $hasAndBelongsToMany = array(
+//             'Pieceaide66' => array(
+//                 'className'              => 'Pieceaide66',
+//                 'joinTable'              => 'aidesapres66_piecesaides66',
+//                 'foreignKey'             => 'aideapre66_id',
+//                 'associationForeignKey'  => 'pieceaide66_id',
+//                 'with'                   => 'Aideapre66Pieceaide66'
+//             )
+//         );
+
         function dossierId( $apre_id ){
             $this->unbindModelAll();
             $this->bindModel(
