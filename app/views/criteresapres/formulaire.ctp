@@ -191,7 +191,7 @@
                                 array(
                                     $html->viewLink(
                                         'Voir le dossier « '.$title.' »',
-                                        array( 'controller' => 'apres', 'action' => 'index', $apre['Apre']['personne_id'] )
+                                        array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $apre['Apre']['personne_id'] )
                                     ),
                                     array( 'class' => 'noprint' )
                                 ),
