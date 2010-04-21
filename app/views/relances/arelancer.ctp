@@ -39,6 +39,12 @@
 
     <?php if( is_array( $orientsstructs ) && count( $orientsstructs ) > 0 ):?>
         <?php echo $form->create( 'RelanceOrient', array( 'url'=> Router::url( null, true ) ) );?>
+        <?php
+            echo '<div>';
+            echo $form->input( 'Relance.compare', array( 'type' => 'hidden', 'id' => 'RelanceCompare2' ) );
+            echo $form->input( 'Relance.nbjours', array( 'type' => 'hidden', 'id' => 'RelanceNbjours2' ) );
+            echo '</div>';
+        ?>
         <?php echo $pagination;?>
         <table class="tooltips" style="width: 100%;">
             <thead>
