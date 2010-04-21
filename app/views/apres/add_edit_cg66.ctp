@@ -114,7 +114,7 @@
 
         echo $default->subform(
             array(
-                'Aideapre66.datedemande'
+                'Aideapre66.datedemande' => array( 'empty' => false )
             )
         );
     ?>
@@ -251,7 +251,7 @@
             echo $default->subform(
                 array(
                     'Aideapre66.montantpropose' => array( 'type' => 'text' ),
-                    'Aideapre66.datemontantpropose'
+                    'Aideapre66.datemontantpropose' => array( 'empty' => false )
                 )
             );
         ?>
@@ -263,7 +263,7 @@
                 array(
                     'Aideapre66.decisionapre' => array( 'legend' => false, 'type' => 'radio', 'options' => $options['decisionapre'], 'separator' => '<br />' ),
                     'Aideapre66.montantaccorde' => array( 'type' => 'text' ),
-                    'Aideapre66.datemontantaccorde'
+                    'Aideapre66.datemontantaccorde' => array( 'empty' => false )
                 ),
                 array(
                     'class' => 'fraisdepct'
