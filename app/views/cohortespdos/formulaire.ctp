@@ -43,6 +43,26 @@
         <?php echo $pagination;?>
         <?php echo $form->create( 'Propopdo', array( 'url'=> Router::url( null, true ) ) );?>
 
+
+        <?php
+            echo '<div>';
+            echo $form->input( 'Cohortepdo.numcomptt', array( 'type' => 'hidden', 'id' => 'CohortepdoNumcomptt2' ) );
+            echo $form->input( 'Cohortepdo.matricule', array( 'type' => 'hidden', 'id' => 'CohortepdoMatricule2' ) );
+            echo $form->input( 'Cohortepdo.nom', array( 'type' => 'hidden', 'id' => 'CohortepdoNom2' ) );
+            echo $form->input( 'Cohortepdo.prenom', array( 'type' => 'hidden', 'id' => 'CohortepdoPrenom2' ) );
+            echo $form->input( 'Cohortepdo.typepdo_id', array( 'type' => 'hidden', 'id' => 'CohortepdoTypepdoId2' ) );
+            echo $form->input( 'Cohortepdo.decisionpdo_id', array( 'type' => 'hidden', 'id' => 'CohortepdoDecisionpdoId2' ) );
+            echo $form->input( 'Cohortepdo.motifpdo', array( 'type' => 'hidden', 'id' => 'CohortepdoMotifpdo2' ) );
+            ///FIXME: problème: les dates se remettent à 0 (2010-01-01) après
+            ///     validation au lieu de conserver les plages saisies
+            echo $form->input( 'Cohortepdo.datedecisionpdo', array( 'type' => 'hidden', 'id' => 'CohortepdoDatedecisionpdo2' ) );
+            echo $form->input( 'Cohortepdo.datedecisionpdo_from', array( 'type' => 'hidden', 'id' => 'CohortepdoDatedecisionpdoFrom2' ) );
+            echo $form->input( 'Cohortepdo.datedecisionpdo_to', array( 'type' => 'hidden', 'id' => 'CohortepdoDatedecisionpdoTo2' ) );
+            echo '</div>';
+        ?>
+
+
+
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
