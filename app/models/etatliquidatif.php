@@ -305,8 +305,8 @@
             $conditions = Set::merge(
                 $conditions,
                 array(
-                    'Apre.id NOT IN ( SELECT apres_etatsliquidatifs.apre_id FROM apres_etatsliquidatifs INNER JOIN etatsliquidatifs ON apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id WHERE etatsliquidatifs.datecloture IS NOT NULL )
-                    OR Apre.id IN ( SELECT apres_etatsliquidatifs.apre_id FROM apres_etatsliquidatifs INNER JOIN etatsliquidatifs ON apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id WHERE ( '.$this->sousRequeteApreNbpaiementeff.' <> "Apre"."nbpaiementsouhait" ) OR ( Apre.montantdejaverse <> Apre.montantaverser/*.$this->Apre->sousRequeteMontanttotal().*/ ) )'
+                    '( Apre.id NOT IN ( SELECT apres_etatsliquidatifs.apre_id FROM apres_etatsliquidatifs INNER JOIN etatsliquidatifs ON apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id WHERE etatsliquidatifs.datecloture IS NOT NULL )
+                    OR Apre.id IN ( SELECT apres_etatsliquidatifs.apre_id FROM apres_etatsliquidatifs INNER JOIN etatsliquidatifs ON apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id WHERE ( '.$this->sousRequeteApreNbpaiementeff.' <> "Apre"."nbpaiementsouhait" ) OR ( Apre.montantdejaverse <> Apre.montantaverser/*.$this->Apre->sousRequeteMontanttotal().*/ ) ) )'
                 )
             );
 // debug($conditions);
