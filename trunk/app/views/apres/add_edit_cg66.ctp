@@ -141,14 +141,14 @@
                     foreach( $listesAidesSelonApre as $i => $liste ){
                     ///FIXME: voir comment mieux faire pour enlever l'APRE du tableau
                     /// des APREs antérieures lorqu'on est en train de l'éditer
-                        if( $liste['Aideapre66']['apre_id'] == $this->params['pass'][0] ){
+                        /*if( $liste['Aideapre66']['apre_id'] == $this->params['pass'][0] ){
                             unset( $liste['Aideapre66']['id'] );
                             unset( $liste['Aideapre66']['apre_id'] );
                             unset( $liste['Aideapre66']['datedemande'] );
                             unset( $liste['Aideapre66']['themeapre66_id'] );
                             unset( $liste['Aideapre66']['typeaideapre66_id'] );
                             unset( $liste['Aideapre66']['montantaide'] );
-                        }
+                        }*/
 
                         echo $html->tableCells(
                             array(
@@ -177,7 +177,98 @@
         );
     ?>
 
-    <table>
+	<div class="fraisdepct">
+		<table class="fraisdepct">
+			<caption>Véhicule personnel</caption>
+			<tbody>
+				<tr>
+					<th>Nb km</th>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbkmvoiture', array( 'label' => false, 'div' => false ) );?></td>
+				</tr>
+				<tr>
+					<th>Nb trajet </th>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajetvoiture', array( 'label' => false, 'div' => false ) );?></td>
+				</tr>
+				<tr>
+					<th>Nb total km</th>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtotalkm', array( 'label' => false, 'div' => false ) );?></td>
+				</tr>
+				<tr>
+					<th>Forfait "Km"</th>
+					<!--<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.forfaitvehicule', array( 'label' => false, 'div' => false, 'value' => '0.20' ) );?></td>-->
+					<td class="fraisdepct"><?php echo $locale->money( 0.20 );?></td>
+				</tr>
+				<tr>
+					<th>Total</th>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totalvehicule', array( 'label' => false, 'div' => false ) ); ?></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="fraisdepct">
+		<table class="fraisdepct">
+			<caption>Transport public</caption>
+			<tbody>
+				<tr>
+					<th>Nb trajet</th>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajettranspub', array( 'label' => false, 'div' => false ) );?></td>
+				</tr>
+				<tr>
+					<th>Prix billet </th>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.prixbillettranspub', array( 'label' => false, 'div' => false ) );?></td>
+				</tr>
+				<tr>
+					<th>Total</th>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totaltranspub', array( 'label' => false, 'div' => false ) ); ?></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="fraisdepct">
+		<table class="fraisdepct">
+			<caption>Hébergement</caption>
+			<tbody>
+				<tr>
+					<th>Nb nuitées</th>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbnuithebergt', array( 'label' => false, 'div' => false ) );?></td>
+				</tr>
+				<tr>
+					<th>Forfait "nuitées"</th>
+					<!-- <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.forfaithebergt', array( 'label' => false, 'div' => false, 'value' => '23' ) );?></td> -->
+					<td class="fraisdepct"><?php echo $locale->money( 23 );?></td>
+				</tr>
+				<tr>
+					<th>Total</th>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totalhebergt', array( 'label' => false, 'div' => false ) ); ?></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="fraisdepct">
+		<table class="fraisdepct">
+			<caption>Repas</caption>
+			<tbody>
+				<tr>
+					<th>Nb repas</th>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbrepas', array( 'label' => false, 'div' => false ) );?></td>
+				</tr>
+				<tr>
+					<th>Forfait "Repas"</th>
+					<!-- 0<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.forfaitrepas', array( 'label' => false, 'div' => false, 'value' => '3.81' ) );?></td> -->
+					<td class="fraisdepct"><?php echo $locale->money( 3.81 );?></td>
+				</tr>
+				<tr>
+					<th>Total</th>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totalrepas', array( 'label' => false, 'div' => false ) ); ?></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+    <!--<table>
         <thead>
             <tr>
                 <th colspan="2">Véhicule personnel</th>
@@ -226,7 +317,7 @@
                 <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totalvehicule', array( 'label' => false ) ); ?> </td>
             </tr>
         </tbody>
-    </table>
+    </table>-->
 </fieldset>
 
 <fieldset class="aere">
