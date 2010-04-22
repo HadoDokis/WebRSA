@@ -263,12 +263,16 @@
             *   Liste des APREs de la personne pour l'affichage de l'historique
             *   lors de l'add/edit
             **/
+
+			$conditionsListeApres = array( "{$this->modelClass}.personne_id" => $personne_id );
+			if( $this->action == 'edit' ) {
+				$conditionsListeApres["{$this->modelClass}.id <>"] = $apre_id;
+			}
+
             $listApres = $this->{$this->modelClass}->find(
                 'all',
                 array(
-                    'conditions' => array(
-                        "{$this->modelClass}.personne_id" => $personne_id
-                    ),
+                    'conditions' => $conditionsListeApres,
                     'recursive' => -1
                 )
             );

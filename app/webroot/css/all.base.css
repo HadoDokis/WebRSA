@@ -347,6 +347,40 @@ table#dossierInfosOrganisme th, table#dossierInfosOrganisme td {
 	display: none;
 }
 
-form#Apre  td.fraisdepct input {
+/*form#Apre  td.fraisdepct input {
     width: 30%;
+}*/
+
+form#Apre  div.fraisdepct {
+    width: 25%;
+	float: left;
+}
+
+form#Apre  table.fraisdepct {
+    width: 15em;
+}
+
+form#Apre  table.fraisdepct caption {
+    caption-side: top;
+	border: 1px solid #235F7D;
+	background: #235F7D;
+	text-align: center;
+	color: white;
+	padding: 0;
+	margin: 0;
+}
+
+
+form#Apre  table.fraisdepct th {
+    width: 5em;
+}
+
+form#Apre  table.fraisdepct td.fraisdepct {
+    width: 3em;
+	max-width: 3em;
+}
+
+form#Apre  table.fraisdepct td.fraisdepct input {
+    width: 5em;
+	max-width: 5em;
 }
