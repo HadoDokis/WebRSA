@@ -27,7 +27,7 @@
                         h( 'APREs' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'apres', 'action' => 'indexparams' )
+                            array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'indexparams' )
                         )
                     ),
                     array( 'class' => 'odd' ),

@@ -37,7 +37,12 @@
 
 
         public function index() {
-            $this->Default->index();
+			$queryData = array(
+				'Typeaideapre66' => array(
+					'order' => array( 'Themeapre66.name ASC', 'Typeaideapre66.name ASC' )
+				)
+			);
+            $this->Default->index( $queryData );
         }
 
         /**

@@ -3,11 +3,13 @@
     {
         public $name = 'Typeaideapre66';
 
-        var $belongsTo = array( 'Themeapre66' );
+		public $order = 'Typeaideapre66.name ASC';
 
-        var $actsAs = array( 'Autovalidate' );
+        public $belongsTo = array( 'Themeapre66' );
 
-        var $hasAndBelongsToMany = array(
+        public $actsAs = array( 'Autovalidate' );
+
+        public $hasAndBelongsToMany = array(
             'Pieceaide66' => array(
                 'classname'             => 'Pieceaide66',
                 'joinTable'             => 'typesaidesapres66_piecesaides66',
@@ -17,7 +19,7 @@
             )
         );
 
-        function listOptions() {
+        public function listOptions() {
             $tmp = $this->find(
                 'all',
                 array (

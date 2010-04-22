@@ -3,6 +3,8 @@
     {
         public $name = 'Themeapre66';
 
+		public $order = 'Themeapre66.name ASC';
+
 //         var $hasMany = array(
 //             'Aideapre66'
 //         );
