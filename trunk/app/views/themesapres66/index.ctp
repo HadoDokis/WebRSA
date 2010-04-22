@@ -22,7 +22,7 @@
     echo $default->button(
         'back',
         array(
-            'controller' => 'apres',
+            'controller' => 'apres66',
             'action'     => 'indexparams'
         ),
         array(

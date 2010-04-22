@@ -3,7 +3,9 @@
     {
         public $name = 'Pieceaide66';
 
-        var $hasAndBelongsToMany = array(
+		public $order = 'Pieceaide66.name ASC';
+
+        public $hasAndBelongsToMany = array(
             'Typeaideapre66' => array(
                 'classname'             => 'Typeaideapre66',
                 'joinTable'             => 'typesaidesapres66_piecesaides66',
@@ -20,7 +22,7 @@
             )*/
         );
 
-        var $validate = array(
+        public $validate = array(
             'name' => array(
                 array(
                     'rule' => 'notEmpty',

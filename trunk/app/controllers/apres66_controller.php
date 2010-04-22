@@ -51,7 +51,13 @@
                 $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
             }
 
-            $this->render( $this->action, null, 'indexparams_'.Configure::read( 'nom_form_apre_cg' ) );
+			$compteurs = array(
+				'Pieceaide66' => ClassRegistry::init( 'Pieceaide66' )->find( 'count' ),
+				'Themeapre66' => ClassRegistry::init( 'Themeapre66' )->find( 'count' )
+			);
+			$this->set( compact( 'compteurs' ) );
+
+            $this->render( $this->action, null, '/apres/indexparams_'.Configure::read( 'nom_form_apre_cg' ) );
         }
 
         /** ********************************************************************

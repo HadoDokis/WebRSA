@@ -10,13 +10,14 @@
         </thead>
         <tbody>
             <?php
-
+// debug( $this );
                 echo $html->tableCells(
                     array(
                         h( 'Liste des aides de l\'APRE' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'typesaidesapres66', 'action' => 'index' )
+                            array( 'controller' => 'typesaidesapres66', 'action' => 'index' ),
+							( ( $compteurs['Pieceaide66'] > 0 ) && ( $compteurs['Themeapre66'] > 0 ) )
                         )
                     ),
                     array( 'class' => 'odd' ),

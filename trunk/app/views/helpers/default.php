@@ -305,7 +305,8 @@
 			/// FIXME: function
 			$name = Inflector::camelize( $this->params['controller'] );
 			$action = $this->action;
-			$modelName = Inflector::classify( Inflector::tableize( $name ) );
+			//$modelName = Inflector::classify( Inflector::tableize( $name ) );
+			$modelName = Inflector::classify( $name );
 			$modelClass = ClassRegistry::init( Inflector::classify( $modelName ) );
 			$cohorte = Set::classicExtract( $cohorteParams, 'cohorte' );
 			$domain = Inflector::singularize( Inflector::tableize( $modelName ) );
@@ -470,7 +471,6 @@
                     ),
                     $actions[$actionModelField]
                 );
-
 
 				$return .= $this->Html->tag(
 					'p',
