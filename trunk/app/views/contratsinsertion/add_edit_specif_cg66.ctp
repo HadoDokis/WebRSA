@@ -91,7 +91,7 @@
         <tr>
             <td class="mediumSize noborder"></td>
             <td class="mediumSize noborder">
-                <p class="caution center">Attention : si le contrat conditionne l'ouverture du droit  celui-ci n'aura                                                                                                                                                      de valeur qu'après décision du Président du Conseil Général.</p>
+                <p class="caution center">Attention : lorsque le contrat conditionne le paiement du rsa il ne sera effectif qu'après décision du Président du Conseil Général. La responsabilité du référent signataire n'est nullement engagée par la signature de ce contrat</p>
             </td>
         </tr>
     </table>
