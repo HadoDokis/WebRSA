@@ -31,8 +31,10 @@
         });
     </script>
 <!--/************************************************************************/ -->
+
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
+    <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ):?>
         //Données pour le type d'activité du bénéficiare
         ['F', 'C', 'P'].each( function( letter ) {
             observeDisableFieldsOnValue(
@@ -74,7 +76,7 @@
             'E',
             false
         );
-
+    <?php endif;?>
         <?php
             echo $ajax->remoteFunction(
                 array(
@@ -129,28 +131,31 @@
                         <?php echo $form->input( "{$this->modelClass}.numeroapre", array( 'type' => 'hidden', 'value' => $numapre ) ); ?>
                         <strong>Numéro de l'APRE : </strong><?php echo $numapre; ?>
                     </td>
+                    <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ):?>
                     <td class="mediumSize noborder">
                         <?php echo $xform->enum( "{$this->modelClass}.typedemandeapre", array(  'legend' => required( __d( 'apre', 'Apre.typedemandeapre', true ) ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['typedemandeapre'] ) );?>
                     </td>
+                    <?php endif;?>
                 </tr>
             </table>
         </fieldset>
-        <fieldset>
-           <table class="wide noborder">
-                <tr>
-                    <td class="mediumSize noborder">
+        <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ):?>
+            <fieldset>
+            <table class="wide noborder">
+                    <tr>
+                        <td class="mediumSize noborder">
 
-                    </td>
+                        </td>
 
-                </tr>
-                <tr>
-                    <td colspan="2" class="wide noborder">
-                        <?php echo $xform->input( "{$this->modelClass}.datedemandeapre", array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 ) );?>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="wide noborder">
+                            <?php echo $xform->input( "{$this->modelClass}.datedemandeapre", array( 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 ) );?>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        <?php endif;?>
         <fieldset>
             <legend>Identité du bénéficiaire de la demande</legend>
             <table class="wide noborder">
