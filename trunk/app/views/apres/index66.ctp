@@ -36,9 +36,10 @@
    <table class="tooltips">
         <thead>
             <tr>
-                <th>Statut de l'APRE</th>
                 <th>Date demande APRE</th>
                 <th>Etat du dossier</th>
+                <th>Thème de l'aide</th>
+                <th>Type d'aides</th>
                 <th>Montant demandé</th>
                 <th>Montant accordé</th>
                 <th>Décision</th>
@@ -64,6 +65,7 @@
                         $buttonEnabledInc = true;
                     }
 
+
                     $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                         <tbody>
                             <tr>
@@ -87,9 +89,10 @@
 
                     echo $html->tableCells(
                         array(
-                            h( Set::enum( $statutApre, $options['statutapre'] ) ),
                             h( date_short( Set::classicExtract( $apre, 'Aideapre66.datedemande' ) ) ),
                             h( $etat ),
+                            h( Set::enum( Set::classicExtract( $apre, 'Aideapre66.themeapre66_id' ), $themes  ) ),
+                            h( Set::enum( Set::classicExtract( $apre, 'Aideapre66.typeaideapre66_id' ), $nomsTypeaide  ) ),
                             h( $locale->money( $mtforfait ) ),
                             h( $locale->money( $mtattribue ) ),
                             h(  Set::enum( Set::classicExtract( $apre, 'Aideapre66.decisionapre' ), $options['decisionapre'] ) ),
