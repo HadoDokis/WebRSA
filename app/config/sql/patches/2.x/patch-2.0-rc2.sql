@@ -147,9 +147,9 @@ ALTER TABLE permisb DROP COLUMN montanttotal;
 ALTER TABLE permisb DROP COLUMN dateversementtotal;
 
 
-ALTER TABLE allocationssoutienfamilial ADD COLUMN topasf BOOLEAN ;
-ALTER TABLE allocationssoutienfamilial ADD COLUMN topdemasf BOOLEAN ;
-ALTER TABLE allocationssoutienfamilial ADD COLUMN topenfreconn BOOLEAN ;
+ALTER TABLE allocationssoutienfamilial ADD COLUMN topasf type_booleannumber ;
+ALTER TABLE allocationssoutienfamilial ADD COLUMN topdemasf type_booleannumber ;
+ALTER TABLE allocationssoutienfamilial ADD COLUMN topenfreconn type_booleannumber ;
 
 -- -----------------------------------------------------------------------------
 --          modif table foyers
@@ -162,7 +162,7 @@ ALTER TABLE foyers ADD COLUMN raisoctieelectdom VARCHAR(32);
 -- -----------------------------------------------------------------------------
 
 ALTER TABLE adresses ADD COLUMN typeres  CHAR (1);
-ALTER TABLE adresses ADD COLUMN topresetr BOOLEAN;
+ALTER TABLE adresses ADD COLUMN topresetr type_booleannumber;
 
 -- -----------------------------------------------------------------------------
 --          modifs table rattachements
