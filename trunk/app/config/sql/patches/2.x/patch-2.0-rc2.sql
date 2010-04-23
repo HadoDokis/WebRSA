@@ -174,7 +174,7 @@ CREATE TABLE rattachements (
     personne_id             INTEGER NOT NULL REFERENCES personnes(id),
     nomnai                  VARCHAR(28),
     prenom                  VARCHAR(32),
-    typepar                 CHAR(2),
+    typepar                 CHAR(3),
     dtnai                   DATE,
     nir                     CHAR(15)
 );
