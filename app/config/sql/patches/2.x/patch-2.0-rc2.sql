@@ -176,7 +176,7 @@ CREATE TABLE rattachements (
     prenom                  VARCHAR(32),
     typepar                 CHAR(2),
     dtnai                   DATE,
-    nir                     CHAR(15),
+    nir                     CHAR(15)
 );
 -- ALTER TABLE rattachements ADD COLUMN id SERIAL NOT NULL PRIMARY KEY;
 -- ALTER TABLE rattachements ADD COLUMN nomnai VARCHAR(28);
