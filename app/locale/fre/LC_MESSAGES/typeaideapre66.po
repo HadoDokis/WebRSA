@@ -49,5 +49,8 @@ msgstr "Thème auquel l'aide est lié"
 msgid "Typeaideapre66.plafond"
 msgstr "Plafond de l'aide"
 
+msgid "Typeaideapre66.objetaide"
+msgstr "Objet de l'aide"
+
 msgid "Typeaideapre66::delete::confirm"
 msgstr "Confirmer la suppression ?"
