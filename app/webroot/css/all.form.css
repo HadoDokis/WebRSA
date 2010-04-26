@@ -8,7 +8,7 @@ div.text, div.password, div.select, div.radio, div.date, div.textarea, div.input
     width: auto;
 }
 
-div.input label, div.input span.label {
+div.input label, div.input span.label, dl.inform dt {
     display: -moz-inline-box;
     display: inline-table;
     display: inline-block;
@@ -26,12 +26,19 @@ div.textarea label, div.textarea textarea {
     width: 100%;
 }
 
-div.text input, div.password input, div.select select, div.input.text span.input {
+div.text input, div.password input, div.select select, div.input.text span.input, dl.inform dd {
     display: -moz-inline-box;
     display: inline-table;
     display: inline-block;
     width: 48%; /* Grrrr */
 	font-size: 1em;
+}
+
+dl.inform dt, dl.inform dd {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    margin: 0;
 }
 
 td div.text input, td div.password input, td div.select select {

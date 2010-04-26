@@ -169,12 +169,20 @@
 <fieldset>
     <legend><strong>Calcul des frais de déplacements, d'hébergement et de restauration</strong></legend>
     <?php
-        echo $default->subform(
+        $tmp = array(
+            'Fraisdeplacement66.lieuresidence' => Set::extract( $personne, 'Adresse.numvoie' ).' '.Set::extract( $typevoie, Set::extract( $personne, 'Adresse.typevoie' ) ).' '.Set::extract( $personne, 'Adresse.nomvoie' ).' '.Set::extract( $personne, 'Adresse.codepos' ).' '.Set::extract( $personne, 'Adresse.locaadr' )
+        );
+        echo $default->view(
+            Xset::bump( $tmp ),
             array(
-                'Fraisdeplacement66.lieuresidence',
-                'Fraisdeplacement66.destination',
+                'Fraisdeplacement66.lieuresidence'
+            ),
+            array(
+                'class' => 'inform'
             )
         );
+
+        echo $xform->input( 'Fraisdeplacement66.destination', array( 'label' => __d( 'fraisdeplacement66', "Fraisdeplacement66.destination", true ) ) );
     ?>
 
 	<div class="fraisdepct">
@@ -182,7 +190,7 @@
 			<caption>Véhicule personnel</caption>
 			<tbody>
 				<tr>
-					<th>Nb km</th>
+					<th>Nb km par trajet</th>
 					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbkmvoiture', array( 'label' => false, 'div' => false ) );?></td>
 				</tr>
 				<tr>
@@ -268,56 +276,6 @@
 		</table>
 	</div>
 
-    <!--<table>
-        <thead>
-            <tr>
-                <th colspan="2">Véhicule personnel</th>
-                <th colspan="2">Transport public</th>
-                <th colspan="2">Hébergement</th>
-                <th colspan="2">Repas</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="fraisdepct">Nb km </td>
-                <td class="fraisdepct"> <?php echo $xform->input( 'Fraisdeplacement66.nbkmvoiture', array( 'label' => false ) );?></td>
-                <td class="fraisdepct">Nb trajet</td>
-                <td class="fraisdepct"> <?php echo $form->input( 'Fraisdeplacement66.nbtrajettranspub', array( 'label' => false ) );?></td>
-                <td class="fraisdepct">Nb nuitées</td>
-                <td class="fraisdepct"> <?php echo $form->input( 'Fraisdeplacement66.nbnuithebergt', array( 'label' => false ) );?></td>
-                <td class="fraisdepct">Nb repas</td>
-                <td class="fraisdepct"> <?php echo $form->input( 'Fraisdeplacement66.nbrepas', array( 'label' => false ) );?></td>
-            </tr>
-            <tr>
-                <td class="fraisdepct"> Nb trajet </td>
-                <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajetvoiture', array( 'label' => false ) );?></td>
-                <td class="fraisdepct"> Prix billet </td>
-                <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.prixbillettranspub', array( 'label' => false ) );?></td>
-                <td class="fraisdepct"> Forfait "nuitées"</td>
-                <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.forfaithebergt', array( 'label' => false/*, 'value' => '23'*/ ) );?></td>
-                <td class="fraisdepct"> Forfait "Repas"</td>
-                <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.forfaitrepas', array( 'label' => false/*, 'value' => '3.81'*/ ) );?></td>
-            </tr>
-            <tr>
-                <td class="fraisdepct"> Nb total km </td>
-                <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtotalkm', array( 'label' => false ) );?></td>
-                <td class="fraisdepct"> Total </td>
-                <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totaltranspub', array( 'label' => false ) );?></td>
-                <td class="fraisdepct"> Total </td>
-                <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totalhebergt', array( 'label' => false ) );?></td>
-                <td class="fraisdepct"> Total </td>
-                <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totalrepas', array( 'label' => false ) );?></td>
-            </tr>
-            <tr>
-                <td class="fraisdepct"> Forfait "Km" </td>
-                <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.forfaitvehicule', array( 'label' => false/*, 'value' => '0.20'*/ ) );?></td>
-            </tr>
-            <tr>
-                <td class="fraisdepct"> Total </td>
-                <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totalvehicule', array( 'label' => false ) ); ?> </td>
-            </tr>
-        </tbody>
-    </table>-->
 </fieldset>
 
 <fieldset class="aere">
