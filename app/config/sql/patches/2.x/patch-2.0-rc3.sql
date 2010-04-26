@@ -12,4 +12,6 @@ BEGIN;
 
 ALTER TABLE typesaidesapres66 ADD COLUMN objetaide TEXT;
 
+-- --------------------------------------------------------------------------------
+
 COMMIT;

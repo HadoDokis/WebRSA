@@ -23,7 +23,7 @@
                         echo $html->tableCells(
                             array(
                                 h( $locale->date( 'Date::short', Set::classicExtract( $evenement, 'Evenement.dtliq' ) ) ),
-                                h( $locale->date( 'Date::time', Set::classicExtract( $evenement, 'Evenement.heuliq' ) ) ),
+                                h( $locale->date( 'Time::short', Set::classicExtract( $evenement, 'Evenement.heuliq' ) ) ),
                                 h( Set::enum( Set::classicExtract( $evenement, 'Evenement.fg' ), $fg ) )
                             ),
                             array( 'class' => 'odd' ),

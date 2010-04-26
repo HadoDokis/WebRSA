@@ -228,7 +228,7 @@
                         <?php
                             echo $html->link(
                                 'Evènements',
-                                array( 'controller' => 'foyers_evenements', 'action' => 'index', $dossier['Foyer']['id'] )
+                                array( 'controller' => 'evenements', 'action' => 'index', $dossier['Foyer']['id'] )
                             );
                         ?>
                     </li>

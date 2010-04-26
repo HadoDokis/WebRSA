@@ -3,7 +3,7 @@
     {
 
         var $name = 'Evenements';
-        var $uses = array( /*'FoyerEvenement',*/ 'Option', 'Foyer', 'Evenement' );
+        var $uses = array( 'Option', 'Foyer', 'Evenement' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
 
 

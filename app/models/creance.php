@@ -4,12 +4,10 @@
         var $name = 'Creance';
         var $useTable = 'creances';
 
-        var $hasAndBelongsToMany = array(
+        var $belongsTo = array(
             'Foyer' => array(
                 'classname' => 'Foyer',
-                'joinTable' => 'foyers_creances',
-                'foreignKey' => 'creance_id',
-                'associationForeignKey' => 'foyer_id'
+                'foreignKey' => 'foyer_id'
             )
         );
 
