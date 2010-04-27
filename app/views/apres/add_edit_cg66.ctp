@@ -152,8 +152,8 @@
                         <strong>Prénom : </strong><?php echo Set::classicExtract( $personne, 'Personne.prenom' );?>
                         <br />
                         <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
-                        <br />
-                        <strong>Situation familiale : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Foyer.sitfam' ), $sitfam );?>
+                        <!-- <br />
+                         <strong>Situation familiale : </strong><?php /*echo Set::enum( Set::classicExtract( $personne, 'Foyer.sitfam' ), $sitfam );*/?> -->
                     </td>
                     <td class="mediumSize noborder">
                         <strong>N° Service instructeur : </strong><?php echo Set::extract( 'Serviceinstructeur.lib_service', $typeservice );?>
@@ -172,8 +172,8 @@
                         ?>
                         <br />
                         <strong>N° identifiant : </strong><?php echo Set::classicExtract( $personne, 'Personne.idassedic' );?>
-                        <br />
-                        <strong>Nbre d'enfants : </strong><?php echo $nbEnfants;?>
+                        <!-- <br />
+                        <strong>Nbre d'enfants : </strong><?php /*echo $nbEnfants;*/?> -->
                     </td>
                 </tr>
                 <tr>
@@ -197,7 +197,6 @@
             </table>
         </fieldset>
 
-
          <fieldset>
             <legend>Activité du bénéficiaire</legend>
             <table class="wide noborder">
@@ -217,6 +216,12 @@
                     <td class="mediumsize noborder"><strong>Si autres, préciser  </strong></td>
                     <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.precisionsautrecontrat", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
                 </tr>
+               <!-- <tr>
+                    <td class="activiteSize noborder" colspan="2"><strong>Secteur d'activité  </strong></td>
+                </tr>
+                <tr>
+                    <td class="activiteSize noborder" colspan="2"><?php /*echo $xform->input( "{$this->modelClass}.secteuractivite", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'class' => 'activiteSize', 'options' => $sect_acti_emp, 'empty' => true ) );*/?></td>
+                </tr> -->
 
                 <tr>
                     <td class="mediumsize noborder"><strong>Quotité de travail hebdomadaire </strong></td>
