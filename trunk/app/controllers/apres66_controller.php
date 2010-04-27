@@ -410,34 +410,6 @@
                     ///FIXME: doit faire autrement
                     $this->data['Fraisdeplacement66'] = $this->data['Aideapre66']['Fraisdeplacement66'];
 
-
-//                     $pieces = $this->{$this->modelClass}->Aideapre66->Pieceaide66->find(
-//                         'all',
-//                         array(
-//                             'fields' => array( 'Pieceaide66.id' ),
-//                             'joins' => array(
-//                                 array(
-//                                     'table'      => 'aidesapres66_piecesaides66',
-//                                     'alias'      => 'Aideapre66Pieceaide66',
-//                                     'type'       => 'INNER',
-//                                     'foreignKey' => false,
-//                                     'conditions' => array(
-//                                         'Aideapre66Pieceaide66.pieceaide66_id = Pieceaide66.id',
-//                                         'Aideapre66Pieceaide66.aideapre66_id' => $apre['Aideapre66']['id']
-//                                     )
-//                                 )
-//                             ),
-//         //                     'order' => array( 'Pieceaide66.id' ),
-//                             'recursive' => -1
-//                         )
-//                     );
-// 
-// debug($pieces);
-//                     $this->data['Pieceaide66']['Pieceaide66'] = $this->data['Aideapre66']['Pieceaide66'];
-//                     $this->data['Pieceaide66']['Pieceaide66'] = Set::extract( $pieces, '/Pieceaide66/id' );
-
-
-// debug($this->data);
                 }
             }
             $this->{$this->modelClass}->commit();

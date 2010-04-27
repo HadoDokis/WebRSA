@@ -5,6 +5,17 @@
         public $virtualFields = array();
         public $_findQueryType = null;
 
+
+        /**
+        * INFO: avec PostgreSQL, on s'assure un accès exclusif à la table "jetons"
+        */
+
+        public function begin() {
+            $return = parent::begin();
+            $this->query( 'LOCK TABLE "jetons" IN ACCESS EXCLUSIVE MODE;' );
+            return $return;
+        }
+
         /**
         *
         */

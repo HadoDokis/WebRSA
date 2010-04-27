@@ -51,9 +51,38 @@
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.',
                     'allowEmpty' => true
+                ),
+                array(
+                    'rule' => 'plafondMontantAideapre',
+                    'message' => 'Plafond dépassé'
                 )
             )
         );
+
+        /**
+        * Vérification du montant demandé pour une aide APRE
+        * Ce montant doit être inférieur au plafond de cette aide
+        *
+        * FIXME: signature + retour
+        *
+        * @param string $montantaide Value to check
+        * @param integer $plafond Valeur à ne pas dépasser
+        *
+        * @return boolean Success
+        * @access public
+        */
+        public function plafondMontantAideapre( $check ) {
+            $return = true;
+            $typeaideapre66_id = Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' );
+            $typeaideapre66 = $this->Typeaideapre66->findById( $typeaideapre66_id, null, null, -1 );
+            $plafond = Set::classicExtract( $typeaideapre66, 'Typeaideapre66.plafond' );
+
+            foreach( $check as $field => $value ) {
+                $return = ( $value <= $plafond ) && $return;
+
+            }
+            return $return;
+        }
 
 
         /**
