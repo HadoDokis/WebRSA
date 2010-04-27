@@ -444,8 +444,8 @@
 
 
             $this->set( 'personne_id', $personne_id );
-//             $this->render( $this->action, null, '/apres/add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
-            $this->render( $this->action, null, '/apres/add_edit' );
+            $this->render( $this->action, null, '/apres/add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
+//             $this->render( $this->action, null, '/apres/add_edit' );
         }
 
     }
