@@ -29,69 +29,6 @@
 
         function _ged( $datas, $model ) {
             $this->Gedooo->generate( $datas, $model );
-            /*// Définition des variables & maccros
-            // FIXME: chemins
-            $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo';
-            $sMimeType  = "application/pdf";
-            $path_model = $phpGedooDir.'/../modelesodt/'.$model;
-
-            // Inclusion des fichiers nécessaires à GEDOOo
-            // FIXME
-            $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo';
-            require_once( $phpGedooDir.DS.'GDO_Utility.class' );
-            require_once( $phpGedooDir.DS.'GDO_FieldType.class' );
-            require_once( $phpGedooDir.DS.'GDO_ContentType.class' );
-            require_once( $phpGedooDir.DS.'GDO_IterationType.class' );
-            require_once( $phpGedooDir.DS.'GDO_PartType.class' );
-            require_once( $phpGedooDir.DS.'GDO_FusionType.class' );
-            require_once( $phpGedooDir.DS.'GDO_MatrixType.class' );
-            require_once( $phpGedooDir.DS.'GDO_MatrixRowType.class' );
-            require_once( $phpGedooDir.DS.'GDO_AxisTitleType.class' );
-
-            //initialisation des objets
-            $util      = new GDO_Utility();
-            $oTemplate = new GDO_ContentType(
-                '',
-                basename( $path_model ),
-                $util->getMimeType( $path_model ),
-                'binary',
-                $util->ReadFile( $path_model )
-            );
-            $oMainPart = new GDO_PartType();
-
-// $freu = array();
-
-            // Définition des variables pour les modèles de doc
-            foreach( $datas as $group => $details ) {
-                if( !empty( $details ) ) {
-                    foreach( $details as $key => $value ) {
-
-                        $type = 'text';
-                        if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
-                            $type = 'date';
-                        }
-
-                        $oMainPart->addElement(
-                            new GDO_FieldType(
-                                strtolower( $group ).'_'.strtolower( $key ),
-                                $value,
-                                $type
-                            )
-                       );
-                       $freu[strtolower( $group ).'_'.strtolower( $key )] = $value;
-                    }
-                }
-            }
-// debug( $freu );
-// die();
-
-            // fusion des documents
-            $oFusion = new GDO_FusionType($oTemplate, $sMimeType, $oMainPart);
-            $oFusion->process();
-            $oFusion->SendContentToClient();
-
-            // Possibilité de récupérer la fusion dans un fichier
-            // $oFusion->SendContentToFile($path.$nomFichier);*/
         }
 
         function notification_structure( $personne_id = null ) {
@@ -452,330 +389,57 @@
         }
 
         function orientstruct( $orientstruct_id = null ) {
-            // TODO: error404/error500 si on ne trouve pas les données
-            $qual = $this->Option->qual();
-            $typevoie = $this->Option->typevoie();
+			/*$this->Gedooo->sendCohortePdfToClient(
+				array(
+					'conditions' => array(
+						'Pdf.modele' => 'Orientstruct',
+						'Pdf.fk_value' => $orientstruct_id
+					)
+				)
+			);*/
+			$this->Dossier->begin();
 
+			$content = $this->Gedooo->getCohortePdfForClient(
+				array(
+					'conditions' => array(
+						'modele' => 'Orientstruct',
+						'Orientstruct.id' => $orientstruct_id
+					),
+					'joins' => array(
+						array(
+							'table'      => 'orientsstructs',
+							'alias'      => 'Orientstruct',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Pdf.fk_value = Orientstruct.id'
+							)
+						)
+					)
+				)
+			);
 
-            $orientstruct = $this->Orientstruct->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Orientstruct.id' => $orientstruct_id
-                    )
-                )
-            );
+			$success = ( $content !== false ) && $this->Orientstruct->updateAll(
+				array( 'Orientstruct.date_impression' => date( "'Y-m-d'" ) ),
+				array( 'Orientstruct.id' => $orientstruct_id, 'Orientstruct.date_impression IS NULL' )
+			);
 
-            $typeorient = $this->Structurereferente->Typeorient->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Typeorient.id' => $orientstruct['Orientstruct']['typeorient_id'] // FIXME structurereferente_id
-                    )
-                )
-            );
-//             debug($typeorient);
-//             die();
-            // FIXME: seulement pour le cg66 ?
-            $modele = $typeorient['Typeorient']['modele_notif'];
-// debug($modele);
-// die();
-            $this->Adressefoyer->bindModel(
-                array(
-                    'belongsTo' => array(
-                        'Adresse' => array(
-                            'className'     => 'Adresse',
-                            'foreignKey'    => 'adresse_id'
-                        )
-                    )
-                )
-            );
-
-            $adresse = $this->Adressefoyer->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Adressefoyer.foyer_id' => $orientstruct['Personne']['foyer_id'],
-                        'Adressefoyer.rgadr' => '01',
-                    )
-                )
-            );
-            $orientstruct['Adresse'] = $adresse['Adresse'];
-            // Récupération de l'utilisateur
-            $user = $this->User->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'User.id' => $this->Session->read( 'Auth.User.id' )
-                    )
-                )
-            );
-            $orientstruct['User'] = $user['User'];
-
-			// Recherche des informations du dossier
-            $foyer = $this->Dossier->Foyer->findById( $orientstruct['Personne']['foyer_id'], null, null, -1 );
-            $dossier = $this->Dossier->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dossier.id' => $foyer['Foyer']['dossier_rsa_id']
-                    ),
-					'recursive' => -1
-                )
-            );
-
-            $orientstruct['Dossier'] = $dossier['Dossier'];
-
-            //Ajout pour le numéro de poste du référent de la structure
-            $referent = $this->Referent->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Referent.structurereferente_id' => $orientstruct['Structurereferente']['id']
-                    ),
-                    'recursive' => -1
-                )
-            );
-            $orientstruct['Referent'] = $referent['Referent'];
-// debug($orientstruct);
-// die();
-            // FIXME
-
-            $orientstruct['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $orientstruct['Personne']['dtnai'] ) );
-            $orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );
-            $orientstruct['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Adresse.typevoie' ) );
-            $orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
-
-
-            $personne_referent = $this->PersonneReferent->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'PersonneReferent.personne_id' => Set::classicExtract( $orientstruct, 'Personne.id' )
-                    )
-                )
-            );
-
-            if( !empty( $personne_referent ) ){
-                $orientstruct = Set::merge( $orientstruct, $personne_referent );
-            }
-// debug($orientstruct);
-// die();
-            $this->_ged( $orientstruct, 'Orientation/'.$modele.'.odt' );
+			if( $content !== false ) { // date_impression
+				$this->Dossier->commit();
+				$this->Gedooo->sendPdfContentToClient( $content, sprintf( "orientations-%s.pdf", date( "Ymd-H\hi" ) ) );
+				die();
+			}
+			else {
+				$this->Dossier->rollback();
+				// redirect referer
+				debug( $this->referer );
+			}
         }
 
-        function _get( $personne_id ) {
-            $this->Personne->unbindModel( array( 'hasMany' => array( 'Contratinsertion', 'Rendezvous'/*, 'Orientstruct'*/ ) ) );
-            $personne = $this->Personne->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Personne.id' => $personne_id
-                    )
-                )
-            );
-
-            $contratinsertion = $this->Personne->Contratinsertion->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Contratinsertion.personne_id' => $personne_id
-                    ),
-                    'order' => array(
-                        'Contratinsertion.dd_ci DESC'
-                    ),
-                    'recursive' => -1
-                )
-            );
-            $personne = Set::merge( $personne, $contratinsertion );
-
-            // Récupération de l'adresse lié à la personne
-            $this->Adressefoyer->bindModel(
-                array(
-                    'belongsTo' => array(
-                        'Adresse' => array(
-                            'className'     => 'Adresse',
-                            'foreignKey'    => 'adresse_id'
-                        )
-                    )
-                )
-            );
-            $adresse = $this->Adressefoyer->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Adressefoyer.foyer_id' => $personne['Personne']['foyer_id'],
-                        'Adressefoyer.rgadr' => '01',
-                    )
-                )
-            );
-            $personne['Adresse'] = $adresse['Adresse'];
-
-            // Récupération de l'utilisateur
-            $user = $this->User->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'User.id' => $this->Session->read( 'Auth.User.id' )
-                    )
-                )
-            );
-            $personne['User'] = $user['User'];
-
-            // Récupération de la structure referente liée à la personne
-            $orientstruct = $this->Orientstruct->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        // 'Orientstruct.id' => $personne['Orientstruct']['id']
-                        'Orientstruct.personne_id' => $personne['Personne']['id'] // FIXME
-                    )
-                )
-            );
-            $personne['Orientstruct'] = $orientstruct['Orientstruct'];
-            $personne['Structurereferente'] = $orientstruct['Structurereferente'];
-
-            return $personne;
-
-        }
-
-
-
-        /**
-        *
-        *
-        *
-        */
-
-     /*   function notifications_cohortes() {
-//             $qual = $this->Option->qual();
-//             $this->set( 'qual', $qual );
-//             $typevoie = $this->Option->typevoie();
-//             $this->set( 'typevoie', $typevoie );
-
-            $AuthZonegeographique = $this->Session->read( 'Auth.Zonegeographique' );
-            if( !empty( $AuthZonegeographique ) ) {
-                $AuthZonegeographique = array_values( $AuthZonegeographique );
-            }
-            else {
-                $AuthZonegeographique = array();
-            }
-            $cohorte = $this->Cohorte->search( 'Orienté', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
-
-
-
-            // Définition des variables & maccros
-            // FIXME: chemins
-            $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo'; // FIXME: chemin
-            $sMimeType  = "application/pdf";
-
-
-            // Inclusion des fichiers nécessaires à GEDOOo
-            // FIXME
-            $phpGedooDir = dirname( __FILE__ ).'/../vendors/phpgedooo';
-            require_once( $phpGedooDir.DS.'GDO_Utility.class' );
-            require_once( $phpGedooDir.DS.'GDO_FieldType.class' );
-            require_once( $phpGedooDir.DS.'GDO_ContentType.class' );
-            require_once( $phpGedooDir.DS.'GDO_IterationType.class' );
-            require_once( $phpGedooDir.DS.'GDO_PartType.class' );
-            require_once( $phpGedooDir.DS.'GDO_FusionType.class' );
-            require_once( $phpGedooDir.DS.'GDO_MatrixType.class' );
-            require_once( $phpGedooDir.DS.'GDO_MatrixRowType.class' );
-            require_once( $phpGedooDir.DS.'GDO_AxisTitleType.class' );
-
-            //
-            // Organisation des données
-            //
-            $u = new GDO_Utility();
-            $oMainPart = new GDO_PartType();
-            $oIteration = new GDO_IterationType( "emploi" );
-
-            $qual = $this->Option->qual();
-            $typevoie = $this->Option->typevoie();
-
-            foreach( $cohorte as $personne_id ) {
-                $oDevPart = new GDO_PartType();
-
-                $datas = $this->_get( $personne_id );
-
-
-                $datas['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $datas, 'Personne.qual' ) );
-                $datas['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $datas, 'Adresse.typevoie' ) );
-
-
-                foreach( Set::flatten( $datas, '_' ) as $group => $details ) {
-//                     if( !empty( $details ) ) {
-//                         foreach( $details as $key => $value ) {
-                            $oDevPart->addElement(
-                                new GDO_FieldType(
-                                    strtolower( $group ).'_'.strtolower( $key ),
-                                    $details,
-                                    'text'
-                                )
-                            );
-//                         }
-//                     }
-                }
-
-                $oIteration->addPart($oDevPart);
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                // Récupération de la structure referente liée à la personne
-                $orientstruct = $this->Orientstruct->find( // FIXME: +++ -> dernière ?
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Orientstruct.personne_id' => $personne_id
-                        )
-                    )
-                );
-// debug($datas);
-// die();
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                if( empty( $personne['Orientstruct']['date_impression'] ) ){
-                    $orientstruct['Orientstruct']['date_impression'] = strftime( '%Y-%m-%d', mktime() );
-                    $this->Orientstruct->create();
-                    $this->Orientstruct->set( $orientstruct['Orientstruct'] );
-                    $this->Orientstruct->save( $orientstruct['Orientstruct'] );
-                }
-                $typeorient = $this->Structurereferente->Typeorient->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Typeorient.id' => $orientstruct['Orientstruct']['typeorient_id'] // FIXME structurereferente_id
-                        )
-                    )
-                );
-                $modele = $typeorient['Typeorient']['modele_notif'];
-                $orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
-//             debug($orientstruct);
-//             die();
-            }
-// debug();
-// die();
-            $sModele = $phpGedooDir.'/../modelesodt/Orientation/'.$modele.'.odt';
-            $oMainPart->addElement($oIteration);
-
-            $bTemplate = $u->ReadFile($sModele);
-            $oTemplate = new GDO_ContentType(
-                "",
-                "modele.ott",
-                $u->getMimeType($sModele),
-                "binary",
-                $bTemplate
-            );
-
-            $oFusion = new GDO_FusionType( $oTemplate, $sMimeType, $oMainPart );
-            $oFusion->process();
-            $oFusion->SendContentToClient();
-        } */
-
-
-/******************************************************************************/
+		/******************************************************************************/
         /* Notification de relances
-/******************************************************************************/
+		/******************************************************************************/
+
         /**
         * Notification de relances
         **/

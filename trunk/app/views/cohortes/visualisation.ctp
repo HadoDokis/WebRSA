@@ -164,14 +164,6 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-        <?php /*echo $pagination;*/ ?>
-        <?php
-            $typeorientation = Set::classicExtract( $this->data, 'Filtre.typeorient' );
-
-            if( empty( $typeorientation ) ):?>
-
-            <p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $html->image( 'icons/error.png' );?> <strong>Attention</strong>, si vous souhaitez imprimer en cohorte, veuillez saisir un type d'orientation dans le formulaire ci-dessus.</p>
-        <?php else:?>
 
         <?php echo $this->element( 'popup' );?>
 
@@ -223,6 +215,6 @@
                 );
             ?></li>-->
         </ul>
-        <?php endif;?>
+
     <?php endif;?>
 <?php endif;?>

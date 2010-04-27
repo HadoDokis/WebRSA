@@ -1,10 +1,7 @@
 <?php
-//     define( 'GEDOOO_WSDL', 'http://gedooo.rsa:8080/axis2/services/OfficeService?wsdl' );
+	define( 'GEDOOO_WSDL', 'http://gedooo.rsa:8080/axis2/services/OfficeService?wsdl' );
 //         define( 'GEDOOO_WSDL', 'http://gedooo.services.adullact.org:8080/axis2/services/OfficeService?wsdl' );
 
-
-    // new 20100420 by Francois
-    define( 'GEDOOO_WSDL', 'http://gedooo.services.adullact.org:8080/gedooo/OfficeService?wsdl' ); 
 
     Configure::write( 'Utilisateurs.multilogin', false );
     Configure::write( 'with_parentid', false ); // true = cg66
@@ -20,7 +17,7 @@
     Configure::write( 'nom_form_apre_cg', 'cg93' );
 
     // Limit pour le nombre de documents à éditer dans la cohorte par orientation
-    Configure::write( 'nb_limit_print', 300 );// INFO: Au delà de 50, risque de cassure,
+    Configure::write( 'nb_limit_print', 2000 );
 
 
 	/**
@@ -58,6 +55,12 @@
     Configure::write( 'Apre.forfaitaire.montantbase', 400 );
     Configure::write( 'Apre.forfaitaire.montantenfant12', 100 );
     Configure::write( 'Apre.forfaitaire.nbenfant12max', 4 );
+
+	/**
+	* FIXME: vérifier l'existance et les droits
+	* FIXME: accès concurrents ?
+	*/
+    Configure::write( 'Cohorte.dossierTmpPdfs', APP.'tmp/files/pdf' );
 
     /**
     *   Paramètres à renseigner pour les montants des

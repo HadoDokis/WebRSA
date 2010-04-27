@@ -161,6 +161,9 @@ case $1 in
     clear)
         __clearDir "$APP_DIR/tmp/cache/"
         __clearDir "$APP_DIR/tmp/logs/"
+		if [ -d "$APP_DIR/tmp/files/" ] ; then
+			rm -R "$APP_DIR/tmp/files/"
+		fi
     ;;
     clearcache)
         __clearDir "$APP_DIR/tmp/cache/"

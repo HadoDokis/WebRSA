@@ -9,6 +9,167 @@
 
     class GedoooComponent extends Component
     {
+        /**
+        * The initialize method is called before the controller's beforeFilter method.
+        */
+
+        function initialize( &$controller, $settings = array() ) {
+            $this->controller = &$controller;
+        }
+
+		/**
+		*
+		*/
+
+        function mkOrientstructPdf( $orientstruct_id = null ) {
+			$orientstructModelClass = ClassRegistry::init( 'Orientstruct' );
+			$pdfModelClass = ClassRegistry::init( 'Pdf' );
+
+			$orientstruct = $orientstructModelClass->getDataForPdf( $orientstruct_id, $this->controller->Session->read( 'Auth.User.id' ) );
+            $modele = $orientstruct['Typeorient']['modele_notif'];
+
+			$vieuxPdf = $pdfModelClass->find(
+				'first',
+				array(
+					'conditions' => array(
+						"{$pdfModelClass->alias}.modele" => 'Orientstruct',
+						"{$pdfModelClass->alias}.fk_value" => $orientstruct_id
+					)
+				)
+			);
+
+			$modeledoc = 'Orientation/'.$modele.'.odt';
+            $pdfContent = $this->getPdf( $orientstruct, $modeledoc );
+			if( !is_bool( $pdfContent ) ) {
+				$record = Set::merge(
+					$vieuxPdf,
+					array(
+						$pdfModelClass->alias => array(
+							'modele' => 'Orientstruct',
+							'modeledoc' => $modeledoc,
+							'fk_value' => $orientstruct_id,
+							'document' => $pdfContent
+						)
+					)
+				);
+
+				$pdfModelClass->create( $record );
+				return $pdfModelClass->save();
+			}
+			return $pdfContent;
+        }
+
+		/**
+		*
+		*/
+
+		function getCohortePdfForClient( $queryData ) {
+			/// FIXME: supprimer si besoin dans UsersController::login et UsersController::logout
+			/// FIXME: voir le formulaire CG66
+			$pdfModel = ClassRegistry::init( 'Pdf' );
+			$pdfTmpDir = rtrim( Configure::read( 'Cohorte.dossierTmpPdfs' ), '/' ).'/'.session_id().'/Orientstruct';
+			$old = umask(0);
+			@mkdir( $pdfTmpDir, 0777, true ); /// FIXME: vérification
+			umask($old);
+
+			$pdfs = $pdfModel->find( 'all', $queryData );
+
+			foreach( $pdfs as $pdf ) {
+				file_put_contents( "{$pdfTmpDir}/{$pdf['Pdf']['id']}.pdf", $pdf['Pdf']['document'] );
+			}
+
+			exec( "pdftk {$pdfTmpDir}/*.pdf cat output {$pdfTmpDir}/all.pdf" ); // FIXME: nom de fichier cohorte-orientation-20100423-12h00.pdf
+
+			$c = file_get_contents( "{$pdfTmpDir}/all.pdf" );
+
+			exec( "rm {$pdfTmpDir}/*.pdf" );
+			exec( "rmdir {$pdfTmpDir}" );
+
+			return $c; /// FIXME: false si problème
+		}
+
+		/**
+		*
+		*/
+
+		function sendPdfContentToClient( $content, $filename ) {
+			header( 'Content-type: application/pdf' );
+			header( 'Content-Length: '.strlen( $content ) );
+			header( "Content-Disposition: attachment; filename={$filename}" );
+
+			echo $content;
+			die();
+		}
+
+		/**
+		* FIXME: la faire utiliser par GedoooComponent::generate
+		*/
+
+        function getPdf( $datas, $model ) {
+            // Définition des variables & maccros
+            // FIXME: chemins
+            $phpGedooDir = dirname( __FILE__ ).'/../../vendors/phpgedooo';
+            $sMimeType  = "application/pdf";
+            $path_model = $phpGedooDir.'/../modelesodt/'.$model;
+
+            // Inclusion des fichiers nécessaires à GEDOOo
+            // FIXME
+            $phpGedooDir = dirname( __FILE__ ).'/../../vendors/phpgedooo';
+            require_once( $phpGedooDir.DS.'GDO_Utility.class' );
+            require_once( $phpGedooDir.DS.'GDO_FieldType.class' );
+            require_once( $phpGedooDir.DS.'GDO_ContentType.class' );
+            require_once( $phpGedooDir.DS.'GDO_IterationType.class' );
+            require_once( $phpGedooDir.DS.'GDO_PartType.class' );
+            require_once( $phpGedooDir.DS.'GDO_FusionType.class' );
+            require_once( $phpGedooDir.DS.'GDO_MatrixType.class' );
+            require_once( $phpGedooDir.DS.'GDO_MatrixRowType.class' );
+            require_once( $phpGedooDir.DS.'GDO_AxisTitleType.class' );
+
+            //initialisation des objets
+            $util      = new GDO_Utility();
+            $oTemplate = new GDO_ContentType(
+                '',
+                basename( $path_model ),
+                $util->getMimeType( $path_model ),
+                'binary',
+                $util->ReadFile( $path_model )
+            );
+            $oMainPart = new GDO_PartType();
+
+            $fieldList = array();
+            foreach( Set::flatten( $datas, '_' )  as $key => $value ) {
+                $type = 'text';
+                if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
+                    $type = 'date';
+                }
+
+                $oMainPart->addElement(
+                    new GDO_FieldType(
+                        strtolower( $key ),
+                        $value,
+                        $type
+                    )
+                );
+
+                $fieldList[] = strtolower( $key );
+            }
+
+            // fusion des documents
+            $oFusion = new GDO_FusionType($oTemplate, $sMimeType, $oMainPart);
+            $oFusion->process();
+
+			if( $oFusion->getCode() == 'OK' ) {
+				$content = $oFusion->getContent();
+				return $content->binary;
+			}
+
+			return ( $oFusion->getCode() == 'OK' );
+        }
+
+		/**
+		*
+		*/
+
         function generate( $datas, $model ) {
             // Définition des variables & maccros
             // FIXME: chemins

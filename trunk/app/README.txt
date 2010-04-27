@@ -2,6 +2,20 @@ Versions de CakePHP supportées:
     * version minimale requise: 1.2.4.8284
     * version recommandée: 1.2.5
 
+* Version 1.3-rc5
+    - Correctifs:
+        * Nouvelle gestion des éditions de courrier pour les orientations ( édition simple ou en cohorte ). Lors de l'ajout ou de la modification d'une orientation, le PDF est généré directement et stocké en base en base, ce qui permet de ne plus solliciter le serveur gedooo qu'une seule fois.
+		Pour cela, nous avons créé une nouvelle table "pdfs" présente dans le patch app/config/sql/patches/1.x/patch-version-1.3rc5.sql.
+		ATTENTION:
+			1°) dans la partie Cohortes -> Orientation -> Demandes orientées, n'apparaîtront que les demandes qui possèdent leur PDF en base.
+			2°) Lors du parcours d'un dossier d'allocataire, dans le module Orientation, dans le tableau des orientations d'une personne, le lien permettant d'imprimer une notification d'orientation sera grisé tant que le PDF pour cette orientation ne sera pas stocké en base.
+			3°) Lorsqu'on réalise une nouvelle orientation ou que l'on modifie une orientation existante, PDF sera enregistré pour cette orientation.
+			4°) Pour sauvegarder les PDFs des orientations déjà présentes en base, il existe un script cake.
+			Ce script accepte 3 arguments: -help, -limit et -order. -help vous permettra d'avoir l'aide la plus à jour concernant ce script, ainsi que la valeur par défaut pour les arguments -limit et -order.
+			Par exemple, pour créer les PDFs des 100 dernières orientations enregistrées qui ne possèdent pas encore de PDf en base: cake/console/cake cohjortepdfs -limit 100 -order desc
+        * Réparation des données présentes dans l'état liquidatif: les valeurs du fichier Hopeyra et du fichier Pdf renvoient le même résultat (la même somme ).
+        * Modification des relations des tables "evenements" et "creances" qui sont passées de m-n à 0-n.
+
 * version 1.3-rc1
 	1°) Ajout d'un script bash app/majmodeles.sh qui permet de passer tous les modèles pour les éditions de .odt.default en .odt si le modèle .odt n'existe pas ou s'il est plus ancien que le fichier .odt.default
 	2°) Corrections du script d'importation des données Pôle Emploi
@@ -70,4 +84,3 @@ Versions de CakePHP supportées:
 
     - Pour l'intégration des informations Pôle emploi, l'ancien script integrationcsvpe.sh n'existe plus. Il faut à présent utiliser le script cake "importcsvinfope.php":
         cake/console/cake importcsvpe -type inscription ( ou radiation ou cessation ) mon_fichier.csv
-
