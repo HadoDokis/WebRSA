@@ -11,7 +11,7 @@
         */
 
         public function begin() {
-            $return = parent::begin();
+            $return = $this->getDataSource()->begin($this);
             $this->query( 'LOCK TABLE "jetons" IN ACCESS EXCLUSIVE MODE;' );
             return $return;
         }
