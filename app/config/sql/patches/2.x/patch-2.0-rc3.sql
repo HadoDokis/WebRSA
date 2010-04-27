@@ -11,6 +11,7 @@ SET default_with_oids = false;
 BEGIN;
 
 ALTER TABLE typesaidesapres66 ADD COLUMN objetaide TEXT;
+ALTER TABLE apres ADD COLUMN dureecontrat   VARCHAR(50);
 
 -- --------------------------------------------------------------------------------
 

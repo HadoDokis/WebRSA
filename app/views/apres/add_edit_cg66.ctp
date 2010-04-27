@@ -205,7 +205,7 @@
                     <td class="mediumsize noborder"><?php echo $xform->enum( "{$this->modelClass}.activitebeneficiaire", array( 'legend' => required( __d( 'apre', 'Apre.activitebeneficiaire', true ) ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['activitebeneficiaire'] ) );?></td>
                 </tr>
                 <tr>
-                    <td class="mediumsize noborder"><strong>Date de l'emploi prévu </strong></td>
+                    <td class="mediumsize noborder"><strong>Date prévue de l'entrée en emploi,<br /> en formation ou du rendez-vous</strong></td>
                     <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.dateentreeemploi", array( 'domain' => 'apre', 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?></td>
                 </tr>
                 <tr>
@@ -215,6 +215,10 @@
                 <tr>
                     <td class="mediumsize noborder"><strong>Si autres, préciser  </strong></td>
                     <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.precisionsautrecontrat", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
+                </tr>
+                <tr>
+                    <td class="mediumsize noborder"><strong>Durée ( semaine, mois ) si CDD, CTT, ...</strong></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.dureecontrat", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?></td>
                 </tr>
                <!-- <tr>
                     <td class="activiteSize noborder" colspan="2"><strong>Secteur d'activité  </strong></td>
