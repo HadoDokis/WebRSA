@@ -12,14 +12,14 @@
                 'foreignKey'            => 'pieceaide66_id',
                 'associationForeignKey' => 'typeaideapre66_id',
                 'with'                  => 'Typeaideapre66Pieceaide66'
-            )/*,
+            ),
             'Aideapre66' => array(
                 'classname'             => 'Aideapre66',
                 'joinTable'             => 'aidesapres66_piecesaides66',
                 'foreignKey'            => 'pieceaide66_id',
                 'associationForeignKey' => 'aideapre66_id',
                 'with'                  => 'Aideapre66Pieceaide66'
-            )*/
+            )
         );
 
         public $validate = array(

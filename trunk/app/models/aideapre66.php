@@ -13,6 +13,7 @@
         var $actsAs = array(
 			'Autovalidate',
 			'Formattable' => array(
+                'amount' => array( 'montantaide' ),
 				'suffix' => array( 'typeaideapre66_id' ),
 			),
             'Enumerable' => array(
@@ -25,14 +26,35 @@
             )
 		);
 
+        public $hasAndBelongsToMany = array(
+            'Pieceaide66' => array(
+                'classname'             => 'Pieceaide66',
+                'joinTable'             => 'aidesapres66_piecesaides66',
+                'foreignKey'            => 'aideapre66_id',
+                'associationForeignKey' => 'pieceaide66_id',
+                'with'                  => 'Aideapre66Pieceaide66'
+            )
+        );
 
         var $validate = array(
-			'themeapre66_id' => array(
-				array(
-					'rule' => 'notEmpty'
-				)
-			)
+            'themeapre66_id' => array(
+                array(
+                    'rule' => 'notEmpty'
+                )
+            ),
+            'montantaide' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.',
+                    'allowEmpty' => true
+                )
+            )
         );
+
 
         /**
         *

@@ -1,6 +1,10 @@
 <?php
-    define( 'GEDOOO_WSDL', 'http://gedooo.rsa:8080/axis2/services/OfficeService?wsdl' );
+//     define( 'GEDOOO_WSDL', 'http://gedooo.rsa:8080/axis2/services/OfficeService?wsdl' );
 //         define( 'GEDOOO_WSDL', 'http://gedooo.services.adullact.org:8080/axis2/services/OfficeService?wsdl' );
+
+
+    // new 20100420 by Francois
+    define( 'GEDOOO_WSDL', 'http://gedooo.services.adullact.org:8080/gedooo/OfficeService?wsdl' ); 
 
     Configure::write( 'Utilisateurs.multilogin', false );
     Configure::write( 'with_parentid', false ); // true = cg66
@@ -54,4 +58,15 @@
     Configure::write( 'Apre.forfaitaire.montantbase', 400 );
     Configure::write( 'Apre.forfaitaire.montantenfant12', 100 );
     Configure::write( 'Apre.forfaitaire.nbenfant12max', 4 );
+
+    /**
+    *   Paramètres à renseigner pour les montants des
+    *   forfaits de déplacements des APREs pour le CG66
+    *   @default:   0.20€ pour les forfaits au Km
+    *               23€ pour les frais d'hebergement
+    *               3.81€ pour les frais de repas
+    */
+    Configure::write( 'Fraisdeplacement66.forfaitvehicule', 0.20 );
+    Configure::write( 'Fraisdeplacement66.forfaithebergt', 23 );
+    Configure::write( 'Fraisdeplacement66.forfaitrepas', 3.81 );
 ?>
