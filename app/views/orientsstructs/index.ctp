@@ -59,7 +59,7 @@
                             $html->printLink(
                                 'Imprimer la notification',
                                 array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
-                                $permissions->check( 'gedooos', 'orientstruct' )
+                                $permissions->check( 'gedooos', 'orientstruct' ) && $orientstruct['Orientstruct']['imprime']
                             ),
                             $html->reorientLink( 'Réorientation', array( 'controller' => 'demandesreorient', 'action' => 'add', $orientstruct['Orientstruct']['id'] ), $isOrient )
                         ),

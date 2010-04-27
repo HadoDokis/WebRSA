@@ -247,13 +247,14 @@
                         )
                     )
                 );
-// debug( $vieuxJeton );
+
                 if( !empty( $vieuxJeton ) ) {
                     $jeton['Jeton']['id'] = $vieuxJeton['Jeton']['id'];
                     $jeton['Jeton']['created'] = $vieuxJeton['Jeton']['created'];
                 }
-
-                return ( $this->Jeton->save( $jeton ) !== false );
+// debug( $jeton );
+				$this->Jeton->create( $jeton );
+                return ( $this->Jeton->save() !== false );
             }
             else {
                 return false;

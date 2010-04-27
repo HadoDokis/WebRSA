@@ -23,7 +23,7 @@
 			$dsp = $this->Dsp->find(
 				'first',
 				array(
-					'conditions' => array( 'Dsp.personne_id' => 174537/*$element['Personne']['id']*/ ),
+					'conditions' => array( 'Dsp.personne_id' => $element['Personne']['id'] ),
 					'recursive' => 1
 				)
 			);
@@ -157,6 +157,11 @@
                 'calculsdroitsrsa.toppersdrodevorsa = \'1\'',
                 'orientsstructs.statut_orient = \''.Sanitize::clean( $statutOrientation ).'\''
             );
+
+			// INFO: nouvelle manière de générer les PDFs
+			if( $statutOrientation == 'Orienté' ) {
+				$conditions[] = 'orientsstructs.id IN ( SELECT pdfs.fk_value FROM pdfs WHERE modele = \'Orientstruct\' )';
+			}
 
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {

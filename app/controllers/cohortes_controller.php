@@ -114,8 +114,17 @@
                                 $this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
                             }
                             $saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) );
+
+							// Création des PDF pour les orientations effectives
                             if( $saved ) {
-                                // FIXME ?
+                                foreach( $this->data['Orientstruct'] as $element ) {
+									if( $element['statut_orient'] == 'Orienté' ) {
+										$saved = $this->Gedooo->mkOrientstructPdf( $element['id'] ) && $saved;
+									}
+								}
+							}
+
+                            if( $saved ) {
                                 foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
                                     $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
                                 }
@@ -140,17 +149,25 @@
                     $this->set( 'count', $count );
                     $this->set( 'pages', ceil( $count / $_limit ) );
 
-                    foreach( $cohorte as $personne_id ) {
-                        $this->Jetons->get( array( 'Dossier.id' => $this->Dossier->Foyer->Personne->dossierId( $personne_id ) ) );
+                    foreach( $cohorte as $orientstruct_id ) {
+                        //$this->Jetons->get( array( 'Dossier.id' => $this->Orientstruct->dossierId( $orientstruct_id ) ) );
+						$dossier_id = $this->Orientstruct->dossierId( $orientstruct_id );
+
+						$this->Jetons->get( $dossier_id ); // TODO: vérifier ?
                     }
 
 					if( !empty( $cohorte ) ) {
-						$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dsp', 'Orientstruct' ), 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
-						$cohorte = $this->Dossier->Foyer->Personne->find(
+						$this->Dossier->Foyer->Personne->bindModel(
+							array(
+								'hasOne' => array( 'Dsp', 'Orientstruct' ),
+								'belongsTo' => array( 'Foyer' )
+							)
+						);
+						$cohorte = $this->Orientstruct->find(
 							'all',
 							array(
 								'conditions' => array(
-									'Personne.id' => $cohorte
+									'Orientstruct.id' => $cohorte
 								),
 								'recursive' => 2,
 								'limit'     => $_limit
@@ -160,7 +177,13 @@
 
                     // --------------------------------------------------------
 
+					/// FIXME: beaucoup trop de requètes
                     foreach( $cohorte as $key => $element ) {
+						$cohorte[$key]['Foyer'] = $element['Foyer'] = $element['Personne']['Foyer'];
+						unset( $element['Personne']['Foyer'], $cohorte[$key]['Personne']['Foyer'] );
+
+						// ----------------------------------------------------
+
                         // Dossier
                         $dossier = $this->Dossier->find(
                             'first',
@@ -256,7 +279,17 @@
                     }
                     $this->set( 'cohorte', $cohorte );
                 }
-                $this->Dossier->commit(); // Pour les jetons + FIXME: bloquer maintenant les ids dont on s'occupe
+
+				if( ( $statutOrientation == 'En attente' ) || ( $statutOrientation == 'Non orienté' ) ) {
+					if( !empty( $cohorte ) && is_array( $cohorte ) ) {
+						foreach( array_unique( Set::extract( $cohorte, '{n}.Dossier.id' ) ) as $dossier_id ) {
+							//$this->Jetons->get( array( 'Dossier.id' => $dossier_id ) );
+							$this->Jetons->get( $dossier_id );
+						}
+					}
+				}
+
+                $this->Dossier->commit();
             }
 
             //-----------------------------------------------------------------
@@ -267,15 +300,6 @@
 			else {
 				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
 			}
-
-            if( ( $statutOrientation == 'En attente' ) || ( $statutOrientation == 'Non orienté' ) ) {
-                // FIXME ?
-                if( !empty( $cohorte ) && is_array( $cohorte ) ) {
-                    foreach( array_unique( Set::extract( $cohorte, '{n}.Dossier.id' ) ) as $dossier_id ) {
-                        $this->Jetons->get( array( 'Dossier.id' => $dossier_id ) );
-                    }
-                }
-            }
 
             switch( $statutOrientation ) {
                 case 'En attente':
@@ -447,37 +471,10 @@
         /**
         *
         */
-/*
-        function progression() { // FIXME: pas de droits
-            include ( 'vendors/progressbar.php' );
-            Initialize( 200, 100, 200, 30, '#000000', '#FFCC00', '#006699' );
-            ProgressBar( 100, 'Chargement des documents à éditer' );
-
-            $indix = 10;
-            for( $cpt = 1 ; $cpt <= $indix ; $cpt++ ) {
-                $cpt++;
-                $indice = $cpt*(100/$indix);
-                if( $indice != null ){
-                    ProgressBar( $indice, 'Edition de '.$indix.' fichiers' );
-                }
-            }
-
-            Configure::write( 'debug', 0 );
-            $this->render( 'visualisation', 'ajax' );
-        }*/
-
-        /**
-        *
-        */
 
         function cohortegedooo( $personne_id = null ) {
+			$this->Dossier->begin();
 
-            // Initialisation de la progressBar
-//             include ('vendors/progressbar.php');
-//             Initialize( 200, 100, 200, 30, '#000000', '#FFCC00', '#006699' );
-//             ProgressBar( 100, 'Chargement des documents à éditer' );
-
-// $this->progression();
             $AuthZonegeographique = $this->Session->read( 'Auth.Zonegeographique' );
             if( !empty( $AuthZonegeographique ) ) {
                 $AuthZonegeographique = array_values( $AuthZonegeographique );
@@ -489,97 +486,49 @@
             $limit = Configure::read( 'nb_limit_print' );
 
             $cohorte = $this->Cohorte->search( 'Orienté', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids(), $limit );
+
             $qual = $this->Option->qual();
             $typevoie = $this->Option->typevoie();
 
             $cohorteDatas = array();
 
-//             $indix = count( $cohorte );
-//             $cpt = 0;
+			/// FIXME: supprimer si besoin dans UsersController::login et UsersController::logout
 
-            $orientstructs_update = array();
-
-            foreach( $cohorte as $personne_id ) {
-                //Barre de chargement
-//                 $cpt++;
-//                 $indice = $cpt*(100/$indix);
-//                 if( $indice != null ){
-//                     ProgressBar( $indice, 'Edition de '.$indix.' fichiers' );
-//                 }
-
-
-                $datas = $this->_get( $personne_id );
-                $datas['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $datas, 'Personne.qual' ) );
-                $datas['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $datas, 'Adresse.typevoie' ) );
-
-                if( empty( $datas['Orientstruct']['date_impression'] ) ) {
-                    $orientstructs_update[] = array(
-                        'Orientstruct' => array(
-                            'id' => $datas['Orientstruct']['id'],
-                            'date_impression' => strftime( '%Y-%m-%d', mktime() )
-                        )
-                    );
-                }
-
-                /*$typeorient = $this->Structurereferente->Typeorient->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Typeorient.id' => $datas['Orientstruct']['typeorient_id'] // FIXME structurereferente_id
-                        )
-                    )
-                );
-                $modele = $typeorient['Typeorient']['modele_notif_cohorte'];
-
-                ///FIXME: pas assez générique, trouver une meilleure solution
-                if( $modele == 'proposition_orientation_vers_pole_emploi_cohorte' ) {
-                    $section = 'emploi';
-                }
-                else if( $modele == 'proposition_orientation_vers_SS_ou_PDV_cohorte' ){
-                    $section = 'pdv';
-                }*/
-
-                $datas['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, set::classicExtract( $datas, 'Structurereferente.type_voie' ) );
-
-                unset($datas['Apre']);
-                unset($datas['Creancealimentaire']);
-
-                $cohorteDatas[] = $datas;
-            }
-
-// debug($cohorteDatas);
-// die();
-			// Sélection du modèle de document à partir du champ modele_notif_cohorte de Typeorient
-			$typeorient = $this->Structurereferente->Typeorient->find(
-				'first',
+			$content = $this->Gedooo->getCohortePdfForClient(
 				array(
 					'conditions' => array(
-						'Typeorient.id' => Set::classicExtract( $this->params['named'], 'Filtre__typeorient' ) // FIXME structurereferente_id
+						'modele' => 'Orientstruct',
+						'Orientstruct.id' => $cohorte
+					),
+					'joins' => array(
+						array(
+							'table'      => 'orientsstructs',
+							'alias'      => 'Orientstruct',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Pdf.fk_value = Orientstruct.id'
+							)
+						)
 					)
 				)
 			);
-			$modele = $typeorient['Typeorient']['modele_notif_cohorte'];
 
-			///FIXME: pas assez générique, trouver une meilleure solution
-			if( $modele == 'proposition_orientation_vers_pole_emploi_cohorte' ) {
-				$section = 'emploi';
-			}
-			else if( $modele == 'proposition_orientation_vers_SS_ou_PDV_cohorte' ){
-				$section = 'pdv';
+			$success = ( $content !== false ) && $this->Orientstruct->updateAll(
+				array( 'Orientstruct.date_impression' => date( "'Y-m-d'" ) ),
+				array( 'Orientstruct.id' => $cohorte, 'Orientstruct.date_impression IS NULL' )
+			);
+
+			if( $content !== false ) { // date_impression
+				$this->Dossier->commit();
+				$this->Gedooo->sendPdfContentToClient( $content, sprintf( "cohorte-orientations-%s.pdf", date( "Ymd-H\hi" ) ) );
+				die();
 			}
 			else {
-				debug( "Le modèle de document pour le type d'orientation {$typeorient['Typeorient']['lib_type_orient']} n'est pas paramétré dans la base de données." );
+				$this->Dossier->rollback();
+				// redirect referer
+				debug( $this->referer );
 			}
-// debug( $cohorteDatas );
-            ///Si gedooo nous renvoie OK, on modifie la date d'impression dans la table orientsstructs
-            if( $this->Gedooo->generateCohorte( $section, $cohorteDatas, 'Orientation/'.$modele.'.odt', null ) ) {
-                foreach( array( 'date_propo', 'date_valid' ) as $key ) {
-                    unset( $this->Orientstruct->validate[$key] );
-                }
-                $this->Orientstruct->saveAll( $orientstructs_update );
-            }
         }
-
-
     }
 ?>

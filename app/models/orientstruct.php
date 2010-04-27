@@ -333,5 +333,118 @@
                 return null;
             }
         }
+
+        //*********************************************************************
+
+		/**
+		* Récupère les données pour le PDf
+		*/
+
+		function getDataForPdf( $id, $user_id ) {
+            // TODO: error404/error500 si on ne trouve pas les données
+			$optionModel = ClassRegistry::init( 'Option' );
+            $qual = $optionModel->qual();
+            $typevoie = $optionModel->typevoie();
+
+
+            $orientstruct = $this->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.id' => $id
+                    )
+                )
+            );
+
+            $typeorient = $this->Structurereferente->Typeorient->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Typeorient.id' => $orientstruct['Orientstruct']['typeorient_id'] // FIXME structurereferente_id
+                    )
+                )
+            );
+
+            $this->Personne->Foyer->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+
+            $adresse = $this->Personne->Foyer->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => $orientstruct['Personne']['foyer_id'],
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $orientstruct['Adresse'] = $adresse['Adresse'];
+
+            // Récupération de l'utilisateur
+            $user = ClassRegistry::init( 'User' )->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'User.id' => $user_id
+                    )
+                )
+            );
+            $orientstruct['User'] = $user['User'];
+
+			// Recherche des informations du dossier
+            $foyer = $this->Personne->Foyer->findById( $orientstruct['Personne']['foyer_id'], null, null, -1 );
+            $dossier = $this->Personne->Foyer->Dossier->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossier.id' => $foyer['Foyer']['dossier_rsa_id']
+                    ),
+					'recursive' => -1
+                )
+            );
+
+            $orientstruct['Dossier'] = $dossier['Dossier'];
+
+            //Ajout pour le numéro de poste du référent de la structure
+            $referent = $this->Personne->Referent->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Referent.structurereferente_id' => $orientstruct['Structurereferente']['id']
+                    ),
+                    'recursive' => -1
+                )
+            );
+            $orientstruct['Referent'] = $referent['Referent'];
+
+            $orientstruct['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $orientstruct['Personne']['dtnai'] ) );
+            $orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );
+            $orientstruct['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Adresse.typevoie' ) );
+            $orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
+
+
+            $personne_referent = $this->Personne->Referent->PersonneReferent->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'PersonneReferent.personne_id' => Set::classicExtract( $orientstruct, 'Personne.id' )
+                    )
+                )
+            );
+
+            if( !empty( $personne_referent ) ){
+                $orientstruct = Set::merge( $orientstruct, $personne_referent );
+            }
+
+			return $orientstruct;
+		}
+
     }
 ?>

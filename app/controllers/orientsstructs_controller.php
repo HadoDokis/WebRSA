@@ -3,9 +3,9 @@
     {
 
         var $name = 'Orientsstructs';
-        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Demandereorient' );
-
+        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Demandereorient', 'Pdf' );
         var $helpers = array( 'Default' );
+        var $components = array( 'Gedooo' );
         /**
         *
         *
@@ -62,6 +62,19 @@
                     'recursive' => 0
                 )
             );
+
+			foreach( $orientstructs as $key => $orientstruct ) {
+				$orientstruct[$this->Orientstruct->alias]['imprime'] = $this->Pdf->find(
+					'count',
+					array(
+						'conditions' => array(
+							'Pdf.fk_value' => $orientstruct[$this->Orientstruct->alias]['id'],
+							'Pdf.modele = \'Orientstruct\''
+						)
+					)
+				);
+				$orientstructs[$key] = $orientstruct;
+			}
 
             $dossier_rsa_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_rsa_id' );
 
@@ -139,6 +152,7 @@
 
                     $saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data );
                     $saved = $this->Orientstruct->save( $this->data['Orientstruct'] ) && $saved;
+					$saved = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->getLastInsertId() ) && $saved;
 
                     if( $saved ) {
                         $this->Jetons->release( $dossier_id );
@@ -193,7 +207,10 @@
                 $valid = $this->Orientstruct->validates() && $valid;
 
                 if( $valid ) {
-                    if( $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data ) && $this->Orientstruct->save( $this->data ) ) {
+                    if( $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data )
+						&& $this->Orientstruct->save( $this->data )
+						&& $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->id )
+					) {
                         $this->Jetons->release( $dossier_id );
                         $this->Orientstruct->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
