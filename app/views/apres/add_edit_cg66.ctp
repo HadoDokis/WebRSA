@@ -48,7 +48,8 @@
                 'url' => Router::url(
                     array(
                         'action' => 'ajaxpiece',
-                        Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' )
+                        Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' ),
+                        'aideapre_id' => Set::classicExtract( $this->data, 'Aideapre66.id' )
                     ),
                     true
                 )
@@ -87,7 +88,7 @@
             )
         );
 
-        echo $ajax->observeField( 'Aideapre66Typeaideapre66Id', array( 'update' => 'Piece66', 'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ) ) );
+        echo $ajax->observeField( 'Aideapre66Typeaideapre66Id', array( 'update' => 'Piece66', 'url' => Router::url( array( 'action' => 'ajaxpiece', 'aideapre_id' => Set::classicExtract( $this->data, 'Aideapre66.id' ) ), true ) ) );
 
         echo $html->tag( 'div', null, array( 'id' => 'Piece66' ) );
         echo $html->tag( '/div' );
@@ -203,8 +204,7 @@
 				</tr>
 				<tr>
 					<th>Forfait "Km"</th>
-					<!--<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.forfaitvehicule', array( 'label' => false, 'div' => false, 'value' => '0.20' ) );?></td>-->
-					<td class="fraisdepct"><?php echo $locale->money( 0.20 );?></td>
+					<td class="fraisdepct"><?php echo $locale->money( Configure::read( 'Fraisdeplacement66.forfaitvehicule' ) );?></td>
 				</tr>
 				<tr>
 					<th>Total</th>
@@ -244,8 +244,7 @@
 				</tr>
 				<tr>
 					<th>Forfait "nuitées"</th>
-					<!-- <td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.forfaithebergt', array( 'label' => false, 'div' => false, 'value' => '23' ) );?></td> -->
-					<td class="fraisdepct"><?php echo $locale->money( 23 );?></td>
+					<td class="fraisdepct"><?php echo $locale->money( Configure::read( 'Fraisdeplacement66.forfaithebergt' ) );?></td>
 				</tr>
 				<tr>
 					<th>Total</th>
@@ -265,8 +264,7 @@
 				</tr>
 				<tr>
 					<th>Forfait "Repas"</th>
-					<!-- 0<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.forfaitrepas', array( 'label' => false, 'div' => false, 'value' => '3.81' ) );?></td> -->
-					<td class="fraisdepct"><?php echo $locale->money( 3.81 );?></td>
+					<td class="fraisdepct"><?php echo $locale->money( Configure::read( 'Fraisdeplacement66.forfaitrepas' ) );?></td>
 				</tr>
 				<tr>
 					<th>Total</th>

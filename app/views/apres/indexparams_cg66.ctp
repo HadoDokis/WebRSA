@@ -10,7 +10,7 @@
         </thead>
         <tbody>
             <?php
-// debug( $this );
+
                 echo $html->tableCells(
                     array(
                         h( 'Liste des aides de l\'APRE' ),

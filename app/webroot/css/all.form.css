@@ -39,6 +39,7 @@ dl.inform dt, dl.inform dd {
     background: transparent;
     padding: 0;
     margin: 0;
+    margin-bottom: 0.5em;
 }
 
 td div.text input, td div.password input, td div.select select {

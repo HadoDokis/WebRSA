@@ -149,7 +149,7 @@
         *   Ajax pour les coordonnées du référent APRE
         */
 
-        function ajaxpiece( $typeaideapre66_id = null ) { // FIXME
+        function ajaxpiece( $typeaideapre66_id = null, $aideapre66_id = null ) { // FIXME
             Configure::write( 'debug', 0 );
             if( !empty( $typeaideapre66_id ) ) {
                 $typeaideapre66_id = suffix( $typeaideapre66_id );
@@ -180,7 +180,36 @@
                 )
             );
 
-            $this->set( 'pieces', $pieces );
+            // Cases déjà cochées
+            $checked = array();
+            $aideapre_id = Set::classicExtract( $this->params, 'named.aideapre_id' );
+            if( !empty( $aideapre_id ) ) {
+                $checked = $this->{$this->modelClass}->Aideapre66->Pieceaide66->find(
+                    'all',
+                    array(
+                        'fields' => array( 'Pieceaide66.id' ),
+                        'joins' => array(
+                            array(
+                                'table'      => 'aidesapres66_piecesaides66',
+                                'alias'      => 'Aideapre66Pieceaide66',
+                                'type'       => 'INNER',
+                                'foreignKey' => false,
+                                'conditions' => array(
+                                    'Aideapre66Pieceaide66.pieceaide66_id = Pieceaide66.id',
+                                    'Aideapre66Pieceaide66.aideapre66_id' => $aideapre_id
+                                )
+                            )
+                        ),
+                        'recursive' => -1
+                    )
+                );
+
+                $this->data['Pieceaide66']['Pieceaide66'] = Set::extract( $checked, '/Pieceaide66/id' );
+            }
+
+            $typeaideapre = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findById( $typeaideapre66_id, null, null, -1 );
+
+            $this->set( compact( 'pieces', 'typeaideapre' ) );
             $this->render( $this->action, 'ajax', '/apres/ajaxpiece' );
         }
 
@@ -336,20 +365,17 @@
                 }
 
 
-
-
-
                 // Tentative d'enregistrement des pièces liées à une APRE selon ne aide donnée
-//                 if( !empty( $this->data['Pieceaide66'] ) ) {
-//                     $linkedData = array(
-//                         'Aideapre66' => array(
-//                             'id' => $this->{$this->modelClass}->Aideapre66->id
-//                         ),
-//                         'Pieceaide66' => $this->data['Pieceaide66']
-//                     );
-//                     $saved = $this->{$this->modelClass}->Aideapre66->save( $linkedData ) && $saved;
-//                 }
-
+                if( !empty( $this->data['Pieceaide66'] ) ) {
+                    $linkedData = array(
+                        'Aideapre66' => array(
+                            'id' => $this->{$this->modelClass}->Aideapre66->id
+                        ),
+                        'Pieceaide66' => $this->data['Pieceaide66']
+                    );
+                    $saved = $this->{$this->modelClass}->Aideapre66->save( $linkedData ) && $success;
+                }
+// debug($this->data);
 
 
 
@@ -383,6 +409,34 @@
 
                     ///FIXME: doit faire autrement
                     $this->data['Fraisdeplacement66'] = $this->data['Aideapre66']['Fraisdeplacement66'];
+
+
+//                     $pieces = $this->{$this->modelClass}->Aideapre66->Pieceaide66->find(
+//                         'all',
+//                         array(
+//                             'fields' => array( 'Pieceaide66.id' ),
+//                             'joins' => array(
+//                                 array(
+//                                     'table'      => 'aidesapres66_piecesaides66',
+//                                     'alias'      => 'Aideapre66Pieceaide66',
+//                                     'type'       => 'INNER',
+//                                     'foreignKey' => false,
+//                                     'conditions' => array(
+//                                         'Aideapre66Pieceaide66.pieceaide66_id = Pieceaide66.id',
+//                                         'Aideapre66Pieceaide66.aideapre66_id' => $apre['Aideapre66']['id']
+//                                     )
+//                                 )
+//                             ),
+//         //                     'order' => array( 'Pieceaide66.id' ),
+//                             'recursive' => -1
+//                         )
+//                     );
+// 
+// debug($pieces);
+//                     $this->data['Pieceaide66']['Pieceaide66'] = $this->data['Aideapre66']['Pieceaide66'];
+//                     $this->data['Pieceaide66']['Pieceaide66'] = Set::extract( $pieces, '/Pieceaide66/id' );
+
+
 // debug($this->data);
                 }
             }
