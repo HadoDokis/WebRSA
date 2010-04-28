@@ -292,11 +292,12 @@
             /*INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id )*/
             /*LEFT OUTER JOIN suivisinstruction ON ( suivisinstruction.dossier_rsa_id = dossiers_rsa.id )*/
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
-            $sql = 'SELECT DISTINCT personnes.id
+
+            $sql = 'SELECT orientsstructs.id
                     FROM personnes
                         INNER JOIN prestations ON ( prestations.personne_id = personnes.id AND prestations.natprest = \'RSA\' AND ( prestations.rolepers = \'DEM\' OR prestations.rolepers = \'CJT\' ) )
-                        INNER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
-                        '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dsps ON ( dsps.personne_id = personnes.id )' : '' ).'
+                         INNER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
+                         '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dsps ON ( dsps.personne_id = personnes.id )' : '' ).'
                         INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
                         INNER JOIN dossiers_rsa ON ( foyers.dossier_rsa_id = dossiers_rsa.id )
                         INNER JOIN adresses_foyers ON ( adresses_foyers.foyer_id = foyers.id AND adresses_foyers.rgadr = \'01\' )
@@ -308,6 +309,23 @@
                     LIMIT '.$limit;
 
             $cohorte = $this->Dossier->query( $sql );
+//             $this->Dossier =& ClassRegistry::init( 'Dossier' );
+//             $sql = 'SELECT DISTINCT personnes.id
+//                     FROM personnes
+//                         INNER JOIN prestations ON ( prestations.personne_id = personnes.id AND prestations.natprest = \'RSA\' AND ( prestations.rolepers = \'DEM\' OR prestations.rolepers = \'CJT\' ) )
+//                         INNER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
+//                         '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dsps ON ( dsps.personne_id = personnes.id )' : '' ).'
+//                         INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+//                         INNER JOIN dossiers_rsa ON ( foyers.dossier_rsa_id = dossiers_rsa.id )
+//                         INNER JOIN adresses_foyers ON ( adresses_foyers.foyer_id = foyers.id AND adresses_foyers.rgadr = \'01\' )
+//                         INNER JOIN adresses as Adresse ON ( adresses_foyers.adresse_id = Adresse.id)
+//                         INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
+//                         INNER JOIN detailsdroitsrsa ON ( detailsdroitsrsa.dossier_rsa_id = dossiers_rsa.id )
+//                         INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id AND ( situationsdossiersrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) ) )
+//                     WHERE '.implode( ' AND ', $conditions ).'
+//                     LIMIT '.$limit;
+// 
+//             $cohorte = $this->Dossier->query( $sql );
 
             return Set::extract( $cohorte, '{n}.0.id' );
         }
