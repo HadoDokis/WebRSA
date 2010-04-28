@@ -8,11 +8,22 @@
 
         /**
         * INFO: avec PostgreSQL, on s'assure un accès exclusif à la table "jetons"
+		* INFO: Valeble seulement pour PostgreSQL
         */
 
         public function begin() {
             $return = $this->getDataSource()->begin($this);
             $this->query( 'LOCK TABLE "jetons" IN ACCESS EXCLUSIVE MODE;' );
+            return $return;
+        }
+
+        public function commit() {
+            $return = $this->getDataSource()->commit($this);
+            return $return;
+        }
+
+        public function rollback() {
+            $return = $this->getDataSource()->rollback($this);
             return $return;
         }
 
