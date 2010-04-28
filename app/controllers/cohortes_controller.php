@@ -149,12 +149,13 @@
                     $this->set( 'count', $count );
                     $this->set( 'pages', ceil( $count / $_limit ) );
 
-                    foreach( $cohorte as $orientstruct_id ) {
-                        //$this->Jetons->get( array( 'Dossier.id' => $this->Orientstruct->dossierId( $orientstruct_id ) ) );
-						$dossier_id = $this->Orientstruct->dossierId( $orientstruct_id );
-
-						$this->Jetons->get( $dossier_id ); // TODO: vérifier ?
-                    }
+					if( ( $statutOrientation == 'En attente' ) || ( $statutOrientation == 'Non orienté' ) ) {
+						foreach( $cohorte as $orientstruct_id ) {
+							//$this->Jetons->get( array( 'Dossier.id' => $this->Orientstruct->dossierId( $orientstruct_id ) ) );
+							$dossier_id = $this->Orientstruct->dossierId( $orientstruct_id );
+							$this->Jetons->get( $dossier_id ); // TODO: vérifier ?
+						}
+					}
 
 					if( !empty( $cohorte ) ) {
 						$this->Dossier->Foyer->Personne->bindModel(
