@@ -37,8 +37,8 @@ msgstr "Modifier la fiche de candidature"
 msgid "ActioncandidatPersonne::gedooo"
 msgstr "Imprimer la fiche de candidature"
 
-msgid "ActioncandidatPersonne::index::empty"
-msgstr "Aucune fiche de candidature"
+msgid "ActionscandidatsPersonne::index::empty"
+msgstr "Aucune fiche de candidature présente pour cette personne"
 
 msgid "ActioncandidatPersonne.actioncandidat_id"
 msgstr "Action engagée"
