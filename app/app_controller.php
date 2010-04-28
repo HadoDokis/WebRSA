@@ -282,8 +282,7 @@
             $this->_loadZonesgeographiques();
 			$this->_checkWebrsaInc(
 				array(
-					'Cohorte.dossierTmpPdfs'/*,
-					'Cohorte.dossierTmpPdfs2',*/
+					'Cohorte.dossierTmpPdfs'
 				)
 			);
 			$this->_checkMissingBinaries(
