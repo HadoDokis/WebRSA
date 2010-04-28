@@ -203,7 +203,7 @@
         </fieldset>
 
         <fieldset>
-            <legend>Identité du bénéficiaire de la demande</legend>
+            <legend>Demandeur</legend>
             <table class="wide noborder">
                 <tr>
                     <td class="mediumSize noborder">
@@ -259,8 +259,32 @@
             </table>
         </fieldset>
 
+        <fieldset>
+            <legend>Référent ou prescripteur habilité</legend>
+            <table class="wide noborder">
+                <tr>
+                    <td class="noborder">
+                        <strong>Nom de l'organisme</strong>
+                        <?php echo $xform->input( "{$this->modelClass}.structurereferente_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $structs, 'empty' => true ) );?>
+                        <?php echo $ajax->observeField( $this->modelClass.'StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?> 
+                    </td>
+                    <td class="noborder">
+                        <strong>Nom du référent</strong>
+                        <?php echo $xform->input( "{$this->modelClass}.referent_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $referents, 'empty' => true ) );?>
+                        <?php echo $ajax->observeField( $this->modelClass.'ReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?> 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="wide noborder"><div id="StructurereferenteRef"></div></td>
+
+                    <td class="wide noborder"><div id="ReferentRef"></div></td>
+                </tr>
+            </table>
+        </fieldset>
+
+
          <fieldset>
-            <legend>Activité du bénéficiaire</legend>
+            <legend>Activité (Emploi, formation, Création d'entreprise)</legend>
             <table class="wide noborder">
                 <tr>
                     <td class="mediumsize noborder"><strong>Type d'activité </strong></td>
@@ -299,33 +323,6 @@
                 </tr>
             </table>
         </fieldset>
-
-        <fieldset>
-
-            <legend>Prescripteur</legend>
-
-            <table class="wide noborder">
-                <tr>
-                    <td class="noborder">
-                        <strong>Nom de l'organisme</strong>
-                        <?php echo $xform->input( "{$this->modelClass}.structurereferente_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $structs, 'empty' => true ) );?>
-                        <?php echo $ajax->observeField( $this->modelClass.'StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?> 
-                    </td>
-                    <td class="noborder">
-                        <strong>Nom du référent</strong>
-                        <?php echo $xform->input( "{$this->modelClass}.referent_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $referents, 'empty' => true ) );?>
-                        <?php echo $ajax->observeField( $this->modelClass.'ReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?> 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="wide noborder"><div id="StructurereferenteRef"></div></td>
-
-                    <td class="wide noborder"><div id="ReferentRef"></div></td>
-                </tr>
-            </table>
-        </fieldset>
-
-
 
 <fieldset>
     <legend><strong>Aide demandée</strong></legend>
@@ -392,7 +389,7 @@
     }
 ?>
 <fieldset>
-    <legend>Attributions antérieures de l'APRE</legend>
+    <legend>Attributions antérieures de l'APRE (le cas échéant)</legend>
     <?php if( !empty( $listesAidesSelonApre ) ):?>
         <table>
             <thead>
