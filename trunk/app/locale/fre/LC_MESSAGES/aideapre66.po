@@ -47,7 +47,7 @@ msgid "Aideapre66.autorisationvers"
 msgstr "Autorisation de versement"
 
 msgid "Aideapre66.motifrejet"
-msgstr "Motif du rejet ou de la modification du montant"
+msgstr "Motif du rejet ou de la modification du montant proposé"
 
 msgid "Aideapre66.montantpropose"
 msgstr "Montant proposé par le référent"
@@ -71,7 +71,7 @@ msgid "ENUM::DECISIONAPRE::ACC"
 msgstr "Accord"
 
 msgid "ENUM::DECISIONAPRE::REF"
-msgstr "Refus"
+msgstr "Rejet"
 
 msgid "ENUM::VIREMENT::RIB"
 msgstr "Virement bancaire RIB"
