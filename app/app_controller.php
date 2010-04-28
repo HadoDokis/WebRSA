@@ -224,6 +224,48 @@
 			}
 		}
 
+		/**
+		*
+		*/
+
+        function _checkWebrsaInc( $paths = array() ) {
+            if( !$this->_isAdminAction() ) {
+				$errorPaths = array();
+				if( !empty( $paths ) ) {
+					foreach( $paths as $path ) {
+						$value = Configure::read( $path );
+						if( empty( $value ) && !is_numeric( $value ) ) {
+							$errorPaths[] = $path;
+						}
+					}
+				}
+				if( !empty( $errorPaths ) ) {
+                    $this->cakeError( 'webrsaInc', array( 'paths' => $errorPaths ) );
+				}
+			}
+		}
+
+		/**
+		*
+		*/
+
+        function _checkMissingBinaries( $binaries = array() ) {
+            if( !$this->_isAdminAction() ) {
+				$missing = array();
+				if( !empty( $binaries ) ) {
+					foreach( $binaries as $binary ) {
+						$which = exec( "which {$binary}" );
+						if( empty( $which ) ) {
+							$missing[] = $binary;
+						}
+					}
+				}
+				if( !empty( $missing ) ) {
+                    $this->cakeError( 'missingBinaries', array( 'binaries' => $missing ) );
+				}
+			}
+		}
+
         /**
         *
         *
@@ -238,6 +280,17 @@
             $return = parent::beforeFilter();
             $this->_loadPermissions();
             $this->_loadZonesgeographiques();
+			$this->_checkWebrsaInc(
+				array(
+					'Cohorte.dossierTmpPdfs'/*,
+					'Cohorte.dossierTmpPdfs2',*/
+				)
+			);
+			$this->_checkMissingBinaries(
+				array(
+					'pdftk'
+				)
+			);
 
             if( ( substr( $_SERVER['REQUEST_URI'], strlen( $this->base ) ) != '/users/login' ) ) {
                 if( !$this->Session->check( 'Auth' ) ) {

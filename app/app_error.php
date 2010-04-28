@@ -35,6 +35,12 @@
             if ($method !== 'error') {
                 if( Configure::read( 'debug' ) == 0 ) {
                     switch( $method ) {
+						case 'missingBinaries';
+							$method = 'missingBinaries';
+                        break;
+						case 'webrsaInc';
+							$method = 'webrsaInc';
+                        break;
                         case 'dateHabilitationUser':
                             $method = 'dateHabilitationUser';
                         break;
@@ -85,6 +91,50 @@
 
             $this->dispatchMethod($method, $messages);
             $this->_stop();
+        }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function missingBinaries( $params ) {
+            extract( $params, EXTR_OVERWRITE );
+
+            if (!isset($url)) {
+                $url = $this->controller->here;
+            }
+            $url = Router::normalize($url);
+            header("HTTP/1.0 401 Unauthorized");
+            $this->controller->set(array(
+                'code' => '401',
+                'name' => __( 'Unauthorized', true ),
+                'message' => $url,
+                'base' => $this->controller->base,
+                'params' => $params
+            ));
+            $this->_outputMessage( 'missing_binaries' );
+        }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function webrsaInc( $params ) {
+            extract( $params, EXTR_OVERWRITE );
+
+            if (!isset($url)) {
+                $url = $this->controller->here;
+            }
+            $url = Router::normalize($url);
+            header("HTTP/1.0 401 Unauthorized");
+            $this->controller->set(array(
+                'code' => '401',
+                'name' => __( 'Unauthorized', true ),
+                'message' => $url,
+                'base' => $this->controller->base,
+                'params' => $params
+            ));
+            $this->_outputMessage( 'webrsa_inc' );
         }
 
         /** ********************************************************************
