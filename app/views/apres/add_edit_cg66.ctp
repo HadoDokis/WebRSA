@@ -30,6 +30,69 @@
             );
         });
     </script>
+
+
+<!--/************************************************************************/ -->
+    <?php echo $javascript->link( 'dependantselect.js' ); ?>
+    <script type="text/javascript">
+        document.observe("dom:loaded", function() {
+            dependantSelect(
+                'Aideapre66Typeaideapre66Id',
+                'Aideapre66Themeapre66Id'
+            );
+
+            observeDisableFieldsOnValue(
+                'Aideapre66VersementTIE',
+                [
+                    'Aideapre66AutorisationversO',
+                    'Aideapre66AutorisationversN'
+                ],
+                'TIE',
+                false
+            );
+
+            observeDisableFieldsOnValue(
+                'Aideapre66VersementDEM',
+                [
+                    'Aideapre66AutorisationversO',
+                    'Aideapre66AutorisationversN'
+                ],
+                'DEM',
+                true
+            );
+
+            observeDisableFieldsetOnRadioValue(
+                'Apre',
+                'data[Aideapre66][autorisationvers]',
+                $( 'Soussigne' ),
+                'O',
+                false,
+                true
+            );
+
+        });
+
+
+
+    <?php
+        echo $ajax->remoteFunction(
+            array(
+                'update' => 'Piece66',
+                'url' => Router::url(
+                    array(
+                        'action' => 'ajaxpiece',
+                        Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' ),
+                        'aideapre_id' => Set::classicExtract( $this->data, 'Aideapre66.id' )
+                    ),
+                    true
+                )
+            )
+        );
+    ?>
+    </script>
+
+<!--/************************************************************************/ -->
+
 <!--/************************************************************************/ -->
 
 <script type="text/javascript">
@@ -80,7 +143,6 @@
             'ACC',
             false
         );
-
 
         <?php
             echo $ajax->remoteFunction(
@@ -264,68 +326,6 @@
         </fieldset>
 
 
-<!--/************************************************************************/ -->
-    <?php echo $javascript->link( 'dependantselect.js' ); ?>
-    <script type="text/javascript">
-        document.observe("dom:loaded", function() {
-            dependantSelect(
-                'Aideapre66Typeaideapre66Id',
-                'Aideapre66Themeapre66Id'
-            );
-
-            observeDisableFieldsOnValue(
-                'Aideapre66VersementTIE',
-                [
-                    'Aideapre66AutorisationversO',
-                    'Aideapre66AutorisationversN'
-                ],
-                'TIE',
-                false
-            );
-
-            observeDisableFieldsOnValue(
-                'Aideapre66VersementDEM',
-                [
-                    'Aideapre66AutorisationversO',
-                    'Aideapre66AutorisationversN'
-                ],
-                'DEM',
-                true
-            );
-
-            observeDisableFieldsetOnRadioValue(
-                'Apre',
-                'data[Aideapre66][autorisationvers]',
-                $( 'Soussigne' ),
-                'O',
-                false,
-                true
-            );
-
-
-        });
-
-
-
-    <?php
-        echo $ajax->remoteFunction(
-            array(
-                'update' => 'Piece66',
-                'url' => Router::url(
-                    array(
-                        'action' => 'ajaxpiece',
-                        Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' ),
-                        'aideapre_id' => Set::classicExtract( $this->data, 'Aideapre66.id' )
-                    ),
-                    true
-                )
-            )
-        );
-    ?>
-    </script>
-
-<!--/************************************************************************/ -->
-
 
 <fieldset>
     <legend><strong>Aide demandée</strong></legend>
@@ -406,16 +406,6 @@
             <tbody>
                 <?php
                     foreach( $listesAidesSelonApre as $i => $liste ){
-                    ///FIXME: voir comment mieux faire pour enlever l'APRE du tableau
-                    /// des APREs antérieures lorqu'on est en train de l'éditer
-                        /*if( $liste['Aideapre66']['apre_id'] == $this->params['pass'][0] ){
-                            unset( $liste['Aideapre66']['id'] );
-                            unset( $liste['Aideapre66']['apre_id'] );
-                            unset( $liste['Aideapre66']['datedemande'] );
-                            unset( $liste['Aideapre66']['themeapre66_id'] );
-                            unset( $liste['Aideapre66']['typeaideapre66_id'] );
-                            unset( $liste['Aideapre66']['montantaide'] );
-                        }*/
 
                         echo $html->tableCells(
                             array(
@@ -466,7 +456,7 @@
 				</tr>
 				<tr>
 					<th>Nb total km</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtotalkm', array( 'label' => false, 'div' => false ) );?></td>
+					<td class="fraisdepct" ><?php echo $xform->input( 'Fraisdeplacement66.nbtotalkm', array( 'label' => false, 'div' => false ) );?></td>
 				</tr>
 				<tr>
 					<th>Forfait "Km"</th>
@@ -599,4 +589,47 @@
     </div>
     <?php echo $form->end();?>
 </div>
+
+<script type="text/javascript">
+    /**
+    * FIXME: vérifier les types
+    */
+
+    function calculTotal() {
+        // Frais de déplacement pour un véhicule individuel
+        var Nbkmvoiture = $F( 'Fraisdeplacement66Nbkmvoiture' );
+        var Nbtrajetvoiture = $F( 'Fraisdeplacement66Nbtrajetvoiture' );
+        $( 'Fraisdeplacement66Nbtotalkm' ).value = ( Nbkmvoiture * Nbtrajetvoiture );
+        $( 'Fraisdeplacement66Totalvehicule' ).value = ( Nbkmvoiture * Nbtrajetvoiture * 0.20 ); // FIXME: 0.20
+
+        // Frais de déplacement pour un transport public
+        var Nbtrajettranspub = $F( 'Fraisdeplacement66Nbtrajettranspub' );
+        var Prixbillettranspub = $F( 'Fraisdeplacement66Prixbillettranspub' );
+        $( 'Fraisdeplacement66Totaltranspub' ).value = ( Nbtrajettranspub * Prixbillettranspub );
+
+        // Frais de déplacement pour un hébergement
+        var Nbnuithebergt = $F( 'Fraisdeplacement66Nbnuithebergt' );
+        $( 'Fraisdeplacement66Totalhebergt' ).value = ( Nbnuithebergt * 23 );
+
+        // Frais de déplacement pour un repas
+        var Nbrepas = $F( 'Fraisdeplacement66Nbrepas' );
+        $( 'Fraisdeplacement66Totalrepas' ).value = ( Nbrepas * 3.81 );
+
+    }
+
+    // Frais de déplacement pour un véhicule individuel
+    $( 'Fraisdeplacement66Nbkmvoiture' ).observe( 'blur', function( event ) { calculTotal(  ); } );
+    $( 'Fraisdeplacement66Nbtrajetvoiture' ).observe( 'blur', function( event ) { calculTotal(); } );
+
+    // Frais de déplacement pour un transport public
+    $( 'Fraisdeplacement66Nbtrajettranspub' ).observe( 'blur', function( event ) { calculTotal(); } );
+    $( 'Fraisdeplacement66Prixbillettranspub' ).observe( 'blur', function( event ) { calculTotal(); } );
+
+    // Frais de déplacement pour un hébergement
+    $( 'Fraisdeplacement66Nbnuithebergt' ).observe( 'blur', function( event ) { calculTotal(); } );
+
+    // Frais de déplacement pour un repas
+    $( 'Fraisdeplacement66Nbrepas' ).observe( 'blur', function( event ) { calculTotal(); } );
+</script>
+
 <div class="clearer"><hr /></div>
