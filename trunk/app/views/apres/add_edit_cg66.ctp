@@ -592,6 +592,7 @@
 
 <script type="text/javascript">
     /**
+    *   Javascript gérant les frais de déplacements
     * FIXME: vérifier les types
     */
 
@@ -600,7 +601,7 @@
         var Nbkmvoiture = $F( 'Fraisdeplacement66Nbkmvoiture' );
         var Nbtrajetvoiture = $F( 'Fraisdeplacement66Nbtrajetvoiture' );
         $( 'Fraisdeplacement66Nbtotalkm' ).value = ( Nbkmvoiture * Nbtrajetvoiture );
-        $( 'Fraisdeplacement66Totalvehicule' ).value = ( Nbkmvoiture * Nbtrajetvoiture * 0.20 ); // FIXME: 0.20
+        $( 'Fraisdeplacement66Totalvehicule' ).value = ( Nbkmvoiture * Nbtrajetvoiture * Configure::read( 'Fraisdeplacement66.forfaitvehicule' ) );
 
         // Frais de déplacement pour un transport public
         var Nbtrajettranspub = $F( 'Fraisdeplacement66Nbtrajettranspub' );
@@ -609,12 +610,11 @@
 
         // Frais de déplacement pour un hébergement
         var Nbnuithebergt = $F( 'Fraisdeplacement66Nbnuithebergt' );
-        $( 'Fraisdeplacement66Totalhebergt' ).value = ( Nbnuithebergt * 23 );
+        $( 'Fraisdeplacement66Totalhebergt' ).value = ( Nbnuithebergt * Configure::read( 'Fraisdeplacement66.forfaithebergt' ) );
 
         // Frais de déplacement pour un repas
         var Nbrepas = $F( 'Fraisdeplacement66Nbrepas' );
-        $( 'Fraisdeplacement66Totalrepas' ).value = ( Nbrepas * 3.81 );
-
+        $( 'Fraisdeplacement66Totalrepas' ).value = ( Nbrepas * Configure::read( 'Fraisdeplacement66.forfaitrepas' ) );
     }
 
     // Frais de déplacement pour un véhicule individuel
