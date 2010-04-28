@@ -280,14 +280,14 @@
                     $this->set( 'cohorte', $cohorte );
                 }
 
-				if( ( $statutOrientation == 'En attente' ) || ( $statutOrientation == 'Non orienté' ) ) {
+				/*if( ( $statutOrientation == 'En attente' ) || ( $statutOrientation == 'Non orienté' ) ) {
 					if( !empty( $cohorte ) && is_array( $cohorte ) ) {
 						foreach( array_unique( Set::extract( $cohorte, '{n}.Dossier.id' ) ) as $dossier_id ) {
 							//$this->Jetons->get( array( 'Dossier.id' => $dossier_id ) );
 							$this->Jetons->get( $dossier_id );
 						}
 					}
-				}
+				}*/
 
                 $this->Dossier->commit();
             }
