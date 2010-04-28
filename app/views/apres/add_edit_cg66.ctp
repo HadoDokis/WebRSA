@@ -288,7 +288,7 @@
             <table class="wide noborder">
                 <tr>
                     <td class="mediumsize noborder"><strong>Type d'activité </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->enum( "{$this->modelClass}.activitebeneficiaire", array( 'legend' => required( __d( 'apre', 'Apre.activitebeneficiaire', true ) ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['activitebeneficiaire'] ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->enum( "{$this->modelClass}.activitebeneficiaire", array( 'legend' => required( __d( 'apre', 'Apre.activitebeneficiaire', true ) ), 'type' => 'radio', 'separator' => '<br />', 'options' => /*$options['activitebeneficiaire']*/array( 'E' => 'Emploi' , 'F' => 'Formation', 'C' => 'Création d\'Entreprise' ) ) );?></td> <!-- FIXME: trouver mieux car activite  = enum mais pour cg93 un champ de + est présent -->
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Date prévue de l'entrée en emploi,<br /> en formation ou du rendez-vous</strong></td>
