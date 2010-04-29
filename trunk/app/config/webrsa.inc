@@ -5,7 +5,7 @@
 
     Configure::write( 'Utilisateurs.multilogin', false );
     Configure::write( 'with_parentid', false ); // true = cg66
-    Configure::write( 'nom_form_ci_cg', 'cg93' );
+    Configure::write( 'nom_form_ci_cg', 'cg66' );
     Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
     Configure::write( 'Zonesegeographiques.CodesInsee', true );
     //Configure::write( 'Etatliquidatif.limit', 1000 ); // INFO: commenter pour ne pas avoir de limite
@@ -14,7 +14,7 @@
     * Champs spécifique selon le CG pour le formulaire de l'APRE
     * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
     */
-    Configure::write( 'nom_form_apre_cg', 'cg93' );
+    Configure::write( 'nom_form_apre_cg', 'cg66' );
 
     // Limit pour le nombre de documents à éditer dans la cohorte par orientation
     Configure::write( 'nb_limit_print', 2000 );
@@ -46,7 +46,7 @@
     * Paramètre à renseigner pour l'utilisation du bon MVC
     * @default: vide (pour le CG93), sinon '66' pour le CG66
     */
-    Configure::write( 'Apre.suffixe', '' );
+    Configure::write( 'Apre.suffixe', '66' );
 
     /**
     * Paramètres à renseigner pour les APRE's forfaitaires
@@ -72,4 +72,12 @@
     Configure::write( 'Fraisdeplacement66.forfaitvehicule', 0.20 );
     Configure::write( 'Fraisdeplacement66.forfaithebergt', 23 );
     Configure::write( 'Fraisdeplacement66.forfaitrepas', 3.81 );
+
+    /**
+    * Permet à l'administrateur d'ajouter une adresse pour l'utilisateur
+    * connecté à l'application.
+    * Besoin pour le CG66 lors de l'impression des courriers de rendez-vous
+    * @default false
+    */
+    Configure::write( 'User.adresse', true ); // true = cg66, false = cg93
 ?>

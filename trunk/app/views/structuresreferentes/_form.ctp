@@ -47,3 +47,12 @@
     <legend><?php echo required( 'Gère les APREs ?' );?></legend>
     <?php echo $xform->enum( 'Structurereferente.apre', array(  'legend' => false,/* 'div' => false,*/  'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $optionsradio['apre'] ) );?>
 </fieldset>
+
+<fieldset class="col2">
+    <legend><?php echo required( 'Gère les Orientations ?' );?></legend>
+    <?php echo $xform->enum( 'Structurereferente.orientation', array(  'legend' => false, /*'div' => false, */ 'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $optionsradio['orientation'] ) );?>
+</fieldset>
+<fieldset class="col2">
+    <legend><?php echo required( 'Gère les PDOs ?' );?></legend>
+    <?php echo $xform->enum( 'Structurereferente.pdo', array(  'legend' => false,/* 'div' => false,*/  'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $optionsradio['pdo'] ) );?>
+</fieldset>

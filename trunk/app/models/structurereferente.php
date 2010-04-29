@@ -11,6 +11,8 @@
 				'fields' => array(
 					'contratengagement' => array( 'type' => 'no', 'domain' => 'default' ),
 					'apre' => array( 'type' => 'no', 'domain' => 'default' ),
+                    'orientation' => array( 'type' => 'no', 'domain' => 'default' ),
+                    'pdo' => array( 'type' => 'no', 'domain' => 'default' )
 				)
             )
         );
