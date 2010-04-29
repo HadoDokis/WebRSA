@@ -19,6 +19,7 @@ ALTER TABLE users ADD COLUMN ville VARCHAR(50);
 
 ALTER TABLE structuresreferentes ADD COLUMN orientation type_no DEFAULT 'O';
 ALTER TABLE structuresreferentes ADD COLUMN pdo type_no DEFAULT 'O';
+
 -- *****************************************************************************
 --      La partie suivante est à utiliser uniquement en cas de doublons
 --      de pièces liées au niveau des aides de l'APRE pour le CG93
