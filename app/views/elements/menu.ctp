@@ -128,6 +128,10 @@
                                     </ul>
                                 </li>
                         <?php endif;?>
+
+
+            <?php if( Configure::read( 'nom_form_apre_cg' == 'cg93' ) ):?> <!-- Début de l'affichage en fonction du CG-->
+
                         <?php if( $permissions->check( 'comitesapres', 'index' ) || $permissions->check( 'cohortescomitesapres', 'index' ) ):?>
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                                 <?php echo $html->link( 'Comité d\'examen', '#');?>
@@ -169,9 +173,13 @@
                         <?php if( $permissions->check( 'budgetsapres', 'index' ) ):?>
                             <li><?php echo $html->link( 'Budgets APRE', array( 'controller' => 'budgetsapres', 'action' => 'index' ) );?></li>
                         <?php endif;?>
+
+                <?php endif;?> <!-- Fin de l'affichage en fonction du CG-->
+
                     </ul>
                 </li>
             <?php endif;?>
+
 
             <!-- Début du Nouveau menu pour les Equipes pluridisciplinaires -->
 
