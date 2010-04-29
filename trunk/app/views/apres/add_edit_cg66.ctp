@@ -593,40 +593,56 @@
     * FIXME: vérifier les types
     */
 
-    function calculTotal() {
+    function frenchToJsFloatValue( id ) {
+        return $F( id ).replace( ',', '.' );
+    }
+
+    function jsToFrenchFloatValue( jsValue ) {
+        return jsValue.toString().replace( '.', ',' );
+    }
+
+    function calculTotalVoiture() {
         // Frais de déplacement pour un véhicule individuel
-        var Nbkmvoiture = $F( 'Fraisdeplacement66Nbkmvoiture' );
-        var Nbtrajetvoiture = $F( 'Fraisdeplacement66Nbtrajetvoiture' );
-        $( 'Fraisdeplacement66Nbtotalkm' ).value = ( Nbkmvoiture * Nbtrajetvoiture );
-        $( 'Fraisdeplacement66Totalvehicule' ).value = ( Nbkmvoiture * Nbtrajetvoiture * Configure::read( 'Fraisdeplacement66.forfaitvehicule' ) );
+        var Nbkmvoiture = frenchToJsFloatValue( 'Fraisdeplacement66Nbkmvoiture' );
+        var Nbtrajetvoiture = frenchToJsFloatValue( 'Fraisdeplacement66Nbtrajetvoiture' );
+        $( 'Fraisdeplacement66Nbtotalkm' ).value = jsToFrenchFloatValue( Nbkmvoiture * Nbtrajetvoiture );
+        $( 'Fraisdeplacement66Totalvehicule' ).value = jsToFrenchFloatValue( Nbkmvoiture * Nbtrajetvoiture * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaitvehicule' ) );?> );
 
+    }
+
+    function calculTotalTranspub() {
         // Frais de déplacement pour un transport public
-        var Nbtrajettranspub = $F( 'Fraisdeplacement66Nbtrajettranspub' );
-        var Prixbillettranspub = $F( 'Fraisdeplacement66Prixbillettranspub' );
-        $( 'Fraisdeplacement66Totaltranspub' ).value = ( Nbtrajettranspub * Prixbillettranspub );
+        var Nbtrajettranspub = frenchToJsFloatValue( 'Fraisdeplacement66Nbtrajettranspub' );
+        var Prixbillettranspub = frenchToJsFloatValue( 'Fraisdeplacement66Prixbillettranspub' );
+        $( 'Fraisdeplacement66Totaltranspub' ).value = jsToFrenchFloatValue( Nbtrajettranspub * Prixbillettranspub );
 
+    }
+
+    function calcultotalHebergt() {
         // Frais de déplacement pour un hébergement
-        var Nbnuithebergt = $F( 'Fraisdeplacement66Nbnuithebergt' );
-        $( 'Fraisdeplacement66Totalhebergt' ).value = ( Nbnuithebergt * Configure::read( 'Fraisdeplacement66.forfaithebergt' ) );
+        var Nbnuithebergt = frenchToJsFloatValue( 'Fraisdeplacement66Nbnuithebergt' );
+        $( 'Fraisdeplacement66Totalhebergt' ).value = jsToFrenchFloatValue( Nbnuithebergt * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaithebergt' ) ); ?> );
+    }
 
+    function calculTotalRepas() {
         // Frais de déplacement pour un repas
-        var Nbrepas = $F( 'Fraisdeplacement66Nbrepas' );
-        $( 'Fraisdeplacement66Totalrepas' ).value = ( Nbrepas * Configure::read( 'Fraisdeplacement66.forfaitrepas' ) );
+        var Nbrepas = frenchToJsFloatValue( 'Fraisdeplacement66Nbrepas' );
+        $( 'Fraisdeplacement66Totalrepas' ).value = jsToFrenchFloatValue( Nbrepas * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaitrepas' ) );?> );
     }
 
     // Frais de déplacement pour un véhicule individuel
-    $( 'Fraisdeplacement66Nbkmvoiture' ).observe( 'blur', function( event ) { calculTotal(  ); } );
-    $( 'Fraisdeplacement66Nbtrajetvoiture' ).observe( 'blur', function( event ) { calculTotal(); } );
+    $( 'Fraisdeplacement66Nbkmvoiture' ).observe( 'blur', function( event ) { calculTotalVoiture(  ); } );
+    $( 'Fraisdeplacement66Nbtrajetvoiture' ).observe( 'blur', function( event ) { calculTotalVoiture(); } );
 
     // Frais de déplacement pour un transport public
-    $( 'Fraisdeplacement66Nbtrajettranspub' ).observe( 'blur', function( event ) { calculTotal(); } );
-    $( 'Fraisdeplacement66Prixbillettranspub' ).observe( 'blur', function( event ) { calculTotal(); } );
+    $( 'Fraisdeplacement66Nbtrajettranspub' ).observe( 'blur', function( event ) { calculTotalTranspub(); } );
+    $( 'Fraisdeplacement66Prixbillettranspub' ).observe( 'blur', function( event ) { calculTotalTranspub(); } );
 
     // Frais de déplacement pour un hébergement
-    $( 'Fraisdeplacement66Nbnuithebergt' ).observe( 'blur', function( event ) { calculTotal(); } );
+    $( 'Fraisdeplacement66Nbnuithebergt' ).observe( 'blur', function( event ) { calcultotalHebergt(); } );
 
     // Frais de déplacement pour un repas
-    $( 'Fraisdeplacement66Nbrepas' ).observe( 'blur', function( event ) { calculTotal(); } );
+    $( 'Fraisdeplacement66Nbrepas' ).observe( 'blur', function( event ) { calculTotalRepas(); } );
 </script>
 
 <div class="clearer"><hr /></div>

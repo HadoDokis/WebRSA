@@ -138,7 +138,7 @@
                     $this->render( $this->action, null, 'forfaitaire' );
                     break;
                 case 'Critereapre::eligible':
-                    $this->set( 'pageTitle', 'Eligibilite des APREs' );
+                    $this->set( 'pageTitle', 'Eligibilité des APREs' );
                     $this->render( $this->action, null, 'visualisation' );
                     break;
             }
