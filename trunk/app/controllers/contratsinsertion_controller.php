@@ -165,7 +165,7 @@
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
 
-            $persreferent = $this->PersonneReferent->findByPersonneId( $personne_id, null, null, -1 );
+            $persreferent = $this->PersonneReferent->find( 'count', array('conditions' => array( 'PersonneReferent.personne_id' => $personne_id ), 'recursive' => -1 ) );
             $this->set( compact( 'persreferent' ) );
 
             $contratsinsertion = $this->Contratinsertion->find(
