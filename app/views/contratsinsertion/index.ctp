@@ -12,6 +12,11 @@
 ?>
 <div class="with_treemenu">
     <h1><?php  echo 'Contrat d\'engagement réciproque  ';?></h1>
+    <?php if( Configure::read( 'nom_form_ci_cg' )  == 'cg66' ):?>
+        <?php if( empty( $persreferent ) ) :?>
+            <p class="error">Aucun référent n'est lié au parcours de cette personne.</p>
+        <?php endif;?>
+    <?php endif;?>
      <!-- <?php /*if( empty( $orientstruct )  ):?>
         <p class="error">Impossible d'ajouter un contrat d'engagement réciproque lorsqu'il n'existe pas d'orientation.</p>
 
