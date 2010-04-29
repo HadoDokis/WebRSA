@@ -165,6 +165,9 @@
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
 
+            $persreferent = $this->PersonneReferent->findByPersonneId( $personne_id, null, null, -1 );
+            $this->set( compact( 'persreferent' ) );
+
             $contratsinsertion = $this->Contratinsertion->find(
                 'all',
                 array(
@@ -199,6 +202,7 @@
                         'recursive' => -1
                     )
                 );
+
                 $this->set( 'referents', $referents );
                 $sr = $this->Contratinsertion->Structurereferente->listeParType( array( 'contratengagement' => true ) );
                 $struct = Set::enum( Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' ), $sr );
