@@ -451,17 +451,17 @@
 					<th>Nb trajet </th>
 					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajetvoiture', array( 'label' => false, 'div' => false ) );?></td>
 				</tr>
-				<tr>
-					<th>Nb total km</th>
-					<td class="fraisdepct" ><?php echo $xform->input( 'Fraisdeplacement66.nbtotalkm', array( 'label' => false, 'div' => false ) );?></td>
-				</tr>
+                <tr>
+                    <th>Nb total km</th>
+                    <td class="fraisdepct" id="Fraisdeplacement66Nbtotalkm"></td>
+                </tr>
 				<tr>
 					<th>Forfait "Km"</th>
 					<td class="fraisdepct"><?php echo $locale->money( Configure::read( 'Fraisdeplacement66.forfaitvehicule' ) );?></td>
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totalvehicule', array( 'label' => false, 'div' => false ) ); ?></td>
+					<td class="fraisdepct" id="Fraisdeplacement66Totalvehicule"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -481,7 +481,7 @@
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totaltranspub', array( 'label' => false, 'div' => false ) ); ?></td>
+					<td class="fraisdepct" id="Fraisdeplacement66Totaltranspub"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -501,7 +501,7 @@
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totalhebergt', array( 'label' => false, 'div' => false ) ); ?></td>
+					<td class="fraisdepct" id="Fraisdeplacement66Totalhebergt"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -521,7 +521,7 @@
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.totalrepas', array( 'label' => false, 'div' => false ) ); ?></td>
+					<td class="fraisdepct" id="Fraisdeplacement66Totalrepas"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -605,44 +605,47 @@
         // Frais de déplacement pour un véhicule individuel
         var Nbkmvoiture = frenchToJsFloatValue( 'Fraisdeplacement66Nbkmvoiture' );
         var Nbtrajetvoiture = frenchToJsFloatValue( 'Fraisdeplacement66Nbtrajetvoiture' );
-        $( 'Fraisdeplacement66Nbtotalkm' ).value = jsToFrenchFloatValue( Nbkmvoiture * Nbtrajetvoiture );
-        $( 'Fraisdeplacement66Totalvehicule' ).value = jsToFrenchFloatValue( Nbkmvoiture * Nbtrajetvoiture * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaitvehicule' ) );?> );
-
+        //$( 'Fraisdeplacement66Nbtotalkm' ).value = jsToFrenchFloatValue( Nbkmvoiture * Nbtrajetvoiture );
+        $( 'Fraisdeplacement66Nbtotalkm' ).update( jsToFrenchFloatValue( Nbkmvoiture * Nbtrajetvoiture ) );
+        $( 'Fraisdeplacement66Totalvehicule' ).update( jsToFrenchFloatValue( ( Nbkmvoiture * Nbtrajetvoiture * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaitvehicule' ) );?> ).toFixed( 2 ) ) );
     }
+    // Frais de déplacement pour un véhicule individuel
+    $( 'Fraisdeplacement66Nbtotalkm' ).observe( 'blur', function( event ) { calculTotalVoiture(); } );
+    $( 'Fraisdeplacement66Nbtrajetvoiture' ).observe( 'blur', function( event ) { calculTotalVoiture(); } );
+
 
     function calculTotalTranspub() {
         // Frais de déplacement pour un transport public
         var Nbtrajettranspub = frenchToJsFloatValue( 'Fraisdeplacement66Nbtrajettranspub' );
         var Prixbillettranspub = frenchToJsFloatValue( 'Fraisdeplacement66Prixbillettranspub' );
-        $( 'Fraisdeplacement66Totaltranspub' ).value = jsToFrenchFloatValue( Nbtrajettranspub * Prixbillettranspub );
+        $( 'Fraisdeplacement66Totaltranspub' ).update( jsToFrenchFloatValue( Nbtrajettranspub * Prixbillettranspub ) );
 
     }
-
-    function calcultotalHebergt() {
-        // Frais de déplacement pour un hébergement
-        var Nbnuithebergt = frenchToJsFloatValue( 'Fraisdeplacement66Nbnuithebergt' );
-        $( 'Fraisdeplacement66Totalhebergt' ).value = jsToFrenchFloatValue( Nbnuithebergt * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaithebergt' ) ); ?> );
-    }
-
-    function calculTotalRepas() {
-        // Frais de déplacement pour un repas
-        var Nbrepas = frenchToJsFloatValue( 'Fraisdeplacement66Nbrepas' );
-        $( 'Fraisdeplacement66Totalrepas' ).value = jsToFrenchFloatValue( Nbrepas * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaitrepas' ) );?> );
-    }
-
-    // Frais de déplacement pour un véhicule individuel
-    $( 'Fraisdeplacement66Nbkmvoiture' ).observe( 'blur', function( event ) { calculTotalVoiture(  ); } );
-    $( 'Fraisdeplacement66Nbtrajetvoiture' ).observe( 'blur', function( event ) { calculTotalVoiture(); } );
-
     // Frais de déplacement pour un transport public
     $( 'Fraisdeplacement66Nbtrajettranspub' ).observe( 'blur', function( event ) { calculTotalTranspub(); } );
     $( 'Fraisdeplacement66Prixbillettranspub' ).observe( 'blur', function( event ) { calculTotalTranspub(); } );
 
+    function calcultotalHebergt() {
+        // Frais de déplacement pour un hébergement
+        var Nbnuithebergt = frenchToJsFloatValue( 'Fraisdeplacement66Nbnuithebergt' );
+        $( 'Fraisdeplacement66Totalhebergt' ).update( jsToFrenchFloatValue( Nbnuithebergt * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaithebergt' ) ); ?> ) );
+    }
     // Frais de déplacement pour un hébergement
     $( 'Fraisdeplacement66Nbnuithebergt' ).observe( 'blur', function( event ) { calcultotalHebergt(); } );
 
+
+    function calculTotalRepas() {
+        // Frais de déplacement pour un repas
+        var Nbrepas = frenchToJsFloatValue( 'Fraisdeplacement66Nbrepas' );
+        $( 'Fraisdeplacement66Totalrepas' ).update( jsToFrenchFloatValue( Nbrepas * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaitrepas' ) );?> ) );
+    }
     // Frais de déplacement pour un repas
     $( 'Fraisdeplacement66Nbrepas' ).observe( 'blur', function( event ) { calculTotalRepas(); } );
+
+
+
+
+
 </script>
 
 <div class="clearer"><hr /></div>
