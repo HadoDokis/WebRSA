@@ -3,7 +3,19 @@
     <?php echo $form->input( 'User.prenom', array( 'label' =>  required( __( 'prenom', true ) ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'User.username', array( 'label' =>  required( __( 'username', true ) ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'User.passwd', array( 'label' =>  required( __( 'password', true ) ), 'type' => 'password', 'value' => '' ) );?>
-    <?php echo $form->input( 'User.numtel', array( 'label' =>  required( __( 'numtel', true ) ), 'type' => 'text', 'maxLength' => 15 ) );?>
+    <?php
+        echo $form->input( 'User.numtel', array( 'label' =>  required( __( 'numtel', true ) ), 'type' => 'text', 'maxlength' => 15 ) );
+
+        if( Configure::read( 'User.adresse' ) ) {
+            echo $form->input( 'User.numvoie', array( 'label' =>  __( 'numvoie', true ), 'type' => 'text' ) );
+            echo $form->input( 'User.typevoie', array( 'label' =>  __( 'typevoie', true ), 'type' => 'select', 'options' => $typevoie, 'empty' => true  ) );
+            echo $form->input( 'User.nomvoie', array( 'label' =>  __( 'nomvoie', true ), 'type' => 'text' ) );
+            echo $form->input( 'User.compladr', array( 'label' =>  __( 'compladr', true ), 'type' => 'text' ) );
+            echo $form->input( 'User.codepos', array( 'label' =>  __( 'codepos', true ), 'type' => 'text', 'maxlength' => 5 ) );
+            echo $form->input( 'User.ville', array( 'label' =>  __( 'ville', true ), 'type' => 'text' ) );
+        }
+
+    ?>
     <?php echo $form->input( 'User.date_naissance', array( 'label' =>  __( 'date_naissance', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y') - 80 , 'empty' => true ) ) ;?>
     <?php echo $form->input( 'User.date_deb_hab', array( 'label' => required(  __( 'date_deb_hab', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y') + 10, 'minYear'=>date('Y') - 10 , 'empty' => true ) );?>
     <?php echo $form->input( 'User.date_fin_hab', array( 'label' => required(  __( 'date_fin_hab', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y') + 10, 'minYear'=>date('Y') - 10, 'empty' => true ) ) ;?>

@@ -2,7 +2,7 @@
     class UsersController extends AppController
     {
         var $name = 'Users';
-        var $uses = array( 'Group', 'Zonegeographique', 'User', 'Serviceinstructeur', 'Connection' );
+        var $uses = array( 'Group', 'Zonegeographique', 'User', 'Serviceinstructeur', 'Connection', 'Option' );
         var $aucunDroit = array('login', 'logout');
         var $helpers = array( 'Xform' );
 
@@ -153,6 +153,7 @@
             $this->set( 'zglist', $this->Zonegeographique->find( 'list' ) );
             $this->set( 'gp', $this->Group->find( 'list' ) );
             $this->set( 'si', $this->Serviceinstructeur->find( 'list' ) );
+            $this->set( 'typevoie', $this->Option->typevoie() );
 
             if( !empty( $this->data ) ) {
                 $this->User->begin();
@@ -197,6 +198,7 @@
             $this->set( 'zglist', $this->Zonegeographique->find( 'list' ) );
             $this->set( 'gp', $this->Group->find( 'list' ) );
             $this->set( 'si', $this->Serviceinstructeur->find( 'list' ) );
+            $this->set( 'typevoie', $this->Option->typevoie() );
 
             unset( $this->User->validate['passwd'] );
 
