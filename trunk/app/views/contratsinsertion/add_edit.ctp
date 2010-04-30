@@ -229,18 +229,35 @@
                     ?>
                 </td>
             </tr>
-            <tr>
-                <td class="noborder">
-                    <?php
-                        echo $xform->input( 'Contratinsertion.numcontrat', array( 'label' => false , 'type' => 'hidden', 'value' => $tc ) );
-                        echo $tc;
 
-                    ?>
-                </td>
-                <td class="noborder">
-                    <?php echo '(nombre de renouvellement) : '.$nbrCi;?>
-                </td>
-            </tr>
+            <?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ):?>
+                <tr>
+                    <td class="noborder">
+                        <?php
+                            echo $xform->input( 'Contratinsertion.num_contrat', array( 'label' => false , 'type' => 'select', 'options' => $options['num_contrat'], 'empty' => true, 'value' => $tc ) );
+//                             echo $tc;
+                        ?>
+                    </td>
+                    <td class="noborder">
+                        <?php echo '(nombre de renouvellement) : '.$nbrCi;?>
+                    </td>
+                </tr>
+            <?php endif;?>
+
+            <?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ):?>
+                <tr>
+                    <td class="noborder">
+                        <?php
+                            echo $xform->input( 'Contratinsertion.num_contrat', array( 'label' => false , 'type' => 'hidden', 'value' => $tc ) );
+                            echo Set::enum( $tc, $options['num_contrat'] );
+
+                        ?>
+                    </td>
+                    <td class="noborder">
+                        <?php echo '(nombre de renouvellement) : '.$nbrCi;?>
+                    </td>
+                </tr>
+            <?php endif;?>
         </table>
     </fieldset>
     <fieldset id="Contratsuite">
@@ -250,6 +267,15 @@
                     <em>Ce contrat fait suite à : </em>
                 </td>
             </tr>
+
+            <?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ):?>
+                <tr>
+                    <td colspan="2" class="noborder">
+                        <div class="demi"><?php echo $form->input( 'Contratinsertion.type_demande', array( 'label' => 'Raison : ' , 'type' => 'radio', 'div' => false, 'separator' => '</div><div class="demi">', 'options' => $options['type_demande'], 'legend' => false ) );?></div>
+                    </td>
+                </tr>
+            <?php endif;?>
+
             <tr>
                 <td colspan="2" class="noborder">
                     <div class="demi"><?php echo $form->input( 'Contratinsertion.raison_ci', array( 'label' => 'Raison : ' , 'type' => 'radio', 'div' => false, 'separator' => '</div><div class="demi">', 'options' => $raison_ci, 'legend' => false ) );?></div>

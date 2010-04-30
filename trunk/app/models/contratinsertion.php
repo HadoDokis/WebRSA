@@ -5,6 +5,15 @@
 
         var $useTable = 'contratsinsertion';
 
+        var $actsAs = array(
+            'Enumerable' => array(
+                'fields' => array(
+                    'type_demande' => array( 'type' => 'type_demande', 'domain' => 'contratinsertion' ),
+                    'num_contrat' => array( 'type' => 'num_contrat', 'domain' => 'contratinsertion' )
+                )
+            )
+        );
+
         var $belongsTo = array(
             'Personne' => array(
                 'classname'     => 'Personne',

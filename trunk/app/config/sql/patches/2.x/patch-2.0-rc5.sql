@@ -20,6 +20,21 @@ ALTER TABLE users ADD COLUMN ville VARCHAR(50);
 ALTER TABLE structuresreferentes ADD COLUMN orientation type_no DEFAULT 'O';
 ALTER TABLE structuresreferentes ADD COLUMN pdo type_no DEFAULT 'O';
 
+CREATE TYPE type_type_demande AS ENUM ( 'DOD', 'DRD' );
+ALTER TABLE contratsinsertion ADD COLUMN type_demande type_type_demande;
+
+CREATE TYPE type_num_contrat AS ENUM ( 'PRE', 'REN' );
+ALTER TABLE contratsinsertion ADD COLUMN num_contrat type_num_contrat;
+
+UPDATE contratsinsertion
+    SET num_contrat = 'REN'
+    WHERE numcontrat = 'Renouvellement';
+
+UPDATE contratsinsertion
+    SET num_contrat = 'PRE'
+    WHERE numcontrat = 'Premier contrat';
+
+ALTER TABLE contratsinsertion DROP COLUMN numcontrat;
 -- *****************************************************************************
 --      La partie suivante est à utiliser uniquement en cas de doublons
 --      de pièces liées au niveau des aides de l'APRE pour le CG93
