@@ -27,6 +27,9 @@
         // FIXME -> à nettoyer
         function beforeFilter() {
             parent::beforeFilter();
+            $options = $this->Contratinsertion->allEnumLists();
+            $this->set( 'options', $options );
+
             if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
                 $this->set( 'decision_ci', $this->Option->decision_ci() );
             }
@@ -57,10 +60,10 @@
                 $this->set( 'typo_aide', $this->Option->typo_aide() );
                 $this->set( 'soclmaj', $this->Option->natpfcre( 'soclmaj' ) );
                 $this->set( 'rolepers', $this->Option->rolepers() );
-//                  $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
+
                 $this->set( 'sr', $this->Contratinsertion->Structurereferente->listeParType( array( 'contratengagement' => true ) ) );
                 $this->set( 'referents', $this->Contratinsertion->Structurereferente->Referent->find( 'list' ) );
-                //$this->set( 'actions', $this->Action->grouplist( 'aide' ) );
+
                 $this->set( 'actions', $this->Action->grouplist( 'prest' ) );
             }
         }
@@ -164,7 +167,10 @@
             $nbrPersonnes = $this->Contratinsertion->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
-
+            /**
+            *   Recherche du nombre de référent lié au parcours de la personne
+            *   Si aucun alors message d'erreur signalant l'absence de référent (cg66)
+            **/
             $persreferent = $this->PersonneReferent->find( 'count', array('conditions' => array( 'PersonneReferent.personne_id' => $personne_id ), 'recursive' => -1 ) );
             $this->set( compact( 'persreferent' ) );
 
@@ -269,14 +275,20 @@
                 $valueFormeci = 'S';
 
 				$nbContratsPrecedents = $this->Contratinsertion->find( 'count', array( 'recursive' => -1, 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
-				if( $nbContratsPrecedents >= 1 ) {
-// 					$tc = $tcAutresContrats;
+
+				/*if( $nbContratsPrecedents >= 1 ) {
                     $tc = 'Renouvellement';
 				}
 				else {
-// 					$tc = $tcPremierContrat;
                     $tc = 'Premier contrat';
-				}
+				}*/
+
+                if( $nbContratsPrecedents >= 1 ) {
+                    $tc = 'REN';
+                }
+                else {
+                    $tc = 'PRE';
+                }
             }
             else if( $this->action == 'edit' ) {
                 $contratinsertion_id = $id;
@@ -294,6 +306,7 @@
 //                     $tc = 'Premier contrat';
 // 				}
                 $tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.numcontrat' );
+//                 $tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.numcontrat' );
 
             }
 
