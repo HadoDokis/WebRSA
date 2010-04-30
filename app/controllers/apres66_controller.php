@@ -408,7 +408,9 @@
 					$this->data = Set::insert( $this->data, 'Aideapre66.typeaideapre66_id', "{$themeapre66_id}_{$typeaideapre66_id}" );
 
                     ///FIXME: doit faire autrement
-                    $this->data['Fraisdeplacement66'] = $this->data['Aideapre66']['Fraisdeplacement66'];
+                    if( !empty( $this->data['Fraisdeplacement66'] ) ) {
+                        $this->data['Fraisdeplacement66'] = $this->data['Aideapre66']['Fraisdeplacement66'];
+                    }
 
                 }
             }
