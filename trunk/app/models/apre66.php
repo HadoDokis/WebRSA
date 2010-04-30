@@ -40,7 +40,7 @@
 					'message' => 'Champ obligatoire'
 				)
             ),
-            'activitebeneficiaire' => array(
+            'avistechreferent' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
@@ -69,6 +69,61 @@
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
+            ),
+            'datedemandeapre' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'referent_id' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            //Partie activité bénéficiaire
+            'typecontrat' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'dateentreeemploi' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'activitebeneficiaire' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'dureecontrat' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'nbheurestravaillees' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'nomemployeur' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'adresseemployeur' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
             )
         );
 

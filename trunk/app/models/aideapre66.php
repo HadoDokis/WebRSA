@@ -56,7 +56,67 @@
                     'rule' => 'plafondMontantAideapre',
                     'message' => 'Plafond dépassé'
                 )
-            )
+            ),
+            'montantpropose' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.',
+                    'allowEmpty' => true
+                ),
+                array(
+                    'rule' => 'plafondMontantAideapre',
+                    'message' => 'Plafond dépassé'
+                )
+            ),
+            'montantaccorde' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.',
+                    'allowEmpty' => true
+                ),
+                array(
+                    'rule' => 'plafondMontantAideapre',
+                    'message' => 'Plafond dépassé'
+                )
+            ),
+            'virement' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'versement' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+//             'autorisationvers' => array(
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             ),
+            'motivdem' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            )/*,
+            'decisionapre' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            )*/
         );
 
         /**

@@ -296,7 +296,7 @@
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Type de contrat </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->enum( "{$this->modelClass}.typecontrat", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['typecontrat'] ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->enum( "{$this->modelClass}.typecontrat", array(  'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['typecontrat'] ) );?></td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Si autres, préciser  </strong></td>
