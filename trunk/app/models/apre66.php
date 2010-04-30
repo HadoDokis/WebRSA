@@ -173,19 +173,25 @@
             }
         }
 
-
         /**
-        *
+        * FIXME
         */
 
-        /*function beforeSave( $options = array() ) {
-            $return = parent::beforeSave( $options );
-debug( $return );
-            if( array_key_exists( $this->name, $this->data ) && array_key_exists( 'referent_id', $this->data[$this->name] ) ) {
-                $this->data = Set::insert( $this->data, "{$this->alias}.referent_id", suffix( Set::extract( $this->data, "{$this->alias}.referent_id" ) ) );
-            }
+//         function beforeSave( $options = array() ) {
+//             $return = parent::beforeSave( $options );
+//
+//             $valide = true;
+//             $nbNormalPieces = $this->Aideapre66->_nbrNormalPieces();
+//             $key = 'Pieceaide66';
+//             if( isset( $this->data['Aideapre66'] ) && isset( $this->data[$key] ) && isset( $this->data[$key][$key] ) ) {
+//                 $valide = ( count( $this->data[$key][$key] ) == $nbNormalPieces ) && $valide;
+//             }
+// debug(count( $this->data[$key][$key] ));
+// debug($nbNormalPieces);
+//             $this->data['Apre66']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
+//
+//             return $return;
+//         }
 
-            return $return;
-        }*/
     }
 ?>

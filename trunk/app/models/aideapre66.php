@@ -139,11 +139,73 @@
 
             foreach( $check as $field => $value ) {
                 $return = ( $value <= $plafond ) && $return;
-
             }
             return $return;
         }
 
+
+        /**
+        *   Récupération du nombre de pièces liées aux types d'aides d'une APRE
+        */
+
+        function _nbrNormalPieces() {
+            $nbNormalPieces = array();
+
+            $typeaideapre66_id = Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' );
+            $typeaide = $this->Typeaideapre66->findById( $typeaideapre66_id, null, null, 2 );
+
+            $nbNormalPieces['Typeaideapre66'] = count( Set::extract( $typeaide, '/Pieceaide66/id' ) );
+// debug($nbNormalPieces);
+            return $nbNormalPieces;
+        }
+
+
+        /**
+        *   Détails des APREs afin de récupérer les pièces liés à cette APRE ainsi que les aides complémentaires avec leurs pièces
+        *   @param int $id
+        */
+
+        function _details( $aideapre66_id ) {
+            $nbNormalPieces = $this->_nbrNormalPieces();
+            $details['Piecepresente'] = array();
+            $details['Piecemanquante'] = array();
+
+
+            // Nombre de pièces trouvées par-rapport au nombre de pièces prévues - Apre
+            $details['Piecepresente']['Typeaideapre66'] = $this->Aideapre66Pieceaide66->find( 'count', array( 'conditions' => array( 'aideapre66_id' => $aideapre66_id ) ) );
+
+            $details['Piecemanquante']['Typeaideapre66'] = abs( $details['Piecepresente']['Typeaideapre66'] - $nbNormalPieces['Typeaideapre66'] );
+
+            $piecesPresentes = array();
+            // Quelles sont les pièces manquantes
+            $piecesPresentes = Set::extract( $this->Aideapre66Pieceaide66->find( 'all', array( 'conditions' => array( 'aideapre66_id' => $aideapre66_id ) ) ), '/Aideapre66Pieceaide66/pieceaide66_id' );
+
+            $typeaideapre66_id = Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' );
+            $piecesParType = $this->Typeaideapre66->Typeaideapre66Pieceaide66->find(
+                'list',
+                array(
+                    'fields' => array( 'id', 'pieceaide66_id' ),
+                    'conditions' => array(
+                        'Typeaideapre66Pieceaide66.typeaideapre66_id' => $typeaideapre66_id/*,
+                        'NOT' => array( 'Typeaideapre66Pieceaide66.pieceaide66_id' => $piecesPresentes )*/
+                    )
+                )
+            );
+// debug($piecesPresentes);
+            $piecesAbsentes = array_diff( $piecesParType, $piecesPresentes );
+
+            return $details;
+        }
+
+
+        /**
+        *
+        */
+
+        function afterSave( $created ) {
+            $return = parent::afterSave( $created );
+            $details = $this->_details( $this->id );
+        }
 
         /**
         *

@@ -8,8 +8,6 @@
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 
-    <!-- Données concernant le CG93 -->
-        <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ):?>
             <?php if( empty( $apres ) ):?>
                 <p class="error">Cette personne ne possède pas encore d'APRE forfaitaire, il n'est donc pas possible de créer une APRE Complémentaire.</p>
             <?php endif;?>
@@ -24,26 +22,8 @@
                     ?>
                 </ul>
             <?php endif;?>
-        <?php endif;?>
-    <!-- Fin des Données concernant le CG93 -->
-<!-- .................................................................................... -->
-    <!-- Données concernant le CG66 -->
-        <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg66' ):?>
-            <?php if( empty( $apres ) ):?>
-                <p class="notice">Cette personne ne possède pas encore d'APRE.</p>
-            <?php endif;?>
-            <?php if( $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'add' ) ):?>
-                <ul class="actionMenu">
-                    <?php
-                        echo '<li>'.$html->addLink(
-                            'Ajouter APRE',
-                            array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'add', $personne_id )
-                        ).' </li>';
-                    ?>
-                </ul>
-            <?php endif;?>
-        <?php endif;?>
-    <!-- Fin des Données concernant le CG66 -->
+
+
 
     <?php if( !empty( $apres ) ):?>
 	<?php
