@@ -1,0 +1,930 @@
+/*****************************************************************************/
+
+#pageWrapper {
+    background: white url( ../img/header.png ) top left no-repeat;
+}
+
+#pageMenu, #pageContent, #pageCartouche, table.cake-sql-log {
+    width: 90%;
+    margin: auto;
+}
+
+/* #pageContent {
+    width: 80%;
+    margin: auto;
+    left: 100px;
+} */
+
+table.cake-sql-log {
+    background: white;
+}
+
+p {
+    text-align: justify;
+}
+
+/*---------------------------------------------------------------------------*/
+
+#pageCartouche * { font-size: 10px; }
+#pageCartouche thead { display: none; }
+
+#pageCartouche {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+}
+
+#pageCartouche table {
+    position: absolute;
+    right: 0;
+    top: 1em;
+}
+
+/*---------------------------------------------------------------------------*/
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #235f7d;
+    padding: 0.125em 0.25em;
+}
+
+table th {
+    background: #dcdcdc;
+}
+
+table thead, table tbody {
+    border: 2px solid #235f7d;
+}
+
+table th {
+    background: #235f7d;
+    color: white;
+}
+
+tr.even td {
+    background: #e6eef2;
+}
+
+tbody tr.even th {
+    background: #235f7d;
+}
+
+table.cake-sql-log caption {
+    color: black;
+}
+
+table thead a {
+    color: white;
+}
+
+/*****************************************************************************/
+
+#whois {
+    padding: 0.5em;
+    margin: 0;
+    font-size: 1.95em;
+    line-height: 1.2em;
+}
+
+#whois a {
+    margin-left: 150px;
+    text-decoration: none;
+}
+
+#whois a, #whois h1 {
+    color: transparent;
+}
+
+/*****************************************************************************/
+
+.menu a {
+    color: blue;
+}
+
+/*---------------------------------------------------------------------------*/
+
+#pageMenu ul, #pageContent, #pageCartouche, table.cake-sql-log {
+    /*max-width: 1000px;*/
+    margin: 0 auto;
+    padding: 0.5em;
+}
+
+#pageHeader {
+    height: 64px;
+}
+
+/*****************************************************************************/
+
+#pageContent {
+    margin-top: 6em;
+}
+
+/*****************************************************************************/
+
+#pageFooter {
+    margin: 1em 0 0 0;
+    border-top: 1px solid #235f7d;
+    padding: 0.5em;
+    text-align: center;
+    color: silver;
+}
+
+/*****************************************************************************
+    Fiches
+*****************************************************************************/
+
+/* Affichage vue Dspp  */
+div#ficheDspp table {
+    width: 800px;
+    margin-bottom: 1em;
+}
+
+div#ficheDspp tbody th {
+    width: 600px;
+}
+
+div#ficheDspp tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheDspp tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheDspp tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheDspp tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+div#ficheDspp h2 {
+    font-size: 1.5em;
+}
+/* Affichage vue Données personne  */
+div#fichePers table {
+    width: 600px;
+    margin-bottom: 1em;
+}
+
+div#fichePers tbody th {
+    width: 300px;
+}
+div#fichePers tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#fichePers tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#fichePers tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#fichePers tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+div#fichePers h2 {
+    font-size: 1.5em;
+}
+
+/* Affichage vue Contrat Insertion */
+div#ficheCI table {
+    width: 800px;
+    margin-bottom: 1em;
+}
+
+div#ficheCI tbody th {
+    width: 600px;
+}
+div#ficheCI tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheCI tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheCI tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheCI tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+div#ficheCI h2 {
+    font-size: 1.5em;
+}
+
+/* Affichage vue Dspf */
+div#ficheDspf table {
+    width: 800px;
+    margin-bottom: 1em;
+}
+
+div#ficheDspf tbody th {
+    width: 600px;
+}
+div#ficheDspf tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheDspf tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheDspf tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheDspf tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+div#ficheDspf h2 {
+    font-size: 1.5em;
+}
+
+/* Affichage vue Adresses */
+div#ficheAdresse table {
+    width: 700px;
+    margin-bottom: 1em;
+}
+
+div#ficheAdresse tbody th {
+    width: 400px;
+}
+
+div#ficheAdresse tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheAdresse tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheAdresse tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheAdresse tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+div#ficheAdresse h2 {
+    font-size: 1.5em;
+}
+
+table#ficheDossier tbody, table#ficheDossier td { border-width: 0; background: transparent; }
+table#ficheDossier table td { border-width: 1px; }
+table#ficheDossier table tbody tr.even td {
+    background: #e6eef2;
+}
+
+
+/* Affichage vue Dossier */
+#resumeDossier table {
+    width: 350px;
+    margin-bottom: 1em;
+}
+
+#resumeDossier table#creancesalimentaires, table#personnes {
+    width: 100%;
+}
+
+#resumeDossier tbody th {
+    width: 175px;
+}
+
+#resumeDossier table tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+#resumeDossier tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+#resumeDossier tbody tr.even th, table.demcjt tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+#resumeDossier tbody tr.odd th, table.demcjt tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+
+
+/* Affichage vue Ressources */
+div#ficheRessTri table {
+    width: 750px;
+    margin-bottom: 1em;
+}
+
+div#ficheRessTri tbody th {
+    width: 500px;
+}
+
+div#ficheRessTri tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheRessTri tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheRessTri tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheRessTri tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+
+/* Affichage vue Infos Financieres */
+div#ficheInfoFina table {
+    width: 600px;
+    margin-bottom: 1em;
+}
+
+div#ficheInfoFina tbody th {
+    width: 400px;
+}
+
+div#ficheInfoFina tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#ficheInfoFina tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#ficheInfoFina tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+div#ficheInfoFina tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+/*****************************************************************************/
+/* Affichage vue Suivi insertion */
+div#suiviInsertion table {
+/*     width: 360px; */
+    width: auto;
+    margin-bottom: 1em;
+/*     float: left; */
+}
+
+div#suiviInsertion tbody th {
+/*     width: 190px; */
+}
+
+div#suiviInsertion table tbody tr.even td {
+    background: white;
+    color: black;
+}
+
+div#suiviInsertion tbody tr.odd td {
+    background: white;
+    color: black;
+}
+
+div#suiviInsertion tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+#suiviInsertion tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+
+/*****************************************************************************/
+/*****************************************************************************/
+
+#flashMessage, #authMessage {
+    margin: 1em 0;
+    border: 1px solid #235f7d;
+    padding: 0.5em;
+}
+
+#authMessage {
+    border-color: silver;
+}
+
+#flashMessage.message {
+    background: #fffee5;
+}
+
+#flashMessage.error, #authMessage.message /* FIXME */ {
+    background: #ffe5e5;
+    color: #cc0000;
+}
+
+#flashMessage.success {
+    background: #aed8ed;
+}
+
+/*****************************************************************************/
+
+p.error {
+    background: #ffe5e5;
+    color: #b20000;
+    margin: 1em 0;
+    border: 1px solid #b20000;
+    padding: 0.5em;
+}
+
+p.notice {
+    background: #e1ebf7;
+    margin: 1em 0;
+    border: 1px solid #1d2f54;
+    padding: 0.5em;
+    color: #1d2f54;
+}
+
+p.success {
+    background: #ecffe8;
+    margin: 1em 0;
+    border: 1px solid #158000;
+    padding: 0.5em;
+    color: #158000;
+}
+
+.notice a {
+    color: blue;
+}
+
+/*****************************************************************************/
+
+/*table#searchResults a {
+    display: block;
+}*/
+
+/*****************************************************************************/
+
+/*table.tooltips tbody tr {
+    position: relative;
+}*/
+
+table.tooltips thead tr th.tooltip_table, table.tooltips tbody tr td.tooltip_table {
+    display: none;
+}
+
+table.tooltips tbody tr.hover td {
+    cursor: help;
+}
+
+table.tooltips tbody tr.hover td.tooltip_table {
+    position: absolute;
+    display: block;
+    border: 1px solid #235f7d;
+    background: white;
+    left: 0;
+    top: auto;
+    z-index: 5;
+    padding: 0;
+}
+
+table.tooltips td table {
+    padding: 0;
+    margin: 0;
+}
+
+
+
+/*****************************************************************************/
+/*****************************************************************************/
+
+div.clearer {
+    clear: both;
+}
+
+div.clearer hr {
+    display: none;
+}
+
+/*****************************************************************************/
+
+.with_treemenu {
+    margin-left: 18em;
+}
+
+.treemenu {
+    width: 200px;/*17em*/
+    border: 1px solid #235f7d;
+    float: left;
+    /*z-index: 100;*/
+}
+
+.treemenu ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: #e6eef2;
+}
+
+.treemenu li {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    padding-left: 1em;
+}
+
+.treemenu a, .treemenu span {
+    display: block;
+    padding: 0.125em 0;
+}
+
+.treemenu a.toggler {
+    display: block;
+    width: 1em;
+    height: 1.2em;
+    line-height: 1.2em;
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.treemenu li li {
+    display: block;
+}
+
+.treemenu h2 {
+    font-size: 1em;
+    background: #235f7d;
+    padding: 0.25em;
+    border-bottom: 1px solid #235f7d;
+}
+
+.treemenu h2 a {
+    color: white;
+}
+
+/*.treemenu li, .treemenu li ul { background: #f9ffe6; }
+.treemenu li li, .treemenu li li ul { background: white; }
+
+/*****************************************************************************/
+
+ul.actionMenu {
+    margin: 0.75em 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.actionMenu li {
+    margin: 0 0.5em 0 0;
+    padding: 0;
+    display: inline;
+}
+
+ul.actionMenu a {
+    padding: 0.33em 0.5em;
+    border: 1px solid #235f7d;
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+}
+
+
+/*****************************************************************************/
+/***** Ajout Arnaud pour les nouveaux boutons du Helper Default.php  *********/
+/*****************************************************************************/
+
+p.actions {
+    margin: 0.75em 0;
+    padding: 0;
+    list-style: none;
+}
+
+p.actions li {
+    margin: 0 0.5em 0 0;
+    padding: 0;
+    display: inline;
+}
+
+p.actions a {
+    padding: 0.33em 0.5em;
+    border: 1px solid #235f7d;
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+}
+/*****************************************************************************/
+/*****************************************************************************/
+
+
+/*table a {
+    display: inline-block;
+}*/
+
+#pageMenu * {
+    line-height: 1em;
+}
+
+#pageMenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    height: 2em;
+    z-index: 10;
+}
+
+#pageMenu li {
+    padding: 0;
+    margin: 0;
+    float: left;
+    padding: 0.5em 0;
+    position: relative;
+}
+
+#pageMenu a {
+    border-right: 1px solid silver;
+    padding: 0.5em;
+}
+/* FIXME: on ne veut pas un sous-meun vertical mais un sous-menu horizontal */
+#pageMenu ul ul {
+    display: none;
+    position: absolute;
+    top: 2em;
+    left: 0;
+/*    width: 18em;
+    background: white;
+    padding: 0.5em 0;*/
+}
+
+/*#pageMenu ul ul li, #pageMenu ul ul li a {
+    clear: both;
+    display: block;
+    background: white;
+    width: 18em;
+    padding: 0; margin: 0;
+}
+
+#pageMenu ul ul li {
+    margin: 0 0.5em;
+    padding: 0.25em 0;
+}*/
+
+#pageMenu li:hover ul, #pageMenu li.hover ul {
+    display: block;
+}
+
+#pageMenu li:hover a, #pageMenu li.hover a {
+    background: #e6eef2;
+}
+
+#pageMenu li:hover ul a, #pageMenu li.hover ul a {
+    background: #a8dbef;
+}
+
+#pageMenu li a {
+    border: 0;
+}
+
+/*#pageMenu li ul ul
+{
+        margin    : -22px 0 0 144px ;
+        border-left     : 1px solid #fff ;
+}*/
+
+/*****************************************************************************/
+
+#pageWrapper {
+    position: relative;
+    z-index: 2;
+}
+
+.dynamic.innerTableHeader, .dynamic .innerTableCell {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1px;
+    width: 1px;
+    z-index: 0;
+    border: 0;
+}
+
+.dynamic.innerTableHeader { left: -2000px; }
+.innerTable td { background: white; }
+.innerTable { min-width: 20em; }
+.innerTable td { min-width: 10em; }
+.dynamic td { cursor: help; }
+
+/*****************************************************************************/
+
+table.bodyHeaders tbody tr.even th {
+    background: #83c2e2;
+    color: black;
+}
+
+table.bodyHeaders tbody tr.odd th {
+    background: #a8dbef;
+    color: black;
+}
+
+table.wide { width: 100%; }
+
+table.smallHeader tbody th { width: 25%; }
+table.mediumHeader tbody th { width: 50%; }
+table.wideHeader tbody th { width: 75%; }
+table.widerHeader tbody th { width: 90%; }
+
+
+/*****************************************************************************/
+
+span.disabled {
+    color: silver;
+}
+
+/*****************************************************************************/
+legend.wideHeader { width: 90%; }
+/*****************************************************************************/
+table.aere {
+    margin-bottom: 1.5em;
+/*     width: 25%; */
+}
+
+td.aere, th.aere{
+    width: 15em;
+}
+
+div.aere {
+    margin-bottom:1.5em;
+}
+/*****************************************************************************/
+/*Pour le dossier_menu dans l'entête*/
+p.etatDossier {
+    font-size: 14px;
+    border-bottom: 1px solid #235F7D;
+    line-height: 1em;
+    margin: 0;
+    padding: 0.5em;
+    background: #E6EEF2;
+}
+/*****************************************************************************/
+
+.noborder, table.noborder tbody {
+    border: 0!important;
+}
+
+.center {
+    text-align: center;
+}
+
+td.mediumSize  {
+    width: 50%;
+}
+
+td.radioSize {
+    width: 3%;
+}
+
+td.selectSize {
+    width: 30%;
+}
+
+td.selectSize label, td.selectSize div.input.select {
+    width: 100%!important;
+}
+
+td.radioSize div.input.radio, td.radioSize div.input.select {
+    width: 70%;
+}
+
+
+/** Ajout d'une légende pour les titres des fieldset ds le CI **/
+legend.title {
+    cursor: help;
+}
+
+fieldset.loici {
+    padding: 1em;
+    padding-top: 0em;
+    padding-bottom: 0em;
+    font-size:11px;
+    background-color: #FDF5E7;
+}
+fieldset.cnilci, fieldset.cnilci p {
+    font-size: 11px;
+    padding-bottom: 0em;
+    padding-bottom: 0em;
+    margin-bottom: 0em;
+    margin-top: 0em;
+}
+
+/*td.signature{
+    padding-bottom: 5em;
+}*/
+
+p.caution {
+    font-size: 9px;
+}
+
+thead tr#datesApre th {
+    color: black;
+    background-color: #C2E0EF;
+}
+
+table#repddtefp tbody th {
+    color: black;
+    background-color: #CFCFCF;
+}
+/** Selcteur d'activité pour le bénéficiaire APRE**/
+td.activiteSize {
+    width: 30%!important;
+}
+select.activiteSize {
+    width: 100%!important;
+}
+
+/*****************************************************************************/
+
+div.demi {
+    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;
+    width: 50%;
+/*     margin-bottom: 1.5em; */
+}
+
+div.demi div.checkbox {
+    display: inline;
+}
+
+/*******************************************************************************
+*	Onglets
+*******************************************************************************/
+
+.tab.title.hidden {
+	display: none;
+}
+
+div.tab {
+    border: 1px solid silver;
+    padding: 1em;
+    margin-top: 0.5em;
+    padding-top: 1.5em;
+}
+
+ul.ui-tabs-nav {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.ui-tabs-nav li {
+    padding: 0;
+    margin: 0;
+    display: inline;
+}
+
+ul.ui-tabs-nav a {
+    border: 1px solid silver;
+    padding: 0.5em;
+    background: #ddd;
+}
+
+ul.ui-tabs-nav a.active {
+    border: 1px solid silver;
+    border-bottom: 1px solid white;
+    background: white;
+}
