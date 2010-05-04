@@ -41,6 +41,7 @@
             $typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
             $this->set( 'typesorient', $typesorient );
             $this->set( 'referents', $this->Referent->find( 'list' ) );
+            $this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
             return $return;
         }
 

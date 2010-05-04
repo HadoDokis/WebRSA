@@ -23,7 +23,7 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'lib_typo' );?></th>
-                    <td><?php echo ( $contratinsertion['Contratinsertion']['numcontrat'] );?></td>
+                    <td><?php echo Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ), $options['num_contrat'] );?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'dd_ci' );?></th>

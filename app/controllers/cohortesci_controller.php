@@ -1,4 +1,6 @@
 <?php
+    @ini_set( 'max_execution_time', 0 );
+    @ini_set( 'memory_limit', '512M' );
     App::import('Sanitize');
 
     class CohortesciController extends AppController
@@ -32,6 +34,7 @@
             $this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
 
             $this->set( 'action', $this->Contratinsertion->Actioninsertion->find( 'list' ) );
+            $this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
             return $return;
         }
 
@@ -224,9 +227,7 @@
             $referents = $this->Referent->referentsListe( $structurereferente_id );
             $this->set( 'referents', $referents );
 
-
-
-// debug($orients);
+// debug($contrats);
 // die();
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'contrats' ) );
