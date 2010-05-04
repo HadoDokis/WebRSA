@@ -370,8 +370,9 @@
 
 
                 if( $this->Apre->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-
+// debug( $this->data );
                     $saved = $this->Apre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+
                     if( $saved ) {
                         $tablesLiees = array(
                             'Formqualif' => 'Pieceformqualif',
@@ -391,6 +392,7 @@
                                     ),
                                     $piecesLiees => $this->data[$piecesLiees]
                                 );
+
                                 $saved = $this->Apre->{$model}->save( $linkedData ) && $saved;
                             }
                         }

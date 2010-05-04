@@ -38,12 +38,16 @@
 
         // Onchage event - Partie dynamique
         $(select1Id).onchange = function() {
+
             $$('#' + select2Id + ' option').each( function ( option ) {
                 $(option).remove();
             } );
 
+            // INFO: pour les select dépendants en cascade
+            var select1IdValue = $(select1Id).value.replace( new RegExp( '^[^_]+_', 'gi' ), '' );
+
             for( var i = 0 ; i < select2Values.length ; i++ ) {
-                if( select2Values[i] == '' || select2Values[i].match( new RegExp( '^' + $(select1Id).value + '_' ), "g" ) ) {
+                if( select2Values[i] == '' || select2Values[i].match( new RegExp( '^' + select1IdValue + '_' ), "g" ) ) {
                     $(select2Id).insert( new Element( 'option', { 'value': select2Values[i] } ).update( select2Options[i] ) );
                 }
             }

@@ -22,10 +22,17 @@
 		*/
 
         function mkOrientstructPdf( $orientstruct_id = null ) {
+
 			$orientstructModelClass = ClassRegistry::init( 'Orientstruct' );
 			$pdfModelClass = ClassRegistry::init( 'Pdf' );
 
+//         $test = $orientstructModelClass->findById( $orientstruct_id, null, null, 2 );
+//         debug($orientstructModelClass);
+//         die();
+
+
 			$orientstruct = $orientstructModelClass->getDataForPdf( $orientstruct_id, $this->controller->Session->read( 'Auth.User.id' ) );
+
             $modele = $orientstruct['Typeorient']['modele_notif'];
 
 			$vieuxPdf = $pdfModelClass->find(
@@ -216,7 +223,8 @@
                     )
                 );
 
-                $fieldList[] = strtolower( $key );
+//                 $fieldList[] = strtolower( $key );
+//                 $fieldList[strtolower( $key )] = $value;
             }
 // debug( $fieldList );
 // die();

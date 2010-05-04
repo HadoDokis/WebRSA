@@ -39,6 +39,10 @@
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.',
                     'allowEmpty' => true
+                ),
+                array(
+                    'rule' => array( 'comparison', '>=', 0 ),
+                    'message' => 'Veuillez saisir une valeur positive.'
                 )
             )
         );

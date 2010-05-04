@@ -3,7 +3,7 @@
     {
 
         var $name = 'Orientsstructs';
-        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Demandereorient', 'Pdf' );
+        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Demandereorient', 'Pdf', 'Referent' );
         var $helpers = array( 'Default' );
         var $components = array( 'Gedooo' );
         /**
@@ -18,6 +18,8 @@
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
+
+//             $this->set( 'structs', $this->Structurereferente->list1Options() );
 
             $options = array();
             foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
@@ -128,6 +130,8 @@
 
             $this->set( 'options', $this->Typeorient->listOptions() );
             $this->set( 'options2', $this->Structurereferente->list1Options() );
+            $this->set( 'referents', $this->Referent->listOptions() );
+
 
             if( !empty( $this->data ) ) {
 // debug( $this->data );
@@ -198,6 +202,8 @@
 
             $this->set( 'options', $this->Typeorient->listOptions() );
             $this->set( 'options2', $this->Structurereferente->list1Options() );
+            $this->set( 'referents', $this->Referent->listOptions() );
+
 
             // Essai de sauvegarde
             if( !empty( $this->data ) ) {
@@ -224,8 +230,9 @@
             }
             // Afficage des données
             else {
-                // Assignation au formulaire
+                // Assignation au formulaire*
                 $this->data = Set::merge( array( 'Orientstruct' => $orientstruct['Orientstruct'] ), array( 'Calculdroitrsa' => $orientstruct['Personne']['Calculdroitrsa'] ) );
+
             }
 
             $this->Orientstruct->commit();
