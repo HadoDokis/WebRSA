@@ -28,6 +28,14 @@
                         'Structurereferente.lib_struc'
                     ),
                     'order'  => array( 'Structurereferente.lib_struc ASC' ),
+                    'conditions' => array(
+                        'OR' => array(
+                            'Structurereferente.apre' => 'O',
+                            'Structurereferente.orientation' => 'O',
+                            'Structurereferente.pdo' => 'O',
+                            'Structurereferente.contratengagement' => 'O'
+                        )
+                    ),
                     'recursive' => -1
                 )
             );
@@ -172,7 +180,7 @@
 
             $conditions = array();
 
-            foreach( array( 'apre', 'contratengagement' ) as $type ) {
+            foreach( array( 'apre', 'contratengagement', 'orientation', 'pdo' ) as $type ) {
                 $bool = Set::classicExtract( $types, $type );
                 if( !empty( $bool ) ) {
                     $conditions[] = "Structurereferente.{$type} = 'O'";
