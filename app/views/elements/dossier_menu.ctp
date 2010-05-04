@@ -94,7 +94,7 @@
                                 <?php endif;?>
 
                                 <?php if( $permissions->check( 'personnes_referents', 'index' ) || $permissions->check( 'rendezvous', 'index' ) || $permissions->check( 'contratsinsertion', 'index' ) ):?>
-                                    <li><span>Parcours</span>
+                                    <li><span>Accompagnement du parcours</span>
                                         <ul>
                                             <li>
                                                 <?php
