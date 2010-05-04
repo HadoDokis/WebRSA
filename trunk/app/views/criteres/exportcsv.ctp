@@ -12,7 +12,7 @@
         }
     }
 
-    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'NIR', 'Date de naissance', 'N° CAF',  'N° Téléphone', 'Adresse allocataire', 'Complément adresse', 'Code postal', 'Commune de l\'allocataire', 'Date d\'ouverture de droit', 'Etat du droit', 'Date de l\'orientation', 'Structure référente', 'Statut de l\'orientation', 'Soumis à droits et devoirs', 'Nature de la prestation' ) );
+    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'NIR', 'Date de naissance', 'N° CAF', 'Identifiant Pôle Emploi', 'N° Téléphone', 'Adresse allocataire', 'Complément adresse', 'Code postal', 'Commune de l\'allocataire', 'Date d\'ouverture de droit', 'Etat du droit', 'Date de l\'orientation', 'Structure référente', 'Statut de l\'orientation', 'Soumis à droits et devoirs', 'Nature de la prestation' ) );
 // debug($orients);
 // die();
     foreach( $orients as $orient ) {
@@ -34,6 +34,7 @@
             Set::classicExtract( $orient, 'Personne.nir' ),
             date_short( Set::classicExtract( $orient, 'Personne.dtnai' ) ),
             Set::classicExtract( $orient, 'Dossier.matricule' ),
+            Set::classicExtract( $orient, 'Infopoleemploi.identifiantpe' ),
             Set::classicExtract( $orient, 'Modecontact.numtel' ),
             Set::classicExtract( $orient, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $orient, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $orient, 'Adresse.nomvoie' ),
             Set::classicExtract( $orient, 'Adresse.complideadr' ).' '.Set::classicExtract( $orient, 'Adresse.compladr' ),
