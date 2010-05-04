@@ -305,7 +305,7 @@
 // // 					$tc = $tcPremierContrat;
 //                     $tc = 'Premier contrat';
 // 				}
-                $tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.numcontrat' );
+                $tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' );
 //                 $tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.numcontrat' );
 
             }
