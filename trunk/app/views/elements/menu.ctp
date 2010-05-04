@@ -129,9 +129,7 @@
                                 </li>
                         <?php endif;?>
 
-
-            <?php if( Configure::read( 'nom_form_apre_cg' == 'cg93' ) ):?> <!-- Début de l'affichage en fonction du CG-->
-
+                <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ):?> <!-- Début de l'affichage en fonction du CG-->
                         <?php if( $permissions->check( 'comitesapres', 'index' ) || $permissions->check( 'cohortescomitesapres', 'index' ) ):?>
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                                 <?php echo $html->link( 'Comité d\'examen', '#');?>

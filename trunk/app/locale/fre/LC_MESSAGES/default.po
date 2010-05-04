@@ -747,6 +747,9 @@ msgstr "Type d'orientation"
 msgid "lib_struc"
 msgstr "Type de structure"
 
+msgid "nom_referent"
+msgstr "Nom du référent"
+
 msgid "structure_referente"
 msgstr "Zone géographique"
 

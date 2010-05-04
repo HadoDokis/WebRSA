@@ -392,19 +392,24 @@
         *
         */
 
+
         function afterSave( $created ) {
             $return = parent::afterSave( $created );
 
-			$details = $this->_details( $this->id );
+            $details = $this->_details( $this->id );
 
-            $return = $this->query( "UPDATE apres SET eligibiliteapre = 'O' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'COM' AND ( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = ".$this->data[$this->name]['personne_id']." ) > 0;" ) && $return;
+            $personne_id = Set::classicExtract( $this->data, "{$this->alias}.personne_id" );
 
-            $return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND NOT ( apres.etatdossierapre = 'COM' AND ( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = ".$this->data[$this->name]['personne_id']." ) > 0 );" ) && $return;
+            if( !empty( $personne_id ) ){
+                $return = $this->query( "UPDATE apres SET eligibiliteapre = 'O' WHERE apres.personne_id = {$personne_id} AND apres.etatdossierapre = 'COM' AND ( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = {$personne_id} ) > 0;" ) && $return;
 
+                $return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = {$personne_id} AND NOT ( apres.etatdossierapre = 'COM' AND ( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = {$personne_id} ) > 0 );" ) && $return;
+            }
 
-			// FIXME: return ?
+            // FIXME: return ?
             return $return;
         }
+
 
         /**
         * Mise à jour des montants déjà versés pour chacune des APREs
