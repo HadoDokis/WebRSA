@@ -58,40 +58,39 @@
                                                     );
                                                 ?>
                                             </li>
+                                            <?php if( $permissions->check( 'dsps', 'view' ) ):?>
+                                                <li>
+                                                    <?php
+                                                        echo $html->link(
+                                                            h( 'DSP CAF (NEW)' ),
+                                                            array( 'controller' => 'dsps', 'action' => 'view', $personne['id'] )
+                                                        );?>
+                                                </li>
+                                            <?php endif;?>
+                                            <?php if( $permissions->check( 'dspps', 'view' ) ):?>
+                                                <li>
+                                                    <?php
+                                                        echo $html->link(
+                                                            h( 'DSP CAF' ),
+                                                            array( 'controller' => 'dspps', 'action' => 'view', $personne['id'] )
+                                                        );?>
+                                                </li>
+                                            <?php endif;?>
+
+                                            <?php if( $permissions->check( 'orientsstructs', 'index' ) ):?>
+                                                <li>
+                                                    <?php
+                                                        echo $html->link(
+                                                            h( 'Orientation' ),
+                                                            array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
+                                                        );
+                                                    ?>
+                                                </li>
+                                            <?php endif;?>
                                         </ul>
                                     </li>
                                 <?php endif;?>
 
-                                <?php if( $permissions->check( 'dsps', 'view' ) ):?>
-                                    <li>
-                                        <?php
-                                            echo $html->link(
-                                                h( 'DSP CAF (NEW)' ),
-                                                array( 'controller' => 'dsps', 'action' => 'view', $personne['id'] )
-                                            );?>
-                                    </li>
-                                <?php endif;?>
-
-                                <?php if( $permissions->check( 'dspps', 'view' ) ):?>
-                                    <li>
-                                        <?php
-                                            echo $html->link(
-                                                h( 'DSP CAF' ),
-                                                array( 'controller' => 'dspps', 'action' => 'view', $personne['id'] )
-                                            );?>
-                                    </li>
-                                <?php endif;?>
-
-                                <?php if( $permissions->check( 'orientsstructs', 'index' ) ):?>
-                                    <li>
-                                        <?php
-                                            echo $html->link(
-                                                h( 'Orientation' ),
-                                                array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
-                                            );
-                                        ?>
-                                    </li>
-                                <?php endif;?>
 
                                 <?php if( $permissions->check( 'personnes_referents', 'index' ) || $permissions->check( 'rendezvous', 'index' ) || $permissions->check( 'contratsinsertion', 'index' ) ):?>
                                     <li><span>Accompagnement du parcours</span>
