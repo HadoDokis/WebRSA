@@ -97,7 +97,7 @@
                     <th><?php echo $paginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
                     <th><?php echo $paginator->sort( 'Date de saisie du contrat', 'Contratinsertion.date_saisi_ci' );?></th>
                     <th><?php echo $paginator->sort( 'Rang du contrat', 'Contratinsertion.rg_ci' );?></th>
-                    <th><?php echo $paginator->sort( 'Décision', 'contratinsertion.decision_ci' );?></th>
+                    <th><?php echo $paginator->sort( 'Décision', 'Contratinsertion.decision_ci' ).$paginator->sort( ' ', 'Contratinsertion.datevalidation_ci' );?></th>
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
