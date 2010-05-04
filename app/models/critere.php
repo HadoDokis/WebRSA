@@ -38,6 +38,7 @@
             $referent_id = Set::extract( $criteres, 'Critere.referent_id' );
             $dtnai = Set::extract( $criteres, 'Critere.dtnai' );
             $matricule = Set::extract( $criteres, 'Critere.matricule' );
+            $identifiantpe = Set::extract( $criteres, 'Critere.identifiantpe' );
 
 
             /// Critères sur l'orientation - date d'orientation
@@ -105,6 +106,11 @@
             // ...
             if( !empty( $natpf ) ) {
                 $conditions[] = 'Detailcalculdroitrsa.natpf = \''.Sanitize::clean( $natpf ).'\'';
+            }
+
+            // ...
+            if( !empty( $identifiantpe ) ) {
+                $conditions[] = 'Infopoleemploi.identifiantpe = \''.Sanitize::clean( $identifiantpe ).'\'';
             }
 
             // ...
@@ -177,7 +183,8 @@
                     '"Situationdossierrsa"."etatdosrsa"',
                     '"Calculdroitrsa"."toppersdrodevorsa"',
                     '"Detailcalculdroitrsa"."natpf"',
-                    '"PersonneReferent"."referent_id"'
+                    '"PersonneReferent"."referent_id"',
+                    '"Infopoleemploi"."identifiantpe"'
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -197,6 +204,13 @@
                             'Prestation.personne_id = Personne.id',
                             'Prestation.natprest = \'RSA\''
                         )
+                    ),
+                    array(
+                        'table'      => 'infospoleemploi',
+                        'alias'      => 'Infopoleemploi',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Infopoleemploi.personne_id = Personne.id' )
                     ),
                     array(
                         'table'      => 'calculsdroitsrsa',

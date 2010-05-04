@@ -59,6 +59,7 @@
         <?php echo $form->input( 'Critere.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Critere.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Critere.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Critere.identifiantpe', array( 'label' => 'Identifiant Pôle Emploi ', 'type' => 'text', 'maxlength' => 11 ) );?>
         <!-- <?php echo $form->input( 'Critere.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'text' ) );?> -->
         <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
         <?php
@@ -146,6 +147,10 @@
                                 <tr>
                                     <th>NIR</th>
                                     <td>'.$orient['Personne']['nir'].'</td>
+                                </tr>
+                                <tr>
+                                    <th>Identifiant Pôle Emploi</th>
+                                    <td>'.$orient['Infopoleemploi']['identifiantpe'].'</td>
                                 </tr>
                             </tbody>
                         </table>';
