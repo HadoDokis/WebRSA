@@ -26,6 +26,9 @@
                         'values' => array( 0, 1 )
                     ),*/
                 )
+            ),
+            'Formattable' => array(
+                'suffix' => array( 'structurereferente_id', 'referent_id' ),
             )
         );
 
@@ -49,12 +52,18 @@
             'Typeorient' => array(
                 'classname'     => 'Typeorient',
                 'foreignKey'    => 'typeorient_id'
+            ),
+            'Referent' => array(
+                'classname'     => 'Referent',
+                'foreignKey'    => 'referent_id'
             )/*,///FIXMRE: test avant confirmation !!!!!!!
             'Serviceinstructeur' => array(
                 'classname' => 'Serviceinstructeur',
                 'foreignKey' => 'serviceinstructeur_id'
             )*/
         );
+
+
 
         // ********************************************************************
 
@@ -285,26 +294,28 @@
         }
 
         // ********************************************************************
-
+/*
         function beforeSave( $options = array() ) {
             $return = parent::beforeSave( $options );
             $hasMany = ( array_depth( $this->data ) > 2 );
 
             if( !$hasMany ) { // INFO: 1 seul enregistrement
-                if( array_key_exists( 'structurereferente_id', $this->data['Orientstruct'] ) ) {
+                if( array_key_exists( 'structurereferente_id', $this->data['Orientstruct'] ) && array_key_exists( 'referent_id', $this->data['Orientstruct'] ) ) {
                     $this->data['Orientstruct']['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct']['structurereferente_id'] );
+                    $this->data['Orientstruct']['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct']['referent_id'] );
                 }
             }
             else { // INFO: plusieurs enregistrements
                 foreach( $this->data['Orientstruct'] as $key => $value ) {
                     if( is_array( $value ) && array_key_exists( 'structurereferente_id', $value ) ) {
                         $this->data['Orientstruct'][$key]['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $value['structurereferente_id'] );
+                        $this->data['Orientstruct'][$key]['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $value['referent_id'] );
                     }
                 }
             }
 
             return $return;
-        }
+        }*/
 
         //*********************************************************************
 

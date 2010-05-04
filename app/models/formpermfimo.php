@@ -41,6 +41,10 @@
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.',
                     'allowEmpty' => true
+                ),
+                array(
+                    'rule' => array( 'inclusiveRange', 0, 2000 ),
+                    'message' => 'Veuillez saisir un montant compris entre 0 et 2000€ maximum.'
                 )
             ),
             'dureeform' => array(
@@ -52,6 +56,10 @@
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.',
                     'allowEmpty' => true
+                ),
+                array(
+                    'rule' => array( 'comparison', '>=', 0 ),
+                    'message' => 'Veuillez saisir une valeur positive.'
                 )
             ),
             'ddform' => array(

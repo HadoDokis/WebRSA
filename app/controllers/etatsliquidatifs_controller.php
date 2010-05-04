@@ -211,21 +211,28 @@
 
             $this->{$this->modelClass}->Apre->unbindModelAll( false );
             $this->paginate['Apre'] = $queryData;
-            $apres = $this->paginate( 'Apre' );
 
+            $apres = $this->paginate( 'Apre' );
+// debug( $apres );
 
             if( $typeapre  == 'C' ) {
-                $apre_etatliquidatif = $this->ApreEtatliquidatif->find(
-                    'all',
-                    array(
-                        'conditions' => array(
-                            'ApreEtatliquidatif.etatliquidatif_id' => $id,
-                            'ApreEtatliquidatif.apre_id' => Set::extract( $apres, '/Apre/id' )
+                foreach( $apres as $i => $apre ) {
+                    $apre_etatliquidatif = $this->ApreEtatliquidatif->find(
+                        'first',
+                        array(
+                            'conditions' => array(
+                                'ApreEtatliquidatif.etatliquidatif_id' => $id,
+                                'ApreEtatliquidatif.apre_id' => Set::extract( $apre, '/Apre/id' )
+                            ),
+                            'recursive' => -1
                         )
-                    )
-                );
+                    );
+                    $apre = Set::merge( $apre, $apre_etatliquidatif );
+// debug( $apre );
+                    $apres[$i] = $apre;
+                }
+
                 $this->set( 'apre_etatliquidatif', $apre_etatliquidatif );
-                $apres= Set::merge( $apres, $apre_etatliquidatif );
 
 // 		$aidesApre = array();
 // 		foreach( $apres as $key => $apre ) {
@@ -353,13 +360,15 @@
             else if( $typeapre == 'C' && $dest == 'tiersprestataire' ) {
                 // FIXME: dans le modèle
                 $apre['Apre']['pourcentallocation'] = round( Set::classicExtract( $apre, 'Apre.allocation' ) / Set::classicExtract( $apre, 'Apre.montantaverser' ) * 100, 0 );
-                $apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
+                //$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
+                $apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantdejaverse' ) - Set::classicExtract( $apre, 'Apre.montantaverser' ), 2 );
                 $this->Gedooo->generate( $apre, 'APRE/Paiement/paiement_'.$dest.'.odt' );
             }
             else if( $typeapre == 'C' && $dest == 'beneficiaire' ) {
                 // FIXME: dans le modèle
                 $apre['Apre']['pourcentallocation'] = round( Set::classicExtract( $apre, 'Apre.allocation' ) / Set::classicExtract( $apre, 'Apre.montantaverser' ) * 100, 0 );
-                $apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
+                //$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
+                $apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantdejaverse' ) - Set::classicExtract( $apre, 'Apre.montantaverser' ), 2 );
                 $this->Gedooo->generate( $apre, 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt' );
             }
         }

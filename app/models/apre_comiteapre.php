@@ -25,7 +25,7 @@
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.',
                     'allowEmpty' => true
-                ),
+                )
             ),
         );
 
@@ -48,15 +48,19 @@
                     //$apre = $this->Apre->findById( $this->data[$this->name]['apre_id'], null, null, -1 );
                     $apre = $this->Apre->read( array( 'id', $this->Apre->sousRequeteMontantTotal().' AS "Apre__montantaverser"' ), $this->data[$this->name]['apre_id'] );
 
-                    $montantacceptable = ( $this->data[$this->name]['montantattribue'] <= $apre['Apre']['montantaverser'] );
+                    /// INFO: devrait fonctionner avec comparison, mais ce n'est pas le cas
+                    $montantpositif = ( $this->data[$this->name]['montantattribue'] >= 0 );
+                    if( !$montantpositif ) {
+                        $this->invalidate( 'montantattribue', 'Veuillez entrer un nombre positif' );
+                    }
 
+                    $montantacceptable = ( $this->data[$this->name]['montantattribue'] <= $apre['Apre']['montantaverser'] );
                     if( !$montantacceptable ) {
                         $this->invalidate( 'montantattribue', 'Maximum: '.$apre['Apre']['montantaverser'].' €' );
                     }
-                    $return = ( $return && $montantacceptable );
+                    $return = ( $return && $montantacceptable && $montantpositif );
                 }
             }
-
             return $return;
         }
 

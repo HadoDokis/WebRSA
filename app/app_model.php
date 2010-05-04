@@ -675,7 +675,7 @@
 		* @access public
 		*/
 
-		function inclusiveRange($check, $lower = null, $upper = null ) {
+		function inclusiveRange( $check, $lower = null, $upper = null ) {
             $return = true;
             foreach( $check as $field => $value ) {
 				if (isset($lower) && isset($upper)) {

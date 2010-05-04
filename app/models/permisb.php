@@ -17,21 +17,21 @@
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
-            'coutform' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-                array(
-                    'rule' => 'numeric',
-                    'message' => 'Veuillez entrer une valeur numérique.',
-//                     'allowEmpty' => true
-                ),
-                array(
-                    'rule' => array( 'inclusiveRange', 0, 1000 ),
-                    'message' => 'Veuillez saisir un montant compris entre 0 et 1000€ maximum.'
-                )
-            ),
+//             'coutform' => array(
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 ),
+//                 array(
+//                     'rule' => 'numeric',
+//                     'message' => 'Veuillez entrer une valeur numérique.',
+// //                     'allowEmpty' => true
+//                 ),
+//                 array(
+//                     'rule' => array( 'inclusiveRange', 0, 1000 ),
+//                     'message' => 'Veuillez saisir un montant compris entre 0 et 1000€ maximum.'
+//                 )
+//             ),
             'dureeform' => array(
                 array(
                     'rule' => 'notEmpty',
@@ -41,6 +41,10 @@
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.',
 //                     'allowEmpty' => true
+                ),
+                array(
+                    'rule' => array( 'comparison', '>=', 0 ),
+                    'message' => 'Veuillez saisir une valeur positive.'
                 )
             ),
             'montantaide' => array(
@@ -51,6 +55,10 @@
                 array(
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.'
+                ),
+                array(
+                    'rule' => array( 'inclusiveRange', 0, 1000 ),
+                    'message' => 'Veuillez saisir un montant compris entre 0 et 1000€ maximum.'
                 )
             ),
         );

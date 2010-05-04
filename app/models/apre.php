@@ -56,6 +56,10 @@
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.'
                 ),
+                array(
+                    'rule' => array( 'comparison', '>=', 0 ),
+                    'message' => 'Veuillez entrer un nombre positif.'
+                )
             ),
             'structurereferente_id' => array(
                 'rule' => 'notEmpty',
@@ -65,6 +69,13 @@
 //                 'rule' => 'notEmpty',
 //                 'message' => 'Champ obligatoire'
 //             ),
+            'nbheurestravaillees' => array(
+                array(
+                    'rule' => array( 'comparison', '>=', 0 ),
+                    'message' => 'Veuillez saisir une valeur positive.',
+                    'allowEmpty' => true
+                )
+            )
         );
 
         var $belongsTo = array(

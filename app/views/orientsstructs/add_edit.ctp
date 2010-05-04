@@ -16,9 +16,12 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         dependantSelect( 'OrientstructStructurereferenteId', 'OrientstructTypeorientId' );
+        dependantSelect( 'OrientstructReferentId', 'OrientstructStructurereferenteId' );
+
+        try { $( 'OrientstructStructurereferenteId' ).onchange(); } catch(id) { }
+        try { $( 'OrientstructReferentId' ).onchange(); } catch(id) { }
     });
 </script>
-
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>

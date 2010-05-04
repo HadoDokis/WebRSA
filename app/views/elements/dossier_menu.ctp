@@ -95,6 +95,15 @@
                                 <?php if( $permissions->check( 'personnes_referents', 'index' ) || $permissions->check( 'rendezvous', 'index' ) || $permissions->check( 'contratsinsertion', 'index' ) ):?>
                                     <li><span>Accompagnement du parcours</span>
                                         <ul>
+                                            <li>
+                                                <?php
+                                                    echo $html->link(
+                                                        h( 'Chronologie parcours' ),
+                                                        '#'
+//                                                         array( 'controller' => '#', 'action' => '#', $personne['id'] )
+                                                    );
+                                                ?>
+                                            </li>
                                         <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg66' ):?>
                                             <li>
                                                 <?php
@@ -108,37 +117,62 @@
                                             <li>
                                                 <?php
                                                     echo $html->link(
-                                                        h( 'Rendez-vous' ),
+                                                        h( 'Gestion RDV' ),
                                                         array( 'controller' => 'rendezvous', 'action' => 'index', $personne['id'] )
                                                     );
                                                 ?>
                                             </li>
-                                            <li>
-                                                <?php
-                                                    echo $html->link(
-                                                        'Contrats',
-                                                        array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne['id'] )
-                                                    );
-                                                ?>
-                                            </li>
-                                            <li>
-                                                <?php
-                                                    echo $html->link(
-                                                        'Candidatures',
-                                                        array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne['id'] )
-                                                    );
-                                                ?>
-                                            </li>
-                                            <li><span>Suivi</span>
+                                            <li><span>Contrats</span>
                                                 <ul>
-                                                    <!-- <li>
+                                                    <li>
                                                         <?php
                                                             echo $html->link(
-                                                                'Actions /Partenaires /Bilan',
-                                                                '#'//array( 'controller' => 'actionsinsertion', 'action' => 'index', $personne['id'] )
+                                                                'Contrat Engagement',
+                                                                array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne['id'] )
                                                             );
                                                         ?>
+                                                    </li>
+                                                    <li>
+                                                        <?php
+                                                            echo $html->link(
+                                                                'CUI',
+                                                                '#'
+//                                                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne['id'] )
+                                                            );
+                                                        ?>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li><span>Offre d'insertion</span>
+                                                <ul>
+                                                   <!-- <li>
+                                                        <?php
+                                                            /*echo $html->link(
+                                                                'Recherche action',
+                                                                array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne['id'] )
+                                                            );*/
+                                                        ?>
                                                     </li> -->
+                                                    <li>
+                                                        <?php
+                                                            if( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ){
+                                                                echo $html->link(
+                                                                    'Fiche de liaison',
+                                                                    array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne['id'] )
+                                                                );
+                                                            }
+                                                            else{
+                                                                echo $html->link(
+                                                                    'Fiche de candidature',
+                                                                    array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne['id'] )
+                                                                );
+                                                            }
+                                                        ?>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li><span>Aides financières</span>
+                                                <ul>
                                                     <li>
                                                         <?php
                                                             echo $html->link(
@@ -147,15 +181,51 @@
                                                             );
                                                         ?>
                                                     </li>
-                                                   <!-- <li>
+                                                </ul>
+                                            </li>
+                                            <li><span>Saisine EP</span>
+                                                <ul>
+                                                    <li>
+                                                        <?php
+                                                            if( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ){
+                                                                echo $html->link(
+                                                                    'Fiche de saisine',
+                                                                    '#'
+//                                                                     array( 'controller' => 'eps', 'action' => 'index', $personne['id'] )
+                                                                );
+                                                            }
+                                                            else{
+                                                                echo $html->link(
+                                                                    'Bilan du parcours',
+                                                                    '#'
+//                                                                     array( 'controller' => 'eps', 'action' => 'index', $personne['id'] )
+                                                                );
+                                                            }
+                                                        ?>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li><span>Documents scannés</span>
+                                                <ul>
+                                                    <li>
                                                         <?php
                                                             echo $html->link(
-                                                                'Bilan du parcours d\'insertion',
-                                                                '#'//array( 'controller' => '', 'action' => 'index', $personne['id'] )
+                                                                'Courriers',
+                                                                '#'
+//                                                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $personne['id'] )
                                                             );
                                                         ?>
-                                                    </li> -->
+                                                    </li>
                                                 </ul>
+                                            </li>
+                                            <li>
+                                                <?php
+                                                    echo $html->link(
+                                                        'Mémo',
+                                                        '#'
+//                                                         array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $personne['id'] )
+                                                    );
+                                                ?>
                                             </li>
                                         </ul>
                                     </li>

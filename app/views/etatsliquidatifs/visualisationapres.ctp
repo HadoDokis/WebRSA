@@ -48,7 +48,6 @@
         $rows = array();
 
         foreach( $apres as $i => $apre ) {
-
             if( $typeapre == 'F' ) {
                 $apre['Apre']['allocation'] = $apre['Apre']['mtforfait'];
                 $isTiers = false;
