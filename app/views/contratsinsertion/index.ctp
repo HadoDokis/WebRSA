@@ -54,6 +54,15 @@
             <tbody>
                 <?php foreach( $contratsinsertion as $contratinsertion ):?>
                     <?php
+                        $isValid = Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' );
+                        $block = true;
+                        if( $isValid == 'V'  ){
+                            $block = false;
+                        }
+                        else{
+                            $block;
+                        }
+
                         echo $html->tableCells(
                             array(
                                 //h( $contratinsertion['Contratinsertion']['id'] ),
@@ -78,7 +87,10 @@
                                 $html->editLink(
                                     'Éditer le contrat d\'engagement réciproque ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'edit', $contratinsertion['Contratinsertion']['id'] ),
-                                    $permissions->check( 'contratsinsertion', 'edit' )
+//                                     array(
+                                        $block,
+                                        $permissions->check( 'contratsinsertion', 'edit' )
+//                                     )
                                 ),
                                 $html->printLink(
                                     'Imprimer le contrat d\'engagement réciproque',
