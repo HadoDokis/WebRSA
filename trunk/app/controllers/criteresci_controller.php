@@ -39,6 +39,7 @@
 
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
+            $this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
 
             $this->set( 'action', $this->Action->find( 'list' ) );
 

@@ -188,7 +188,7 @@
                 'fields' => array(
                     '"Contratinsertion"."id"',
                     '"Contratinsertion"."personne_id"',
-                    '"Contratinsertion"."numcontrat"',
+                    '"Contratinsertion"."num_contrat"',
                     '"Contratinsertion"."structurereferente_id"',
                     '"Contratinsertion"."rg_ci"',
                     '"Contratinsertion"."decision_ci"',

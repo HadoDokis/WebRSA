@@ -17,16 +17,16 @@
     foreach( $contrats as $contrat ) {
 
         $row = array(
-            Set::extract( $contrat, 'Dossier.numdemrsa' ),
-            Set::extract( $contrat, 'Personne.nom' ).' '.Set::extract( $contrat, 'Personne.prenom'),
-            Set::extract( $contrat, 'Adresse.locaadr' ),
-            value( $referents, Set::extract( $contrat, 'PersonneReferent.referent_id' ) ),
-            value( $struct, Set::extract( $contrat, 'Contratinsertion.structurereferente_id' ) ),
-            Set::extract( $contrat, 'Contratinsertion.numcontrat' ),
-            $locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.dd_ci' ) ),
+            Set::classicExtract( $contrat, 'Dossier.numdemrsa' ),
+            Set::classicExtract( $contrat, 'Personne.nom' ).' '.Set::classicExtract( $contrat, 'Personne.prenom'),
+            Set::classicExtract( $contrat, 'Adresse.locaadr' ),
+            value( $referents, Set::classicExtract( $contrat, 'PersonneReferent.referent_id' ) ),
+            value( $struct, Set::classicExtract( $contrat, 'Contratinsertion.structurereferente_id' ) ),
+            Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] ),
+            $locale->date( 'Date::short', Set::classicExtract( $contrat, 'Contratinsertion.dd_ci' ) ),
             Set::enum( Set::extract( $contrat, 'Contratinsertion.duree_engag' ), $duree_engag_cg93 ),
-            $locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.df_ci' ) ),
-            Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ),
+            $locale->date( 'Date::short', Set::classicExtract( $contrat, 'Contratinsertion.df_ci' ) ),
+            Set::classicExtract( $decision_ci, Set::classicExtract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$locale->date( 'Date::short', Set::classicExtract( $contrat, 'Contratinsertion.datevalidation_ci' ) ),
             Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.actions_prev' ), $action ),
         );
         $csv->addRow($row);

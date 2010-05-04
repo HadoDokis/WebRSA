@@ -96,6 +96,7 @@
                                 <?php if( $permissions->check( 'personnes_referents', 'index' ) || $permissions->check( 'rendezvous', 'index' ) || $permissions->check( 'contratsinsertion', 'index' ) ):?>
                                     <li><span>Accompagnement du parcours</span>
                                         <ul>
+                                        <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg66' ):?>
                                             <li>
                                                 <?php
                                                     echo $html->link(
@@ -104,6 +105,7 @@
                                                     );
                                                 ?>
                                             </li>
+                                        <?php endif;?>
                                             <li>
                                                 <?php
                                                     echo $html->link(

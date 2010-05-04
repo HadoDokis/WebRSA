@@ -26,8 +26,8 @@
     }
 
     /////  Récupération données du Contratinsertion pour le DEM et le CJT
-    $DT = Set::extract( 'DEM.Contratinsertion.numcontrat', $details);
-    $CT = Set::extract( 'CJT.Contratinsertion.numcontrat', $details);
+    $DT = Set::extract( 'DEM.Contratinsertion.num_contrat', $details);
+    $CT = Set::extract( 'CJT.Contratinsertion.num_contrat', $details);
 
     $deciD = Set::extract( 'DEM.Contratinsertion.decision_ci', $details);
     $deciC = Set::extract( 'CJT.Contratinsertion.decision_ci', $details);
@@ -151,8 +151,8 @@
                         <tbody>
                             <tr class="even">
                                 <th>Type de contrat</th>
-                                <td><?php echo Set::classicExtract( $details, 'DEM.Contratinsertion.numcontrat' );?></td>
-                                <td><?php echo Set::classicExtract( $details, 'CJT.Contratinsertion.numcontrat' );?></td>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] );?></td>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date de début</th>
