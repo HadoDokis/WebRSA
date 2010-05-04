@@ -206,6 +206,7 @@
 				$countTypesOrient[$preOrientation]++;
 
 				$orientstruct = array( 'Orientstruct' => Set::classicExtract( $personne, 'Orientstruct' ) );
+				$orientstruct['Orientstruct']['date_propo'] = date( 'Y-m-d' );
 				$orientstruct['Orientstruct']['propo_algo_texte'] = $preOrientationTexte;
 				$orientstruct['Orientstruct']['propo_algo'] = $preOrientation;
 
