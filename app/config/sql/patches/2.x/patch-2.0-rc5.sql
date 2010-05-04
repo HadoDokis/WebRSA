@@ -48,5 +48,6 @@ ALTER TABLE contratsinsertion DROP COLUMN numcontrat;
 -- DELETE FROM piecespermisb WHERE id > '2';
 -- --------------------------------------------------------------------------------
 
+ALTER TABLE orientsstructs ADD COLUMN referent_id INTEGER REFERENCES referents(id) DEFAULT NULL;
 
 COMMIT;
