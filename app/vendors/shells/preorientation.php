@@ -175,8 +175,7 @@
 							SET propo_algo = NULL,
 								date_propo = NULL
 							WHERE statut_orient <> 'Orienté'";
-				$t = $this->Orientstruct->query( $sql ); // FIXME
-				debug( $t );
+				$t = $this->Orientstruct->query( $sql );
 			}
 
 			//------------------------------------------------------------------
