@@ -89,7 +89,12 @@
 
             // Nature de la prestation
             if( !empty( $natpf ) ) {
-                $conditions[] = 'Detailcalculdroitrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';
+                //$conditions[] = 'detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';
+				$conditions[] = 'Detaildroitrsa.id IN (
+									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
+										FROM detailscalculsdroitsrsa
+										WHERE detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'
+								)';
             }
 
             /// Critères sur l'adresse - canton
@@ -245,13 +250,22 @@ SELECT DISTINCT contratsinsertion.id
                         'foreignKey' => false,
                         'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
                     ),
-                    array(
+                    /*array(
                         'table'      => 'detailscalculsdroitsrsa',
                         'alias'      => 'Detailcalculdroitrsa',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
-                    ),
+                        'conditions' => array(
+							'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id',
+							'Detailcalculdroitrsa.id IN (
+								SELECT tmpdetailscalculsdroitsrsa.id FROM (
+									SELECT detailscalculsdroitsrsa.id, MAX(detailscalculsdroitsrsa.ddnatdro)
+										FROM detailscalculsdroitsrsa
+										GROUP BY detailscalculsdroitsrsa.detaildroitrsa_id, detailscalculsdroitsrsa.id
+								) AS tmpdetailscalculsdroitsrsa
+							)'
+						)
+                    ),*/
                     array(
                         'table'      => 'personnes_referents',
                         'alias'      => 'PersonneReferent',
