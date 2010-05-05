@@ -271,7 +271,10 @@ SELECT DISTINCT contratsinsertion.id
                         'alias'      => 'PersonneReferent',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'PersonneReferent.personne_id = Personne.id' )
+                        'conditions' => array(
+                            'PersonneReferent.personne_id = Personne.id',
+                            'PersonneReferent.dfdesignation IS NULL'
+                        )
                     ),
 //                     array(
 //                         'table'      => 'structuresreferentes',

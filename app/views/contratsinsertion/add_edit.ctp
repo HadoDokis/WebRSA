@@ -84,7 +84,7 @@
                 $duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
                 foreach( $$duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
 
-            setDateInterval2( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], true );
+            setDateInterval( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
         }
     }
 
@@ -329,9 +329,9 @@
                         if( !empty( $orientstruct ) ) {
                             echo $typeOrientation;
                         }
-
-                        //echo Set::classicExtract( $struct, 'Structurereferente.typeorient_id' );
-
+                        else if( empty( $orientstruct ) ){
+                            echo Set::enum( Set::classicExtract( $struct, 'Structurereferente.typeorient_id' ), $typesorients );
+                        }
                     ?>
                 </td>
             </tr>
@@ -353,23 +353,18 @@
                     <?php endif;?>
                 </td>
                 <td class="noborder">
-<!--<<<<<<< .mine
-                    <?php
-                        echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
-					?>
-=======-->
                     <?php
                         if( empty( $personne_referent ) && $this->action == 'add' ){
-                            echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $refstruct, 'empty' => true ) );
+                            echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $referent, 'empty' => true ) );
                         }
                         else if( empty( $personne_referent ) && $this->action == 'edit' ){
-                            echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $refstruct, 'selected' => $struct_id.'_'.$referent_id, 'empty' => true ) );
+                            echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $referent, 'selected' => $struct_id.'_'.$referent_id, 'empty' => true ) );
                         }
                     ?>
                     <?php if( !empty( $personne_referent ) ):?>
                         <strong>Nom du référent chargé du suivi :</strong> <br />
                             <?php
-                                echo value( $refs, Set::classicExtract( $personne, 'PersonneReferent.referent_id' ) );
+                                echo value( $refs, Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' ) );
                             ?>
                     <?php endif;?>
                 </td>

@@ -18,24 +18,17 @@
         );
 
 
-        function list1Options() {
+        function list1Options( $conditions = array() ) {
             $tmp = $this->find(
                 'all',
-                array (
+                array(
+                    'conditions' => $conditions,
                     'fields' => array(
                         'Structurereferente.id',
                         'Structurereferente.typeorient_id',
                         'Structurereferente.lib_struc'
                     ),
                     'order'  => array( 'Structurereferente.lib_struc ASC' ),
-                    'conditions' => array(
-                        'OR' => array(
-                            'Structurereferente.apre' => 'O',
-                            'Structurereferente.orientation' => 'O',
-                            'Structurereferente.pdo' => 'O',
-                            'Structurereferente.contratengagement' => 'O'
-                        )
-                    ),
                     'recursive' => -1
                 )
             );

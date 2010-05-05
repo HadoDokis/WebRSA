@@ -30,7 +30,7 @@
 
         var $hasAndBelongsToMany = array(
             'Actioncandidat' => array( 'with' => 'ActioncandidatPersonne' ),
-            'Referent' => array( 'with' => 'ActioncandidatPersonne' )
+            'Referent' => array( 'with' => 'PersonneReferent' )
         );
 
         var $hasMany = array(
