@@ -129,7 +129,7 @@
             $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             $this->set( 'options', $this->Typeorient->listOptions() );
-            $this->set( 'options2', $this->Structurereferente->list1Options() );
+            $this->set( 'options2', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
             $this->set( 'referents', $this->Referent->listOptions() );
 
 
@@ -201,7 +201,7 @@
             $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             $this->set( 'options', $this->Typeorient->listOptions() );
-            $this->set( 'options2', $this->Structurereferente->list1Options() );
+            $this->set( 'options2', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
             $this->set( 'referents', $this->Referent->listOptions() );
 
 

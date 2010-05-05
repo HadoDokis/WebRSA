@@ -29,6 +29,8 @@
             parent::beforeFilter();
             $options = $this->Contratinsertion->allEnumLists();
             $this->set( 'options', $options );
+            $this->set( 'refs', $this->Referent->find( 'list') );
+            $this->set( 'typesorients', $this->Typeorient->find( 'list', array( 'fields' => 'Typeorient.lib_type_orient' ) ) );
 
             if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
                 $this->set( 'decision_ci', $this->Option->decision_ci() );
@@ -358,22 +360,35 @@
 
 
             ///Récupération du référent si ce dernier existe déjà
-            $personne_referent = $this->PersonneReferent->findByPersonneId( $personne_id, null, null, -1 );
+//             $personne_referent = $this->PersonneReferent->findByPersonneId( $personne_id, null, null, -1 );
+
+            $personne_referent = $this->Contratinsertion->Personne->PersonneReferent->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'PersonneReferent.personne_id' => $personne_id,
+                        'PersonneReferent.dfdesignation IS NULL'
+                    ),
+                    'recursive' => -1
+                )
+            );
             $this->set( 'personne_referent', $personne_referent );
-            $this->set( 'refs', $this->Referent->find( 'list') );
+
+// debug($personne_referent);
+
             if( !empty($personne_referent) ){
-                $struct = $this->Structurereferente->find( 'first', array( 'conditions' => array( 'Structurereferente.id' => Set::classicExtract( $personne_referent, 'PersonneReferent.structurereferente_id' ) ) ) );
+                $struct = $this->Structurereferente->find( 'first', array( 'conditions' => array( 'Structurereferente.id' => Set::extract( $personne_referent, '/PersonneReferent/structurereferente_id' ) ) ) );
                 $this->set( 'struct', $struct );
 
                 $referent = $this->Referent->find( 'first', array( 'conditions' => array( 'Referent.id' => Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' ) ) ) );
                 $this->set( 'referent', $referent );
             }
-            $personne['PersonneReferent'] = $personne_referent['PersonneReferent'];
+//             $personne['PersonneReferent'] = $personne_referent['PersonneReferent'];
 
 
             if( empty( $personne_referent ) ){
-                $refstruct = $this->Referent->listOptions();
-                $this->set( 'refstruct', $refstruct );
+                $referent = $this->Referent->listOptions();
+                $this->set( 'referent', $referent );
             }
 // debug($personne);
             /// Calcul du numéro du contrat d'insertion

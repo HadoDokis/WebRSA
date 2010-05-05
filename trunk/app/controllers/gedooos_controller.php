@@ -144,6 +144,8 @@
             $this->set( 'nat_cont_trav', $nat_cont_trav );
             $duree_cdd = $this->Option->duree_cdd();
             $this->set( 'duree_cdd', $duree_cdd );
+            $duree_engag_cg93 = $this->Option->duree_engag_cg93();
+            $this->set( 'duree_engag_cg93', $duree_engag_cg93 );
             $decision_ci = $this->Option->decision_ci();
             $this->set( 'decision_ci', $decision_ci );
 
@@ -364,14 +366,24 @@
 			}
 
             /// Code des actions engagées
-            if( 'nom_form_ci_cg' == 'cg66' ){ ///FIXME : comment faire plus proprement
+            if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ){ ///FIXME : comment faire plus proprement
                 $contratinsertion['Contratinsertion']['engag_object'] = Set::classicExtract( $contratinsertion, 'Contratinsertion.engag_object' );
             }
-            else if ( 'nom_form_ci_cg' == 'cg93' ){
+            else if ( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ){
                 $codesaction = $this->Action->find( 'list', array( 'fields' => array( 'code', 'libelle' ) ) );
-                $codesaction = empty( $contratinsertion['Contratinsertion']['engag_object'] ) ? null : $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
-                $contratinsertion['Contratinsertion']['engag_object'] = $codesaction;
+                $this->set( 'codesaction', $codesaction );
+
+                $v = null;
+                if( isset( $codesaction[$contratinsertion['Contratinsertion']['engag_object']] ) ) {
+                $v = $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
+                }
+                $contratinsertion['Contratinsertion']['engag_object'] = $v;
             }
+
+            $contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $duree_engag_cg93 );
+
+// debug( $contratinsertion );
+// die();
 
             ///Permet d'afficher le nb d'ouverture de droit de la personne
             $contratinsertion['Dossier']['nbouv'] = count( Set::classicExtract( $contratinsertion, 'Dossier.dtdemrsa' ) );
