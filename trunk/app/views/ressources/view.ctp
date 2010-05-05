@@ -48,7 +48,18 @@
             </tr>
             <tr class="even">
                 <th><?php __( 'mtpersressmenrsa' );?></th>
-                <td><?php echo ( $ressource['Ressource']['mtpersressmenrsa']  );?></td>
+                <td><?php
+					// FIXME: abaneu ?
+					$mtnatressmens = Set::extract( $ressource, '/Ressourcemensuelle/Detailressourcemensuelle/mtnatressmen' );
+					$nb = count( $mtnatressmens );
+					$mtnatressmens = Set::filter( $mtnatressmens );
+					if( !empty( $mtnatressmens ) ) {
+						echo $locale->money( array_sum( $mtnatressmens ) / $nb  );
+					}
+					else {
+						echo $locale->money( 0  );
+					}
+				?></td>
             </tr>
             <tr class="odd">
                 <th><?php __( 'ddress' );?></th>
@@ -87,7 +98,7 @@
                                         h( $ressourcemensuelle['nbheumentra'] ),
                                         h( $ressourcemensuelle['mtabaneu'] ),
                                         h( ( !empty( $indexNatress ) ) ? $natress[$indexNatress] : null ),
-                                        h( $detailressourcemensuelle['mtnatressmen'] ),
+                                        $locale->money( $detailressourcemensuelle['mtnatressmen'] ),
                                         h( $detailressourcemensuelle['abaneu'] ),
                                         h( $detailressourcemensuelle['dfpercress'] ),
                                         h( $detailressourcemensuelle['topprevsubsress']? 'Oui' : 'Non' )

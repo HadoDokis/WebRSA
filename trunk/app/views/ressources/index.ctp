@@ -46,10 +46,23 @@
         <tbody>
             <?php foreach( $ressources as $ressource ):?>
                 <?php
+					// FIXME: abaneu ?
+					$mtnatressmens = Set::extract( $ressource, '/Ressourcemensuelle/Detailressourcemensuelle/mtnatressmen' );
+
+					$nb = count( $mtnatressmens );
+					$mtnatressmens = Set::filter( $mtnatressmens );
+
+					if( !empty( $mtnatressmens ) ) {
+						$avg = ( array_sum( $mtnatressmens ) / $nb  );
+					}
+					else {
+						$avg = 0;
+					}
+
                     $title = implode( ' ', array(
 //                         $ressource['Ressource']['id'] ,
                         $ressource['Ressource']['topressnotnul'] ,
-                        $ressource['Ressource']['mtpersressmenrsa'] ,
+                        $locale->money( $avg ),
                         $ressource['Ressource']['ddress'] ,
                         $ressource['Ressource']['dfress'] ,
                      ));
@@ -58,7 +71,7 @@
                         array(
 //                             h( $ressource['Ressource']['id']),
                             h( $ressource['Ressource']['topressnotnul']  ? 'Oui' : 'Non'),
-                            h( $ressource['Ressource']['mtpersressmenrsa'] ),
+                            $locale->money( $avg ),
                             h( date_short( $ressource['Ressource']['ddress'] ) ),
                             h( date_short( $ressource['Ressource']['dfress'] ) ),
                             $html->viewLink(

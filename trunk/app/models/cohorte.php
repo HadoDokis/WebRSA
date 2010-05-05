@@ -324,7 +324,7 @@
 //                         INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id AND ( situationsdossiersrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) ) )
 //                     WHERE '.implode( ' AND ', $conditions ).'
 //                     LIMIT '.$limit;
-// 
+//
 //             $cohorte = $this->Dossier->query( $sql );
 
             return Set::extract( $cohorte, '{n}.0.id' );

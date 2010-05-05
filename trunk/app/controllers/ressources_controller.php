@@ -32,12 +32,15 @@
 //             debug( $nPersonnes );
 //             $this->assert( ( $nPersonnes == 1 ), 'invalidParameter' );
 
+			$this->Ressource->Personne->unbindModelAll();
+			$this->Ressource->Ressourcemensuelle->unbindModel( array( 'belongsTo' => array( 'Ressource' ) ) );
             $ressources = $this->Ressource->find(
                 'all',
                 array(
                     'conditions' => array(
                         'Ressource.personne_id' => $personne_id
-                    )
+                    ),
+					'recursive' => 2
                 )
             ) ;
 

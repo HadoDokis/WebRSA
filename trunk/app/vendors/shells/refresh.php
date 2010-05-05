@@ -14,12 +14,13 @@
     class RefreshShell extends Shell
     {
         var $uses = array( 'Foyer', 'Cohorte', 'Typeorient', 'Orientstruct' );
-		var $limit = PHP_INT_MAX; // FIXME: PHP_INT_MAX ?
+		var $limit = PHP_INT_MAX; // FIXME: PHP_INT_MAX ? -> en paramètre
 		var $force = true;
 		var $ressources = true;
 		var $soumis = true;
 		var $preorientation = true;
 		var $help = array(
+			'limit' => "Nombre de foyers à traiter. Doit être un nombre entier positif. Par défaut: pas de limite. Utiliser 0 ou null pour ne pas avoir de limite et traiter tous les foyers.",
 			'ressources' => 'Doit-on recalculer la moyenne des ressources mensuelles des demandeurs et des conjoints ?',
 			'soumis' => 'Doit-on recalculer si les demandeurs et les conjoints sont soumis à droits et devoirs ?',
 			'preorientation' => 'Doit-on calculer et sauvegarder une préorientation pour les demandeurs et les conjoints qui ne sont pas encore orientés ni préorientés ?',
@@ -101,15 +102,30 @@
 			/// Vérifcation des paramètres
 			$success = true;
 			foreach( $this->help as $param => $message ) {
-				if( isset( $this->params[$param] ) && !in_array( $this->params[$param], array( 'true', 'false' ) ) ) {
-					$this->out( '-'.$param );
-					$this->out( sprintf( $this->messageErreur, $param, ( $this->{$param} ? 'true' : 'false' ) ) );
-					$this->out( "\t{$message}" );
-					$success = false;
-					$this->hr();
+				// Limit
+				if( $param == 'limit' ) {
+					if( is_numeric( $this->params['limit'] ) && ( (int)$this->params['limit'] == ( $this->params['limit'] * 1 ) ) && ( $this->params['limit'] != 0 ) ) {
+						$this->limit = $this->params['limit'];
+					}
+					else if( empty( $this->params['limit'] ) || ( $this->params['limit'] == 'null' ) ) {
+						$this->limit = PHP_INT_MAX;
+					}
+					else {
+						$this->err( sprintf( "Veuillez entrer un nombre comme valeur du paramètre limit (valeur entrée: %s)", $this->params['limit'] ) );
+						exit( 2 );
+					}
 				}
-				if( isset( $this->params[$param] ) ) {
-					$this->{$param} = ( $this->params[$param] == 'true' );
+				else {
+					if( isset( $this->params[$param] ) && !in_array( $this->params[$param], array( 'true', 'false' ) ) ) {
+						$this->out( '-'.$param );
+						$this->out( sprintf( $this->messageErreur, $param, ( $this->{$param} ? 'true' : 'false' ) ) );
+						$this->out( "\t{$message}" );
+						$success = false;
+						$this->hr();
+					}
+					if( isset( $this->params[$param] ) ) {
+						$this->{$param} = ( $this->params[$param] == 'true' );
+					}
 				}
 			}
 

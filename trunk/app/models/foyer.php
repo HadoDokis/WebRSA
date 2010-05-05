@@ -167,7 +167,8 @@
 
             $saved = true;
             foreach( $personnesFoyer as $personne ) {
-                $personne['Calculdroitrsa']['toppersdrodevorsa'] = $this->Personne->soumisDroitsEtDevoirs( $personne['Personne']['id'] );
+				$toppersdrodevorsa = $this->Personne->soumisDroitsEtDevoirs( $personne['Personne']['id'] );
+                $personne['Calculdroitrsa']['toppersdrodevorsa'] = ( $toppersdrodevorsa ? '1' : '0' );
                 $this->Personne->Calculdroitrsa->create( $personne['Calculdroitrsa'] );
                 $saved =  $this->Personne->Calculdroitrsa->save( $personne['Calculdroitrsa'] ) && $saved;
 
