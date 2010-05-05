@@ -9,7 +9,9 @@
                     'decisioncomite' => array( 'type' => 'decisioncomite', 'domain' => 'apre' ),
                     'recoursapre' => array( 'type' => 'recoursapre', 'domain' => 'apre' ),
                 )
-            )
+            ),
+            'Frenchfloat' => array( 'fields' => array( 'montantattribue' ) )
+
         );
 
         var $validate = array(
