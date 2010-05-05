@@ -9,17 +9,19 @@
 		public $script = null;
 
 		/// Aide sur les paramètres
-		public $help = array( /// FIXME: 100
-			'limit' => "Nombre d'enregistrements à traiter. Doit être un nombre entier positif. Par défaut: 0. Utiliser 0 ou null pour ne pas avoir de limite et traiter tous les enregistrements."
+		public $help = array(
+			//'limit' => "Nombre d'enregistrements à traiter. Doit être un nombre entier positif. Par défaut: 0. Utiliser 0 ou null pour ne pas avoir de limite et traiter tous les enregistrements.",
+			'force' => 'Doit-on forcer le calcul de la préorientation même si une préorientation a déjà été calculée ?',
 		);
 
 		public $possibleParams = array(
+			'force' => array( 'true', 'false' )
 		);
 
 		public $outfile = null;
 		public $output = '';
 		public $limit = 0;
-		public $force = true; /// FIXME: param
+		public $force = true;
 		public $startTime = null;
 
         /**
@@ -83,7 +85,7 @@
 			}
 			$this->hr();
 
-			$this->out( sprintf( "Exemple: cake/console/cake %s -limit 100", $this->script, implode( ' ', $params ) ) );
+			$this->out( sprintf( "Exemple: cake/console/cake %s %s", $this->script, implode( ' ', $params ) ) );
 			$this->hr();
 			exit( 0 );
 		}
@@ -103,7 +105,7 @@
 			}
 
 			/// Paramétrage
-			// Limit
+			/*// Limit
 			if( isset( $this->params['limit'] ) ) {
 				if( is_numeric( $this->params['limit'] ) && ( (int)$this->params['limit'] == ( $this->params['limit'] * 1 ) ) && ( $this->params['limit'] != 0 ) ) {
 					$this->limit = $this->params['limit'];
@@ -114,6 +116,18 @@
 				else {
 					$this->err( sprintf( "Veuillez entrer un nombre comme valeur du paramètre limit (valeur entrée: %s)", $this->params['limit'] ) );
 					exit( 2 );
+				}
+			}*/
+			foreach( $this->possibleParams as $paramName => $paramValues ) {
+				if( isset( $this->params[$paramName] ) ) {
+					if( is_string( $this->params[$paramName] ) && in_array( strtolower( trim( $this->params[$paramName] ) ), $this->possibleParams[$paramName] ) ) {
+						$this->{$paramName} = ( in_array( $this->params[$paramName], array( 'true', 'false' ) ) ? ( $this->params[$paramName] == 'true' ) : $this->params[$paramName] );
+					}
+					else {
+						// FIXME: si on a d'autres paramètres ... à rendre générique
+						$this->err( sprintf( "Veuillez entrer true ou false comme valeur du paramètre {$paramName} (valeur entrée: %s)", $this->params[$paramName] ) );
+						exit( 2 );
+					}
 				}
 			}
 

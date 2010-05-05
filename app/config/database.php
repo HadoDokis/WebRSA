@@ -84,7 +84,8 @@ class DATABASE_CONFIG {
         'host'        => 'localhost',
         'login'       => 'webrsa',
         'password'    => 'webrsa',
-      	'database'    => 'webrsa',
+// 		'database'    => 'basewebrsa_test_1904',
+		'database'    => 'basewebrsa_test_1904_testapre',
         'prefix'      => ''
     );
 
@@ -94,8 +95,9 @@ class DATABASE_CONFIG {
         'host'        => 'localhost',
         'login'       => 'webrsa',
         'password'    => 'webrsa',
-        'database'    => 'webrsa_test',
-        'prefix'      => '',
+        'database'    => 'webrsatest',
+//         'database'    => 'cg93_20100212',
+//         'prefix'      => 'test_',
     );
 
 }

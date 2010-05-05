@@ -50,4 +50,100 @@ ALTER TABLE contratsinsertion DROP COLUMN numcontrat;
 
 ALTER TABLE orientsstructs ADD COLUMN referent_id INTEGER REFERENCES referents(id) DEFAULT NULL;
 
+-- --------------------------------------------------------------------------------
+-- Ajout dans la table calculsdroitsrsa des entrées pour les personnes dont les ressources sont inexistantes
+-- --------------------------------------------------------------------------------
+
+INSERT INTO calculsdroitsrsa ( personne_id, mtpersressmenrsa, mtpersabaneursa, toppersdrodevorsa )
+	SELECT DISTINCT(ressources.personne_id) AS personne_id,
+			0 AS mtpersressmenrsa,
+			0 AS mtpersabaneursa,
+			CAST ( '1' AS type_booleannumber ) AS toppersdrodevorsa
+		FROM ressources
+			WHERE ressources.topressnul = true
+				AND ressources.personne_id NOT IN(
+					SELECT calculsdroitsrsa.personne_id
+						FROM calculsdroitsrsa
+				)
+				AND ressources.id IN (
+					SELECT tmpressources.id FROM (
+						SELECT ressources.id, MAX(ressources.dfress)
+							FROM ressources
+							GROUP BY ressources.personne_id, ressources.id
+					) AS tmpressources
+				);
+
+-- --------------------------------------------------------------------------------
+-- Ajout dans la table calculsdroitsrsa des entrées pour les personnes dont les ressources sont existantes
+-- mais dont les ressources mensuelles sont inexistantes et qui ne sont pas encore rentrées
+-- --------------------------------------------------------------------------------
+
+--> 166239
+-- SELECT COUNT(DISTINCT(personne_id))
+-- 	FROM prestations
+-- 		INNER JOIN personnes ON (
+-- 			prestations.personne_id = personnes.id
+-- 			AND prestations.natprest = 'RSA'
+-- 			AND prestations.rolepers IN ( 'DEM', 'CJT' )
+-- 		);
+
+--> 160032
+-- SELECT COUNT(DISTINCT(personne_id))
+-- 	FROM calculsdroitsrsa;
+
+--> 34255
+-- SELECT COUNT(DISTINCT(personne_id))
+-- 	FROM prestations
+-- 		INNER JOIN personnes ON (
+-- 			prestations.personne_id = personnes.id
+-- 			AND prestations.natprest = 'RSA'
+-- 			AND prestations.rolepers IN ( 'DEM', 'CJT' )
+-- 		)
+-- 	WHERE prestations.personne_id NOT IN (
+-- 		SELECT calculsdroitsrsa.personne_id
+-- 			FROM calculsdroitsrsa
+-- 	);
+
+-- FIXME: 34255
+INSERT INTO calculsdroitsrsa (personne_id, toppersdrodevorsa, mtpersressmenrsa, mtpersabaneursa)
+	SELECT prestations.personne_id AS personne_id,
+			'1' AS toppersdrodevorsa,
+			0 AS mtpersressmenrsa,
+			0 AS mtpersabaneursa
+		FROM prestations
+			INNER JOIN personnes ON (
+				prestations.personne_id = personnes.id
+				AND prestations.natprest = 'RSA'
+				AND prestations.rolepers IN ( 'DEM', 'CJT' )
+			)
+			LEFT OUTER JOIN ressources ON ( ressources.personne_id = personnes.id )
+		WHERE (
+			(
+				ressources.id IN (
+					SELECT tmpressources.id FROM (
+						SELECT ressources.id, MAX(ressources.dfress)
+							FROM ressources
+							GROUP BY ressources.personne_id, ressources.id
+					) AS tmpressources
+				)
+				AND ressources.id NOT IN (
+					SELECT ressourcesmensuelles.ressource_id
+						FROM ressourcesmensuelles
+				)
+			)
+			OR (
+				prestations.personne_id NOT IN (
+					SELECT tmpressources.personne_id FROM (
+						SELECT ressources.personne_id, MAX(ressources.dfress)
+							FROM ressources
+							GROUP BY ressources.personne_id, ressources.id
+					) AS tmpressources
+				)
+			)
+		)
+		AND prestations.personne_id NOT IN (
+			SELECT calculsdroitsrsa.personne_id
+				FROM calculsdroitsrsa
+		);
+
 COMMIT;

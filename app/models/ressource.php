@@ -112,10 +112,18 @@
                 $moyenne = $this->moyenne( $ressource );
                 $ressource['Ressource']['topressnotnul'] = ( $moyenne != 0 );
                 $ressource['Ressource']['topressnul'] = !$ressource['Ressource']['topressnotnul'];
-                $ressource['Ressource']['mtpersressmenrsa'] = number_format( $moyenne, 2, '.', '' );
-
                 $this->create( $ressource );
-                return $this->save();
+                $saved = $this->save();
+
+				// INFO: en version2 c'est dans Calculdroitrsa
+				$ModelCalculdroitrsa = ClassRegistry::init( 'Calculdroitrsa' );
+				$calculdroitrsa = $ModelCalculdroitrsa->findByPersonneId( $personne_id, null, null, -1 );
+                $calculdroitrsa['Calculdroitrsa']['personne_id'] = $personne_id;
+                $calculdroitrsa['Calculdroitrsa']['mtpersressmenrsa'] = number_format( $moyenne, 2, '.', '' );
+                $ModelCalculdroitrsa->create( $calculdroitrsa );
+                $saved = $ModelCalculdroitrsa->save() && $saved;
+
+				return $saved;
             }
 
             return true;
@@ -152,7 +160,6 @@
             $moyenne = $this->moyenne( $this->data );
             $this->data['Ressource']['topressnotnul'] = ( $moyenne != 0 );
             $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
-            $this->data['Ressource']['mtpersressmenrsa'] = number_format( $moyenne, 2, '.', '' );
 
 //             if( !empty( $this->data['Ressource']['topressnotnul'] ) ) {
 //                 $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
@@ -171,7 +178,26 @@
         function afterSave( $created ) {
             $return = parent::afterSave( $created );
 
-            $thisPersonne = $this->Personne->findById( $this->data['Ressource']['personne_id'], null, null, -1 );
+			$personne_id = Set::classicExtract( $this->data, 'Ressource.personne_id' );
+			$modelCalculdroitrsa = ClassRegistry::init( 'Calculdroitrsa' );
+
+			// Mise à jour de Calculdroitrsa
+            $moyenne = $this->moyenne( $this->data );
+			$calculdroitrsa = $modelCalculdroitrsa->findByPersonneId( $personne_id, null, null, -1 );
+
+			// FIXME: si $calculdroitrsa est vide ? Ne doit pas arriver
+			$calculdroitrsa[$modelCalculdroitrsa->alias]['personne_id'] = $personne_id;
+			$calculdroitrsa[$modelCalculdroitrsa->alias]['mtpersressmenrsa'] = number_format( $moyenne, 2, '.', '' );
+			$modelCalculdroitrsa->create( $calculdroitrsa );
+			$modelCalculdroitrsa->save();
+// debug( $return );
+// debug( $personne_id );
+// debug( $moyenne );
+// debug( $calculdroitrsa );
+// debug( $this->data );
+// die();
+
+            $thisPersonne = $this->Personne->findById( $personne_id, null, null, -1 );
             $this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
 
             return $return;

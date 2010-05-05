@@ -62,12 +62,12 @@
                                                 <li>
                                                     <?php
                                                         echo $html->link(
-                                                            h( 'DSP CAF (NEW)' ),
+                                                            h( 'DSP CAF' ),
                                                             array( 'controller' => 'dsps', 'action' => 'view', $personne['id'] )
                                                         );?>
                                                 </li>
                                             <?php endif;?>
-                                            <?php if( $permissions->check( 'dspps', 'view' ) ):?>
+                                            <!--<?php if( $permissions->check( 'dspps', 'view' ) ):?>
                                                 <li>
                                                     <?php
                                                         echo $html->link(
@@ -75,7 +75,7 @@
                                                             array( 'controller' => 'dspps', 'action' => 'view', $personne['id'] )
                                                         );?>
                                                 </li>
-                                            <?php endif;?>
+                                            <?php endif;?>-->
 
                                             <?php if( $permissions->check( 'orientsstructs', 'index' ) ):?>
                                                 <li>
@@ -362,14 +362,14 @@
             </ul>
         </li>
 
-        <?php if( $permissions->check( 'dspfs', 'edit' ) ):?>
+        <!--<?php if( $permissions->check( 'dspfs', 'edit' ) ):?>
             <?php
                 echo '<li>'.$html->link(
                     'DSP CAF',
                     array( 'controller' => 'dspfs', 'action' => 'view', $dossier['Foyer']['id'] )
                 ).'</li>';
             ?>
-        <?php endif;?>
+        <?php endif;?>-->
 
         <?php if( $permissions->check( 'infoscomplementaires', 'view' ) ):?>
             <?php
