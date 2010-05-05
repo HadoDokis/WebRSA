@@ -4,7 +4,12 @@
 	echo $html->tag( 'h1', $this->pageTitle );
 
 	if( empty( $apres ) ) {
+        echo $xform->create( 'Etatliquidatif' );
 		echo $html->tag( 'p', 'Aucune APRE à sélectionner.', array( 'class' => 'notice' ) );
+        $buttons = array();
+        $buttons[] = $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        echo $html->tag( 'div', implode( '', $buttons ), array( 'class' => 'submit' ) );
+        echo $xform->end();
 	}
 	else {
 		$headers = array(
@@ -84,7 +89,9 @@
         echo $html->tag( 'div', implode( '', $buttons ), array( 'class' => 'submit' ) );
 
 		echo $xform->end();
+
 	}
+
 ?>
 <script type="text/javascript">
 //<![CDATA[

@@ -49,6 +49,14 @@
         */
 
         function listeApres( $conditions ) {
+            $conditions = Set::merge(
+                $conditions,
+                array(
+                    'Apre.eligibiliteapre' => 'O'
+                )
+            );
+
+
             $queryData = array(
                 'fields' => array(
                     'Apre.id',
