@@ -105,7 +105,7 @@
                             h( $locale->date( 'Date::short', Set::extract( $comite, 'Comiteapre.datecomite' ) ) ),
                             h( Set::classicExtract( $comite, 'Apre.montanttotal') ),
 //                             $xform->input( 'ApreComiteapre.'.$index.'.montantdemande', array( 'label' => false, 'type' => 'text' ) ),
-                            $xform->input( 'ApreComiteapre.'.$index.'.montantattribue', array( 'label' => false, 'type' => 'text', 'maxlength' => 4, 'value' => Set::classicExtract( $comite, 'Apre.montanttotal' ) ) ),
+                            $xform->input( 'ApreComiteapre.'.$index.'.montantattribue', array( 'label' => false, 'type' => 'text', /*'maxlength' => 4,*/ 'value' => Set::classicExtract( $comite, 'Apre.montanttotal' ) ) ),
                             $xform->input( 'ApreComiteapre.'.$index.'.observationcomite', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
                             $html->viewLink(
                                 'Voir l\'APRE',
