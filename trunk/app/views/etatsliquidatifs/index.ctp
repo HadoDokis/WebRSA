@@ -21,17 +21,18 @@
 		echo $html->tag( 'p', 'Aucun état liquidatif pour l\'instant.', array( 'class' => 'notice' ) );
 	}
 	else {
-		$paginator->options( array( 'url' => $this->passedArgs ) );
-		$params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-		$pagination = $html->tag( 'p', $paginator->counter( $params ) );
-
-		$pages = $paginator->first( '<<' );
-		$pages .= $paginator->prev( '<' );
-		$pages .= $paginator->numbers();
-		$pages .= $paginator->next( '>' );
-		$pages .= $paginator->last( '>>' );
-
-		$pagination .= $html->tag( 'p', $pages );
+        $pagination = $xpaginator->paginationBlock( 'Etatliquidatif', $this->passedArgs );
+// 		$paginator->options( array( 'url' => $this->passedArgs ) );
+// 		$params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+// 		$pagination = $html->tag( 'p', $paginator->counter( $params ) );
+// 
+// 		$pages = $paginator->first( '<<' );
+// 		$pages .= $paginator->prev( '<' );
+// 		$pages .= $paginator->numbers();
+// 		$pages .= $paginator->next( '>' );
+// 		$pages .= $paginator->last( '>>' );
+// 
+// 		$pagination .= $html->tag( 'p', $pages );
 
 		//----------------------------------------------------------------------
 
