@@ -104,7 +104,7 @@
                                                     );
                                                 ?>
                                             </li>
-                                        <?php if( Configure::read( 'nom_form_apre_cg' ) == 'cg66' ):?>
+                                        <?php /*if( Configure::read( 'nom_form_apre_cg' ) == 'cg66' ):*/?>
                                             <li>
                                                 <?php
                                                     echo $html->link(
@@ -113,7 +113,7 @@
                                                     );
                                                 ?>
                                             </li>
-                                        <?php endif;?>
+                                        <?php /*endif;*/?>
                                             <li>
                                                 <?php
                                                     echo $html->link(
