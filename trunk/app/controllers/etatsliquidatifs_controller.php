@@ -133,7 +133,7 @@
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
             // Retour à la liste en cas d'annulation
-            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+            if( /*!empty( $this->data ) && */isset( $this->params['form']['Cancel'] ) ) {
                 $this->redirect( array( 'action' => 'index' ) );
             }
 
