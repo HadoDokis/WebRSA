@@ -268,10 +268,16 @@
 
             $codesaction = $this->Action->find( 'list', array( 'fields' => array( 'code', 'libelle' ) ) );
             $codesaction = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.engag_object' ), $codesaction );
+            $structures = $this->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ) ) );
+            $referents = $this->Referent->find( 'list', array( 'fields' => array( 'nom' ) ) );
+            $typesorients = $this->Typeorient->find( 'list', array( 'fields' => array( 'lib_type_orient' ) ) );
 //             $codesaction = empty( $contratinsertion['Contratinsertion']['engag_object'] ) ? null : $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
             $this->set( 'codesaction', $codesaction );
 
             $this->set( 'contratinsertion', $contratinsertion );
+            $this->set( 'structures', $structures );
+            $this->set( 'referents', $referents );
+            $this->set( 'typesorients', $typesorients );
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
         }
 

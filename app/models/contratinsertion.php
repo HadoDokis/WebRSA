@@ -11,6 +11,9 @@
                     'type_demande' => array( 'type' => 'type_demande', 'domain' => 'contratinsertion' ),
                     'num_contrat' => array( 'type' => 'num_contrat', 'domain' => 'contratinsertion' )
                 )
+            ),
+            'Formattable' => array(
+                'suffix' => array( 'structurereferente_id', 'referent_id' ),
             )
         );
 

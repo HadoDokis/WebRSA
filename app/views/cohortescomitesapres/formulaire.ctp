@@ -41,6 +41,15 @@
         <?php echo $pagination;?>
         <?php echo $xform->create( 'Cohortecomiteapre', array( 'url'=> Router::url( null, true ) ) );?>
 
+        <?php
+            $filtre = Set::extract( $this->data, 'Cohortecomiteapre' );
+            if( !empty( $filtre ) ) {
+                foreach( $filtre as $key => $value ) {
+                    echo $xform->input( "Cohortecomiteapre.{$key}", array( 'type' => 'hidden', 'value' => $value ) );
+                }
+            }
+        ?>
+
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
