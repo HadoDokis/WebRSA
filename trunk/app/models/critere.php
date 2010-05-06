@@ -101,11 +101,20 @@
             // ...
             if( !empty( $statut_orient ) ) {
                 $conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statut_orient ).'\'';
+				// INFO: nouvelle manière de générer les PDFs
+				if( $statut_orient == 'Orienté' ) {
+					$conditions[] = 'Orientstruct.id IN ( SELECT pdfs.fk_value FROM pdfs WHERE modele = \'Orientstruct\' )';
+				}
             }
 
             // ...
             if( !empty( $natpf ) ) {
-                $conditions[] = 'Detailcalculdroitrsa.natpf = \''.Sanitize::clean( $natpf ).'\'';
+//                 $conditions[] = 'Detailcalculdroitrsa.natpf = \''.Sanitize::clean( $natpf ).'\'';
+				$conditions[] = 'Detaildroitrsa.id IN (
+									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
+										FROM detailscalculsdroitsrsa
+										WHERE detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'
+								)';
             }
 
             // ...
@@ -182,7 +191,7 @@
                     '"Serviceinstructeur"."lib_service"',
                     '"Situationdossierrsa"."etatdosrsa"',
                     '"Calculdroitrsa"."toppersdrodevorsa"',
-                    '"Detailcalculdroitrsa"."natpf"',
+//                     '"Detailcalculdroitrsa"."natpf"',
                     '"PersonneReferent"."referent_id"',
                     '"Infopoleemploi"."identifiantpe"'
                 ),
@@ -282,13 +291,13 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
                     ),
-                    array(
+                    /*array(
                         'table'      => 'detailscalculsdroitsrsa',
                         'alias'      => 'Detailcalculdroitrsa',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
-                    ),
+                    ),*/
                     array(
                         'table'      => 'personnes_referents',
                         'alias'      => 'PersonneReferent',
