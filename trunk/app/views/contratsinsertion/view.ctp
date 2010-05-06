@@ -64,6 +64,23 @@
                 </tr>
             </tbody>
         </table>
+                <h2>Type d'orientation</h2>
+        <table>
+            <tbody>
+                <tr class="odd">
+                    <th><?php __( 'Type d\'orientation' );?></th>
+                    <td><?php echo Set::enum( $contratinsertion['Structurereferente']['typeorient_id'], $typesorients );?></td>
+                </tr>
+                <tr class="even">
+                    <th><?php __( 'Structure référente' );?></th>
+                    <td><?php echo Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.structurereferente_id' ), $structures );?></td>
+                </tr>
+                <tr class="odd">
+                    <th><?php __( 'Référent' );?></th>
+                    <td><?php echo Set::enum( $contratinsertion['Contratinsertion']['referent_id'], $referents );?></td>
+                </tr>
+            </tbody>
+        </table>
                 <h2>Parcours d'insertion antérieur</h2>
         <table>
             <tbody>

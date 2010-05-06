@@ -71,9 +71,9 @@
                             }
                             $params[$key] =  urlencode( $param );
                         }
-                        $getUrl = Router::url( array_merge( array( 'action' => $controller->action ), $params ) );
-                    }
 
+                        $getUrl = Router::url( array( 'action' => $controller->action ) ).'/'.implode_assoc( '/', ':', array_merge( array( 'action' => $controller->action ), $params ) );
+                    }
                     header( 'Location: '.$getUrl );
 
                     // INFO: this doesn't work

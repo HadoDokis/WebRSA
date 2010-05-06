@@ -132,7 +132,7 @@
                             array(
                                 h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
                                 h( $contrat['Adresse']['locaadr'] ),
-                                h( value( $referents, Set::classicExtract( $contrat, 'PersonneReferent.referent_id' ) ) ),
+                                h( value( $referents, Set::classicExtract( $contrat, 'Contratinsertion.referent_id' ) ) ),
                                 h( $contrat['Dossier']['matricule'] ),
                                 h( $locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.date_saisi_ci' ) ) ),//date_short( $contrat['Contratinsertion']['date_saisi_ci'] ) ),
                                 h( $contrat['Contratinsertion']['rg_ci'] ),

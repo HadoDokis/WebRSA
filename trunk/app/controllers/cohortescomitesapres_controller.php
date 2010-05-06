@@ -31,7 +31,7 @@
                     'REF' => __d( 'apre', 'ENUM::DECISIONCOMITE::REF', true ),
                 )
             );
-            $this->Apre->ApreComiteapre->validate = array(
+            /*$this->Apre->ApreComiteapre->validate = array(
                 'decisioncomite' => array(
                     array(
                         'rule'      => array( 'inList', array( 'AJ', 'ACC', 'REF' ) ),
@@ -53,8 +53,9 @@
                         'required' => false
                     ),
                 ),
-            );
+            );*/
             $this->set( 'options', $options );
+// debug( $this->data );
         }
 
         /** ********************************************************************
@@ -62,6 +63,7 @@
         *** *******************************************************************/
 
         function aviscomite() {
+// debug( $this->data );
             $this->_index( 'Cohortecomiteapre::aviscomite' );
         }
 
@@ -79,7 +81,8 @@
         *
         *** *******************************************************************/
 
-        function _index( $avisComite = null ){
+        function _index( $avisComite = null ) {
+// debug( $this->data );
             $this->set( 'comitesapre', $this->Comiteapre->find( 'list' ) );
 
             $isRapport = ( Set::classicExtract( $this->params, 'named.rapport' ) == 1 );
@@ -101,6 +104,7 @@
                             $apre = $this->Apre->findById( $apre_id, null, null, -1 );
                             $apre['Apre']['montantaverser'] = ( !empty( $montantattribue ) ? $montantattribue : 0 );
                             $this->Apre->create( $apre );
+//                 debug($apre);
                             $saved = $this->Apre->save( $apre ) && $saved;
                         }
 
@@ -120,6 +124,7 @@
                 }
 
                 $comitesapres = $this->Cohortecomiteapre->search( $avisComite, $this->data );
+
                 $comitesapres['limit'] = 10;
                 $this->paginate = $comitesapres;
                 $comitesapres = $this->paginate( 'Comiteapre' );
