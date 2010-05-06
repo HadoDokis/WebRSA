@@ -247,7 +247,14 @@
                         'alias'      => 'Modecontact',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Modecontact.foyer_id = Foyer.id' )
+                        'conditions' => array(
+							'Modecontact.foyer_id = Foyer.id',
+							'Modecontact.id IN (
+								SELECT MAX(modescontact.id)
+									FROM modescontact
+									GROUP BY modescontact.foyer_id
+							)'
+						)
                     ),
                     array(
                         'table'      => 'typesorients',
@@ -268,7 +275,16 @@
                         'alias'      => 'Suiviinstruction',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
+                        'conditions' => array(
+							'Suiviinstruction.dossier_rsa_id = Dossier.id',
+							'Suiviinstruction.id IN (
+								SELECT tmpsuivisinstruction.id FROM (
+									SELECT suivisinstruction.id, MAX(suivisinstruction.date_etat_instruction)
+										FROM suivisinstruction
+										GROUP BY suivisinstruction.dossier_rsa_id, suivisinstruction.id
+								) AS tmpsuivisinstruction
+							)'
+						)
                     ),
                     array(
                         'table'      => 'servicesinstructeurs',
@@ -303,7 +319,16 @@
                         'alias'      => 'PersonneReferent',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Personne.id = PersonneReferent.personne_id' )
+                        'conditions' => array(
+							'Personne.id = PersonneReferent.personne_id',
+							'PersonneReferent.id IN (
+								SELECT tmppersonnes_referents.id FROM (
+									SELECT personnes_referents.id, MAX(personnes_referents.dddesignation)
+										FROM personnes_referents
+										GROUP BY personnes_referents.personne_id, personnes_referents.id
+								) AS tmppersonnes_referents
+							)'
+						)
                     ),
                     array(
                         'table'      => 'referents',
