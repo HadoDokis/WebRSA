@@ -28,6 +28,16 @@
         }
 
         /**
+        * Remplace le caractère * par le caractère % por les requêtes SQL
+        * FIXME ? ne fonctionne pas avec Sanitize::paranoid
+        */
+
+        public function wildcard( $value ) {
+            //debug( str_replace( '*', '%', $value ) );
+            return str_replace( '*', '%', $value );
+        }
+
+        /**
         *
         */
 

@@ -41,10 +41,6 @@
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
-            'secteurprofessionnel' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            ),
             'montantaverser' => array(
                 array(
                     'rule' => 'numeric',
