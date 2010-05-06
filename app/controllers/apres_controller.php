@@ -3,7 +3,7 @@
     {
 
         var $name = 'Apres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Prestation'/*, 'Dsp'*/, 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Prestation', 'Dsp', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb' );
 
@@ -17,8 +17,8 @@
             $this->set( 'options', $options );
             $optionsacts = $this->Actprof->allEnumLists();
             $this->set( 'optionsacts', $optionsacts );
-//             $optionsdsps = $this->Dsp->allEnumLists();
-//             $this->set( 'optionsdsps', $optionsdsps );
+            $optionsdsps = $this->Dsp->allEnumLists();
+            $this->set( 'optionsdsps', $optionsdsps );
             $optionslogts = $this->Amenaglogt->allEnumLists();
             $this->set( 'optionslogts', $optionslogts );
             $optionscrea = $this->Acccreaentr->allEnumLists();
