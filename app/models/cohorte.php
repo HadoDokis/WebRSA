@@ -154,7 +154,7 @@
         function search( $statutOrientation, $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers, $limit = PHP_INT_MAX ) {
             /// Conditions de base
             $conditions = array(
-                'calculsdroitsrsa.toppersdrodevorsa = \'1\'',
+                /*'calculsdroitsrsa.toppersdrodevorsa = \'1\'',*/
                 'orientsstructs.statut_orient = \''.Sanitize::clean( $statutOrientation ).'\''
             );
 
@@ -304,7 +304,7 @@
                         INNER JOIN adresses as Adresse ON ( adresses_foyers.adresse_id = Adresse.id)
                         INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
                         INNER JOIN detailsdroitsrsa ON ( detailsdroitsrsa.dossier_rsa_id = dossiers_rsa.id )
-                        INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id AND ( situationsdossiersrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) ) )
+                        INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id /*AND ( situationsdossiersrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )*/ )
                     WHERE '.implode( ' AND ', $conditions ).'
                     LIMIT '.$limit;
 
