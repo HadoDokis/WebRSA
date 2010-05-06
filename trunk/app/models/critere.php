@@ -63,7 +63,7 @@
             $filtersPersonne = array();
             foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
                 if( isset( $criteres['Critere'][$criterePersonne] ) && !empty( $criteres['Critere'][$criterePersonne] ) ) {
-                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.replace_accents( $criteres['Critere'][$criterePersonne] ).'%\'';
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( replace_accents( $criteres['Critere'][$criterePersonne] ) ).'\'';
                 }
             }
 

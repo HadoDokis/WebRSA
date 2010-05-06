@@ -78,7 +78,7 @@
             $filtersPersonne = array();
             foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
                 if( isset( $criteresindu['Cohorteindu'][$criterePersonne] ) && !empty( $criteresindu['Cohorteindu'][$criterePersonne] ) ) {
-                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.replace_accents( $criteresindu['Cohorteindu'][$criterePersonne] ).'%\'';
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( replace_accents( $criteresindu['Cohorteindu'][$criterePersonne] ) ).'\'';
                 }
             }
             // Localité adresse

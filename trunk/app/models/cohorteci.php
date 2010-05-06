@@ -62,7 +62,7 @@
             $filtersPersonne = array();
             foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
                 if( isset( $criteresci['Filtre'][$criterePersonne] ) && !empty( $criteresci['Filtre'][$criterePersonne] ) ) {
-                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \'%'.$criteresci['Filtre'][$criterePersonne].'%\'';
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criteresci['Filtre'][$criterePersonne] ).'\'';
                 }
             }
 
