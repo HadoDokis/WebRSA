@@ -33,12 +33,12 @@
             echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
-//             if( empty( $orientstruct ) && empty( $personne_referent ) ) {
-//             echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden', 'id' => 'structId', 'value' => Set::classicExtract( $this->data, 'Structurereferente.id' ) ) );
-//             }
-//             else{
-//                 echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden', 'id' => 'structId', 'value' => Set::classicExtract( $struct, 'Structurereferente.id' ) ) );
-//             }
+            if( empty( $orientstruct ) && empty( $personne_referent ) ) {
+                echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden', 'id' => 'structId', 'value' => Set::classicExtract( $this->data, 'Structurereferente.id' ) ) );
+            }
+            else{
+                echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden', 'id' => 'structId', 'value' => Set::classicExtract( $struct, 'Structurereferente.id' ) ) );
+            }
 
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
             echo $form->input( 'Contratinsertion.rg_ci', array( 'type' => 'hidden'/*, 'value' => '' */) );
@@ -71,7 +71,6 @@
     <script type="text/javascript">
         document.observe("dom:loaded", function() {
             dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
-//             dependantSelect( 'ContratinsertionStructurereferenteId', 'OrientstructTypeorientId' );
         });
     </script>
 <!--/************************************************************************/ -->
@@ -114,64 +113,36 @@
                 true
             );
 
-        observeDisableFieldsOnRadioValue(
-            'testform',
-            'data[Contratinsertion][raison_ci]',
-            [
-                'SituationdossierrsaDtclorsaDay',
-                'SituationdossierrsaDtclorsaMonth',
-                'SituationdossierrsaDtclorsaYear',
-                'SituationdossierrsaId',
-                'SituationdossierrsaDossierRsaId',
-                'ContratinsertionAvisraisonRadiationCiD',
-                'ContratinsertionAvisraisonRadiationCiN'
-            ],
-            'R',
-            true
-        );
+		observeDisableFieldsOnRadioValue(
+			'testform',
+			'data[Contratinsertion][raison_ci]',
+			[
+				'SituationdossierrsaDtclorsaDay',
+				'SituationdossierrsaDtclorsaMonth',
+				'SituationdossierrsaDtclorsaYear',
+				'SituationdossierrsaId',
+				'SituationdossierrsaDossierRsaId',
+				'ContratinsertionAvisraisonRadiationCiD',
+				'ContratinsertionAvisraisonRadiationCiN'
+			],
+			'R',
+			true
+		);
 
-        observeDisableFieldsOnRadioValue(
-            'testform',
-            'data[Contratinsertion][raison_ci]',
-            [
-                'ContratinsertionAvisraisonSuspensionCiD',
-                'ContratinsertionAvisraisonSuspensionCiN',
-                'SuspensiondroitDdsusdrorsaDay',
-                'SuspensiondroitDdsusdrorsaMonth',
-                'SuspensiondroitDdsusdrorsaYear',
-                'SuspensiondroitSituationdossierrsaId'
-            ],
-            'S',
-            true
-        );
-
-
-        <?php
-            echo $ajax->remoteFunction(
-                array(
-                    'update' => 'StructurereferenteRef',
-                    'url' => Router::url(
-                        array(
-                            'action' => 'ajaxstruct',
-                            Set::extract( $this->data, 'Contratinsertion.structurereferente_id' )
-                        ),
-                        true
-                    )
-                )
-            ).';';
-            echo $ajax->remoteFunction(
-                array(
-                    'update' => 'ReferentRef',
-                    'url' => Router::url(
-                        array(
-                            'action' => 'ajaxref',
-                            Set::extract( $this->data, 'Contratinsertion.referent_id' )
-                        ),
-                        true
-                    )
-                )
-            ).';';
-        ?>
+		observeDisableFieldsOnRadioValue(
+			'testform',
+			'data[Contratinsertion][raison_ci]',
+			[
+				'ContratinsertionAvisraisonSuspensionCiD',
+				'ContratinsertionAvisraisonSuspensionCiN',
+				'SuspensiondroitDdsusdrorsaDay',
+				'SuspensiondroitDdsusdrorsaMonth',
+				'SuspensiondroitDdsusdrorsaYear',
+				'SuspensiondroitSituationdossierrsaId'
+			],
+			'S',
+			true
+		);
 
     } );
 </script>
@@ -232,7 +203,7 @@
                         $error = Set::classicExtract( $this->validationErrors, 'Contratinsertion.forme_ci' );
                         $class = 'radio'.( !empty( $error ) ? ' error' : '' );
 
-                        $input =  $form->input( 'Contratinsertion.forme_ci', array( 'type' => 'radio' , 'options' => $forme_ci, 'div' => false, 'legend' => required( __( 'forme_ci', true )  ), 'value' => $valueFormeci ) );
+                        $input =  $form->input( 'Contratinsertion.forme_ci', array( 'type' => 'radio' , 'options' => $forme_ci, 'div' => false, 'legend' => required( __( 'forme_ci', true )  ), 'value' => $valueFormeci/*( empty( $forme_ci ) ? $forme_ci : 'S' )*/ ) );
 
                         echo $html->tag( 'div', $input, array( 'class' => $class ) );
                     ?>
@@ -348,36 +319,134 @@
         </table>
 </fieldset>
 
-
-
-
 <fieldset>
-    <legend>Type d'orientation</legend>
-    <table class="wide noborder">
-        <tr>
-            <td class="noborder">
-                <strong>Nom de l'organisme de suivi :</strong>
-                <?php echo $xform->input( 'Contratinsertion.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structures, 'selected' => $struct_id, 'empty' => true ) );?>
-                <?php echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?> 
-            </td>
-            <td class="noborder">
-                <strong>Nom du référent chargé du suivi :</strong>
-                <?php echo $xform->input( 'Contratinsertion.referent_id', array('label' => false, 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $struct_id.'_'.$referent_id ) );?>
-                <?php echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?> 
-            </td>
-        </tr>
-        <tr>
-            <td class="wide noborder"><div id="StructurereferenteRef"></div></td>
+    <legend>Type d'Orientation</legend>
+        <table class="wide noborder">
+            <tr>
+                <td class="mediumSize noborder" colspan="3">
+                    <strong>Type d'orientation:</strong>
+                    <?php
+                        if( !empty( $orientstruct ) ) {
+                            echo $typeOrientation;
+                        }
 
-            <td class="wide noborder"><div id="ReferentRef"></div></td>
-        </tr>
-    </table>
+//                             echo Set::enum( Set::classicExtract( $struct, 'Structurereferente.typeorient_id' ), $typesorients );
 
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="noborder" colspan="2">
+                   <?php
+                        if( empty( $orientstruct ) && !empty( $personne_referent ) ){
+                            echo '<strong>Nom de l\'organisme de suivi '.REQUIRED_MARK.':</strong><br />'. value( $sr, Set::classicExtract( $personne_referent, 'PersonneReferent.structurereferente_id' ) );
+                        }
+                        else if( empty( $orientstruct ) && empty( $personne_referent ) ) {
+                            echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __( '<em>Nom de l\'organisme de suivi '.REQUIRED_MARK.'</em>', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );
+                        }
+                    ?>
+                    <?php if( !empty( $orientstruct ) ):?>
+                        <strong>Nom de l'organisme de suivi :</strong>
+                            <?php
+                                echo Set::classicExtract( $struct, 'Structurereferente.lib_struc' );
+                            ?>
+                    <?php endif;?>
+                </td>
+                <td class="noborder">
+                    <?php
+                        if( empty( $personne_referent ) && $this->action == 'add' ){
+                            echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $referent, 'empty' => true ) );
+                        }
+                        else if( empty( $personne_referent ) && $this->action == 'edit' ){
+                            echo $form->input( 'Contratinsertion.referent_id', array( 'label' => __( '<em>Nom du référent</em>', true ), 'type' => 'select' , 'options' => $referent, 'selected' => $struct_id.'_'.$referent_id, 'empty' => true ) );
+                        }
+                    ?>
+                    <?php if( !empty( $personne_referent ) ):?>
+                        <strong>Nom du référent chargé du suivi :</strong> <br />
+                            <?php
+                                echo value( $refs, Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' ) );
+                            ?>
+                    <?php endif;?>
+                </td>
+            </tr>
+            <tr>
+                <td class="textArea noborder">
+                    <?php
+                        if( empty( $orientstruct ) && empty( $personne_referent ) ){
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Coordonnées de l\'organisme' ).'<br />'.
+                                $html->tag( 'span', ( isset( $StructureAdresse ) ? $StructureAdresse : ' ' ), array( 'id' => 'StructureAdresse' ) )
+                            );
+                            echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructureAdresse', 'url' => Router::url( array( 'action' => 'ajaxstructadr' ), true ) ) );
+                        }
+                        else if( empty( $orientstruct ) && !empty( $personne_referent ) ){
+
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Coordonnées de l\'organisme' ).'<br />'.
+                                Set::classicExtract( $struct, 'Structurereferente.num_voie' ).' '.
+                                Set::classicExtract( $typevoie, Set::classicExtract( $struct, 'Structurereferente.type_voie' ) ).' '.
+                                Set::classicExtract( $struct, 'Structurereferente.nom_voie' ).'<br />'.
+                                Set::classicExtract( $struct, 'Structurereferente.code_postal' ).' '.
+                                Set::classicExtract( $struct, 'Structurereferente.ville' )
+                            );
+                        }
+                        else if( !empty( $orientstruct ) ){
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Coordonnées de l\'organisme' ).'<br />'.
+                                Set::classicExtract( $struct, 'Structurereferente.num_voie' ).' '.
+                                Set::classicExtract( $typevoie, Set::classicExtract( $struct, 'Structurereferente.type_voie' ) ).' '.
+                                Set::classicExtract( $struct, 'Structurereferente.nom_voie' ).'<br />'.
+                                Set::classicExtract( $struct, 'Structurereferente.code_postal' ).' '.
+                                Set::classicExtract( $struct, 'Structurereferente.ville' )
+                            );
+                        }
+                    ?>
+                    <?php echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructureAdresse', 'url' => Router::url( array( 'action' => 'ajaxstructadr' ), true ) ) );?>
+                </td>
+                <td class="textArea noborder">
+                    <?php
+                        if( empty( $personne_referent ) ){
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Coordonnées du référent' ).'<br />'.
+                                $html->tag( 'span', ( isset( $ReferentEmail ) ? $ReferentEmail : ' ' ), array( 'id' => 'ReferentEmail' ) )
+                            );
+                            echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentEmail', 'url' => Router::url( array( 'action' => 'ajaxrefcoord' ), true ) ) );
+                        }
+                        else{
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Coordonnées du référent' ).'<br />'.
+                                Set::classicExtract( $referent, 'Referent.email' ). '<br/>' .Set::classicExtract( $referent, 'Referent.numero_poste')
+                            );
+                        }
+                    ?>
+                </td>
+                <td class="textArea noborder">
+                    <?php
+                        if( empty( $personne_referent ) ) {
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Fonction du référent' ).'<br />'.
+                                $html->tag( 'span', ( isset( $ReferentFonction ) ? $ReferentFonction : ' ' ), array( 'id' => 'ReferentFonction' ) )
+                            );
+                            echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
+                       }
+                        else{
+                            echo $html->tag(
+                                'p',
+                                $html->tag( 'em', 'Fonction du référent' ).'<br />'.
+                                Set::classicExtract( $referent, 'Referent.fonction' )
+                            );
+                        }
+                    ?>
+                </td>
+            </tr>
+        </table>
 </fieldset>
-
-
-
-
 <fieldset class="loici">
     <p>
         Loi N°2008-1249 du 1er Décembre, généralisant le revenu de solidarité active et réformant les politiques d'engagement réciproque : <strong>Contrat librement débattu avec engagements réciproques</strong> ( articles L.263.35 et L.262.36 )<br />
@@ -405,5 +474,3 @@
 </div>
 
 <div class="clearer"><hr /></div>
-
-<?php /*debug( array_keys( $this->viewVars ) );*/?>

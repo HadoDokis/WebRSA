@@ -31,28 +31,30 @@
         </thead>
         <tbody>
             <?php foreach( $structuresreferentes as $structurereferente ):?>
-                <?php echo $html->tableCells(
-                            array(
-                                h( $structurereferente['Structurereferente']['lib_struc'] ),
-                                h( $structurereferente['Structurereferente']['num_voie'] ),
-                                h( isset( $typevoie[$structurereferente['Structurereferente']['type_voie']] ) ? $typevoie[$structurereferente['Structurereferente']['type_voie']] : null ),
-                                h( $structurereferente['Structurereferente']['nom_voie'] ),
-                                h( $structurereferente['Structurereferente']['code_postal'] ),
-                                h( $structurereferente['Structurereferente']['ville'] ),
-                                h( $structurereferente['Structurereferente']['code_insee'] ),
-                                h( Set::enum( Set::classicExtract( $structurereferente, 'Structurereferente.typeorient_id' ), $type ) ),
-                                $html->editLink(
-                                    'Éditer la structure référente ',
-                                    array( 'controller' => 'structuresreferentes', 'action' => 'edit', $structurereferente['Structurereferente']['id'] )
-                                ),
-                                $html->deleteLink(
-                                    'Supprimer la structure référente ',
-                                    array( 'controller' => 'structuresreferentes', 'action' => 'delete', $structurereferente['Structurereferente']['id'] )
-                                )
+                <?php
+
+                    echo $html->tableCells(
+                        array(
+                            h( $structurereferente['Structurereferente']['lib_struc'] ),
+                            h( $structurereferente['Structurereferente']['num_voie'] ),
+                            h( isset( $typevoie[$structurereferente['Structurereferente']['type_voie']] ) ? $typevoie[$structurereferente['Structurereferente']['type_voie']] : null ),
+                            h( $structurereferente['Structurereferente']['nom_voie'] ),
+                            h( $structurereferente['Structurereferente']['code_postal'] ),
+                            h( $structurereferente['Structurereferente']['ville'] ),
+                            h( $structurereferente['Structurereferente']['code_insee'] ),
+                            h( $typeorient[$structurereferente['Structurereferente']['typeorient_id']] ),
+                            $html->editLink(
+                                'Éditer la structure référente ',
+                                array( 'controller' => 'structuresreferentes', 'action' => 'edit', $structurereferente['Structurereferente']['id'] )
                             ),
-                            array( 'class' => 'odd' ),
-                            array( 'class' => 'even' )
-                        );
+                            $html->deleteLink(
+                                'Supprimer la structure référente ',
+                                array( 'controller' => 'structuresreferentes', 'action' => 'delete', $structurereferente['Structurereferente']['id'] )
+                            )
+                        ),
+                        array( 'class' => 'odd' ),
+                        array( 'class' => 'even' )
+                    );
                 ?>
             <?php endforeach;?>
             </tbody>

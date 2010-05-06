@@ -18,7 +18,7 @@
         var $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'PersonneReferent' );
         var $helpers = array( 'Ajax' );
         var $components = array( 'RequestHandler' );
-        var $aucunDroit = array( 'ajax', 'ajaxreffonct', 'ajaxrefcoord', 'ajaxreferent', 'ajaxstructadr', 'ajaxraisonci' );
+        var $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci' );
 
         /** ********************************************************************
         *
@@ -29,8 +29,7 @@
             parent::beforeFilter();
             $options = $this->Contratinsertion->allEnumLists();
             $this->set( 'options', $options );
-            $this->set( 'refs', $this->Referent->find( 'list') );
-            $this->set( 'typesorients', $this->Typeorient->find( 'list', array( 'fields' => 'Typeorient.lib_type_orient' ) ) );
+
 
             if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
                 $this->set( 'decision_ci', $this->Option->decision_ci() );
@@ -63,8 +62,8 @@
                 $this->set( 'soclmaj', $this->Option->natpfcre( 'soclmaj' ) );
                 $this->set( 'rolepers', $this->Option->rolepers() );
 
-                $this->set( 'sr', $this->Contratinsertion->Structurereferente->listeParType( array( 'contratengagement' => true ) ) );
-                $this->set( 'referents', $this->Contratinsertion->Structurereferente->Referent->find( 'list' ) );
+//                 $this->set( 'sr', $this->Contratinsertion->Structurereferente->listeParType( array( 'contratengagement' => true ) ) );
+//                 $this->set( 'referents', $this->Contratinsertion->Structurereferente->Referent->find( 'list' ) );
 
                 $this->set( 'actions', $this->Action->grouplist( 'prest' ) );
             }
@@ -115,7 +114,7 @@
         /** ********************************************************************
         *   Ajax pour les coordonnées du référent
         *** *******************************************************************/
-
+/*
         function ajaxrefcoord() { // FIXME
             Configure::write( 'debug', 0 );
             $this->data['Contratinsertion']['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Contratinsertion']['referent_id'] );
@@ -123,23 +122,23 @@
             echo $referent['Referent']['email']. '<br/>' .$referent['Referent']['numero_poste'];
             $this->render( null, 'ajax' );
         }
-
+*/
         /** ********************************************************************
         *   Ajax pour la fonction du référent
         *** *******************************************************************/
 
-        function ajaxreffonct() { // FIXME
+  /*      function ajaxreffonct() { // FIXME
             Configure::write( 'debug', 0 );
             $this->data['Contratinsertion']['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Contratinsertion']['referent_id'] );
             $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( Set::extract( $this->data, 'Contratinsertion.referent_id' ), null, null, -1 );
             echo $referent['Referent']['fonction'];
             $this->render( null, 'ajax' );
-        }
+        }*/
 
         /** ********************************************************************
         *   Ajax pour le nom du référent
         *** *******************************************************************/
-
+/*
         function ajaxreferent() { // FIXME
             Configure::write( 'debug', 0 );
             $qual = $this->Option->qual();
@@ -148,18 +147,51 @@
             echo Set::enum( Set::classicExtract( $referent, 'Referent.qual') , $qual ).' '.$referent['Referent']['nom'].' '.$referent['Referent']['prenom'];
             $this->render( null, 'ajax' );
         }
+*/
+        /** ********************************************************************
+        *   Ajax pour les coordonnées du référent APRE
+        *** *******************************************************************/
 
+        function ajaxref( $referent_id = null ) { // FIXME
+            Configure::write( 'debug', 0 );
+            if( !empty( $referent_id ) ) {
+                $referent_id = suffix( $referent_id );
+            }
+            else {
+                $referent_id = suffix( Set::extract( $this->data, 'Contratinsertion.referent_id' ) );
+            }
+
+            $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( $referent_id, null, null, -1 );
+            $this->set( 'referent', $referent );
+            $this->render( 'ajaxref', 'ajax' );
+        }
+
+        /** ********************************************************************
+        *   Ajax pour les coordonnées de la structure référente liée
+        *** *******************************************************************/
+
+        function ajaxstruct( $structurereferente_id = null ) { // FIXME
+            Configure::write( 'debug', 0 );
+            $this->set( 'typesorients', $this->Typeorient->find( 'list', array( 'fields' => array( 'lib_type_orient' ) ) ) );
+
+            $dataStructurereferente_id = Set::extract( $this->data, 'Contratinsertion.structurereferente_id' );
+            $structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
+
+            $struct = $this->Contratinsertion->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
+            $this->set( 'struct', $struct );
+            $this->render( 'ajaxstruct', 'ajax' );
+        }
         /** ********************************************************************
         *   Ajax pour les coordonnées de la structure référente
         *** *******************************************************************/
 
-        function ajaxstructadr() { // FIXME
+       /* function ajaxstructadr() { // FIXME
             Configure::write( 'debug', 0 );
             $struct = $this->Contratinsertion->Structurereferente->findbyId( Set::extract( $this->data, 'Contratinsertion.structurereferente_id' ), null, null, -1 );
             echo $struct['Structurereferente']['num_voie'].' '.$struct['Structurereferente']['type_voie'].' '.$struct['Structurereferente']['nom_voie'].'<br/>'.$struct['Structurereferente']['code_postal'].' '.$struct['Structurereferente']['ville'];
             $this->render( null, 'ajax' );
         }
-
+*/
 
         /** ********************************************************************
         *
@@ -277,14 +309,6 @@
                 $valueFormeci = 'S';
 
 				$nbContratsPrecedents = $this->Contratinsertion->find( 'count', array( 'recursive' => -1, 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
-
-				/*if( $nbContratsPrecedents >= 1 ) {
-                    $tc = 'Renouvellement';
-				}
-				else {
-                    $tc = 'Premier contrat';
-				}*/
-
                 if( $nbContratsPrecedents >= 1 ) {
                     $tc = 'REN';
                 }
@@ -299,20 +323,42 @@
                 $personne_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.personne_id' );
                 $valueFormeci = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
 
-// 				if( Set::classicExtract( $contratinsertion, 'Contratinsertion.rg_ci' ) > 1 ) {
-// // 					$tc = $tcAutresContrats;
-//                     $tc = 'Renouvellement';
-// 				}
-// 				else {
-// // 					$tc = $tcPremierContrat;
-//                     $tc = 'Premier contrat';
-// 				}
                 $tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' );
-//                 $tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.numcontrat' );
-
             }
 
+            /// Recherche du type d'orientation
+            $orientstruct = $this->Contratinsertion->Structurereferente->Orientstruct->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.personne_id' => $personne_id,
+                        'Orientstruct.typeorient_id IS NOT NULL',
+                        'Orientstruct.statut_orient' => 'Orienté'
+                    ),
+                    'order' => 'Orientstruct.date_valid DESC',
+                    'recursive' => -1
+                )
+            );
+            $this->set( 'orientstruct', $orientstruct );
+
+            ///Personne liée au parcours
+            $personne_referent = $this->Contratinsertion->Personne->PersonneReferent->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'PersonneReferent.personne_id' => $personne_id,
+                        'PersonneReferent.dfdesignation IS NULL'
+                    ),
+                    'recursive' => -1
+                )
+            );
+            //$this->set( 'personne_referent', $personne_referent );
+
+            $structures = $this->Structurereferente->listOptions();
+            $referents = $this->Referent->listOptions();
+
 			$this->set( 'tc', $tc );
+
 
             /// Peut-on prendre le jeton ?
             $this->Contratinsertion->begin();
@@ -329,72 +375,12 @@
             $this->set( 'situationdossierrsa_id', $situationdossierrsa['Situationdossierrsa']['id'] );
 
             $personne = $this->Contratinsertion->Personne->detailsCi( $personne_id );
-// debug($personne);
-            /// Recherche du type d'orientation
-            $orientstruct = $this->Contratinsertion->Structurereferente->Orientstruct->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Orientstruct.personne_id' => $personne_id,
-                        'Orientstruct.typeorient_id IS NOT NULL',
-                        'Orientstruct.statut_orient' => 'Orienté'
-                    ),
-                    'order' => 'Orientstruct.date_valid DESC'
-                )
-            );
-            $this->set( 'orientstruct', $orientstruct );
-
-            if( !empty( $orientstruct ) ) {
-                $struct = $this->Contratinsertion->Structurereferente->findById( Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' ), null, null, -1 );
-                $this->set( 'struct', $struct );
-
-                $referents = $this->_referentStruct( Set::classicExtract( $struct, 'Structurereferente.id' ) );
-                $this->set( 'referents', $referents );
-
-
-                /// Recherche du type d'orientation de premier niveau
-                $this->set( 'typeOrientation', $this->_libelleTypeorientNiv0( Set::classicExtract( $orientstruct, 'Orientstruct.typeorient_id' ) ) );
-
-            }
 
 
 
-            ///Récupération du référent si ce dernier existe déjà
-//             $personne_referent = $this->PersonneReferent->findByPersonneId( $personne_id, null, null, -1 );
-
-            $personne_referent = $this->Contratinsertion->Personne->PersonneReferent->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'PersonneReferent.personne_id' => $personne_id,
-                        'PersonneReferent.dfdesignation IS NULL'
-                    ),
-                    'recursive' => -1
-                )
-            );
-            $this->set( 'personne_referent', $personne_referent );
-
-// debug($personne_referent);
-
-            if( !empty($personne_referent) ){
-                $struct = $this->Structurereferente->find( 'first', array( 'conditions' => array( 'Structurereferente.id' => Set::extract( $personne_referent, '/PersonneReferent/structurereferente_id' ) ) ) );
-                $this->set( 'struct', $struct );
-
-                $referent = $this->Referent->find( 'first', array( 'conditions' => array( 'Referent.id' => Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' ) ) ) );
-                $this->set( 'referent', $referent );
-            }
-//             $personne['PersonneReferent'] = $personne_referent['PersonneReferent'];
-
-
-            if( empty( $personne_referent ) ){
-                $referent = $this->Referent->listOptions();
-                $this->set( 'referent', $referent );
-            }
-// debug($personne);
             /// Calcul du numéro du contrat d'insertion
             $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
             $this->set( 'nbrCi', $nbrCi );
-
             $this->set( 'personne', $personne );
             $this->set( 'valueFormeci', $valueFormeci );
             /// Essai de sauvegarde
@@ -408,13 +394,6 @@
                 else if( $contratinsertionRaisonCi == 'R' ){
                     $this->data['Contratinsertion']['avisraison_ci'] = Set::classicExtract( $this->data, 'Contratinsertion.avisraison_radiation_ci' );
                 }
-
-                /*if( $this->data['Contratinsertion']['raison_ci'] == 'S' ) {
-                    $this->data['Contratinsertion']['avisraison_ci'] = $this->data['Contratinsertion']['avisraison_suspension_ci'];
-                }
-                else if( $this->data['Contratinsertion']['raison_ci'] == 'R' ){
-                    $this->data['Contratinsertion']['avisraison_ci'] =  $this->data['Contratinsertion']['avisraison_radiation_ci'];
-                }*/
 
                 /// Validation
                 $this->Contratinsertion->set( $this->data );
@@ -527,19 +506,36 @@
                 $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
                 $this->assert( !empty( $user ), 'error500' ); // FIXME
 
-                ///FIXME Suppression du blocage du Contrat donc modif des données à récupérer pour la struct referente
-//                 $this->data['Contratinsertion']['structurereferente_id'] = $personne['Orientstruct']['structurereferente_id'];
-//                 $this->data['Contratinsertion']['structurereferente_id'] = $personne['Structurereferente']['id'];
-//                 $this->set( 'StructureAdresse', $referent['Structurereferente']['numvoie'].' '. );
-
-
                 /// Si on est en présence d'un deuxième contrat -> Alors renouvellement
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
 
             }
 
+            // Doit-on setter les valeurs par défault ?
+            $dataStructurereferente_id = Set::classicExtract( $this->data, "{$this->Contratinsertion->alias}.structurereferente_id" );
+            $dataReferent_id = Set::classicExtract( $this->data, "{$this->Contratinsertion->alias}.referent_id" );
+
+            // Si le formulaire ne possède pas de valeur pour ces champs, on met celles par défaut
+            if( empty( $dataStructurereferente_id ) && empty( $dataReferent_id ) ) {
+                // Valeur par défaut préférée: à partir de personnes_referents
+                if( !empty( $personne_referent ) ){
+                    $structurereferente_id = Set::classicExtract( $personne_referent, "{$this->PersonneReferent->alias}.structurereferente_id" );
+                    $referent_id = Set::classicExtract( $personne_referent, "{$this->PersonneReferent->alias}.referent_id" );
+                }
+                // Valeur par défaut de substitution: à partir de orientsstructs
+                else if( !empty( $orientstruct ) ) {
+                    $structurereferente_id = Set::classicExtract( $orientstruct, "{$this->Orientstruct->alias}.structurereferente_id" );
+                    $referent_id = Set::classicExtract( $orientstruct, "{$this->Orientstruct->alias}.referent_id" );
+                }
+
+                $this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.structurereferente_id", $structurereferente_id );
+                $this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.referent_id", "{$structurereferente_id}_{$referent_id}" );
+            }
+
+
             $struct_id = Set::classicExtract( $this->data, 'Contratinsertion.structurereferente_id' );
             $this->set( 'struct_id', $struct_id );
+
             if( !empty( $struct_id ) ) {
                 $struct = $this->Contratinsertion->Structurereferente->findbyId( Set::extract( $this->data, 'Contratinsertion.structurereferente_id' ), null, null, -1 );
                 $this->set( 'StructureAdresse', $struct['Structurereferente']['num_voie'].' '.$struct['Structurereferente']['type_voie'].' '.$struct['Structurereferente']['nom_voie'].'<br/>'.$struct['Structurereferente']['code_postal'].' '.$struct['Structurereferente']['ville'] );
@@ -557,8 +553,10 @@
                 $this->set( 'ReferentNom', $referent['Referent']['nom'].' '.$referent['Referent']['prenom'] );
 
             }
-// debug($this);
+
             $this->Contratinsertion->commit();
+
+            $this->set( compact( 'structures', 'referents' ) );
             $this->render( $this->action, null, 'add_edit' );
         }
 

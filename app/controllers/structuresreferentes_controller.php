@@ -21,7 +21,7 @@
                 $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
             }
 
-            $type = $this->Typeorient->find(
+            $typeorient = $this->Typeorient->find(
                 'list',
                 array(
                     'fields' => array(
@@ -29,8 +29,7 @@
                     )
                 )
             );
-            $this->set( 'type', $type );
-
+            $this->set( 'typeorient', $typeorient );
 
             $structuresreferentes = $this->Structurereferente->find(
                 'all',
