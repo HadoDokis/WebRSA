@@ -39,7 +39,7 @@
         *   Before Save pour remettre à zéro les montants attribués par le comité si la décision est passée en Refus
         **/
         function beforeSave( $options = array() ) {
-debug($this->data);
+// debug($this->data);
             $return = parent::beforeSave( $options );
             //FIXME: a mettre dans le beforeValidate
             if( isset( $this->data[$this->name]['decisioncomite'] ) ) {
@@ -71,7 +71,7 @@ debug($this->data);
                 }
             }
 
-            return $return && false;
+            return $return;
         }
 
     }
