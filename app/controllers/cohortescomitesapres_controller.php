@@ -8,7 +8,7 @@
         var $components = array( 'Gedooo' );
 
         function __construct() {
-            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'aviscomite', 'notificationscomite' ) ) ) );
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( /*'aviscomite',*/ 'notificationscomite' ) ) ) );
             parent::__construct();
         }
 
