@@ -34,6 +34,12 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
+        //Données pour la nature du logement
+        ['P', 'L', 'H', 'S'].each( function( letter ) {
+            observeDisableFieldsOnValue( 'ApreNaturelogement' + letter, [ 'AprePrecisionsautrelogement' ],  letter, true );
+        } );
+        observeDisableFieldsOnValue( 'ApreNaturelogementA', [ 'AprePrecisionsautrelogement' ], 'A', false );
+
         //Données pour le type d'activité du bénéficiare
         ['F', 'C', 'P'].each( function( letter ) {
             observeDisableFieldsOnValue(
@@ -206,7 +212,50 @@
                 </tr>
             </table>
         </fieldset>
-
+        <fieldset>
+            <legend>Situation administrative du bénéficiaire</legend>
+            <table class="wide noborder">
+                <tr>
+                    <td class="mediumSize noborder">
+                        <?php echo $xform->enum( 'Apre.naturelogement', array( 'div' => false, 'legend' => __d( 'apre', 'Apre.naturelogement', true ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['naturelogement'] ) );?>
+                    </td>
+                    <td class="noborder">
+                        <?php echo $xform->input( 'Apre.precisionsautrelogement', array( 'domain' => 'apre', 'type' => 'textarea' ) );?>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="mediumSize noborder">
+                        <strong>Date de validation du contrat d'insertion par le Président du Conseil Général  </strong> <?php echo date_short( Set::classicExtract( $personne, 'Contratinsertion.dernier.datevalidation_ci' ) );?>
+                        <br />(joindre obligatoirement la copie du contrat d'insertion)
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+         <fieldset>
+            <legend>Parcours du bénéficiaire</legend>
+            <table class="wide noborder">
+                <tr>
+                    <td class="mediumsize noborder"><strong>Date de dernière cessation d'activité : </strong></td>
+                    <td class="mediumsize noborder"><?php echo Set::enum( Set::classicExtract( $personne, 'Dsp.cessderact' ), $optionsdsps['cessderact'] );?></td>
+                </tr>
+                <tr>
+                    <td class="mediumsize noborder"><strong>Ancienneté pôle emploi </strong></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.anciennetepoleemploi', array( 'domain' => 'apre', 'label' => false ) );?></td>
+                </tr>
+                <tr>
+                    <td class="mediumsize noborder"><strong>Niveau d'étude </strong></td>
+                    <td class="mediumsize noborder"><?php echo Set::enum( Set::classicExtract( $personne, 'Dsp.nivetu' ), $optionsdsps['nivetu'] );?></td>
+                </tr>
+                <tr>
+                    <td class="mediumsize noborder"><strong>Projet professionnel </strong></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.projetprofessionnel', array( 'domain' => 'apre', 'label' => false ) );?></td>
+                </tr>
+                <tr>
+                    <td class="mediumsize noborder"><strong>Secteur professionnel en lien avec la demande *</strong></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.secteurprofessionnel', array( 'domain' => 'apre', 'label' => false ) );?></td>
+                </tr>
+            </table>
+        </fieldset>
 
          <fieldset>
             <legend>Activité du bénéficiaire</legend>
