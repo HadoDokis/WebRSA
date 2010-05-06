@@ -25,11 +25,11 @@
             $this->controller = &$controller;
             $this->_prgActions = Set::extract( $settings, 'actions' );
 
-			if( !is_array( $this->_prgActions ) ) {
-				$this->_prgActions = array( $this->_prgActions );
-			}
+            if( !is_array( $this->_prgActions ) ) {
+                $this->_prgActions = array( $this->_prgActions );
+            }
 
-			$this->_prgActions = Set::normalize( $this->_prgActions );
+            $this->_prgActions = Set::normalize( $this->_prgActions );
         }
 
         /** *******************************************************************
@@ -42,18 +42,18 @@
                 ( !empty( $controller->params['form'] ) ? $controller->params['form'] : array() )
             );
 
-			if( !empty( $controller->params['form'] ) ) {
-				return;
-			}
+            if( !empty( $controller->params['form'] ) ) {
+                return;
+            }
 
             if( in_array( '*', array_keys( $this->_prgActions ) ) || in_array( $controller->action, array_keys( $this->_prgActions ) ) ) {
-				$filter = Set::extract( $this->_prgActions, "{$controller->action}.filter" );
-				if( !empty( $filter ) ) {
-					$datas = Set::extract( $controller->data, $filter );
-				}
-				else {
-					$datas = $controller->data;
-				}
+                $filter = Set::extract( $this->_prgActions, "{$controller->action}.filter" );
+                if( !empty( $filter ) ) {
+                    $datas = Set::extract( $controller->data, $filter );
+                }
+                else {
+                    $datas = $controller->data;
+                }
                 if( !empty( $datas ) ) {
                     $params = Set::flatten( $datas, '__' );
 
@@ -71,9 +71,9 @@
                             }
                             $params[$key] =  urlencode( $param );
                         }
-
-                        $getUrl = Router::url( array( 'action' => $controller->action ) ).'/'.implode_assoc( '/', ':', array_merge( array( 'action' => $controller->action ), $params ) );
+                        $getUrl = Router::url( array_merge( array( 'action' => $controller->action ), $params ) );
                     }
+
                     header( 'Location: '.$getUrl );
 
                     // INFO: this doesn't work
