@@ -102,9 +102,3 @@
             );
         ?>
 </fieldset>
-
-       <!-- <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __( 'Nom du service d\'accompagnement (Structure référente)', true ), 'type' => 'select' , 'options' => $sr, 'empty' => true ) );?>
-        <?php echo $form->input( 'Contratinsertion.service_soutien', array( 'label' => '<em>'.__( 'service_soutien', true ).'</em>', 'type' => 'textarea', 'rows' => 3 )  ); ?>
-        <?php echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'ContratinsertionServiceSoutien', 'url' => Router::url( array( 'action' => 'ajax' ), true ) ) ) ;?>
-
-        <?php echo $form->input( 'Contratinsertion.pers_charg_suivi', array( 'label' => '<em>'. __( 'pers_charg_suivi', true ).'</em>', 'type' => 'textarea', 'rows' => 1 )  ); ?> -->
