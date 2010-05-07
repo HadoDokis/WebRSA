@@ -523,6 +523,7 @@
 
             // Si le formulaire ne possède pas de valeur pour ces champs, on met celles par défaut
             if( empty( $dataStructurereferente_id ) && empty( $dataReferent_id ) ) {
+                $structurereferente_id = $referent_id = null;
                 // Valeur par défaut préférée: à partir de personnes_referents
                 if( !empty( $personne_referent ) ){
                     $structurereferente_id = Set::classicExtract( $personne_referent, "{$this->PersonneReferent->alias}.structurereferente_id" );
@@ -535,9 +536,9 @@
                 }
 
                 $this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.structurereferente_id", $structurereferente_id );
-                $this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.referent_id", "{$structurereferente_id}_{$referent_id}" );
+                $this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
             }
-
+// debug($this->data);
 
             $struct_id = Set::classicExtract( $this->data, 'Contratinsertion.structurereferente_id' );
             $this->set( 'struct_id', $struct_id );
@@ -551,7 +552,7 @@
             $referent_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $referent_id );
             $this->set( 'referent_id', $referent_id );
 
-            if( !empty( $referent_id ) ) {
+            if( !empty( $referent_id ) && !empty( $this->data['Contratinsertion']['referent_id'] ) ) {
                 $contratinsertionReferentId = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Contratinsertion']['referent_id'] );
                 $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( $contratinsertionReferentId, null, null, -1 );
                 $this->set( 'ReferentEmail', $referent['Referent']['email']. '<br/>' .$referent['Referent']['numero_poste'] );
