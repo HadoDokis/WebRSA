@@ -166,6 +166,8 @@
 		*/
 
 		protected function _help() {
+			$connections = $this->_connections();
+
 			$this->out('Postgresql:');
 			$this->hr();
 			$this->out('Le script Postgresql permet de réaliser certaines opérations de maintenance');
@@ -177,9 +179,9 @@
 			$this->out('Params:');
 			$this->out("\t-help affiche cette aide\n");
 			$this->out('Commandes:');
-			$this->out("\n\tsequences\n\t\tmet à jour toutes les séquences pour la connection.\n");
+			$this->out("\n\tsequences\n\t\tmet à jour toutes les séquences pour la connection et affiche les commandes exécutées.\n\t\tExemple: cake/console/cake {$this->_script} {$connections[0]} sequences\n");
 			$this->out('Connections:');
-			$this->out("\n\t<connection>\n\t\tpeut prendre une des valeurs suivantes: ".implode( ', ', $this->_connections() ).".\n");
+			$this->out("\n\t<connection>\n\t\tpeut prendre une des valeurs suivantes: ".implode( ', ', $connections ).".\n");
 			$this->out();
 		}
     }
