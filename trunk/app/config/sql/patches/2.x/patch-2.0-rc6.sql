@@ -34,4 +34,11 @@ CREATE INDEX personnes_sexe_idx ON personnes ( sexe );
 
 -- *****************************************************************************
 
+UPDATE apres
+    SET eligibiliteapre = 'O' WHERE apres.statutapre ='F';
+UPDATE apres
+    SET etatdossierapre = 'COM' WHERE apres.statutapre ='F';
+
+-- *****************************************************************************
+
 COMMIT;

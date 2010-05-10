@@ -365,16 +365,22 @@
 //                 }
 //             }
 
-            $valide = true;
-            $nbNormalPieces = $this->_nbrNormalPieces();
-            foreach( $nbNormalPieces as $aide => $nbPieces ) {
-                $key = 'Piece'.strtolower( $aide );
-                if( isset( $this->data[$aide] ) && isset( $this->data[$key] ) && isset( $this->data[$key][$key] ) ) {
-                    $valide = ( count( $this->data[$key][$key] ) == $nbPieces ) && $valide;
-                }
-            }
+            $statutapre = Set::classicExtract( $this->data, "{$this->alias}.statutapre" );
 
-            $this->data['Apre']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
+            if( $statutapre == 'C' ) {
+                $valide = true;
+                $nbNormalPieces = $this->_nbrNormalPieces();
+                foreach( $nbNormalPieces as $aide => $nbPieces ) {
+                    $key = 'Piece'.strtolower( $aide );
+                    if( isset( $this->data[$aide] ) && isset( $this->data[$key] ) && isset( $this->data[$key][$key] ) ) {
+                        $valide = ( count( $this->data[$key][$key] ) == $nbPieces ) && $valide;
+                    }
+                }
+                $this->data['Apre']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
+            }
+            else if( $statutapre == 'F' ){
+                $this->data['Apre']['etatdossierapre'] = 'COM';
+            }
 
             if( array_key_exists( $this->name, $this->data ) && array_key_exists( 'referent_id', $this->data[$this->name] ) ) {
                 $this->data = Set::insert( $this->data, "{$this->alias}.referent_id", suffix( Set::extract( $this->data, "{$this->alias}.referent_id" ) ) );
@@ -406,8 +412,9 @@
             $details = $this->_details( $this->id );
 
             $personne_id = Set::classicExtract( $this->data, "{$this->alias}.personne_id" );
+            $statutapre = Set::classicExtract( $this->data, "{$this->alias}.statutapre" );
 
-            if( !empty( $personne_id ) ){
+            if( !empty( $personne_id ) && ( $statutapre == 'C' ) ){
                 $return = $this->query( "UPDATE apres SET eligibiliteapre = 'O' WHERE apres.personne_id = {$personne_id} AND apres.etatdossierapre = 'COM' AND ( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = {$personne_id} ) > 0;" ) && $return;
 
                 $return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = {$personne_id} AND NOT ( apres.etatdossierapre = 'COM' AND ( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = {$personne_id} ) > 0 );" ) && $return;

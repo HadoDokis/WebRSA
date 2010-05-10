@@ -93,7 +93,7 @@
 						$mtattribue = ( ( is_array( $montantsAttribues ) && !empty( $montantsAttribues ) ) ? array_sum( $montantsAttribues ) : null );
                     }
                     else if( $statutApre == 'F' ) {
-                        $etat = null;
+                        $etat = Set::enum( Set::classicExtract( $apre, "{$this->modelClass}.etatdossierapre" ), $options['etatdossierapre'] );
                         $mtforfait = Set::classicExtract( $apre, "{$this->modelClass}.mtforfait" );
                         $buttonEnabled = false;
                         $buttonEnabledInc = false;

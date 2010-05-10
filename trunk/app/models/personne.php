@@ -320,7 +320,6 @@
 
             //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
             if( empty( $suiviinstruction ) ) {
-                $service = array();
                 $user = $this->Contratinsertion->User->findById( $user_id, null, null, 0 );
                 $personne = Set::merge( $personne, $user );
             }
