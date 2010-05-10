@@ -268,7 +268,7 @@
         *    Détails propre à la personne pour le contrat d'insertion
         *** *******************************************************************/
 
-        function detailsCi( $personne_id ){
+        function detailsCi( $personne_id, $user_id ){
             // TODO: début dans le modèle
             ///Recup personne
             $this->unbindModel(
@@ -315,26 +315,15 @@
                     )
                 )
             );
+
             $personne = Set::merge( $personne, $suiviinstruction );
 
-            /// Recherche des informations financières
-//             $infofinancieres = $this->Foyer->Dossier->Infofinanciere->find(
-//                 'all',
-//                 array(
-//                     'recursive' => -1,
-//                     'order' => array( 'Infofinanciere.moismoucompta DESC' )
-//                 )
-//             );
-//             $personne['Foyer']['Dossier']['Infofinanciere'] = Set::classicExtract( $infofinancieres, '{n}.Infofinanciere' );
-
-//             $detaildroitrsa = $this->Foyer->Dossier->Detaildroitrsa->find(
-//                 'first',
-//                 array(
-//                     'recursive' => -1,
-//                     'conditions' => array( 'Detaildroitrsa.dossier_rsa_id' => $personne['Foyer']['Dossier']['id'] )
-//                 )
-//             );
-//             $personne['Foyer']['Dossier']['Detaildroitrsa'] = $detaildroitrsa['Detaildroitrsa'];
+            //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
+            if( empty( $suiviinstruction ) ) {
+                $service = array();
+                $user = $this->Contratinsertion->User->findById( $user_id, null, null, 0 );
+                $personne = Set::merge( $personne, $user );
+            }
 
             // FIXME -> comment distinguer ? + FIXME autorutitel / autorutiadrelec
             $modecontact = $this->Foyer->Modecontact->find(

@@ -380,7 +380,10 @@
             $this->assert( !empty( $situationdossierrsa ), 'error500' );
             $this->set( 'situationdossierrsa_id', $situationdossierrsa['Situationdossierrsa']['id'] );
 
-            $personne = $this->Contratinsertion->Personne->detailsCi( $personne_id );
+            //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
+            $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
+            $user_id = Set::classicExtract( $user, 'User.id' );
+            $personne = $this->Contratinsertion->Personne->detailsCi( $personne_id, $user_id );
 
 
 
