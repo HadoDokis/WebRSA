@@ -236,7 +236,10 @@
             <table class="wide noborder">
                 <tr>
                     <td class="mediumsize noborder"><strong>Date de dernière cessation d'activité : </strong></td>
-                    <td class="mediumsize noborder"><?php echo Set::enum( Set::classicExtract( $personne, 'Dsp.cessderact' ), $optionsdsps['cessderact'] );?></td>
+                    <td class="mediumsize noborder">
+                        <?php /*echo Set::enum( Set::classicExtract( $personne, 'Dsp.cessderact' ), $optionsdsps['cessderact'] );*/?>
+                        <?php echo $xform->input( 'Dsp.cessderact', array( 'label' => false, 'type' => 'select', 'options' => $optionsdsps['cessderact'], 'empty' => true, 'selected' => Set::classicExtract( $personne, 'Dsp.cessderact' ) ) );?>
+                    </td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Ancienneté pôle emploi </strong></td>
@@ -244,7 +247,10 @@
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Niveau d'étude </strong></td>
-                    <td class="mediumsize noborder"><?php echo Set::enum( Set::classicExtract( $personne, 'Dsp.nivetu' ), $optionsdsps['nivetu'] );?></td>
+                    <td class="mediumsize noborder">
+                        <?php /*echo Set::enum( Set::classicExtract( $personne, 'Dsp.nivetu' ), $optionsdsps['nivetu'] );*/?>
+                        <?php echo $xform->input( 'Dsp.nivetu', array( 'label' => false, 'type' => 'select', 'options' => $optionsdsps['nivetu'], 'empty' => true, 'selected' => Set::classicExtract( $personne, 'Dsp.nivetu' ) ) );?>
+                    </td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Projet professionnel </strong></td>
