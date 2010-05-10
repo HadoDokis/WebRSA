@@ -535,8 +535,13 @@
                     $referent_id = Set::classicExtract( $orientstruct, "{$this->Orientstruct->alias}.referent_id" );
                 }
 
-                $this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.structurereferente_id", $structurereferente_id );
-                $this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
+
+                if( !empty( $structurereferente_id ) ) {
+                    $this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.structurereferente_id", $structurereferente_id );
+                }
+                if( !empty( $structurereferente_id ) && !empty( $referent_id ) ) {
+                    $this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
+                }
             }
 // debug($this->data);
 
