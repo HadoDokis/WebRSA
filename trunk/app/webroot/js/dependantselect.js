@@ -15,6 +15,8 @@
 
     // var selects = new Array(); // TODO dependantselects
     function dependantSelect( select2Id, select1Id ) {
+        var value2 = $F( select2Id );
+
         // selects[select2Id] = new Array();
         // Nettoyage du texte des options
         $$('#' + select2Id + ' option').each( function ( option ) {
@@ -38,7 +40,6 @@
 
         // Onchage event - Partie dynamique
         $(select1Id).onchange = function() {
-
             $$('#' + select2Id + ' option').each( function ( option ) {
                 $(option).remove();
             } );
@@ -52,8 +53,16 @@
                 }
             }
 
+            /*var opt = $$('#' + select2Id + ' option');
+            opt[0].selected = 'selected';*/
+
             var opt = $$('#' + select2Id + ' option');
-            opt[0].selected = 'selected';
+            $( opt ).each( function ( option ) {
+                if( $(option).value == value2 ) {
+                    $(option).selected = 'selected';
+                }
+            } );
+
             try {
                 // INFO -> fonctionne quand m�me, mais g�n�re une erreur
                 $( select2Id ).onchange();
