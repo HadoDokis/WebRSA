@@ -219,6 +219,7 @@
                         'conditions' => array(
 							'Foyer.id = Adressefoyer.foyer_id',
 							'Adressefoyer.rgadr = \'01\'',
+							// FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
 							'Adressefoyer.id IN (
 								SELECT tmpadresses_foyers.id FROM (
 									SELECT MAX(adresses_foyers.id) AS id, adresses_foyers.foyer_id
