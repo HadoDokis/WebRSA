@@ -32,6 +32,7 @@
 	* Montant maximal des apres complémentaires pour une personne au cours
 	* de la période de temps définie par Apre.periodeMontantMaxComplementaires.
 	* @default 2600
+    * cg66 -> 3000
 	*/
 	Configure::write( 'Apre.montantMaxComplementaires', 2600 );
 
@@ -79,5 +80,5 @@
     * Besoin pour le CG66 lors de l'impression des courriers de rendez-vous
     * @default false
     */
-    Configure::write( 'User.adresse', true ); // true = cg66, false = cg93
+    Configure::write( 'User.adresse', false ); // true = cg66, false = cg93
 ?>
