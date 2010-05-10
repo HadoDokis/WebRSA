@@ -18,9 +18,24 @@
             }
         }
         else {
-            $this->data = Set::insert( $this->data, 'Orientstruct.structurereferente_id', '' );
-            $this->data = Set::insert( $this->data, 'Orientstruct.referent_id', '' );
+            if( !Set::check( $this->data, 'Orientstruct.structurereferente_id', '' ) ) {
+                $this->data = Set::insert( $this->data, 'Orientstruct.structurereferente_id', '' );
+            }
+            if( !Set::check( $this->data, 'Orientstruct.referent_id', '' ) ) {
+                $this->data = Set::insert( $this->data, 'Orientstruct.referent_id', '' );
+            }
         }
+
+        /// Rustine sinon 13_10_5_4
+        $this->data['Orientstruct']['structurereferente_id'] = preg_replace( '/^.*(?<![0-9])([0-9]+_[0-9]+)$/', '\1', $this->data['Orientstruct']['structurereferente_id'] );
+        $this->data['Orientstruct']['referent_id'] = preg_replace( '/^.*(?<![0-9])([0-9]+_[0-9]+)$/', '\1', $this->data['Orientstruct']['referent_id'] );
+
+// debug(
+//     array(
+//         $this->data['Orientstruct']['structurereferente_id'],
+//         $this->data['Orientstruct']['referent_id']
+//     )
+// );
 
         if( isset( $this->data['Calculdroitrsa']['id'] ) ) {
             echo $form->input( 'Calculdroitrsa.id', array(  'label' =>  false, 'type' => 'hidden' ) );
