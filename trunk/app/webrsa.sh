@@ -56,11 +56,10 @@ function __changelog() {
         tail -n $numlines $ChangeLogTmp > $ChangeLog
         rm $ChangeLogTmp
 
-        for tag in `svn ls --verbose $ASNV/tags | sort -r | awk '{ printf( "%s/%s ", $1, $6 ) }'`; do
+        for tag in `svn ls --verbose $ASNV/tags | sed 's/^\W*\([0-9]\+\)\W\+.* \+\([^ ]\+\)\/$/\1 \2/g' | grep -v "^[0-9]\+ .$" | sort -n -r -k1 | sed 's/^\([^ ]\+\) \([^ ]\+\)$/\1\/\2/g'`; do
             rev=`echo "$tag" | cut -d "/" -f1`
             tag=`echo "$tag" | cut -d "/" -sf2`
-
-            sed -i "s/^r$rev/\n************************************************************************\n Version $tag\n************************************************************************\n\nr$rev /" $ChangeLog
+            sed -i "s/^r$rev /\n************************************************************************\n Version $tag\n************************************************************************\n\nr$rev /" $ChangeLog
         done
     )
 }
