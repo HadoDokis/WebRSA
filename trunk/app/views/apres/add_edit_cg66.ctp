@@ -218,7 +218,7 @@
                          <strong>Situation familiale : </strong><?php /*echo Set::enum( Set::classicExtract( $personne, 'Foyer.sitfam' ), $sitfam );*/?> -->
                     </td>
                     <td class="mediumSize noborder">
-                        <strong>N° Service instructeur : </strong><?php echo Set::extract( 'Serviceinstructeur.lib_service', $typeservice );?>
+                        <strong>N° Service instructeur : </strong><?php echo Set::classicExtract( $personne, 'Serviceinstructeur.lib_service' );?>
                         <br />
                         <strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.numdemrsa' );?>
                         <br />
