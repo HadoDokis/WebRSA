@@ -184,6 +184,10 @@
 			$actions = Set::classicExtract( $params, 'actions' );
 
 			foreach( Set::normalize( $columns ) as $column => $options ) {
+                if( !Set::check( $options, 'domain' ) && Set::check( $params, 'domain' ) ) {
+                    $options['domain'] = $params['domain'];
+                }
+
 				$label = $this->label( $column, $options );
 
 				if( Set::check( $this->Xpaginator->params, 'paging' ) ) {
@@ -222,7 +226,17 @@
 			if( is_array( $actions ) && !empty( $actions ) ) {
 				foreach( $actions as $action => $actionParams ) {
 					list( $modelName, $action ) = model_field( $action );
-					$domain = Inflector::singularize( Inflector::tableize( $modelName ) );
+
+                    if( Set::check( $actionParams, 'domain' ) ) {
+                        $domain = $actionParams['domain'];
+                    }
+                    else if( Set::check( $params, 'domain' ) ) {
+                        $domain = $params['domain'];
+                    }
+                    else {
+                        $domain = Inflector::singularize( Inflector::tableize( $modelName ) );
+                    }
+
 					$controller = Inflector::tableize( $modelName );
 					$controllerName = Inflector::camelize( $modelName );
 					$model = ClassRegistry::init( $modelName );
@@ -309,7 +323,13 @@
 			$modelName = Inflector::classify( $name );
 			$modelClass = ClassRegistry::init( Inflector::classify( $modelName ) );
 			$cohorte = Set::classicExtract( $cohorteParams, 'cohorte' );
-			$domain = Inflector::singularize( Inflector::tableize( $modelName ) );
+
+            if( Set::check( $cohorteParams, 'domain' ) ) {
+                $domain = $cohorteParams['domain'];
+            }
+            else {
+                $domain = Inflector::singularize( Inflector::tableize( $modelName ) );
+            }
 			///
 
 			$cells = Set::normalize( $cells );
@@ -593,6 +613,10 @@
 					}
 				}
 
+                if( Set::check( $formParams, 'domain' ) ) {
+                    $params['domain'] = $formParams['domain'];
+                }
+
 				$return .= $this->Type->input( $path, $params );
 			}
 
@@ -716,6 +740,7 @@
 		*	- options ie. array( 'User' => array( 'status' => array( 1 => 'Enabled', 0 => 'Disabled' ) ) )
 		*   - domain
 		* TODO: $this->defaultModel() à la place de $this->params, 'controller'
+        * FIXME: ajouter domain_suffix. (voir avec ActioncandidatPersonne)
 		*/
 
 		public function view( $item, $columns, $options = array() ) { // FIXME: rename options en viewParams
@@ -734,33 +759,15 @@
 				$columnDomain = Inflector::singularize( Inflector::tableize( $columnModel ) );
 				/// dans une fonction ?
 
-				if( !Set::check( $columnOptions, 'domain' ) ) {
-					if( Set::check( $options, 'domain' ) ) {
-						$columnOptions['domain'] = $options['domain'];
-					}
-					else {
-						$columnOptions['domain'] = $columnDomain;
-					}
-				}
+                /// FIXME -> domain
+                if( Set::check( $options, 'domain' ) ) {
+                    $columnOptions['domain'] = $options['domain'];
+                }
+                else if( !Set::check( $columnOptions, 'domain' ) ) {
+                    $columnOptions['domain'] = $columnDomain;
+                }
 
 				$formatOptions = $labelOptions = $columnOptions = $this->addClass( $columnOptions, ( ( $lineNr % 2 ) ?  'odd' : 'even' ) );
-
-				/// FIXME
-				unset(
-					$columnOptions['domain'],
-					$columnOptions['type'],
-					$columnOptions['null'],
-					$columnOptions['default'],
-					$columnOptions['country'],
-					$columnOptions['length'],
-					$columnOptions['virtual'],
-					$columnOptions['key'],
-					$columnOptions['options'],
-					$columnOptions['dateFormat'],
-					$columnOptions['maxlength'],
-					$columnOptions['suffix'],
-					$columnOptions['currency']
-				);
 
 				$params = array( 'tag' => ( ( $widget == 'table' ) ? 'td' : 'dd' ) );
 				foreach( array( 'options', 'type', 'class', 'domain' ) as $optionsKey ) {
@@ -768,6 +775,23 @@
 						$params[$optionsKey] = $columnOptions[$optionsKey];
 					}
 				}
+
+                /// FIXME
+                unset(
+                    $columnOptions['domain'],
+                    $columnOptions['type'],
+                    $columnOptions['null'],
+                    $columnOptions['default'],
+                    $columnOptions['country'],
+                    $columnOptions['length'],
+                    $columnOptions['virtual'],
+                    $columnOptions['key'],
+                    $columnOptions['options'],
+                    $columnOptions['dateFormat'],
+                    $columnOptions['maxlength'],
+                    $columnOptions['suffix'],
+                    $columnOptions['currency']
+                );
 
 				if( $widget == 'dl' ) {
 					$params['class'] = $columnOptions['class'];
