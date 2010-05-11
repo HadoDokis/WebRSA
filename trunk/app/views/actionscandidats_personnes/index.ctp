@@ -3,9 +3,11 @@
 <div class="with_treemenu">
 
     <?php
+        $domain = "actioncandidat_personne_".Configure::read( 'ActioncandidatPersonne.suffixe' );
+
         echo $html->tag(
             'h1',
-            $this->pageTitle = __d( 'actioncandidat_personne', "ActionscandidatsPersonnes::{$this->action}", true )
+            $this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true )
         )
     ?>
 
@@ -16,16 +18,17 @@
                 'Actioncandidat.intitule',
                 'Referent.nom_complet',
                 'Actioncandidat.Partenaire.0.libstruc',
+                'ActioncandidatPersonne.datesignature' => array( 'domain' => $domain )/*,
                 'ActioncandidatPersonne.ddaction',
-                'ActioncandidatPersonne.dfaction'
+                'ActioncandidatPersonne.dfaction'*/
             ),
             array(
                 'cohorte' => false,
                 'actions' => array(
-                    'ActioncandidatPersonne.edit',
-                    'ActioncandidatPersonne.gedooo'
+                    'ActioncandidatPersonne.edit' => array( 'domain' => $domain ),
+                    'ActioncandidatPersonne.gedooo' => array( 'domain' => $domain )
                 ),
-                'add' => array( 'ActioncandidatPersonne.add' => $this->params['pass'][0] ),
+                'add' => array( 'ActioncandidatPersonne.add' => $this->params['pass'][0], 'domain' => $domain ),
             )
         );
 //     debug($actionscandidats_personnes);

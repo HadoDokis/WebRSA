@@ -7,6 +7,7 @@
         <tr>
             <td class="wide noborder">
                 <?php
+//                 debug($part);
                     echo Set::enum( Set::classicExtract( $part, 'ActioncandidatPartenaire.partenaire_id' ), $parts );
                 ?>
             </td>
