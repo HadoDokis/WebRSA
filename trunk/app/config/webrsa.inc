@@ -81,4 +81,11 @@
     * @default false
     */
     Configure::write( 'User.adresse', false ); // true = cg66, false = cg93
+
+
+    /**
+    * Paramètre à renseigner pour l'affichage de la bonne fiche de candidature
+    * @default: 'cg93' (pour le CG93), sinon 'cg66' pour le CG66
+    */
+    Configure::write( 'ActioncandidatPersonne.suffixe', 'cg93' );
 ?>
