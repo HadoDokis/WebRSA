@@ -155,7 +155,7 @@
                                                     </li> -->
                                                     <li>
                                                         <?php
-                                                            if( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ){
+                                                            if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ){
                                                                 echo $html->link(
                                                                     'Fiche de liaison',
                                                                     array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne['id'] )

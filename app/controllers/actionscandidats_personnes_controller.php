@@ -92,8 +92,9 @@
         *   Ajax pour les partenaires fournissant les actions
         *** *******************************************************************/
 
-        function ajaxpart( $partenaire_id = null ) { // FIXME
+        function ajaxpart( $actioncandidat_id = null ) { // FIXME
             Configure::write( 'debug', 0 );
+// debug($actioncandidat_id);
             $dataActioncandidat_id = Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' );
             $actioncandidat_id = ( empty( $actioncandidat_id ) && !empty( $dataActioncandidat_id ) ? $dataActioncandidat_id : $actioncandidat_id );
 

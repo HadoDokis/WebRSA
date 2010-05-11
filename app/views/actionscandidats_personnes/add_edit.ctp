@@ -1,7 +1,8 @@
-
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossierId) ); ?>
-
-    <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+    $domain = "actioncandidat_personne_".Configure::read( 'Actioncandidat.suffixe' );
+    echo $this->element( 'dossier_menu', array( 'id' => $dossierId) );
+    echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+?>
 
 <script type="text/javascript">
     document.observe( "dom:loaded", function() {
@@ -44,7 +45,7 @@
     <?php
         echo $html->tag(
             'h1',
-            $this->pageTitle = __d( 'actioncandidat_personne', "ActionscandidatsPersonnes::{$this->action}", true )
+            $this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true )
         );
     ?>
     <?php
@@ -59,15 +60,18 @@
             echo $default->subform(
                 array(
                     'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
-                    'ActioncandidatPersonne.actioncandidat_id' => array( 'domain' => 'actioncandidat_personne' ),
+                    'ActioncandidatPersonne.actioncandidat_id',
                     'ActioncandidatPersonne.referent_id' => array( 'value' => $referentId ),
-                    'ActioncandidatPersonne.ddaction' => array( 'dateFormat' => 'DMY', 'domain' => 'actioncandidat_personne' ),
-                    'ActioncandidatPersonne.dfaction' => array( 'dateFormat' => 'DMY', 'domain' => 'actioncandidat_personne' )
+//                     'ActioncandidatPersonne.ddaction' => array( 'dateFormat' => 'DMY', 'domain' => 'actioncandidat_personne' ),
+//                     'ActioncandidatPersonne.dfaction' => array( 'dateFormat' => 'DMY', 'domain' => 'actioncandidat_personne' )
                 ),
                 array(
+                    'domain' => $domain,
                     'options' => $options
                 )
             );
+
+            echo $ajax->observeField( 'ActioncandidatPersonneActioncandidatId', array( 'update' => 'ActioncandidatPartenairePartenaireId', 'url' => Router::url( array( 'action' => 'ajaxpart' ), true ) ) );
 
             echo $html->tag(
                 'div',
@@ -76,8 +80,6 @@
                     'id' => 'ActioncandidatPartenairePartenaireId'
                 )
             );
-
-            echo $ajax->observeField( 'ActioncandidatPersonneActioncandidatId', array( 'update' => 'ActioncandidatPartenairePartenaireId', 'url' => Router::url( array( 'action' => 'ajaxpart' ), true ) ) );
 
         ?>
     </fieldset>
@@ -122,6 +124,7 @@
                     'class' => 'allocataire infos'
                 )
             );
+
         ?>
     </fieldset>
     <fieldset>
@@ -130,6 +133,9 @@
                 echo $default->subform(
                     array(
                         'ActioncandidatPersonne.motifdemande' => array( 'label' => false )
+                    ),
+                    array(
+                        'domain' => $domain
                     )
                 );
             ?>
@@ -147,6 +153,7 @@
                     'ActioncandidatPersonne.enattente' => array( 'label' => false, 'type' => 'radio', 'div' => false, 'legend' => 'Candidature en attente', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ) )
                 ),
                 array(
+                    'domain' => $domain,
                     'options' => $options
                 )
             );
@@ -163,42 +170,51 @@
         <?php
             echo $default->subform(
                 array(
-                    'ActioncandidatPersonne.datesignature' => array( 'dateFormat' => 'DMY' )
+                    'ActioncandidatPersonne.datesignature' => array( 'dateFormat' => 'DMY', 'empty' => false )
+                ),
+                array(
+                    'domain' => $domain
                 )
             );
         ?>
     </fieldset>
 
-    <p class="center"><em><strong>A remplir par le partenaire :</strong></em></p>
-    <fieldset class="partenaire bilan">
-        <?php
-            echo $html->tag(
-                'dl',
-                'Bilan d\'accueil : '
-            );
+    <?php if( $this->action == 'edit' ):?>
 
-            echo $default->subform(
-                array(
-                    'ActioncandidatPersonne.bilanvenu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => false ),
-                    'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'separator' => '<br />', 'legend' => false ),
-                ),
-                array(
-                    'options' => $options
-                )
-            );
+        <p class="center"><em><strong>A remplir par le partenaire :</strong></em></p>
+        <fieldset class="partenaire bilan">
+            <?php
+                echo $html->tag(
+                    'dl',
+                    'Bilan d\'accueil : '
+                );
 
-            echo $default->subform(
-                array(
-                    'ActioncandidatPersonne.infocomplementaire',
-                    'ActioncandidatPersonne.datebilan' => array( 'dateFormat' => 'DMY', 'empty' => true )
-                ),
-                array(
-                    'options' => $options
-                )
-            );
-//             debug($options);
-        ?>
-    </fieldset>
+                echo $default->subform(
+                    array(
+                        'ActioncandidatPersonne.bilanvenu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => false ),
+                        'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'separator' => '<br />', 'legend' => false ),
+                    ),
+                    array(
+                        'domain' => $domain,
+                        'options' => $options
+                    )
+                );
+
+                echo $default->subform(
+                    array(
+                        'ActioncandidatPersonne.infocomplementaire',
+                        'ActioncandidatPersonne.datebilan' => array( 'dateFormat' => 'DMY', 'empty' => true )
+                    ),
+                    array(
+                        'domain' => $domain,
+                        'options' => $options
+                    )
+                );
+
+    //             debug($options);
+            ?>
+        </fieldset>
+    <?php endif;?>
     <?php echo $xform->submit( 'Enregistrer' );?>
     <?php echo $xform->end();?>
 </div>
