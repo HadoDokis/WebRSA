@@ -345,20 +345,24 @@
             }
             $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
 
-
-            $personne = $this->Apre->Personne->detailsApre( $personne_id );
-            $this->set( 'personne', $personne );
-
-            ///Nombre d'enfants par foyer
-            $nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
-            $this->set( 'nbEnfants', $nbEnfants );
-
             ///Récupération de la liste des structures référentes liés uniquement à l'APRE
             $structs = $this->Structurereferente->listeParType( array( 'apre' => true ) );
             $this->set( 'structs', $structs );
             ///Récupération de la liste des référents liés à l'APRE
             $referents = $this->Referent->listOptions();
             $this->set( 'referents', $referents );
+
+
+            ///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
+            $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
+            $user_id = Set::classicExtract( $user, 'User.id' );
+            $personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $user_id );
+            $this->set( 'personne', $personne );
+// debug($personne);
+
+            ///Nombre d'enfants par foyer
+            $nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
+            $this->set( 'nbEnfants', $nbEnfants );
 
 
             if( !empty( $this->data ) ){

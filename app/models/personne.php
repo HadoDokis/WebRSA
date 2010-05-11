@@ -268,7 +268,7 @@
         *    Détails propre à la personne pour le contrat d'insertion
         *** *******************************************************************/
 
-        function detailsCi( $personne_id, $user_id ){
+        function detailsCi( $personne_id, $user_id = null ){
             // TODO: début dans le modèle
             ///Recup personne
             $this->unbindModel(
@@ -396,7 +396,7 @@
         *   Détails propre à la personne pour l'APRE
         *** *******************************************************************/
 
-        function detailsApre( $personne_id ){
+        function detailsApre( $personne_id, $user_id = null ){
             // TODO: début dans le modèle
             ///Recup personne
             $this->unbindModel(
@@ -518,6 +518,45 @@
                 )
             );
             $personne['Dsp'] = $dsp['Dsp'];
+
+
+
+            // Récupération du service instructeur
+            $suiviinstruction = $this->Foyer->Dossier->Suiviinstruction->find(
+                'first',
+                array(
+                    'fields' => array_keys( // INFO: champs des tables Suiviinstruction et Serviceinstructeur
+                        Set::merge(
+                            Set::flatten( array( 'Suiviinstruction' => Set::normalize( array_keys( $this->Foyer->Dossier->Suiviinstruction->schema() ) ) ) ),
+                            Set::flatten( array( 'Serviceinstructeur' => Set::normalize( array_keys( ClassRegistry::init( 'Serviceinstructeur' )->schema() ) ) ) )
+                        )
+                    ),
+                    'recursive' => -1,
+                    'conditions' => array(
+                        'Suiviinstruction.dossier_rsa_id' => $personne['Foyer']['dossier_rsa_id']
+                    ),
+                    'joins' => array(
+                        array(
+                            'table'      => 'servicesinstructeurs',
+                            'alias'      => 'Serviceinstructeur',
+                            'type'       => 'LEFT OUTER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+                        )
+                    )
+                )
+            );
+
+            $personne = Set::merge( $personne, $suiviinstruction );
+
+            //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
+            if( empty( $suiviinstruction ) ) {
+                $user = $this->Contratinsertion->User->findById( $user_id, null, null, 0 );
+                $personne = Set::merge( $personne, $user );
+            }
+
+
+
 
 
             return $personne;

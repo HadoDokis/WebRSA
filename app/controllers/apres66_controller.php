@@ -319,12 +319,6 @@
                 $this->set( compact( 'listesAidesSelonApre' ) );
             }
 
-            $personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id );
-            $this->set( 'personne', $personne );
-
-            ///Nombre d'enfants par foyer
-            $nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
-            $this->set( 'nbEnfants', $nbEnfants );
 
             ///Récupération de la liste des structures référentes liés uniquement à l'APRE
             $structs = $this->Structurereferente->listeParType( array( 'apre' => true ) );
@@ -335,6 +329,19 @@
             ///Récupération de la liste des référents liés à l'APRE
             $typesaides = $this->Typeaideapre66->listOptions();
             $this->set( 'typesaides', $typesaides );
+
+
+            ///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
+            $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
+            $user_id = Set::classicExtract( $user, 'User.id' );
+            $personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $user_id );
+            $this->set( 'personne', $personne );
+// debug($personne);
+
+            ///Nombre d'enfants par foyer
+            $nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
+            $this->set( 'nbEnfants', $nbEnfants );
+
 
             if( !empty( $this->data ) ){
 				// Tentative d'enregistrement de l'APRE complémentaire
