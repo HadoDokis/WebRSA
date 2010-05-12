@@ -51,10 +51,13 @@ msgid "ActioncandidatPersonne.referent_id"
 msgstr "Nom du prescripteur"
 
 msgid "ActioncandidatPersonne.ddaction"
-msgstr "Date de début de la liaison"
+msgstr "Date de transmission de la prescription"
 
 msgid "ActioncandidatPersonne.dfaction"
-msgstr "Date de fin de la liaison"
+msgstr "Date de retour de la prescription"
+
+msgid "ActioncandidatPersonne.motifdemande"
+msgstr "Objet ou nature de l'orientation / observations : "
 
 msgid "ActioncandidatPersonne.rendezvous_id"
 msgstr "Rendez-vous"
@@ -73,26 +76,3 @@ msgstr "Date"
 
 msgid "ActioncandidatPersonne.daterdvpartenaire"
 msgstr "Date du RDV"
-
-###############################################################################
-### ENUM pour le bilan de la liaison
-###############################################################################
-msgid "ENUM::BILANRETENU::RET"
-msgstr "Retenu(e)"
-
-msgid "ENUM::BILANRETENU::NRE"
-msgstr "Non Retenu(e)"
-
-msgid "ENUM::BILANVENU::VEN"
-msgstr "Venu(e)"
-
-msgid "ENUM::BILANVENU::NVE"
-msgstr "Non Venu(e)"
-
-msgid "ENUM::ENATTENTE::0"
-msgstr "Oui"
-
-msgid "ENUM::ENATTENTE::1"
-msgstr "Non"
-
-###############################################################################

@@ -1,9 +1,11 @@
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossierId) ); ?>
+<?php
+    $domain = "actioncandidat_personne_".Configure::read( 'ActioncandidatPersonne.suffixe' );
+    echo $this->element( 'dossier_menu', array( 'id' => $dossierId) );
+?>
 
 <div class="with_treemenu">
 
     <?php
-        $domain = "actioncandidat_personne_".Configure::read( 'ActioncandidatPersonne.suffixe' );
 
         echo $html->tag(
             'h1',
@@ -23,15 +25,15 @@
                 'ActioncandidatPersonne.dfaction'*/
             ),
             array(
-                'cohorte' => false,
+//                 'cohorte' => false,
                 'actions' => array(
                     'ActioncandidatPersonne.edit' => array( 'domain' => $domain ),
                     'ActioncandidatPersonne.gedooo' => array( 'domain' => $domain )
                 ),
-                'add' => array( 'ActioncandidatPersonne.add' => $this->params['pass'][0], 'domain' => $domain ),
+                'add' => array( 'ActioncandidatPersonne.add' => $this->params['pass'][0] )
             )
         );
-//     debug($actionscandidats_personnes);
+
     ?>
 </div>
 <div class="clearer"><hr /></div>

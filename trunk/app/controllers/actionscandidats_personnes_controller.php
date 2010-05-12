@@ -3,9 +3,9 @@
     {
 
         var $name = 'ActionscandidatsPersonnes';
-        var $uses = array( 'ActioncandidatPersonne', 'Option', 'Personne', 'Actioncandidat', 'Partenaire', 'Typerdv', 'PersonneReferent', 'Referent', 'ActioncandidatPartenaire', 'Contactpartenaire', 'Adressefoyer', 'Natmob' );
+        var $uses = array( 'ActioncandidatPersonne', 'Option', 'Personne', 'Actioncandidat', 'Partenaire', 'Typerdv', 'PersonneReferent', 'Referent', 'ActioncandidatPartenaire', 'Contactpartenaire', 'Adressefoyer', 'Natmob', 'Dsp' );
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
-        var $aucunDroit = array( 'ajaxpart', 'freu' );
+        var $aucunDroit = array( 'ajaxpart', 'ajaxstruct' );
         var $components = array( 'Default', 'Gedooo' );
 
 
@@ -23,7 +23,8 @@
 
             $options = Set::insert( $options, 'Adresse.typevoie', $this->Option->typevoie() );
             $options = Set::insert( $options, 'Personne.qual', $this->Option->qual() );
-
+            $options = Set::insert( $options, 'Contratinsertion.decision_ci', $this->Option->decision_ci() );
+            $options = Set::insert( $options, 'Dsp', $this->Dsp->allEnumLists() );
 
             foreach( array( 'Actioncandidat', /*'Personne', */'Referent'/*, 'Partenaire'*/ ) as $linkedModel ) {
                 $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
@@ -34,9 +35,17 @@
             $this->Locale = new LocaleHelper();
 
             $options = Set::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Natmob->find( 'list' ) );
-//             $this->set( 'mobilites', $this->Natmob->find( 'list' ) );
-// debug($options);
+
+
+            $this->set( 'typevoie', $this->Option->typevoie() );
+            $this->set( 'qual', $this->Option->qual() );
+            $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
+            $this->set( 'sitfam', $this->Option->sitfam() );
+            $this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
+            $this->set( 'rolepers', $this->Option->rolepers() );
+            $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
             $this->set( compact( 'options', 'typevoie' ) );
+
             return $return;
         }
 
@@ -111,6 +120,37 @@
         }
 
 
+        /** ********************************************************************
+        *   Ajax pour les partenaires fournissant les actions
+        *** *******************************************************************/
+
+        function ajaxstruct( $referent_id = null ) { // FIXME
+            Configure::write( 'debug', 0 );
+
+// debug($referent_id);
+            $this->set( 'typevoie', $this->Option->typevoie() );
+
+            $dataReferent_id = Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' );
+            $referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
+
+            if( !empty( $referent_id ) ) {
+                $referent = $this->Referent->findbyId( $referent_id, null, null, -1 );
+
+                $structs = $this->Structurereferente->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
+                        ),
+                        'recursive' => -1
+                    )
+                );
+                $this->set( compact( 'referent', 'structs' ) );
+            }
+
+
+            $this->render( 'ajaxstruct', 'ajax' );
+        }
         /**
         *
         */
@@ -195,12 +235,47 @@
                 $this->set( compact( 'dossierId', 'personne_id' ) );
             }
 
+            ///Données récupérées propre à la personne
+            $personne = $this->{$this->modelClass}->Personne->detailsCi( $personne_id );
+            ///Données Contrat engagement
+            $contrat = $this->{$this->modelClass}->Personne->Contratinsertion->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Contratinsertion.personne_id' => $personne_id
+                    ),
+                    'recursive' => -1,
+                    'order' => 'Contratinsertion.date_saisi_ci DESC'
+                )
+            );
+            if( !empty( $contrat ) ) {
+                $personne = Set::merge( $personne, $contrat );
+            }
+            $this->set( 'personne', $personne );
+
+            ///Nombre d'enfants par foyer
+            $nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
+            $this->set( 'nbEnfants', $nbEnfants );
+
+
+            ///Données Dsp
+            $dsp = $this->Dsp->findByPersonneId( $personne_id, null, null, -1  );
+            $this->set( compact( 'dsp' ) );
+
             $this->ActioncandidatPersonne->begin();
 
             if( !empty( $this->data ) ){
 // debug( $this->data );
 // die();
+                $this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) );
+
                 if( $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+
+                    $this->ActioncandidatPersonne->Personne->Dsp->create();
+                    $this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+
+
+
                     if( $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 
                         $this->Jetons->release( $dossierId );
@@ -216,13 +291,34 @@
             else{
                 if( $this->action == 'edit' ) {
                     $this->data = $actioncandidat_personne;
+
+
+
+                    /// Récupération des données socio pro (notamment Niveau etude) lié au contrat
+                    $this->ActioncandidatPersonne->Personne->Dsp->unbindModelAll();
+                    $dsp = $this->ActioncandidatPersonne->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
+                    if( empty( $dsp ) ) {
+                        $dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
+                        $this->ActioncandidatPersonne->Personne->Dsp->set( $dsp );
+                        if( $this->ActioncandidatPersonne->Personne->Dsp->save( $dsp ) ) {
+                            $dsp = $this->ActioncandidatPersonne->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
+                        }
+                        else {
+                            $this->cakeError( 'error500' );
+                        }
+                        $this->assert( !empty( $dsp ), 'error500' );
+                    }
+                    $this->data['Dsp'] = array( 'id' => $dsp['Dsp']['id'], 'personne_id' => $dsp['Dsp']['personne_id'] );
+                    $this->data['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );
+
+
                 }
             }
             $this->ActioncandidatPersonne->commit();
 
 
 //             $this->set( 'personne_id', $personne_id );
-            $this->render( $this->action, null, 'add_edit' );
+            $this->render( $this->action, null, 'add_edit_'.Configure::read( 'ActioncandidatPersonne.suffixe' ) );
         }
 
         /**

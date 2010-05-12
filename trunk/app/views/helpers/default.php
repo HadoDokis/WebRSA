@@ -229,6 +229,7 @@
 
                     if( Set::check( $actionParams, 'domain' ) ) {
                         $domain = $actionParams['domain'];
+                        unset( $actionParams['domain'] );
                     }
                     else if( Set::check( $params, 'domain' ) ) {
                         $domain = $params['domain'];
@@ -606,6 +607,7 @@
                 if( !Set::check( $params, 'domain' ) || empty( $params['domain'] ) ) {
                     $params['domain'] = Inflector::singularize( Inflector::tableize( $fieldModelName ) );
                 }*/
+
 				if( !Set::check( $params, 'options' ) ) {
 					$options = Set::extract( $formParams, "options.{$fieldModelName}.{$fieldModelfield}" );
 					if( !empty( $options ) ) {
