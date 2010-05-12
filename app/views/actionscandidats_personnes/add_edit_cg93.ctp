@@ -264,7 +264,7 @@
                     'ActioncandidatPersonne.typemobile'=> array( 'label' => 'Type de mobilité ' ),
                     'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'radio' , 'legend' => 'Rendez-vous', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
                     'ActioncandidatPersonne.daterdvpartenaire' => array( 'dateFormat' => 'DMY', 'empty' => true ),
-                    'ActioncandidatPersonne.enattente' => array( 'label' => false, 'type' => 'radio', 'div' => false, 'legend' => 'Candidature en attente', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ) )
+                    'ActioncandidatPersonne.enattente' => array( 'type' => 'radio', 'div' => false, 'legend' => 'Candidature en attente', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ) )
                 ),
                 array(
                     'domain' => $domain,
