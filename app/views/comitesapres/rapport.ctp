@@ -153,7 +153,7 @@
                     <?php
                         foreach( $comiteapre['Apre'] as $apre ) {
 
-    // debug($apre);
+//     debug($apre);
                             echo $html->tableCells(
                                 array(
                                     h( Set::classicExtract( $apre, 'numeroapre' ) ),
@@ -164,6 +164,7 @@
                                     h( Set::enum( Set::classicExtract( $apre, 'ApreComiteapre.recoursapre' ), $options['recoursapre'] ) ),
                                     h( Set::enum( Set::classicExtract( $apre, 'ApreComiteapre.decisioncomite' ), $options['decisioncomite'] ) ),
                                     h( Set::classicExtract( $apre, 'ApreComiteapre.montantattribue' ) ),
+//                                     h( Set::classicExtract( $apre, 'ApreComiteapre.observationcomite') ),
                                     $html->viewLink(
                                         'Voir les apres',
                                         array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $apre, 'personne_id' ) ),

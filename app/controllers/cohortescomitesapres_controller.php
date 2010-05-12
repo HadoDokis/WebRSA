@@ -168,11 +168,18 @@
         **/
 
         function editdecision( $apre_id = null ) {
+            // Retour à l'index en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'comitesapres', 'action' => 'rapport', Set::classicExtract( $this->data, 'ApreComiteapre.comiteapre_id' ) ) );
+            }
 
             // TODO: error404/error500 si on ne trouve pas les données
             $qual = $this->Option->qual();
             $typevoie = $this->Option->typevoie();
 
+
+            $comiteapre = $this->ApreComiteapre->findByApreId( $apre_id, null, null, -1 );
+            $this->set( compact( 'comiteapre' ) );
 
             $apre = $this->Apre->find(
                 'first',

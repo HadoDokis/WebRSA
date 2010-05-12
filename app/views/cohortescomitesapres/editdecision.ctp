@@ -29,9 +29,9 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach( $apre['Comiteapre'] as $index => $comite ):?>
                 <?php
-                    $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+
+                    $innerTable = '<table id="innerTable0" class="innerTable">
                             <tbody>
                                 <tr>
                                     <th>Date naissance</th>
@@ -49,10 +49,10 @@
                         </table>';
                     $title = $apre['Dossier']['numdemrsa'];
 
-                    $apre_id = Set::extract( $comite, 'ApreComiteapre.apre_id');
-                    $comiteapre_id = Set::extract( $comite, 'ApreComiteapre.comiteapre_id');
-                    $aprecomiteapre_id = Set::extract( $comite, 'ApreComiteapre.id');
-// debug($apre_id);
+                    $apre_id = Set::classicExtract( $comiteapre, 'ApreComiteapre.apre_id');
+                    $comiteapre_id = Set::classicExtract( $comiteapre, 'ApreComiteapre.comiteapre_id');
+                    $aprecomiteapre_id = Set::classicExtract( $comiteapre, 'ApreComiteapre.id');
+
                     echo $html->tableCells(
                         array(
                             h( Set::classicExtract( $apre, 'Dossier.numdemrsa') ),
@@ -60,7 +60,7 @@
                             h( Set::classicExtract( $apre, 'Adresse.locaadr') ),
                             h( $locale->date( 'Date::short', Set::extract( $apre, 'Apre.datedemandeapre' ) ) ),
 
-                            $xform->enum( 'ApreComiteapre.decisioncomite', array( 'label' => false, 'type' => 'select', 'options' => $options['decisioncomite'], 'selected' => Set::classicExtract( $comite, 'ApreComiteapre.decisioncomite' ) ) ).
+                            $xform->enum( 'ApreComiteapre.decisioncomite', array( 'label' => false, 'type' => 'select', 'options' => $options['decisioncomite'], 'selected' => Set::classicExtract( $comiteapre, 'ApreComiteapre.decisioncomite' ) ) ).
                             $xform->input( 'ApreComiteapre.apre_id', array( 'label' => false, 'div' => false, 'value' => $apre_id, 'type' => 'hidden' ) ).
                             $xform->input( 'ApreComiteapre.id', array( 'label' => false, 'div' => false, 'value' => $aprecomiteapre_id, 'type' => 'hidden' ) ).
                             $xform->input( 'ApreComiteapre.comiteapre_id', array( 'label' => false, 'type' => 'hidden', 'value' => $comiteapre_id ) ).
@@ -68,25 +68,31 @@
                             $xform->input( 'Apre.id', array( 'label' => false, 'type' => 'hidden', 'value' => $apre_id ) ),
 
 
-                            h( $locale->date( 'Date::short', Set::extract( $comite, 'datecomite' ) ) ),
-                            $xform->input( 'ApreComiteapre.montantattribue', array( 'label' => false, 'type' => 'text', 'maxlength' => 7, 'value' => Set::classicExtract( $comite, 'ApreComiteapre.montantattribue') ) ),
-                            $xform->input( 'ApreComiteapre.observationcomite', array( 'label' => false, 'type' => 'text', 'rows' => 3, 'value' => Set::classicExtract( $comite, 'ApreComiteapre.observationcomite') ) ),
+                            h( $locale->date( 'Date::short', Set::extract( $comiteapre, 'datecomite' ) ) ),
+                            $xform->input( 'ApreComiteapre.montantattribue', array( 'label' => false, 'type' => 'text', 'maxlength' => 7, 'value' => Set::classicExtract( $comiteapre, 'ApreComiteapre.montantattribue') ) ),
+
+                            $xform->input( 'ApreComiteapre.observationcomite', array( 'label' => false, 'type' => 'text', 'rows' => 3, 'value' => Set::classicExtract( $comiteapre, 'ApreComiteapre.observationcomite') ) ),
                             $html->viewLink(
-                                'Voir le comite « '.Set::extract( $comite, 'Comiteapre.id' ).' »',
-                                array( 'controller' => 'comitesapres', 'action' => 'view', Set::extract( $comite, 'Comiteapre.id' ) ),
+                                'Voir le comite « '.Set::extract( $comiteapre, 'Comiteapre.id' ).' »',
+                                array( 'controller' => 'comitesapres', 'action' => 'view', Set::extract( $comiteapre, 'Comiteapre.id' ) ),
                                 true,
                                 true
                             ),
                             array( $innerTable, array( 'class' => 'innerTableCell' ) )
                         ),
-                        array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-                        array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+                        array( 'class' => 'odd', 'id' => 'innerTableTrigger0' ),
+                        array( 'class' => 'even', 'id' => 'innerTableTrigger0' )
                     );
                 ?>
-                <?php endforeach;?>
             </tbody>
         </table>
 
-        <?php echo $xform->submit( 'Enregistrer' );?>
+
+        <div class="submit">
+            <?php
+                echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
+                echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
+            ?>
+        </div>
         <?php echo $xform->end();?>
 <?php endif;?>

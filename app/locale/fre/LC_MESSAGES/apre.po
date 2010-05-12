@@ -414,13 +414,13 @@ msgstr "Oui"
 # Enum ComiteapreParticipantcomite.presence
 ###############################################################################
 
-msgid "ENUM::PRESENCE::PRE"
+msgid "ENUM::PRESENCECA::PRE"
 msgstr "Présent"
 
-msgid "ENUM::PRESENCE::ABS"
+msgid "ENUM::PRESENCECA::ABS"
 msgstr "Absent"
 
-msgid "ENUM::PRESENCE::EXC"
+msgid "ENUM::PRESENCECA::EXC"
 msgstr "Excusé"
 
 ###############################################################################
