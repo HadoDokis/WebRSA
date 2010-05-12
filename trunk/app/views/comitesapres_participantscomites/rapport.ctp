@@ -8,8 +8,6 @@
         <div class="aere">
             <fieldset>
                 <legend>Participants au comité</legend>
-                <?php /*echo $xform->input( 'Comiteapre.id', array( 'label' => false, 'type' => 'hidden' ) ) ;*/?>
-
                 <table>
                     <thead>
                         <tr>
@@ -29,7 +27,7 @@
                                 $comiteapreparticipantcomite_id = Set::classicExtract( $participant, 'ComiteapreParticipantcomite.id');
                                 $valuePresence = Set::classicExtract( $this->data, "$index.ComiteapreParticipantcomite.presence" );
 
-// debug($this->data);
+// debug($options['presence']);
                                 echo $html->tableCells(
                                     array(
                                         h( Set::classicExtract( $participant, 'Participantcomite.nom' ) ),
