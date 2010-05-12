@@ -119,6 +119,11 @@
         function add( $personne_id = null ) {
             $this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
+            // Retour à l'index en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index', $personne_id ) );
+            }
+
             $dossier_id = $this->Personne->dossierId( $personne_id );
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
@@ -187,6 +192,12 @@
 
         function edit( $orientstruct_id = null ) {
             $this->assert( valid_int( $orientstruct_id ), 'invalidParameter' );
+
+            // Retour à l'index en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $orientstruct_id = $this->Orientstruct->field( 'personne_id', array( 'id' => $orientstruct_id ) );
+                $this->redirect( array( 'action' => 'index', $orientstruct_id ) );
+            }
 
             $orientstruct = $this->Orientstruct->findById( $orientstruct_id, null, null, 2 );
             $this->assert( !empty( $orientstruct ), 'invalidParameter' );
