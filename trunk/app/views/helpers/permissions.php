@@ -12,8 +12,11 @@
         */
 
         function check( $controller, $action ) {
-            $controller = ucfirst( $controller );
+            /*$controller = ucfirst( $controller );
+            $action = strtolower( $action );*/
+			$controller = Inflector::camelize( $controller );
             $action = strtolower( $action );
+// debug( array( $controller, $action ) );
 
             $permissions = $this->Session->read( 'Auth.Permissions' );
 
