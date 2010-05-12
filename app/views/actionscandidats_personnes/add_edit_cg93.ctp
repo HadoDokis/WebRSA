@@ -52,7 +52,18 @@
     <?php
         echo $html->tag(
             'h1',
-            $this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true )
+            $this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true ),
+            array(
+                'class' => 'aere'
+            )
+        );
+
+        echo $html->tag(
+            'p',
+            'La fiche de liaison est un document conventionnel partagé qui engage tous les acteurs du PDI',
+            array(
+                'class' => 'remarque'
+            )
         );
     ?>
     <?php
@@ -64,27 +75,6 @@
     <fieldset>
         <legend>Prescripteur / Référent</legend>
         <?php
-            echo $default->subform(
-                array(
-                    'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
-                    'ActioncandidatPersonne.actioncandidat_id'
-                ),
-                array(
-                    'domain' => $domain,
-                    'options' => $options
-                )
-            );
-
-            ///Ajax pour les données de l'action entreprise et de son partenaire lié
-            echo $ajax->observeField( 'ActioncandidatPersonneActioncandidatId', array( 'update' => 'ActioncandidatPartenairePartenaireId', 'url' => Router::url( array( 'action' => 'ajaxpart' ), true ) ) );
-            echo $html->tag(
-                'div',
-                '<b></b>',
-                array(
-                    'id' => 'ActioncandidatPartenairePartenaireId',
-                    'class' => 'aere'
-                )
-            );
 
             echo $default->subform(
                 array(
@@ -255,8 +245,34 @@
 
 
     <fieldset>
-        <legend>Mobilité</legend>
+        <legend>Partenaire / Prestataire</legend>
         <?php
+            echo $default->subform(
+                array(
+                    'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
+                    'ActioncandidatPersonne.actioncandidat_id'
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+
+            ///Ajax pour les données de l'action entreprise et de son partenaire lié
+            echo $ajax->observeField( 'ActioncandidatPersonneActioncandidatId', array( 'update' => 'ActioncandidatPartenairePartenaireId', 'url' => Router::url( array( 'action' => 'ajaxpart' ), true ) ) );
+            echo $html->tag(
+                'div',
+                '<b></b>',
+                array(
+                    'id' => 'ActioncandidatPartenairePartenaireId',
+                    'class' => 'aere'
+                )
+            );
+
+
+
+
+
             echo $default->subform(
                 array(
                     'ActioncandidatPersonne.mobile' => array( 'type' => 'radio' , 'legend' => 'Etes-vous mobile ?', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
