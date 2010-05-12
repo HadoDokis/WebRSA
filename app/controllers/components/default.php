@@ -88,6 +88,7 @@
 			$item = $this->controller->{$this->controller->modelClass}->findById( $id, null, null, 1 );
 			$this->controller->assert( !empty( $item ), 'invalidParameter' );
 
+			//debug( Inflector::underscore( Inflector::singularize( $this->controller->name ) ) ); // FIXME TODO
 			$varname = strtolower( Inflector::singularize( $this->controller->name ) );
 			$this->controller->set( $varname, $item );
 		}
@@ -123,14 +124,14 @@
 		public function _add_edit( $id = null ) {
 			if( Set::check( $this->controller->params, 'form.cancel' ) ) {
 				$this->controller->Session->setFlash( __( 'Save->cancel', true ), 'flash/information' );
-				$this->controller->redirect( array( 'action' => 'index' ) );
+				$this->controller->redirect( array( 'action' => 'index' ) ); // FIXME: paramétrer
 			}
 
 			if( $this->controller->action == 'edit' ) {
 				$item = $this->controller->{$this->controller->modelClass}->findById( $id, null, null, 1 );
 				$this->controller->assert( !empty( $item ), 'invalidParameter' );
 
-				$varname = strtolower( Inflector::singularize( $this->controller->name ) );
+				$varname = strtolower( Inflector::singularize( $this->controller->name ) ); // FIXME: voir view
 				$this->controller->set( $varname, $item );
 			}
 
