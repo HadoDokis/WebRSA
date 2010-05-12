@@ -36,6 +36,10 @@
         }
 
         function add() {
+            // Retour à l'index en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index' ) );
+            }
 
             if( !empty( $this->data ) ) {
                 if( $this->Tiersprestataireapre->saveAll( $this->data ) ) {
@@ -50,6 +54,11 @@
             // TODO : vérif param
             // Vérification du format de la variable
             $this->assert( valid_int( $tiersprestataireapre_id ), 'invalidParameter' );
+
+            // Retour à l'index en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index' ) );
+            }
 
             if( !empty( $this->data ) ) {
                 if( $this->Tiersprestataireapre->saveAll( $this->data ) ) {
