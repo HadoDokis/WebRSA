@@ -93,7 +93,8 @@
             );
             $htmlAttributes['class'] = $class;
 
-			$htmlAttributes = array_filter_keys( $htmlAttributes, array( 'enabled' ), true );
+			//$htmlAttributes = array_filter_keys( $htmlAttributes, array( 'enabled' ), true );
+			unset( $htmlAttributes['enabled'] );
 
 
             if( $enabled ) {
@@ -249,8 +250,6 @@
 // 						}
 // 					}
 
-					$actionParams['enabled'] = $this->Permissions->check( $controller, $action );
-
 					if( $action == 'delete' ) {
 						$value = $this->button(
 							'delete',
@@ -266,7 +265,8 @@
 								'title' => sprintf(
 									__d( $domain, "{$controllerName}::{$action}", true ),
 									Set::classicExtract( $line, "{$model->name}.{$model->displayField}" )
-								)
+								),
+								'enabled' => $this->Permissions->check( $controller, $action )
 							),
 							sprintf(
 								__d( $domain, "{$controllerName}::{$action}::confirm", true ),
@@ -289,7 +289,8 @@
 								'title' => sprintf(
 									__d( $domain, "{$controllerName}::{$action}", true ),
 									Set::classicExtract( $line, "{$model->name}.{$model->displayField}" )
-								)
+								),
+								'enabled' => $this->Permissions->check( $controller, $action )
 							)
 						);
 
