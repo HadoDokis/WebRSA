@@ -20,6 +20,11 @@
 	echo $xform->input( 'Parametrefinancier.apreforfait', array(  'required' => true, 'domain' => 'apre' ) );
 	echo $xform->input( 'Parametrefinancier.aprecomplem', array(  'domain' => 'apre' ) );
 	echo $xform->input( 'Parametrefinancier.natureimput', array(  'required' => true, 'domain' => 'apre' ) );
-	echo $xform->submit( 'Enregistrer' );
+
+    echo '<div class="submit">';
+    echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
+    echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
+    echo '</div>';
+
 	echo $xform->end();
 ?>

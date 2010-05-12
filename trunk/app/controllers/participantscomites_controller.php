@@ -21,6 +21,11 @@
         }
 
         function add() {
+            // Retour à l'index en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index' ) );
+            }
+
             if( !empty( $this->data ) ) {
                 if( $this->Participantcomite->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -32,6 +37,10 @@
 
         function edit( $participant_id = null ) {
             $this->assert( valid_int( $participant_id ) , 'invalidParameter' );
+            // Retour à l'index en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index' ) );
+            }
 
             if( !empty( $this->data ) ) {
                 if( $this->Participantcomite->saveAll( $this->data ) ) {

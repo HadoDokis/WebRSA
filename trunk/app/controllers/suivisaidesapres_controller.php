@@ -50,6 +50,10 @@
 
         function _add_edit() {
             $args = func_get_args();
+            // Retour à l'index en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index' ) );
+            }
 			call_user_func_array( array( $this->Default, $this->action ), $args );
 		}
 

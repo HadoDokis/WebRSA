@@ -20,7 +20,12 @@
         <?php echo $xform->input( 'Suiviaideapre.numtel', array( 'label' =>  __( 'numtel', true ), 'type' => 'text', 'maxlength' => 10 ) );?>
     </fieldset>
 
-    <?php echo $xform->submit( 'Enregistrer' );?>
+        <div class="submit">
+            <?php
+                echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
+                echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
+            ?>
+        </div>
 <?php echo $xform->end();?>
 
 <div class="clearer"><hr /></div>

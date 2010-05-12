@@ -24,7 +24,9 @@
 
 		function edit() {
 			$parametrefinancier = $this->{$this->modelClass}->find( 'first' );
-
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'parametresfinanciers', 'action' => 'index' ) );
+            }
 			if( !empty( $this->data ) ) {
 				$this->{$this->modelClass}->create( $this->data );
 				if( $this->{$this->modelClass}->save() ) {

@@ -25,7 +25,10 @@
         }
 
         function add() {
-
+            // Retour à l'index en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index' ) );
+            }
             if( !empty( $this->data ) ) {
                 if( $this->Serviceinstructeur->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -41,7 +44,10 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $serviceinstructeur_id ), 'error404' );
 
-
+            // Retour à l'index en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index' ) );
+            }
             if( !empty( $this->data ) ) {
                 if( $this->Serviceinstructeur->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
