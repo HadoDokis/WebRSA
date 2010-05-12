@@ -1,7 +1,7 @@
 <?php
 	class DefaultHelper extends AppHelper
 	{
-        public $helpers = array( 'Html', 'Xpaginator', 'Locale', 'Xform', 'Type' );
+        public $helpers = array( 'Html', 'Xpaginator', 'Locale', 'Xform', 'Type', 'Permissions' );
 
 		/**
 		* FIXME docs
@@ -248,6 +248,8 @@
 // 							$$t = Set::classicExtract( $actionParams, $t );
 // 						}
 // 					}
+
+					$actionParams['enabled'] = $this->Permissions->check( $controller, $action );
 
 					if( $action == 'delete' ) {
 						$value = $this->button(
@@ -498,7 +500,10 @@
 					$this->button(
 						$actionAction,
 						$url,
-						array( 'title' => __d( $domain, "{$actionModel}::{$actionAction}", true ) )
+						array(
+							'title' => __d( $domain, "{$actionModel}::{$actionAction}", true ),
+							'enabled' => $this->Permissions->check( $url['controller'], $url['action'] )
+						)
 					),
 					array( 'class' => 'actions' )
 				);
