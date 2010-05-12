@@ -178,8 +178,11 @@
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
 
-            // Retour à la liste en cas d'annulation
+            // Retour à l'index en cas d'annulation
             if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                if( $this->action == 'edit' ) {
+                    $id = $this->ActioncandidatPersonne->field( 'personne_id', array( 'id' => $id ) );
+                }
                 $this->redirect( array( 'action' => 'index', $id ) );
             }
 
