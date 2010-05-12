@@ -20,10 +20,12 @@
                         'values' => array( 'O', 'N' )
                     ),
                     'bilanvenu' => array(
-                        'values' => array( 'VEN', 'NVE' )
+                        'values' => array( 'VEN', 'NVE' ),
+                        'domain' => 'actioncandidat_personne'
                     ),
                     'bilanretenu' => array(
-                        'values' => array( 'RET', 'NRE' )
+                        'values' => array( 'RET', 'NRE' ),
+                        'domain' => 'actioncandidat_personne'
                     )
                 )
             ),

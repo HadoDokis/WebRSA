@@ -72,24 +72,3 @@ msgstr "Date"
 
 msgid "ActioncandidatPersonne.daterdvpartenaire"
 msgstr "Date du RDV"
-
-###############################################################################
-### ENUM pour le bilan de la candidature
-###############################################################################
-msgid "ENUM::BILANRETENU::RET"
-msgstr "Retenu(e)"
-
-msgid "ENUM::BILANRETENU::NRE"
-msgstr "Non Retenu(e)"
-
-msgid "ENUM::BILANVENU::VEN"
-msgstr "Venu(e)"
-
-msgid "ENUM::BILANVENU::NVE"
-msgstr "Non Venu(e)"
-
-msgid "ENUM::ENATTENTE::0"
-msgstr "Oui"
-
-msgid "ENUM::ENATTENTE::1"
-msgstr "Non"

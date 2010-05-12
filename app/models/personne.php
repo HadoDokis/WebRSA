@@ -342,11 +342,6 @@
                 }
             }
 
-//             if( Set::extract(  ) )
-            //$personne['Foyer']['Modecontact'] = Set::extract( $modecontact, '/Modecontact' );
-//             $personne['Foyer'] = Set::merge( $personne['Foyer'], array( 'Modecontact' => Set::extract( $modecontact, '{n}.Modecontact' ) ) );
-
-// debug($modecontact);
             /// Récupération de l'adresse lié à la personne
             $this->Foyer->Adressefoyer->bindModel(
                 array(
@@ -358,6 +353,36 @@
                     )
                 )
             );
+
+            $detaildroitrsa = $this->Foyer->Dossier->Detaildroitrsa->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Detaildroitrsa.dossier_rsa_id' => $personne['Foyer']['Dossier']['id']
+                    ),
+                    'recursive' => -1
+                )
+            );//Detaildroitrsa.oridemrsa
+            if( !empty( $detaildroitrsa ) ) {
+                $personne = Set::merge( $personne, $detaildroitrsa );
+            }
+
+
+            $activite = $this->Activite->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Activite.personne_id' => $personne_id
+                    ),
+                    'recursive' => -1,
+                    'order' => 'Activite.dfact DESC'
+                )
+            );//Activite.act
+            if( !empty( $activite ) ) {
+                $personne = Set::merge( $personne, $activite );
+
+            }
+
 
             $adresse = $this->Foyer->Adressefoyer->find(
                 'first',
@@ -384,7 +409,9 @@
                     'recursive' => 0
                 )
             );
-// debug($personne);
+
+
+
             if( !empty( $orientstruct ) ) {
                 $personne = Set::merge( $personne, $orientstruct );
             }
