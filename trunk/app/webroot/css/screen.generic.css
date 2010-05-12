@@ -829,6 +829,14 @@ td.radioSize div.input.radio, td.radioSize div.input.select {
     width: 70%;
 }
 
+.remarque {
+    border: 1px solid black;
+    padding: 1em;
+    padding-top: 0em;
+    padding-bottom: 0em;
+    font-size: 100%;
+    background-color: #FDF5E7;
+}
 
 /** Ajout d'une légende pour les titres des fieldset ds le CI **/
 legend.title {
