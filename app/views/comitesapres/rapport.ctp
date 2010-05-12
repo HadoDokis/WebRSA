@@ -124,15 +124,15 @@
         <div id="apres">
             <h2 class="title">Décision des APREs</h2>
             <?php if( is_array( $comiteapre['Apre'] ) && count( $comiteapre['Apre'] ) > 0  ):?>
-
+<!--
             <ul class="actionMenu">
                 <?php
-                    echo '<li>'.$html->editLink(
+                    /*echo '<li>'.$html->editLink(
                         'Modifier Liste APRES',
                         array( 'controller' => 'cohortescomitesapres', 'action' => 'aviscomite', 'Cohortecomiteapre__id' => Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'rapport' => 1 )
-                    ).' </li>';
+                    ).' </li>';*/
                 ?>
-            </ul>
+            </ul>-->
 
         <div>
             <table id="searchResults" class="tooltips">
