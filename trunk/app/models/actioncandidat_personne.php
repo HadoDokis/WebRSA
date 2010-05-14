@@ -26,6 +26,10 @@
                     'bilanretenu' => array(
                         'values' => array( 'RET', 'NRE' ),
                         'domain' => 'actioncandidat_personne'
+                    ),
+                    'bilanrecu' => array(
+                        'values' => array( 'O', 'N' ),
+                        'domain' => 'actioncandidat_personne'
                     )
                 )
             ),

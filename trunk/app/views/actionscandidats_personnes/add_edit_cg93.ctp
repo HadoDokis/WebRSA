@@ -3,33 +3,35 @@
     echo $this->element( 'dossier_menu', array( 'id' => $dossierId) );
     echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 ?>
-
+    <?php echo $javascript->link( 'dependantselect.js' ); ?>
 <script type="text/javascript">
     document.observe( "dom:loaded", function() {
+            dependantSelect(
+                'RendezvousReferentId',
+                'RendezvousStructurereferenteId'
+            );
+
         observeDisableFieldsOnRadioValue(
             'candidatureform',
-            'data[ActioncandidatPersonne][rendezvouspartenaire]',
+            'data[ActioncandidatPersonne][bilanrecu]',
             [
-                'ActioncandidatPersonneDaterdvpartenaireDay',
-                'ActioncandidatPersonneDaterdvpartenaireMonth',
-                'ActioncandidatPersonneDaterdvpartenaireYear'
+                'ActioncandidatPersonneDaterecuDay',
+                'ActioncandidatPersonneDaterecuMonth',
+                'ActioncandidatPersonneDaterecuYear'
             ],
-            '1',
-            true
+            'N',
+            false
         );
 
         observeDisableFieldsOnRadioValue(
             'candidatureform',
-            'data[ActioncandidatPersonne][mobile]',
+            'data[ActioncandidatPersonne][bilanrecu]',
             [
-                'ActioncandidatPersonneTypemobile',
-                'ActioncandidatPersonneNaturemobile'
+                'ActioncandidatPersonnePersonnerecu'
             ],
-            '1',
-            true
+            'N',
+            false
         );
-
-
         <?php
             echo $ajax->remoteFunction(
                 array(
@@ -42,6 +44,13 @@
                 array(
                     'update' => 'ActioncandidatPersonneStructurereferente',
                     'url' => Router::url( array( 'action' => 'ajaxstruct', Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' ) ), true )
+                )
+            ).';';
+
+            echo $ajax->remoteFunction(
+                array(
+                    'update' => 'StructureData',
+                    'url' => Router::url( array( 'action' => 'ajaxreffonct', Set::extract( $this->data, 'Rendezvous.referent_id' ) ), true )
                 )
             );
         ?>
@@ -78,7 +87,7 @@
 
             echo $default->subform(
                 array(
-                    'ActioncandidatPersonne.ddaction' => array( 'dateFormat' => 'DMY' ),
+                    'ActioncandidatPersonne.ddaction' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 ),
                     'ActioncandidatPersonne.referent_id' => array( 'value' => $referentId ),
                 ),
                 array(
@@ -242,11 +251,61 @@
         ?>
     </fieldset>
 
-
-
     <fieldset>
         <legend>Partenaire / Prestataire</legend>
         <?php
+            echo $default->subform(
+                array(
+                    'Rendezvous.id' => array( 'type' => 'hidden' ),
+                    'Rendezvous.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
+                    'Rendezvous.daterdv' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
+                    'Rendezvous.heurerdv' => array( 'label' =>  __( 'heurerdv', true ), 'type' => 'time', 'timeFormat' => '24', 'minuteInterval' => 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
+                ),
+                array(
+                    'options' => $options,
+                    'domain' => $domain
+                )
+            );
+
+
+            echo $xform->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'lib_struct', true ) ), 'type' => 'select', 'options' => $structs, 'empty' => true ) );
+
+            echo $xform->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+
+
+            ///Ajax pour les données du référent et de l'organisme auquel il est lié
+            echo $ajax->observeField( 'RendezvousStructurereferenteId', array( 'update' => 'StructureData', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
+
+            echo $html->tag(
+                'div',
+                '<b></b>',
+                array(
+                    'id' => 'StructureData'
+                )
+            );
+
+
+        ?>
+    </fieldset>
+
+
+    <fieldset>
+        <legend>Résultats d'orientation</legend>
+        <?php
+            echo $default->subform(
+                array(
+                    'ActioncandidatPersonne.bilanvenu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => 'La personne s\'est présentée' ),
+                    'ActioncandidatPersonne.bilanrecu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => 'La personne a été reçue' ),
+                    'ActioncandidatPersonne.daterecu' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
+                    'ActioncandidatPersonne.personnerecu',
+                    'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'separator' => '<br />', 'legend' => 'La personne a été retenue' ),
+                ),
+                array(
+                    'options' => $options,
+                    'domain' => $domain
+                )
+            );
+
             echo $default->subform(
                 array(
                     'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
@@ -270,26 +329,10 @@
             );
 
 
-
-
-
-            echo $default->subform(
-                array(
-                    'ActioncandidatPersonne.mobile' => array( 'type' => 'radio' , 'legend' => 'Etes-vous mobile ?', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
-                    'ActioncandidatPersonne.naturemobile' => array( 'label' => 'Nature de la mobilité', 'empty' => true ),
-                    'ActioncandidatPersonne.typemobile'=> array( 'label' => 'Type de mobilité ' ),
-                    'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'radio' , 'legend' => 'Rendez-vous', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
-                    'ActioncandidatPersonne.daterdvpartenaire' => array( 'dateFormat' => 'DMY', 'empty' => true ),
-                    'ActioncandidatPersonne.enattente' => array( 'type' => 'radio', 'div' => false, 'legend' => 'Candidature en attente', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ) )
-                ),
-                array(
-                    'domain' => $domain,
-                    'options' => $options
-                )
-            );
-
         ?>
     </fieldset>
+
+
     <fieldset class="loici">
         <p>
             <strong>Engagement:</strong><br />
@@ -300,7 +343,7 @@
         <?php
             echo $default->subform(
                 array(
-                    'ActioncandidatPersonne.datesignature' => array( 'dateFormat' => 'DMY', 'empty' => false )
+                    'ActioncandidatPersonne.datesignature' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => false )
                 ),
                 array(
                     'domain' => $domain
@@ -309,41 +352,6 @@
         ?>
     </fieldset>
 
-    <?php if( $this->action == 'edit' ):?>
-
-        <p class="center"><em><strong>A remplir par le partenaire :</strong></em></p>
-        <fieldset class="partenaire bilan">
-            <?php
-                echo $html->tag(
-                    'dl',
-                    'Bilan d\'accueil : '
-                );
-
-                echo $default->subform(
-                    array(
-                        'ActioncandidatPersonne.bilanvenu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => false ),
-                        'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'separator' => '<br />', 'legend' => false ),
-                    ),
-                    array(
-                        'domain' => $domain,
-                        'options' => $options
-                    )
-                );
-
-                echo $default->subform(
-                    array(
-                        'ActioncandidatPersonne.infocomplementaire',
-                        'ActioncandidatPersonne.datebilan' => array( 'dateFormat' => 'DMY', 'empty' => true )
-                    ),
-                    array(
-                        'domain' => $domain,
-                        'options' => $options
-                    )
-                );
-
-            ?>
-        </fieldset>
-    <?php endif;?>
     <div class="submit">
         <?php
             echo $xform->submit( 'Enregistrer', array( 'div' => false ) );

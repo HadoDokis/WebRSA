@@ -33,6 +33,12 @@ msgstr "Venu(e)"
 msgid "ENUM::BILANVENU::NVE"
 msgstr "Non Venu(e)"
 
+msgid "ENUM::BILANRECU::O"
+msgstr "Oui"
+
+msgid "ENUM::BILANRECU::N"
+msgstr "Non"
+
 msgid "ENUM::ENATTENTE::0"
 msgstr "Oui"
 

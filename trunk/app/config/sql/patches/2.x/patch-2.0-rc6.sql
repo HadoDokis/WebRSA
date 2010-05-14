@@ -41,4 +41,8 @@ UPDATE apres
 
 -- *****************************************************************************
 
+ALTER TABLE actionscandidats_personnes ADD COLUMN bilanrecu type_no DEFAULT NULL;
+ALTER TABLE actionscandidats_personnes ADD COLUMN daterecu DATE;
+ALTER TABLE actionscandidats_personnes ADD COLUMN personnerecu VARCHAR( 50 );
+-- *****************************************************************************
 COMMIT;
