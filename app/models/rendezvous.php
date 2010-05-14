@@ -5,6 +5,12 @@
         var $useTable = 'rendezvous';
         var $displayField = 'libelle';
 
+        var $actsAs = array(
+            'Formattable' => array(
+                'suffix' => array( 'referent_id' )
+            )
+        );
+
         var $belongsTo = array(
             'Personne' => array(
                 'classname' => 'Personne',

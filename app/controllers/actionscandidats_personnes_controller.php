@@ -3,9 +3,9 @@
     {
 
         var $name = 'ActionscandidatsPersonnes';
-        var $uses = array( 'ActioncandidatPersonne', 'Option', 'Personne', 'Actioncandidat', 'Partenaire', 'Typerdv', 'PersonneReferent', 'Referent', 'ActioncandidatPartenaire', 'Contactpartenaire', 'Adressefoyer', 'Natmob', 'Dsp' );
+        var $uses = array( 'ActioncandidatPersonne', 'Option', 'Personne', 'Actioncandidat', 'Partenaire', 'Typerdv', 'PersonneReferent', 'Referent', 'Rendezvous', 'ActioncandidatPartenaire', 'Contactpartenaire', 'Adressefoyer', 'Natmob', 'Dsp' );
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
-        var $aucunDroit = array( 'ajaxpart', 'ajaxstruct' );
+        var $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct' );
         var $components = array( 'Default', 'Gedooo' );
 
 
@@ -45,6 +45,14 @@
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
             $this->set( compact( 'options', 'typevoie' ) );
+
+
+            ///Données nécessaire spour la création du RDV si celui-ci existe
+//             $this->set( 'struct', $this->Structurereferente->listOptions() );
+//             $this->set( 'sr', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
+//             $this->set( 'referents', $this->Referent->find( 'list', array( 'recursive' => 1 ) ) );
+
+
 
             return $return;
         }
@@ -148,9 +156,43 @@
                 $this->set( compact( 'referent', 'structs' ) );
             }
 
-
             $this->render( 'ajaxstruct', 'ajax' );
         }
+
+
+        /** ********************************************************************
+        *   Ajax pour les partenaires fournissant les actions
+        *** *******************************************************************/
+
+        function ajaxreffonct( $referent_id = null ) { // FIXME
+            Configure::write( 'debug', 0 );
+
+// debug($referent_id);
+            $this->set( 'typevoie', $this->Option->typevoie() );
+
+            $dataReferent_id = Set::extract( $this->data, 'Rendezvous.referent_id' );
+            $referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
+
+            if( !empty( $referent_id ) ) {
+                $referent = $this->Referent->findbyId( $referent_id, null, null, -1 );
+
+                $structs = $this->Structurereferente->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
+                        ),
+                        'recursive' => -1
+                    )
+                );
+                $this->set( compact( 'referent', 'structs' ) );
+            }
+
+            $this->render( 'ajaxreffonct', 'ajax' );
+        }
+
+
+
         /**
         *
         */
@@ -261,6 +303,16 @@
             $this->set( 'nbEnfants', $nbEnfants );
 
 
+
+            ///Récupération de la liste des structures référentes liés uniquement à l'APRE
+            $structs = $this->Structurereferente->listOptions( );
+            $this->set( 'structs', $structs );
+//             debug($structs);
+            ///Récupération de la liste des référents liés à l'APRE
+            $referents = $this->Referent->listOptions();
+            $this->set( 'referents', $referents );
+
+
             ///Données Dsp
             $dsp = $this->Dsp->findByPersonneId( $personne_id, null, null, -1  );
             $this->set( compact( 'dsp' ) );
@@ -268,26 +320,33 @@
             $this->ActioncandidatPersonne->begin();
 
             if( !empty( $this->data ) ){
-// debug( $this->data );
-// die();
+
+                ///Récupération des Dsps et sauvegarde
                 $this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) );
+                ///Récupération des RDVs et sauvegarde
+                $this->ActioncandidatPersonne->Personne->Rendezvous->saveAll( $this->data, array( 'validate' => 'only' ) );
 
                 if( $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 
+                    ///Récupération des Dsps et sauvegarde
                     $this->ActioncandidatPersonne->Personne->Dsp->create();
                     $this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 
+                    ///Récupération des RDVs et sauvegarde
+                    $this->ActioncandidatPersonne->Personne->Rendezvous->create();
+                    $this->ActioncandidatPersonne->Personne->Rendezvous->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 
 
                     if( $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 
                         $this->Jetons->release( $dossierId );
-                        $this->ActioncandidatPersonne->commit(); /// FIXE
+                        $this->ActioncandidatPersonne->commit(); /// FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array(  'controller' => 'actionscandidats_personnes','action' => 'index', $personne_id ) );
                     }
                     else {
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                        $this->ActioncandidatPersonne->rollback();
                     }
                 }
             }
@@ -297,7 +356,7 @@
 
 
 
-                    /// Récupération des données socio pro (notamment Niveau etude) lié au contrat
+                /// Récupération des données socio pro (notamment Niveau etude) lié au contrat
                     $this->ActioncandidatPersonne->Personne->Dsp->unbindModelAll();
                     $dsp = $this->ActioncandidatPersonne->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
                     if( empty( $dsp ) ) {
@@ -313,14 +372,37 @@
                     }
                     $this->data['Dsp'] = array( 'id' => $dsp['Dsp']['id'], 'personne_id' => $dsp['Dsp']['personne_id'] );
                     $this->data['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );
+                ///Fin des Dsps
 
+                /// Récupération des données socio pro (notamment Niveau etude) lié à la fiche
+                    $this->ActioncandidatPersonne->Personne->Rendezvous->unbindModelAll();
+                    $rdv = $this->ActioncandidatPersonne->Personne->Rendezvous->findByPersonneId( $personne_id, null, null, 2 );
+                    if( empty( $rdv ) ) {
+                        $rdv = array( 'Rendezvous' => array( 'personne_id' => $personne_id ) );
+                        $this->ActioncandidatPersonne->Personne->Rendezvous->set( $rdv );
+                        if( $this->ActioncandidatPersonne->Personne->Rendezvous->save( $rdv ) ) {
+                            $dsp = $this->ActioncandidatPersonne->Personne->Rendezvous->findByPersonneId( $personne_id, null, null, 2 );
+                        }
+                        else {
+                            $this->cakeError( 'error500' );
+                        }
+                        $this->assert( !empty( $rdv ), 'error500' );
+                    }
+                    $this->data['Rendezvous'] = array(
+                        'id' => $rdv['Rendezvous']['id'],
+                        'personne_id' => $rdv['Rendezvous']['personne_id'],
+                        'referent_id' => $rdv['Rendezvous']['structurereferente_id'].'_'.$rdv['Rendezvous']['referent_id'],
+                        'structurereferente_id' => $rdv['Rendezvous']['structurereferente_id'],
+                        'daterdv' => $rdv['Rendezvous']['daterdv'],
+                        'heurerdv' => $rdv['Rendezvous']['heurerdv'],
+                    );
+                ///Fin des RDVs
+// debug($this->data);
 
                 }
             }
             $this->ActioncandidatPersonne->commit();
 
-
-//             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, 'add_edit_'.Configure::read( 'ActioncandidatPersonne.suffixe' ) );
         }
 
