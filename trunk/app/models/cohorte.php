@@ -300,7 +300,7 @@
                          '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dsps ON ( dsps.personne_id = personnes.id )' : '' ).'
                         INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
                         INNER JOIN dossiers_rsa ON ( foyers.dossier_rsa_id = dossiers_rsa.id )
-                        INNER JOIN adresses_foyers ON ( adresses_foyers.foyer_id = foyers.id AND adresses_foyers.rgadr = \'01\' )
+                        INNER JOIN adresses_foyers ON ( adresses_foyers.foyer_id = foyers.id AND adresses_foyers.rgadr = \'01\' AND adresses_foyers.id IN ( SELECT tmpadresses_foyers.id FROM ( SELECT MAX(adresses_foyers.id) AS id, adresses_foyers.foyer_id FROM adresses_foyers WHERE adresses_foyers.rgadr = \'01\' GROUP BY adresses_foyers.foyer_id ORDER BY adresses_foyers.foyer_id ) AS tmpadresses_foyers ) )
                         INNER JOIN adresses as Adresse ON ( adresses_foyers.adresse_id = Adresse.id)
                         INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
                         INNER JOIN detailsdroitsrsa ON ( detailsdroitsrsa.dossier_rsa_id = dossiers_rsa.id )

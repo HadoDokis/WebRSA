@@ -279,9 +279,9 @@
 							'Suiviinstruction.dossier_rsa_id = Dossier.id',
 							'Suiviinstruction.id IN (
 								SELECT tmpsuivisinstruction.id FROM (
-									SELECT suivisinstruction.id, MAX(suivisinstruction.date_etat_instruction)
+									SELECT MAX(suivisinstruction.id) AS id
 										FROM suivisinstruction
-										GROUP BY suivisinstruction.dossier_rsa_id, suivisinstruction.id
+										GROUP BY suivisinstruction.dossier_rsa_id
 								) AS tmpsuivisinstruction
 							)'
 						)
@@ -350,7 +350,18 @@
 					'alias'      => 'Adressefoyer',
 					'type'       => 'INNER',
 					'foreignKey' => false,
-					'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+					'conditions' => array(
+						'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
+						'Adressefoyer.id IN (
+							SELECT tmpadresses_foyers.id FROM (
+								SELECT MAX(adresses_foyers.id) AS id, adresses_foyers.foyer_id
+									FROM adresses_foyers
+									WHERE adresses_foyers.rgadr = \'01\'
+									GROUP BY adresses_foyers.foyer_id
+									ORDER BY adresses_foyers.foyer_id
+							) AS tmpadresses_foyers
+						)'
+					)
 				);
 				$query['joins'][] = array(
 					'table'      => 'adresses',
@@ -366,7 +377,18 @@
 					'alias'      => 'Adressefoyer',
 					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,
-					'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+					'conditions' => array(
+						'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
+						'Adressefoyer.id IN (
+							SELECT tmpadresses_foyers.id FROM (
+								SELECT MAX(adresses_foyers.id) AS id, adresses_foyers.foyer_id
+									FROM adresses_foyers
+									WHERE adresses_foyers.rgadr = \'01\'
+									GROUP BY adresses_foyers.foyer_id
+									ORDER BY adresses_foyers.foyer_id
+							) AS tmpadresses_foyers
+						)'
+					)
 				);
 				$query['joins'][] = array(
 					'table'      => 'adresses',
