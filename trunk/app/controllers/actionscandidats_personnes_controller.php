@@ -166,8 +166,14 @@
 
         function ajaxreffonct( $referent_id = null ) { // FIXME
             Configure::write( 'debug', 0 );
-
 // debug($referent_id);
+            if( !empty( $referent_id ) ) {
+                $referent_id = suffix( $referent_id );
+            }
+            else {
+                $referent_id = suffix( Set::extract( $this->data, 'Rendezvous.referent_id' ) );
+            }
+
             $this->set( 'typevoie', $this->Option->typevoie() );
 
             $dataReferent_id = Set::extract( $this->data, 'Rendezvous.referent_id' );

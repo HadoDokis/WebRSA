@@ -258,7 +258,7 @@
                 array(
                     'Rendezvous.id' => array( 'type' => 'hidden' ),
                     'Rendezvous.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
-                    'Rendezvous.daterdv' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
+                    'Rendezvous.daterdv' => array( 'label' =>  __( 'daterdv', true ), 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
                     'Rendezvous.heurerdv' => array( 'label' =>  __( 'heurerdv', true ), 'type' => 'time', 'timeFormat' => '24', 'minuteInterval' => 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
                 ),
                 array(
@@ -268,13 +268,13 @@
             );
 
 
-            echo $xform->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'lib_struct', true ) ), 'type' => 'select', 'options' => $structs, 'empty' => true ) );
+            echo $xform->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'Nom de l\'organisme', true ) ), 'type' => 'select', 'options' => $structs, 'empty' => true ) );
 
             echo $xform->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
 
 
             ///Ajax pour les données du référent et de l'organisme auquel il est lié
-            echo $ajax->observeField( 'RendezvousStructurereferenteId', array( 'update' => 'StructureData', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
+            echo $ajax->observeField( 'RendezvousReferentId', array( 'update' => 'StructureData', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
 
             echo $html->tag(
                 'div',
