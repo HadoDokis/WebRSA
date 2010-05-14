@@ -44,17 +44,32 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
-                    array(
-                        h( 'Fiches de Candidature' ),
-                        $html->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'actionscandidats_personnes', 'action' => 'indexparams' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
+                if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg66' ){
+                    echo $html->tableCells(
+                        array(
+                            h( 'Fiches de Candidature' ),
+                            $html->viewLink(
+                                'Voir la table',
+                                array( 'controller' => 'actionscandidats_personnes', 'action' => 'indexparams' )
+                            )
+                        ),
+                        array( 'class' => 'odd' ),
+                        array( 'class' => 'even' )
+                    );
+                }
+                else if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ){
+                    echo $html->tableCells(
+                        array(
+                            h( 'Fiches de Liaison' ),
+                            $html->viewLink(
+                                'Voir la table',
+                                array( 'controller' => 'actionscandidats_personnes', 'action' => 'indexparams' )
+                            )
+                        ),
+                        array( 'class' => 'odd' ),
+                        array( 'class' => 'even' )
+                    );
+                }
                 echo $html->tableCells(
                     array(
                         h( 'Cantons' ),
