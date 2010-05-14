@@ -19,7 +19,7 @@ msgstr ""
 
 ###############################################################################
 msgid "Actionscandidats::index"
-msgstr "Actions pour les fiches de candidature"
+msgstr "Actions pour les fiches"
 
 msgid "Actioncandidat::index::empty"
 msgstr "Aucune action présente"

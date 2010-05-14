@@ -1,4 +1,14 @@
-<h1><?php echo $this->pageTitle = 'Paramétrages pour les fiches de candidature';?></h1>
+<h1><?php
+        if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg66' ){
+            $typefiche = 'candidature';
+        }
+        else if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ){
+
+            $typefiche = 'liaison';
+        }
+        echo $this->pageTitle = 'Paramétrages pour les fiches de '.$typefiche;
+    ?>
+</h1>
 
 <?php echo $form->create( 'NouvellesFiches', array( 'url'=> Router::url( null, true ) ) );?>
     <table >
@@ -12,7 +22,7 @@
             <?php
                 echo $html->tableCells(
                     array(
-                        h( 'Actions d\'insertion pour fiches de candidature' ),
+                        h( 'Actions d\'insertion pour fiches de '.$typefiche ),
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'actionscandidats', 'action' => 'index' )
@@ -34,7 +44,7 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Partenaires pour fiches candidature' ),
+                        h( 'Partenaires pour fiche de '.$typefiche ),
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'partenaires', 'action' => 'index' )
