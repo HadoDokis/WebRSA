@@ -195,11 +195,6 @@
         function _add_edit( $id = null ) {
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
-            // Retour à la liste en cas d'annulation
-            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-                $this->redirect( array( 'action' => 'index', $id ) );
-            }
-
             $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
             $this->set( 'typerdv', $typerdv );
 
@@ -216,6 +211,11 @@
 
                 $personne_id = $rdv['Rendezvous']['personne_id'];
                 $dossier_rsa_id = $this->Rendezvous->dossierId( $rdv_id );
+            }
+
+            // Retour à la liste en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index', $personne_id ) );
             }
 
             $this->Rendezvous->begin();
