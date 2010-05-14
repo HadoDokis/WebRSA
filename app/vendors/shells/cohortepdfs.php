@@ -20,7 +20,7 @@
 
 		var $outfile = null;
 		var $output = '';
-		var $limit = 10;
+		var $limit = 1000;
 		var $order = 'asc';
 		var $startTime = null;
 
@@ -144,7 +144,7 @@
 			$nSuccess = 0;
 			$nErrors = 0;
 			$this->startTime = microtime( true );
-			$this->Orientstruct->begin();
+// 			$this->Orientstruct->begin();
 
 			App::import( 'Core', 'Component' );
 			App::import( 'Component', 'Gedooo' );
@@ -168,6 +168,8 @@
 			$this->hr();
 
 			foreach( $orientsstructs_ids as $orientstruct_id ) {
+	 			$this->Orientstruct->begin();
+
 				$this->out( sprintf( "Génération du PDFs %d/%d (Orientstruct.id=%s)", ( $compteur + 1 ), count( $orientsstructs_ids ), $orientstruct_id ) );
 
 				$orientstruct = $this->Orientstruct->getDataForPdf( $orientstruct_id, null );
@@ -196,9 +198,20 @@
 					}
 
 					$success = $tmpSuccess && $success;
-					$compteur++;
+				}
+				else {
+					$tmpSuccess = false;
+					$nErrors++;
 				}
 
+				if( $tmpSuccess ) {
+					$this->Orientstruct->commit();
+				}
+				else {
+					$this->Orientstruct->rollback();
+				}
+
+				$compteur++;
 			}
 
 			$this->hr();
@@ -209,11 +222,11 @@
 			$message = "%s ({$compteur} pdfs d'orientation à générer, {$nSuccess} succès, {$nErrors} erreurs) en {$endTime} secondes";
             if( $success ) {
                 $this->out( sprintf( $message, "Script terminé avec succès" ) );
-                $this->Orientstruct->commit();
+//                 $this->Orientstruct->commit();
             }
             else {
                 $this->out( sprintf( $message, "Script terminé avec erreurs" ) );
-                $this->Orientstruct->rollback();
+//                 $this->Orientstruct->rollback();
             }
 
 			$this->exportlog();
