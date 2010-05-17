@@ -936,3 +936,12 @@ ul.ui-tabs-nav a.active {
     border-bottom: 1px solid white;
     background: white;
 }
+
+/*******************************************************************************
+*   Pour la fiche de liaison cg93
+*******************************************************************************/
+fieldset.actioncandidat legend {
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+}
