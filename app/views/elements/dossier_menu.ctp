@@ -1,5 +1,4 @@
 <?php
-
     if( isset( $personne_id ) ) {
         $dossier = $this->requestAction( array( 'controller' => 'dossiers', 'action' => 'menu' ), array( 'personne_id' => $personne_id ) );
     }
@@ -16,7 +15,21 @@
 
 <?php $etatdosrsaValue = Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' );?>
 
-    <p class="etatDossier"> <?php echo ( isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini' );?> </p>
+
+<?php
+    if( isset( $personne_id ) ) {
+        $personneDossier = Set::extract( $dossier, '/Foyer/Personne' );
+        foreach( $personneDossier as $i => $personne ) {
+            if( $personne_id == Set::classicExtract( $personne, 'Personne.id' ) ) {
+                $personneDossier = Set::classicExtract( $personne, 'Personne.qual' ).' '.Set::classicExtract( $personne, 'Personne.nom' ).' '.Set::classicExtract( $personne, 'Personne.prenom' );
+            }
+        }
+        echo $html->tag( 'p', $personneDossier, array( 'class' => 'etatDossier' ) );
+    }
+?>
+
+
+<p class="etatDossier"> <?php echo ( isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini' );?> </p>
 
     <ul>
         <li><?php echo $html->link( 'Composition du foyer', array( 'controller' => 'personnes', 'action' => 'index', $dossier['Foyer']['id'] ) );?>
@@ -34,22 +47,6 @@
                                 <?php if( $permissions->check( 'situationsdossiersrsa', 'index' ) || $permissions->check( 'detailsdroitsrsa', 'index' ) || $permissions->check( 'dossierspdo', 'index' ) ):?>
                                     <li><span>Droit</span>
                                         <ul>
-                                            <li>
-                                                <?php
-                                                    echo $html->link(
-                                                        'Historique du droit',
-                                                        array( 'controller' => 'situationsdossiersrsa', 'action' => 'index', $dossier['Dossier']['id'] )
-                                                    );
-                                                ?>
-                                            </li>
-                                            <li>
-                                                <?php
-                                                    echo $html->link(
-                                                        'Détails du droit RSA',
-                                                        array( 'controller' => 'detailsdroitsrsa', 'action' => 'index', $dossier['Dossier']['id'] )
-                                                    );
-                                                ?>
-                                            </li>
                                             <li>
                                                 <?php
                                                     echo $html->link(
@@ -242,14 +239,6 @@
                                                     );
                                                 ?>
                                             </li>
-                                            <li>
-                                                <?php
-                                                    echo $html->link(
-                                                        'Liste des Indus',
-                                                        array( 'controller' => 'indus', 'action' => 'index', $dossier['Dossier']['id'] )
-                                                    );
-                                                ?>
-                                            </li>
                                         </ul>
                                     </li>
                                 <?php endif;?>
@@ -277,6 +266,24 @@
         <!-- TODO: permissions à partir d'ici et dans les fichiers concernés -->
         <li><span>Informations foyer</span>
             <ul>
+                <?php if( $permissions->check( 'situationsdossiersrsa', 'index' ) || $permissions->check( 'detailsdroitsrsa', 'index' ) ):?>
+                    <li>
+                        <?php
+                            echo $html->link(
+                                'Historique du droit',
+                                array( 'controller' => 'situationsdossiersrsa', 'action' => 'index', $dossier['Dossier']['id'] )
+                            );
+                        ?>
+                    </li>
+                    <li>
+                        <?php
+                            echo $html->link(
+                                'Détails du droit RSA',
+                                array( 'controller' => 'detailsdroitsrsa', 'action' => 'index', $dossier['Dossier']['id'] )
+                            );
+                        ?>
+                    </li>
+                <?php endif;?>
                 <?php if( $permissions->check( 'adressesfoyers', 'index' ) ):?>
                     <li><?php echo $html->link( 'Adresses', array( 'controller' => 'adressesfoyers', 'action' => 'index', $dossier['Foyer']['id'] ) );?>
                         <?php if( !empty( $dossier['Foyer']['AdressesFoyer'] ) ):?>
@@ -337,8 +344,16 @@
                         ?>
                     </li>
                 <?php endif;?>
-
-
+                <?php if( $permissions->check( 'indus', 'index' ) ):?>
+                    <li>
+                        <?php
+                            echo $html->link(
+                                'Liste des Indus',
+                                array( 'controller' => 'indus', 'action' => 'index', $dossier['Dossier']['id'] )
+                            );
+                        ?>
+                    </li>
+                <?php endif;?>
                <?php if( $permissions->check( 'suivisinstruction', 'index' ) ):?>
                     <li>
                         <?php

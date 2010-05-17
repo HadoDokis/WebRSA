@@ -1,6 +1,6 @@
 <?php
     $domain = "actioncandidat_personne_".Configure::read( 'ActioncandidatPersonne.suffixe' );
-    echo $this->element( 'dossier_menu', array( 'id' => $dossierId) );
+    echo $this->element( 'dossier_menu', array( 'id' => $dossierId, 'personne_id' => $personne_id ) );
     echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 ?>
     <?php echo $javascript->link( 'dependantselect.js' ); ?>
@@ -87,8 +87,8 @@
             echo $xform->input( 'ActioncandidatPersonne.id', array( 'type' => 'hidden' ) );
         }
     ?>
-    <fieldset>
-        <legend>Prescripteur / Référent</legend>
+    <fieldset class="actioncandidat">
+        <legend class="actioncandidat" >Prescripteur / Référent</legend>
         <?php
 
             echo $default->subform(
@@ -120,8 +120,8 @@
             );
         ?>
     </fieldset>
-    <fieldset>
-        <legend>Personne orientée / allocataire</legend>
+    <fieldset class="actioncandidat">
+        <legend class="actioncandidat" >Personne orientée / allocataire</legend>
         <?php
             ///Données propre à la Personne
             echo $default->view(
@@ -263,8 +263,8 @@
         ?>
     </fieldset>
 
-    <fieldset>
-        <legend>Partenaire / Prestataire</legend>
+    <fieldset class="actioncandidat">
+        <legend class="actioncandidat" >Partenaire / Prestataire</legend>
         <?php
             echo $default->subform(
                 array(
@@ -307,8 +307,8 @@
     </fieldset>
 
 
-    <fieldset>
-        <legend>Résultats d'orientation</legend>
+    <fieldset class="actioncandidat">
+        <legend class="actioncandidat" >Résultats d'orientation</legend>
         <?php
             echo $default->subform(
                 array(

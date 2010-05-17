@@ -22,7 +22,7 @@
     }
 ?>
 
-<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $personne['Personne']['foyer_id'] ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $personne['Personne']['foyer_id'], 'personne_id' => $personne['Personne']['id'] ) );?>
 
 <div class="with_treemenu">
     <h1><?php echo 'Visualisation d\'une personne « '.$title.' »';?></h1>
@@ -145,3 +145,5 @@
 </div>
 </div>
 <div class="clearer"><hr /></div>
+
+<?php debug( $this->viewVars );?>
