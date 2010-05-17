@@ -82,3 +82,9 @@ msgstr "Le "
 
 msgid "ActioncandidatPersonne.personnerecu"
 msgstr "Par "
+
+msgid "ActioncandidatPersonne.autrepiece"
+msgstr " "
+
+msgid "ActioncandidatPersonne.precisionmotif"
+msgstr "* Préciser les motifs"

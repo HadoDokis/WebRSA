@@ -19,6 +19,7 @@
             $options = array();
             foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
+//                 debug($options);
             }
 
             $options = Set::insert( $options, 'Adresse.typevoie', $this->Option->typevoie() );
