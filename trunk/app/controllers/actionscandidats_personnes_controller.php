@@ -102,6 +102,7 @@
 
             $varname = Inflector::tableize( $this->name );
             $this->set( $varname, $items );
+            $this->set( 'personne_id', $personne_id );
 
         }
 
@@ -286,6 +287,9 @@
                 $this->assert( !empty( $dossierId ), 'invalidParameter' );
                 $this->set( compact( 'dossierId', 'personne_id' ) );
             }
+
+
+            $this->set( 'personne_id', $personne_id );
 
             ///Données récupérées propre à la personne
             $personne = $this->{$this->modelClass}->Personne->detailsCi( $personne_id );

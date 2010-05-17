@@ -1,5 +1,5 @@
 <?php  $this->pageTitle = 'Orientation de la personne';?>
-<?php  echo $this->element( 'dossier_menu', array( 'id' => $personne_id) );?>
+<?php  echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id) );?>
 
 
 <div class="with_treemenu">

@@ -1,6 +1,6 @@
 <?php $this->pageTitle = 'Liste des indus';?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id, 'personne_id' => $infofinanciere['Personne']['id'] ) );?>
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>

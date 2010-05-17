@@ -8,7 +8,7 @@
     }
 ?>
 
-<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id, 'personne_id' => $foyer['Personne']['id'] ) );?>
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>

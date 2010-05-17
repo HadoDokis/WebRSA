@@ -3,7 +3,7 @@
 <?php  $this->pageTitle = 'Situation PDO';?>
 
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossierId ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'id' => $dossierId, 'personne_id' => $notifs[''][''] ) );?>
 
 <?php
     function value( $array, $index ) {
