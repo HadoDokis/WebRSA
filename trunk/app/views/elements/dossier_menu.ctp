@@ -1,4 +1,21 @@
 <?php
+	/*
+	* INFO: Parfois la variable a le nom personne_id, parfois personneId
+	* 	On met tout le monde d'accord (en camelcase)
+	*/
+
+	if( isset( ${Inflector::variable( 'personne_id' )} ) ) {
+		$personne_id = ${Inflector::variable( 'personne_id' )};
+	}
+
+	if( isset( ${Inflector::variable( 'foyer_id' )} ) ) {
+		$foyer_id = ${Inflector::variable( 'foyer_id' )};
+	}
+
+	/*
+	* Recherche du dossier à afficher
+	*/
+
     if( isset( $personne_id ) ) {
         $dossier = $this->requestAction( array( 'controller' => 'dossiers', 'action' => 'menu' ), array( 'personne_id' => $personne_id ) );
     }
