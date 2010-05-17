@@ -30,6 +30,18 @@
                     'bilanrecu' => array(
                         'values' => array( 'O', 'N' ),
                         'domain' => 'actioncandidat_personne'
+                    ),
+                    'presencecontrat' => array(
+                        'values' => array( 'O', 'N' ),
+                        'domain' => 'actioncandidat_personne'
+                    ),
+                    'pieceallocataire' => array(
+                        'values' => array( 'CER', 'NCA', 'CV', 'AUT' ),
+                        'domain' => 'actioncandidat_personne'
+                    ),
+                    'integrationaction' => array(
+                        'values' => array( 'O', 'N' ),
+                        'domain' => 'actioncandidat_personne'
                     )
                 )
             ),

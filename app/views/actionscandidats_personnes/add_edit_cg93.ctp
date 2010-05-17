@@ -11,27 +11,33 @@
                 'RendezvousStructurereferenteId'
             );
 
+        ///Bilan si personne reçue
         observeDisableFieldsOnRadioValue(
             'candidatureform',
             'data[ActioncandidatPersonne][bilanrecu]',
             [
                 'ActioncandidatPersonneDaterecuDay',
                 'ActioncandidatPersonneDaterecuMonth',
-                'ActioncandidatPersonneDaterecuYear'
+                'ActioncandidatPersonneDaterecuYear',
+                'ActioncandidatPersonnePersonnerecu',
+                'ActioncandidatPersonnePresencecontrat'
             ],
             'N',
             false
         );
 
+        ///Bilan si personne reçue
         observeDisableFieldsOnRadioValue(
             'candidatureform',
-            'data[ActioncandidatPersonne][bilanrecu]',
+            'data[ActioncandidatPersonne][pieceallocataire]',
             [
-                'ActioncandidatPersonnePersonnerecu'
+                'ActioncandidatPersonneAutrepiece'
             ],
-            'N',
-            false
+            'AUT',
+            true
         );
+
+
         <?php
             echo $ajax->remoteFunction(
                 array(
@@ -165,10 +171,16 @@
             ///Données propre au Pole Emploi
             $isPoleemploi = Set::classicExtract( $personne, 'Activite.act' );
             $isInscrit = 'Non';
-            if( $isPoleemploi == 'ANP' )
+            $idassedic = null;
+            if( $isPoleemploi == 'ANP' ) {
                 $isInscrit = 'Oui';
-            else
+                $idassedic = Set::classicExtract( $personne, 'Personne.idassedic' );
+            }
+            else {
                 $isInscrit;
+                $idassedic;
+            }
+
 
             echo $html->tag(
                 'dl',
@@ -180,7 +192,7 @@
                 $html->tag( 'dt', ' N° identifiant : ' ).
                 $html->tag(
                     'dd',
-                    Set::classicExtract( $personne, 'Personne.idassedic' )
+                    $idassedic
                 ),
                 array(
                     'class' => 'allocataire infos'
@@ -258,8 +270,8 @@
                 array(
                     'Rendezvous.id' => array( 'type' => 'hidden' ),
                     'Rendezvous.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
-                    'Rendezvous.daterdv' => array( 'label' =>  __( 'daterdv', true ), 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
-                    'Rendezvous.heurerdv' => array( 'label' =>  __( 'heurerdv', true ), 'type' => 'time', 'timeFormat' => '24', 'minuteInterval' => 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
+                    'Rendezvous.daterdv' => array( 'label' =>  'Rendez-vous fixé le ', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
+                    'Rendezvous.heurerdv' => array( 'label' => 'A ', 'type' => 'time', 'timeFormat' => '24', 'minuteInterval' => 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
                 ),
                 array(
                     'options' => $options,
@@ -284,6 +296,12 @@
                 )
             );
 
+            echo $default->subform(
+                array(
+                    'ActioncandidatPersonne.pieceallocataire' => array( 'legend' => 'L\'allocataire est invité à se munir: ', 'type' => 'radio', 'separator' => '<br />', 'options' => $options['ActioncandidatPersonne']['pieceallocataire'] ),
+                    'ActioncandidatPersonne.autrepiece' => array( 'label' => false )
+                )
+            );
 
         ?>
     </fieldset>
@@ -298,7 +316,8 @@
                     'ActioncandidatPersonne.bilanrecu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => 'La personne a été reçue' ),
                     'ActioncandidatPersonne.daterecu' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
                     'ActioncandidatPersonne.personnerecu',
-                    'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'separator' => '<br />', 'legend' => 'La personne a été retenue' ),
+                    'ActioncandidatPersonne.presencecontrat' => array( 'type' => 'select', 'label' => 'Avec son contrat d\'Engagement Réciproque' ),
+                    'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'separator' => '<br />', 'legend' => 'La personne a été retenue' )
                 ),
                 array(
                     'options' => $options,
@@ -328,6 +347,17 @@
                 )
             );
 
+            echo $default->subform(
+                array(
+                    'ActioncandidatPersonne.integrationaction' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => 'La personne souhaite intégrer l\'action' ),
+                    'ActioncandidatPersonne.precisionmotif',
+                    'ActioncandidatPersonne.dfaction' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true )
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
 
         ?>
     </fieldset>

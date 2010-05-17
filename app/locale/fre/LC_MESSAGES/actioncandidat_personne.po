@@ -25,24 +25,48 @@ msgid "ENUM::BILANRETENU::RET"
 msgstr "Retenu(e)"
 
 msgid "ENUM::BILANRETENU::NRE"
-msgstr "Non Retenu(e)"
+msgstr "Non Retenu(e) *"
 
 msgid "ENUM::BILANVENU::VEN"
 msgstr "Venu(e)"
 
 msgid "ENUM::BILANVENU::NVE"
-msgstr "Non Venu(e)"
+msgstr "Non Venu(e) *"
 
 msgid "ENUM::BILANRECU::O"
 msgstr "Oui"
 
 msgid "ENUM::BILANRECU::N"
-msgstr "Non"
+msgstr "Non *"
 
 msgid "ENUM::ENATTENTE::0"
 msgstr "Oui"
 
 msgid "ENUM::ENATTENTE::1"
+msgstr "Non *"
+
+
+msgid "ENUM::PIECEALLOCATAIRE::CER"
+msgstr "Contrat d'Engagement Réciproque"
+
+msgid "ENUM::PIECEALLOCATAIRE::NCA"
+msgstr "Notification CAF"
+
+msgid "ENUM::PIECEALLOCATAIRE::CV"
+msgstr "CV"
+
+msgid "ENUM::PIECEALLOCATAIRE::AUT"
+msgstr "Autres"
+
+msgid "ENUM::PRESENCECONTRAT::O"
+msgstr "Oui"
+
+msgid "ENUM::PRESENCECONTRAT::N"
 msgstr "Non"
 
+msgid "ENUM::INTEGRATIONACTION::O"
+msgstr "Oui"
+
+msgid "ENUM::INTEGRATIONACTION::N"
+msgstr "Non *"
 ###############################################################################
