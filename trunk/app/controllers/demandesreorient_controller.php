@@ -124,6 +124,52 @@
             call_user_func_array( array( $this, '_add_edit' ), $args );
         }
 
+		protected function _detailsPersonne( $personne_id ) {
+			$this->Personne->unbindModelAll();
+            $personne = $this->Personne->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Personne.id' => $personne_id
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+            $foyer = $this->Personne->Foyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Foyer.id' => Set::classicExtract( $personne, 'Personne.foyer_id' )
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+            $dossier = $this->Personne->Foyer->Dossier->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossier.id' => Set::classicExtract( $foyer, 'Foyer.dossier_rsa_id' )
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+            $adresse = $this->Personne->Foyer->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => Set::classicExtract( $foyer, 'Foyer.id' ),
+						'Adressefoyer.rgadr' => '01'
+                    ),
+                    'recursive' => 0
+                )
+            );
+
+			return Set::merge( $personne, $foyer, $dossier, $adresse );
+		}
+
 		/**
 		*
 		*/
@@ -138,8 +184,14 @@
 
             if( $this->action == 'edit' ) {
                 $demandereorient_id = $args[0];
+				$demandereorient = $this->{$this->modelClass}->findById( $demandereorient_id, null, null, -1 );
+				$referent_origine = $this->Personne->Referent->findById( Set::classicExtract( $demandereorient, 'Demandereorient.reforigine_id' ) ); // FIXME
+
                 $personne_id = $this->{$this->modelClass}->field( 'personne_id', array( 'Demandereorient.id' => $demandereorient_id ) );
                 $orientstruct_id = $this->{$this->modelClass}->field( 'orientstruct_id', array( 'Demandereorient.id' => $demandereorient_id ) );
+
+                $orientstruct = $this->Demandereorient->Orientstruct->findById( $orientstruct_id );
+                $this->assert( !empty( $orientstruct ), 'invalidParameter' );
 
                 $item = $this->{$this->modelClass}->findById( $demandereorient_id, null, null, 1 );
                 $this->assert( !empty( $item ), 'invalidParameter' );
@@ -153,6 +205,8 @@
                 $this->assert( !empty( $orientstruct ), 'invalidParameter' );
 
                 $personne_id = Set::classicExtract( $orientstruct, 'Orientstruct.personne_id' );
+				$referent_origine = $this->Personne->Referent->readByPersonneId( $personne_id ); // FIXME
+
                 $dossierId = $this->Demandereorient->Personne->dossierId( $personne_id );
             }
 
@@ -161,7 +215,10 @@
                 $this->data = Xset::filterDeep( $this->data );
                 $this->{$this->modelClass}->create( $this->data );
                 $this->{$this->modelClass}->Precoreorientreferent->create( $this->data );
-                $validates = $this->{$this->modelClass}->validates() && $this->{$this->modelClass}->Precoreorientreferent->validates();
+
+                $validates = $this->{$this->modelClass}->validates();
+				$validates = $this->{$this->modelClass}->Precoreorientreferent->validates() && $validates;
+
                 $saved = false;
                 if( $validates ) {
                     $saved = true;
@@ -184,24 +241,12 @@
                 $this->data = $item;
             }
 
-            $personne = $this->Personne->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Personne.id' => $personne_id
-                    ),
-                    'fields' => array(
-                        'Personne.qual',
-                        'Personne.nom',
-                        'Personne.prenom',
-                    ),
-                    'recursive' => -1
-                )
-            );
+			$personne = $this->_detailsPersonne( $personne_id );
+
             $dossierId = $this->Demandereorient->Personne->dossierId( $personne_id );
             $this->assert( !empty( $dossierId ), 'invalidParameter' );
 
-            $this->set( compact( 'dossierId', 'personne_id', 'orientstruct_id', 'personne' ) );
+            $this->set( compact( 'dossierId', 'personne_id', 'orientstruct_id', 'personne', 'orientstruct', 'referent_origine' ) );
 
             $this->render( $this->action, null, 'add_edit' );
 		}

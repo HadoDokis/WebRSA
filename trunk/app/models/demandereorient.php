@@ -32,21 +32,24 @@
 				'type' => 'LEFT OUTER',
 				'conditions' => array(
 					'Precoreorientreferent.rolereorient' => 'referent'
-				)
+				),
+				'dependent' => true
 			),
 			'Precoreorientequipe' => array(
 				'className' => 'Precoreorient',
 				'type' => 'LEFT OUTER',
 				'conditions' => array(
 					'Precoreorientequipe.rolereorient' => 'equipe'
-				)
+				),
+				'dependent' => true
 			),
 			'Precoreorientconseil' => array(
 				'className' => 'Precoreorient',
 				'type' => 'LEFT OUTER',
 				'conditions' => array(
 					'Precoreorientconseil.rolereorient' => 'conseil'
-				)
+				),
+				'dependent' => true
 			),
 		);
 
