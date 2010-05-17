@@ -143,5 +143,76 @@
             }
             return $referents;
         }
+
+		/**
+		* Retourne l'id du référent lié à une personne
+		*/
+
+		function readByPersonneId( $personne_id ) {
+			$referent_id = null;
+
+			// Valeur par défaut préférée: à partir de personnes_referents
+			$referent = $this->PersonneReferent->find(
+				'first',
+				array(
+					'conditions' => array( 'personne_id' => $personne_id ), // FIXME ddesignation / dfdesignation
+					'order' => array( 'dddesignation ASC' ),
+					'recursive' => -1
+				)
+			);
+			$referent_id = Set::classicExtract( $referent, 'PersonneReferent.referent_id' );
+
+			// Valeur par défaut de substitution: à partir de orientsstructs
+			if( empty( $referent_id ) ) {
+				$orientstruct = $this->Personne->Orientstruct->find(
+					'first',
+					array(
+						'conditions' => array(
+							'personne_id' => $personne_id,
+							'statut_orient' => 'Orienté',
+							'date_valid IS NOT NULL'
+						),
+						'order' => array( 'date_valid ASC' ),
+						'recursive' => -1
+					)
+				);
+
+				if( !empty( $orientstruct ) ) {
+					$referent_id = Set::classicExtract( $orientstruct, 'Orientstruct.referent_id' );
+					$structurereferente_id = Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' );
+					$count = $this->Personne->Referent->find(
+						'count',
+						array(
+							'conditions' => array( 'structurereferente_id' => $structurereferente_id ),
+							'recursive' => -1
+						)
+					);
+
+					if( empty( $referent_id ) && !empty( $structurereferente_id ) && ( $count == 1 ) ) {
+						$referent = $this->Personne->Referent->find(
+							'first',
+							array(
+								'conditions' => array( 'structurereferente_id' => $structurereferente_id ),
+								'order' => array( 'id ASC' ),
+								'recursive' => -1
+							)
+						);
+						$referent_id = Set::classicExtract( $referent, 'Referent.id' );
+					}
+				}
+			}
+
+			if( !empty( $referent_id ) ) {
+				return $this->Personne->Referent->find(
+					'first',
+					array(
+						'conditions' => array( 'id' => $referent_id ),
+						'recursive' => -1
+					)
+				);
+			}
+
+			return null;
+		}
     }
 ?>
