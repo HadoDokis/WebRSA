@@ -1,6 +1,6 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php  echo $form->create( 'Dossiersimplifie',array( 'url' => Router::url( null, true ) ) ); ?>
-<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id, 'personne_id' => $personne_id ) );?>
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
@@ -39,7 +39,7 @@
             <?php echo $form->input( 'Prestation.rolepers', array( 'label' => required( __( 'rolepers', true ) ), 'type' => 'select', 'options' => $rolepers, 'empty' => true ) );?>
 
 
-            <div><?php echo $form->input( 'Personne.id', array( 'label' => required( __( 'id', true ) ), 'value' =>$id , 'type' => 'hidden') );?></div>
+            <div><?php echo $form->input( 'Personne.id', array( 'label' => required( __( 'id', true ) ), 'value' => $personne_id , 'type' => 'hidden') );?></div>
             <?php echo $form->input( 'Personne.qual', array( 'label' => required( __( 'qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
             <?php echo $form->input( 'Personne.nom', array( 'label' => required( __( 'nom', true ) ) ) );?>
             <?php echo $form->input( 'Personne.prenom', array( 'label' => required( __( 'prenom', true ) ) ) );?>

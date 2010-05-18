@@ -239,7 +239,7 @@
             $dossier_id =  $personne['Foyer']['dossier_rsa_id'] ;
             $dossimple  = $this->Dossier->read(null,$dossier_id );
 
-            $this->set( 'id', $personne_id);
+            $this->set( 'personne_id', $personne_id);
             $this->set( 'dossiersimple_id', $dossier_id);
             $this->set( 'foyer_id', $personne['Foyer']['id']);
             $this->set( 'typesOrient',   $this->Typeorient->listOptions()  );
