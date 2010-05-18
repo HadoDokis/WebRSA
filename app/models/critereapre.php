@@ -168,13 +168,14 @@
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."codepos"',
+                    '"Adressefoyer"."rgadr"',
                     '"Adresse"."numcomptt"',
                     '"Relanceapre"."id"',
                     '"Relanceapre"."daterelance"',
-                    '"ApreComiteapre"."comiteapre_id"',
-                    '"ApreComiteapre"."apre_id"',
-                    '"ApreComiteapre"."decisioncomite"',
-                    '"Comiteapre"."datecomite"',
+//                     '"ApreComiteapre"."comiteapre_id"',
+//                     '"ApreComiteapre"."apre_id"',
+//                     '"ApreComiteapre"."decisioncomite"',
+//                     '"Comiteapre"."datecomite"',
                 ),
                 'recursive' => -1,
                 'joins' => array(
@@ -186,30 +187,21 @@
                         'conditions' => array( 'Personne.id = Apre.personne_id' )
                     ),
 //                     array(
-//                         'table'      => 'contratsinsertion',
-//                         'alias'      => 'Contratinsertion',
+//                         'table'      => 'apres_comitesapres',
+//                         'alias'      => 'ApreComiteapre',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'comitesapres',
+//                         'alias'      => 'Comiteapre',
 //                         'type'       => 'LEFT OUTER',
 //                         'foreignKey' => false,
 //                         'conditions' => array(
-//                             'Contratinsertion.personne_id = Personne.id'
+//                             'ApreComiteapre.comiteapre_id = Comiteapre.id'
 //                         )
 //                     ),
-                    array(
-                        'table'      => 'apres_comitesapres',
-                        'alias'      => 'ApreComiteapre',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
-                    ),
-                    array(
-                        'table'      => 'comitesapres',
-                        'alias'      => 'Comiteapre',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array(
-                            'ApreComiteapre.comiteapre_id = Comiteapre.id'
-                        )
-                    ),
                     array(
                         'table'      => 'relancesapres',
                         'alias'      => 'Relanceapre',

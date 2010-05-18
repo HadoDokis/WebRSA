@@ -145,5 +145,3 @@
 </div>
 </div>
 <div class="clearer"><hr /></div>
-
-<?php debug( $this->viewVars );?>

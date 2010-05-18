@@ -88,6 +88,27 @@
                 unset( $queryData['fields'] );
                 $queryData['recursive'] = -1;
 
+
+                $queryData['joins'] = array(
+                    array(
+                        'table'      => 'apres_comitesapres',
+                        'alias'      => 'ApreComiteapre',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
+                    ),
+                    array(
+                        'table'      => 'comitesapres',
+                        'alias'      => 'Comiteapre',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'ApreComiteapre.comiteapre_id = Comiteapre.id'
+                        )
+                    ),
+                );
+
+
                 ///Nb d'APREs appartenant à un comité et dont la décision a été/va être prise
                 $attenteDecision = array(
                     'conditions' => array(
