@@ -231,8 +231,9 @@
 // debug( $apre );
                     $apres[$i] = $apre;
                 }
-
-                $this->set( 'apre_etatliquidatif', $apre_etatliquidatif );
+                if( !empty( $apre_etatliquidatif ) ){
+                    $this->set( 'apre_etatliquidatif', $apre_etatliquidatif );
+                }
 
 // 		$aidesApre = array();
 // 		foreach( $apres as $key => $apre ) {

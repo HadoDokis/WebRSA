@@ -178,8 +178,12 @@
             $typevoie = $this->Option->typevoie();
 
 
-            $comiteapre = $this->ApreComiteapre->findByApreId( $apre_id, null, null, -1 );
+            $aprecomiteapre = $this->ApreComiteapre->findByApreId( $apre_id, null, null, -1 );
+            $this->set( compact( 'aprecomiteapre' ) );
+
+            $comiteapre = $this->Comiteapre->findById( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.comiteapre_id' ), null, null, -1 );
             $this->set( compact( 'comiteapre' ) );
+
 
             $apre = $this->Apre->find(
                 'first',

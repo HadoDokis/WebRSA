@@ -49,10 +49,11 @@
                         </table>';
                     $title = $apre['Dossier']['numdemrsa'];
 
-                    $apre_id = Set::classicExtract( $comiteapre, 'ApreComiteapre.apre_id');
-                    $comiteapre_id = Set::classicExtract( $comiteapre, 'ApreComiteapre.comiteapre_id');
-                    $aprecomiteapre_id = Set::classicExtract( $comiteapre, 'ApreComiteapre.id');
+                    $apre_id = Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.apre_id');
+                    $comiteapre_id = Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.comiteapre_id');
+                    $aprecomiteapre_id = Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.id');
 
+// debug($comiteapre);
                     echo $html->tableCells(
                         array(
                             h( Set::classicExtract( $apre, 'Dossier.numdemrsa') ),
@@ -60,21 +61,20 @@
                             h( Set::classicExtract( $apre, 'Adresse.locaadr') ),
                             h( $locale->date( 'Date::short', Set::extract( $apre, 'Apre.datedemandeapre' ) ) ),
 
-                            $xform->enum( 'ApreComiteapre.decisioncomite', array( 'label' => false, 'type' => 'select', 'options' => $options['decisioncomite'], 'selected' => Set::classicExtract( $comiteapre, 'ApreComiteapre.decisioncomite' ) ) ).
+                            $xform->enum( 'ApreComiteapre.decisioncomite', array( 'label' => false, 'type' => 'select', 'options' => $options['decisioncomite'], 'selected' => Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ) ) ).
                             $xform->input( 'ApreComiteapre.apre_id', array( 'label' => false, 'div' => false, 'value' => $apre_id, 'type' => 'hidden' ) ).
                             $xform->input( 'ApreComiteapre.id', array( 'label' => false, 'div' => false, 'value' => $aprecomiteapre_id, 'type' => 'hidden' ) ).
                             $xform->input( 'ApreComiteapre.comiteapre_id', array( 'label' => false, 'type' => 'hidden', 'value' => $comiteapre_id ) ).
                             $xform->input( 'Comiteapre.id', array( 'label' => false, 'type' => 'hidden', 'value' => $comiteapre_id ) ).
                             $xform->input( 'Apre.id', array( 'label' => false, 'type' => 'hidden', 'value' => $apre_id ) ),
 
+                            h( $locale->date( 'Date::short', Set::extract( $comiteapre, 'Comiteapre.datecomite' ) ) ),
+                            $xform->input( 'ApreComiteapre.montantattribue', array( 'label' => false, 'type' => 'text', 'maxlength' => 7, 'value' => Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.montantattribue') ) ),
 
-                            h( $locale->date( 'Date::short', Set::extract( $comiteapre, 'datecomite' ) ) ),
-                            $xform->input( 'ApreComiteapre.montantattribue', array( 'label' => false, 'type' => 'text', 'maxlength' => 7, 'value' => Set::classicExtract( $comiteapre, 'ApreComiteapre.montantattribue') ) ),
-
-                            $xform->input( 'ApreComiteapre.observationcomite', array( 'label' => false, 'type' => 'text', 'rows' => 3, 'value' => Set::classicExtract( $comiteapre, 'ApreComiteapre.observationcomite') ) ),
+                            $xform->input( 'ApreComiteapre.observationcomite', array( 'label' => false, 'type' => 'text', 'rows' => 3, 'value' => Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.observationcomite') ) ),
                             $html->viewLink(
-                                'Voir le comite « '.Set::extract( $comiteapre, 'Comiteapre.id' ).' »',
-                                array( 'controller' => 'comitesapres', 'action' => 'view', Set::extract( $comiteapre, 'Comiteapre.id' ) ),
+                                'Voir le comite « '.Set::extract( $aprecomiteapre, 'Comiteapre.id' ).' »',
+                                array( 'controller' => 'comitesapres', 'action' => 'view', Set::extract( $aprecomiteapre, 'Comiteapre.id' ) ),
                                 true,
                                 true
                             ),
