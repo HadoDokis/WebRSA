@@ -2,11 +2,13 @@
     @set_time_limit( 0 );
     @ini_set( 'memory_limit', '128M' );
     App::import('Sanitize');
-    class Repsddtefp2Controller extends AppController
+
+    class RepsddtefpController extends AppController
     {
-        var $name = 'Repsddtefp2';
-        var $uses = array( 'Apre', 'Repddtefp2', 'Option', 'Budgetapre', 'Etatliquidatif' );
-        var $helpers = array( 'Xform', 'Paginator', 'Locale', 'Xpaginator' );
+        var $name = 'Repsddtefp';
+        var $uses = array( 'Apre', 'Repddtefp', 'Option', 'Budgetapre', 'Etatliquidatif' );
+        var $helpers = array( 'Xform', 'Paginator', 'Locale', 'Xpaginator', 'Csv' );
+        var $aucunDroit = array( 'exportcsv' );
 
         function __construct() {
             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'suivicontrole' ) ) ) );
@@ -35,12 +37,12 @@
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
             if( !empty( $this->data ) ) {
-                $annee = Set::classicExtract( $this->data, 'Repddtefp2.annee' );
-                $semestre = Set::classicExtract( $this->data, 'Repddtefp2.semestre' );
-                $numcomptt = Set::classicExtract( $this->data, 'Repddtefp2.numcomptt' );
+                $annee = Set::classicExtract( $this->data, 'Repddtefp.annee' );
+                $semestre = Set::classicExtract( $this->data, 'Repddtefp.semestre' );
+                $numcomptt = Set::classicExtract( $this->data, 'Repddtefp.numcomptt' );
 
-                $listeSexe = $this->Repddtefp2->listeSexe( $annee, $semestre, $numcomptt );
-                $listeAge = $this->Repddtefp2->listeAge( $annee, $semestre, $numcomptt );
+                $listeSexe = $this->Repddtefp->listeSexe( $annee, $semestre, $numcomptt );
+                $listeAge = $this->Repddtefp->listeAge( $annee, $semestre, $numcomptt );
 
                 $this->set( compact( 'listeSexe', 'listeAge', 'numcomptt' ) );
             }
@@ -63,18 +65,18 @@
 
             if( !empty( $this->data ) ) {
 
-                /*$queryData = $this->Repddtefp2->search( $this->data );
+                /*$queryData = $this->Repddtefp->search( $this->data );
                 $queryData['limit'] = 10;
                 $this->paginate['Apre'] = $queryData;
                 $apres = $this->paginate( 'Apre' );*/
 
-				$queryData = $this->Repddtefp2->search2( $this->data );
+				$queryData = $this->Repddtefp->search( $this->data );
                 $queryData['limit'] = 10;
                 $this->paginate['Etatliquidatif'] = $queryData;
                 $apres = $this->paginate( 'Etatliquidatif' );
 
                 ///Détails de l'enveloppe APRE
-                $detailsEnveloppe = $this->Repddtefp2->detailsEnveloppe2( $this->data );
+                $detailsEnveloppe = $this->Repddtefp->detailsEnveloppe( $this->data );
                 $this->set( 'detailsEnveloppe', $detailsEnveloppe );
 
 
@@ -90,5 +92,17 @@
             }
         }
 
+
+        /// Export du tableau en CSV
+        function exportcsv() {
+
+            $queryData = $this->Repddtefp->search( array_multisize( $this->params['named'] ) );
+            unset( $queryData['limit'] );
+
+            $apres = $this->Etatliquidatif->find( 'all', $queryData );
+            $this->layout = '';
+            $this->set( compact( 'apres' ) );
+
+        }
     }
 ?>

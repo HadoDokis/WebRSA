@@ -2,9 +2,9 @@
 
     App::import( 'Sanitize' );
 
-    class Repddtefp2 extends AppModel{
+    class Repddtefp extends AppModel{
 
-        var $name = 'Repddtefp2';
+        var $name = 'Repddtefp';
         var $useTable = false;
 
 
@@ -311,7 +311,7 @@
 		*
 		*/
 
-		public function search2( $criteresrepddtefp ) {
+		public function search( $criteresrepddtefp ) {
             $queryData = $this->_queryData( $criteresrepddtefp );
 
             /// Conditions de base
@@ -390,10 +390,10 @@
 		*
 		*/
 
-        public function detailsEnveloppe2( $criteresrepddtefp ) {
+        public function detailsEnveloppe( $criteresrepddtefp ) {
             $result = array();
             $this->Etatliquidatif =& ClassRegistry::init( 'Etatliquidatif' );
-            $queryData = $this->search2( $criteresrepddtefp );
+            $queryData = $this->search( $criteresrepddtefp );
 
             foreach( array( null, 'C', 'F' ) AS $statut ) {
                 $queryDataTmp = $queryData;
