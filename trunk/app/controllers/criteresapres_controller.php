@@ -6,7 +6,7 @@
         var $name = 'Criteresapres';
         var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Critereapre', 'Apre', 'Tiersprestataireapre', 'Option',  );
 
-        var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
+        var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Xpaginator' );
         /**
         */
         function __construct() {

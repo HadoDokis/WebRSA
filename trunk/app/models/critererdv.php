@@ -93,7 +93,12 @@
 
             /// Nature de la prestation
             if( !empty( $natpf ) ) {
-                $conditions[] = 'Detailcalculdroitrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';
+                $conditions[] = 'Dossier.id IN (
+                    SELECT detailsdroitsrsa.dossier_rsa_id
+                        FROM detailsdroitsrsa
+                            INNER JOIN detailscalculsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id )
+                        WHERE detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'
+                )';
             }
 
             /// Objet du rendez vous
@@ -178,14 +183,19 @@
                     array(
                         'table'      => 'adresses_foyers',
                         'alias'      => 'Adressefoyer',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                        'conditions' => array(
+                            'Foyer.id = Adressefoyer.foyer_id',
+                            'Adressefoyer.rgadr = \'01\'',
+                            // FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+                            'Adressefoyer.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique()
+                        )
                     ),
                     array(
                         'table'      => 'adresses',
                         'alias'      => 'Adresse',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
                     ),
@@ -196,20 +206,22 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
                     ),
-                    array(
-                        'table'      => 'detailsdroitsrsa',
-                        'alias'      => 'Detaildroitrsa',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
-                    ),
-                    array(
-                        'table'      => 'detailscalculsdroitsrsa',
-                        'alias'      => 'Detailcalculdroitrsa',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
-                    )
+//                     array(
+//                         'table'      => 'detailsdroitsrsa',
+//                         'alias'      => 'Detaildroitrsa',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'detailscalculsdroitsrsa',
+//                         'alias'      => 'Detailcalculdroitrsa',
+//                         'type'       => 'INNER',
+//                         'foreignKey' => false,
+//                         'conditions' => array(
+//                             'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id'
+//                         )
+//                     )
                 ),
                 'order' => array( '"Rendezvous"."daterdv" ASC' ),
                 'conditions' => $conditions
