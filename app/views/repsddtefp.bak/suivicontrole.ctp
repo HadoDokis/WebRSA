@@ -32,7 +32,7 @@
     else {
         $pagination = '';
     }*/
-    $pagination = $xpaginator->paginationBlock( 'Etatliquidatif', $this->passedArgs );
+    $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 ?>
 <?php
     if( is_array( $this->data ) ) {
@@ -86,6 +86,7 @@
             if( !empty( $quinzaine ) ) {
                 echo '<h2>Données pour la quinzaine : '.$quinzaine.'</h2>';
             }
+
         ?>
             <table>
                 <thead>
@@ -99,21 +100,21 @@
                 <tbody>
                     <tr>
                         <th>Nombre d'APREs</th>
-                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'A.nbrapres' );?></td>
-                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'C.nbrapres' );?></td>
-                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'F.nbrapres' );?></td>
+                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'nombre_apres' );?></td>
+                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'nombre_apres_c' );?></td>
+                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'nombre_apres_f' );?></td>
                     </tr>
                     <tr>
                         <th>Nombre de bénéficiaires</th>
-                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'A.nbrpersonnes' );?></td>
-                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'C.nbrpersonnes' );?></td>
-                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'F.nbrpersonnes' );?></td>
+                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'nombre_beneficiaires' );?></td>
+                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'nombre_beneficiaires_c' );?></td>
+                        <td class="number"><?php echo Set::classicExtract( $detailsEnveloppe, 'nombre_beneficiaires_f' );?></td>
                     </tr>
                     <tr>
                         <th>Consommation de l'enveloppe</th>
-                        <td class="number"><?php echo $locale->money( Set::classicExtract( $detailsEnveloppe, 'A.montantconsomme' ) );?></td>
-                        <td class="number"><?php echo $locale->money( Set::classicExtract( $detailsEnveloppe, 'C.montantconsomme' ) );?></td>
-                        <td class="number"><?php echo $locale->money( Set::classicExtract( $detailsEnveloppe, 'F.montantconsomme' ) );?></td>
+                        <td class="number"><?php echo $locale->money( Set::classicExtract( $detailsEnveloppe, 'montantconsomme' ) );?></td>
+                        <td class="number"><?php echo $locale->money( Set::classicExtract( $detailsEnveloppe, 'montantconsomme_c' ) );?></td>
+                        <td class="number"><?php echo $locale->money( Set::classicExtract( $detailsEnveloppe, 'montantconsomme_f' ) );?></td>
                     </tr>
                 </tbody>
             </table>
@@ -192,59 +193,6 @@
                     ///Nb total des montants versés
                     $montantTotal += $mtforfait;
 
-
-
-
-// debug($apre);
-//                             if( Set::extract( $apres, ( $index - 1 ).'.Dossier.numdemrsa' ) != Set::extract( $apre, 'Dossier.numdemrsa' ) ) {
-//                             $rowspan = 1;
-//                             for( $i = ( $index + 1 ) ; $i < count( $apres ) ; $i++ ) {
-//                                 if( Set::extract( $apre, 'Dossier.numdemrsa' ) == Set::extract( $apres, $i.'.Dossier.numdemrsa' ) )
-//                                     $rowspan++;
-//                             }
-//                             if( $rowspan == 1 ) {
-//                                 echo $html->tableCells(
-//                                     array(
-//                                         h( Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
-//                                         h( Set::enum( Set::classicExtract( $apre, 'Personne.sexe' ), $sexe ) ),
-//                                         h( $age ),
-//                                         h( Set::classicExtract( $apre, 'Adresse.locaadr' ) ),
-//                                         h( $locale->money( $mtforfait ) ),
-//                                         ( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
-//                                         h( Set::enum( Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ), $options['activitebeneficiaire'] ) ),
-//                                         h( Set::enum( Set::classicExtract( $apre, 'Apre.secteuractivite' ), $sect_acti_emp ) ),
-//                                         h( Set::enum( $statutApre , $options['statutapre'] ) ),
-//                                     ),
-//                                     array( 'class' => ( $even ? 'even' : 'odd' ) ),
-//                                     array( 'class' => ( !$even ? 'even' : 'odd' ) )
-//                                 );
-//                             }
-//                             // Nouvelle entrée avec rowspan
-//                             else {
-//                                 echo '<tr class="'.( $even ? 'even' : 'odd' ).'">
-//                                         <td rowspan="'.$rowspan.'">'.h( Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ).'</td>
-//                                         <td rowspan="'.$rowspan.'">'.h( Set::enum( Set::classicExtract( $apre, 'Personne.sexe' ), $sexe ) ).'</td>
-//                                         <td rowspan="'.$rowspan.'">'.h( $age ).'</td>
-//                                         <td rowspan="'.$rowspan.'">'.Set::classicExtract( $apre, 'Adresse.locaadr' ).'</td>
-//
-//                                         <td>'.h( $locale->money( $mtforfait ) ).'</td>
-//                                         <td>'.( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ).'</td>
-//                                         <td>'.h( Set::enum( Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ), $options['activitebeneficiaire'] ) ).'</td>
-//                                         <td>'.h( Set::enum( Set::classicExtract( $apre, 'Apre.secteuractivite' ), $sect_acti_emp ) ).'</td>
-//                                         <td>'.h( Set::enum( $statutApre , $options['statutapre'] )  ).'</td>
-//                                     </tr>';
-//                             }
-//                         }
-//                         // Suite avec rowspan
-//                         else {
-//                             echo '<tr class="'.( $even ? 'even' : 'odd' ).'">
-//                                     <td>'.h( $locale->money( $mtforfait ) ).'</td>
-//                                         <td>'.( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ).'</td>
-//                                         <td>'.h( Set::enum( Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ), $options['activitebeneficiaire'] ) ).'</td>
-//                                         <td>'.h( Set::enum( Set::classicExtract( $apre, 'Apre.secteuractivite' ), $sect_acti_emp ) ).'</td>
-//                                         <td>'.h( Set::enum( $statutApre , $options['statutapre'] )  ).'</td>
-//                                 </tr>';
-//                         }
                 ?>
             <?php endforeach; ?>
 
@@ -256,6 +204,12 @@
                 echo $html->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+                );
+            ?></li>
+            <li><?php
+                echo $html->exportLink(
+                    'Télécharger le tableau',
+                    array( 'controller' => 'repsddtefp', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
             ?></li>
         </ul>

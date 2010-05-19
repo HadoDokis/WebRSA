@@ -2,9 +2,9 @@
 
     App::import( 'Sanitize' );
 
-    class Repddtefp extends AppModel{
+    class Repddtefp2 extends AppModel{
 
-        var $name = 'Repddtefp';
+        var $name = 'Repddtefp2';
         var $useTable = false;
 
 
@@ -207,21 +207,8 @@
                         'foreignKey' => false,
                         'conditions' => array(
                             'Personne.id = Prestation.personne_id',
-                            'Prestation.natprest = \'RSA\'',
-							/**
-								FIXME: les calculs ne sont pas justes avec cette condition,
-								par rapport à ce que l'on a dans la table etatsliquidatifs
-								ou dans la table apres -> c'est sensé être fait ailleurs
-
-								Requête permettant de trouver lesquels:
-								SELECT *
-									FROM apres
-									INNER JOIN personnes ON apres.personne_id = personnes.id
-									INNER JOIN prestations ON personnes.id = prestations.personne_id
-										AND prestations.natprest = 'RSA'
-										AND prestations.rolepers NOT IN ( 'DEM', 'CJT' );
-							*/
-//                             '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+                            'Prestation.natprest = \'RSA\''/*,
+                            'Prestation.rolepers IN ( \'DEM\', \'CJT\' )',*/ // FIXME ??!
                         )
                     ),
                     array(
@@ -229,7 +216,11 @@
                         'alias'      => 'Adressefoyer',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                        'conditions' => array(
+							'Foyer.id = Adressefoyer.foyer_id',
+							'Adressefoyer.rgadr = \'01\'',
+							'Adressefoyer.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique()
+						),
                     ),
                     array(
                         'table'      => 'adresses',
@@ -274,13 +265,94 @@
 				)';
         }
 
+		/**
+		*
+		*/
 
-        /**
-        *   Donnéees que l'on affiche dans la vue
-        **/
+		function _conditionsApresEtatsliquidatifs2( $criteresrepddtefp ) {
+			$conditionsApresEtatsliquidatifs = array(
+				'Etatliquidatif.datecloture IS NOT NULL'
+			);
 
-        function search( $criteresrepddtefp ) {
+            $annee = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.annee' );
+            $mois = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.mois.month' );
+            $quinzaine = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.quinzaine' );
+            $statutapre = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.statutapre' );
+
+            /// Année de demande APRE
+            if( !empty( $annee ) ) {
+                $conditionsApresEtatsliquidatifs[] = 'EXTRACT(YEAR FROM Etatliquidatif.datecloture ) = '.$annee;
+            }
+
+            /// Mois de demande APRE
+            if( !empty( $mois ) ) {
+                $conditionsApresEtatsliquidatifs[] = 'EXTRACT(MONTH FROM Etatliquidatif.datecloture ) = '.$mois;
+            }
+
+            /// Quinzaine du mois de demande APRE
+            if( !empty( $quinzaine ) ) {
+                if( $quinzaine == 1 ) {
+                    $conditionsApresEtatsliquidatifs[] = 'EXTRACT( DAY FROM Etatliquidatif.datecloture ) < 15';
+                }
+                else if( $quinzaine == 2 ) {
+                    $conditionsApresEtatsliquidatifs[] = 'EXTRACT( DAY FROM Etatliquidatif.datecloture ) >= 15';
+                }
+            }
+
+            /// Statut de l'APRE
+            if( !empty( $statutapre ) ) {
+                $conditionsApresEtatsliquidatifs[] = 'Etatliquidatif.typeapre = \''.( $statutapre == 'C' ? 'complementaire' : 'forfaitaire' ).'\'';
+            }
+
+			return $conditionsApresEtatsliquidatifs;
+		}
+
+		/**
+		*
+		*/
+
+		public function search2( $criteresrepddtefp ) {
             $queryData = $this->_queryData( $criteresrepddtefp );
+
+            /// Conditions de base
+            $conditions = array(
+				'(
+					( "Apre"."statutapre" = \'F\' )
+					OR ( "Apre"."statutapre" = \'C\' AND "ApreEtatliquidatif"."montantattribue" IS NOT NULL )
+				)',
+				$this->_conditionsApresEtatsliquidatifs2( $criteresrepddtefp )
+            );
+
+            /// Localité adresse
+			$numcomptt = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.numcomptt' );
+            if( !empty( $numcomptt ) ) {
+                $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+            }
+
+			$joins = array(
+				array(
+					'table'      => 'apres_etatsliquidatifs',
+					'alias'      => 'ApreEtatliquidatif',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Etatliquidatif.id = ApreEtatliquidatif.etatliquidatif_id' )
+				),
+				array(
+					'table'      => 'apres',
+					'alias'      => 'Apre',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'ApreEtatliquidatif.apre_id = Apre.id' )
+				),
+			);
+
+			foreach( $queryData['joins'] as $join ) {
+				$joins[] = $join;
+			}
+
+			$queryData['joins'] = $joins;
+
+			$queryData['conditions'] = $conditions;
 
             $queryData['fields'] = array(
                 '"Apre"."id"',
@@ -311,28 +383,17 @@
 				'Personne.prenom',
             );
 
-            ///
-            /*$this->Apre =& ClassRegistry::init( 'Apre' );
-
-            $fieldTotal = array();
-            foreach( $this->Apre->aidesApre as $modelAide ) {
-                $fieldTotal[] = "\"{$modelAide}\".\"montantaide\"";
-            }
-//             $queryData['fields'][] = '( COALESCE( '.implode( ', 0 ) + COALESCE( ', $fieldTotal ).', 0 ) ) AS "Apre__montanttotal"';
-            $queryData['fields'][] = '( COALESCE( "Apre"."montantdejaverse" ) ) AS "Apre__montanttotal"';*/
-
             return $queryData;
-        }
+		}
 
+		/**
+		*
+		*/
 
-        /**
-        *   Infos concernant les calculs nb de bénéficiaires + montants totaux consommés
-        **/
-
-        function detailsEnveloppe( $criteresrepddtefp ) {
+        public function detailsEnveloppe2( $criteresrepddtefp ) {
             $result = array();
-            $this->Apre =& ClassRegistry::init( 'Apre' );
-            $queryData = $this->_queryData( $criteresrepddtefp );
+            $this->Etatliquidatif =& ClassRegistry::init( 'Etatliquidatif' );
+            $queryData = $this->search2( $criteresrepddtefp );
 
             foreach( array( null, 'C', 'F' ) AS $statut ) {
                 $queryDataTmp = $queryData;
@@ -343,35 +404,26 @@
                     $conditions = array( "Apre.statutapre = '{$statut}'" );
                 }
                 $queryDataTmp['conditions'] = Set::merge( $queryDataTmp['conditions'], $conditions );
+				unset( $queryDataTmp['order'] );
+
 
                 // Montants consommés
                 $fieldTotal = array();
-                foreach( $this->Apre->aidesApre as $modelAide ) {
+                foreach( $this->Etatliquidatif->Apre->aidesApre as $modelAide ) {
                     $fieldTotal[] = "\"{$modelAide}\".\"montantaide\"";
                 }
-//                 $queryDataTmp['fields'][] = 'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( '.implode( ', 0 ) + COALESCE( ', $fieldTotal ).', 0 ) ) AS "Apre__montantconsomme"';
-                //$queryDataTmp['fields'][] = 'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( "Apre"."montantdejaverse", 0 ) ) AS "Apre__montantconsomme"';
-                $queryDataTmp['fields'][] = 'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( '.$this->_apreMontantAidesVersees( $criteresrepddtefp ).', 0 ) ) AS "Apre__montantconsomme"';
 
-//                 $queryDataTmp['group'] = array(
-//                     'EXTRACT(YEAR FROM Apre.datedemandeapre )',
-//                     'Apre.datedemandeapre'
-//                 );
+				$queryDataTmp['fields'] = array(
+					'COUNT( * ) AS "Etatliquidatif__nbrresultats"',
+					'COUNT( DISTINCT ( "Apre"."id" ) ) AS "Etatliquidatif__nbrapres"',
+					'COUNT( DISTINCT( "Personne"."id" ) ) AS "Etatliquidatif__nbrpersonnes"',
+					'SUM( COALESCE( "Apre"."mtforfait", 0 ) + COALESCE( '.$this->_apreMontantAidesVersees( $criteresrepddtefp ).', 0 ) ) AS "Etatliquidatif__montantconsomme"'
+				);
 
-                $montantconsomme = $this->Apre->find( 'all', $queryDataTmp );
-                $result["montantconsomme{$suffix}"] = Set::classicExtract( $montantconsomme, '0.Apre.montantconsomme' );
-
-                // Nombre de bénéficiaires
-                $queryDataTmp['fields'][] = 'COUNT( DISTINCT( "Apre"."personne_id" ) ) AS "Apre__nombre_beneficiaires"';
-                $nombre_beneficiaires = $this->Apre->find( 'all', $queryDataTmp );
-                $result["nombre_beneficiaires{$suffix}"] = Set::classicExtract( $nombre_beneficiaires, '0.Apre.nombre_beneficiaires' );
-
-                // Nombre d'APREs
-                $queryDataTmp['fields'][] = 'COUNT( DISTINCT( "Apre"."id" ) ) AS "Apre__nombre_apres"';
-                $nombre_apres = $this->Apre->find( 'all', $queryDataTmp );
-                $result["nombre_apres{$suffix}"] = Set::classicExtract( $nombre_apres, '0.Apre.nombre_apres' );
+				$tmpResult = $this->Etatliquidatif->find( 'all', $queryDataTmp );
+                $result[( empty( $statut ) ? 'A' : $statut )] = Set::classicExtract( $tmpResult, '0.Etatliquidatif' );
             }
-// debug( $result );
+
             return $result;
         }
     }
