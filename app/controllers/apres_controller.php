@@ -177,6 +177,7 @@
 
         function ajaxref( $referent_id = null ) { // FIXME
             Configure::write( 'debug', 0 );
+// debug($referent_id);
             if( !empty( $referent_id ) ) {
                 $referent_id = suffix( $referent_id );
             }
@@ -445,15 +446,14 @@
                         if( !empty( $linkedData ) ){
                             $this->data = Set::merge( $apre, $linkedData );
                         }
-                        else{
-                            $this->data = $apre;
-                            $this->data = Set::insert(
-                                $this->data, 'Apre.referent_id',
-                                Set::extract( $this->data, 'Apre.structurereferente_id' ).'_'.Set::extract( $this->data, 'Apre.referent_id' )
-                            );
-                        }
 
                     }
+
+                    $this->data = $apre;
+                    $this->data = Set::insert(
+                        $this->data, 'Apre.referent_id',
+                        Set::extract( $this->data, 'Apre.structurereferente_id' ).'_'.Set::extract( $this->data, 'Apre.referent_id' )
+                    );
                 }
             }
             $this->Apre->commit();
