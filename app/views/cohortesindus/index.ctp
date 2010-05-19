@@ -17,7 +17,7 @@
     }
 
     //
-
+/*
     if( isset( $cohorteindu ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
@@ -33,7 +33,8 @@
     }
     else {
         $pagination = '';
-    }
+    }*/
+    $pagination = $xpaginator->paginationBlock( 'Dossier', $this->passedArgs );
 ?>
 
 <?php echo $form->create( 'Cohorteindu', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->data ) && empty( $this->validationErrors ) ) ? 'folded' : 'unfolded' ) ) );?>

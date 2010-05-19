@@ -12,7 +12,7 @@
 </script>
 
 <?php
-
+/*
     if( isset( $apres ) ) {
         $paginator->options( array( 'url' => $this->params['named'] ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
@@ -28,8 +28,8 @@
     }
     else {
         $pagination = '';
-    }
-
+    }*/
+    $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 ?>
 <?php
     if( is_array( $this->data ) ) {

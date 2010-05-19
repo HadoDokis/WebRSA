@@ -352,15 +352,7 @@
 					'foreignKey' => false,
 					'conditions' => array(
 						'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
-						'Adressefoyer.id IN (
-							SELECT tmpadresses_foyers.id FROM (
-								SELECT MAX(adresses_foyers.id) AS id, adresses_foyers.foyer_id
-									FROM adresses_foyers
-									WHERE adresses_foyers.rgadr = \'01\'
-									GROUP BY adresses_foyers.foyer_id
-									ORDER BY adresses_foyers.foyer_id
-							) AS tmpadresses_foyers
-						)'
+						'Adressefoyer.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique()
 					)
 				);
 				$query['joins'][] = array(
@@ -379,15 +371,7 @@
 					'foreignKey' => false,
 					'conditions' => array(
 						'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
-						'Adressefoyer.id IN (
-							SELECT tmpadresses_foyers.id FROM (
-								SELECT MAX(adresses_foyers.id) AS id, adresses_foyers.foyer_id
-									FROM adresses_foyers
-									WHERE adresses_foyers.rgadr = \'01\'
-									GROUP BY adresses_foyers.foyer_id
-									ORDER BY adresses_foyers.foyer_id
-							) AS tmpadresses_foyers
-						)'
+						'Adressefoyer.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique()
 					)
 				);
 				$query['joins'][] = array(

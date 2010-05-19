@@ -50,5 +50,27 @@
         }
 
         //*********************************************************************
+
+
+        //*********************************************************************
+        /**
+        *   Foyers avec plusieurs adresses_foyers.rgadr = 01
+        *   donc on s'assure de n'en prendre qu'un seul et celui dont l'ID est le + élevé
+        *   FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+        */
+
+        function sqlFoyerActuelUnique() {
+            return '(
+                SELECT tmpadresses_foyers.id FROM (
+                    SELECT MAX(adresses_foyers.id) AS id, adresses_foyers.foyer_id
+                        FROM adresses_foyers
+                        WHERE adresses_foyers.rgadr = \'01\'
+                        GROUP BY adresses_foyers.foyer_id
+                        ORDER BY adresses_foyers.foyer_id
+                ) AS tmpadresses_foyers
+            )';
+        }
+
+        //*********************************************************************
     }
 ?>

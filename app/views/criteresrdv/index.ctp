@@ -16,22 +16,23 @@
     }
 ?>
 <?php
-    if( isset( $rdvs ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
-        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
-
-        $pages = $paginator->first( '<<' );
-        $pages .= $paginator->prev( '<' );
-        $pages .= $paginator->numbers();
-        $pages .= $paginator->next( '>' );
-        $pages .= $paginator->last( '>>' );
-
-        $pagination .= $html->tag( 'p', $pages );
-    }
-    else {
-        $pagination = '';
-    }
+//     if( isset( $rdvs ) ) {
+//         $paginator->options( array( 'url' => $this->passedArgs ) );
+//         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+//         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+// 
+//         $pages = $paginator->first( '<<' );
+//         $pages .= $paginator->prev( '<' );
+//         $pages .= $paginator->numbers();
+//         $pages .= $paginator->next( '>' );
+//         $pages .= $paginator->last( '>>' );
+// 
+//         $pagination .= $html->tag( 'p', $pages );
+//     }
+//     else {
+//         $pagination = '';
+//     }
+    $pagination = $xpaginator->paginationBlock( 'Rendezvous', $this->passedArgs );
 ?>
 <?php
     if( is_array( $this->data ) ) {
@@ -154,7 +155,7 @@
                                 </tr>
                             </tbody>
                         </table>';
-
+// debug($rdv);
                         echo $html->tableCells(
                             array(
                                 h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),

@@ -54,7 +54,8 @@
                                 ),
                                 $html->deleteLink(
                                     'Supprimer le tiers prestataire APRE ',
-                                    array( 'controller' => 'tiersprestatairesapres', 'action' => 'delete', $tiersprestataire['Tiersprestataireapre']['id'] )
+                                    array( 'controller' => 'tiersprestatairesapres', 'action' => 'delete', $tiersprestataire['Tiersprestataireapre']['id'] ),
+                                    $permissions->check( 'tiersprestatairesapres', 'delete' )
                                 )
                             ),
                             array( 'class' => 'odd' ),
