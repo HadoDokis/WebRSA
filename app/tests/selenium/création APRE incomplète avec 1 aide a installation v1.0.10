@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>création APRE incomplète avec 1 aide a installation v1.0</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">création APRE incomplète avec 1 aide a installation v1.0</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/webrsa/branch-1.0.8/apres/index/17</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Ajouter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreTypedemandeapreFO</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreNaturelogementP</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreAnciennetepoleemploi</td>
+	<td>41</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreProjetprofessionnel</td>
+	<td>fsfs</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreSecteurprofessionnel</td>
+	<td>efzfz zefze ze</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreActivitebeneficiaireF</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ApreStructurereferenteId</td>
+	<td>label=Conseil Général de l'Hérault</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ApreReferentId</td>
+	<td>label=MR Hamzaoui Michel</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ApreJustificatifCREA</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre4</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceaprePieceapre5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>data[Apre][Natureaide]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//form[@id='Apre']/div[2]/fieldset[10]/h3/label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FormqualifIntituleform</td>
+	<td>Intitulé de la formation</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='data[Apre][Natureaide]' and @value='Amenaglogt']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>AmenaglogtTypeaidelogementAEL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AmenaglogtBesoins</td>
+	<td>zefze zefzf zzf</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>AmenaglogtMontantaide</td>
+	<td>1425</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceamenaglogtPieceamenaglogt1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceamenaglogtPieceamenaglogt4</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceamenaglogtPieceamenaglogt3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>PieceamenaglogtPieceamenaglogt2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ApreAvistechreferent</td>
+	<td>Avis technique et motivé du référent (Article 5.1 relatif au règlement de l'APRE):</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Enregistrer']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Relancer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Enregistrer']</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
