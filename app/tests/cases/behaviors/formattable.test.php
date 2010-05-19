@@ -8,7 +8,7 @@
     class FormattableBehaviorTest extends CakeTestCase
     {
 
-		var $fixtures = array( 'item' );
+		var $fixtures = array( 'item', 'jeton' );
 
 		/**
 		* Création d'un modèle sans behavior et association du behavior à tester.
