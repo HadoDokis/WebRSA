@@ -48,16 +48,16 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-            'dtclorsa' => array(
-                array(
-                    'rule' => 'date',
-                    'message' => 'Veuillez vérifier le format de la date.'
-                ),
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            )
+//             'dtclorsa' => array(
+//                 array(
+//                     'rule' => 'date',
+//                     'message' => 'Veuillez vérifier le format de la date.'
+//                 ),
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
+//             )
         );
 
         //*********************************************************************

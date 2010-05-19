@@ -55,7 +55,7 @@
                                 $html->deleteLink(
                                     'Supprimer le tiers prestataire APRE ',
                                     array( 'controller' => 'tiersprestatairesapres', 'action' => 'delete', $tiersprestataire['Tiersprestataireapre']['id'] ),
-                                    $permissions->check( 'tiersprestatairesapres', 'delete' )
+                                    $permissions->check( 'tiersprestatairesapres', 'delete' ) && Set::classicExtract( $tiersprestataire, 'Tiersprestataireapre.deletable' )
                                 )
                             ),
                             array( 'class' => 'odd' ),
