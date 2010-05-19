@@ -1,4 +1,6 @@
 <?php
+	App::import( 'Model', 'Partep' );
+
     class Parteprempl extends Partep
     {
         var $name = 'Parteprempl';
