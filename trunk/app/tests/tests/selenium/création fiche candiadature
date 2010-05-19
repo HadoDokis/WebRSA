@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>création fiche candiadature</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">création fiche candiadature</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/webrsa/webrsa-1.2/actionscandidats_personnes/add/174453</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ActioncandidatPersonneActioncandidatId</td>
+	<td>label=Itinérant Environnement</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActioncandidatPersonneMotifdemande</td>
+	<td>Travaux d'environnement auprès de collectivités locales</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ActioncandidatPersonneMobile1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ActioncandidatPersonneNaturemobile</td>
+	<td>label=Sur le département</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActioncandidatPersonneTypemobile</td>
+	<td>Type de mobilité</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ActioncandidatPersonneRendezvouspartenaire1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ActioncandidatPersonneDaterdvpartenaireDay</td>
+	<td>label=19</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ActioncandidatPersonneDaterdvpartenaireMonth</td>
+	<td>label=mars</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ActioncandidatPersonneDaterdvpartenaireYear</td>
+	<td>label=2010</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ActioncandidatPersonneEnattente0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ActioncandidatPersonneBilanvenuVEN</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ActioncandidatPersonneBilanretenuRET</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActioncandidatPersonneInfocomplementaire</td>
+	<td>Inform</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>ActioncandidatPersonneInfocomplementaire</td>
+	<td>Informs) complémentaire(</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ActioncandidatPersonneDatebilanDay</td>
+	<td>label=19</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ActioncandidatPersonneDatebilanMonth</td>
+	<td>label=mai</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>ActioncandidatPersonneDatebilanYear</td>
+	<td>label=2010</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Enregistrer']</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
