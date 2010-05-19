@@ -197,6 +197,7 @@
                     $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
                 }
 
+				/// FIXME: si la date d'habilitation est celle du jour il n'est plus habilité du tout
                 if( !empty( $habilitations['date_fin_hab'] ) && ( strtotime( $habilitations['date_fin_hab'] ) < mktime() ) ) {
                     $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
                 }
@@ -501,6 +502,12 @@
                 unset($defaults[0]);
             }
             extract($options = array_merge(array('page' => 1, 'limit' => 20), $defaults, $options));
+
+           // made in gaëtan -> pour les tests unitaires
+           $options['limit'] = (empty($options['limit']) || !is_numeric($options['limit'])) ? 1 : $options['limit'];
+           extract($options);
+           // fin made in gaëtan
+
 
             if (is_array($scope) && !empty($scope)) {
                 $conditions = array_merge($conditions, $scope);
