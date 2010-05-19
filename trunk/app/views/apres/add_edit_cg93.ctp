@@ -310,6 +310,7 @@
                     </td>
                     <td class="noborder">
                         <strong>Nom du référent</strong>
+                        <?php /*debug( $this->data, "{$this->modelClass}.referent_id" );*/?>
                         <?php echo $xform->input( "{$this->modelClass}.referent_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $referents, 'empty' => true ) );?>
                         <?php echo $ajax->observeField( $this->modelClass.'ReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?> 
                     </td>
