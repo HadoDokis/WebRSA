@@ -24,13 +24,7 @@
                 $this->redirect( array( 'controller' => 'apres', 'action' => 'indexparams' ) );
             }
 
-            $tiersprestatairesapres = $this->Tiersprestataireapre->find(
-                'all',
-                array(
-                    'recursive' => -1
-                )
-
-            );
+            $tiersprestatairesapres = $this->Tiersprestataireapre->adminList();
 
             $this->set('tiersprestatairesapres', $tiersprestatairesapres);
         }

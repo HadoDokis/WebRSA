@@ -36,6 +36,7 @@
             )
         );
 
+        var $modelsFormation = array( 'Formqualif', 'Formpermfimo', 'Permisb', 'Actprof' );
 
         var $validate = array(
             'nomtiers' => array(
@@ -123,5 +124,26 @@
             ),
         );
 
+        /**
+        * FIXME: merci Arnaud pour les commentaires que tu vas ajouter
+        */
+
+        function adminList() {
+            $tiersprestatairesapres = $this->find( 'all', array( 'recursive' => -1 ) );
+
+            foreach( $tiersprestatairesapres as $key => $tiersprestataireapre ) {
+                $subQueries = array();
+                foreach( $this->modelsFormation as $model ) {
+                    $tableName = Inflector::tableize( $model );
+                    $subQueries[] = "( SELECT COUNT(*) FROM {$tableName} WHERE tiersprestataireapre_id = {$tiersprestatairesapres[$key]['Tiersprestataireapre']['id']} )";
+                }
+                $result = $this->query( 'SELECT ( '.implode( '+', $subQueries ).' ) AS count' );
+                $result = Set::classicExtract( $result, '0.0.count' );
+
+                $tiersprestatairesapres[$key]['Tiersprestataireapre']['deletable'] = empty( $result );
+            }
+
+            return $tiersprestatairesapres;
+        }
     }
 ?>

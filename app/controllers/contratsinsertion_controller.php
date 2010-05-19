@@ -112,43 +112,6 @@
         }
 
         /** ********************************************************************
-        *   Ajax pour les coordonnées du référent
-        *** *******************************************************************/
-/*
-        function ajaxrefcoord() { // FIXME
-            Configure::write( 'debug', 0 );
-            $this->data['Contratinsertion']['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Contratinsertion']['referent_id'] );
-            $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( Set::extract( $this->data, 'Contratinsertion.referent_id' ), null, null, -1 );
-            echo $referent['Referent']['email']. '<br/>' .$referent['Referent']['numero_poste'];
-            $this->render( null, 'ajax' );
-        }
-*/
-        /** ********************************************************************
-        *   Ajax pour la fonction du référent
-        *** *******************************************************************/
-
-  /*      function ajaxreffonct() { // FIXME
-            Configure::write( 'debug', 0 );
-            $this->data['Contratinsertion']['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Contratinsertion']['referent_id'] );
-            $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( Set::extract( $this->data, 'Contratinsertion.referent_id' ), null, null, -1 );
-            echo $referent['Referent']['fonction'];
-            $this->render( null, 'ajax' );
-        }*/
-
-        /** ********************************************************************
-        *   Ajax pour le nom du référent
-        *** *******************************************************************/
-/*
-        function ajaxreferent() { // FIXME
-            Configure::write( 'debug', 0 );
-            $qual = $this->Option->qual();
-            $this->data['Contratinsertion']['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Contratinsertion']['referent_id'] );
-            $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( Set::extract( $this->data, 'Contratinsertion.referent_id' ), null, null, -1 );
-            echo Set::enum( Set::classicExtract( $referent, 'Referent.qual') , $qual ).' '.$referent['Referent']['nom'].' '.$referent['Referent']['prenom'];
-            $this->render( null, 'ajax' );
-        }
-*/
-        /** ********************************************************************
         *   Ajax pour les coordonnées du référent APRE
         *** *******************************************************************/
 
@@ -181,17 +144,7 @@
             $this->set( 'struct', $struct );
             $this->render( 'ajaxstruct', 'ajax' );
         }
-        /** ********************************************************************
-        *   Ajax pour les coordonnées de la structure référente
-        *** *******************************************************************/
 
-       /* function ajaxstructadr() { // FIXME
-            Configure::write( 'debug', 0 );
-            $struct = $this->Contratinsertion->Structurereferente->findbyId( Set::extract( $this->data, 'Contratinsertion.structurereferente_id' ), null, null, -1 );
-            echo $struct['Structurereferente']['num_voie'].' '.$struct['Structurereferente']['type_voie'].' '.$struct['Structurereferente']['nom_voie'].'<br/>'.$struct['Structurereferente']['code_postal'].' '.$struct['Structurereferente']['ville'];
-            $this->render( null, 'ajax' );
-        }
-*/
 
         /** ********************************************************************
         *

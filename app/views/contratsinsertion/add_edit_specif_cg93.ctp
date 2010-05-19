@@ -102,3 +102,4 @@
             );
         ?>
 </fieldset>
+<?php debug($this->data);?>

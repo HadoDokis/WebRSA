@@ -104,15 +104,15 @@
             checkDatesToRefresh();
         } );
 
-// form, radioName, fieldsetId, value, condition, toggleVisibility
-            observeDisableFieldsetOnRadioValue(
-                'testform',
-                'data[Contratinsertion][forme_ci]',
-                $( 'Contratsuite' ),
-                'C',
-                false,
-                true
-            );
+        // form, radioName, fieldsetId, value, condition, toggleVisibility
+        observeDisableFieldsetOnRadioValue(
+            'testform',
+            'data[Contratinsertion][forme_ci]',
+            $( 'Contratsuite' ),
+            'C',
+            false,
+            true
+        );
 
         observeDisableFieldsOnRadioValue(
             'testform',
@@ -232,6 +232,10 @@
                         $error = Set::classicExtract( $this->validationErrors, 'Contratinsertion.forme_ci' );
                         $class = 'radio'.( !empty( $error ) ? ' error' : '' );
 
+                        $thisDataFormeCi = Set::classicExtract( $this->data, 'Contratinsertion.forme_ci' );
+                        if( !empty( $thisDataFormeCi ) ) {
+                            $valueFormeci = $thisDataFormeCi;
+                        }
                         $input =  $form->input( 'Contratinsertion.forme_ci', array( 'type' => 'radio' , 'options' => $forme_ci, 'div' => false, 'legend' => required( __( 'forme_ci', true )  ), 'value' => $valueFormeci ) );
 
                         echo $html->tag( 'div', $input, array( 'class' => $class ) );
