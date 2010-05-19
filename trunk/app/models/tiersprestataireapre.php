@@ -125,7 +125,8 @@
         );
 
         /**
-        * FIXME: merci Arnaud pour les commentaires que tu vas ajouter
+        *   Fonction permettant de récupérer la liste des tiers prestataires ainsi
+        *   qu'un champ virtuel 'deletable' qui indique si le tiers est lié à une aide de l'APRE
         */
 
         function adminList() {
