@@ -28,15 +28,18 @@
 ?>
 
 <div class="treemenu">
-    <!-- <ul>
-        <li onclick="treeMenuExpandsAll( '<?php echo Router::url( '/', true );?>' );"> -->
             <h2 >
+                <?php echo $html->link(
+                    $html->image( 'icons/bullet_toggle_plus.png', array( 'alt' => '', 'title' => 'Dossier verrouillé', 'width' => '30px' ) ),
+                    '#',
+                    array( 'onclick' => 'treeMenuExpandsAll( \''.Router::url( '/', true ).'\' ); return false;', 'id' => 'treemenuToggleLink' ),
+                    false,
+                    false
+                );?>
+
+
                 <?php echo $html->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) ).( $dossier['Dossier']['locked'] ? $html->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null );?>
             </h2>
-<!--
-        </li>
-    </ul> -->
-    <!-- <p onclick="treeMenuExpandsAll( '<?php echo Router::url( '/', true );?>' );">Coucou</p> -->
 
 <?php $etatdosrsaValue = Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' );?>
 
@@ -69,17 +72,9 @@
                             <!-- Début "Partie du sous-menu concernant uniquement le demandeur et son conjoint" -->
                             <?php if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ):?>
                                 <ul>
-                                <?php if( $permissions->check( 'situationsdossiersrsa', 'index' ) || $permissions->check( 'detailsdroitsrsa', 'index' ) || $permissions->check( 'dossierspdo', 'index' ) ):?>
+                                <?php if( $permissions->check( 'situationsdossiersrsa', 'index' ) || $permissions->check( 'detailsdroitsrsa', 'index' ) ):?>
                                     <li><span>Droit</span>
                                         <ul>
-                                            <li>
-                                                <?php
-                                                    echo $html->link(
-                                                        'Consultation dossier PDO',
-                                                        array( 'controller' => 'dossierspdo', 'action' => 'index', $dossier['Dossier']['id'] )
-                                                    );
-                                                ?>
-                                            </li>
                                             <?php if( $permissions->check( 'dsps', 'view' ) ):?>
                                                 <li>
                                                     <?php
@@ -291,7 +286,7 @@
         <!-- TODO: permissions à partir d'ici et dans les fichiers concernés -->
         <li><span>Informations foyer</span>
             <ul>
-                <?php if( $permissions->check( 'situationsdossiersrsa', 'index' ) || $permissions->check( 'detailsdroitsrsa', 'index' ) ):?>
+                <?php if( $permissions->check( 'situationsdossiersrsa', 'index' ) || $permissions->check( 'detailsdroitsrsa', 'index' ) || $permissions->check( 'dossierspdo', 'index' ) ):?>
                     <li>
                         <?php
                             echo $html->link(
@@ -305,6 +300,14 @@
                             echo $html->link(
                                 'Détails du droit RSA',
                                 array( 'controller' => 'detailsdroitsrsa', 'action' => 'index', $dossier['Dossier']['id'] )
+                            );
+                        ?>
+                    </li>
+                    <li>
+                        <?php
+                            echo $html->link(
+                                'Consultation dossier PDO',
+                                array( 'controller' => 'dossierspdo', 'action' => 'index', $dossier['Dossier']['id'] )
                             );
                         ?>
                     </li>
