@@ -598,6 +598,10 @@ div.clearer hr {
     display: inline;
 }
 
+
+.treemenu a.selected {
+    background-color: #A8DBEF;
+}
 /*.treemenu li, .treemenu li ul { background: #f9ffe6; }
 .treemenu li li, .treemenu li li ul { background: white; }
 
