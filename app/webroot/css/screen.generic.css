@@ -618,7 +618,7 @@ div.clearer hr {
 }
 
 #pageWrapper.treemenu_large .treemenu li {
-    padding-left: 2em;
+    padding-left: 1.4em;
 }
 
 #pageWrapper.treemenu_large .treemenu a, #pageWrapper.treemenu_large .treemenu span {
@@ -627,17 +627,21 @@ div.clearer hr {
 
 #pageWrapper.treemenu_large .treemenu a.toggler {
     width: 1em;
-    height: 2em;
-    line-height: 2em;
+    height: 1.2em;
+    line-height: 1.2em;
 }
 
 #pageWrapper.treemenu_large .treemenu li, #pageWrapper.treemenu_large .treemenu a, #pageWrapper.treemenu_large .treemenu span {
-    line-height: 2em;
+    line-height: 1.2em;
 }
 
 
 #pageWrapper.treemenu_large h2 a {
     display: inline;
+}
+
+#pageWrapper.treemenu_large .treemenu img {
+    margin-left: 4px;
 }
 
 /*****************************************************************************/
