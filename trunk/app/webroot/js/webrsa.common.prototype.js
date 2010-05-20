@@ -16,11 +16,11 @@ function make_treemenus( absoluteBaseUrl, large ) {
     $$( '.treemenu li' ).each( function ( elmtLi ) {
         if( elmtLi.down( 'ul' ) ) {
             if( large ) {
-                var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus.png', 'alt': 'Étendre', 'width': '30px'
+                var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus2.png', 'alt': 'Étendre', 'width': '12px'
                 } );
             }
             else  {
-                var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus.png', 'alt': 'Étendre' } );
+                var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus2.png', 'alt': 'Étendre' } );
             }
             var link = img.wrap( 'a', { 'href': '#', 'class' : 'toggler' } );
             var sign = '+';
@@ -29,11 +29,11 @@ function make_treemenus( absoluteBaseUrl, large ) {
                 var innerUl = $( this ).up( 'li' ).down( 'ul' );
                 innerUl.toggle();
                 if( innerUl.visible() ) {
-                    $( this ).down( 'img' ).src = dir + '/bullet_toggle_minus.png';
+                    $( this ).down( 'img' ).src = dir + '/bullet_toggle_minus2.png';
                     $( this ).down( 'img' ).alt = 'Réduire';
                 }
                 else {
-                    $( this ).down( 'img' ).src = dir + '/bullet_toggle_plus.png';
+                    $( this ).down( 'img' ).src = dir + '/bullet_toggle_plus2.png';
                     $( this ).down( 'img' ).alt = 'Étendre';
                 }
                 return false;
@@ -56,7 +56,7 @@ function make_treemenus( absoluteBaseUrl, large ) {
                 if( aAncestor.tagName == 'LI' ) {
                     var toggler = aAncestor.down( 'a.toggler img' );
                     if( toggler != undefined ) {
-                        toggler.src = dir + '/bullet_toggle_minus.png';
+                        toggler.src = dir + '/bullet_toggle_minus2.png';
                         toggler.alt = 'Réduire';
                     }
                 }
@@ -90,11 +90,11 @@ function expandableTreeMenuContent( elmt, sign, dir ) {
 
         if( elmtA.down( 'img' ) != undefined ) {
             if( sign == 'plus' ) {
-                elmtA.down( 'img' ).src = dir + '/bullet_toggle_minus.png';
+                elmtA.down( 'img' ).src = dir + '/bullet_toggle_minus2.png';
                 elmtA.down( 'img' ).alt = 'Réduire';
             }
             else {
-                elmtA.down( 'img' ).src = dir + '/bullet_toggle_plus.png';
+                elmtA.down( 'img' ).src = dir + '/bullet_toggle_plus2.png';
                 elmtA.down( 'img' ).alt = 'Étendre';
             }
         }
@@ -120,11 +120,11 @@ function treeMenuExpandsAll( absoluteBaseUrl ) {
 
         if( elmtA.down( 'img' ) != undefined ) {
             if( sign == 'plus' ) {
-                elmtA.down( 'img' ).src = dir + '/bullet_toggle_minus.png';
+                elmtA.down( 'img' ).src = dir + '/bullet_toggle_minus2.png';
                 elmtA.down( 'img' ).alt = 'Réduire';
             }
             else {
-                elmtA.down( 'img' ).src = dir + '/bullet_toggle_plus.png';
+                elmtA.down( 'img' ).src = dir + '/bullet_toggle_plus2.png';
                 elmtA.down( 'img' ).alt = 'Étendre';
             }
         }
@@ -133,11 +133,11 @@ function treeMenuExpandsAll( absoluteBaseUrl ) {
     } );
 
     if( sign == 'plus' ) {
-        $( toggleLink ).down( 'img' ).src = dir + '/bullet_toggle_minus.png';
+        $( toggleLink ).down( 'img' ).src = dir + '/bullet_toggle_minus2.png';
     }
     else {
 
-        $( toggleLink ).down( 'img' ).src = dir + '/bullet_toggle_plus.png';
+        $( toggleLink ).down( 'img' ).src = dir + '/bullet_toggle_plus2.png';
     }
 }
 
