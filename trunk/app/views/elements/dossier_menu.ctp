@@ -28,18 +28,22 @@
 ?>
 
 <div class="treemenu">
-            <h2 >
-                <?php echo $html->link(
-                    $html->image( 'icons/bullet_toggle_plus.png', array( 'alt' => '', 'title' => 'Dossier verrouillé', 'width' => '30px' ) ),
+
+        <h2 >
+            <?php
+                echo $html->link(
+                    $html->image( 'icons/bullet_toggle_plus.png', array( 'alt' => '', 'title' => 'Étendre le menu ', 'width' => '30px' ) ),
                     '#',
                     array( 'onclick' => 'treeMenuExpandsAll( \''.Router::url( '/', true ).'\' ); return false;', 'id' => 'treemenuToggleLink' ),
                     false,
                     false
-                );?>
+                );
+            ?>
 
-
-                <?php echo $html->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) ).( $dossier['Dossier']['locked'] ? $html->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null );?>
-            </h2>
+            <?php
+                echo $html->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) ).( $dossier['Dossier']['locked'] ? $html->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null );
+            ?>
+        </h2>
 
 <?php $etatdosrsaValue = Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' );?>
 

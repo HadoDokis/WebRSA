@@ -543,7 +543,7 @@ div.clearer hr {
 }
 
 .treemenu {
-    width: 200px;/*17em*/
+    width: 215px;/*17em*/
     border: 1px solid #235f7d;
     float: left;
     /*z-index: 100;*/
@@ -595,6 +595,7 @@ div.clearer hr {
 
 .treemenu h2 a {
     color: white;
+    display: inline;
 }
 
 /*.treemenu li, .treemenu li ul { background: #f9ffe6; }
@@ -628,6 +629,11 @@ div.clearer hr {
 
 #pageWrapper.treemenu_large .treemenu li, #pageWrapper.treemenu_large .treemenu a, #pageWrapper.treemenu_large .treemenu span {
     line-height: 2em;
+}
+
+
+#pageWrapper.treemenu_large h2 a {
+    display: inline;
 }
 
 /*****************************************************************************/
