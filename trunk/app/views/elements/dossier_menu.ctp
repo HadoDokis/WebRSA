@@ -30,6 +30,7 @@
 <div class="treemenu">
 
         <h2 >
+            <?php if( Configure::read( 'UI.menu.large' ) ):?>
             <?php
                 echo $html->link(
                     $html->image( 'icons/bullet_toggle_plus.png', array( 'alt' => '', 'title' => 'Étendre le menu ', 'width' => '30px' ) ),
@@ -39,6 +40,7 @@
                     false
                 );
             ?>
+            <?php endif;?>
 
             <?php
                 echo $html->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) ).( $dossier['Dossier']['locked'] ? $html->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null );
