@@ -88,4 +88,10 @@
     * @default: 'cg93' (pour le CG93), sinon 'cg66' pour le CG66
     */
     Configure::write( 'ActioncandidatPersonne.suffixe', 'cg93' );
+
+    /**
+    *   Paramètre à renseigner dans le cas d'un affichage plus large du menu du dossier
+    *   @default: false
+    */
+//     Configure::write( 'UI.menu.large', true );
 ?>

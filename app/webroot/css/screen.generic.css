@@ -600,6 +600,36 @@ div.clearer hr {
 /*.treemenu li, .treemenu li ul { background: #f9ffe6; }
 .treemenu li li, .treemenu li li ul { background: white; }
 
+/**
+* Menu large
+*/
+
+#pageWrapper.treemenu_large .with_treemenu {
+    margin-left: 18em;
+}
+
+#pageWrapper.treemenu_large .treemenu {
+    width: 250px;
+}
+
+#pageWrapper.treemenu_large .treemenu li {
+    padding-left: 2em;
+}
+
+#pageWrapper.treemenu_large .treemenu a, #pageWrapper.treemenu_large .treemenu span {
+/*     padding: 0.125em 0; */
+}
+
+#pageWrapper.treemenu_large .treemenu a.toggler {
+    width: 1em;
+    height: 2em;
+    line-height: 2em;
+}
+
+#pageWrapper.treemenu_large .treemenu li, #pageWrapper.treemenu_large .treemenu a, #pageWrapper.treemenu_large .treemenu span {
+    line-height: 2em;
+}
+
 /*****************************************************************************/
 
 ul.actionMenu {

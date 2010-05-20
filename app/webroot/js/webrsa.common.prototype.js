@@ -11,11 +11,17 @@ function make_folded_forms() {
 
 //-----------------------------------------------------------------------------
 
-function make_treemenus( absoluteBaseUrl ) {
+function make_treemenus( absoluteBaseUrl, large ) {
     var dir = absoluteBaseUrl + 'img/icons';
     $$( '.treemenu li' ).each( function ( elmtLi ) {
         if( elmtLi.down( 'ul' ) ) {
-            var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus.png', 'alt': 'Étendre' } );
+            if( large ) {
+                var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus.png', 'alt': 'Étendre', 'width': '30px'
+                } );
+            }
+            else  {
+                var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus.png', 'alt': 'Étendre' } );
+            }
             var link = img.wrap( 'a', { 'href': '#', 'class' : 'toggler' } );
             var sign = '+';
 
@@ -56,10 +62,47 @@ function make_treemenus( absoluteBaseUrl ) {
                 }
             } );
             // Montrer son descendant direct
-            var ul = elmtA.up( 'li' ).down( 'ul' );
-            if( ul != undefined ) {
-                ul.show();
+            try {
+                var upLi = elmtA.up( 'li' );
+                if( upLi != undefined ) {
+                    var ul = upLi.down( 'ul' );
+                    if( ul != undefined ) {
+                        ul.show();
+                    }
+                }
             }
+            catch( e ) {
+            }
+        }
+    } );
+}
+
+function treeMenuExpandsAll( absoluteBaseUrl ) {
+    var dir = absoluteBaseUrl + 'img/icons';
+
+    $$( '.treemenu a' ).each( function ( elmtA ) {
+        // Montrer tous les ancètres
+        elmtA.ancestors().each( function ( aAncestor ) {
+            aAncestor.show();
+            if( aAncestor.tagName == 'LI' ) {
+                var toggler = aAncestor.down( 'a.toggler img' );
+                if( toggler != undefined ) {
+                    toggler.src = dir + '/bullet_toggle_minus.png';
+                    toggler.alt = 'Réduire';
+                }
+            }
+        } );
+        // Montrer son descendant direct
+        try {
+            var upLi = elmtA.up( 'li' );
+            if( upLi != undefined ) {
+                var ul = upLi.down( 'ul' );
+                if( ul != undefined ) {
+                    ul.show();
+                }
+            }
+        }
+        catch( e ) {
         }
     } );
 }
