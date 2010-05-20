@@ -93,5 +93,5 @@
     *   Paramètre à renseigner dans le cas d'un affichage plus large du menu du dossier
     *   @default: false
     */
-//     Configure::write( 'UI.menu.large', true );
+    Configure::write( 'UI.menu.large', true );
 ?>

@@ -77,34 +77,65 @@ function make_treemenus( absoluteBaseUrl, large ) {
     } );
 }
 
-function treeMenuExpandsAll( absoluteBaseUrl ) {
-    var dir = absoluteBaseUrl + 'img/icons';
-
-    $$( '.treemenu a' ).each( function ( elmtA ) {
-        // Montrer tous les ancètres
-        elmtA.ancestors().each( function ( aAncestor ) {
-            aAncestor.show();
-            if( aAncestor.tagName == 'LI' ) {
-                var toggler = aAncestor.down( 'a.toggler img' );
-                if( toggler != undefined ) {
-                    toggler.src = dir + '/bullet_toggle_minus.png';
-                    toggler.alt = 'Réduire';
-                }
-            }
-        } );
-        // Montrer son descendant direct
-        try {
-            var upLi = elmtA.up( 'li' );
-            if( upLi != undefined ) {
-                var ul = upLi.down( 'ul' );
-                if( ul != undefined ) {
-                    ul.show();
-                }
-            }
+function expandableTreeMenuContent( elmt, sign, dir ) {
+    $( elmt ).up( 'ul' ).getElementsBySelector( 'li > a.toggler' ).each( function( elmtA ) {
+        if( sign == 'plus' ) {
+            elmtA.up( 'li' ).down( 'ul' ).show();
         }
-        catch( e ) {
+        else {
+            elmtA.up( 'li' ).down( 'ul' ).hide();
+        }
+
+        if( elmtA.down( 'img' ) != undefined ) {
+            if( sign == 'plus' ) {
+                elmtA.down( 'img' ).src = dir + '/bullet_toggle_minus.png';
+                elmtA.down( 'img' ).alt = 'Réduire';
+            }
+            else {
+                elmtA.down( 'img' ).src = dir + '/bullet_toggle_plus.png';
+                elmtA.down( 'img' ).alt = 'Étendre';
+            }
         }
     } );
+}
+
+function treeMenuExpandsAll( absoluteBaseUrl ) {
+    var toggleLink = $( 'treemenuToggleLink' );
+    var dir = absoluteBaseUrl + 'img/icons';
+
+    var sign = $( toggleLink ).down( 'img' ).src.replace( new RegExp( '^.*(minus|plus).*' ), '$1' );
+
+//alert( $$( '.treemenu > ul > li > a' ).length );
+    $$( '.treemenu > ul > li > a.toggler' ).each( function ( elmtA ) {
+        // Montrer tous les ancètres
+        if( sign == 'plus' ) {
+            elmtA.up( 'li' ).down( 'ul' ).show();
+        }
+        else {
+            elmtA.up( 'li' ).down( 'ul' ).hide();
+        }
+
+        if( elmtA.down( 'img' ) != undefined ) {
+            if( sign == 'plus' ) {
+                elmtA.down( 'img' ).src = dir + '/bullet_toggle_minus.png';
+                elmtA.down( 'img' ).alt = 'Réduire';
+            }
+            else {
+                elmtA.down( 'img' ).src = dir + '/bullet_toggle_plus.png';
+                elmtA.down( 'img' ).alt = 'Étendre';
+            }
+        }
+
+        expandableTreeMenuContent( elmtA, sign, dir );
+    } );
+
+    if( sign == 'plus' ) {
+        $( toggleLink ).down( 'img' ).src = dir + '/bullet_toggle_minus.png';
+    }
+    else {
+
+        $( toggleLink ).down( 'img' ).src = dir + '/bullet_toggle_plus.png';
+    }
 }
 
 //-----------------------------------------------------------------------------
