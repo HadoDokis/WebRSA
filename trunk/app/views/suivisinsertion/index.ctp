@@ -375,8 +375,8 @@
                     <th class="action">Action</th>
                 </tr>
                 <tr>
-                    <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.datevalidation_ci', $details ) );?></td>
                     <td><?php echo value( $decision_ci, Set::extract( 'DEM.Contratinsertion.decision_ci', $details ) );?></td>
+                    <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.datevalidation_ci', $details ) );?></td>
                     <td><?php echo $html->boolean( !empty( $details['DEM']['Contratinsertion']['decision_ci'] )  && ( $details['DEM']['Contratinsertion']['decision_ci'] != 'E' ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Contratinsertion']['datevalidation_ci'] ) ){
@@ -388,8 +388,8 @@
                         ?>
                     </td>
 
-                    <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.datevalidation_ci', $details ) );?></td>
                     <td><?php echo value( $decision_ci, Set::extract( 'CJT.Contratinsertion.decision_ci', $details ) );?></td>
+                    <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.datevalidation_ci', $details ) );?></td>
                     <td><?php echo $html->boolean( !empty( $details['CJT']['Contratinsertion']['decision_ci'] ) && ( $details['CJT']['Contratinsertion']['decision_ci'] != 'E' ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Contratinsertion']['datevalidation_ci'] ) ){
