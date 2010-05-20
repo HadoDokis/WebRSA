@@ -61,6 +61,7 @@ function make_treemenus( absoluteBaseUrl, large ) {
                     }
                 }
             } );
+            $( elmtA ).addClassName( 'selected' );
             // Montrer son descendant direct
             try {
                 var upLi = elmtA.up( 'li' );
@@ -77,6 +78,7 @@ function make_treemenus( absoluteBaseUrl, large ) {
     } );
 }
 
+/// Fonction permettant "d'enrouler" le menu du dossier allocataire
 function expandableTreeMenuContent( elmt, sign, dir ) {
     $( elmt ).up( 'ul' ).getElementsBySelector( 'li > a.toggler' ).each( function( elmtA ) {
         if( sign == 'plus' ) {
@@ -99,13 +101,14 @@ function expandableTreeMenuContent( elmt, sign, dir ) {
     } );
 }
 
+/// Fonction permettant "de dérouler" le menu du dossier allocataire
 function treeMenuExpandsAll( absoluteBaseUrl ) {
+
     var toggleLink = $( 'treemenuToggleLink' );
     var dir = absoluteBaseUrl + 'img/icons';
 
     var sign = $( toggleLink ).down( 'img' ).src.replace( new RegExp( '^.*(minus|plus).*' ), '$1' );
 
-//alert( $$( '.treemenu > ul > li > a' ).length );
     $$( '.treemenu > ul > li > a.toggler' ).each( function ( elmtA ) {
         // Montrer tous les ancètres
         if( sign == 'plus' ) {
@@ -139,6 +142,10 @@ function treeMenuExpandsAll( absoluteBaseUrl ) {
 }
 
 //-----------------------------------------------------------------------------
+
+
+
+
 
 // TODO: mettre avant les actions
 // function make_table_tooltips() {

@@ -49,7 +49,7 @@
 
 <?php $etatdosrsaValue = Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' );?>
 
-
+<?php /*debug( $this->params['url']['url'] );*/?>
 <?php
     if( isset( $personne_id ) ) {
         $personneDossier = Set::extract( $dossier, '/Foyer/Personne' );
