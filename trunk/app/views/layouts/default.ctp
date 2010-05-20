@@ -51,7 +51,7 @@
 				<?php endif;?>
 
                 var baseUrl = '<?php echo Router::url( '/', true );?>';
-                make_treemenus( baseUrl );
+                make_treemenus( baseUrl, <?php echo ( Configure::read( 'UI.menu.large' ) ? 'true' : 'false' );?> );
 //                 make_table_tooltips();
                 make_folded_forms();
                 mkTooltipTables();
@@ -91,7 +91,7 @@
         <body>
     <?php endif; ?>
 
-        <div id="pageWrapper">
+        <div id="pageWrapper"<?php if( Configure::read( 'UI.menu.large' ) ) { echo ' class="treemenu_large"'; } ?>>
             <?php echo $this->element( 'header' );?>
             <?php echo $this->element( 'menu' );?>
             <?php echo $this->element( 'cartouche' );?>

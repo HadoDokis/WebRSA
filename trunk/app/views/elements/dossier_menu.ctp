@@ -28,7 +28,15 @@
 ?>
 
 <div class="treemenu">
-    <h2><?php echo $html->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) ).( $dossier['Dossier']['locked'] ? $html->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null );?></h2>
+    <!-- <ul>
+        <li onclick="treeMenuExpandsAll( '<?php echo Router::url( '/', true );?>' );"> -->
+            <h2 >
+                <?php echo $html->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) ).( $dossier['Dossier']['locked'] ? $html->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null );?>
+            </h2>
+<!--
+        </li>
+    </ul> -->
+    <!-- <p onclick="treeMenuExpandsAll( '<?php echo Router::url( '/', true );?>' );">Coucou</p> -->
 
 <?php $etatdosrsaValue = Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' );?>
 
