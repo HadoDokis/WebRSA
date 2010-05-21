@@ -117,6 +117,7 @@
 
         function ajaxref( $referent_id = null ) { // FIXME
             Configure::write( 'debug', 0 );
+
             if( !empty( $referent_id ) ) {
                 $referent_id = suffix( $referent_id );
             }
@@ -124,7 +125,12 @@
                 $referent_id = suffix( Set::extract( $this->data, 'Contratinsertion.referent_id' ) );
             }
 
-            $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( $referent_id, null, null, -1 );
+            $referent = array();
+            if( !empty( $referent_id ) ) {
+                $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( $referent_id, null, null, -1
+                );
+            }
+
             $this->set( 'referent', $referent );
             $this->render( 'ajaxref', 'ajax' );
         }

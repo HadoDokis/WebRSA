@@ -344,19 +344,21 @@ function disableFieldsOnValue( selectId, fieldsIds, value, condition ) {
 
     fieldsIds.each( function ( fieldId ) {
         var field = $( fieldId );
-        if( result == condition ) {
-            field.disable();
-            if( input = field.up( 'div.input' ) )
-                input.addClassName( 'disabled' );
-            else if( input = field.up( 'div.checkbox' ) )
-                input.addClassName( 'disabled' );
-        }
-        else {
-            field.enable();
-            if( input = field.up( 'div.input' ) )
-                input.removeClassName( 'disabled' );
-            else if( input = field.up( 'div.checkbox' ) )
-                input.removeClassName( 'disabled' );
+        if( field != null ) {
+            if( result == condition ) {
+                field.disable();
+                if( input = field.up( 'div.input' ) )
+                    input.addClassName( 'disabled' );
+                else if( input = field.up( 'div.checkbox' ) )
+                    input.addClassName( 'disabled' );
+            }
+            else {
+                field.enable();
+                if( input = field.up( 'div.input' ) )
+                    input.removeClassName( 'disabled' );
+                else if( input = field.up( 'div.checkbox' ) )
+                    input.removeClassName( 'disabled' );
+            }
         }
     } );
 }

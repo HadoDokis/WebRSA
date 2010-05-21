@@ -648,4 +648,9 @@
 
 </script>
 
+<script type="text/javascript">
+    Event.observe( $( 'ApreStructurereferenteId' ), 'change', function( event ) {
+        $( 'ReferentRef' ).update( '' );
+    } );
+</script>
 <div class="clearer"><hr /></div>

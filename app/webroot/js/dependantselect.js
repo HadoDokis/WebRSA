@@ -53,13 +53,14 @@
                 }
             }
 
-            /*var opt = $$('#' + select2Id + ' option');
-            opt[0].selected = 'selected';*/
-
+//             var isChanged = false;
             var opt = $$('#' + select2Id + ' option');
             $( opt ).each( function ( option ) {
                 if( $(option).value == value2 ) {
                     $(option).selected = 'selected';
+                    /*alert( $(option).value );
+                    isChanged = true;
+                    alert( isChanged );*/
                 }
             } );
 

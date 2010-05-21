@@ -177,6 +177,10 @@
                 )
             ),
             'nature_projet' => array(
+                'notEmpty' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                ),
                 'maxLength' => array(
                     'rule' => array( 'maxLength', 500 ),
                     'message' => '500 carac. max'

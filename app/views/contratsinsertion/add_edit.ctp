@@ -71,7 +71,6 @@
     <script type="text/javascript">
         document.observe("dom:loaded", function() {
             dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
-//             dependantSelect( 'ContratinsertionStructurereferenteId', 'OrientstructTypeorientId' );
         });
     </script>
 <!--/************************************************************************/ -->
@@ -147,6 +146,7 @@
 
 
         <?php
+        $ref_id = Set::extract( $this->data, 'Contratinsertion.referent_id' );
             echo $ajax->remoteFunction(
                 array(
                     'update' => 'StructurereferenteRef',
@@ -172,7 +172,6 @@
                 )
             ).';';
         ?>
-
     } );
 </script>
 
@@ -379,6 +378,11 @@
 
 </fieldset>
 
+<script type="text/javascript">
+    Event.observe( $( 'ContratinsertionStructurereferenteId' ), 'change', function( event ) {
+        $( 'ReferentRef' ).update( '' );
+    } );
+</script>
 
 
 

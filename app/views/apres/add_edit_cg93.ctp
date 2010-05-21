@@ -644,3 +644,9 @@
     <?php echo $form->end();?>
 </div>
 <div class="clearer"><hr /></div>
+
+<script type="text/javascript">
+    Event.observe( $( 'ApreStructurereferenteId' ), 'change', function( event ) {
+        $( 'ReferentRef' ).update( '' );
+    } );
+</script>
