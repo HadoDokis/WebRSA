@@ -33,7 +33,7 @@
             <?php if( Configure::read( 'UI.menu.large' ) ):?>
             <?php
                 echo $html->link(
-                    $html->image( 'icons/bullet_toggle_plus.png', array( 'alt' => '', 'title' => 'Étendre le menu ', 'width' => '30px' ) ),
+                    $html->image( 'icons/bullet_toggle_plus2.png', array( 'alt' => '', 'title' => 'Étendre le menu ', 'width' => '12px' ) ),
                     '#',
                     array( 'onclick' => 'treeMenuExpandsAll( \''.Router::url( '/', true ).'\' ); return false;', 'id' => 'treemenuToggleLink' ),
                     false,
