@@ -57,7 +57,19 @@
                 $personneDossier = Set::classicExtract( $personne, 'Personne.qual' ).' '.Set::classicExtract( $personne, 'Personne.nom' ).' '.Set::classicExtract( $personne, 'Personne.prenom' );
             }
         }
-        echo $html->tag( 'p', $personneDossier, array( 'class' => 'etatDossier' ) );
+
+        if( Configure::read( 'UI.menu.lienDemandeur' ) ) {
+            echo $html->tag(
+                'p',
+                $html->link( h( $personneDossier ), sprintf( Configure::read( 'UI.menu.lienDemandeur' ), $dossier['Dossier']['matricule'] ) ),
+                array( 'class' => 'etatDossier' ),
+                false,
+                false
+            );
+        }
+        else {
+            echo $html->tag( 'p', $personneDossier, array( 'class' => 'etatDossier' ) );
+        }
     }
 ?>
 

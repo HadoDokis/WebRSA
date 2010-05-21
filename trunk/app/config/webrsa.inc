@@ -94,4 +94,12 @@
     *   @default: false
     */
     Configure::write( 'UI.menu.large', true );
+
+
+
+    /**
+    *   Paramètre à renseigner pour le CG58 pour le lien pointant sur leur application
+    */
+    Configure::write( 'UI.menu.lienDemandeur',
+    'http://intranet.cg58.fr/applications/xbase/xbase_list.php?DBNAME=xbase_rsa&APPCODE=ALLOCATAIRE&LIST=Fichier RSA&NAV=NO-L&DISPLAYSTYLE=DISPLAYSTD&nCurPage=0&FILTER=;;;;;%s;;;;' );//
 ?>
