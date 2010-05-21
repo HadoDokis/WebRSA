@@ -61,7 +61,7 @@
         if( Configure::read( 'UI.menu.lienDemandeur' ) ) {
             echo $html->tag(
                 'p',
-                $html->link( h( $personneDossier ), sprintf( Configure::read( 'UI.menu.lienDemandeur' ), $dossier['Dossier']['matricule'] ) ),
+                $html->link( h( $personneDossier ), sprintf( Configure::read( 'UI.menu.lienDemandeur' ), $dossier['Dossier']['matricule'] ), array(  'class' => 'external' ) ),
                 array( 'class' => 'etatDossier' ),
                 false,
                 false
