@@ -255,6 +255,35 @@
             call_user_func_array( array( $this, '_add_edit' ), $args );
         }
 
+        protected function _getDsp( $personne_id ) {
+            /// Récupération des données socio pro (notamment Niveau etude) lié au contrat
+            $this->Contratinsertion->Personne->Dsp->unbindModelAll();
+            $dsp = $this->Contratinsertion->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
+
+            $dspData = Set::filter( $dsp['Dsp'] );
+            if( empty( $dsp ) && !empty( $dspData )  ){
+                $dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
+
+                $this->Contratinsertion->Personne->Dsp->set( $dsp );
+                if( $this->Contratinsertion->Personne->Dsp->save( $dsp ) ) {
+                    $dsp = $this->Contratinsertion->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
+                }
+                else {
+                    $this->cakeError( 'error500' );
+                }
+                $this->assert( !empty( $dsp ), 'error500' );
+            }
+
+            $return = array();
+            $return['Dsp'] = array(
+                'id' => $dsp['Dsp']['id'],
+                'personne_id' => $dsp['Dsp']['personne_id']
+            );
+            $return['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );
+
+            return $return;
+        }
+
         /** ********************************************************************
         *
         *** *******************************************************************/
@@ -347,8 +376,6 @@
             $user_id = Set::classicExtract( $user, 'User.id' );
             $personne = $this->Contratinsertion->Personne->detailsCi( $personne_id, $user_id );
 
-
-
             /// Calcul du numéro du contrat d'insertion
             $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
             $this->set( 'nbrCi', $nbrCi );
@@ -370,16 +397,27 @@
                 $this->Contratinsertion->set( $this->data );
                 $valid = $this->Contratinsertion->validates();
                 $valid = $this->Contratinsertion->Actioninsertion->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
-                $valid = $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
+
+
+                $dspData = Set::filter( $this->data['Dsp'] );
+                if( !empty( $dspData ) ){
+                    $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
+                }
+//                 $valid = $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
+
                 //FIXME
                     $valid = $this->Contratinsertion->Structurereferente->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
                 //
                 $valid = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
                 $valid = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
 
+
                 if( $valid ) {
                     $saved = true;
-                    $this->Contratinsertion->Personne->Dsp->create();
+
+                    if( !empty( $dspData ) ){
+                        $this->Contratinsertion->Personne->Dsp->create();
+                    }
                     $this->Contratinsertion->Actioninsertion->create();
                     //FIXME
                         $this->Contratinsertion->Structurereferente->create();
@@ -387,7 +425,9 @@
                     $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->create();
                     $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->create();
 
-                    $saved = $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
+                    if( !empty( $dspData ) ){
+                        $saved = $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
+                    }
                     $saved = $this->Contratinsertion->Actioninsertion->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
                     //FIXME
                         $saved = $this->Contratinsertion->Structurereferente->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
@@ -410,7 +450,10 @@
                 }
             }
             else {
-                if( !empty( $contratinsertion ) ) {
+                if( $this->action == 'edit' ) {
+
+                    $this->data = $contratinsertion;
+// debug( $this->data['Personne']['Dsp'] );
                     $suspensiondroit = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->find(
                         'first',
                         array(
@@ -424,7 +467,6 @@
                     if( !empty( $suspensiondroit ) ) {
                         $contratinsertion = Set::merge( $contratinsertion, $suspensiondroit );
                     }
-                    $this->data = $contratinsertion;
 
                     /// FIXME
                     $actioninsertion = $this->Contratinsertion->Actioninsertion->find(
@@ -453,12 +495,14 @@
                     $this->data['Situationdossierrsa']['dtclorsa'] = Set::classicExtract( $situationdossierrsa, 'Situationdossierrsa.dtclorsa' );
                 }
 
-                /// Récupération des données socio pro (notamment Niveau etude) lié au contrat
+                /*/// Récupération des données socio pro (notamment Niveau etude) lié au contrat
                 $this->Contratinsertion->Personne->Dsp->unbindModelAll();
                 $dsp = $this->Contratinsertion->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
 
-                if( empty( $dsp ) ) {
+                $dspData = Set::filter( $dsp['Dsp'] );
+                if( empty( $dsp ) && !empty( $dspData )  ){
                     $dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
+
                     $this->Contratinsertion->Personne->Dsp->set( $dsp );
                     if( $this->Contratinsertion->Personne->Dsp->save( $dsp ) ) {
                         $dsp = $this->Contratinsertion->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
@@ -468,10 +512,12 @@
                     }
                     $this->assert( !empty( $dsp ), 'error500' );
                 }
-                //$this->assert( !empty( $dsp ), 'error500' ); // FIXME -> error code
-
-                $this->data['Dsp'] = array( 'id' => $dsp['Dsp']['id'], 'personne_id' => $dsp['Dsp']['personne_id'] );
-                $this->data['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );
+                $this->data['Dsp'] = array(
+                    'id' => $dsp['Dsp']['id'],
+                    'personne_id' => $dsp['Dsp']['personne_id']
+                );
+                $this->data['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );*/
+                $this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
 
                 /// Récupération du services instructeur lié au contrat
                 $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
@@ -479,7 +525,6 @@
 
                 /// Si on est en présence d'un deuxième contrat -> Alors renouvellement
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
-
             }
 
             // Doit-on setter les valeurs par défault ?
@@ -508,7 +553,7 @@
                     $this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
                 }
             }
-// debug($this->data);
+
 
             $struct_id = Set::classicExtract( $this->data, 'Contratinsertion.structurereferente_id' );
             $this->set( 'struct_id', $struct_id );
