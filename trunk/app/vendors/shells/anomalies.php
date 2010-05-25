@@ -168,7 +168,7 @@
 								AND p1.natprest = p2.natprest'
 			),
 			array(
-				'text' => 'personnes orientees sans etre demandeur ou conjoint RSA',
+				'text' => 'non demandeurs ou conjoints RSA possedant des orientsstrcuts',
 				'sql' => 'SELECT COUNT(*)
 							FROM
 							(
@@ -195,31 +195,58 @@
 // 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
 // 								);'
 // 			),
-			/*array(
-				'text' => 'apres pour des non demandeurs ou conjoints RSA',
-				'sql' => 'SELECT COUNT(apres.*)
-							FROM apres
-							WHERE
-								apres.personne_id NOT IN (
-									SELECT prestations.personne_id
-										FROM prestations
-										WHERE prestations.natprest = \'RSA\'
-											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
-								);'
-			),
-
 			array(
-				'text' => 'dsps pour des non demandeurs ou conjoints RSA',
-				'sql' => 'SELECT COUNT(dsps.*)
-							FROM dsps
-							WHERE
-								dsps.personne_id NOT IN (
-									SELECT prestations.personne_id
+				'text' => 'non demandeurs ou conjoints RSA possedant des apres',
+				'sql' => 'SELECT COUNT(*)
+							FROM
+							(
+									SELECT DISTINCT( apres.personne_id )
+										FROM apres
+								EXCEPT
+									SELECT DISTINCT( prestations.personne_id )
 										FROM prestations
 										WHERE prestations.natprest = \'RSA\'
 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
-								);'
-			)*/
+							) AS FOO'
+			),
+// 			array(
+// 				'text' => 'apres pour des non demandeurs ou conjoints RSA',
+// 				'sql' => 'SELECT COUNT(apres.*)
+// 							FROM apres
+// 							WHERE
+// 								apres.personne_id NOT IN (
+// 									SELECT prestations.personne_id
+// 										FROM prestations
+// 										WHERE prestations.natprest = \'RSA\'
+// 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+// 								);'
+// 			),
+			array(
+				'text' => 'non demandeurs ou conjoints RSA possedant des dsps',
+				'sql' => 'SELECT COUNT(*)
+							FROM
+							(
+									SELECT DISTINCT( dsps.personne_id )
+										FROM dsps
+								EXCEPT
+									SELECT DISTINCT( prestations.personne_id )
+										FROM prestations
+										WHERE prestations.natprest = \'RSA\'
+											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+							) AS FOO'
+			),
+// 			array(
+// 				'text' => 'dsps pour des non demandeurs ou conjoints RSA',
+// 				'sql' => 'SELECT COUNT(dsps.*)
+// 							FROM dsps
+// 							WHERE
+// 								dsps.personne_id NOT IN (
+// 									SELECT prestations.personne_id
+// 										FROM prestations
+// 										WHERE prestations.natprest = \'RSA\'
+// 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+// 								);'
+// 			)
 		);
 
 		/**
