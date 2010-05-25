@@ -32,7 +32,7 @@
 							) AS FOO'
 			),
 			array(
-				'text' => 'foyers vides',
+				'text' => 'foyers sans aucune personne',
  				'sql' => 'SELECT COUNT(*)
 							FROM
 							(
@@ -168,7 +168,7 @@
 								AND p1.natprest = p2.natprest'
 			),
 			array(
-				'text' => 'non demandeurs ou conjoints RSA possedant des orientsstrcuts',
+				'text' => 'non demandeurs ou non conjoints RSA possedant des orientsstrcuts',
 				'sql' => 'SELECT COUNT(*)
 							FROM
 							(
@@ -183,7 +183,7 @@
 							) AS FOO'
 			),
 // 			array(
-// 				'text' => 'orientsstrcuts pour des non demandeurs ou conjoints RSA',
+// 				'text' => 'orientsstrcuts pour des non demandeurs ou non conjoints RSA',
 // 				'sql' => 'SELECT COUNT(orientsstructs.*)
 // 							FROM orientsstructs
 // 							WHERE
@@ -196,7 +196,7 @@
 // 								);'
 // 			),
 			array(
-				'text' => 'non demandeurs ou conjoints RSA possedant des apres',
+				'text' => 'non demandeurs ou non conjoints RSA possedant des apres',
 				'sql' => 'SELECT COUNT(*)
 							FROM
 							(
@@ -210,7 +210,7 @@
 							) AS FOO'
 			),
 // 			array(
-// 				'text' => 'apres pour des non demandeurs ou conjoints RSA',
+// 				'text' => 'apres pour des non demandeurs ou non conjoints RSA',
 // 				'sql' => 'SELECT COUNT(apres.*)
 // 							FROM apres
 // 							WHERE
@@ -222,7 +222,7 @@
 // 								);'
 // 			),
 			array(
-				'text' => 'non demandeurs ou conjoints RSA possedant des dsps',
+				'text' => 'non demandeurs ou non conjoints RSA possedant des dsps',
 				'sql' => 'SELECT COUNT(*)
 							FROM
 							(
@@ -236,7 +236,7 @@
 							) AS FOO'
 			),
 // 			array(
-// 				'text' => 'dsps pour des non demandeurs ou conjoints RSA',
+// 				'text' => 'dsps pour des non demandeurs ou non conjoints RSA',
 // 				'sql' => 'SELECT COUNT(dsps.*)
 // 							FROM dsps
 // 							WHERE
@@ -247,7 +247,36 @@
 // 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
 // 								);'
 // 			)
+			array(
+				'text' => 'non demandeurs ou non conjoints RSA possedant des contratsinsertion',
+				'sql' => 'SELECT COUNT(*)
+							FROM
+							(
+									SELECT DISTINCT( contratsinsertion.personne_id )
+										FROM contratsinsertion
+								EXCEPT
+									SELECT DISTINCT( prestations.personne_id )
+										FROM prestations
+										WHERE prestations.natprest = \'RSA\'
+											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+							) AS FOO'
+			),
 		);
+
+		/**
+		* TODO: SELECT
+		*				tc.constraint_name,
+		*				tc.table_name,
+		*				kcu.column_name,
+		*				ccu.table_name AS foreign_table_name,
+		*				ccu.column_name AS foreign_column_name
+		*			FROM
+		*				information_schema.table_constraints AS tc
+		*				JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name
+		*				JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name
+		*			WHERE constraint_type = 'FOREIGN KEY'
+		*				AND kcu.column_name='personne_id';
+		*/
 
 		/**
 		* Initialisation: lecture des paramètres, on s'assure d'avoir une connexion
