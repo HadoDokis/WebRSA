@@ -20,18 +20,6 @@
 
 		protected $_checks = array(
 			array(
-				'text' => 'foyers vides',
- 				'sql' => 'SELECT COUNT(*)
-							FROM
-							(
-									SELECT DISTINCT( foyers.id )
-										FROM foyers
-								EXCEPT
-									SELECT DISTINCT( personnes.foyer_id )
-										FROM personnes
-							) AS FOO'
-			),
-			array(
 				'text' => 'dossiers sans foyer',
  				'sql' => 'SELECT COUNT(*)
 							FROM
@@ -41,6 +29,18 @@
 								EXCEPT
 									SELECT DISTINCT( foyers.dossier_rsa_id )
 										FROM foyers
+							) AS FOO'
+			),
+			array(
+				'text' => 'foyers vides',
+ 				'sql' => 'SELECT COUNT(*)
+							FROM
+							(
+									SELECT DISTINCT( foyers.id )
+										FROM foyers
+								EXCEPT
+									SELECT DISTINCT( personnes.foyer_id )
+										FROM personnes
 							) AS FOO'
 			),
 			array(
@@ -61,6 +61,31 @@
 							) AS FOO'
 			),
 			array(
+				'text' => 'foyers sans adresse_foyer',
+				'sql' => 'SELECT COUNT(*)
+							FROM
+							(
+									SELECT DISTINCT( foyers.id )
+										FROM foyers
+								EXCEPT
+									SELECT DISTINCT( adresses_foyers.foyer_id )
+										FROM adresses_foyers
+							) AS FOO;'
+			),
+			array(
+				'text' => 'foyers sans adresse_foyer de rang 01',
+				'sql' => 'SELECT COUNT(*)
+							FROM
+							(
+									SELECT DISTINCT( foyers.id )
+										FROM foyers
+								EXCEPT
+									SELECT DISTINCT( adresses_foyers.foyer_id )
+										FROM adresses_foyers
+										WHERE adresses_foyers.rgadr = \'01\'
+							) AS FOO;'
+			),
+			array(
 				'text' => 'adresses_foyers de rang incorrect',
 				'sql' => 'SELECT COUNT(adresses_foyers.*)
 							FROM adresses_foyers
@@ -73,16 +98,37 @@
 							FROM adresses_foyers AS a1,
 								adresses_foyers AS a2
 							WHERE
-								a1.id <> a2.id
+								a1.id < a2.id
 								AND a1.foyer_id = a2.foyer_id
 								AND a1.rgadr = a2.rgadr;'
+			),
+			array(
+				'text' => 'adresses_foyers faisant reference au meme adresse_id',
+				'sql' => 'SELECT COUNT(a1.*)
+							FROM adresses_foyers AS a1,
+								adresses_foyers AS a2
+							WHERE
+								a1.id < a2.id
+								AND a1.adresse_id = a2.adresse_id;'
+			),
+			array(
+				'text' => 'adresses sans adresses_foyers',
+				'sql' => 'SELECT COUNT(*)
+							FROM
+							(
+									SELECT DISTINCT( adresses.id )
+										FROM adresses
+								EXCEPT
+									SELECT DISTINCT( adresses_foyers.adresse_id )
+										FROM adresses_foyers
+							) AS FOO;'
 			),
 			array(
 				'text' => 'personnes en doublons',
 				'sql' => 'SELECT COUNT(p1.*)
 							FROM personnes p1,
 								personnes p2
-							WHERE p1.id <> p2.id
+							WHERE p1.id < p2.id
 								AND
 								(
 									( LENGTH(p1.nir) = 15 AND p1.nir = p2.nir )
@@ -91,13 +137,6 @@
 			),
 			array(
 				'text' => 'personnes sans prestation RSA',
-// 				'sql' => 'SELECT COUNT(personnes.*)
-// 							FROM personnes
-// 							WHERE personnes.id NOT IN (
-// 								SELECT prestations.personne_id
-// 									FROM prestations
-// 									WHERE prestations.natprest = \'RSA\'
-// 							);'
  				'sql' => 'SELECT COUNT(*)
 							FROM
 							(
@@ -110,30 +149,53 @@
 							) AS FOO'
 			),
 			array(
-				'text' => 'prestations en doublons pour une natprest',
+				'text' => 'prestations de meme nature et de meme role pour une personne donnee',
 				'sql' => 'SELECT COUNT(p1.*)
 							FROM prestations p1,
 								prestations p2
-							WHERE p1.id <> p2.id
+							WHERE p1.id < p2.id
 								AND p1.personne_id = p2.personne_id
 								AND p1.natprest = p2.natprest
-						-- 		AND p1.rolepers = p2.rolepers
-						-- 	ORDER BY p1.personne_id ASC, p1.natprest ASC, p1.rolepers ASC'
+								AND p1.rolepers = p2.rolepers'
 			),
 			array(
-				'text' => 'orientsstrcuts pour des non demandeurs ou conjoints RSA',
-				'sql' => 'SELECT COUNT(orientsstructs.*)
-					FROM orientsstructs
-					WHERE
-						orientsstructs.statut_orient = \'Orienté\'
-						AND orientsstructs.personne_id NOT IN (
-							SELECT prestations.personne_id
-								FROM prestations
-								WHERE prestations.natprest = \'RSA\'
-									AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
-						);'
+				'text' => 'prestations de meme nature pour une personne donnee',
+				'sql' => 'SELECT COUNT(p1.*)
+							FROM prestations p1,
+								prestations p2
+							WHERE p1.id < p2.id
+								AND p1.personne_id = p2.personne_id
+								AND p1.natprest = p2.natprest'
 			),
 			array(
+				'text' => 'personnes orientees sans etre demandeur ou conjoint RSA',
+				'sql' => 'SELECT COUNT(*)
+							FROM
+							(
+									SELECT DISTINCT( orientsstructs.personne_id )
+										FROM orientsstructs
+										WHERE orientsstructs.statut_orient = \'Orienté\'
+								EXCEPT
+									SELECT DISTINCT( prestations.personne_id )
+										FROM prestations
+										WHERE prestations.natprest = \'RSA\'
+											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+							) AS FOO'
+			),
+// 			array(
+// 				'text' => 'orientsstrcuts pour des non demandeurs ou conjoints RSA',
+// 				'sql' => 'SELECT COUNT(orientsstructs.*)
+// 							FROM orientsstructs
+// 							WHERE
+// 								orientsstructs.statut_orient = \'Orienté\'
+// 								AND orientsstructs.personne_id NOT IN (
+// 									SELECT prestations.personne_id
+// 										FROM prestations
+// 										WHERE prestations.natprest = \'RSA\'
+// 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+// 								);'
+// 			),
+			/*array(
 				'text' => 'apres pour des non demandeurs ou conjoints RSA',
 				'sql' => 'SELECT COUNT(apres.*)
 							FROM apres
@@ -157,7 +219,7 @@
 										WHERE prestations.natprest = \'RSA\'
 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
 								);'
-			)
+			)*/
 		);
 
 		/**
@@ -192,7 +254,7 @@
 			$this->hr();
 			$this->out();
 			$this->out( 'Connexion : '. $this->connection->configKeyName );
-			$this->out( 'Base de données : '. $this->connection->config['database'] );
+			$this->out( 'Base de donnees : '. $this->connection->config['database'] );
 			$this->out();
 			$this->hr();
 		}
@@ -211,7 +273,7 @@
 				$this->out(
 					sprintf(
 						"%s\t%s\t (%s ms)",
-						str_pad( $check['text'], 60, " ", STR_PAD_RIGHT ),
+						str_pad( $check['text'], 80, " ", STR_PAD_RIGHT ),
 						( $this->connection->error ? 'erreur' : $result ),
 						$this->connection->took
 					)
