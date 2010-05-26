@@ -34,6 +34,10 @@ msgstr "Nom de la personne"
 
 msgid "Personne.dtnai"
 msgstr "Date de naissance"
+
+msgid "Personne.idassedic"
+msgstr "N° identifiant Pôle Emploi"
+
 ###############################################################################
 
 msgid "Foyer.Modecontact.numtel"

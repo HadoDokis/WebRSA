@@ -23,6 +23,27 @@
     <script type="text/javascript">
         document.observe("dom:loaded", function() {
             dependantSelect( '<?php echo "PrecoreorientreferentStructurereferenteId";?>', '<?php echo "PrecoreorientreferentTypeorientId";?>' );
+			observeDisableFieldsOnRadioValue(
+				'testform',
+				'data[Precoreorientreferent][accord]',
+				['PrecoreorientreferentCommentaire'],
+				'1',
+				false,
+				true
+			);
+
+			if( $F( 'DemandereorientId' ).length == 0 ) {
+				[ 'PrecoreorientreferentDtconcertationDay', 'PrecoreorientreferentDtconcertationMonth', 'PrecoreorientreferentDtconcertationYear', 'PrecoreorientreferentCommentaire' ].each( function( field ) {
+					$( field ).disabled = true;
+					$( field ).up( 'div' ).addClassName( 'disabled' );
+				} );
+				$( 'concertationLocale' ).getElementsBySelector( 'fieldset' ).each( function( fieldset ) {
+					$( fieldset ).addClassName( 'disabled' );
+				} );
+				$( 'concertationLocale' ).getElementsBySelector( 'fieldset input' ).each( function( field ) {
+					$( field ).disabled = true;
+				} );
+			}
         });
     </script>
 
@@ -43,12 +64,13 @@
                     accord -- null, 0, 1 ou boolean ? référent accueil, équipe, conseil
         */
 
-        $this->data['Precoreorientreferent']['structurereferente_id'] = $this->data['Precoreorientreferent']['typeorient_id'].'_'.$this->data['Precoreorientreferent']['structurereferente_id'];
+        $this->data['Precoreorientreferent']['structurereferente_id'] = $this->data['Precoreorientreferent']['typeorient_id'].'_'.preg_replace( '/^.*_([0-9]+)$/', '\1', $this->data['Precoreorientreferent']['structurereferente_id'] );
 
-        echo $xform->create();
+        echo $xform->create( null, array( 'id' => 'testform' ) );
     ?>
 
 	<?php
+		echo $html->tag( 'h2', '1. Service référent initial' );
 		echo $default->view(
 			Set::merge( $orientstruct, $referentOrigine ),
 			array(
@@ -60,10 +82,12 @@
 				'Referent.numero_poste' => array( 'type' => 'phone' ),
 			),
 			array(
-				'widget' => 'table'
+				'widget' => 'table',
+				'class' => 'view wide'
 			)
 		);
 
+		echo $html->tag( 'h2', '2. Le bénéficiaire' );
 		echo $default->view(
 			$personne,
 			array(
@@ -74,61 +98,67 @@
 				'Personne.idassedic',
 			),
 			array(
-				'widget' => 'table'
+				'widget' => 'table',
+				'class' => 'view wide'
 			)
 		);
 	?>
 
-    <fieldset>
-        <legend>Demande de réorientation</legend>
-        <?php
-			$step = 'referent';
-            echo $default->subform(
-                array(
-                    'Demandereorient.id' => array( 'type' => 'hidden' ),
-                    'Demandereorient.personne_id' => array( 'type' => 'hidden', 'value' => $personneId ),
-                    'Demandereorient.reforigine_id' => array( 'type' => 'hidden', 'value' => Set::classicExtract( $referentOrigine, 'Referent.id' ) ),
-                    'Demandereorient.dtprementretien', // FIXME: default aujourd'hui
-                    'Demandereorient.motifdemreorient_id',
-/*                    'Demandereorient.commentaire',
-                    'Demandereorient.accordbenef' => array( 'type' => 'checkbox' ),
-                    'Demandereorient.urgent' => array( 'type' => 'checkbox' ),*/
-//                     'Demandereorient.ep_id',
-                    "Precoreorient{$step}.id" => array( 'type' => 'hidden' ),
-                    "Precoreorient{$step}.demandereorient_id" => array( 'type' => 'hidden' ),
-                    "Demandereorient.orientstruct_id" => array( 'type' => 'hidden', 'value' => Set::classicExtract( $orientstruct, 'Orientstruct.id' ) ),
-                    "Precoreorient{$step}.rolereorient" => array( 'type' => 'hidden', 'value' => $step ),
-                    "Precoreorient{$step}.typeorient_id",
-                    "Precoreorient{$step}.structurereferente_id" => array( 'value' => $this->data['Precoreorientreferent']['structurereferente_id'] ),
-                ),
-                array(
-                    'options' => $options
-                )
-            );
-        ?>
-    </fieldset>
+	<?php
+		echo $html->tag( 'h2', '3. Conclusion du 1er entretien' );
 
-    <fieldset>
-        <legend>Préconisation du référent</legend>
-        <?php
-        /*
-            id 	demandereorient_id 	rolereorient 	typeorient_id 	structurereferente_id 	referent_id 	accord 	commentaire 	created
-        */
-            $step = 'referent';
-            echo $default->subform(
-                array(
-					"Precoreorient{$step}.dtconcertation",
-                    "Precoreorient{$step}.accord" => array( 'type' => 'checkbox' ),
-					'Demandereorient.accordbenef' => array( 'type' => 'checkbox' ), // FIXME
-					'Demandereorient.urgent' => array( 'type' => 'checkbox' ),
-                    "Precoreorient{$step}.commentaire",
-                ),
-                array(
-                    'options' => $options
-                )
-            );
-        ?>
-    </fieldset>
+		$dtprementretien = Set::classicExtract( $this->data, 'Demandereorient.dtprementretien' );
+		if( empty( $dtprementretien ) ) {
+			$dtprementretien = array( 'year' => date( 'Y' ), 'month' => date( 'm' ), 'day' => date( 'd' ) );
+		}
+
+		$step = 'referent';
+		echo $default->subform(
+			array(
+				'Demandereorient.id' => array( 'type' => 'hidden' ),
+				'Demandereorient.personne_id' => array( 'type' => 'hidden', 'value' => $personneId ),
+				'Demandereorient.reforigine_id' => array( 'type' => 'hidden', 'value' => Set::classicExtract( $referentOrigine, 'Referent.id' ) ),
+				'Demandereorient.dtprementretien' => array( 'value' => $dtprementretien ), // FIXME: default aujourd'hui
+				'Demandereorient.motifdemreorient_id',
+				'Demandereorient.urgent' => array( 'type' => 'checkbox' ),
+				"Demandereorient.orientstruct_id" => array( 'type' => 'hidden', 'value' => Set::classicExtract( $orientstruct, 'Orientstruct.id' ) ),
+/*                    'Demandereorient.commentaire',
+				'Demandereorient.accordbenef' => array( 'type' => 'checkbox' ),
+				'Demandereorient.urgent' => array( 'type' => 'checkbox' ),*/
+//                     'Demandereorient.ep_id',
+				"Precoreorient{$step}.id" => array( 'type' => 'hidden' ),
+				"Precoreorient{$step}.demandereorient_id" => array( 'type' => 'hidden' ),
+				"Precoreorient{$step}.rolereorient" => array( 'type' => 'hidden', 'value' => $step ),
+				"Precoreorient{$step}.typeorient_id",
+				"Precoreorient{$step}.structurereferente_id" => array( 'value' => $this->data['Precoreorientreferent']['structurereferente_id'] ),
+			),
+			array(
+				'options' => $options
+			)
+		);
+	?>
+
+	<div id="concertationLocale">
+	<?php
+		echo $html->tag( 'h2', '4. Concertation locale' );
+	/*
+		id 	demandereorient_id 	rolereorient 	typeorient_id 	structurereferente_id 	referent_id 	accord 	commentaire 	created
+	*/
+		$step = 'referent';
+		echo $default->subform(
+			array(
+				"Precoreorient{$step}.dtconcertation",
+				"Precoreorient{$step}.accord" => array( 'type' => 'radio', 'options' => array( 1 => 'Oui', 0 => 'Non' ) ),
+				//'Demandereorient.accordbenef' => array( 'type' => 'checkbox' ), // FIXME
+				"Precoreorient{$step}.commentaire",
+			),
+			array(
+				'options' => $options
+			)
+		);
+	?>
+	</div>
+
     <?php
         echo $xform->submit( 'Enregistrer' );
         echo $xform->end();

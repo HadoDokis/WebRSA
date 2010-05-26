@@ -185,7 +185,14 @@
             if( $this->action == 'edit' ) {
                 $demandereorient_id = $args[0];
 				$demandereorient = $this->{$this->modelClass}->findById( $demandereorient_id, null, null, -1 );
-				$referent_origine = $this->Personne->Referent->findById( Set::classicExtract( $demandereorient, 'Demandereorient.reforigine_id' ) ); // FIXME
+
+				$referent_origine_id = Set::classicExtract( $demandereorient, 'Demandereorient.reforigine_id' );
+				$referent_origine = array();
+				if( !empty( $referent_origine_id ) ) {
+					$referent_origine = $this->Personne->Referent->findById( $referent_origine_id );
+				}
+
+//				$referent_origine = $this->Personne->Referent->findById( Set::classicExtract( $demandereorient, 'Demandereorient.reforigine_id' ) ); // FIXME
 
                 $personne_id = $this->{$this->modelClass}->field( 'personne_id', array( 'Demandereorient.id' => $demandereorient_id ) );
                 $orientstruct_id = $this->{$this->modelClass}->field( 'orientstruct_id', array( 'Demandereorient.id' => $demandereorient_id ) );
@@ -212,7 +219,16 @@
 
             $this->{$this->modelClass}->begin();
             if( !empty( $this->data ) ) {
-                $this->data = Xset::filterDeep( $this->data );
+                //$this->data = Xset::filterDeep( $this->data );
+				$PrecoreorientreferentId = Set::classicExtract( $this->data, 'Precoreorientreferent.id' );
+				if( empty( $PrecoreorientreferentId ) ) {
+					$this->data = Set::remove( $this->data, 'Precoreorientreferent.id' );
+				}
+				$PrecoreorientreferentDemandereorientId = Set::classicExtract( $this->data, 'Precoreorientreferent.demandereorient_id' );
+				if( empty( $PrecoreorientreferentDemandereorientId ) ) {
+					$this->data = Set::remove( $this->data, 'Precoreorientreferent.demandereorient_id' );
+				}
+
                 $this->{$this->modelClass}->create( $this->data );
                 $this->{$this->modelClass}->Precoreorientreferent->create( $this->data );
 
@@ -276,11 +292,25 @@
 
 		public function view( $id ) {
             $personne_id = $this->{$this->modelClass}->field( 'personne_id', array( 'Demandereorient.id' => $id ) );
+			$orientstruct_id = $this->{$this->modelClass}->field( 'orientstruct_id', array( 'Demandereorient.id' => $id ) );
+			$referent_origine_id = $this->{$this->modelClass}->field( 'reforigine_id', array( 'Demandereorient.id' => $id ) );
+
+			$personne = $this->_detailsPersonne( $personne_id );
+			$orientstruct = $this->Demandereorient->Orientstruct->findById( $orientstruct_id );
+			$referent_origine = array();
+			if( !empty( $referent_origine_id ) ) {
+				$referent_origine = $this->Personne->Referent->findById( $referent_origine_id );
+			}
+
+			$this->assert( !empty( $personne ), 'invalidParameter' );
+			$this->assert( !empty( $orientstruct ), 'invalidParameter' );
+			$this->set( compact( 'personne', 'orientstruct', 'referent_origine' ) );
 
             // Préparation du menu du dossier
             $dossierId = $this->Demandereorient->Personne->dossierId( $personne_id );
             $this->assert( !empty( $dossierId ), 'invalidParameter' );
             $this->set( compact( 'dossierId' ) );
+
 			$this->Default->view( $id );
 		}
 	}

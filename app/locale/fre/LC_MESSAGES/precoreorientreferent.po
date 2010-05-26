@@ -20,7 +20,7 @@ msgstr ""
 ###############################################################################
 
 msgid "Precoreorientreferent.accord"
-msgstr "Accord"
+msgstr "La concertation locale a-t-elle validé la proposition du service référent initial ?"
 
 msgid "Precoreorientreferent.typeorient_id"
 msgstr "Type d'orientation"
@@ -36,3 +36,9 @@ msgstr "Date de décision"
 
 msgid "Precoreorientreferent.commentaire"
 msgstr "Commentaire du référent préconisant la réorientation"
+
+msgid "Precoreorientreferent.dtconcertation"
+msgstr "Date"
+
+msgid "Precoreorientreferent.commentaire"
+msgstr "Si non, pourquoi ?"

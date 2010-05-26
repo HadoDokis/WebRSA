@@ -34,3 +34,6 @@ msgstr "Code postal"
 
 msgid "Adresse.locaadr"
 msgstr "Nom de commune"
+
+msgid "Adresse.localite"
+msgstr "Commune de résidence"

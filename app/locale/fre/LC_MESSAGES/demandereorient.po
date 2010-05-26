@@ -52,8 +52,11 @@ msgstr "Aucune demande de réorientation présente"
 msgid "Demandereorient.reforigine_id"
 msgstr "Référent d'origine"
 
+msgid "Demandereorient.dtprementretien"
+msgstr "Date du premier entretien"
+
 msgid "Demandereorient.motifdemreorient_id"
-msgstr "Motif de la demande"
+msgstr "Pourquoi l'orientation est-elle inappropriée ?"
 
 msgid "Demandereorient.ep_id"
 msgstr "Equipe pluridisciplinaire"
