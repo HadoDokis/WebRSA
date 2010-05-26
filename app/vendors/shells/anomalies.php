@@ -125,13 +125,13 @@
 			),
 			array(
 				'text' => 'personnes en doublons',
-				'sql' => 'SELECT COUNT(p1.*)
+				'sql' => 'SELECT COUNT(DISTINCT(p1.id))
 							FROM personnes p1,
 								personnes p2
 							WHERE p1.id < p2.id
 								AND
 								(
-									( LENGTH(p1.nir) = 15 AND p1.nir = p2.nir )
+									( LENGTH(TRIM(p1.nir)) = 15 AND p1.nir = p2.nir )
 									OR ( p1.nom = p2.nom AND p1.prenom = p2.prenom AND p1.dtnai = p2.dtnai )
 								)'
 			),
@@ -168,7 +168,7 @@
 								AND p1.natprest = p2.natprest'
 			),
 			array(
-				'text' => 'non demandeurs ou non conjoints RSA possedant des orientsstrcuts',
+				'text' => 'non demandeurs ou non conjoints RSA possedant des orientsstrcuts orientees',
 				'sql' => 'SELECT COUNT(*)
 							FROM
 							(
@@ -195,20 +195,20 @@
 // 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
 // 								);'
 // 			),
-			array(
-				'text' => 'non demandeurs ou non conjoints RSA possedant des apres',
-				'sql' => 'SELECT COUNT(*)
-							FROM
-							(
-									SELECT DISTINCT( apres.personne_id )
-										FROM apres
-								EXCEPT
-									SELECT DISTINCT( prestations.personne_id )
-										FROM prestations
-										WHERE prestations.natprest = \'RSA\'
-											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							) AS FOO'
-			),
+// 			array(
+// 				'text' => 'non demandeurs ou non conjoints RSA possedant des apres',
+// 				'sql' => 'SELECT COUNT(*)
+// 							FROM
+// 							(
+// 									SELECT DISTINCT( apres.personne_id )
+// 										FROM apres
+// 								EXCEPT
+// 									SELECT DISTINCT( prestations.personne_id )
+// 										FROM prestations
+// 										WHERE prestations.natprest = \'RSA\'
+// 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+// 							) AS FOO'
+// 			),
 // 			array(
 // 				'text' => 'apres pour des non demandeurs ou non conjoints RSA',
 // 				'sql' => 'SELECT COUNT(apres.*)
@@ -221,20 +221,20 @@
 // 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
 // 								);'
 // 			),
-			array(
-				'text' => 'non demandeurs ou non conjoints RSA possedant des dsps',
-				'sql' => 'SELECT COUNT(*)
-							FROM
-							(
-									SELECT DISTINCT( dsps.personne_id )
-										FROM dsps
-								EXCEPT
-									SELECT DISTINCT( prestations.personne_id )
-										FROM prestations
-										WHERE prestations.natprest = \'RSA\'
-											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							) AS FOO'
-			),
+// 			array(
+// 				'text' => 'non demandeurs ou non conjoints RSA possedant des dsps',
+// 				'sql' => 'SELECT COUNT(*)
+// 							FROM
+// 							(
+// 									SELECT DISTINCT( dsps.personne_id )
+// 										FROM dsps
+// 								EXCEPT
+// 									SELECT DISTINCT( prestations.personne_id )
+// 										FROM prestations
+// 										WHERE prestations.natprest = \'RSA\'
+// 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+// 							) AS FOO'
+// 			),
 // 			array(
 // 				'text' => 'dsps pour des non demandeurs ou non conjoints RSA',
 // 				'sql' => 'SELECT COUNT(dsps.*)
@@ -247,29 +247,44 @@
 // 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
 // 								);'
 // 			)
-			array(
-				'text' => 'non demandeurs ou non conjoints RSA possedant des contratsinsertion',
-				'sql' => 'SELECT COUNT(*)
-							FROM
-							(
-									SELECT DISTINCT( contratsinsertion.personne_id )
-										FROM contratsinsertion
-								EXCEPT
-									SELECT DISTINCT( prestations.personne_id )
-										FROM prestations
-										WHERE prestations.natprest = \'RSA\'
-											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							) AS FOO'
-			),
+// 			array(
+// 				'text' => 'non demandeurs ou non conjoints RSA possedant des contratsinsertion',
+// 				'sql' => 'SELECT COUNT(*)
+// 							FROM
+// 							(
+// 									SELECT DISTINCT( contratsinsertion.personne_id )
+// 										FROM contratsinsertion
+// 								EXCEPT
+// 									SELECT DISTINCT( prestations.personne_id )
+// 										FROM prestations
+// 										WHERE prestations.natprest = \'RSA\'
+// 											AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+// 							) AS FOO'
+// 			),
+		);
+
+		protected $_personnesLinkedQuery = array(
+			'text' => 'non demandeurs ou non conjoints RSA possedant des %table%',
+			'sql' => 'SELECT COUNT(*)
+						FROM
+						(
+								SELECT DISTINCT( %table%.personne_id )
+									FROM %table%
+							EXCEPT
+								SELECT DISTINCT( prestations.personne_id )
+									FROM prestations
+									WHERE prestations.natprest = \'RSA\'
+										AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+						) AS FOO'
 		);
 
 		/**
-		* TODO: SELECT
-		*				tc.constraint_name,
+		* INFO: SELECT
+		*		--		tc.constraint_name,
 		*				tc.table_name,
-		*				kcu.column_name,
-		*				ccu.table_name AS foreign_table_name,
-		*				ccu.column_name AS foreign_column_name
+		*		--		kcu.column_name,
+		*		--		ccu.table_name AS foreign_table_name,
+		*		--		ccu.column_name AS foreign_column_name
 		*			FROM
 		*				information_schema.table_constraints AS tc
 		*				JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name
@@ -277,6 +292,26 @@
 		*			WHERE constraint_type = 'FOREIGN KEY'
 		*				AND kcu.column_name='personne_id';
 		*/
+
+		protected $_personnesLinkedTables = array(
+// 			'actionscandidats_personnes',
+			'apres',
+			'avispcgpersonnes',
+			'calculsdroitsrsa',
+			'contratsinsertion',
+			'demandesreorient',
+// 			'dspps',
+			'dsps',
+			'informationseti',
+			'infosagricoles',
+			'infospoleemploi',
+			'orientations',
+// 			'orientsstructs', // INFO: orientées, voir plus haut
+			'parcours',
+			'personnes_referents',
+			'rendezvous',
+			'suivisappuisorientation',
+		);
 
 		/**
 		* Initialisation: lecture des paramètres, on s'assure d'avoir une connexion
@@ -330,6 +365,21 @@
 					sprintf(
 						"%s\t%s\t (%s ms)",
 						str_pad( $check['text'], 80, " ", STR_PAD_RIGHT ),
+						( $this->connection->error ? 'erreur' : $result ),
+						$this->connection->took
+					)
+				);
+				$success = ( !$this->connection->error ) && $success;
+			}
+
+			// Tables liéées à un demandeur ou conjoint RSA
+			foreach( $this->_personnesLinkedTables as $table ) {
+				$result = $this->connection->query( str_replace( '%table%', $table, $this->_personnesLinkedQuery['sql'] ) );
+				$result = Set::classicExtract( $result, '0.0.count' );
+				$this->out(
+					sprintf(
+						"%s\t%s\t (%s ms)",
+						str_pad( str_replace( '%table%', $table, $this->_personnesLinkedQuery['text'] ), 80, " ", STR_PAD_RIGHT ),
 						( $this->connection->error ? 'erreur' : $result ),
 						$this->connection->took
 					)
