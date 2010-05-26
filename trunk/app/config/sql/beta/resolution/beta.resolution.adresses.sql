@@ -104,8 +104,8 @@ DELETE FROM adresses_foyers
 * Ajout de vérifications
 */
 
-ALTER TABLE adresses_foyers DROP CONSTRAINT adresses_foyers_adresse_id_fkey;
-ALTER TABLE adresses_foyers ADD CONSTRAINT adresses_foyers_adresse_id_fkey FOREIGN KEY (adresse_id) REFERENCES adresses (id) ON UPDATE CASCADE ON DELETE CASCADE;
+/*ALTER TABLE adresses_foyers DROP CONSTRAINT adresses_foyers_adresse_id_fkey;
+ALTER TABLE adresses_foyers ADD CONSTRAINT adresses_foyers_adresse_id_fkey FOREIGN KEY (adresse_id) REFERENCES adresses (id) ON UPDATE CASCADE ON DELETE CASCADE;*/
 
 -- Prévention: pour s'assurer que le rang des adresses soit bien une valeur parmi '01', '02' ou '03')
 ALTER TABLE adresses_foyers ADD CONSTRAINT adresses_foyers_rgadr_correct CHECK ( rgadr IN ( '01', '02', '03' ) );
