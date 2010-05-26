@@ -805,6 +805,7 @@ table.bodyHeaders tbody tr.odd th {
 }
 
 table.wide { width: 100%; }
+table.wide th { width: 40%; }
 
 table.smallHeader tbody th { width: 25%; }
 table.mediumHeader tbody th { width: 50%; }

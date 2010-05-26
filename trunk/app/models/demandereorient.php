@@ -57,6 +57,9 @@
 			'Autovalidate',
 			'Enumerable' => array(
 				'fields' => array(
+					'accord' => array(
+						'values' => array( 0, 1 )
+					),
 					'accordbenef' => array(
 						'values' => array( 0, 1 )
 					),
@@ -76,7 +79,7 @@
 			)
 		);
 
-		var $validate = array(
+/*		var $validate = array(
 			'reforigine_id' => array(
 				array( 'rule' => 'notEmpty' )
 			),
@@ -86,7 +89,7 @@
 // 			'refaccueil_id' => array(
 // 				array( 'rule' => 'notEmpty' )
 // 			),
-		);
+		);*/
 
 /*		function beforeSave( $options = array() ) {
 		}*/

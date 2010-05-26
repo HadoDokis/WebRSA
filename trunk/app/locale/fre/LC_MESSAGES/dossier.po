@@ -22,3 +22,6 @@ msgstr ""
 
 msgid "Dossier.fonorg"
 msgstr "Organisme payeur"
+
+msgid "Dossier.matricule"
+msgstr "N° CAF"
