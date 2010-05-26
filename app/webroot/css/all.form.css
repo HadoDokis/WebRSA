@@ -128,3 +128,7 @@ fieldset.partenaire.bilan div.radio {
     width: 50%;
     float: left;
 }
+
+div.input.radio label, div.input.radio input {
+	width: auto;
+}

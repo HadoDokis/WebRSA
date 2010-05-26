@@ -158,62 +158,63 @@
 				$value = Set::enum( $value, Set::classicExtract( $params, "options" ) );
 				$value = __d( $domain, $value, true );
 			}
-
-			// Format entry and get classes
-			$classes[] = $params['type'];
-			switch( $params['type'] ) {
-				case 'email':
-					if( !empty( $params['tag'] ) && !empty( $value ) ) {
-						$value = $this->Html->link( $value, "mailto:{$value}" );
-					}
-					break;
-				// TODO: l10n + spécialisation des types
-				case 'phone':
-					$value = implode( ' ', str_split( $value, 2 ) );
-					break;
-				case 'money':
-					$classes = Set::merge( $classes, array( 'number', ( ( $value >= 0 ) ? 'positive' : 'negative' ) ) );
-					$value = $this->Locale->money( $value, 2 );
-					break;
-				/// SQL
-				case 'boolean':
-					switch( $value ) {
-						case null:
-							$value = ' ';
-							$classes = Set::merge( $classes, array( 'number', 'null' ) );
-							break;
-						default:
-							$classes = Set::merge( $classes, array( 'number', ( $value ? 'true' : 'false' ) ) );
-							$value = ( $value ? __( 'Yes', true ) : __( 'No', true ) );
-					}
-					break;
-				case 'float':
-					$classes = Set::merge( $classes, array( 'number', ( ( $value >= 0 ) ? 'positive' : 'negative' ) ) );
-					$value = $this->Locale->number( $value, 2 );
-					break;
-				case 'integer':
-					$classes = Set::merge( $classes, array( 'number', ( ( $value >= 0 ) ? 'positive' : 'negative' ) ) );
-					$value = $this->Locale->number( $value );
-					break;
-				case 'date':
-				case 'time':
-				case 'timestamp':
-				case 'datetime':
-					$value = $this->Locale->date( "Locale->{$params['type']}", $value );
-					break;
-				case 'string':
-				case 'text':
-					$value = ( !empty( $value ) ? $value : '&nbsp;' );
-					break;
-				default:
-					if( preg_match( '/^enum(\W)*.*$/', $params['type'] ) ) {
-						$classes[] = 'enum string'; // FIXME: class enum::presence
+			else {
+				// Format entry and get classes
+				$classes[] = $params['type'];
+				switch( $params['type'] ) {
+					case 'email':
+						if( !empty( $params['tag'] ) && !empty( $value ) ) {
+							$value = $this->Html->link( $value, "mailto:{$value}" );
+						}
+						break;
+					// TODO: l10n + spécialisation des types
+					case 'phone':
+						$value = implode( ' ', str_split( $value, 2 ) );
+						break;
+					case 'money':
+						$classes = Set::merge( $classes, array( 'number', ( ( $value >= 0 ) ? 'positive' : 'negative' ) ) );
+						$value = $this->Locale->money( $value, 2 );
+						break;
+					/// SQL
+					case 'boolean':
+						switch( $value ) {
+							case null:
+								$value = ' ';
+								$classes = Set::merge( $classes, array( 'number', 'null' ) );
+								break;
+							default:
+								$classes = Set::merge( $classes, array( 'number', ( $value ? 'true' : 'false' ) ) );
+								$value = ( $value ? __( 'Yes', true ) : __( 'No', true ) );
+						}
+						break;
+					case 'float':
+						$classes = Set::merge( $classes, array( 'number', ( ( $value >= 0 ) ? 'positive' : 'negative' ) ) );
+						$value = $this->Locale->number( $value, 2 );
+						break;
+					case 'integer':
+						$classes = Set::merge( $classes, array( 'number', ( ( $value >= 0 ) ? 'positive' : 'negative' ) ) );
+						$value = $this->Locale->number( $value );
+						break;
+					case 'date':
+					case 'time':
+					case 'timestamp':
+					case 'datetime':
+						$value = $this->Locale->date( "Locale->{$params['type']}", $value );
+						break;
+					case 'string':
+					case 'text':
 						$value = ( !empty( $value ) ? $value : '&nbsp;' );
-					}
-					else {
-						trigger_error( "Unrecognized type {$params['type']}", E_USER_WARNING );
-						return null;
-					}
+						break;
+					default:
+						if( preg_match( '/^enum(\W)*.*$/', $params['type'] ) ) {
+							$classes[] = 'enum string'; // FIXME: class enum::presence
+							$value = ( !empty( $value ) ? $value : '&nbsp;' );
+						}
+						else {
+							trigger_error( "Unrecognized type {$params['type']}", E_USER_WARNING );
+							return null;
+						}
+				}
 			}
 
 			// Empty ?

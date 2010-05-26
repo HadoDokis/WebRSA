@@ -118,6 +118,10 @@
             unset( $options['required'] );
 			unset( $options['domain'] );
 
+			if( in_array( $options['type'], array( 'radio' ) ) && !Set::check( $options, 'legend' )  ) {
+				$options['legend'] = $options['label'];
+			}
+
             return parent::input( $fieldName, $options );
         }
 
