@@ -13,12 +13,6 @@
         $this->pageTitle = 'Édition APRE';
     }
 
-    function radioApre( $view, $path, $value, $label ) {
-        $name = 'data['.implode( '][', explode( '.', $path ) ).']';
-        $notEmptyValues = Set::filter( Set::classicExtract( $view->data, $value ) );
-        $checked = ( ( !empty( $notEmptyValues ) ) ? 'checked="checked"' : '' );
-        return "<label><input type=\"radio\" name=\"{$name}\" value=\"{$value}\" {$checked} />{$label}</label>";
-    }
 ?>
 <!--/************************************************************************/ -->
     <?php echo $javascript->link( 'dependantselect.js' ); ?>
@@ -69,6 +63,15 @@
                 false,
                 true
             );
+
+            observeDisableFieldsetOnRadioValue(
+            'Apre',
+            'data[<?php echo $this->modelClass;?>][isdecision]',
+            $( 'DecisionApre' ),
+            'O',
+            false,
+            true
+        );
 
         });
 
@@ -555,7 +558,6 @@
 </fieldset>
 <fieldset>
     <legend><strong>Administration</strong></legend>
-    <fieldset>
         <?php
             echo $default->subform(
                 array(
@@ -564,9 +566,20 @@
                 )
             );
         ?>
-    </fieldset>
-    <fieldset>
-        <legend><strong>Décision et engagement financier de l'équipe de direction</strong></legend>
+</fieldset>
+<?php
+    $error = Set::classicExtract( $this->validationErrors, "{$this->modelClass}.isdecision" );
+    $class = 'radio'.( !empty( $error ) ? ' error' : '' );
+    $thisDataIsDecision = Set::classicExtract( $this->data, "{$this->modelClass}.isdecision" );
+    if( !empty( $thisDataIsDecision ) ) {
+        $valueIsDecision = $thisDataIsDecision;
+    }
+    $input = $form->input( "{$this->modelClass}.isdecision", array( 'type' => 'radio' , 'options' => $options['isdecision'], 'legend' => required( __d( 'apre', "{$this->modelClass}.isdecision", true )  ), 'value' => $valueIsDecision ) );
+    echo $html->tag( 'div', $input, array( 'class' => $class ) );
+?>
+
+<fieldset id="DecisionApre">
+    <legend><strong>Décision et engagement financier de l'équipe de direction</strong></legend>
         <?php
             echo $default->subform(
                 array(
@@ -579,7 +592,7 @@
                 )
             );
         ?>
-    </fieldset>
+
 </fieldset>
 <fieldset class="loici">
     <p>

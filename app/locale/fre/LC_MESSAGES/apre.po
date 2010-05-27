@@ -58,6 +58,10 @@ msgstr "Ajouter comité examen "
 msgid "Apre.eligibiliteapre"
 msgstr "Eligibilité de l'APRE"
 
+
+msgid "Apre66.isdecision"
+msgstr "Décision prise ?"
+
 ###############################################################################
 # Nom des aides
 ###############################################################################
