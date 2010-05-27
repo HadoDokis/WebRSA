@@ -218,7 +218,7 @@
 
             $this->set( compact( 'orientstruct', 'contratsinsertion' ) );
             $this->set( 'personne_id', $personne_id );
-            $this->render( $this->action, null, '/contratsinsertion/index'.Configure::read( 'Apre.suffixe' ) );
+            $this->render( $this->action, null, '/contratsinsertion/index'.Configure::read( 'Apre.suffixe' ) ); ///FIXME: pas propre, mais pr le moment ça marche afin d'eviter de tout renommer
 
         }
 
