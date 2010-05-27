@@ -57,7 +57,6 @@
     <fieldset>
         <legend>Informations de candidature</legend>
         <?php
-        echo 'test';
             echo $default->subform(
                 array(
                     'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
