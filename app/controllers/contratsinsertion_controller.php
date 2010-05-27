@@ -41,7 +41,12 @@
 
             if( in_array( $this->action, array( 'add', 'edit'/*, 'view'*/ ) ) ) {
 
-                $forme_ci = array( 'S' => 'Simple', 'C' => 'Complexe' );
+                if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
+                    $forme_ci = array( 'S' => 'Simple', 'C' => 'Complexe' );
+                }
+                else if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
+                    $forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
+                }
                 $this->set( 'forme_ci', $forme_ci );
                 $this->set( 'qual', $this->Option->qual() );
                 $this->set( 'raison_ci', $this->Option->raison_ci() );

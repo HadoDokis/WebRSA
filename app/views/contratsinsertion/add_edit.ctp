@@ -243,7 +243,7 @@
                         if( !empty( $thisDataFormeCi ) ) {
                             $valueFormeci = $thisDataFormeCi;
                         }
-                        $input =  $form->input( 'Contratinsertion.forme_ci', array( 'type' => 'radio' , 'options' => $forme_ci, 'div' => false, 'legend' => required( __( 'forme_ci', true )  ), 'value' => $valueFormeci ) );
+                        $input =  $form->input( 'Contratinsertion.forme_ci', array( 'type' => 'radio' , 'options' => $forme_ci, /*'div' => false,*/ 'legend' => required( __( 'forme_ci', true )  ), 'value' => $valueFormeci ) );
 
                         echo $html->tag( 'div', $input, array( 'class' => $class ) );
                     ?>
@@ -302,12 +302,6 @@
     </fieldset>
     <fieldset id="Contratsuite">
         <table class="wide noborder">
-            <tr>
-                <td colspan="2" class="noborder center">
-                    <em>Ce contrat fait suite à : </em>
-                </td>
-            </tr>
-
             <?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ):?>
                 <tr>
                     <td colspan="2" class="noborder">
@@ -316,6 +310,11 @@
                 </tr>
             <?php endif;?>
 
+            <tr>
+                <td colspan="2" class="noborder center" id="moi">
+                    <em>Ce contrat fait suite à : </em>
+                </td>
+            </tr>
             <tr>
                 <td colspan="2" class="noborder">
                     <div class="demi"><?php echo $form->input( 'Contratinsertion.raison_ci', array( 'label' => 'Raison : ' , 'type' => 'radio', 'div' => false, 'separator' => '</div><div class="demi">', 'options' => $raison_ci, 'legend' => false ) );?></div>
