@@ -76,6 +76,10 @@ CREATE TYPE type_orgapayeur AS ENUM ( 'DEP', 'CAF', 'MSA', 'ASP', 'AUT' );
 -- ASP = ASP
 -- AUT = Autre
 
+CREATE TYPE type_convention AS ENUM ( 'CES', 'EES' );
+-- CES = Le Conseil Général, l'Employeur et le Salarié
+-- EES = L'Etat, l'Employeur et le Salarié
+
 -- CREATE TABLE employeurscuis (
 --     id                     SERIAL NOT NULL PRIMARY KEY,
 --     libstruc               VARCHAR(32) NOT NULL,
@@ -96,6 +100,7 @@ CREATE TABLE cuis (
     referent_id                      INTEGER NOT NULL REFERENCES referents(id),
 --     employeurcui_id             INTEGER NOT NULL REFERENCES employeurscuis(id),
     -- Partie prescripteur
+    convention                       type_convention DEFAULT NULL,
     secteur                          type_secteur DEFAULT NULL,
     numsecteur                       VARCHAR(11) DEFAULT NULL,
     avenant                          type_avenant DEFAULT NULL,
