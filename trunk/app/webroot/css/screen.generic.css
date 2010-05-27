@@ -831,6 +831,12 @@ td.aere, th.aere{
     width: 15em;
 }
 
+
+table tr td#moi {
+/*     margin-top: 1.5em; */
+    line-height: 3em;
+}
+
 div.aere {
     margin-bottom:1.5em;
 }
