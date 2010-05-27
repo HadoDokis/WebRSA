@@ -30,8 +30,177 @@ ALTER TABLE precosreorients ALTER COLUMN referent_id DROP NOT NULL;
 ALTER TABLE precosreorients ALTER COLUMN referent_id SET DEFAULT NULL;
 ALTER TABLE precosreorients ADD COLUMN dtconcertation DATE DEFAULT NULL;
 
+COMMIT;
+
 -- *****************************************************************************
 -- ***** Modifications pour les équipes pluridisciplinaires (26/05/2010)   *****
+-- *****************************************************************************
+
+BEGIN;
+
+-- ********************************************************************
+-- ***** Création des tables nécessaires au CUI ( 25/05/2010 )  *******
+-- ********************************************************************
+
+CREATE TYPE type_secteur AS ENUM ( 'CIE', 'CAE' );
+-- CIE = Secteur marchand
+-- CAE = secteur non marchand
+CREATE TYPE type_avenant AS ENUM ( 'REN', 'MOD' );
+-- REN = renouvellement
+-- MOD = Modification
+CREATE TYPE type_orgrecouvcotis AS ENUM ( 'URS', 'MSA', 'AUT' );
+--URS = URSSAF
+--MSA = MSA
+--AUT = AUTRE
+CREATE TYPE type_assurance AS ENUM ( 'UNE', 'LUI' );
+-- UNE = l'employeur public ou privé est affilié à l'UNEDIC
+-- LUI = l'employeur public assure lui-même ce risque
+CREATE TYPE type_emploi AS ENUM ( '06', '11', '23', '24' );
+-- 06 = moins de 6 mois
+-- 11 = de 6 à 11 mois
+-- 23 = de 12 à 23 mois
+-- 24 = 24 et plus
+CREATE TYPE type_typecontratcui AS ENUM ( 'CDI', 'CDD' );
+CREATE TYPE type_initiative AS ENUM ( '1', '2', '3' ); -- A l'initiative de :
+-- 1 = l'employeur
+-- 2 = le salarié
+-- 3 = le prescripteur
+CREATE TYPE type_formation AS ENUM ( 'INT', 'EXT' );
+-- INT = interne
+-- EXT = externe
+
+CREATE TYPE type_orgapayeur AS ENUM ( 'DEP', 'CAF', 'MSA', 'ASP', 'AUT' );
+-- DEP = département
+-- CAF = CAF
+-- MSA = MSA
+-- ASP = ASP
+-- AUT = Autre
+
+-- CREATE TABLE employeurscuis (
+--     id                     SERIAL NOT NULL PRIMARY KEY,
+--     libstruc               VARCHAR(32) NOT NULL,
+--     numvoie                VARCHAR(6) NOT NULL,
+--     typevoie               VARCHAR(6) NOT NULL,
+--     nomvoie                VARCHAR(30) NOT NULL,
+--     compladr               VARCHAR(32) NOT NULL,
+--     numtel                 VARCHAR(14),
+--     email                  VARCHAR(78),
+--     codepostal             CHAR(5) NOT NULL,
+--     ville                  VARCHAR(45) NOT NULL
+-- );
+-- COMMENT ON TABLE employeurscuis IS 'Table des employeurs liés au CUI';
+
+CREATE TABLE cuis (
+    id                               SERIAL NOT NULL PRIMARY KEY,
+    personne_id                      INTEGER NOT NULL REFERENCES personnes(id),
+    referent_id                      INTEGER NOT NULL REFERENCES referents(id),
+--     employeurcui_id             INTEGER NOT NULL REFERENCES employeurscuis(id),
+    -- Partie prescripteur
+    secteur                          type_secteur DEFAULT NULL,
+    numsecteur                       VARCHAR(11) DEFAULT NULL,
+    avenant                          type_avenant DEFAULT NULL,
+    numconventioncollect             VARCHAR(9),
+    avenantcg                        type_avenant DEFAULT NULL,
+    datedepot                        DATE DEFAULT NULL,
+    codeprescripteur                 VARCHAR(6) DEFAULT NULL,
+    numeroide                        VARCHAR(8) DEFAULT NULL,
+    -- Partie pour l'employeur
+    nomemployeur                     VARCHAR(50),
+    numvoieemployeur                 VARCHAR(6),
+    typevoieemployeur                VARCHAR(4) NOT NULL,
+    nomvoieemployeur                 VARCHAR(50) NOT NULL,
+    compladremployeur                VARCHAR(50) NOT NULL,
+    numtelemployeur                  VARCHAR(14),
+    emailemployeur                   VARCHAR(78),
+    codepostalemployeur              CHAR(5) NOT NULL,
+    villeemployeur                   VARCHAR(45) NOT NULL,
+    siret                            CHAR(14),
+    codenaf2                         CHAR(5),
+    identconvcollec                  CHAR(4),
+    statutemployeur                  CHAR(2),
+    effectifemployeur                CHAR(6),
+    orgrecouvcotis                   type_orgrecouvcotis DEFAULT NULL,
+    atelierchantier                  type_no DEFAULT NULL,
+    numannexefinanciere              VARCHAR(9),
+    assurancechomage                 type_assurance DEFAULT NULL,
+    iscie                            type_no DEFAULT NULL,
+    --Partie pour l'employeur si envoi à adresse différente
+    isadresse2                       type_no DEFAULT NULL,
+    numvoieemployeur2                VARCHAR(50),
+    typevoieemployeur2               VARCHAR(6),
+    nomvoieemployeur2                VARCHAR(30) ,
+    compladremployeur2               VARCHAR(32) ,
+    numtelemployeur2                 VARCHAR(14),
+    emailemployeur2                  VARCHAR(78),
+    codepostalemployeur2             CHAR(5) ,
+    villeemployeur2                  VARCHAR(45),
+    -- Partie pour la situation du salarié avant la signature de la convention
+    niveauformation                  CHAR(2), -- A voir si niveauetude ou pas cf tableau 2 du CUI
+    dureesansemploi                  type_emploi DEFAULT NULL,
+    dureeinscritpe                   type_emploi DEFAULT NULL,
+    ass                              type_no DEFAULT NULL,
+    rsadept                          type_no DEFAULT NULL,
+    rsadeptmaj                       type_no DEFAULT NULL,
+    aah                              type_no DEFAULT NULL,
+    ata                              type_no DEFAULT NULL,
+    dureebenefaide                   type_emploi DEFAULT NULL,
+    handicap                         type_no DEFAULT NULL,
+    -- Partie Contrat travail
+    typecontrat                      type_typecontratcui DEFAULT NULL,
+    dateembauche                     DATE DEFAULT NULL,
+    datefincontrat                   DATE DEFAULT NULL,
+    codeemploi                       CHAR(5),
+    salairebrut                      CHAR(5),
+    dureehebdosalarie                TIME WITHOUT TIME ZONE DEFAULT NULL,
+    modulation                       type_no DEFAULT NULL,
+    dureecollectivehebdo             TIME WITHOUT TIME ZONE DEFAULT NULL,
+    numlieucontrat                   VARCHAR(6),
+    typevoielieucontrat              VARCHAR(4) NOT NULL,
+    nomvoielieucontrat               VARCHAR(50) NOT NULL,
+    codepostallieucontrat            CHAR(5) NOT NULL,
+    villelieucontrat                 VARCHAR(45) NOT NULL,
+    -- Partie actions d'accompagnement
+    qualtuteur                       CHAR(3),
+    nomtuteur                        VARCHAR(50),
+    prenomtuteur                     VARCHAR(50),
+    fonctiontuteur                   VARCHAR(50),
+    structurereferente_id            INTEGER REFERENCES structuresreferentes(id),
+    isaas                            type_no DEFAULT NULL, -- action d'accompagnement social
+    -- actions d'accompagnement professionnel
+    remobilisation                   type_initiative DEFAULT NULL,
+    aidereprise                      type_initiative DEFAULT NULL,
+    elaboprojetpro                   type_initiative DEFAULT NULL,
+    evaluation                       type_initiative DEFAULT NULL,
+    aiderechemploi                   type_initiative DEFAULT NULL,
+    autre                            type_initiative DEFAULT NULL,
+    precisionautre                   VARCHAR(50),
+    -- actions de formation
+    adaptation                       type_initiative DEFAULT NULL,
+    remiseniveau                     type_initiative DEFAULT NULL,
+    prequalification                 type_initiative DEFAULT NULL,
+    nouvellecompetence               type_initiative DEFAULT NULL,
+    formqualif                       type_initiative DEFAULT NULL,
+    formation                        type_formation DEFAULT NULL,
+    isperiodepro                     type_no DEFAULT NULL,
+    niveauqualif                     CHAR(2),
+    validacquis                      type_no DEFAULT NULL,
+    --
+    iscae                            type_no DEFAULT NULL,
+    -- Partie prise en charge (pour prescripteur)
+    datedebprisecharge               DATE,
+    datefinprisecharge               DATE,
+    dureehebdoretenue                TIME WITHOUT TIME ZONE,
+    opspeciale                       CHAR(5),
+    tauxfixe                         INTEGER,
+    tauxprisencharge                 INTEGER,
+    financementexclusif              type_no DEFAULT NULL,
+    tauxfinancementexclusif          INTEGER,
+    orgapayeur                       type_orgapayeur DEFAULT NULL,
+    organisme                        VARCHAR(50),
+    adresseorganisme                 TEXT,
+    datecontrat                      DATE
+);
+COMMENT ON TABLE cuis IS 'Table pour les CUIs';
 -- *****************************************************************************
 
 ALTER TABLE demandesreorient ALTER COLUMN reforigine_id DROP NOT NULL;
