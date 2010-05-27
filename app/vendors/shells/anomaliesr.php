@@ -53,7 +53,114 @@
 					)
 				)
 			),
-			// .........
+			array(
+				'text' => 'foyers sans demandeur RSA',
+				'model' => 'Foyer',
+				'queryData' => array(
+					'conditions' => array(
+						'Foyer.id IN (
+							SELECT DISTINCT( foyers.id )
+								FROM foyers
+							EXCEPT
+							SELECT DISTINCT( personnes.foyer_id )
+								FROM personnes
+								INNER JOIN prestations ON (
+									prestations.personne_id = personnes.id
+									AND prestations.natprest = \'RSA\'
+									AND prestations.rolepers = \'DEM\'
+								)
+						)'
+					)
+				)
+			),
+			array(
+				'text' => 'foyers sans adresse_foyer',
+				'model' => 'Foyer',
+				'queryData' => array(
+					'conditions' => array(
+						'Foyer.id IN (
+							SELECT DISTINCT( foyers.id )
+								FROM foyers
+							EXCEPT
+							SELECT DISTINCT( adresses_foyers.foyer_id )
+								FROM adresses_foyers
+						)'
+					)
+				)
+			),
+			array(
+				'text' => 'foyers sans adresse_foyer de rang 01',
+				'model' => 'Foyer',
+				'queryData' => array(
+					'conditions' => array(
+						'Foyer.id IN (
+							SELECT DISTINCT( foyers.id )
+								FROM foyers
+							EXCEPT
+							SELECT DISTINCT( adresses_foyers.foyer_id )
+								FROM adresses_foyers
+								WHERE adresses_foyers.rgadr = \'01\'
+						)'
+					)
+				)
+			),
+			array(
+				'text' => 'adresses_foyers de rang incorrect',
+				'model' => 'Adressefoyer',
+				'queryData' => array(
+					'conditions' => array(
+						'Adressefoyer.rgadr NOT IN ( \'01\', \'02\', \'03\' )'
+					)
+				)
+			),
+			array(
+				'text' => 'adresses_foyers en doublons',
+				'model' => 'Adressefoyer',
+				'queryData' => array(
+					'conditions' => array(
+						'Adressefoyer.id IN (
+							SELECT DISTINCT(a1.id)
+								FROM adresses_foyers AS a1,
+									adresses_foyers AS a2
+								WHERE
+									a1.id < a2.id
+									AND a1.foyer_id = a2.foyer_id
+									AND a1.rgadr = a2.rgadr
+						)'
+					)
+				)
+			),
+			array(
+				'text' => 'adresses_foyers faisant reference au meme adresse_id',
+				'model' => 'Adressefoyer',
+				'queryData' => array(
+					'conditions' => array(
+						'Adressefoyer.id IN (
+							SELECT DISTINCT(a1.id)
+								FROM adresses_foyers AS a1,
+									adresses_foyers AS a2
+								WHERE
+									a1.id < a2.id
+									AND a1.adresse_id = a2.adresse_id
+						)'
+					)
+				)
+			),
+			array(
+				'text' => 'adresses sans adresses_foyers',
+				'model' => 'Adresse',
+				'queryData' => array(
+					'conditions' => array(
+						'Adresse.id IN (
+							SELECT DISTINCT( adresses.id )
+								FROM adresses
+							EXCEPT
+							SELECT DISTINCT( adresses_foyers.adresse_id )
+								FROM adresses_foyers
+						)'
+					)
+				)
+			),
 			array(
 				'text' => 'personnes en doublons',
 				'model' => 'Personne',
@@ -73,7 +180,22 @@
 					)
 				)
 			),
-			// ..........
+			array(
+				'text' => 'personnes sans prestation RSA',
+				'model' => 'Personne',
+				'queryData' => array(
+					'conditions' => array(
+						'Personne.id IN (
+							SELECT DISTINCT( personnes.id )
+								FROM personnes
+							EXCEPT
+							SELECT DISTINCT( prestations.personne_id )
+								FROM prestations
+								WHERE prestations.natprest = \'RSA\'
+						)'
+					)
+				)
+			),
 			array(
 				'text' => 'prestations de meme nature et de meme role pour une personne donnee',
 				'model' => 'Prestation',
@@ -107,24 +229,76 @@
 					)
 				)
 			),
-			// ..........
 			array(
-				'text' => 'non demandeurs ou non conjoints RSA possedant des dsps',
+				'text' => 'non demandeurs ou non conjoints RSA possedant des orientsstrcuts orientees',
 				'model' => 'Personne',
 				'queryData' => array(
 					'conditions' => array(
 						'Personne.id IN (
 							SELECT DISTINCT( orientsstructs.personne_id )
 								FROM orientsstructs
+								WHERE orientsstructs.statut_orient = \'Orienté\'
 							EXCEPT
-								SELECT DISTINCT( prestations.personne_id )
-									FROM prestations
-									WHERE prestations.natprest = \'RSA\'
-										AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+							SELECT DISTINCT( prestations.personne_id )
+								FROM prestations
+								WHERE prestations.natprest = \'RSA\'
+									AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
 						)'
 					)
 				)
 			),
+		);
+
+		protected $_personnesLinkedQuery = array(
+			'text' => 'non demandeurs ou non conjoints RSA possedant des %table%',
+			'model' => 'Personne',
+			'queryData' => array(
+				'conditions' => array(
+					'Personne.id IN (
+						SELECT DISTINCT( %table%.personne_id )
+							FROM %table%
+						EXCEPT
+						SELECT DISTINCT( prestations.personne_id )
+							FROM prestations
+							WHERE prestations.natprest = \'RSA\'
+								AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+					)'
+				)
+			)
+		);
+
+		/**
+		* INFO: SELECT
+		*		--		tc.constraint_name,
+		*				tc.table_name,
+		*		--		kcu.column_name,
+		*		--		ccu.table_name AS foreign_table_name,
+		*		--		ccu.column_name AS foreign_column_name
+		*			FROM
+		*				information_schema.table_constraints AS tc
+		*				JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name
+		*				JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name
+		*			WHERE constraint_type = 'FOREIGN KEY'
+		*				AND kcu.column_name='personne_id';
+		*/
+
+		protected $_personnesLinkedTables = array(
+// 			'actionscandidats_personnes',
+			'apres',
+			'avispcgpersonnes',
+			'calculsdroitsrsa',
+			'contratsinsertion',
+			'demandesreorient',
+// 			'dspps',
+			'dsps',
+			'informationseti',
+			'infosagricoles',
+			'infospoleemploi',
+			'orientations',
+			'parcours',
+			'personnes_referents',
+			'rendezvous',
+			'suivisappuisorientation',
 		);
 
 		/**
@@ -170,6 +344,109 @@
 		}
 
 		/**
+		* Traitement d'une vérification
+		*/
+
+		protected function _check( $check, $generalOutfile ) {
+			$model = ClassRegistry::init( array('class' => $check['model'], 'ds' => $this->connection->configKeyName ) );
+			$check['queryData']['recursive'] = -1;
+
+			if( $this->verbose ) {
+				$outfile = preg_replace( '/(\.log)$/', '_'.Inflector::slug( $check['text'] ).'.log.html', $generalOutfile );
+
+				if( !empty( $this->limit ) ) {
+					$check['queryData']['limit'] = $this->limit;
+				}
+
+				$items = $model->find( 'all', $check['queryData'] );
+
+				$this->out(
+					sprintf(
+						"%s\t%s",
+						str_pad( $check['text'], 80, " ", STR_PAD_RIGHT ),
+						count( $items )
+					)
+				);
+
+				if( !empty( $items ) ) {
+					$table = '';
+					foreach( $items as $item ) {
+						$row = '';
+
+						foreach( $item[$check['model']] as $field => $value ) {
+							if( $field == 'dossier_rsa_id' ) {
+								$row .= '<td><a href="'.Router::url(
+									array(
+										'controller' => 'dossiers',
+										'action' => 'view',
+										$value
+									),
+									true
+								).'">'.$value.'</a></td>';
+							}
+							else if( $field == 'foyer_id' || ( $check['model'] == 'Foyer' && $field == 'id' ) ) {
+								$row .= '<td><a href="'.Router::url(
+									array(
+										'controller' => 'personnes',
+										'action' => 'index',
+										$value
+									),
+									true
+								).'">'.$value.'</a></td>';
+							}
+							else if( $field == 'personne_id' || ( $check['model'] == 'Personne' && $field == 'id' ) ) {
+								$row .= '<td><a href="'.Router::url(
+									array(
+										'controller' => 'personnes',
+										'action' => 'view',
+										$value
+									),
+									true
+								).'">'.$value.'</a></td>';
+							}
+							else {
+								$row .= '<td>'.$value.'</td>';
+							}
+						}
+						$row = '<tr>'.$row.'</tr>';
+						$table .= $row;
+					}
+
+					$html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+							"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+							<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+								<head>
+									<title>'.$check['text'].'</title>
+									<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+									<style type="text/css" media="all">
+										body { font-size: 12px; }
+										table { border-collapse: collapse; }
+										thead, tbody { border: 3px solid black; }
+										th, td { border: 1px solid black; padding: 0.125em 0.25em; }
+										tr.odd { background: #eee; }
+									</style>
+								</head><body>';
+					$html .= '<h1>'.$check['text'].'</h1><p>Résultats: '.count( $items ).'</p><table><thead><tr><th>'.implode( '</th><th>', array_keys( $model->schema( true ) ) ).'</th></tr></thead><tbody>'.$table.'</tbody></table>';
+					$html .= '</body></html>';
+
+					file_put_contents( $outfile, $html );
+				}
+			}
+			else {
+				$count = $model->find( 'count', $check['queryData'] );
+				$this->out(
+					sprintf(
+						"%s\t%s",
+						str_pad( $check['text'], 80, " ", STR_PAD_RIGHT ),
+						$count
+					)
+				);
+			}
+
+			return ( !$this->connection->error );
+		}
+
+		/**
 		* Par défaut, on affiche l'aide
 		*/
 
@@ -184,100 +461,16 @@
 			$this->out();
 
 			foreach( $this->_checks as $check ) {
-				$model = ClassRegistry::init( array('class' => $check['model'], 'ds' => $this->connection->configKeyName ) );
-				$check['queryData']['recursive'] = -1;
+				$success = $this->_check( $check, $generalOutfile ) && $success;
+			}
 
-				if( $this->verbose ) {
-					$outfile = preg_replace( '/(\.log)$/', '_'.Inflector::slug( $check['text'] ).'.log.html', $generalOutfile );
+			// Tables liéées à un demandeur ou conjoint RSA
+			foreach( $this->_personnesLinkedTables as $table ) {
+				$check = $this->_personnesLinkedQuery;
+				$check['text'] = str_replace( '%table%', $table, $check['text'] );
+				$check['queryData']['conditions'] = str_replace( '%table%', $table, $check['queryData']['conditions'] );
 
-					if( !empty( $this->limit ) ) {
-						$check['queryData']['limit'] = $this->limit;
-					}
-
-					$items = $model->find( 'all', $check['queryData'] );
-
-					$this->out(
-						sprintf(
-							"%s\t%s",
-							str_pad( $check['text'], 80, " ", STR_PAD_RIGHT ),
-							count( $items )
-						)
-					);
-
-					if( !empty( $items ) ) {
-						$table = '';
-						foreach( $items as $item ) {
-							$row = '';
-
-							foreach( $item[$check['model']] as $field => $value ) {
-								if( $field == 'dossier_rsa_id' ) {
-									$row .= '<td><a href="'.Router::url(
-										array(
-											'controller' => 'dossiers',
-											'action' => 'view',
-											$value
-										),
-										true
-									).'">'.$value.'</a></td>';
-								}
-								else if( $field == 'foyer_id' || ( $check['model'] == 'Foyer' && $field == 'id' ) ) {
-									$row .= '<td><a href="'.Router::url(
-										array(
-											'controller' => 'personnes',
-											'action' => 'index',
-											$value
-										),
-										true
-									).'">'.$value.'</a></td>';
-								}
-								else if( $field == 'personne_id' || ( $check['model'] == 'Personne' && $field == 'id' ) ) {
-									$row .= '<td><a href="'.Router::url(
-										array(
-											'controller' => 'personnes',
-											'action' => 'view',
-											$value
-										),
-										true
-									).'">'.$value.'</a></td>';
-								}
-								else {
-									$row .= '<td>'.$value.'</td>';
-								}
-							}
-							$row = '<tr>'.$row.'</tr>';
-							$table .= $row;
-						}
-
-						$html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-								"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-								<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
-									<head>
-										<title>'.$check['text'].'</title>
-										<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-										<style type="text/css" media="all">
-											body { font-size: 12px; }
-											table { border-collapse: collapse; }
-											thead, tbody { border: 3px solid black; }
-											th, td { border: 1px solid black; padding: 0.125em 0.25em; }
-											tr.odd { background: #eee; }
-										</style>
-									</head><body>';
-						$html .= '<h1>'.$check['text'].'</h1><p>Résultats: '.count( $items ).'</p><table><thead><tr><th>'.implode( '</th><th>', array_keys( $model->schema( true ) ) ).'</th></tr></thead><tbody>'.$table.'</tbody></table>';
-						$html .= '</body></html>';
-
-						file_put_contents( $outfile, $html );
-					}
-				}
-				else {
-					$count = $model->find( 'count', $check['queryData'] );
-					$this->out(
-						sprintf(
-							"%s\t%s",
-							str_pad( $check['text'], 80, " ", STR_PAD_RIGHT ),
-							$count
-						)
-					);
-				}
+				$success = $this->_check( $check, $generalOutfile ) && $success;
 			}
 
 			$this->out();
