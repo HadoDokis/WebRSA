@@ -8,6 +8,7 @@
         var $actsAs = array(
             'Enumerable' => array(
                 'fields' => array(
+                    'convention' => array( 'domain' => 'cui' ),
                     'secteur' => array( 'domain' => 'cui' ),
                     'avenant' => array( 'domain' => 'cui' ),
                     'avenantcg' => array( 'domain' => 'cui' ),
@@ -46,6 +47,10 @@
 
 
         var $validate = array(
+            'convention' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
             'secteur' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
