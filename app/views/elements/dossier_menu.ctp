@@ -126,7 +126,7 @@
                                 <?php endif;?>
 
 
-                                <?php if( $permissions->check( 'personnes_referents', 'index' ) || $permissions->check( 'rendezvous', 'index' ) || $permissions->check( 'contratsinsertion', 'index' ) ):?>
+                                <?php if( $permissions->check( 'personnes_referents', 'index' ) || $permissions->check( 'rendezvous', 'index' ) || $permissions->check( 'contratsinsertion', 'index' ) || $permissions->check( 'cuis', 'index' ) ):?>
                                     <li><span>Accompagnement du parcours</span>
                                         <ul>
                                             <li>
@@ -170,8 +170,7 @@
                                                         <?php
                                                             echo $html->link(
                                                                 'CUI',
-                                                                '#'
-//                                                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne['id'] )
+                                                                array( 'controller' => 'cuis', 'action' => 'index', $personne['id'] )
                                                             );
                                                         ?>
                                                     </li>

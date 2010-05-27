@@ -385,3 +385,51 @@ form#Apre  table.fraisdepct td.fraisdepct input {
     width: 5em;
 	max-width: 5em;
 }
+
+
+
+/***************************************/
+/*****     Partie pour le CUI      *****/
+/**************************************/
+form#cuiform fieldset.prescripteur{
+    position: center;
+}
+
+form#cuiform fieldset#Adressebis{
+    border: 0;
+}
+
+form#cuiform .cui1 {
+    width: 50%;
+}
+
+form#cuiform .cui2 {
+    width: 50%;
+}
+
+form#cuiform .cui3 {
+    width: 100%;
+}
+
+form#cuiform fieldset div.text {
+    clear: none;
+}
+
+form#cuiform td div.text input, form#cuiform td div.password input, form#cuiform td div.select select {
+    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;
+    width: 48%; /* Grrrr */
+}
+
+/*----------------------------------------------------------------------------*/
+form#cuiform dl.allocataire.cuis dt, dl.allocataire.cuis dd {
+    border: 0;
+    background: inherit;
+}
+
+form#cuiform dl.allocataire.cuis dt {
+    font-weight: bold;
+}
+
+/*----------------------------------------------------------------------------*/
