@@ -27,7 +27,7 @@
                 )
             ),
 			'Formattable' => array(
-				'suffix' => array( 'referent_id' ),
+				'suffix' => array( 'structurereferente_id', 'referent_id' ),
 			)
         );
 
