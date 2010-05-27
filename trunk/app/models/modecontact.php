@@ -45,10 +45,7 @@
                 array(
                     'allowEmpty' => true
                 ),
-//                 array(
-//                     'rule' => 'isUnique',
-//                     'message' => 'Ce numéro est déjà utilisé'
-//                 ),
+
                 array(
                     'rule' => array( 'between', 4, 4 ),
                     'message' => 'Le numéro de poste est composé de 4 chiffres'
