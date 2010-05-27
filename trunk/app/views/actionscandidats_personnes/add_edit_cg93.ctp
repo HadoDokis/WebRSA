@@ -90,7 +90,6 @@
     <fieldset class="actioncandidat">
         <legend class="actioncandidat" >Prescripteur / Référent</legend>
         <?php
-
             echo $default->subform(
                 array(
                     'ActioncandidatPersonne.ddaction' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 ),
