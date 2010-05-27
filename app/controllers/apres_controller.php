@@ -361,6 +361,34 @@
             $this->set( 'personne', $personne );
 // debug($personne);
 
+            /// Recherche du type d'orientation
+            $orientstruct = $this->Apre->Structurereferente->Orientstruct->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.personne_id' => $personne_id,
+                        'Orientstruct.typeorient_id IS NOT NULL',
+                        'Orientstruct.statut_orient' => 'Orienté'
+                    ),
+                    'order' => 'Orientstruct.date_valid DESC',
+                    'recursive' => -1
+                )
+            );
+            $this->set( 'orientstruct', $orientstruct );
+
+            ///Personne liée au parcours
+            $personne_referent = $this->Apre->Personne->PersonneReferent->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'PersonneReferent.personne_id' => $personne_id,
+                        'PersonneReferent.dfdesignation IS NULL'
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+
             ///Nombre d'enfants par foyer
             $nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
             $this->set( 'nbEnfants', $nbEnfants );
@@ -456,6 +484,44 @@
                     );
                 }
             }
+
+
+            // Doit-on setter les valeurs par défault ?
+            $dataStructurereferente_id = Set::classicExtract( $this->data, "{$this->modelClass}.structurereferente_id" );
+            $dataReferent_id = Set::classicExtract( $this->data, "{$this->modelClass}.referent_id" );
+
+            // Si le formulaire ne possède pas de valeur pour ces champs, on met celles par défaut
+            if( empty( $dataStructurereferente_id ) && empty( $dataReferent_id ) ) {
+                $structurereferente_id = $referent_id = null;
+
+                // Valeur par défaut préférée: à partir de personnes_referents
+                if( !empty( $personne_referent ) ){
+                    $structurereferente_id = Set::classicExtract( $personne_referent, 'PersonneReferent.structurereferente_id' );
+                    $referent_id = Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' );
+                }
+                // Valeur par défaut de substitution: à partir de orientsstructs
+                else if( !empty( $orientstruct ) ) {
+                    $structurereferente_id = Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' );
+                    $referent_id = Set::classicExtract( $orientstruct, 'Orientstruct.referent_id' );
+                }
+
+                if( !empty( $structurereferente_id ) ) {
+                    $this->data = Set::insert( $this->data, "{$this->modelClass}.structurereferente_id", $structurereferente_id );
+                }
+                if( !empty( $structurereferente_id ) && !empty( $referent_id ) ) {
+                    $this->data = Set::insert( $this->data, "{$this->modelClass}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
+                }
+            }
+
+
+            $struct_id = Set::classicExtract( $this->data, "{$this->modelClass}.structurereferente_id" );
+            $this->set( 'struct_id', $struct_id );
+
+            $referent_id = Set::classicExtract( $this->data, "{$this->modelClass}.referent_id" );
+            $referent_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $referent_id );
+            $this->set( 'referent_id', $referent_id );
+
+
             $this->Apre->commit();
 
 
