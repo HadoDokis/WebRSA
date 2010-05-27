@@ -522,7 +522,7 @@
             );
             $apre['Adresse'] = $adresse['Adresse'];
 
-            $apre_id = Set::classicExtract( $apre, 'Actioncandidat.id' );
+            $apre_id = Set::classicExtract( $apre, "{$this->modelClass}.id" );
 
             ///Traduction pour les données de la Personne/Contact/Partenaire/Référent
             $apre['Personne']['qual'] = Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual );

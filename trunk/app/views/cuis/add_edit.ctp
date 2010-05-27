@@ -77,6 +77,7 @@
         echo $default->subform(
             array(
                 'Cui.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
+                'Cui.convention' => array( /*'div' => false,*/ 'legend' => required( __d( 'cui', 'Cui.convention', true )  ), 'type' => 'radio', 'options' => $options['convention'] ),
                 'Cui.secteur' => array( /*'div' => false,*/ 'legend' => required( __d( 'cui', 'Cui.secteur', true )  ), 'type' => 'radio', 'options' => $options['secteur'] )
             ),
             array(

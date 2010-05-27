@@ -48,6 +48,9 @@ msgstr "Code prescripteur"
 msgid "Cui.secteur"
 msgstr "Secteur"
 
+msgid "Cui.convention"
+msgstr "Convention entre "
+
 msgid "Cui.avenant"
 msgstr "Avenant"
 
@@ -151,6 +154,12 @@ msgstr "Secteur marchand (CIE)"
 
 msgid "ENUM::SECTEUR::CAE"
 msgstr "Secteur non marchand (CAE)"
+
+msgid "ENUM::CONVENTION::CES"
+msgstr "Le Conseil Général, l'Employeur et le Salarié"
+
+msgid "ENUM::CONVENTION::EES"
+msgstr "L'État, l'Employeur et le Salarié"
 
 msgid "ENUM::AVENANT::REN"
 msgstr "Avenant renouvellement"
