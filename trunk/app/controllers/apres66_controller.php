@@ -253,10 +253,12 @@
 
             $this->{$this->modelClass}->begin();
 
+            $valueIsDecision = null;
             // Récupération des id afférents
             if( $this->action == 'add' ) {
                 $personne_id = $id;
                 $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
+                $valueIsDecision = 'N';
 
                 ///Création automatique du N° APRE de la forme : Année / Mois / N°
                 $numapre = date('Ym').sprintf( "%010s",  $this->{$this->modelClass}->find( 'count' ) + 1 );
@@ -268,6 +270,7 @@
                 $apre_id = $id;
                 $apre = $this->{$this->modelClass}->findById( $apre_id, null, null, 2 );
                 $this->assert( !empty( $apre ), 'invalidParameter' );
+                $valueIsDecision = Set::classicExtract( $this->data, "{$this->modelClass}.isdecision" );
 
                 $personne_id = $apre[$this->modelClass]['personne_id'];
                 $dossier_rsa_id = $this->{$this->modelClass}->dossierId( $apre_id );
@@ -282,6 +285,7 @@
             $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
             $this->assert( !empty( $dossier_rsa_id ), 'invalidParameter' );
             $this->set( 'dossier_id', $dossier_rsa_id );
+            $this->set( 'valueIsDecision', $valueIsDecision );
 
             if( !$this->Jetons->check( $dossier_rsa_id ) ) {
                 $this->{$this->modelClass}->rollback();

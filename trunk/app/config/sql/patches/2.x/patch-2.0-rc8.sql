@@ -327,3 +327,8 @@ INSERT INTO departements ( numdep, name ) VALUES
 ( '974', 'La Réunion' );
 
 COMMIT;
+
+
+BEGIN;
+ALTER TABLE apres ADD COLUMN isdecision type_no DEFAULT NULL;
+COMMIT;
