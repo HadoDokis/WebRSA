@@ -19,10 +19,9 @@
     <?php endif;?>
     <?php if( !empty( $pieces ) ):?>
         <?php
-//         debug($pieces);
             echo $default->subform(
                 array(
-                    'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces à fournir', 'multiple' => 'checkbox', 'options' => $pieces, 'empty' => false )
+                    'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces fournies', 'multiple' => 'checkbox', 'options' => $pieces, 'empty' => false )
                 )
             );
         ?>

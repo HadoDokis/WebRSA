@@ -450,23 +450,24 @@
 			<tbody>
 				<tr>
 					<th>Nb km par trajet</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbkmvoiture', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
+					<td colspan="2"  class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbkmvoiture', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
 				<tr>
 					<th>Nb trajet </th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajetvoiture', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
+					<td colspan="2"  class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajetvoiture', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
                 <tr>
                     <th>Nb total km</th>
-                    <td class="fraisdepct" id="Fraisdeplacement66Nbtotalkm"></td>
+                    <td colspan="2"  class="fraisdepct" id="Fraisdeplacement66Nbtotalkm"></td>
                 </tr>
 				<tr>
 					<th>Forfait "Km"</th>
-					<td class="fraisdepct"><?php echo $locale->money( Configure::read( 'Fraisdeplacement66.forfaitvehicule' ) );?></td>
+					<td colspan="2"  class="fraisdepct"><?php echo $locale->money( Configure::read( 'Fraisdeplacement66.forfaitvehicule' ) );?></td>
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct" id="Fraisdeplacement66Totalvehicule"></td>
+					<td class="fraisdepct noborder" id="Fraisdeplacement66Totalvehicule"></td>
+                    <td  class="fraisdepct noborder">&euro;</td>
 				</tr>
 			</tbody>
 		</table>
@@ -478,15 +479,16 @@
 			<tbody>
 				<tr>
 					<th>Nb trajet</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajettranspub', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
+					<td colspan="2"  class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajettranspub', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
 				<tr>
 					<th>Prix billet </th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.prixbillettranspub', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
+					<td colspan="2"  class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.prixbillettranspub', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct" id="Fraisdeplacement66Totaltranspub"></td>
+					<td class="fraisdepct noborder" id="Fraisdeplacement66Totaltranspub"></td>
+                    <td  class="fraisdepct noborder">&euro;</td>
 				</tr>
 			</tbody>
 		</table>
@@ -498,15 +500,16 @@
 			<tbody>
 				<tr>
 					<th>Nb nuitées</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbnuithebergt', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
+					<td colspan="2"  class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbnuithebergt', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
 				<tr>
 					<th>Forfait "nuitées"</th>
-					<td class="fraisdepct"><?php echo $locale->money( Configure::read( 'Fraisdeplacement66.forfaithebergt' ) );?></td>
+					<td colspan="2"  class="fraisdepct"><?php echo $locale->money( Configure::read( 'Fraisdeplacement66.forfaithebergt' ) );?></td>
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct" id="Fraisdeplacement66Totalhebergt"></td>
+					<td class="fraisdepct noborder" id="Fraisdeplacement66Totalhebergt"></td>
+                    <td  class="fraisdepct noborder">&euro;</td>
 				</tr>
 			</tbody>
 		</table>
@@ -518,15 +521,16 @@
 			<tbody>
 				<tr>
 					<th>Nb repas</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbrepas', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
+					<td colspan="2"  class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbrepas', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
 				<tr>
 					<th>Forfait "Repas"</th>
-					<td class="fraisdepct"><?php echo $locale->money( Configure::read( 'Fraisdeplacement66.forfaitrepas' ) );?></td>
+					<td colspan="2" class="fraisdepct"><?php echo $locale->money( Configure::read( 'Fraisdeplacement66.forfaitrepas' ) );?></td>
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct" id="Fraisdeplacement66Totalrepas">€</td>
+					<td class="fraisdepct noborder" id="Fraisdeplacement66Totalrepas"></td>
+                    <td class="fraisdepct2 noborder">&euro;</td>
 				</tr>
 			</tbody>
 		</table>
@@ -537,7 +541,7 @@
 <fieldset class="aere">
     <legend><strong>Observations du référent</strong></legend>
     <?php
-        echo $xform->input(  "{$this->modelClass}.avistechreferent", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );
+        echo $xform->input(  "{$this->modelClass}.avistechreferent", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );
     ?>
 </fieldset>
 <fieldset>

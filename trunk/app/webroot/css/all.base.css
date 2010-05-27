@@ -373,7 +373,7 @@ form#Apre  table.fraisdepct caption {
 
 
 form#Apre  table.fraisdepct th {
-    width: 5em;
+    width: 8em;
 }
 
 form#Apre  table.fraisdepct td.fraisdepct {
@@ -387,6 +387,15 @@ form#Apre  table.fraisdepct td.fraisdepct input {
 }
 
 
+
+form#Apre  table.fraisdepct2 td.fraisdepct2 {
+    width: 1em;
+    max-width: 1em;
+}
+form#Apre  table.fraisdepct2 td.fraisdepct2 input {
+    width: 1em;
+    max-width: 1em;
+}
 
 /***************************************/
 /*****     Partie pour le CUI      *****/
