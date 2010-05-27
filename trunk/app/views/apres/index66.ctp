@@ -107,11 +107,10 @@
                                 $buttonEnabled,
                                 $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'edit' )
                             ),
-                            $html->relanceLink(
-                                'Relancer la demande APRE',
-                                array( 'controller' => 'relancesapres', 'action' => 'add', $apre[$this->modelClass]['id'] ),
-                                $buttonEnabledInc,
-                                $permissions->check( 'relancesapres', 'add' ) && ( $apre[$this->modelClass]['etatdossierapre'] == 'INC' )
+                            $html->notificationsApre66Link(
+                                'Notifier à l\'organisme payeur',
+                                array( 'controller' => 'gedooos', 'action' => 'notificationsapre', $apre[$this->modelClass]['id'] ),
+                                $permissions->check( 'gedooos', 'notificationsapre' )
                             ),
                             $html->printLink(
                                 'Imprimer la demande APRE',
@@ -130,69 +129,5 @@
     </table>
 <?php endif;?>
 
-<br />
-
-    <?php if( !empty( $apres ) ):?>
-
-        <h2>Liste des relances</h2>
-        <?php if( empty( $relancesapres ) ):?>
-            <p class="notice">Cette personne ne possède pas encore de relances.</p>
-        <?php endif;?>
-
-        <?php if( !empty( $apres ) && !empty( $relancesapres ) ):?>
-        <table class="tooltips">
-            <thead>
-                <tr>
-                    <th>N° Apre</th>
-                    <th>Date de relance</th>
-                    <th>Liste des pièces manquantes</th>
-                    <th>Commentaire</th>
-                    <th colspan="3" class="action">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    foreach( $relancesapres as $relanceapre ) {
-                        $piecesAbsentes = Set::extract( $relanceapre, '/Relanceapre/Piecemanquante/libelle' );
-                        $piecesManquantesAides = Set::classicExtract( $relanceapre, "{$this->modelClass}.Piece.Manquante" );
-
-                        $textePiecesManquantes = '';
-                        foreach( $piecesManquantesAides as $model => $pieces ) {
-                            if( !empty( $pieces ) ) {
-                                $textePiecesManquantes .= $html->tag( 'h3', __d( 'apre', $model, true ) ).'<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
-                            }
-                        }
-
-                        echo $html->tableCells(
-                            array(
-                                h( Set::classicExtract( $relanceapre, "{$this->modelClass}.numeroapre" ) ),
-                                h( date_short( Set::classicExtract( $relanceapre, 'Relanceapre.daterelance' ) ) ),
-                                $textePiecesManquantes,
-                                h( Set::classicExtract( $relanceapre, 'Relanceapre.commentairerelance' ) ),
-//                                 $html->viewLink(
-//                                     'Voir la relance',
-//                                     array( 'controller' => 'relancesapres', 'action' => 'view', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
-//                                     $permissions->check( 'relancesapres', 'view' )
-//                                 ),
-                                $html->editLink(
-                                    'Editer la relance',
-                                    array( 'controller' => 'relancesapres', 'action' => 'edit', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
-                                    $permissions->check( 'relancesapres', 'edit' )
-                                ),
-                                $html->printLink(
-                                    'Imprimer la notification de relance',
-                                    array( 'controller' => 'gedooos', 'action' => 'relanceapre', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
-                                    $permissions->check( 'gedooos', 'relanceapre' )
-                                )
-                            ),
-                            array( 'class' => 'odd' ),
-                            array( 'class' => 'even' )
-                        );
-                    }
-                ?>
-            </tbody>
-        </table>
-        <?php  endif;?>
-    <?php  endif;?>
 </div>
 <div class="clearer"><hr /></div>
