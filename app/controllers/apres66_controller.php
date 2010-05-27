@@ -331,6 +331,19 @@
             $this->set( 'typesaides', $typesaides );
 
 
+            ///Personne liée au parcours
+            $personne_referent = $this->Personne->PersonneReferent->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'PersonneReferent.personne_id' => $personne_id,
+                        'PersonneReferent.dfdesignation IS NULL'
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+
             ///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
             $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
             $user_id = Set::classicExtract( $user, 'User.id' );
@@ -421,6 +434,39 @@
 
                 }
             }
+
+            // Doit-on setter les valeurs par défault ?
+            $dataStructurereferente_id = Set::classicExtract( $this->data, "{$this->modelClass}.structurereferente_id" );
+            $dataReferent_id = Set::classicExtract( $this->data, "{$this->modelClass}.referent_id" );
+
+            // Si le formulaire ne possède pas de valeur pour ces champs, on met celles par défaut
+            if( empty( $dataStructurereferente_id ) && empty( $dataReferent_id ) ) {
+                $structurereferente_id = $referent_id = null;
+
+
+                $structPersRef = Set::classicExtract( $personne_referent, 'PersonneReferent.structurereferente_id' );
+                // Valeur par défaut préférée: à partir de personnes_referents
+                if( !empty( $personne_referent ) && array_key_exists( $structPersRef, $structs ) ){
+                    $structurereferente_id = Set::classicExtract( $personne_referent, 'PersonneReferent.structurereferente_id' );
+                    $referent_id = Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' );
+                }
+
+                if( !empty( $structurereferente_id ) ) {
+                    $this->data = Set::insert( $this->data, "{$this->modelClass}.structurereferente_id", $structurereferente_id );
+                }
+                if( !empty( $structurereferente_id ) && !empty( $referent_id ) ) {
+                    $this->data = Set::insert( $this->data, "{$this->modelClass}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
+                }
+            }
+
+
+            $struct_id = Set::classicExtract( $this->data, "{$this->modelClass}.structurereferente_id" );
+            $this->set( 'struct_id', $struct_id );
+
+            $referent_id = Set::classicExtract( $this->data, "{$this->modelClass}.referent_id" );
+            $referent_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $referent_id );
+            $this->set( 'referent_id', $referent_id );
+
             $this->{$this->modelClass}->commit();
 
 

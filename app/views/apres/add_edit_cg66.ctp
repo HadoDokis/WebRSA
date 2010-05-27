@@ -265,12 +265,12 @@
                 <tr>
                     <td class="noborder">
                         <strong>Nom de l'organisme</strong>
-                        <?php echo $xform->input( "{$this->modelClass}.structurereferente_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $structs, 'empty' => true ) );?>
+                        <?php echo $xform->input( "{$this->modelClass}.structurereferente_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $structs, 'selected' => $struct_id,  'empty' => true ) );?>
                         <?php echo $ajax->observeField( $this->modelClass.'StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?> 
                     </td>
                     <td class="noborder">
                         <strong>Nom du référent</strong>
-                        <?php echo $xform->input( "{$this->modelClass}.referent_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $referents, 'empty' => true ) );?>
+                        <?php echo $xform->input( "{$this->modelClass}.referent_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $referents, 'selected' => $struct_id.'_'.$referent_id, 'empty' => true ) );?>
                         <?php echo $ajax->observeField( $this->modelClass.'ReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?> 
                     </td>
                 </tr>
@@ -282,6 +282,11 @@
             </table>
         </fieldset>
 
+<script type="text/javascript">
+    Event.observe( $( 'Apre66StructurereferenteId' ), 'change', function( event ) {
+        $( 'ReferentRef' ).update( '' );
+    } );
+</script>
 
          <fieldset>
             <legend>Activité (Emploi, formation, Création d'entreprise)</legend>
@@ -315,11 +320,11 @@
 
                 <tr>
                     <td class="mediumsize noborder"><strong>Quotité de travail hebdomadaire </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  "{$this->modelClass}.nbheurestravaillees", array( 'domain' => 'apre', 'label' => false ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.nbheurestravaillees", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?></td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Localisation de l'activité ( nom et adresse ) </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  "{$this->modelClass}.nomemployeur", array( 'domain' => 'apre', 'label' => false ) );?><?php echo $xform->input(  "{$this->modelClass}.adresseemployeur", array( 'domain' => 'apre', 'label' => false ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input(  "{$this->modelClass}.nomemployeur", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?><?php echo $xform->input(  "{$this->modelClass}.adresseemployeur", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
                 </tr>
             </table>
         </fieldset>
@@ -436,7 +441,7 @@
             )
         );
 
-        echo $xform->input( 'Fraisdeplacement66.destination', array( 'label' => __d( 'fraisdeplacement66', "Fraisdeplacement66.destination", true ) ) );
+        echo $xform->input( 'Fraisdeplacement66.destination', array( 'label' => __d( 'fraisdeplacement66', "Fraisdeplacement66.destination", true ), 'type' => 'text' ) );
     ?>
 
 	<div class="fraisdepct">
@@ -445,11 +450,11 @@
 			<tbody>
 				<tr>
 					<th>Nb km par trajet</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbkmvoiture', array( 'label' => false, 'div' => false ) );?></td>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbkmvoiture', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
 				<tr>
 					<th>Nb trajet </th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajetvoiture', array( 'label' => false, 'div' => false ) );?></td>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajetvoiture', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
                 <tr>
                     <th>Nb total km</th>
@@ -473,11 +478,11 @@
 			<tbody>
 				<tr>
 					<th>Nb trajet</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajettranspub', array( 'label' => false, 'div' => false ) );?></td>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbtrajettranspub', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
 				<tr>
 					<th>Prix billet </th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.prixbillettranspub', array( 'label' => false, 'div' => false ) );?></td>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.prixbillettranspub', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
 				<tr>
 					<th>Total</th>
@@ -493,7 +498,7 @@
 			<tbody>
 				<tr>
 					<th>Nb nuitées</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbnuithebergt', array( 'label' => false, 'div' => false ) );?></td>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbnuithebergt', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
 				<tr>
 					<th>Forfait "nuitées"</th>
@@ -513,7 +518,7 @@
 			<tbody>
 				<tr>
 					<th>Nb repas</th>
-					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbrepas', array( 'label' => false, 'div' => false ) );?></td>
+					<td class="fraisdepct"><?php echo $xform->input( 'Fraisdeplacement66.nbrepas', array( 'label' => false, 'div' => false, 'type' => 'text' ) );?></td>
 				</tr>
 				<tr>
 					<th>Forfait "Repas"</th>
@@ -521,7 +526,7 @@
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct" id="Fraisdeplacement66Totalrepas"></td>
+					<td class="fraisdepct" id="Fraisdeplacement66Totalrepas">€</td>
 				</tr>
 			</tbody>
 		</table>
@@ -532,7 +537,7 @@
 <fieldset class="aere">
     <legend><strong>Observations du référent</strong></legend>
     <?php
-        echo $xform->input(  "{$this->modelClass}.avistechreferent", array( 'domain' => 'apre', 'label' => false ) );
+        echo $xform->input(  "{$this->modelClass}.avistechreferent", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );
     ?>
 </fieldset>
 <fieldset>
@@ -641,10 +646,6 @@
     }
     // Frais de déplacement pour un repas
     $( 'Fraisdeplacement66Nbrepas' ).observe( 'blur', function( event ) { calculTotalRepas(); } );
-
-
-
-
 
 </script>
 
