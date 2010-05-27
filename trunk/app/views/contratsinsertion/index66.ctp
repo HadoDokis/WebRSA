@@ -47,13 +47,28 @@
             <tbody>
                 <?php foreach( $contratsinsertion as $contratinsertion ):?>
                     <?php
-                        $isValid = Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' );
+                        /**
+                        *   Règle de blocage du bouton modifier si le contrat est validé
+                        */
+                        $isValid = Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' );
                         $block = true;
                         if( $isValid == 'V'  ){
                             $block = false;
                         }
                         else{
                             $block;
+                        }
+
+                        /**
+                        *   Règle de blocage du bouton valider si le contrat est simple
+                        */
+                        $isSimple = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
+                        $blockValid = true;
+                        if( $isSimple == 'S'  ){
+                            $blockValid = false;
+                        }
+                        else{
+                            $blockValid;
                         }
 
                         echo $html->tableCells(
@@ -65,7 +80,8 @@
                                 h( Set::enum( Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' ), $decision_ci ).' '.$locale->date( 'Date::short', Set::extract( $contratinsertion, 'Contratinsertion.datevalidation_ci' ) ) ),
                                 $html->validateLink(
                                     'Valider le contrat d\'engagement réciproque ',
-                                    array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] )
+                                    array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] ),
+                                    $blockValid
                                 ),
                                 $html->viewLink(
                                     'Voir le contrat d\'engagement réciproque',
