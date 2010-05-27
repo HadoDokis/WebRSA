@@ -243,7 +243,7 @@
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Ancienneté pôle emploi </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.anciennetepoleemploi', array( 'domain' => 'apre', 'label' => false ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.anciennetepoleemploi', array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?></td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Niveau d'étude </strong></td>
@@ -254,11 +254,11 @@
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Projet professionnel </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.projetprofessionnel', array( 'domain' => 'apre', 'label' => false ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.projetprofessionnel', array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Secteur professionnel en lien avec la demande *</strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.secteurprofessionnel', array( 'domain' => 'apre', 'label' => false ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.secteurprofessionnel', array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
                 </tr>
             </table>
         </fieldset>
@@ -290,11 +290,11 @@
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Nombres d'heures travaillées </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  "{$this->modelClass}.nbheurestravaillees", array( 'domain' => 'apre', 'label' => false ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input(  "{$this->modelClass}.nbheurestravaillees", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?></td>
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Nom et adresse de l'employeur </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  "{$this->modelClass}.nomemployeur", array( 'domain' => 'apre', 'label' => false ) );?><?php echo $xform->input(  "{$this->modelClass}.adresseemployeur", array( 'domain' => 'apre', 'label' => false ) );?></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input(  "{$this->modelClass}.nomemployeur", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?><?php echo $xform->input(  "{$this->modelClass}.adresseemployeur", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
                 </tr>
             </table>
         </fieldset>
@@ -305,13 +305,13 @@
                 <tr>
                     <td class="noborder">
                         <strong>Nom de l'organisme</strong>
-                        <?php echo $xform->input( "{$this->modelClass}.structurereferente_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $structs, 'empty' => true ) );?>
+                        <?php echo $xform->input( "{$this->modelClass}.structurereferente_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $structs, 'selected' => $struct_id, 'empty' => true ) );?>
                         <?php echo $ajax->observeField( $this->modelClass.'StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?> 
                     </td>
                     <td class="noborder">
                         <strong>Nom du référent</strong>
                         <?php /*debug( $this->data, "{$this->modelClass}.referent_id" );*/?>
-                        <?php echo $xform->input( "{$this->modelClass}.referent_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $referents, 'empty' => true ) );?>
+                        <?php echo $xform->input( "{$this->modelClass}.referent_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $referents, 'selected' => $struct_id.'_'.$referent_id,'empty' => true ) );?>
                         <?php echo $ajax->observeField( $this->modelClass.'ReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?> 
                     </td>
                 </tr>
@@ -376,7 +376,7 @@
             ?>
         </fieldset>
             <?php
-                echo $xform->input( 'Pieceapre.Pieceapre', array( 'options' => $piecesapre, 'multiple' => 'checkbox',  'label' => 'Pièces jointes', ) );
+                echo $xform->input( 'Pieceapre.Pieceapre', array( 'options' => $piecesapre, 'multiple' => 'checkbox',  'label' => 'Pièces jointes' ) );
             ?>
 
         <h2 class="center">Nature de la demande</h2>
