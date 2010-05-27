@@ -1036,6 +1036,28 @@ class HtmlHelper extends AppHelper {
     }
 
     /**
+    **  Liens nécessaires pour les décisions et notification de l'APRE
+    **/
+    //Lien pour les notifications d'APRE
+    function notificationsApre66Link( $title, $url, $enabled = true ){
+        $content = $this->image(
+            'icons/application_view_list.png',
+            array( 'alt' => '' )
+        ).' Notifications OP';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
+
+    /**
     **
     **/
     ///Boutons à utiliser pour les Equipes pluridisciplinaires
