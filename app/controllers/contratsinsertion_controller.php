@@ -212,6 +212,10 @@
             }
 
 
+
+
+
+
             $this->set( compact( 'orientstruct', 'contratsinsertion' ) );
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, '/contratsinsertion/index'.Configure::read( 'Apre.suffixe' ) );
@@ -394,18 +398,25 @@
                     $this->data['Contratinsertion']['avisraison_ci'] = Set::classicExtract( $this->data, 'Contratinsertion.avisraison_radiation_ci' );
                 }
 
+                if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
+                    $contratinsertionDecisionCi = Set::classicExtract( $this->data, 'Contratinsertion.forme_ci' );
+                    if( $contratinsertionDecisionCi == 'S' ) {
+                        ///Validation si le contrat est simple (CG66)
+                        $this->data['Contratinsertion']['decision_ci'] = 'V';
+                        $this->data['Contratinsertion']['datevalidation_ci'] = date( 'Y-m-d' );
+                    }
+                }
                 /// Validation
                 $this->Contratinsertion->set( $this->data );
                 $valid = $this->Contratinsertion->validates();
                 $valid = $this->Contratinsertion->Actioninsertion->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
 
-
+/*
                 $dspData = Set::filter( $this->data['Dsp'] );
                 if( !empty( $dspData ) ){
                     $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
-                }
-//                 $valid = $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
-
+                }*/
+$this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
                 //FIXME
                     $valid = $this->Contratinsertion->Structurereferente->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
                 //
@@ -416,9 +427,9 @@
                 if( $valid ) {
                     $saved = true;
 
-                    if( !empty( $dspData ) ){
-                        $this->Contratinsertion->Personne->Dsp->create();
-                    }
+//                     if( !empty( $dspData ) ){
+//                         $this->Contratinsertion->Personne->Dsp->create();
+//                     }
                     $this->Contratinsertion->Actioninsertion->create();
                     //FIXME
                         $this->Contratinsertion->Structurereferente->create();
@@ -426,9 +437,9 @@
                     $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->create();
                     $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->create();
 
-                    if( !empty( $dspData ) ){
-                        $saved = $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
-                    }
+//                     if( !empty( $dspData ) ){
+//                         $saved = $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
+//                     }
                     $saved = $this->Contratinsertion->Actioninsertion->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
                     //FIXME
                         $saved = $this->Contratinsertion->Structurereferente->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
