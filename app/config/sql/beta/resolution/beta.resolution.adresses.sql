@@ -1,11 +1,5 @@
 /*
-* Résolution des problèmes et mise en place de vérifications pour les erreurs
-* sur les tables adresses_foyers et adresses
-*/
-
-/**
-NOTICE:  ALTER TABLE / ADD UNIQUE will create implicit index "adresses_foyers_unique_rgadr" for table "adresses_foyers"
-NOTICE:  ALTER TABLE / ADD UNIQUE will create implicit index "adresses_foyers_unique_adresse_id" for table "adresses_foyers"
+* Résolution des problèmes pour les erreurs sur les tables adresses_foyers et adresses
 */
 
 BEGIN;
@@ -99,21 +93,5 @@ DELETE FROM adresses_foyers
 				AND a1.rgadr > a2.rgadr
 			ORDER BY a1.adresse_id ASC, a1.foyer_id ASC
 	);
-
-/**
-* Ajout de vérifications
-*/
-
-/*ALTER TABLE adresses_foyers DROP CONSTRAINT adresses_foyers_adresse_id_fkey;
-ALTER TABLE adresses_foyers ADD CONSTRAINT adresses_foyers_adresse_id_fkey FOREIGN KEY (adresse_id) REFERENCES adresses (id) ON UPDATE CASCADE ON DELETE CASCADE;*/
-
--- Prévention: pour s'assurer que le rang des adresses soit bien une valeur parmi '01', '02' ou '03')
-ALTER TABLE adresses_foyers ADD CONSTRAINT adresses_foyers_rgadr_correct CHECK ( rgadr IN ( '01', '02', '03' ) );
-
--- Prévention: pour s'assurer que pour un  foyer donné, celui-ci ne possède qu'un seul enregistrement pour un rang donné
-ALTER TABLE adresses_foyers ADD CONSTRAINT adresses_foyers_unique_rgadr UNIQUE (foyer_id, rgadr);
-
--- Prévention: pour s'assurer qu'une adresse n'est référencée que par un adresses_foyers
-ALTER TABLE adresses_foyers ADD CONSTRAINT adresses_foyers_unique_adresse_id UNIQUE (adresse_id);
 
 COMMIT;
