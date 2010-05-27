@@ -18,7 +18,7 @@
         var $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'PersonneReferent' );
         var $helpers = array( 'Ajax' );
         var $components = array( 'RequestHandler' );
-        var $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci' );
+        var $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
 
         /** ********************************************************************
         *
@@ -214,6 +214,7 @@
 
             $this->set( compact( 'orientstruct', 'contratsinsertion' ) );
             $this->set( 'personne_id', $personne_id );
+            $this->render( $this->action, null, '/contratsinsertion/index'.Configure::read( 'Apre.suffixe' ) );
 
         }
 
@@ -616,5 +617,59 @@
 		public function delete( $id ) {
 			$this->Default->delete( $id );
 		}
+
+
+
+        /**
+        *
+        */
+
+        function notificationsop( $id = null ) {
+            $qual = $this->Option->qual();
+            $typevoie = $this->Option->typevoie();
+
+            $contratinsertion = $this->{$this->modelClass}->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        "{$this->modelClass}.id" => $id
+                    ),
+                    'recursive' => 0
+                )
+            );
+
+            $this->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+
+            $adresse = $this->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => Set::classicExtract( $contratinsertion, 'Personne.foyer_id' ),
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $contratinsertion['Adresse'] = $adresse['Adresse'];
+
+            $contratinsertion_id = Set::classicExtract( $contratinsertion, 'Actioncandidat.id' );
+
+            ///Traduction pour les données de la Personne/Contact/Partenaire/Référent
+            $contratinsertion['Personne']['qual'] = Set::enum( Set::classicExtract( $contratinsertion, 'Personne.qual' ), $qual );
+//             $contratinsertion['Personne']['dtnai'] = $this->Locale->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Personne.dtnai' ) );
+            $contratinsertion['Referent']['qual'] = Set::enum( Set::classicExtract( $contratinsertion, 'Referent.qual' ), $qual );
+// debug($contratinsertion);
+// die();
+//             $this->Gedooo->generate( $contratinsertion, 'Contratinsertion/notificationop.odt' );
+        }
+
     }
 ?>

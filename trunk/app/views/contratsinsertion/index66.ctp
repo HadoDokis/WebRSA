@@ -13,6 +13,9 @@
 <div class="with_treemenu">
     <h1><?php  echo 'Contrat d\'engagement réciproque  ';?></h1>
 
+        <?php if( empty( $persreferent ) ) :?>
+            <p class="error">Aucun référent n'est lié au parcours de cette personne.</p>
+        <?php endif;?>
         <?php if( empty( $contratsinsertion ) ):?>
             <p class="notice">Cette personne ne possède pas encore de contrat d'engagement réciproque.</p>
         <?php endif;?>
@@ -64,11 +67,6 @@
                                     'Valider le contrat d\'engagement réciproque ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] )
                                 ),
-                                $html->actionsLink(
-                                    'Actions pour le contrat d\'engagement réciproque',
-                                    array( 'controller' => 'actionsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['id'] ),
-                                    $permissions->check( 'actionsinsertion', 'index' )
-                                ),
                                 $html->viewLink(
                                     'Voir le contrat d\'engagement réciproque',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'view', $contratinsertion['Contratinsertion']['id']),
@@ -81,6 +79,11 @@
                                         $block,
                                         $permissions->check( 'contratsinsertion', 'edit' )
 //                                     )
+                                ),
+                                $html->notificationsApre66Link(
+                                    'Notifier à l\'organisme payeur',
+                                    array( 'controller' => 'contratsinsertion', 'action' => 'notificationsop', $contratinsertion['Contratinsertion']['id'] ),
+                                    $permissions->check( 'contratsinsertion', 'notificationsop' )
                                 ),
                                 $html->printLink(
                                     'Imprimer le contrat d\'engagement réciproque',
@@ -101,7 +104,6 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-        <?php  endif;?>
-    <?php /*endif;*/?>
+    <?php  endif;?>
 </div>
 <div class="clearer"><hr /></div>
