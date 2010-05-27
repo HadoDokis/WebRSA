@@ -2,9 +2,10 @@
     class Apres66Controller extends AppController
     {
         var $name = 'Apres66';
-        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Typeaideapre66Pieceaide66', /*'Aideapre66Pieceaide66', */'Fraisdeplacement66',  'Structurereferente', 'Referent' );
-        var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
-        var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece' );
+        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Typeaideapre66Pieceaide66', 'Adressefoyer', 'Fraisdeplacement66',  'Structurereferente', 'Referent' );
+        var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
+        var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece', 'notificationsop' );
+        var $components = array( 'Default', 'Gedooo' );
 
         /** ********************************************************************
         *
@@ -12,6 +13,7 @@
 
         function beforeFilter() {
             parent::beforeFilter();
+
             $options = $this->{$this->modelClass}->allEnumLists();
 
 
@@ -477,6 +479,58 @@
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, '/apres/add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
 //             $this->render( $this->action, null, '/apres/add_edit' );
+        }
+
+
+        /**
+        *
+        */
+
+        function notificationsop( $id = null ) {
+            $qual = $this->Option->qual();
+            $typevoie = $this->Option->typevoie();
+
+            $apre = $this->{$this->modelClass}->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        "{$this->modelClass}.id" => $id
+                    ),
+                    'recursive' => 0
+                )
+            );
+
+            $this->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+
+            $adresse = $this->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => Set::classicExtract( $apre, 'Personne.foyer_id' ),
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $apre['Adresse'] = $adresse['Adresse'];
+
+            $apre_id = Set::classicExtract( $apre, 'Actioncandidat.id' );
+
+            ///Traduction pour les données de la Personne/Contact/Partenaire/Référent
+            $apre['Personne']['qual'] = Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual );
+//             $apre['Personne']['dtnai'] = $this->Locale->date( 'Date::short', Set::classicExtract( $apre, 'Personne.dtnai' ) );
+            $apre['Referent']['qual'] = Set::enum( Set::classicExtract( $apre, 'Referent.qual' ), $qual );
+// debug($apre);
+// die();
+//             $this->Gedooo->generate( $apre, 'Apre/notificationop.odt' );
         }
 
     }

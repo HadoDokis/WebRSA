@@ -109,8 +109,8 @@
                             ),
                             $html->notificationsApre66Link(
                                 'Notifier à l\'organisme payeur',
-                                array( 'controller' => 'gedooos', 'action' => 'notificationsapre', $apre[$this->modelClass]['id'] ),
-                                $permissions->check( 'gedooos', 'notificationsapre' )
+                                array( 'controller' => 'apres66', 'action' => 'notificationsop', $apre[$this->modelClass]['id'] ),
+                                $permissions->check( 'gedooos', 'notificationsop' )
                             ),
                             $html->printLink(
                                 'Imprimer la demande APRE',
