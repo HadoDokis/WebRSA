@@ -302,6 +302,11 @@
     </fieldset>
     <fieldset id="Contratsuite">
         <table class="wide noborder">
+            <tr>
+                <td colspan="2" class="noborder center" id="contrat">
+                    <em>Ce contrat est établi pour : </em>
+                </td>
+            </tr>
             <?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ):?>
                 <tr>
                     <td colspan="2" class="noborder">
@@ -311,7 +316,7 @@
             <?php endif;?>
 
             <tr>
-                <td colspan="2" class="noborder center" id="moi">
+                <td colspan="2" class="noborder center" id="contrat">
                     <em>Ce contrat fait suite à : </em>
                 </td>
             </tr>
