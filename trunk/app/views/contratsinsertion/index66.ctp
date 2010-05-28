@@ -92,7 +92,7 @@
                                     $block,
                                     $permissions->check( 'contratsinsertion', 'edit' )
                                 ),
-                                $html->notificationsApre66Link(
+                                $html->notificationsCer66Link(
                                     'Notifier à l\'organisme payeur',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'notificationsop', $contratinsertion['Contratinsertion']['id'] ),
                                     $permissions->check( 'contratsinsertion', 'notificationsop' )

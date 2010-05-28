@@ -1039,11 +1039,11 @@ class HtmlHelper extends AppHelper {
     **  Liens nécessaires pour les décisions et notification de l'APRE
     **/
     //Lien pour les notifications d'APRE
-    function notificationsApre66Link( $title, $url, $enabled = true ){
+    function notificationsCer66Link( $title, $url, $enabled = true ){
         $content = $this->image(
             'icons/application_view_list.png',
             array( 'alt' => '' )
-        ).' Notifications';
+        ).' Notifications OP';
 
         if( $enabled ) {
             return $this->link(
