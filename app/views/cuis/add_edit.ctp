@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
+        //Utilisé en cas d'adresse de l'employeur différente pour les doc administratifs
         observeDisableFieldsetOnRadioValue(
             'cuiform',
             'data[Cui][isadresse2]',
@@ -17,6 +18,17 @@
             true
         );
 
+        //Utilisé en cas de personne inscrite à Pole Emploi
+        observeDisableFieldsetOnRadioValue(
+            'cuiform',
+            'data[Cui][isinscritpe]',
+            $( 'InscritPE' ),
+            'O',
+            false,
+            true
+        );
+
+        //Utilisé si l'employeur est un atelier ou un chantier d'insertion
         observeDisableFieldsOnRadioValue(
             'cuiform',
             'data[Cui][atelierchantier]',
@@ -26,6 +38,57 @@
             'O',
             true
         );
+
+        //Utilisé si l'employeur est un atelier ou un chantier d'insertion
+//         observeDisableFieldsOnRadioValue(
+//             'cuiform',
+//             'data[Cui][rsadept]',
+//             [
+//                 'CuiRsadeptmaj'
+//             ],
+//             'O',
+//             true
+//         );
+
+//         //Utilisé en cas de personne inscrite à Pole Emploi
+        ['ass', 'aah', 'ata', 'rsadept' ].each( function( letter ) {
+            observeDisableFieldsetOnRadioValue(
+                'cuiform',
+                'data[Cui][' + letter + ']',
+                $( 'IsBeneficiaire' ),
+                'O',
+                false,
+                true
+            );
+        });
+
+        //Utilisé en cas de personne inscrite à Pole Emploi
+//         observeDisableFieldsetOnRadioValue(
+//             'cuiform',
+//             'data[Cui][ass]',
+//             $( 'IsBeneficiaire' ),
+//             'O',
+//             false,
+//             true
+//         );
+// 
+//         observeDisableFieldsetOnRadioValue(
+//             'cuiform',
+//             'data[Cui][aah]',
+//             $( 'IsBeneficiaire' ),
+//             'O',
+//             false,
+//             true
+//         );
+// 
+//         observeDisableFieldsetOnRadioValue(
+//             'cuiform',
+//             'data[Cui][ata]',
+//             $( 'IsBeneficiaire' ),
+//             'O',
+//             false,
+//             true
+//         );
     });
 </script>
 
@@ -163,7 +226,7 @@
                                     'Cui.siret',
                                     'Cui.codenaf2',
                                     'Cui.identconvcollec',
-                                    'Cui.statutemployeur',
+                                    'Cui.statutemployeur' => array( 'empty' => true, 'options' => $options['statutemployeur'] ),
                                     'Cui.effectifemployeur'
                                 ),
                                 array(
@@ -285,17 +348,122 @@
             <?php
                 echo $default->subform(
                     array(
-                        'Cui.niveauformation' => array( 'legend' => required( __d( 'cui', 'Cui.niveauformation', true )  ), 'type' => 'radio', 'options' => $options['niveauformation'] ),
-                        'Cui.dureesansemploi' => array( 'legend' => required( __d( 'cui', 'Cui.dureesansemploi', true )  ), 'type' => 'radio', 'options' => $options['dureesansemploi'] ),
-                        'Cui.dureeinscritpe' => array( 'separator' => '<br />', 'legend' => required( __d( 'cui', 'Cui.dureeinscritpe', true )  ), 'type' => 'radio', 'options' => $options['dureeinscritpe'] ),
-                        'Cui.ass' => array( 'label' => required( __d( 'cui', 'Cui.iscie', true )  ), 'type' => 'checkbox' )
+                        'Cui.niveauformation'  => array( 'empty' => true, 'options' => $options['niveauformation'] ),
+                        'Cui.dureesansemploi' => array( 'legend' => required( __d( 'cui', 'Cui.dureesansemploi', true )  ), 'type' => 'radio', 'options' => $options['dureesansemploi'] )
                     ),
                     array(
                         'domain' => $domain,
                         'options' => $options
                     )
                 );
+
+                $error = Set::classicExtract( $this->validationErrors, 'Cui.isisncritpe' );
+                $class = 'radio'.( !empty( $error ) ? ' error' : '' );
+                $thisDataInscritPE = Set::classicExtract( $this->data, 'Cui.isisncritpe' );
+                if( !empty( $thisDataInscritPE ) ) {
+                    $valueInscritPE = $thisDataInscritPE;
+                }
+
+                $input =  $form->input( 'Cui.isinscritpe', array( 'type' => 'radio' , 'options' => $options['isinscritpe'], /*'div' => false,*/ 'legend' => required( __d( 'cui', 'Cui.isinscritpe', true )  ), 'value' => $valueInscritPE ) );
+                echo $html->tag( 'div', $input, array( 'class' => $class ) );
             ?>
+            <fieldset id="InscritPE" class="invisible">
+                <?php
+                    echo $default->subform(
+                        array(
+                            'Cui.dureeinscritpe' => array( 'legend' => required( __d( 'cui', 'Cui.dureeinscritpe', true )  ), 'type' => 'radio', 'options' => $options['dureeinscritpe'] ),
+                        ),
+                        array(
+                            'domain' => $domain,
+                            'options' => $options
+                        )
+                    );
+                ?>
+
+            </fieldset>
+                    <?php
+/*
+                    $error = Set::classicExtract( $this->validationErrors, 'Cui.isbeneficiaire' );
+                    $class = 'radio'.( !empty( $error ) ? ' error' : '' );
+                    $thisDataIsBeneficiaire = Set::classicExtract( $this->data, 'Cui.isbeneficiaire' );
+                    if( !empty( $thisDataInscritPE ) ) {
+                        $valueIsBeneficiaire = $thisDataIsBeneficiaire;
+                    }
+
+                    $input =  $form->input( 'Cui.isbeneficiaire', array( 'type' => 'radio' , 'options' => $options['isbeneficiaire'],  'legend' => required( __d( 'cui', 'Cui.isbeneficiaire', true )  ), 'value' => $valueIsBeneficiaire ) );
+                    echo $html->tag( 'div', $input, array( 'class' => $class ) );*/
+                ?>
+                <table class="noborder">
+                    <tr>
+                        <td class="cui3 noborder">
+                            <?php
+                                echo $default->subform(
+                                    array(
+                                        'Cui.ass' => array( 'label' => required( __d( 'cui', 'Cui.ass', true )  ), 'type' => 'radio', 'options' => $options['ass'] ),
+                                        'Cui.aah' => array( 'label' => required( __d( 'cui', 'Cui.aah', true )  ), 'type' => 'radio', 'options' => $options['aah'] )
+                                    ),
+                                    array(
+                                        'domain' => $domain,
+                                        'options' => $options
+                                    )
+                                );
+                            ?>
+
+                        </td>
+                        <td class="cui3 noborder">
+                            <?php
+                                echo $default->subform(
+                                    array(
+                                        'Cui.rsadept' => array( 'label' => required( __d( 'cui', 'Cui.rsadept', true )  ), 'type' => 'radio', 'options' => $options['rsadept'] ),
+                                        'Cui.ata' => array( 'label' => required( __d( 'cui', 'Cui.ata', true )  ), 'type' => 'radio', 'options' => $options['ata'] )
+                                    ),
+                                    array(
+                                        'domain' => $domain,
+                                        'options' => $options
+                                    )
+                                );
+                            ?>
+                        </td>
+                        <td class="cui3 noborder">
+                            <?php
+                                echo $default->subform(
+                                    array(
+                                        'Cui.rsadeptmaj' => array( 'label' => required( __d( 'cui', 'Cui.rsadeptmaj', true )  ), 'type' => 'radio', 'options' => $options['rsadeptmaj'] )
+                                    ),
+                                    array(
+                                        'domain' => $domain,
+                                        'options' => $options
+                                    )
+                                );
+                            ?>
+                        </td>
+                    </tr>
+                </table>
+
+                <fieldset id="IsBeneficiaire">
+                    <?php
+                        echo $default->subform(
+                            array(
+                                'Cui.dureebenefaide' => array( 'label' => required( __d( 'cui', 'Cui.dureebenefaide', true )  ), 'type' => 'radio', 'options' => $options['dureebenefaide'] )
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                    ?>
+                </fieldset>
+                <?php
+                    echo $default->subform(
+                        array(
+                            'Cui.handicap' => array( 'label' => required( __d( 'cui', 'Cui.handicap', true )  ), 'type' => 'radio', 'options' => $options['handicap'] )
+                        ),
+                        array(
+                            'domain' => $domain,
+                            'options' => $options
+                        )
+                    );
+                ?>
     </fieldset>
 
 <!--********************* Le contrat de travail ********************** -->
