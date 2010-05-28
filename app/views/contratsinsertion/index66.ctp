@@ -48,15 +48,16 @@
                 <?php foreach( $contratsinsertion as $contratinsertion ):?>
                     <?php
                         /**
-                        *   Règle de blocage du bouton modifier si le contrat est validé
+                        *   Règle de blocage du bouton modifier si le contrat est validé et que 
+                        *   la date du jour est comprise dans les 24heures
                         */
+                        $dateValidation = Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
+
                         $isValid = Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' );
                         $block = true;
-                        if( $isValid == 'V'  ){
+
+                        if( $isValid == 'V' && ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiable.nbheure' ) ) ) ){
                             $block = false;
-                        }
-                        else{
-                            $block;
                         }
 
                         /**
@@ -64,11 +65,8 @@
                         */
                         $isSimple = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
                         $blockValid = true;
-                        if( $isSimple == 'S'  ){
+                        if( $isValid == 'V' && $isSimple == 'S' ){
                             $blockValid = false;
-                        }
-                        else{
-                            $blockValid;
                         }
 
                         echo $html->tableCells(
@@ -91,10 +89,8 @@
                                 $html->editLink(
                                     'Éditer le contrat d\'engagement réciproque ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'edit', $contratinsertion['Contratinsertion']['id'] ),
-//                                     array(
-                                        $block,
-                                        $permissions->check( 'contratsinsertion', 'edit' )
-//                                     )
+                                    $block,
+                                    $permissions->check( 'contratsinsertion', 'edit' )
                                 ),
                                 $html->notificationsApre66Link(
                                     'Notifier à l\'organisme payeur',

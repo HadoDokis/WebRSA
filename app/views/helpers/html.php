@@ -1043,7 +1043,7 @@ class HtmlHelper extends AppHelper {
         $content = $this->image(
             'icons/application_view_list.png',
             array( 'alt' => '' )
-        ).' Notifications OP';
+        ).' Notifications';
 
         if( $enabled ) {
             return $this->link(
