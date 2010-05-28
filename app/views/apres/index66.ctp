@@ -107,7 +107,7 @@
                                 $buttonEnabled,
                                 $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'edit' )
                             ),
-                            $html->notificationsApre66Link(
+                            $html->notificationsApreLink(
                                 'Notifier la décision',
                                 array( 'controller' => 'apres66', 'action' => 'notificationsop', $apre[$this->modelClass]['id'] ),
                                 $permissions->check( 'gedooos', 'notificationsop' )
