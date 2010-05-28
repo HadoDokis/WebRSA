@@ -84,7 +84,7 @@
                         'div',
                         $html->tag( 'span', ( isset( $ReferentNom ) ? $ReferentNom : ' ' ), array( 'id' => 'ReferentNom' ) )
                     );
-                    echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentNom', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
+                    echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentNom', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) );
                 ?>
             </td>
         </tr>
