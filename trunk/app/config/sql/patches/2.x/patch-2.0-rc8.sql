@@ -55,6 +55,10 @@ CREATE TYPE type_orgrecouvcotis AS ENUM ( 'URS', 'MSA', 'AUT' );
 CREATE TYPE type_assurance AS ENUM ( 'UNE', 'LUI' );
 -- UNE = l'employeur public ou privé est affilié à l'UNEDIC
 -- LUI = l'employeur public assure lui-même ce risque
+CREATE TYPE type_statutemployeur AS ENUM ( '10', '11', '21', '22', '50', '60', '70', '80', '90', '98', '99' );
+-- cf formulaire cerfa du CUI tableau 1
+CREATE TYPE type_niveauformation AS ENUM ( '70', '60', '50', '51', '40', '41', '30', '20', '10', '00' );
+-- cf formulaire cerfa du CUI tableau 2
 CREATE TYPE type_emploi AS ENUM ( '06', '11', '23', '24' );
 -- 06 = moins de 6 mois
 -- 11 = de 6 à 11 mois
@@ -77,6 +81,7 @@ CREATE TYPE type_orgapayeur AS ENUM ( 'DEP', 'CAF', 'MSA', 'ASP', 'AUT' );
 -- AUT = Autre
 
 CREATE TYPE type_convention AS ENUM ( 'CES', 'EES' );
+
 -- CES = Le Conseil Général, l'Employeur et le Salarié
 -- EES = L'Etat, l'Employeur et le Salarié
 
@@ -98,8 +103,6 @@ CREATE TABLE cuis (
     id                               SERIAL NOT NULL PRIMARY KEY,
     personne_id                      INTEGER NOT NULL REFERENCES personnes(id),
     referent_id                      INTEGER NOT NULL REFERENCES referents(id),
---     employeurcui_id             INTEGER NOT NULL REFERENCES employeurscuis(id),
-    -- Partie prescripteur
     convention                       type_convention DEFAULT NULL,
     secteur                          type_secteur DEFAULT NULL,
     numsecteur                       VARCHAR(11) DEFAULT NULL,
@@ -109,7 +112,6 @@ CREATE TABLE cuis (
     datedepot                        DATE DEFAULT NULL,
     codeprescripteur                 VARCHAR(6) DEFAULT NULL,
     numeroide                        VARCHAR(8) DEFAULT NULL,
-    -- Partie pour l'employeur
     nomemployeur                     VARCHAR(50),
     numvoieemployeur                 VARCHAR(6),
     typevoieemployeur                VARCHAR(4) NOT NULL,
@@ -122,14 +124,13 @@ CREATE TABLE cuis (
     siret                            CHAR(14),
     codenaf2                         CHAR(5),
     identconvcollec                  CHAR(4),
-    statutemployeur                  CHAR(2),
-    effectifemployeur                CHAR(6),
+    statutemployeur                  type_statutemployeur DEFAULT NULL,
+    effectifemployeur                INTEGER,
     orgrecouvcotis                   type_orgrecouvcotis DEFAULT NULL,
     atelierchantier                  type_no DEFAULT NULL,
     numannexefinanciere              VARCHAR(9),
     assurancechomage                 type_assurance DEFAULT NULL,
     iscie                            type_no DEFAULT NULL,
-    --Partie pour l'employeur si envoi à adresse différente
     isadresse2                       type_no DEFAULT NULL,
     numvoieemployeur2                VARCHAR(50),
     typevoieemployeur2               VARCHAR(6),
@@ -139,10 +140,11 @@ CREATE TABLE cuis (
     emailemployeur2                  VARCHAR(78),
     codepostalemployeur2             CHAR(5) ,
     villeemployeur2                  VARCHAR(45),
-    -- Partie pour la situation du salarié avant la signature de la convention
-    niveauformation                  CHAR(2), -- A voir si niveauetude ou pas cf tableau 2 du CUI
+    niveauformation                  type_niveauformation DEFAULT NULL,
     dureesansemploi                  type_emploi DEFAULT NULL,
+    isinscritpe                      type_no DEFAULT NULL,
     dureeinscritpe                   type_emploi DEFAULT NULL,
+    isbeneficiaire                   type_no DEFAULT NULL,
     ass                              type_no DEFAULT NULL,
     rsadept                          type_no DEFAULT NULL,
     rsadeptmaj                       type_no DEFAULT NULL,
@@ -150,7 +152,6 @@ CREATE TABLE cuis (
     ata                              type_no DEFAULT NULL,
     dureebenefaide                   type_emploi DEFAULT NULL,
     handicap                         type_no DEFAULT NULL,
-    -- Partie Contrat travail
     typecontrat                      type_typecontratcui DEFAULT NULL,
     dateembauche                     DATE DEFAULT NULL,
     datefincontrat                   DATE DEFAULT NULL,
@@ -164,22 +165,18 @@ CREATE TABLE cuis (
     nomvoielieucontrat               VARCHAR(50) NOT NULL,
     codepostallieucontrat            CHAR(5) NOT NULL,
     villelieucontrat                 VARCHAR(45) NOT NULL,
-    -- Partie actions d'accompagnement
     qualtuteur                       CHAR(3),
     nomtuteur                        VARCHAR(50),
     prenomtuteur                     VARCHAR(50),
     fonctiontuteur                   VARCHAR(50),
     structurereferente_id            INTEGER REFERENCES structuresreferentes(id),
-    isaas                            type_no DEFAULT NULL, -- action d'accompagnement social
-    -- actions d'accompagnement professionnel
+    isaas                            type_no DEFAULT NULL,
     remobilisation                   type_initiative DEFAULT NULL,
     aidereprise                      type_initiative DEFAULT NULL,
     elaboprojetpro                   type_initiative DEFAULT NULL,
     evaluation                       type_initiative DEFAULT NULL,
     aiderechemploi                   type_initiative DEFAULT NULL,
-    autre                            type_initiative DEFAULT NULL,
-    precisionautre                   VARCHAR(50),
-    -- actions de formation
+    autre                            VARCHAR(50),
     adaptation                       type_initiative DEFAULT NULL,
     remiseniveau                     type_initiative DEFAULT NULL,
     prequalification                 type_initiative DEFAULT NULL,
@@ -189,9 +186,7 @@ CREATE TABLE cuis (
     isperiodepro                     type_no DEFAULT NULL,
     niveauqualif                     CHAR(2),
     validacquis                      type_no DEFAULT NULL,
-    --
     iscae                            type_no DEFAULT NULL,
-    -- Partie prise en charge (pour prescripteur)
     datedebprisecharge               DATE,
     datefinprisecharge               DATE,
     dureehebdoretenue                TIME WITHOUT TIME ZONE,
