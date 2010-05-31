@@ -425,8 +425,8 @@
 
 
 
-debug( $contratinsertion );
-die();
+// debug( $contratinsertion );
+// die();
             ///Permet d'afficher le nb d'ouverture de droit de la personne
             $contratinsertion['Dossier']['nbouv'] = count( Set::classicExtract( $contratinsertion, 'Dossier.dtdemrsa' ) );
 
