@@ -554,22 +554,15 @@
                 )
             );
         ?>
-        <table class="cui3 noborder">
+         <table class="cuiduree noborder">
             <tr>
-                <td class=" noborder">
+                <td class="dureehebdo noborder">Durée hebdomadaire de travail du salarié indiquée sur le contrat de travail</td>
+                <td class="dureehebdo noborder">
                     <?php
-                        echo $default->subform(
-                            array(
-                                 'Cui.dureehebdosalarie' => array( 'label' =>  required( __d( 'cui', 'Cui.dureehebdosalarie', true ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ) ),
-                            ),
-                            array(
-                                'domain' => $domain,
-                                'options' => $options
-                            )
-                        );
+                        echo $xform->input( 'Cui.dureehebdosalarieheure', array( 'div' => false, 'label' => false, 'type' => 'text' ) ).' H '.$xform->input( 'Cui.dureehebdosalarieminute', array( 'div' => false, 'label' => false, 'type' => 'text' ) );
                     ?>
-                </td>
-                <td class=" noborder">
+                 </td>
+                 <td class="noborder"> 
                     <?php
                         echo $default->subform(
                             array(
@@ -581,21 +574,19 @@
                             )
                         );
                     ?>
-                </td>
+                 </td>
             </tr>
+            <tr>
+                <td class="dureehebdo noborder">Durée collective hebdomadaire de travail appliquée dans l'établissement</td>
+                <td class="dureehebdo noborder">
+                    <?php
+                        echo $xform->input( 'Cui.dureecollhebdoheure', array( 'div' => false, 'label' => false, 'type' => 'text' ) ).' H '.$xform->input( 'Cui.dureecollhebdominute', array( 'div' => false, 'label' => false, 'type' => 'text' ) );
+                    ?>
+                </td>
         </table>
-        <?php
-            echo $default->subform(
-                array(
-                    'Cui.dureecollectivehebdo' => array( 'label' =>  required( __d( 'cui', 'Cui.dureehebdosalarie', true ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
-                ),
-                array(
-                    'domain' => $domain,
-                    'options' => $options
-                )
-            );
 
-            echo $html->tag( 'p', 'Lieu d\'exécution du contrat s\'il eest différent de l\'adresse de l\'employeur :' );
+        <?php
+            echo $html->tag( 'p', 'Lieu d\'exécution du contrat s\'il est différent de l\'adresse de l\'employeur :' );
             echo $default->subform(
                 array(
                     'Cui.numlieucontrat',
@@ -788,19 +779,12 @@
                 </td>
             </tr>
         </table>
-        <table class="cui5 noborder">
+        <table class="cuiduree noborder">
             <tr>
-                <td class="noborder">
+                <td class="dureehebdo noborder">Durée hebdomadaire retenue pour le calcul de l'aide</td>
+                <td class="dureehebdo noborder">
                     <?php
-                        echo $default->subform(
-                            array(
-                                'Cui.dureehebdoretenue' => array( 'label' =>  required( __d( 'cui', 'Cui.dureehebdoretenue', true ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
-                            ),
-                            array(
-                                'domain' => $domain,
-                                'options' => $options
-                            )
-                        );
+                        echo $xform->input( 'Cui.dureehebdoretenueheure', array( 'div' => false, 'label' => false, 'type' => 'text' ) ).' H '.$xform->input( 'Cui.dureehebdoretenueminute', array( 'div' => false, 'label' => false, 'type' => 'text' ) );
                     ?>
                 </td>
                 <td class="noborder">
@@ -865,6 +849,9 @@
             </tr>
         </table>
     </fieldset>
+    <?php
+        echo $html->tag( 'p', 'En cas de non exécution de la présente convention, les sommes déjà versées font l\'objet d\'un ordre de reversement. L\'employeur et le salarié déclarent avoir pris connaissance des conditions générales jointes', array( 'class' => 'remarque' ) );
+    ?>
 
     <div class="submit">
         <?php

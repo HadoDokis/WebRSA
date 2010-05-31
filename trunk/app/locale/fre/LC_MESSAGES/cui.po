@@ -198,13 +198,16 @@ msgstr "Emploi proposé : "
 msgid "Cui.salairebrut"
 msgstr "Salaire brut mensuel"
 
-msgid "Cui.dureehebdosalarie"
+msgid "Cui.dureehebdosalarieheure"
 msgstr "Durée hebdomadaire de travail du salarié indiquée sur le contrat de travail "
+
+msgid "Cui.dureehebdosalarieminute"
+msgstr " H "
 
 msgid "Cui.modulation"
 msgstr "Modulation"
 
-msgid "Cui.dureecollectivehebdo:"
+msgid "Cui.dureecollhebdoheure"
 msgstr "Durée collective hebdomadaire de travail appliquée dans l'établissement"
 
 msgid "Cui.numlieucontrat"

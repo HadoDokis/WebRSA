@@ -29,7 +29,8 @@
                 array(
                     'actions' => array(
                         'Cui.edit',
-                        'Cui.delete',
+                        'Cui.print' => array( 'controller' => 'cuis', 'action' => 'gedooo' ),
+                        'Cui.delete'
                     ),
                     'add' => array( 'Cui.add' => $personne_id ),
                 )
