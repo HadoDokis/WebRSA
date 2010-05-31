@@ -7,7 +7,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dsp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dsp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent', 'Suspensiondroit', 'Situationdossierrsa' );
         var $components = array( 'Jetons', 'Gedooo' );
         var $helpers = array( 'Locale' );
 
@@ -167,6 +167,10 @@
             $this->set( 'typeocclog', $typeocclog );
             $oridemrsa = $this->Option->oridemrsa();
             $this->set( 'oridemrsa', $oridemrsa );
+            $avisraison_ci = $this->Option->avisraison_ci();
+            $this->set( 'avisraison_ci', $avisraison_ci );
+            $options = $this->Contratinsertion->allEnumLists();
+            $this->set( 'options', $options );
 
 
 
@@ -288,6 +292,35 @@
             );
             $dossier['Dossier']['id'] = $ddrsa['Detaildroitrsa']['dossier_rsa_id'];
 
+            /// Récupération des données de la table Suspension
+            $situationdossierrsa = $this->Situationdossierrsa->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Situationdossierrsa.dossier_rsa_id' => $dossier['Dossier']['id']
+                    )
+                )
+            );
+            $contratinsertion['Situationdossierrsa'] = $situationdossierrsa['Situationdossierrsa'];
+            $contratinsertion['Situationdossierrsa']['dtclorsa'] = $this->Locale->date( '%d/%m/%Y', Set::classicExtract( $contratinsertion, 'Situationdossierrsa.dtclorsa' ) );
+
+
+            if( !empty( $situationdossierrsa ) ) {
+                /// Récupération des données de la table Suspension
+                $suspension = $this->Suspensiondroit->find(
+                    'all',
+                    array(
+                        'conditions' => array(
+                            'Suspensiondroit.situationdossierrsa_id' => $situationdossierrsa['Situationdossierrsa']['id']
+                        ),
+                        'order' => array( 'Suspensiondroit.ddsusdrorsa DESC' )
+                    )
+                );
+                $contratinsertion['Suspensiondroit'] = $suspension[0]['Suspensiondroit'];
+                $contratinsertion['Suspensiondroit']['ddsusdrorsa'] = $this->Locale->date( '%d/%m/%Y', Set::classicExtract( $contratinsertion, 'Suspensiondroit.ddsusdrorsa' ) );
+            }
+
+
 
             $activite = $this->Activite->find(
                 'first',
@@ -322,6 +355,7 @@
             /// Données Personne récupérées
             $contratinsertion['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Personne']['dtnai'] ) );
             $contratinsertion['Personne']['qual'] = ( isset( $qual[$contratinsertion['Personne']['qual']] ) ? $qual[$contratinsertion['Personne']['qual']] : null );
+
 
 
             $contratinsertion['Contratinsertion']['dd_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['dd_ci'] ) );
@@ -382,9 +416,17 @@
 
             $contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $duree_engag_cg93 );
 
-// debug( $contratinsertion );
-// die();
+            /// Ajout de la traduction pour le rôle de la personne (DEM/ CJT)
+            $contratinsertion['Prestation']['rolepers'] = Set::enum( Set::classicExtract( $contratinsertion, 'Prestation.rolepers' ), $rolepers );
 
+            ///Permet d'afficher le type de demande en cas de contrat Complexe
+           $contratinsertion['Contratinsertion']['type_demande'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.type_demande' ), $options['type_demande'] );
+           $contratinsertion['Contratinsertion']['avisraison_ci'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.avisraison_ci' ), $avisraison_ci );
+
+
+
+debug( $contratinsertion );
+die();
             ///Permet d'afficher le nb d'ouverture de droit de la personne
             $contratinsertion['Dossier']['nbouv'] = count( Set::classicExtract( $contratinsertion, 'Dossier.dtdemrsa' ) );
 
