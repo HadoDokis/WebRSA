@@ -18,7 +18,7 @@
             true
         );
 
-        //Utilisé si les périodes sont des périodes de professionnalisation
+        //Utilisé si le contrat signé est de type CIE
         observeDisableFieldsetOnRadioValue(
             'cuiform',
             'data[Cui][secteur]',
@@ -28,7 +28,7 @@
             true
         );
 
-        //Utilisé si les périodes sont des périodes de professionnalisation
+        //Utilisé si le contrat signé est de type CAE
         observeDisableFieldsetOnRadioValue(
             'cuiform',
             'data[Cui][secteur]',
@@ -59,7 +59,7 @@
             true
         );
 
-        //Utilisé si l'employeur est un atelier ou un chantier d'insertion
+        //Utilisé si le bénéficiaire bénéficie d'un rsa majoré
         observeDisableFieldsetOnRadioValue(
             'cuiform',
             'data[Cui][rsadept]',
@@ -91,6 +91,30 @@
             false,
             true
         );
+
+        //Utilisé si le financement excclusif provient du Conseil Général
+        observeDisableFieldsOnRadioValue(
+            'cuiform',
+            'data[Cui][financementexclusif]',
+            [
+                'CuiTauxfinancementexclusif'
+            ],
+            'O',
+            true
+        );
+
+        //Utilisé si l'organisme payeur est AUTRE
+        observeDisableFieldsOnRadioValue(
+            'cuiform',
+            'data[Cui][orgapayeur]',
+            [
+                'CuiOrganisme',
+                'CuiAdresseorganisme'
+            ],
+            'AUT',
+            true
+        );
+
     });
 </script>
 
@@ -730,7 +754,117 @@
         ?>
     </fieldset>
 
+<!--********************* La prise en charge (cadre réservé au prescripteur) ********************** -->
+    <fieldset>
+        <legend>LA PRISE EN CHARGE (CADRE RÉSERVÉ AU PRESCRIPTEUR)</legend>
+        <table class="cui5 noborder">
+            <tr>
+                <td class="noborder">
+                    <?php
+                        echo $default->subform(
+                            array(
+                                'Cui.datedebprisecharge' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 )
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                        echo $html->tag( 'em','(identique à la date d\'embauche si convention initiale)' );
+                    ?>
+                </td>
+                <td class="noborder">
+                    <?php
+                        echo $default->subform(
+                            array(
+                                'Cui.datefinprisecharge' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 )
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                    ?>
+                </td>
+            </tr>
+        </table>
+        <table class="cui5 noborder">
+            <tr>
+                <td class="noborder">
+                    <?php
+                        echo $default->subform(
+                            array(
+                                'Cui.dureehebdoretenue' => array( 'label' =>  required( __d( 'cui', 'Cui.dureehebdoretenue', true ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                    ?>
+                </td>
+                <td class="noborder">
+                    <?php
+                        echo $default->subform(
+                            array(
+                                'Cui.opspeciale' => array( 'type' => 'text' )/* => array( 'type' => 'radio', 'legend' => __d( 'cui', 'Cui.opspeciale', true ), 'options' => $options['opspeciale'] )*/
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
 
+                    ?>
+                </td>
+            </tr>
+        </table>
+        <table class="noborder">
+            <tr>
+                <td class="noborder">
+                    <?php
+                        echo $default->subform(
+                            array(
+                                'Cui.tauxfixe' => array( 'maxlength' => 3 )
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+
+                        echo $html->tag( 'hr');
+
+                        echo $html->tag( 'p','Dans le cas d\'un contrat prescrit par le Conseil Général ou pour son compte (sur la base d\'une convention d\'objectifs et de moyens)', array( 'class' => 'aere' ) );
+                        echo $default->subform(
+                            array(
+                                'Cui.tauxprisencharge' => array( 'maxlength' => 3 ),
+                                'Cui.financementexclusif' => array( 'type' => 'radio', 'legend' => __d( 'cui', 'Cui.financementexclusif', true ), 'options' => $options['financementexclusif'] ),
+                                'Cui.tauxfinancementexclusif' => array( 'maxlength' => 3 ),
+                                'Cui.orgapayeur' => array(  'type' => 'radio', 'legend' => __d( 'cui', 'Cui.orgapayeur', true ), 'options' => $options['orgapayeur'] ),
+                                'Cui.organisme' => array( 'maxlength' => 3 ),
+                                'Cui.adresseorganisme' => array( 'maxlength' => 3 ),
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+
+                        echo $default->subform(
+                            array(
+                                'Cui.datecontrat' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => false )
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                    ?>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
 
     <div class="submit">
         <?php

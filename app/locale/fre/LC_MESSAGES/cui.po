@@ -293,6 +293,40 @@ msgstr "Une ou plusieurs de ces actions s'inscrivent elles dans le cadre de la v
 
 msgid "Cui.iscae"
 msgstr "Si CAE, envisagez-vous de mettre en oeuvre des périodes d'immersion ?"
+
+msgid "Cui.datedebprisecharge"
+msgstr "Date d'effet de la prise en charge"
+
+msgid "Cui.datefinprisecharge"
+msgstr "Date de fin de la prise en charge"
+
+msgid "Cui.opspeciale"
+msgstr "Opération spéciale"
+
+msgid "Cui.dureehebdoretenue"
+msgstr "Durée hebdomadaire retenue pour le calcul de l'aide :"
+
+msgid "Cui.tauxfixe"
+msgstr "Taux fixé par l'arrêté du Préfet de région (en %)"
+
+msgid "Cui.tauxprisencharge"
+msgstr "Taux de prise en charge effectif si le Conseil Général fixe un taux supérieur au taux fixé par le Préfet de région (en %)"
+
+msgid "Cui.financementexclusif"
+msgstr "Financement exclusif du Conseil Général"
+
+msgid "Cui.tauxfinancementexclusif"
+msgstr "Si oui, taux (en %)"
+
+msgid "Cui.orgapayeur"
+msgstr "Organisme payeur de l'aide du Conseil Général à l'employeur"
+
+msgid "Cui.organisme"
+msgstr "Organisme"
+
+msgid "Cui.adresseorganisme"
+msgstr "Adresse de l'organisme"
+
 ###############################################################################
 ####  Liste des ENUM de la table CUI
 ###############################################################################
@@ -541,3 +575,26 @@ msgstr "Non"
 
 msgid "ENUM::ISCAE::O"
 msgstr "Oui"
+
+####################
+msgid "ENUM::FINANCEMENTEXCLUSIF::N"
+msgstr "Non"
+
+msgid "ENUM::FINANCEMENTEXCLUSIF::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::ORGAPAYEUR::DEP"
+msgstr "Département"
+
+msgid "ENUM::ORGAPAYEUR::CAF"
+msgstr "CAF"
+
+msgid "ENUM::ORGAPAYEUR::MSA"
+msgstr "MSA"
+
+msgid "ENUM::ORGAPAYEUR::ASP"
+msgstr "ASP"
+
+msgid "ENUM::ORGAPAYEUR::AUT"
+msgstr "Autre (préciser)"
