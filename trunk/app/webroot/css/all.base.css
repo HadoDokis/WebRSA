@@ -453,6 +453,17 @@ form#cuiform table.cui5  p {
     font-weight: bold;
 }
 
+form#cuiform input#CuiTauxfixe {
+    width: 10%;
+}
+
+form#cuiform input#CuiTauxprisencharge {
+    width: 10%;
+}
+
+form#cuiform input#CuiTauxfinancementexclusif {
+    width: 10%;
+}
 
 form#cuiform fieldset div.text {
     clear: none;
