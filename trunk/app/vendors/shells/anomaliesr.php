@@ -21,6 +21,7 @@
 
 		public $verbose;
 		public $limit;
+		public $connection = null;
 
 		protected $_checks = array(
 			array(
@@ -314,13 +315,17 @@
 			$connectionName = $this->_getNamedValue( 'connection', 'string' );
 			$this->limit = $this->_getNamedValue( 'limit', 'integer' );
 
-			try {
-				$this->connection = @ConnectionManager::getDataSource( $connectionName );
-			} catch (Exception $e) {
+			$connections = array_keys( ConnectionManager::enumConnectionObjects() );
+
+			if( in_array( $connectionName, $connections ) ) {
+				try {
+					$this->connection = ConnectionManager::getDataSource( $connectionName );
+				} catch (Exception $e) {
+				}
 			}
 
 			if( !$this->connection || !$this->connection->connected ) {
-				$this->error( "Impossible de se connecter avec la connexion {$connectionName}" );
+				$this->error( "Impossible de se connecter avec la connexion {$connectionName} (essayez une connexion parmis ".implode( ", ", $connections ).")", null );
 			}
 		}
 
