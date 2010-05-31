@@ -412,6 +412,10 @@ form#cuiform .cui1 {
     width: 50%;
 }
 
+form#cuiform table.cui3 tbody tr td {
+    width: 48%;
+}
+
 form#cuiform .cui2 {
     width: 50%;
 }
@@ -419,6 +423,36 @@ form#cuiform .cui2 {
 form#cuiform .cui3 {
     width: 100%;
 }
+
+form#cuiform .cui4 {
+    width: 50%;
+}
+
+
+form#cuiform table.cui5 tbody tr td {
+    width: 48%;
+}
+
+
+
+form#cuiform .cui5 td div.select select {
+    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;
+    width: 10%;
+}
+
+form#cuiform .cui5 td div.radio {
+/*    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;*/
+    width: 50%;
+}
+
+form#cuiform table.cui5  p {
+    font-weight: bold;
+}
+
 
 form#cuiform fieldset div.text {
     clear: none;

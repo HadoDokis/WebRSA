@@ -23,6 +23,7 @@
             $this->set( 'nationalite', $this->Option->nationalite() );
 
             $options = Set::insert( $options, 'typevoie', $typevoie );
+//             $options = Set::insert( $options, 'initiative', array( '0', '1', '2', '3' ) );
 // debug($options);
             $dept = $this->Departement->find('list', array( 'fields' => array( 'numdep', 'name' ) ) );
             $this->set( compact( 'options', 'dept' ) );
@@ -90,12 +91,16 @@
             }
 
             $valueAdressebis = null;
+            $valueInscritPE = null;
+            $valueIsBeneficiaire = null;
             if( $this->action == 'add' ) {
                 $cui_id = null;
                 $personne_id = $id;
                 $nbrPersonnes = $this->Cui->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
                 $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
                 $valueAdressebis = 'N';
+                $valueInscritPE = 'N';
+                $valueIsBeneficiaire = 'N';
 
             }
             else if( $this->action == 'edit' ) {
@@ -104,6 +109,8 @@
                 $this->assert( !empty( $cui ), 'invalidParameter' );
                 $personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
                 $valueAdressebis = Set::classicExtract( $cui, 'Cui.isadresse2' );
+                $valueInscritPE = Set::classicExtract( $cui, 'Cui.isinscritpe' );
+                $valueIsBeneficiaire = Set::classicExtract( $cui, 'Cui.isbeneficiaire' );
             }
 
             /// Peut-on prendre le jeton ?
@@ -115,6 +122,8 @@
             $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
             $this->set( 'dossier_id', $dossier_id );
             $this->set( 'valueAdressebis', $valueAdressebis );
+            $this->set( 'valueInscritPE', $valueInscritPE );
+            $this->set( 'valueIsBeneficiaire', $valueIsBeneficiaire );
 
             ///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
             $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
@@ -122,6 +131,7 @@
             $personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $user_id );
             $this->set( 'personne', $personne );
 
+            $this->set( 'referents', $this->Referent->find( 'list' ) );
 
             if( !empty( $this->data ) ){
 

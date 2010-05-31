@@ -18,6 +18,26 @@
             true
         );
 
+        //Utilisé si les périodes sont des périodes de professionnalisation
+        observeDisableFieldsetOnRadioValue(
+            'cuiform',
+            'data[Cui][secteur]',
+            $( 'iscie' ),
+            'CIE',
+            false,
+            true
+        );
+
+        //Utilisé si les périodes sont des périodes de professionnalisation
+        observeDisableFieldsetOnRadioValue(
+            'cuiform',
+            'data[Cui][secteur]',
+            $( 'iscae' ),
+            'CAE',
+            false,
+            true
+        );
+
         //Utilisé en cas de personne inscrite à Pole Emploi
         observeDisableFieldsetOnRadioValue(
             'cuiform',
@@ -40,55 +60,37 @@
         );
 
         //Utilisé si l'employeur est un atelier ou un chantier d'insertion
-//         observeDisableFieldsOnRadioValue(
-//             'cuiform',
-//             'data[Cui][rsadept]',
-//             [
-//                 'CuiRsadeptmaj'
-//             ],
-//             'O',
-//             true
-//         );
+        observeDisableFieldsetOnRadioValue(
+            'cuiform',
+            'data[Cui][rsadept]',
+            $( 'IsRsaMaj' ),
+            'O',
+            false,
+            true
+        );
 
-//         //Utilisé en cas de personne inscrite à Pole Emploi
-        ['ass', 'aah', 'ata', 'rsadept' ].each( function( letter ) {
-            observeDisableFieldsetOnRadioValue(
-                'cuiform',
-                'data[Cui][' + letter + ']',
-                $( 'IsBeneficiaire' ),
-                'O',
-                false,
-                true
-            );
-        });
+        //Utilisé si le type de contrat est un CDD
+        observeDisableFieldsOnRadioValue(
+            'cuiform',
+            'data[Cui][typecontrat]',
+            [
+                'CuiDatefincontratYear',
+                'CuiDatefincontratMonth',
+                'CuiDatefincontratDay'
+            ],
+            'CDD',
+            true
+        );
 
-        //Utilisé en cas de personne inscrite à Pole Emploi
-//         observeDisableFieldsetOnRadioValue(
-//             'cuiform',
-//             'data[Cui][ass]',
-//             $( 'IsBeneficiaire' ),
-//             'O',
-//             false,
-//             true
-//         );
-// 
-//         observeDisableFieldsetOnRadioValue(
-//             'cuiform',
-//             'data[Cui][aah]',
-//             $( 'IsBeneficiaire' ),
-//             'O',
-//             false,
-//             true
-//         );
-// 
-//         observeDisableFieldsetOnRadioValue(
-//             'cuiform',
-//             'data[Cui][ata]',
-//             $( 'IsBeneficiaire' ),
-//             'O',
-//             false,
-//             true
-//         );
+        //Utilisé si les périodes sont des périodes de professionnalisation
+        observeDisableFieldsetOnRadioValue(
+            'cuiform',
+            'data[Cui][isperiodepro]',
+            $( 'niveauqualif' ),
+            'O',
+            false,
+            true
+        );
     });
 </script>
 
@@ -262,8 +264,7 @@
                                 array(
                                     'Cui.atelierchantier' => array( /*'div' => false,*/ 'legend' => required( __d( 'cui', 'Cui.atelierchantier', true )  ), 'type' => 'radio', 'options' => $options['atelierchantier'] ),
                                     'Cui.numannexefinanciere',
-                                    'Cui.assurancechomage' => array( /*'div' => false,*/ 'separator' => '<br />', 'legend' => required( __d( 'cui', 'Cui.assurancechomage', true )  ), 'type' => 'radio', 'options' => $options['assurancechomage'] ),
-                                    'Cui.iscie' => array( 'div' => false, 'label' => required( __d( 'cui', 'Cui.iscie', true )  ), 'type' => 'checkbox' )
+                                    'Cui.assurancechomage' => array( /*'div' => false,*/ 'separator' => '<br />', 'legend' => required( __d( 'cui', 'Cui.assurancechomage', true )  ), 'type' => 'radio', 'options' => $options['assurancechomage'] )
                                 ),
                                 array(
                                     'domain' => $domain,
@@ -271,10 +272,23 @@
                                 )
                             );
                         ?>
-
                 </td>
             </tr>
         </table>
+        <fieldset id="iscie" class="invisible">
+            <?php
+                echo $html->tag( 'p', 'Si CIE, je déclare sur l\'honneur être à jour des versements de mes cotisations et contributions sociales, que cette embauche ne résulte pas du licenciement d\'un salarié en CDI, ne pas avoir procédé à un licenciement pour motif économique au cours des 6 derniers mois ou pour une raison autre que la faute grave' );
+                echo $default->subform(
+                    array(
+                        'Cui.iscie' => array( 'label' => false, 'type' => 'radio', 'options' => $options['iscie']  )
+                    ),
+                    array(
+                        'domain' => $domain,
+                        'options' => $options
+                    )
+                );
+            ?>
+        </fieldset>
     </fieldset>
 
 <!--**************************************** Partie SALARIE *********************************************** -->
@@ -381,21 +395,10 @@
                 ?>
 
             </fieldset>
-                    <?php
-/*
-                    $error = Set::classicExtract( $this->validationErrors, 'Cui.isbeneficiaire' );
-                    $class = 'radio'.( !empty( $error ) ? ' error' : '' );
-                    $thisDataIsBeneficiaire = Set::classicExtract( $this->data, 'Cui.isbeneficiaire' );
-                    if( !empty( $thisDataInscritPE ) ) {
-                        $valueIsBeneficiaire = $thisDataIsBeneficiaire;
-                    }
-
-                    $input =  $form->input( 'Cui.isbeneficiaire', array( 'type' => 'radio' , 'options' => $options['isbeneficiaire'],  'legend' => required( __d( 'cui', 'Cui.isbeneficiaire', true )  ), 'value' => $valueIsBeneficiaire ) );
-                    echo $html->tag( 'div', $input, array( 'class' => $class ) );*/
-                ?>
+                <?php  echo $html->tag( 'p', 'Le salarié est-il bénéficiaire' ); ?>
                 <table class="noborder">
                     <tr>
-                        <td class="cui3 noborder">
+                        <td class="cui4 noborder">
                             <?php
                                 echo $default->subform(
                                     array(
@@ -410,7 +413,7 @@
                             ?>
 
                         </td>
-                        <td class="cui3 noborder">
+                        <td class="cui4 noborder">
                             <?php
                                 echo $default->subform(
                                     array(
@@ -424,19 +427,22 @@
                                 );
                             ?>
                         </td>
-                        <td class="cui3 noborder">
-                            <?php
-                                echo $default->subform(
-                                    array(
-                                        'Cui.rsadeptmaj' => array( 'label' => required( __d( 'cui', 'Cui.rsadeptmaj', true )  ), 'type' => 'radio', 'options' => $options['rsadeptmaj'] )
-                                    ),
-                                    array(
-                                        'domain' => $domain,
-                                        'options' => $options
-                                    )
-                                );
-                            ?>
+                        <td class="cui4 noborder">
+                            <fieldset class="invisible" id="IsRsaMaj">
+                                <?php
+                                    echo $default->subform(
+                                        array(
+                                            'Cui.rsadeptmaj' => array( 'label' => required( __d( 'cui', 'Cui.rsadeptmaj', true ) ), 'type' => 'radio', 'options' => $options['rsadeptmaj'] )
+                                        ),
+                                        array(
+                                            'domain' => $domain,
+                                            'options' => $options
+                                        )
+                                    );
+                                ?>
+                            </fieldset>
                         </td>
+
                     </tr>
                 </table>
 
@@ -451,6 +457,7 @@
                                 'options' => $options
                             )
                         );
+                        echo $html->tag( 'p', '( Pour les bénéficiaires du RSA, y compris la période antérieure au 01/06/2009 en RMI ou API )', array( 'class' => 'remarque' ) );
                     ?>
                 </fieldset>
                 <?php
@@ -470,7 +477,261 @@
 
     <fieldset>
         <legend>LE CONTRAT DE TRAVAIL</legend>
+        <?php
+            echo $default->subform(
+                array(
+                    'Cui.typecontrat' => array( 'label' => required( __d( 'cui', 'Cui.typecontrat', true )  ), 'type' => 'radio', 'options' => $options['typecontrat'] )
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+        ?>
+        <table class="cui3 noborder">
+            <tr>
+                <td class=" noborder">
+                    <?php
+                        echo $default->subform(
+                            array(
+                                'Cui.dateembauche' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 ),
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                    ?>
+                </td>
+                <td class=" noborder">
+                    <?php
+                        echo $default->subform(
+                            array(
+                                'Cui.datefincontrat' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 )
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                    ?>
+                </td>
+            </tr>
+        </table>
+        <?php
+            echo $default->subform(
+                array(
+                    'Cui.codeemploi',
+                    'Cui.salairebrut'
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+        ?>
+        <table class="cui3 noborder">
+            <tr>
+                <td class=" noborder">
+                    <?php
+                        echo $default->subform(
+                            array(
+                                 'Cui.dureehebdosalarie' => array( 'label' =>  required( __d( 'cui', 'Cui.dureehebdosalarie', true ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ) ),
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                    ?>
+                </td>
+                <td class=" noborder">
+                    <?php
+                        echo $default->subform(
+                            array(
+                                'Cui.modulation' => array( 'label' => required( __d( 'cui', 'Cui.modulation', true )  ), 'type' => 'radio', 'options' => $options['modulation'] )
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                    ?>
+                </td>
+            </tr>
+        </table>
+        <?php
+            echo $default->subform(
+                array(
+                    'Cui.dureecollectivehebdo' => array( 'label' =>  required( __d( 'cui', 'Cui.dureehebdosalarie', true ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+
+            echo $html->tag( 'p', 'Lieu d\'exécution du contrat s\'il eest différent de l\'adresse de l\'employeur :' );
+            echo $default->subform(
+                array(
+                    'Cui.numlieucontrat',
+                    'Cui.typevoielieucontrat' => array( 'empty' => true, 'options' => $options['typevoie'] ),
+                    'Cui.nomvoielieucontrat',
+                    'Cui.codepostallieucontrat',
+                    'Cui.villelieucontrat'
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+        ?>
+
     </fieldset>
+
+<!--********************* Les actions d'accompagnement et de formation prévues ********************** -->
+    <fieldset>
+        <legend>LES ACTIONS D'ACCOMPAGNEMENT ET DE FORMATION PRÉVUES</legend>
+        <?php
+            echo $default->subform(
+               array(
+                    'Cui.qualtuteur' => array( 'empty' => true, 'options' => $qual ),
+                    'Cui.nomtuteur',
+                    'Cui.prenomtuteur',
+                    'Cui.fonctiontuteur',
+                    'Cui.structurereferente_id',
+                    'Cui.referent_id' => array( 'options' => $referents, 'empty' => true ),
+                    'Cui.isaas' => array( 'label' => __d( 'cui', 'Cui.isaas', true ), 'type' => 'radio', 'options' => $options['isaas'] )
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+        ?>
+        <table class="cui5 noborder">
+            <tr>
+                <td class="noborder">
+                    <?php
+                        echo $html->tag(
+                            'p',
+                            'Actions d\'accompagnement professionnel',
+                            array(
+                                'class' => 'center'
+                            )
+                        );
+                    ?>
+                </td>
+                <td class="noborder">
+                    <?php
+                        echo $html->tag(
+                            'p',
+                            'Actions de formation',
+                            array(
+                                'class' => 'center'
+                            )
+                        );
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="noborder">
+                    <?php
+                        echo $html->tag(
+                            'div',
+                            'Indiquez 1, 2 ou 3 dans la case selon que l\'action est mobilisée à l\'initiative de: 1 l\'employeur, 2 le salarié, 3 le prescripteur',
+                            array(
+                                'class' => 'remarque aere'
+                            )
+                        );
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="cui5 noborder">
+                    <?php
+                        echo $html->tag( 'p', 'Type d\'actions : ' );
+                        echo $default->subform(
+                            array(
+                                'Cui.remobilisation' => array( 'type' => 'select', 'empty' => true, 'options' => $options['remobilisation'] ),
+                                'Cui.aidereprise' => array( 'type' => 'select', 'empty' => true, 'options' => $options['aidereprise'] ),
+                                'Cui.elaboprojetpro' => array( 'type' => 'select', 'empty' => true, 'options' => $options['elaboprojetpro'] ),
+                                'Cui.evaluation' => array( 'type' => 'select', 'empty' => true, 'options' => $options['evaluation'] ),
+                                'Cui.aiderechemploi' => array( 'type' => 'select', 'empty' => true, 'options' => $options['aiderechemploi'] ),
+                                'Cui.autre' => array( 'type' => 'text' )/*,
+                                'Cui.precisionautre' => array( 'type' => 'text' )*/
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                    ?>
+                </td>
+                <td class="cui5 noborder">
+                    <?php
+                        echo $html->tag( 'p', 'Type d\'actions : ' );
+                        echo $default->subform(
+                            array(
+                                'Cui.adaptation' => array( 'type' => 'select', 'empty' => true, 'options' => $options['adaptation'] ),
+                                'Cui.remiseniveau' => array( 'type' => 'select', 'empty' => true, 'options' => $options['remiseniveau'] ),
+                                'Cui.prequalification' => array( 'type' => 'select', 'empty' => true, 'options' => $options['prequalification'] ),
+                                'Cui.nouvellecompetence' => array( 'type' => 'select', 'empty' => true, 'options' => $options['nouvellecompetence'] ),
+                                'Cui.formqualif' => array( 'type' => 'select', 'empty' => true, 'options' => $options['formqualif'] ),
+                                'Cui.formation' => array( 'type' => 'radio', 'label' => __d( 'cui', 'Cui.formation', true ), 'options' => $options['formation'] ),
+                                'Cui.isperiodepro' => array( 'type' => 'radio', 'label' => __d( 'cui', 'Cui.isperiodepro', true ), 'options' => $options['isperiodepro'] )
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                    ?>
+                    <fieldset id="niveauqualif" class="invisible">
+                        <?php
+                            echo $default->subform(
+                                array(
+                                    'Cui.niveauqualif' => array( 'options' => $options['niveauformation'], 'empty' => true )
+                                ),
+                                array(
+                                    'domain' => $domain,
+                                    'options' => $options
+                                )
+                            );
+                        ?>
+                    </fieldset>
+                    <?php
+                        echo $html->tag( 'p', 'Une ou plusieurs de ces actions s\'inscrivent elles dans le cadre de la validation des acquis de l\'expérience ?' );
+                        echo $default->subform(
+                            array(
+                                'Cui.validacquis' => array( 'type' => 'radio', 'legend' => false, 'options' => $options['validacquis'] )
+                            ),
+                            array(
+                                'domain' => $domain,
+                                'options' => $options
+                            )
+                        );
+                    ?>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset id="iscae" class="invisible">
+        <?php
+            echo $default->subform(
+                array(
+                    'Cui.iscae' => array( 'type' => 'radio', 'legend' => __d( 'cui', 'Cui.iscae', true ), 'options' => $options['iscae'] )
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+        ?>
+    </fieldset>
+
+
+
     <div class="submit">
         <?php
             echo $xform->submit( 'Enregistrer', array( 'div' => false ) );

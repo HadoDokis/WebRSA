@@ -146,6 +146,153 @@ msgstr "Assurance chômage"
 
 msgid "Cui.iscie"
 msgstr "Si CIE, je déclare sur l'honneur être à jour des versements de mes cotisations et contributions sociales, que cette embauche ne résulte pas du licenciement d'un salarié en CDI, ne pas avoir procédé à un licenciement pour motif économique au cours des 6 derniers mois ou pour une raison autre que la faute grave"
+
+msgid "Cui.niveauformation"
+msgstr "Niveau de formation"
+
+msgid "Cui.dureesansemploi"
+msgstr "Le salarié est sans emploi depuis "
+
+msgid "Cui.isinscritpe"
+msgstr "Le salarié est-il inscrit au Pôle Emploi ?"
+
+msgid "Cui.isbeneficiaire"
+msgstr "Le salarié est-il bénéficiaire de "
+
+msgid "Cui.ass"
+msgstr "ASS"
+
+msgid "Cui.rsadept"
+msgstr "RSA financé par le département"
+
+msgid "Cui.rsadeptmaj"
+msgstr "si oui: majoré "
+
+msgid "Cui.aah"
+msgstr "AAH"
+
+msgid "Cui.ata"
+msgstr "ATA"
+
+msgid "Cui.dureeinscritpe"
+msgstr "Depuis"
+
+msgid "Cui.dureebenefaide"
+msgstr "Si oui, depuis : "
+
+msgid "Cui.typecontrat"
+msgstr "Type de contrat"
+
+msgid "Cui.handicap"
+msgstr "Le salarié déclare-t-il être reconnu travailleur handicapé ?"
+
+msgid "Cui.dateembauche"
+msgstr "Date d'embauche"
+
+msgid "Cui.datefincontrat"
+msgstr "Date prévue de fin de contrat (si CDD)"
+
+msgid "Cui.codeemploi"
+msgstr "Emploi proposé : "
+
+msgid "Cui.salairebrut"
+msgstr "Salaire brut mensuel"
+
+msgid "Cui.dureehebdosalarie"
+msgstr "Durée hebdomadaire de travail du salarié indiquée sur le contrat de travail "
+
+msgid "Cui.modulation"
+msgstr "Modulation"
+
+msgid "Cui.dureecollectivehebdo:"
+msgstr "Durée collective hebdomadaire de travail appliquée dans l'établissement"
+
+msgid "Cui.numlieucontrat"
+msgstr "Numéro de rue"
+
+msgid "Cui.typevoielieucontrat"
+msgstr "type de voie"
+
+msgid "Cui.nomvoielieucontrat"
+msgstr "Nom de voie"
+
+msgid "Cui.codepostallieucontrat"
+msgstr "Code postal"
+
+msgid "Cui.villelieucontrat"
+msgstr "Commune"
+
+msgid "Cui.qualtuteur"
+msgstr "Civilité du tuteur"
+
+msgid "Cui.nomtuteur"
+msgstr "Nom du tuteur"
+
+msgid "Cui.prenomtuteur"
+msgstr "Prénom du tuteur"
+
+msgid "Cui.fonctiontuteur"
+msgstr "Fonction du tuteur"
+
+msgid "Cui.structurereferente_id"
+msgstr "Organisme chargé du suivi"
+
+msgid "Cui.isaas"
+msgstr "Éventuellement actions d'accompagnement social "
+
+msgid "Cui.remobilisation"
+msgstr "Remobilisation vers l'emploi"
+
+msgid "Cui.aidereprise"
+msgstr "Aide à la reprise de poste"
+
+msgid "Cui.elaboprojetpro"
+msgstr "Élaboration du projet professionnel et appui à sa réalisation"
+
+msgid "Cui.evaluation"
+msgstr "Évaluation des capacités et des compétences"
+
+msgid "Cui.aiderechemploi"
+msgstr "Aide à la recherche d'emploi"
+
+msgid "Cui.autre"
+msgstr "Autre"
+
+msgid "Cui.precisionautre"
+msgstr "Précisez"
+
+msgid "Cui.adaptation"
+msgstr "Adaptation au poste de travail"
+
+msgid "Cui.remiseniveau"
+msgstr "Remise à niveau"
+
+msgid "Cui.prequalification"
+msgstr "Préqualification"
+
+msgid "Cui.nouvellecompetence"
+msgstr "Acquisition de nouvelles compétences"
+
+msgid "Cui.formqualif"
+msgstr "Formation qualifiante"
+
+msgid "Cui.datecontrat"
+msgstr "Date du contrat"
+
+msgid "Cui.formation"
+msgstr "Formation"
+
+msgid "Cui.isperiodepro"
+msgstr "Périodes de professionnalisation"
+
+msgid "Cui.niveauqualif"
+msgstr "Si oui, niveau de qualification visé "
+
+msgid "Cui.validacquis"
+msgstr "Une ou plusieurs de ces actions s'inscrivent elles dans le cadre de la validation des acquis de l'expérience"
+
+msgid "Cui.iscae"
+msgstr "Si CAE, envisagez-vous de mettre en oeuvre des périodes d'immersion ?"
 ###############################################################################
 ####  Liste des ENUM de la table CUI
 ###############################################################################
@@ -154,31 +301,31 @@ msgstr "Secteur marchand (CIE)"
 
 msgid "ENUM::SECTEUR::CAE"
 msgstr "Secteur non marchand (CAE)"
-
+####################
 msgid "ENUM::CONVENTION::CES"
 msgstr "Le Conseil Général, l'Employeur et le Salarié"
 
 msgid "ENUM::CONVENTION::EES"
 msgstr "L'État, l'Employeur et le Salarié"
-
+####################
 msgid "ENUM::AVENANT::REN"
 msgstr "Avenant renouvellement"
 
 msgid "ENUM::AVENANT::MOD"
 msgstr "Avenant modification"
-
+####################
 msgid "ENUM::AVENANTCG::REN"
 msgstr "Avenant renouvellement"
 
 msgid "ENUM::AVENANTCG::MOD"
 msgstr "Avenant modification"
-
+####################
 msgid "ENUM::ISADRESSE2::N"
 msgstr "Non"
 
 msgid "ENUM::ISADRESSE2::O"
 msgstr "Oui"
-
+####################
 msgid "ENUM::ORGRECOUVCOTIS::URS"
 msgstr "URSSAF"
 
@@ -187,21 +334,210 @@ msgstr "MSA"
 
 msgid "ENUM::ORGRECOUVCOTIS::AUT"
 msgstr "AUTRE"
-
+####################
 msgid "ENUM::ATELIERCHANTIER::N"
 msgstr "Non"
 
 msgid "ENUM::ATELIERCHANTIER::O"
 msgstr "Oui"
-
+####################
 msgid "ENUM::ASSURANCECHOMAGE::UNE"
 msgstr "L'employeur public ou privé est affilié à l'UNEDIC"
 
 msgid "ENUM::ASSURANCECHOMAGE::LUI"
 msgstr "L'employeur public assure lui-même ce risque"
-
+####################
 msgid "ENUM::ISCIE::N"
 msgstr "Non"
 
 msgid "ENUM::ISCIE::O"
+msgstr "Oui"
+####################
+msgid "ENUM::STATUTEMPLOYEUR::10"
+msgstr "Commune"
+
+msgid "ENUM::STATUTEMPLOYEUR::11"
+msgstr "EPCI"
+
+msgid "ENUM::STATUTEMPLOYEUR::21"
+msgstr "Département"
+
+msgid "ENUM::STATUTEMPLOYEUR::22"
+msgstr "Région"
+
+msgid "ENUM::STATUTEMPLOYEUR::50"
+msgstr "Association"
+
+msgid "ENUM::STATUTEMPLOYEUR::60"
+msgstr "Autre personne morale chargée de la gestion d'un service public (mutuelle, office public d'HLM)"
+
+msgid "ENUM::STATUTEMPLOYEUR::70"
+msgstr "Établissement Public d'Enseignement (lycée, collège)"
+
+msgid "ENUM::STATUTEMPLOYEUR::80"
+msgstr "Établissement Sanitaire Public"
+
+msgid "ENUM::STATUTEMPLOYEUR::90"
+msgstr "Autre établissement public"
+
+msgid "ENUM::STATUTEMPLOYEUR::98"
+msgstr "Groupement d'employeurs"
+
+msgid "ENUM::STATUTEMPLOYEUR::99"
+msgstr "Autre entreprise"
+####################
+msgid "ENUM::NIVEAUFORMATION::00"
+msgstr "Autres qualifications non certifiantes"
+
+msgid "ENUM::NIVEAUFORMATION::10"
+msgstr "Troisième cycle ou Écoles d'Ingénieurs (Équivalent au niveau I de l'Éducation Nationale)"
+
+msgid "ENUM::NIVEAUFORMATION::20"
+msgstr "Formation de niveau égal ou supérieur à celui de la Licence ou des Écoles d'Ingénieurs (Équivalent au niveau II de l'Éducation Nationale)"
+
+msgid "ENUM::NIVEAUFORMATION::30"
+msgstr "Formation de niveau du Brevet de Technicien Supérieur ou du Diplôme des Instituts Universitaires de Technologie et de fin de premier cycle de l'enseignement supérieur (Équivalent au niveau III de l'Éducation Nationale)"
+
+msgid "ENUM::NIVEAUFORMATION::41"
+msgstr "Brevet de technicien ou Baccalauréat professionnel"
+
+msgid "ENUM::NIVEAUFORMATION::40"
+msgstr "Formation de niveau équivalent à celui du Baccalauréat général (Équivalent au niveau IV de l'Éducation Nationale)"
+
+msgid "ENUM::NIVEAUFORMATION::51"
+msgstr "Diplôme obtenu du Brevet d'Études Professionnelles (BEP) et du Certificat d'Aptitude Professionnelle (CAP) (Équivalent au niveau V de l'Éducation Nationale)"
+
+msgid "ENUM::NIVEAUFORMATION::50"
+msgstr "Formation de niveau équivalent à celui du Brevet d'Études Professionnelles (BEP) et du Certificat d'Aptitude Professionnelle (CAP) (Diplôme non obtenu)"
+
+msgid "ENUM::NIVEAUFORMATION::60"
+msgstr "Formation courte d'une durée maximum d'un an, conduisant au Certificat d'éducation Professionnelle ou à toute autre attestation de même nature (Équivalent au niveau V bis de l'Éducation Nationale)"
+
+msgid "ENUM::NIVEAUFORMATION::70"
+msgstr "Pas de formation allant au-delà de la fin de la scolarité obligatoire"
+
+####################
+msgid "ENUM::DUREESANSEMPLOI::06"
+msgstr "moins de 6 mois"
+
+msgid "ENUM::DUREESANSEMPLOI::11"
+msgstr "de 6 à 11 mois"
+
+msgid "ENUM::DUREESANSEMPLOI::23"
+msgstr "de 12 à 23 mois"
+
+msgid "ENUM::DUREESANSEMPLOI::24"
+msgstr "24 et plus"
+
+####################
+msgid "ENUM::ASS::N"
+msgstr "Non"
+
+msgid "ENUM::ASS::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::ISINSCRITPE::N"
+msgstr "Non"
+
+msgid "ENUM::ISINSCRITPE::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::RSADEPT::N"
+msgstr "Non"
+
+msgid "ENUM::RSADEPT::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::RSADEPTMAJ::N"
+msgstr "Non"
+
+msgid "ENUM::RSADEPTMAJ::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::AAH::N"
+msgstr "Non"
+
+msgid "ENUM::AAH::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::ATA::N"
+msgstr "Non"
+
+msgid "ENUM::ATA::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::ISBENEFICIAIRE::N"
+msgstr "Non"
+
+msgid "ENUM::ISBENEFICIAIRE::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::HANDICAP::N"
+msgstr "Non"
+
+msgid "ENUM::HANDICAP::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::TYPECONTRAT::CDI"
+msgstr "CDI"
+
+msgid "ENUM::TYPECONTRAT::CDD"
+msgstr "CDD"
+####################
+msgid "ENUM::MODULATION::N"
+msgstr "Non"
+
+msgid "ENUM::MODULATION::O"
+msgstr "Oui"
+####################
+msgid "ENUM::ISAAS::N"
+msgstr "Non"
+
+msgid "ENUM::ISAAS::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::INITIATIVE::1"
+msgstr "1"
+
+msgid "ENUM::INITIATIVE::2"
+msgstr "2"
+
+msgid "ENUM::INITIATIVE::3"
+msgstr "3"
+
+####################
+msgid "ENUM::FORMATION::INT"
+msgstr "Interne"
+
+msgid "ENUM::FORMATION::EXT"
+msgstr "Externe"
+
+####################
+msgid "ENUM::ISPERIODEPRO::N"
+msgstr "Non"
+
+msgid "ENUM::ISPERIODEPRO::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::VALIDACQUIS::N"
+msgstr "Non"
+
+msgid "ENUM::VALIDACQUIS::O"
+msgstr "Oui"
+
+####################
+msgid "ENUM::ISCAE::N"
+msgstr "Non"
+
+msgid "ENUM::ISCAE::O"
 msgstr "Oui"
