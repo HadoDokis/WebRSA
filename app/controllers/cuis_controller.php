@@ -1,4 +1,5 @@
 <?php
+    App::import( 'Helper', 'Locale' );
 
     class CuisController extends AppController {
 
@@ -7,7 +8,7 @@
 
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $components = array( 'RequestHandler' );
-//         var $aucunDroit = array( 'ajax' );
+        var $aucunDroit = array( 'gedooo' );
 
         /** ********************************************************************
         *
@@ -160,6 +161,59 @@
 
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, 'add_edit' );
+        }
+
+
+        /**
+        *
+        */
+
+        public function gedooo( $id ) {
+            $qual = $this->Option->qual();
+            $typevoie = $this->Option->typevoie();
+
+            $cui = $this->{$this->modelClass}->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        "{$this->modelClass}.id" => $id
+                    ),
+                    'recursive' => 0
+                )
+            );
+
+            $this->Adressefoyer->bindModel(
+                array(
+                    'belongsTo' => array(
+                        'Adresse' => array(
+                            'className'     => 'Adresse',
+                            'foreignKey'    => 'adresse_id'
+                        )
+                    )
+                )
+            );
+
+            $adresse = $this->Adressefoyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Adressefoyer.foyer_id' => Set::classicExtract( $cui, 'Personne.foyer_id' ),
+                        'Adressefoyer.rgadr' => '01',
+                    )
+                )
+            );
+            $cui['Adresse'] = $adresse['Adresse'];
+
+            $cui_id = Set::classicExtract( $cui, 'Actioncandidat.id' );
+
+            ///Traduction pour les données de la Personne/Contact/Partenaire/Référent
+            $LocaleHelper = new LocaleHelper();
+            $cui['Personne']['qual'] = Set::enum( Set::classicExtract( $cui, 'Personne.qual' ), $qual );
+            $cui['Personne']['dtnai'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $cui, 'Personne.dtnai' ) );
+            $cui['Referent']['qual'] = Set::enum( Set::classicExtract( $cui, 'Referent.qual' ), $qual );
+debug($cui);
+die();
+//             $this->Gedooo->generate( $cui, 'Contratinsertion/notificationop.odt' );
         }
 
         /**

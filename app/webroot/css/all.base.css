@@ -465,6 +465,14 @@ form#cuiform input#CuiTauxfinancementexclusif {
     width: 10%;
 }
 
+form#cuiform table.cuiduree td.dureehebdo{
+    width: 33%;
+}
+
+form#cuiform table.cuiduree td.dureehebdo input {
+    width: 8%;
+}
+
 form#cuiform fieldset div.text {
     clear: none;
 }
