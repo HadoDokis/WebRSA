@@ -10,6 +10,8 @@
                 'fields' => array(
                     'convention' => array( 'domain' => 'cui' ),
                     'secteur' => array( 'domain' => 'cui' ),
+                    'statutemployeur' => array( 'domain' => 'cui' ),
+                    'niveauformation' => array( 'domain' => 'cui' ),
                     'avenant' => array( 'domain' => 'cui' ),
                     'avenantcg' => array( 'domain' => 'cui' ),
                     'orgrecouvcotis' => array( 'domain' => 'cui' ),
@@ -22,12 +24,39 @@
                     'isadresse2' => array( 'domain' => 'cui' ),
                     'atelierchantier' => array( 'domain' => 'cui' ),
                     'assurancechomage' => array( 'domain' => 'cui' ),
-                    'iscie' => array( 'domain' => 'cui' )
+                    'iscie' => array( 'domain' => 'cui' ),
+                    'dureesansemploi' => array( 'domain' => 'cui' ),
+                    'isinscritpe' => array( 'domain' => 'cui' ),
+                    'dureeinscritpe' => array( 'type' => 'dureesansemploi', 'domain' => 'cui' ),
+                    'niveauemploi' => array( 'domain' => 'cui' ),
+                    'ass' => array( 'domain' => 'cui' ),
+                    'rsadept' => array( 'domain' => 'cui' ),
+                    'rsadeptmaj' => array( 'domain' => 'cui' ),
+                    'aah' => array( 'domain' => 'cui' ),
+                    'ata' => array( 'domain' => 'cui' ),
+                    'dureebenefaide' => array( 'type' => 'dureesansemploi', 'domain' => 'cui' ),
+                    'isbeneficiaire' => array( 'domain' => 'cui' ),
+                    'handicap' => array( 'domain' => 'cui' ),
+                    'typecontrat' => array( 'domain' => 'cui' ),
+                    'modulation' => array( 'domain' => 'cui' ),
+                    'isaas' => array( 'domain' => 'cui' ),
+                    'remobilisation' => array( 'domain' => 'cui', 'type' => 'initiative' ),
+                    'aidereprise' => array( 'domain' => 'cui', 'type' => 'initiative' ),
+                    'elaboprojetpro' => array( 'domain' => 'cui', 'type' => 'initiative' ),
+                    'evaluation' => array( 'domain' => 'cui', 'type' => 'initiative' ),
+                    'aiderechemploi' => array( 'domain' => 'cui', 'type' => 'initiative' ),
+                    'adaptation' => array( 'domain' => 'cui', 'type' => 'initiative' ),
+                    'remiseniveau' => array( 'domain' => 'cui', 'type' => 'initiative' ),
+                    'prequalification' => array( 'domain' => 'cui', 'type' => 'initiative' ),
+                    'nouvellecompetence' => array( 'domain' => 'cui', 'type' => 'initiative' ),
+                    'formqualif' => array( 'domain' => 'cui', 'type' => 'initiative' ),
+                    'isperiodepro' => array( 'domain' => 'cui' ),
+                    'validacquis' => array( 'domain' => 'cui' ),
+                    'iscae' => array( 'domain' => 'cui' ),
+
                 )
-            )/*,
-            'Formattable' => array(
-                'suffix' => array( 'structurereferente_id', 'referent_id' ),
-            )*/
+            ),
+            'Formattable'
         );
 
         var $belongsTo = array(
@@ -135,6 +164,26 @@
                 'rule' => 'email',
                 'message' => 'Email non valide',
                 'allowEmpty' => true
+            ),
+            'niveauformation' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'dureesansemploi' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'isisncritpe' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'isisncritpe' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
+            'typecontrat' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
             )
         );
 
