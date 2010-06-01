@@ -85,12 +85,16 @@
                         <?php if( $permissions->check( 'criteres', 'index' ) ):?>
                             <li><?php echo $html->link( 'Par Orientation', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
                         <?php endif;?>
-                        <?php if( $permissions->check( 'criteresci', 'index' ) ):?>
+                        <?php if( $permissions->check( 'criteresci', 'index' ) || $permissions->check( 'criterescuis', 'index' ) ):?>
                             <li>
                                 <?php echo $html->link( 'Par Contrats', '#' );?>
                                 <ul>
                                     <li>
                                         <?php echo $html->link( 'Par Contrat d\'engagement',  array( 'controller' => 'criteresci', 'action' => 'index'  ) );?>
+                                    </li>
+
+                                    <li>
+                                        <?php echo $html->link( 'Par Contrat Unique d\'Insertion',  array( 'controller' => 'criterescuis', 'action' => 'index'  ) );?>
                                     </li>
                                 </ul>
                             </li>
