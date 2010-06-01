@@ -236,7 +236,8 @@
         'pieceaide66' => 'piecesaides66',
         'typeaideapre66_pieceaide66' => 'typesaidesapres66_piecesaides66',
         'aideapre66_pieceaide66' => 'aidesapres66_piecesaides66',
-        'fraisdeplacement66' => 'fraisdeplacements66'
+        'fraisdeplacement66' => 'fraisdeplacements66',
+        'criterecui' => 'criterescuis'
      );
 /**
  * This is a key => value array of regex used to match words.
