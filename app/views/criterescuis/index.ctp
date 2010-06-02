@@ -44,9 +44,11 @@
                 'Cui.convention' => array( 'label' => __d( 'cui', 'Cui.convention', true ), 'type' => 'select', 'options' => $options['convention'] ),
                 'Cui.datecontrat' => array( 'label' => __d( 'cui', 'Cui.datecontrat', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
                 'Cui.secteur' => array( 'label' => __d( 'cui', 'Cui.secteur', true ), 'type' => 'select', 'options' => $options['secteur'] ),
-                'Cui.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
-                'Cui.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
-                'Cui.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
+                'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
+                'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
+                'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
+                'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
+                'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 )
             ),
             array(
                 'options' => $options
@@ -66,6 +68,7 @@
             <thead>
                 <tr>
                     <th>Nom demandeur</th>
+                    <th>N° CAF</th>
                     <th>Secteur</th>
                     <th>Date du contrat</th>
                     <th>Nom de l'employeur</th>
@@ -74,21 +77,48 @@
             </thead>
             <tbody>
                 <?php
-                    foreach( $criterescuis as $criterecui ) {
+                    foreach( $criterescuis as $index => $criterecui ) {
 // debug($criterecui);
+                        $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+                            <tbody>
+                                <tr>
+                                    <th>Etat du droit</th>
+                                    <td>'.Set::enum( Set::classicExtract( $criterecui, 'Situationdossierrsa.etatdosrsa' ),$criterecui ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Commune de naissance</th>
+                                    <td>'. $criterecui['Personne']['nomcomnai'].'</td>
+                                </tr>
+                                <tr>
+                                    <th>Date de naissance</th>
+                                    <td>'.date_short( $criterecui['Personne']['dtnai']).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Code INSEE</th>
+                                    <td>'.$criterecui['Adresse']['numcomptt'].'</td>
+                                </tr>
+                                <tr>
+                                    <th>NIR</th>
+                                    <td>'.$criterecui['Personne']['nir'].'</td>
+                                </tr>
+
+                            </tbody>
+                        </table>';
                         echo $html->tableCells(
                             array(
                                 h( Set::enum( Set::classicExtract( $criterecui, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criterecui, 'Personne.nom' ).' '.Set::classicExtract( $criterecui, 'Personne.prenom' ) ),
+                                h( Set::classicExtract( $criterecui, 'Dossier.matricule' ) ),
                                 h( Set::classicExtract( $criterecui, 'Cui.secteur' ) ),
                                 h( $locale->date( 'Locale->date',  Set::classicExtract( $criterecui, 'Cui.datecontrat' ) ) ),
                                 h( Set::classicExtract( $criterecui, 'Cui.nomemployeur' ) ),
                                 $html->viewLink(
                                     'Voir',
                                     array( 'controller' => 'cuis', 'action' => 'index', Set::classicExtract( $criterecui, 'Cui.personne_id' ) )
-                                )
+                                ),
+                                array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
                             ),
-                            array( 'class' => 'odd' ),
-                            array( 'class' => 'even' )
+                            array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+                            array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
                         );
                     }
                 ?>

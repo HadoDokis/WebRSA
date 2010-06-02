@@ -25,8 +25,10 @@
             $secteur = Set::extract( $criterescuis, 'Search.Cui.secteur' );
             $convention = Set::extract( $criterescuis, 'Search.Cui.convention' );
             $nir = Set::extract( $criterescuis, 'Search.Cui.nir' );
-            $nom = Set::extract( $criterescuis, 'Search.Cui.nom' );
-            $prenom = Set::extract( $criterescuis, 'Search.Cui.prenom' );
+            $nom = Set::extract( $criterescuis, 'Search.Personne.nom' );
+            $prenom = Set::extract( $criterescuis, 'Search.Personne.prenom' );
+            $matricule = Set::extract( $criterescuis, 'Search.Dossier.matricule' );
+            $numdemrsa = Set::extract( $criterescuis, 'Search.Dossier.numdemrsa' );
 
 
             /// Critères sur le CI - date de saisi contrat
@@ -61,6 +63,10 @@
             // ...
             if( !empty( $matricule ) ) {
                 $conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
+            }
+            // ...
+            if( !empty( $numdemrsa ) ) {
+                $conditions[] = 'Dossier.numdemrsa = \''.Sanitize::clean( $numdemrsa ).'\'';
             }
 
             /// Critères sur l'adresse - canton

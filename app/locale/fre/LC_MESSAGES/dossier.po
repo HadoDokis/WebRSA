@@ -25,3 +25,6 @@ msgstr "Organisme payeur"
 
 msgid "Dossier.matricule"
 msgstr "N° CAF"
+
+msgid "Dossier.numdemrsa"
+msgstr "N° demande RSA"
