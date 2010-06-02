@@ -29,6 +29,9 @@ msgstr "Nom"
 msgid "Personne.prenom"
 msgstr "Prénom"
 
+msgid "Personne.nir"
+msgstr "NIR"
+
 msgid "Personne.nom_complet"
 msgstr "Nom de la personne"
 

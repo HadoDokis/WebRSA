@@ -5,7 +5,11 @@
         $this->pageTitle = __d( 'criterecui', "Criterescuis::{$this->action}", true )
     )
 ?>
-
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsetOnCheckbox( 'CuiDatecontrat', $( 'CuiDatecontratFromDay' ).up( 'fieldset' ), false );
+    });
+</script>
 <?php
     if( is_array( $this->data ) ) {
         echo '<ul class="actionMenu"><li>'.$html->link(
@@ -19,21 +23,37 @@
     }
 
     echo $xform->create( 'Criterescuis', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );
-
-    ///Formulaire de recherche pour les CUIs
-    echo $default->search(
-        array(
-            'Cui.denomination' => array( 'type' => 'text' ),
-            'Cui.date' => array( 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
-            'Cui.secteur' => array( 'legend' => required( __d( 'cui', 'Cui.secteur', true )  ), 'type' => 'radio', 'options' => $options['secteur'] )
-        ),
-        array(
-            'options' => $options
-        )
-    );
-
-    echo $xform->end();
 ?>
+<fieldset>
+    <legend>Recherche de Contrat Unique d'Insertion</legend>
+        <?php echo $form->input( 'Cui.datecontrat', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
+        <fieldset>
+            <legend>Date de saisie du contrat</legend>
+            <?php
+                $datecontrat_from = Set::check( $this->data, 'Cui.datecontrat_from' ) ? Set::extract( $this->data, 'Cui.datecontrat_from' ) : strtotime( '-1 week' );
+                $datecontrat_to = Set::check( $this->data, 'Cui.datecontrat_to' ) ? Set::extract( $this->data, 'Cui.datecontrat_to' ) : strtotime( 'now' );
+            ?>
+            <?php echo $form->input( 'Cui.datecontrat_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecontrat_from ) );?>
+            <?php echo $form->input( 'Cui.datecontrat_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecontrat_to ) );?>
+        </fieldset>
+</fieldset>
+    <?php
+        ///Formulaire de recherche pour les CUIs
+        echo $default->search(
+            array(
+                'Cui.convention' => array( 'label' => __d( 'cui', 'Cui.convention', true ), 'type' => 'select', 'options' => $options['convention'] ),
+                'Cui.datecontrat' => array( 'label' => __d( 'cui', 'Cui.datecontrat', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
+                'Cui.secteur' => array( 'label' => __d( 'cui', 'Cui.secteur', true ), 'type' => 'select', 'options' => $options['secteur'] ),
+                'Cui.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
+                'Cui.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
+                'Cui.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
+            ),
+            array(
+                'options' => $options
+            )
+        );
+    ?>
+<?php echo $xform->end(); ?>
 <?php $pagination = $xpaginator->paginationBlock( 'Cui', $this->passedArgs ); ?>
 
     <?php if( isset( $criterescuis ) ):?>
@@ -48,7 +68,7 @@
                     <th>Nom demandeur</th>
                     <th>Secteur</th>
                     <th>Date du contrat</th>
-                    <th>Dénomination</th>
+                    <th>Nom de l'employeur</th>
                     <th colspan="4" class="action">Actions</th>
                 </tr>
             </thead>

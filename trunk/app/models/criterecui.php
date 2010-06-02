@@ -23,23 +23,34 @@
             /// Critères
             $datecontrat = Set::extract( $criterescuis, 'Search.Cui.datecontrat' );
             $secteur = Set::extract( $criterescuis, 'Search.Cui.secteur' );
+            $convention = Set::extract( $criterescuis, 'Search.Cui.convention' );
+            $nir = Set::extract( $criterescuis, 'Search.Cui.nir' );
+            $nom = Set::extract( $criterescuis, 'Search.Cui.nom' );
+            $prenom = Set::extract( $criterescuis, 'Search.Cui.prenom' );
+
 
             /// Critères sur le CI - date de saisi contrat
-            if( isset( $criterescuis['Filtre']['datecontrat'] ) && !empty( $criterescuis['Filtre']['datecontrat'] ) ) {
-                $valid_from = ( valid_int( $criterescuis['Filtre']['datecontrat_from']['year'] ) && valid_int( $criterescuis['Filtre']['datecontrat_from']['month'] ) && valid_int( $criterescuis['Filtre']['datecontrat_from']['day'] ) );
-                $valid_to = ( valid_int( $criterescuis['Filtre']['datecontrat_to']['year'] ) && valid_int( $criterescuis['Filtre']['datecontrat_to']['month'] ) && valid_int( $criterescuis['Filtre']['datecontrat_to']['day'] ) );
+            if( isset( $criterescuis['Cui']['datecontrat'] ) && !empty( $criterescuis['Cui']['datecontrat'] ) ) {
+                $valid_from = ( valid_int( $criterescuis['Cui']['datecontrat_from']['year'] ) && valid_int( $criterescuis['Cui']['datecontrat_from']['month'] ) && valid_int( $criterescuis['Cui']['datecontrat_from']['day'] ) );
+                $valid_to = ( valid_int( $criterescuis['Cui']['datecontrat_to']['year'] ) && valid_int( $criterescuis['Cui']['datecontrat_to']['month'] ) && valid_int( $criterescuis['Cui']['datecontrat_to']['day'] ) );
                 if( $valid_from && $valid_to ) {
-                    $conditions[] = 'Cui.datecontrat BETWEEN \''.implode( '-', array( $criterescuis['Filtre']['datecontrat_from']['year'], $criterescuis['Filtre']['datecontrat_from']['month'], $criterescuis['Filtre']['datecontrat_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterescuis['Filtre']['datecontrat_to']['year'], $criterescuis['Filtre']['datecontrat_to']['month'], $criterescuis['Filtre']['datecontrat_to']['day'] ) ).'\'';
+                    $conditions[] = 'Cui.datecontrat BETWEEN \''.implode( '-', array( $criterescuis['Cui']['datecontrat_from']['year'], $criterescuis['Cui']['datecontrat_from']['month'], $criterescuis['Cui']['datecontrat_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterescuis['Cui']['datecontrat_to']['year'], $criterescuis['Cui']['datecontrat_to']['month'], $criterescuis['Cui']['datecontrat_to']['day'] ) ).'\'';
                 }
             }
 
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-            $filtersPersonne = array();
-            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
-                if( isset( $criterescuis['Filtre'][$criterePersonne] ) && !empty( $criterescuis['Filtre'][$criterePersonne] ) ) {
-                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criterescuis['Filtre'][$criterePersonne] ).'\'';
-                }
+//             $filtersPersonne = array();
+            if( !empty( $nom ) ) {
+                $conditions[] = 'Personne.nom ILIKE \''.$this->wildcard( $nom ).'\'';
             }
+            if( !empty( $prenom ) ) {
+                $conditions[] = 'Personne.prenom ILIKE \''.$this->wildcard( $prenom ).'\'';
+            }
+//             foreach( array( 'nom', 'prenom' ) as $criterePersonne ) {
+//                 if( isset( $criterescuis['Search.Cui'][$criterePersonne] ) && !empty( $criterescuis['Search.Cui'][$criterePersonne] ) ) {
+//                     $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criterescuis['Search.Cui'][$criterePersonne] ).'\'';
+//                 }
+//             }
 
 
             // Localité adresse
@@ -70,11 +81,16 @@
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
-            // Personne chargée du suiv
+            // Secteur du contrat
             if( !empty( $secteur ) ) {
                 $conditions[] = 'Cui.secteur = \''.Sanitize::clean( $secteur ).'\'';
             }
 
+
+            // convention du contrat
+            if( !empty( $convention ) ) {
+                $conditions[] = 'Cui.convention = \''.Sanitize::clean( $convention ).'\'';
+            }
 
             /// Référent
 //             debug($referent_id);
