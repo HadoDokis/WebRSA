@@ -10,6 +10,7 @@
 //     @ini_set( 'max_execution_time', 0 );
 //     @ini_set( 'memory_limit', '512M' );
 //     App::import( 'Sanitize' );
+    App::import( 'Helper', 'Locale' );
 
     class ContratsinsertionController extends AppController
     {
@@ -17,7 +18,7 @@
         var $name = 'Contratsinsertion';
         var $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'PersonneReferent' );
         var $helpers = array( 'Ajax' );
-        var $components = array( 'RequestHandler' );
+        var $components = array( 'RequestHandler', 'Gedooo' );
         var $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
 
         /** ********************************************************************
@@ -643,6 +644,8 @@ $this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
         function notificationsop( $id = null ) {
             $qual = $this->Option->qual();
             $typevoie = $this->Option->typevoie();
+            $duree_engag_cg66 = $this->Option->duree_engag_cg66();
+            $duree_engag_cg93 = $this->Option->duree_engag_cg93();
 
             $contratinsertion = $this->{$this->modelClass}->find(
                 'first',
@@ -676,15 +679,47 @@ $this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
             );
             $contratinsertion['Adresse'] = $adresse['Adresse'];
 
+            /// Récupération du dossier lié à la personne
+            $foyer = $this->Foyer->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Foyer.id' => $contratinsertion['Personne']['foyer_id']
+                    )
+                )
+            );
+            $contratinsertion['Foyer'] = $foyer['Foyer'];
+            $dossier = $this->Dossier->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossier.id' => $contratinsertion['Foyer']['dossier_rsa_id']
+                    )
+                )
+            );
+            $contratinsertion['Dossier'] = $dossier['Dossier'];
+
             $contratinsertion_id = Set::classicExtract( $contratinsertion, 'Actioncandidat.id' );
 
+
+            $LocaleHelper = new LocaleHelper();
             ///Traduction pour les données de la Personne/Contact/Partenaire/Référent
             $contratinsertion['Personne']['qual'] = Set::enum( Set::classicExtract( $contratinsertion, 'Personne.qual' ), $qual );
-//             $contratinsertion['Personne']['dtnai'] = $this->Locale->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Personne.dtnai' ) );
+            $contratinsertion['Personne']['dtnai'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Personne.dtnai' ) );
             $contratinsertion['Referent']['qual'] = Set::enum( Set::classicExtract( $contratinsertion, 'Referent.qual' ), $qual );
-// debug($contratinsertion);
+            $contratinsertion['Adresse']['typevoie'] = Set::enum( Set::classicExtract( $contratinsertion, 'Adresse.typevoie' ), $typevoie );
+            $contratinsertion['Contratinsertion']['datevalidation_ci'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' ) );
+            $contratinsertion['Dossier']['dtdemrsa'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Dossier.dtdemrsa' ) );
+
+            if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
+                $contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $duree_engag_cg66 );
+            }
+            else if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
+                $contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $duree_engag_cg93 );
+            }
+// debug($contratinsertion['Contratinsertion']['decision_ci']);
 // die();
-//             $this->Gedooo->generate( $contratinsertion, 'Contratinsertion/notificationop.odt' );
+            $this->Gedooo->generate( $contratinsertion, 'Contratinsertion/notificationop.odt' );
         }
 
     }
