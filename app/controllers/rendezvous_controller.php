@@ -100,6 +100,7 @@
         function index( $personne_id = null ){
 
             $nbrPersonnes = $this->Rendezvous->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
+
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
             $orientstruct = $this->Rendezvous->Structurereferente->Orientstruct->find(
