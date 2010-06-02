@@ -67,8 +67,8 @@
         <table class="tooltips">
             <thead>
                 <tr>
+                    <th>N° dossier</th>
                     <th>Nom demandeur</th>
-                    <th>N° CAF</th>
                     <th>Convention</th>
                     <th>Secteur</th>
                     <th>Date du contrat</th>
@@ -102,13 +102,17 @@
                                     <th>NIR</th>
                                     <td>'.$criterecui['Personne']['nir'].'</td>
                                 </tr>
+                                <tr>
+                                    <th>NIR</th>
+                                    <td>'.$criterecui['Dossier']['matricule'].'</td>
+                                </tr>
 
                             </tbody>
                         </table>';
                         echo $html->tableCells(
                             array(
+                                h( Set::classicExtract( $criterecui, 'Dossier.numdemrsa' ) ),
                                 h( Set::enum( Set::classicExtract( $criterecui, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criterecui, 'Personne.nom' ).' '.Set::classicExtract( $criterecui, 'Personne.prenom' ) ),
-                                h( Set::classicExtract( $criterecui, 'Dossier.matricule' ) ),
                                 h( Set::enum( Set::classicExtract( $criterecui, 'Cui.convention' ), $options['convention'] ) ),
                                 h( Set::enum( Set::classicExtract( $criterecui, 'Cui.secteur' ), $options['secteur'] ) ),
                                 h( $locale->date( 'Locale->date',  Set::classicExtract( $criterecui, 'Cui.datecontrat' ) ) ),
