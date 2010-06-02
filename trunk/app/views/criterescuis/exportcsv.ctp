@@ -12,16 +12,18 @@
         }
     }
 
-    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'Commune de l\'allocataire', /*'Référent', 'Service référent', */'Secteur', 'Date début contrat' ) );
+    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'N° CAF', 'Commune de l\'allocataire', 'Convention entre', 'Secteur', 'Date début contrat' ) );
 
     foreach( $cuis as $cui ) {
 
         $row = array(
             Set::classicExtract( $cui, 'Dossier.numdemrsa' ),
             Set::classicExtract( $cui, 'Personne.nom' ).' '.Set::classicExtract( $cui, 'Personne.prenom'),
+            Set::classicExtract( $cui, 'Dossier.matricule' ),
             Set::classicExtract( $cui, 'Adresse.locaadr' ),
 //             value( $referents, Set::classicExtract( $cui, 'PersonneReferent.referent_id' ) ),
 //             value( $struct, Set::classicExtract( $cui, 'Cui.structurereferente_id' ) ),
+            Set::enum( Set::classicExtract( $cui, 'Cui.convention' ), $options['convention'] ),
             Set::enum( Set::classicExtract( $cui, 'Cui.secteur' ), $options['secteur'] ),
             $locale->date( 'Date::short', Set::classicExtract( $cui, 'Cui.datecontrat' ) )
         );
