@@ -717,7 +717,20 @@ $this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
             else if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
                 $contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $duree_engag_cg93 );
             }
-// debug($contratinsertion['Contratinsertion']['decision_ci']);
+
+            ///Utilisé pour savoir si le contrat est en accord de validation dans le modèle odt
+            if( $contratinsertion['Contratinsertion']['decision_ci'] == 'V' ){
+                $contratinsertion['Contratinsertion']['accord'] = 'X';
+            }
+
+            ///Utilisé pour savoir si le contrat est en premier contrat ou renouvellement
+            if( $contratinsertion['Contratinsertion']['num_contrat'] == 'PRE' ){
+                $contratinsertion['Contratinsertion']['premier'] = 'X';
+            }
+            else if( $contratinsertion['Contratinsertion']['num_contrat'] == 'REN' ){
+                $contratinsertion['Contratinsertion']['renouvel'] = 'X';
+            }
+// debug($contratinsertion);
 // die();
             $this->Gedooo->generate( $contratinsertion, 'Contratinsertion/notificationop.odt' );
         }
