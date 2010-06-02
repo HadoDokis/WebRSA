@@ -83,21 +83,23 @@
             'matricule' => array(
                 array(
                     'rule' => 'isUnique',
-                    'message' => 'Ce numéro CAF est déjà utilisé'
+                    'message' => 'Ce numéro CAF est déjà utilisé',
+                    'allowEmpty' => true
                 ),
                 array(
                     'rule' => array( 'between', 15, 15 ),
-                    'message' => 'Le numéro CAF est composé de 15 chiffres'
+                    'message' => 'Le numéro CAF est composé de 15 chiffres',
+                    'allowEmpty' => true
                 ),
                 array(
                     'rule' => 'numeric',
                     'message' => 'Veuillez entrer une valeur numérique.',
                     'allowEmpty' => true
                 ),
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 )
                 // TODO: format NIR
             ),
         );
