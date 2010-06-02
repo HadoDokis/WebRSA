@@ -85,20 +85,6 @@ CREATE TYPE type_convention AS ENUM ( 'CES', 'EES' );
 -- CES = Le Conseil Général, l'Employeur et le Salarié
 -- EES = L'Etat, l'Employeur et le Salarié
 
--- CREATE TABLE employeurscuis (
---     id                     SERIAL NOT NULL PRIMARY KEY,
---     libstruc               VARCHAR(32) NOT NULL,
---     numvoie                VARCHAR(6) NOT NULL,
---     typevoie               VARCHAR(6) NOT NULL,
---     nomvoie                VARCHAR(30) NOT NULL,
---     compladr               VARCHAR(32) NOT NULL,
---     numtel                 VARCHAR(14),
---     email                  VARCHAR(78),
---     codepostal             CHAR(5) NOT NULL,
---     ville                  VARCHAR(45) NOT NULL
--- );
--- COMMENT ON TABLE employeurscuis IS 'Table des employeurs liés au CUI';
-
 CREATE TABLE cuis (
     id                               SERIAL NOT NULL PRIMARY KEY,
     personne_id                      INTEGER NOT NULL REFERENCES personnes(id),
