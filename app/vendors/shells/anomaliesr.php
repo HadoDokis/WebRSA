@@ -198,6 +198,18 @@
 				)
 			),
 			array(
+				'text' => 'personnes avec des noms ou des prenoms contenant des caracteres inattendus',
+				'model' => 'Personne',
+				'queryData' => array(
+					'conditions' => array(
+						'or' => array(
+							"Personne.nom NOT SIMILAR TO '^[A-Z]+([A-Z \'\-]*)[A-Z]+$'",
+							"Personne.prenom NOT SIMILAR TO '^[A-Z]+([A-Z \'\-]*)[A-Z]+$'"
+						)
+					)
+				)
+			),
+			array(
 				'text' => 'prestations de meme nature et de meme role pour une personne donnee',
 				'model' => 'Prestation',
 				'queryData' => array(
