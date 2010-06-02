@@ -211,9 +211,8 @@
             $cui['Personne']['qual'] = Set::enum( Set::classicExtract( $cui, 'Personne.qual' ), $qual );
             $cui['Personne']['dtnai'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $cui, 'Personne.dtnai' ) );
             $cui['Referent']['qual'] = Set::enum( Set::classicExtract( $cui, 'Referent.qual' ), $qual );
-debug($cui);
-die();
-//             $this->Gedooo->generate( $cui, 'Contratinsertion/notificationop.odt' );
+
+//             $this->Gedooo->generate( $cui, 'CUI/cui.odt' );
         }
 
         /**
