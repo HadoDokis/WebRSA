@@ -36,8 +36,8 @@
         <table class="tooltips">
             <thead>
                 <tr>
-                    <!-- <th>N° Contrat</th> -->
-                    <th>Type contrat</th>
+                    <th>Type Contrat</th> 
+                    <th>Rang contrat</th>
                     <th>Date début</th>
                     <th>Date fin</th>
                     <th>Décision</th>
@@ -71,7 +71,7 @@
 
                         echo $html->tableCells(
                             array(
-                                //h( $contratinsertion['Contratinsertion']['id'] ),
+                                h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci ) ),
                                 h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ),  $options['num_contrat'] ) ),
                                 h( date_short( isset( $contratinsertion['Contratinsertion']['dd_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['dd_ci']  ) : null ),
                                 h( date_short( isset( $contratinsertion['Contratinsertion']['df_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['df_ci'] ) : null ),

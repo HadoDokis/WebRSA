@@ -34,13 +34,6 @@
 
             if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
                 $this->set( 'decision_ci', $this->Option->decision_ci() );
-            }
-
-            if( in_array( $this->action, array( 'add', 'edit', 'view' ) ) ) {
-                $this->set( 'formeci', $this->Option->formeci() );
-            }
-
-            if( in_array( $this->action, array( 'add', 'edit'/*, 'view'*/ ) ) ) {
 
                 if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
                     $forme_ci = array( 'S' => 'Simple', 'C' => 'Complexe' );
@@ -49,6 +42,14 @@
                     $forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
                 }
                 $this->set( 'forme_ci', $forme_ci );
+            }
+
+            if( in_array( $this->action, array( 'add', 'edit', 'view' ) ) ) {
+                $this->set( 'formeci', $this->Option->formeci() );
+            }
+
+            if( in_array( $this->action, array( 'add', 'edit'/*, 'view'*/ ) ) ) {
+
                 $this->set( 'qual', $this->Option->qual() );
                 $this->set( 'raison_ci', $this->Option->raison_ci() );
                 $this->set( 'avisraison_ci', $this->Option->avisraison_ci() );
