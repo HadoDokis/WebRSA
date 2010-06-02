@@ -67,12 +67,12 @@
         <table class="tooltips">
             <thead>
                 <tr>
-                    <th>N° dossier</th>
-                    <th>Nom demandeur</th>
-                    <th>Convention</th>
-                    <th>Secteur</th>
-                    <th>Date du contrat</th>
-                    <th>Nom de l'employeur</th>
+                    <th><?php echo $paginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $paginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
+                    <th><?php echo $paginator->sort( 'Convention', 'Cui.convention' );?></th>
+                    <th><?php echo $paginator->sort( 'Secteur', 'Cui.secteur' );?></th>
+                    <th><?php echo $paginator->sort( 'Date du contrat', 'Cui.datecontrat' );?></th>
+                    <th><?php echo $paginator->sort( 'Nom de l\'employeur', 'Cui.nomemployeur' );?></th>
                     <th colspan="4" class="action">Actions</th>
                 </tr>
             </thead>
