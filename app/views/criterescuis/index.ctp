@@ -69,6 +69,7 @@
                 <tr>
                     <th>Nom demandeur</th>
                     <th>N° CAF</th>
+                    <th>Convention</th>
                     <th>Secteur</th>
                     <th>Date du contrat</th>
                     <th>Nom de l'employeur</th>
@@ -108,7 +109,8 @@
                             array(
                                 h( Set::enum( Set::classicExtract( $criterecui, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criterecui, 'Personne.nom' ).' '.Set::classicExtract( $criterecui, 'Personne.prenom' ) ),
                                 h( Set::classicExtract( $criterecui, 'Dossier.matricule' ) ),
-                                h( Set::classicExtract( $criterecui, 'Cui.secteur' ) ),
+                                h( Set::enum( Set::classicExtract( $criterecui, 'Cui.convention' ), $options['convention'] ) ),
+                                h( Set::enum( Set::classicExtract( $criterecui, 'Cui.secteur' ), $options['secteur'] ) ),
                                 h( $locale->date( 'Locale->date',  Set::classicExtract( $criterecui, 'Cui.datecontrat' ) ) ),
                                 h( Set::classicExtract( $criterecui, 'Cui.nomemployeur' ) ),
                                 $html->viewLink(

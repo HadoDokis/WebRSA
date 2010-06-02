@@ -115,6 +115,7 @@
                     '"Cui"."secteur"',
                     '"Cui"."datecontrat"',
                     '"Cui"."nomemployeur"',
+                    '"Cui"."convention"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
                     '"Dossier"."dtdemrsa"',
