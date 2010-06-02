@@ -385,10 +385,13 @@
                     $this->data['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );
                 ///Fin des Dsps
 
+
+
                 /// Récupération des données socio pro (notamment Niveau etude) lié à la fiche
                     $this->ActioncandidatPersonne->Personne->Rendezvous->unbindModelAll();
                     $rdv = $this->ActioncandidatPersonne->Personne->Rendezvous->findByPersonneId( $personne_id, null, null, 2 );
-                    if( empty( $rdv ) ) {
+                    $rdvData = Set::filter( $rdv['Rendezvous'] );
+                    if( empty( $rdv ) && !empty( $rdvData ) ) {
                         $rdv = array( 'Rendezvous' => array( 'personne_id' => $personne_id ) );
                         $this->ActioncandidatPersonne->Personne->Rendezvous->set( $rdv );
                         if( $this->ActioncandidatPersonne->Personne->Rendezvous->save( $rdv ) ) {

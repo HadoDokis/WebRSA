@@ -46,7 +46,7 @@
                 $this->Dossier->begin(); // Pour les jetons
 
                 $this->paginate = $this->Criterecui->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-//                 $this->paginate['limit'] = 10;
+                $this->paginate['limit'] = 10;
                 $criterescuis = $this->paginate( 'Cui' );
 
                 $this->Dossier->commit();

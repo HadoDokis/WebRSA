@@ -422,7 +422,7 @@
                 if( !empty( $dspData ) ){
                     $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
                 }*/
-$this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
+                $this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
                 //FIXME
                     $valid = $this->Contratinsertion->Structurereferente->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
                 //
