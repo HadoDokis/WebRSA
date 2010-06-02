@@ -313,8 +313,8 @@
                 array(
                     'ActioncandidatPersonne.bilanvenu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => 'La personne s\'est présentée' ),
                     'ActioncandidatPersonne.bilanrecu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => 'La personne a été reçue' ),
-                    'ActioncandidatPersonne.daterecu' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
-                    'ActioncandidatPersonne.personnerecu',
+                    'ActioncandidatPersonne.daterecu' => array( 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
+                    'ActioncandidatPersonne.personnerecu' => array( 'type' => 'text' ),
                     'ActioncandidatPersonne.presencecontrat' => array( 'type' => 'select', 'label' => 'Avec son contrat d\'Engagement Réciproque' ),
                     'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'separator' => '<br />', 'legend' => 'La personne a été retenue' )
                 ),

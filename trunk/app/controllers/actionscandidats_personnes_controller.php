@@ -125,7 +125,7 @@
 
             $contact = $this->Contactpartenaire->findByPartenaireId( Set::classicExtract( $part, 'ActioncandidatPartenaire.partenaire_id', null, null, -1 ) );
             $this->set( compact( 'contact' ) );
-
+// debug($part);
             $this->render( 'ajaxpart', 'ajax' );
         }
 

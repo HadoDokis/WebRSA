@@ -10,9 +10,16 @@
             'candidatureform',
             'data[ActioncandidatPersonne][rendezvouspartenaire]',
             [
-                'ActioncandidatPersonneDaterdvpartenaireDay',
-                'ActioncandidatPersonneDaterdvpartenaireMonth',
-                'ActioncandidatPersonneDaterdvpartenaireYear'
+//                 'ActioncandidatPersonneDaterdvpartenaireDay',
+                    'RendezvousDaterdvDay',
+                    'RendezvousDaterdvMonth',
+                    'RendezvousDaterdvYear',
+                    'RendezvousHeurerdvHour',
+                    'RendezvousHeurerdvMin',
+                    'RendezvousStructurereferenteId',
+                    'RendezvousReferentId'
+//                 'ActioncandidatPersonneDaterdvpartenaireMonth',
+//                 'ActioncandidatPersonneDaterdvpartenaireYear'
             ],
             '1',
             true
@@ -57,6 +64,7 @@
     <fieldset>
         <legend>Informations de candidature</legend>
         <?php
+
             echo $default->subform(
                 array(
                     'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
@@ -149,12 +157,51 @@
                     'ActioncandidatPersonne.naturemobile' => array( 'label' => 'Nature de la mobilité', 'empty' => true ),
                     'ActioncandidatPersonne.typemobile'=> array( 'label' => 'Type de mobilité ' ),
                     'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'radio' , 'legend' => 'Rendez-vous', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
-                    'ActioncandidatPersonne.daterdvpartenaire' => array( 'dateFormat' => 'DMY', 'empty' => true ),
-                    'ActioncandidatPersonne.enattente' => array( 'type' => 'radio', 'div' => false, 'legend' => 'Candidature en attente', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ) )
+//                     'ActioncandidatPersonne.daterdvpartenaire' => array( 'dateFormat' => 'DMY', 'empty' => true ),
                 ),
                 array(
                     'domain' => $domain,
                     'options' => $options
+                )
+            );
+
+            echo $default->subform(
+                array(
+                    'Rendezvous.id' => array( 'type' => 'hidden' ),
+                    'Rendezvous.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
+                    'Rendezvous.daterdv' => array( 'label' =>  'Rendez-vous fixé le ', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
+                    'Rendezvous.heurerdv' => array( 'label' => 'A ', 'type' => 'time', 'timeFormat' => '24', 'minuteInterval' => 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
+                ),
+                array(
+                    'options' => $options,
+                    'domain' => $domain
+                )
+            );
+
+
+            echo $xform->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'Nom de l\'organisme', true ) ), 'type' => 'select', 'options' => $structs, 'empty' => true ) );
+
+            echo $xform->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+
+
+            ///Ajax pour les données du référent et de l'organisme auquel il est lié
+            echo $ajax->observeField( 'RendezvousReferentId', array( 'update' => 'StructureData', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
+
+            echo $html->tag(
+                'div',
+                '<b></b>',
+                array(
+                    'id' => 'StructureData'
+                )
+            );
+
+            echo $default->subform(
+                array(
+                    'ActioncandidatPersonne.enattente' => array( 'type' => 'radio', 'div' => false, 'legend' => 'Candidature en attente', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ) )
+                ),
+                array(
+                    'options' => $options,
+                    'domain' => $domain
                 )
             );
 
@@ -203,7 +250,7 @@
                 echo $default->subform(
                     array(
                         'ActioncandidatPersonne.infocomplementaire',
-                        'ActioncandidatPersonne.datebilan' => array( 'dateFormat' => 'DMY', 'empty' => true )
+                        'ActioncandidatPersonne.datebilan' => array( 'dateFormat' => 'DMY', 'empty' => false )
                     ),
                     array(
                         'domain' => $domain,
