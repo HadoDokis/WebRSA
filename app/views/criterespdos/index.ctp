@@ -8,6 +8,7 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsetOnCheckbox( 'PropopdoDatereceptionpdo', $( 'PropopdoDatereceptionpdoFromDay' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'PropopdoDatedecisionpdo', $( 'PropopdoDatedecisionpdoFromDay' ).up( 'fieldset' ), false );
     });
 </script>
 <?php
@@ -25,7 +26,7 @@
     echo $xform->create( 'Criterespdos', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );
 ?>
 <fieldset>
-    <legend>Recherche de Proposition d'Opportunité</legend>
+    <legend>Recherche par date de décision</legend>
         <?php echo $form->input( 'Propopdo.datereceptionpdo', array( 'label' => 'Filtrer par date de réception de la PDO', 'type' => 'checkbox' ) );?>
         <fieldset>
             <legend>Date de proposition de la décision PDO</legend>
@@ -37,14 +38,27 @@
             <?php echo $form->input( 'Propopdo.datereceptionpdo_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datereceptionpdo_to ) );?>
         </fieldset>
 </fieldset>
+<fieldset>
+    <legend>Recherche par date de réception</legend>
+        <?php echo $form->input( 'Propopdo.datedecisionpdo', array( 'label' => 'Filtrer par date de décision de la PDO', 'type' => 'checkbox' ) );?>
+        <fieldset>
+            <legend>Date de proposition de la décision PDO</legend>
+            <?php
+                $datedecisionpdo_from = Set::check( $this->data, 'Propopdo.datedecisionpdo_from' ) ? Set::extract( $this->data, 'Propopdo.datedecisionpdo_from' ) : strtotime( '-1 week' );
+                $datedecisionpdo_to = Set::check( $this->data, 'Propopdo.datedecisionpdo_to' ) ? Set::extract( $this->data, 'Propopdo.datedecisionpdo_to' ) : strtotime( 'now' );
+            ?>
+            <?php echo $form->input( 'Propopdo.datedecisionpdo_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedecisionpdo_from ) );?>
+            <?php echo $form->input( 'Propopdo.datedecisionpdo_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datereceptionpdo_to ) );?>
+        </fieldset>
+</fieldset>
     <?php
         ///Formulaire de recherche pour les CUIs
         echo $default->search(
             array(
-                'Propopdo.decisionpdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.decisionpdo_id', true ), 'type' => 'select', 'options' => $decisionpdo ),
+                'Propopdo.decisionpdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.decisionpdo_id', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ),
                 'Propopdo.datereceptionpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.datereceptionpdo', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
-                'Propopdo.originepdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.originepdo_id', true ), 'type' => 'select', 'options' => $originepdo ),
-                'Propopdo.motifpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.motifpdo', true ), 'type' => 'select', 'options' => $motifpdo ),
+                'Propopdo.originepdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.originepdo_id', true ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
+                'Propopdo.motifpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true  ),
                 'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
                 'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
                 'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
