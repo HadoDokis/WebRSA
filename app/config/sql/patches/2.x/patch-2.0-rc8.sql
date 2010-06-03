@@ -316,3 +316,43 @@ COMMIT;
 BEGIN;
 ALTER TABLE apres ADD COLUMN isdecision type_no DEFAULT NULL;
 COMMIT;
+
+
+
+-- *****************************************************************************
+-- ***** Modifications de la table PDO (03/06/2010)                        *****
+-- *****************************************************************************
+
+BEGIN;
+CREATE TYPE type_choixpdo AS ENUM ( 'PDO', 'JUS' );
+ALTER TABLE propospdos ADD COLUMN choixpdo type_choixpdo DEFAULT NULL;
+ALTER TABLE propospdos ADD COLUMN dateenvoiop DATE;
+ALTER TABLE propospdos ADD COLUMN daterevision DATE;
+ALTER TABLE propospdos ADD COLUMN dateecheance DATE;
+ALTER TABLE propospdos ADD COLUMN decision type_booleannumber DEFAULT NULL;
+ALTER TABLE propospdos ADD COLUMN suivi type_booleannumber DEFAULT NULL;
+ALTER TABLE propospdos ADD COLUMN autres type_booleannumber DEFAULT NULL;
+
+-----------------------------------------------------
+CREATE TABLE statutsdecisionspdos (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    libelle                     VARCHAR(50)
+);
+CREATE INDEX statutsdecisionspdos_libelle_idx ON statutsdecisionspdos (libelle);
+COMMENT ON TABLE statutsdecisionspdos IS 'Table des statuts des décisions de PDOs';
+
+-----------------------------------------------------
+CREATE TABLE propospdos_statutsdecisionspdos (
+    id              SERIAL NOT NULL PRIMARY KEY,
+    propopdo_id           INTEGER NOT NULL REFERENCES propospdos(id),
+    statutdecisionpdo_id       INTEGER NOT NULL REFERENCES statutsdecisionspdos(id)
+);
+
+CREATE INDEX propospdos_statutsdecisionspdos_propopdo_id_idx ON propospdos_statutsdecisionspdos (propopdo_id);
+CREATE INDEX propospdos_statutsdecisionspdos_statutpdo_id_idx ON propospdos_statutsdecisionspdos (statutdecisionpdo_id);
+
+COMMENT ON TABLE propospdos_statutspdos IS 'Statuts des décisions liés aux PDOs';
+
+ALTER TABLE propospdos DROP COLUMN statutdecision;
+COMMIT;
+

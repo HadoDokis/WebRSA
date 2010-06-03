@@ -17,33 +17,30 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
+###############################################################################
+msgid "Statutsdecisionspdos::index"
+msgstr "Statuts pour les décisions des PDOs"
+
+msgid "Statutsdecisionspdos::add"
+msgstr "Ajout d'un statut"
+
+msgid "Statutdecisionpdo::index::empty"
+msgstr "Aucun statut présent"
+
+msgid "Statutdecisionpdo::add"
+msgstr "Ajout d'un statut"
+
+msgid "Statutdecisionpdo::edit"
+msgstr "Modifier un statut"
+
+msgid "Statutdecisionpdo::delete"
+msgstr "Supprimer un statut"
+
+msgid "Statutsdecisionspdos::edit"
+msgstr "Modification d'un statut"
+
+msgid "Statutdecisionpdo.libelle"
+msgstr "Intitulé du statut"
+
 
 ###############################################################################
-# Enum Propopdo.statutdecision
-###############################################################################
-msgid "Criterespdos::index"
-msgstr "Recherche par PDOs"
-
-msgid "ENUM::STATUTDECISION::DEF"
-msgstr "Définitive"
-
-msgid "ENUM::STATUTDECISION::UND"
-msgstr "Non définitive"
-
-msgid "ENUM::CHOIXPDO::PDO"
-msgstr "PDO"
-
-msgid "ENUM::CHOIXPDO::JUS"
-msgstr "Justificatifs arrivés"
-
-msgid "Propopdo.decisionpdo_id"
-msgstr "Proposition de décision"
-
-msgid "Propopdo.datereceptionpdo"
-msgstr "Date de réception de la PDO"
-
-msgid "Propopdo.originepdo_id"
-msgstr "Origine de la PDO"
-
-msgid "Propopdo.motifpdo"
-msgstr "Motif de la PDO"

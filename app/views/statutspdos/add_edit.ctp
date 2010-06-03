@@ -9,7 +9,7 @@
 <?php
     echo $default->form(
         array(
-            'Statutpdo.libelle'
+            'Statutpdo.libelle' => array( 'type' => 'text' )
         ),
         array(
             'actions' => array(

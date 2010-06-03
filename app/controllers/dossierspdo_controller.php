@@ -3,7 +3,7 @@
     class DossierspdoController extends AppController{
 
         var $name = 'Dossierspdo';
-        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction', 'Piecepdo', 'PropopdoTypenotifpdo', 'Originepdo',  'Statutpdo', 'Situationpdo' );
+        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction', 'Piecepdo', 'PropopdoTypenotifpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo' );
 
         var $helpers = array( 'Default' );
 
@@ -22,6 +22,7 @@
 
             $this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
             $this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
+            $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
 
             $options = $this->Propopdo->allEnumLists();
             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
@@ -149,7 +150,13 @@
 
             //Essai de sauvegarde
             if( !empty( $this->data ) ) {
+                // Nettoyage des Dsp
+                $keys = array_keys( $this->Propopdo->schema() );
+                $defaults = array_combine( $keys, array_fill( 0, count( $keys ), null ) );
+                unset( $defaults['id'] );
 
+                $this->data['Propopdo'] = Set::merge( $defaults, $this->data['Propopdo'] );
+// debug($this->data);
                 if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) /*&& $this->Typenotifpdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) */) {
                     if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) )/* && $this->Typenotifpdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) )*/) {
 

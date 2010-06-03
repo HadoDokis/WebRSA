@@ -79,11 +79,12 @@
             }
 
             $dossier_id = $this->Propopdo->dossierId( $pdo_id );
-// debug($dossier_id);
+
             $this->set( 'dossier_id', $dossier_id );
 
 
             if( !empty( $this->data ) ) {
+
                 if( $this->PropopdoTypenotifpdo->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'propospdos_typesnotifspdos', 'action' => 'index', $id ) );
