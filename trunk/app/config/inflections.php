@@ -244,12 +244,13 @@
 		'fonctionpartep' => 'fonctionspartseps',
 		'partep' => 'partseps',
 		'ep_zonegeographique' => 'eps_zonesgeographiques',
-		'sceanceep' => 'sceanceseps',
-		'partep_sceanceep' => 'partseps_sceanceseps',
+		'seanceep' => 'seanceseps',
+		'partep_seanceep' => 'partseps_seanceseps',
 		'motifdemreorient' => 'motifsdemsreorients',
 		'demandereorient' => 'demandesreorient',
-		'sceanceep_demandereorient' => 'sceanceseps_demandesreorient',
+		'demandereorient_seanceep' => 'demandesreorient_seanceseps',
 		'decisionreorient' => 'decisionsreorient',
+		'demandereorient_seanceep' => 'demandesreorient_seanceseps',
 
      );
 /**

@@ -23,15 +23,20 @@ BEGIN;
 -- Nouvelle version des eps
 DROP TABLE IF EXISTS decisionsreorient;
 DROP TABLE IF EXISTS sceanceseps_demandesreorient;
+DROP TABLE IF EXISTS seanceseps_demandesreorient;
+DROP TABLE IF EXISTS demandesreorient_sceanceseps;
+DROP TABLE IF EXISTS demandesreorient_seanceseps;
 DROP TABLE IF EXISTS demandesreorient;
 DROP TABLE IF EXISTS motifsdemsreorients;
 DROP TYPE IF EXISTS type_accordconcertation_reorient;
 DROP TYPE IF EXISTS type_etapedecisionep;
 DROP TYPE IF EXISTS type_decisionep;
+DROP TABLE IF EXISTS partseps_seanceseps;
 DROP TABLE IF EXISTS partseps_sceanceseps;
 DROP TYPE IF EXISTS type_presenceep;
 DROP TYPE IF EXISTS type_reponseinvitationep;
 DROP TABLE IF EXISTS sceanceseps;
+DROP TABLE IF EXISTS seanceseps;
 DROP TYPE IF EXISTS type_traitementthemeep;
 DROP TABLE IF EXISTS eps_zonesgeographiques;
 DROP TABLE IF EXISTS partseps;
@@ -80,11 +85,11 @@ CREATE TABLE eps_zonesgeographiques (
 
 CREATE TYPE type_traitementthemeep AS ENUM ( 'nontraite', 'decisionep', 'decisioncg' );
 
-CREATE TABLE sceanceseps (
+CREATE TABLE seanceseps (
 	id								SERIAL NOT NULL PRIMARY KEY,
 	ep_id							INTEGER NOT NULL REFERENCES eps(id),
 	structurereferente_id			INTEGER NOT NULL REFERENCES structuresreferentes(id),
-	datesceance						TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+	dateseance						TIMESTAMP WITHOUT TIME ZONE NOT NULL,
 	finaliseeep						type_booleannumber DEFAULT NULL,
 	finaliseecg						type_booleannumber DEFAULT NULL,
 	-- themes
@@ -95,13 +100,13 @@ CREATE TABLE sceanceseps (
 CREATE TYPE type_reponseinvitationep AS ENUM ( 'confirme', 'decline', 'non_renseigne' );
 CREATE TYPE type_presenceep AS ENUM ( 'present', 'absent', 'excuse', 'remplace' );
 
-CREATE TABLE partseps_sceanceseps (
+CREATE TABLE partseps_seanceseps (
 	id								SERIAL NOT NULL PRIMARY KEY,
 	partep_id						INTEGER NOT NULL REFERENCES partseps(id),
-	sceanceep_id					INTEGER NOT NULL REFERENCES sceanceseps(id),
+	seanceep_id					INTEGER NOT NULL REFERENCES seanceseps(id),
 	reponseinvitation				type_reponseinvitationep DEFAULT 'non_renseigne',
 	presence						type_presenceep DEFAULT NULL,
-	partep_remplacant_id			INTEGER DEFAULT NULL REFERENCES partseps(id)
+	remplacant_partep_id			INTEGER DEFAULT NULL REFERENCES partseps(id)
 );
 
 CREATE TYPE type_decisionep AS ENUM ( 'accord', 'refus', 'report' );
@@ -140,7 +145,7 @@ CREATE TABLE demandesreorient (
 	dateecheance					DATE DEFAULT NULL,
 	motivation						TEXT DEFAULT NULL,
 	-- FIXME: avec les réexamens
-	sceanceep_id					INTEGER DEFAULT NULL REFERENCES sceanceseps(id),
+	seanceep_id					INTEGER DEFAULT NULL REFERENCES seanceseps(id),
 	nv_orientstruct_id				INTEGER DEFAULT NULL REFERENCES orientsstructs(id),
 	vx_demandereorient_id			INTEGER DEFAULT NULL REFERENCES demandesreorient(id),
 	created							TIMESTAMP WITHOUT TIME ZONE,
@@ -157,15 +162,16 @@ CREATE TABLE demandesreorient (
 * Résultats des scéances ep
 */
 
-CREATE TABLE sceanceseps_demandesreorient (
+CREATE TABLE demandesreorient_seanceseps (
 	id								SERIAL NOT NULL PRIMARY KEY,
-	sceanceep_id					INTEGER NOT NULL REFERENCES sceanceseps(id),
-	demandereorient_id				INTEGER NOT NULL REFERENCES demandesreorient(id)
+	demandereorient_id				INTEGER NOT NULL REFERENCES demandesreorient(id),
+	seanceep_id					INTEGER NOT NULL REFERENCES seanceseps(id)
+
 );
 
 CREATE TABLE decisionsreorient (
     id                              SERIAL NOT NULL PRIMARY KEY,
-	sceanceep_demandereorient_id	INTEGER DEFAULT NULL REFERENCES sceanceseps_demandesreorient(id),
+	demandereorient_seanceep_id	INTEGER DEFAULT NULL REFERENCES demandesreorient_seanceseps(id),
 	etape							type_etapedecisionep NOT NULL DEFAULT 'ep',
 	decision						type_decisionep NOT NULL,
 	commentaire						TEXT DEFAULT NULL,
