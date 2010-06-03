@@ -206,17 +206,17 @@
         'propopdo_situationpdo' => 'propospdos_situationspdos',
         'propopdo_statutpdo' => 'propospdos_statutspdos',
 		/// Équipes pluridisciplinaires
-		'partep' => 'partseps',
-		'rolepartep' => 'rolespartseps',
-		'ep_partep' => 'eps_partseps',
-		// Demandes de réorientation
-		'motifdemreorient' => 'motifsdemsreorients',
-		'demandereorient' => 'demandesreorient',
-		'precoreorient' => 'precosreorients',
-		// Détection des parcours
-// 		'parcoursdetecte' => 'parcoursdetectes',
-		'decisionparcours' => 'decisionsparcours',
-        	'ep_theme' => 'eps_themes',
+// 		'partep' => 'partseps',
+// 		'rolepartep' => 'rolespartseps',
+// 		'ep_partep' => 'eps_partseps',
+// 		// Demandes de réorientation
+// 		'motifdemreorient' => 'motifsdemsreorients',
+// 		'demandereorient' => 'demandesreorient',
+// 		'precoreorient' => 'precosreorients',
+// 		// Détection des parcours
+// // 		'parcoursdetecte' => 'parcoursdetectes',
+// 		'decisionparcours' => 'decisionsparcours',
+//         	'ep_theme' => 'eps_themes',
 		/// Table de connexion ajoutée par gaëtan
 		'aro_aco' => 'aros_acos',
 		/// Dsp, v 1
@@ -237,7 +237,18 @@
         'typeaideapre66_pieceaide66' => 'typesaidesapres66_piecesaides66',
         'aideapre66_pieceaide66' => 'aidesapres66_piecesaides66',
         'fraisdeplacement66' => 'fraisdeplacements66',
-        'criterecui' => 'criterescuis'
+        'criterecui' => 'criterescuis',
+		/// Équipes pluridisciplinaires
+		'fonctionpartep' => 'fonctionspartseps',
+		'partep' => 'partseps',
+		'ep_zonegeographique' => 'eps_zonesgeographiques',
+		'sceanceep' => 'sceanceseps',
+		'partep_sceanceep' => 'partseps_sceanceseps',
+		'motifdemreorient' => 'motifsdemsreorients',
+		'demandereorient' => 'demandesreorient',
+		'sceanceep_demandereorient' => 'sceanceseps_demandesreorient',
+		'decisionreorient' => 'decisionsreorient',
+
      );
 /**
  * This is a key => value array of regex used to match words.
