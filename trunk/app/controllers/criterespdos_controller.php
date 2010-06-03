@@ -83,7 +83,7 @@
             unset( $querydata['limit'] );
             $pdos = $this->Propopdo->find( 'all', $querydata );
 
-// debug($contrats);
+// debug($pdos);
 // die();
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'pdos' ) );
