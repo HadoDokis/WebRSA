@@ -205,6 +205,8 @@
         'situationpdo' => 'situationspdos',
         'propopdo_situationpdo' => 'propospdos_situationspdos',
         'propopdo_statutpdo' => 'propospdos_statutspdos',
+        'statutdecisionpdo' => 'statutsdecisionspdos',
+        'propopdo_statutdecisionpdo' => 'propospdos_statutsdecisionspdos',
 		/// Équipes pluridisciplinaires
 // 		'partep' => 'partseps',
 // 		'rolepartep' => 'rolespartseps',

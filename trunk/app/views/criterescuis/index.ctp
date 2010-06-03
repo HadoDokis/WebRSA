@@ -103,7 +103,7 @@
                                     <td>'.$criterecui['Personne']['nir'].'</td>
                                 </tr>
                                 <tr>
-                                    <th>NIR</th>
+                                    <th>N° CAF</th>
                                     <td>'.$criterecui['Dossier']['matricule'].'</td>
                                 </tr>
 

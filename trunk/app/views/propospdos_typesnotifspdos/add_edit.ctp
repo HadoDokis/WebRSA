@@ -36,7 +36,7 @@
             <legend>Détails PDO</legend>
                 <?php echo $form->input( 'PropopdoTypenotifpdo.propopdo_id', array( 'label' => false, 'type' => 'hidden' ) ) ;?>
               <?php echo $form->input( 'PropopdoTypenotifpdo.typenotifpdo_id', array( 'label' =>  ( __( 'Type de notification', true ) ), 'type' => 'select', 'options' => $typenotifpdo, 'empty' => true ) );?>
-                <?php echo $form->input( 'PropopdoTypenotifpdo.datenotifpdo', array( 'label' =>  ( __( 'Date de notification', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=> date('Y')-1, 'empty' => true ) );?> 
+                <?php echo $form->input( 'PropopdoTypenotifpdo.datenotifpdo', array( 'label' =>  ( __( 'Date de notification', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=> date('Y')-1, 'empty' => false ) );?> 
         </fieldset>
     </div>
 

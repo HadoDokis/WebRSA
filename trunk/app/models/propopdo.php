@@ -8,6 +8,7 @@
             'Enumerable' => array(
 				'fields' => array(
 					'statutdecision' => array( 'type' => 'statutdecision', 'domain' => 'propopdo' ),
+                    'choixpdo' => array( 'domain' => 'propopdo' ),
 				)
             )
         );
@@ -44,7 +45,8 @@
             ),
             'motifpdo' => array(
                 'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
+                'message' => 'Champ obligatoire',
+                'allowEmpty' => true
             ),
             'decisionpdo' => array(
                 'rule' => 'notEmpty',
@@ -62,7 +64,7 @@
             else {
                 return null;
             }
-            debug($propopdo);
+//             debug($propopdo);
         }
     }
 ?>

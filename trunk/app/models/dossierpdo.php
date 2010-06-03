@@ -108,7 +108,7 @@
                     array(
                         'table'      => 'decisionspdos',
                         'alias'      => 'Decisionpdo',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Propopdo.decisionpdo_id = Decisionpdo.id' )
                     ),
