@@ -21,7 +21,7 @@
             }
 
             /// Critères
-            $datedecisionpdo = Set::extract( $criterespdos, 'Search.Propopdo.datedecisionpdo' );
+
             $decisionpdo = Set::extract( $criterespdos, 'Search.Propopdo.decisionpdo_id' );
             $motifpdo = Set::extract( $criterespdos, 'Search.Propopdo.motifpdo' );
             $originepdo = Set::extract( $criterespdos, 'Search.Propopdo.originepdo_id' );
@@ -32,7 +32,16 @@
             $numdemrsa = Set::extract( $criterespdos, 'Search.Dossier.numdemrsa' );
 
 
-            /// Critères sur le CI - date de saisi contrat
+            /// Critères sur les PDOs - date de decisonde la PDO
+            if( isset( $criterespdos['Propopdo']['datedecisionpdo'] ) && !empty( $criterespdos['Propopdo']['datedecisionpdo'] ) ) {
+                $valid_from = ( valid_int( $criterespdos['Propopdo']['datedecisionpdo_from']['year'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_from']['month'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_from']['day'] ) );
+                $valid_to = ( valid_int( $criterespdos['Propopdo']['datedecisionpdo_to']['year'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_to']['month'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_to']['day'] ) );
+                if( $valid_from && $valid_to ) {
+                    $conditions[] = 'Propopdo.datedecisionpdo BETWEEN \''.implode( '-', array( $criterespdos['Propopdo']['datedecisionpdo_from']['year'], $criterespdos['Propopdo']['datedecisionpdo_from']['month'], $criterespdos['Propopdo']['datedecisionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdos['Propopdo']['datedecisionpdo_to']['year'], $criterespdos['Propopdo']['datedecisionpdo_to']['month'], $criterespdos['Propopdo']['datedecisionpdo_to']['day'] ) ).'\'';
+                }
+            }
+
+            /// Critères sur les PDOs - date de reception de la PDO
             if( isset( $criterespdos['Propopdo']['datereceptionpdo'] ) && !empty( $criterespdos['Propopdo']['datereceptionpdo'] ) ) {
                 $valid_from = ( valid_int( $criterespdos['Propopdo']['datereceptionpdo_from']['year'] ) && valid_int( $criterespdos['Propopdo']['datereceptionpdo_from']['month'] ) && valid_int( $criterespdos['Propopdo']['datereceptionpdo_from']['day'] ) );
                 $valid_to = ( valid_int( $criterespdos['Propopdo']['datereceptionpdo_to']['year'] ) && valid_int( $criterespdos['Propopdo']['datereceptionpdo_to']['month'] ) && valid_int( $criterespdos['Propopdo']['datereceptionpdo_to']['day'] ) );
@@ -40,7 +49,6 @@
                     $conditions[] = 'Propopdo.datereceptionpdo BETWEEN \''.implode( '-', array( $criterespdos['Propopdo']['datereceptionpdo_from']['year'], $criterespdos['Propopdo']['datereceptionpdo_from']['month'], $criterespdos['Propopdo']['datereceptionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdos['Propopdo']['datereceptionpdo_to']['year'], $criterespdos['Propopdo']['datereceptionpdo_to']['month'], $criterespdos['Propopdo']['datereceptionpdo_to']['day'] ) ).'\'';
                 }
             }
-
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
             if( !empty( $nom ) ) {
                 $conditions[] = 'Personne.nom ILIKE \''.$this->wildcard( $nom ).'\'';
@@ -81,18 +89,18 @@
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
-            // Secteur du contrat
+            // Décision de la PDO
             if( !empty( $decisionpdo ) ) {
                 $conditions[] = 'Propopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
             }
 
 
-            // Secteur du contrat
+            // Motif de la PDO
             if( !empty( $motifpdo ) ) {
                 $conditions[] = 'Propopdo.motifpdo = \''.Sanitize::clean( $motifpdo ).'\'';
             }
 
-            // Secteur du contrat
+            // Origine de la PDO
             if( !empty( $originepdo ) ) {
                 $conditions[] = 'Propopdo.originepdo_id = \''.Sanitize::clean( $originepdo ).'\'';
             }

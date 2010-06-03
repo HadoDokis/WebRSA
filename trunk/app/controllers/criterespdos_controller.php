@@ -61,7 +61,7 @@
                 $criterespdos = $this->paginate( 'Propopdo' );
 
                 $this->Dossier->commit();
-
+debug($this->data);
                 $this->set( 'criterespdos', $criterespdos );
             }
 
