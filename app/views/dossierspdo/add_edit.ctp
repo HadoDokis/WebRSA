@@ -74,8 +74,11 @@
             ?>
         </fieldset>
     </div>
+    <div class="submit">
+        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+        <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+    </div>
 
-            <?php echo $xform->submit( 'Enregistrer' );?>
     <?php echo $xform->end();?>
 </div>
 <div class="clearer"><hr /></div>
