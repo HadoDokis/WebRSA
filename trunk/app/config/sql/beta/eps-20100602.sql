@@ -127,11 +127,11 @@ CREATE TABLE demandesreorient (
 	passageep						type_booleannumber NOT NULL DEFAULT '0',
 	-- Ancien
 	vx_typeorient_id				INTEGER NOT NULL REFERENCES typesorients(id),
-	vx_structure_id					INTEGER NOT NULL REFERENCES structuresreferentes(id),
+	vx_structurereferente_id		INTEGER NOT NULL REFERENCES structuresreferentes(id),
 	vx_referent_id					INTEGER DEFAULT NULL REFERENCES referents(id),
 	-- Nouveau
 	nv_typeorient_id				INTEGER NOT NULL REFERENCES typesorients(id),
-	nv_structure_id					INTEGER DEFAULT NULL REFERENCES structuresreferentes(id),
+	nv_structurereferente_id		INTEGER DEFAULT NULL REFERENCES structuresreferentes(id),
 	nv_referent_id					INTEGER DEFAULT NULL REFERENCES referents(id),
 	datepremierentretien			DATE DEFAULT NULL,
 	-- Concertation
@@ -171,8 +171,8 @@ CREATE TABLE decisionsreorient (
 	commentaire						TEXT DEFAULT NULL,
 	-- Nouveau
 	nv_typeorient_id				INTEGER DEFAULT NULL REFERENCES typesorients(id),
-	nv_structure_id					INTEGER DEFAULT NULL REFERENCES structuresreferentes(id),
-	nv_referent_id						INTEGER DEFAULT NULL REFERENCES referents(id),
+	nv_structurereferente_id		INTEGER DEFAULT NULL REFERENCES structuresreferentes(id),
+	nv_referent_id					INTEGER DEFAULT NULL REFERENCES referents(id),
 	created							TIMESTAMP WITHOUT TIME ZONE,
 	modified						TIMESTAMP WITHOUT TIME ZONE
 );

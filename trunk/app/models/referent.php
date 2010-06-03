@@ -27,11 +27,11 @@
             )
         );
 
-        var $hasMany = array(
-            'Demandereorient' => array(
-				'foreignKey' => 'reforigine_id'
-			)
-        );
+//         var $hasMany = array(
+//             'Demandereorient' => array(
+// 				'foreignKey' => 'reforigine_id'
+// 			)
+//         );
 
         public $virtualFields = array(
             'nom_complet' => array(

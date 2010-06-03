@@ -3,7 +3,7 @@
     {
 
         var $name = 'Orientsstructs';
-        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Demandereorient', 'Pdf', 'Referent' );
+        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente'/*, 'Demandereorient'*/, 'Pdf', 'Referent' );
         var $helpers = array( 'Default' );
         var $components = array( 'Gedooo' );
         /**
@@ -25,10 +25,10 @@
             foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
             }
-            foreach( array( 'Demandereorient' ) as $linkedModel ) {
+            /*foreach( array( 'Demandereorient' ) as $linkedModel ) {
                 $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
-            }
+            }*/
             $this->set( compact( 'options' ) );
 
             return $return;

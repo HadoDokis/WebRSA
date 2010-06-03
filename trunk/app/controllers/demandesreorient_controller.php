@@ -10,12 +10,22 @@
 		public $components = array( 'Default' );
 
 		/**
+		* @access public
+		*/
+
+        public $uses = array( 'Demandereorient', 'Typeorient', 'Structurereferente', 'Referent' );
+
+		/**
 		*
 		*/
 
 		protected function _options() {
 			$options = $this->{$this->modelClass}->enums();
-// 			debug( $options );
+			$options[$this->modelClass]['motifdemreorient_id'] = $this->{$this->modelClass}->Motifdemreorient->find( 'list' );
+			$options[$this->modelClass]['nv_typeorient_id'] = $this->Typeorient->listOptions();
+			$options[$this->modelClass]['nv_structurereferente_id'] = $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
+			$options[$this->modelClass]['nv_referent_id'] = $this->Referent->listOptions();
+
 			return $options;
 		}
 
@@ -66,7 +76,12 @@
 			$this->set( 'options', $options );
 
 			if( !empty( $this->data ) ) {
-				debug( $this->data );
+				$this->{$this->modelClass}->begin();
+
+				$this->{$this->modelClass}->create( $this->data );
+				debug( $this->{$this->modelClass}->save() );
+
+				$this->{$this->modelClass}->rollback();
 			}
 			else {
 				if( $this->action == 'add' ) {
@@ -79,20 +94,19 @@
 						$referent_id = $referent['Referent']['id'];
 					}
 
-					$this->set( 'personne_id', $orientstruct['Orientstruct']['personne_id'] );
-
 					$this->data[$this->modelClass] = array(
 						'orientstruct_id' => $orientstruct['Orientstruct']['id'],
 						'personne_id' => $orientstruct['Orientstruct']['personne_id'],
 						'vx_typeorient_id' => $orientstruct['Orientstruct']['typeorient_id'],
-						'vx_structure_id' => $orientstruct['Orientstruct']['structurereferente_id'],
-						'vx_referent_id' => $referent_id
+						'vx_structurereferente_id' => $orientstruct['Orientstruct']['structurereferente_id'],
+						'vx_referent_id' => $referent_id,
+						'accordconcertation' => 'attente',
+						'datepremierentretien' => date( 'Y-m-d' )
 					);
 				}
 			}
 
-			/*$this->{$this->modelClass}->recursive = -1;
-            $this->Default->_add_edit( $id, null, null, array( 'action' => 'index' ) );*/
+			$this->set( 'personne_id', $this->data[$this->modelClass]['personne_id'] );
             $this->render( null, null, 'add_edit' );
 		}
 
