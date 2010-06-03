@@ -120,18 +120,20 @@ CREATE TABLE motifsdemsreorients (
 
 CREATE TABLE demandesreorient (
     id                              SERIAL NOT NULL PRIMARY KEY,
+	personne_id						INTEGER DEFAULT NULL REFERENCES personnes(id),
 	orientstruct_id					INTEGER DEFAULT NULL REFERENCES orientsstructs(id),
 	motifdemreorient_id				INTEGER NOT NULL REFERENCES motifsdemsreorients(id),
 	urgent							type_booleannumber NOT NULL DEFAULT '0',
 	passageep						type_booleannumber NOT NULL DEFAULT '0',
 	-- Ancien
-	vx_typeorient					INTEGER NOT NULL REFERENCES typesorients(id),
-	vx_structure					INTEGER NOT NULL REFERENCES structuresreferentes(id),
-	vx_referent						INTEGER NOT NULL REFERENCES referents(id),
+	vx_typeorient_id				INTEGER NOT NULL REFERENCES typesorients(id),
+	vx_structure_id					INTEGER NOT NULL REFERENCES structuresreferentes(id),
+	vx_referent_id					INTEGER DEFAULT NULL REFERENCES referents(id),
 	-- Nouveau
-	nv_typeorient					INTEGER NOT NULL REFERENCES typesorients(id),
-	nv_structure					INTEGER DEFAULT NULL REFERENCES structuresreferentes(id),
-	nv_referent						INTEGER DEFAULT NULL REFERENCES referents(id),
+	nv_typeorient_id				INTEGER NOT NULL REFERENCES typesorients(id),
+	nv_structure_id					INTEGER DEFAULT NULL REFERENCES structuresreferentes(id),
+	nv_referent_id					INTEGER DEFAULT NULL REFERENCES referents(id),
+	datepremierentretien			DATE DEFAULT NULL,
 	-- Concertation
 	accordconcertation				type_accordconcertation_reorient NOT NULL DEFAULT 'attente',
 	dateconcertation				DATE DEFAULT NULL,
@@ -140,7 +142,7 @@ CREATE TABLE demandesreorient (
 	-- FIXME: avec les réexamens
 	sceanceep_id					INTEGER DEFAULT NULL REFERENCES sceanceseps(id),
 	nv_orientstruct_id				INTEGER DEFAULT NULL REFERENCES orientsstructs(id),
-	vx_demandesreorient_id			INTEGER DEFAULT NULL REFERENCES demandesreorient(id),
+	vx_demandereorient_id			INTEGER DEFAULT NULL REFERENCES demandesreorient(id),
 	created							TIMESTAMP WITHOUT TIME ZONE,
 	modified						TIMESTAMP WITHOUT TIME ZONE
 );
@@ -168,9 +170,9 @@ CREATE TABLE decisionsreorient (
 	decision						type_decisionep NOT NULL,
 	commentaire						TEXT DEFAULT NULL,
 	-- Nouveau
-	nv_typeorient					INTEGER DEFAULT NULL REFERENCES typesorients(id),
-	nv_structure					INTEGER DEFAULT NULL REFERENCES structuresreferentes(id),
-	nv_referent						INTEGER DEFAULT NULL REFERENCES referents(id),
+	nv_typeorient_id				INTEGER DEFAULT NULL REFERENCES typesorients(id),
+	nv_structure_id					INTEGER DEFAULT NULL REFERENCES structuresreferentes(id),
+	nv_referent_id						INTEGER DEFAULT NULL REFERENCES referents(id),
 	created							TIMESTAMP WITHOUT TIME ZONE,
 	modified						TIMESTAMP WITHOUT TIME ZONE
 );
