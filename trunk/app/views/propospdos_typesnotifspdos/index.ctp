@@ -3,7 +3,7 @@
 <?php  $this->pageTitle = 'Situation PDO';?>
 
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossierId, 'personne_id' => $notifs[''][''] ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'id' => $dossierId ) );?>
 
 <?php
     function value( $array, $index ) {
@@ -30,8 +30,8 @@
         <ul class="actionMenu">
             <?php
                 echo '<li>'.$html->addLink(
-                    'Ajouter PDO',
-                    array( 'controller' => 'propospdos_typesnotifspdos', 'action' => 'add', Set::classicExtract( $notifs, 'PropopdoTypenotifpdo.propopdo_id' ) )
+                    'Ajouter Traitement',
+                    array( 'controller' => 'propospdos_typesnotifspdos', 'action' => 'add', $pdo_id )
                 ).' </li>';
             ?>
         </ul>

@@ -30,6 +30,7 @@
                     )
                 )
             );
+            $this->set( 'pdo_id', $pdo_id );
             $this->set( compact( 'notifs', 'dossier_id' ) );
 // debug($notifs);
         }
@@ -54,10 +55,20 @@
         *** *******************************************************************/
 
         function _add_edit( $id = null ){
+            // Retour à la liste en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+
+                if( $this->action == 'edit' ) {
+                    $id = $this->PropopdoTypenotifpdo->field( 'propopdo_id', array( 'id' => $id ) );
+                }
+                $this->redirect( array( 'action' => 'index', $id ) );
+
+            }
 
             if( $this->action == 'add' ) {
                 $pdo_id = $id;
-//                 $nbrPdos = $this->Propopdo->find( 'count', array( 'conditions' => array( 'Propopdo.id' => $pdo_id ), 'recursive' => -1 ) );
+//                 $dossier_id = $pdo_id;
+//                 $nbrPdos = $this->PropopdoTypenotifpdo->find( 'count', array( 'conditions' => array( 'PropopdoTypenotifpdo.id' => $pdo_id ), 'recursive' => -1 ) );
 //                 $this->assert( ( $nbrPdos == 1 ), 'invalidParameter' );
             }
             else if( $this->action == 'edit' ) {
@@ -67,8 +78,9 @@
                 $pdo_id = Set::classicExtract( $propotype, 'PropopdoTypenotifpdo.propopdo_id' );
             }
 
-            $dossier_rsa_id = $this->Propopdo->dossierId( $pdo_id );
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+            $dossier_id = $this->Propopdo->dossierId( $pdo_id );
+// debug($dossier_id);
+            $this->set( 'dossier_id', $dossier_id );
 
 
             if( !empty( $this->data ) ) {

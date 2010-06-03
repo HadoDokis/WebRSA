@@ -51,6 +51,7 @@
 
                 echo $xform->input( 'Propopdo.commentairepdo', array( 'label' =>  'Observations', 'type' => 'text', 'rows' => 3, 'empty' => true ) );
 
+
                 echo $default->view(
                     $dossier,
                     array(
@@ -67,8 +68,8 @@
                 /**
                 *   Ajouts de checkbox multiples pour les statuts et situations
                 */
-                echo $xform->input( 'Statutpdo.Statutpdo', array( 'label' => 'Statut de la PDO', 'multiple' => 'checkbox' , 'options' => $statutlist ) );
-                echo $xform->input( 'Situationpdo.Situationpdo', array( 'label' => 'Situation de la PDO', 'multiple' => 'checkbox' , 'options' => $situationlist ) );
+                echo $xform->input( 'Statutpdo.Statutpdo', array( 'type' => 'select', 'label' => 'Statut de la PDO', 'multiple' => 'checkbox' , 'options' => $statutlist ) );
+                echo $xform->input( 'Situationpdo.Situationpdo', array( 'type' => 'select', 'label' => 'Situation de la PDO', 'multiple' => 'checkbox' , 'options' => $situationlist ) );
 
             ?>
         </fieldset>
