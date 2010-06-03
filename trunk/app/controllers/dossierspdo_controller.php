@@ -100,6 +100,17 @@
         *** *******************************************************************/
 
         function _add_edit( $id = null ) {
+            // Retour à la liste en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+
+                if( $this->action == 'edit' ) {
+                    $id = $this->Propopdo->field( 'dossier_rsa_id', array( 'id' => $id ) );
+                }
+                $this->redirect( array( 'action' => 'index', $id ) );
+
+            }
+
+
             if( $this->action == 'add' ) {
                 $dossier_rsa_id = $id;
 //                 $nbrDossiers = $this->Dossier->find( 'count', array( 'conditions' => array( 'Dossier.id' => $dossier_rsa_id ), 'recursive' => -1 ) );
