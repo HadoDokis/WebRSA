@@ -3,7 +3,7 @@
     {
 
         var $name = 'Referents';
-        var $uses = array( 'Referent', 'Structurereferente', 'Option', 'Precoreorient' );
+        var $uses = array( 'Referent', 'Structurereferente', 'Option' );
         var $helpers = array( 'Xform' );
 
 
@@ -188,7 +188,7 @@
         *   Liste des demandes de réorientation par référents
         */
 
-        public function liste_demande_reorient( $operations = array() ) {
+        /*public function liste_demande_reorient( $operations = array() ) {
             if( !empty( $this->data ) ) {
                 $referents = $this->Default->search( $operations, $this->data );
             }
@@ -215,9 +215,9 @@
 			}
 
 			return $demandes;
-		}
+		}*/
 
-		public function demandes_reorient( $referent_id ) {
+		/*public function demandes_reorient( $referent_id ) {
 			$demandes_origine = $this->_demandes_reorient(
 				array(
 					'Demandereorient.reforigine_id' => $referent_id,
@@ -254,7 +254,7 @@
 
 			//
 			$this->set( compact( 'demandes_origine', 'demandes_destination' ) );
-		}
+		}*/
     }
 
 ?>
