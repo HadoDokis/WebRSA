@@ -163,7 +163,7 @@ CREATE TABLE sceanceseps_demandesreorient (
 
 CREATE TABLE decisionsreorient (
     id                              SERIAL NOT NULL PRIMARY KEY,
-	demandereorient_id				INTEGER DEFAULT NULL REFERENCES demandesreorient(id),
+	sceanceep_demandereorient_id	INTEGER DEFAULT NULL REFERENCES sceanceseps_demandesreorient(id),
 	etape							type_etapedecisionep NOT NULL DEFAULT 'ep',
 	decision						type_decisionep NOT NULL,
 	commentaire						TEXT DEFAULT NULL,
