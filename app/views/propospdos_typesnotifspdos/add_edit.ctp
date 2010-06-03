@@ -2,7 +2,8 @@
 
 <?php  $this->pageTitle = 'Ajout d\'un traitement pour la PDO';?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
+
+<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );?>
 
 <?php
     if( $this->action == 'add' ) {
@@ -35,11 +36,14 @@
             <legend>Détails PDO</legend>
                 <?php echo $form->input( 'PropopdoTypenotifpdo.propopdo_id', array( 'label' => false, 'type' => 'hidden' ) ) ;?>
               <?php echo $form->input( 'PropopdoTypenotifpdo.typenotifpdo_id', array( 'label' =>  ( __( 'Type de notification', true ) ), 'type' => 'select', 'options' => $typenotifpdo, 'empty' => true ) );?>
-                <?php echo $form->input( 'PropopdoTypenotifpdo.datenotifpdo', array( 'label' =>  ( __( 'Date de notification', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?> 
+                <?php echo $form->input( 'PropopdoTypenotifpdo.datenotifpdo', array( 'label' =>  ( __( 'Date de notification', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=> date('Y')-1, 'empty' => true ) );?> 
         </fieldset>
     </div>
 
-            <?php echo $form->submit( 'Enregistrer' );?>
-    <?php echo $form->end();?>
+    <div class="submit">
+        <?php echo $xform->submit( 'Enregistrer', array( 'div' => false ) );?>
+        <?php echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+    </div>
+    <?php echo $xform->end();?>
 </div>
 <div class="clearer"><hr /></div>

@@ -52,10 +52,10 @@
             )
         );
 
-        function dossierId( $propopdo_id ) {
+        function dossierId( $id ) {
 //             $this->unbindModelAll();
 //             $this->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) );
-            $propopdo = $this->findById( $propopdo_id, null, null, 0 );
+            $propopdo = $this->findById( $id, null, null, 0 );
             if( !empty( $propopdo ) ) {
                 return $propopdo['Propopdo']['dossier_rsa_id'];
             }
