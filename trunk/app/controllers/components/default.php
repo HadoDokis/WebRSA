@@ -73,7 +73,7 @@
 			$this->controller->paginate = Xset::merge( $this->controller->paginate, $queryData );
 			$items = $this->controller->paginate( $this->controller->modelClass );
 
-			$varname = Inflector::tableize( $this->controller->name );
+			$varname = Inflector::tableize( $this->controller->modelClass );
 			$this->controller->set( $varname, $items );
 //             $this->controller->render( $this->controller->action, null, 'index' );
 		}

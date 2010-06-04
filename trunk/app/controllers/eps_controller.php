@@ -39,9 +39,49 @@
         */
 
         public function liste() {
+            $this->set( 'options', $this->_options() );
+
             if( !empty( $this->data ) ) {
                 $eps = $this->Default->search( array( 'Ep.name' => 'LIKE', 'Ep.localisation' => 'LIKE' ), $this->data );
             }
+        }
+
+        /**
+        *   Ordre du jour
+        */
+
+        function ordre( $ep_id = null ) {
+
+            $ep = $this->Ep->findById( $ep_id, null, null, 2 );
+            $this->assert( !empty( $ep ), 'invalidParameter' );
+
+            $parcoursdetectes = $this->Ep->Parcoursdetecte->find( 'all', array( 'conditions' => array( 'Parcoursdetecte.ep_id' => $ep_id ), 'recursive' => 2 ) );
+
+            /// FIXME
+            $ep = Set::insert( $ep, 'Parcoursdetecte', $parcoursdetectes );
+//debug( $ep );
+            // Si finalisation de l'ordre du jour,
+            // --> on modifie la valeur de validordre et on ferme l'ordre du jour
+            if( isset( $this->params['form']['Valid'] ) ) {
+                $eps_update = array();
+                if( $ep['Ep']['validordre'] == 0 ) {
+                    $eps_update[] = array(
+                        'Ep' => array(
+                            'id' => $ep['Ep']['id'],
+                            'validordre' => 1
+                        )
+                    );
+                }
+                $this->Ep->saveAll( $eps_update );
+                $this->redirect( array( 'controller' => 'eps', 'action' => 'liste', '/Search__active:1' ) );
+            }
+
+            $eppartep = $this->EpPartep->findByEpId( $ep_id, null, null, 0 );
+
+            $participants = $this->Ep->Partep->find( 'list' );
+            $roles = $this->Ep->Rolepartep->find( 'list' );
+
+            $this->set( compact( 'eppartep', 'ep', 'participants'/*, 'roles'*/ ) );
         }
 
 		/**

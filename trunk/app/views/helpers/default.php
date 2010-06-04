@@ -705,6 +705,10 @@
 			unset( $params['options'] );
 
 			// Was search data sent ?
+			if( empty( $this->data ) ) {
+				$this->data = array();
+			}
+
 			$data = array_keys( $this->data );
 // 			$data = preg_replace( '/^Search_/', 'Search.', $data );
 			$data = Xset::bump( Set::normalize( $data ) );
