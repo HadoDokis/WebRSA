@@ -1,19 +1,26 @@
-<h1><?php echo $title_for_layout;?></h1>
+<h1>
+    <?php
+        echo $html->tag(
+            'h1',
+            $this->pageTitle = __d( 'partep', "Partseps::{$this->action}", true )
+        );
+    ?>
+</h1>
 
 <?php
-	echo $default->search(
-		array(
-			'Partep.id',
-			'Partep.qual',
-			'Partep.nom',
-			'Partep.prenom',
-			'Partep.tel',
-			'Partep.email',
-			'Partep.ep_id',
-			'Partep.fonctionpartep_id',
-			'Partep.rolepartep',
-		)
-	);
+// 	echo $default->search(
+// 		array(
+// 			'Partep.id',
+// 			'Partep.qual',
+// 			'Partep.nom',
+// 			'Partep.prenom',
+// 			'Partep.tel',
+// 			'Partep.email',
+// 			'Partep.ep_id',
+// 			'Partep.fonctionpartep_id',
+// 			'Partep.rolepartep',
+// 		)
+// 	);
 
 	echo $default->index(
 		$partseps,
@@ -39,4 +46,15 @@
 			)
 		)
 	);
+
+    echo $default->button(
+        'back',
+        array(
+            'controller' => 'eps',
+            'action'     => 'indexparams'
+        ),
+        array(
+            'id' => 'Back'
+        )
+    );
 ?>

@@ -6,10 +6,10 @@
 
 <?php
     if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout PDO';
+        $this->pageTitle = 'Ajout d\'une PDO';
     }
     else {
-        $this->pageTitle = 'Édition PDO';
+        $this->pageTitle = 'Édition de la PDO';
     }
 ?>
 

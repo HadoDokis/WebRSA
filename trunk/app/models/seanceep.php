@@ -3,8 +3,18 @@
 	{
 		public $name = 'Seanceep';
 
+        public $displayField = 'dateseance';
+
 		public $actsAs = array(
-			'Autovalidate'
+			'Autovalidate',
+            'Enumerable' => array(
+                'fields' => array(
+                    'finaliseeep',
+                    'finaliseecg',
+                    'reorientation',
+                )
+            ),
+            'Formattable'
 		);
 
 		public $belongsTo = array(
@@ -23,6 +33,7 @@
 				'foreignKey' => 'seanceep_id',
 				'associationForeignKey' => 'partep_id',
 				'unique' => true,
+                'with' => 'PartepSeanceep'
 			),
 			'Demandereorient' => array(
 				'className' => 'Demandereorient',

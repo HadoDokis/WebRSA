@@ -184,5 +184,5 @@ CREATE TABLE decisionsreorient (
 );
 
 -- -----------------------------------------------------------------------------
-
+ALTER TABLE eps ADD COLUMN filtre_zone_geo BOOLEAN DEFAULT true;
 COMMIT;

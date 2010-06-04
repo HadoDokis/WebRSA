@@ -1,17 +1,15 @@
-<h1><?php echo $title_for_layout;?></h1>
+<h1><?php
+    echo $html->tag(
+        'h1',
+        $this->pageTitle = __d( 'fonctionpartep', "Fonctionspartseps::{$this->action}", true )
+    );?>
+</h1>
 
 <?php
-	echo $default->search(
-		array(
-			'Fonctionpartep.id',
-			'Fonctionpartep.name',
-		)
-	);
-
 	echo $default->index(
 		$fonctionspartseps,
 		array(
-			'Fonctionpartep.id',
+// 			'Fonctionpartep.id',
 			'Fonctionpartep.name',
 		),
 		array(
@@ -25,4 +23,15 @@
 			)
 		)
 	);
+
+    echo $default->button(
+        'back',
+        array(
+            'controller' => 'eps',
+            'action'     => 'indexparams'
+        ),
+        array(
+            'id' => 'Back'
+        )
+    );
 ?>

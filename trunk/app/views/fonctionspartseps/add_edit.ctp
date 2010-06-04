@@ -1,4 +1,9 @@
-<h1><?php echo $title_for_layout;?></h1>
+<h1><?php
+    echo $html->tag(
+        'h1',
+        $this->pageTitle = __d( 'fonctionpartep', "Fonctionspartseps::{$this->action}", true )
+    );?>
+</h1>
 
 <?php
 	echo $default->form(

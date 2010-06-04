@@ -1,28 +1,20 @@
-<h1><?php echo $title_for_layout;?></h1>
+<h1><?php
+        echo $html->tag(
+            'h1',
+            $this->pageTitle = __d( 'seanceep', "Seanceseps::{$this->action}", true )
+        );
+    ?>
+</h1>
 
 <?php
-	echo $default->search(
-		array(
-			'Seanceep.id',
-			'Seanceep.ep_id',
-			'Seanceep.structurereferente_id',
-			'Seanceep.dateseance',
-			'Seanceep.finaliseeep',
-			'Seanceep.finaliseecg',
-			'Seanceep.reorientation',
-		)
-	);
 
 	echo $default->index(
 		$seanceseps,
 		array(
-			'Seanceep.id',
 			'Ep.name',
-			'Structurereferente.id',
-			'Seanceep.dateseance',
-			'Seanceep.finaliseeep',
-			'Seanceep.finaliseecg',
-			'Seanceep.reorientation',
+			'Structurereferente.lib_struc',
+			'Seanceep.dateseance' => array( 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 2, 'minYear' => date( 'Y' ) - 2 ),
+			'Seanceep.reorientation' => array( 'options' => $options ),
 		),
 		array(
 			'add' => array(
@@ -35,4 +27,15 @@
 			)
 		)
 	);
+
+    echo $default->button(
+        'back',
+        array(
+            'controller' => 'eps',
+            'action'     => 'indexparams'
+        ),
+        array(
+            'id' => 'Back'
+        )
+    );
 ?>
