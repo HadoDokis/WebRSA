@@ -188,14 +188,14 @@
         *   Liste des demandes de réorientation par référents
         */
 
-        /*public function liste_demande_reorient( $operations = array() ) {
+        public function liste_demande_reorient( $operations = array() ) {
             if( !empty( $this->data ) ) {
                 $referents = $this->Default->search( $operations, $this->data );
             }
         }
 
 		protected function _demandes_reorient( $conditions ) {
-			$this->{$this->modelClass}->Demandereorient->Ep->unbindModelAll();
+			//$this->{$this->modelClass}->Demandereorient->Ep->unbindModelAll();
 			$demandes = $this->{$this->modelClass}->Demandereorient->find(
 				'all',
 				array(
@@ -215,18 +215,22 @@
 			}
 
 			return $demandes;
-		}*/
+		}
 
-		/*public function demandes_reorient( $referent_id ) {
+		/**
+		*
+		*/
+
+		public function demandes_reorient( $referent_id ) {
 			$demandes_origine = $this->_demandes_reorient(
 				array(
-					'Demandereorient.reforigine_id' => $referent_id,
-					'Demandereorient.statut <' => 3,
+					'Demandereorient.vx_referent_id' => $referent_id/*,
+					'Demandereorient.statut <' => 3,*/
 				)
 			);
 
 			//
-			$precosreorient = $this->Precoreorient->find(
+			/*$precosreorient = $this->Precoreorient->find(
 				'list',
 				array(
 					'fields' => array(
@@ -235,7 +239,7 @@
 					),
 					'conditions' => array(
 						'OR' => array(
-							'Demandereorient.reforigine_id' => $referent_id,
+							'Demandereorient.vx_referent_id' => $referent_id,
 							'Precoreorient.referent_id' => $referent_id,
 						),
 						'OR' => array(
@@ -245,16 +249,21 @@
 					),
 					'recursive' => 0
 				)
-			);
-// debug( $precosreorient );
+			);*/
+
 			$demandes_destination = array();
 			if( !empty( $precosreorient ) ) {
-				$demandes_destination = $this->_demandes_reorient( array( 'Demandereorient.id IN ( '.implode( ', ', array_values( $precosreorient ) ).' )' ) );
+				$demandes_destination = $this->_demandes_reorient(
+					array(
+						'Demandereorient.nv_referent_id' => $referent_id/*,
+						'Demandereorient.statut <' => 3,*/
+					)
+				);
 			}
 
 			//
 			$this->set( compact( 'demandes_origine', 'demandes_destination' ) );
-		}*/
+		}
     }
 
 ?>

@@ -27,11 +27,12 @@
             )
         );
 
-//         var $hasMany = array(
-//             'Demandereorient' => array(
-// 				'foreignKey' => 'reforigine_id'
-// 			)
-//         );
+        var $hasMany = array(
+            'Demandereorient' => array(
+				'VxReferent',
+				'foreignKey' => 'vx_referent_id'
+			)
+        );
 
         public $virtualFields = array(
             'nom_complet' => array(
