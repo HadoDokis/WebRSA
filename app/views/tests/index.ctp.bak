@@ -1,0 +1,58 @@
+<?php
+	/*arsort( $themes );
+
+	$nombreTotalDossiers = array_sum( $themes );
+	echo $html->tag( 'p', sprintf( '%s dossiers sont à traiter pour ce thème.', $nombreTotalDossiers ) );
+
+	$cells = array();
+	foreach( $themes as $ville => $nombre ) {
+		$cells[] = array( $ville, $nombre );
+	}
+	echo $html->tag( 'table', $html->tableCells( $cells ) );
+
+	// Calcul proportionnel avec arrondi
+	$total = 0;
+	$nombredossiers = 30;
+	$cells = array();
+	foreach( $themes as $ville => $nombre ) {
+		$nombre = round( $nombre / $nombreTotalDossiers * $nombredossiers );
+		//$nombre = ( $nombre / $nombreTotalDossiers * $nombredossiers );
+		$total += $nombre;
+		$cells[] = array( $ville, $nombre );
+	}
+
+	// 1er cas: le nombre de dossiers calculés est plus élevé que le nombre de dossiers demandés
+	$diff = ( $total - $nombredossiers );
+	if( $diff > 0 ) {
+		$total = 0;
+		foreach( $cells as $key => $cell ) {
+			if( $diff > 0 ) {
+				if( $cell[1] > 0 ) {
+					$cell[1]--;
+					$diff--;
+					$cells[$key] = $cell;
+				}
+			}
+			$total += $cell[1];
+		}
+	}
+
+	// 2nd cas: le nombre de dossiers calculés est plus petit que le nombre de dossiers demandés
+	$diff = ( $total - $nombredossiers );
+	if( $diff < 0 ) {
+		$total = 0;
+		foreach( $cells as $key => $cell ) {
+			if( $diff < 0 ) {
+				$cell[1]++;
+				$diff++;
+				$cells[$key] = $cell;
+			}
+			$total += $cell[1];
+		}
+	}
+
+	// Affichage
+	echo $html->tag( 'p', sprintf( '%s dossiers.', $total ) );
+	echo $html->tag( 'table', $html->tableCells( $cells ) );*/
+?>
+<!--<div><label for="nombredossiers">Nombre de dossiers à traiter</label><input type="text" id="nombredossiers" name="nombredossiers" value="<?php echo $nombredossiers;?>" /></div>-->

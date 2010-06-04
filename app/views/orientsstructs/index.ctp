@@ -80,11 +80,14 @@
         echo $default->index(
             $demandesreorients,
             array(
-                'Reforigine.nom_complet' => array( 'domain' => 'referent' ), // FIXME
-                'Motifdemreorient.name',
-                'Demandereorient.urgent' => array( 'type' => 'boolean' ),
+                'VxTypeorient.lib_type_orient',
+                'VxStructurereferente.lib_struc',
+                'VxReferent.nom_complet' => array( 'domain' => 'referent' ), // FIXME
+//                 'Motifdemreorient.name',
+//                 'Demandereorient.urgent' => array( 'type' => 'boolean' ),
                 'Demandereorient.created',
                 'Ep.name',
+                'NvOrientstruct.id',
             ),
             array(
                 'actions' => array(

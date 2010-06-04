@@ -7,7 +7,7 @@
 		* @access public
 		*/
 
-		public $components = array( 'Default' );
+		public $components = array( 'Default', 'Gedooo' );
 
 		/**
 		* @access public
@@ -22,9 +22,9 @@
 		protected function _options() {
 			$options = $this->{$this->modelClass}->enums();
 			$options[$this->modelClass]['motifdemreorient_id'] = $this->{$this->modelClass}->Motifdemreorient->find( 'list' );
-			$options[$this->modelClass]['nv_typeorient_id'] = $this->Typeorient->listOptions();
-			$options[$this->modelClass]['nv_structurereferente_id'] = $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
-			$options[$this->modelClass]['nv_referent_id'] = $this->Referent->listOptions();
+			$options[$this->modelClass]['vx_typeorient_id'] = $options[$this->modelClass]['nv_typeorient_id'] = $this->Typeorient->listOptions();
+			$options[$this->modelClass]['vx_structurereferente_id'] = $options[$this->modelClass]['nv_structurereferente_id'] = $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
+			$options[$this->modelClass]['vx_referent_id'] = $options[$this->modelClass]['nv_referent_id'] = $this->Referent->listOptions();
 
 			return $options;
 		}
@@ -79,9 +79,21 @@
 				$this->{$this->modelClass}->begin();
 
 				$this->{$this->modelClass}->create( $this->data );
-				debug( $this->{$this->modelClass}->save() );
+				$saved = $this->{$this->modelClass}->save();
+				$nvOrientstructId = $this->{$this->modelClass}->Orientstruct->getLastInsertId();
+				if( !empty( $nvOrientstructId ) ) {
+					$saved = $this->Gedooo->mkOrientstructPdf( $nvOrientstructId ) && $saved;
+				}
 
-				$this->{$this->modelClass}->rollback();
+				if( $saved ) {
+					$this->{$this->modelClass}->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $this->data[$this->modelClass]['personne_id'] ) );
+				}
+				else {
+					$this->{$this->modelClass}->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
 			}
 			else {
 				if( $this->action == 'add' ) {
@@ -103,6 +115,9 @@
 						'accordconcertation' => 'attente',
 						'datepremierentretien' => date( 'Y-m-d' )
 					);
+				}
+				else {
+					$this->data = $this->{$this->modelClass}->findById( $id, null, null, -1 );
 				}
 			}
 

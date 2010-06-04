@@ -171,7 +171,7 @@ CREATE TABLE demandesreorient_seanceseps (
 
 CREATE TABLE decisionsreorient (
     id                              SERIAL NOT NULL PRIMARY KEY,
-	demandereorient_seanceep_id	INTEGER DEFAULT NULL REFERENCES demandesreorient_seanceseps(id),
+	demandereorient_seanceep_id		INTEGER DEFAULT NULL REFERENCES demandesreorient_seanceseps(id),
 	etape							type_etapedecisionep NOT NULL DEFAULT 'ep',
 	decision						type_decisionep NOT NULL,
 	commentaire						TEXT DEFAULT NULL,
