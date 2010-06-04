@@ -271,9 +271,10 @@
                     <li id="menu6one">
                         <?php echo $html->link( 'Administration', '#' );?>
                         <ul>
-                            <?php if( $permissions->check( 'droits', 'edit' ) ):?>
+                        	<!-- Lien caché afin de ne pas concurencer la nouvelle gestion des droits -->
+                            <!--<?php if( $permissions->check( 'droits', 'edit' ) ):?>
                                 <li><?php echo $html->link( 'Droits', array( 'controller' => 'droits', 'action' => 'edit' )  );?></li>
-                            <?php endif;?>
+                            <?php endif;?>-->
                             <?php if( $permissions->check( 'parametrages', 'index' ) ):?>
                                 <li><?php echo $html->link( 'Paramétrages',  array( 'controller' => 'parametrages', 'action' => 'index'  ) );?></li>
                             <?php endif;?>

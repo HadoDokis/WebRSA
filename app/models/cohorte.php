@@ -335,11 +335,13 @@
         *** *******************************************************************/
 
         function structuresAutomatiques() {
-            App::import( 'Model','Structurereferente' );
-            $this->Structurereferente = new Structurereferente();
-            App::import( 'Model','Typeorient' );
-            $this->Typeorient = new Typeorient();
-
+            /*App::import( 'Model', 'Structurereferente' );
+            $this->Structurereferente = new Structurereferente();*/
+            $this->Structurereferente =& ClassRegistry::init( 'Structurereferente' );
+            /*App::import( 'Model', 'Typeorient' );
+            $this->Typeorient = new Typeorient();*/
+            $this->Typeorient =& ClassRegistry::init( 'Typeorient' );
+            
             // FIXME: valeurs magiques
             $typesPermis = $this->Typeorient->find(
                 'list',

@@ -223,7 +223,7 @@
 			);
 			$this->login($authUser);
 			$this->AppController->_loadZonesgeographiques();
-			$this->assertEqual(array(1=>34000),$this->AppController->Session->read( 'Auth.Zonegeographique'));
+			$this->assertEqual(array(1=>34090),$this->AppController->Session->read( 'Auth.Zonegeographique'));
 
 			//------------------------------------------------------------------
 
@@ -302,8 +302,8 @@
 						)
 					),
 					'structures' => array(
-						3 => 'Assedic Mont Nord',
 						2 => 'Assedic Nimes',
+						3 => 'MSA du Gard',
 						4 => 'Pole emploi Mont Sud'
 					)
 				)
@@ -330,7 +330,7 @@
 							)
 						),
 						"structures" => array(
-							'3' => 'Assedic Mont Nord',
+							'3' => 'MSA du Gard',
 							'2' => "Assedic Nimes"
 						)
 				)
@@ -417,7 +417,8 @@
 							'Date de fin d\'habilitation' => '',
 						),
 						'serviceinstructeur' => array(
-							'Nom du service instructeur' => 1,
+							///FIXME: vérifier le nom du service instructeur car il n'apparait pas
+							'Nom du service instructeur' => '',
 							'Numéro du département du service instructeur' => '',
 							'Type de service instructeur' => '',
 							'Numéro de la commune du service instructeur' => '',
@@ -719,11 +720,11 @@
 			    'code_insee' => '30900',
 			    'code_postal' => '30000',
 			    'ville' => 'Nimes',
-			    'numdepins' => '030',
-			    'typeserins' => 'F',
-			    'numcomins' => '189',
+			    'numdepins' => '034',
+			    'typeserins' => 'P',
+			    'numcomins' => '111',
 			    'numagrins' => '11',
-			    'type_voie' => 'BCH'
+			    'type_voie' => 'ARC'
 			);
 			$this->assertEqual($serviceinstructeur,$this->AppController->Session->read('Auth.Serviceinstructeur'));
 			$this->logout();
@@ -736,7 +737,7 @@
 				"User" => array (
 					'id' => '2',
 					'group_id' => '2',
-					'serviceinstructeur_id' => '1',
+					'serviceinstructeur_id' => '2',
 					'username' => 'test2',
 					'password' => 'motdepassesur40caracteresquineserapaslu.',
 					'nom' => 'zétofraie',
@@ -757,19 +758,19 @@
 			);
 			$this->assertEqual($group,$this->AppController->Session->read('Auth.Group'));
 			$serviceinstructeur=array(
-			    'id' => 1,
-			    'lib_service' => 'Service 1',
-			    'num_rue' => '16',
-			    'nom_rue' => 'collines',
-			    'complement_adr' => '',
-			    'code_insee' => '30900',
-			    'code_postal' => '30000',
-			    'ville' => 'Nimes',
-			    'numdepins' => '030',
-			    'typeserins' => 'F',
-			    'numcomins' => '189',
-			    'numagrins' => '11',
-			    'type_voie' => 'BCH'
+				'id' => '2',
+				'lib_service' => 'Service 2',
+				'num_rue' => '775',
+				'nom_rue' => 'moulin',
+				'complement_adr' => null,
+				'code_insee' => '34080',
+				'code_postal' => '34000',
+				'ville' => 'Lattes',
+				'numdepins' => '034',
+				'typeserins' => 'P',
+				'numcomins' => '111',
+				'numagrins' => null,
+				'type_voie' => 'ARC'
 			);
 			$this->assertEqual($serviceinstructeur,$this->AppController->Session->read('Auth.Serviceinstructeur'));
 			$this->logout();

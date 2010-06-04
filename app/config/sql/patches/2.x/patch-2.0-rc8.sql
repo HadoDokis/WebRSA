@@ -368,3 +368,17 @@ ALTER TABLE propospdos ADD COLUMN nonadmis type_nonadmis DEFAULT NULL;
 ALTER TABLE propospdos ADD COLUMN categoriegeneral VARCHAR(3) DEFAULT NULL;
 ALTER TABLE propospdos ADD COLUMN categoriedetail VARCHAR(3) DEFAULT NULL;
 COMMIT;
+
+-- **************************** Ajout du 04/06/2010 - nouvelle gestion des droits *****************************
+
+BEGIN;
+
+UPDATE aros
+        SET model=substring(alias FROM '^([^:]+)'),
+                alias = substring(alias FROM '^.*:(.+)$');
+
+UPDATE acos
+        SET alias = ( 'Module:' || alias )
+        WHERE substring(alias FROM '^.*:(.+)$') IS NULL;
+
+COMMIT;

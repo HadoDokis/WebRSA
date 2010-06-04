@@ -65,13 +65,13 @@
 				$out = array();
 				$out[] = '<?php';
 				$out[] = '';
-				$out[] = sprintf('class %sFixture extends CakeTestFixture {', $name);
-				$out[] = sprintf(' var $name = \'%s\';', $name);
-				$out[] = sprintf(' var $table = \'%s\';', $table);
-				$out[] = sprintf(' var $import = array( \'table\' => \'%s\', \'connection\' => \'default\', \'records\' => false);', $table);
-				$out[] = ' var $records = array(';
+				$out[] = sprintf('	class %sFixture extends CakeTestFixture {', $name);
+				$out[] = sprintf('		var $name = \'%s\';', $name);
+				$out[] = sprintf('		var $table = \'%s\';', $table);
+				$out[] = sprintf('		var $import = array( \'table\' => \'%s\', \'connection\' => \'default\', \'records\' => false);', $table);
+				$out[] = '		var $records = array(';
 				foreach ($records as $record) {
-					$out[] = ' array(';
+					$out[] = '			array(';
 					if ($options['reindex']) {
 						foreach (array('old_id', 'vendor_id') as $field) {
 							if ($Model->hasField($field)) {
@@ -83,16 +83,16 @@
 					}
 					foreach ($record[$name] as $field => $val) {
 						if( empty( $val ) && !is_numeric( $val ) ) {
-							$out[] = sprintf(' \'%s\' => null,', addcslashes($field, "'"));
+							$out[] = sprintf('				\'%s\' => null,', addcslashes($field, "'"));
 						}
 						else {
-							$out[] = sprintf(' \'%s\' => \'%s\',', addcslashes($field, "'"), addcslashes($val, "'"));
+							$out[] = sprintf('				\'%s\' => \'%s\',', addcslashes($field, "'"), addcslashes($val, "'"));
 						}
 					}
-					$out[] = ' ),';
+					$out[] = '			),';
 				}
-				$out[] = ' );';
-				$out[] = '}';
+				$out[] = '		);';
+				$out[] = '	}';
 				$out[] = '';
 				$out[] = '?>';
 				

@@ -516,3 +516,7 @@ form#cuiform dl.allocataire.cuis dt {
 }
 
 /*----------------------------------------------------------------------------*/
+
+#tableEditDroits td {
+	vertical-align: middle;
+}

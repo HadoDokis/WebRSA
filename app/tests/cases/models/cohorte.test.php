@@ -9,9 +9,19 @@
 	{
 
 		function testStructuresAutomatiques() {
+			/**FIXME : problème d'importation de modèle
+			* remplacer 
+            * 		App::import( 'Model', 'Structurereferente' );
+            * 		$this->Structurereferente = new Structurereferente();
+            * 		App::import( 'Model', 'Typeorient' );
+            * 		$this->Typeorient = new Typeorient();
+            * par
+            *       $this->Structurereferente =& ClassRegistry::init( 'Structurereferente' );
+            * 		$this->Typeorient =& ClassRegistry::init( 'Typeorient' );
+			*/
 			$expected=array(
 				2 => array(
-					34000 => '2_3'
+					34090 => '2_3'
 				)
 			);
 			$result=$this->Cohorte->structuresAutomatiques();

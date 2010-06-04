@@ -15,12 +15,17 @@ class DroitsController extends AppController
 
     /* Gestion des droits des utilisateurs sur les menus et les actions des controleurs */
     function edit() {
-           // Initialisation de la progressBar
-           include ('vendors/progressbar.php');
-           Initialize( 200, 100, 200, 30, '#000000', '#FFCC00', '#006699' );
+    	// fonction devenue inutilisable avec la gestion des droits par utilisateur et par groupe
+    	$this->Session->setFlash( 'Cette fonction n\'est plus utilisée, merci d\'utiliser la gestion des droits par utilisateur et par groupe', 'flash/error' );
+		$this->redirect('/');
+		exit();
+    
+		// Initialisation de la progressBar
+		include ('vendors/progressbar.php');
+		Initialize( 200, 100, 200, 30, '#000000', '#FFCC00', '#006699' );
 
         // Initialisations
-                $profilsUsersTree = array();
+        $profilsUsersTree = array();
         $menuControllersTree = array();
         $filtreProfils = array();
         $filtreMenu = array();

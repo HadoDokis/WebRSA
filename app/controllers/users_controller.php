@@ -5,6 +5,7 @@
         var $uses = array( 'Group', 'Zonegeographique', 'User', 'Serviceinstructeur', 'Connection', 'Option' );
         var $aucunDroit = array('login', 'logout');
         var $helpers = array( 'Xform' );
+        var $components = array('Menu','Dbdroits');
 
         /** ********************************************************************
         *
@@ -53,7 +54,7 @@
                 $this->Utilisateur->Service->recursive=-1;
                 $group =  $this->Group->findById($authUser['User']['group_id']);
                 //$authUser['aroAlias'] = $group['Group']['name'].':'. $authUser['User']['username'];
-                $authUser['User']['aroAlias'] = 'Utilisateur:'. $authUser['User']['username'];
+                $authUser['User']['aroAlias'] = $authUser['User']['username'];
                 /* lecture de la collectivite de l'utilisateur authentifié */
                 $this->Session->write( 'Auth', $authUser );
                 $this->redirect( $this->Auth->redirect() );
@@ -112,9 +113,9 @@
 
         function _setNewPermissions( $group_id, $user_id, $username ) {
             $group = $this->User->Group->findById( $group_id, null, null, -1 );
-            $aroGroup = $this->Acl->Aro->findByAlias( 'Group:'.$group['Group']['name'], null, null, 2 );
+            $aroGroup = $this->Acl->Aro->findByAlias( $group['Group']['name'], null, null, 2 );
 
-            $aroAlias = 'Utilisateur:'.$username;
+            $aroAlias = $username;
             $aroUser = $this->Acl->Aro->find( 'first', array( 'conditions' => array( 'Aro.foreign_key' => $user_id, 'Aro.alias' => $aroAlias ), 'recursive' => -1 ) );
 
             if( empty( $aroUser ) ) {
@@ -213,15 +214,27 @@
 
                 if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
                     if( $userDb['User']['group_id'] != $this->data['User']['group_id'] ) {
-                        $group = $this->User->Group->findById( $this->data['User']['group_id'], null, null, -1 );
-                        $aroGroup = $this->Acl->Aro->findByAlias( 'Group:'.$group['Group']['name'], null, null, -1 );
+                    	$this->Dbdroits->MajCruDroits(
+							array(
+								'model'=>'Utilisateur',
+								'foreign_key'=>$this->data['User']['id'],
+								'alias'=>$this->data['User']['username']
+							),
+							array (
+								'model'=>'Group',
+								'foreign_key'=>$this->data['User']['group_id']
+							),
+							$this->data['Droits']
+						);
+                        /*$group = $this->User->Group->findById( $this->data['User']['group_id'], null, null, -1 );
+                        $aroGroup = $this->Acl->Aro->findByAlias( $group['Group']['name'], null, null, -1 );
 
                         $aroUserDb = $this->Acl->Aro->findByForeignKey( $this->data['User']['id'], null, null, 2 );
 
                         $aroUserData = array( 'Aro' => $aroUserDb['Aro'] );
                         $aroUserData['Aro']['parent_id'] = $aroGroup['Aro']['id'];
                         // Utile SSI l'utilisateur change de username
-                        $aroUserData['Aro']['alias'] = 'Utilisateur:'.$this->data['User']['username'];
+                        $aroUserData['Aro']['alias'] = $this->data['User']['username'];
 
                         // Sauvegarde des bonnes données liées à l'uilisateur et à son groupe dans la table Aros
                         $this->Acl->Aro->create( $aroUserData );
@@ -232,7 +245,7 @@
                         $arosAcosDb = Set::extract( 'Aco.{n}.Permission.id', $aroUserDb );
                         if( !empty( $arosAcosDb ) ) {
                             $saved = $this->Acl->Aro->query( 'DELETE FROM aros_acos WHERE id IN ('.implode( ', ', $arosAcosDb ).');' ) && $saved;
-                        }
+                        }*/
 
                         // Ajout des nouvelles entrées liées à cet groupe (dont on descend) dans la table aros_acos
                         $saved = $this->_setNewPermissions(
@@ -252,6 +265,15 @@
                         }
                     }
                     else {
+                    	$this->Dbdroits->MajCruDroits(
+							array(
+								'model'=>'Utilisateur',
+								'foreign_key'=>$this->data['User']['id'],
+								'alias'=>$this->data['User']['username']
+							),
+							null,
+							$this->data['Droits']
+						);
                         $this->User->commit();
                         $this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
                         $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
@@ -265,6 +287,8 @@
             else {
                 $this->data = $userDb;
             }
+			$this->set('listeCtrlAction', $this->Menu->menuCtrlActionAffichage());
+			$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Utilisateur','foreign_key'=>$user_id));
             $this->render( $this->action, null, 'add_edit' );
         }
 

@@ -10,7 +10,6 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'DEM',
 				'topchapers' => null,
-				'toppersdrodevorsa' => null,
 				'id' => '1',
 			),
 			array(
@@ -18,7 +17,6 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'ENF',
 				'topchapers' => null,
-				'toppersdrodevorsa' => null,
 				'id' => '2',
 			),
 			array(
@@ -26,7 +24,6 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'DEM',
 				'topchapers' => null,
-				'toppersdrodevorsa' => true,
 				'id' => '3',
 			),
 			array(
@@ -34,7 +31,6 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'CJT',
 				'topchapers' => null,
-				'toppersdrodevorsa' => null,
 				'id' => '4',
 			),
 			array(
@@ -42,7 +38,6 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'DEM',
 				'topchapers' => null,
-				'toppersdrodevorsa' => null,
 				'id' => '5',
 			),
 			array(
@@ -50,7 +45,6 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'DEM',
 				'topchapers' => null,
-				'toppersdrodevorsa' => null,
 				'id' => '6',
 			),
 			array(
@@ -58,7 +52,6 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'CJT',
 				'topchapers' => null,
-				'toppersdrodevorsa' => null,
 				'id' => '7',
 			),
 			array(
@@ -66,7 +59,6 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'ENF',
 				'topchapers' => null,
-				'toppersdrodevorsa' => null,
 				'id' => '8',
 			),
 			array(
@@ -74,7 +66,6 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'DEM',
 				'topchapers' => null,
-				'toppersdrodevorsa' => null,
 				'id' => '9',
 			),
 			array(
@@ -82,7 +73,6 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'CJT',
 				'topchapers' => null,
-				'toppersdrodevorsa' => true,
 				'id' => '10',
 			),
 			array(
@@ -90,7 +80,6 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'ENF',
 				'topchapers' => null,
-				'toppersdrodevorsa' => null,
 				'id' => '11',
 			),
 		);
