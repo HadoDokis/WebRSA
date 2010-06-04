@@ -7,8 +7,9 @@
         var $actsAs = array(
             'Enumerable' => array(
 				'fields' => array(
-					'statutdecision' => array( 'type' => 'statutdecision', 'domain' => 'propopdo' ),
+					'statutdecision' => array(  'domain' => 'propopdo' ),
                     'choixpdo' => array( 'domain' => 'propopdo' ),
+                    'nonadmis' => array( 'domain' => 'propopdo' ),
 				)
             )
         );

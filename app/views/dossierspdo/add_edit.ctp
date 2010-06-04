@@ -44,7 +44,12 @@
         Event.observe( $( 'PropopdoDaterevisionYear' ), 'change', function() {
             checkDatesToRefresh();
         } );
+
+        //Utilisé en cas de motif de PDO non admissible
+        observeDisableFieldsOnValue( 'PropopdoMotifpdo', [ 'PropopdoNonadmis' ], 'N', false );
     });
+
+
 </script>
 
 <div class="with_treemenu">
@@ -145,7 +150,8 @@
                         'Propopdo.datedecisionpdo' => array( 'label' =>  ( __( 'Date de décision de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
                         'Propopdo.decisionpdo_id' => array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ),
                         'Propopdo.dateenvoiop' => array( 'label' =>  ( __( 'Date d\'envoi à l\'OP', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
-                        'Propopdo.motifpdo' => array( 'label' =>  ( __( 'Motif de la décision', true ) ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true )
+                        'Propopdo.motifpdo' => array( 'label' =>  ( __( 'Motif de la décision', true ) ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true ),
+                        'Propopdo.nonadmis' => array( 'label' => 'Raison non admissible', 'type' => 'select', 'options' => $options['nonadmis'], 'empty' => true  )
                     ),
                     array(
                         'domain' => $domain,
@@ -153,6 +159,20 @@
                     )
                 );
             ?>
+
+            <!-- <fieldset id="nonadmis" class="invisible">
+                <?php
+//                     echo $default->subform(
+//                         array(
+//                             'Propopdo.nonadmis' => array( 'label' => 'Raison non admissible', 'type' => 'select', 'options' => $options['nonadmis'], 'empty' => true  )
+//                         ),
+//                         array(
+//                             'domain' => $domain,
+//                             'options' => $options
+//                         )
+//                     );
+                ?>
+            </fieldset> -->
         </fieldset>
     </fieldset>
     <fieldset>
@@ -182,7 +202,8 @@
         <?php
             echo $default->subform(
                 array(
-                    'Propopdo.commentairepdo' => array( 'label' =>  'Mémo pour observation', 'type' => 'textarea', 'rows' => 3 )
+                    'Propopdo.commentairepdo' => array( 'label' =>  'Mémo pour observation', 'type' => 'textarea', 'rows' => 3 ),
+                    'Propopdo.referent_id' => array( 'label' =>  'Référent du dossier PDO (instructeur en charge du dossier)', 'type' => 'select', 'options' => $referents )
                 ),
                 array(
                     'domain' => $domain,
