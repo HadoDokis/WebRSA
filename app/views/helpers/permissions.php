@@ -6,7 +6,7 @@
         /**
             FIXME: http://localhost/adullact/webrsa/adressesfoyers/edit/1
             avec
-                [Adressesfoyers] =>
+                [Module:Adressesfoyers] =>
                 [Adressesfoyers:index] => 1
                 [Adressesfoyers:view] => 1
         */
@@ -26,7 +26,7 @@
 //             $foundAction = array_key_exists( $controller.':'.$action, $permissions );
 //             $returnAction = ( $foundAction ? $permissions[$controller.':'.$action] : null );
 
-            $returnController = Set::extract( $permissions, $controller );
+            $returnController = Set::extract( $permissions, "Module:{$controller}" );
             $returnAction = Set::extract( $permissions, $controller.':'.$action );
 
             if( $returnAction !== null ) {
