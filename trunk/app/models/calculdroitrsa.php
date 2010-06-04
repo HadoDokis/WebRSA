@@ -11,6 +11,10 @@
             )
         );
 
+        var $actsAs = array(
+            'Formattable'
+        );
+
         var $validate = array(
 			'mtpersressmenrsa' => array(
                 array(
