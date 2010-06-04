@@ -4,9 +4,9 @@
 
 
     Configure::write( 'Utilisateurs.multilogin', false );
-    Configure::write( 'with_parentid', false ); // true = cg66
+    Configure::write( 'with_parentid', true ); // true = cg66
     Configure::write( 'nom_form_ci_cg', 'cg93' );
-    Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
+    Configure::write( 'CG.cantons', true ); // false = cg93, true = cg66
     Configure::write( 'Zonesegeographiques.CodesInsee', true );
     //Configure::write( 'Etatliquidatif.limit', 1000 ); // INFO: commenter pour ne pas avoir de limite
 
@@ -47,7 +47,7 @@
     * Paramètre à renseigner pour l'utilisation du bon MVC
     * @default: vide (pour le CG93), sinon '66' pour le CG66
     */
-    Configure::write( 'Apre.suffixe', '' );
+    Configure::write( 'Apre.suffixe', '66' );
 
     /**
     * Paramètres à renseigner pour les APRE's forfaitaires
@@ -80,14 +80,14 @@
     * Besoin pour le CG66 lors de l'impression des courriers de rendez-vous
     * @default false
     */
-    Configure::write( 'User.adresse', false ); // true = cg66, false = cg93
+    Configure::write( 'User.adresse', true ); // true = cg66, false = cg93
 
 
     /**
     * Paramètre à renseigner pour l'affichage de la bonne fiche de candidature
     * @default: 'cg93' (pour le CG93), sinon 'cg66' pour le CG66
     */
-    Configure::write( 'ActioncandidatPersonne.suffixe', 'cg93' );
+    Configure::write( 'ActioncandidatPersonne.suffixe', 'cg66' );
 
     /**
     *   Paramètre à renseigner dans le cas d'un affichage plus large du menu du dossier
@@ -96,10 +96,27 @@
     Configure::write( 'UI.menu.large', true );
 
 
-
     /**
     *   Paramètre à renseigner pour le CG58 pour le lien pointant sur leur application
     */
     Configure::write( 'UI.menu.lienDemandeur',
-    'http://intranet.cg58.fr/applications/xbase/xbase_list.php?DBNAME=xbase_rsa&APPCODE=ALLOCATAIRE&LIST=Fichier RSA&NAV=NO-L&DISPLAYSTYLE=DISPLAYSTD&nCurPage=0&FILTER=;;;;;%s;;;;' );//
+    'http://intranet.cg58.fr/applications/xbase/xbase_list.php?DBNAME=xbase_rsa&APPCODE=ALLOCATAIRE&LIST=Fichier RSA&NAV=NO-L&DISPLAYSTYLE=DISPLAYSTD&nCurPage=0&FILTER=;;;;;%s;;;;' );
+
+
+    /**
+    *   Paramètre à renseigner pour déterminer la plage horaire que l'on dispose pour pouvoir accéder
+    *   aux différents boutons possédant ce paramètre.
+    *   On met 48, pour 48H car la plage de date va de minuit à minuit et donc un formulaire saisi
+    *   un jour à 18h ne serait plus modifiable/validable/supprimable le lendemain.
+    *   @default: 48 --> nombre d'heures pendant lesquelles on pourra accéder au bouton
+    */
+    Configure::write( 'Periode.modifiable.nbheure', 48 );
+
+
+
+    /**
+    * Champs spécifique selon le CG pour le formulaire des PDOs
+    * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
+    */
+    Configure::write( 'nom_form_pdo_cg', 'cg93' );
 ?>

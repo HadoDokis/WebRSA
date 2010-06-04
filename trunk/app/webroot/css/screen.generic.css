@@ -872,6 +872,7 @@ td.selectSize {
     width: 30%;
 }
 
+
 td.selectSize label, td.selectSize div.input.select {
     width: 100%!important;
 }
