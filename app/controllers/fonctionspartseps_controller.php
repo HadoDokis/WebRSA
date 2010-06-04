@@ -14,6 +14,10 @@
 		*/
 
 		public function index() {
+            $this->set(
+                Inflector::tableize( $this->modelClass ),
+                $this->paginate( $this->modelClass )
+            );
 			$this->{$this->modelClass}->recursive = 0;
 			$this->Default->search(
 				$this->data
@@ -53,8 +57,8 @@
 
 		public function _add_edit( $id = null ) {
 			$this->{$this->modelClass}->recursive = -1;
-            $this->Default->add_edit( $id, null, null, array( 'action' => 'index' ) );
-            $this->render( null, null, 'add_edit' );
+            $this->Default->_add_edit( $id, null, null, array( 'action' => 'index' ) );
+//             $this->render( null, null, 'add_edit' );
 		}
 
 		/**

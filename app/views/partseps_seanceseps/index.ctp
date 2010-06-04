@@ -1,36 +1,43 @@
-<h1><?php echo $title_for_layout;?></h1>
+<h1><?php
+        echo $html->tag(
+            'h1',
+            $this->pageTitle = __d( 'partep_seanceep', "PartsepsSeanceseps::{$this->action}", true )
+        );
+    ?>
+</h1>
 
 <?php
-	echo $default->search(
-		array(
-			'PartsepsSeancesep.id',
-			'PartsepsSeancesep.partep_id',
-			'PartsepsSeancesep.seanceep_id',
-			'PartsepsSeancesep.reponseinvitation',
-			'PartsepsSeancesep.presence',
-			'PartsepsSeancesep.remplacant_partep_id',
-		)
-	);
-
+// debug( Inflector::classify( 'PartsepsSeanceseps' ) );
 	echo $default->index(
-		$partsepsSeanceseps,
+		$partseps_seanceseps,
 		array(
-			'PartsepsSeancesep.id',
-			'PartsepsSeancesep.partep_id',
-			'PartsepsSeancesep.seanceep_id',
-			'PartsepsSeancesep.reponseinvitation',
-			'PartsepsSeancesep.presence',
-			'PartsepsSeancesep.remplacant_partep_id',
+			'Partep.nom_complet',
+			'PartepSeanceep.seanceep_id',
+			'PartepSeanceep.reponseinvitation',
+			'PartepSeanceep.presence',
+			'PartepSeanceep.remplacant_partep_id',
 		),
 		array(
 			'add' => array(
-				'PartsepsSeancesep.add'
+				'PartepSeanceep.add'
 			),
 			'actions' => array(
-				'PartsepsSeancesep.view',
-				'PartsepsSeancesep.edit',
-				'PartsepsSeancesep.delete'
-			)
+				'PartepSeanceep.view',
+				'PartepSeanceep.edit',
+				'PartepSeanceep.delete'
+			),
+            'options' => $options
 		)
 	);
+
+    echo $default->button(
+        'back',
+        array(
+            'controller' => 'eps',
+            'action'     => 'indexparams'
+        ),
+        array(
+            'id' => 'Back'
+        )
+    );
 ?>

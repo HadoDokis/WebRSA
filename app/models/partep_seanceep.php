@@ -4,13 +4,23 @@
 		public $name = 'PartepSeanceep';
 
 		public $actsAs = array(
-			'Autovalidate'
+			'Autovalidate',
+            'Enumerable' => array(
+                'fields' => array(
+                    'reponseinvitation',
+                    'presence'
+                )
+            ),
+            'Formattable'
 		);
 
 		public $belongsTo = array(
 			'Partep',
 			'Seanceep',
-			'Partep'
+            'RemplacantPartep' =>array(
+                'className' => 'Partep',
+                'foreignKey' => 'remplacant_partep_id'
+            )
 		);
 	}
 ?>

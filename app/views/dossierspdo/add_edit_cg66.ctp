@@ -17,8 +17,7 @@
         observeDisableFieldsetOnCheckbox( 'PropopdoDecision', $( 'PropopdoDecisionpdoId' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnCheckbox( 'PropopdoSuivi', $( 'PropopdoDaterevisionDay' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnCheckbox( 'PropopdoAutres', $( 'PropopdoCommentairepdo' ).up( 'fieldset' ), false );
-        
-        
+
 //         observeDisableFieldsetOnCheckbox( 'PropopdoMotifpdo', $( 'PropopdoNonadmis' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnRadioValue(
             'propopdoform',
@@ -33,10 +32,10 @@
 
 <?php
     if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout PDO';
+        $this->pageTitle = 'Ajout d\'une PDO';
     }
     else {
-        $this->pageTitle = 'Édition PDO';
+        $this->pageTitle = 'Édition de la PDO';
     }
 ?>
 

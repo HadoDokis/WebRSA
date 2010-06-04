@@ -1,13 +1,38 @@
-<h1><?php echo $title_for_layout;?></h1>
+<h1><?php
+        echo $html->tag(
+            'h1',
+            $this->pageTitle = __d( 'partep_seanceep', "PartsepsSeanceseps::{$this->action}", true )
+        );
+    ?>
+</h1>
 
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsOnValue( 'PartepSeanceepPresence', [ 'PartepSeanceepRemplacantPartepId' ], 'remplace', false );
+    });
+</script>
 <?php
 	echo $default->form(
 		array(
-			'PartsepsSeancesep.partep_id',
-			'PartsepsSeancesep.seanceep_id',
-			'PartsepsSeancesep.reponseinvitation',
-			'PartsepsSeancesep.presence',
-			'PartsepsSeancesep.remplacant_partep_id',
-		)
+			'PartepSeanceep.partep_id',
+			'PartepSeanceep.seanceep_id',
+			'PartepSeanceep.reponseinvitation',
+			'PartepSeanceep.presence',
+			'PartepSeanceep.remplacant_partep_id'
+		),
+        array(
+            'options' => $options
+        )
 	);
+
+    echo $default->button(
+        'back',
+        array(
+            'controller' => 'partseps_seanceseps',
+            'action'     => 'index'
+        ),
+        array(
+            'id' => 'Back'
+        )
+    );
 ?>

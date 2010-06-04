@@ -4,7 +4,9 @@
 		public $name = 'Ep';
 
 		public $actsAs = array(
-			'Autovalidate'
+			'Autovalidate',
+            'Enumerable',
+            'Formattable'
 		);
 
 		public $hasMany = array(

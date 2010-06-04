@@ -9,11 +9,28 @@
 
 		public $components = array( 'Default' );
 
+
+        /**
+        *
+        */
+
+        protected function _options() {
+            $options = $this->{$this->modelClass}->enums();
+            $options[$this->modelClass]['fonctionpartep_id'] = $this->{$this->modelClass}->Fonctionpartep->find( 'list' );
+            $options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->find( 'list' );
+
+            return $options;
+        }
+
 		/**
 		*
 		*/
 
 		public function index() {
+            $this->set(
+                Inflector::tableize( $this->modelClass ),
+                $this->paginate( $this->modelClass )
+            );
 			$this->{$this->modelClass}->recursive = 0;
 			$this->Default->search(
 				$this->data
@@ -52,9 +69,11 @@
 		*/
 
 		public function _add_edit( $id = null ) {
+            $options = $this->_options();
+            $this->set( 'options', $options );
 			$this->{$this->modelClass}->recursive = -1;
-            $this->Default->add_edit( $id, null, null, array( 'action' => 'index' ) );
-            $this->render( null, null, 'add_edit' );
+            $this->Default->_add_edit( $id, null, null, array( 'action' => 'index' ) );
+//             $this->render( null, null, 'add_edit' );
 		}
 
 		/**

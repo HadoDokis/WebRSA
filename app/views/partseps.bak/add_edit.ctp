@@ -2,7 +2,7 @@
     echo $html->tag(
         'h1',
         $this->pageTitle = __d( 'partep', "Partseps::{$this->action}", true )
-    )
+    );
 ?>
 <?php
 	echo $default->form(

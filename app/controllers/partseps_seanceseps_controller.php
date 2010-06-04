@@ -9,11 +9,37 @@
 
 		public $components = array( 'Default' );
 
+        /**
+        *
+        */
+
+        public $uses = array( 'PartepSeanceep' );
+
+        /**
+        *
+        */
+
+        protected function _options() {
+            $options = $this->{$this->modelClass}->enums();
+            $options[$this->modelClass]['partep_id'] = $this->{$this->modelClass}->Partep->find( 'list' );
+            $options[$this->modelClass]['seanceep_id'] = $this->{$this->modelClass}->Seanceep->find( 'list' );
+            $options[$this->modelClass]['remplacant_partep_id'] = $this->{$this->modelClass}->Partep->find( 'list' );
+
+            return $options;
+        }
+
 		/**
 		*
 		*/
 
 		public function index() {
+            $this->set(
+                Inflector::tableize( $this->modelClass ),
+                $this->paginate( $this->modelClass )
+            );
+            $options = $this->_options();
+            $this->set( 'options', $options );
+
 			$this->{$this->modelClass}->recursive = 0;
 			$this->Default->search(
 				$this->data
@@ -52,9 +78,11 @@
 		*/
 
 		public function _add_edit( $id = null ) {
+            $options = $this->_options();
+            $this->set( 'options', $options );
 			$this->{$this->modelClass}->recursive = -1;
-            $this->Default->add_edit( $id, null, null, array( 'action' => 'index' ) );
-            $this->render( null, null, 'add_edit' );
+            $this->Default->_add_edit( $id, null, null, array( 'action' => 'index' ) );
+//             $this->render( null, null, 'add_edit' );
 		}
 
 		/**

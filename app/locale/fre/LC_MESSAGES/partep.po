@@ -60,3 +60,18 @@ msgstr "Adresse email"
 
 msgid "Partep.nom_complet"
 msgstr "Nom complet"
+
+msgid "Partep.rolepartep"
+msgstr "Rôle du participant"
+
+msgid "Partep.ep_id"
+msgstr "Equipe pluridisciplinaire liée"
+
+msgid "Partep.fonctionpartep_id"
+msgstr "Fonction du participant"
+
+msgid "ENUM::ROLEPARTEP::titulaire"
+msgstr "Titulaire"
+
+msgid "ENUM::ROLEPARTEP::suppleant"
+msgstr "Suppléant"
