@@ -192,7 +192,7 @@
             $this->Propopdo->commit();
 
             $this->set( 'dossier_rsa_id', $dossier_rsa_id );
-            $this->render( $this->action, null, 'add_edit' );
+            $this->render( $this->action, null, 'add_edit_'.Configure::read( 'nom_form_pdo_cg' ) );
         }
     }
 

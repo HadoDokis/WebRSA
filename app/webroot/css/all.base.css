@@ -327,6 +327,27 @@ table#dossierInfosOrganisme th, table#dossierInfosOrganisme td {
     padding: 0.25em 0;
 }
 
+
+table#infosPdo {
+    width: 100%;
+    border: 0;
+}
+
+table#infosPdo tbody {
+    border: 0;
+}
+
+table#infosPdo th {
+    width: 48%;
+}
+
+table#infosPdo th, table#infosPdo td {
+    background: transparent;
+    color: black;
+    border: 0;
+    padding: 0.25em 0;
+}
+
 /**
 * Dsps
 */
