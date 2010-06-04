@@ -165,12 +165,14 @@
             $oFusion = new GDO_FusionType($oTemplate, $sMimeType, $oMainPart);
             $oFusion->process();
 
-			if( $oFusion->getCode() == 'OK' ) {
+			$success = ( $oFusion->getCode() == 'OK' );
+
+			if( $success ) {
 				$content = $oFusion->getContent();
 				return $content->binary;
 			}
 
-			return ( $oFusion->getCode() == 'OK' );
+			return $success;
         }
 
 		/**

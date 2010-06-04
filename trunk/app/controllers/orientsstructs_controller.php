@@ -3,7 +3,7 @@
     {
 
         var $name = 'Orientsstructs';
-        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente'/*, 'Demandereorient'*/, 'Pdf', 'Referent' );
+        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Demandereorient', 'Pdf', 'Referent' );
         var $helpers = array( 'Default' );
         var $components = array( 'Gedooo' );
         /**
