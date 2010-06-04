@@ -9,7 +9,7 @@ class MenuComponent extends Object
     function load($varNameMenu, $aro=null)
     {
 		// lecture du menu du fichier menu.ini.php
-    	include_once(CONFIGS . 'menu.ini.php');
+    	include(CONFIGS . 'menu.ini.php');
     	$menuRet = ${$varNameMenu};
 
     	// chargement des droits
