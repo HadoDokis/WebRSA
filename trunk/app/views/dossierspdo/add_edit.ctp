@@ -11,9 +11,13 @@
 ?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
+        //Utilisé en cas de motif de PDO non admissible
+        observeDisableFieldsOnValue( 'PropopdoMotifpdo', [ 'PropopdoNonadmis' ], 'N', false );
+
         observeDisableFieldsetOnCheckbox( 'PropopdoDecision', $( 'PropopdoDecisionpdoId' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnCheckbox( 'PropopdoSuivi', $( 'PropopdoDaterevisionDay' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnCheckbox( 'PropopdoAutres', $( 'PropopdoCommentairepdo' ).up( 'fieldset' ), false );
+
     });
 </script>
 
@@ -45,9 +49,6 @@
             checkDatesToRefresh();
         } );
 
-
-        //Utilisé en cas de motif de PDO non admissible
-        observeDisableFieldsOnValue( 'PropopdoMotifpdo', [ 'PropopdoNonadmis' ], 'N', false );
     });
 
 
