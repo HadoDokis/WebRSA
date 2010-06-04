@@ -45,6 +45,7 @@
             checkDatesToRefresh();
         } );
 
+
         //Utilisé en cas de motif de PDO non admissible
         observeDisableFieldsOnValue( 'PropopdoMotifpdo', [ 'PropopdoNonadmis' ], 'N', false );
     });
