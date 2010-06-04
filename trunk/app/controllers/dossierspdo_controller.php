@@ -3,12 +3,12 @@
     class DossierspdoController extends AppController{
 
         var $name = 'Dossierspdo';
-        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction', 'Piecepdo', 'PropopdoTypenotifpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo' );
+        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction', 'Piecepdo', 'PropopdoTypenotifpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent' );
 
         var $helpers = array( 'Default' );
 
         function beforeFilter(){
-            parent::beforeFilter();
+            $return = parent::beforeFilter();
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
             $this->set( 'pieecpres', $this->Option->pieecpres() );
             $this->set( 'commission', $this->Option->commission() );
@@ -25,8 +25,10 @@
             $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
 
             $options = $this->Propopdo->allEnumLists();
+//             debug($options);
             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
             $this->set( compact( 'options' ) );
+            return $return;
         }
 
 
@@ -147,7 +149,7 @@
             }
             $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
 
-
+            $this->set( 'referents', $this->Referent->find( 'list' ) );
             //Essai de sauvegarde
             if( !empty( $this->data ) ) {
                 // Nettoyage des Dsp
