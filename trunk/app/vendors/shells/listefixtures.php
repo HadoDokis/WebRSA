@@ -24,7 +24,7 @@
 			$dir=opendir(sprintf('%stests/fixtures/',APP));
 			while (($file = readdir($dir)) !== false) {
 				$explose=explode('~',$file);
-				if ((count($explose)==1)&&!is_dir($file)) $this->args[] = $file;
+				if ((count($explose)==1)&&(!is_dir($file))&&($file!='empty')) $this->args[] = $file;
     		}
     		closedir($dir);
 			
@@ -52,9 +52,9 @@
 				$out[] = '		public $fixtures = array (';
 				foreach ($this->args as $fixture) {
 					$explose = explode('_',$fixture);
-					$name=Inflector::singularize($explose[0]);
+					$name=$explose[0];
 					for ($i=1;$i<count($explose)-1;$i++) {
-						$name.='_'.Inflector::singularize($explose[$i]);
+						$name.='_'.$explose[$i];
 					}
 				
 					$out[] = '			\'app.'.$name.'\',';

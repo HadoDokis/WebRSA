@@ -1,5 +1,5 @@
 <?php
-		
+
 	class ServiceinstructeurFixture extends CakeTestFixture {
 		var $name = 'Serviceinstructeur';
 		var $table = 'servicesinstructeurs';
@@ -14,28 +14,28 @@
 				'code_insee' => '30900',
 				'code_postal' => '30000',
 				'ville' => 'Nimes',
-				'numdepins' => '030',
-				'typeserins' => 'F',
-				'numcomins' => '189',
+				'numdepins' => '034',
+				'typeserins' => 'P',
+				'numcomins' => '111',
 				'numagrins' => '11',
-				'type_voie' => 'BCH',
+				'type_voie' => 'ARC',
 			),
 			array(
 				'id' => '2',
-				'lib_service' => null,
-				'num_rue' => '16',
-				'nom_rue' => 'collines',
+				'lib_service' => 'Service 2',
+				'num_rue' => '775',
+				'nom_rue' => 'moulin',
 				'complement_adr' => null,
-				'code_insee' => '30900',
-				'code_postal' => '30000',
-				'ville' => 'Nimes',
-				'numdepins' => '030',
-				'typeserins' => 'F',
-				'numcomins' => '189',
+				'code_insee' => '34080',
+				'code_postal' => '34000',
+				'ville' => 'Lattes',
+				'numdepins' => '034',
+				'typeserins' => 'P',
+				'numcomins' => '111',
 				'numagrins' => null,
-				'type_voie' => 'BCH',
+				'type_voie' => 'ARC',
 			),
 		);
 	}
-		
+
 ?>

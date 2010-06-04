@@ -375,11 +375,12 @@
 					1 => 'ApreComiteapre.recoursapre IS NOT NULL',
 					2 => 'ApreComiteapre.daterecours IS NOT NULL',
 					3 => 'Apre.datedemandeapre BETWEEN \'2009-6-10\' AND \'2010-8-24\'',
-					4 => 'Personne.nom ILIKE \'%Dupond%\'',
+					4 => 'Personne.nom ILIKE \'Dupond\'',
 					5 => 'Dossier.matricule ILIKE \'%123456%\'',
 					6 => 'Apre.numeroapre ILIKE \'%98765%\''
 				)
 			);
+			//debug($result);
 			$this->assertEqual($expected,$result);
 		}
 

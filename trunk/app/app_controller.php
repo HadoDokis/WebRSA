@@ -38,7 +38,11 @@
                     $parentAros[] = $parentAro;
                     $parent_id = Set::extract( $parentAro, 'Aro.parent_id' );
                 }
-                $permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
+
+				$permissions = array();
+                if( !empty( $parentAros ) && !empty( $parentAros['Aro'] ) && !empty( $parentAros['Aco'] ) ) {
+	                $permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
+                }
 
                 if( !empty( $Aro ) ) {
                     // FIXME: trié par parent / fils ? .. un seul niveau

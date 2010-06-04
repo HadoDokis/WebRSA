@@ -45,14 +45,6 @@
 			// test pour une personne inexistente
 			$this->assertNull($this->Personne->dossierId(666));
 		}
-		
-		function testSoumisDroitsEtDevoirs() {
-			$this->assertTrue($this->Personne->soumisDroitsEtDevoirs(1));
-			$this->assertTrue($this->Personne->soumisDroitsEtDevoirs(4));
-			$this->assertTrue($this->Personne->soumisDroitsEtDevoirs(5));
-			$this->assertFalse($this->Personne->soumisDroitsEtDevoirs(6));
-			$this->assertTrue($this->Personne->soumisDroitsEtDevoirs(10));
-		}
 
 	}
 ?>

@@ -44,7 +44,6 @@
 				'sitpro_ci' => null,
 				'observ_benef' => null,
 				'referent_id' => null,
-				'current_action' => null,
 				'avisraison_ci' => null,
 			),
 			array(
@@ -86,7 +85,6 @@
 				'sitpro_ci' => null,
 				'observ_benef' => null,
 				'referent_id' => null,
-				'current_action' => null,
 				'avisraison_ci' => null,
 			),
 			array(
@@ -128,7 +126,6 @@
 				'sitpro_ci' => null,
 				'observ_benef' => null,
 				'referent_id' => null,
-				'current_action' => null,
 				'avisraison_ci' => null,
 			),
 			array(
@@ -170,7 +167,6 @@
 				'sitpro_ci' => null,
 				'observ_benef' => null,
 				'referent_id' => null,
-				'current_action' => null,
 				'avisraison_ci' => null,
 			),
 			array(
@@ -212,7 +208,6 @@
 				'sitpro_ci' => null,
 				'observ_benef' => null,
 				'referent_id' => null,
-				'current_action' => null,
 				'avisraison_ci' => null,
 			),
 			array(
@@ -254,7 +249,6 @@
 				'sitpro_ci' => null,
 				'observ_benef' => null,
 				'referent_id' => null,
-				'current_action' => null,
 				'avisraison_ci' => null,
 			),
 			array(
@@ -296,7 +290,6 @@
 				'sitpro_ci' => null,
 				'observ_benef' => null,
 				'referent_id' => null,
-				'current_action' => null,
 				'avisraison_ci' => null,
 			),
 			array(
@@ -338,7 +331,6 @@
 				'sitpro_ci' => null,
 				'observ_benef' => null,
 				'referent_id' => null,
-				'current_action' => null,
 				'avisraison_ci' => null,
 			),
 			array(
@@ -380,7 +372,6 @@
 				'sitpro_ci' => null,
 				'observ_benef' => null,
 				'referent_id' => null,
-				'current_action' => null,
 				'avisraison_ci' => null,
 			),
 		);

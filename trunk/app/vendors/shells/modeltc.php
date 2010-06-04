@@ -26,7 +26,7 @@
 				$dir=opendir(sprintf('%smodels/',APP));
 				while (($file = readdir($dir)) !== false) {
 					$explose=explode('~',$file);
-					if ((count($explose)==1)&&!is_dir($file)) $this->args[] = $file;
+					if ((count($explose)==1)&&(!is_dir($file))&&($file!='empty')) $this->args[] = $file;
         		}
         		closedir($dir);
         		if (!file_exists(sprintf('%sapp_model.php',APP))) $this->args[]='app';

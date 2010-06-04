@@ -10,9 +10,8 @@
 		function testListeCodesInsee() {
 			$result=$this->Adresse->listeCodesInsee();
 			$expected=array(
-				"ighr8" => "ighr8 Mont de Marsan",
-				"pokf2" => "pokf2 Montpellier"
-
+				'ighr8' => 'ighr8 Mont de Marsan',
+				'pokf2' => 'pokf2 Montpellier'
 			);
 			$this->assertEqual($result,$expected);
 		}

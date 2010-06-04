@@ -7,7 +7,7 @@
 		var $records = array(
 			array(
 				'id' => '1',
-				'codeinsee' => '34000',
+				'codeinsee' => '34090',
 				'libelle' => 'Pole Montpellier-Nord',
 			),
 			array(

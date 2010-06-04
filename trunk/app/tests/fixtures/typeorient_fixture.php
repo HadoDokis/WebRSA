@@ -9,22 +9,22 @@
 				'id' => '1',
 				'parentid' => null,
 				'lib_type_orient' => 'Emploi',
-				'modele_notif' => 'notif_orientation_cg66_mod3',
-				'modele_notif_cohorte' => null,
+				'modele_notif' => 'proposition_orientation_vers_pole_emploi',
+				'modele_notif_cohorte' => 'proposition_orientation_vers_pole_emploi_cohorte',
 			),
 			array(
 				'id' => '2',
 				'parentid' => null,
 				'lib_type_orient' => 'Socioprofessionnelle',
-				'modele_notif' => 'notif_orientation_cg66_mod1',
-				'modele_notif_cohorte' => null,
+				'modele_notif' => 'proposition_orientation_vers_SS_ou_PDV',
+				'modele_notif_cohorte' => 'proposition_orientation_vers_SS_ou_PDV_cohorte',
 			),
 			array(
 				'id' => '3',
 				'parentid' => null,
 				'lib_type_orient' => 'Social',
-				'modele_notif' => 'notif_orientation_cg66_mod2',
-				'modele_notif_cohorte' => null,
+				'modele_notif' => 'proposition_orientation_vers_SS_ou_PDV',
+				'modele_notif_cohorte' => 'proposition_orientation_vers_SS_ou_PDV_cohorte',
 			),
 		);
 	}

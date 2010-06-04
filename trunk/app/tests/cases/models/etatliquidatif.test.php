@@ -9,7 +9,6 @@
 	{
 
 		function testListeApres() {
-			$result=$this->Etatliquidatif->listeApres("ici ma condition");
 			$expected=array(
 				'fields' => array(
 					0 => 'Apre.id',
@@ -36,134 +35,141 @@
 				),
 				'joins' => array(
 					0 => array(
-						'table' => 'personnes',
-						'alias' => 'Personne',
-						'type' => 'INNER',
-						'foreignKey' => '',
-						'conditions' => array(
+				        'table' => 'personnes',
+				        'alias' => 'Personne',
+				        'type' => 'INNER',
+				        'foreignKey' => '',
+				        'conditions' => array(
 							0 => 'Apre.personne_id = Personne.id'
 						)
-					),
+				    ),
 					1 => array(
-						'table' => 'foyers',
-						'alias' => 'Foyer',
-						'type' => 'INNER',
-						'foreignKey' => '',
-						'conditions' => array(
-							0 => 'Personne.foyer_id = Foyer.id'
+				        'table' => 'foyers',
+				        'alias' => 'Foyer',
+				        'type' => 'INNER',
+				        'foreignKey' => '',
+				        'conditions' => array(
+				                0 => 'Personne.foyer_id = Foyer.id'
 						)
 					),
 					2 => array(
-						'table' => 'dossiers_rsa',
-						'alias' => 'Dossier',
-						'type' => 'INNER',
-						'foreignKey' => '',
-						'conditions' => array(
-							0 => 'Foyer.dossier_rsa_id = Dossier.id'
-						)
-					),
-					'3' => array(
+				        'table' => 'dossiers_rsa',
+				        'alias' => 'Dossier',
+				        'type' => 'INNER',
+				        'foreignKey' => '',
+				        'conditions' => array(
+				                0 => 'Foyer.dossier_rsa_id = Dossier.id'
+				            )
+				    ),
+					3 => array(
 						'table' => 'adresses_foyers',
 						'alias' => 'Adressefoyer',
-						'type' => 'INNER',
-						'foreignKey' => '',
-						'conditions' => array
-						(
-							0 => 'Foyer.id = Adressefoyer.foyer_id',
-							1 => 'Adressefoyer.rgadr = \'01\''
-						)
-					),
-					'4' => array(
-						'table' => 'adresses',
-						'alias' => 'Adresse',
-						'type' => 'INNER',
+						'type' => 'LEFT OUTER',
 						'foreignKey' => '',
 						'conditions' => array(
-							'0' => 'Adresse.id = Adressefoyer.adresse_id'
+							0 => 'Foyer.id = Adressefoyer.foyer_id',
+							1 => 'Adressefoyer.rgadr = \'01\'',
+							2 => 'Adressefoyer.id IN ( SELECT MAX(adresses_foyers.id)
+								FROM adresses_foyers
+								WHERE adresses_foyers.rgadr = \'01\'
+								GROUP BY adresses_foyers.foyer_id
+							)'
 						)
 					),
-					'5' => array(
+					4 => array(
+						'table' => 'adresses',
+						'alias' => 'Adresse',
+						'type' => 'LEFT OUTER',
+						'foreignKey' => '',
+						'conditions' => array(
+							0 => 'Adresse.id = Adressefoyer.adresse_id'
+						)
+					),
+					5 => array(
 						'table' => 'formsqualifs',
 						'alias' => 'Formqualif',
 						'type' => 'LEFT OUTER',
 						'foreignKey' => '',
-						'conditions' => array
-						(
-							'0' => 'Apre.id = Formqualif.apre_id'
+						'conditions' => array(
+							0 => 'Apre.id = Formqualif.apre_id'
 						)
 					),
-					'6' => array(
+					6 => array(
 						'table' => 'formspermsfimo',
 						'alias' => 'Formpermfimo',
 						'type' => 'LEFT OUTER',
 						'foreignKey' => '',
 						'conditions' => array(
-							'0' => 'Apre.id = Formpermfimo.apre_id'
+							0 => 'Apre.id = Formpermfimo.apre_id'
 						)
 					),
-					'7' => array(
+					7 => array(
 						'table' => 'actsprofs',
 						'alias' => 'Actprof',
 						'type' => 'LEFT OUTER',
 						'foreignKey' => '',
 						'conditions' => array(
-							'0' => 'Apre.id = Actprof.apre_id'
+							0 => 'Apre.id = Actprof.apre_id'
 						)
 					),
-					'8' => array(
+					8 => array(
 						'table' => 'permisb',
 						'alias' => 'Permisb',
 						'type' => 'LEFT OUTER',
 						'foreignKey' => '',
 						'conditions' => array(
-							'0' => 'Apre.id = Permisb.apre_id'
+							0 => 'Apre.id = Permisb.apre_id'
 						)
 					),
-					'9' => array(
+					9 => array(
 						'table' => 'amenagslogts',
 						'alias' => 'Amenaglogt',
 						'type' => 'LEFT OUTER',
 						'foreignKey' => '',
 						'conditions' => array(
-							'0' => 'Apre.id = Amenaglogt.apre_id'
+							0 => 'Apre.id = Amenaglogt.apre_id'
 						)
 					),
-					'10' => array(
+					10 => array(
 						'table' => 'accscreaentr',
 						'alias' => 'Acccreaentr',
 						'type' => 'LEFT OUTER',
 						'foreignKey' => '',
 						'conditions' => array(
-							'0' => 'Apre.id = Acccreaentr.apre_id'
+							0 => 'Apre.id = Acccreaentr.apre_id'
 						)
 					),
-					'11' => array(
+					11 => array(
 						'table' => 'acqsmatsprofs',
 						'alias' => 'Acqmatprof',
 						'type' => 'LEFT OUTER',
 						'foreignKey' => '',
 						'conditions' => array(
-							'0' => 'Apre.id = Acqmatprof.apre_id'
+							0 => 'Apre.id = Acqmatprof.apre_id'
 						)
 					),
-					'12' => array(
+					12 => array(
 						'table' => 'locsvehicinsert',
 						'alias' => 'Locvehicinsert',
 						'type' => 'LEFT OUTER',
 						'foreignKey' => '',
 						'conditions' => array(
-							'0' => 'Apre.id = Locvehicinsert.apre_id'
+							0 => 'Apre.id = Locvehicinsert.apre_id'
 						)
-					)
+					),
 				),
 				'recursive' => 1,
-				'conditions' => 'ici ma condition'
+				'conditions' => array(
+					0 => 'ici ma condition',
+					'Apre.eligibiliteapre' => 'O'
+				)
 			);
+			$result=$this->Etatliquidatif->listeApres("ici ma condition");
 			$this->assertEqual($result,$expected);
 		}
 
 		function testListeApresEtatLiquidatif() {
-			debug($this->Etatliquidatif->listeApresEtatLiquidatif('1=1',1));
+			
 		}
 
 	}
