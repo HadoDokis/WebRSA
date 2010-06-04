@@ -12,12 +12,22 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         //Utilisé en cas de motif de PDO non admissible
-        observeDisableFieldsOnValue( 'PropopdoMotifpdo', [ 'PropopdoNonadmis' ], 'N', false );
+//         observeDisableFieldsOnValue( 'PropopdoMotifpdo', [ 'PropopdoNonadmis' ], 'N', false );
 
         observeDisableFieldsetOnCheckbox( 'PropopdoDecision', $( 'PropopdoDecisionpdoId' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnCheckbox( 'PropopdoSuivi', $( 'PropopdoDaterevisionDay' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnCheckbox( 'PropopdoAutres', $( 'PropopdoCommentairepdo' ).up( 'fieldset' ), false );
-
+        
+        
+//         observeDisableFieldsetOnCheckbox( 'PropopdoMotifpdo', $( 'PropopdoNonadmis' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnRadioValue(
+            'propopdoform',
+            'data[Propopdo][motifpdo]',
+            $( 'nonadmis' ),
+            'N',
+            false,
+            true
+        );
     });
 </script>
 
@@ -58,13 +68,13 @@
     <h1><?php echo $this->pageTitle;?></h1>
 
     <?php
-
+        echo $xform->create( 'Propopdo', array( 'id' => 'propopdoform' ) );
         if( $this->action == 'add' ) {
-            echo $xform->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+//             echo $xform->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
 //             echo $xform->input( 'PropopdoTypenotifpdo.id', array( 'type' => 'hidden' ) );
         }
         else {
-            echo $xform->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+//             echo $xform->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ), 'id' => 'propopdoform' ) );
             echo '<div>';
             echo $xform->input( 'Propopdo.id', array( 'type' => 'hidden' ) );
 //             echo $xform->input( 'PropopdoTypenotifpdo.id', array( 'type' => 'hidden' ) );
@@ -140,6 +150,24 @@
                 </td>
             </tr>
         </table>
+        <?php
+
+            echo $html->tag(
+                'p',
+                'Catégories : '
+            );
+
+            echo $default->subform(
+                array(
+                    'Propopdo.categoriegeneral' => array( 'label' => __d( 'propopdo', 'Propopdo.categoriegeneral', true ), 'type' => 'select', 'empty' => true, 'options' => $categoriegeneral ),
+                    'Propopdo.categoriedetail' => array( 'label' => __d( 'propopdo', 'Propopdo.categoriedetail', true ), 'type' => 'select', 'empty' => true, 'options' => $categoriedetail ),
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+        ?>
     </fieldset>
     <fieldset>
         <?php
@@ -152,8 +180,7 @@
                         'Propopdo.datedecisionpdo' => array( 'label' =>  ( __( 'Date de décision de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
                         'Propopdo.decisionpdo_id' => array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ),
                         'Propopdo.dateenvoiop' => array( 'label' =>  ( __( 'Date d\'envoi à l\'OP', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
-                        'Propopdo.motifpdo' => array( 'label' =>  ( __( 'Motif de la décision', true ) ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true ),
-                        'Propopdo.nonadmis' => array( 'label' => 'Raison non admissible', 'type' => 'select', 'options' => $options['nonadmis'], 'empty' => true  )
+                        'Propopdo.motifpdo' => array( 'label' =>  ( __( 'Motif de la décision', true ) ), 'type' => 'radio', 'options' => $motifpdo, 'empty' => true )
                     ),
                     array(
                         'domain' => $domain,
@@ -161,21 +188,21 @@
                     )
                 );
             ?>
-
-            <!-- <fieldset id="nonadmis" class="invisible">
+             <fieldset id="nonadmis" class="invisible">
                 <?php
-//                     echo $default->subform(
-//                         array(
-//                             'Propopdo.nonadmis' => array( 'label' => 'Raison non admissible', 'type' => 'select', 'options' => $options['nonadmis'], 'empty' => true  )
-//                         ),
-//                         array(
-//                             'domain' => $domain,
-//                             'options' => $options
-//                         )
-//                     );
+                    echo $default->subform(
+                        array(
+                            'Propopdo.nonadmis' => array( 'label' => 'Raison non admissible', 'type' => 'select', 'options' => $options['nonadmis'], 'empty' => true  )
+                        ),
+                        array(
+                            'domain' => $domain,
+                            'options' => $options
+                        )
+                    );
                 ?>
-            </fieldset> -->
+            </fieldset> 
         </fieldset>
+
     </fieldset>
     <fieldset>
         <?php

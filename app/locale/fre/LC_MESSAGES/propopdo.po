@@ -53,3 +53,9 @@ msgstr "Conditions d'admission non remplies"
 
 msgid "ENUM::NONADMIS::RSP"
 msgstr "Ressources > au plafond"
+
+msgid "Propopdo.categoriegeneral"
+msgstr "Métiers ( général )"
+
+msgid "Propopdo.categoriedetail"
+msgstr "Métiers ( détaillé )"

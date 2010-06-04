@@ -356,11 +356,15 @@ COMMENT ON TABLE propospdos_statutspdos IS 'Statuts des décisions liés aux PDO
 ALTER TABLE propospdos DROP COLUMN statutdecision;
 COMMIT;
 
--- **************************** 04/06/2010 *****************************
+-- **************************** Ajout du 04/06/2010 *****************************
 BEGIN;
 ALTER TABLE propospdos ADD COLUMN referent_id INTEGER DEFAULT NULL REFERENCES referents(id);
 CREATE TYPE type_nonadmis AS ENUM ( 'CAN', 'RSP' );
 -- CAN = Conditions d'admission non remplies
 -- RSP = Ressource > plafond
 ALTER TABLE propospdos ADD COLUMN nonadmis type_nonadmis DEFAULT NULL;
+-- FIXME: trouver meilleur solution:
+-- pour le moment on se contente d'un varchar car la liste des métiers à faire apparaître n'est peut-être pas la bonne
+ALTER TABLE propospdos ADD COLUMN categoriegeneral VARCHAR(3) DEFAULT NULL;
+ALTER TABLE propospdos ADD COLUMN categoriedetail VARCHAR(3) DEFAULT NULL;
 COMMIT;

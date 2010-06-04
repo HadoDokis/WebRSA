@@ -11,7 +11,8 @@
                     'choixpdo' => array( 'domain' => 'propopdo' ),
                     'nonadmis' => array( 'domain' => 'propopdo' ),
 				)
-            )
+            ),
+            'Formattable'
         );
 
         var $belongsTo = array(
@@ -36,7 +37,8 @@
                 'associationForeignKey' => 'typenotifpdo_id'
             ),
             'Situationpdo' => array( 'with' => 'PropopdoSituationpdo' ),
-            'Statutpdo' => array( 'with' => 'PropopdoStatutpdo' )
+            'Statutpdo' => array( 'with' => 'PropopdoStatutpdo' ),
+            'Statutdecisionpdo' => array( 'with' => 'PropopdoStatutdecisionpdo' )
         );
 
         var $validate = array(

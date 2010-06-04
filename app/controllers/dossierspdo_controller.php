@@ -14,6 +14,9 @@
             $this->set( 'commission', $this->Option->commission() );
             $this->set( 'motidempdo', $this->Option->motidempdo() );
             $this->set( 'motifpdo', $this->Option->motifpdo() );
+            $this->set( 'categoriegeneral', $this->Option->sect_acti_emp() );
+            $this->set( 'categoriedetail', $this->Option->emp_occupe() );
+
             $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
