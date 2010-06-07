@@ -26,7 +26,7 @@
 				'Ep.add'
 			),
 			'actions' => array(
-				'Ep.view',
+// 				'Ep.view',
 				'Ep.edit',
 				'Ep.delete'
 			)

@@ -22,7 +22,7 @@
 				'PartepSeanceep.add'
 			),
 			'actions' => array(
-				'PartepSeanceep.view',
+// 				'PartepSeanceep.view',
 				'PartepSeanceep.edit',
 				'PartepSeanceep.delete'
 			),
