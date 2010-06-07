@@ -19,7 +19,7 @@
 				'Motifdemreorient.add'
 			),
 			'actions' => array(
-				'Motifdemreorient.view',
+// 				'Motifdemreorient.view',
 				'Motifdemreorient.edit',
 				'Motifdemreorient.delete'
 			)

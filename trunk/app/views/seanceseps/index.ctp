@@ -21,7 +21,7 @@
 				'Seanceep.add'
 			),
 			'actions' => array(
-				'Seanceep.view',
+// 				'Seanceep.view',
 				'Seanceep.edit',
 				'Seanceep.delete'
 			)

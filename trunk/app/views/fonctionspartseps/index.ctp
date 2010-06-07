@@ -17,7 +17,7 @@
 				'Fonctionpartep.add'
 			),
 			'actions' => array(
-				'Fonctionpartep.view',
+// 				'Fonctionpartep.view',
 				'Fonctionpartep.edit',
 				'Fonctionpartep.delete'
 			)

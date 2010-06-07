@@ -40,7 +40,7 @@
 				'Partep.add'
 			),
 			'actions' => array(
-				'Partep.view',
+// 				'Partep.view',
 				'Partep.edit',
 				'Partep.delete'
 			)
