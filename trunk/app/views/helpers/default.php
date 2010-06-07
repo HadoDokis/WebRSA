@@ -244,11 +244,11 @@
 					$model = ClassRegistry::init( $modelName );
 
 					// TODO
-// 					foreach( array( 'controller', 'action' ) as $t ) {
-// 						if( Set::check( $actionParams, $t ) ) {
-// 							$$t = Set::classicExtract( $actionParams, $t );
-// 						}
-// 					}
+					foreach( array( 'controller', 'action' ) as $t ) {
+						if( Set::check( $actionParams, $t ) ) {
+							$$t = Set::classicExtract( $actionParams, $t );
+						}
+					}
 
 					if( $action == 'delete' ) {
 						$value = $this->button(

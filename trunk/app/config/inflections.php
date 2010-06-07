@@ -121,7 +121,6 @@
         'decisionpdo' => 'decisionspdos',
         'typepdo' => 'typespdos',
         'piecepdo' => 'piecespdos',
-        'propopdo_typenotifpdo' => 'propospdos_typesnotifspdos',
         'statutrdv' => 'statutsrdvs',
         'infopoleemploi' => 'infospoleemploi',
 		// Apre
@@ -251,6 +250,10 @@
 		'demandereorient_seanceep' => 'demandesreorient_seanceseps',
 		'decisionreorient' => 'decisionsreorient',
 		'demandereorient_seanceep' => 'demandesreorient_seanceseps',
+        ///PDOs traitements
+        'traitementtypepdo' => 'traitementstypespdos',
+        'descriptionpdo' => 'descriptionspdos',
+        'traitementpdo' => 'traitementspdos',
 
      );
 /**

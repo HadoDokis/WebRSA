@@ -3,7 +3,7 @@
     class DossierspdoController extends AppController{
 
         var $name = 'Dossierspdo';
-        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Typenotifpdo', 'Suiviinstruction', 'Piecepdo', 'PropopdoTypenotifpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent' );
+        var $uses = array( 'Dossierpdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent' );
 
         var $helpers = array( 'Default' );
 
@@ -17,7 +17,6 @@
             $this->set( 'categoriegeneral', $this->Option->sect_acti_emp() );
             $this->set( 'categoriedetail', $this->Option->emp_occupe() );
 
-            $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
             $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
@@ -55,13 +54,10 @@
             $pdos = $this->Propopdo->find( 'all', $options );
 
             if( !empty( $pdos ) ){
-                /// Récupération des Types de notification liées à la PDO
-                $notifs = $this->PropopdoTypenotifpdo->find( 'all', array( 'conditions' => array( 'PropopdoTypenotifpdo.propopdo_id' => Set::extract( $pdos, '/Propopdo/id' )  ) ) );
 
                 /// Récupération des Pièces liées à la PDO
                 $piecespdos = $this->Piecepdo->find( 'all', array( 'conditions' => array( 'Piecepdo.propopdo_id' => Set::extract( $pdos, '/Propopdo/id' )  ), 'order' => 'Piecepdo.dateajout DESC' ) );
-// debug($notifs);
-                $this->set( 'notifs', $notifs );
+
                 $this->set( 'piecespdos', $piecespdos );
             }
 

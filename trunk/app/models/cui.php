@@ -58,7 +58,8 @@
 
                 )
             ),
-            'Formattable'
+            'Formattable',
+            'Autovalidate'
         );
 
         var $belongsTo = array(

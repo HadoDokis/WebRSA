@@ -24,6 +24,17 @@
                 );
                 echo $html->tableCells(
                     array(
+                        h( 'Description pour traitements PDOs' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'descriptionspdos', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
                         h( 'Origine PDOs' ),
                         $html->viewLink(
                             'Voir la table',
@@ -72,6 +83,17 @@
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'typesnotifspdos', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
+                        h( 'Types de traitements PDOs' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'traitementstypespdos', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),
