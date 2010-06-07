@@ -382,3 +382,38 @@ UPDATE acos
         WHERE substring(alias FROM '^.*:(.+)$') IS NULL;
 
 COMMIT;
+
+-- **************************** Ajout du 07/06/2010 - Traitement des PDOs *****************************
+BEGIN;
+DROP TABLE propospdos_typesnotifspdos;
+
+CREATE TABLE descriptionspdos (
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    name                            VARCHAR(50),
+    modelenotification              VARCHAR(250),
+    sensibilite                     type_no DEFAULT 'N'
+);
+COMMENT ON TABLE descriptionspdos IS 'Descriptions pour les traitmeents des PDOs';
+
+CREATE TABLE traitementstypespdos (
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    name                            VARCHAR(50)
+);
+COMMENT ON TABLE traitementstypespdos IS 'Types pour les traitements des PDOs';
+
+
+
+CREATE TABLE traitementspdos (
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    propopdo_id                     INTEGER NOT NULL REFERENCES propospdos(id),
+    descriptionpdo_id                  INTEGER NOT NULL REFERENCES descriptionspdos(id),
+    traitementtypepdo_id            INTEGER NOT NULL REFERENCES traitementstypespdos(id),
+    datereception                   DATE,
+    datedepart                      DATE,
+    hascourrier                     type_booleannumber DEFAULT NULL,
+    hasrevenu                       type_booleannumber DEFAULT NULL,
+    haspiecejointe                  type_booleannumber DEFAULT NULL
+);
+COMMENT ON TABLE traitementspdos IS 'Traitements des PDOs';
+
+COMMIT;

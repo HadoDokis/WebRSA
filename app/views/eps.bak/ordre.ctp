@@ -144,16 +144,16 @@
                     </table>
 
                     <?php
-                        echo $html->tag( 'h3', 'Thème 2: parcours détectés' );
-
-                        echo $default->index(
-                            $this->viewVars['ep']['Parcoursdetecte'],
-                            array(
-                                'Orientstruct.Personne.nom_complet',
-                                'Parcoursdetecte.signale' => array( 'type' => 'boolean' ),
-                                'Parcoursdetecte.commentaire'
-                            )
-                        );
+//                         echo $html->tag( 'h3', 'Thème 2: parcours détectés' );
+// 
+//                         echo $default->index(
+//                             $this->viewVars['ep']['Parcoursdetecte'],
+//                             array(
+//                                 'Orientstruct.Personne.nom_complet',
+//                                 'Parcoursdetecte.signale' => array( 'type' => 'boolean' ),
+//                                 'Parcoursdetecte.commentaire'
+//                             )
+//                         );
                     ?>
                 </div>
             <?php else:?>

@@ -49,7 +49,8 @@
                         h( 'Participants aux Equipes pluridisciplinaires' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'partseps', 'action' => 'index' )
+                            array( 'controller' => 'partseps', 'action' => 'index' ),
+                            ( ( $compteurs['Fonctionpartep'] > 0 ) && ( $compteurs['Ep'] > 0 ) )
                         )
                     ),
                     array( 'class' => 'odd' ),
@@ -60,23 +61,24 @@
                         h( 'Présence aux séances' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'partseps_seanceseps', 'action' => 'index' )
+                            array( 'controller' => 'partseps_seanceseps', 'action' => 'index' ),
+                            ( ( $compteurs['Partep'] > 0 ) )
                         )
                     ),
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
-                    array(
-                        h( 'Séances d\'équipes pluridisciplinaires' ),
-                        $html->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'seanceseps', 'action' => 'indexparams' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
+//                 echo $html->tableCells(
+//                     array(
+//                         h( 'Séances d\'équipes pluridisciplinaires' ),
+//                         $html->viewLink(
+//                             'Voir la table',
+//                             array( 'controller' => 'seanceseps', 'action' => 'indexparams' )
+//                         )
+//                     ),
+//                     array( 'class' => 'odd' ),
+//                     array( 'class' => 'even' )
+//                 );
             ?>
         </tbody>
     </table>

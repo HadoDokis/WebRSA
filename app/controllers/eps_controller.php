@@ -32,6 +32,13 @@
             if( isset( $this->params['form']['Cancel'] ) ) {
                 $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
             }
+
+            $compteurs = array(
+                'Ep' => ClassRegistry::init( 'Ep' )->find( 'count' ),
+                'Fonctionpartep' => ClassRegistry::init( 'Fonctionpartep' )->find( 'count' ),
+                'Partep' => ClassRegistry::init( 'Partep' )->find( 'count' ),
+            );
+            $this->set( compact( 'compteurs' ) );
         }
 
         /**

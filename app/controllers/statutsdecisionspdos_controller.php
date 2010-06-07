@@ -8,7 +8,6 @@
         var $components = array( 'Default' );
 
 
-
         /**
         *   Ajout à la suite de l'utilisation des nouveaux helpers
         *   - default.php

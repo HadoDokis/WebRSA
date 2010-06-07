@@ -18,4 +18,15 @@
             )
         )
     );
+
+     echo $default->button(
+        'back',
+        array(
+            'controller' => 'statutsdecisionspdos',
+            'action'     => 'index'
+        ),
+        array(
+            'id' => 'Back'
+        )
+    );
 ?>

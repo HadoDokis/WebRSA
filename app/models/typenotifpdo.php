@@ -6,14 +6,6 @@
         var $displayField = 'libelle';
         var $order = 'Typenotifpdo.id ASC';
 
-        var $hasAndBelongsToMany = array(
-            'Propopdo' => array(
-                'classname' => 'Propopdo',
-                'joinTable' => 'propospdos_typesnotifspdos',
-                'foreignKey' => 'typenotifpdo_id',
-                'associationForeignKey' => 'propopdo_id'
-            )
-        );
 
 
         var $validate = array(

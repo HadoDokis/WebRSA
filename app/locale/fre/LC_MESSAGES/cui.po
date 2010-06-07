@@ -330,6 +330,8 @@ msgstr "Organisme"
 msgid "Cui.adresseorganisme"
 msgstr "Adresse de l'organisme"
 
+msgid "Cui.referent_id"
+msgstr "Référent du contrat"
 ###############################################################################
 ####  Liste des ENUM de la table CUI
 ###############################################################################

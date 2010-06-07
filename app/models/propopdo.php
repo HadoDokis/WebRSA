@@ -26,16 +26,14 @@
             'Piecepdo' => array(
                 'classname'     => 'Piecepdo',
                 'foreignKey'    => 'propopdo_id'
+            ),
+            'Traitementpdo' => array(
+                'classname'     => 'Traitementpdo',
+                'foreignKey'    => 'propopdo_id'
             )
         );
 
         var $hasAndBelongsToMany = array(
-            'Typenotifpdo' => array(
-                'classname' => 'Typenotifpdo',
-                'joinTable' => 'propospdos_typesnotifspdos',
-                'foreignKey' => 'propopdo_id',
-                'associationForeignKey' => 'typenotifpdo_id'
-            ),
             'Situationpdo' => array( 'with' => 'PropopdoSituationpdo' ),
             'Statutpdo' => array( 'with' => 'PropopdoStatutpdo' ),
             'Statutdecisionpdo' => array( 'with' => 'PropopdoStatutdecisionpdo' )
