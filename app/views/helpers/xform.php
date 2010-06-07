@@ -131,7 +131,7 @@
 			}
 
 			// maxLength
-			if( ( !isset( $options['type'] ) || $options['type'] == 'string' ) && !isset( $options['maxlength'] ) ) { // FIXME: maxLength
+			if( ( !isset( $options['type'] ) || in_array( $options['type'], array( 'string', 'text' ) ) ) && !isset( $options['maxlength'] ) ) { // FIXME: maxLength
 				list( $modelName, $fieldName ) = model_field( $fieldName );
 				if( !isset( $this->_schemas[$modelName] ) ) {
 					$this->_schemas[$modelName] = ClassRegistry::init( $modelName )->schema();
