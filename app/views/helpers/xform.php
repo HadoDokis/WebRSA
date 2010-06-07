@@ -25,6 +25,14 @@
 
 		var $inputDefaults = array();
 
+		/**
+		* FIXME docs
+		*
+		* @access public
+		*/
+
+		var $_schemas = array();
+
 
 		/**
 		* FIXME docs
@@ -120,6 +128,19 @@
 
 			if( isset( $options['type'] ) && in_array( $options['type'], array( 'radio' ) ) && !Set::check( $options, 'legend' )  ) {
 				$options['legend'] = $options['label'];
+			}
+
+			// maxLength
+			if( ( !isset( $options['type'] ) || $options['type'] == 'string' ) && !isset( $options['maxlength'] ) ) { // FIXME: maxLength
+				list( $modelName, $fieldName ) = model_field( $fieldName );
+				if( !isset( $this->_schemas[$modelName] ) ) {
+					$this->_schemas[$modelName] = ClassRegistry::init( $modelName )->schema();
+				}
+				$schema = $this->_schemas[$modelName];
+				$field = Set::classicExtract( $schema, $fieldName );
+				if( !empty( $field ) && ( $field['type'] == 'string' ) && isset( $field['length'] ) ) {
+					$options['maxlength'] = $field['length'];
+				}
 			}
 
             return parent::input( $fieldName, $options );
