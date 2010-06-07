@@ -27,6 +27,8 @@
 		*/
 
 		public function index() {
+            $options = $this->_options();
+            $this->set( 'options', $options );
             $this->set(
                 Inflector::tableize( $this->modelClass ),
                 $this->paginate( $this->modelClass )

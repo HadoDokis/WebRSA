@@ -25,7 +25,7 @@
 	echo $default->index(
 		$partseps,
 		array(
-			'Partep.id',
+// 			'Partep.id',
 			'Partep.qual',
 			'Partep.nom',
 			'Partep.prenom',
@@ -33,7 +33,7 @@
 			'Partep.email',
 			'Ep.name',
 			'Fonctionpartep.name',
-			'Partep.rolepartep',
+			'Partep.rolepartep' => array( 'options' => $options ),
 		),
 		array(
 			'add' => array(
