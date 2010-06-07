@@ -211,7 +211,7 @@
 
                         if( $model->getColumnType( $field ) == 'datetime' ) { /// FIXME: si c'est un vrai datetime
                             $data[] = "{$model->alias}.{$field} BETWEEN '{$value}' AND '".date( 'Y-m-d', strtotime( $value ) + ( 24 * 60 * 60 ) )."'";
-                            $data = Set::remove( $data, 'Ep.date' );
+                            $data = Set::remove( $data, "{$model->alias}.{$field}" );
                         }
                         else {
                             $data[$model->alias][$field] = $value;
