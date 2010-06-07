@@ -192,39 +192,39 @@
             <li id="menu4one">
                 <?php echo $html->link( 'Eq. Pluri.', '#' );?>
                 <ul>
-                    <li>
-                        <?php echo $html->link( 'Parcours', '#' );?>
+                    <!-- <li>
+                        <?php /*echo $html->link( 'Parcours', '#' );?>
                         <ul>
                             <li>
                                 <?php echo $html->link( 'Détection de parcours', array( 'controller' => 'parcoursdetectes', 'action' => 'detecte' ) );?>
                             </li>
                             <li>
-                                <?php echo $html->link( 'Parcours détectés', array( 'controller' => 'parcoursdetectes', 'action' => 'index' ) );?>
+                                <?php echo $html->link( 'Parcours détectés', array( 'controller' => 'parcoursdetectes', 'action' => 'index' ) );*/?>
                             </li>
                         </ul>
-                    </li>
-                    <?php if( $permissions->check( 'eps', 'liste' ) ):?>
+                    </li> -->
+                    <?php if( $permissions->check( 'seanceseps', 'index' ) ):?>
                         <li>
-                            <?php echo $html->link( 'Liste des équipes', array( 'controller' => 'eps', 'action' => 'liste' ) );?>
+                            <?php echo $html->link( 'Liste des séances', array( 'controller' => 'seanceseps', 'action' => 'index' ) );?>
                         </li>
                     <?php endif;?>
-                    <?php if( $permissions->check( 'eps', 'liste' ) ):?>
-                        <!-- <li>
+                   <!--  <?php /*if( $permissions->check( 'eps', 'liste' ) ):?>
+                       <li>
                             <?php echo $html->link( 'Liste des équipes', array( 'controller' => 'eps', 'action' => 'liste' ) );?>
                             <ul>
                                 <li>
                                     <?php /*echo $html->link( 'Gestion des demandes de réorientation', array( 'controller' => 'eps', 'action' => 'liste' ) );?>
                                 </li>
                                 <li>
-                                    <?php echo $html->link( 'Gestion des parcours détectés', array( 'controller' => 'eps', 'action' => 'detection' ) );*/?>
+                                    <?php echo $html->link( 'Gestion des parcours détectés', array( 'controller' => 'eps', 'action' => 'detection' ) );?>
                                 </li>
                             </ul> 
-                        </li> -->
+                        </li>
 
                         <li>
                             <?php echo $html->link( 'Demandes de réorientation par référents', array( 'controller' => 'referents', 'action' => 'liste_demande_reorient' ) );?>
                         </li>
-                    <?php endif;?>
+                    <?php endif;*/?> -->
                    <!-- <?php if( $permissions->check( 'precosreorients', 'conseil' ) || $permissions->check( 'parcoursdetectes', 'conseil' ) ) :?>
                         <li>
                             <?php echo $html->link( 'Conseil général', '#' );?>

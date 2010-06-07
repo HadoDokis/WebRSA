@@ -57,7 +57,7 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Participants des séances' ),
+                        h( 'Présence aux séances' ),
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'partseps_seanceseps', 'action' => 'index' )
@@ -71,7 +71,7 @@
                         h( 'Séances d\'équipes pluridisciplinaires' ),
                         $html->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'seanceseps', 'action' => 'index' )
+                            array( 'controller' => 'seanceseps', 'action' => 'indexparams' )
                         )
                     ),
                     array( 'class' => 'odd' ),

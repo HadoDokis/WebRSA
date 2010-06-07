@@ -55,10 +55,10 @@
             $ep = $this->Ep->findById( $ep_id, null, null, 2 );
             $this->assert( !empty( $ep ), 'invalidParameter' );
 
-            $parcoursdetectes = $this->Ep->Parcoursdetecte->find( 'all', array( 'conditions' => array( 'Parcoursdetecte.ep_id' => $ep_id ), 'recursive' => 2 ) );
+//             $parcoursdetectes = $this->Ep->Parcoursdetecte->find( 'all', array( 'conditions' => array( 'Parcoursdetecte.ep_id' => $ep_id ), 'recursive' => 2 ) );
 
             /// FIXME
-            $ep = Set::insert( $ep, 'Parcoursdetecte', $parcoursdetectes );
+//             $ep = Set::insert( $ep, 'Parcoursdetecte', $parcoursdetectes );
 //debug( $ep );
             // Si finalisation de l'ordre du jour,
             // --> on modifie la valeur de validordre et on ferme l'ordre du jour
@@ -76,10 +76,10 @@
                 $this->redirect( array( 'controller' => 'eps', 'action' => 'liste', '/Search__active:1' ) );
             }
 
-            $eppartep = $this->EpPartep->findByEpId( $ep_id, null, null, 0 );
+//             $eppartep = $this->EpPartep->findByEpId( $ep_id, null, null, 0 );
 
-            $participants = $this->Ep->Partep->find( 'list' );
-            $roles = $this->Ep->Rolepartep->find( 'list' );
+//             $participants = $this->Ep->Partep->find( 'list' );
+//             $roles = $this->Ep->Rolepartep->find( 'list' );
 
             $this->set( compact( 'eppartep', 'ep', 'participants'/*, 'roles'*/ ) );
         }
