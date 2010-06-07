@@ -21,6 +21,23 @@
             return $options;
         }
 
+        /**
+        *
+        */
+
+        public function indexparams() {
+            $options = $this->_options();
+            $this->set( 'options', $options );
+            $this->set(
+                Inflector::tableize( $this->modelClass ),
+                $this->paginate( $this->modelClass )
+            );
+            $this->{$this->modelClass}->recursive = 0;
+            $this->Default->search(
+                $this->data
+            );
+        }
+
 		/**
 		*
 		*/

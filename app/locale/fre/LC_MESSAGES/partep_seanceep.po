@@ -20,19 +20,19 @@ msgstr ""
 ###############################################################################
 
 msgid "PartsepsSeanceseps::add"
-msgstr "Ajout d'un participant à une séance"
+msgstr "Ajout d'une présence de participant à une séance"
 
 msgid "PartepSeanceep::add"
-msgstr "Ajouter un participant à une séance"
+msgstr "Ajouter une présence de participant à une séance"
 
 msgid "PartsepsSeanceseps::index"
-msgstr "Liste des participants d'une séance"
+msgstr "Liste des présences d'une séance"
 
 msgid "PartepSeanceep::delete"
 msgstr "Suppression d'un participant d'une séance"
 
 msgid "PartsepsSeanceseps::edit"
-msgstr "Modification d'unn participant d'une séance"
+msgstr "Modification d'un participant d'une séance"
 
 msgid "PartepSeanceep::edit"
 msgstr "Modifier le participant de la séance"
