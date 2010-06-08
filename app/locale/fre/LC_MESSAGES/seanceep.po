@@ -28,6 +28,9 @@ msgstr "Ajouter une séance"
 msgid "Seanceseps::index"
 msgstr "Liste des séances"
 
+msgid "Seanceseps::ordre"
+msgstr "Ordre du jour"
+
 msgid "Seanceep::delete"
 msgstr "Suppression d'une séance"
 
