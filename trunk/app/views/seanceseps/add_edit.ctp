@@ -13,7 +13,7 @@
 			'Seanceep.dateseance',
 // 			'Seanceep.finaliseeep',
 // 			'Seanceep.finaliseecg',
-			'Seanceep.reorientation',
+			'Seanceep.demandesreorient',
 		),
         array(
             'options' => $options
