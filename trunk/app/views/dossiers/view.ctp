@@ -248,6 +248,45 @@
                     </table>
                 </td>
                 <td>
+                    <h2>Contrat Unique d'Insertion</h2>
+                    <table>
+                    <?php echo thead( 10 );?>
+                        <tbody>
+                            <tr class="even">
+                                <th>Convention</th>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.convention' ), $enumcui['convention'] );?></td>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui.convention' ), $enumcui['convention'] );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Secteur</th>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.secteur' ), $enumcui['secteur'] );?></td>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui.secteur' ), $enumcui['secteur'] );?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Date du contrat</th>
+                                <td><?php echo date_short( Set::extract( 'DEM.Cui.datecontrat', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Cui.datecontrat', $details) );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Décision</th>
+                                <td>
+                                    
+                                </td>
+                                <td>
+                                    
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <th>Date de décision</th>
+                                <td><?php echo date_short( Set::extract( 'DEM.Cui.datevalidation_ci', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Cui.datevalidation_ci', $details) );?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr colspan="2">
+                <td>
                     <h2>Informations Pôle Emploi</h2>
                     <table>
                     <?php echo thead( 10 );?>

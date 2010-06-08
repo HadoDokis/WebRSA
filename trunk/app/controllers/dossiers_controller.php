@@ -6,7 +6,7 @@
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dsp', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dsp', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent', 'Cui' );
         var $aucunDroit = array( 'menu' );
         var $helpers = array( 'Csv' );
 
@@ -42,6 +42,7 @@
             $this->set( 'typesorient', $typesorient );
             $this->set( 'referents', $this->Referent->find( 'list' ) );
             $this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
+            $this->set( 'enumcui', $this->Cui->allEnumLists() );
             return $return;
         }
 
@@ -275,6 +276,17 @@
                     )
                 );
                 $personnesFoyer[$index]['Contratinsertion'] = $tContratinsertion['Contratinsertion'];
+
+
+                $tCui = $this->Cui->find(
+                    'first',
+                    array(
+                        'conditions' => array( 'Cui.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+                        'recursive' => -1,
+                        'order' => array( 'Cui.datecontrat DESC' )
+                    )
+                );
+                $personnesFoyer[$index]['Cui'] = $tCui['Cui'];
 
                 $tOrientstruct = $this->Orientstruct->find(
                     'first',
