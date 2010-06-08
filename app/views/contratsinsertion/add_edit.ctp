@@ -307,13 +307,13 @@
                     <em>Ce contrat est établi pour : </em>
                 </td>
             </tr>
-            <?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ):?>
+            <?php /*if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ): */?>
                 <tr>
                     <td colspan="2" class="noborder">
                         <div class="demi"><?php echo $form->input( 'Contratinsertion.type_demande', array( 'label' => 'Raison : ' , 'type' => 'radio', 'div' => false, 'separator' => '</div><div class="demi">', 'options' => $options['type_demande'], 'legend' => false ) );?></div>
                     </td>
                 </tr>
-            <?php endif;?>
+            <?php /*endif;*/?>
 
             <tr>
                 <td colspan="2" class="noborder center" id="contrat">
