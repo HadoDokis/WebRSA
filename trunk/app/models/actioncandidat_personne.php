@@ -60,6 +60,38 @@
             'actioncandidat_id' => array(
                 array( 'rule' => 'notEmpty' )
             ),
+            'enattente'  => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'bilanvenu'  => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'bilanretenu'  => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'bilanrecu'  => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'integrationaction'  => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'pieceallocataire' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'ddaction' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'motifdemande' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
         );
 
     }
