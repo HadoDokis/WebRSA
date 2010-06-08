@@ -64,8 +64,8 @@
 
 		/*public $virtualFields = array(
 			'statut' => array(
-				'type'		=> 'string',
-				'postgres'	=> '( SELECT COUNT( "precosreorients"."id" ) FROM "precosreorients" WHERE "precosreorients"."demandereorient_id" = "%s"."id" )'
+				'type'		=> 'integer',
+				'postgres'	=> '( SELECT COUNT( "demandesreorient_seanceseps"."id" ) FROM "demandesreorient_seanceseps" WHERE "demandesreorient_seanceseps"."demandereorient_id" = "%s"."id" )'
 			),
 		);*/
 
@@ -105,5 +105,135 @@
 
             return $return;
         }
+
+		/**
+		*
+		*/
+
+		public function countAtraiterParZonegeographique( $seanceep_id = null ) {
+			$this->unbindModelAll();
+			return $this->find(
+				'all',
+				array(
+					'fields' => array(
+						"COUNT(\"{$this->alias}\".\"id\") AS \"{$this->alias}__limit\"",
+						'Adresse.numcomptt',
+						'Adresse.locaadr',
+					),
+					'conditions' => array(
+						'( SELECT COUNT( "demandesreorient_seanceseps"."id" )
+							FROM "demandesreorient_seanceseps"
+							WHERE "demandesreorient_seanceseps"."demandereorient_id" = "'.$this->alias.'"."id"
+								AND (
+									"demandesreorient_seanceseps"."seanceep_id" = \''.$seanceep_id.'\'
+									OR "demandesreorient_seanceseps"."seanceep_id" IS NULL
+								)
+						) = \'0\''
+					),
+					'joins' => array(
+						array(
+							'table'      => Inflector::tableize( 'Personne' ),
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Personne.id = {$this->alias}.personne_id" )
+						),
+						array(
+							'table'      => Inflector::tableize( 'Foyer' ),
+							'alias'      => 'Foyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Personne.foyer_id = Foyer.id" )
+						),
+						array(
+							'table'      => 'adresses_foyers',
+							'alias'      => 'Adressefoyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								"Adressefoyer.foyer_id = Foyer.id",
+								"Adressefoyer.rgadr = '01'"
+							)
+						),
+						array(
+							'table'      => 'adresses',
+							'alias'      => 'Adresse',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Adresse.id = Adressefoyer.adresse_id" )
+						),
+					),
+					'group' => array( 'Adresse.numcomptt', 'Adresse.locaadr' ),
+					'order' => array( 'Adresse.locaadr' ),
+					'recursive' => -1
+				)
+			);
+		}
+
+		/**
+		*
+		*/
+
+		public function marquerAtraiterParZonegeographique( $seanceep_id, $numcomptt, $limit ) {
+			$this->unbindModelAll();
+			$ids = $this->find(
+				'all',
+				array(
+					'fields' => array(
+						"{$this->alias}.id"
+					),
+					'conditions' => array( /// FIXME
+						"Adresse.numcomptt" => $numcomptt,
+						"{$this->alias}.seanceep_id" => NULL,
+// 						"{$this->alias}.passageep" => '1',
+					),
+					'joins' => array(
+						array(
+							'table'      => Inflector::tableize( 'Personne' ),
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Personne.id = {$this->alias}.personne_id" )
+						),
+						array(
+							'table'      => Inflector::tableize( 'Foyer' ),
+							'alias'      => 'Foyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Personne.foyer_id = Foyer.id" )
+						),
+						array(
+							'table'      => 'adresses_foyers',
+							'alias'      => 'Adressefoyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								"Adressefoyer.foyer_id = Foyer.id",
+								"Adressefoyer.rgadr = '01'"
+							)
+						),
+						array(
+							'table'      => 'adresses',
+							'alias'      => 'Adresse',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Adresse.id = Adressefoyer.adresse_id" )
+						),
+					),
+					'order' => array(
+						"{$this->alias}.urgent DESC", // INFO: d'abord les urgents
+						"{$this->alias}.created ASC"
+					),
+					'recursive' => -1,
+					'limit' => $limit
+				)
+			);
+
+			$ids = Set::extract( $ids, "/{$this->alias}/id" );
+			return $this->updateAll(
+				array( "{$this->alias}.seanceep_id" => $seanceep_id ),
+				array( "{$this->alias}.id" => $ids )
+			);
+		}
     }
 ?>

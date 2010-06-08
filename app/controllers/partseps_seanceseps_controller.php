@@ -23,7 +23,7 @@
             $options = $this->{$this->modelClass}->enums();
             $options[$this->modelClass]['partep_id'] = $this->{$this->modelClass}->Partep->find( 'list' );
             $options[$this->modelClass]['seanceep_id'] = $this->{$this->modelClass}->Seanceep->find( 'list' );
-            $options[$this->modelClass]['remplacant_partep_id'] = $this->{$this->modelClass}->Partep->find( 'list' );
+            $this->{$this->modelClass}->Partep->find( 'list' );
 
             return $options;
         }
