@@ -8,7 +8,8 @@
         var $belongsTo = array(
             'Personne',
             'Referent',
-            'Actioncandidat'
+            'Actioncandidat',
+            'Rendezvous'
         );
 
         var $actsAs = array (
