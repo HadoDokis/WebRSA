@@ -1,7 +1,7 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Groupes';?>
+<?php $this->pageTitle = 'Groupe';?>
 
-<h1><?php echo $this->pageTitle;?></h1><br />
+<h1><?php echo $this->pageTitle." ".$this->data['Group']['name'];?></h1><br />
 
 <div id="tabbedWrapper" class="tabs">
     <div id="infos">
