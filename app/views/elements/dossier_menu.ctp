@@ -254,7 +254,7 @@
                                             <li>
                                                 <?php
                                                     echo $html->link(
-                                                        'Mémo',
+                                                        'Mémos',
                                                         array( 'controller' => 'memos', 'action' => 'index', $personne['id'] )
                                                     );
                                                 ?>
