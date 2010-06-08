@@ -58,14 +58,14 @@
 		);
 	}
 
-    echo $default->button(
-        'back',
-        array(
-            'controller' => 'eps',
-            'action'     => 'indexparams'
-        ),
-        array(
-            'id' => 'Back'
-        )
-    );
+//     echo $default->button(
+//         'back',
+//         array(
+//             'controller' => 'eps',
+//             'action'     => 'indexparams'
+//         ),
+//         array(
+//             'id' => 'Back'
+//         )
+//     );
 ?>

@@ -52,14 +52,26 @@ msgstr "Lieu de la séance"
 msgid "Seanceep.dateseance"
 msgstr "Date de la séance"
 
-msgid "Seanceep.reorientation"
+msgid "Seanceep.demandesreorient"
 msgstr "Réorientation"
 
-msgid "ENUM::REORIENTATION::nontraite"
+msgid "Search.Seanceep.structurereferente_id"
+msgstr "Structure référente"
+
+msgid "Search.Seanceep.dateseance"
+msgstr "Date de la séance"
+
+msgid "Search.Seanceep.ep_id"
+msgstr "Équipe pluridisciplinaire"
+
+msgid "Seanceep::ordre"
+msgstr "Ordre du jour"
+
+msgid "ENUM::DEMANDESREORIENT::nontraite"
 msgstr "Non traité"
 
-msgid "ENUM::REORIENTATION::decisionep"
+msgid "ENUM::DEMANDESREORIENT::decisionep"
 msgstr "Décision EP"
 
-msgid "ENUM::REORIENTATION::decisioncg"
+msgid "ENUM::DEMANDESREORIENT::decisioncg"
 msgstr "Décision CG"
