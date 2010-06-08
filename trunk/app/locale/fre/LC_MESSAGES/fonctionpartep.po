@@ -26,7 +26,7 @@ msgid "Fonctionpartep::add"
 msgstr "Ajouter une fonction pour le participant"
 
 msgid "Fonctionspartseps::index"
-msgstr "Liste des fonctions pour le participants"
+msgstr "Liste des fonctions pour les participants"
 
 msgid "Fonctionpartep::delete"
 msgstr "Suppression d'une fonction pour le participant"
