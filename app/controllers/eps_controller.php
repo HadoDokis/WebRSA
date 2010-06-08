@@ -37,6 +37,7 @@
                 'Ep' => ClassRegistry::init( 'Ep' )->find( 'count' ),
                 'Fonctionpartep' => ClassRegistry::init( 'Fonctionpartep' )->find( 'count' ),
                 'Partep' => ClassRegistry::init( 'Partep' )->find( 'count' ),
+		'Seanceep' => ClassRegistry::init( 'Seanceep' )->find( 'count' ),
             );
             $this->set( compact( 'compteurs' ) );
         }

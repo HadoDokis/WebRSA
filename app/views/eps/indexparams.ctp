@@ -62,7 +62,7 @@
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'partseps_seanceseps', 'action' => 'index' ),
-                            ( ( $compteurs['Partep'] > 0 ) )
+                            ( ( $compteurs['Partep'] > 0 ) && ( $compteurs['Seanceep'] > 0 ) )
                         )
                     ),
                     array( 'class' => 'odd' ),
