@@ -13,7 +13,7 @@
 		<?php if( !empty( $themes[$theme] ) && ( $themes[$theme] != 'nontraite' ) ):?>
 			<?php $modelTheme = Inflector::classify( $theme );?>
 			<div id="<?php echo $theme;?>">
-				<h2 class="title"><?php echo __d( Inflector::underscore( $modelTheme ), Inflector::camelize( $theme ).'::index', true );?></h2><!-- FIXME -->
+				<h2 class="title"><?php echo __d( Inflector::underscore( $modelTheme ), Inflector::camelize( $theme ).'::ordre', true );?></h2><!-- FIXME -->
 				<?php
 					$i = 0;
 					$total = 0;

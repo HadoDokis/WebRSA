@@ -162,12 +162,12 @@ CREATE TABLE demandesreorient (
 * Résultats des scéances ep
 */
 
--- CREATE TABLE demandesreorient_seanceseps (
--- 	id								SERIAL NOT NULL PRIMARY KEY,
--- 	demandereorient_id				INTEGER NOT NULL REFERENCES demandesreorient(id),
--- 	seanceep_id						INTEGER NOT NULL REFERENCES seanceseps(id)
---
--- );
+CREATE TABLE demandesreorient_seanceseps (
+	id								SERIAL NOT NULL PRIMARY KEY,
+	demandereorient_id				INTEGER NOT NULL REFERENCES demandesreorient(id),
+	seanceep_id						INTEGER NOT NULL REFERENCES seanceseps(id)
+
+);
 
 CREATE TABLE decisionsreorient (
     id                              SERIAL NOT NULL PRIMARY KEY,
@@ -188,5 +188,6 @@ CREATE TABLE decisionsreorient (
 ALTER TABLE eps ADD COLUMN filtre_zone_geo BOOLEAN DEFAULT true;
 ALTER TABLE seanceseps RENAME COLUMN reorientation TO demandesreorient;
 DROP TYPE type_themeep;
+DROP TABLE demandesreorient_seanceseps;
 
 COMMIT;

@@ -45,7 +45,7 @@
 				'Ep.name',
 				'Structurereferente.lib_struc',
 				'Seanceep.dateseance' => array( 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 2, 'minYear' => date( 'Y' ) - 2 ),
-				'Seanceep.reorientation' => array( 'options' => $options ),
+				'Seanceep.demandesreorient' => array( 'options' => $options ),
 			),
 			array(
 				'actions' => array(

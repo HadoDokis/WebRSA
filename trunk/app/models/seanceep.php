@@ -11,7 +11,7 @@
                 'fields' => array(
                     'finaliseeep',
                     'finaliseecg',
-                    'reorientation',
+                    'demandesreorient',
                 )
             ),
             'Formattable'
