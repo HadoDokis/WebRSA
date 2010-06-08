@@ -21,6 +21,24 @@ msgstr ""
 ###############################################################################
 ### ENUM pour le bilan de la candidature
 ###############################################################################
+msgid "ActionscandidatsPersonne::index::empty"
+msgstr "Aucune fiche présente pour cette personne"
+
+msgid "ActionscandidatsPersonnes::add"
+msgstr "Ajout d'une fiche"
+
+msgid "ActionscandidatsPersonnes::edit"
+msgstr "Modification de la fiche"
+
+msgid "ActioncandidatPersonne::add"
+msgstr "Ajouter une fiche"
+
+msgid "ActioncandidatPersonne::edit"
+msgstr "Modifier la fiche"
+
+msgid "ActioncandidatPersonne::gedooo"
+msgstr "Imprimer la fiche"
+
 msgid "ENUM::BILANRETENU::RET"
 msgstr "Retenu(e)"
 

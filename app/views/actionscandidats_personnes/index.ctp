@@ -10,7 +10,7 @@
         echo $html->tag(
             'h1',
             $this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true )
-        )
+        );
     ?>
 
     <?php
