@@ -132,3 +132,7 @@ fieldset.partenaire.bilan div.radio {
 div.input.radio label, div.input.radio input {
 	width: auto;
 }
+
+td.error {
+    background: #fff2f2;
+}
