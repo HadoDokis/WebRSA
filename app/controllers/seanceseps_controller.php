@@ -11,8 +11,7 @@
 		*
 		*/
 
-		public $uses = array( 'Seanceep', 'Propositionnombredossiersep' );
-
+		public $uses = array( 'Seanceep', 'Propositionnombredossiersep', 'Typeorient', 'Structurereferente', 'Referent' );
 
 		/**
 		* @access public
@@ -44,7 +43,6 @@
 
 			$this->{$this->modelClass}->recursive = 0;
 			$this->Default->search(
-				$this->data,
 				array(
 					'Seanceep.dateseance' => 'BETWEEN'
 				)
@@ -124,6 +122,34 @@
 			}
 
 			$this->Default->view( $id );
+		}
+
+		/**
+		*
+		*/
+
+		public function equipe( $id = null ) {
+			$demandesreorient = $this->{$this->modelClass}->Demandereorient->find(
+				'all',
+				array(
+					'conditions' => array(
+						'Demandereorient.seanceep_id' => $id
+					),
+					'order' => array(
+						"{$this->{$this->modelClass}->Demandereorient->alias}.urgent DESC", // INFO: d'abord les urgents
+						"{$this->{$this->modelClass}->Demandereorient->alias}.created ASC"
+					)
+				)
+			);
+
+			$step = 'equipe';
+
+			$options = Set::merge( $this->{$this->modelClass}->enums(), $this->{$this->modelClass}->Demandereorient->enums(), $this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->enums() );
+			$options = Set::insert( $options, "Decisionreorient{$step}.nv_typeorient_id", $this->Typeorient->listOptions() );
+			$options = Set::insert( $options, "Decisionreorient{$step}.nv_structurereferente_id", $this->Structurereferente->list1Options() );
+			$options = Set::insert( $options, "Decisionreorient{$step}.nv_referent_id", $this->Referent->listOptions() );
+
+			$this->set( compact( 'demandesreorient', 'options', 'step' ) );
 		}
 
 		/**

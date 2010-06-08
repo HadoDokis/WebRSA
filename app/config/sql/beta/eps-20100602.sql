@@ -186,8 +186,12 @@ CREATE TABLE decisionsreorient (
 -- -----------------------------------------------------------------------------
 
 ALTER TABLE eps ADD COLUMN filtre_zone_geo BOOLEAN DEFAULT true;
+
 ALTER TABLE seanceseps RENAME COLUMN reorientation TO demandesreorient;
 DROP TYPE type_themeep;
 DROP TABLE demandesreorient_seanceseps;
+
+ALTER TABLE decisionsreorient ADD COLUMN demandereorient_id INTEGER DEFAULT NULL REFERENCES demandesreorient_seanceseps(id);
+ALTER TABLE decisionsreorient DROP COLUMN demandereorient_seanceep_id;
 
 COMMIT;
