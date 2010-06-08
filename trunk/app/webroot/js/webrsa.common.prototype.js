@@ -669,17 +669,24 @@ function make_treemenus_droits( absoluteBaseUrl, large ) {
     var dir = absoluteBaseUrl + 'img/icons';
     $$( '#tableEditDroits tr.niveau0 td.label' ).each( function ( elmtTd ) {
 		if( elmtTd.up( 'tr' ).next( 'tr' ).hasClassName('niveau1')) {
+			
 			if( large )
-			    var img = new Element( 'img', { 'src': dir + '/bullet_toggle_minus2.png', 'alt': 'Réduire', 'width': '12px' } );
+			    var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus2.png', 'alt': 'Étendre', 'width': '12px' } );
 			else
-			    var img = new Element( 'img', { 'src': dir + '/bullet_toggle_minus2.png', 'alt': 'Réduire' } );
+			    var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus2.png', 'alt': 'Étendre' } );
+			
+			var thisTr = $( elmtTd ).up( 'tr' );
+			var nextTr = $( thisTr ).next( 'tr' );
+			while( nextTr != undefined && Element.hasClassName( nextTr, 'niveau1' ) ) {
+				nextTr.hide();
+				nextTr = $( nextTr ).next( 'tr' );
+			}
 
 			// INFO: onclick -> return false est indispensable.
 			var link = img.wrap( 'a', { 'href': '#', 'class' : 'toggler', 'onclick' : 'return false;' } );
 
 			$( link ).observe( 'click', function( event ) {
-				var thisTr = $( this ).up( 'td' ).up( 'tr' );
-				var nextTr = $( thisTr ).next( 'tr' );
+				var nextTr = $( this ).up( 'td' ).up( 'tr' ).next( 'tr' );
 				
 				while( nextTr != undefined && Element.hasClassName( nextTr, 'niveau1' ) ) {
 					nextTr.toggle();
