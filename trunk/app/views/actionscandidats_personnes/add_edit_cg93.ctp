@@ -267,6 +267,7 @@
         <?php
             echo $default->subform(
                 array(
+                    'ActioncandidatPersonne.rendezvous_id' => array( 'type' => 'hidden' ),
                     'Rendezvous.id' => array( 'type' => 'hidden' ),
                     'Rendezvous.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
                     'Rendezvous.daterdv' => array( 'label' =>  'Rendez-vous fixé le ', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
