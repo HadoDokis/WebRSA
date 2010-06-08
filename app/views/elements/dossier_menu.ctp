@@ -255,8 +255,7 @@
                                                 <?php
                                                     echo $html->link(
                                                         'Mémo',
-                                                        '#'
-//                                                         array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $personne['id'] )
+                                                        array( 'controller' => 'memos', 'action' => 'index', $personne['id'] )
                                                     );
                                                 ?>
                                             </li>
