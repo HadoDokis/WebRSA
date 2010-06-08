@@ -556,10 +556,31 @@
         ?>
          <table class="cuiduree noborder">
             <tr>
-                <td class="dureehebdo noborder">Durée hebdomadaire de travail du salarié indiquée sur le contrat de travail</td>
-                <td class="dureehebdo noborder">
+                <?php
+                    $errors = array(
+                        'dureehebdosalarieheure' => Set::extract( $this->validationErrors, 'Cui.dureehebdosalarieheure' ),
+                        'dureehebdosalarieminute' => Set::extract( $this->validationErrors, 'Cui.dureehebdosalarieminute' ),
+                    );
+                    unset(
+                        $this->validationErrors['Cui']['dureehebdosalarieheure'],
+                        $this->validationErrors['Cui']['dureehebdosalarieminute']
+                    );
+                ?>
+                <td class="dureehebdo noborder<?php echo ( empty( $errors ) ? '' : ' error' );?>">Durée hebdomadaire de travail du salarié indiquée sur le contrat de travail</td>
+                <td class="dureehebdo noborder<?php echo ( empty( $errors ) ? '' : ' error' );?>">
                     <?php
                         echo $xform->input( 'Cui.dureehebdosalarieheure', array( 'div' => false, 'label' => false, 'type' => 'text' ) ).' H '.$xform->input( 'Cui.dureehebdosalarieminute', array( 'div' => false, 'label' => false, 'type' => 'text' ) );
+
+                        if( !empty( $errors ) ) {
+                            echo '<ul class="error">';
+                            if( !empty( $errors['dureehebdosalarieheure'] ) ) {
+                                echo '<li><strong>Heure:</strong> '.$errors['dureehebdosalarieheure'].'</li>';
+                            }
+                            if( !empty( $errors['dureehebdosalarieminute'] ) ) {
+                                echo '<li><strong>Minutes:</strong> '.$errors['dureehebdosalarieminute'].'</li>';
+                            }
+                            echo '</ul>';
+                        }
                     ?>
                  </td>
                  <td class="noborder"> 
@@ -577,12 +598,34 @@
                  </td>
             </tr>
             <tr>
-                <td class="dureehebdo noborder">Durée collective hebdomadaire de travail appliquée dans l'établissement</td>
-                <td class="dureehebdo noborder">
+                <?php
+                    $errors2 = array(
+                        'dureecollhebdoheure' => Set::extract( $this->validationErrors, 'Cui.dureecollhebdoheure' ),
+                        'dureecollhebdominute' => Set::extract( $this->validationErrors, 'Cui.dureecollhebdominute' ),
+                    );
+                    unset(
+                        $this->validationErrors['Cui']['dureecollhebdoheure'],
+                        $this->validationErrors['Cui']['dureecollhebdominute']
+                    );
+                ?>
+                <td class="dureehebdo noborder<?php echo ( empty( $errors2 ) ? '' : ' error' );?>">Durée collective hebdomadaire de travail appliquée dans l'établissement</td>
+                <td class="dureehebdo noborder<?php echo ( empty( $errors2 ) ? '' : ' error' );?>">
                     <?php
                         echo $xform->input( 'Cui.dureecollhebdoheure', array( 'div' => false, 'label' => false, 'type' => 'text' ) ).' H '.$xform->input( 'Cui.dureecollhebdominute', array( 'div' => false, 'label' => false, 'type' => 'text' ) );
+
+                        if( !empty( $errors2 ) ) {
+                            echo '<ul class="error">';
+                            if( !empty( $errors2['dureecollhebdoheure'] ) ) {
+                                echo '<li><strong>Heure:</strong> '.$errors2['dureecollhebdoheure'].'</li>';
+                            }
+                            if( !empty( $errors2['dureecollhebdominute'] ) ) {
+                                echo '<li><strong>Minutes:</strong> '.$errors2['dureecollhebdominute'].'</li>';
+                            }
+                            echo '</ul>';
+                        }
                     ?>
                 </td>
+            </tr>
         </table>
 
         <?php
@@ -754,7 +797,7 @@
                     <?php
                         echo $default->subform(
                             array(
-                                'Cui.datedebprisecharge' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 )
+                                'Cui.datedebprisecharge' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => false )
                             ),
                             array(
                                 'domain' => $domain,
@@ -768,7 +811,7 @@
                     <?php
                         echo $default->subform(
                             array(
-                                'Cui.datefinprisecharge' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 )
+                                'Cui.datefinprisecharge' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => false )
                             ),
                             array(
                                 'domain' => $domain,
@@ -781,10 +824,31 @@
         </table>
         <table class="cuiduree noborder">
             <tr>
-                <td class="dureehebdo noborder">Durée hebdomadaire retenue pour le calcul de l'aide</td>
-                <td class="dureehebdo noborder">
+                <?php
+                    $errors = array(
+                        'dureehebdoretenueheure' => Set::extract( $this->validationErrors, 'Cui.dureehebdoretenueheure' ),
+                        'dureehebdoretenueminute' => Set::extract( $this->validationErrors, 'Cui.dureehebdoretenueminute' ),
+                    );
+                    unset(
+                        $this->validationErrors['Cui']['dureehebdoretenueheure'],
+                        $this->validationErrors['Cui']['dureehebdoretenueminute']
+                    );
+                ?>
+                <td class="dureehebdo noborder<?php echo ( empty( $errors ) ? '' : ' error' );?>">Durée hebdomadaire retenue pour le calcul de l'aide</td>
+                <td class="dureehebdo noborder<?php echo ( empty( $errors ) ? '' : ' error' );?>">
                     <?php
                         echo $xform->input( 'Cui.dureehebdoretenueheure', array( 'div' => false, 'label' => false, 'type' => 'text' ) ).' H '.$xform->input( 'Cui.dureehebdoretenueminute', array( 'div' => false, 'label' => false, 'type' => 'text' ) );
+
+                        if( !empty( $errors ) ) {
+                            echo '<ul class="error">';
+                            if( !empty( $errors['dureehebdoretenueheure'] ) ) {
+                                echo '<li><strong>Heure:</strong> '.$errors['dureehebdoretenueheure'].'</li>';
+                            }
+                            if( !empty( $errors['dureehebdoretenueminute'] ) ) {
+                                echo '<li><strong>Minutes:</strong> '.$errors['dureehebdoretenueminute'].'</li>';
+                            }
+                            echo '</ul>';
+                        }
                     ?>
                 </td>
                 <td class="noborder">
@@ -809,7 +873,7 @@
                     <?php
                         echo $default->subform(
                             array(
-                                'Cui.tauxfixe' => array( 'maxlength' => 3 )
+                                'Cui.tauxfixe'
                             ),
                             array(
                                 'domain' => $domain,
@@ -817,17 +881,17 @@
                             )
                         );
 
-                        echo $html->tag( 'hr');
+                        echo $html->tag( 'hr /');
 
                         echo $html->tag( 'p','Dans le cas d\'un contrat prescrit par le Conseil Général ou pour son compte (sur la base d\'une convention d\'objectifs et de moyens)', array( 'class' => 'aere' ) );
                         echo $default->subform(
                             array(
-                                'Cui.tauxprisencharge' => array( 'maxlength' => 3 ),
+                                'Cui.tauxprisencharge',
                                 'Cui.financementexclusif' => array( 'type' => 'radio', 'legend' => __d( 'cui', 'Cui.financementexclusif', true ), 'options' => $options['financementexclusif'] ),
-                                'Cui.tauxfinancementexclusif' => array( 'maxlength' => 3 ),
+                                'Cui.tauxfinancementexclusif',
                                 'Cui.orgapayeur' => array(  'type' => 'radio', 'legend' => __d( 'cui', 'Cui.orgapayeur', true ), 'options' => $options['orgapayeur'] ),
-                                'Cui.organisme' => array( 'maxlength' => 3 ),
-                                'Cui.adresseorganisme' => array( 'maxlength' => 3 ),
+                                'Cui.organisme',
+                                'Cui.adresseorganisme',
                             ),
                             array(
                                 'domain' => $domain,

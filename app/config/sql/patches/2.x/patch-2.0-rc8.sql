@@ -416,4 +416,16 @@ CREATE TABLE traitementspdos (
 );
 COMMENT ON TABLE traitementspdos IS 'Traitements des PDOs';
 
+ALTER TABLE cuis ALTER COLUMN typevoielieucontrat DROP NOT NULL;
+ALTER TABLE cuis ALTER COLUMN typevoielieucontrat SET DEFAULT NULL;
+
+ALTER TABLE cuis ALTER COLUMN nomvoielieucontrat DROP NOT NULL;
+ALTER TABLE cuis ALTER COLUMN nomvoielieucontrat SET DEFAULT NULL;
+
+ALTER TABLE cuis ALTER COLUMN codepostallieucontrat DROP NOT NULL;
+ALTER TABLE cuis ALTER COLUMN codepostallieucontrat SET DEFAULT NULL;
+
+ALTER TABLE cuis ALTER COLUMN villelieucontrat DROP NOT NULL;
+ALTER TABLE cuis ALTER COLUMN villelieucontrat SET DEFAULT NULL;
+
 COMMIT;
