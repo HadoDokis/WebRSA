@@ -1,42 +1,50 @@
 <?php
 	$themes = array(
-		'reorientation' => Set::classicExtract( $seanceep, 'Seanceep.reorientation' )
+		'demandesreorient' => Set::classicExtract( $seanceep, 'Seanceep.demandesreorient' )
 	);
 ?>
 
+<h1>Ordre du jour</h1>
+
+<?php echo $xform->create();?>
+
 <div id="tabbedWrapper" class="tabs">
-	<?php if( !empty( $themes['reorientation'] ) && ( $themes['reorientation'] != 'nontraite' ) ):?>
-		<div id="demandesreorient">
-			<h2 class="title">Demandes de réorientation</h2>
-			<?php
-				$i = 0;
-				$total = 0;
-				$cells = array();
+	<?php foreach( array_keys( $themes ) as $theme ):?>
+		<?php if( !empty( $themes[$theme] ) && ( $themes[$theme] != 'nontraite' ) ):?>
+			<?php $modelTheme = Inflector::classify( $theme );?>
+			<div id="<?php echo $theme;?>">
+				<h2 class="title"><?php echo __d( Inflector::underscore( $modelTheme ), Inflector::camelize( $theme ).'::index', true );?></h2><!-- FIXME -->
+				<?php
+					$i = 0;
+					$total = 0;
+					$cells = array();
 
-				echo '<h1>&nbsp;</h1>'.$xform->create();
-				foreach( $this->data['Demandereorient'] as $i => $demandsreorient ) {
-					$cells[] = array(
-						$demandsreorient['locaadr'],
-						$xform->input( "Demandereorient.{$i}.numcomptt", array( 'type' => 'hidden'/*, 'value' => $demandsreorient['Adresse']['numcomptt']*/ ) ).
-						$xform->input( "Demandereorient.{$i}.limit", array( 'type' => 'text', /*'value' => $demandsreorient['Demandereorient']['count'],*/ 'div' => false, 'label' => false ) )
+					foreach( $this->data[$modelTheme] as $i => $dossier ) {
+						$cells[] = array(
+							$dossier['locaadr'],
+							$xform->input( "{$modelTheme}.{$i}.numcomptt", array( 'type' => 'hidden' ) ).
+							$xform->input( "{$modelTheme}.{$i}.limit", array( 'type' => 'text', 'div' => false, 'label' => false ) )
+						);
+						$i++;
+						$total += $dossier['limit'];
+					}
+
+					echo $html->tag(
+						'table',
+						$html->tableCells( $cells )."<tr><th>Total</th><td id=\"cellTotal{$modelTheme}\">{$total}</td></tr>",
+						array( 'id' => "table{$modelTheme}" )
 					);
-					$i++;
-					$total += $demandsreorient['limit'];
-				}
-
-				echo $html->tag(
-					'table',
-					$html->tableCells( $cells )."<tr><th>Total</th><td id=\"cellTotalDemandereorient\">{$total}</td></tr>",
-					array( 'id' => "tableDemandereorient" )
-				);
-				echo $xform->input( "Seanceep.nombretotal", array( 'type' => 'text', 'value' => $total, 'id' => 'SeanceepNombretotalDemandereorient' ) );
-
-				echo $xform->submit( 'Enregistrer' );
-				echo $xform->end();
-			?>
-		</div>
-	<?php endif;?>
+					// FIXME
+					echo $xform->input( "Seanceep.nombretotal", array( 'type' => 'text', 'value' => $total, 'id' => "SeanceepNombretotal{$modelTheme}" ) );
+				?>
+			</div>
+		<?php endif;?>
+	<?php endforeach;?>
 </div>
+<?php
+	echo $xform->submit( 'Enregistrer' );
+	echo $xform->end();
+?>
 
 <script type="text/javascript">
 	var originalTotal = new Array();
@@ -189,6 +197,18 @@
 	}
 </script>
 
+<?php
+    echo $javascript->link( 'prototype.livepipe.js' );
+    echo $javascript->link( 'prototype.tabs.js' );
+?>
+
 <script type="text/javascript">
-	preparePropositions( 'Demandereorient' );
+	<?php foreach( array_keys( $themes ) as $theme ):?>
+		<?php if( !empty( $themes[$theme] ) && ( $themes[$theme] != 'nontraite' ) ):?>
+			<?php $modelTheme = Inflector::classify( $theme );?>
+			preparePropositions( '<?php echo $modelTheme;?>' );
+		<?php endif;?>
+	<?php endforeach;?>
+
+	makeTabbed( 'tabbedWrapper', 2 );
 </script>

@@ -145,7 +145,7 @@ CREATE TABLE demandesreorient (
 	dateecheance					DATE DEFAULT NULL,
 	motivation						TEXT DEFAULT NULL,
 	-- FIXME: avec les réexamens
-	seanceep_id					INTEGER DEFAULT NULL REFERENCES seanceseps(id),
+	seanceep_id						INTEGER DEFAULT NULL REFERENCES seanceseps(id),
 	nv_orientstruct_id				INTEGER DEFAULT NULL REFERENCES orientsstructs(id),
 	vx_demandereorient_id			INTEGER DEFAULT NULL REFERENCES demandesreorient(id),
 	created							TIMESTAMP WITHOUT TIME ZONE,
@@ -162,12 +162,12 @@ CREATE TABLE demandesreorient (
 * Résultats des scéances ep
 */
 
-CREATE TABLE demandesreorient_seanceseps (
-	id								SERIAL NOT NULL PRIMARY KEY,
-	demandereorient_id				INTEGER NOT NULL REFERENCES demandesreorient(id),
-	seanceep_id					INTEGER NOT NULL REFERENCES seanceseps(id)
-
-);
+-- CREATE TABLE demandesreorient_seanceseps (
+-- 	id								SERIAL NOT NULL PRIMARY KEY,
+-- 	demandereorient_id				INTEGER NOT NULL REFERENCES demandesreorient(id),
+-- 	seanceep_id						INTEGER NOT NULL REFERENCES seanceseps(id)
+--
+-- );
 
 CREATE TABLE decisionsreorient (
     id                              SERIAL NOT NULL PRIMARY KEY,
@@ -184,5 +184,9 @@ CREATE TABLE decisionsreorient (
 );
 
 -- -----------------------------------------------------------------------------
+
 ALTER TABLE eps ADD COLUMN filtre_zone_geo BOOLEAN DEFAULT true;
+ALTER TABLE seanceseps RENAME COLUMN reorientation TO demandesreorient;
+DROP TYPE type_themeep;
+
 COMMIT;
