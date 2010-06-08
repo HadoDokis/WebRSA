@@ -53,6 +53,7 @@
 					'Seanceep.edit',
 // 					'Seanceep.delete',
 					'Seanceep.ordre',
+					'Seanceep.equipe',
 				)
 			)
 		);

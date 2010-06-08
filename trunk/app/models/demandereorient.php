@@ -62,6 +62,23 @@
 			),
 		);
 
+		var $hasOne = array(
+			'Decisionreorientequipe' => array(
+				'className' => 'Decisionreorient',
+				'type' => 'LEFT OUTER',
+				'conditions' => array(
+					'Decisionreorientequipe.etape' => 'ep'
+				)
+			),
+			'Decisionreorientconseil' => array(
+				'className' => 'Decisionreorient',
+				'type' => 'LEFT OUTER',
+				'conditions' => array(
+					'Decisionreorientconseil.etape' => 'cg'
+				)
+			),
+		);
+
 		/*public $virtualFields = array(
 			'statut' => array(
 				'type'		=> 'integer',

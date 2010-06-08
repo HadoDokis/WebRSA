@@ -4,7 +4,12 @@
 		public $name = 'Decisionreorient';
 
 		public $actsAs = array(
-			'Autovalidate'
+			'Autovalidate',
+			'Enumerable' => array(
+				'fields' => array(
+					'decision'
+				)
+			),
 		);
 
 // 		public $belongsTo = array(
