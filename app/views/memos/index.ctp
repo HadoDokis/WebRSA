@@ -1,4 +1,4 @@
-<?php  $this->pageTitle = 'Mémo concernant la personne';?>
+<?php  $this->pageTitle = 'Mémos concernant la personne';?>
 <?php  echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id) );?>
 
 <div class="with_treemenu">
@@ -9,7 +9,8 @@
                 $memos,
                 array(
                     'Memo.name',
-                    'Memo.created'
+                    'Memo.created',
+                    'Memo.modified'
                 ),
                 array(
                     'actions' => array(
