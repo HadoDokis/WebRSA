@@ -557,6 +557,7 @@
          <table class="cuiduree noborder">
             <tr>
                 <?php
+                    $nbErrors = count( $this->validationErrors );
                     $errors = array(
                         'dureehebdosalarieheure' => Set::extract( $this->validationErrors, 'Cui.dureehebdosalarieheure' ),
                         'dureehebdosalarieminute' => Set::extract( $this->validationErrors, 'Cui.dureehebdosalarieminute' ),
@@ -565,9 +566,10 @@
                         $this->validationErrors['Cui']['dureehebdosalarieheure'],
                         $this->validationErrors['Cui']['dureehebdosalarieminute']
                     );
+
                 ?>
-                <td class="dureehebdo noborder<?php echo ( empty( $errors ) ? '' : ' error' );?>">Durée hebdomadaire de travail du salarié indiquée sur le contrat de travail</td>
-                <td class="dureehebdo noborder<?php echo ( empty( $errors ) ? '' : ' error' );?>">
+                <td class="dureehebdo noborder<?php echo ( ( $nbErrors == 0 ) ? '' : ' error' );?>">Durée hebdomadaire de travail du salarié indiquée sur le contrat de travail</td>
+                <td class="dureehebdo noborder<?php echo ( ( $nbErrors == 0 ) ? '' : ' error' );?>">
                     <?php
                         echo $xform->input( 'Cui.dureehebdosalarieheure', array( 'div' => false, 'label' => false, 'type' => 'text' ) ).' H '.$xform->input( 'Cui.dureehebdosalarieminute', array( 'div' => false, 'label' => false, 'type' => 'text' ) );
 
@@ -599,6 +601,7 @@
             </tr>
             <tr>
                 <?php
+                    $nbErrors2 = count( $this->validationErrors );
                     $errors2 = array(
                         'dureecollhebdoheure' => Set::extract( $this->validationErrors, 'Cui.dureecollhebdoheure' ),
                         'dureecollhebdominute' => Set::extract( $this->validationErrors, 'Cui.dureecollhebdominute' ),
@@ -608,8 +611,8 @@
                         $this->validationErrors['Cui']['dureecollhebdominute']
                     );
                 ?>
-                <td class="dureehebdo noborder<?php echo ( empty( $errors2 ) ? '' : ' error' );?>">Durée collective hebdomadaire de travail appliquée dans l'établissement</td>
-                <td class="dureehebdo noborder<?php echo ( empty( $errors2 ) ? '' : ' error' );?>">
+                <td class="dureehebdo noborder<?php echo ( ( $nbErrors2 == 0 ) ? '' : ' error' );?>">Durée collective hebdomadaire de travail appliquée dans l'établissement</td>
+                <td class="dureehebdo noborder<?php echo ( ( $nbErrors2 == 0 ) ? '' : ' error' );?>">
                     <?php
                         echo $xform->input( 'Cui.dureecollhebdoheure', array( 'div' => false, 'label' => false, 'type' => 'text' ) ).' H '.$xform->input( 'Cui.dureecollhebdominute', array( 'div' => false, 'label' => false, 'type' => 'text' ) );
 
@@ -825,6 +828,7 @@
         <table class="cuiduree noborder">
             <tr>
                 <?php
+                    $nbErrors3 = count($this->validationErrors);
                     $errors = array(
                         'dureehebdoretenueheure' => Set::extract( $this->validationErrors, 'Cui.dureehebdoretenueheure' ),
                         'dureehebdoretenueminute' => Set::extract( $this->validationErrors, 'Cui.dureehebdoretenueminute' ),
@@ -834,8 +838,8 @@
                         $this->validationErrors['Cui']['dureehebdoretenueminute']
                     );
                 ?>
-                <td class="dureehebdo noborder<?php echo ( empty( $errors ) ? '' : ' error' );?>">Durée hebdomadaire retenue pour le calcul de l'aide</td>
-                <td class="dureehebdo noborder<?php echo ( empty( $errors ) ? '' : ' error' );?>">
+                <td class="dureehebdo noborder<?php echo ( ( $nbErrors3 == 0 ) ? '' : ' error' );?>">Durée hebdomadaire retenue pour le calcul de l'aide</td>
+                <td class="dureehebdo noborder<?php echo ( ( $nbErrors3 == 0 ) ? '' : ' error' );?>">
                     <?php
                         echo $xform->input( 'Cui.dureehebdoretenueheure', array( 'div' => false, 'label' => false, 'type' => 'text' ) ).' H '.$xform->input( 'Cui.dureehebdoretenueminute', array( 'div' => false, 'label' => false, 'type' => 'text' ) );
 
