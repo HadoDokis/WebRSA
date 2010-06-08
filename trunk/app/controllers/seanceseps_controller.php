@@ -1,13 +1,27 @@
 <?php
 	class SeancesepsController extends AppController
 	{
+		/**
+		*
+		*/
+
 		public $name = 'Seanceseps';
+
+		/**
+		*
+		*/
+
+		public $uses = array( 'Seanceep', 'Propositionnombredossiersep' );
+
 
 		/**
 		* @access public
 		*/
 
-		public $components = array( 'Default' );
+		public $components = array(
+			'Default',
+			'Prg' => array( 'actions' => array( 'index' ) )
+		);
 
         /**
         *
@@ -21,37 +35,19 @@
             return $options;
         }
 
-        /**
-        *
-        */
-
-        public function indexparams() {
-            $options = $this->_options();
-            $this->set( 'options', $options );
-            $this->set(
-                Inflector::tableize( $this->modelClass ),
-                $this->paginate( $this->modelClass )
-            );
-            $this->{$this->modelClass}->recursive = 0;
-            $this->Default->search(
-                $this->data
-            );
-        }
-
 		/**
 		*
 		*/
 
 		public function index() {
-            $options = $this->_options();
-            $this->set( 'options', $options );
-            $this->set(
-                Inflector::tableize( $this->modelClass ),
-                $this->paginate( $this->modelClass )
-            );
+            $this->set( 'options', $this->_options() );
+
 			$this->{$this->modelClass}->recursive = 0;
 			$this->Default->search(
-				$this->data
+				$this->data,
+				array(
+					'Seanceep.dateseance' => 'BETWEEN'
+				)
 			);
 		}
 
@@ -80,6 +76,54 @@
 		public function edit( $id = null ) {
             $args = func_get_args();
             call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
+
+		/**
+		*
+		*/
+
+		public function ordre( $id = null ) {
+			$this->{$this->modelClass}->recursive = -1;
+
+			if( !empty( $this->data ) ) {
+				$this->{$this->modelClass}->begin();
+				if( $success = $this->Propositionnombredossiersep->saveAll( $this->data['Demandereorient'], array( 'validate' => 'only' ) ) ) {
+					$this->{$this->modelClass}->Demandereorient->updateAll(
+						array( 'Demandereorient.seanceep_id' => NULL ),
+						array(
+							'Demandereorient.seanceep_id' => $id
+						)
+					);
+
+					foreach( $this->data['Demandereorient'] as $zonegeographique ) {
+						$success = $this->{$this->modelClass}->Demandereorient->marquerAtraiterParZonegeographique(
+							$id,
+							$zonegeographique['numcomptt'],
+							$zonegeographique['limit']
+						) && $success;
+					}
+				}
+
+				if( $success ) {
+					$this->{$this->modelClass}->commit();
+					$this->Session->setFlash( __( 'Save->success', true ), 'flash/success' );
+				}
+				else {
+					$this->{$this->modelClass}->rollback();
+					$this->Session->setFlash( __( 'Save->error', true ), 'flash/error' );
+				}
+			}
+
+			$demandesreorient = $this->{$this->modelClass}->Demandereorient->countAtraiterParZonegeographique( $id );
+			foreach( $demandesreorient as $i => $demandereorient ) {
+				$this->data['Demandereorient'][$i] = array(
+					'limit' => $demandereorient['Demandereorient']['limit'],
+					'numcomptt' => $demandereorient['Adresse']['numcomptt'],
+					'locaadr' => $demandereorient['Adresse']['locaadr'],
+				);
+			}
+
+			$this->Default->view( $id );
 		}
 
 		/**
