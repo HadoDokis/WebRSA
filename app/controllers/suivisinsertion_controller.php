@@ -3,7 +3,7 @@
     {
 
         var $name = 'Suivisinsertion';
-        var $uses = array( 'Foyer', 'Dossier', 'Suiviinstruction', 'Contratinsertion', 'Orientstruct', 'Structurereferente', 'Typocontrat', 'Typeorient', 'Actioninsertion', 'Option', 'Rendezvous', 'Aidedirecte' );
+        var $uses = array( 'Foyer', 'Dossier', 'Suiviinstruction', 'Contratinsertion', 'Orientstruct', 'Structurereferente', 'Typocontrat', 'Typeorient', 'Actioninsertion', 'Option', 'Rendezvous', 'Aidedirecte', 'Cui' );
 //         var $helpers = array( 'Locale', 'Csv' );
 
         /** ********************************************************************
@@ -69,6 +69,17 @@
                 );
                 $personnesFoyer[$index]['Contratinsertion'] = $tContratinsertion['Contratinsertion'];
 
+
+                // Contrat insertion lié à la personne
+                $tCui = $this->Cui->find(
+                    'first',
+                    array(
+                        'conditions' => array( 'Cui.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+                        'recursive' => -1,
+                        'order' => array( 'Cui.datecontrat DESC' )
+                    )
+                );
+                $personnesFoyer[$index]['Cui'] = $tCui['Cui'];
 
                 // Actions insertions engagées par la personne
 //                 $this->Actioninsertion->unbindModelAll();

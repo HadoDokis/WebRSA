@@ -159,16 +159,36 @@
         </table>
 
         <!-- Etape 4 : Affichage des derniers enregistrements des contrats engagements -->
-        <h2>Etape 4: Enregistrement Contrat d'Engagement Réciproque</h2>
+        <h2>Etape 4: Enregistrement Contrats ( CER / CUI )</h2>
         <table>
             <thead>
+                <tr>
+                    <th  class="entete" colspan="8">Contrat d'Engagement Réciproque</th>
+                    <th></th>
+                    <th  class="entete" colspan="8">Contrat Unique d'Insertion</th>
+                </tr>
                 <tr class="odd">
+                    <th colspan="4">Parcours Demandeur</th>
+                    <th colspan="4">Parcours Conjoint</th>
+
+                    <th></th>
+
                     <th colspan="4">Parcours Demandeur</th>
                     <th colspan="4">Parcours Conjoint</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="odd">
+                    <th>Date de signature</th>
+                    <th colspan="2">Réalisé</th>
+                    <th class="action">Action</th>
+
+                    <th>Date de signature</th>
+                    <th colspan="2">Réalisé</th>
+                    <th class="action">Action</th>
+
+                    <th></th>
+
                     <th>Date de signature</th>
                     <th colspan="2">Réalisé</th>
                     <th class="action">Action</th>
@@ -201,21 +221,64 @@
                         }
                         ?>
                     </td>
+
+                    <td></td>
+
+                    <!-- CUI -->
+                    <td><?php echo date_short( Set::extract( 'DEM.Cui.datecontrat', $details ) );?></td>
+                    <td colspan="2"><?php echo $html->boolean( !empty( $details['DEM']['Cui']['datecontrat'] ) );?></td>
+                    <td><?php
+                        if( !empty( $details['DEM']['Cui']['datecontrat'] ) ){
+                            echo $html->viewLink(
+                                'Voir le contrat',
+                                array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
+                            );
+                        }
+                        ?>
+                    </td>
+
+                    <td><?php echo date_short( Set::extract( 'CJT.Cui.datecontrat', $details ) );?></td>
+                    <td colspan="2" ><?php echo $html->boolean( !empty( $details['CJT']['Cui']['datecontrat'] ) );?></td>
+                    <td><?php
+                        if( !empty( $details['CJT']['Cui']['datecontrat'] ) ){
+                            echo $html->viewLink(
+                                'Voir le contrat',
+                                array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
+                            );
+                        }
+                        ?>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
-        <!-- Etape 5 : Affichage des validations des contrats d'Engagement -->
-        <h2>Etape 5: Validation Contrat d'Engagement Réciproque</h2>
+        <!-- Etape 5 : Affichage des validations des contrats d'd'Engagement -->
+        <h2>Etape 5: Validation Contrats ( CER / CUI )</h2>
         <table>
             <thead>
+                <tr>
+                    <th  class="entete" colspan="8">Contrat d'Engagement Réciproque</th>
+                    <th></th>
+                    <th  class="entete" colspan="8">Contrat Unique d'Insertion</th>
+                </tr>
                 <tr class="odd">
+                    <th colspan="4">Parcours Demandeur</th>
+                    <th colspan="4">Parcours Conjoint</th>
+                    <th></th>
                     <th colspan="4">Parcours Demandeur</th>
                     <th colspan="4">Parcours Conjoint</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="odd">
+                    <th>Date de validation</th>
+                    <th colspan="2">Réalisé</th>
+                    <th class="action">Action</th>
+
+                    <th>Date de validation</th>
+                    <th colspan="2">Réalisé</th>
+                    <th class="action">Action</th>
+                    <th></th>
                     <th>Date de validation</th>
                     <th colspan="2">Réalisé</th>
                     <th class="action">Action</th>
@@ -244,6 +307,30 @@
                             echo $html->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
+                            );
+                        }
+                        ?>
+                    </td>
+                    <td></td>
+                    <td><?php echo date_short( Set::extract( 'DEM.Cui.datevalidation_ci', $details ) );?></td>
+                    <td colspan="2"><?php echo $html->boolean( !empty( $details['DEM']['Cui']['datevalidation_ci'] ) );?></td>
+                    <td><?php
+                        if( !empty( $details['DEM']['Cui']['datevalidation_ci'] ) ){
+                            echo $html->viewLink(
+                                'Voir le contrat',
+                                array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
+                            );
+                        }
+                        ?>
+                    </td>
+
+                    <td><?php echo date_short( Set::extract( 'CJT.Cui.datevalidation_ci', $details ) );?></td>
+                    <td colspan="2" ><?php echo $html->boolean( !empty( $details['CJT']['Cui']['datevalidation_ci'] ) );?></td>
+                    <td><?php
+                        if( !empty( $details['CJT']['Cui']['datevalidation_ci'] ) ){
+                            echo $html->viewLink(
+                                'Voir le contrat',
+                                array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
                             );
                         }
                         ?>
@@ -303,16 +390,36 @@
         </table>
 
         <!-- Etape 7 : Affichage des bilans de fin de Contrat d'insertion -->
-        <h2>Etape 7: Bilan de fin de Contrat d'Engagement Réciproque</h2>
+        <h2>Etape 7: Bilan de fin de Contrats ( CER / CUI )</h2>
         <table>
             <thead>
+                <tr>
+                    <th  class="entete" colspan="8">Contrat d'Engagement Réciproque</th>
+                    <th></th>
+                    <th  class="entete" colspan="8">Contrat Unique d'Insertion</th>
+                </tr>
                 <tr class="odd">
+                    <th colspan="4">Parcours Demandeur</th>
+                    <th colspan="4">Parcours Conjoint</th>
+                    <th></th>
                     <th colspan="4">Parcours Demandeur</th>
                     <th colspan="4">Parcours Conjoint</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="odd">
+                    <th>Date bilan</th>
+                    <th>Bilan</th>
+                    <th>Réalisé</th>
+                    <th class="action">Action</th>
+
+                    <th>Date bilan</th>
+                    <th>Bilan</th>
+                    <th>Réalisé</th>
+                    <th class="action">Action</th>
+
+                    <th></th>
+
                     <th>Date bilan</th>
                     <th>Bilan</th>
                     <th>Réalisé</th>
@@ -345,6 +452,34 @@
                             echo $html->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
+                            );
+                        }
+                        ?>
+                    </td>
+                    
+                    <td></td>
+                    
+                    <td><?php echo date_short( Set::extract( 'DEM.Cui.df_ci', $details ) );?></td>
+                    <td><?php echo 'Non défini'?></td>
+                    <td><?php echo $html->boolean( !empty( $details['DEM']['Cui']['df_ci'] ) );?></td>
+                    <td><?php
+                        if( !empty( $details['DEM']['Cui']['df_ci'] ) ){
+                            echo $html->viewLink(
+                                'Voir le contrat',
+                                array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
+                            );
+                        }
+                        ?>
+                    </td>
+
+                    <td><?php echo date_short( Set::extract( 'CJT.Cui.df_ci', $details ) );?></td>
+                    <td><?php echo 'Non défini'?></td>
+                    <td><?php echo $html->boolean( !empty( $details['CJT']['Cui']['df_ci'] ) );?></td>
+                    <td><?php
+                        if( !empty( $details['CJT']['Cui']['df_ci'] ) ){
+                            echo $html->viewLink(
+                                'Voir le contrat',
+                                array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
                             );
                         }
                         ?>

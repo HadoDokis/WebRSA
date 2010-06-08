@@ -136,3 +136,13 @@ div.input.radio label, div.input.radio input {
 td.error {
     background: #fff2f2;
 }
+
+/*********************************************************************/
+
+th.entete, td.entete {
+    background: #fff2f2;
+    color: black;
+}
+/*tbody tr th.entete{
+    background: red;
+}*/
