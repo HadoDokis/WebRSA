@@ -82,11 +82,11 @@
             array(
                 'VxTypeorient.lib_type_orient',
                 'VxStructurereferente.lib_struc',
-                'VxReferent.nom_complet' => array( 'domain' => 'referent' ), // FIXME
+                'VxReferent.nom_complet',
 //                 'Motifdemreorient.name',
 //                 'Demandereorient.urgent' => array( 'type' => 'boolean' ),
                 'Demandereorient.created',
-                'Ep.name',
+                'Ep.name' => array( 'domain' => 'ep' ),
                 'NvOrientstruct.id',
             ),
             array(
@@ -96,7 +96,8 @@
                     'Demandereorient.delete',
                 ),
                 'add' => array( 'Demandereorient.add' => $this->params['pass'][0] ),
-                'options' => $options
+                'options' => $options,
+                'domain' => 'demandereorient'
             )
         );
     ?>
