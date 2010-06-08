@@ -22,7 +22,10 @@ msgid "Memo.name"
 msgstr "Zone de commentaire"
 
 msgid "Memo.created"
-msgstr "Date du commentaire"
+msgstr "Date d'enregistrement du mémo"
+
+msgid "Memo.modified"
+msgstr "Date de modification du mémo"
 
 msgid "Memo::index::empty"
 msgstr "Aucun mémo présent pour cette personne"
