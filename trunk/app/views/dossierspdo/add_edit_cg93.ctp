@@ -85,7 +85,7 @@
                     </td>
                     <td class="noborder">
                         <?php
-                            echo $xform->input( 'Statutdecisiondo.Statutdecisiondo', array( 'type' => 'select', 'label' => 'Statut de la PDO', 'multiple' => 'checkbox' , 'options' => $statutdecisionlist ) );
+                            echo $xform->input( 'Statutdecisiondo.Statutdecisiondo', array( 'type' => 'select', 'label' => 'Thème de la PDO', 'multiple' => 'checkbox' , 'options' => $statutdecisionlist ) );
                         ?>
                     </td>
                 </tr>
