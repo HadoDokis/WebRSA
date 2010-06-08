@@ -47,7 +47,13 @@
         ?>
     } );
 </script>
-
+<!--/************************************************************************/ -->
+<?php echo $javascript->link( 'dependantselect.js' ); ?>
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        dependantSelect( 'RendezvousReferentId', 'RendezvousStructurereferenteId' );
+    });
+</script>
 <div class="with_treemenu">
     <?php
         echo $html->tag(
@@ -157,7 +163,7 @@
                     'ActioncandidatPersonne.naturemobile' => array( 'label' => 'Nature de la mobilité', 'empty' => true ),
                     'ActioncandidatPersonne.typemobile'=> array( 'label' => 'Type de mobilité ' ),
                     'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'radio' , 'legend' => 'Rendez-vous', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
-//                     'ActioncandidatPersonne.daterdvpartenaire' => array( 'dateFormat' => 'DMY', 'empty' => true ),
+                    
                 ),
                 array(
                     'domain' => $domain,
@@ -167,6 +173,7 @@
 
             echo $default->subform(
                 array(
+                    'ActioncandidatPersonne.rendezvous_id' => array( 'type' => 'hidden' ),
                     'Rendezvous.id' => array( 'type' => 'hidden' ),
                     'Rendezvous.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
                     'Rendezvous.daterdv' => array( 'label' =>  'Rendez-vous fixé le ', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),

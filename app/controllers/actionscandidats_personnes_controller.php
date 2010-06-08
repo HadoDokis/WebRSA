@@ -332,10 +332,25 @@
 
             if( !empty( $this->data ) ){
 
+//                 $this->data['ActioncandidatPersonne']['rendezvous_id'] = $this->data['Rendezvous']['id'];
                 ///Récupération des Dsps et sauvegarde
                 $this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) );
+
                 ///Récupération des RDVs et sauvegarde
-                $this->ActioncandidatPersonne->Personne->Rendezvous->saveAll( $this->data, array( 'validate' => 'only' ) );
+//                 $this->ActioncandidatPersonne->Personne->Rendezvous->unbindModelAll();
+//                 $rdv = $this->ActioncandidatPersonne->Personne->Rendezvous->findByPersonneId( $personne_id, null, null, 1 );
+//                 $rdvData = Set::filter( $rdv['Rendezvous'] );
+//                 if( empty( $rdv ) && !empty( $rdvData )  ){
+//                     $rdv = array(
+//                         'Rendezvous' => array(
+//                             'personne_id' => $personne_id,
+//                             'structurereferente_id' => Set::classicExtract( $this->data, 'Rendezvous.structurereferente_id' )
+//                         )
+//                     );
+// 
+// //                     $this->ActioncandidatPersonne->Personne->Rendezvous->saveAll( $this->data, array( 'validate' => 'only' ) );
+//                 }
+
 
                 if( $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 
@@ -344,9 +359,13 @@
                     $this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 
                     ///Récupération des RDVs et sauvegarde
-                    $this->ActioncandidatPersonne->Personne->Rendezvous->create();
-                    $this->ActioncandidatPersonne->Personne->Rendezvous->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+//                     $this->ActioncandidatPersonne->Personne->Rendezvous->create();
+//                     $this->ActioncandidatPersonne->Personne->Rendezvous->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 
+                    //
+                    if( count( $this->data['Rendezvous'] ) == 2 && empty( $this->data['Rendezvous']['id'] ) ) {
+                        unset( $this->data['Rendezvous'] );
+                    }
 
                     if( $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 
@@ -363,9 +382,6 @@
             }
             else{
                 if( $this->action == 'edit' ) {
-                    $this->data = $actioncandidat_personne;
-
-
 
                 /// Récupération des données socio pro (notamment Niveau etude) lié au contrat
                     $this->ActioncandidatPersonne->Personne->Dsp->unbindModelAll();
@@ -386,32 +402,51 @@
                 ///Fin des Dsps
 
 
-
+//                     debug($this->data);
                 /// Récupération des données socio pro (notamment Niveau etude) lié à la fiche
-                    $this->ActioncandidatPersonne->Personne->Rendezvous->unbindModelAll();
-                    $rdv = $this->ActioncandidatPersonne->Personne->Rendezvous->findByPersonneId( $personne_id, null, null, 2 );
-                    $rdvData = Set::filter( $rdv['Rendezvous'] );
-                    if( empty( $rdv ) && !empty( $rdvData ) ) {
-                        $rdv = array( 'Rendezvous' => array( 'personne_id' => $personne_id ) );
-                        $this->ActioncandidatPersonne->Personne->Rendezvous->set( $rdv );
-                        if( $this->ActioncandidatPersonne->Personne->Rendezvous->save( $rdv ) ) {
-                            $dsp = $this->ActioncandidatPersonne->Personne->Rendezvous->findByPersonneId( $personne_id, null, null, 2 );
-                        }
-                        else {
-                            $this->cakeError( 'error500' );
-                        }
-                        $this->assert( !empty( $rdv ), 'error500' );
-                    }
-                    $this->data['Rendezvous'] = array(
-                        'id' => $rdv['Rendezvous']['id'],
-                        'personne_id' => $rdv['Rendezvous']['personne_id'],
-                        'referent_id' => $rdv['Rendezvous']['structurereferente_id'].'_'.$rdv['Rendezvous']['referent_id'],
-                        'structurereferente_id' => $rdv['Rendezvous']['structurereferente_id'],
-                        'daterdv' => $rdv['Rendezvous']['daterdv'],
-                        'heurerdv' => $rdv['Rendezvous']['heurerdv'],
-                    );
+//                 if( !empty( $this->data['Rendezvous'] ) ) {
+//                     $this->ActioncandidatPersonne->Personne->Rendezvous->unbindModelAll();
+//                     $rdv = $this->ActioncandidatPersonne->Personne->Rendezvous->find(
+//                         'all',
+//                         array(
+//                             'conditions' => array(
+//                                 'Rendezvous.personne_id' => $personne_id
+//                             ),
+//                             'recursive' => -1
+//                         )
+//                     );
+// 
+//                     debug($rdv);
+//                 }
+
+                    $rdv_id = Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.rendezvous_id' );
+                    $rdv = $this->Rendezvous->findById( $rdv_id, null, null, -1 );
+                    $actioncandidat_personne = Set::merge( $actioncandidat_personne, $rdv );
+                    $actioncandidat_personne['Rendezvous']['referent_id'] = $actioncandidat_personne['Rendezvous']['structurereferente_id'].'_'.$actioncandidat_personne['Rendezvous']['referent_id'];
+                    $this->data = $actioncandidat_personne;
+//                     $rdv = $this->ActioncandidatPersonne->Personne->Rendezvous->findByPersonneId( $personne_id, null, null, 2 );
+//                     $rdvData = Set::filter( $rdv['Rendezvous'] );
+//                     if( empty( $rdv ) && !empty( $rdvData ) ) {
+//                         $rdv = array( 'Rendezvous' => array( 'personne_id' => $personne_id ) );
+//                         $this->ActioncandidatPersonne->Personne->Rendezvous->set( $rdv );
+//                         if( $this->ActioncandidatPersonne->Personne->Rendezvous->save( $rdv ) ) {
+//                             $rdv = $this->ActioncandidatPersonne->Personne->Rendezvous->findByPersonneId( $personne_id, null, null, 2 );
+//                         }
+//                         else {
+//                             $this->cakeError( 'error500' );
+//                         }
+//                         $this->assert( !empty( $rdv ), 'error500' );
+//                     }
+//                     $this->data['Rendezvous'] = array(
+//                         'id' => $rdv['Rendezvous']['id'],
+//                         'personne_id' => $rdv['Rendezvous']['personne_id'],
+//                         'referent_id' => $rdv['Rendezvous']['structurereferente_id'].'_'.$rdv['Rendezvous']['referent_id'],
+//                         'structurereferente_id' => $rdv['Rendezvous']['structurereferente_id'],
+//                         'daterdv' => $rdv['Rendezvous']['daterdv'],
+//                         'heurerdv' => $rdv['Rendezvous']['heurerdv'],
+//                     );
                 ///Fin des RDVs
-// debug($this->data);
+// debug($rdv);
 
                 }
             }

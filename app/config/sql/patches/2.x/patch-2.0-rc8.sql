@@ -429,3 +429,7 @@ ALTER TABLE cuis ALTER COLUMN villelieucontrat DROP NOT NULL;
 ALTER TABLE cuis ALTER COLUMN villelieucontrat SET DEFAULT NULL;
 
 COMMIT;
+
+BEGIN;
+ALTER TABLE actionscandidats_personnes ADD COLUMN rendezvous_id INTEGER REFERENCES rendezvous DEFAULT NULL;
+COMMIT;
