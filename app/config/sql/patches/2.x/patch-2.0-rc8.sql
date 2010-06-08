@@ -433,3 +433,14 @@ COMMIT;
 BEGIN;
 ALTER TABLE actionscandidats_personnes ADD COLUMN rendezvous_id INTEGER REFERENCES rendezvous DEFAULT NULL;
 COMMIT;
+
+BEGIN;
+CREATE TABLE memos (
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    personne_id                     INTEGER DEFAULT NULL REFERENCES personnes(id),
+    name                            TEXT,
+    created                         TIMESTAMP WITHOUT TIME ZONE,
+    modified                        TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE memos IS 'Mémos pour les infos d''une personne';
+COMMIT;
