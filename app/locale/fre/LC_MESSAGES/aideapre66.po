@@ -47,7 +47,7 @@ msgid "Aideapre66.autorisationvers"
 msgstr "Autorisation de versement"
 
 msgid "Aideapre66.motifrejet"
-msgstr "Motif du rejet ou de la modification du montant proposé"
+msgstr "Motif du rejet ou de la modification du montant demandé"
 
 msgid "Aideapre66.montantpropose"
 msgstr "Montant proposé par le référent"

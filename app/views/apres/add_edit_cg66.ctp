@@ -35,31 +35,31 @@
                 'Aideapre66Themeapre66Id'
             );
 
-            observeDisableFieldsOnValue(
-                'Aideapre66VersementTIE',
-                [
-                    'Aideapre66AutorisationversO',
-                    'Aideapre66AutorisationversN'
-                ],
-                'TIE',
-                false
-            );
-
-            observeDisableFieldsOnValue(
-                'Aideapre66VersementDEM',
-                [
-                    'Aideapre66AutorisationversO',
-                    'Aideapre66AutorisationversN'
-                ],
-                'DEM',
-                true
-            );
+//             observeDisableFieldsOnValue(
+//                 'Aideapre66VersementTIE',
+//                 [
+//                     'Aideapre66AutorisationversO',
+//                     'Aideapre66AutorisationversN'
+//                 ],
+//                 'TIE',
+//                 false
+//             );
+// 
+//             observeDisableFieldsOnValue(
+//                 'Aideapre66VersementDEM',
+//                 [
+//                     'Aideapre66AutorisationversO',
+//                     'Aideapre66AutorisationversN'
+//                 ],
+//                 'DEM',
+//                 true
+//             );
 
             observeDisableFieldsetOnRadioValue(
                 'Apre',
-                'data[Aideapre66][autorisationvers]',
+                'data[Aideapre66][versement]',
                 $( 'Soussigne' ),
-                'O',
+                'TIE',
                 false,
                 true
             );
@@ -311,7 +311,7 @@
                     <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.precisionsautrecontrat", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
                 </tr>
                 <tr>
-                    <td class="mediumsize noborder"><strong>Durée ( semaine, mois ) si CDD, CTT, ...</strong></td>
+                    <td class="mediumsize noborder"><strong>Durée ( mois ) si CDD, CTT, ...</strong></td>
                     <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.dureecontrat", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?></td>
                 </tr>
                <!-- <tr>
@@ -371,7 +371,7 @@
                 'Aideapre66.montantaide' => array( 'type' => 'text' ),
                 'Aideapre66.virement' => array( 'domain' => 'aideapre66', 'type' => 'radio', 'options' => $options['virement'], 'separator' => '<br />' ),
                 'Aideapre66.versement' => array( 'domain' => 'aideapre66', 'type' => 'radio', 'options' => $options['versement'], 'separator' => '<br />' ),
-                'Aideapre66.autorisationvers' => array( 'legend' => 'Autorisation de paiement au tiers', 'domain' => 'aideapre66', 'options' => $options['autorisationvers'], 'type' => 'radio', 'separator' => '<br />' )
+//                 'Aideapre66.autorisationvers' => array( 'legend' => 'Autorisation de paiement au tiers', 'domain' => 'aideapre66', 'options' => $options['autorisationvers'], 'type' => 'radio', 'separator' => '<br />' )
             ),
             array(
                 'options' => $options
@@ -547,20 +547,13 @@
         echo $xform->input(  "{$this->modelClass}.avistechreferent", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );
     ?>
 </fieldset>
-<fieldset>
-    <?php
-        echo $default->subform(
-            array(
-                'Aideapre66.motifrejet'
-            )
-        );
-    ?>
-</fieldset>
+
 <fieldset>
     <legend><strong>Administration</strong></legend>
         <?php
             echo $default->subform(
                 array(
+                    'Aideapre66.motifrejet',
                     'Aideapre66.montantpropose' => array( 'type' => 'text' ),
                     'Aideapre66.datemontantpropose' => array( 'empty' => false )
                 )
