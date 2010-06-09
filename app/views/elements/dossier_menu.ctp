@@ -96,7 +96,7 @@
                                                 <li>
                                                     <?php
                                                         echo $html->link(
-                                                            h( 'DSP CAF' ),
+                                                            'DSP d\'origine',
                                                             array( 'controller' => 'dsps', 'action' => 'view', $personne['id'] )
                                                         );?>
                                                 </li>
