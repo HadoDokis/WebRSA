@@ -96,12 +96,7 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-//             'activitebeneficiaire' => array(
-//                 array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
+
             'dureecontrat' => array(
                 array(
                     'rule' => 'notEmpty',

@@ -99,12 +99,12 @@
                     'message' => 'Champ obligatoire'
                 )
             ),
-//             'autorisationvers' => array(
-//                 array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
+            'creancier' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
             'motivdem' => array(
                 array(
                     'rule' => 'notEmpty',
@@ -155,7 +155,7 @@
             $typeaide = $this->Typeaideapre66->findById( $typeaideapre66_id, null, null, 2 );
 
             $nbNormalPieces['Typeaideapre66'] = count( Set::extract( $typeaide, '/Pieceaide66/id' ) );
-// debug($nbNormalPieces);
+// debug($typeaideapre66_id);
             return $nbNormalPieces;
         }
 
