@@ -223,15 +223,13 @@
                                                             if( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ){
                                                                 echo $html->link(
                                                                     'Fiche de saisine',
-                                                                    '#'
-//                                                                     array( 'controller' => 'eps', 'action' => 'index', $personne['id'] )
+                                                                    array( 'controller' => 'bilanparcours', 'action' => 'index', $personne['id'] )
                                                                 );
                                                             }
                                                             else{
                                                                 echo $html->link(
                                                                     'Bilan du parcours',
-                                                                    '#'
-//                                                                     array( 'controller' => 'eps', 'action' => 'index', $personne['id'] )
+                                                                    array( 'controller' => 'bilanparcours', 'action' => 'index', $personne['id'] )
                                                                 );
                                                             }
                                                         ?>

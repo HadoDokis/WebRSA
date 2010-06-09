@@ -44,7 +44,8 @@
         'rendezvous',
         'parcours',
         'permisb',
-        'avisref'
+        'avisref',
+        'bilanparcours'
     );
 /**
  * This is a key => value array of plural irregular words.
@@ -254,6 +255,8 @@
         'traitementtypepdo' => 'traitementstypespdos',
         'descriptionpdo' => 'descriptionspdos',
         'traitementpdo' => 'traitementspdos',
+        ///Bilan de parcours
+//         'bilanparcours' => 'bilansparcours', //FIXME: on utilise useTable sinon ca passe pas
 
      );
 /**
