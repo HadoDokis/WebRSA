@@ -35,35 +35,36 @@
 
 		$demandesreorient[$key]["Decisionreorient{$step}"]['nv_structurereferente_id'] = $demandesreorient[$key]["Decisionreorient{$step}"]['nv_typeorient_id'].'_'.$demandesreorient[$key]["Decisionreorient{$step}"]['nv_structurereferente_id'];
 	}
-
+// debug( $demandesreorient );
 	echo $default->index(
 		$demandesreorient,
 		array(
 			'Demandereorient.urgent' => array( 'type' => 'boolean' ),
-// 			"Decisionreorient{$pvstep}.decision" => array( 'type' => 'boolean' ),
-// 			"Decisionreorient{$pvstep}.Typeorient.lib_type_orient",
-// 			"Decisionreorient{$pvstep}.Structurereferente.lib_struc",
-// 			"Decisionreorient{$pvstep}.Referent.nom_complet",
-			"Decisionreorient{$step}.decision" => array( 'input' => 'select', 'empty' => true ),
-			"Decisionreorient{$step}.nv_typeorient_id" => array( 'input' => 'select', 'empty' => true ),
-			"Decisionreorient{$step}.nv_structurereferente_id" => array( 'input' => 'select', 'empty' => true ),
-			"Decisionreorient{$step}.nv_referent_id" => array( 'input' => 'select', 'empty' => true ),
-			"Decisionreorient{$step}.created",
+			"Demandereorient.accordconcertation",
+			"NvTypeorient.lib_type_orient" => array( 'domain' => 'decisionreorient' ),
+			"NvStructurereferente.lib_struc" => array( 'domain' => 'decisionreorient' ),
+			"NvReferent.nom_complet" => array( 'domain' => 'decisionreorient' ),
+			"Decisionreorient{$step}.decision" => array( 'input' => 'select', 'empty' => true, 'domain' => 'decisionreorient' ),
+			"Decisionreorient{$step}.nv_typeorient_id" => array( 'input' => 'select', 'empty' => true, 'domain' => 'decisionreorient' ),
+			"Decisionreorient{$step}.nv_structurereferente_id" => array( 'input' => 'select', 'empty' => true, 'domain' => 'decisionreorient' ),
+			"Decisionreorient{$step}.nv_referent_id" => array( 'input' => 'select', 'empty' => true, 'domain' => 'decisionreorient' ),
+			"Decisionreorient{$step}.created" => array( 'domain' => 'decisionreorient' ),
 		),
 		array(
 			'cohorte' => true,
 			'hidden' => array(
 				"Decisionreorient{$step}.id",
 				"Decisionreorient{$step}.demandereorient_id" => array( 'valuePath' => 'Demandereorient.id' ),
-				"Decisionreorient{$step}.ep_id" => array( 'valuePath' => 'Ep.id' ),
+// 				"Decisionreorient{$step}.ep_id" => array( 'valuePath' => 'Ep.id' ),
 				"Decisionreorient{$step}.rolereorient" => array( 'value' => $step ),
 			),
 			'options' => $options,
-/*			'tooltip' => array(
-				'Reforigine.nom_complet',
-// 				'Reforigine.Structurereferente.lib_struc', // FIXME
+			'tooltip' => array(
+				"VxTypeorient.lib_type_orient" => array( 'domain' => 'decisionreorient' ),
+				"VxStructurereferente.lib_struc" => array( 'domain' => 'decisionreorient' ),
+				"VxReferent.nom_complet" => array( 'domain' => 'decisionreorient' ),
 				'Motifdemreorient.name',
-			),*/
+			),
 			'paginate' => 'Demandereorient',
 			'groupColumns' => array(
 				$pvstep => array( 1, 2, 3, 4 ),

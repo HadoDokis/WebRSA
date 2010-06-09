@@ -19,6 +19,7 @@
 
 		public $components = array(
 			'Default',
+			'Gedooo',
 			'Prg' => array( 'actions' => array( 'index' ) )
 		);
 
@@ -77,7 +78,8 @@
 		}
 
 		/**
-		*
+		* FIXME: si on n'a rien dans la liste -> prévenir
+		* FIXME: jetons
 		*/
 
 		public function ordre( $id = null ) {
@@ -105,6 +107,7 @@
 				if( $success ) {
 					$this->{$this->modelClass}->commit();
 					$this->Session->setFlash( __( 'Save->success', true ), 'flash/success' );
+					$this->redirect( array( 'action' => 'index' ) );
 				}
 				else {
 					$this->{$this->modelClass}->rollback();
@@ -128,7 +131,90 @@
 		*
 		*/
 
-		public function equipe( $id = null ) {
+		public function conseil( $seanceep_id = null ) {
+		}
+
+		/**
+		*
+		*/
+
+		protected function _freu( $id, $step, $demandesreorient, $modelDecision ) {
+			$seanceep = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+			$this->assert( !empty( $seanceep ), 'invalidaParameter' );
+
+			if( !empty( $this->data ) ) {
+				$this->{$this->modelClass}->begin();
+
+				if( $seanceep[$this->modelClass]['demandesreorient'] == $demandesreorient ) {
+					$notEmptyRule = array(
+						'rule' => 'checkDependantDecision',
+						'message' => __( "Validate::notEmpty", true )
+					);
+
+					foreach( array( 'nv_typeorient_id', 'nv_structurereferente_id', 'nv_referent_id' ) as $field ) {
+						$validate = $this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->validate[$field];
+						array_unshift( $validate, $notEmptyRule );
+						$this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->validate[$field] = $validate;
+					}
+				}
+
+				$success = true;
+				if( $seanceep[$this->modelClass]['demandesreorient'] == $demandesreorient ) {
+					foreach( $this->data["Decisionreorient{$step}"] as $i => $decision ) {
+						$demandereorient = $this->{$this->modelClass}->Demandereorient->findById( $decision['demandereorient_id'], null, null, -1 );
+
+						$vxOrientstruct = array();
+						if( !empty( $demandereorient['Demandereorient']['nv_orientstruct_id'] ) ) {
+							$vxOrientstruct = $this->{$this->modelClass}->Demandereorient->Orientstruct->findById( $demandereorient['Demandereorient']['nv_orientstruct_id'], null, null, -1 );
+						}
+
+						// TODO: assert ?
+						$orientstruct = array(
+							$this->{$this->modelClass}->Demandereorient->Orientstruct->alias => array(
+								'personne_id' => $demandereorient['Demandereorient']['personne_id'],
+								'typeorient_id' => $decision['nv_typeorient_id'],
+								'structurereferente_id' => $decision['nv_structurereferente_id'],
+								'referent_id' => $decision['nv_referent_id'],
+								'valid_cg' => true,
+								'date_propo' => date( 'Y-m-d' ),
+								'date_valid' => date( 'Y-m-d' ),
+								'statut_orient' => 'Orienté',
+							)
+						);
+
+						$orientstruct = Xset::bump(
+							Set::merge(
+								Set::flatten( $vxOrientstruct ),
+								Set::flatten( $orientstruct )
+							)
+						);
+
+						$this->{$this->modelClass}->Demandereorient->Orientstruct->create( $orientstruct );
+						$success = $this->{$this->modelClass}->Demandereorient->Orientstruct->save() && $success;
+						$demandereorient['Demandereorient']['nv_orientstruct_id'] = $this->{$this->modelClass}->Demandereorient->Orientstruct->id;
+
+						if( $success ) {
+							$success = $this->Gedooo->mkOrientstructPdf( $demandereorient['Demandereorient']['nv_orientstruct_id'] ) && $success;
+						}
+
+						$this->{$this->modelClass}->Demandereorient->create( $demandereorient );
+						$success = $this->{$this->modelClass}->Demandereorient->save() && $success;
+					}
+				}
+
+				$success = $this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->saveAll( $this->data["Decisionreorient{$step}"], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+
+				if( $success ) {
+					$this->{$this->modelClass}->commit();
+					$this->Session->setFlash( __( 'Save->success', true ), 'flash/success' );
+					$this->redirect( array( 'action' => 'index' ) );
+				}
+				else {
+					$this->{$this->modelClass}->rollback();
+					$this->Session->setFlash( __( 'Save->error', true ), 'flash/error' );
+				}
+			}
+
 			$demandesreorient = $this->{$this->modelClass}->Demandereorient->find(
 				'all',
 				array(
@@ -142,7 +228,109 @@
 				)
 			);
 
+			$options = Set::merge( $this->{$this->modelClass}->enums(), $this->{$this->modelClass}->Demandereorient->enums(), $this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->enums() );
+			$options = Set::insert( $options, "Decisionreorient{$step}.nv_typeorient_id", $this->Typeorient->listOptions() );
+			$options = Set::insert( $options, "Decisionreorient{$step}.nv_structurereferente_id", $this->Structurereferente->list1Options() );
+			$options = Set::insert( $options, "Decisionreorient{$step}.nv_referent_id", $this->Referent->listOptions() );
+
+			$this->set( compact( 'demandesreorient', 'options', 'step' ) );
+		}
+
+		/**
+		* FIXME: jetons
+		*/
+
+		public function equipe( $id = null ) {
 			$step = 'equipe';
+
+			$seanceep = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+			$this->assert( !empty( $seanceep ), 'invalidaParameter' );
+
+			if( !empty( $this->data ) ) {
+				$this->{$this->modelClass}->begin();
+
+				if( $seanceep[$this->modelClass]['demandesreorient'] == 'decisionep' ) {
+					$notEmptyRule = array(
+						'rule' => 'checkDependantDecision',
+						'message' => __( "Validate::notEmpty", true )
+					);
+
+					foreach( array( 'nv_typeorient_id', 'nv_structurereferente_id', 'nv_referent_id' ) as $field ) {
+						$validate = $this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->validate[$field];
+						array_unshift( $validate, $notEmptyRule );
+						$this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->validate[$field] = $validate;
+					}
+				}
+
+				$success = true;
+				if( $seanceep[$this->modelClass]['demandesreorient'] == 'decisionep' ) {
+					foreach( $this->data["Decisionreorient{$step}"] as $i => $decision ) {
+						$demandereorient = $this->{$this->modelClass}->Demandereorient->findById( $decision['demandereorient_id'], null, null, -1 );
+
+						$vxOrientstruct = array();
+						if( !empty( $demandereorient['Demandereorient']['nv_orientstruct_id'] ) ) {
+							$vxOrientstruct = $this->{$this->modelClass}->Demandereorient->Orientstruct->findById( $demandereorient['Demandereorient']['nv_orientstruct_id'], null, null, -1 );
+						}
+
+						// TODO: assert ?
+						$orientstruct = array(
+							$this->{$this->modelClass}->Demandereorient->Orientstruct->alias => array(
+								'personne_id' => $demandereorient['Demandereorient']['personne_id'],
+								'typeorient_id' => $decision['nv_typeorient_id'],
+								'structurereferente_id' => $decision['nv_structurereferente_id'],
+								'referent_id' => $decision['nv_referent_id'],
+								'valid_cg' => true,
+								'date_propo' => date( 'Y-m-d' ),
+								'date_valid' => date( 'Y-m-d' ),
+								'statut_orient' => 'Orienté',
+							)
+						);
+
+						$orientstruct = Xset::bump(
+							Set::merge(
+								Set::flatten( $vxOrientstruct ),
+								Set::flatten( $orientstruct )
+							)
+						);
+
+						$this->{$this->modelClass}->Demandereorient->Orientstruct->create( $orientstruct );
+						$success = $this->{$this->modelClass}->Demandereorient->Orientstruct->save() && $success;
+						$demandereorient['Demandereorient']['nv_orientstruct_id'] = $this->{$this->modelClass}->Demandereorient->Orientstruct->id;
+
+						if( $success ) {
+							$success = $this->Gedooo->mkOrientstructPdf( $demandereorient['Demandereorient']['nv_orientstruct_id'] ) && $success;
+						}
+
+						$this->{$this->modelClass}->Demandereorient->create( $demandereorient );
+						$success = $this->{$this->modelClass}->Demandereorient->save() && $success;
+					}
+				}
+
+				$success = $this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->saveAll( $this->data["Decisionreorient{$step}"], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+
+				if( $success ) {
+					$this->{$this->modelClass}->commit();
+					$this->Session->setFlash( __( 'Save->success', true ), 'flash/success' );
+					$this->redirect( array( 'action' => 'index' ) );
+				}
+				else {
+					$this->{$this->modelClass}->rollback();
+					$this->Session->setFlash( __( 'Save->error', true ), 'flash/error' );
+				}
+			}
+
+			$demandesreorient = $this->{$this->modelClass}->Demandereorient->find(
+				'all',
+				array(
+					'conditions' => array(
+						'Demandereorient.seanceep_id' => $id
+					),
+					'order' => array(
+						"{$this->{$this->modelClass}->Demandereorient->alias}.urgent DESC", // INFO: d'abord les urgents
+						"{$this->{$this->modelClass}->Demandereorient->alias}.created ASC"
+					)
+				)
+			);
 
 			$options = Set::merge( $this->{$this->modelClass}->enums(), $this->{$this->modelClass}->Demandereorient->enums(), $this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->enums() );
 			$options = Set::insert( $options, "Decisionreorient{$step}.nv_typeorient_id", $this->Typeorient->listOptions() );

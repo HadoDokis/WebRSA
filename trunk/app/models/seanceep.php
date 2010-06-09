@@ -35,13 +35,13 @@
 				'unique' => true,
                 'with' => 'PartepSeanceep'
 			),
-			'Demandereorient' => array(
-				'className' => 'Demandereorient',
-				'joinTable' => 'demandesreorient_seanceseps',
-				'foreignKey' => 'seanceep_id',
-				'associationForeignKey' => 'demandereorient_id',
-				'unique' => true,
-			)
+// 			'Demandereorient' => array(
+// 				'className' => 'Demandereorient',
+// 				'joinTable' => 'demandesreorient_seanceseps',
+// 				'foreignKey' => 'seanceep_id',
+// 				'associationForeignKey' => 'demandereorient_id',
+// 				'unique' => true,
+// 			)
 		);
 	}
 ?>
