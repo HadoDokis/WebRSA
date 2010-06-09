@@ -94,7 +94,7 @@ msgstr "Non"
 msgid "ENUM::URGENT::1"
 msgstr "Oui"
 
-msgid "ENUM::ACCORDCONCERTATION::enattente"
+msgid "ENUM::ACCORDCONCERTATION::attente"
 msgstr "En attente"
 
 msgid "ENUM::ACCORDCONCERTATION::accord"
@@ -104,7 +104,7 @@ msgid "ENUM::ACCORDCONCERTATION::pasaccord"
 msgstr "Pas d'accord"
 
 msgid "Demandereorient.nv_typeorient_id"
-msgstr "Nouveau type d'orientation"
+msgstr "Type de réorientation"
 
 msgid "Demandereorient.nv_structurereferente_id"
 msgstr "Nouvelle structure référente"
@@ -122,7 +122,7 @@ msgid "Demandereorient.dateconcertation"
 msgstr "Date de la concertation"
 
 msgid "Demandereorient.motivation"
-msgstr "Motivation"
+msgstr "Motivation de la demande de réorientation"
 
 msgid "VxTypeorient.lib_type_orient"
 msgstr "Ancienne orientation"
