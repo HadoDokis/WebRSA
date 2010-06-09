@@ -132,6 +132,7 @@
 		*/
 
 		public function conseil( $seanceep_id = null ) {
+			$this->_freu( $seanceep_id, 'conseil', 'cg', 'Decisionreorientconseil' );
 		}
 
 		/**
@@ -140,7 +141,7 @@
 
 		protected function _freu( $id, $step, $demandesreorient, $modelDecision ) {
 			$seanceep = $this->{$this->modelClass}->findById( $id, null, null, -1 );
-			$this->assert( !empty( $seanceep ), 'invalidaParameter' );
+			$this->assert( !empty( $seanceep ), 'invalidParameter' );
 
 			if( !empty( $this->data ) ) {
 				$this->{$this->modelClass}->begin();
@@ -152,9 +153,9 @@
 					);
 
 					foreach( array( 'nv_typeorient_id', 'nv_structurereferente_id', 'nv_referent_id' ) as $field ) {
-						$validate = $this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->validate[$field];
+						$validate = $this->{$this->modelClass}->Demandereorient->{$modelDecision}->validate[$field];
 						array_unshift( $validate, $notEmptyRule );
-						$this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->validate[$field] = $validate;
+						$this->{$this->modelClass}->Demandereorient->{$modelDecision}->validate[$field] = $validate;
 					}
 				}
 
@@ -202,10 +203,10 @@
 					}
 				}
 
-				$success = $this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->saveAll( $this->data["Decisionreorient{$step}"], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+				$success = $this->{$this->modelClass}->Demandereorient->{$modelDecision}->saveAll( $this->data["Decisionreorient{$step}"], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
 
 				if( $success ) {
-					$this->{$this->modelClass}->commit();
+					$this->{$this->modelClass}->commit(); // FIXME
 					$this->Session->setFlash( __( 'Save->success', true ), 'flash/success' );
 					$this->redirect( array( 'action' => 'index' ) );
 				}
@@ -228,7 +229,7 @@
 				)
 			);
 
-			$options = Set::merge( $this->{$this->modelClass}->enums(), $this->{$this->modelClass}->Demandereorient->enums(), $this->{$this->modelClass}->Demandereorient->Decisionreorientequipe->enums() );
+			$options = Set::merge( $this->{$this->modelClass}->enums(), $this->{$this->modelClass}->Demandereorient->enums(), $this->{$this->modelClass}->Demandereorient->{$modelDecision}->enums() );
 			$options = Set::insert( $options, "Decisionreorient{$step}.nv_typeorient_id", $this->Typeorient->listOptions() );
 			$options = Set::insert( $options, "Decisionreorient{$step}.nv_structurereferente_id", $this->Structurereferente->list1Options() );
 			$options = Set::insert( $options, "Decisionreorient{$step}.nv_referent_id", $this->Referent->listOptions() );

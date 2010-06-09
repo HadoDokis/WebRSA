@@ -54,7 +54,7 @@
                     break;
                 case 'conseil':
                     $icon = 'icons/door_out'.$iconFileSuffix.'.png';
-                    $text = __( 'Traitement conseil', true );
+                    $text = __( 'Traitement conseil général', true );
                     break;
                 case 'ordre':
                     $icon = 'icons/book_open'.$iconFileSuffix.'.png';
