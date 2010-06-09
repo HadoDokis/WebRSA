@@ -444,3 +444,71 @@ CREATE TABLE memos (
 );
 COMMENT ON TABLE memos IS 'Mémos pour les infos d''une personne';
 COMMIT;
+
+
+COMMIT;
+
+BEGIN;
+CREATE TYPE type_proposition AS ENUM ( 'traitement', 'parcours', 'audition' );
+CREATE TYPE type_choixparcours AS ENUM ( 'maintien', 'reorientation' );
+CREATE TYPE type_reorientation AS ENUM ( 'SP', 'PS' );
+CREATE TYPE type_orient AS ENUM ( 'social', 'prepro' );
+CREATE TYPE type_aviscommission AS ENUM ( 'SDC', 'SNR', 'MAL' );
+CREATE TYPE type_aviscoordonnateur AS ENUM ( 'VAL', 'DEM' );
+CREATE TYPE type_typeeplocale AS ENUM ('audition', 'parcours' );
+
+
+CREATE TABLE bilanparcours (
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    personne_id                     INTEGER NOT NULL REFERENCES personnes(id),
+    referent_id                     INTEGER NOT NULL REFERENCES referents(id),
+    structurereferente_id           INTEGER NOT NULL REFERENCES structuresreferentes(id),
+    objinit                         TEXT,
+    objatteint                      TEXT,
+    objnew                          TEXT,
+    proposition                     type_proposition DEFAULT NULL,
+    rendezvous_id                   INTEGER DEFAULT NULL REFERENCES rendezvous(id),
+    datebilan                       DATE,
+    -- Traitement sans passage EP Locale
+    maintienorientsansep            type_orient DEFAULT NULL,
+    changementrefsansep             type_no DEFAULT NULL,
+    datedebreconduction             DATE,
+    datefinreconduction             DATE,
+    nvsansep_referent_id            INTEGER DEFAULT NULL REFERENCES referents(id),
+    accordprojet                    type_booleannumber DEFAULT NULL,
+    -- Commission parcours
+    choixparcours                   type_choixparcours DEFAULT NULL,
+    maintienorientparcours          type_orient DEFAULT NULL,
+    changementrefparcours           type_no DEFAULT NULL,
+    nvparcours_referent_id          INTEGER DEFAULT NULL REFERENCES referents(id),
+    reorientation                   type_reorientation DEFAULT NULL,
+    -- Commission audition
+    examenaudition                  type_type_demande DEFAULT NULL,
+    infoscomplementaires            TEXT,
+    observbenef                     TEXT,
+    -- Avis EP Locale
+    dateaviseplocale                DATE,
+    maintienorientavisep            type_orient DEFAULT NULL,
+    changementrefeplocale           type_no DEFAULT NULL,
+    reorientationeplocale           type_reorientation DEFAULT NULL,
+    -- pour les checkbox
+    avisparcours                    type_booleannumber DEFAULT NULL,
+    aviscoordonnateur               type_booleannumber DEFAULT NULL,
+    aviscga                         type_booleannumber DEFAULT NULL,
+    typeeplocale                    type_typeeplocale DEFAULT NULL,
+    -- EP locale Commission audition
+    dateavisaudition                DATE,
+    decisioncommission              type_aviscommission DEFAULT NULL,
+    autreaviscommission             type_booleannumber DEFAULT NULL,
+    infoscompleplocale              TEXT,
+    -- Décision coordonnateur
+    dateaviscoordonnateur           DATE,
+    decisioncoordonnateur           type_aviscoordonnateur DEFAULT NULL,
+    motivationavis                  TEXT,
+    -- Décision CGA
+    dateaviscga                     DATE,
+    decisioncga                     type_aviscoordonnateur DEFAULT NULL,
+    motivationaviscga               TEXT
+);
+COMMENT ON TABLE bilanparcours IS 'Table pour le bilan parcours';
+COMMIT;

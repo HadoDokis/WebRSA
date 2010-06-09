@@ -1,0 +1,219 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+msgid "Bilanparcours.structurereferente_id"
+msgstr "MSP"
+
+msgid "Bilanparcours.referent_id"
+msgstr "Rédigé par "
+
+msgid "Bilanparcours.objinit"
+msgstr "Objectifs initiaux et actions prévues, capacités mobilisables, freins éventuels"
+
+msgid "Bilanparcours.objatteint"
+msgstr "Atteinte des objectifs"
+
+msgid "Bilanparcours.objnew"
+msgstr "Nouveaux objectifs: actions à mettre en place ou à poursuivre"
+
+msgid "Bilanparcours.proposition"
+msgstr "Propositions"
+
+msgid "Bilanparcours.examenaudition"
+msgstr "Maintien / Réorientation"
+
+msgid "Bilanparcours.choixparcours"
+msgstr "Choix du parcours"
+
+msgid "Bilanparcours.maintienorientsansep"
+msgstr "Maintien de l'orientation"
+
+msgid "ENUM::MAINTIENORIENTSANSEP::social"
+msgstr "Sociale"
+
+msgid "ENUM::MAINTIENORIENTSANSEP::prepro"
+msgstr "Prépro"
+
+msgid "Bilanparcours.changementrefsansep"
+msgstr "Changement de référent"
+
+msgid "ENUM::CHANGEMENTREFSANSEP::O"
+msgstr "Avec changement de référent"
+
+msgid "ENUM::CHANGEMENTREFSANSEP::N"
+msgstr "Sans changement de référent"
+
+msgid "Bilanparcours.nvsansep_referent_id"
+msgstr "Nouveau référent"
+
+msgid "Bilanparcours.accordprojet"
+msgstr "Accord entre le référent initial et le nouveau référent"
+
+msgid "ENUM::ACCORDPROJET::0"
+msgstr "Non"
+
+msgid "ENUM::ACCORDPROJET::1"
+msgstr "Oui"
+
+msgid "Bilanparcours.choixparcours"
+msgstr "Choix du parcours"
+
+msgid "ENUM::CHOIXPARCOURS::maintien"
+msgstr "Maintien"
+
+msgid "ENUM::CHOIXPARCOURS::reorientation"
+msgstr "Réorientation"
+
+
+msgid "Bilanparcours.maintienorientparcours"
+msgstr "Maintien de l'orientation"
+
+msgid "ENUM::MAINTIENORIENTPARCOURS::social"
+msgstr "Sociale"
+
+msgid "ENUM::MAINTIENORIENTPARCOURS::prepro"
+msgstr "Prépro"
+
+msgid "Bilanparcours.changementrefparcours"
+msgstr "Changement de référent"
+
+msgid "ENUM::CHANGEMENTREFPARCOURS::O"
+msgstr "Avec changement de référent"
+
+msgid "ENUM::CHANGEMENTREFPARCOURS::N"
+msgstr "Sans changement de référent"
+
+msgid "Bilanparcours.nvparcours_referent_id"
+msgstr "Nouveau référent"
+
+msgid "ENUM::REORIENTATION::SP"
+msgstr "Réorientation du SOCIAL vers le PROFESSIONNEL"
+
+msgid "ENUM::REORIENTATION::PS"
+msgstr "Réorientation du PROFESSIONNEL vers le SOCIAL"
+
+msgid "Bilanparcours.examenaudition"
+msgstr "Raison d'examen du dossier"
+
+msgid "ENUM::EXAMENAUDITION::DOD"
+msgstr "Défaut de conclusion"
+
+msgid "ENUM::EXAMENAUDITION::DRD"
+msgstr "Non respect"
+
+msgid "Bilanparcours.infoscomplementaires"
+msgstr "Informations complémentaires en lien avec la proposition faite"
+
+msgid "Bilanparcours.observbenef"
+msgstr "Observations du bénéficiaire"
+
+msgid "Bilanparcours.datebilan"
+msgstr "Date du bilan de parcours"
+
+msgid "Bilanparcours.dateaviseplocale"
+msgstr "Date de l'avis de l'EP Locale"
+
+msgid "Bilanparcours.maintienorientavisep"
+msgstr "Maintien de l'orientation"
+
+msgid "ENUM::MAINTIENORIENTAVISEP::social"
+msgstr "Social"
+
+msgid "ENUM::MAINTIENORIENTAVISEP::prepro"
+msgstr "Prépro"
+
+msgid "Bilanparcours.changementrefeplocale"
+msgstr "Changement de référent"
+
+msgid "ENUM::CHANGEMENTREFEPLOCALE::N"
+msgstr "Non"
+
+msgid "ENUM::CHANGEMENTREFEPLOCALE::O"
+msgstr "Oui"
+
+msgid "Bilanparcours.reorientationeplocale"
+msgstr "Réorientation"
+
+msgid "ENUM::REORIENTATIONEPLOCALE::SP"
+msgstr "Réorientation du SOCIAL vers le PROFESSIONNEL"
+
+msgid "ENUM::REORIENTATIONEPLOCALE::PS"
+msgstr "Réorientation du PROFESSIONNEL vers le SOCIAL"
+
+msgid "Bilanparcours.typeeplocale"
+msgstr "Type d'EP locale"
+
+msgid "ENUM::TYPEEPLOCALE::audition"
+msgstr "EP Locale Commission Audition"
+
+msgid "ENUM::TYPEEPLOCALE::parcours"
+msgstr "EP Locale Commission Parcours"
+
+msgid "Bilanparcours.decisioncommission"
+msgstr "Décision de l'EP Commission Audition"
+
+msgid "ENUM::DECISIONCOMMISSION::SDC"
+msgstr "Suspension suite à défaut de conclusion"
+
+msgid "ENUM::DECISIONCOMMISSION::SNR"
+msgstr "Suspension suite à non respect du contrat"
+
+msgid "ENUM::DECISIONCOMMISSION::MAL"
+msgstr "Maintien de l'allocation"
+
+msgid "Bilanparcours.dateavisaudition"
+msgstr "Date de l'avis de l'EP Locale Commission Audition"
+
+msgid "Bilanparcours.autreaviscommission"
+msgstr "Dossier ajourné et à représenter lors d'une prochaine EPL (dossier non complet, attente de pièces... )"
+
+msgid "Bilanparcours.infoscompleplocale"
+msgstr "Information complémentaire de l'EP Locale"
+
+msgid "Bilanparcours.decisioncga"
+msgstr "Décision de la CGA"
+
+msgid "ENUM::DECISIONCGA::VAL"
+msgstr "Validation de l'avis de l'EPL"
+
+msgid "ENUM::DECISIONCGA::DEM"
+msgstr "Demande de ré-examen du dossier"
+
+msgid "Bilanparcours.dateaviscga"
+msgstr "Date de la décision CGA"
+
+msgid "Bilanparcours.motivationaviscga"
+msgstr "Motivation du ré-examen"
+
+
+msgid "Bilanparcours.decisioncoordonnateur"
+msgstr "Décision du coordonnateur"
+
+msgid "ENUM::DECISIONCOORDONNATEUR::VAL"
+msgstr "Validation de l'avis de l'EPL"
+
+msgid "ENUM::DECISIONCOORDONNATEUR::DEM"
+msgstr "Demande de ré-examen du dossier"
+
+msgid "Bilanparcours.dateaviscoordonnateur"
+msgstr "Date de la décision du Coordonnateur"
+
+msgid "Bilanparcours.motivationavis"
+msgstr "Motivation du ré-examen"
