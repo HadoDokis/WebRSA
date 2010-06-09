@@ -132,7 +132,7 @@
 		*/
 
 		public function conseil( $seanceep_id = null ) {
-			$this->_freu( $seanceep_id, 'conseil', 'cg', 'Decisionreorientconseil' );
+			$this->_freu( $seanceep_id, 'conseil', 'decisioncg', 'Decisionreorientconseil' );
 		}
 
 		/**
@@ -228,7 +228,7 @@
 					)
 				)
 			);
-
+// debug( $demandesreorient );
 			$options = Set::merge( $this->{$this->modelClass}->enums(), $this->{$this->modelClass}->Demandereorient->enums(), $this->{$this->modelClass}->Demandereorient->{$modelDecision}->enums() );
 			$options = Set::insert( $options, "Decisionreorient{$step}.nv_typeorient_id", $this->Typeorient->listOptions() );
 			$options = Set::insert( $options, "Decisionreorient{$step}.nv_structurereferente_id", $this->Structurereferente->list1Options() );

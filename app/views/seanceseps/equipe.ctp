@@ -56,7 +56,7 @@
 				"Decisionreorient{$step}.id",
 				"Decisionreorient{$step}.demandereorient_id" => array( 'valuePath' => 'Demandereorient.id' ),
 // 				"Decisionreorient{$step}.ep_id" => array( 'valuePath' => 'Ep.id' ),
-				"Decisionreorient{$step}.rolereorient" => array( 'value' => $step ),
+				"Decisionreorient{$step}.etape" => array( 'value' => ( $step == 'equipe' ? 'ep' : 'cg' ) ),
 			),
 			'options' => $options,
 			'tooltip' => array(
