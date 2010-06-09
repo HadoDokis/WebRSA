@@ -220,7 +220,7 @@
                                                 <ul>
                                                     <li>
                                                         <?php
-                                                            if( Configure::read( 'nom_form_apre_cg' ) == 'cg93' ){
+                                                            if( Configure::read( 'nom_form_bilan_cg' ) == 'cg93' ){
                                                                 echo $html->link(
                                                                     'Fiche de saisine',
                                                                     array( 'controller' => 'bilanparcours', 'action' => 'index', $personne['id'] )

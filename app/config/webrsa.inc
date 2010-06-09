@@ -118,5 +118,11 @@
     * Champs spécifique selon le CG pour le formulaire des PDOs
     * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
     */
-    Configure::write( 'nom_form_pdo_cg', 'cg93' );
+    Configure::write( 'nom_form_pdo_cg', 'cg66' );
+
+    /**
+    * Champs spécifique selon le CG pour le formulaire du bilan de parcours / Fiche de saisine
+    * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
+    */
+    Configure::write( 'nom_form_bilan_cg', 'cg93' );
 ?>
