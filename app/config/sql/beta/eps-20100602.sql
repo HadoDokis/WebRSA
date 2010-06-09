@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS decisionsreorient;
 DROP TABLE IF EXISTS sceanceseps_demandesreorient;
 DROP TABLE IF EXISTS seanceseps_demandesreorient;
 DROP TABLE IF EXISTS demandesreorient_sceanceseps;
-DROP TABLE IF EXISTS demandesreorient_seanceseps;
+DROP TABLE IF EXISTS demandesreorient_seanceseps CASCADE;
 DROP TABLE IF EXISTS demandesreorient;
 DROP TABLE IF EXISTS motifsdemsreorients;
 DROP TYPE IF EXISTS type_accordconcertation_reorient;
@@ -166,7 +166,6 @@ CREATE TABLE demandesreorient_seanceseps (
 	id								SERIAL NOT NULL PRIMARY KEY,
 	demandereorient_id				INTEGER NOT NULL REFERENCES demandesreorient(id),
 	seanceep_id						INTEGER NOT NULL REFERENCES seanceseps(id)
-
 );
 
 CREATE TABLE decisionsreorient (
@@ -189,9 +188,9 @@ ALTER TABLE eps ADD COLUMN filtre_zone_geo BOOLEAN DEFAULT true;
 
 ALTER TABLE seanceseps RENAME COLUMN reorientation TO demandesreorient;
 DROP TYPE type_themeep;
-DROP TABLE demandesreorient_seanceseps;
+DROP TABLE IF EXISTS demandesreorient_seanceseps CASCADE;
 
-ALTER TABLE decisionsreorient ADD COLUMN demandereorient_id INTEGER DEFAULT NULL REFERENCES demandesreorient_seanceseps(id);
+ALTER TABLE decisionsreorient ADD COLUMN demandereorient_id INTEGER DEFAULT NULL REFERENCES demandesreorient(id);
 ALTER TABLE decisionsreorient DROP COLUMN demandereorient_seanceep_id;
 
 COMMIT;
