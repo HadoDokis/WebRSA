@@ -31,6 +31,7 @@
 		var $belongsTo = array(
 			'Personne',
 			'Orientstruct',
+			'Seanceep',
 			'Motifdemreorient',
 			'VxTypeorient' => array(
 				'className' => 'Typeorient',

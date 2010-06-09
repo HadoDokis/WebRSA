@@ -86,8 +86,8 @@
 //                 'Motifdemreorient.name',
 //                 'Demandereorient.urgent' => array( 'type' => 'boolean' ),
                 'Demandereorient.created',
-                'Ep.name' => array( 'domain' => 'ep' ),
-                'NvOrientstruct.id',
+                'Seanceep.dateseance' => array( 'label' => 'Date de la séance' ),
+//                 'NvOrientstruct.id',
             ),
             array(
                 'actions' => array(
@@ -95,7 +95,7 @@
                     'Demandereorient.edit',
                     'Demandereorient.delete',
                 ),
-                'add' => array( 'Demandereorient.add' => $this->params['pass'][0] ),
+//                 'add' => array( 'Demandereorient.add' => $this->params['pass'][0] ),
                 'options' => $options,
                 'domain' => 'demandereorient'
             )

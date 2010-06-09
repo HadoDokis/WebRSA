@@ -45,6 +45,23 @@ msgstr "Nouveau référent"
 
 # -----------------------------------------------------------------------------
 
+msgid "Decisionreorientconseil.decision"
+msgstr "Décision"
+
+msgid "Decisionreorientconseil.nv_typeorient_id"
+msgstr "Type de réorientation"
+
+msgid "Decisionreorientconseil.nv_structurereferente_id"
+msgstr "Nouvelle structure référente"
+
+msgid "Decisionreorientconseil.nv_referent_id"
+msgstr "Nouveau référent"
+
+msgid "Decisionreorientconseil.created"
+msgstr "Date de prise de décision"
+
+# -----------------------------------------------------------------------------
+
 msgid "ENUM::DECISION::accord"
 msgstr "Accord"
 

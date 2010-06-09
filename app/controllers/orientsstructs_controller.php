@@ -80,12 +80,33 @@
 
             $dossier_rsa_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_rsa_id' );
 
+			$this->Demandereorient->unbindModelAll();
+			$this->Demandereorient->bindModel(
+				array(
+					'belongsTo' => array(
+						'Seanceep',
+						'VxTypeorient' => array(
+							'className' => 'Typeorient',
+							'foreignKey' => 'vx_typeorient_id'
+						),
+						'VxStructurereferente' => array(
+							'className' => 'Structurereferente',
+							'foreignKey' => 'vx_structurereferente_id'
+						),
+						'VxReferent' => array(
+							'className' => 'Referent',
+							'foreignKey' => 'vx_referent_id'
+						),
+					)
+				)
+			);
             $demandesreorients = $this->Demandereorient->find(
                 'all',
                 array(
                     'conditions' => array(
                         'Demandereorient.personne_id' => $personne_id
-                    )
+                    ),
+					'recursive' => 0
                 )
             );
             $this->set( 'demandesreorients', $demandesreorients );
