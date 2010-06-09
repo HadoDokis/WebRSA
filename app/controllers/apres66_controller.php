@@ -363,6 +363,32 @@
 
 
             if( !empty( $this->data ) ){
+
+
+
+// debug($this->data);
+                /**
+                *   Pour le nombre de pièces afin de savoir si le dossier est complet ou non
+                */
+                $valide = true;
+                $nbNormalPieces = array();
+
+                $typeaideapre66_id = suffix( Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' ) );
+                $typeaide = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findById( $typeaideapre66_id, null, null, 2 );
+
+                $nbNormalPieces['Typeaideapre66'] = count( Set::extract( $typeaide, '/Pieceaide66/id' ) );
+
+                $key = 'Pieceaide66';
+                if( isset( $this->data['Aideapre66'] ) && isset( $this->data[$key] ) && isset( $this->data[$key][$key] ) ) {
+                    $valide = ( count( $this->data[$key][$key] ) == $nbNormalPieces['Typeaideapre66'] ) && $valide;
+                }
+//     debug(count( $this->data[$key][$key] ));
+//     debug($nbNormalPieces['Typeaideapre66']);
+                $this->data['Apre66']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
+
+
+
+
 				// Tentative d'enregistrement de l'APRE complémentaire
 				$this->{$this->modelClass}->create( $this->data );
 				$this->{$this->modelClass}->set( 'statutapre', 'C' );
