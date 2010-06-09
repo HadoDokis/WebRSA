@@ -7,11 +7,21 @@
 ?>
 
 <?php
-    if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout d\'un bilan de parcours';
+    if( $this->action == 'add'  ) {
+        if( Configure::read( 'nom_form_bilan_cg' ) == 'cg66' ) {
+            $this->pageTitle = 'Ajout d\'un bilan de parcours';
+        }
+        else {
+            $this->pageTitle = 'Ajout d\'une fiche de saisine';
+        }
     }
     else {
-        $this->pageTitle = 'Édition du bilan de parcours';
+        if( Configure::read( 'nom_form_bilan_cg' ) == 'cg66' ) {
+            $this->pageTitle = 'Édition du bilan de parcours';
+        }
+        else {
+            $this->pageTitle = 'Édition de la fiche de saisine';
+        }
     }
 ?>
 
