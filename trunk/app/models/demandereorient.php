@@ -65,14 +65,14 @@
 
 		var $hasOne = array(
 			'Decisionreorientequipe' => array(
-				'className' => 'Decisionreorient',
+				'className' => 'Decisionreorientequipe',
 				'type' => 'LEFT OUTER',
 				'conditions' => array(
 					'Decisionreorientequipe.etape' => 'ep'
 				)
 			),
 			'Decisionreorientconseil' => array(
-				'className' => 'Decisionreorient',
+				'className' => 'Decisionreorientconseil',
 				'type' => 'LEFT OUTER',
 				'conditions' => array(
 					'Decisionreorientconseil.etape' => 'cg'

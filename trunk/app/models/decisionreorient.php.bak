@@ -31,15 +31,20 @@
 			return true;
         }
 
-// 		public $belongsTo = array(
-// 			'Personne',
-// 			'Orientstruct',
-// 			'Motifdemreorient',
-// 			'VxTypeorient' => array(
-// 				'className' => 'Typeorient',
-// 				'foreignKey' => 'vx_typeorient_id'
-// 			)
-// 		);
+		public $belongsTo = array(
+			'NvTypeorient' => array(
+				'className' => 'Typeorient',
+				'foreignKey' => 'nv_typeorient_id'
+			),
+			'NvStructurereferente' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'nv_structurereferente_id'
+			),
+			'NvReferent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'nv_referent_id'
+			),
+		);
 
 		/*public $hasMany = array(
 			'Decisionreorient'
