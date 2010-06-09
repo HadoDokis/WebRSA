@@ -138,14 +138,18 @@
 						'Adresse.locaadr',
 					),
 					'conditions' => array(
-						'( SELECT COUNT( "demandesreorient_seanceseps"."id" )
+						/*'( SELECT COUNT( "demandesreorient_seanceseps"."id" )
 							FROM "demandesreorient_seanceseps"
 							WHERE "demandesreorient_seanceseps"."demandereorient_id" = "'.$this->alias.'"."id"
 								AND (
 									"demandesreorient_seanceseps"."seanceep_id" = \''.$seanceep_id.'\'
 									OR "demandesreorient_seanceseps"."seanceep_id" IS NULL
 								)
-						) = \'0\''
+						) = \'0\''*/
+						'or' => array(
+							"{$this->alias}.seanceep_id" => $seanceep_id,
+							"{$this->alias}.seanceep_id IS NULL",
+						)
 					),
 					'joins' => array(
 						array(
@@ -192,6 +196,10 @@
 		*/
 
 		public function marquerAtraiterParZonegeographique( $seanceep_id, $numcomptt, $limit ) {
+			if( $limit == 0 ) {
+				return true;
+			}
+
 			$this->unbindModelAll();
 			$ids = $this->find(
 				'all',

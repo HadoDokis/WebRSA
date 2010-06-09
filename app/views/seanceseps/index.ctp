@@ -54,6 +54,7 @@
 // 					'Seanceep.delete',
 					'Seanceep.ordre',
 					'Seanceep.equipe',
+					'Seanceep.conseil',
 				)
 			)
 		);
