@@ -62,6 +62,11 @@ msgstr "Eligibilité de l'APRE"
 msgid "Apre66.isdecision"
 msgstr "Décision prise ?"
 
+msgid "ENUM::ISDECISION::N"
+msgstr "Non"
+
+msgid "ENUM::ISDECISION::O"
+msgstr "Oui"
 ###############################################################################
 # Nom des aides
 ###############################################################################
