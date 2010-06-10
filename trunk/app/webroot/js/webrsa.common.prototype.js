@@ -667,19 +667,38 @@ function makeTabbed( wrapperId, titleLevel ) {
 
 function make_treemenus_droits( absoluteBaseUrl, large ) {
     var dir = absoluteBaseUrl + 'img/icons';
+		
     $$( '#tableEditDroits tr.niveau0 td.label' ).each( function ( elmtTd ) {
 		if( elmtTd.up( 'tr' ).next( 'tr' ).hasClassName('niveau1')) {
 			
-			if( large )
-			    var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus2.png', 'alt': 'Étendre', 'width': '12px' } );
-			else
-			    var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus2.png', 'alt': 'Étendre' } );
-			
 			var thisTr = $( elmtTd ).up( 'tr' );
 			var nextTr = $( thisTr ).next( 'tr' );
+			var value = 2;
+			var etat = 'fermer';
 			while( nextTr != undefined && Element.hasClassName( nextTr, 'niveau1' ) ) {
-				nextTr.hide();
+				var checkboxes = $( nextTr ).getElementsBySelector( 'input[type=checkbox]' );
+				if ( value == 2) { value = $F( checkboxes[0] ); }
+				else if ( value != $F( checkboxes[0] )) { etat = 'ouvert'; }
 				nextTr = $( nextTr ).next( 'tr' );
+			}
+			
+			if( etat == 'fermer' ) {
+				if( large )
+					var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus2.png', 'alt': 'Étendre', 'width': '12px' } );
+				else
+					var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus2.png', 'alt': 'Étendre' } );
+					
+				nextTr = $( thisTr ).next( 'tr' );
+				while( nextTr != undefined && Element.hasClassName( nextTr, 'niveau1' ) ) {
+					nextTr.hide();
+					nextTr = $( nextTr ).next( 'tr' );
+				}
+			}
+			else {
+				if( large )
+					var img = new Element( 'img', { 'src': dir + '/bullet_toggle_minus2.png', 'alt': 'Réduire', 'width': '12px' } );
+				else
+					var img = new Element( 'img', { 'src': dir + '/bullet_toggle_minus2.png', 'alt': 'Réduire' } );
 			}
 
 			// INFO: onclick -> return false est indispensable.
@@ -706,5 +725,75 @@ function make_treemenus_droits( absoluteBaseUrl, large ) {
 
 	        $( elmtTd ).insert( { 'top' : link } );
 	    }
+	} );
+	
+	var tabledroit = $$( '#tableEditDroits' ).each(function (elmt) {
+    	if( large )
+			var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus2.png', 'alt': 'Étendre', 'width': '12px' } );
+		else
+			var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus2.png', 'alt': 'Étendre' } );
+	
+		var biglink = img.wrap( 'a', { 'href': '#', 'class' : 'toggler', 'onclick' : 'return false;' } );
+	
+		$( biglink ).observe( 'click', function( event ) {
+			$$( '#tableEditDroits tr.niveau0 td.label' ).each( function ( elmtTd ) {
+				if( elmtTd.up( 'tr' ).next( 'tr' ).hasClassName('niveau1')) {
+					var nextTr = $( elmtTd ).up( 'tr' ).next( 'tr' );
+		
+					while( nextTr != undefined && Element.hasClassName( nextTr, 'niveau1' ) ) {
+						if( $( elmt ).down( 'img' ).alt == 'Étendre' ) {
+							$( elmtTd ).down( 'img' ).src = dir + '/bullet_toggle_minus2.png';
+							$( elmtTd ).down( 'img' ).alt = 'Réduire';
+							nextTr.show();
+						}
+						else {
+							$( elmtTd ).down( 'img' ).src = dir + '/bullet_toggle_plus2.png';
+							$( elmtTd ).down( 'img' ).alt = 'Étendre';
+							nextTr.hide();
+						}
+
+						nextTr = $( nextTr ).next( 'tr' );
+					}
+				}
+			} );
+			if( $( elmt ).down( 'img' ).alt == 'Étendre' ) {
+				$( elmt ).down( 'img' ).src = dir + '/bullet_toggle_minus2.png';
+				$( elmt ).down( 'img' ).alt = 'Réduire';
+			}
+			else {
+				$( elmt ).down( 'img' ).src = dir + '/bullet_toggle_plus2.png';
+				$( elmt ).down( 'img' ).alt = 'Étendre';
+			}
+		} );
+	
+    	$( elmt ).insert( { 'top' : biglink } );
+    });
+	
+}
+			
+function OpenTree(action, absoluteBaseUrl, large) {
+	var dir = absoluteBaseUrl + 'img/icons';
+	$$( '#tableEditDroits tr.niveau0 td.label' ).each( function ( elmtTd ) {
+		if( elmtTd.up( 'tr' ).next( 'tr' ).hasClassName('niveau1')) {
+			var thisTr = $( elmtTd ).up( 'tr' );
+			if( action == 'open' ) {
+				$( elmtTd ).down( 'a' ).down( 'img' ).src = dir + '/bullet_toggle_minus2.png';
+				$( elmtTd ).down( 'a' ).down( 'img' ).alt = 'Réduire';
+				var nextTr = $( thisTr ).next( 'tr' );
+				while( nextTr != undefined && Element.hasClassName( nextTr, 'niveau1' ) ) {
+					nextTr.show();
+					nextTr = $( nextTr ).next( 'tr' );
+				}
+			}
+			else {
+				$( elmtTd ).down( 'a' ).down( 'img' ).src = dir + '/bullet_toggle_plus2.png';
+				$( elmtTd ).down( 'a' ).down( 'img' ).alt = 'Étendre';
+				var nextTr = $( thisTr ).next( 'tr' );
+				while( nextTr != undefined && Element.hasClassName( nextTr, 'niveau1' ) ) {
+					nextTr.hide();
+					nextTr = $( nextTr ).next( 'tr' );
+				}
+			}
+		}
 	} );
 }
