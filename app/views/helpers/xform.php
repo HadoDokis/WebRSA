@@ -133,13 +133,15 @@
 			// maxLength
 			if( ( !isset( $options['type'] ) || in_array( $options['type'], array( 'string', 'text' ) ) ) && !isset( $options['maxlength'] ) ) { // FIXME: maxLength
 				list( $model, $field ) = model_field( $fieldName );
-				if( !isset( $this->_schemas[$model] ) ) {
-					$this->_schemas[$model] = ClassRegistry::init( $model )->schema();
-				}
-				$schema = $this->_schemas[$model];
-				$field = Set::classicExtract( $schema, $field );
-				if( !empty( $field ) && ( $field['type'] == 'string' ) && isset( $field['length'] ) ) {
-					$options['maxlength'] = $field['length'];
+				if( ClassRegistry::isKeySet( $model ) ) {
+					if( !isset( $this->_schemas[$model] ) ) {
+						$this->_schemas[$model] = ClassRegistry::init( $model )->schema();
+					}
+					$schema = $this->_schemas[$model];
+					$field = Set::classicExtract( $schema, $field );
+					if( !empty( $field ) && ( $field['type'] == 'string' ) && isset( $field['length'] ) ) {
+						$options['maxlength'] = $field['length'];
+					}
 				}
 			}
 
