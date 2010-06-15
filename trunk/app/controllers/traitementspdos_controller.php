@@ -44,10 +44,10 @@
             $pdo = $this->{$this->modelClass}->Propopdo->findById( $id, null, null, -1 );
             $this->set( 'pdo', $pdo );
 
-            $dossier_rsa_id = Set::classicExtract( $pdo, 'Propopdo.dossier_rsa_id' );
+            $personne_id = Set::classicExtract( $pdo, 'Propopdo.personne_id' );
             $pdo_id = Set::classicExtract( $pdo, 'Propopdo.id' );
 
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+            $this->set( 'personne_id', $personne_id );
             $this->set( 'pdo_id', $pdo_id );
             $this->set( 'options', $this->_options() );
         }
@@ -92,20 +92,22 @@
 
                 $propopdo = $this->Propopdo->findById( $id, null, null, -1 );
                 $this->set( 'propopdo', $propopdo );
-
-                $dossier_rsa_id = Set::classicExtract( $propopdo, 'Propopdo.dossier_rsa_id' );
+                $personne_id = Set::classicExtract( $propopdo, 'Propopdo.personne_id' );
+                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
             }
             else if( $this->action == 'edit' ) {
                 $traitement_id = $id;
                 $traitement = $this->Traitementpdo->findById( $traitement_id, null, null, 1 );
                 $this->assert( !empty( $traitement ), 'invalidParameter' );
-
+// debug($traitement);
                 $propopdo_id = Set::classicExtract( $traitement, 'Traitementpdo.propopdo_id' );
-                $dossier_rsa_id = Set::classicExtract( $traitement, 'Propopdo.dossier_rsa_id' );
+                $personne_id = Set::classicExtract( $traitement, 'Propopdo.personne_id' );
+                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
             }
 
             $this->assert( !empty( $dossier_rsa_id ), 'invalidParameter' );
-            $this->set( 'dossier_id', $dossier_rsa_id );
+            $this->set( 'personne_id', $personne_id );
+            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
             $this->set( 'propopdo_id', $propopdo_id );
 
 

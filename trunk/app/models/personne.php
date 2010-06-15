@@ -61,6 +61,10 @@
             'Allocationsoutienfamilial' => array(
                 'classname' => 'Allocationsoutienfamilial',
                 'foreignKey' => 'personne_id',
+            ),
+            'Propopdo' => array(
+                'classname' => 'Propopdo',
+                'foreignKey' => 'personne_id',
             )
         );
 
