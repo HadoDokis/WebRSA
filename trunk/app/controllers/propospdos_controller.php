@@ -51,7 +51,7 @@
             $nbrPersonnes = $this->Propopdo->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
-            $conditions = array( 'Personne.id' => $personne_id );
+            $conditions = array( 'Propopdo.personne_id' => $personne_id );
 
             /// Récupération de la situation du dossier
 //             $options = $this->Propopdo->prepare( 'etat', array( 'conditions' => $conditions ) );
@@ -61,6 +61,7 @@
             $options = $this->Propopdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
             $pdos = $this->Propopdo->find( 'all', $options );
 
+debug($pdos);
             if( !empty( $pdos ) ){
 
                 /// Récupération des Pièces liées à la PDO
