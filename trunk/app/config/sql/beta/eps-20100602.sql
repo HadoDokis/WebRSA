@@ -26,23 +26,23 @@ DROP TABLE IF EXISTS sceanceseps_demandesreorient;
 DROP TABLE IF EXISTS seanceseps_demandesreorient;
 DROP TABLE IF EXISTS demandesreorient_sceanceseps;
 DROP TABLE IF EXISTS demandesreorient_seanceseps CASCADE;
-DROP TABLE IF EXISTS demandesreorient;
+DROP TABLE IF EXISTS demandesreorient CASCADE;
 DROP TABLE IF EXISTS motifsdemsreorients;
 DROP TYPE IF EXISTS type_accordconcertation_reorient;
 DROP TYPE IF EXISTS type_etapedecisionep;
 DROP TYPE IF EXISTS type_decisionep;
 DROP TABLE IF EXISTS partseps_seanceseps;
 DROP TABLE IF EXISTS partseps_sceanceseps;
-DROP TYPE IF EXISTS type_presenceep;
+DROP TYPE IF EXISTS type_presenceep CASCADE;
 DROP TYPE IF EXISTS type_reponseinvitationep;
 DROP TABLE IF EXISTS sceanceseps;
 DROP TABLE IF EXISTS seanceseps;
 DROP TYPE IF EXISTS type_traitementthemeep;
 DROP TABLE IF EXISTS eps_zonesgeographiques;
-DROP TABLE IF EXISTS partseps;
+DROP TABLE IF EXISTS partseps CASCADE;
 DROP TYPE IF EXISTS type_rolepartep;
 DROP TABLE IF EXISTS fonctionspartseps;
-DROP TABLE IF EXISTS eps;
+DROP TABLE IF EXISTS eps CASCADE;
 DROP TYPE IF EXISTS type_themeep;
 
 -- -----------------------------------------------------------------------------
