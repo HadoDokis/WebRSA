@@ -8,7 +8,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 BEGIN;
-
+DROP TABLE IF EXISTS cuis;
 -- *****************************************************************************
 
 CREATE TYPE type_munir AS ENUM ( 'CER', 'NCA', 'CV', 'AUT' );
