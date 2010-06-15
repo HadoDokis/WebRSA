@@ -121,6 +121,16 @@
                                                     ?>
                                                 </li>
                                             <?php endif;?>
+                                            <?php if( $permissions->check( 'propospdos', 'index' ) ):?>
+                                                <li>
+                                                    <?php
+                                                        echo $html->link(
+                                                            'Consultation dossier PDO',
+                                                            array( 'controller' => 'propospdos', 'action' => 'index', $personne['id'] )
+                                                        );
+                                                    ?>
+                                                </li>
+                                            <?php endif;?>
                                         </ul>
                                     </li>
                                 <?php endif;?>
@@ -313,14 +323,6 @@
                             echo $html->link(
                                 'Détails du droit RSA',
                                 array( 'controller' => 'detailsdroitsrsa', 'action' => 'index', $dossier['Dossier']['id'] )
-                            );
-                        ?>
-                    </li>
-                    <li>
-                        <?php
-                            echo $html->link(
-                                'Consultation dossier PDO',
-                                array( 'controller' => 'dossierspdo', 'action' => 'index', $dossier['Dossier']['id'] )
                             );
                         ?>
                     </li>

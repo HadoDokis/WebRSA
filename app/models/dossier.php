@@ -41,10 +41,6 @@
             'Infofinanciere' => array(
                 'classname' => 'Infofinanciere',
                 'foreignKey' => 'dossier_rsa_id'
-            ),
-            'Propopdo' => array(
-                'classname' => 'Propopdo',
-                'foreignKey' => 'dossier_rsa_id'
             )
         );
 
