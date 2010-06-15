@@ -158,33 +158,33 @@
             /**
             * Régle ajoutée suite à la demande du CG66
             */
-            'sitfam_ci' => array(
-                'maxLength' => array(
-                    'rule' => array( 'maxLength', 500 ),
-                    'message' => '500 carac. max'
-                )
-            ),
-            'sitpro_ci' => array(
-                'maxLength' => array(
-                    'rule' => array( 'maxLength', 500 ),
-                    'message' => '500 carac. max'
-                )
-            ),
-            'observ_benef' => array(
-                'maxLength' => array(
-                    'rule' => array( 'maxLength', 500 ),
-                    'message' => '500 carac. max'
-                )
-            ),
+//             'sitfam_ci' => array(
+//                 'maxLength' => array(
+//                     'rule' => array( 'maxLength', 500 ),
+//                     'message' => '500 carac. max'
+//                 )
+//             ),
+//             'sitpro_ci' => array(
+//                 'maxLength' => array(
+//                     'rule' => array( 'maxLength', 500 ),
+//                     'message' => '500 carac. max'
+//                 )
+//             ),
+//             'observ_benef' => array(
+//                 'maxLength' => array(
+//                     'rule' => array( 'maxLength', 500 ),
+//                     'message' => '500 carac. max'
+//                 )
+//             ),
             'nature_projet' => array(
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
-                ),
+                )/*,
                 'maxLength' => array(
                     'rule' => array( 'maxLength', 500 ),
                     'message' => '500 carac. max'
-                )
+                )*/
             )
         );
 
