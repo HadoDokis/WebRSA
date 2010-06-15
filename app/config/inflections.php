@@ -107,7 +107,7 @@
         'autre_annulation' => 'autres_annulations',
         //Parcours d'insertion
         'suiviinsertion' => 'suivisinsertion',
-        'dossierpdo' => 'dossierspdo',
+//         'dossierpdo' => 'dossierspdo',
         'avispcgpersonne' => 'avispcgpersonnes',
         'indicateurmensuel' => 'indicateursmensuels',
         'cohortepdo' => 'cohortespdos',
