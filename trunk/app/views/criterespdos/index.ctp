@@ -134,7 +134,7 @@
                                 h( $locale->date( 'Locale->date',  Set::classicExtract( $criterepdo, 'Propopdo.datereceptionpdo' ) ) ),
                                 $html->viewLink(
                                     'Voir',
-                                    array( 'controller' => 'dossierspdo', 'action' => 'index', Set::classicExtract( $criterepdo, 'Propopdo.dossier_rsa_id' ) )
+                                    array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $criterepdo, 'Propopdo.personne_id' ) )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
                             ),

@@ -55,56 +55,56 @@
             )
         );
         var $_types = array(
-            'etat' => array(
-                'fields' => array(
-                    '"Dossier"."id"',
-                    '"Situationdossierrsa"."etatdosrsa"',
-                    '"Dossier"."numdemrsa"',
-                    '"Dossier"."matricule"',
-                    '"Dossier"."dtdemrsa"',
-                    '"Situationdossierrsa"."dtrefursa"',
-                    '"Situationdossierrsa"."dtclorsa"',
-                    '"Suiviinstruction"."typeserins"'
-                ),
-                'recursive' => -1,
-                'joins' => array(
-                    array(
-                        'table'      => 'dossiers_rsa',
-                        'alias'      => 'Dossier',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id' )
-                    ),
-                    array(
-                        'table'      => 'suivisinstruction',
-                        'alias'      => 'Suiviinstruction',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
-                    ),
-                    array(
-                        'table'      => 'foyers',
-                        'alias'      => 'Foyer',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Dossier.id = Foyer.dossier_rsa_id' )
-                    )/*,
-                    array(
-                        'table'      => 'adresses_foyers',
-                        'alias'      => 'Adressefoyer',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-                    ),
-                    array(
-                        'table'      => 'adresses',
-                        'alias'      => 'Adresse',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                    )*/
-                )
-            ),
+//             'etat' => array(
+//                 'fields' => array(
+//                     '"Dossier"."id"',
+//                     '"Situationdossierrsa"."etatdosrsa"',
+//                     '"Dossier"."numdemrsa"',
+//                     '"Dossier"."matricule"',
+//                     '"Dossier"."dtdemrsa"',
+//                     '"Situationdossierrsa"."dtrefursa"',
+//                     '"Situationdossierrsa"."dtclorsa"',
+//                     '"Suiviinstruction"."typeserins"'
+//                 ),
+//                 'recursive' => -1,
+//                 'joins' => array(
+//                     array(
+//                         'table'      => 'dossiers_rsa',
+//                         'alias'      => 'Dossier',
+//                         'type'       => 'INNER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'suivisinstruction',
+//                         'alias'      => 'Suiviinstruction',
+//                         'type'       => 'INNER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
+//                     ),
+//                     array(
+//                         'table'      => 'foyers',
+//                         'alias'      => 'Foyer',
+//                         'type'       => 'INNER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Dossier.id = Foyer.dossier_rsa_id' )
+//                     )/*,
+//                     array(
+//                         'table'      => 'adresses_foyers',
+//                         'alias'      => 'Adressefoyer',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+//                     ),
+//                     array(
+//                         'table'      => 'adresses',
+//                         'alias'      => 'Adresse',
+//                         'type'       => 'LEFT OUTER',
+//                         'foreignKey' => false,
+//                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+//                     )*/
+//                 )
+//             ),
             'propopdo' => array(
                 'fields' => array(
                     '"Propopdo"."id"',
