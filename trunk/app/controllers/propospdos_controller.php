@@ -61,7 +61,7 @@
             $options = $this->Propopdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
             $pdos = $this->Propopdo->find( 'all', $options );
 
-debug($pdos);
+// debug($pdos);
             if( !empty( $pdos ) ){
 
                 /// Récupération des Pièces liées à la PDO
