@@ -2,7 +2,7 @@
 
 <?php  $this->pageTitle = 'Détails demande PDO';?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
 <?php
 
@@ -23,10 +23,10 @@
     <h1>Détails demande PDO</h1>
     <ul class="actionMenu">
         <?php
-            if( $permissions->check( 'dossierspdo', 'edit' ) ) {
+            if( $permissions->check( 'propospdos', 'edit' ) ) {
                 echo '<li>'.$html->editLink(
                     'Éditer PDO',
-                    array( 'controller' => 'dossierspdo', 'action' => 'edit', Set::classicExtract( $pdo, 'Propopdo.id' ) )
+                    array( 'controller' => 'propospdos', 'action' => 'edit', Set::classicExtract( $pdo, 'Propopdo.id' ) )
                 ).' </li>';
             }
         ?>
@@ -53,7 +53,7 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Type de notification' );?></th>
-                    <td><?php echo Set::enum( Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' ),  $typenotifpdo ) ;?></td>
+                    <td><?php echo value( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' ) );?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Date de notification' );?></th>
@@ -88,7 +88,7 @@
                             if( !empty( $pdo['Personne']['pieecpres'] ) ){
                                 echo $html->attachLink(
                                     'Voir PDO',
-                                    array( 'controller' => 'dossierspdo', 'action' => 'view', $pdo['Propopdo']['id'] )
+                                    array( 'controller' => 'propospdos', 'action' => 'view', $pdo['Propopdo']['id'] )
                                 );
                             }
                             ?>
