@@ -109,15 +109,15 @@
 
 
             /// Requête
-            $this->Dossier =& ClassRegistry::init( 'Dossier' );
+//             $this->Dossier =& ClassRegistry::init( 'Dossier' );
 
             $query = array(
                 'fields' => array(
                     '"Propopdo"."id"',
+                    '"Propopdo"."personne_id"',
                     '"Propopdo"."decisionpdo_id"',
                     '"Propopdo"."datereceptionpdo"',
                     '"Propopdo"."datedecisionpdo"',
-                    '"Propopdo"."dossier_rsa_id"',
                     '"Propopdo"."motifpdo"',
                     '"Propopdo"."originepdo_id"',
                     '"Dossier"."id"',
@@ -138,26 +138,11 @@
                 'recursive' => -1,
                 'joins' => array(
                     array(
-                        'table'      => 'dossiers_rsa',
-                        'alias'      => 'Dossier',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Dossier.id = Propopdo.dossier_rsa_id' )
-                    ),
-
-                    array(
-                        'table'      => 'foyers',
-                        'alias'      => 'Foyer',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
-                    ),
-                    array(
                         'table'      => 'personnes',
                         'alias'      => 'Personne',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                        'conditions' => array( 'Propopdo.personne_id = Personne.id' ),
                     ),
                     array(
                         'table'      => 'prestations',
@@ -171,20 +156,38 @@
                             '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
                         )
                     ),
-
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
                     array(
                         'table'      => 'adresses_foyers',
                         'alias'      => 'Adressefoyer',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                        'conditions' => array(
+                            'Foyer.id = Adressefoyer.foyer_id',
+                            'Adressefoyer.rgadr = \'01\'',
+                            // FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+                            'Adressefoyer.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique()
+                        )
                     ),
                     array(
                         'table'      => 'adresses',
                         'alias'      => 'Adresse',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    ),
+                    array(
+                        'table'      => 'dossiers_rsa',
+                        'alias'      => 'Dossier',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
                     )
                 ),
                 'limit' => 10,
