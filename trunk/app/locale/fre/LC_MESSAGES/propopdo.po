@@ -39,6 +39,9 @@ msgstr "Justificatifs arrivés"
 msgid "Propopdo.decisionpdo_id"
 msgstr "Proposition de décision"
 
+msgid "Propopdo.user_id"
+msgstr "Gestionnaire"
+
 msgid "Propopdo.datereceptionpdo"
 msgstr "Date de réception de la PDO"
 

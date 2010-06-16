@@ -43,6 +43,7 @@
             $datedecisionpdo = Set::extract( $criterespdo, 'Cohortepdo.datedecisionpdo' );
             $matricule = Set::extract( $criterespdo, 'Cohortepdo.matricule' );
             $numcomptt = Set::extract( $criterespdo, 'Cohortepdo.numcomptt' );
+            $gestionnaire = Set::extract( $criterespdo, 'Cohortepdo.user_id' );
 
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
             $filtersPersonne = array();
@@ -83,6 +84,11 @@
             // Décision CG
             if( !empty( $decisionpdo_id ) ) {
                 $conditions[] = 'Propopdo.decisionpdo_id = \''.$decisionpdo_id.'\'';
+            }
+
+            // Décision CG
+            if( !empty( $gestionnaire ) ) {
+                $conditions[] = 'Propopdo.user_id = \''.$gestionnaire.'\'';
             }
 
             /// Critères sur les PDOs - date de décision

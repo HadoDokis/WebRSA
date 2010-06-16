@@ -37,6 +37,19 @@
             $this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
             $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
 
+            $this->set( 'gestionnaire', $this->User->find(
+                    'list',
+                    array(
+                        'fields' => array(
+                            'User.nom_complet'
+                        ),
+                        'conditions' => array(
+                            'User.isgestionnaire' => 'O'
+                        )
+                    )
+                )
+            );
+
             $options = $this->Propopdo->allEnumLists();
             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
             $this->set( compact( 'options' ) );

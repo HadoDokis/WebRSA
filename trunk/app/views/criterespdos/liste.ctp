@@ -128,12 +128,12 @@
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
-            <li><?php
-                echo $html->exportLink(
+            <!--<li><?php
+                /*echo $html->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'criterespdos', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
-                );
-            ?></li>
+                );*/
+            ?></li>-->
         </ul>
     <?php else:?>
         <p>Vos critères n'ont retourné aucune PDO.</p>

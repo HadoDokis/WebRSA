@@ -47,6 +47,7 @@
             echo $form->input( 'Cohortepdo.typepdo_id', array( 'label' =>  ( __( 'typepdo', true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );
             echo $form->input( 'Cohortepdo.decisionpdo_id', array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );
             echo $form->input( 'Cohortepdo.motifpdo', array( 'label' => __( 'motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) );
+            echo $form->input( 'Cohortepdo.user_id', array( 'label' => __d( 'propopdo', 'Propopdo.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) );
         ?>
             <?php echo $form->input( 'Cohortepdo.datedecisionpdo', array( 'label' => 'Filtrer par date de décision des PDOs', 'type' => 'checkbox' ) );?>
             <fieldset>

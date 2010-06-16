@@ -58,6 +58,7 @@
                 'Propopdo.decisionpdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.decisionpdo_id', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ),
                 'Propopdo.datereceptionpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.datereceptionpdo', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
                 'Propopdo.originepdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.originepdo_id', true ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
+                'Propopdo.user_id' => array( 'label' => __d( 'propopdo', 'Propopdo.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ),
                 'Propopdo.motifpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true  ),
                 'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
                 'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
@@ -88,6 +89,7 @@
                     <th><?php echo $paginator->sort( 'Origine de la PDO', 'Propopdo.originepdo_id' );?></th>
                     <th><?php echo $paginator->sort( 'Motif de la PDO', 'Propopdo.motifpdo' );?></th>
                     <th><?php echo $paginator->sort( 'Date du contrat', 'Propopdo.datereceptionpdo' );?></th>
+                    <th><?php echo $paginator->sort( 'Gestionnaire', 'Propopdo.user_id' );?></th>
                     <th colspan="4" class="action">Actions</th>
                 </tr>
             </thead>
@@ -132,6 +134,7 @@
                                 h( Set::enum( Set::classicExtract( $criterepdo, 'Propopdo.originepdo_id' ), $originepdo ) ),
                                 h( Set::enum( Set::classicExtract( $criterepdo, 'Propopdo.motifpdo' ), $motifpdo ) ),
                                 h( $locale->date( 'Locale->date',  Set::classicExtract( $criterepdo, 'Propopdo.datereceptionpdo' ) ) ),
+                                h( Set::classicExtract( $gestionnaire, Set::classicExtract( $criterepdo, 'Propopdo.user_id' ) ) ),
                                 $html->viewLink(
                                     'Voir',
                                     array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $criterepdo, 'Propopdo.personne_id' ) )
