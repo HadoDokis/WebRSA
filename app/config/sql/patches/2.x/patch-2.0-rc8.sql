@@ -192,8 +192,8 @@ CREATE TABLE cuis (
 COMMENT ON TABLE cuis IS 'Table pour les CUIs';
 -- *****************************************************************************
 
-ALTER TABLE demandesreorient ALTER COLUMN reforigine_id DROP NOT NULL;
-ALTER TABLE demandesreorient ALTER COLUMN reforigine_id SET DEFAULT NULL;
+-- ALTER TABLE demandesreorient ALTER COLUMN reforigine_id DROP NOT NULL;
+-- ALTER TABLE demandesreorient ALTER COLUMN reforigine_id SET DEFAULT NULL;
 
 -- *****************************************************************************
 -- ***** Liste des départements (26/05/2010)                               *****
@@ -517,9 +517,6 @@ COMMIT;
 BEGIN;
 ALTER TABLE propospdos DROP COLUMN dossier_rsa_id;
 ALTER TABLE propospdos ADD COLUMN personne_id INTEGER NOT NULL REFERENCES personnes(id);
-
-ALTER TABLE piecespdos DROP COLUMN dossier_rsa_id;
-ALTER TABLE piecespdos ADD COLUMN personne_id INTEGER NOT NULL REFERENCES personnes(id);
 
 COMMIT;
 
