@@ -12,7 +12,7 @@
         }
     }
 
-    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'N° CAF', 'Commune de l\'allocataire', 'Proposition de décision', 'Motif PDO', 'Date de proposition de décision' ) );
+    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'N° CAF', 'Commune de l\'allocataire', 'Proposition de décision', 'Motif PDO', 'Date de proposition de décision', 'Gestionnaire' ) );
 
     foreach( $pdos as $pdo ) {
 
@@ -25,7 +25,8 @@
 //             value( $struct, Set::classicExtract( $pdo, 'Propopdo.structurereferente_id' ) ),
             Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ),
             Set::enum( Set::classicExtract( $pdo, 'Propopdo.motifpdo' ), $motifpdo ),
-            $locale->date( 'Date::short', Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) )
+            $locale->date( 'Date::short', Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ),
+            Set::classicExtract( $gestionnaire, Set::classicExtract( $pdo, 'Propopdo.user_id' ) )
         );
         $csv->addRow($row);
     }

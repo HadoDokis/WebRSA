@@ -227,6 +227,7 @@
             $prenom = Set::extract( $criterespdos, 'Search.Personne.prenom' );
             $matricule = Set::extract( $criterespdos, 'Search.Dossier.matricule' );
             $numdemrsa = Set::extract( $criterespdos, 'Search.Dossier.numdemrsa' );
+            $gestionnaire = Set::extract( $criterespdos, 'Search.Propopdo.user_id' );
 
 
             /// Critères sur les PDOs - date de decisonde la PDO
@@ -303,6 +304,10 @@
             }
 
 
+            // Gestionnaire de la PDO
+            if( !empty( $gestionnaire ) ) {
+                $conditions[] = 'Propopdo.user_id = \''.Sanitize::clean( $gestionnaire ).'\'';
+            }
 
 
             /// Requête
@@ -317,6 +322,7 @@
                     '"Propopdo"."datedecisionpdo"',
                     '"Propopdo"."motifpdo"',
                     '"Propopdo"."originepdo_id"',
+                    '"Propopdo"."user_id"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
                     '"Dossier"."dtdemrsa"',
