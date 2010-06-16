@@ -522,3 +522,7 @@ ALTER TABLE piecespdos DROP COLUMN dossier_rsa_id;
 ALTER TABLE piecespdos ADD COLUMN personne_id INTEGER NOT NULL REFERENCES personnes(id);
 
 COMMIT;
+
+BEGIN;
+ALTER TABLE users ADD COLUMN isgestionnaire type_no DEFAULT 'N';
+COMMIT;

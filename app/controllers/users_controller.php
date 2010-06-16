@@ -155,6 +155,7 @@
             $this->set( 'gp', $this->Group->find( 'list' ) );
             $this->set( 'si', $this->Serviceinstructeur->find( 'list' ) );
             $this->set( 'typevoie', $this->Option->typevoie() );
+            $this->set( 'options', $this->User->allEnumLists() );
 
             if( !empty( $this->data ) ) {
                 $this->User->begin();
@@ -200,6 +201,7 @@
             $this->set( 'gp', $this->Group->find( 'list' ) );
             $this->set( 'si', $this->Serviceinstructeur->find( 'list' ) );
             $this->set( 'typevoie', $this->Option->typevoie() );
+            $this->set( 'options', $this->User->allEnumLists() );
 
             unset( $this->User->validate['passwd'] );
 

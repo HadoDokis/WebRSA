@@ -4,6 +4,15 @@
 
         var $name = 'User';
 
+
+        var $actsAs = array(
+            'Enumerable' => array(
+                'fields' => array(
+                    'isgestionnaire'
+                )
+            )
+        );
+
         var $belongsTo = array(
             'Group'=> array(
                 'className'  => 'Group',

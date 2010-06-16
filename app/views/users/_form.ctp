@@ -55,3 +55,7 @@
     <legend><?php echo required( 'Service instructeur' );?></legend>
     <?php echo $form->input( 'User.serviceinstructeur_id', array( 'label' => false, 'type' => 'select' , 'options' => $si, 'empty' => true ) );?>
 </fieldset>
+<fieldset class="col2">
+    <legend><?php echo required( 'Est-il gestionnaire ?' );?></legend>
+    <?php echo $xform->input( 'User.isgestionnaire', array( 'legend' => false, 'type' => 'radio', 'options' => $options['isgestionnaire'] ) );?>
+</fieldset>

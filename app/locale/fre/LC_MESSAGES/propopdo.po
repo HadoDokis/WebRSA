@@ -22,7 +22,7 @@ msgstr ""
 # Enum Propopdo.statutdecision
 ###############################################################################
 msgid "Criterespdos::index"
-msgstr "Recherche par PDOs"
+msgstr "Recherche de PDOs"
 
 msgid "ENUM::STATUTDECISION::DEF"
 msgstr "Définitive"
