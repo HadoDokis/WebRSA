@@ -19,6 +19,7 @@
             $this->set( 'optionsacts', $optionsacts );
             $optionsdsps = $this->Dsp->allEnumLists();
             $this->set( 'optionsdsps', $optionsdsps );
+
             $optionslogts = $this->Amenaglogt->allEnumLists();
             $this->set( 'optionslogts', $optionslogts );
             $optionscrea = $this->Acccreaentr->allEnumLists();

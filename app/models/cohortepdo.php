@@ -13,7 +13,7 @@
             if( !empty( $statutValidationAvis ) ) {
                 if( $statutValidationAvis == 'Decisionpdo::nonvalide' ) {
                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
-                    $conditions[] = 'Situationdossierrsa.dossier_rsa_id NOT IN ( SELECT propospdos.dossier_rsa_id FROM propospdos )';
+//                     $conditions[] = 'Situationdossierrsa.dossier_rsa_id NOT IN ( SELECT propospdos.personne_id FROM propospdos )';
                 }
                 else if( $statutValidationAvis == 'Decisionpdo::enattente' ) {
                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
@@ -99,7 +99,7 @@
             $query = array(
                 'fields' => array(
                     '"Propopdo"."id"',
-                    '"Propopdo"."dossier_rsa_id"',
+                    '"Propopdo"."personne_id"',
                     '"Propopdo"."typepdo_id"',
                     '"Propopdo"."decisionpdo_id"',
                     '"Propopdo"."typenotifpdo_id"',
@@ -124,18 +124,11 @@
                 ),
                 'joins' => array(
                     array(
-                        'table'      => 'foyers',
-                        'alias'      => 'Foyer',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
-                    ),
-                    array(
                         'table'      => 'personnes',
                         'alias'      => 'Personne',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                        'conditions' => array( 'Propopdo.personne_id = Personne.id' ),
                     ),
                     array(
                         'table'      => 'prestations',
@@ -146,8 +139,15 @@
                             'Personne.id = Prestation.personne_id',
                             'Prestation.natprest = \'RSA\'',
 //                             '( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
-                            '( Prestation.rolepers = \'DEM\' )',
+                            '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
                         )
+                    ),
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
                     ),
                     array(
                         'table'      => 'adresses_foyers',
