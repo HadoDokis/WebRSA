@@ -66,7 +66,7 @@
                     <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo_id' );?></th>
                     <th><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.decisionpdo_id' );?></th>
                     <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.datedecisionpdo' );?></th>
-                    <th><?php echo $paginator->sort( 'Motif', 'Propopdo.motifpdo' );?></th>
+                    <th><?php echo $paginator->sort( 'Gestionnaire', 'Propopdo.user_id' );?></th>
 
                     <th class="action">Action</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
@@ -92,7 +92,7 @@
                             </tbody>
                         </table>';
                         $title = $pdo['Dossier']['numdemrsa'];
-
+// debug($pdo);
 
                     echo $html->tableCells(
                         array(
@@ -103,10 +103,10 @@
                             h( value( $typepdo, Set::extract( 'Propopdo.typepdo_id', $pdo ) ) ),
                             h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo_id', $pdo ) ) ),
                             h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
-                            h( value( $motifpdo, Set::extract( 'Propopdo.motifpdo', $pdo ) ) ),
+                            h( Set::classicExtract( $gestionnaire, Set::classicExtract( $pdo, 'Propopdo.user_id' ) ) ),
                             $html->viewLink(
-                                'Voir le contrat « '.$title.' »',
-                                array( 'controller' => 'dossierspdo', 'action' => 'index', $pdo['Dossier']['id'] )
+                                'Voir la PDO « '.$title.' »',
+                                array( 'controller' => 'propospdos', 'action' => 'index', $pdo['Personne']['id'] )
                             ),
                             array( $innerTable, array( 'class' => 'innerTableCell' ) )
                         ),

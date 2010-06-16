@@ -122,7 +122,7 @@
 
                             $html->viewLink(
                                 'Voir le contrat « '.$title.' »',
-                                array( 'controller' => 'dossierspdo', 'action' => 'index', $pdo['Dossier']['id'] )
+                                array( 'controller' => 'propospdos', 'action' => 'index', $pdo['Propopdo']['personne_id'] )
                             ),
                             array( $innerTable, array( 'class' => 'innerTableCell' ) )
                         ),

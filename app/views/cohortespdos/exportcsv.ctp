@@ -1,7 +1,7 @@
 <?php
     $csv->preserveLeadingZerosInExcel = true;
 
-    $csv->addRow( array( 'N° demande RSA', 'Date demande RSA', 'Nom/Prénom allocataire', 'Date de naissance', 'Commune', 'Type de PDO', 'Date de soumission PDO', 'Décision PDO', 'Motif PDO', 'Commentaires PDO' ) );
+    $csv->addRow( array( 'N° demande RSA', 'Date demande RSA', 'Nom/Prénom allocataire', 'Date de naissance', 'Commune', 'Type de PDO', 'Date de soumission PDO', 'Décision PDO', 'Motif PDO', 'Commentaires PDO', 'Gestionnaire' ) );
 
     foreach( $pdos as $pdo ) {
         $row = array(
@@ -14,7 +14,8 @@
             $locale->date( 'Date::short', Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ),
             Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ),
             Set::enum( Set::classicExtract( $pdo, 'Propopdo.motifpdo' ), $motifpdo ),
-            Set::classicExtract( $pdo, 'Propopdo.commentairepdo' )
+            Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ),
+            Set::classicExtract( $gestionnaire, Set::classicExtract( $pdo, 'Propopdo.user_id' ) )
         );
         $csv->addRow($row);
     }

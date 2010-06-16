@@ -517,7 +517,7 @@ COMMIT;
 BEGIN;
 ALTER TABLE propospdos DROP COLUMN dossier_rsa_id;
 ALTER TABLE propospdos ADD COLUMN personne_id INTEGER NOT NULL REFERENCES personnes(id);
-
+ALTER TABLE propospdos ADD COLUMN user_id INTEGER REFERENCES users(id);
 COMMIT;
 
 BEGIN;

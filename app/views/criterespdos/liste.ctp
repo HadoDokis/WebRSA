@@ -109,7 +109,7 @@
                                 h( Set::classicExtract( $etatdosrsa, Set::classicExtract( $criterepdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
                                 $html->viewLink(
                                     'Voir',
-                                    array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $criterepdo, 'Propopdo.personne_id' ) )
+                                    array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $criterepdo, 'Personne.id' ) )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
                             ),

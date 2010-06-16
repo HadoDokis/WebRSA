@@ -13,17 +13,15 @@
             if( !empty( $statutValidationAvis ) ) {
                 if( $statutValidationAvis == 'Decisionpdo::nonvalide' ) {
                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
-//                     $conditions[] = 'Situationdossierrsa.dossier_rsa_id NOT IN ( SELECT propospdos.personne_id FROM propospdos )';
+                    $conditions[] = 'Propopdo.user_id IS NULL';
+
                 }
                 else if( $statutValidationAvis == 'Decisionpdo::enattente' ) {
                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
                     $conditions[] = 'Propopdo.motifpdo = \'E\'';
-//                     $conditions[] = 'Propopdo.decisionpdo_id = \'E\'';
                 }
                 else if( $statutValidationAvis == 'Decisionpdo::valide' ) {
-//                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
-                    $conditions[] = 'Propopdo.motifpdo <> \'E\'';
-                    $conditions[] = 'Propopdo.decisionpdo_id IS NOT NULL';
+                    $conditions[] = 'Propopdo.user_id IS NOT NULL';
                 }
             }
 
@@ -106,6 +104,7 @@
                     '"Propopdo"."datedecisionpdo"',
                     '"Propopdo"."motifpdo"',
                     '"Propopdo"."commentairepdo"',
+                    '"Propopdo"."user_id"',
                     '"Dossier"."id"',
                     '"Dossier"."numdemrsa"',
                     '"Dossier"."dtdemrsa"',
@@ -147,21 +146,33 @@
                         'alias'      => 'Foyer',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                        'conditions' => array( 'Foyer.id = Personne.foyer_id' )
                     ),
                     array(
                         'table'      => 'adresses_foyers',
                         'alias'      => 'Adressefoyer',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                        'conditions' => array(
+                            'Foyer.id = Adressefoyer.foyer_id',
+                            'Adressefoyer.rgadr = \'01\'',
+                            // FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+                            'Adressefoyer.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique()
+                        )
                     ),
                     array(
                         'table'      => 'adresses',
                         'alias'      => 'Adresse',
-                        'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    ),
+                    array(
+                        'table'      => 'dossiers_rsa',
+                        'alias'      => 'Dossier',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Dossier.id = Foyer.dossier_rsa_id' )
                     ),
                     array(
                         'table'      => 'situationsdossiersrsa',
@@ -169,16 +180,8 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array(
-                            'Situationdossierrsa.dossier_rsa_id = Dossier.id',
-                            //'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' )'
+                            'Situationdossierrsa.dossier_rsa_id = Dossier.id'
                         )
-                    ),
-                    array(
-                        'table'      => 'propospdos',
-                        'alias'      => 'Propopdo',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Propopdo.dossier_rsa_id = Dossier.id' )
                     ),
                     array(
                         'table'      => 'typesnotifspdos',

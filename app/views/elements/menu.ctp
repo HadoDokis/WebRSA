@@ -50,9 +50,9 @@
                                     <?php if( $permissions->check( 'cohortespdos', 'avisdemande' ) ): ?>
                                         <li><?php echo $html->link( 'Nouvelles demandes', array( 'controller' => 'cohortespdos', 'action' => 'avisdemande' ), array( 'title' => 'Avis CG demandé' ) );?></li>
                                     <?php endif; ?>
-                                    <?php if( $permissions->check( 'cohortespdos', 'enattente' ) ): ?>
+                                    <!-- <?php /*if( $permissions->check( 'cohortespdos', 'enattente' ) ): ?>
                                         <li><?php echo $html->link( 'PDOs en attente', array( 'controller' => 'cohortespdos', 'action' => 'enattente' ), array( 'title' => 'PDOs en attente' ) );?></li>
-                                    <?php endif; ?>
+                                    <?php endif;*/ ?> -->
                                     <?php if( $permissions->check( 'cohortespdos', 'valide' ) ): ?>
                                         <li><?php echo $html->link( 'Liste PDOs', array( 'controller' => 'cohortespdos', 'action' => 'valide' ), array( 'title' => 'PDOs validés' ) );?></li>
                                     <?php endif; ?>
