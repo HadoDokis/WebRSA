@@ -107,7 +107,19 @@
                             <li><?php echo $html->link( 'Par Rendez-vous',  array( 'controller' => 'criteresrdv', 'action' => 'index'  ) );?></li>
                         <?php endif;?>
                         <?php if( $permissions->check( 'criterespdos', 'index' ) ):?>
-                            <li><?php echo $html->link( 'Par PDOs',  array( 'controller' => 'criterespdos', 'action' => 'index'  ) );?></li>
+                            <li>
+                                <?php echo $html->link( 'Par PDOs', '#' );?>
+                                <ul>
+                                    <li>
+                                        <?php echo $html->link( 'Nouvelles PDOs',  array( 'controller' => 'criterespdos', 'action' => 'nouvelles'  ) );?>
+                                    </li>
+
+                                    <li>
+                                        <?php echo $html->link( 'Liste des PDOs',  array( 'controller' => 'criterespdos', 'action' => 'index'  ) );?>
+                                    </li>
+                                </ul>
+                            </li>
+
                         <?php endif;?>
                     </ul>
                 </li>

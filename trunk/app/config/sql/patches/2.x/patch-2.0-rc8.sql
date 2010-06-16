@@ -512,3 +512,13 @@ CREATE TABLE bilanparcours (
 );
 COMMENT ON TABLE bilanparcours IS 'Table pour le bilan parcours';
 COMMIT;
+
+
+BEGIN;
+ALTER TABLE propospdos DROP COLUMN dossier_rsa_id;
+ALTER TABLE propospdos ADD COLUMN personne_id INTEGER NOT NULL REFERENCES personnes(id);
+
+ALTER TABLE piecespdos DROP COLUMN dossier_rsa_id;
+ALTER TABLE piecespdos ADD COLUMN personne_id INTEGER NOT NULL REFERENCES personnes(id);
+
+COMMIT;
