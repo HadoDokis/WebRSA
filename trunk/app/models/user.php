@@ -30,6 +30,12 @@
             )
         );
 
+        public $virtualFields = array(
+            'nom_complet' => array(
+                'type'      => 'string',
+                'postgres'  => '( "%s"."nom" || \' \' || "%s"."prenom" )'
+            ),
+        );
         //*********************************************************************
 
         var $hasAndBelongsToMany = array(

@@ -3,7 +3,7 @@
     class CohortespdosController extends AppController {
 
         var $name = 'Cohortespdos';
-        var $uses = array( 'Canton', 'Cohortepdo', 'Option', 'Dossier', 'Situationdossierrsa', 'Propopdo', 'Typenotifpdo', 'Typepdo', 'Decisionpdo' );
+        var $uses = array( 'Canton', 'Cohortepdo', 'Option', 'Dossier', 'Situationdossierrsa', 'Propopdo', 'Typenotifpdo', 'Typepdo', 'Decisionpdo', 'User' );
         var $helpers = array( 'Csv', 'Paginator' );
 
         var $paginate = array(
@@ -31,6 +31,18 @@
             $this->set( 'motidempdo', $this->Option->motidempdo() );
 //             $this->set( 'motideccg', $this->Option->motideccg() );
             $this->set( 'motifpdo', $this->Option->motifpdo() );
+            $this->set( 'gestionnaire', $this->User->find(
+                    'list',
+                    array(
+                        'fields' => array(
+                            'User.nom_complet'
+                        ),
+                        'conditions' => array(
+                            'User.isgestionnaire' => 'O'
+                        )
+                    )
+                )
+            );
         }
 
         //*********************************************************************
@@ -69,30 +81,22 @@
             if( !empty( $this->data ) ) {
                 if( !empty( $this->data['Propopdo'] ) ) {
                     $valid = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'only', 'atomic' => false ) );
-//                     $data = Set::extract( $this->data, '/Propopdo' );
-//                     if( $this->Propopdo->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-//                         $saved = $this->Propopdo->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
-//                         if( array_search( 0, $saved ) == false ) {
-//                             //FIXME ?
-//                             foreach( array_unique( Set::extract( $this->data, 'Propopdo.{n}.dossier_id' ) ) as $dossier_id ) {
-//                                 $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
-//                             }
-// 
-//                             $this->Dossier->commit();
-// //                             $this->data = array();
-//                         }
-//                         else {
-//                             $this->Dossier->rollback();
-//                         }
-//                     }
+
+                    $personne_id = Set::extract(  $this->data, 'Propopdo.{n}.personne_id'  );
+
                     if( $valid ) {
                         $this->Dossier->begin();
                         $saved = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'first', 'atomic' => false ) );
                         if( $saved ) {
                             // FIXME ?
-                            foreach( array_unique( Set::extract( $this->data, 'Propopdo.{n}.dossier_id' ) ) as $dossier_id ) {
+                            foreach( $personne_id as $i => $pers ) {
+                                $dossier_id =  $this->Personne->dossierId( $pers );
                                 $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
+
                             }
+//                             foreach( array_unique( Set::extract( $this->data, 'Propopdo.{n}.dossier_id' ) ) as $dossier_id ) {
+//                                 $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
+//                             }
                             $this->Dossier->commit();
                             $this->data['Propopdo'] = array(); //FIXME: voir si on peut mieux faire
                         }
@@ -106,15 +110,10 @@
                     $this->Dossier->begin(); // Pour les jetons
 
                     $queryData = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-    //                 $_limit = 10;
-                    $queryData['limit'] = 10;
-                    $this->paginate['Dossier'] = $queryData;
-                    $cohortepdo = $this->paginate( 'Dossier' );
 
-    //                 $count = count( $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() ) );
-    //                 $this->set( 'count', $count );
-    // //                 debug( $count );
-    //                 $this->set( 'pages', ceil( $count / $_limit ) );
+                    $queryData['limit'] = 10;
+                    $this->paginate['Propopdo'] = $queryData;
+                    $cohortepdo = $this->paginate( 'Propopdo' );
 
                     $this->Dossier->commit();
                     $this->set( 'cohortepdo', $cohortepdo );
@@ -158,7 +157,7 @@
             $params = $this->Cohortepdo->search( 'Decisionpdo::valide', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 
             unset( $params['limit'] );
-            $pdos = $this->Dossier->find( 'all', $params );
+            $pdos = $this->Propopdo->find( 'all', $params );
 
 
             $this->layout = ''; // FIXME ?
