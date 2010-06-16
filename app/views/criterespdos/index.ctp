@@ -161,7 +161,7 @@
             ?></li>
         </ul>
     <?php else:?>
-        <p>Vos critères n'ont retourné aucun contrat unique d'insertion.</p>
+        <p>Vos critères n'ont retourné aucune PDO.</p>
     <?php endif?>
 <?php endif?>
 
