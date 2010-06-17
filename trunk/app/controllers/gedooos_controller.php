@@ -316,7 +316,10 @@
                         'order' => array( 'Suspensiondroit.ddsusdrorsa DESC' )
                     )
                 );
-                $contratinsertion['Suspensiondroit'] = $suspension[0]['Suspensiondroit'];
+
+                if( !empty( $suspension ) ) {
+                    $contratinsertion['Suspensiondroit'] = $suspension[0]['Suspensiondroit'];
+                }
                 $contratinsertion['Suspensiondroit']['ddsusdrorsa'] = $this->Locale->date( '%d/%m/%Y', Set::classicExtract( $contratinsertion, 'Suspensiondroit.ddsusdrorsa' ) );
             }
 
@@ -424,7 +427,38 @@
            $contratinsertion['Contratinsertion']['avisraison_ci'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.avisraison_ci' ), $avisraison_ci );
 
 
+            ///Utilisé pour savoir si le contrat est pour une insertion vers le social / emploi
+            if( $contratinsertion['Contratinsertion']['typeinsertion'] == 'SOC' ){
+                $contratinsertion['Contratinsertion']['issociale'] = 'X';
+            }
+            else if( $contratinsertion['Contratinsertion']['typeinsertion'] == 'EMP' ){
+                $contratinsertion['Contratinsertion']['isemploi'] = 'X';
+            }
 
+            ///Utilisé pour savoir si la personne est demandeur ou ayant droit
+            if( $contratinsertion['Prestation']['rolepers'] == 'Demandeur du RSA' ){
+                $contratinsertion['Contratinsertion']['isallocataire'] = 'X';
+            }
+            else if( $contratinsertion['Prestation']['rolepers'] != 'Demandeur du RSA' ){
+                $contratinsertion['Contratinsertion']['isayantdroit'] = 'X';
+            }
+
+            ///Utilisé pour savoir si la personne est demandeur ou ayant droit
+            if( $contratinsertion['Contratinsertion']['num_contrat'] == 'PRE' ){
+                $contratinsertion['Contratinsertion']['ispremier'] = 'X';
+            }
+            else if( $contratinsertion['Contratinsertion']['num_contrat'] == 'REN' ){
+                $contratinsertion['Contratinsertion']['isrenouvel'] = 'X';
+            }
+            else if( $contratinsertion['Contratinsertion']['num_contrat'] != ( 'REN' || 'PRE' ) ){
+                $contratinsertion['Contratinsertion']['isavenant'] = 'X';
+            }
+// debug( $contratinsertion );
+// die();
+            ///Permet d'afficher le nb d'ouverture de droit de la personne
+            $zonelist = $this->Zonegeographique->find( 'list', array( 'fields' => array( 'libelle' ) ) );
+// debug($zonelist);
+            $contratinsertion['Contratinsertion']['zonegeographique_id'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.zonegeographique_id' ), $zonelist );
 // debug( $contratinsertion );
 // die();
             ///Permet d'afficher le nb d'ouverture de droit de la personne
@@ -438,8 +472,14 @@
 
 // debug( $contratinsertion );
 // die();
+            if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
+                $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertioncg58.odt' );
+            }
+            else{
+                $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
+            }
 
-            $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
+//             $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
         }
 
         function orientstruct( $orientstruct_id = null ) {
