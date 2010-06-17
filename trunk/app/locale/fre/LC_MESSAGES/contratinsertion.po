@@ -29,3 +29,24 @@ msgstr "Premier contrat"
 
 msgid "ENUM::NUM_CONTRAT::REN"
 msgstr "Renouvellement"
+
+msgid "Contratinsertion.typeinsertion"
+msgstr "Type d'insertion"
+
+msgid "ENUM::INSERTION::SOC"
+msgstr "Insertion Sociale"
+
+msgid "ENUM::INSERTION::EMP"
+msgstr "Insertion Professionnelle"
+
+msgid "Contratinsertion.niveausalaire"
+msgstr "Niveau de salaire attendu"
+
+msgid "Contratinsertion.dd_ci"
+msgstr "Date de début de contrat"
+
+msgid "Contratinsertion.df_ci"
+msgstr "Date de fin de contrat"
+
+msgid "Contratinsertion.duree_engag"
+msgstr "Durée du contrat"

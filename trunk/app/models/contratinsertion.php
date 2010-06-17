@@ -9,7 +9,8 @@
             'Enumerable' => array(
                 'fields' => array(
                     'type_demande' => array( 'type' => 'type_demande', 'domain' => 'contratinsertion' ),
-                    'num_contrat' => array( 'type' => 'num_contrat', 'domain' => 'contratinsertion' )
+                    'num_contrat' => array( 'type' => 'num_contrat', 'domain' => 'contratinsertion' ),
+                    'typeinsertion' => array( 'type' => 'insertion', 'domain' => 'contratinsertion' )
                 )
             ),
             'Formattable' => array(

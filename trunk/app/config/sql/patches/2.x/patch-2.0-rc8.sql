@@ -523,3 +523,18 @@ COMMIT;
 BEGIN;
 ALTER TABLE users ADD COLUMN isgestionnaire type_no DEFAULT 'N';
 COMMIT;
+
+-- Ajout du champ foyerId dans le patch suite à la création du script d'intégration Talend par le CG93
+BEGIN;
+ALTER TABLE adresses ADD COLUMN foyerId INTEGER REFERENCES foyers(id);
+COMMIT;
+
+BEGIN;
+CREATE TYPE type_insertion AS ENUM ( 'SOC', 'EMP' );
+ALTER TABLE contratsinsertion ADD COLUMN typeinsertion type_insertion DEFAULT NULL;
+ALTER TABLE contratsinsertion ADD COLUMN bilancontrat TEXT DEFAULT NULL;
+ALTER TABLE contratsinsertion ADD COLUMN engag_object_referent TEXT;
+ALTER TABLE contratsinsertion ADD COLUMN outilsmobilises TEXT;
+ALTER TABLE contratsinsertion ADD COLUMN niveausalaire NUMERIC(12,2);
+ALTER TABLE contratsinsertion ADD COLUMN zonegeographique_id INTEGER DEFAULT NULL REFERENCES zonesgeographiques(id);
+COMMIT;
