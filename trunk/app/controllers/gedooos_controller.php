@@ -453,14 +453,11 @@
             else if( $contratinsertion['Contratinsertion']['num_contrat'] != ( 'REN' || 'PRE' ) ){
                 $contratinsertion['Contratinsertion']['isavenant'] = 'X';
             }
-// debug( $contratinsertion );
-// die();
-            ///Permet d'afficher le nb d'ouverture de droit de la personne
+
+            ///Permet d'afficher le nom de la zone géographique liée au contrat du cg58
             $zonelist = $this->Zonegeographique->find( 'list', array( 'fields' => array( 'libelle' ) ) );
-// debug($zonelist);
             $contratinsertion['Contratinsertion']['zonegeographique_id'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.zonegeographique_id' ), $zonelist );
-// debug( $contratinsertion );
-// die();
+
             ///Permet d'afficher le nb d'ouverture de droit de la personne
             $contratinsertion['Dossier']['nbouv'] = count( Set::classicExtract( $contratinsertion, 'Dossier.dtdemrsa' ) );
 
