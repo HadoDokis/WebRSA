@@ -535,6 +535,7 @@ ALTER TABLE contratsinsertion ADD COLUMN typeinsertion type_insertion DEFAULT NU
 ALTER TABLE contratsinsertion ADD COLUMN bilancontrat TEXT DEFAULT NULL;
 ALTER TABLE contratsinsertion ADD COLUMN engag_object_referent TEXT;
 ALTER TABLE contratsinsertion ADD COLUMN outilsmobilises TEXT;
+ALTER TABLE contratsinsertion ADD COLUMN outilsamobiliser TEXT;
 ALTER TABLE contratsinsertion ADD COLUMN niveausalaire NUMERIC(12,2);
 ALTER TABLE contratsinsertion ADD COLUMN zonegeographique_id INTEGER DEFAULT NULL REFERENCES zonesgeographiques(id);
 COMMIT;

@@ -363,7 +363,7 @@
                         'Contratinsertion.nature_projet' => array( 'label' => 'Projet négocié' ),
                         'Contratinsertion.engag_object' => array( 'label' => 'Actions à réaliser par le bénéficiaire' ),
                         'Contratinsertion.engag_object_referent' => array( 'label' => 'Actions à réaliser par le référent' ),
-                        'Contratinsertion.outilsmobilises' => array( 'label' => 'Outils à mobiliser' ),
+                        'Contratinsertion.outilsamobiliser' => array( 'label' => 'Outils à mobiliser' ),
                     ),
                     array(
                         'options' => $options
@@ -412,31 +412,16 @@
 
 </fieldset>
 
-    <fieldset>
+    <!-- <fieldset>
             <legend>DÉCISION DE LA COMMISSION D’ORIENTATION ET DE VALIDATION</legend>
-                <?php echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __( 'observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
+                <?php /*echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __( 'observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
                 <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __( 'decision_ci', true ), 'type' => 'select', 'options' => $decision_ci ) ); ?>
-                <?php echo $form->input( 'Contratinsertion.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true)  ); ?>
-        </fieldset>
+                <?php echo $form->input( 'Contratinsertion.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true)  );*/ ?>
+        </fieldset> -->
 
     <fieldset>
         <legend>CARACTÉRISTIQUES DU PRÉSENT CONTRAT</legend>
-        <!-- <table class="wide noborder">
-            <tr>
-                <td class="mediumSize noborder"> Type de contrat </td>
-                <td class="mediumSize noborder">
-                    <?php
-                        /*echo $xform->input( 'Contratinsertion.num_contrat', array( 'label' => false , 'type' => 'select', 'options' => $options['num_contrat'], 'empty' => true, 'value' => $tc ) );*/
-//                         echo Set::enum( $tc, $options['num_contrat'] );
 
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td class="mediumSize noborder">Nombre de renouvellements </td>
-                <td class="mediumSize noborder"> <?php echo $nbrCi;?> </td>
-            </tr>
-        </table> -->
         <?php echo $xform->input( 'Contratinsertion.num_contrat', array( 'label' => 'Type de contrat' , 'type' => 'select', 'options' => $options['num_contrat'], 'empty' => true, 'value' => $tc ) );?>
 
         <table class="nbrCi wide noborder">
