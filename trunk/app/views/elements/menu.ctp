@@ -9,7 +9,7 @@
                         <?php if( $permissions->check( 'cohortesci', 'nouveaux' ) || $permissions->check( 'cohortesci', 'valides' ) || $permissions->check( 'cohortesci', 'enattente' ) ):?>
                             <!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                                <?php  echo $html->link( 'Contrat d\'engagement ', '#' );?>
+                                <?php  echo $html->link( 'CER ', '#' );?>
                                     <ul>
                                         <?php if( $permissions->check( 'cohortesci', 'nouveaux' ) ): ?>
                                             <li><?php echo $html->link( 'Contrats à valider', array( 'controller' => 'cohortesci', 'action' => 'nouveaux' ), array( 'title' => 'Contrats à valider' ) );?></li>
@@ -90,11 +90,11 @@
                                 <?php echo $html->link( 'Par Contrats', '#' );?>
                                 <ul>
                                     <li>
-                                        <?php echo $html->link( 'Par Contrat d\'engagement',  array( 'controller' => 'criteresci', 'action' => 'index'  ) );?>
+                                        <?php echo $html->link( 'Par CER',  array( 'controller' => 'criteresci', 'action' => 'index'  ) );?>
                                     </li>
 
                                     <li>
-                                        <?php echo $html->link( 'Par Contrat Unique d\'Insertion',  array( 'controller' => 'criterescuis', 'action' => 'index'  ) );?>
+                                        <?php echo $html->link( 'Par CUI',  array( 'controller' => 'criterescuis', 'action' => 'index'  ) );?>
                                     </li>
                                 </ul>
                             </li>
