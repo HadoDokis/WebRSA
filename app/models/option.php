@@ -332,6 +332,17 @@
             );
         }
 
+        function duree_engag_cg58() {
+            return array(
+                '1' => '3 mois',
+                '2' => '6 mois',
+                '3' => '9 mois',
+                '4' => '12 mois',
+                '5' => '18 mois',
+                '6' => '24 mois'
+            );
+        }
+
         function duree_engag_cg66() {
             return array(
                 '1' => '3 mois',

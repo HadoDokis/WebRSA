@@ -34,7 +34,7 @@
 
             if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
                 $this->set( 'decision_ci', $this->Option->decision_ci() );
-
+                $forme_ci = array();
                 if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
                     $forme_ci = array( 'S' => 'Simple', 'C' => 'Complexe' );
                 }
@@ -61,6 +61,8 @@
                 $this->set( 'duree_cdd', $this->Option->duree_cdd() );
                 $this->set( 'duree_engag_cg66', $this->Option->duree_engag_cg66() );
                 $this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
+                $this->set( 'duree_engag_cg58', $this->Option->duree_engag_cg58() );
+
                 $this->set( 'typevoie', $this->Option->typevoie() );
                 $this->set( 'fonction_pers', $this->Option->fonction_pers() );
                 $this->set( 'nivetus', $this->Contratinsertion->Personne->Dsp->enumList( 'nivetu' ) );
@@ -68,6 +70,8 @@
                 $this->set( 'typo_aide', $this->Option->typo_aide() );
                 $this->set( 'soclmaj', $this->Option->natpfcre( 'soclmaj' ) );
                 $this->set( 'rolepers', $this->Option->rolepers() );
+
+                $this->set( 'zoneprivilegie', $this->Zonegeographique->find( 'list' ) );
 
 //                 $this->set( 'sr', $this->Contratinsertion->Structurereferente->listeParType( array( 'contratengagement' => true ) ) );
 //                 $this->set( 'referents', $this->Contratinsertion->Structurereferente->Referent->find( 'list' ) );
@@ -225,7 +229,7 @@
 
             $this->set( compact( 'orientstruct', 'contratsinsertion' ) );
             $this->set( 'personne_id', $personne_id );
-            $this->render( $this->action, null, '/contratsinsertion/index'.Configure::read( 'Apre.suffixe' ) ); ///FIXME: pas propre, mais pr le moment ça marche afin d'eviter de tout renommer
+            $this->render( $this->action, null, '/contratsinsertion/index_'.Configure::read( 'nom_form_ci_cg' ) ); ///FIXME: pas propre, mais pr le moment ça marche afin d'eviter de tout renommer
 
         }
 
@@ -324,6 +328,7 @@
                 else {
                     $tc = 'PRE';
                 }
+
             }
             else if( $this->action == 'edit' ) {
                 $contratinsertion_id = $id;
@@ -332,8 +337,26 @@
                 $personne_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.personne_id' );
                 $valueFormeci = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
 
+                $nbContratsPrecedents = $this->Contratinsertion->find( 'count', array( 'recursive' => -1, 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
+
                 $tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' );
             }
+            $this->set( 'nbContratsPrecedents',  $nbContratsPrecedents );
+            /**
+            *   Détails des précédents contrats
+            */
+            $lastContrat = $this->Contratinsertion->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Contratinsertion.personne_id' => $personne_id
+                    ),
+                    'recursive' => -1,
+                    'order' => 'Contratinsertion.date_saisi_ci DESC'
+                )
+            );
+            $this->set( 'lastContrat',  $lastContrat );
+
 
             /// Recherche du type d'orientation
             $orientstruct = $this->Contratinsertion->Structurereferente->Orientstruct->find(
@@ -598,7 +621,12 @@
             $this->Contratinsertion->commit();
 
             $this->set( compact( 'structures', 'referents' ) );
-            $this->render( $this->action, null, 'add_edit' );
+            if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
+                $this->render( $this->action, null, 'add_edit_specif_cg58' );
+            }
+            else {
+                $this->render( $this->action, null, 'add_edit' );
+            }
         }
 
         /** ********************************************************************

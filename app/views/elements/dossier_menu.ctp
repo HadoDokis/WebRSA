@@ -171,7 +171,7 @@
                                                     <li>
                                                         <?php
                                                             echo $html->link(
-                                                                'Contrat Engagement',
+                                                                'CER',
                                                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne['id'] )
                                                             );
                                                         ?>

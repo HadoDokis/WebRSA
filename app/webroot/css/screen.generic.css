@@ -820,11 +820,25 @@ span.disabled {
 }
 
 /*****************************************************************************/
-legend.wideHeader { width: 90%; }
+legend.wideHeader, p.wideHeader { width: 90%; }
 /*****************************************************************************/
 table.aere {
     margin-bottom: 1.5em;
 /*     width: 25%; */
+}
+
+table.nbrCi tr td {
+/*     margin-bottom: 1.5em; */
+/*     margin-top: 0.5em; */
+/*     margin: 0 auto; */
+    margin-bottom: 1.5em;
+    width: 50%;
+    padding: 0em;
+}
+
+tr.aere td {
+    margin-bottom: 1.5em;
+    margin-top: 1.5em;
 }
 
 td.aere, th.aere{
@@ -909,7 +923,13 @@ fieldset.cnilci, fieldset.cnilci p {
     margin-bottom: 0em;
     margin-top: 0em;
 }
-
+fieldset.loici58 {
+    padding: 1em;
+    padding-top: 0em;
+    padding-bottom: 0em;
+    font-size:14px;
+    background-color: #FDF5E7;
+}
 /*td.signature{
     padding-bottom: 5em;
 }*/
@@ -917,7 +937,9 @@ fieldset.cnilci, fieldset.cnilci p {
 p.caution {
     font-size: 9px;
 }
-
+p.caution58 {
+    font-size: 11px;
+}
 thead tr#datesApre th {
     color: black;
     background-color: #C2E0EF;
