@@ -50,6 +50,9 @@
 
         <table id="searchResults" class="tooltips">
             <?php foreach( $totsacoms as $totacom ) :?>
+            <?php
+//                 debug($type_totalisation);
+            ?>
                <!-- <?php
                     /*foreach( array( 'mttotsoclrsa', 'mttotsoclmajorsa', 'mttotlocalrsa' ) as $typemontant ) {
                         $sommeFlux += $totacom['Totalisationacompte'][$typemontant];
@@ -57,7 +60,7 @@
                 ?> -->
                 <tbody>
                     <tr class="even">
-                        <th><?php echo $type_totalisation[$totacom['Totalisationacompte']['type_totalisation']];?></th>
+                        <th><?php echo Set::classicExtract( $type_totalisation, Set::classicExtract( $totacom, 'Totalisationacompte.type_totalisation' )  );/*[$totacom['Totalisationacompte']['type_totalisation']];*/?></th>
                         <th>Total acomptes transmis (CAF/MSA)</th>
 <!--                         <th>Total acomptes calculés</th> -->
                     </tr>
