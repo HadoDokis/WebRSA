@@ -420,6 +420,12 @@
             if( !empty( $this->data ) ) {
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
 
+
+                if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
+                    $this->data['Contratinsertion']['forme_ci'] = 'S';
+                }
+
+
                 $contratinsertionRaisonCi = Set::classicExtract( $this->data, 'Contratinsertion.raison_ci' );
                 if( $contratinsertionRaisonCi == 'S' ) {
                     $this->data['Contratinsertion']['avisraison_ci'] = Set::classicExtract( $this->data, 'Contratinsertion.avisraison_suspension_ci' );
