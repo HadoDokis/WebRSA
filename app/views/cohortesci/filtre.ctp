@@ -33,7 +33,7 @@
         <?php echo $form->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
     </fieldset>
     <fieldset>
-        <legend>Recherche de Contrat d'engagment réciproque</legend>
+        <legend>Recherche de CER</legend>
             <?php echo $form->input( 'Filtre.date_saisi_ci', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de saisie du contrat</legend>

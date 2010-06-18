@@ -145,7 +145,7 @@
                     </table>
                 </td>
                 <td>
-                    <h2>Contrat d'Engagement réciproque</h2>
+                    <h2>CER</h2>
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>

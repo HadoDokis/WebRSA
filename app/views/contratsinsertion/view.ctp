@@ -1,17 +1,17 @@
-<?php $this->pageTitle = 'Contrat d\'Engagement réciproque';?>
+<?php $this->pageTitle = 'CER';?>
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
 <?php
     if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout d\'un contrat d\'Engagment réciproque';
+        $this->pageTitle = 'Ajout d\'un CER';
     }
     else {
-        $this->pageTitle = 'Contrat d\'Engagment réciproque ';
+        $this->pageTitle = 'CER ';
         $foyer_id = $this->data['Personne']['foyer_id'];
     }
 ?>
 <div class="with_treemenu">
-    <h1><?php echo 'Contrat d\'Engagement réciproque  ';?></h1>
+    <h1><?php echo 'CER ';?></h1>
 
 
 <div id="ficheCI">

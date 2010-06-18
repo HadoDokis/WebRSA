@@ -455,7 +455,7 @@ msgid "form_compl"
 msgstr "Autres expériences, savoir, connaissances"
 
 msgid "type_ci"
-msgstr "Type de contrat d\'insertion "
+msgstr "Type de CER "
 
 msgid "rg_ci"
 msgstr "Rang du présent contrat "
@@ -754,7 +754,7 @@ msgid "structure_referente"
 msgstr "Zone géographique"
 
 msgid "contratengagement"
-msgstr "Gestion des Contrats d'engagement"
+msgstr "Gestion des CERs"
 
 msgid "apre"
 msgstr "Gestion des APREs"

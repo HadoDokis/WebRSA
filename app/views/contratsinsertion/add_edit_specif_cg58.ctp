@@ -1,14 +1,14 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Contrats d\'engagement réciproque';?>
+<?php $this->pageTitle = 'CER';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
 
 <?php
     if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout d\'un contrat d\'engagement réciproque';
+        $this->pageTitle = 'Ajout d\'un CER';
     }
     else {
-        $this->pageTitle = 'Édition d\'un contrat d\'engagement réciproque';
+        $this->pageTitle = 'Édition d\'un CER';
     }
 ?>
 <?php echo $javascript->link( 'dependantselect.js' ); ?>
