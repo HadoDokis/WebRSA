@@ -163,9 +163,9 @@
         <table>
             <thead>
                 <tr>
-                    <th  class="entete" colspan="8">Contrat d'Engagement Réciproque</th>
+                    <th  class="entete" colspan="8">CER</th>
                     <th></th>
-                    <th  class="entete" colspan="8">Contrat Unique d'Insertion</th>
+                    <th  class="entete" colspan="8">CUI</th>
                 </tr>
                 <tr class="odd">
                     <th colspan="4">Parcours Demandeur</th>
@@ -257,9 +257,9 @@
         <table>
             <thead>
                 <tr>
-                    <th  class="entete" colspan="8">Contrat d'Engagement Réciproque</th>
+                    <th  class="entete" colspan="8">CER</th>
                     <th></th>
-                    <th  class="entete" colspan="8">Contrat Unique d'Insertion</th>
+                    <th  class="entete" colspan="8">CUI</th>
                 </tr>
                 <tr class="odd">
                     <th colspan="4">Parcours Demandeur</th>
@@ -394,9 +394,9 @@
         <table>
             <thead>
                 <tr>
-                    <th  class="entete" colspan="8">Contrat d'Engagement Réciproque</th>
+                    <th  class="entete" colspan="8">CER</th>
                     <th></th>
-                    <th  class="entete" colspan="8">Contrat Unique d'Insertion</th>
+                    <th  class="entete" colspan="8">CUI</th>
                 </tr>
                 <tr class="odd">
                     <th colspan="4">Parcours Demandeur</th>
@@ -499,13 +499,13 @@
             </thead>
             <tbody>
                 <tr class="odd">
-                    <th>Date commission pluridisciplinaire</th>
                     <th>Décision</th>
+                    <th>Date commission pluridisciplinaire</th>
                     <th>Réalisé</th>
                     <th class="action">Action</th>
 
-                    <th>Date commission pluridisciplinaire</th>
                     <th>Décision</th>
+                    <th>Date commission pluridisciplinaire</th>
                     <th>Réalisé</th>
                     <th class="action">Action</th>
                 </tr>
