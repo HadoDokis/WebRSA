@@ -38,7 +38,7 @@
                     <th>Date début</th>
                     <th>Date fin</th>
                     <th>Décision</th>
-                    <th colspan="6" class="action">Actions</th>
+                    <th colspan="5" class="action">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,11 +62,6 @@
                                 $html->validateLink(
                                     'Valider le CER ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] )
-                                ),
-                                $html->actionsLink(
-                                    'Actions pour le CER',
-                                    array( 'controller' => 'actionsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['id'] ),
-                                    $permissions->check( 'actionsinsertion', 'index' )
                                 ),
                                 $html->viewLink(
                                     'Voir le CER',
