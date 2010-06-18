@@ -1,14 +1,14 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Contrats d\'engagement réciproque';?>
+<?php $this->pageTitle = 'CER';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
 
 <?php
     if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout d\'un contrat d\'engagement réciproque';
+        $this->pageTitle = 'Ajout d\'un CER';
     }
     else {
-        $this->pageTitle = 'Édition d\'un contrat d\'engagement réciproque';
+        $this->pageTitle = 'Édition d\'un CER';
     }
 ?>
 
@@ -84,7 +84,9 @@
                 $duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
                 foreach( $$duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
 
-            setDateInterval( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
+            setDateInterval2( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
+            //INFO: setDateInterval2 permet de conserver le jour lors du choix de la durée
+            //      setDateInterval affiche le dernier jour du mois lors du choix de la durée
         }
     }
 

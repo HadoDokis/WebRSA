@@ -3,28 +3,28 @@
 
 <?php
     if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout d\'un contrat d\'engagement réciproque';
+        $this->pageTitle = 'Ajout d\'un CER';
     }
     else {
-        $this->pageTitle = 'Contrat d\'engagement réciproque ';
+        $this->pageTitle = 'CER ';
         $foyer_id = $this->data['Personne']['foyer_id'];
     }
 ?>
 <div class="with_treemenu">
-    <h1><?php  echo 'Contrat d\'engagement réciproque  ';?></h1>
+    <h1><?php  echo 'CER ';?></h1>
 
         <?php if( empty( $persreferent ) ) :?>
             <p class="error">Aucun référent n'est lié au parcours de cette personne.</p>
         <?php endif;?>
         <?php if( empty( $contratsinsertion ) ):?>
-            <p class="notice">Cette personne ne possède pas encore de contrat d'engagement réciproque.</p>
+            <p class="notice">Cette personne ne possède pas encore de CER.</p>
         <?php endif;?>
 
         <?php if( $permissions->check( 'contratsinsertion', 'add' ) ):?>
             <ul class="actionMenu">
                 <?php
                     echo '<li>'.$html->addLink(
-                        'Ajouter un contrat d\'engagement réciproque',
+                        'Ajouter un CER',
                         array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id )
                     ).' </li>';
                 ?>
@@ -77,17 +77,17 @@
                                 h( date_short( isset( $contratinsertion['Contratinsertion']['df_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['df_ci'] ) : null ),
                                 h( Set::enum( Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' ), $decision_ci ).' '.$locale->date( 'Date::short', Set::extract( $contratinsertion, 'Contratinsertion.datevalidation_ci' ) ) ),
                                 $html->validateLink(
-                                    'Valider le contrat d\'engagement réciproque ',
+                                    'Valider le CER ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] ),
                                     $blockValid
                                 ),
                                 $html->viewLink(
-                                    'Voir le contrat d\'engagement réciproque',
+                                    'Voir le CER',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'view', $contratinsertion['Contratinsertion']['id']),
                                     $permissions->check( 'contratsinsertion', 'view' )
                                 ),
                                 $html->editLink(
-                                    'Éditer le contrat d\'engagement réciproque ',
+                                    'Éditer le CER ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'edit', $contratinsertion['Contratinsertion']['id'] ),
                                     $block,
                                     $permissions->check( 'contratsinsertion', 'edit' )
@@ -98,12 +98,12 @@
                                     $permissions->check( 'contratsinsertion', 'notificationsop' )
                                 ),
                                 $html->printLink(
-                                    'Imprimer le contrat d\'engagement réciproque',
+                                    'Imprimer le CER',
                                     array( 'controller' => 'gedooos', 'action' => 'contratinsertion', $contratinsertion['Contratinsertion']['id'] ),
                                     $permissions->check( 'gedooos', 'contratinsertion' )
                                 ),
                                 $html->deleteLink(
-                                    'Supprimer le contrat d\'engagement réciproque ',
+                                    'Supprimer le CER ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'delete', $contratinsertion['Contratinsertion']['id'] ),
                                     $permissions->check( 'contratsinsertion', 'delete' )
                                 )

@@ -40,7 +40,7 @@
 </fieldset>
 
 <fieldset class="col2">
-    <legend><?php echo required( 'Gère les Contrats d\'engagement ?' );?></legend>
+    <legend><?php echo required( 'Gère les CERs ?' );?></legend>
     <?php echo $xform->enum( 'Structurereferente.contratengagement', array(  'legend' => false, /*'div' => false, */ 'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $optionsradio['contratengagement'] ) );?>
 </fieldset>
 <fieldset class="col2">
