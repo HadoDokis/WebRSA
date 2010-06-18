@@ -300,7 +300,6 @@
                 if( !$this->Session->check( 'Auth' ) ) {
                     //le forcer a se connecter
                     $this->redirect("/users/login");
-                    exit();
                 }
                 else {
                     $user = $this->Session->read( 'Auth' );
