@@ -186,9 +186,14 @@
         if( $this->action == 'edit' ) {
             echo '<div>';
             echo $form->input( "{$this->modelClass}.id", array( 'type' => 'hidden' ) );
+
             echo '</div>';
         }
         echo '<div>';
+        echo $form->input( 'Modecontact.0.foyer_id', array( 'type' => 'hidden', 'value' => $foyer_id ) );
+        echo $form->input( 'Modecontact.1.foyer_id', array( 'type' => 'hidden', 'value' => $foyer_id ) );
+        echo $form->input( 'Modecontact.0.id', array( 'type' => 'hidden' ) );
+        echo $form->input( 'Modecontact.1.id', array( 'type' => 'hidden' ) );
         echo $form->input( "{$this->modelClass}.personne_id", array( 'type' => 'hidden', 'value' => $personne_id ) );
         echo '</div>';
     ?>
@@ -248,15 +253,47 @@
                 </tr>
                 <tr>
                     <td class="mediumSize noborder">
-                        <strong>Tél. fixe : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?>
+                        <strong>Tél. fixe : </strong>
+                        <?php
+                            $numtelfixe = Set::classicExtract( $personne, 'Foyer.Modecontact.0.numtel' );
+                            if( !empty( $numtelfixe ) ) {
+                                echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );
+                            }
+                            else{
+                                echo $xform->input( 'Modecontact.0.numtel', array( 'label' => false, 'type' => 'text' ) );
+                            }
+                        ?>
                     </td>
                     <td class="mediumSize noborder">
-                        <strong>Tél. portable : </strong><?php echo ''/*.Set::extract( $foyer, 'Modecontact.0.numtel' );*/?>
+                        <strong>Tél. portable : </strong>
+                        <?php
+                            $numtelport = Set::extract( $personne, 'Foyer.Modecontact.1.numtel' );
+                            if( !empty( $numtelport ) ) {
+                                echo Set::extract( $personne, 'Foyer.Modecontact.1.numtel' );
+                            }
+                            else{
+//                                 echo $xform->input( 'Foyer.Modecontact.1.foyer_id', array( 'label' => false, 'type' => 'hidden', 'value' => $foyer_id ) );
+//                                 echo $xform->input( 'Foyer.Modecontact.1.id', array( 'label' => false, 'type' => 'hidden' ) );
+                                echo $xform->input( 'Modecontact.1.numtel', array( 'label' => false, 'type' => 'text' ) );
+                            }
+                        ?>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" class="mediumSize noborder">
-                        <strong>Adresse mail : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?> <!-- FIXME -->
+                        <strong>Adresse mail : </strong>
+                        <?php
+                            $email = Set::extract( $personne, 'Foyer.Modecontact.0.adrelec' );
+                            if( !empty( $email ) ) {
+                                echo Set::extract( $personne, 'Foyer.Modecontact.0.adrelec' );
+                            }
+                            else{
+//                                 echo $xform->input( 'Foyer.Modecontact.0.id', array( 'label' => false, 'type' => 'hidden' ) );
+//                                 echo $xform->input( 'Foyer.Modecontact.foyer_id', array( 'label' => false, 'type' => 'hidden', 'value' => $foyer_id ) );
+                                echo $xform->input( 'Modecontact.0.adrelec', array( 'label' => false, 'type' => 'text' ) );
+                            }
+//                             echo Set::extract( $personne, 'Foyer.Foyer.Modecontact.0.numtel' );
+                        ?> <!-- FIXME -->
                     </td>
                 </tr>
             </table>
@@ -296,7 +333,7 @@
             <table class="wide noborder">
                 <tr>
                     <td class="mediumsize noborder"><strong>Type d'activité </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->enum( "{$this->modelClass}.activitebeneficiaire", array( 'legend' => __d( 'apre', 'Apre.activitebeneficiaire', true ), 'type' => 'radio', 'separator' => '<br />', 'options' => /*$options['activitebeneficiaire']*/array( 'E' => 'Emploi' , 'F' => 'Formation', 'C' => 'Création d\'Entreprise' ) ) );?></td> <!-- FIXME: trouver mieux car activite  = enum mais pour cg93 un champ de + est présent -->
+                    <td class="mediumsize noborder"><?php echo $xform->enum( "{$this->modelClass}.activitebeneficiaire", array( 'legend' => __d( 'apre', 'Apre.activitebeneficiaire', true ), 'type' => 'radio', 'separator' => '<br />', 'options' => /*$options['activitebeneficiaire']*/array( 'P' => 'Recherche d\'Emploi', 'E' => 'Emploi' , 'F' => 'Formation', 'C' => 'Création d\'Entreprise' ) ) );?></td> <!-- FIXME: trouver mieux car activite  = enum mais pour cg93 un champ de + est présent -->
                 </tr>
                 <tr>
                     <td class="mediumsize noborder"><strong>Date prévue de l'entrée en emploi,<br /> en formation ou du rendez-vous</strong></td>

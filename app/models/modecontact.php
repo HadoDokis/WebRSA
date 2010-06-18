@@ -38,7 +38,8 @@
 //                 ),
                 array(
                     'rule' => array( 'between', 10, 14 ),
-                    'message' => 'Le numéro de téléphone est composé de 10 chiffres'
+                    'message' => 'Le numéro de téléphone est composé de 10 chiffres',
+                    'allowEmpty' => true
                 )
             ),
             'numposte' => array(
