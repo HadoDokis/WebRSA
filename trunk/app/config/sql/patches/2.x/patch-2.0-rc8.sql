@@ -7,9 +7,13 @@ SET search_path = public, pg_catalog;
 SET default_tablespace = '';
 SET default_with_oids = false;
 
-BEGIN;
-DROP TABLE IF EXISTS cuis;
 -- *****************************************************************************
+BEGIN;
+-- *****************************************************************************
+
+DROP TABLE IF EXISTS cuis;
+
+-- -----------------------------------------------------------------------------
 
 CREATE TYPE type_munir AS ENUM ( 'CER', 'NCA', 'CV', 'AUT' );
 ALTER TABLE actionscandidats_personnes ADD COLUMN pieceallocataire type_munir;
@@ -30,13 +34,13 @@ ALTER TABLE precosreorients ALTER COLUMN referent_id DROP NOT NULL;
 ALTER TABLE precosreorients ALTER COLUMN referent_id SET DEFAULT NULL;
 ALTER TABLE precosreorients ADD COLUMN dtconcertation DATE DEFAULT NULL;
 
-COMMIT;
+
 
 -- *****************************************************************************
 -- ***** Modifications pour les équipes pluridisciplinaires (26/05/2010)   *****
 -- *****************************************************************************
 
-BEGIN;
+
 
 -- ********************************************************************
 -- ***** Création des tables nécessaires au CUI ( 25/05/2010 )  *******
@@ -310,12 +314,12 @@ INSERT INTO departements ( numdep, name ) VALUES
 ( '973', 'Guyane' ),
 ( '974', 'La Réunion' );
 
-COMMIT;
 
 
-BEGIN;
+
+
 ALTER TABLE apres ADD COLUMN isdecision type_no DEFAULT NULL;
-COMMIT;
+
 
 
 
@@ -323,7 +327,7 @@ COMMIT;
 -- ***** Modifications de la table PDO (03/06/2010)                        *****
 -- *****************************************************************************
 
-BEGIN;
+
 CREATE TYPE type_choixpdo AS ENUM ( 'PDO', 'JUS' );
 ALTER TABLE propospdos ADD COLUMN choixpdo type_choixpdo DEFAULT NULL;
 ALTER TABLE propospdos ADD COLUMN dateenvoiop DATE;
@@ -354,10 +358,10 @@ CREATE INDEX propospdos_statutsdecisionspdos_statutpdo_id_idx ON propospdos_stat
 COMMENT ON TABLE propospdos_statutspdos IS 'Statuts des décisions liés aux PDOs';
 
 ALTER TABLE propospdos DROP COLUMN statutdecision;
-COMMIT;
+
 
 -- **************************** Ajout du 04/06/2010 *****************************
-BEGIN;
+
 ALTER TABLE propospdos ADD COLUMN referent_id INTEGER DEFAULT NULL REFERENCES referents(id);
 CREATE TYPE type_nonadmis AS ENUM ( 'CAN', 'RSP' );
 -- CAN = Conditions d'admission non remplies
@@ -367,11 +371,11 @@ ALTER TABLE propospdos ADD COLUMN nonadmis type_nonadmis DEFAULT NULL;
 -- pour le moment on se contente d'un varchar car la liste des métiers à faire apparaître n'est peut-être pas la bonne
 ALTER TABLE propospdos ADD COLUMN categoriegeneral VARCHAR(3) DEFAULT NULL;
 ALTER TABLE propospdos ADD COLUMN categoriedetail VARCHAR(3) DEFAULT NULL;
-COMMIT;
+
 
 -- **************************** Ajout du 04/06/2010 - nouvelle gestion des droits *****************************
 
-BEGIN;
+
 
 UPDATE aros
         SET model=substring(alias FROM '^([^:]+)'),
@@ -381,10 +385,10 @@ UPDATE acos
         SET alias = ( 'Module:' || alias )
         WHERE substring(alias FROM '^.*:(.+)$') IS NULL;
 
-COMMIT;
+
 
 -- **************************** Ajout du 07/06/2010 - Traitement des PDOs *****************************
-BEGIN;
+
 DROP TABLE propospdos_typesnotifspdos;
 
 CREATE TABLE descriptionspdos (
@@ -428,13 +432,13 @@ ALTER TABLE cuis ALTER COLUMN codepostallieucontrat SET DEFAULT NULL;
 ALTER TABLE cuis ALTER COLUMN villelieucontrat DROP NOT NULL;
 ALTER TABLE cuis ALTER COLUMN villelieucontrat SET DEFAULT NULL;
 
-COMMIT;
 
-BEGIN;
+
+
 ALTER TABLE actionscandidats_personnes ADD COLUMN rendezvous_id INTEGER REFERENCES rendezvous DEFAULT NULL;
-COMMIT;
 
-BEGIN;
+
+
 CREATE TABLE memos (
     id                              SERIAL NOT NULL PRIMARY KEY,
     personne_id                     INTEGER DEFAULT NULL REFERENCES personnes(id),
@@ -443,12 +447,12 @@ CREATE TABLE memos (
     modified                        TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE memos IS 'Mémos pour les infos d''une personne';
-COMMIT;
 
 
-COMMIT;
 
-BEGIN;
+
+
+
 CREATE TYPE type_proposition AS ENUM ( 'traitement', 'parcours', 'audition' );
 CREATE TYPE type_choixparcours AS ENUM ( 'maintien', 'reorientation' );
 CREATE TYPE type_reorientation AS ENUM ( 'SP', 'PS' );
@@ -511,25 +515,26 @@ CREATE TABLE bilanparcours (
     motivationaviscga               TEXT
 );
 COMMENT ON TABLE bilanparcours IS 'Table pour le bilan parcours';
-COMMIT;
 
+-- -----------------------------------------------------------------------------
 
-BEGIN;
+TRUNCATE propospdos CASCADE;
 ALTER TABLE propospdos DROP COLUMN dossier_rsa_id;
 ALTER TABLE propospdos ADD COLUMN personne_id INTEGER NOT NULL REFERENCES personnes(id);
 ALTER TABLE propospdos ADD COLUMN user_id INTEGER REFERENCES users(id);
-COMMIT;
 
-BEGIN;
+-- -----------------------------------------------------------------------------
+
 ALTER TABLE users ADD COLUMN isgestionnaire type_no DEFAULT 'N';
-COMMIT;
 
+-- -----------------------------------------------------------------------------
 -- Ajout du champ foyerId dans le patch suite à la création du script d'intégration Talend par le CG93
-BEGIN;
-ALTER TABLE adresses ADD COLUMN foyerId INTEGER REFERENCES foyers(id);
-COMMIT;
+-- -----------------------------------------------------------------------------
 
-BEGIN;
+ALTER TABLE adresses ADD COLUMN foyerId INTEGER REFERENCES foyers(id);
+
+-- -----------------------------------------------------------------------------
+
 CREATE TYPE type_insertion AS ENUM ( 'SOC', 'EMP' );
 ALTER TABLE contratsinsertion ADD COLUMN typeinsertion type_insertion DEFAULT NULL;
 ALTER TABLE contratsinsertion ADD COLUMN bilancontrat TEXT DEFAULT NULL;
@@ -538,4 +543,7 @@ ALTER TABLE contratsinsertion ADD COLUMN outilsmobilises TEXT;
 ALTER TABLE contratsinsertion ADD COLUMN outilsamobiliser TEXT;
 ALTER TABLE contratsinsertion ADD COLUMN niveausalaire NUMERIC(12,2);
 ALTER TABLE contratsinsertion ADD COLUMN zonegeographique_id INTEGER DEFAULT NULL REFERENCES zonesgeographiques(id);
+
+-- *****************************************************************************
 COMMIT;
+-- *****************************************************************************
