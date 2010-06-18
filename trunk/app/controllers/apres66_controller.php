@@ -265,6 +265,8 @@
                 $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
                 $valueIsDecision = 'N';
 
+                $foyer = $this->Foyer->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
+                $foyer_id = Set::classicExtract( $foyer, 'Foyer.id' );
                 ///Création automatique du N° APRE de la forme : Année / Mois / N°
                 $numapre = date('Ym').sprintf( "%010s",  $this->{$this->modelClass}->find( 'count' ) + 1 );
                 $this->set( 'numapre', $numapre);
@@ -279,10 +281,17 @@
 
                 $personne_id = $apre[$this->modelClass]['personne_id'];
                 $dossier_rsa_id = $this->{$this->modelClass}->dossierId( $apre_id );
-
+                
+                
+                $foyer_id = Set::classicExtract( $apre, 'Personne.foyer_id' );
+                
+                
                 $this->set( 'numapre', Set::extract( $apre, "{$this->modelClass}.numeroapre" ) );
             }
 
+
+
+            $this->set( 'foyer_id', $foyer_id );
             // Retour à la liste en cas d'annulation
             if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
                 $this->redirect( array( 'action' => 'index', $personne_id ) );
@@ -388,6 +397,7 @@
                 $this->data['Apre66']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
 
 
+
 				// Tentative d'enregistrement de l'APRE complémentaire
 				$this->{$this->modelClass}->create( $this->data );
 				$this->{$this->modelClass}->set( 'statutapre', 'C' );
@@ -417,6 +427,33 @@
                 }
 
 
+
+                $Modecontact = Xset::bump( Set::filter( Set::flatten( $this->data['Modecontact'] ) ) );
+                $success = $this->{$this->modelClass}->Personne->Foyer->Modecontact->saveAll( $Modecontact, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+
+                /*//debug( $Modecontact );
+//                 if( $this->action == 'add' ) {
+                    if( !empty( $Modecontact ) ) {
+                        $this->{$this->modelClass}->Personne->Foyer->Modecontact->create( $this->data );
+                    }
+//                 }
+//                 if( $this->action == 'add' ) {
+//                     if( !empty( $Modecontact ) ){
+//                         $this->{$this->modelClass}->Personne->Foyer->Modecontact->set( 'foyer_id', $foyer_id );
+//                     }
+//                 }
+
+                if( !empty( $Modecontact ) ){
+                    $success = $this->{$this->modelClass}->Personne->Foyer->Modecontact->save() && $success;
+                }*/
+
+
+//                 debug($foyer_id);
+//                 debug($this->data);
+
+
+
+
                 // Tentative d'enregistrement des pièces liées à une APRE selon ne aide donnée
                 if( !empty( $this->data['Pieceaide66'] ) ) {
                     $linkedData = array(
@@ -427,10 +464,10 @@
                     );
                     $saved = $this->{$this->modelClass}->Aideapre66->save( $linkedData ) && $success;
                 }
-// debug($this->data);
+// debug($personne);
 
 
-
+// debug($this->validationErrors);
 				if( $success ) {
 					$this->Jetons->release( $dossier_rsa_id );
 					$this->{$this->modelClass}->commit(); // FIXME
@@ -463,6 +500,7 @@
                     if( !empty( $this->data['Fraisdeplacement66'] ) ) {
                         $this->data['Fraisdeplacement66'] = $this->data['Aideapre66']['Fraisdeplacement66'];
                     }
+                    $this->data['Modecontact'] = $personne['Foyer']['Modecontact'];
 
                 }
             }

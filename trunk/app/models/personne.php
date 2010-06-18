@@ -439,7 +439,7 @@
             $this->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
             $this->Foyer->unbindModel(
                 array(
-                    'hasMany' => array( 'Personne', 'Modecontact', 'Adressefoyer' ),
+                    'hasMany' => array( 'Personne',/* 'Modecontact',*/ 'Adressefoyer' ),
                     'hasAndBelongsToMany' => array( 'Creance' )
                 )
             );
@@ -463,15 +463,19 @@
             $modecontact = $this->Foyer->Modecontact->find(
                 'all',
                 array(
-                    'recursive' => -1,
                     'conditions' => array(
                         'Modecontact.foyer_id' => $personne['Foyer']['id']
-                    )
+                    ),
+                    'recursive' => -1
                 )
             );
-            $personne['Foyer']['Modecontact'] = Set::extract( $modecontact, '/Modecontact' );
+// debug($modecontact);
+            if( !empty( $modecontact ) ) {
+                //$personne['Foyer']['Modecontact'] = $modecontact[0]['Modecontact'];
+                $personne['Foyer']['Modecontact'] = Set::extract( $modecontact, '{n}.Modecontact' );
+            }
 
-
+// debug($personne);
             /// Récupération de l'adresse lié à la personne
             $this->Foyer->Adressefoyer->bindModel(
                 array(
@@ -589,7 +593,7 @@
 
 
 
-
+// debug($personne);
             return $personne;
         }
 
