@@ -1,7 +1,7 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Recherche par contrats d\'engagement réciproque';?>
 
-<h1>Recherche par Contrat d'engagement réciproque</h1>
+<h1>Recherche par CER</h1>
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
@@ -45,7 +45,7 @@
         <?php echo $form->input( 'Filtre.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
-        <legend>Recherche par Contrat d'engagement réciproque</legend>
+        <legend>Recherche par CER</legend>
             <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
             <?php echo $form->input( 'Filtre.date_saisi_ci', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
             <fieldset>
