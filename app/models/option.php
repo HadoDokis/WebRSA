@@ -1654,6 +1654,7 @@
 
         function type_totalisation() {
             return array(
+//                 'TotalAllocationsComptabilises' => 'Total des allocations comptabilisees',
                 'TotalAllocationsComptabilisees' => 'Total des allocations comptabilisees',
                 'TotalIndusConstates' => 'Total des indus constates',
                 'TotalIndusTransferesCG' => 'Total des indus transferés au CG',

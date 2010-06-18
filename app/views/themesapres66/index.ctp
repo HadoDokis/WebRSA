@@ -6,7 +6,7 @@
 ?>
 <?php
     echo $default->index(
-        $themesapres66s,
+        $themesapres66,
         array(
             'Themeapre66.name',
         ),

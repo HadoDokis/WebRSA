@@ -6,7 +6,7 @@
 ?>
 <?php
     echo $default->index(
-        $typesaidesapres66s,
+        $typesaidesapres66,
         array(
             'Themeapre66.name',
             'Typeaideapre66.name',

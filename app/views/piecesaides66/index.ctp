@@ -6,7 +6,7 @@
 ?>
 <?php
     echo $default->index(
-        $piecesaides66s,
+        $piecesaides66,
         array(
             'Pieceaide66.name',
         ),
