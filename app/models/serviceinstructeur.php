@@ -5,6 +5,9 @@
         var $useTable = 'servicesinstructeurs';
         var $displayField = 'lib_service';
         var $order = 'Serviceinstructeur.lib_service ASC';
+		var $actsAs = array(
+			'Autovalidate'
+		);
 
         function listOptions() {
             return  $this->find(

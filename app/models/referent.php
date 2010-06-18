@@ -8,6 +8,7 @@
         var $displayField = 'full_name';
 
         var $actsAs = array(
+			'Autovalidate',
             'MultipleDisplayFields' => array(
                 'fields' => array( 'qual', 'nom', 'prenom' ),
                 'pattern' => '%s %s %s'
