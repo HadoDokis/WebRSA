@@ -41,6 +41,9 @@
             );
             $this->set( 'pieceliste', $pieceliste );
 
+// debug($themes);
+
+
         }
 
         /** ********************************************************************
@@ -364,8 +367,6 @@
 
             if( !empty( $this->data ) ){
 
-
-
 // debug($this->data);
                 /**
                 *   Pour le nombre de pièces afin de savoir si le dossier est complet ou non
@@ -387,8 +388,6 @@
                 $this->data['Apre66']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
 
 
-
-
 				// Tentative d'enregistrement de l'APRE complémentaire
 				$this->{$this->modelClass}->create( $this->data );
 				$this->{$this->modelClass}->set( 'statutapre', 'C' );
@@ -406,6 +405,7 @@
 					$this->{$this->modelClass}->Aideapre66->set( 'apre_id', $this->{$this->modelClass}->getLastInsertID( ) );
 				}
 				$success = $this->{$this->modelClass}->Aideapre66->save() && $success;
+
 
                 if( $this->action == 'add' ) {
                     if( !empty( $Fraisdeplacement66 ) ){
@@ -466,7 +466,7 @@
 
                 }
             }
-
+//                 debug( $this->{$this->modelClass}->validationErrors );
             // Doit-on setter les valeurs par défault ?
             $dataStructurereferente_id = Set::classicExtract( $this->data, "{$this->modelClass}.structurereferente_id" );
             $dataReferent_id = Set::classicExtract( $this->data, "{$this->modelClass}.referent_id" );

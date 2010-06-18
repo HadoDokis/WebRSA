@@ -8,6 +8,9 @@
         */
 
         public function index() {
+//             $this->set(
+//                 Inflector::tableize( $this->modelClass )
+//             );
             $this->Default->index();
         }
 
