@@ -33,6 +33,13 @@
                 'foreignKey'            => 'aideapre66_id',
                 'associationForeignKey' => 'pieceaide66_id',
                 'with'                  => 'Aideapre66Pieceaide66'
+            ),
+            'Piececomptable66' => array(
+                'classname'             => 'Piececomptable66',
+                'joinTable'             => 'aidesapres66_piecescomptables66',
+                'foreignKey'            => 'aideapre66_id',
+                'associationForeignKey' => 'piececomptable66_id',
+                'with'                  => 'Aideapre66Piececomptable66'
             )
         );
 
