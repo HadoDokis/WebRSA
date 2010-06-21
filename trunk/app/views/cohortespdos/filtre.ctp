@@ -51,7 +51,7 @@
         ?>
             <?php echo $form->input( 'Cohortepdo.datedecisionpdo', array( 'label' => 'Filtrer par date de décision des PDOs', 'type' => 'checkbox' ) );?>
             <fieldset>
-                <legend>Date de saisie du contrat</legend>
+                <legend>Date de saisie de la PDO</legend>
                 <?php
                     $datedecisionpdo_from = Set::check( $this->data, 'Cohortepdo.datedecisionpdo_from' ) ? Set::extract( $this->data, 'Cohortepdo.datedecisionpdo_from' ) : strtotime( '-1 week' );
                     $datedecisionpdo_to = Set::check( $this->data, 'Cohortepdo.datedecisionpdo_to' ) ? Set::extract( $this->data, 'Cohortepdo.datedecisionpdo_to' ) : strtotime( 'now' );
