@@ -63,10 +63,11 @@
                     <th><?php echo $paginator->sort( 'N° CAF/MSA', 'Dossier.matricule' );?></th>
                     <th><?php echo $paginator->sort( 'Ville', 'Adresse.locaadr' );?></th>
                     <th><?php echo $paginator->sort( 'Date de la demande RSA', 'Dossier.dtdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo_id' );?></th>
+                    <!--<th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo_id' );?></th>
                     <th><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.decisionpdo_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.datedecisionpdo' );?></th>
+                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.datedecisionpdo' );?></th>-->
                     <th><?php echo $paginator->sort( 'Gestionnaire', 'Propopdo.user_id' );?></th>
+                    <th><?php echo $paginator->sort( 'Commentaire', 'Propopdo.commentairepdo' );?></th>
 
                     <th class="action">Action</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
@@ -100,10 +101,11 @@
                             h( Set::extract( $pdo, 'Dossier.matricule' ) ),
                             h( Set::extract( $pdo, 'Adresse.locaadr' ) ),
                             h( date_short( Set::extract( $pdo, 'Dossier.dtdemrsa' ) ) ),
-                            h( value( $typepdo, Set::extract( 'Propopdo.typepdo_id', $pdo ) ) ),
-                            h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo_id', $pdo ) ) ),
-                            h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
+//                             h( value( $typepdo, Set::extract( 'Propopdo.typepdo_id', $pdo ) ) ),
+//                             h( value( $decisionpdo, Set::extract( 'Propopdo.decisionpdo_id', $pdo ) ) ),
+//                             h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
                             h( Set::classicExtract( $gestionnaire, Set::classicExtract( $pdo, 'Propopdo.user_id' ) ) ),
+                            h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),
                             $html->viewLink(
                                 'Voir la PDO « '.$title.' »',
                                 array( 'controller' => 'propospdos', 'action' => 'index', $pdo['Personne']['id'] )

@@ -58,10 +58,10 @@
         }
 
         //---------------------------------------------------------------------
-
+/*
         function enattente() {
             $this->_index( 'Decisionpdo::enattente' );
-        }
+        }*/
 
 
         //*********************************************************************
@@ -81,7 +81,7 @@
             if( !empty( $this->data ) ) {
                 if( !empty( $this->data['Propopdo'] ) ) {
                     $valid = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'only', 'atomic' => false ) );
-
+// debug($this->data);
                     $personne_id = Set::extract(  $this->data, 'Propopdo.{n}.personne_id'  );
 
                     if( $valid ) {
@@ -110,10 +110,13 @@
                     $this->Dossier->begin(); // Pour les jetons
 
                     $queryData = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-
+/*
                     $queryData['limit'] = 10;
                     $this->paginate['Propopdo'] = $queryData;
-                    $cohortepdo = $this->paginate( 'Propopdo' );
+                    $cohortepdo = $this->paginate( 'Propopdo' );*/
+                    $queryData['limit'] = 10;
+                    $this->paginate['Personne'] = $queryData;
+                    $cohortepdo = $this->paginate( 'Personne' );
 
                     $this->Dossier->commit();
                     $this->set( 'cohortepdo', $cohortepdo );
@@ -132,10 +135,10 @@
                     $this->set( 'pageTitle', 'Nouvelles demandes PDOs' );
                     $this->render( $this->action, null, 'formulaire' );
                     break;
-                case 'Decisionpdo::enattente':
-                    $this->set( 'pageTitle', 'PDOs en attente' );
-                    $this->render( $this->action, null, 'formulaire' );
-                    break;
+//                 case 'Decisionpdo::enattente':
+//                     $this->set( 'pageTitle', 'PDOs en attente' );
+//                     $this->render( $this->action, null, 'formulaire' );
+//                     break;
                 case 'Decisionpdo::valide':
                     $this->set( 'pageTitle', 'PDOs validés' );
                     $this->render( $this->action, null, 'visualisation' );
