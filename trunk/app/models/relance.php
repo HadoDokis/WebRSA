@@ -201,7 +201,11 @@
                 if( $statutRelance == 'Relance::arelancer' ) {
                     $conditions[] = 'Orientstruct.statut_orient = \'Orienté\'';
                     $conditions[] = 'Orientstruct.statutrelance NOT LIKE \'R\'';
-                    $conditions[] = 'Orientstruct.personne_id NOT IN ( SELECT contratsinsertion.personne_id FROM contratsinsertion WHERE contratsinsertion.datevalidation_ci IS NOT NULL )';
+                    $conditions[] = 'Orientstruct.personne_id NOT IN (
+                            ( SELECT contratsinsertion.personne_id FROM contratsinsertion WHERE contratsinsertion.datevalidation_ci IS NOT NULL )
+                        UNION
+                            ( SELECT cuis.personne_id FROM cuis WHERE cuis.datecontrat IS NOT NULL )
+                    )';
                 }
                 else if( $statutRelance == 'Relance::relance' ){
                     $conditions[] = 'Orientstruct.statut_orient = \'Orienté\'';

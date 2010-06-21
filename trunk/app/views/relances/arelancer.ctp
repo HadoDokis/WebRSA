@@ -1,6 +1,29 @@
 <h1><?php echo $this->pageTitle = $pageTitle;?></h1>
 
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+
+<?php if( isset( $orientsstructs ) ):?>
+    <script type="text/javascript">
+        document.observe("dom:loaded", function() {
+
+            <?php foreach( $orientsstructs as $index => $orientstruct ):?>
+                observeDisableFieldsOnRadioValue(
+                    'relanceform',
+                    'data[Orientstruct][<?php echo $index;?>][statutrelance]',
+                    [
+                        'Orientstruct<?php echo $index;?>DaterelanceDay',
+                        'Orientstruct<?php echo $index;?>DaterelanceMonth',
+                        'Orientstruct<?php echo $index;?>DaterelanceYear'
+                    ],
+                    'R',
+                    true
+                );
+            <?php endforeach;?>
+        });
+    </script>
+<?php endif;?>
+
+
 <?php
     if( isset( $orientsstructs ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
@@ -38,7 +61,7 @@
     <h2 class="noprint">Résultats de la recherche</h2>
 
     <?php if( is_array( $orientsstructs ) && count( $orientsstructs ) > 0 ):?>
-        <?php echo $form->create( 'RelanceOrient', array( 'url'=> Router::url( null, true ) ) );?>
+        <?php echo $form->create( 'RelanceOrient', array( 'url'=> Router::url( null, true ), 'id' => 'relanceform' ) );?>
         <?php
             echo '<div>';
             echo $form->input( 'Relance.compare', array( 'type' => 'hidden', 'id' => 'RelanceCompare2' ) );
