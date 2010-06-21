@@ -2,7 +2,7 @@
     class DossierssimplifiesController extends AppController
     {
         var $name = 'Dossierssimplifies';
-        var $uses = array( 'Dossier', 'Foyer', /*'Adresse', 'Adressefoyer',*/ 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct', 'Typocontrat' );
+        var $uses = array( 'Dossier', /*'Foyer',*/ /*'Adresse', 'Adressefoyer',*/ 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct', 'Typocontrat' );
 
         /**
         *
@@ -29,60 +29,109 @@
         */
 
         function view( $id = null ) {
-            $typesOrient = $this->Typeorient->find(
-                'list',
+//             $typesOrient = $this->Typeorient->find(
+//                 'list',
+//                 array(
+//                     'fields' => array(
+//                         'Typeorient.id',
+//                         'Typeorient.lib_type_orient'
+//                     ),
+//                     'conditions' => array(
+//                         'Typeorient.parentid' => null
+//                     )
+//                 )
+//             );
+//             $this->set( 'typesOrient', $typesOrient );
+// 
+//             $typesStruct = $this->Typeorient->find(
+//                 'list',
+//                 array(
+//                     'fields' => array(
+//                         'Typeorient.id',
+//                         'Typeorient.lib_type_orient'
+//                     ),
+//                     'conditions' => array(
+//                         'Typeorient.parentid NOT' => null
+//                     )
+//                 )
+//             );
+//             $this->set( 'typesStruct', $typesStruct );
+
+
+//             $this->Dossier->unbindModel(
+//                 array(
+//                     'hasOne' => array( 'Situationdossierrsa', 'Avispcgdroitrsa', 'Detaildroitrsa' ),
+//                     'hasMany' => array( 'Suiviinstruction', 'Infofinanciere' )
+//                 )
+//             );
+// 
+            $details = array();
+
+            $typeorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'lib_type_orient' ) ) );
+            $this->set( 'typeorient', $typeorient );
+
+            $tDossier = $this->Dossier->findById( $id, null, null, -1 );
+            $details = Set::merge( $details, $tDossier );
+
+            $tFoyer = $this->Dossier->Foyer->findByDossierRsaId( $id, null, null, -1 );
+            $details = Set::merge( $details, $tFoyer );
+
+            $bindPrestation = $this->Personne->hasOne['Prestation'];
+            $this->Personne->unbindModelAll();
+            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Prestation' => $bindPrestation ) ) );
+            $personnesFoyer = $this->Personne->find(
+                'all',
                 array(
-                    'fields' => array(
-                        'Typeorient.id',
-                        'Typeorient.lib_type_orient'
+                    'conditions' => array(
+                        'Personne.foyer_id' => $tFoyer['Foyer']['id'],
+                        'Prestation.rolepers' => array( 'DEM', 'CJT' )
                     ),
-                    'conditions' => array(
-                        'Typeorient.parentid' => null
-                    )
-                )
-            );
-            $this->set( 'typesOrient', $typesOrient );
-
-            $typesStruct = $this->Typeorient->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Typeorient.id',
-                        'Typeorient.lib_type_orient'
-                    ),
-                    'conditions' => array(
-                        'Typeorient.parentid NOT' => null
-                    )
-                )
-            );
-            $this->set( 'typesStruct', $typesStruct );
-
-            // FIXME: assert
-            $dossier = $this->Dossier->find(
-                'first',
-                array(
-                    'recursive' => 2,
-                    'conditions' => array(
-                        'Dossier.id' => $id
-                    )
+                    'recursive' => 0
                 )
             );
 
-            foreach( $dossier['Foyer']['Personne'] as $key => $personne ) {
-                $orientsstructs = $this->Orientstruct->find(
+            $roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
+            foreach( $roles as $index => $role ) {
+                ///Orientations
+                $orient = $this->Orientstruct->find(
                     'first',
                     array(
-                        'recursive' => 2,
-                        'conditions' => array(
-                            'Orientstruct.personne_id' => $personne['id']
-                        )
+                        'conditions' => array( 'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+                        'recursive' => -1,
+                        'order' => 'Orientstruct.date_propo DESC',
                     )
                 );
-                $dossier['Foyer']['Personne'][$key]['Orientstruct'] = $orientsstructs['Orientstruct'];
-                $dossier['Foyer']['Personne'][$key]['Structurereferente'] = $orientsstructs['Structurereferente'];
+                $personnesFoyer[$index]['Orientstruct'] = $orient['Orientstruct'];
 
+                ///Structures référentes
+                $struct = $this->Structurereferente->find(
+                    'first',
+                    array(
+                        'conditions' => array( 'Structurereferente.id' => $personnesFoyer[$index]['Orientstruct']['structurereferente_id'] ),
+                        'recursive' => -1
+                    )
+                );
+                $personnesFoyer[$index]['Structurereferente'] = $struct['Structurereferente'];
+
+                $details[$role] = $personnesFoyer[$index];
             }
-            $this->set( 'dossier', $dossier );
+//             debug($personnesFoyer);
+            $this->set( 'personnes', $personnesFoyer );
+//             foreach( $dossier['Foyer']['Personne'] as $key => $personne ) {
+//                 $orientsstructs = $this->Orientstruct->find(
+//                     'first',
+//                     array(
+//                         'recursive' => 2,
+//                         'conditions' => array(
+//                             'Orientstruct.personne_id' => $personne['id']
+//                         )
+//                     )
+//                 );
+//                 $dossier['Foyer']['Personne'][$key]['Orientstruct'] = $orientsstructs['Orientstruct'];
+//                 $dossier['Foyer']['Personne'][$key]['Structurereferente'] = $orientsstructs['Structurereferente'];
+//
+// debug($details);
+            $this->set( 'details', $details );
         }
 
         /**

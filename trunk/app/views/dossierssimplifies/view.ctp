@@ -1,12 +1,11 @@
 <?php $this->pageTitle = 'Préconisation d\'orientation';?>
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier['Dossier']['id'] ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'id' => $details['Dossier']['id'] ) );?>
 
 
 <h1>Préconisation d'orientation</h1>
 
 <div class="with_treemenu">
 
-</div>
 
 
 <table class="tooltips">
@@ -25,21 +24,22 @@
         </thead>
         <tbody>
             <?php
-                foreach( $dossier['Foyer']['Personne'] as $personne ) {
+//             debug($details);
+                foreach( $personnes as $personne ) {
+
                     echo $html->tableCells(
+
                         array(
-//                             h( $personne['rolepers'] ),
-                            h( $personne['nom'] ),
-                            h( $personne['prenom'] ),
-                            h( $locale->date( 'Date::short', $dossier['Dossier']['dtdemrsa'] ) ),
+                            h( $personne['Personne']['nom'] ),
+                            h( $personne['Personne']['prenom'] ),
+                            h( $locale->date( 'Date::short', $details['Dossier']['dtdemrsa'] ) ),
                             h( $locale->date( 'Date::short', $personne['Orientstruct']['date_valid'] ) ),
                             h( $personne['Orientstruct']['statut_orient'] ),
-                            h( isset( $personne['Structurereferente']['Typeorient']['lib_type_orient'] ) ? $personne['Structurereferente']['Typeorient']['lib_type_orient']  : null ) ,
-                            h( isset( $personne['Structurereferente']['lib_struc'] ) ? $personne['Structurereferente']['lib_struc'] : null ),
-
+                            h( Set::enum( Set::classicExtract( $personne, 'Structurereferente.typeorient_id' ), $typeorient ) ) ,
+                            h( Set::classicExtract( $personne, 'Structurereferente.lib_struc' )  ),
                             $html->editLink(
                                 'Editer l\'orientation',
-                                array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personne['id'] )
+                                array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personne['Personne']['id'] )
                             ),
                             $html->printLink(
                                 'Imprimer la notification',
