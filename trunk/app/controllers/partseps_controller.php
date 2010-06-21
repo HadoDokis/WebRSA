@@ -20,6 +20,7 @@
             $options[$this->modelClass]['fonctionpartep_id'] = $this->{$this->modelClass}->Fonctionpartep->find( 'list' );
             $options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->find( 'list' );
             $options['typevoie'] = $this->Option->typevoie();
+            $options['qual'] = $this->Option->qual();
 
             return $options;
         }
