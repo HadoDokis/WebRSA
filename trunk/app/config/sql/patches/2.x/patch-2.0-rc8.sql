@@ -582,6 +582,9 @@ COMMENT ON TABLE aidesapres66_piecescomptables66 IS 'Table pour connaître les p
 
 UPDATE orientsstructs SET daterelance = NULL WHERE statutrelance = 'E';
 
+ALTER TABLE propospdos ALTER COLUMN typepdo_id DROP NOT NULL;
+ALTER TABLE propospdos ALTER COLUMN typepdo_id SET DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
