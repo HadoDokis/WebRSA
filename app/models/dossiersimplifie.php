@@ -4,7 +4,5 @@
         var $name = 'Dossiersimplifie';
         var $useTable = false;
 
-
-
     }
 ?>

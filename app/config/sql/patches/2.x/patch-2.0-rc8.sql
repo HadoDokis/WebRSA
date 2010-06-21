@@ -579,6 +579,9 @@ CREATE INDEX aidesapres66_piecescomptables66_aideapre66_id_idx ON aidesapres66_p
 CREATE INDEX aidesapres66_piecescomptables66_piececomptable66_id_idx ON aidesapres66_piecescomptables66 (piececomptable66_id);
 COMMENT ON TABLE aidesapres66_piecescomptables66 IS 'Table pour connaître les pièces comptables liées à une APRE pour une aide donnée';
 
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout du 21/06/2010
+-- --------------------------------------------------------------------------------------------------------
 
 UPDATE orientsstructs SET daterelance = NULL WHERE statutrelance = 'E';
 
