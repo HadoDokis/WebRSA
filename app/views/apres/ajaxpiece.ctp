@@ -17,7 +17,7 @@
         );
     ?>
     <?php endif;?>
-    <table class="noborder">
+    <table class="wide noborder">
         <tr>
             <td class="noborder">
                 <?php if( !empty( $piecesadmin ) ):?>
