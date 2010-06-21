@@ -3,7 +3,7 @@
     {
         public $name = 'Typesaidesapres66';
 
-        var $uses = array( 'Typeaideapre66', 'Themeapre66', 'Pieceaide66' );
+        var $uses = array( 'Typeaideapre66', 'Themeapre66', 'Pieceaide66', 'Piececomptable66' );
 
         /**
         *
@@ -21,7 +21,7 @@
 
             $this->set( compact( 'options' ) );
 
-            $pieceliste = $this->Pieceaide66->find(
+            $pieceadmin = $this->Pieceaide66->find(
                 'list',
                 array(
                     'fields' => array(
@@ -30,7 +30,19 @@
                     )
                 )
             );
-            $this->set( 'pieceliste', $pieceliste );
+            $this->set( 'pieceadmin', $pieceadmin );
+            ///TODO: ajouter les pieces comtpables
+            $piececomptable = $this->Piececomptable66->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Piececomptable66.id',
+                        'Piececomptable66.name'
+                    )
+                )
+            );
+            $this->set( 'piececomptable', $piececomptable );
+
 
             return $return;
         }

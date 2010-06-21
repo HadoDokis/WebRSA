@@ -25,7 +25,7 @@
                 );
                 echo $html->tableCells(
                     array(
-                        h( 'Liste des pièces à fournir' ),
+                        h( 'Liste des pièces administratives' ),
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'piecesaides66', 'action' => 'index' )
@@ -34,7 +34,17 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-
+                echo $html->tableCells(
+                    array(
+                        h( 'Liste des pièces comptables' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'piecescomptables66', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
                 echo $html->tableCells(
                     array(
                         h( 'Thèmes de la demande d\'aide APRE' ),

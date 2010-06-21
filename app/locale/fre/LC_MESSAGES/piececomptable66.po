@@ -19,29 +19,29 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Pieceaide66::index::empty"
-msgstr "Aucune pièce administrative pour l'APRE présente"
+msgid "Piececomptable66::index::empty"
+msgstr "Aucune pièce comptable pour l'APRE présente"
 
-msgid "Piecesaides66::index"
-msgstr "Intitulé des pièces administratives de l'APRE"
+msgid "Piecescomptables66::index"
+msgstr "Intitulé des pièces comptables de l'APRE"
 
-msgid "Piecesaides66::add"
-msgstr "Ajout d'une pièce administrative "
+msgid "Piecescomptables66::add"
+msgstr "Ajout d'une pièce comptable"
 
-msgid "Pieceaide66::add"
-msgstr "Ajouter une pièce administrative "
+msgid "Piececomptable66::add"
+msgstr "Ajouter une pièce comptable"
 
-msgid "Pieceaide66::edit"
-msgstr "Modifier la pièce administrative "
+msgid "Piececomptable66::edit"
+msgstr "Modifier la pièce comptable"
 
-msgid "Pieceaide66::delete"
-msgstr "Supprimer la pièce administrative "
+msgid "Piececomptable66::delete"
+msgstr "Supprimer la pièce comptable"
 
-msgid "Piecesaides66::edit"
-msgstr "Modification de la pièce administrative "
+msgid "Piecescomptables66::edit"
+msgstr "Modification de la pièce comptable"
 
-msgid "Pieceaide66::delete::confirm"
+msgid "Piececomptable66::delete::confirm"
 msgstr "Confirmer la suppression ?"
 
-msgid "Pieceaide66.name"
-msgstr "Intitulé de la pièce administrative "
+msgid "Piececomptable66.name"
+msgstr "Intitulé de la pièce comptable"

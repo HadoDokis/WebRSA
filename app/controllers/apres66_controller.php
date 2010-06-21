@@ -2,7 +2,7 @@
     class Apres66Controller extends AppController
     {
         var $name = 'Apres66';
-        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Typeaideapre66Pieceaide66', 'Adressefoyer', 'Fraisdeplacement66',  'Structurereferente', 'Referent' );
+        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Typeaideapre66Pieceaide66', 'Adressefoyer', 'Fraisdeplacement66',  'Structurereferente', 'Referent', 'Typeaideapre66Piececomptable66', 'Piececomptable66' );
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece', 'notificationsop' );
         var $components = array( 'Default', 'Gedooo' );
@@ -30,7 +30,7 @@
             $options = Set::merge( $options, $this->{$this->modelClass}->Aideapre66->allEnumLists() );
 // debug($options);
             $this->set( 'options', $options );
-            $pieceliste = $this->Pieceaide66->find(
+            $pieceadmin = $this->Pieceaide66->find(
                 'list',
                 array(
                     'fields' => array(
@@ -39,9 +39,18 @@
                     )
                 )
             );
-            $this->set( 'pieceliste', $pieceliste );
-
-// debug($themes);
+            $this->set( 'pieceadmin', $pieceadmin );
+            $piececomptable = $this->Piececomptable66->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Piececomptable66.id',
+                        'Piececomptable66.name'
+                    )
+                )
+            );
+            $this->set( 'piececomptable', $piececomptable );
+// debug($piececomptable);
 
 
         }
@@ -164,7 +173,7 @@
                 $typeaideapre66_id = suffix( Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' ) );
             }
 
-            $pieces = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Pieceaide66->find(
+            $piecesadmin = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Pieceaide66->find(
                 'list',
                 array(
                     'fields' => array( 'Pieceaide66.id', 'Pieceaide66.name' ),
@@ -184,6 +193,28 @@
                     'recursive' => -1
                 )
             );
+
+            $piecescomptable = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Piececomptable66->find(
+                'list',
+                array(
+                    'fields' => array( 'Piececomptable66.id', 'Piececomptable66.name' ),
+                    'joins' => array(
+                        array(
+                            'table'      => 'typesaidesapres66_piecescomptables66',
+                            'alias'      => 'Typeaideapre66Piececomptable66',
+                            'type'       => 'INNER',
+                            'foreignKey' => false,
+                            'conditions' => array(
+                                'Typeaideapre66Piececomptable66.piececomptable66_id = Piececomptable66.id',
+                                'Typeaideapre66Piececomptable66.typeaideapre66_id' => $typeaideapre66_id,
+                            )
+                        )
+                    ),
+                    'order' => array( 'Piececomptable66.name' ),
+                    'recursive' => -1
+                )
+            );
+
 
             // Cases déjà cochées
             $checked = array();
@@ -210,11 +241,33 @@
                 );
 
                 $this->data['Pieceaide66']['Pieceaide66'] = Set::extract( $checked, '/Pieceaide66/id' );
+                
+                $checkedcomptable = $this->{$this->modelClass}->Aideapre66->Piececomptable66->find(
+                    'all',
+                    array(
+                        'fields' => array( 'Piececomptable66.id' ),
+                        'joins' => array(
+                            array(
+                                'table'      => 'aidesapres66_piecescomptables66',
+                                'alias'      => 'Aideapre66Piececomptable66',
+                                'type'       => 'INNER',
+                                'foreignKey' => false,
+                                'conditions' => array(
+                                    'Aideapre66Piececomptable66.piececomptable66_id = Piececomptable66.id',
+                                    'Aideapre66Piececomptable66.aideapre66_id' => $aideapre_id
+                                )
+                            )
+                        ),
+                        'recursive' => -1
+                    )
+                );
+
+                $this->data['Piececomptable66']['Piececomptable66'] = Set::extract( $checkedcomptable, '/Piececomptable66/id' );
             }
 
             $typeaideapre = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findById( $typeaideapre66_id, null, null, -1 );
 
-            $this->set( compact( 'pieces', 'typeaideapre' ) );
+            $this->set( compact( 'piecesadmin', 'piecescomptable', 'typeaideapre' ) );
             $this->render( $this->action, 'ajax', '/apres/ajaxpiece' );
         }
 

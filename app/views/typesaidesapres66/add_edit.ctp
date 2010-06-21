@@ -31,7 +31,8 @@
             'Typeaideapre66.name',
             'Typeaideapre66.objetaide' => array( 'type' => 'text' ),
             'Typeaideapre66.plafond' => array( 'type' => 'text' ),
-            'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces à fournir', 'multiple' => 'checkbox' , 'options' => $pieceliste, 'empty' => false )
+            'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces administratives', 'multiple' => 'checkbox' , 'options' => $pieceadmin, 'empty' => false ),
+            'Piececomptable66.Piececomptable66' => array( 'label' => 'Pièces comptables', 'multiple' => 'checkbox' , 'options' => $piececomptable, 'empty' => false )
         ),
         array(
             'options' => $options
