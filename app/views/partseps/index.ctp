@@ -8,32 +8,17 @@
 </h1>
 
 <?php
-// 	echo $default->search(
-// 		array(
-// 			'Partep.id',
-// 			'Partep.qual',
-// 			'Partep.nom',
-// 			'Partep.prenom',
-// 			'Partep.tel',
-// 			'Partep.email',
-// 			'Partep.ep_id',
-// 			'Partep.fonctionpartep_id',
-// 			'Partep.rolepartep',
-// 		)
-// 	);
-
 	echo $default->index(
 		$partseps,
 		array(
-// 			'Partep.id',
-			'Partep.qual',
+			'Partep.qual' => array( 'options' => $options['qual'] ),
 			'Partep.nom',
 			'Partep.prenom',
 			'Partep.tel',
 			'Partep.email',
 			'Ep.name',
 			'Fonctionpartep.name',
-			'Partep.rolepartep' => array( 'options' => $options ),
+			'Partep.rolepartep' => array( 'options' => $options )
 		),
 		array(
 			'add' => array(
