@@ -2,11 +2,11 @@
 <?php echo $this->element( 'dossier_menu', array( 'id' => $details['Dossier']['id'] ) );?>
 
 
-<h1>Préconisation d'orientation</h1>
+
 
 <div class="with_treemenu">
 
-
+<h1>Préconisation d'orientation</h1>
 
 <table class="tooltips">
         <thead>
@@ -54,4 +54,5 @@
             ?>
         </tbody>
     </table>
+</div>
 <div class="clearer"><hr /></div>
