@@ -41,7 +41,7 @@
 
     <?php if( is_array( $cohortepdo ) && count( $cohortepdo ) > 0 ):?>
         <?php echo $pagination;?>
-        <?php echo $form->create( 'Propopdo', array( 'url'=> Router::url( null, true ) ) );?>
+        <?php echo $form->create( 'Cohortepdo', array( 'url'=> Router::url( null, true ) ) );?>
 
 
         <?php
@@ -50,14 +50,15 @@
             echo $form->input( 'Cohortepdo.matricule', array( 'type' => 'hidden', 'id' => 'CohortepdoMatricule2' ) );
             echo $form->input( 'Cohortepdo.nom', array( 'type' => 'hidden', 'id' => 'CohortepdoNom2' ) );
             echo $form->input( 'Cohortepdo.prenom', array( 'type' => 'hidden', 'id' => 'CohortepdoPrenom2' ) );
-            echo $form->input( 'Cohortepdo.typepdo_id', array( 'type' => 'hidden', 'id' => 'CohortepdoTypepdoId2' ) );
-            echo $form->input( 'Cohortepdo.decisionpdo_id', array( 'type' => 'hidden', 'id' => 'CohortepdoDecisionpdoId2' ) );
-            echo $form->input( 'Cohortepdo.motifpdo', array( 'type' => 'hidden', 'id' => 'CohortepdoMotifpdo2' ) );
-            ///FIXME: problème: les dates se remettent à 0 (2010-01-01) après
-            ///     validation au lieu de conserver les plages saisies
-            echo $form->input( 'Cohortepdo.datedecisionpdo', array( 'type' => 'hidden', 'id' => 'CohortepdoDatedecisionpdo2' ) );
-            echo $form->input( 'Cohortepdo.datedecisionpdo_from', array( 'type' => 'hidden', 'id' => 'CohortepdoDatedecisionpdoFrom2' ) );
-            echo $form->input( 'Cohortepdo.datedecisionpdo_to', array( 'type' => 'hidden', 'id' => 'CohortepdoDatedecisionpdoTo2' ) );
+            echo $form->input( 'Cohortepdo.locaadr', array( 'type' => 'hidden', 'id' => 'CohortepdoLocaadr2' ) );
+            echo $form->input( 'Cohortepdo.user_id', array( 'type' => 'hidden', 'id' => 'CohortepdoUserId2' ) );
+//             echo $form->input( 'Cohortepdo.decisionpdo_id', array( 'type' => 'hidden', 'id' => 'CohortepdoDecisionpdoId2' ) );
+//             echo $form->input( 'Cohortepdo.motifpdo', array( 'type' => 'hidden', 'id' => 'CohortepdoMotifpdo2' ) );
+//             ///FIXME: problème: les dates se remettent à 0 (2010-01-01) après
+//             ///     validation au lieu de conserver les plages saisies
+//             echo $form->input( 'Cohortepdo.datedecisionpdo', array( 'type' => 'hidden', 'id' => 'CohortepdoDatedecisionpdo2' ) );
+//             echo $form->input( 'Cohortepdo.datedecisionpdo_from', array( 'type' => 'hidden', 'id' => 'CohortepdoDatedecisionpdoFrom2' ) );
+//             echo $form->input( 'Cohortepdo.datedecisionpdo_to', array( 'type' => 'hidden', 'id' => 'CohortepdoDatedecisionpdoTo2' ) );
             echo '</div>';
         ?>
 
@@ -68,10 +69,11 @@
                 <tr>
                     <th>Nom de l'allocataire</th>
                     <th>Date de demande RSA</th>
-                    <th>Type de PDO</th>
+                    <th>Adresse</th>
+                    <!-- <th>Type de PDO</th>
                     <th>Decision PDO</th>
                     <th>Date de décision PDO</th>
-                    <th>Motif</th>
+                    <th>Motif</th> -->
                     <th>Gestionnaire</th>
                     <th>Commentaires</th>
                     <th class="action noprint">Action</th>
@@ -109,31 +111,32 @@
 
 
                     $personne_id = $pdo['Personne']['id'];//Set::extract( $pdo, 'Propopdo.dossier_rsa_id');
-                    $pdo_id = Set::extract( $pdo, 'Propopdo.id');
-                    $typepdo_id = Set::extract( $pdo, 'Propopdo.typepdo_id');
-                    $decisionpdo_id = Set::extract( $pdo, 'Propopdo.decisionpdo_id');
-                    
+//                     $pdo_id = Set::extract( $this->data, 'Propopdo.id');
+//                     $typepdo_id = Set::extract( $pdo, 'Propopdo.typepdo_id');
+//                     $decisionpdo_id = Set::extract( $pdo, 'Propopdo.decisionpdo_id');
+
 // debug($pdo);
 // die();
                     echo $html->tableCells(
                         array(
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
                             h( date_short( $pdo['Dossier']['dtdemrsa'] ) ),
+                            h( Set::classicExtract( $pdo, 'Adresse.locaadr' ) ),
 //                             h( Set::classicExtract( $typepdo, Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ) ) ),
 //                             h( Set::classicExtract( $decisionpdo, Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ) ) ),
 //                             h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
 //                             h( Set::classicExtract( $motifpdo, Set::classicExtract( $pdo, 'Propopdo.motifpdo' ) ) ),
 
-                            $form->input( 'Propopdo.'.$index.'.typepdo_id', array( 'label' => false,  'div' => false, 'value' => $typepdo_id, 'type' => 'hidden' ) ).
-                            h( Set::classicExtract( $typepdo, Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ) ) ),
+//                             $form->input( 'Propopdo.'.$index.'.typepdo_id', array( 'label' => false,  'div' => false, 'value' => $typepdo_id, 'type' => 'hidden' ) ).
+//                             h( Set::classicExtract( $typepdo, Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ) ) ),
 // 
-                            $form->input( 'Propopdo.'.$index.'.decisionpdo_id', array( 'label' => false,  'div' => false, 'value' => $decisionpdo_id, 'type' => 'hidden' ) ).
+//                             $form->input( 'Propopdo.'.$index.'.decisionpdo_id', array( 'label' => false,  'div' => false, 'value' => $decisionpdo_id, 'type' => 'hidden' ) ).
                             $form->input( 'Propopdo.'.$index.'.personne_id', array( 'label' => false, 'div' => false, 'value' => $personne_id, 'type' => 'hidden' ) ).
-                            $form->input( 'Propopdo.'.$index.'.id', array( 'label' => false, 'div' => false, 'value' => $pdo_id, 'type' => 'hidden' ) ).
-                            h( Set::classicExtract( $decisionpdo, Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ) ) ),
+                            $form->input( 'Propopdo.'.$index.'.id', array( 'label' => false, 'div' => false, 'type' => 'hidden' ) ).
+//                             h( Set::classicExtract( $decisionpdo, Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ) ) ),
 
-                            h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
-                            h( Set::classicExtract( $motifpdo, Set::classicExtract( $pdo, 'Propopdo.motifpdo' ) ) ),
+//                             h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
+//                             h( Set::classicExtract( $motifpdo, Set::classicExtract( $pdo, 'Propopdo.motifpdo' ) ) ),
 // 
 //                             $form->input( 'Propopdo.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $pdo['Dossier']['id'] ) ),
 // 

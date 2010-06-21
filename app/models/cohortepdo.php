@@ -16,10 +16,10 @@
                     $conditions[] = 'Propopdo.user_id IS NULL';
 
                 }
-                else if( $statutValidationAvis == 'Decisionpdo::enattente' ) {
-                    $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
-                    $conditions[] = 'Propopdo.motifpdo = \'E\'';
-                }
+//                 else if( $statutValidationAvis == 'Decisionpdo::enattente' ) {
+//                     $conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
+//                     $conditions[] = 'Propopdo.motifpdo = \'E\'';
+//                 }
                 else if( $statutValidationAvis == 'Decisionpdo::valide' ) {
                     $conditions[] = 'Propopdo.user_id IS NOT NULL';
                 }
@@ -102,57 +102,37 @@
 
             $query = array(
                 'fields' => array(
-                    '"Propopdo"."id"',
-                    '"Propopdo"."personne_id"',
-                    '"Propopdo"."typepdo_id"',
-                    '"Propopdo"."decisionpdo_id"',
-                    '"Propopdo"."typenotifpdo_id"',
-                    '"Propopdo"."datedecisionpdo"',
-                    '"Propopdo"."motifpdo"',
-                    '"Propopdo"."commentairepdo"',
-                    '"Propopdo"."user_id"',
-                    '"Dossier"."id"',
-                    '"Dossier"."numdemrsa"',
-                    '"Dossier"."dtdemrsa"',
-                    '"Dossier"."matricule"',
-                    '"Dossier"."typeparte"',
                     '"Personne"."id"',
                     '"Personne"."nom"',
                     '"Personne"."prenom"',
                     '"Personne"."dtnai"',
                     '"Personne"."nir"',
                     '"Personne"."qual"',
+                    '"Propopdo"."user_id"',
+                    '"Dossier"."id"',
+                    '"Dossier"."numdemrsa"',
+                    '"Dossier"."dtdemrsa"',
+                    '"Dossier"."matricule"',
                     '"Personne"."nomcomnai"',
                     '"Adresse"."locaadr"',
                     '"Adresse"."codepos"',
+                    '"Adresse"."numcomptt"',
                     '"Situationdossierrsa"."etatdosrsa"',
                 ),
                 'joins' => array(
-                    array(
-                        'table'      => 'personnes',
-                        'alias'      => 'Personne',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Propopdo.personne_id = Personne.id' ),
-                    ),
-                    array(
-                        'table'      => 'prestations',
-                        'alias'      => 'Prestation',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array(
-                            'Personne.id = Prestation.personne_id',
-                            'Prestation.natprest = \'RSA\'',
-//                             '( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
-                            '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
-                        )
-                    ),
                     array(
                         'table'      => 'foyers',
                         'alias'      => 'Foyer',
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+                    ),
+                    array(
+                        'table'      => 'propospdos',
+                        'alias'      => 'Propopdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.personne_id = Personne.id' )
                     ),
                     array(
                         'table'      => 'adresses_foyers',
@@ -190,25 +170,16 @@
                         )
                     ),
                     array(
-                        'table'      => 'typesnotifspdos',
-                        'alias'      => 'Typenotifpdo',
-                        'type'       => 'LEFT OUTER',
+                        'table'      => 'prestations',
+                        'alias'      => 'Prestation',
+                        'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Propopdo.typenotifpdo_id = Typenotifpdo.id' )
-                    ),
-                    array(
-                        'table'      => 'decisionspdos',
-                        'alias'      => 'Decisionpdo',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Propopdo.decisionpdo_id = Decisionpdo.id' )
-                    ),
-                    array(
-                        'table'      => 'typespdos',
-                        'alias'      => 'Typepdo',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Propopdo.typepdo_id = Typepdo.id' )
+                        'conditions' => array(
+                            'Personne.id = Prestation.personne_id',
+                            'Prestation.natprest = \'RSA\'',
+//                             '( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
+                            '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+                        )
                     ),
                 ),
                 'recursive' => -1,
