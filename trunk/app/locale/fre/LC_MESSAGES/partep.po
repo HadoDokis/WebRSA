@@ -75,3 +75,21 @@ msgstr "Titulaire"
 
 msgid "ENUM::ROLEPARTEP::suppleant"
 msgstr "Suppléant"
+
+msgid "Partep.numvoie"
+msgstr "N° de voie"
+
+msgid "Partep.typevoie"
+msgstr "Type de voie"
+
+msgid "Partep.nomvoie"
+msgstr "Nom de voie"
+
+msgid "Partep.compladr"
+msgstr "Complément d'adresse"
+
+msgid "Partep.codepos"
+msgstr "Code postal"
+
+msgid "Partep.ville"
+msgstr "Ville"

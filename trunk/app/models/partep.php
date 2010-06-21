@@ -42,6 +42,26 @@
                 'rule' => 'email',
                 'message' => 'Email non valide',
                 'allowEmpty' => true
+            ),
+            'numvoie' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'typevoie' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'nomvoie' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'codepos' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'ville' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
             )
         );
 

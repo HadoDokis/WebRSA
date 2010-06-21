@@ -3,6 +3,7 @@
 	{
 		public $name = 'Partseps';
 
+        var $uses = array( 'Partep', 'Option' );
 		/**
 		* @access public
 		*/
@@ -18,6 +19,7 @@
             $options = $this->{$this->modelClass}->enums();
             $options[$this->modelClass]['fonctionpartep_id'] = $this->{$this->modelClass}->Fonctionpartep->find( 'list' );
             $options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->find( 'list' );
+            $options['typevoie'] = $this->Option->typevoie();
 
             return $options;
         }
