@@ -544,6 +544,41 @@ ALTER TABLE contratsinsertion ADD COLUMN outilsamobiliser TEXT;
 ALTER TABLE contratsinsertion ADD COLUMN niveausalaire NUMERIC(12,2);
 ALTER TABLE contratsinsertion ADD COLUMN zonegeographique_id INTEGER DEFAULT NULL REFERENCES zonesgeographiques(id);
 
+
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces pour les types d'aides comptables de l'APRE
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE piecescomptables66 (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    name                        VARCHAR(200) NOT NULL
+);
+COMMENT ON TABLE piecescomptables66 IS 'Table pour les pièces comptables liées aux aides de l''APRE CG66';
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces liées aux aides de l'APRE
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE typesaidesapres66_piecescomptables66 (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    typeaideapre66_id           INTEGER NOT NULL REFERENCES typesaidesapres66(id),
+    piececomptable66_id              INTEGER NOT NULL REFERENCES piecescomptables66(id)
+);
+CREATE INDEX typesaidesapres66_piecescomptables66_typeaideapre66_id_idx ON typesaidesapres66_piecescomptables66 (typeaideapre66_id);
+CREATE INDEX typesaidesapres66_piecescomptables66_piececomptable66_id_idx ON typesaidesapres66_piecescomptables66 (piececomptable66_id);
+COMMENT ON TABLE typesaidesapres66_piecescomptables66 IS 'Table pour lier les aides de l''APRE CG66 à leurs pièces comptables';
+
+-- --------------------------------------------------------------------------------------------------------
+--  ....Table des pièces liées aux aides de l'APRE
+-- --------------------------------------------------------------------------------------------------------
+CREATE TABLE aidesapres66_piecescomptables66 (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    aideapre66_id               INTEGER NOT NULL REFERENCES aidesapres66(id),
+    piececomptable66_id              INTEGER NOT NULL REFERENCES piecescomptables66(id)
+);
+CREATE INDEX aidesapres66_piecescomptables66_aideapre66_id_idx ON aidesapres66_piecescomptables66 (aideapre66_id);
+CREATE INDEX aidesapres66_piecescomptables66_piececomptable66_id_idx ON aidesapres66_piecescomptables66 (piececomptable66_id);
+COMMENT ON TABLE aidesapres66_piecescomptables66 IS 'Table pour connaître les pièces comptables liées à une APRE pour une aide donnée';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

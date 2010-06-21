@@ -255,6 +255,9 @@
         'traitementtypepdo' => 'traitementstypespdos',
         'descriptionpdo' => 'descriptionspdos',
         'traitementpdo' => 'traitementspdos',
+        'piececomptable66' => 'piecescomptables66',
+        'typeaideapre66_piececomptable66' => 'typesaidesapres66_piecescomptables66',
+        'aideapre66_piececomptable66' => 'aidesapres66_piecescomptables66',
         ///Bilan de parcours
 //         'bilanparcours' => 'bilansparcours', //FIXME: on utilise useTable sinon ca passe pas
 
