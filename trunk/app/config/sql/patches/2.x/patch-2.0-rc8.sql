@@ -585,6 +585,13 @@ UPDATE orientsstructs SET daterelance = NULL WHERE statutrelance = 'E';
 ALTER TABLE propospdos ALTER COLUMN typepdo_id DROP NOT NULL;
 ALTER TABLE propospdos ALTER COLUMN typepdo_id SET DEFAULT NULL;
 
+ALTER TABLE partseps ADD COLUMN numvoie VARCHAR(6);
+ALTER TABLE partseps ADD COLUMN typevoie VARCHAR(4);
+ALTER TABLE partseps ADD COLUMN nomvoie VARCHAR(32);
+ALTER TABLE partseps ADD COLUMN compladr VARCHAR(32);
+ALTER TABLE partseps ADD COLUMN codepos VARCHAR(5);
+ALTER TABLE partseps ADD COLUMN ville VARCHAR(32);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
