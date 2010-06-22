@@ -83,11 +83,7 @@
                             echo $xform->input( 'Statutpdo.Statutpdo', array( 'type' => 'select', 'label' => 'Statut de la PDO', 'multiple' => 'checkbox' , 'options' => $statutlist ) );
                         ?>
                     </td>
-                    <td class="noborder">
-                        <?php
-                            echo $xform->input( 'Statutdecisiondo.Statutdecisiondo', array( 'type' => 'select', 'label' => 'Thème de la PDO', 'multiple' => 'checkbox' , 'options' => $statutdecisionlist ) );
-                        ?>
-                    </td>
+
                 </tr>
             </table>
         </fieldset>

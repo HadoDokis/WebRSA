@@ -130,7 +130,7 @@
     </fieldset>
     <fieldset>
         <legend>Prise de décision</legend>
-        <table class="noborder" id="wide">
+        <table class="noborder" id="infosPdo">
             <tr>
                 <td class="mediumSize noborder">
                     <?php
@@ -140,11 +140,6 @@
                 <td class="mediumSize noborder">
                     <?php
                         echo $xform->input( 'Statutpdo.Statutpdo', array( 'type' => 'select', 'label' => 'Statut de la PDO', 'multiple' => 'checkbox' , 'options' => $statutlist ) );
-                    ?>
-                </td>
-                <td class="mediumSize noborder">
-                    <?php
-                        echo $xform->input( 'Statutdecisionpdo.Statutdecisionpdo', array( 'label' =>  ( __( 'Thème de la décision', true ) ), 'type' => 'select', 'multiple' => 'checkbox', 'options' => $statutdecisionlist ) );
                     ?>
                 </td>
             </tr>
