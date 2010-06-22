@@ -192,9 +192,9 @@
                                                 <?php endif;?>
                                                 </ul>
                                             </li>
+                                            <?php if( $permissions->check( 'entretiens', 'index' ) ):?>
                                             <li><span>Actualisation suivi</span>
                                                 <ul>
-                                                    <?php if( $permissions->check( 'entretiens', 'index' ) ):?>
                                                     <li>
                                                         <?php
                                                             echo $html->link(
@@ -203,9 +203,10 @@
                                                             );
                                                         ?>
                                                     </li>
-                                                    <?php endif;?>
+
                                                 </ul>
                                             </li>
+                                            <?php endif;?>
                                             <li><span>Offre d'insertion</span>
                                                 <ul>
                                                    <!-- <li>

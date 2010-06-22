@@ -58,6 +58,9 @@
             checkDatesToRefresh();
         } );
 
+
+
+
     });
 
 
@@ -87,29 +90,7 @@
     ?>
 
     <div class="aere">
-        <!-- <fieldset>
-            <legend>Détails PDO</legend>
-            <?php
-                /*
 
-                echo $xform->input( 'Propopdo.',  );
-
-
-                echo $default->view(
-                    $dossier,
-                    array(
-                        'Dossier.fonorg',
-                        'Suiviinstruction.typeserins',
-                    ),
-                    array(
-                        'widget' => 'table',
-                        'id' => 'dossierInfosOrganisme',
-                        'options' => $options
-                    )
-                );*/
-
-            ?>
-        </fieldset> -->
     <fieldset>
         <legend>Arrivée de la PDO</legend>
         <?php
@@ -126,8 +107,34 @@
                     'options' => $options
                 )
             );
+
+                echo $default->view(
+                    $dossier,
+                    array(
+                        'Dossier.fonorg',
+                        'Suiviinstruction.typeserins',
+                    ),
+                    array(
+                        'widget' => 'table',
+                        'id' => 'dossierInfosOrganisme',
+                        'options' => $options
+                    )
+                );
         ?>
     </fieldset>
+
+    <fieldset id="Etatpdo1" class="invisible">
+        <?php
+//             debug($step);
+//             if( $step == '0' ) {
+//                 echo 'Etat du dossier : <strong>'.$etatpdo.'</strong>';
+//             }
+//             else {
+//                 echo 'Etat du dossier : ';
+//             }
+        ?>
+    </fieldset>
+
     <fieldset>
         <legend>Prise de décision</legend>
         <table class="noborder" id="infosPdo">
@@ -163,6 +170,18 @@
             );
         ?>
     </fieldset>
+
+    <fieldset id="Etatpdo2" class="invisible">
+        <?php
+//             if( $step == '1' ) {
+//                 echo 'Etat du dossier : <strong>'.$etatpdo.'</strong>';
+//             }
+//             else {
+//                 echo 'Etat du dossier : ';
+//             }
+        ?>
+    </fieldset>
+
     <fieldset>
         <?php
             echo $form->input( 'Propopdo.decision', array( 'label' => 'Décision', 'type' => 'checkbox' ) );
@@ -198,6 +217,19 @@
         </fieldset>
 
     </fieldset>
+
+    <fieldset id="Etatpdo3" class="invisible">
+        <?php
+//             if( $step == '2' ) {
+//                 echo 'Etat du dossier : <strong>'.$etatpdo.'</strong>';
+//             }
+//             else {
+//                 echo 'Etat du dossier : ';
+//             }
+        ?>
+
+    </fieldset>
+
     <fieldset>
         <?php
             echo $form->input( 'Propopdo.suivi', array( 'label' => 'Suivi', 'type' => 'checkbox' ) );
@@ -217,6 +249,19 @@
         ?>
         </fieldset>
     </fieldset>
+
+    <fieldset id="Etatpdo4" class="invisible">
+        <?php
+//             if( $step == '3' ) {
+//                 echo 'Etat du dossier : <strong>'.$etatpdo.'</strong>';
+//             }
+//             else {
+//                 echo 'Etat du dossier : ';
+//             }
+        ?>
+
+    </fieldset>
+
     <fieldset>
         <?php
             echo $form->input( 'Propopdo.autres', array( 'label' => 'Autres', 'type' => 'checkbox' ) );
@@ -236,6 +281,18 @@
         ?>
         </fieldset>
     </fieldset>
+    <fieldset id="Etatpdo5" class="invisible">
+        <?php
+//             if( $step == '4' ) {
+//                 echo 'Etat du dossier : <strong>'.$etatpdo.'</strong>';
+//             }
+//             else {
+//                 echo 'Etat du dossier : ';
+//             }
+        ?>
+
+    </fieldset>
+
     </div>
     <div class="submit">
         <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>

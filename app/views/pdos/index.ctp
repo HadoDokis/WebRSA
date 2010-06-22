@@ -55,17 +55,17 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
-                    array(
-                        h( 'Statut décisions PDOs' ),
-                        $html->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'statutsdecisionspdos', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
+//                 echo $html->tableCells(
+//                     array(
+//                         h( 'Statut décisions PDOs' ),
+//                         $html->viewLink(
+//                             'Voir la table',
+//                             array( 'controller' => 'statutsdecisionspdos', 'action' => 'index' )
+//                         )
+//                     ),
+//                     array( 'class' => 'odd' ),
+//                     array( 'class' => 'even' )
+//                 );
                 echo $html->tableCells(
                     array(
                         h( 'Statut PDOs' ),
