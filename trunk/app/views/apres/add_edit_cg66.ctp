@@ -35,25 +35,7 @@
                 'Aideapre66Themeapre66Id'
             );
 
-//             observeDisableFieldsOnValue(
-//                 'Aideapre66VersementTIE',
-//                 [
-//                     'Aideapre66AutorisationversO',
-//                     'Aideapre66AutorisationversN'
-//                 ],
-//                 'TIE',
-//                 false
-//             );
-// 
-//             observeDisableFieldsOnValue(
-//                 'Aideapre66VersementDEM',
-//                 [
-//                     'Aideapre66AutorisationversO',
-//                     'Aideapre66AutorisationversN'
-//                 ],
-//                 'DEM',
-//                 true
-//             );
+            observeDisableFieldsetOnCheckbox( '<?php echo $this->modelClass;?>Hasfrais', $( 'Fraisdeplacement66Destination' ).up( 'fieldset' ), false );
 
             observeDisableFieldsetOnRadioValue(
                 'Apre',
@@ -178,7 +160,7 @@
 </script>
 
 <div class="with_treemenu">
-    <h1>Formulaire de demande de l'APRE COMPLÉMENTAIRE</h1>
+    <h1>Formulaire de demande de l'APRE</h1>
 <br />
     <?php
         echo $form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre', 'url' => Router::url( null, true ) ) );
@@ -186,14 +168,14 @@
         if( $this->action == 'edit' ) {
             echo '<div>';
             echo $form->input( "{$this->modelClass}.id", array( 'type' => 'hidden' ) );
-
+            echo $form->input( 'Modecontact.0.id', array( 'type' => 'hidden' ) );
+            echo $form->input( 'Modecontact.1.id', array( 'type' => 'hidden' ) );
             echo '</div>';
         }
         echo '<div>';
         echo $form->input( 'Modecontact.0.foyer_id', array( 'type' => 'hidden', 'value' => $foyer_id ) );
         echo $form->input( 'Modecontact.1.foyer_id', array( 'type' => 'hidden', 'value' => $foyer_id ) );
-        echo $form->input( 'Modecontact.0.id', array( 'type' => 'hidden' ) );
-        echo $form->input( 'Modecontact.1.id', array( 'type' => 'hidden' ) );
+
         echo $form->input( "{$this->modelClass}.personne_id", array( 'type' => 'hidden', 'value' => $personne_id ) );
         echo '</div>';
     ?>
@@ -465,7 +447,10 @@
         <p class="notice">Aucune APRE antérieure présente pour cette personne</p>
     <?php endif;?>
 </fieldset>
-<fieldset>
+<?php
+    echo $xform->input( "{$this->modelClass}.hasfrais", array( 'label' => 'Présence de frais', 'type' => 'checkbox' ) );
+?>
+<fieldset id="Hasfrais">
     <legend><strong>Calcul des frais de déplacements, d'hébergement et de restauration</strong></legend>
     <?php
         $tmp = array(
@@ -597,6 +582,7 @@
             );
         ?>
 </fieldset>
+
 <?php
     $error = Set::classicExtract( $this->validationErrors, "{$this->modelClass}.isdecision" );
     $class = 'radio'.( !empty( $error ) ? ' error' : '' );
@@ -629,7 +615,17 @@
         Un formulaire de demande par type d'aide demandée. Il doit être établi par un référent, pour Pôle Emploi en son absence par un prescripteur habilité.
     </p>
 </fieldset>
-
+        <?php
+        ///FIXME: Voir si on peut faire mieux
+            $etat = Set::enum( Set::classicExtract( $this->data, "{$this->modelClass}.etatdossierapre" ), $options['etatdossierapre'] );
+//             debug($etat);
+            if( empty( $etat ) ) {
+                echo 'Etat du dossier : <strong>Incomplet</strong>';
+            }
+            else{
+                echo 'Etat du dossier : <strong>'.$etat.'</strong>';
+            }
+        ?>
     </div>
 
     <div class="submit">

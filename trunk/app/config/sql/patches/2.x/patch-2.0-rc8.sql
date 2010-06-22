@@ -595,6 +595,11 @@ ALTER TABLE partseps ADD COLUMN compladr VARCHAR(32);
 ALTER TABLE partseps ADD COLUMN codepos VARCHAR(5);
 ALTER TABLE partseps ADD COLUMN ville VARCHAR(32);
 
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout du 22/06/2010
+-- --------------------------------------------------------------------------------------------------------
+ALTER TABLE apres ADD COLUMN hasfrais type_booleannumber DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

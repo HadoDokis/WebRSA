@@ -17,7 +17,8 @@
                     'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' ),
                     'presence' => array( 'type' => 'presence', 'domain' => 'apre' ),
                     'justificatif' => array( 'type' => 'justificatif', 'domain' => 'apre' ),
-                    'isdecision' => array( 'domain' => 'apre' )
+                    'isdecision' => array( 'domain' => 'apre' ),
+                    'etatdossierapre' => array( 'domain' => 'apre' )
                 )
             ),
             'Frenchfloat' => array(

@@ -16,7 +16,7 @@
 
             $options = $this->{$this->modelClass}->allEnumLists();
 
-
+//             debug($options);
             $this->set( 'typevoie', $this->Option->typevoie() );
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'sitfam', $this->Option->sitfam() );
@@ -450,7 +450,6 @@
                 $this->data['Apre66']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
 
 
-
 				// Tentative d'enregistrement de l'APRE complémentaire
 				$this->{$this->modelClass}->create( $this->data );
 				$this->{$this->modelClass}->set( 'statutapre', 'C' );
@@ -459,10 +458,13 @@
 				// Tentative d'enregistrement de l'aide liée à l'APRE complémentaire
 				$this->{$this->modelClass}->Aideapre66->create( $this->data );
 
-                $Fraisdeplacement66 = Set::filter( $this->data['Fraisdeplacement66'] );
-                if( !empty( $Fraisdeplacement66 ) ){
-                    $this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->create( $this->data );
-                }
+                if( !empty( $this->data['Fraisdeplacement66'] ) ) {
+
+                    $Fraisdeplacement66 = Set::filter( $this->data['Fraisdeplacement66'] );
+                    if( !empty( $Fraisdeplacement66 ) ){
+                        $this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->create( $this->data );
+                    }
+                 }
 
 				if( $this->action == 'add' ) {
 					$this->{$this->modelClass}->Aideapre66->set( 'apre_id', $this->{$this->modelClass}->getLastInsertID( ) );
@@ -550,11 +552,13 @@
 					$this->data = Set::insert( $this->data, 'Aideapre66.typeaideapre66_id', "{$themeapre66_id}_{$typeaideapre66_id}" );
 
                     ///FIXME: doit faire autrement
-                    if( !empty( $this->data['Fraisdeplacement66'] ) ) {
+                    if( !empty( $this->data['Aideapre66']['Fraisdeplacement66'] ) ) {
                         $this->data['Fraisdeplacement66'] = $this->data['Aideapre66']['Fraisdeplacement66'];
                     }
-                    $this->data['Modecontact'] = $personne['Foyer']['Modecontact'];
-
+                    if( !empty( $this->data['Modecontact'] ) ) {
+                        $this->data['Modecontact'] = $personne['Foyer']['Modecontact'];
+                    }
+// debug($this->data);
                 }
             }
 //                 debug( $this->{$this->modelClass}->validationErrors );
