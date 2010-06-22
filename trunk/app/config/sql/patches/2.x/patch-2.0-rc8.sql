@@ -600,6 +600,8 @@ ALTER TABLE partseps ADD COLUMN ville VARCHAR(32);
 -- --------------------------------------------------------------------------------------------------------
 ALTER TABLE apres ADD COLUMN hasfrais type_booleannumber DEFAULT NULL;
 
+-- CREATE TYPE type_etat AS ENUM ( '0', '1', '2', '3', '4' );
+-- ALTER TABLE propospdos ADD COLUMN etatdossierpdo type_etat DEFAULT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

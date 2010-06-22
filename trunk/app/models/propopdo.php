@@ -10,6 +10,7 @@
 					'statutdecision' => array(  'domain' => 'propopdo' ),
                     'choixpdo' => array( 'domain' => 'propopdo' ),
                     'nonadmis' => array( 'domain' => 'propopdo' ),
+//                     'etatdossierpdo'
 				)
             ),
             'Formattable'

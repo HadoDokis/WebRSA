@@ -47,13 +47,13 @@
             );
 
             observeDisableFieldsetOnRadioValue(
-            'Apre',
-            'data[<?php echo $this->modelClass;?>][isdecision]',
-            $( 'DecisionApre' ),
-            'O',
-            false,
-            true
-        );
+                'Apre',
+                'data[<?php echo $this->modelClass;?>][isdecision]',
+                $( 'DecisionApre' ),
+                'O',
+                false,
+                true
+            );
 
         });
 
