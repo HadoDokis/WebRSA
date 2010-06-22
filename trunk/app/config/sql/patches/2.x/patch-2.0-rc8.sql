@@ -554,7 +554,7 @@ CREATE TABLE piecescomptables66 (
     name                        VARCHAR(200) NOT NULL
 );
 COMMENT ON TABLE piecescomptables66 IS 'Table pour les pièces comptables liées aux aides de l''APRE CG66';
-
+CREATE INDEX piecescomptables66_name_idx ON piecescomptables66 (name);
 -- --------------------------------------------------------------------------------------------------------
 --  ....Table des pièces liées aux aides de l'APRE
 -- --------------------------------------------------------------------------------------------------------

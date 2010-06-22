@@ -25,7 +25,7 @@
 
             $this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
             $this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
-            $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
+//             $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
 
             $options = $this->Propopdo->allEnumLists();
 //             debug($options);

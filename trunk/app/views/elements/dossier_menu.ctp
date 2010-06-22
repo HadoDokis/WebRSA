@@ -148,7 +148,7 @@
                                                     );
                                                 ?>
                                             </li>
-                                        <?php /*if( Configure::read( 'nom_form_apre_cg' ) == 'cg66' ):*/?>
+                                        <?php if( $permissions->check( 'personnes_referents', 'index' ) ):?>
                                             <li>
                                                 <?php
                                                     echo $html->link(
@@ -157,7 +157,8 @@
                                                     );
                                                 ?>
                                             </li>
-                                        <?php /*endif;*/?>
+                                        <?php endif;?>
+                                        <?php if( $permissions->check( 'rendezvous', 'index' ) ):?>
                                             <li>
                                                 <?php
                                                     echo $html->link(
@@ -166,8 +167,10 @@
                                                     );
                                                 ?>
                                             </li>
+                                        <?php endif;?>
                                             <li><span>Contrats</span>
                                                 <ul>
+                                                <?php if( $permissions->check( 'contratsinsertion', 'index' ) ):?>
                                                     <li>
                                                         <?php
                                                             echo $html->link(
@@ -176,6 +179,8 @@
                                                             );
                                                         ?>
                                                     </li>
+                                                <?php endif;?>
+                                                <?php if( $permissions->check( 'cuis', 'index' ) ):?>
                                                     <li>
                                                         <?php
                                                             echo $html->link(
@@ -184,6 +189,21 @@
                                                             );
                                                         ?>
                                                     </li>
+                                                <?php endif;?>
+                                                </ul>
+                                            </li>
+                                            <li><span>Actualisation suivi</span>
+                                                <ul>
+                                                    <?php if( $permissions->check( 'entretiens', 'index' ) ):?>
+                                                    <li>
+                                                        <?php
+                                                            echo $html->link(
+                                                                'Entretiens',
+                                                                array( 'controller' => 'entretiens', 'action' => 'index', $personne['id'] )
+                                                            );
+                                                        ?>
+                                                    </li>
+                                                    <?php endif;?>
                                                 </ul>
                                             </li>
                                             <li><span>Offre d'insertion</span>
@@ -196,6 +216,7 @@
                                                             );*/
                                                         ?>
                                                     </li> -->
+                                                    <?php if( $permissions->check( 'actionscandidats_personnes', 'index' ) ):?>
                                                     <li>
                                                         <?php
                                                             if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ){
@@ -212,10 +233,12 @@
                                                             }
                                                         ?>
                                                     </li>
+                                                    <?php endif;?>
                                                 </ul>
                                             </li>
                                             <li><span>Aides financières</span>
                                                 <ul>
+                                                <?php if( $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'index' ) ):?>
                                                     <li>
                                                         <?php
                                                             echo $html->link(
@@ -224,10 +247,12 @@
                                                             );
                                                         ?>
                                                     </li>
+                                                    <?php endif;?>
                                                 </ul>
                                             </li>
                                             <li><span>Saisine EP</span>
                                                 <ul>
+                                                    <?php if( $permissions->check( 'bilanparcours', 'index' ) ):?>
                                                     <li>
                                                         <?php
                                                             if( Configure::read( 'nom_form_bilan_cg' ) == 'cg93' ){
@@ -244,6 +269,7 @@
                                                             }
                                                         ?>
                                                     </li>
+                                                    <?php endif;?>
                                                 </ul>
                                             </li>
                                             <li><span>Documents scannés</span>
@@ -259,6 +285,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
+                                            <?php if( $permissions->check( 'memos', 'index' ) ):?>
                                             <li>
                                                 <?php
                                                     echo $html->link(
@@ -267,6 +294,7 @@
                                                     );
                                                 ?>
                                             </li>
+                                             <?php endif;?>
                                         </ul>
                                     </li>
                                 <?php endif;?>
