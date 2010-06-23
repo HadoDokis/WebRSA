@@ -14,12 +14,14 @@
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
-
-            $options = array();
-            foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
-                $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
-            }
-            $this->set( compact( 'options' ) );
+            $this->set( 'referents', $this->Referent->listOptions() );
+            $this->set( 'typesorients', $this->Typeorient->listOptions() );
+            $this->set( 'structs', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
+//             $options = array();
+//             foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
+//                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
+//             }
+//             $this->set( compact( 'options' ) );
         }
 
 
@@ -29,27 +31,27 @@
         *
         */
 
-//         function beforeFilter() {
-//             $return = parent::beforeFilter();
+        function beforeFilter() {
+            $return = parent::beforeFilter();
 //             $this->set( 'pays', $this->Option->pays() );
 //             $this->set( 'qual', $this->Option->qual() );
 //             $this->set( 'rolepers', $this->Option->rolepers() );
 //             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
-// 
-// //             $this->set( 'structs', $this->Structurereferente->list1Options() );
-// 
-//             $options = array();
-//             foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
-//                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
-//             }
-//             /*foreach( array( 'Demandereorient' ) as $linkedModel ) {
-//                 $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
-//                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
-//             }*/
-//             $this->set( compact( 'options' ) );
-// 
-//             return $return;
-//         }
+
+//             $this->set( 'structs', $this->Structurereferente->list1Options() );
+
+            $options = array();
+            foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
+                $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
+            }
+            /*foreach( array( 'Demandereorient' ) as $linkedModel ) {
+                $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
+                $options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
+            }*/
+            $this->set( compact( 'options' ) );
+
+            return $return;
+        }
 
         /**
         *
@@ -172,9 +174,9 @@
             }
             $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-            $this->set( 'options', $this->Typeorient->listOptions() );
-            $this->set( 'options2', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
-            $this->set( 'referents', $this->Referent->listOptions() );
+//             $this->set( 'options', $this->Typeorient->listOptions() );
+//             $this->set( 'options2', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
+//             $this->set( 'referents', $this->Referent->listOptions() );
 
 
             if( !empty( $this->data ) ) {
@@ -252,9 +254,9 @@
             }
             $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-            $this->set( 'options', $this->Typeorient->listOptions() );
-            $this->set( 'options2', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
-            $this->set( 'referents', $this->Referent->listOptions() );
+//             $this->set( 'options', $this->Typeorient->listOptions() );
+//             $this->set( 'options2', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
+//             $this->set( 'referents', $this->Referent->listOptions() );
 
 
             // Essai de sauvegarde

@@ -187,7 +187,12 @@
                 $referent_id = suffix( Set::extract( $this->data, 'Apre.referent_id' ) );
             }
 
-            $referent = $this->Apre->Referent->findbyId( $referent_id, null, null, -1 );
+            // INFO: éviter les requêtes erronées du style ... WHERE "Referent"."id" = ''
+            $referent = array();
+            if( !empty( $referent_id ) && ( $referent_id != '_' ) ) {
+                $referent = $this->Apre->Referent->findbyId( $referent_id, null, null, -1 );
+            }
+
             $this->set( 'referent', $referent );
             $this->render( 'ajaxref', 'ajax' );
         }

@@ -152,8 +152,12 @@
             else {
                 $referent_id = suffix( Set::extract( $this->data, "{$this->modelClass}.referent_id" ) );
             }
-
-            $referent = $this->{$this->modelClass}->Referent->findbyId( $referent_id, null, null, -1 );
+            // INFO: éviter les requêtes erronées du style ... WHERE "Referent"."id" = ''
+            $referent = array();
+            if( is_int( $referent_id ) ) {
+                $referent = $this->{$this->modelClass}->Referent->findbyId( $referent_id, null, null, -1 );
+            }
+//             $referent = $this->{$this->modelClass}->Referent->findbyId( $referent_id, null, null, -1 );
             $this->set( 'referent', $referent );
             $this->render( $this->action, 'ajax', '/apres/ajaxref' );
         }
@@ -172,47 +176,50 @@
                 $typeaideapre66_id = suffix( Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' ) );
             }
 
-            $piecesadmin = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Pieceaide66->find(
-                'list',
-                array(
-                    'fields' => array( 'Pieceaide66.id', 'Pieceaide66.name' ),
-                    'joins' => array(
-                        array(
-                            'table'      => 'typesaidesapres66_piecesaides66',
-                            'alias'      => 'Typeaideapre66Pieceaide66',
-                            'type'       => 'INNER',
-                            'foreignKey' => false,
-                            'conditions' => array(
-                                'Typeaideapre66Pieceaide66.pieceaide66_id = Pieceaide66.id',
-                                'Typeaideapre66Pieceaide66.typeaideapre66_id' => $typeaideapre66_id,
-                            )
-                        )
-                    ),
-                    'order' => array( 'Pieceaide66.name' ),
-                    'recursive' => -1
-                )
-            );
 
-            $piecescomptable = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Piececomptable66->find(
-                'list',
-                array(
-                    'fields' => array( 'Piececomptable66.id', 'Piececomptable66.name' ),
-                    'joins' => array(
-                        array(
-                            'table'      => 'typesaidesapres66_piecescomptables66',
-                            'alias'      => 'Typeaideapre66Piececomptable66',
-                            'type'       => 'INNER',
-                            'foreignKey' => false,
-                            'conditions' => array(
-                                'Typeaideapre66Piececomptable66.piececomptable66_id = Piececomptable66.id',
-                                'Typeaideapre66Piececomptable66.typeaideapre66_id' => $typeaideapre66_id,
+            if( is_int( $typeaideapre66_id ) ) {
+                $piecesadmin = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Pieceaide66->find(
+                    'list',
+                    array(
+                        'fields' => array( 'Pieceaide66.id', 'Pieceaide66.name' ),
+                        'joins' => array(
+                            array(
+                                'table'      => 'typesaidesapres66_piecesaides66',
+                                'alias'      => 'Typeaideapre66Pieceaide66',
+                                'type'       => 'INNER',
+                                'foreignKey' => false,
+                                'conditions' => array(
+                                    'Typeaideapre66Pieceaide66.pieceaide66_id = Pieceaide66.id',
+                                    'Typeaideapre66Pieceaide66.typeaideapre66_id' => $typeaideapre66_id,
+                                )
                             )
-                        )
-                    ),
-                    'order' => array( 'Piececomptable66.name' ),
-                    'recursive' => -1
-                )
-            );
+                        ),
+                        'order' => array( 'Pieceaide66.name' ),
+                        'recursive' => -1
+                    )
+                );
+
+                $piecescomptable = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Piececomptable66->find(
+                    'list',
+                    array(
+                        'fields' => array( 'Piececomptable66.id', 'Piececomptable66.name' ),
+                        'joins' => array(
+                            array(
+                                'table'      => 'typesaidesapres66_piecescomptables66',
+                                'alias'      => 'Typeaideapre66Piececomptable66',
+                                'type'       => 'INNER',
+                                'foreignKey' => false,
+                                'conditions' => array(
+                                    'Typeaideapre66Piececomptable66.piececomptable66_id = Piececomptable66.id',
+                                    'Typeaideapre66Piececomptable66.typeaideapre66_id' => $typeaideapre66_id,
+                                )
+                            )
+                        ),
+                        'order' => array( 'Piececomptable66.name' ),
+                        'recursive' => -1
+                    )
+                );
+            }
 
 
             // Cases déjà cochées
@@ -264,8 +271,12 @@
                 $this->data['Piececomptable66']['Piececomptable66'] = Set::extract( $checkedcomptable, '/Piececomptable66/id' );
             }
 
-            $typeaideapre = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findById( $typeaideapre66_id, null, null, -1 );
 
+            $typeaideapre = array();
+//             if( !empty( $typeaideapre66_id ) && ( $typeaideapre66_id != '_' ) ) {
+            if( is_int( $typeaideapre66_id ) ) {
+                $typeaideapre = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findbyId( $typeaideapre66_id, null, null, -1 );
+            }
             $this->set( compact( 'piecesadmin', 'piecescomptable', 'typeaideapre' ) );
             $this->render( $this->action, 'ajax', '/apres/ajaxpiece' );
         }
