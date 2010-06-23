@@ -113,17 +113,20 @@
 
         function ajaxpart( $actioncandidat_id = null ) { // FIXME
             Configure::write( 'debug', 0 );
-// debug($actioncandidat_id);
+
             $dataActioncandidat_id = Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' );
             $actioncandidat_id = ( empty( $actioncandidat_id ) && !empty( $dataActioncandidat_id ) ? $dataActioncandidat_id : $actioncandidat_id );
 
-            $part = $this->ActioncandidatPartenaire->findbyActioncandidatId( $actioncandidat_id, null, null, -1 );
+//             if( is_int( $actioncandidat_id ) ) {
+                $part = $this->ActioncandidatPartenaire->findbyActioncandidatId( $actioncandidat_id, null, null, -1 );
+//             }
 
             $parts = $this->Partenaire->find( 'list', array(  'recursive' => -1 ) );
             $this->set( compact( 'part', 'parts' ) );
 
-
-            $contact = $this->Contactpartenaire->findByPartenaireId( Set::classicExtract( $part, 'ActioncandidatPartenaire.partenaire_id', null, null, -1 ) );
+            if( !empty( $part ) ) {
+                $contact = $this->Contactpartenaire->findByPartenaireId( Set::classicExtract( $part, 'ActioncandidatPartenaire.partenaire_id', null, null, -1 ) );
+            }
             $this->set( compact( 'contact' ) );
 // debug($part);
             $this->render( 'ajaxpart', 'ajax' );
@@ -143,7 +146,7 @@
             $dataReferent_id = Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' );
             $referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
 
-            if( !empty( $referent_id ) ) {
+            if( is_int( $referent_id ) ) {
                 $referent = $this->Referent->findbyId( $referent_id, null, null, -1 );
 
                 $structs = $this->Structurereferente->find(
@@ -181,7 +184,7 @@
             $dataReferent_id = Set::extract( $this->data, 'Rendezvous.referent_id' );
             $referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
 
-            if( !empty( $referent_id ) ) {
+            if( is_int( $referent_id ) ) {
                 $referent = $this->Referent->findbyId( $referent_id, null, null, -1 );
 
                 $structs = $this->Structurereferente->find(
@@ -245,9 +248,10 @@
                 $this->set( compact( 'dossierId', 'personne_id' ) );
 
                 ///Afin d'obtenir les données de la personne nécessaires
-                $personne= $this->Personne->detailsCi( $personne_id );
+//                 $personne= $this->Personne->detailsApre( $personne_id );
+                $personne = $this->Personne->findById( $personne_id, null, null, -1 );
                 $this->set( compact( 'personne' ) );
-                unset( $personne['Apre'] );
+//                 unset( $personne['Apre'] );
 
                 ///Pour récupérer le référent lié à la personne s'il existe déjà
                 $personne_referent = $this->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $personne_id ) ) );

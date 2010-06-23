@@ -189,7 +189,7 @@
 
             // INFO: éviter les requêtes erronées du style ... WHERE "Referent"."id" = ''
             $referent = array();
-            if( !empty( $referent_id ) && ( $referent_id != '_' ) ) {
+            if( is_int( $referent_id ) ) {
                 $referent = $this->Apre->Referent->findbyId( $referent_id, null, null, -1 );
             }
 

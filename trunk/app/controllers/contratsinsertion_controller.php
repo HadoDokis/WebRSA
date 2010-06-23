@@ -137,7 +137,7 @@
             }
 
             $referent = array();
-            if( !empty( $referent_id ) ) {
+            if( is_int( $referent_id ) ) {
                 $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( $referent_id, null, null, -1
                 );
             }
