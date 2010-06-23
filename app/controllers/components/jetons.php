@@ -58,11 +58,23 @@
         // ********************************************************************
 
         function _clean() { // FIXME ?
-            return $this->Jeton->deleteAll(
+			$count = $this->Jeton->find(
+				'count',
                 array(
-                    '"Jeton"."modified" <' => strftime( '%Y-%m-%d %H:%M:%S', strtotime( '-'.readTimeout().' seconds' ) )
+                    'conditions' => array( '"Jeton"."modified" <' => strftime( '%Y-%m-%d %H:%M:%S', strtotime( '-'.readTimeout().' seconds' ) ) )
                 )
             );
+
+			if( $count > 0 ) {
+				$this->_lock();
+				return $this->Jeton->deleteAll(
+					array(
+						'"Jeton"."modified" <' => strftime( '%Y-%m-%d %H:%M:%S', strtotime( '-'.readTimeout().' seconds' ) )
+					)
+				);
+			}
+
+			return false;
         }
 
         // ********************************************************************
@@ -90,8 +102,6 @@
         // *******************************************************************
 
         function ids() {
-            $this->_clean();
-
             $jetons = $this->Jeton->find(
                 'list',
                 array(
@@ -114,6 +124,8 @@
         // ********************************************************************
 
         function check( $params ) {
+			/*$this->_lock();*/
+
             if( is_array( $params ) ) { // FIXME
                 $dossier_id = $this->_dossierId( $params );
             }
@@ -163,6 +175,7 @@
         // ********************************************************************
 
         function locked( $params ) {
+			/*$this->_lock();*/
             if( is_array( $params ) ) { // FIXME
                 $dossier_id = $this->_dossierId( $params );
             }
@@ -220,6 +233,8 @@
         // ********************************************************************
 
         function get( $params ) {
+			$this->_lock();
+
             if( is_array( $params ) ) { // FIXME
                 $dossier_id = $this->_dossierId( $params );
             }
@@ -264,6 +279,8 @@
         // ********************************************************************
 
         function release( $params ) {
+			$this->_lock();
+
             if( is_array( $params ) ) { // FIXME
                 $dossier_id = $this->_dossierId( $params );
             }
@@ -281,6 +298,14 @@
                 )
             );
         }
+
+		/**
+		*
+		*/
+
+        function _lock() {
+			$this->Jeton->query( 'LOCK TABLE "jetons" IN ACCESS EXCLUSIVE MODE;' );
+		}
 
         /** *******************************************************************
             The beforeRedirect method is invoked when the controller's redirect method

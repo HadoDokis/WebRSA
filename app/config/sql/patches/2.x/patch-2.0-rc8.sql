@@ -531,7 +531,7 @@ ALTER TABLE users ADD COLUMN isgestionnaire type_no DEFAULT 'N';
 -- Ajout du champ foyerId dans le patch suite à la création du script d'intégration Talend par le CG93
 -- -----------------------------------------------------------------------------
 
-ALTER TABLE adresses ADD COLUMN foyerId INTEGER REFERENCES foyers(id);
+-- ALTER TABLE adresses ADD COLUMN foyerId INTEGER REFERENCES foyers(id);
 
 -- -----------------------------------------------------------------------------
 

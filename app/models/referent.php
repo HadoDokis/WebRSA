@@ -9,6 +9,7 @@
 
         var $actsAs = array(
 			'Autovalidate',
+			'Formattable',
             'MultipleDisplayFields' => array(
                 'fields' => array( 'qual', 'nom', 'prenom' ),
                 'pattern' => '%s %s %s'
