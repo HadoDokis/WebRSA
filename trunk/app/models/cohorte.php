@@ -341,19 +341,22 @@
             /*App::import( 'Model', 'Typeorient' );
             $this->Typeorient = new Typeorient();*/
             $this->Typeorient =& ClassRegistry::init( 'Typeorient' );
-            
+
             // FIXME: valeurs magiques
             $typesPermis = $this->Typeorient->find(
                 'list',
                 array(
                     'conditions' => array(
-                        'Typeorient.lib_type_orient' => array( 'Emploi', 'Socioprofessionnelle' ) )
+                        'Typeorient.lib_type_orient' => array( 'Emploi', 'Socioprofessionnelle' )
+					),
+					'recursive' => -1
                 )
             );
             $typesPermis = array_keys( $typesPermis );
 
             $this->Structurereferente->unbindModelAll();
             $this->Structurereferente->bindModel( array( 'hasAndBelongsToMany' => array( 'Zonegeographique' ) ) );
+            $this->Structurereferente->Zonegeographique->unbindModelAll();
             $structures = $this->Structurereferente->find(
                 'all',
                 array(
