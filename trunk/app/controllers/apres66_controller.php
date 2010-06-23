@@ -11,8 +11,7 @@
         *
         *** *******************************************************************/
 
-        function beforeFilter() {
-            parent::beforeFilter();
+        protected function _setOptions() {
 
             $options = $this->{$this->modelClass}->allEnumLists();
 
@@ -121,7 +120,7 @@
                 $alerteMontantAides = true;
             }
             $this->set( 'alerteMontantAides', $alerteMontantAides );
-
+            $this->_setOptions();
             $this->render( $this->action, null, '/apres/index66' );
         }
 
@@ -598,6 +597,7 @@
 
 
             $this->set( 'personne_id', $personne_id );
+            $this->_setOptions();
             $this->render( $this->action, null, '/apres/add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
 //             $this->render( $this->action, null, '/apres/add_edit' );
         }
