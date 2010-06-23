@@ -433,7 +433,9 @@
                     'recursive' => -1
                 )
             );
-            $orientstruct['Referent'] = $referent['Referent'];
+            if( !empty( $referent ) ) {
+                $orientstruct['Referent'] = $referent['Referent'];
+            }
 
             $orientstruct['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $orientstruct['Personne']['dtnai'] ) );
             $orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );
