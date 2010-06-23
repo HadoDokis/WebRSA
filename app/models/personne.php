@@ -323,7 +323,7 @@
             $personne = Set::merge( $personne, $suiviinstruction );
 
             //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-            if( empty( $suiviinstruction ) ) {
+            if( empty( $suiviinstruction ) && is_int( $user_id ) ) {
                 $user = $this->Contratinsertion->User->findById( $user_id, null, null, 0 );
                 $personne = Set::merge( $personne, $user );
             }
@@ -585,7 +585,7 @@
             $personne = Set::merge( $personne, $suiviinstruction );
 
             //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-            if( empty( $suiviinstruction ) ) {
+            if( empty( $suiviinstruction ) && is_int( $user_id ) ) {
                 $user = $this->Contratinsertion->User->findById( $user_id, null, null, 0 );
                 $personne = Set::merge( $personne, $user );
             }
