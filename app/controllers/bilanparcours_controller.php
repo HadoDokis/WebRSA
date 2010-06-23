@@ -10,9 +10,7 @@
         /** ********************************************************************
         *
         *** *******************************************************************/
-        function beforeFilter() {
-            $return = parent::beforeFilter();
-
+        protected function _setOptions() {
             $options = array();
             $options = $this->Bilanparcours->allEnumLists();
             $typevoie = $this->Option->typevoie();
@@ -30,8 +28,13 @@
             $this->set( compact( 'options' ) );
 
             $this->set( 'rsaSocle', $this->Option->natpf() );
-            return $return;
         }
+        /*
+        function beforeFilter() {
+            $return = parent::beforeFilter();
+
+            return $return;
+        }*/
 
         /** ********************************************************************
         *
@@ -96,6 +99,7 @@
                 $sr = $this->Bilanparcours->Structurereferente->listeParType( array( 'contratengagement' => true ) );
             }
 */
+            $this->_setOptions();
             $this->set( compact(/* 'orientstruct',*/ 'bilanparcours' ) );
             $this->set( 'personne_id', $personne_id );
         }
@@ -184,7 +188,7 @@
             }
             $this->Bilanparcours->commit();
 
-
+            $this->_setOptions();
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, 'add_edit' );
         }
