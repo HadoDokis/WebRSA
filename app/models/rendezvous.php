@@ -19,7 +19,8 @@
             'Structurereferente' => array(
                 'classname' => 'Structurereferente',
                 'foreignKey' => 'structurereferente_id'
-            )
+            ),
+            'Referent'
         );
 
         var $hasOne = array(

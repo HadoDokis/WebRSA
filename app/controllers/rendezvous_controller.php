@@ -11,15 +11,27 @@
         *
         *** *******************************************************************/
 
-        function beforeFilter() {
-            parent::beforeFilter();
-//             $this->set( 'struct', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
+
+        protected function _setOptions() {
             $this->set( 'struct', $this->Structurereferente->listOptions() );
-            $this->set( 'sr', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
-            $this->set( 'referent', $this->Referent->find( 'list', array( 'recursive' => 1 ) ) );
             $this->set( 'permanences', $this->Permanence->find( 'list' ) );
             $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
         }
+
+
+
+
+        /*function beforeFilter() {
+            parent::beforeFilter();
+//             $this->Rendezvous->query( 'SELECT 1;' );
+
+//             $this->set( 'struct', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
+//             $this->set( 'struct', $this->Structurereferente->listOptions() );
+//             $this->set( 'sr', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
+//             $this->set( 'referent', $this->Referent->find( 'list', array( 'recursive' => 1 ) ) );
+//             $this->set( 'permanences', $this->Permanence->find( 'list' ) );
+//             $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
+        }*/
 
         /** ********************************************************************
         * Ajax pour lien référent - structure référente
@@ -103,53 +115,10 @@
 
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
-            $orientstruct = $this->Rendezvous->Structurereferente->Orientstruct->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Orientstruct.personne_id' => $personne_id,
-                        'Orientstruct.typeorient_id IS NOT NULL',
-                        'Orientstruct.statut_orient' => 'Orienté'
-                    ),
-                    'order' => 'Orientstruct.date_valid DESC'
-                )
-            );
-
-/*
-            if( !empty( $orientstruct ) ) {
-                ///S'il n'y a pas de permanence, IMPOSSIBLE de créer un RDV
-                $permanence = $this->Rendezvous->Structurereferente->Permanence->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Permanence.structurereferente_id' => Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' )
-                        )
-                    )
-                );
-                $this->set( 'permanence', $permanence );*/
-
-//                 $sr = $this->Rendezvous->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
-//                 $struct = Set::enum( Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' ), $sr );
-// 
-//                 ///S'il n'y a pas de référent lié, IMPOSSIBLE de créer un RDV
-//                 $refrdv = $this->Referent->find(
-//                     'first',
-//                     array(
-//                         'conditions' => array(
-//                             'Referent.structurereferente_id' => Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' )
-//                         ),
-//                         'recursive' => -1
-//                     )
-//                 );
-//                 $this->set( 'refrdv', $refrdv );
-
-            ///S'il n'y a pas de statut de RDV, IMPOSSIBLE de créer un RDV
-            $statutrdv = $this->Statutrdv->find( 'list' );
-//             }
-
             $rdvs = $this->Rendezvous->find( 'all', array( 'conditions' => array( 'Rendezvous.personne_id' => $personne_id ) ) );
 
-            $this->set( compact( 'orientstruct', 'rdvs' ) );
+            $this->_setOptions();
+            $this->set( compact( 'rdvs' ) );
             $this->set( 'personne_id', $personne_id );
         }
 
@@ -263,6 +232,7 @@
                 $this->set( 'ReferentFonction', $referent['Referent']['fonction'] );
             }
 
+            $this->_setOptions();
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, 'add_edit' );
         }

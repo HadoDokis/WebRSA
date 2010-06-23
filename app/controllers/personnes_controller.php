@@ -10,15 +10,13 @@
         *
         */
 
-        function beforeFilter() {
-            $return = parent::beforeFilter();
+        protected function _setOptions() {
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'nationalite', $this->Option->nationalite() );
             $this->set( 'typedtnai', $this->Option->typedtnai() );
             $this->set( 'pieecpres', $this->Option->pieecpres() );
             $this->set( 'sexe', $this->Option->sexe() );
-            return $return;
         }
 
         /**
@@ -41,6 +39,7 @@
             );
 
             // Assignations à la vue
+            $this->_setOptions();
             $this->set( 'foyer_id', $foyer_id );
             $this->set( 'personnes', $personnes );
         }
@@ -77,6 +76,7 @@
             $this->assert( !empty( $personne ), 'invalidParameter' );
 
             // Assignation à la vue
+            $this->_setOptions();
             $this->set( 'grossesse', $grossesse );
             $this->set( 'personne', $personne );
         }
@@ -154,6 +154,7 @@
             $this->set( 'foyer_id', $foyer_id );
             $this->data['Personne']['foyer_id'] = $foyer_id;
 
+            $this->_setOptions();
             $this->Personne->commit();
             $this->render( $this->action, null, 'add_edit' );
         }
@@ -213,6 +214,7 @@
                 $this->data = $personne;
             }
 
+            $this->_setOptions();
             $this->Personne->commit();
             $this->render( $this->action, null, 'add_edit' );
         }

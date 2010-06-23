@@ -20,23 +20,21 @@
 
         */
 
-        function beforeFilter() {
-            $return = parent::beforeFilter();
-
+        protected function _setOptions() {
             $typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
             $this->set( 'typeservice', $typeservice );
 
-			// Structures référentes
-			$datas = Set::merge( $this->data, array_multisize( $this->params['named'] ) );
-			$typeorient_id = Set::classicExtract( $datas, 'Critere.typeorient_id' );
-			$conditions = array();
-			if( !empty( $typeorient_id ) ) {
-				$conditions = array(
-					'Structurereferente.typeorient_id' => $typeorient_id
-				);
-			}
-			$sr = $this->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ), 'conditions' => $conditions ) );
-			$this->set( 'sr', $sr );
+            // Structures référentes
+            $datas = Set::merge( $this->data, array_multisize( $this->params['named'] ) );
+            $typeorient_id = Set::classicExtract( $datas, 'Critere.typeorient_id' );
+            $conditions = array();
+            if( !empty( $typeorient_id ) ) {
+                $conditions = array(
+                    'Structurereferente.typeorient_id' => $typeorient_id
+                );
+            }
+            $sr = $this->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ), 'conditions' => $conditions ) );
+            $this->set( 'sr', $sr );
 
 
 
@@ -46,9 +44,37 @@
             $this->set( 'natpf', $this->Option->natpf() );
 
             $this->set( 'referents', $this->Referent->find( 'list' ) );
-
-            return $return;
         }
+
+//         function beforeFilter() {
+//             $return = parent::beforeFilter();
+// 
+//             $typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
+//             $this->set( 'typeservice', $typeservice );
+// 
+// 			// Structures référentes
+// 			$datas = Set::merge( $this->data, array_multisize( $this->params['named'] ) );
+// 			$typeorient_id = Set::classicExtract( $datas, 'Critere.typeorient_id' );
+// 			$conditions = array();
+// 			if( !empty( $typeorient_id ) ) {
+// 				$conditions = array(
+// 					'Structurereferente.typeorient_id' => $typeorient_id
+// 				);
+// 			}
+// 			$sr = $this->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ), 'conditions' => $conditions ) );
+// 			$this->set( 'sr', $sr );
+// 
+// 
+// 
+//             $this->set( 'typeorient', $this->Typeorient->listOptions() );
+//             $this->set( 'statuts', $this->Option->statut_orient() );
+//             $this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
+//             $this->set( 'natpf', $this->Option->natpf() );
+// 
+//             $this->set( 'referents', $this->Referent->find( 'list' ) );
+// 
+//             return $return;
+//         }
 
         /** ********************************************************************
         *   Ajax pour la structure référente liée au type d'orientation
@@ -113,6 +139,7 @@
 			else {
 				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
 			}
+            $this->_setOptions();
         }
 
         /// Export du tableau en CSV
@@ -127,6 +154,7 @@
             $orients = $this->Orientstruct->find( 'all', $querydata );
 
             $this->layout = ''; // FIXME ?
+            $this->_setOptions();
             $this->set( compact( 'orients' ) );
         }
     }

@@ -11,10 +11,14 @@
         *
         *** *******************************************************************/
 
+        protected function _setOptions() {
+            $this->set( 'struct', $this->Structurereferente->listOptions() );
+        }
+/*
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'struct', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
-        }
+        }*/
 
 
         /** ********************************************************************
@@ -41,6 +45,7 @@
 //     debug($pers);
             }
 
+            $this->_setOptions();
             $this->set( 'personne_id', $personne_id );
         }
 
@@ -136,8 +141,7 @@
                 }
             }
             $this->PersonneReferent->commit();
-
-
+            $this->_setOptions();
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, 'add_edit' );
         }

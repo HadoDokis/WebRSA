@@ -7,8 +7,8 @@
 
         var $helpers = array( 'Default' );
 
-        function beforeFilter(){
-            $return = parent::beforeFilter();
+
+        protected function _setOptions() {
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
             $this->set( 'pieecpres', $this->Option->pieecpres() );
             $this->set( 'commission', $this->Option->commission() );
@@ -31,8 +31,35 @@
 //             debug($options);
             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
             $this->set( compact( 'options' ) );
-            return $return;
         }
+
+
+//         function beforeFilter(){
+//             $return = parent::beforeFilter();
+//             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+//             $this->set( 'pieecpres', $this->Option->pieecpres() );
+//             $this->set( 'commission', $this->Option->commission() );
+//             $this->set( 'motidempdo', $this->Option->motidempdo() );
+//             $this->set( 'motifpdo', $this->Option->motifpdo() );
+//             $this->set( 'categoriegeneral', $this->Option->sect_acti_emp() );
+//             $this->set( 'categoriedetail', $this->Option->emp_occupe() );
+// 
+//             $this->set( 'typeserins', $this->Option->typeserins() );
+//             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
+//             $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
+//             $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
+//             $this->set( 'originepdo', $this->Originepdo->find( 'list' ) );
+// 
+//             $this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
+//             $this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
+// //             $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
+// 
+//             $options = $this->Propopdo->allEnumLists();
+// //             debug($options);
+//             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
+//             $this->set( compact( 'options' ) );
+//             return $return;
+//         }
 
         /**
         *   Partie pour les tables de paramétrages des PDOs
@@ -72,6 +99,7 @@
             }
 
             $this->set( 'personne_id', $personne_id );
+            $this->_setOptions();
             $this->set( 'pdos', $pdos );
 
         }
@@ -86,6 +114,7 @@
             $pdo = $this->Propopdo->find( 'first', $options );
 
             $this->set( 'pdo', $pdo );
+            $this->_setOptions();
             $this->set( 'personne_id', $pdo['Propopdo']['personne_id'] );
         }
 
@@ -239,6 +268,7 @@
             $this->Propopdo->commit();
 
             $this->set( 'personne_id', $personne_id );
+            $this->_setOptions();
             $this->render( $this->action, null, 'add_edit_'.Configure::read( 'nom_form_pdo_cg' ) );
         }
     }
