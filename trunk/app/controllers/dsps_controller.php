@@ -43,7 +43,6 @@
 			foreach( array_keys( $this->specialHasMany ) as $model ) {
 				$options = Set::merge( $options, $this->Dsp->{$model}->enums() );
 			}
-// debug( $options );
 			$this->set( 'options', $options );
 
 			return $return;

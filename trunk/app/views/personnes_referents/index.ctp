@@ -72,7 +72,7 @@
                             h( Set::classicExtract( $personne_referent, 'Referent.fonction' ) ),
                             h( Set::classicExtract( $personne_referent, 'Referent.numero_poste' ) ),
                             h( Set::classicExtract( $personne_referent, 'Referent.email' ) ),
-                            h( value( $struct, Set::extract( $personne_referent, 'Referent.structurereferente_id' ) ) ),
+                            h( Set::extract( $personne_referent, 'Structurereferente.lib_struc' ) ),
                             h( $locale->date( 'Date::short', Set::classicExtract( $personne_referent, 'PersonneReferent.dddesignation' ) ) ),
                             h( $locale->date( 'Date::short', Set::classicExtract( $personne_referent, 'PersonneReferent.dfdesignation' ) ) ),
 

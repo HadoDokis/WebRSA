@@ -65,12 +65,12 @@
         <tbody>
             <?php
                 foreach( $rdvs as $rdv ) {
-
+// debug($rdv);
                     echo $html->tableCells(
                         array(
                             h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
-                            h( Set::enum( Set::extract( $rdv, 'Rendezvous.structurereferente_id' ), $sr ) ),
-                            h( Set::enum( Set::extract( $rdv, 'Rendezvous.referent_id' ), $referent ) ),
+                            h( Set::extract( $rdv, 'Structurereferente.lib_struc' ) ),
+                            h( Set::extract( $rdv, 'Referent.qual' ).' '.Set::extract( $rdv, 'Referent.nom' ).' '.Set::extract( $rdv, 'Referent.prenom' ) ),
                             h( Set::enum( Set::extract( $rdv, 'Rendezvous.permanence_id' ), $permanences ) ),
                             h( Set::extract( $rdv, 'Typerdv.libelle' ) ),
                             h( Set::enum( Set::classicExtract( $rdv, 'Rendezvous.statutrdv_id' ), $statutrdv ) ),

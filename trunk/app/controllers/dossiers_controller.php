@@ -82,6 +82,8 @@
         function menu() {
             // Ce n'est pas un appel par une URL
             $this->assert( isset( $this->params['requested'] ), 'error404' );
+//             $this->params['id'] = 203121;
+//             $this->Dossier->query( 'SELECT 1;' );
 
             $conditions = array();
 
