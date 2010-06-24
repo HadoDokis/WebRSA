@@ -24,14 +24,9 @@
         /** ********************************************************************
         *
         *** *******************************************************************/
-
-        // FIXME -> à nettoyer
-        function beforeFilter() {
-            parent::beforeFilter();
+        protected function _setOptions() {
             $options = $this->Contratinsertion->allEnumLists();
             $this->set( 'options', $options );
-
-
             if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
                 $this->set( 'decision_ci', $this->Option->decision_ci() );
                 $forme_ci = array();
@@ -77,6 +72,15 @@
 //                 $this->set( 'referents', $this->Contratinsertion->Structurereferente->Referent->find( 'list' ) );
 
                 $this->set( 'actions', $this->Action->grouplist( 'prest' ) );
+        }
+
+
+        // FIXME -> à nettoyer
+        function beforeFilter() {
+            parent::beforeFilter();
+
+
+
             }
         }
 
@@ -226,7 +230,7 @@
 
 
 
-
+            $this->_setOptions();
             $this->set( compact( 'orientstruct', 'contratsinsertion' ) );
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, '/contratsinsertion/index_'.Configure::read( 'nom_form_ci_cg' ) ); ///FIXME: pas propre, mais pr le moment ça marche afin d'eviter de tout renommer
@@ -253,6 +257,7 @@
             $this->set( 'structures', $structures );
             $this->set( 'referents', $referents );
             $this->set( 'typesorients', $typesorients );
+            $this->_setOptions();
             $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
         }
 
@@ -625,7 +630,7 @@
             }
 
             $this->Contratinsertion->commit();
-
+            $this->_setOptions();
             $this->set( compact( 'structures', 'referents' ) );
             if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
                 $this->render( $this->action, null, 'add_edit_specif_cg58' );
@@ -660,6 +665,7 @@
             else {
                 $this->data = $contratinsertion;
             }
+            $this->_setOptions();
         }
 
 		/**
@@ -767,6 +773,7 @@
             }
 // debug($contratinsertion);
 // die();
+            $this->_setOptions();
             $this->Gedooo->generate( $contratinsertion, 'Contratinsertion/notificationop.odt' );
         }
 
