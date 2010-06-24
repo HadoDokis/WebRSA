@@ -1,4 +1,4 @@
-<h1><?php echo $this->pageTitle = 'Erreur: Répertoires non inscriptibles sur le système';?></h1>
+<h1><?php echo $this->pageTitle = 'Erreur: Répertoires en lecture seule sur le système';?></h1>
 <p>Veuillez contacter votre administrateur réseau afin qu'il s'assure que les répertoires suivants existent et qu'il soit possible d'y écrire:</p>
 
 <ul>
