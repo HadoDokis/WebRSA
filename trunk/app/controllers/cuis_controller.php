@@ -13,23 +13,41 @@
         /** ********************************************************************
         *
         *** *******************************************************************/
+        protected function _setOptions() {
+//             $options = array();
+//             $options = $this->Cui->allEnumLists();
+            $typevoie = $this->Option->typevoie();
+            $this->set( 'rolepers', $this->Option->rolepers() );
+            $this->set( 'qual', $this->Option->qual() );
+            $this->set( 'nationalite', $this->Option->nationalite() );
+
+//             $options = Set::insert( $options, 'typevoie', $typevoie );
+
+            $dept = $this->Departement->find('list', array( 'fields' => array( 'numdep', 'name' ) ) );
+            $this->set( compact(/* 'options',*/ 'dept' ) );
+
+            $this->set( 'rsaSocle', $this->Option->natpf() );
+        }
+
         function beforeFilter() {
             $return = parent::beforeFilter();
 
             $options = array();
             $options = $this->Cui->allEnumLists();
             $typevoie = $this->Option->typevoie();
-            $this->set( 'rolepers', $this->Option->rolepers() );
-            $this->set( 'qual', $this->Option->qual() );
-            $this->set( 'nationalite', $this->Option->nationalite() );
-
             $options = Set::insert( $options, 'typevoie', $typevoie );
+//             $typevoie = $this->Option->typevoie();
+//             $this->set( 'rolepers', $this->Option->rolepers() );
+//             $this->set( 'qual', $this->Option->qual() );
+//             $this->set( 'nationalite', $this->Option->nationalite() );
+// 
+//             $options = Set::insert( $options, 'typevoie', $typevoie );
 //             $options = Set::insert( $options, 'initiative', array( '0', '1', '2', '3' ) );
-// debug($options);
-            $dept = $this->Departement->find('list', array( 'fields' => array( 'numdep', 'name' ) ) );
-            $this->set( compact( 'options', 'dept' ) );
-
-            $this->set( 'rsaSocle', $this->Option->natpf() );
+// // debug($options);
+//             $dept = $this->Departement->find('list', array( 'fields' => array( 'numdep', 'name' ) ) );
+            $this->set( compact( 'options' ) );
+// 
+//             $this->set( 'rsaSocle', $this->Option->natpf() );
             return $return;
         }
 
@@ -58,6 +76,7 @@
                 )
             );
 
+            $this->_setOptions();
             $this->set( 'personne_id', $personne_id );
             $this->set( compact( 'cuis' ) );
         }
@@ -133,6 +152,7 @@
             $this->set( 'personne', $personne );
 
             $this->set( 'referents', $this->Referent->find( 'list' ) );
+            $this->set( 'structs', $this->Structurereferente->listOptions() );
 
             if( !empty( $this->data ) ){
 
@@ -159,6 +179,7 @@
                 }
             }
 
+            $this->_setOptions();
             $this->set( 'personne_id', $personne_id );
             $this->render( $this->action, null, 'add_edit' );
         }
@@ -212,6 +233,7 @@
             $cui['Personne']['dtnai'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $cui, 'Personne.dtnai' ) );
             $cui['Referent']['qual'] = Set::enum( Set::classicExtract( $cui, 'Referent.qual' ), $qual );
 
+            $this->_setOptions();
 //             $this->Gedooo->generate( $cui, 'CUI/cui.odt' );
         }
 
@@ -228,6 +250,7 @@
         */
 
         public function view( $id ) {
+            $this->_setOptions();
             $this->Default->view( $id );
         }
 
