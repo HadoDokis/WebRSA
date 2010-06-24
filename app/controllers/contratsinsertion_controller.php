@@ -72,9 +72,9 @@
 //                 $this->set( 'referents', $this->Contratinsertion->Structurereferente->Referent->find( 'list' ) );
 
                 $this->set( 'actions', $this->Action->grouplist( 'prest' ) );
+            }
+
         }
-
-
         // FIXME -> à nettoyer
 //         function beforeFilter() {
 //             parent::beforeFilter();
