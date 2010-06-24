@@ -1,4 +1,4 @@
-<?php 
+<?php
     class Rendezvous extends AppModel
     {
         var $name = 'Rendezvous';
@@ -20,7 +20,9 @@
                 'classname' => 'Structurereferente',
                 'foreignKey' => 'structurereferente_id'
             ),
-            'Referent'
+            'Referent',
+			'Statutrdv',
+			'Permanence'
         );
 
         var $hasOne = array(
