@@ -76,13 +76,13 @@
 
 
         // FIXME -> à nettoyer
-        function beforeFilter() {
-            parent::beforeFilter();
-
-
-
-            }
-        }
+//         function beforeFilter() {
+//             parent::beforeFilter();
+// 
+// 
+// 
+//             }
+//         }
 
         /** ********************************************************************
         *
