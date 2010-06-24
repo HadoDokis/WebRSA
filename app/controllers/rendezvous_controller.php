@@ -14,7 +14,7 @@
 
         protected function _setOptions() {
             $this->set( 'struct', $this->Structurereferente->listOptions() );
-            $this->set( 'permanences', $this->Permanence->find( 'list' ) );
+            $this->set( 'permanences', $this->Permanence->listOptions() );
             $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
 
         }
@@ -90,20 +90,20 @@
         /** ********************************************************************
         *   Ajax pour la permanence liée à la structure référente
         *** *******************************************************************/
-        function _selectPermanences( $structurereferente_id ) {
-            $permanences = $this->Rendezvous->Structurereferente->Permanence->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'Permanence.structurereferente_id' => $structurereferente_id
-                    ),
-                    'recursive' => -1
-                )
-            );
-
-            return $permanences;
-
-        }
+//         function _selectPermanences( $structurereferente_id ) {
+//             $permanences = $this->Rendezvous->Structurereferente->Permanence->find(
+//                 'all',
+//                 array(
+//                     'conditions' => array(
+//                         'Permanence.structurereferente_id' => $structurereferente_id
+//                     ),
+//                     'recursive' => -1
+//                 )
+//             );
+// 
+//             return $permanences;
+// 
+//         }
 
 //         function ajaxperm() { // FIXME
 //             Configure::write( 'debug', 0 );
@@ -128,7 +128,7 @@
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
             $rdvs = $this->Rendezvous->find( 'all', array( 'conditions' => array( 'Rendezvous.personne_id' => $personne_id ) ) );
-
+// debug($rdvs);
             $this->_setOptions();
             $this->set( compact( 'rdvs' ) );
             $this->set( 'personne_id', $personne_id );
@@ -242,6 +242,11 @@
             $referent_id = Set::classicExtract( $this->data, "{$this->modelClass}.referent_id" );
             $referent_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $referent_id );
             $this->set( 'referent_id', $referent_id );
+
+
+            $permanence_id = Set::classicExtract( $this->data, "{$this->modelClass}.permanence_id" );
+            $permanence_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $permanence_id );
+            $this->set( 'permanence_id', $permanence_id );
 //             $refrdv = $this->Rendezvous->Structurereferente->Referent->find( 'all', array( 'order' => 'Referent.nom ASC', 'recursive' => -1, 'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom', 'Referent.fonction' ) ) );
 //             $ids = Set::extract( $refrdv, '/Referent/id' );
 //             $values = Set::format( $refrdv, '{0} {1}', array( '{n}.Referent.nom', '{n}.Referent.prenom' ) );

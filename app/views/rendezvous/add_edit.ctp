@@ -15,8 +15,9 @@
 <?php echo $javascript->link( 'dependantselect.js' ); ?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
+        dependantSelect( 'RendezvousPermanenceId', 'RendezvousStructurereferenteId' );
         dependantSelect( 'RendezvousReferentId', 'RendezvousStructurereferenteId' );
-//         dependantSelect( 'RendezvousPermanenceId', 'RendezvousStructurereferenteId' );
+
 
         <?php
             echo $ajax->remoteFunction(
@@ -73,7 +74,7 @@
                 );
 
                 ///Ajout d'une permanence liée à une structurereferente
-                echo $form->input( 'Rendezvous.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'empty' => true ) );
+                echo $form->input( 'Rendezvous.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'selected' => $struct_id.'_'.$permanence_id, 'empty' => true ) );
 
 
                 echo $form->input( 'Rendezvous.typerdv_id', array( 'label' =>  required( __( 'lib_rdv', true ) ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
