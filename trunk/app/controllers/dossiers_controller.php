@@ -169,166 +169,167 @@
         /**
         */
         function view( $id = null ) {
-            $this->assert( valid_int( $id ), 'invalidParameter' );
-            /** Tables necessaire à l'ecran de synthèse
+            if ($this->assert( valid_int( $id ), 'invalidParameter' )) {
+		        /** Tables necessaire à l'ecran de synthèse
 
-                OK -> Dossier
-                OK -> Foyer
-                OK -> Situationdossierrsa
-                OK -> Adresse
-                OK -> Detaildroitrsa
-                    OK -> Detailcalculdroitrsa
-                OK -> Suiviinstruction
-                OK -> Infofinanciere
-                OK -> Creance
-                OK -> Dossiercaf
-                OK -> Personne (DEM/CJT)
-                    OK -> Personne
-                    OK -> Prestation
-                    OK -> Orientstruct (premier/dernier)
-                        //Typeorient
-                    OK -> Dsp
-                    OK -> Contratinsertion
-                    Calculsdroitrsa
-            */
-            $details = array();
+		            OK -> Dossier
+		            OK -> Foyer
+		            OK -> Situationdossierrsa
+		            OK -> Adresse
+		            OK -> Detaildroitrsa
+		                OK -> Detailcalculdroitrsa
+		            OK -> Suiviinstruction
+		            OK -> Infofinanciere
+		            OK -> Creance
+		            OK -> Dossiercaf
+		            OK -> Personne (DEM/CJT)
+		                OK -> Personne
+		                OK -> Prestation
+		                OK -> Orientstruct (premier/dernier)
+		                    //Typeorient
+		                OK -> Dsp
+		                OK -> Contratinsertion
+		                Calculsdroitrsa
+		        */
+		        $details = array();
 
-            $tDossier = $this->Dossier->findById( $id, null, null, -1 );
-            $details = Set::merge( $details, $tDossier );
+		        $tDossier = $this->Dossier->findById( $id, null, null, -1 );
+		        $details = Set::merge( $details, $tDossier );
 
-            $tFoyer = $this->Dossier->Foyer->findByDossierRsaId( $id, null, null, -1 );
-            $details = Set::merge( $details, $tFoyer );
+		        $tFoyer = $this->Dossier->Foyer->findByDossierRsaId( $id, null, null, -1 );
+		        $details = Set::merge( $details, $tFoyer );
 
-            $tDetaildroitrsa = $this->Detaildroitrsa->findByDossierRsaId( $id, null, null, 1 );
-            $details = Set::merge( $details, $tDetaildroitrsa );
+		        $tDetaildroitrsa = $this->Detaildroitrsa->findByDossierRsaId( $id, null, null, 1 );
+		        $details = Set::merge( $details, $tDetaildroitrsa );
 
-            $tSituationdossierrsa = $this->Dossier->Situationdossierrsa->findByDossierRsaId( $id, null, null, -1 );
-            $details = Set::merge( $details, $tSituationdossierrsa );
+		        $tSituationdossierrsa = $this->Dossier->Situationdossierrsa->findByDossierRsaId( $id, null, null, -1 );
+		        $details = Set::merge( $details, $tSituationdossierrsa );
 
-            $tSuiviinstruction = $this->Dossier->Suiviinstruction->find(
-                'first',
-                array(
-                    'conditions' => array( 'Suiviinstruction.dossier_rsa_id' => $id ),
-                    'recursive' => -1,
-                    'order' => array( 'Suiviinstruction.date_etat_instruction DESC' )
-                )
-            );
-            $details = Set::merge( $details, $tSuiviinstruction );
+		        $tSuiviinstruction = $this->Dossier->Suiviinstruction->find(
+		            'first',
+		            array(
+		                'conditions' => array( 'Suiviinstruction.dossier_rsa_id' => $id ),
+		                'recursive' => -1,
+		                'order' => array( 'Suiviinstruction.date_etat_instruction DESC' )
+		            )
+		        );
+		        $details = Set::merge( $details, $tSuiviinstruction );
 
-            $tInfofinanciere = $this->Dossier->Infofinanciere->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Infofinanciere.dossier_rsa_id' => $id,
-                        'Infofinanciere.type_allocation' => 'IndusConstates'
-                    ),
-                    'recursive' => -1,
-                    'order' => array( 'Infofinanciere.moismoucompta DESC' )
-                )
-            );
-            $details = Set::merge( $details, $tInfofinanciere );
+		        $tInfofinanciere = $this->Dossier->Infofinanciere->find(
+		            'first',
+		            array(
+		                'conditions' => array(
+		                    'Infofinanciere.dossier_rsa_id' => $id,
+		                    'Infofinanciere.type_allocation' => 'IndusConstates'
+		                ),
+		                'recursive' => -1,
+		                'order' => array( 'Infofinanciere.moismoucompta DESC' )
+		            )
+		        );
+		        $details = Set::merge( $details, $tInfofinanciere );
 
-            $adresseFoyer = $this->Adressefoyer->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Adressefoyer.foyer_id' => $details['Foyer']['id'],
-                        'Adressefoyer.rgadr'    => '01'
-                    ),
-                    'recursive' => 1
-                )
-            );
-            $details = Set::merge( $details, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
+		        $adresseFoyer = $this->Adressefoyer->find(
+		            'first',
+		            array(
+		                'conditions' => array(
+		                    'Adressefoyer.foyer_id' => $details['Foyer']['id'],
+		                    'Adressefoyer.rgadr'    => '01'
+		                ),
+		                'recursive' => 1
+		            )
+		        );
+		        $details = Set::merge( $details, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
 
-            /**
-                Personnes
-            */
-            $bindPrestation = $this->Personne->hasOne['Prestation'];
-            $this->Personne->unbindModelAll();
-            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Infopoleemploi', 'Calculdroitrsa', 'Prestation' => $bindPrestation ) ) );
-            $personnesFoyer = $this->Personne->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'Personne.foyer_id' => $tFoyer['Foyer']['id'],
-                        'Prestation.rolepers' => array( 'DEM', 'CJT' )
-                    ),
-                    'recursive' => 0
-                )
-            );
+		        /**
+		            Personnes
+		        */
+		        $bindPrestation = $this->Personne->hasOne['Prestation'];
+		        $this->Personne->unbindModelAll();
+		        $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Infopoleemploi', 'Calculdroitrsa', 'Prestation' => $bindPrestation ) ) );
+		        $personnesFoyer = $this->Personne->find(
+		            'all',
+		            array(
+		                'conditions' => array(
+		                    'Personne.foyer_id' => $tFoyer['Foyer']['id'],
+		                    'Prestation.rolepers' => array( 'DEM', 'CJT' )
+		                ),
+		                'recursive' => 0
+		            )
+		        );
 
-            $roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
-            foreach( $roles as $index => $role ) {
-                $tPersReferent = $this->PersonneReferent->find(
-                    'first',
-                    array(
-                        'conditions' => array( 'PersonneReferent.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
-                        'recursive' => -1,
-                        'order' => array( 'PersonneReferent.dddesignation DESC' )
-                    )
-                );
-                $personnesFoyer[$index]['PersonneReferent']['dernier'] = $tPersReferent['PersonneReferent'];
+		        $roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
+		        foreach( $roles as $index => $role ) {
+		            $tPersReferent = $this->PersonneReferent->find(
+		                'first',
+		                array(
+		                    'conditions' => array( 'PersonneReferent.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+		                    'recursive' => -1,
+		                    'order' => array( 'PersonneReferent.dddesignation DESC' )
+		                )
+		            );
+		            $personnesFoyer[$index]['PersonneReferent']['dernier'] = $tPersReferent['PersonneReferent'];
 
-                $tContratinsertion = $this->Contratinsertion->find(
-                    'first',
-                    array(
-                        'conditions' => array( 'Contratinsertion.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
-                        'recursive' => -1,
-                        'order' => array( 'Contratinsertion.rg_ci DESC' )
-                    )
-                );
-                $personnesFoyer[$index]['Contratinsertion'] = $tContratinsertion['Contratinsertion'];
+		            $tContratinsertion = $this->Contratinsertion->find(
+		                'first',
+		                array(
+		                    'conditions' => array( 'Contratinsertion.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+		                    'recursive' => -1,
+		                    'order' => array( 'Contratinsertion.rg_ci DESC' )
+		                )
+		            );
+		            $personnesFoyer[$index]['Contratinsertion'] = $tContratinsertion['Contratinsertion'];
 
 
-                $tCui = $this->Cui->find(
-                    'first',
-                    array(
-                        'conditions' => array( 'Cui.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
-                        'recursive' => -1,
-                        'order' => array( 'Cui.datecontrat DESC' )
-                    )
-                );
-                $personnesFoyer[$index]['Cui'] = $tCui['Cui'];
+		            $tCui = $this->Cui->find(
+		                'first',
+		                array(
+		                    'conditions' => array( 'Cui.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+		                    'recursive' => -1,
+		                    'order' => array( 'Cui.datecontrat DESC' )
+		                )
+		            );
+		            $personnesFoyer[$index]['Cui'] = $tCui['Cui'];
 
-                $tOrientstruct = $this->Orientstruct->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id']
-                        ),
-                        'order' => 'Orientstruct.date_valid ASC',
-                        'recursive' => -1
-                    )
-                );
-                $personnesFoyer[$index]['Orientstruct']['premiere'] = $tOrientstruct['Orientstruct'];
+		            $tOrientstruct = $this->Orientstruct->find(
+		                'first',
+		                array(
+		                    'conditions' => array(
+		                        'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id']
+		                    ),
+		                    'order' => 'Orientstruct.date_valid ASC',
+		                    'recursive' => -1
+		                )
+		            );
+		            $personnesFoyer[$index]['Orientstruct']['premiere'] = $tOrientstruct['Orientstruct'];
 
-                $tOrientstruct = $this->Orientstruct->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id']
-                        ),
-                        'order' => 'Orientstruct.date_valid DESC',
-                        'recursive' => -1
-                    )
-                );
-                $personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct['Orientstruct'];
+		            $tOrientstruct = $this->Orientstruct->find(
+		                'first',
+		                array(
+		                    'conditions' => array(
+		                        'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id']
+		                    ),
+		                    'order' => 'Orientstruct.date_valid DESC',
+		                    'recursive' => -1
+		                )
+		            );
+		            $personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct['Orientstruct'];
 
-                $details[$role] = $personnesFoyer[$index];
+		            $details[$role] = $personnesFoyer[$index];
+		        }
+
+
+
+		        $structuresreferentes = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
+		        $typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
+		        $typoscontrat = $this->Typocontrat->find( 'list', array( 'fields' => array( 'id', 'lib_typo' ) ) );
+
+		        $this->set( 'structuresreferentes', $structuresreferentes );
+		        $this->set( 'typesorient', $typesorient );
+		        $this->set( 'typoscontrat', $typoscontrat );
+
+	// debug($details);
+		        $this->set( 'details', $details );
             }
-
-
-
-            $structuresreferentes = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
-            $typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
-            $typoscontrat = $this->Typocontrat->find( 'list', array( 'fields' => array( 'id', 'lib_typo' ) ) );
-
-            $this->set( 'structuresreferentes', $structuresreferentes );
-            $this->set( 'typesorient', $typesorient );
-            $this->set( 'typoscontrat', $typoscontrat );
-
-// debug($details);
-            $this->set( 'details', $details );
         }
 
         /// Export du tableau en CSV
