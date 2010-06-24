@@ -131,14 +131,14 @@
             $rendezvous = $this->Rendezvous->findById( $rendezvous_id );
             $this->assert( !empty( $rendezvous ), 'invalidParameter' );
 
-            $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
-            $this->set( 'typerdv', $typerdv );
+            /*$typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
+            $this->set( 'typerdv', $typerdv );*/
 
-            $referent = $this->Referent->find( 'list', array( 'fields' => array( 'id', 'nom' ) ) );
-            $this->set( 'referent', $referent );
+            /*$referent = $this->Referent->find( 'list', array( 'fields' => array( 'id', 'nom' ) ) );
+            $this->set( 'referent', $referent );*/
 
-            $referentFonction = $this->Referent->find( 'list', array( 'fields' => array( 'id', 'fonction' ) ) );
-            $this->set( 'referentFonction', $referentFonction );
+            /*$referentFonction = $this->Referent->find( 'list', array( 'fields' => array( 'id', 'fonction' ) ) );
+            $this->set( 'referentFonction', $referentFonction );*/
 
             $this->set( 'rendezvous', $rendezvous );
             $this->set( 'personne_id', $rendezvous['Rendezvous']['personne_id'] );

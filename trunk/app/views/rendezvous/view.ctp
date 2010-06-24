@@ -24,23 +24,23 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Référent' );?></th>
-                    <td><?php echo value( $referent, Set::classicExtract( $rendezvous, 'Rendezvous.referent_id' ) );?></td>
+                    <td><?php echo Set::classicExtract( $rendezvous, 'Referent.qual' ).' '.Set::classicExtract( $rendezvous, 'Referent.nom' ).' '.Set::classicExtract( $rendezvous, 'Referent.prenom' )/*value( $referent, Set::classicExtract( $rendezvous, 'Rendezvous.referent_id' ) )*/;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Fonction du référent' );?></th>
-                    <td><?php echo value( $referentFonction, Set::classicExtract( $rendezvous, 'Rendezvous.referent_id' ) );?></td>
+                    <td><?php echo Set::classicExtract( $rendezvous, 'Referent.fonction' )/*value( $referentFonction, Set::classicExtract( $rendezvous, 'Rendezvous.referent_id' ) )*/;?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Permanence liée à la structure' );?></th>
-                    <td><?php echo value( $permanences, Set::classicExtract( $rendezvous, 'Rendezvous.permanence_id' ) );?></td>
+                    <td><?php echo Set::classicExtract( $rendezvous, 'Permanence.libpermanence' )/*value( $permanences, Set::classicExtract( $rendezvous, 'Rendezvous.permanence_id' ) )*/;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Type de RDV' );?></th>
-                    <td><?php echo Set::classicExtract( $typerdv, Set::classicExtract( $rendezvous, 'Rendezvous.typerdv_id' ) );?></td>
+                    <td><?php echo /*Set::classicExtract( $typerdv, */Set::classicExtract( $rendezvous, 'Typerdv.libelle' /*'Rendezvous.typerdv_id' )*/ );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'statutrdv' );?></th>
-                    <td><?php echo Set::classicExtract( $statutrdv, Set::classicExtract( $rendezvous, 'Rendezvous.statutrdv_id' ) );?></td>
+                    <td><?php echo Set::classicExtract( $rendezvous, 'Statutrdv.libelle' )/*Set::classicExtract( $statutrdv, Set::classicExtract( $rendezvous, 'Rendezvous.statutrdv_id' ) )*/;?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'daterdv' );?></th>
