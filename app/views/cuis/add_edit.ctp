@@ -660,7 +660,7 @@
                     'Cui.nomtuteur',
                     'Cui.prenomtuteur',
                     'Cui.fonctiontuteur',
-                    'Cui.structurereferente_id',
+                    'Cui.structurereferente_id' => array( 'options' => $structs, 'empty' => true ),
                     'Cui.referent_id' => array( 'options' => $referents, 'empty' => true ),
                     'Cui.isaas' => array( 'label' => __d( 'cui', 'Cui.isaas', true ), 'type' => 'radio', 'options' => $options['isaas'] )
                 ),
@@ -669,6 +669,7 @@
                     'options' => $options
                 )
             );
+//             debug($options);
         ?>
         <table class="cui5 noborder">
             <tr>
