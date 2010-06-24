@@ -7,7 +7,7 @@
 
         var $actsAs = array(
             'Formattable' => array(
-                'suffix' => array( 'referent_id' )
+                'suffix' => array( 'referent_id', 'permanence_id' )
             )
         );
 

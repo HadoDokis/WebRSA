@@ -12,6 +12,28 @@
         $this->pageTitle = 'Édition Rendez-vous';
     }
 ?>
+<?php echo $javascript->link( 'dependantselect.js' ); ?>
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        dependantSelect( 'RendezvousReferentId', 'RendezvousStructurereferenteId' );
+//         dependantSelect( 'RendezvousPermanenceId', 'RendezvousStructurereferenteId' );
+
+        <?php
+            echo $ajax->remoteFunction(
+                array(
+                    'update' => 'ReferentFonction',
+                    'url' => Router::url(
+                        array(
+                            'action' => 'ajaxreffonct',
+                            Set::extract( $this->data, 'Rendezvous.referent_id' )
+                        ),
+                        true
+                    )
+                )
+            );
+        ?>
+    });
+</script>
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
@@ -36,21 +58,23 @@
         <fieldset>
             <?php
                 echo $form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'lib_struct', true ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
-                echo $form->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+                echo $form->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $struct_id.'_'.$referent_id ) );
                 ///Ajax
-                echo $ajax->observeField( 'RendezvousStructurereferenteId', array( 'update' => 'RendezvousReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
+//                 echo $ajax->observeField( 'RendezvousStructurereferenteId', array( 'update' => 'RendezvousReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
+// debug($struct);
+                echo $ajax->observeField( 'RendezvousReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
 
                 echo $html->tag(
                     'div',
-                    $html->tag( 'span', 'Fonction du référent', array( 'class' => 'label' ) ).
-                    $html->tag( 'span', ( isset( $ReferentFonction ) ? $ReferentFonction : null ), array( 'id' => 'ReferentFonction', 'class' => 'input' ) ),
-                    array( 'class' => 'input text' )
+                    '<b></b>',
+                    array(
+                        'id' => 'ReferentFonction'
+                    )
                 );
-                echo $ajax->observeField( 'RendezvousReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
 
                 ///Ajout d'une permanence liée à une structurereferente
                 echo $form->input( 'Rendezvous.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'empty' => true ) );
-                echo $ajax->observeField( 'RendezvousStructurereferenteId', array( 'update' => 'RendezvousPermanenceId', 'url' => Router::url( array( 'action' => 'ajaxperm' ), true ) ) );
+
 
                 echo $form->input( 'Rendezvous.typerdv_id', array( 'label' =>  required( __( 'lib_rdv', true ) ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
             ?>

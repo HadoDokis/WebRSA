@@ -16,6 +16,7 @@
             $this->set( 'struct', $this->Structurereferente->listOptions() );
             $this->set( 'permanences', $this->Permanence->find( 'list' ) );
             $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
+
         }
 
 
@@ -36,7 +37,7 @@
         /** ********************************************************************
         * Ajax pour lien référent - structure référente
         *** *******************************************************************/
-
+/*
         function _selectReferents( $structurereferente_id ) {
             $refrdv = $this->Referent->find(
                 'all',
@@ -60,18 +61,29 @@
             } ///FIXME: à mettre dans la vue
             echo implode( '', $options );
             $this->render( null, 'ajax' );
-        }
-
+        }*/
 
         /** ********************************************************************
-        *   Ajax pour la fonction du référent
+        *   Ajax pour les coordonnées du référent APRE
         *** *******************************************************************/
 
-        function ajaxreffonct() { // FIXME
+        function ajaxreffonct( $referent_id = null ) { // FIXME
             Configure::write( 'debug', 0 );
-            $referent = $this->Rendezvous->Structurereferente->Referent->findbyId( Set::extract( $this->data, 'Rendezvous.referent_id' ), null, null, -1 );
-            echo $referent['Referent']['fonction'];
-            $this->render( null, 'ajax' );
+
+            if( !empty( $referent_id ) ) {
+                $referent_id = suffix( $referent_id );
+            }
+            else {
+                $referent_id = suffix( Set::extract( $this->data, 'Rendezvous.referent_id' ) );
+            }
+
+            $referent = array();
+            if( !empty( $referent_id ) ) {
+                $referent = $this->Referent->findbyId( $referent_id, null, null, -1 );
+            }
+
+            $this->set( 'referent', $referent );
+            $this->render( 'ajaxreffonct', 'ajax' );
         }
 
 
@@ -93,17 +105,17 @@
 
         }
 
-        function ajaxperm() { // FIXME
-            Configure::write( 'debug', 0 );
-            $permanences = $this->_selectPermanences( Set::classicExtract( $this->data, 'Rendezvous.structurereferente_id' ) );
-
-            $options = array( '<option value=""></option>' );
-            foreach( $permanences as $permanence ) {
-                $options[] = '<option value="'.$permanence['Permanence']['id'].'">'.$permanence['Permanence']['libpermanence'].'</option>';
-            }
-            echo implode( '', $options );
-            $this->render( null, 'ajax' );
-        }
+//         function ajaxperm() { // FIXME
+//             Configure::write( 'debug', 0 );
+//             $permanences = $this->_selectPermanences( Set::classicExtract( $this->data, 'Rendezvous.structurereferente_id' ) );
+// 
+//             $options = array( '<option value=""></option>' );
+//             foreach( $permanences as $permanence ) {
+//                 $options[] = '<option value="'.$permanence['Permanence']['id'].'">'.$permanence['Permanence']['libpermanence'].'</option>';
+//             }
+//             echo implode( '', $options );
+//             $this->render( null, 'ajax' );
+//         }
 
         /** ********************************************************************
         *
@@ -198,6 +210,10 @@
             }
             $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
 
+            $referents = $this->Referent->listOptions();
+            $this->set( 'referents', $referents );
+
+
             if( !empty( $this->data ) ){
                 if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
@@ -215,22 +231,28 @@
             else{
                 if( $this->action == 'edit' ) {
                     $this->data = $rdv;
+
                 }
             }
             $this->Rendezvous->commit();
 
-            ///Récupération des référents liés aux structures référentes
-            $refrdv = $this->Rendezvous->Structurereferente->Referent->find( 'all', array( 'order' => 'Referent.nom ASC', 'recursive' => -1, 'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom', 'Referent.fonction' ) ) );
-            $ids = Set::extract( $refrdv, '/Referent/id' );
-            $values = Set::format( $refrdv, '{0} {1}', array( '{n}.Referent.nom', '{n}.Referent.prenom' ) );
-            $refrdv = array_combine( $ids, $values );
-            $this->set( 'referents', $refrdv );
+            $struct_id = Set::classicExtract( $this->data, "{$this->modelClass}.structurereferente_id" );
+            $this->set( 'struct_id', $struct_id );
 
-            $referent_id = Set::classicExtract( $this->data, 'Rendezvous.referent_id' );
-            if( !empty( $referent_id ) ) {
-                $referent = $this->Rendezvous->Structurereferente->Referent->findbyId( Set::extract( $this->data, 'Rendezvous.referent_id' ), null, null, -1 );
-                $this->set( 'ReferentFonction', $referent['Referent']['fonction'] );
-            }
+            $referent_id = Set::classicExtract( $this->data, "{$this->modelClass}.referent_id" );
+            $referent_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $referent_id );
+            $this->set( 'referent_id', $referent_id );
+//             $refrdv = $this->Rendezvous->Structurereferente->Referent->find( 'all', array( 'order' => 'Referent.nom ASC', 'recursive' => -1, 'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom', 'Referent.fonction' ) ) );
+//             $ids = Set::extract( $refrdv, '/Referent/id' );
+//             $values = Set::format( $refrdv, '{0} {1}', array( '{n}.Referent.nom', '{n}.Referent.prenom' ) );
+//             $refrdv = array_combine( $ids, $values );
+//             $this->set( 'referents', $refrdv );
+// 
+//             $referent_id = Set::classicExtract( $this->data, 'Rendezvous.referent_id' );
+//             if( !empty( $referent_id ) ) {
+//                 $referent = $this->Rendezvous->Structurereferente->Referent->findbyId( Set::extract( $this->data, 'Rendezvous.referent_id' ), null, null, -1 );
+//                 $this->set( 'ReferentFonction', $referent['Referent']['fonction'] );
+//             }
 
             $this->_setOptions();
             $this->set( 'personne_id', $personne_id );
