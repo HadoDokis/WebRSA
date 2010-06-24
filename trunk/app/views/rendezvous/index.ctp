@@ -71,7 +71,7 @@
                             h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
                             h( Set::extract( $rdv, 'Structurereferente.lib_struc' ) ),
                             h( Set::extract( $rdv, 'Referent.qual' ).' '.Set::extract( $rdv, 'Referent.nom' ).' '.Set::extract( $rdv, 'Referent.prenom' ) ),
-                            h( Set::enum( Set::extract( $rdv, 'Rendezvous.permanence_id' ), $permanences ) ),
+                            h( Set::extract( $rdv, 'Permanence.libpermanence' ) ),
                             h( Set::extract( $rdv, 'Typerdv.libelle' ) ),
                             h( Set::enum( Set::classicExtract( $rdv, 'Rendezvous.statutrdv_id' ), $statutrdv ) ),
                             h( date_short( Set::extract( $rdv, 'Rendezvous.daterdv' ) ) ),

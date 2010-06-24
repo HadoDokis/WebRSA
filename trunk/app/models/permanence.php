@@ -13,6 +13,28 @@
             )
         );
 
+        function listOptions() {
+            $tmp = $this->find(
+                'all',
+                array (
+                    'fields' => array(
+                        'Permanence.id',
+                        'Permanence.structurereferente_id',
+                        'Permanence.libpermanence'
+                    ),
+                    'recursive' => -1,
+                    'order' => 'Permanence.libpermanence ASC',
+                )
+            );
+
+            $return = array();
+            foreach( $tmp as $key => $value ) {
+                $return[$value['Permanence']['structurereferente_id'].'_'.$value['Permanence']['id']] = $value['Permanence']['libpermanence'];
+            }
+            return $return;
+        }
+
+
         var $validate = array(
             'structurereferente_id' => array(
                 array(
