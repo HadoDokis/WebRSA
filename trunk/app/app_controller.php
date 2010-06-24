@@ -271,6 +271,27 @@
 			}
 		}
 
+		/**
+		*
+		*/
+
+        function _checkTmpPdfDirectory( $dir ) {
+            if( !$this->_isAdminAction() ) {
+				$notWritable = array();
+				$oldUmask = umask(0);
+
+				if( !( is_dir( $dir ) && is_writable( $dir ) ) && !@mkdir( $dir, 0777, true ) ) {
+					$notWritable[] = $dir;
+				}
+
+				umask( $oldUmask );
+
+				if( !empty( $notWritable ) ) {
+                    $this->cakeError( 'notWritableDirs', array( 'directories' => $notWritable ) );
+				}
+			}
+		}
+
         /**
         *
         *
@@ -283,6 +304,7 @@
             $this->Auth->autoRedirect = false;
            // $this->Auth->loginRedirect = array('controller' => 'pages', 'action' => 'home');
             $return = parent::beforeFilter();
+
             $this->_loadPermissions();
             $this->_loadZonesgeographiques();
 			$this->_checkWebrsaInc(
@@ -331,6 +353,7 @@
                     $this->_checkDonneesUtilisateursEtServices( $user );
                     $this->_checkHabilitations();
 					$this->_checkDonneesApre();
+					$this->_checkTmpPdfDirectory( Configure::read( 'Cohorte.dossierTmpPdfs' ) );
 
 					// Vérification des droits d'accès à la page
                     if( $this->name != 'Pages' ) {
@@ -339,6 +362,7 @@
                     }
                 }
             }
+
             $this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
             return $return;
         }

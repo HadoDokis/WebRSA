@@ -1,9 +1,9 @@
 <?php
     class AppError extends ErrorHandler
     {
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function __construct($method, $messages) {
             App::import('Core', 'Sanitize');
@@ -35,6 +35,9 @@
             if ($method !== 'error') {
                 if( Configure::read( 'debug' ) == 0 ) {
                     switch( $method ) {
+						case 'notWritableDirs';
+							$method = 'notWritableDirs';
+                        break;
 						case 'missingBinaries';
 							$method = 'missingBinaries';
                         break;
@@ -93,9 +96,31 @@
             $this->_stop();
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
+
+        function notWritableDirs( $params ) {
+            extract( $params, EXTR_OVERWRITE );
+
+            if (!isset($url)) {
+                $url = $this->controller->here;
+            }
+            $url = Router::normalize($url);
+            header("HTTP/1.0 401 Unauthorized");
+            $this->controller->set(array(
+                'code' => '401',
+                'name' => __( 'Unauthorized', true ),
+                'message' => $url,
+                'base' => $this->controller->base,
+                'params' => $params
+            ));
+            $this->_outputMessage( 'not_writable_dirs' );
+        }
+
+        /**
+        *
+        */
 
         function missingBinaries( $params ) {
             extract( $params, EXTR_OVERWRITE );
@@ -115,9 +140,9 @@
             $this->_outputMessage( 'missing_binaries' );
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function webrsaInc( $params ) {
             extract( $params, EXTR_OVERWRITE );
@@ -137,9 +162,9 @@
             $this->_outputMessage( 'webrsa_inc' );
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function incompleteUser( $params ) {
             extract( $params, EXTR_OVERWRITE );
@@ -159,9 +184,9 @@
             $this->_outputMessage( 'incomplete_user' );
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function incompleteApre( $params ) {
             extract( $params, EXTR_OVERWRITE );
@@ -181,9 +206,9 @@
             $this->_outputMessage( 'incomplete_apre' );
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function incompleteStructure( $params ) {
             extract( $params, EXTR_OVERWRITE );
@@ -205,9 +230,9 @@
             );
             $this->_outputMessage( 'incomplete_structure' );
         }
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function lockedDossier( $params ) {
             extract( $params, EXTR_OVERWRITE );
@@ -249,9 +274,9 @@
             $this->_outputMessage( 'locked_action' );
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function dateHabilitationUser( $params ) {
             extract( $params, EXTR_OVERWRITE );
@@ -271,9 +296,9 @@
             $this->_outputMessage( 'date_habilitation_user' );
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function error403( $params ) {
             extract($params, EXTR_OVERWRITE);
@@ -292,9 +317,9 @@
             $this->_outputMessage('error403');
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function error500( $params ) {
             extract($params, EXTR_OVERWRITE);
@@ -313,9 +338,9 @@
             $this->_outputMessage('error500');
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function invalidParameter( $params ) {
             extract( $params, EXTR_OVERWRITE );
@@ -333,9 +358,9 @@
             $this->_outputMessage( 'invalidParameter' );
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function invalidParamForToken( $params ) {
             extract( $params, EXTR_OVERWRITE );
