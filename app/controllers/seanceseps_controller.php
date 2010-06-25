@@ -160,6 +160,7 @@
 				}
 
 				$success = true;
+				$pdfs = true;
 				if( $seanceep[$this->modelClass]['demandesreorient'] == $demandesreorient ) {
 					foreach( $this->data["Decisionreorient{$step}"] as $i => $decision ) {
 						$demandereorient = $this->{$this->modelClass}->Demandereorient->findById( $decision['demandereorient_id'], null, null, -1 );
@@ -195,7 +196,8 @@
 						$demandereorient['Demandereorient']['nv_orientstruct_id'] = $this->{$this->modelClass}->Demandereorient->Orientstruct->id;
 
 						if( $success ) {
-							$success = $this->Gedooo->mkOrientstructPdf( $demandereorient['Demandereorient']['nv_orientstruct_id'] ) && $success;
+							$pdfs = $this->Gedooo->mkOrientstructPdf( $demandereorient['Demandereorient']['nv_orientstruct_id'] ) && $pdfs;
+							$success = $pdfs && $success;
 						}
 
 						$this->{$this->modelClass}->Demandereorient->create( $demandereorient );
@@ -209,6 +211,10 @@
 					$this->{$this->modelClass}->commit(); // FIXME
 					$this->Session->setFlash( __( 'Save->success', true ), 'flash/success' );
 					$this->redirect( array( 'action' => 'index' ) );
+				}
+				else if( !$pdfs ) {
+					$this->{$this->modelClass}->rollback();
+					$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
 				}
 				else {
 					$this->{$this->modelClass}->rollback();
@@ -264,6 +270,7 @@
 				}
 
 				$success = true;
+				$pdfs = true;
 				if( $seanceep[$this->modelClass]['demandesreorient'] == 'decisionep' ) {
 					foreach( $this->data["Decisionreorient{$step}"] as $i => $decision ) {
 						$demandereorient = $this->{$this->modelClass}->Demandereorient->findById( $decision['demandereorient_id'], null, null, -1 );
@@ -299,7 +306,8 @@
 						$demandereorient['Demandereorient']['nv_orientstruct_id'] = $this->{$this->modelClass}->Demandereorient->Orientstruct->id;
 
 						if( $success ) {
-							$success = $this->Gedooo->mkOrientstructPdf( $demandereorient['Demandereorient']['nv_orientstruct_id'] ) && $success;
+							$pdfs = $this->Gedooo->mkOrientstructPdf( $demandereorient['Demandereorient']['nv_orientstruct_id'] ) && $pdfs;
+							$success = $pdfs && $success;
 						}
 
 						$this->{$this->modelClass}->Demandereorient->create( $demandereorient );
@@ -313,6 +321,10 @@
 					$this->{$this->modelClass}->commit();
 					$this->Session->setFlash( __( 'Save->success', true ), 'flash/success' );
 					$this->redirect( array( 'action' => 'index' ) );
+				}
+				else if( !$pdfs ) {
+					$this->{$this->modelClass}->rollback();
+					$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
 				}
 				else {
 					$this->{$this->modelClass}->rollback();

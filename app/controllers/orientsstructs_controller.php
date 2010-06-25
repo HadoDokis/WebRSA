@@ -202,7 +202,8 @@
 
                     $saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data );
                     $saved = $this->Orientstruct->save( $this->data['Orientstruct'] ) && $saved;
-					$saved = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->getLastInsertId() ) && $saved;
+					$mkOrientstructPdf = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->getLastInsertId() );
+					$saved = $mkOrientstructPdf && $saved;
 
                     if( $saved ) {
                         $this->Jetons->release( $dossier_id );
@@ -210,6 +211,10 @@
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
                     }
+					else if( !$mkOrientstructPdf ) {
+						$this->Orientstruct->rollback();
+						$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
+					}
                     else {
                         $this->Orientstruct->rollback();
                     }
@@ -269,12 +274,19 @@
                 if( $valid ) {
                     if( $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data )
 						&& $this->Orientstruct->save( $this->data )
-						&& $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->id )
 					) {
-                        $this->Jetons->release( $dossier_id );
-                        $this->Orientstruct->commit();
-                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
+						$generationPdf = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->id );
+
+						if( $generationPdf ) {
+							$this->Jetons->release( $dossier_id );
+							$this->Orientstruct->commit();
+							$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+							$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
+						}
+						else {
+							$this->Orientstruct->rollback();
+							$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
+						}
                     }
                     else {
                         $this->Orientstruct->commit();

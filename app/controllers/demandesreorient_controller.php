@@ -82,7 +82,8 @@
 				$saved = $this->{$this->modelClass}->save();
 				$nvOrientstructId = $this->{$this->modelClass}->Orientstruct->getLastInsertId();
 				if( !empty( $nvOrientstructId ) ) {
-					$saved = $this->Gedooo->mkOrientstructPdf( $nvOrientstructId ) && $saved;
+					$generationPdf = $this->Gedooo->mkOrientstructPdf( $nvOrientstructId );
+					$saved = $generationPdf && $saved;
 				}
 
 				if( $saved ) {
@@ -92,7 +93,12 @@
 				}
 				else {
 					$this->{$this->modelClass}->rollback();
-					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					if( isset( $generationPdf ) && !$generationPdf ) {
+						$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
+					}
+					else {
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					}
 				}
 			}
 			else {
