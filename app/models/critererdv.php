@@ -205,23 +205,7 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
-                    ),
-//                     array(
-//                         'table'      => 'detailsdroitsrsa',
-//                         'alias'      => 'Detaildroitrsa',
-//                         'type'       => 'LEFT OUTER',
-//                         'foreignKey' => false,
-//                         'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
-//                     ),
-//                     array(
-//                         'table'      => 'detailscalculsdroitsrsa',
-//                         'alias'      => 'Detailcalculdroitrsa',
-//                         'type'       => 'INNER',
-//                         'foreignKey' => false,
-//                         'conditions' => array(
-//                             'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id'
-//                         )
-//                     )
+                    )
                 ),
                 'order' => array( '"Rendezvous"."daterdv" ASC' ),
                 'conditions' => $conditions
