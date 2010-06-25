@@ -7,13 +7,21 @@
         var $components = array( 'Jetonsfonctions' );
         var $helpers = array( 'Xform' );
 
+
+
+        protected function _setOptions() {
+            $this->set( 'participants', $this->Participantcomite->find( 'all' ) );
+            $options = $this->ComiteapreParticipantcomite->allEnumLists();
+            $this->set( 'options', $options );
+        }
+/*
         function beforeFilter(){
             parent::beforeFilter();
             $this->set( 'participants', $this->Participantcomite->find( 'all' ) );
             $options = $this->ComiteapreParticipantcomite->allEnumLists();
             $this->set( 'options', $options );
             //$this->set( 'options', $options );
-        }
+        }*/
 
         /** ********************************************************************
         *
@@ -89,6 +97,7 @@
                         $this->data['Comiteapre']['id'] = $comiteapre_id;
                     }
                 }
+                $this->_setOptions();
                 $this->Comiteapre->commit();
                 $this->render( $this->action, null, 'add_edit' );
             }
@@ -133,6 +142,7 @@
             else {
                 $this->data = $comiteparticipant;
             }
+            $this->_setOptions();
         }
     }
 ?>

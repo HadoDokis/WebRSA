@@ -10,14 +10,21 @@
         /** ********************************************************************
         *
         *** *******************************************************************/
+        protected function _setOptions() {
+            $this->set( 'referent', $this->Referent->find( 'list' ) );
+            $options = $this->Comiteapre->ApreComiteapre->allEnumLists();
+            $options = Set::merge( $options, $this->Comiteapre->ComiteapreParticipantcomite->allEnumLists() );
+            $this->set( 'options', $options );
+        }
 
+/*
         function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'referent', $this->Referent->find( 'list' ) );
             $options = $this->Comiteapre->ApreComiteapre->allEnumLists();
             $options = Set::merge( $options, $this->Comiteapre->ComiteapreParticipantcomite->allEnumLists() );
             $this->set( 'options', $options );
-        }
+        }*/
 
         /** ********************************************************************
         *
@@ -47,6 +54,7 @@
                 $comitesapres = $this->paginate( 'Comiteapre' );
 // debug($comitesapres);
                 $this->Dossier->commit();
+                $this->_setOptions();
                 $this->set( 'comitesapres', $comitesapres );
             }
 
@@ -96,7 +104,7 @@
             }
 
             $this->set( 'comiteapre', $comiteapre );
-
+            $this->_setOptions();
             $participants = $this->Participantcomite->find( 'list' );
             $this->set( 'participants', $participants );
 
@@ -135,7 +143,7 @@
             }
 
             $this->set( 'comiteapre', $comiteapre );
-
+            $this->_setOptions();
             $participants = $this->Participantcomite->find( 'list' );
             $this->set( 'participants', $participants );
 
@@ -204,7 +212,7 @@
                 }
             }
             $this->Comiteapre->commit();
-
+            $this->_setOptions();
             $this->render( $this->action, null, 'add_edit' );
         }
 
@@ -213,6 +221,7 @@
             unset( $querydata['limit'] );
             $comitesapres = $this->Comiteapre->find( 'all', $querydata );
 
+            $this->_setOptions();
             $this->layout = '';
             $this->set( compact( 'comitesapres' ) );
         }
