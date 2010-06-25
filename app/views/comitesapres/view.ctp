@@ -269,11 +269,10 @@
 		</div>
 	<?php endif;?>
 </div>
-<?php
-$participants = Set::classicExtract( $comiteapre, 'Participantcomite' );
-
-$apres = Set::classicExtract( $comiteapre, 'Apre' );
-?>
+    <?php
+        $participants = Set::classicExtract( $comiteapre, 'Participantcomite' );
+        $apres = Set::classicExtract( $comiteapre, 'Apre' );
+    ?>
 <?php if( !empty( $participants ) && !empty( $apres ) ):?>
     <fieldset class="noborder center invisible">
         <ul class="actionMenu">

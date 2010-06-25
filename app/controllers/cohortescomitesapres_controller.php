@@ -8,7 +8,8 @@
         var $components = array( 'Gedooo' );
 
         function __construct() {
-            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( /*'aviscomite',*/ 'notificationscomite' ) ) ) );
+        //FIXME: voir si le fait d'appeler aviscomite ne va pas retourner tous les comités précédents comme au départ
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'aviscomite', 'notificationscomite' ) ) ) );
             parent::__construct();
         }
 
