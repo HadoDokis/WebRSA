@@ -17,13 +17,8 @@
         *
         *** *******************************************************************/
 
-        function beforeFilter() {
-
-            parent::beforeFilter();
+        protected function _setOptions() {
             $this->set( 'referent', $this->Referent->find( 'list' ) );
-
-            // FIXME
-            //$options = $this->Apre->ApreComiteapre->allEnumLists();
             $options = array(
                 'decisioncomite' => array(
                     'ACC' => __d( 'apre', 'ENUM::DECISIONCOMITE::ACC', true ),
@@ -31,32 +26,11 @@
                     'REF' => __d( 'apre', 'ENUM::DECISIONCOMITE::REF', true ),
                 )
             );
-            /*$this->Apre->ApreComiteapre->validate = array(
-                'decisioncomite' => array(
-                    array(
-                        'rule'      => array( 'inList', array( 'AJ', 'ACC', 'REF' ) ),
-                        'message'   => 'Veuillez choisir une valeur.',
-                        'allowEmpty' => false
-                    )
-                ),
-                'montantattribue' => array(
-                    array(
-                        'rule' => 'numeric',
-                        'message' => 'Veuillez entrer une valeur numérique.',
-                        'allowEmpty' => false,
-                        'required' => false
-                    ),
-                    array(
-                        'rule' => array( 'between', 0, 7 ),
-                        'message' => 'Veuillez entrer une valeur entre 0 et 9999.',
-                        'allowEmpty' => false,
-                        'required' => false
-                    ),
-                ),
-            );*/
+
             $this->set( 'options', $options );
-// debug( $this->data );
         }
+
+
 
         /** ********************************************************************
         *
@@ -128,7 +102,7 @@
                 $comitesapres['limit'] = 10;
                 $this->paginate = $comitesapres;
                 $comitesapres = $this->paginate( 'Comiteapre' );
-
+                $this->_setOptions();
 // debug( $comitesapres );
                 $this->set( 'comitesapres', $comitesapres );
             }
@@ -157,7 +131,7 @@
             $querydata = $this->Cohortecomiteapre->search( null, array_multisize( $this->params['named'] ) );
             unset( $querydata['limit'] );
             $decisionscomites = $this->Comiteapre->find( 'all', $querydata );
-
+$this->_setOptions();
             $this->layout = '';
             $this->set( compact( 'decisionscomites' ) );
         }
@@ -237,6 +211,7 @@
             else {
                 $this->data = $apre;
             }
+            $this->_setOptions();
             $this->Dossier->commit(); // Pour les jetons
             $this->set( 'apre', $apre );
         }
@@ -424,6 +399,7 @@
 // debug($typedecision);
 // debug($apre);
 // die();
+            $this->_setOptions();
             if( ( $dest == 'beneficiaire' || $dest == 'referent' || $dest == 'tiers' ) && ( $typedecision == 'Refus' || $typedecision == 'Ajournement' ) ) {
                 $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Refus/Refus'.$dest.'.odt' );
             }
