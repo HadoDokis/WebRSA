@@ -10,8 +10,7 @@
         *
         */
 
-        function beforeFilter() {
-            parent::beforeFilter();
+        protected function _setOptions() {
             $this->set( 'pays', $this->Option->pays() );
             $this->set( 'qual', $this->Option->qual() );
             $this->set( 'rolepers', array_filter_keys( $this->Option->rolepers(), array( 'DEM', 'CJT' ) ) );
@@ -21,6 +20,18 @@
             $this->set( 'options', $this->Typeorient->listOptions() );
             $this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
         }
+
+//         function beforeFilter() {
+//             parent::beforeFilter();
+//             $this->set( 'pays', $this->Option->pays() );
+//             $this->set( 'qual', $this->Option->qual() );
+//             $this->set( 'rolepers', array_filter_keys( $this->Option->rolepers(), array( 'DEM', 'CJT' ) ) );
+//             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
+//             //$this->set( 'lib_struc', $this->Option->lib_struc() ); ///FIXME
+//             $this->set( 'statut_orient', $this->Option->statut_orient() );
+//             $this->set( 'options', $this->Typeorient->listOptions() );
+//             $this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
+//         }
 
         /**
         *
@@ -131,6 +142,7 @@
 //                 $dossier['Foyer']['Personne'][$key]['Structurereferente'] = $orientsstructs['Structurereferente'];
 //
 // debug($details);
+            $this->_setOptions();
             $this->set( 'details', $details );
         }
 
@@ -264,6 +276,7 @@
                     }
                 }
             }
+            $this->_setOptions();
         }
 
         /**
@@ -299,7 +312,7 @@
             $this->set( 'orient_id', $personne['Orientstruct'][0]['typeorient_id']);
             $this->set( 'structure_id', $personne['Orientstruct'][0]['structurereferente_id']);
 
-
+            $this->_setOptions();
             if( !empty( $this->data ) ) {
                 if( isset( $personne['Orientstruct'][0]['id'] ) ) {
                     $this->data['Orientstruct'][0]['id'] = $personne['Orientstruct'][0]['id'];
