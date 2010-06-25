@@ -6,11 +6,16 @@
         var $uses = array( 'Permanence', 'Structurereferente', 'Option' );
         var $helpers = array( 'Xform' );
 
+        protected function _setOptions() {
+            $this->set( 'typevoie', $this->Option->typevoie() );
+            $this->set( 'sr', $this->Structurereferente->find( 'list' ) );
+        }
+/*
          function beforeFilter() {
             parent::beforeFilter();
             $this->set( 'typevoie', $this->Option->typevoie() );
             $this->set( 'sr', $this->Structurereferente->find( 'list' ) );
-        }
+        }*/
 
 
         function index() {
@@ -27,6 +32,7 @@
                 )
 
             );
+            $this->_setOptions();
             $this->set( 'permanences', $permanences );
         }
 
@@ -39,6 +45,7 @@
                 }
             }
 
+            $this->_setOptions();
             $this->render( $this->action, null, 'add_edit' );
         }
 
@@ -65,6 +72,7 @@
                 $this->data = $permanence;
             }
 
+            $this->_setOptions();
             $this->render( $this->action, null, 'add_edit' );
         }
 
@@ -86,6 +94,7 @@
                 $this->cakeError( 'error404' );
             }
 
+//             $this->_setOptions();
             // Tentative de suppression ... FIXME
             if( $this->Permanence->delete( array( 'Permanence.id' => $permanence_id ) ) ) {
                 $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
