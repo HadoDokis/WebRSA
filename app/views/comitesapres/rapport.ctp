@@ -146,7 +146,7 @@
                         <th>Demande de recours</th>
                         <th>Décision comité</th>
                         <th>Montant attribué</th>
-                        <th colspan="2" class="action">Action</th>
+                        <th colspan="3" class="action">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -174,6 +174,11 @@
                                         'Modifier la décision',
                                         array( 'controller' => 'cohortescomitesapres', 'action' => 'editdecision', Set::classicExtract( $apre, 'id' ) ),
                                         $permissions->check( 'comitesapres', 'index' )
+                                    ),
+                                    $html->notificationsApreLink(
+                                        'Notifier la décision',
+                                        array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomite', 'Cohortecomiteapre__id' => Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+                                        $permissions->check( 'cohortescomitesapres', 'notificationscomite' )
                                     )
                                 ),
                                 array( 'class' => 'odd' ),

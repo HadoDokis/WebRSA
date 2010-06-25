@@ -50,6 +50,7 @@
                 $this->Dossier->begin(); // Pour les jetons
                 $comitesapres = $this->Comiteapre->search( $display, $this->data );
                 $comitesapres['limit'] = 10;
+                $comitesapres['recursive'] = 1;
                 $this->paginate = $comitesapres;
                 $comitesapres = $this->paginate( 'Comiteapre' );
 // debug($comitesapres);
@@ -102,7 +103,7 @@
                 $adresse = $this->Apre->Personne->Foyer->Adressefoyer->Adresse->findById( $foyer['Foyer']['id'], null, null, -1 );
                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $adresse );
             }
-
+// debug($comiteapre);
             $this->set( 'comiteapre', $comiteapre );
             $this->_setOptions();
             $participants = $this->Participantcomite->find( 'list' );

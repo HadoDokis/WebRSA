@@ -106,6 +106,14 @@
                 <?php
                     foreach( $comitesapres as $comiteapre ) {
 
+                        $decisionPrise = true;
+                        // debug($comiteapre);
+                        $decision = Set::extract( $comiteapre, '/Apre/ApreComiteapre/decisioncomite' );
+//                         debug($decision);
+                        if( !empty( $decision ) ) {
+                            $decisionPrise = false;
+                        }
+
                         echo $html->tableCells(
                             array(
                                 h( Set::classicExtract( $comiteapre, 'Comiteapre.intitulecomite' ) ),
@@ -115,6 +123,7 @@
                                 $html->viewLink(
                                     'Voir le comité',
                                     array( 'controller' => 'comitesapres', 'action' => 'view', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+                                    $decisionPrise,
                                     $permissions->check( 'comitesapres', 'index' )
                                 ),
                                 $html->rapportLink(
