@@ -39,7 +39,7 @@
         } );
 
         // Onchage event - Partie dynamique
-        $(select1Id).onchange = function() {
+		Event.observe( select1Id, 'change', function(event) {
             $$('#' + select2Id + ' option').each( function ( option ) {
                 $(option).remove();
             } );
@@ -53,22 +53,18 @@
                 }
             }
 
-//             var isChanged = false;
             var opt = $$('#' + select2Id + ' option');
             $( opt ).each( function ( option ) {
                 if( $(option).value == value2 ) {
                     $(option).selected = 'selected';
-                    /*alert( $(option).value );
-                    isChanged = true;
-                    alert( isChanged );*/
                 }
             } );
 
             try {
-                // INFO -> fonctionne quand m�me, mais g�n�re une erreur
+                // INFO -> fonctionne quand même, mais génère une erreur
                 $( select2Id ).onchange();
             }
             catch(id) {
             }
-        };
+		} );
     }
