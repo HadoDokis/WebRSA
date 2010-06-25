@@ -104,6 +104,7 @@
                         $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
                         $valid = ( count( $this->Dossier->Foyer->Personne->Orientstruct->validationErrors ) == 0 );
                         if( $valid ) {
+							$pdfs = true;
                             $this->Dossier->begin();
                             foreach( $this->data['Orientstruct'] as $key => $value ) {
                                 // FIXME: date_valid et pas date_propo ?
@@ -119,7 +120,8 @@
                             if( $saved ) {
                                 foreach( $this->data['Orientstruct'] as $element ) {
 									if( $element['statut_orient'] == 'Orienté' ) {
-										$saved = $this->Gedooo->mkOrientstructPdf( $element['id'] ) && $saved;
+										$pdfs = $this->Gedooo->mkOrientstructPdf( $element['id'] ) && $pdfs;
+										$saved =  $pdfs && $saved;
 									}
 								}
 							}
@@ -131,6 +133,10 @@
                                 $this->Dossier->commit();
                                 $this->data['Orientstruct'] = array();
                             }
+							else if( !$pdfs ) {
+								$this->Dossier->rollback();
+								$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
+							}
                             else {
                                 $this->Dossier->rollback();
                             }
