@@ -61,6 +61,7 @@
 
             $isRapport = ( Set::classicExtract( $this->params, 'named.rapport' ) == 1 );
             $idRapport = Set::classicExtract( $this->params, 'named.Cohortecomiteapre__id' );
+            $idComite = Set::classicExtract( $this->data, 'Cohortecomiteapre.id' );
 
             $this->Dossier->begin(); // Pour les jetons
             if( !empty( $this->data ) ) {
@@ -85,7 +86,8 @@
                         if( $saved /*&& empty( $this->Apre->ApreComiteapre->validationErrors )*/ ) {
                             $this->ApreComiteapre->commit();
                             if( !$isRapport ){
-                                $this->redirect( array( 'action' => 'aviscomite' ) ); // FIXME
+//                                 $this->redirect( array( 'action' => 'aviscomite' ) ); // FIXME
+                                $this->redirect( array(  'controller' => 'comitesapres', 'action' => 'rapport', $idComite ) );
                             }
                             else if( $isRapport ) {
                                 $this->redirect( array(  'controller' => 'comitesapres', 'action' => 'rapport', $idRapport ) );
