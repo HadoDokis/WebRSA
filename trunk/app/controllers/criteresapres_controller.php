@@ -14,6 +14,16 @@
             parent::__construct();
         }
 
+        protected function _setOptions() {
+            $options = $this->Apre->allEnumLists();
+            $this->set( 'options', $options );
+            $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
+
+            /// Liste des tiers prestataires
+            $this->set( 'tiers', $this->Tiersprestataireapre->find( 'list' ) );
+        }
+
+/*
         function beforeFilter() {
             $return = parent::beforeFilter();
             $options = $this->Apre->allEnumLists();
@@ -24,7 +34,7 @@
             $this->set( 'tiers', $this->Tiersprestataireapre->find( 'list' ) );
 
             return $return;
-        }
+        }*/
 
 
         //*********************************************************************
@@ -142,7 +152,7 @@
             }
 
             $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-
+            $this->_setOptions();
             switch( $etatApre ) {
                 case 'Critereapre::all':
                     $this->set( 'pageTitle', 'Toutes les APREs' );
@@ -163,6 +173,7 @@
                     $this->render( $this->action, null, 'visualisation' );
                     break;
             }
+
         }
 
         /// Export du tableau en CSV
@@ -184,6 +195,7 @@
                 default:
                     $this->render( $this->action, null, 'exportcsveligible' );
             }
+            $this->_setOptions();
         }
     }
 ?>
