@@ -269,7 +269,23 @@
 		</div>
 	<?php endif;?>
 </div>
+<?php
+$participants = Set::classicExtract( $comiteapre, 'Participantcomite' );
 
+$apres = Set::classicExtract( $comiteapre, 'Apre' );
+?>
+<?php if( !empty( $participants ) && !empty( $apres ) ):?>
+    <fieldset class="noborder center invisible">
+        <ul class="actionMenu">
+            <?php
+                echo $html->decisionLink(
+                    'Prise de décision du comité',
+                    array( 'controller' => 'cohortescomitesapres', 'action' => 'aviscomite', 'Cohortecomiteapre__id' => Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
+                );
+            ?>
+        </ul>
+    </fieldset>
+<?php endif;?>
 <div class="clearer"><hr /></div>
 
 <!-- *********************************************************************** -->
