@@ -50,6 +50,7 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsetOnCheckbox( 'CritererdvDaterdv', $( 'CritererdvDaterdvFromDay' ).up( 'fieldset' ), false );
+//         dependantSelect( 'CritererdvReferentId', 'CritererdvStructurereferenteId' );
     });
 </script>
 
@@ -77,12 +78,12 @@
             <?php echo $form->input( 'Critererdv.structurereferente_id', array( 'label' => __( 'lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
 
             <?php echo $form->input( 'Critererdv.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
-            <?php echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
+            <?php /*echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );*/?>
 
             <!--  Ajout d'une permanence liée à une structurereferente  -->
             <?php
                 echo $form->input( 'Critererdv.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'empty' => true ) );
-                echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvPermanenceId', 'url' => Router::url( array( 'action' => 'ajaxperm' ), true ) ) );
+//                 echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvPermanenceId', 'url' => Router::url( array( 'action' => 'ajaxperm' ), true ) ) );
             ?>
             <?php echo $form->input( 'Critererdv.typerdv_id', array( 'label' => __( 'lib_rdv', true ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Critererdv.daterdv', array( 'label' => 'Filtrer par date de RDV', 'type' => 'checkbox' ) );?>
@@ -160,8 +161,8 @@
                             array(
                                 h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
                                 h( Set::extract( $rdv, 'Adresse.locaadr' ) ),
-                                h( Set::enum( Set::extract( $rdv, 'Rendezvous.structurereferente_id' ), $sr ) ),
-                                h( Set::enum( Set::classicExtract( $rdv, 'Rendezvous.referent_id' ), $referents ) ),
+                                h( Set::extract( $rdv, 'Structurereferente.lib_struc' ) ),
+                                h( Set::classicExtract( $rdv, 'Referent.qual' ) ),
                                 h( Set::enum( Set::extract( $rdv, 'Rendezvous.typerdv_id' ), $typerdv ) ),
                                 h( $locale->date( 'Date::short', $rdv['Rendezvous']['daterdv'] ) ),
                                 h( $locale->date( 'Time::short', $rdv['Rendezvous']['heurerdv'] ) ),

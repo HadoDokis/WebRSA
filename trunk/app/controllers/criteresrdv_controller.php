@@ -23,7 +23,19 @@
         /** ********************************************************************
         *
         ** ********************************************************************/
+        protected function _setOptions() {
+            $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
+            $this->set( 'struct', $this->Structurereferente->listOptions() );
+//             $this->set( 'sr', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
+            $typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
+            $this->set( 'typerdv', $typerdv );
+            $this->set( 'permanences', $this->Permanence->find( 'list' ) );
+            $this->set( 'referents', $this->Referent->find( 'list' ) );
 
+            $this->set( 'natpf', $this->Option->natpf() );
+        }
+
+/*
         function beforeFilter() {
             $return = parent::beforeFilter();
             $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
@@ -34,13 +46,13 @@
             $this->set( 'permanences', $this->Permanence->find( 'list' ) );
             $this->set( 'natpf', $this->Option->natpf() );
 
-        }
+        }*/
 
 
         /** ********************************************************************
         *   Ajax pour lien référent - structure référente
         ********************************************************************/
-
+/*
         function _selectReferents( $structurereferente_id ) {
             $conditions = array();
 
@@ -57,12 +69,12 @@
             );
             return $referents;
 
-        }
+        }*/
 
         /** ********************************************************************
         *
         ** ********************************************************************/
-
+/*
         function ajaxreferent() { // FIXME
             Configure::write( 'debug', 0 );
             $referents = $this->_selectReferents( Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' ) );
@@ -72,37 +84,37 @@
             } ///FIXME: à mettre dans la vue
             echo implode( '', $options );
             $this->render( null, 'ajax' );
-        }
+        }*/
 
         /** ********************************************************************
         *   Ajax pour la permanence liée à la structure référente
         *** *******************************************************************/
-        function _selectPermanences( $structurereferente_id ) {
-            $permanences = $this->Rendezvous->Structurereferente->Permanence->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'Permanence.structurereferente_id' => $structurereferente_id
-                    ),
-                    'recursive' => -1
-                )
-            );
-
-            return $permanences;
-
-        }
-
-        function ajaxperm() { // FIXME
-            Configure::write( 'debug', 0 );
-            $permanences = $this->_selectPermanences( Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' ) );
-
-            $options = array( '<option value=""></option>' );
-            foreach( $permanences as $permanence ) {
-                $options[] = '<option value="'.$permanence['Permanence']['id'].'">'.$permanence['Permanence']['libpermanence'].'</option>';
-            }
-            echo implode( '', $options );
-            $this->render( null, 'ajax' );
-        }
+//         function _selectPermanences( $structurereferente_id ) {
+//             $permanences = $this->Rendezvous->Structurereferente->Permanence->find(
+//                 'all',
+//                 array(
+//                     'conditions' => array(
+//                         'Permanence.structurereferente_id' => $structurereferente_id
+//                     ),
+//                     'recursive' => -1
+//                 )
+//             );
+// 
+//             return $permanences;
+// 
+//         }
+// 
+//         function ajaxperm() { // FIXME
+//             Configure::write( 'debug', 0 );
+//             $permanences = $this->_selectPermanences( Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' ) );
+// 
+//             $options = array( '<option value=""></option>' );
+//             foreach( $permanences as $permanence ) {
+//                 $options[] = '<option value="'.$permanence['Permanence']['id'].'">'.$permanence['Permanence']['libpermanence'].'</option>';
+//             }
+//             echo implode( '', $options );
+//             $this->render( null, 'ajax' );
+//         }
 
         /** ********************************************************************
         *
@@ -126,7 +138,7 @@
                 $this->Dossier->commit();
                 $this->set( 'rdvs', $rdvs );
             }
-// debug($this->data);
+
 			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
 				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
 			}
@@ -135,9 +147,10 @@
 			}
 
             // Population du select référents liés aux structures
-            $structurereferente_id = Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' );
-            $referents = $this->Referent->referentsListe( $structurereferente_id );
-            $this->set( 'referents', $referents );
+//             $structurereferente_id = Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' );
+//             $referents = $this->Referent->referentsListe( $structurereferente_id );
+            $this->_setOptions();
+//             $this->set( 'referents', $referents );
         }
 
         /// Export du tableau en CSV
@@ -154,6 +167,7 @@
             $this->set( 'referents', $referents );
 
             $this->layout = ''; // FIXME ?
+            $this->_setOptions();
             $this->set( compact( 'rdvs' ) );
         }
     }

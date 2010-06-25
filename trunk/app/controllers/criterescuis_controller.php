@@ -18,6 +18,18 @@
         }
 
 
+        protected function _setOptions(){
+            $options = array();
+            $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
+            $this->set( 'struct', $struct );
+
+            $qual = $this->Option->qual();
+            $this->set( 'qual', $qual );
+            $options = $this->Cui->allEnumLists();
+            $this->set( 'options', $options );
+
+        }
+/*
         function beforeFilter() {
             $return = parent::beforeFilter();
             $options = array();
@@ -30,7 +42,7 @@
             $this->set( 'options', $options );
 
             return $return;
-        }
+        }*/
 
         function index() {
             if( Configure::read( 'CG.cantons' ) ) {
@@ -51,9 +63,10 @@
 
                 $this->Dossier->commit();
 
+
                 $this->set( 'criterescuis', $criterescuis );
             }
-
+            $this->_setOptions();
             if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
                 $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
             }
@@ -74,6 +87,7 @@
 
 // debug($contrats);
 // die();
+            $this->_setOptions();
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'cuis' ) );
         }

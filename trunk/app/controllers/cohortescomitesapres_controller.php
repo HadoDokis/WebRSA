@@ -102,11 +102,11 @@
                 $comitesapres['limit'] = 10;
                 $this->paginate = $comitesapres;
                 $comitesapres = $this->paginate( 'Comiteapre' );
-                $this->_setOptions();
+
 // debug( $comitesapres );
                 $this->set( 'comitesapres', $comitesapres );
             }
-
+            $this->_setOptions();
             switch( $avisComite ) {
                 case 'Cohortecomiteapre::aviscomite':
                     $this->set( 'pageTitle', 'Décisions des comités' );
