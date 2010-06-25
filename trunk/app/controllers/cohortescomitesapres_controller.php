@@ -134,7 +134,7 @@
             $querydata = $this->Cohortecomiteapre->search( null, array_multisize( $this->params['named'] ) );
             unset( $querydata['limit'] );
             $decisionscomites = $this->Comiteapre->find( 'all', $querydata );
-$this->_setOptions();
+            $this->_setOptions();
             $this->layout = '';
             $this->set( compact( 'decisionscomites' ) );
         }

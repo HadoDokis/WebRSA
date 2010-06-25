@@ -16,6 +16,8 @@
             )
         );
 
+        var $order = array( 'Referent.nom ASC', 'Referent.prenom ASC' );
+
         var $hasAndBelongsToMany = array(
             'Actioncandidat' => array( 'with' => 'ActioncandidatPersonne' ),
 //             'Personne' => array( 'with' => 'ActioncandidatPersonne' ), // FIXME
