@@ -244,7 +244,7 @@
                         $this->Jetons->release( $dossier_rsa_id );
                         $this->Propopdo->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-//                         $this->redirect( array(  'controller' => 'propospdos','action' => 'index', $personne_id ) );
+                        $this->redirect( array(  'controller' => 'propospdos','action' => 'index', $personne_id ) );
                     }
                     else {
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
