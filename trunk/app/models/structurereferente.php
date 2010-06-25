@@ -46,7 +46,22 @@
         *** *******************************************************************/
 
         function listOptions() {
-            //$typesorients = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ), 'conditions' => array( 'Typeorient.parentid IS NULL' ), 'order' => array( 'Typeorient.lib_type_orient ASC' ) ) );
+			return $this->find(
+				'list',
+				array(
+					'fields' => array(
+						'Structurereferente.id',
+						'Structurereferente.lib_struc',
+						'Typeorient.lib_type_orient'
+					),
+					'recursive' => 0,
+					'order' => array(
+						'Typeorient.lib_type_orient ASC',
+						'Structurereferente.lib_struc'
+					)
+				)
+			);
+            /*//$typesorients = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ), 'conditions' => array( 'Typeorient.parentid IS NULL' ), 'order' => array( 'Typeorient.lib_type_orient ASC' ) ) );
 
             $list = array();
             ///FIXME: Voir comment mieux faire (sans ça, pb array_combine), mais pour le moment fonctionne
@@ -54,7 +69,7 @@
                 $typesorients = $this->Typeorient->find( 'all', array( 'conditions' => array( 'Typeorient.parentid IS NOT NULL' ), 'order' => array( 'Typeorient.lib_type_orient ASC' ) ) );
             }
             else {
-                $typesorients = $this->Typeorient->find( 'all', array( /*'conditions' => array( 'Typeorient.parentid IS NOT NULL' ),*/ 'order' => array( 'Typeorient.lib_type_orient ASC' ) ) );
+                $typesorients = $this->Typeorient->find( 'all', array('order' => array( 'Typeorient.lib_type_orient ASC' ) ) );
             }
 
             foreach( $typesorients as $typeorient ) {
@@ -71,8 +86,7 @@
                     }
                 }
             }
-            return $list;
-
+            return $list;*/
         }
 
         var $hasAndBelongsToMany = array(
