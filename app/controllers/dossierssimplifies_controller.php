@@ -3,6 +3,7 @@
     {
         var $name = 'Dossierssimplifies';
         var $uses = array( 'Dossier', /*'Foyer',*/ /*'Adresse', 'Adressefoyer',*/ 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct', 'Typocontrat' );
+        var $components = array( 'Gedooo' );
 
         /**
         *
@@ -21,18 +22,6 @@
             $this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
         }
 
-//         function beforeFilter() {
-//             parent::beforeFilter();
-//             $this->set( 'pays', $this->Option->pays() );
-//             $this->set( 'qual', $this->Option->qual() );
-//             $this->set( 'rolepers', array_filter_keys( $this->Option->rolepers(), array( 'DEM', 'CJT' ) ) );
-//             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
-//             //$this->set( 'lib_struc', $this->Option->lib_struc() ); ///FIXME
-//             $this->set( 'statut_orient', $this->Option->statut_orient() );
-//             $this->set( 'options', $this->Typeorient->listOptions() );
-//             $this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
-//         }
-
         /**
         *
         *
@@ -40,42 +29,6 @@
         */
 
         function view( $id = null ) {
-//             $typesOrient = $this->Typeorient->find(
-//                 'list',
-//                 array(
-//                     'fields' => array(
-//                         'Typeorient.id',
-//                         'Typeorient.lib_type_orient'
-//                     ),
-//                     'conditions' => array(
-//                         'Typeorient.parentid' => null
-//                     )
-//                 )
-//             );
-//             $this->set( 'typesOrient', $typesOrient );
-// 
-//             $typesStruct = $this->Typeorient->find(
-//                 'list',
-//                 array(
-//                     'fields' => array(
-//                         'Typeorient.id',
-//                         'Typeorient.lib_type_orient'
-//                     ),
-//                     'conditions' => array(
-//                         'Typeorient.parentid NOT' => null
-//                     )
-//                 )
-//             );
-//             $this->set( 'typesStruct', $typesStruct );
-
-
-//             $this->Dossier->unbindModel(
-//                 array(
-//                     'hasOne' => array( 'Situationdossierrsa', 'Avispcgdroitrsa', 'Detaildroitrsa' ),
-//                     'hasMany' => array( 'Suiviinstruction', 'Infofinanciere' )
-//                 )
-//             );
-// 
             $details = array();
 
             $typeorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'lib_type_orient' ) ) );
@@ -126,22 +79,9 @@
 
                 $details[$role] = $personnesFoyer[$index];
             }
-//             debug($personnesFoyer);
+
             $this->set( 'personnes', $personnesFoyer );
-//             foreach( $dossier['Foyer']['Personne'] as $key => $personne ) {
-//                 $orientsstructs = $this->Orientstruct->find(
-//                     'first',
-//                     array(
-//                         'recursive' => 2,
-//                         'conditions' => array(
-//                             'Orientstruct.personne_id' => $personne['id']
-//                         )
-//                     )
-//                 );
-//                 $dossier['Foyer']['Personne'][$key]['Orientstruct'] = $orientsstructs['Orientstruct'];
-//                 $dossier['Foyer']['Personne'][$key]['Structurereferente'] = $orientsstructs['Structurereferente'];
-//
-// debug($details);
+
             $this->_setOptions();
             $this->set( 'details', $details );
         }
@@ -186,7 +126,6 @@
 
 
             if( !empty( $this->data ) ) {
-
                 $this->Dossier->set( $this->data );
                 $this->Foyer->set( $this->data );
                 $this->Orientstruct->set( $this->data );
@@ -223,6 +162,7 @@
 
                     $orientstruct_validate = $this->Orientstruct->validate;
 
+					$mkOrientstructPdf = true;
                     foreach( $this->data['Personne'] as $key => $pData ) {
                         if( !empty( $pData ) ) {
                             $this->Orientstruct->validate = $orientstruct_validate;
@@ -263,6 +203,9 @@
 //                                 $this->data['Orientstruct'][$key]['statut_orient'] = 'Non orienté'; // FIXME ?
                                 $saved = $this->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
                             }
+
+							$mkOrientstructPdf = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->getLastInsertId() ) && $mkOrientstructPdf;
+							$saved = $mkOrientstructPdf && $saved;
                         }
                     }
 
@@ -271,6 +214,10 @@
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $this->Dossier->id ) );
                     }
+					else if( !$mkOrientstructPdf ) {
+						$this->Orientstruct->rollback();
+						$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
+					}
                     else {
                         $this->Dossier->rollback();
                     }
@@ -324,10 +271,25 @@
                     $this->data['Orientstruct'][0]['date_valid'] = strftime( '%Y-%m-%d', mktime() ); // FIXME
                 }
 
-                if( $this->Personne->saveAll( $this->data ) ) {
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $personne['Foyer']['dossier_rsa_id'] ) );
+				$this->Dossier->begin();
+				$mkOrientstructPdf = true;
+                if( $saved = $this->Personne->saveAll( $this->data, array( 'atomic' => false ) ) ) {
+					$mkOrientstructPdf = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->id );
+					$saved = $mkOrientstructPdf && $saved;
                 }
+
+				if( $saved ) {
+					$this->Dossier->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $this->Dossier->id ) );
+				}
+				else if( !$mkOrientstructPdf ) {
+					$this->Dossier->rollback();
+					$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
+				}
+				else {
+					$this->Dossier->rollback();
+				}
             }
             else {
                 $this->data = $personne;

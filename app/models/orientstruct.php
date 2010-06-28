@@ -367,14 +367,14 @@
                 )
             );
 
-            $typeorient = $this->Structurereferente->Typeorient->find(
+            /*$typeorient = $this->Structurereferente->Typeorient->find(
                 'first',
                 array(
                     'conditions' => array(
                         'Typeorient.id' => $orientstruct['Orientstruct']['typeorient_id'] // FIXME structurereferente_id
                     )
                 )
-            );
+            );*/
 
             $this->Personne->Foyer->Adressefoyer->bindModel(
                 array(
@@ -423,19 +423,22 @@
 
             $orientstruct['Dossier'] = $dossier['Dossier'];
 
-            //Ajout pour le numéro de poste du référent de la structure
-            $referent = $this->Personne->Referent->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Referent.structurereferente_id' => $orientstruct['Structurereferente']['id']
-                    ),
-                    'recursive' => -1
-                )
-            );
-            if( !empty( $referent ) ) {
-                $orientstruct['Referent'] = $referent['Referent'];
-            }
+			if( isset( $orientstruct[$this->alias]['statut_orient'] ) && $orientstruct[$this->alias]['statut_orient'] == 'Orienté' ) {
+				//Ajout pour le numéro de poste du référent de la structure
+				$referent = $this->Personne->Referent->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Referent.structurereferente_id' => $orientstruct['Structurereferente']['id']
+						),
+						'recursive' => -1
+					)
+				);
+
+				if( !empty( $referent ) ) {
+					$orientstruct['Referent'] = $referent['Referent'];
+				}
+			}
 
             $orientstruct['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $orientstruct['Personne']['dtnai'] ) );
             $orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );

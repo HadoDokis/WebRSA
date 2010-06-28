@@ -22,48 +22,57 @@
 		*/
 
         function mkOrientstructPdf( $orientstruct_id = null ) {
-
 			$orientstructModelClass = ClassRegistry::init( 'Orientstruct' );
 			$pdfModelClass = ClassRegistry::init( 'Pdf' );
 
-//         $test = $orientstructModelClass->findById( $orientstruct_id, null, null, 2 );
-//         debug($orientstructModelClass);
-//         die();
-
-
 			$orientstruct = $orientstructModelClass->getDataForPdf( $orientstruct_id, $this->controller->Session->read( 'Auth.User.id' ) );
+			$statut_orient = Set::classicExtract( $orientstruct, 'Orientstruct.statut_orient' );
 
-            $modele = $orientstruct['Typeorient']['modele_notif'];
+			if( $statut_orient == 'Orienté' ) {
+				$modele = $orientstruct['Typeorient']['modele_notif'];
 
-			$vieuxPdf = $pdfModelClass->find(
-				'first',
-				array(
-					'conditions' => array(
-						"{$pdfModelClass->alias}.modele" => 'Orientstruct',
-						"{$pdfModelClass->alias}.fk_value" => $orientstruct_id
-					)
-				)
-			);
-
-			$modeledoc = 'Orientation/'.$modele.'.odt';
-            $pdfContent = $this->getPdf( $orientstruct, $modeledoc );
-			if( !is_bool( $pdfContent ) ) {
-				$record = Set::merge(
-					$vieuxPdf,
+				$vieuxPdf = $pdfModelClass->find(
+					'first',
 					array(
-						$pdfModelClass->alias => array(
-							'modele' => 'Orientstruct',
-							'modeledoc' => $modeledoc,
-							'fk_value' => $orientstruct_id,
-							'document' => $pdfContent
+						'conditions' => array(
+							"{$pdfModelClass->alias}.modele" => 'Orientstruct',
+							"{$pdfModelClass->alias}.fk_value" => $orientstruct_id
 						)
 					)
 				);
 
-				$pdfModelClass->create( $record );
-				return $pdfModelClass->save();
+				$modeledoc = 'Orientation/'.$modele.'.odt';
+				$pdfContent = $this->getPdf( $orientstruct, $modeledoc );
+				if( !is_bool( $pdfContent ) ) {
+					$record = Set::merge(
+						$vieuxPdf,
+						array(
+							$pdfModelClass->alias => array(
+								'modele' => 'Orientstruct',
+								'modeledoc' => $modeledoc,
+								'fk_value' => $orientstruct_id,
+								'document' => $pdfContent
+							)
+						)
+					);
+
+					$pdfModelClass->create( $record );
+					return $pdfModelClass->save();
+				}
+				return $pdfContent;
 			}
-			return $pdfContent;
+			else {
+				$orientstruct_id = Set::classicExtract( $orientstruct, 'Orientstruct.id' );
+				if( !empty( $orientstruct_id ) ) {
+					return $pdfModelClass->deleteAll(
+						array(
+							"{$pdfModelClass->alias}.modele" => 'Orientstruct',
+							"{$pdfModelClass->alias}.fk_value" => $orientstruct_id
+						)
+					);
+				}
+				return true;
+			}
         }
 
 		/**
