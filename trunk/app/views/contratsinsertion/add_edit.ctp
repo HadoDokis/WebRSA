@@ -84,7 +84,7 @@
                 $duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
                 foreach( $$duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
 
-            setDateInterval2( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
+            setDateInterval( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
             //INFO: setDateInterval2 permet de conserver le jour lors du choix de la durée
             //      setDateInterval affiche le dernier jour du mois lors du choix de la durée
         }
