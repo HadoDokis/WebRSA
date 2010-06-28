@@ -18,6 +18,7 @@
         observeDisableFieldsetOnCheckbox( 'PropopdoSuivi', $( 'PropopdoDaterevisionDay' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnCheckbox( 'PropopdoAutres', $( 'PropopdoCommentairepdo' ).up( 'fieldset' ), false );
 
+
 //         observeDisableFieldsetOnCheckbox( 'PropopdoMotifpdo', $( 'PropopdoNonadmis' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnRadioValue(
             'propopdoform',
@@ -58,7 +59,57 @@
             checkDatesToRefresh();
         } );
 
+        <?php
 
+//             echo $ajax->remoteFunction(
+//                 array(
+//                     'update' => 'Etatpdo1',
+//                     'url' => Router::url(
+//                         array(
+//                             'action' => 'ajaxetat1',
+//                             Set::extract( $this->data, 'Propopdo.typepdo_id' )
+//                         ),
+//                         true
+//                     )
+//                 )
+//             ).';';
+//             echo $ajax->remoteFunction(
+//                 array(
+//                     'update' => 'Etatpdo3',
+//                     'url' => Router::url(
+//                         array(
+//                             'action' => 'ajaxetat2',
+//                             Set::extract( $this->data, 'Propopdo.decision' )
+//                         ),
+//                         true
+//                     )
+//                 )
+//             ).';';
+//             echo $ajax->remoteFunction(
+//                 array(
+//                     'update' => 'Etatpdo4',
+//                     'url' => Router::url(
+//                         array(
+//                             'action' => 'ajaxetat3',
+//                             Set::extract( $this->data, 'Propopdo.suivi' )
+//                         ),
+//                         true
+//                     )
+//                 )
+//             ).';';
+//             echo $ajax->remoteFunction(
+//                 array(
+//                     'update' => 'Etatpdo5',
+//                     'url' => Router::url(
+//                         array(
+//                             'action' => 'ajaxetat4',
+//                             Set::extract( $this->data, 'Propopdo.autres' )
+//                         ),
+//                         true
+//                     )
+//                 )
+//             ).';';
+        ?>
 
 
     });
@@ -70,6 +121,7 @@
     <h1><?php echo $this->pageTitle;?></h1>
 
     <?php
+
         echo $xform->create( 'Propopdo', array( 'id' => 'propopdoform' ) );
         if( $this->action == 'add' ) {
 //             echo $xform->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
@@ -92,7 +144,7 @@
     <div class="aere">
 
     <fieldset>
-        <legend>Arrivée de la PDO</legend>
+        <!-- <legend>Arrivée de la PDO</legend> -->
         <?php
             echo $default->subform(
                 array(
@@ -120,23 +172,18 @@
                         'options' => $options
                     )
                 );
+//                 echo $ajax->observeField( 'PropopdoTypepdoId', array( 'update' => 'Etatpdo1', 'url' => Router::url( array( 'action' => 'ajaxetat1' ), true ) ) );
         ?>
     </fieldset>
 
     <fieldset id="Etatpdo1" class="invisible">
         <?php
-//             debug($step);
-//             if( $step == '0' ) {
-//                 echo 'Etat du dossier : <strong>'.$etatpdo.'</strong>';
-//             }
-//             else {
-//                 echo 'Etat du dossier : ';
-//             }
+
         ?>
     </fieldset>
 
     <fieldset>
-        <legend>Prise de décision</legend>
+        <!--<legend>Prise de décision</legend>-->
         <table class="noborder" id="infosPdo">
             <tr>
                 <td class="mediumSize noborder">
@@ -173,12 +220,7 @@
 
     <fieldset id="Etatpdo2" class="invisible">
         <?php
-//             if( $step == '1' ) {
-//                 echo 'Etat du dossier : <strong>'.$etatpdo.'</strong>';
-//             }
-//             else {
-//                 echo 'Etat du dossier : ';
-//             }
+
         ?>
     </fieldset>
 
@@ -212,6 +254,7 @@
                             'options' => $options
                         )
                     );
+//                     echo $ajax->observeField( 'PropopdoDecision', array( 'update' => 'Etatpdo3', 'url' => Router::url( array( 'action' => 'ajaxetat2' ), true ) ) );
                 ?>
             </fieldset>
         </fieldset>
@@ -220,12 +263,7 @@
 
     <fieldset id="Etatpdo3" class="invisible">
         <?php
-//             if( $step == '2' ) {
-//                 echo 'Etat du dossier : <strong>'.$etatpdo.'</strong>';
-//             }
-//             else {
-//                 echo 'Etat du dossier : ';
-//             }
+
         ?>
 
     </fieldset>
@@ -246,18 +284,14 @@
                     'options' => $options
                 )
             );
+//             echo $ajax->observeField( 'PropopdoSuivi', array( 'update' => 'Etatpdo4', 'url' => Router::url( array( 'action' => 'ajaxetat3' ), true ) ) );
         ?>
         </fieldset>
     </fieldset>
 
     <fieldset id="Etatpdo4" class="invisible">
         <?php
-//             if( $step == '3' ) {
-//                 echo 'Etat du dossier : <strong>'.$etatpdo.'</strong>';
-//             }
-//             else {
-//                 echo 'Etat du dossier : ';
-//             }
+
         ?>
 
     </fieldset>
@@ -278,17 +312,13 @@
                     'options' => $options
                 )
             );
+//             echo $ajax->observeField( 'PropopdoAutres', array( 'update' => 'Etatpdo5', 'url' => Router::url( array( 'action' => 'ajaxetat4' ), true ) ) );
         ?>
         </fieldset>
     </fieldset>
     <fieldset id="Etatpdo5" class="invisible">
         <?php
-//             if( $step == '4' ) {
-//                 echo 'Etat du dossier : <strong>'.$etatpdo.'</strong>';
-//             }
-//             else {
-//                 echo 'Etat du dossier : ';
-//             }
+
         ?>
 
     </fieldset>
