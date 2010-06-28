@@ -5,7 +5,9 @@
         var $name = 'Propospdos';
         var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent' );
 
-        var $helpers = array( 'Default' );
+        var $aucunDroit = array( 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4' );
+
+        var $helpers = array( 'Default', 'Ajax' );
 
 
         protected function _setOptions() {
@@ -61,6 +63,45 @@
 //             return $return;
 //         }
 
+
+        function ajaxetat1( $typepdo_id = null ) {
+            Configure::write( 'debug', 0 );
+// var_dump($typepdo_id);
+            $dataTypepdo_id = Set::extract( $this->data, 'Propopdo.typepdo_id' );
+            $typepdo_id = ( empty( $typepdo_id ) && !empty( $dataTypepdo_id ) ? $dataTypepdo_id : $typepdo_id );
+
+            $this->set( 'typepdo_id', $typepdo_id );
+            $this->render( 'ajaxetat1', 'ajax' );
+        }
+
+        function ajaxetat2( $value = null ) {
+            Configure::write( 'debug', 0 );
+
+//             if( is_int( $value ) ) {
+                $value = Set::extract( $this->data, 'Propopdo.decision' );
+//             }
+
+            $this->set( 'value', $value );
+            $this->render( 'ajaxetat2', 'ajax' );
+        }
+
+        function ajaxetat3( $value = null ) {
+            Configure::write( 'debug', 0 );
+
+            $value = Set::extract( $this->data, 'Propopdo.suivi' );
+
+            $this->set( 'value', $value );
+            $this->render( 'ajaxetat3', 'ajax' );
+        }
+
+        function ajaxetat4( $value = null ) {
+            Configure::write( 'debug', 0 );
+            $value = Set::extract( $this->data, 'Propopdo.autres' );
+
+            $this->set( 'value', $value );
+            $this->render( 'ajaxetat4', 'ajax' );
+        }
+
         /**
         *   Partie pour les tables de paramétrages des PDOs
         */
@@ -89,7 +130,22 @@
             $options = $this->Propopdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
             $pdos = $this->Propopdo->find( 'all', $options );
 
-// debug($pdos);
+//             $freu = array(
+//                 'Propopdo' => array(
+//                     'personne_id' => 185587,
+//                     'typepdo_id' => 1,
+//                     'choixpdo' => 'JUS',
+//                     'originepdo_id' => 1,
+//                 )
+//             );
+//             $this->Propopdo->begin();
+//             $this->Propopdo->create( $freu );
+//             if( !$this->Propopdo->save(  ) ) {
+//                 debug($this->Propopdo->validationErrors);
+//             }
+//             $this->Propopdo->rollback();
+
+
             if( !empty( $pdos ) ){
 
                 /// Récupération des Pièces liées à la PDO
@@ -223,15 +279,15 @@
             /**
             *   FIN
             */
-            
             //Essai de sauvegarde
             if( !empty( $this->data ) ) {
-            
-//                 $this->data['Propopdo']['etatdossierpdo'] = $step + 1;
-            
-            
-            
-                // Nettoyage des Dsp
+
+
+                //FIXME: faire une fonction
+//                 $defaults = $this->Propopdo->nullify( array( 'exceptions' => 'id' ) );
+//                 debug( $defaults );
+//                 die();
+                // Nettoyage des Propopdos
                 $keys = array_keys( $this->Propopdo->schema() );
                 $defaults = array_combine( $keys, array_fill( 0, count( $keys ), null ) );
                 unset( $defaults['id'] );
@@ -255,6 +311,7 @@
             else {
                 if( $this->action == 'edit' ) {
                     $this->data = $pdo;
+
                 }
                 // $this->Propopdo->findByDossierRsaId( $personne_id, null, null, -1 );
 

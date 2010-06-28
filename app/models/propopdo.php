@@ -13,7 +13,8 @@
 //                     'etatdossierpdo'
 				)
             ),
-            'Formattable'
+            'Formattable',
+            'Autovalidate',
         );
 
         var $belongsTo = array(
@@ -41,18 +42,22 @@
         );
 
         var $validate = array(
-            'typepdo' => array(
+            'typepdo_id' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
-            'motifpdo' => array(
+            'choixpdo' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire',
                 'allowEmpty' => true
             ),
-            'decisionpdo' => array(
+            'originepdo_id' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
+            ),
+            'decisionpdo_id' => array(
+                'rule' => array( 'allEmpty', 'decision' ),
+                'message' => 'Si prise de décision, choisir un type de décision'
             )
         );
         var $_types = array(
