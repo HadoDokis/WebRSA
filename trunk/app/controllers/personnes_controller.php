@@ -195,9 +195,14 @@
                         $this->redirect( array(  'controller' => 'personnes','action' => 'index', $this->data['Personne']['foyer_id'] ) );
                     }
                     else {
+						$this->Personne->rollback();
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                     }
                 }
+				else {
+					$this->Personne->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
             }
             // Afficage des données
             else {
@@ -212,6 +217,7 @@
 
                 // Assignation au formulaire
                 $this->data = $personne;
+				$this->Personne->commit();
             }
 
             $this->_setOptions();

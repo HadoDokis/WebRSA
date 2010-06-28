@@ -251,7 +251,7 @@
                         'user_id'       => $this->_userId
                     )
                 );
-
+$this->Jeton->query( 'SELECT 1' );
                 $vieuxJeton = $this->Jeton->find(
                     'first',
                     array(
@@ -304,7 +304,21 @@
 		*/
 
         function _lock() {
-			$this->Jeton->query( 'LOCK TABLE "jetons" IN ACCESS EXCLUSIVE MODE;' );
+			/**
+			* MODE						-> 										-> modif personne	-> cohorte
+			**************************************************************************************************
+			* ACCESS SHARE				-> transactions entremélées				-> 4 form			-> X
+			* ROW SHARE					-> transactions entremélées				->
+			* ROW EXCLUSIVE			    -> transactions entremélées				-> 4 form			-> X
+			* SHARE UPDATE EXCLUSIVE	-> 1 transaction puis l'autre			->
+			* SHARE						-> transactions entremélées, deadlock	->
+			* SHARE ROW EXCLUSIVE		-> 1 transaction puis l'autre			-> 1 form, 3 401	-> 1 form, 3 401
+			* EXCLUSIVE					-> 1 transaction puis l'autre			->
+			* ACCESS EXCLUSIVE			-> 1 transaction puis l'autre			->
+			*/
+
+			$sql = 'LOCK TABLE "jetons" IN SHARE ROW EXCLUSIVE MODE;';
+			$this->Jeton->query( $sql );
 		}
 
         /** *******************************************************************

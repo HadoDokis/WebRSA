@@ -385,6 +385,14 @@
 
                 $this->log( 'Assertion failed: '.$error.' in '.$calledFromFile.' line '.$calledFromLine.' for url '.$this->here );
 
+				// Need to finish transaction ?
+				if( isset( $this->{$this->modelClass} ) ) {
+					$db = $this->{$this->modelClass}->getDataSource();
+					if( $db->_transactionStarted ) {
+						$db->rollback( $this->{$this->modelClass} );
+					}
+				}
+
                 $this->cakeError(
                     $error,
                     array_merge(
