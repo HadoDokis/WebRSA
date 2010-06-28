@@ -53,7 +53,7 @@
             <div><?php echo $form->input( 'Orientstruct.0.personne_id', array( 'label' => false, 'type' => 'hidden') );?></div>
             <?php echo $form->input( 'Orientstruct.0.statut_orient', array( 'label' => "Statut de l'orientation", 'type' => 'select' , 'options' => $statut_orient, 'empty' => true ) );?>
             <?php echo $form->input( 'Orientstruct.0.typeorient_id', array( 'label' => "Type d'orientation / Type de structure",'type' => 'select', 'selected'=> $orient_id, 'options' => $typesOrient, 'empty'=>true));?>
-            <?php $this->data['Orientstruct'][0]['structurereferente_id'] = $this->data['Orientstruct'][0]['typeorient_id'].'_'.$this->data['Orientstruct'][0]['structurereferente_id'];?>
+            <?php $this->data['Orientstruct'][0]['structurereferente_id'] = Set::classicExtract( $this->data, 'Orientstruct.0.typeorient_id' ).'_'.Set::classicExtract( $this->data, 'Orientstruct.0.structurereferente_id' ); ?>
             <?php echo $form->input( 'Orientstruct.0.structurereferente_id', array( 'label' => __( 'structure_referente', true ), 'type' => 'select', 'selected' => $this->data['Orientstruct'][0]['structurereferente_id'], 'options' => $structures, 'empty' => true ) );?>
         </fieldset>
 
