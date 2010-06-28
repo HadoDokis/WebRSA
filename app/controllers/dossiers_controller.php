@@ -154,14 +154,9 @@
             }
 
             // Dossier verrouillé
-//             $lock = $this->Jeton->find( 'list', array( 'conditions' => array( 'Jeton.dossier_id' => $dossier['Foyer']['dossier_rsa_id'] ) ) );
-//             if( !empty( $lock ) ) {
-//                 $dossier['Dossier']['locked'] = true;
-//             }
-//             else {
-//                 $dossier['Dossier']['locked'] = false;
-//             }
+			$this->Dossier->begin();
             $dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Foyer']['dossier_rsa_id'] );
+			$this->Dossier->commit();
 
             return $dossier;
         }
