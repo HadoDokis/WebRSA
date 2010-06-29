@@ -76,6 +76,8 @@ function __cleanFilesForRelease() {
 	mv "app/config/database.php" "app/config/database.php.default" >> /dev/null 2>&1
 	mv "app/config/webrsa.inc" "app/config/webrsa.inc.default" >> /dev/null 2>&1
 	mv "app/config/core.php" "app/config/core.php.default" >> /dev/null 2>&1
+
+	# Passage de tous les modèles .odt du répertoire app/vendors/modelesodt en .odt7.default
 	(
 		cd "app/vendors/modelesodt" && \
 		find . -type f -iname "*.odt" | while read -r ; do mv "$REPLY" "$REPLY.default"; done
@@ -85,6 +87,12 @@ function __cleanFilesForRelease() {
 	sed -i "s/Configure::write *( *'Cache\.disable' *, *[^)]\+ *) *;/Configure::write('Cache.disable', false);/" "app/config/core.php.default" >> /dev/null 2>&1
 	sed -i "s/Configure::write *( *'CG\.cantons' *, *[^)]\+ *) *;/Configure::write('CG.cantons', false);/" "app/config/webrsa.inc.default" >> /dev/null 2>&1
 	sed -i "s/Configure::write *( *'Zonesegeographiques\.CodesInsee' *, *[^)]\+ *) *;/Configure::write('Zonesegeographiques.CodesInsee', true);/" "app/config/webrsa.inc.default" >> /dev/null 2>&1
+
+	# Suppression des fichiers "internes" au développement
+	(
+		cd "app" && \
+		find . -type f -iname "*TODO*" | while read -r ; do rm "$REPLY"; done
+	)
 }
 
 # ------------------------------------------------------------------------------
