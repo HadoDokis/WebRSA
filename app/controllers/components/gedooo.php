@@ -169,7 +169,8 @@
 
                 $fieldList[] = strtolower( $key );
             }
-
+// debug( $fieldList );
+// die();
             // fusion des documents
             $oFusion = new GDO_FusionType($oTemplate, $sMimeType, $oMainPart);
             $oFusion->process();

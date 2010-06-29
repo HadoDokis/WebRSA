@@ -7,7 +7,7 @@
         var $uses = array( 'Cui', 'Option', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Adressefoyer', 'AdresseFoyer', 'Detaildroitrsa', 'Infofinanciere', 'Detailcalculdroitrsa', 'Departement' );
 
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
-        var $components = array( 'RequestHandler' );
+        var $components = array( 'RequestHandler', 'Gedooo' );
         var $aucunDroit = array( 'gedooo' );
 
         /** ********************************************************************
