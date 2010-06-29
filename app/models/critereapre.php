@@ -10,13 +10,15 @@
             $conditions = array(
             );
 
-            if( !empty( $etatApre ) ) {
+            /*if( !empty( $etatApre ) ) {
                 if( $etatApre == 'Critereapre::all' ) {
+					$conditions[] = 'Apre.statutapre = \'C\'';
                 }
                 else if( $etatApre == 'Critereapre::forfaitaire'  ) {
                     $conditions[] = 'Apre.statutapre = \'F\'';
                 }
-            }
+            }*/
+
             /// Filtre zone géographique
             if( $filtre_zone_geo ) {
                 $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
