@@ -18,6 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+
 msgid "Cuis::index"
 msgstr "Contrat Unique d'Insertion"
 
@@ -166,7 +167,7 @@ msgid "Cui.rsadept"
 msgstr "RSA financé par le département"
 
 msgid "Cui.rsadeptmaj"
-msgstr "si oui: majoré "
+msgstr "RSA majoré financé par le département ?"
 
 msgid "Cui.aah"
 msgstr "AAH"
@@ -603,3 +604,17 @@ msgstr "ASP"
 
 msgid "ENUM::ORGAPAYEUR::AUT"
 msgstr "Autre (préciser)"
+
+####################
+
+msgid "ENUM::ISBENEFICIAIRE::AAH"
+msgstr "AAH"
+
+msgid "ENUM::ISBENEFICIAIRE::ASS"
+msgstr "ASS"
+
+msgid "ENUM::ISBENEFICIAIRE::ATA"
+msgstr "ATA"
+
+msgid "ENUM::ISBENEFICIAIRE::RSADEPT"
+msgstr "RSA financé par le département"

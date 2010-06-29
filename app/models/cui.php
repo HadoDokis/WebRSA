@@ -29,11 +29,12 @@
                     'isinscritpe' => array( 'domain' => 'cui' ),
                     'dureeinscritpe' => array( 'type' => 'dureesansemploi', 'domain' => 'cui' ),
                     'niveauemploi' => array( 'domain' => 'cui' ),
-                    'ass' => array( 'domain' => 'cui' ),
-                    'rsadept' => array( 'domain' => 'cui' ),
+					'isbeneficiaire' => array( 'domain' => 'cui', 'type' => 'beneficiaire' ),
+                    /*'ass' => array( 'domain' => 'cui' ),
+                    'rsadept' => array( 'domain' => 'cui' ),*/
                     'rsadeptmaj' => array( 'domain' => 'cui' ),
-                    'aah' => array( 'domain' => 'cui' ),
-                    'ata' => array( 'domain' => 'cui' ),
+                    /*'aah' => array( 'domain' => 'cui' ),
+                    'ata' => array( 'domain' => 'cui' ),*/
                     'dureebenefaide' => array( 'type' => 'dureesansemploi', 'domain' => 'cui' ),
                     'isbeneficiaire' => array( 'domain' => 'cui' ),
                     'handicap' => array( 'domain' => 'cui' ),
@@ -55,7 +56,6 @@
                     'iscae' => array( 'domain' => 'cui' ),
                     'financementexclusif' => array( 'domain' => 'cui' ),
                     'orgapayeur' => array( 'domain' => 'cui' )
-
                 )
             ),
             'Formattable',
