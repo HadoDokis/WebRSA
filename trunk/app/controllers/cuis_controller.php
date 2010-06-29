@@ -34,19 +34,20 @@
 
             $options = array();
             $options = $this->Cui->allEnumLists();
+
             $typevoie = $this->Option->typevoie();
             $options = Set::insert( $options, 'typevoie', $typevoie );
 //             $typevoie = $this->Option->typevoie();
 //             $this->set( 'rolepers', $this->Option->rolepers() );
 //             $this->set( 'qual', $this->Option->qual() );
 //             $this->set( 'nationalite', $this->Option->nationalite() );
-// 
+//
 //             $options = Set::insert( $options, 'typevoie', $typevoie );
 //             $options = Set::insert( $options, 'initiative', array( '0', '1', '2', '3' ) );
 // // debug($options);
 //             $dept = $this->Departement->find('list', array( 'fields' => array( 'numdep', 'name' ) ) );
             $this->set( compact( 'options' ) );
-// 
+//
 //             $this->set( 'rsaSocle', $this->Option->natpf() );
             return $return;
         }
@@ -120,7 +121,7 @@
                 $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
                 $valueAdressebis = 'N';
                 $valueInscritPE = 'N';
-                $valueIsBeneficiaire = 'N';
+                $valueIsBeneficiaire = null;
 
             }
             else if( $this->action == 'edit' ) {

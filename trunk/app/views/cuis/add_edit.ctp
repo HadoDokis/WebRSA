@@ -62,11 +62,20 @@
         //Utilisé si le bénéficiaire bénéficie d'un rsa majoré
         observeDisableFieldsetOnRadioValue(
             'cuiform',
-            'data[Cui][rsadept]',
+            'data[Cui][isbeneficiaire]',
             $( 'IsRsaMaj' ),
-            'O',
-            false,
+            'RSADEPT',
             true
+        );
+
+		//Utilisé si la personne est bénéficiaire
+        observeDisableFieldsetOnRadioValue(
+            'cuiform',
+            'data[Cui][isbeneficiaire]',
+            $( 'IsBeneficiaire' ),
+            undefined,
+            false,
+			true
         );
 
         //Utilisé si le type de contrat est un CDD
@@ -135,9 +144,9 @@
     ?>
     <?php
         echo $xform->create( 'Cui', array( 'id' => 'cuiform' ) );
-        if( Set::check( $this->data, 'Cui.id' ) ){
-            echo $xform->input( 'Cui.id', array( 'type' => 'hidden' ) );
-            echo $xform->input( 'Cui.personne_id', array( 'type' => 'hidden' ) );
+        if( Set::check( $this->data, 'Cui.id' ) ) {
+            echo '<div>'.$xform->input( 'Cui.id', array( 'type' => 'hidden' ) ).'</div>';
+            //echo '<div>'.$xform->input( 'Cui.personne_id', array( 'type' => 'hidden' ) ).'</div>';
         }
     ?>
     <!-- <fieldset class="prescripteur">
@@ -162,19 +171,21 @@
             );*/
         ?>
     </fieldset> -->
-    <?php
-        echo $default->subform(
-            array(
-                'Cui.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
-                'Cui.convention' => array( /*'div' => false,*/ 'legend' => required( __d( 'cui', 'Cui.convention', true )  ), 'type' => 'radio', 'options' => $options['convention'] ),
-                'Cui.secteur' => array( /*'div' => false,*/ 'legend' => required( __d( 'cui', 'Cui.secteur', true )  ), 'type' => 'radio', 'options' => $options['secteur'] )
-            ),
-            array(
-                'domain' => $domain,
-                'options' => $options
-            )
-        );
-    ?>
+	<div>
+		<?php
+			echo $default->subform(
+				array(
+					'Cui.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
+					'Cui.convention' => array( /*'div' => false,*/ 'legend' => required( __d( 'cui', 'Cui.convention', true )  ), 'type' => 'radio', 'options' => $options['convention'] ),
+					'Cui.secteur' => array( /*'div' => false,*/ 'legend' => required( __d( 'cui', 'Cui.secteur', true )  ), 'type' => 'radio', 'options' => $options['secteur'] )
+				),
+				array(
+					'domain' => $domain,
+					'options' => $options
+				)
+			);
+		?>
+	</div>
 
 <!--**************************************** Partie EMPLOYEUR *********************************************** -->
     <fieldset>
@@ -304,7 +315,7 @@
                 echo $html->tag( 'p', 'Si CIE, je déclare sur l\'honneur être à jour des versements de mes cotisations et contributions sociales, que cette embauche ne résulte pas du licenciement d\'un salarié en CDI, ne pas avoir procédé à un licenciement pour motif économique au cours des 6 derniers mois ou pour une raison autre que la faute grave' );
                 echo $default->subform(
                     array(
-                        'Cui.iscie' => array( 'label' => false, 'type' => 'radio', 'options' => $options['iscie']  )
+                        'Cui.iscie' => array( 'type' => 'radio', 'options' => $options['iscie'], 'label' => false  )
                     ),
                     array(
                         'domain' => $domain,
@@ -417,14 +428,50 @@
                         )
                     );
                 ?>
-
             </fieldset>
                 <?php  echo $html->tag( 'p', 'Le salarié est-il bénéficiaire' ); ?>
                 <table class="noborder">
                     <tr>
-                        <td class="cui4 noborder">
+      <td class="cui2 noborder">
                             <?php
-                                echo $default->subform(
+								echo $default->subform(
+                                    array(
+                                        'Cui.isbeneficiaire' => array( 'label' => __d( 'cui', 'Cui.isbeneficiaire', true ), 'type' => 'radio', 'options' => $options['isbeneficiaire'] )
+                                    ),
+                                    array(
+                                        'domain' => $domain,
+                                        'options' => $options
+                                    )
+                                );
+                            ?>
+						</td>
+                        <td class="cui2 noborder">
+                            <fieldset id="IsRsaMaj" style="border: 0; padding: 0;">
+                                <?php
+									echo $default->subform(
+										array(
+											'Cui.rsadeptmaj' => array( 'label' => __d( 'cui', 'Cui.rsadeptmaj', true ), 'type' => 'radio', 'options' => $options['rsadeptmaj'], 'id' => 'fre' )
+										),
+										array(
+											'domain' => $domain,
+											'options' => $options
+										)
+									);
+                                ?>
+                            </fieldset>
+                        </td>
+                        <!--<td class="cui4 noborder">
+                            <?php
+								echo $default->subform(
+                                    array(
+                                        'Cui.isbeneficiaire' => array( 'label' => required( __d( 'cui', 'Cui.ass', true )  ), 'options' => $options['isbeneficiaire'] )
+                                    ),
+                                    array(
+                                        'domain' => $domain,
+                                        'options' => $options
+                                    )
+                                );
+                                /*echo $default->subform(
                                     array(
                                         'Cui.ass' => array( 'label' => required( __d( 'cui', 'Cui.ass', true )  ), 'type' => 'radio', 'options' => $options['ass'] ),
                                         'Cui.aah' => array( 'label' => required( __d( 'cui', 'Cui.aah', true )  ), 'type' => 'radio', 'options' => $options['aah'] )
@@ -433,9 +480,8 @@
                                         'domain' => $domain,
                                         'options' => $options
                                     )
-                                );
+                                );*/
                             ?>
-
                         </td>
                         <td class="cui4 noborder">
                             <?php
@@ -465,8 +511,7 @@
                                     );
                                 ?>
                             </fieldset>
-                        </td>
-
+                        </td>-->
                     </tr>
                 </table>
 
@@ -566,7 +611,7 @@
                         $this->validationErrors['Cui']['dureehebdosalarieheure'],
                         $this->validationErrors['Cui']['dureehebdosalarieminute']
                     );
-
+					$errors = Set::filter( $errors );
                 ?>
                 <td class="dureehebdo noborder<?php echo ( ( $nbErrors == 0 ) ? '' : ' error' );?>">Durée hebdomadaire de travail du salarié indiquée sur le contrat de travail</td>
                 <td class="dureehebdo noborder<?php echo ( ( $nbErrors == 0 ) ? '' : ' error' );?>">
@@ -585,7 +630,7 @@
                         }
                     ?>
                  </td>
-                 <td class="noborder"> 
+                 <td class="noborder">
                     <?php
                         echo $default->subform(
                             array(
@@ -610,6 +655,7 @@
                         $this->validationErrors['Cui']['dureecollhebdoheure'],
                         $this->validationErrors['Cui']['dureecollhebdominute']
                     );
+					$errors2 = Set::filter( $errors2 );
                 ?>
                 <td class="dureehebdo noborder<?php echo ( ( $nbErrors2 == 0 ) ? '' : ' error' );?>">Durée collective hebdomadaire de travail appliquée dans l'établissement</td>
                 <td class="dureehebdo noborder<?php echo ( ( $nbErrors2 == 0 ) ? '' : ' error' );?>">
@@ -838,6 +884,7 @@
                         $this->validationErrors['Cui']['dureehebdoretenueheure'],
                         $this->validationErrors['Cui']['dureehebdoretenueminute']
                     );
+					$errors = Set::filter( $errors );
                 ?>
                 <td class="dureehebdo noborder<?php echo ( ( $nbErrors3 == 0 ) ? '' : ' error' );?>">Durée hebdomadaire retenue pour le calcul de l'aide</td>
                 <td class="dureehebdo noborder<?php echo ( ( $nbErrors3 == 0 ) ? '' : ' error' );?>">

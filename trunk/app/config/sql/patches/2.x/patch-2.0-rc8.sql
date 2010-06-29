@@ -598,10 +598,26 @@ ALTER TABLE partseps ADD COLUMN ville VARCHAR(32);
 -- --------------------------------------------------------------------------------------------------------
 -- Ajout du 22/06/2010
 -- --------------------------------------------------------------------------------------------------------
+
 ALTER TABLE apres ADD COLUMN hasfrais type_booleannumber DEFAULT NULL;
 
 -- CREATE TYPE type_etat AS ENUM ( '0', '1', '2', '3', '4' );
 -- ALTER TABLE propospdos ADD COLUMN etatdossierpdo type_etat DEFAULT NULL;
+
+-- --------------------------------------------------------------------------------------------------------
+-- Ajout du 29/06/2010
+-- --------------------------------------------------------------------------------------------------------
+
+-- TRUNCATE TABLE cuis;
+CREATE TYPE type_beneficiaire AS ENUM ( 'AAH', 'ASS', 'ATA', 'RSADEPT' );
+
+ALTER TABLE cuis DROP COLUMN aah;
+ALTER TABLE cuis DROP COLUMN ass;
+ALTER TABLE cuis DROP COLUMN ata;
+ALTER TABLE cuis DROP COLUMN rsadept;
+ALTER TABLE cuis DROP COLUMN isbeneficiaire;
+ALTER TABLE cuis ADD COLUMN isbeneficiaire type_beneficiaire DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
