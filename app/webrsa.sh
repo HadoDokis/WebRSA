@@ -91,7 +91,7 @@ function __cleanFilesForRelease() {
 	# Suppression des fichiers "internes" au développement
 	(
 		cd "app" && \
-		find . -type f -iname "*TODO*" | while read -r ; do rm "$REPLY"; done
+		find . -type f -regex ".*\(TODO\|FIXME\).*" | while read -r ; do rm "$REPLY"; done
 	)
 }
 
