@@ -95,11 +95,12 @@
 
         /// Export du tableau en CSV
         function exportcsv() {
-
             $queryData = $this->Repddtefp->search( array_multisize( $this->params['named'] ) );
             unset( $queryData['limit'] );
 
+			$this->Etatliquidatif->Apre->deepAfterFind = false;
             $apres = $this->Etatliquidatif->find( 'all', $queryData );
+
             $this->layout = '';
             $this->set( compact( 'apres' ) );
 

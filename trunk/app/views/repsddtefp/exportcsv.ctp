@@ -1,7 +1,7 @@
 <?php
     $csv->preserveLeadingZerosInExcel = true;
 
-    $csv->addRow( array( 'Nom/Prénom allocataire',  'Sexe', 'Age', 'Adresse', 'Montant aides', 'Types d\'aide', 'Activité du bénéficiaire', 'Secteur d \'activité', 'Statut de l\'apre' ) );
+    $csv->addRow( array( 'Nom/Prénom allocataire',  'Sexe', 'Age', 'Adresse', 'Montant aides'/*, 'Types d\'aide'*/, 'Activité du bénéficiaire', 'Secteur d \'activité', 'Statut de l\'apre' ) );
 
     foreach( $apres as $apre ) {
         ///Calcul de l'age des bénéficiaires
@@ -14,14 +14,16 @@
         }
 
         ///récupération des aides liées à l'APRE
-        $aidesApre = array();
-        $naturesaide = Set::classicExtract( $apre, 'Apre.Natureaide' );
-
-        foreach( $naturesaide as $natureaide => $nombre ) {
-            if( $nombre > 0 ) {
-                $aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
-            }
-        }
+//         $aidesApre = array();
+//         $naturesaide = Set::classicExtract( $apre, 'Apre.Natureaide' );
+//
+// 		if (!empty($naturesaide) ) {
+// 			foreach( $naturesaide as $natureaide => $nombre ) {
+// 				if( $nombre > 0 ) {
+// 					$aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
+// 				}
+// 			}
+// 		}
 
 
         $statutApre = Set::classicExtract( $apre, 'Apre.statutapre' );

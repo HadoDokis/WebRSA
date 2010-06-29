@@ -3,6 +3,8 @@
     {
         var $name = 'Apre';
 
+		var $deepAfterFind = true;
+
 //         var $order = array( 'Apre.datedemandeapre ASC' );
 
         var $actsAs = array(
@@ -330,7 +332,7 @@
         function afterFind( $results, $primary = false ) {
             parent::afterFind( $results, $primary );
 
-            if( !empty( $results ) && Set::check( $results, '0.Apre' ) ) {
+            if( $this->deepAfterFind && !empty( $results ) && Set::check( $results, '0.Apre' ) ) {
                 foreach( $results as $key => $result ) {
 					if( isset( $result['Apre']['id'] ) ) {
 						$results[$key]['Apre'] = Set::merge(
