@@ -409,7 +409,8 @@
             else if ( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ){
                 $codesaction = $this->Action->find( 'list', array( 'fields' => array( 'code', 'libelle' ) ) );
                 $this->set( 'codesaction', $codesaction );
-
+// debug($codesaction);
+// die();
                 $v = null;
                 if( isset( $codesaction[$contratinsertion['Contratinsertion']['engag_object']] ) ) {
                 $v = $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
