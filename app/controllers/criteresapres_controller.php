@@ -99,7 +99,7 @@
                 $queryData['recursive'] = -1;
 
 
-                $queryData['joins'] = array(
+                $joins = array(
                     array(
                         'table'      => 'apres_comitesapres',
                         'alias'      => 'ApreComiteapre',
@@ -117,6 +117,8 @@
                         )
                     ),
                 );
+
+                $queryData['joins'] = array_merge( $queryData['joins'], $joins );
 
 
                 ///Nb d'APREs appartenant à un comité et dont la décision a été/va être prise
