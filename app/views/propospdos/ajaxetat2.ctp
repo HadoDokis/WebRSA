@@ -1,6 +1,7 @@
 <?php
-    if( $value == '1' ) {
-        echo 'Etat du dossier : <strong>En attente de validation</strong>';
+debug($iscomplet);
+    if( !empty( $iscomplet ) ) {
+        echo 'Etat du dossier : <strong>Instruction en cours</strong>';
     }
     else {
         echo '';

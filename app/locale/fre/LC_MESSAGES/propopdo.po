@@ -36,6 +36,12 @@ msgstr "PDO"
 msgid "ENUM::CHOIXPDO::JUS"
 msgstr "Justificatifs arrivés"
 
+msgid "Propopdo.structurereferente_id"
+msgstr "Structure référente traitant le dossier"
+
+msgid "Propopdo.typepdo_id"
+msgstr "Type de dossier"
+
 msgid "Propopdo.decisionpdo_id"
 msgstr "Proposition de décision"
 
@@ -65,3 +71,24 @@ msgstr "Métiers ( détaillé )"
 
 msgid "Criterespdos::nouvelles"
 msgstr "Liste des personnes pouvant bénéficier d'une PDO"
+
+msgid "ENUM::ISCOMPLET::COM"
+msgstr "Dossier complet"
+
+msgid "ENUM::ISCOMPLET::INC"
+msgstr "Dossier incomplet"
+
+msgid "Propopdo.isvalidation"
+msgstr "Validation"
+
+msgid "Propopdo.validationdecision"
+msgstr "Validation de la décision"
+
+msgid "Propopdo.datevalidationdecision"
+msgstr "Date de validation de la décision"
+
+msgid "ENUM::VALIDATIONDECISION::N"
+msgstr "Non"
+
+msgid "ENUM::VALIDATIONDECISION::O"
+msgstr "Oui"
