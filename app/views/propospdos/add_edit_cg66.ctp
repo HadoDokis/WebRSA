@@ -124,15 +124,14 @@
             ).';';
         ?>
 
-// form, radioName, fieldsetId, value, condition, toggleVisibility
-        observeDisableFieldsetOnRadioValue(
-            'propopdoform',
-            'data[Propopdo][iscomplet]',
-            $( 'FicheCalcul' ),
-            'COM',
-            false,
-            true
-        );
+//         observeDisableFieldsetOnRadioValue(
+//             'propopdoform',
+//             'data[Propopdo][iscomplet]',
+//             $( 'FicheCalcul' ),
+//             'COM',
+//             false,
+//             true
+//         );
     });
 
 
@@ -251,11 +250,11 @@
             echo $ajax->observeField( 'PropopdoIscompletINC', array( 'update' => 'Etatpdo2', 'url' => Router::url( array( 'action' => 'ajaxetat2' ), true ) ) );
 
         ?>
-        <fieldset id="FicheCalcul" class="invisible">
+        <!--<fieldset id="FicheCalcul" class="invisible">
             <?php
                 echo 'Fiche de calcul';
             ?>
-        </fieldset>
+        </fieldset>-->
     </fieldset>
 
     <fieldset id="Etatpdo2" class="invisible">
