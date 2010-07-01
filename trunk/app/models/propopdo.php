@@ -10,6 +10,8 @@
 					'statutdecision' => array(  'domain' => 'propopdo' ),
                     'choixpdo' => array( 'domain' => 'propopdo' ),
                     'nonadmis' => array( 'domain' => 'propopdo' ),
+                    'iscomplet' => array( 'domain' => 'propopdo' ),
+                    'validationdecision' => array( 'domain' => 'propopdo' ),
 //                     'etatdossierpdo'
 				)
             ),
@@ -21,8 +23,13 @@
             'Personne' => array(
                 'classname'     => 'Personne',
                 'foreignKey'    => 'personne_id'
-            )
+            ),
+            'Structurereferente'
         );
+
+//         var $hasOne = array(
+//             'Structurereferente'
+//         );
 
         var $hasMany = array(
             'Piecepdo' => array(
@@ -60,6 +67,8 @@
                 'message' => 'Si prise de décision, choisir un type de décision'
             )
         );
+
+
         var $_types = array(
 //             'etat' => array(
 //                 'fields' => array(
@@ -111,6 +120,7 @@
 //                     )*/
 //                 )
 //             ),
+
             'propopdo' => array(
                 'fields' => array(
                     '"Propopdo"."id"',
@@ -187,7 +197,12 @@
                         'alias'      => 'Adressefoyer',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                        'conditions' => array(
+                            'Foyer.id = Adressefoyer.foyer_id',
+                            'Adressefoyer.rgadr = \'01\'',
+                            // FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+//                             'Adressefoyer.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique()
+                        )
                     ),
                     array(
                         'table'      => 'adresses',
@@ -240,5 +255,12 @@
                 return $query;
             }
         }
+
+        function etatPdo( $pdo ) {
+            $pdo = XSet::bump( Set::filter( Set::flatten( $pdo ) ) );
+//             debug($pdo);
+        }
+
+
     }
 ?>

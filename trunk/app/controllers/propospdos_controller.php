@@ -3,9 +3,9 @@
     class PropospdosController extends AppController{
 
         var $name = 'Propospdos';
-        var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent' );
+        var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Structurereferente',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent' );
 
-        var $aucunDroit = array( 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4' );
+        var $aucunDroit = array( 'ajaxstruct', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
         var $helpers = array( 'Default', 'Ajax' );
 
@@ -27,6 +27,7 @@
 
             $this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
             $this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
+            $this->set( 'structs', $this->Structurereferente->listOptions() );
 //             $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
 
             $options = $this->Propopdo->allEnumLists();
@@ -63,43 +64,79 @@
 //             return $return;
 //         }
 
+        function ajaxstruct( $structurereferente_id = null ) {
+
+            $dataStructurereferente_id = Set::extract( $this->data, 'Propopdo.structurereferente_id' );
+            $structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
+
+            $struct = $this->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
+
+            $this->set( 'struct', $struct );
+
+            Configure::write( 'debug', 0 );
+            $this->render( 'ajaxstruct', 'ajax' );
+        }
+
+
+//         function ajaxfichecalcul( $iscomplet = null ) {
+// 
+//             $dataIscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
+//             $iscomplet = ( empty( $iscomplet ) && !empty( $dataIscomplet ) ? $dataIscomplet : $iscomplet );
+// 
+//             Configure::write( 'debug', 0 );
+//             $this->render( 'ajaxfichecalcul', 'ajax' );
+//         }
 
         function ajaxetat1( $typepdo_id = null ) {
-            Configure::write( 'debug', 0 );
-// var_dump($typepdo_id);
+
             $dataTypepdo_id = Set::extract( $this->data, 'Propopdo.typepdo_id' );
             $typepdo_id = ( empty( $typepdo_id ) && !empty( $dataTypepdo_id ) ? $dataTypepdo_id : $typepdo_id );
-
+            $this->Propopdo->etatPdo( $this->data );
             $this->set( 'typepdo_id', $typepdo_id );
+            Configure::write( 'debug', 0 );
             $this->render( 'ajaxetat1', 'ajax' );
         }
 
-        function ajaxetat2( $value = null ) {
+        function ajaxetat2( $iscomplet = null ) {
+            $dataIscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
+
+            $iscomplet = ( empty( $iscomplet ) && !empty( $dataIscomplet ) ? $dataIscomplet : $iscomplet );
+//  $this->Propopdo->etatPdo( $this->data );
+
+            $this->set( 'iscomplet', $iscomplet );
             Configure::write( 'debug', 0 );
-
-//             if( is_int( $value ) ) {
-                $value = Set::extract( $this->data, 'Propopdo.decision' );
-//             }
-
-            $this->set( 'value', $value );
             $this->render( 'ajaxetat2', 'ajax' );
         }
 
         function ajaxetat3( $value = null ) {
-            Configure::write( 'debug', 0 );
 
-            $value = Set::extract( $this->data, 'Propopdo.suivi' );
+            if( $this->action == 'add' ) {
+                $value = Set::extract( $this->data, 'Propopdo.decision' );
+            }
 
             $this->set( 'value', $value );
+            Configure::write( 'debug', 0 );
             $this->render( 'ajaxetat3', 'ajax' );
         }
 
         function ajaxetat4( $value = null ) {
             Configure::write( 'debug', 0 );
-            $value = Set::extract( $this->data, 'Propopdo.autres' );
+            if( $this->action == 'add' ) {
+                $value = Set::extract( $this->data, 'Propopdo.isvalidation' );
+            }
 
             $this->set( 'value', $value );
             $this->render( 'ajaxetat4', 'ajax' );
+        }
+
+        function ajaxetat5( $value = null ) {
+            Configure::write( 'debug', 0 );
+            if( $this->action == 'add' ) {
+                $value = Set::extract( $this->data, 'Propopdo.suivi' );
+            }
+
+            $this->set( 'value', $value );
+            $this->render( 'ajaxetat5', 'ajax' );
         }
 
         /**
