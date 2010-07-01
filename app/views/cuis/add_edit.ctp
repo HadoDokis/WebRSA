@@ -60,6 +60,7 @@
         );
 
         //Utilisé si le bénéficiaire bénéficie d'un rsa majoré
+
         observeDisableFieldsetOnRadioValue(
             'cuiform',
             'data[Cui][isbeneficiaire]',
@@ -68,16 +69,32 @@
             true
         );
 
+
 		//Utilisé si la personne est bénéficiaire
-        observeDisableFieldsetOnRadioValue(
+        //form, radioName, fieldsetId, value, condition, toggleVisibility
+//         observeDisableFieldsetOnRadioValue(
+//             'cuiform',
+//             'data[Cui][isbeneficiaire]',
+//             $( 'IsBeneficiaire' ),
+//             undefined,
+// //             false,
+// 			false,
+//             true
+//         );
+
+        //Utilisé si la personne est bénéficiaire
+        observeDisableFieldsOnRadioValue(
             'cuiform',
             'data[Cui][isbeneficiaire]',
-            $( 'IsBeneficiaire' ),
+            [
+                'CuiDureebenefaide06',
+                'CuiDureebenefaide11',
+                'CuiDureebenefaide23',
+                'CuiDureebenefaide24'
+            ],
             undefined,
-            false,
-			true
+            false
         );
-
         //Utilisé si le type de contrat est un CDD
         observeDisableFieldsOnRadioValue(
             'cuiform',
@@ -429,10 +446,10 @@
                     );
                 ?>
             </fieldset>
-                <?php  echo $html->tag( 'p', 'Le salarié est-il bénéficiaire' ); ?>
+
                 <table class="noborder">
                     <tr>
-      <td class="cui2 noborder">
+                        <td class="cui2 noborder">
                             <?php
 								echo $default->subform(
                                     array(
@@ -515,7 +532,7 @@
                     </tr>
                 </table>
 
-                <fieldset id="IsBeneficiaire">
+                <fieldset id="IsBeneficiaire" class="invisible">
                     <?php
                         echo $default->subform(
                             array(
