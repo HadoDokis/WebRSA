@@ -49,6 +49,10 @@
         );
 
         var $validate = array(
+            'structurereferente_id' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
             'typepdo_id' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
@@ -65,7 +69,15 @@
             'decisionpdo_id' => array(
                 'rule' => array( 'allEmpty', 'decision' ),
                 'message' => 'Si prise de décision, choisir un type de décision'
-            )
+            ),
+            'iscomplet' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            ),
+            'validationdecision' => array(
+                'rule' => array( 'allEmpty', 'isvalidation' ),
+                'message' => 'Si validation, choisir une valeur'
+            ),
         );
 
 
