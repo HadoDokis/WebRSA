@@ -82,7 +82,7 @@ msgid "Propopdo.isvalidation"
 msgstr "Validation"
 
 msgid "Propopdo.validationdecision"
-msgstr "Validation de la décision"
+msgstr "Décision validée"
 
 msgid "Propopdo.datevalidationdecision"
 msgstr "Date de validation de la décision"
@@ -92,3 +92,18 @@ msgstr "Non"
 
 msgid "ENUM::VALIDATIONDECISION::O"
 msgstr "Oui"
+
+msgid "ENUM::DECISIONOP::REF"
+msgstr "Refus"
+
+msgid "ENUM::DECISIONOP::ACC"
+msgstr "Accord"
+
+msgid "ENUM::DECISIONOP::AJ"
+msgstr "Ajournement"
+
+msgid "Propopdo.observationop"
+msgstr "Observations"
+
+msgid "Propopdo.datedecisionop"
+msgstr "Date transimission à l\'OP"

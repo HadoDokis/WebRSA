@@ -101,41 +101,43 @@
             $dataIscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
 
             $iscomplet = ( empty( $iscomplet ) && !empty( $dataIscomplet ) ? $dataIscomplet : $iscomplet );
-//  $this->Propopdo->etatPdo( $this->data );
+
 
             $this->set( 'iscomplet', $iscomplet );
             Configure::write( 'debug', 0 );
             $this->render( 'ajaxetat2', 'ajax' );
         }
 
-        function ajaxetat3( $value = null ) {
-
+        function ajaxetat3( $decisionpdo_id = null ) {
+            $dataDecisionpdo_id = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
+            $decisionpdo_id = ( empty( $decisionpdo_id ) && !empty( $dataDecisionpdo_id ) ? $dataDecisionpdo_id : $decisionpdo_id );
+//             $this->Propopdo->etatPdo( $this->data );
+            $this->set( 'decisionpdo_id', $decisionpdo_id );
+            /*
             if( $this->action == 'add' ) {
-                $value = Set::extract( $this->data, 'Propopdo.decision' );
+                $value = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
             }
 
-            $this->set( 'value', $value );
+            $this->set( 'value', $value );*/
             Configure::write( 'debug', 0 );
             $this->render( 'ajaxetat3', 'ajax' );
         }
 
-        function ajaxetat4( $value = null ) {
-            Configure::write( 'debug', 0 );
-            if( $this->action == 'add' ) {
-                $value = Set::extract( $this->data, 'Propopdo.isvalidation' );
-            }
+        function ajaxetat4( $isvalidation = null ) {
+            $dataIsvalidation = Set::extract( $this->data, 'Propopdo.isvalidation' );
+            $isvalidation = ( empty( $isvalidation ) && !empty( $dataIsvalidation ) ? $dataIsvalidation : $isvalidation );
+            $this->set( 'isvalidation', $isvalidation );
 
-            $this->set( 'value', $value );
+            Configure::write( 'debug', 0 );
             $this->render( 'ajaxetat4', 'ajax' );
         }
 
-        function ajaxetat5( $value = null ) {
-            Configure::write( 'debug', 0 );
-            if( $this->action == 'add' ) {
-                $value = Set::extract( $this->data, 'Propopdo.suivi' );
-            }
+        function ajaxetat5( $isdecisionop = null ) {
 
-            $this->set( 'value', $value );
+            $dataIsdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
+            $isdecisionop = ( empty( $isdecisionop ) && !empty( $dataIsdecisionop ) ? $dataIsdecisionop : $isdecisionop );
+            $this->set( 'isdecisionop', $isdecisionop );
+            Configure::write( 'debug', 0 );
             $this->render( 'ajaxetat5', 'ajax' );
         }
 
