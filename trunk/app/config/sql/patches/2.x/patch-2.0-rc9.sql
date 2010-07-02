@@ -18,7 +18,10 @@ ALTER TABLE propospdos ADD COLUMN isvalidation type_booleannumber DEFAULT NULL;
 ALTER TABLE propospdos ADD COLUMN validationdecision type_no DEFAULT NULL;
 ALTER TABLE propospdos ADD COLUMN datevalidationdecision DATE;
 
-
+ALTER TABLE propospdos ADD COLUMN isdecisionop type_booleannumber DEFAULT NULL;
+ALTER TABLE propospdos ADD COLUMN decisionop type_decisioncomite DEFAULT NULL; -- FIXME: voir les champs à ajouter pr le moment ACC, REF, AJ
+ALTER TABLE propospdos ADD COLUMN datedecisionop DATE;
+ALTER TABLE propospdos ADD COLUMN observationoop TEXT;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

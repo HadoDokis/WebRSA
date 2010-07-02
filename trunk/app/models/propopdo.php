@@ -12,6 +12,7 @@
                     'nonadmis' => array( 'domain' => 'propopdo' ),
                     'iscomplet' => array( 'domain' => 'propopdo' ),
                     'validationdecision' => array( 'domain' => 'propopdo' ),
+                    'decisionop' => array( 'domain' => 'propopdo' ),
 //                     'etatdossierpdo'
 				)
             ),
@@ -269,7 +270,7 @@
         }
 
         function etatPdo( $pdo ) {
-            $pdo = XSet::bump( Set::filter( Set::flatten( $pdo ) ) );
+            $pdo = XSet::bump( Set::filter( /*Set::flatten*/( $pdo ) ) );
 //             debug($pdo);
         }
 
