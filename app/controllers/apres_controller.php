@@ -271,6 +271,7 @@
             $this->set( 'referents', $referents );
 
             $this->set( 'apre', $apre );
+            $this->_setOptions();
             $this->set( 'personne_id', $apre['Apre']['personne_id'] );
         }
         /** ********************************************************************
