@@ -360,7 +360,7 @@
                     'options' => $options
                 )
             );
-//             echo $ajax->observeField( 'PropopdoIsdecisionop', array( 'update' => 'Etatpdo5', 'url' => Router::url( array( 'action' => 'ajaxetat5' ), true ) ) );
+            echo $ajax->observeField( 'PropopdoIsdecisionop', array( 'update' => 'Etatpdo5', 'url' => Router::url( array( 'action' => 'ajaxetat5' ), true ) ) );
         ?>
         </fieldset>
     </fieldset>
