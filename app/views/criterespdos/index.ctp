@@ -96,7 +96,7 @@
             <tbody>
                 <?php
                     foreach( $criterespdos as $index => $criterepdo ) {
-// debug($criterepdo);
+// debug($gestionnaire);
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
                                 <tr>
@@ -134,7 +134,7 @@
                                 h( Set::enum( Set::classicExtract( $criterepdo, 'Propopdo.originepdo_id' ), $originepdo ) ),
                                 h( Set::enum( Set::classicExtract( $criterepdo, 'Propopdo.motifpdo' ), $motifpdo ) ),
                                 h( $locale->date( 'Locale->date',  Set::classicExtract( $criterepdo, 'Propopdo.datereceptionpdo' ) ) ),
-                                h( Set::classicExtract( $gestionnaire, Set::classicExtract( $criterepdo, 'Propopdo.user_id' ) ) ),
+                                h( Set::enum( Set::classicExtract( $criterepdo, 'Propopdo.user_id' ), $gestionnaire ) ),
                                 $html->viewLink(
                                     'Voir',
                                     array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $criterepdo, 'Propopdo.personne_id' ) )
