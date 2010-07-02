@@ -8,11 +8,18 @@
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 
-            <?php if( empty( $apres ) ):?>
+            <!-- <?php /*if( empty( $apres ) ):*/?>
                 <p class="error">Cette personne ne possède pas encore d'APRE forfaitaire, il n'est donc pas possible de créer une APRE Complémentaire.</p>
+            <?php /*endif;*/?> -->
+
+            <!-- Modification de l'affichage suite a la demande du cG93, on peut créer une APRE même si pas de forfaitaire présente-->
+            <?php if( empty( $apres ) ):?>
+                <p class="notice">Cette personne ne possède pas encore d'APRE.</p>
             <?php endif;?>
 
-            <?php if( $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'add' ) && ( $apre_forfait > 0 ) ):?>
+
+
+            <?php if( $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'add' ) /*&& ( $apre_forfait > 0 )*/ ):?>
                 <ul class="actionMenu">
                     <?php
                         echo '<li>'.$html->addLink(
