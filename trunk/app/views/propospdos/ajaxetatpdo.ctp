@@ -36,10 +36,14 @@
     else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && !empty( $decisionpdo_id ) && empty( $isvalidation ) && empty( $isdecisionop ) ){
         echo 'Etat du dossier : <strong>En attente de validation</strong>';
     }
-    else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && empty( $decisionpdo_id ) && !empty( $isvalidation ) && empty( $isdecisionop ) ){
+    else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && !empty( $decisionpdo_id ) && ( $isvalidation == 'O' ) && empty( $isdecisionop ) ){
         echo 'Etat du dossier : <strong>Décision validée</strong>';
     }
-    else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && !empty( $decisionpdo_id ) && !empty( $isvalidation ) && !empty( $isdecisionop ) ){
-        echo 'Etat du dossier : <strong>Dossier traité ou En attente de pièce</strong>';
+    else if ( !empty( $typepdo_id ) && ( $iscomplet == 'COM' ) && !empty( $decisionpdo_id ) && !empty( $isvalidation ) && !empty( $isdecisionop ) ){
+        echo 'Etat du dossier : <strong>Dossier traité</strong>';
     }
+    else if ( !empty( $typepdo_id ) && ( $iscomplet == 'INC' ) && !empty( $decisionpdo_id ) && !empty( $isvalidation ) && !empty( $isdecisionop ) ){
+        echo 'Etat du dossier : <strong>En attente de pièce</strong>';
+    }
+
 ?>

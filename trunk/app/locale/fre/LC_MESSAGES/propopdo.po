@@ -107,3 +107,21 @@ msgstr "Observations"
 
 msgid "Propopdo.datedecisionop"
 msgstr "Date transimission à l\'OP"
+
+msgid "ENUM::ETATDOSSIERPDO::1"
+msgstr "En attente d'instruction"
+
+msgid "ENUM::ETATDOSSIERPDO::2"
+msgstr "Instruction en cours"
+
+msgid "ENUM::ETATDOSSIERPDO::3"
+msgstr "En attente de validation"
+
+msgid "ENUM::ETATDOSSIERPDO::4"
+msgstr "Décision validée"
+
+msgid "ENUM::ETATDOSSIERPDO::5"
+msgstr "Dossier traité"
+
+msgid "ENUM::ETATDOSSIERPDO::6"
+msgstr "En attente de pièces"

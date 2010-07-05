@@ -10,7 +10,7 @@ SET default_with_oids = false;
 -- *****************************************************************************
 BEGIN;
 -- *****************************************************************************
-
+-----------------------------  Ajout du 01/07/2010 ----------------------------
 ALTER TABLE propospdos ADD COLUMN structurereferente_id INTEGER DEFAULT NULL REFERENCES structuresreferentes(id);
 CREATE TYPE type_iscomplet AS ENUM ( 'COM', 'INC' );
 ALTER TABLE propospdos ADD COLUMN iscomplet type_iscomplet DEFAULT NULL;
@@ -24,6 +24,10 @@ ALTER TABLE propospdos ADD COLUMN datedecisionop DATE;
 ALTER TABLE propospdos ADD COLUMN observationoop TEXT;
 
 ALTER TABLE cuis ALTER COLUMN compladremployeur DROP NOT NULL;
+
+-----------------------------  Ajout du 05/07/2010 ----------------------------
+CREATE TYPE type_etatdossierpdo AS ENUM ( '1', '2', '3', '4', '5', '6' );
+ALTER TABLE propospdos ADD COLUMN etatdossierpdo type_etatdossierpdo DEFAULT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

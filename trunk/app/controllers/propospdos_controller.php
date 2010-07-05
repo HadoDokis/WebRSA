@@ -31,7 +31,7 @@
 //             $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
 
             $options = $this->Propopdo->allEnumLists();
-//             debug($options);
+// debug($options);
             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
             $this->set( compact( 'options' ) );
         }
@@ -161,6 +161,7 @@
             $dataIsvalidation = Set::extract( $this->data, 'Propopdo.validationdecision' );
             $isvalidation = ( empty( $isvalidation ) && !empty( $dataIsvalidation ) ? $dataIsvalidation : $isvalidation );
             $this->set( 'isvalidation', $isvalidation );
+
             //Etat 5
             $dataIsdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
             $isdecisionop = ( empty( $isdecisionop ) && !empty( $dataIsdecisionop ) ? $dataIsdecisionop : $isdecisionop );
@@ -352,7 +353,7 @@
             //Essai de sauvegarde
             if( !empty( $this->data ) ) {
 
-
+// debug($this->data);
                 //FIXME: faire une fonction
 //                 $defaults = $this->Propopdo->nullify( array( 'exceptions' => 'id' ) );
 //                 debug( $defaults );
