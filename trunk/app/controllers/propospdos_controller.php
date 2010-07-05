@@ -5,7 +5,7 @@
         var $name = 'Propospdos';
         var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Structurereferente',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent' );
 
-        var $aucunDroit = array( 'ajaxstruct', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
+        var $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
         var $helpers = array( 'Default', 'Ajax' );
 
@@ -140,6 +140,37 @@
             Configure::write( 'debug', 0 );
             $this->render( 'ajaxetat5', 'ajax' );
         }
+
+
+
+        function ajaxetatpdo( $typepdo_id = null, $iscomplet = null, $decisionpdo_id = null, $isvalidation = null, $isdecisionop = null ) {
+
+            //Etat 1
+            $dataTypepdo_id = Set::extract( $this->data, 'Propopdo.typepdo_id' );
+            $typepdo_id = ( empty( $typepdo_id ) && !empty( $dataTypepdo_id ) ? $dataTypepdo_id : $typepdo_id );
+            $this->set( 'typepdo_id', $typepdo_id );
+            //Etat 2
+            $dataIscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
+            $iscomplet = ( empty( $iscomplet ) && !empty( $dataIscomplet ) ? $dataIscomplet : $iscomplet );
+            $this->set( 'iscomplet', $iscomplet );
+            //Etat 3
+            $dataDecisionpdo_id = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
+            $decisionpdo_id = ( empty( $decisionpdo_id ) && !empty( $dataDecisionpdo_id ) ? $dataDecisionpdo_id : $decisionpdo_id );
+            $this->set( 'decisionpdo_id', $decisionpdo_id );
+            //Etat 4
+            $dataIsvalidation = Set::extract( $this->data, 'Propopdo.validationdecision' );
+            $isvalidation = ( empty( $isvalidation ) && !empty( $dataIsvalidation ) ? $dataIsvalidation : $isvalidation );
+            $this->set( 'isvalidation', $isvalidation );
+            //Etat 5
+            $dataIsdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
+            $isdecisionop = ( empty( $isdecisionop ) && !empty( $dataIsdecisionop ) ? $dataIsdecisionop : $isdecisionop );
+            $this->set( 'isdecisionop', $isdecisionop );
+
+            $this->Propopdo->etatPdo( $this->data );
+            Configure::write( 'debug', 0 );
+            $this->render( 'ajaxetatpdo', 'ajax' );
+        }
+
 
         /**
         *   Partie pour les tables de paramétrages des PDOs
