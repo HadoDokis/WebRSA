@@ -28,6 +28,13 @@ ALTER TABLE cuis ALTER COLUMN compladremployeur DROP NOT NULL;
 -----------------------------  Ajout du 05/07/2010 ----------------------------
 CREATE TYPE type_etatdossierpdo AS ENUM ( '1', '2', '3', '4', '5', '6' );
 ALTER TABLE propospdos ADD COLUMN etatdossierpdo type_etatdossierpdo DEFAULT NULL;
+
+
+
+-- Champs manquants pour le passage en version v.32 de Cristal
+ALTER TABLE personnes ADD COLUMN numagenpoleemploi CHAR(3) DEFAULT NULL;
+ALTER TABLE personnes ADD COLUMN dtinscpoleemploi DATE DEFAULT NULL;
+ALTER TABLE suspensionsdroits ADD COLUMN natgroupfsus CHAR(3) DEFAULT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
