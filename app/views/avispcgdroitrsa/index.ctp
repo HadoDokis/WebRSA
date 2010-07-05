@@ -57,7 +57,7 @@
                                     h( $condadmin['moticondadmrsa']),
                                     h( $condadmin['comm1condadmrsa']),
                                     h( ( Set::extract( $condadmin, 'Condadmin.comm2condadmrsa' ) != '' ) ? $condadmin['comm2condadmrsa'] : null ),
-                                    h( $condadmin['dteffaviscondadmrsa']),
+                                    h( date_short( $condadmin['dteffaviscondadmrsa'] ) ),
                                 ),
                                 array( 'class' => 'odd' ),
                                 array( 'class' => 'even' )
