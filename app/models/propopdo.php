@@ -75,10 +75,10 @@
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
             ),
-            'validationdecision' => array(
-                'rule' => array( 'allEmpty', 'isvalidation' ),
-                'message' => 'Si validation, choisir une valeur'
-            ),
+//             'validationdecision' => array(
+//                 'rule' => array( 'allEmpty', 'isvalidation' ),
+//                 'message' => 'Si validation, choisir une valeur'
+//             ),
         );
 
 
@@ -277,43 +277,52 @@
         }
 
        /**
-        *
+        * FIXME: bcp trop de nombres magiques
         */
 
         function beforeSave( $options = array() ) {
             $return = parent::beforeSave( $options );
 
+            if( Configure::read( 'nom_form_pdo_cg' ) == 'cg66' ) {
+                $typepdo_id = Set::extract( $this->data, 'Propopdo.typepdo_id' );
+                $iscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
+                $decisionpdo_id = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
+                $isvalidation = Set::extract( $this->data, 'Propopdo.isvalidation' );
+                $isdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
 
-            $typepdo_id = Set::extract( $this->data, 'Propopdo.typepdo_id' );
-            $iscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
-            $decisionpdo_id = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
-            $isvalidation = Set::extract( $this->data, 'Propopdo.isvalidation' );
-            $isdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
-
-            if( !empty( $typepdo_id ) && empty( $iscomplet ) && empty( $decisionpdo_id ) && empty( $isvalidation ) && empty( $isdecisionop ) ){
-                $etat = '1';
-                $this->data['Propopdo']['etatdossierpdo'] = $etat;
+                if( !empty( $typepdo_id ) && empty( $iscomplet ) && empty( $decisionpdo_id ) && empty( $isvalidation ) && empty( $isdecisionop ) ){
+                    $etat = '1';
+                    $this->data['Propopdo']['etatdossierpdo'] = $etat;
+                }
+                else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && empty( $decisionpdo_id ) && empty( $isvalidation ) && empty( $isdecisionop ) ){
+                    $etat = '2';
+                    $this->data['Propopdo']['etatdossierpdo'] = $etat;
+                }
+                else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && !empty( $decisionpdo_id ) && empty( $isvalidation ) && empty( $isdecisionop ) ){
+                    $etat = '3';
+                    $this->data['Propopdo']['etatdossierpdo'] = $etat;
+                }
+                else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && !empty( $decisionpdo_id ) && ( $isvalidation == 'O' ) && empty( $isdecisionop ) ){
+                    $etat = '4';
+                    $this->data['Propopdo']['etatdossierpdo'] = $etat;
+                }
+                else if ( !empty( $typepdo_id ) && ( $iscomplet == 'COM' ) && !empty( $decisionpdo_id ) && !empty( $isvalidation ) && !empty( $isdecisionop ) ){
+                    $etat = '5';
+                    $this->data['Propopdo']['etatdossierpdo'] = $etat;
+                }
+                else if ( !empty( $typepdo_id ) && ( $iscomplet == 'INC' ) && !empty( $decisionpdo_id ) && !empty( $isvalidation ) && !empty( $isdecisionop ) ){
+                    $etat = '6';
+                    $this->data['Propopdo']['etatdossierpdo'] = $etat;
+                }
             }
-            else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && empty( $decisionpdo_id ) && empty( $isvalidation ) && empty( $isdecisionop ) ){
-                $etat = '2';
-                $this->data['Propopdo']['etatdossierpdo'] = $etat;
-            }
-            else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && !empty( $decisionpdo_id ) && empty( $isvalidation ) && empty( $isdecisionop ) ){
-                $etat = '3';
-                $this->data['Propopdo']['etatdossierpdo'] = $etat;
-            }
-            else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && !empty( $decisionpdo_id ) && ( $isvalidation == 'O' ) && empty( $isdecisionop ) ){
-                $etat = '4';
-                $this->data['Propopdo']['etatdossierpdo'] = $etat;
-            }
-            else if ( !empty( $typepdo_id ) && ( $iscomplet == 'COM' ) && !empty( $decisionpdo_id ) && !empty( $isvalidation ) && !empty( $isdecisionop ) ){
-                $etat = '5';
-                $this->data['Propopdo']['etatdossierpdo'] = $etat;
-            }
-            else if ( !empty( $typepdo_id ) && ( $iscomplet == 'INC' ) && !empty( $decisionpdo_id ) && !empty( $isvalidation ) && !empty( $isdecisionop ) ){
-                $etat = '6';
-                $this->data['Propopdo']['etatdossierpdo'] = $etat;
-            }
+//             else if( Configure::read( 'nom_form_pdo_cg' ) == 'cg93' ) {
+//                 $decision = Set::extract( $this->data, 'Propopdo.decision' );
+//         debug($decision);
+//                 if( empty( $decision ) ) {
+//                     $decision = '1';
+//                     $this->data['Propopdo']['decision'] = $decision;
+//                 }
+//             }
 
             return $return;
         }
