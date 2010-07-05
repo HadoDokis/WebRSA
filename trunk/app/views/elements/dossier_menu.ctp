@@ -436,16 +436,6 @@
                         ?>
                     </li>
                 <?php endif;?>
-               <?php if( $permissions->check( 'detailsdroitsrsa', 'index' ) ):?>
-                    <li>
-                        <?php
-                            echo $html->link(
-                                'Détails du droit RSA',
-                                array( 'controller' => 'detailsdroitsrsa', 'action' => 'index', $dossier['Dossier']['id'] )
-                            );
-                        ?>
-                    </li>
-                <?php endif;?>
             </ul>
         </li>
 
