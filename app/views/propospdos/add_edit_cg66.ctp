@@ -75,18 +75,22 @@
                     )
                 )
             ).';';
-//             echo $ajax->remoteFunction(
-//                 array(
-//                     'update' => 'Etatpdo1',
-//                     'url' => Router::url(
-//                         array(
-//                             'action' => 'ajaxetat1',
-//                             Set::extract( $this->data, 'Propopdo.typepdo_id' )
-//                         ),
-//                         true
-//                     )
-//                 )
-//             ).';';
+            echo $ajax->remoteFunction(
+                array(
+                    'update' => 'Etatpdo6',
+                    'url' => Router::url(
+                        array(
+                            'action' => 'ajaxetatpdo',
+                            Set::extract( $this->data, 'Propopdo.typepdo_id' ),
+                            Set::extract( $this->data, 'Propopdo.iscomplet' ),
+                            Set::extract( $this->data, 'Propopdo.decisionpdo_id' ),
+                            Set::extract( $this->data, 'Propopdo.isvalidation' ),
+                            Set::extract( $this->data, 'Propopdo.isdecisionop' )
+                        ),
+                        true
+                    )
+                )
+            ).';';
 //             echo $ajax->remoteFunction(
 //                 array(
 //                     'update' => 'Etatpdo2',
