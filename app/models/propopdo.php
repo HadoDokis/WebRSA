@@ -271,7 +271,17 @@
 
         function etatPdo( $pdo ) {
             $pdo = XSet::bump( Set::filter( /*Set::flatten*/( $pdo ) ) );
+            $etat = null;
+            $typepdo_id = Set::classicExtract( $pdo, 'Propopdo.typepdo_id' );
+            $decision = Set::classicExtract( $pdo, 'Propopdo.decision' );
+//             if( !empty( $typepdo_id ) ){
+//                 $etat = 'Etat Test';
+//             }
+//             if( !empty( $typepdo_id ) && $decision == '1' ) {
+//                 $etat = 'Test Decision';
+//             }
 //             debug($pdo);
+
         }
 
 
