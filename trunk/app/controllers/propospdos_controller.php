@@ -319,34 +319,7 @@
             $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
 
             $this->set( 'referents', $this->Referent->find( 'list' ) );
-            
-            /**
-            *   DEBUT: pour état du dossier PDO
-            */
-//             $step = null;
-//             $step = Set::classicExtract( $this->data, 'Propopdo.etatdossierpdo' );
-//             $step = 0;
-//             switch( $step ) {
-//                 case '0':
-//                     $etatpdo = 'En attente d\'instruction';
-//                     break;
-//                 case '1':
-//                     $etatpdo = 'Instruction en cours';
-//                     break;
-//                 case '2':
-//                     $etatpdo = 'En attente de validation';
-//                     break;
-//                 case '3':
-//                     $etatpdo = 'Décision validée';
-//                     break;
-//                 case '4':
-//                     $etatpdo = 'Dossier traité ou En attente de pièces';
-//                     break;
-//                 default:
-//                     $etatpdo = 'En attente d\'instruction';
-//                     break;
-//             }
-//             $this->set( compact( 'etatpdo', 'step' ) );
+
             /**
             *   FIN
             */
