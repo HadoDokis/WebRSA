@@ -248,7 +248,7 @@
                     </table>
                 </td>
                 <td>
-                    <h2>Contrat Unique d'Insertion</h2>
+                    <h2>CUI</h2>
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>

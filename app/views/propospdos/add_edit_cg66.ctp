@@ -180,6 +180,7 @@
         <?php
             echo $default->subform(
                 array(
+                    'Propopdo.etatdossierpdo' => array( 'type' => 'hidden' ),
                     'Propopdo.structurereferente_id' => array( 'label' =>  __d( 'propopdo','Propopdo.structurereferente_id', true ), 'type' => 'select', 'options' => $structs ),
                     'Propopdo.referent_id' => array( 'label' =>  'Référent du dossier PDO (instructeur en charge du dossier)', 'type' => 'select', 'options' => $referents )
                 ),

@@ -46,13 +46,14 @@
                     <th>Motif de la décision</th>
                     <th>Date de la décision CG</th>
                     <th>Commentaire PDO</th>
+                    <th>Etat du dossier PDO</th>
                     <th colspan="5" class="action">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach( $pdos as $pdo ):?>
                     <?php
-
+// debug($pdo);
                         echo $html->tableCells(
                             array(
                                 h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ), $typepdo ) ),
@@ -60,6 +61,7 @@
                                 h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.motifpdo' ), $motifpdo ) ),
                                 h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
                                 h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),
+                                h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.etatdossierpdo' ), $options['etatdossierpdo'] ) ),
                                 $html->treatmentLink(
                                     'Traitements sur la PDO',
                                     array( 'controller' => 'traitementspdos', 'action' => 'index', $pdo['Propopdo']['id'])
