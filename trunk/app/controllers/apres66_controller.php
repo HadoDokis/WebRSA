@@ -167,7 +167,7 @@
         */
 
         function ajaxpiece( $typeaideapre66_id = null, $aideapre66_id = null ) { // FIXME
-            Configure::write( 'debug', 0 );
+
             if( !empty( $typeaideapre66_id ) ) {
                 $typeaideapre66_id = suffix( $typeaideapre66_id );
 
@@ -177,7 +177,8 @@
             }
 
 
-            if( is_int( $typeaideapre66_id ) ) {
+
+            if( !empty( $typeaideapre66_id ) ) {
                 $piecesadmin = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Pieceaide66->find(
                     'list',
                     array(
@@ -198,7 +199,7 @@
                         'recursive' => -1
                     )
                 );
-
+// debug($piecesadmin);
                 $piecescomptable = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Piececomptable66->find(
                     'list',
                     array(
@@ -271,12 +272,12 @@
                 $this->data['Piececomptable66']['Piececomptable66'] = Set::extract( $checkedcomptable, '/Piececomptable66/id' );
             }
 
-
             $typeaideapre = array();
 //             if( !empty( $typeaideapre66_id ) && ( $typeaideapre66_id != '_' ) ) {
             if( is_int( $typeaideapre66_id ) ) {
                 $typeaideapre = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findbyId( $typeaideapre66_id, null, null, -1 );
             }
+            Configure::write( 'debug', 0 );
             $this->set( compact( 'piecesadmin', 'piecescomptable', 'typeaideapre' ) );
             $this->render( $this->action, 'ajax', '/apres/ajaxpiece' );
         }
