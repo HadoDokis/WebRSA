@@ -12,6 +12,7 @@
                     'hascourrier',
                     'hasrevenu',
                     'haspiecejointe',
+                    'hasficheanalyse'
                 )
             )
         );

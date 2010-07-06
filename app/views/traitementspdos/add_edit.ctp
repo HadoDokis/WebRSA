@@ -27,6 +27,7 @@
                 'Traitementpdo.traitementtypepdo_id',
                 'Traitementpdo.hascourrier' => array( 'type' => 'radio' ),
                 'Traitementpdo.hasrevenu' => array( 'type' => 'radio' ),
+                'Traitementpdo.hasficheanalyse' => array( 'type' => 'radio' ),
                 'Traitementpdo.haspiecejointe' => array( 'type' => 'radio' )
             ),
             array(
