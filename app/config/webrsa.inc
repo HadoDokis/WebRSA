@@ -5,7 +5,7 @@
 
     Configure::write( 'Utilisateurs.multilogin', false );
     Configure::write( 'with_parentid', false ); // true = cg66
-    Configure::write( 'nom_form_ci_cg', 'cg93' );
+    Configure::write( 'nom_form_ci_cg', 'cg66' );
     Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
     Configure::write( 'Zonesegeographiques.CodesInsee', true );
     //Configure::write( 'Etatliquidatif.limit', 1000 ); // INFO: commenter pour ne pas avoir de limite
@@ -14,7 +14,7 @@
     * Champs spécifique selon le CG pour le formulaire de l'APRE
     * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
     */
-    Configure::write( 'nom_form_apre_cg', 'cg93' );
+    Configure::write( 'nom_form_apre_cg', 'cg66' );
 
     // Limit pour le nombre de documents à éditer dans la cohorte par orientation
     Configure::write( 'nb_limit_print', 2000 );
@@ -47,7 +47,7 @@
     * Paramètre à renseigner pour l'utilisation du bon MVC
     * @default: vide (pour le CG93), sinon '66' pour le CG66
     */
-    Configure::write( 'Apre.suffixe', '' );
+    Configure::write( 'Apre.suffixe', '66' );
 
     /**
     * Paramètres à renseigner pour les APRE's forfaitaires
@@ -87,13 +87,13 @@
     * Paramètre à renseigner pour l'affichage de la bonne fiche de candidature
     * @default: 'cg93' (pour le CG93), sinon 'cg66' pour le CG66
     */
-    Configure::write( 'ActioncandidatPersonne.suffixe', 'cg93' );
+    Configure::write( 'ActioncandidatPersonne.suffixe', 'cg66' );
 
     /**
     *   Paramètre à renseigner dans le cas d'un affichage plus large du menu du dossier
     *   @default: false
     */
-    Configure::write( 'UI.menu.large', false );
+    Configure::write( 'UI.menu.large', true );
 
 
     /**
@@ -118,11 +118,18 @@
     * Champs spécifique selon le CG pour le formulaire des PDOs
     * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
     */
-    Configure::write( 'nom_form_pdo_cg', 'cg93' );
+    Configure::write( 'nom_form_pdo_cg', 'cg66' );
 
     /**
     * Champs spécifique selon le CG pour le formulaire du bilan de parcours / Fiche de saisine
     * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
     */
-    Configure::write( 'nom_form_bilan_cg', 'cg93' );
+    Configure::write( 'nom_form_bilan_cg', 'cg66' );
+
+    /**
+    *   Paramètre pour connaître le pourcentage lors d'un versement en 2 fois
+    *   pour les apres présentent dans un état liquidatif
+    *   @default: 60 ---> avant 40 %
+    */
+    Configure::write( 'Apre.pourcentage.montantversement', 60 );
 ?>

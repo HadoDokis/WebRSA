@@ -622,7 +622,12 @@
                 /*$apre['Apre']['montantaverser'] = */$apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] /*= $apre['Apre']['montantdejaverse']*/ = $montanttotal;
             }
             else if( $nbpaiementsouhait == 2 ) {
-                /*$apre['Apre']['montantaverser'] = */$apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] = 40 * ( Set::classicExtract( $apre, 'Apre.montantaverser' ) ) / 100;
+//                 /*$apre['Apre']['montantaverser'] = */$apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] = 40 * ( Set::classicExtract( $apre, 'Apre.montantaverser' ) ) / 100;
+
+            /**
+            *   INFO: remplacement du pourcentage de 40 -> 60 % pour les versements en 2 fois (du coup ajout d'un paramétrage)
+            */
+                $apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] = Configure::read( 'Apre.pourcentage.montantversement' ) * ( Set::classicExtract( $apre, 'Apre.montantaverser' ) ) / 100;
             }
 
             $nbpaiementsouhait = array( '1' => 1, '2' => 2 );// FIXME: dans le modèle et au pluriel
