@@ -294,7 +294,10 @@
             $this->set( 'referents', $referents );
 
             $this->set( 'apre', $apre );
-            $this->set( 'personne_id', $apre['Apre']['personne_id'] );
+
+            $this->set( 'personne_id', $apre[$this->modelClass]['personne_id'] );
+
+            $this->_setOptions();
             $this->render( $this->action, null, '/apres/view' );
         }
         /** ********************************************************************

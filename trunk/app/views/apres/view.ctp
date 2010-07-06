@@ -33,7 +33,7 @@
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Type de demande' );?></th>
-                    <td><?php echo Set::classicExtract( $options['typedemandeapre'], Set::classicExtract( $apre, 'Apre.typedemandeapre' ) );?></td>
+                    <td><?php echo Set::enum( Set::classicExtract( $apre, 'Apre.typedemandeapre' ), $options['typedemandeapre'] );?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Date de demande au CG' );?></th>
@@ -45,7 +45,7 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Avis du comité d\'examen' );?></th>
-                    <td><?php echo Set::classicExtract( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ), $optionsaprecomite['decisioncomite'] );?></td>
+                    <td><?php echo Set::enum( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ), $optionsaprecomite['decisioncomite'] );?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Montant aide complémentaire accordée' );?></th>

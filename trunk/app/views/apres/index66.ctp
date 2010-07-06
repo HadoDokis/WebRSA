@@ -96,11 +96,11 @@
                             h( $locale->money( $mtforfait ) ),
                             h( $locale->money( $mtattribue ) ),
                             h(  Set::enum( Set::classicExtract( $apre, 'Aideapre66.decisionapre' ), $options['decisionapre'] ) ),
-                            $html->viewLink(
-                                'Voir la demande APRE',
-                                array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'view', $apre[$this->modelClass]['id'] ),
-                                $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'view' )
-                            ),
+//                             $html->viewLink(
+//                                 'Voir la demande APRE',
+//                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'view', $apre[$this->modelClass]['id'] ),
+//                                 $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'view' )
+//                             ),
                             $html->editLink(
                                 'Editer la demande APRE',
                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'edit', $apre[$this->modelClass]['id'] ),
