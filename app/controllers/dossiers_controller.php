@@ -43,6 +43,17 @@
             $this->set( 'referents', $this->Referent->find( 'list' ) );
             $this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
             $this->set( 'enumcui', $this->Cui->allEnumLists() );
+            ///FIXME:
+            $this->set(
+                'trancheAge',
+                array(
+                    '< 25',
+                    '25 - 30',
+                    '31 - 55',
+                    '56 - 65',
+                    '> 65'
+                )
+            );
             return $return;
         }
 

@@ -244,6 +244,36 @@
 
 
 
+            ///FIXME : tranche d'âge pour la recherche mais non finalisé
+            $trancheAge = Set::extract( $params, 'Personne.trancheAge' );
+            if( $trancheAge == 0 ) {
+                $ageMin = 0;
+                $ageMax = 25;
+            }
+            else if( $trancheAge == 1 ) {
+                $ageMin = 25;
+                $ageMax = 30;
+            }
+            else if( $trancheAge == 2 ) {
+                $ageMin = 31;
+                $ageMax = 55;
+            }
+            else if( $trancheAge == 3 ) {
+                $ageMin = 56;
+                $ageMax = 65;
+            }
+            else if( $trancheAge == 4 ) {
+                $ageMin = 66;
+                $ageMax = 120;
+            }
+
+            if( !empty( $trancheAge )  ) {
+                $conditions[] = '( EXTRACT ( YEAR FROM AGE( Personne.dtnai ) ) ) BETWEEN '.$ageMin.' AND '.$ageMax;
+            }
+
+// debug($trancheAge);
+
+
 
             $query = array(
                 'fields' => array(
