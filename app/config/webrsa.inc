@@ -127,8 +127,8 @@
     Configure::write( 'nom_form_bilan_cg', 'cg66' );
 
     /**
-    *   Paramètre pour connaître le pourcentage lors d'un versement en 2 fois
-    *   pour les apres présentent dans un état liquidatif
+    *   Paramètre pour connaître le pourcentage du 1er versement, lors d'un versement en 2 fois,
+    *   pour les apres présentes dans un état liquidatif
     *   @default: 60 ---> avant 40 %
     */
     Configure::write( 'Apre.pourcentage.montantversement', 60 );
