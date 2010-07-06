@@ -19,7 +19,7 @@ msgstr ""
 
 ###############################################################################
 msgid "Traitementpdo::index::empty"
-msgstr "Aucun traitement pour cette PDO présente"
+msgstr "Aucun traitement pour cette PDO présent"
 
 msgid "Traitementspdos::index"
 msgstr "Liste des traitements de la PDO"
@@ -60,6 +60,9 @@ msgstr "Courrier"
 msgid "Traitementpdo.hasrevenu"
 msgstr "Revenu"
 
+msgid "Traitementpdo.hasficheanalyse"
+msgstr "Fiche d'analyse"
+
 msgid "Traitementpdo.haspiecejointe"
 msgstr "Pièce jointe"
 
@@ -79,4 +82,10 @@ msgid "ENUM::HASPIECEJOINTE::0"
 msgstr "Non"
 
 msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "ENUM::HASFICHEANALYSE::0"
+msgstr "Non"
+
+msgid "ENUM::HASFICHEANALYSE::1"
 msgstr "Oui"

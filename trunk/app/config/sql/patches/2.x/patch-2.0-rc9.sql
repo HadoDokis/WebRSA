@@ -35,6 +35,9 @@ ALTER TABLE propospdos ADD COLUMN etatdossierpdo type_etatdossierpdo DEFAULT NUL
 ALTER TABLE personnes ADD COLUMN numagenpoleemploi CHAR(3) DEFAULT NULL;
 ALTER TABLE personnes ADD COLUMN dtinscpoleemploi DATE DEFAULT NULL;
 ALTER TABLE suspensionsdroits ADD COLUMN natgroupfsus CHAR(3) DEFAULT NULL;
+
+-----------------------------  Ajout du 06/07/2010 ----------------------------
+ALTER TABLE traitementspdos ADD COLUMN hasficheanalyse type_booleannumber DEFAULT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
