@@ -18,6 +18,17 @@
 
         }
 
+        echo $default->view(
+            $propopdo,
+            array(
+                'Propopdo.user_id'
+            ),
+            array(
+                'widget' => 'table',
+                'id' => 'dossierInfosOrganisme',
+                'options' => $gestionnaire
+            )
+        );
         echo $default->form(
             array(
                 'Traitementpdo.propopdo_id' => array( 'type' => 'hidden', 'value' => $propopdo_id ),

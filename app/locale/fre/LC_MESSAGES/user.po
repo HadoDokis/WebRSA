@@ -21,6 +21,9 @@ msgstr ""
 ###############################################################################
 # Enum Propopdo.statutdecision
 ###############################################################################
+msgid "User.isgestionnaire"
+msgstr "Est-il gestionnaire, notamment pour les PDOs ? "
+
 msgid "ENUM::ISGESTIONNAIRE::N"
 msgstr "Non"
 

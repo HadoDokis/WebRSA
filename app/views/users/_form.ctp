@@ -56,6 +56,6 @@
     <?php echo $form->input( 'User.serviceinstructeur_id', array( 'label' => false, 'type' => 'select' , 'options' => $si, 'empty' => true ) );?>
 </fieldset>
 <fieldset class="col2">
-    <legend><?php echo required( 'Est-il gestionnaire ?' );?></legend>
+    <legend><?php echo required( 'Est-il gestionnaire, notamment pour les PDOs ? ' );?></legend>
     <?php echo $xform->input( 'User.isgestionnaire', array( 'legend' => false, 'type' => 'radio', 'options' => $options['isgestionnaire'] ) );?>
 </fieldset>

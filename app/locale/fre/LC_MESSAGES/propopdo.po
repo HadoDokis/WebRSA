@@ -46,7 +46,7 @@ msgid "Propopdo.decisionpdo_id"
 msgstr "Proposition de décision"
 
 msgid "Propopdo.user_id"
-msgstr "Gestionnaire"
+msgstr "Dossier instruit par"
 
 msgid "Propopdo.datereceptionpdo"
 msgstr "Date de réception de la PDO"

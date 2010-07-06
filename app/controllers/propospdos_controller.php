@@ -29,6 +29,18 @@
             $this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
             $this->set( 'structs', $this->Structurereferente->listOptions() );
 //             $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
+            $this->set( 'gestionnaire', $this->User->find(
+                    'list',
+                    array(
+                        'fields' => array(
+                            'User.nom_complet'
+                        ),
+                        'conditions' => array(
+                            'User.isgestionnaire' => 'O'
+                        )
+                    )
+                )
+            );
 
             $options = $this->Propopdo->allEnumLists();
 // debug($options);

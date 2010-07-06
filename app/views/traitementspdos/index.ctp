@@ -24,6 +24,7 @@
                 'Traitementpdo.traitementtypepdo_id',
                 'Traitementpdo.hascourrier',
                 'Traitementpdo.hasrevenu',
+                'Traitementpdo.hasficheanalyse',
                 'Traitementpdo.haspiecejointe'
             ),
             array(

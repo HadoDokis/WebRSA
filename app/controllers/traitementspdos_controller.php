@@ -20,6 +20,19 @@
             $options = $this->{$this->modelClass}->enums();
             $options[$this->modelClass]['descriptionpdo_id'] = $this->Descriptionpdo->find( 'list' );
             $options[$this->modelClass]['traitementtypepdo_id'] = $this->Traitementtypepdo->find( 'list' );
+            $this->set( 'gestionnaire', $this->User->find(
+                    'list',
+                    array(
+                        'fields' => array(
+                            'User.nom_complet'
+                        ),
+                        'conditions' => array(
+                            'User.isgestionnaire' => 'O'
+                        )
+                    )
+                )
+            );
+
 
             return $options;
         }
