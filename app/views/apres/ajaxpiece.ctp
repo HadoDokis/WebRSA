@@ -24,7 +24,7 @@
                     <?php
                         echo $default->subform(
                             array(
-                                'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces administratives', 'multiple' => 'checkbox', 'options' => $pieceadmin, 'empty' => false )
+                                'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces administratives', 'multiple' => 'checkbox', 'options' => $piecesadmin, 'empty' => false )
                             )
                         );
                     ?>
@@ -32,12 +32,12 @@
             </td>
 
             <td class="noborder">
-            <?php debug($piecescomptable);?>
+            <?php /*debug($piecescomptable);*/?>
                 <?php if( !empty( $piecescomptable ) ):?>
                     <?php
                         echo $default->subform(
                             array(
-                                'Piececomptable66.Piececomptable66' => array( 'label' => 'Pièces comptables', 'multiple' => 'checkbox', 'options' => $piececomptable, 'empty' => false )
+                                'Piececomptable66.Piececomptable66' => array( 'label' => 'Pièces comptables', 'multiple' => 'checkbox', 'options' => $piecescomptable, 'empty' => false )
                             )
                         );
                     ?>
