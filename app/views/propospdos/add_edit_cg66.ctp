@@ -141,14 +141,14 @@
 //             ).';';
         ?>
 
-//         observeDisableFieldsetOnRadioValue(
-//             'propopdoform',
-//             'data[Propopdo][iscomplet]',
-//             $( 'FicheCalcul' ),
-//             'COM',
-//             false,
-//             true
-//         );
+        observeDisableFieldsetOnRadioValue(
+            'propopdoform',
+            'data[Propopdo][iscomplet]',
+            $( 'FicheCalcul' ),
+            'COM',
+            false,
+            true
+        );
     });
 
 
@@ -266,11 +266,11 @@
             echo $ajax->observeField( 'PropopdoIscompletINC', array( 'update' => 'Etatpdo2', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
 
         ?>
-        <!--<fieldset id="FicheCalcul" class="invisible">
+        <fieldset id="FicheCalcul" class="invisible">
             <?php
                 echo 'Fiche de calcul';
             ?>
-        </fieldset>-->
+        </fieldset>
     </fieldset>
 
     <fieldset id="Etatpdo2" class="invisible"></fieldset>
@@ -356,7 +356,7 @@
         <?php
             echo $default->subform(
                 array(
-                    'Propopdo.decisionop' => array( 'label' => false, 'type' => 'radio', 'options' => $options['decisionop'] ),
+                    'Propopdo.decisionop' => array( 'legend' => false, 'type' => 'radio', 'options' => $options['decisionop'] ),
                     'Propopdo.datedecisionop' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.datedecisionop', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false ),
                     'Propopdo.observationop' => array( 'label' => __d( 'propopdo', 'Propopdo.observationop', true ), 'type' => 'textarea', 'rows' => 3 )
                 ),
