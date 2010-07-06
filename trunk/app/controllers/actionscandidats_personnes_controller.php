@@ -552,7 +552,7 @@
 
             ///Traduction pour les données de la Personne/Contact/Partenaire/Référent
             $actioncandidat_personne['Personne']['qual'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Personne.qual' ), $qual );
-            $actioncandidat_personne['Personne']['dtnai'] = $this->Locale->date( 'Date::short', Set::classicExtract( $actioncandidat_personne, 'Personne.dtnai' ) );
+//             $actioncandidat_personne['Personne']['dtnai'] = $this->Locale->date( 'Date::short', Set::classicExtract( $actioncandidat_personne, 'Personne.dtnai' ) );
             $actioncandidat_personne['Referent']['qual'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Referent.qual' ), $qual );
             $actioncandidat_personne['Contactpartenaire']['qual'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Contactpartenaire.qual' ), $qual );
             $actioncandidat_personne['Partenaire']['typevoie'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Partenaire.typevoie' ), $typevoie );
