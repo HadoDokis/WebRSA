@@ -41,3 +41,34 @@ ALTER TABLE traitementspdos ADD COLUMN hasficheanalyse type_booleannumber DEFAUL
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
+
+-- *****************************************************************************
+--  Ajout de la table Entretiens
+-- *****************************************************************************
+-- *****************************************************************************
+BEGIN;
+-- *****************************************************************************
+
+CREATE TYPE type_typeentretien AS ENUM ( 'PHY', 'TEL', 'COU', 'MAI' );
+CREATE TABLE entretiens(
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    personne_id                     INTEGER NOT NULL REFERENCES personnes(id),
+    referent_id                     INTEGER NOT NULL REFERENCES referents(id),
+    structurereferente_id           INTEGER NOT NULL REFERENCES structuresreferentes(id),
+    dateentretien                   DATE,
+    typeentretien                   type_typeentretien DEFAULT NULL,
+    typerdv_id                      INTEGER DEFAULT NULL REFERENCES typesrdv(id), -- objet du rdv
+    rendezvousprevu                 type_booleannumber DEFAULT NULL,
+    rendezvous_id                   INTEGER DEFAULT NULL REFERENCES rendezvous(id),
+--     dateprochainrdv                 DATE,
+    nv_dsp_id                       INTEGER DEFAULT NULL REFERENCES dsps(id),
+    vx_dsp_id                       INTEGER DEFAULT NULL REFERENCES dsps(id),
+    commentaireentretien            TEXT
+);
+COMMENT ON TABLE entretiens IS 'Table pour les entretiens des personnes';
+
+CREATE INDEX entretiens_personne_id_idx ON entretiens(personne_id);
+CREATE INDEX entretiens_dateentretien_idx ON entretiens(dateentretien);
+-- *****************************************************************************
+COMMIT;
+-- *****************************************************************************
