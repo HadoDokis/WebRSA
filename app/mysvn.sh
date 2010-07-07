@@ -14,10 +14,10 @@ rm tmp/logs/debug.log
 rm tmp/logs/error.log
 
 # http://snipt.net/nick/svn-delete-all-files-marked-for-deletion/
-svn status . |grep '^!' |sed 's/^!      /svn delete "/g' | sed 's/$/"/g' | sh
+svn status . |grep '^!' |sed 's/^!       /svn delete "/g' | sed 's/$/"/g' | sh
 
 # http://snipt.net/nick/svn-add-all-files-marked-for-add/
-svn status . |grep '^?' |sed 's/^?      /svn add "/g' | sed 's/$/"/g' | sh
+svn status . |grep '^?' |sed 's/^?       /svn add "/g' | sed 's/$/"/g' | sh
 
 # svn status | grep "^\?" | sed -e 's/? *//' | sed -e 's/ /\\ /g' | xargs svn add
 # svn status | grep "^\!" | sed -e 's/! *//' | sed -e 's/ /\\ /g' | xargs svn del
