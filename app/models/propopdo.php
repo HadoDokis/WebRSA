@@ -25,12 +25,10 @@
                 'classname'     => 'Personne',
                 'foreignKey'    => 'personne_id'
             ),
-            'Structurereferente'
+            'Structurereferente',
+//             'User'
         );
 
-//         var $hasOne = array(
-//             'Structurereferente'
-//         );
 
         var $hasMany = array(
             'Piecepdo' => array(
