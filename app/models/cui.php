@@ -55,7 +55,8 @@
                     'validacquis' => array( 'domain' => 'cui' ),
                     'iscae' => array( 'domain' => 'cui' ),
                     'financementexclusif' => array( 'domain' => 'cui' ),
-                    'orgapayeur' => array( 'domain' => 'cui' )
+                    'orgapayeur' => array( 'domain' => 'cui' ),
+                    'decisioncui' => array( 'domain' => 'cui' ),
                 )
             ),
             'Formattable',

@@ -186,6 +186,35 @@
         }
 
 
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+
+        function valider( $cui_id = null ) {
+
+            $cui = $this->Cui->findById( $cui_id );
+            $this->assert( !empty( $cui ), 'invalidParameter' );
+
+            // Retour à la liste en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index', $cui['Cui']['personne_id'] ) );
+            }
+
+            $this->set( 'personne_id', $cui['Cui']['personne_id'] );
+
+            if( !empty( $this->data ) ) {
+                if( $this->Cui->saveAll( $this->data ) ) {
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                   $this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $cui['Cui']['personne_id']) );
+                }
+            }
+            else {
+                $this->data = $cui;
+            }
+            $this->_setOptions();
+        }
+
         /**
         *
         */
