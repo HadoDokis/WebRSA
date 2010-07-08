@@ -502,7 +502,9 @@
                 'EXCPRE' => 'exclusion Prestation',
                 'ADR' => 'Adresse',
                 'RAD' => 'Radiation du dossier',
-                'MUT' => 'Mutation du dossier'
+                'MUT' => 'Mutation du dossier',
+                //Ajout suite à l'arrivée du RSAJeune
+                'JUSRSAJEU' => 'Justificatif RSA Jeune'
             );
         }
 
@@ -661,7 +663,12 @@
                 '97' => 'Bénéficiaires AAH réduite',
                 'AB' => 'Allocataire absent du foyer',
                 'CV' => 'Attente décision PCG (le droit reste théorique jusqu\'au retour)',
-                'CG' => 'Application Sanction'
+                'CG' => 'Application Sanction',
+                //ajout suite à l'arrivée du RSAJeune
+                'CZ' => 'Activité antérieure insuffisante',
+                'DA' => 'Activité antérieure absente',
+                'DB' => 'Etudiant rémunération insuff.',
+                'DC' => 'Activité antérieure non conforme'
             );
         }
 
@@ -933,6 +940,19 @@
             );
         }
 
+        //Ajout suite à l'arrivée du RSAJeune
+        function natgroupfsus() {
+            return array(
+                'RSA' => 'RSA socle+activité',
+                'RSX' => 'RSA socle uniquement',
+                'RCX' => 'RSA activité uniquement',
+                'DIF' => 'PF différentielles',
+                'HOS' => 'PF hospitalisation',
+                'ISO' => 'PF isolement'
+            );
+        }
+
+
         function natpf() {
             return array(
                 'RSD' => 'RSA Socle (Financement sur fonds Conseil général)',
@@ -942,7 +962,10 @@
                 'RCD' => 'RSA Activité (Financement sur fonds Etat)',
                 'RCI' => 'RSA Activité majoré (Financement sur fonds Etat)',
                 'RCU' => 'RSA Activité Etat Contrat aidé (Financement sur fonds Etat)',
-                'RCB' => 'RSA Activité Local (Financement sur fonds Conseil général)'
+                'RCB' => 'RSA Activité Local (Financement sur fonds Conseil général)',
+                //ajout suite à l'arrivée du RSAJeune
+                'RSJ' => 'RSA socle Jeune (Financement sur fonds Etat)',
+                'RCJ' => 'RSA activité Jeune (Financement sur fonds Etat)'
             );
         }
 
@@ -1330,18 +1353,26 @@
                 'RSUN1' => 'RSA Socle Etat Contrat aidé majoré',
                 'RSUN2' => 'RSA Socle Etat Contrat aidé - 25 ans',
                 'RSUN3' => 'RSA Socle Etat Contrat aidé + 25 ans',
+                //ajout suite à l'arrivée du RSAJeune
+                'RSUN4' => 'RSA Socle Etat Jeune',
                 'RSBN1' => 'RSA Socle Local majoré',
                 'RSBN2' => 'RSA Socle Local -25 ans',
                 'RSBN3' => 'RSA Socle Local + 25 ans',
+                //ajout suite à l'arrivée du RSAJeune
+                'RSJN1' => 'RSA Socle Jeune',
                 'RCDN1' => 'RSA Activité -25 avec enfants à charge ou grossesse',
                 'RCDN2' => 'RSA Activité +25 ans',
                 'RCIN1' => 'RSA Activité majoré',
                 'RCUN1' => 'RSA Activité Etat Contrat aidé N1',
                 'RCUN2' => 'RSA Activité Etat Contrat aidé N2',
                 'RCUN3' => 'RSA Activité Etat Contrat aidé N3',
+                //ajout suite à l'arrivée du RSAJeune
+                'RCUN4' => 'RSA Activité Etat Jeune',
                 'RCBN1' => 'RSA Activité Local majoré',
                 'RCBN2' => 'RSA Activité Local -25 ans',
-                'RCBN3' => 'RSA Activité Local + 25 ans'
+                'RCBN3' => 'RSA Activité Local + 25 ans',
+                //ajout suite à l'arrivée du RSAJeune
+                'RCJN1' => 'RSA activité Jeune'
             );
         }
 
