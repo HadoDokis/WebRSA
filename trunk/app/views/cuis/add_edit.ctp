@@ -130,16 +130,16 @@
         );
 
         //Utilisé si l'organisme payeur est AUTRE
-        observeDisableFieldsOnRadioValue(
-            'cuiform',
-            'data[Cui][orgapayeur]',
-            [
-                'CuiOrganisme',
-                'CuiAdresseorganisme'
-            ],
-            'AUT',
-            true
-        );
+//         observeDisableFieldsetOnRadioValue(
+//             'cuiform',
+//             'data[Cui][orgapayeur]',
+//             [
+//                 'CuiOrganisme',
+//                 'CuiAdresseorganisme'
+//             ],
+//             'AUT',
+//             true
+//         );
 
     });
 </script>
@@ -957,17 +957,46 @@
                             array(
                                 'Cui.tauxprisencharge',
                                 'Cui.financementexclusif' => array( 'type' => 'radio', 'legend' => __d( 'cui', 'Cui.financementexclusif', true ), 'options' => $options['financementexclusif'] ),
-                                'Cui.tauxfinancementexclusif',
-                                'Cui.orgapayeur' => array(  'type' => 'radio', 'legend' => __d( 'cui', 'Cui.orgapayeur', true ), 'options' => $options['orgapayeur'] ),
-                                'Cui.organisme',
-                                'Cui.adresseorganisme',
+                                'Cui.tauxfinancementexclusif'
                             ),
                             array(
                                 'domain' => $domain,
                                 'options' => $options
                             )
                         );
-
+                    ?>
+                    <?php ?>
+                    <fieldset id="organisme" class="invisible">
+                        <?php
+                            if( Configure::read( 'nom_form_cui_cg' ) == 'cg93' ){
+                                echo $default->subform(
+                                    array(
+                                        'Cui.orgapayeur' => array(  'type' => 'radio', 'legend' => __d( 'cui', 'Cui.orgapayeur', true ), 'options' => $options['orgapayeur'], 'value' => 'ASP' ),
+                                        'Cui.organisme' => array( 'value' => 'Agence de Services et de Paiement Délégation régionale Ile de France' ),
+                                        'Cui.adresseorganisme' => array( 'value' => 'Le Cérame hall 1  47 avenue des Genottes BP 8460 95 807 CERGY PONTOISE CEDEX' )
+                                    ),
+                                    array(
+                                        'domain' => $domain,
+                                        'options' => $options
+                                    )
+                                );
+                            }
+                            else if( Configure::read( 'nom_form_cui_cg' ) == 'cg66' ){
+                                echo $default->subform(
+                                    array(
+                                        'Cui.orgapayeur' => array(  'type' => 'radio', 'legend' => __d( 'cui', 'Cui.orgapayeur', true ), 'options' => $options['orgapayeur'] ),
+                                        'Cui.organisme',
+                                        'Cui.adresseorganisme'
+                                    ),
+                                    array(
+                                        'domain' => $domain,
+                                        'options' => $options
+                                    )
+                                );
+                            }
+                        ?>
+                    </fieldset>
+                    <?php
                         echo $default->subform(
                             array(
                                 'Cui.datecontrat' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => false )
