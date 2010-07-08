@@ -127,6 +127,12 @@
     Configure::write( 'nom_form_bilan_cg', 'cg66' );
 
     /**
+    * Champs spécifique selon le CG pour le formulaire du Contrat Unqiue d'Insertion
+    * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
+    */
+    Configure::write( 'nom_form_cui_cg', 'cg93' );
+
+    /**
     *   Paramètre pour connaître le pourcentage du 1er versement, lors d'un versement en 2 fois,
     *   pour les apres présentes dans un état liquidatif
     *   @default: 60 ---> avant 40 %

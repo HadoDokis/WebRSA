@@ -69,6 +69,11 @@ COMMENT ON TABLE entretiens IS 'Table pour les entretiens des personnes';
 
 CREATE INDEX entretiens_personne_id_idx ON entretiens(personne_id);
 CREATE INDEX entretiens_dateentretien_idx ON entretiens(dateentretien);
+
+
+
+-- ALTER TABLE cuis ALTER COLUMN orgapayeur SET DEFAULT 'ASP';
+ALTER TABLE cuis ALTER COLUMN organisme TYPE VARCHAR(150);
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
