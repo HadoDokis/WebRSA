@@ -60,10 +60,10 @@
                     $icon = 'icons/book_open'.$iconFileSuffix.'.png';
                     $text = __( 'Ordre du jour', true );
                     break;
-//                 case 'validate':
-//                     $icon = 'icons/tick'.$iconFileSuffix.'.png';
-//                     $text = __( '', true );
-//                     break;
+                case 'valider':
+                    $icon = 'icons/tick'.$iconFileSuffix.'.png';
+                    $text = __( 'Valider', true );
+                    break;
                 case 'valid':
                     $icon = 'icons/tick'.$iconFileSuffix.'.png';
                     $text = __( 'Finaliser', true );
