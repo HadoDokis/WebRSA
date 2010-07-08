@@ -23,6 +23,23 @@
                                     </ul>
                             </li>
                         <?php endif;?>
+                        <?php if( $permissions->check( 'cohortescui', 'nouveaux' ) || $permissions->check( 'cohortescui', 'valides' ) || $permissions->check( 'cohortescui', 'enattente' ) ):?>
+                            <!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
+                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                <?php  echo $html->link( 'CUI ', '#' );?>
+                                    <ul>
+                                        <?php if( $permissions->check( 'cohortescui', 'nouveaux' ) ): ?>
+                                            <li><?php echo $html->link( 'Contrats à valider', array( 'controller' => 'cohortescui', 'action' => 'nouveaux' ), array( 'title' => 'Contrats à valider' ) );?></li>
+                                        <?php endif; ?>
+                                        <?php if( $permissions->check( 'cohortescui', 'enattente' ) ): ?>
+                                            <li><?php echo $html->link( 'En attente', array( 'controller' => 'cohortescui', 'action' => 'enattente' ), array( 'title' => 'Contrats en attente' ) );?></li>
+                                        <?php endif; ?>
+                                        <?php if( $permissions->check( 'cohortescui', 'valides' ) ): ?>
+                                            <li><?php echo $html->link( 'Contrats validés', array( 'controller' => 'cohortescui', 'action' => 'valides' ), array( 'title' => 'Contrats validés' ) );?></li>
+                                        <?php endif; ?>
+                                    </ul>
+                            </li>
+                        <?php endif;?>
                         <?php if( $permissions->check( 'cohortes', 'nouvelles' ) || $permissions->check( 'cohortes', 'orientees' ) || $permissions->check( 'cohortes', 'enattente' ) ): ?>
                             <!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">

@@ -42,6 +42,7 @@ ALTER TABLE traitementspdos ADD COLUMN hasficheanalyse type_booleannumber DEFAUL
 COMMIT;
 -- *****************************************************************************
 
+-----------------------------  Ajout du 07/07/2010 ----------------------------
 -- *****************************************************************************
 --  Ajout de la table Entretiens
 -- *****************************************************************************
@@ -70,10 +71,20 @@ COMMENT ON TABLE entretiens IS 'Table pour les entretiens des personnes';
 CREATE INDEX entretiens_personne_id_idx ON entretiens(personne_id);
 CREATE INDEX entretiens_dateentretien_idx ON entretiens(dateentretien);
 
+-- *****************************************************************************
+COMMIT;
+-- *****************************************************************************
 
-
--- ALTER TABLE cuis ALTER COLUMN orgapayeur SET DEFAULT 'ASP';
+-- *****************************************************************************
+BEGIN;  -----------------------------  Ajout du 08/07/2010 ---------------------
+-- *****************************************************************************
 ALTER TABLE cuis ALTER COLUMN organisme TYPE VARCHAR(150);
+ALTER TABLE cuis ADD COLUMN ribemployeur VARCHAR(23);
+
+CREATE TYPE type_decision AS ENUM( 'E', 'V', 'A', 'R' );
+ALTER TABLE cuis ADD COLUMN observcui TEXT;
+ALTER TABLE cuis ADD COLUMN decisioncui type_decision DEFAULT 'E';
+ALTER TABLE cuis ADD COLUMN datevalidationcui DATE;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

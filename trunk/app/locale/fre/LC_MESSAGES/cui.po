@@ -328,11 +328,23 @@ msgstr "Organisme payeur de l'aide du Conseil Général à l'employeur"
 msgid "Cui.organisme"
 msgstr "Organisme"
 
+msgid "Cui.ribemployeur"
+msgstr "RIB de l'employeur"
+
 msgid "Cui.adresseorganisme"
 msgstr "Adresse de l'organisme"
 
 msgid "Cui.referent_id"
 msgstr "Référent du contrat"
+
+msgid "Cui.observcui"
+msgstr "Observations"
+
+msgid "Cui.decisioncui"
+msgstr "Décision pour le CUI"
+
+msgid "Cui.datevalidationcui"
+msgstr "Date de validation"
 ###############################################################################
 ####  Liste des ENUM de la table CUI
 ###############################################################################
@@ -618,3 +630,17 @@ msgstr "ATA"
 
 msgid "ENUM::ISBENEFICIAIRE::RSADEPT"
 msgstr "RSA financé par le département"
+
+####################
+
+msgid "ENUM::DECISIONCUI::A"
+msgstr "Ajournement"
+
+msgid "ENUM::DECISIONCUI::V"
+msgstr "Validation à compter du"
+
+msgid "ENUM::DECISIONCUI::R"
+msgstr "Rejet"
+
+msgid "ENUM::DECISIONCUI::E"
+msgstr "En attente"

@@ -289,6 +289,15 @@
                                 )
                             );
                             echo $html->tag( 'p', 'Paiement par virement: fournir un RIB de l\'employeur', array( 'class' => 'remarque center' ) );
+                            echo $default->subform(
+                                array(
+                                    'Cui.ribemployeur'
+                                ),
+                                array(
+                                    'domain' => $domain,
+                                    'options' => $options
+                                )
+                            );
                         ?>
                     </fieldset>
                         <?php

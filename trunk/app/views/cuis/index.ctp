@@ -24,10 +24,13 @@
                 array(
                     'Cui.datecontrat',
                     'Cui.secteur',
-                    'Cui.nomemployeur'
+                    'Cui.nomemployeur',
+                    'Cui.decisioncui' => array( 'options' => $options['decisioncui'] ),
+                    'Cui.datevalidationcui'
                 ),
                 array(
                     'actions' => array(
+                        'Cui.valider',
                         'Cui.edit',
                         'Cui.print' => array( 'controller' => 'cuis', 'action' => 'gedooo' ),
                         'Cui.delete'

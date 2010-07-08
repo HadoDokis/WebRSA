@@ -38,6 +38,10 @@
                 'classname' => 'Contratinsertion',
                 'foreignKey' => 'personne_id',
             ),
+            'Cui' => array(
+                'classname' => 'Cui',
+                'foreignKey' => 'personne_id',
+            ),
             'Orientstruct' => array(
                 'classname' => 'Orientstruct',
                 'foreignKey' => 'personne_id'
