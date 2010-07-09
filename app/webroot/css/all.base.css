@@ -305,6 +305,31 @@ dl.allocataire.infos dt {
     font-weight: bold;
 }
 
+/*------------------------------ Ajout/Edition Période Immersion --------------------------------*/
+
+table#infosCui {
+    width: 100%;
+    border: 0;
+}
+
+table#infosCui tbody {
+    border: 0;
+}
+
+table#infosCui th {
+    width: 48%;
+}
+
+table#infosCui th, table#infosCui td {
+    background: transparent;
+    color: black;
+    border: 0;
+    padding: 0.25em 0;
+}
+
+table#infosCui th{
+    font-weight: bold;
+}
 /*------------------------------ Ajout/Edition PDO --------------------------------*/
 
 table#dossierInfosOrganisme {

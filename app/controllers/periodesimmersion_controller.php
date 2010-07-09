@@ -16,6 +16,8 @@
         protected function _setOptions() {
             $options = array();
             $options = $this->Periodeimmersion->allEnumLists();
+            $optionscui = $this->Cui->allEnumLists();
+            $options = Set::merge( $optionscui, $options );
             $typevoie = $this->Option->typevoie();
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'qual', $this->Option->qual() );
@@ -35,6 +37,7 @@
         */
 
         public function index( $cui_id = null ) {
+
             $nbrCuis = $this->Periodeimmersion->Cui->find( 'count', array( 'conditions' => array( 'Cui.id' => $cui_id ), 'recursive' => -1 ) );
             $this->assert( ( $nbrCuis == 1 ), 'invalidParameter' );
 
@@ -52,8 +55,14 @@
             );
 
             $this->_setOptions();
-            $this->set( compact( 'cuis', 'cui_id', 'personne_id' ) );
-//             $this->set( compact( 'cuis' ) );
+            $this->set( 'personne_id', $personne_id );
+            $this->set( 'cui_id', $cui_id );
+            $this->set( compact( 'cuis', 'periodesimmersion' ) );
+
+            // Retour à la liste des CUI en cas de retour
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
+            }
         }
 
 
@@ -87,9 +96,8 @@
 
             if( $this->action == 'add' ) {
                 $cui_id = $id;
-                $nbrCuis = $this->Periodeimmersion->Cui->find( 'count', array( 'conditions' => array( 'Cui.id' => $cui_id ), 'recursive' => -1 ) );
-                $this->assert( ( $nbrCuis == 1 ), 'invalidParameter' );
-
+                $cui = $this->Cui->findById( $cui_id, null, null, -1 );
+                $personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
             }
             else if( $this->action == 'edit' ) {
                 $periodeimmersion_id = $id;
@@ -116,6 +124,8 @@
             $user_id = Set::classicExtract( $user, 'User.id' );
             $personne = $this->{$this->modelClass}->Cui->Personne->detailsApre( $personne_id, $user_id );
             $this->set( 'personne', $personne );
+            $this->set( 'cui', $cui );
+            $this->set( 'cui_id', $cui_id );
 
             $this->set( 'referents', $this->Referent->find( 'list' ) );
             $this->set( 'structs', $this->Structurereferente->listOptions() );

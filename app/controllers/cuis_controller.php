@@ -190,13 +190,6 @@
                     }
                  }
 
-//                     $this->{$this->modelClass}->Periodeimmersion->create( $this->data );
-//                     if( $this->action == 'add' ) {
-//                         $this->{$this->modelClass}->Periodeimmersion->set( 'cui_id', $this->{$this->modelClass}->getLastInsertID( ) );
-//                     }
-//                     $success = $this->{$this->modelClass}->Periodeimmersion->save() && $success;
-//                 }
-// debug($this->Periodeimmersion->validationErrors);
 
                 if( $success  ) {
                         $this->Jetons->release( $dossier_id );
