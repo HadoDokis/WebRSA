@@ -48,8 +48,8 @@ msgstr "Email"
 msgid "Periodeimmersion.activiteentaccueil"
 msgstr "Activité principale"
 
-msgid "Periodeimmersion.siret"
-msgstr ""
+msgid "Periodeimmersion.siretentaccueil"
+msgstr "N° SIRET"
 
 msgid "Periodeimmersion.datedebperiode"
 msgstr "Période d'immersion prévue du "
