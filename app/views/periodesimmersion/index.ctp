@@ -3,7 +3,7 @@
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
-<div class="with_treemenu">
+<div class="with_treemenu aere">
     <?php
         echo $html->tag(
             'h1',
