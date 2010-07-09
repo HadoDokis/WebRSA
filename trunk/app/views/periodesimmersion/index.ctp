@@ -14,8 +14,8 @@
         echo $default->index(
             $periodesimmersion,
             array(
-                'Periodeimmersion.datdebperiode',
-                'Periodeimmersion.datfinperiode',
+                'Periodeimmersion.datedebperiode',
+                'Periodeimmersion.datefinperiode',
                 'Periodeimmersion.nomentaccueil',
                 'Periodeimmersion.objectifimmersion' => array( 'options' => $options['objectifimmersion'] ),
                 'Periodeimmersion.datesignatureimmersion'
@@ -26,10 +26,17 @@
                     'Periodeimmersion.print' => array( 'controller' => 'periodesimmersion', 'action' => 'gedooo' ),
                     'Periodeimmersion.delete'
                 ),
-                'add' => array( 'Periodeimmersion.add' => $personne_id ),
+                'add' => array( 'Periodeimmersion.add' => $cui_id )
             )
         );
 
     ?>
 </div>
+    <?php echo $xform->create( 'Periodeimmersion' );?>
+    <div class="submit">
+        <?php
+            echo $xform->submit( 'Retour au CUI', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+    <?php echo $xform->end(); ?>
 <div class="clearer"><hr /></div>

@@ -18,8 +18,35 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+msgid "Periodesimmersion::index"
+msgstr "Périodes d'immersion"
+
+msgid "Periodeimmersion::index::empty"
+msgstr "Aucune période d'immersion présente"
+
+msgid "Periodeimmersion::add"
+msgstr "Ajouter une nouvelle période d'immersion à ce CUI"
+
+msgid "Periodesimmersion::add"
+msgstr "Mise en oeuvre d'une période d'immersion"
+
+msgid "Periodesimmersion::edit"
+msgstr "Modification de la période d'immersion"
+
+msgid "Periodeimmersion::edit"
+msgstr "Modifier la période d'immersion"
+
+msgid "Periodeimmersion::gedooo"
+msgstr "Imprimer la période d'immersion"
+
+msgid "Periodeimmersion::delete"
+msgstr "Supprimer la période d'immersion"
+
+msgid "Periodeimmersion::delete::confirm"
+msgstr "Confirmer la suppression ?"
+
 msgid "Periodeimmersion.nomentaccueil"
-msgstr "Dénomination"
+msgstr "Nom de l'entreprise d'accueil"
 
 msgid "Periodeimmersion.numvoieentaccueil"
 msgstr "N° de voie"
@@ -52,10 +79,10 @@ msgid "Periodeimmersion.siretentaccueil"
 msgstr "N° SIRET"
 
 msgid "Periodeimmersion.datedebperiode"
-msgstr "Période d'immersion prévue du "
+msgstr "Date de début de la période"
 
 msgid "Periodeimmersion.datefinperiode"
-msgstr "Au"
+msgstr "Date de fin de la période"
 
 msgid "Periodeimmersion.nbjourperiode"
 msgstr "Soit un nombre de jours équivalent à "
