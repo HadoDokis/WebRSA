@@ -76,6 +76,10 @@
                     $icon = 'icons/user_comment'.$iconFileSuffix.'.png';
                     $text = __( 'Demandes de réorientation', true );
                     break;
+                case 'periodeimmersion':
+                    $icon = 'icons/tick'.$iconFileSuffix.'.png';
+                    $text = __( 'Périodes d\'immersion', true );
+                    break;
                 default:
                     $this->cakeError( 'error500' ); // FIXME -> proprement --> $this->cakeError( 'wrongParameter' )
             }

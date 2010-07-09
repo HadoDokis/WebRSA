@@ -1079,6 +1079,28 @@ class HtmlHelper extends AppHelper {
         }
     }
 
+    /**
+    **
+    **/
+    ///Boutons à utiliser pour les périodes d'immersion des CUIs
+    function periodeImmersionLink( $title, $url, $enabled = true ) {
+        $content = $this->image(
+            'icons/page_attach.png',
+            array( 'alt' => '' )
+        ).' Périodes d\'immersion';
+
+        if( $enabled ) {
+            return $this->link(
+                $content,
+                $url,
+                array( 'escape' => false, 'title' => $title , 'class' => 'internal' )
+            );
+        }
+        else {
+            return '<span class="disabled">'.$content.'</span>';
+        }
+    }
+
     //Lien pour les décisions d'APRE
     function rapportLink( $title, $url, $enabled = true ){
         $content = $this->image(

@@ -129,6 +129,15 @@
             true
         );
 
+        //Utilisé si le contrat signé est de type CAE et que la periode d'immersion est à Oui
+        observeDisableFieldsetOnRadioValue(
+            'cuiform',
+            'data[Cui][iscae]',
+            $( 'periodeimmersion' ),
+            'O',
+            false,
+            true
+        );
         //Utilisé si l'organisme payeur est AUTRE
 //         observeDisableFieldsetOnRadioValue(
 //             'cuiform',
@@ -862,6 +871,50 @@
                 )
             );
         ?>
+        <fieldset id="periodeimmersion" class="invisible">
+            <fieldset>
+                <legend>L'ENTREPRISE D'ACCUEIL</legend>
+                <?php
+                    echo $default->subform(
+                        array(
+                            'Periodeimmersion.cui_id' => array( 'type' => 'hidden'/*, 'value' => $cui_id*/ ),
+                            'Periodeimmersion.nomentaccueil',
+                            'Periodeimmersion.numvoieentaccueil',
+                            'Periodeimmersion.typevoieentaccueil' => array( 'options' => $options['typevoie'] ),
+                            'Periodeimmersion.nomvoieentaccueil',
+                            'Periodeimmersion.compladrentaccueil',
+                            'Periodeimmersion.codepostalentaccueil',
+                            'Periodeimmersion.villeentaccueil',
+                            'Periodeimmersion.numtelentaccueil',
+                            'Periodeimmersion.emailentaccueil',
+                            'Periodeimmersion.activiteentaccueil',
+                            'Periodeimmersion.siret'
+                        ),
+                        array(
+                            'options' => $options
+                        )
+                    );
+                ?>
+            </fieldset>
+            <fieldset>
+                <legend>PÉRIODE D'IMMERSION</legend>
+                <?php
+                    echo $default->subform(
+                        array(
+                            'Periodeimmersion.datedebperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')-2, 'empty' => false ),
+                            'Periodeimmersion.datefinperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')-2, 'empty' => false ),
+                            'Periodeimmersion.nbjourperiode',
+                            'Periodeimmersion.codeposteaffectation',
+                            'Periodeimmersion.objectifimmersion' => array( 'type' => 'radio', 'separator' => '<br />', 'options' => $options['objectifimmersion'] ),
+                            'Periodeimmersion.datesignatureimmersion' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')-2, 'empty' => false )
+                        ),
+                        array(
+                            'options' => $options
+                        )
+                    );
+                ?>
+            </fieldset>
+        </fieldset>
     </fieldset>
 
 <!--********************* La prise en charge (cadre réservé au prescripteur) ********************** -->

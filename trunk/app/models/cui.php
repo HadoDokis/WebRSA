@@ -57,6 +57,7 @@
                     'financementexclusif' => array( 'domain' => 'cui' ),
                     'orgapayeur' => array( 'domain' => 'cui' ),
                     'decisioncui' => array( 'domain' => 'cui' ),
+                    'objectifimmersion'
                 )
             ),
             'Formattable',
@@ -78,8 +79,14 @@
             )
         );
 
+        var $hasMany = array(
+            'Periodeimmersion' => array(
+                'classname' => 'Periodeimmersion',
+                'foreignKey' => 'cui_id'
+            )
+        );
 
-        var $validate = array(
+        /*var $validate = array(
             'convention' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
@@ -354,7 +361,7 @@
                 'message' => 'Champ obligatoire'
             ),
         );
-
+*/
         // ********************************************************************
 
         var $queries = array(

@@ -93,8 +93,8 @@
                                 h( $contrat['Cui']['observcui'] ),
                                 $html->viewLink(
                                     'Voir le contrat',
-                                    array( 'controller' => 'cuis', 'action' => 'view', $contrat['Cui']['id'] ),
-                                    $permissions->check( 'cuis', 'view' )
+                                    array( 'controller' => 'cuis', 'action' => 'index', $contrat['Cui']['personne_id'] ),
+                                    $permissions->check( 'cuis', 'index' )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),
