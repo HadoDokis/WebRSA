@@ -48,11 +48,13 @@
                         'Cui.typevoieemployeur' => array( 'options' => $options['typevoie'] ),
                         'Cui.nomvoieemployeur',
                         'Cui.compladremployeur',
-                        'Cui.numtelemployeur',
-                        'Cui.emailemployeur',
                         'Cui.codepostalemployeur',
                         'Cui.villeemployeur',
+                        'Cui.numtelemployeur',
+                        'Cui.emailemployeur',
                         'Cui.siret',
+                        'Cui.atelierchantier',
+                        'Cui.numannexefinanciere'
                     ),
                     array(
                         'widget' => 'table',
