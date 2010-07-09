@@ -4,7 +4,7 @@
     class PeriodesimmersionController extends AppController {
 
         var $name = 'Periodesimmersion';
-        var $uses = array( 'Periodeimmersion', 'Cui', 'Option', 'Referent', 'Personne', 'Dossier', 'Structurereferente' );
+        var $uses = array( 'Periodeimmersion', 'Cui', 'Option', 'Referent', 'Personne', 'Dossier', 'Adressefoyer', 'Structurereferente' );
 
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $components = array( 'RequestHandler', 'Gedooo' );
@@ -167,8 +167,9 @@
         public function gedooo( $id ) {
             $qual = $this->Option->qual();
             $typevoie = $this->Option->typevoie();
+            $options = $this->{$this->modelClass}->allEnumLists();
 
-            $cui = $this->{$this->modelClass}->find(
+            $periodeimmersion = $this->{$this->modelClass}->find(
                 'first',
                 array(
                     'conditions' => array(
@@ -177,6 +178,10 @@
                     'recursive' => 0
                 )
             );
+
+            $personne_id = Set::classicExtract( $periodeimmersion, 'Cui.personne_id' );
+            $personne = $this->Personne->findById( $personne_id, null, null, -1 );
+            $periodeimmersion['Personne'] = $personne['Personne'];
 
             $this->Adressefoyer->bindModel(
                 array(
@@ -193,23 +198,37 @@
                 'first',
                 array(
                     'conditions' => array(
-                        'Adressefoyer.foyer_id' => Set::classicExtract( $cui, 'Personne.foyer_id' ),
+                        'Adressefoyer.foyer_id' => Set::classicExtract( $periodeimmersion, 'Personne.foyer_id' ),
                         'Adressefoyer.rgadr' => '01',
                     )
                 )
             );
-            $cui['Adresse'] = $adresse['Adresse'];
+            $periodeimmersion['Adresse'] = $adresse['Adresse'];
 
-            $cui_id = Set::classicExtract( $cui, 'Actioncandidat.id' );
+            $periodeimmersion_id = Set::classicExtract( $periodeimmersion, 'Actioncandidat.id' );
 
             ///Traduction pour les données de la Personne/Contact/Partenaire/Référent
             $LocaleHelper = new LocaleHelper();
-            $cui['Personne']['qual'] = Set::enum( Set::classicExtract( $cui, 'Personne.qual' ), $qual );
-            $cui['Personne']['dtnai'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $cui, 'Personne.dtnai' ) );
-            $cui['Referent']['qual'] = Set::enum( Set::classicExtract( $cui, 'Referent.qual' ), $qual );
+            //Données Periode immersion
+            $periodeimmersion['Periodeimmersion']['typevoieentaccueil'] = Set::enum( Set::classicExtract( $periodeimmersion, 'Periodeimmersion.typevoieentaccueil' ), $typevoie );
+            $periodeimmersion['Periodeimmersion']['datedebperiode'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Periodeimmersion.datedebperiode' ) );
+            $periodeimmersion['Periodeimmersion']['datefinperiode'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Periodeimmersion.datefinperiode' ) );
+            $periodeimmersion['Periodeimmersion']['datesignatureimmersion'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Periodeimmersion.datesignatureimmersion' ) );
+            $periodeimmersion['Periodeimmersion']['objectifimmersion'] = Set::enum( Set::classicExtract( $periodeimmersion, 'Periodeimmersion.objectifimmersion' ), $options['objectifimmersion'] );
+            //Données Cui
+            $periodeimmersion['Cui']['datedebprisecharge'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Cui.datedebprisecharge' ) );
+            $periodeimmersion['Cui']['datefinprisecharge'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Cui.datefinprisecharge' ) );
+            $periodeimmersion['Cui']['datecontrat'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Cui.datecontrat' ) );
+            //Données Personne
+            $periodeimmersion['Personne']['qual'] = Set::enum( Set::classicExtract( $periodeimmersion, 'Personne.qual' ), $qual );
+            $periodeimmersion['Personne']['dtnai'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Personne.dtnai' ) );
 
-            $this->_setOptions();
-//             $this->Gedooo->generate( $cui, 'CUI/periodeimmersion.odt' );
+            $periodeimmersion['Adresse']['typevoie'] = Set::enum( Set::classicExtract( $periodeimmersion, 'Adresse.typevoie' ), $typevoie );
+/*
+debug($periodeimmersion);
+die();*/
+
+//             $this->Gedooo->generate( $periodeimmersion, 'CUI/periodeimmersion.odt' );
         }
 
         /**
