@@ -88,3 +88,34 @@ ALTER TABLE cuis ADD COLUMN datevalidationcui DATE;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
+
+-- *****************************************************************************
+BEGIN;  -----------------------------  Ajout du 09/07/2010 ---------------------
+-- *****************************************************************************
+CREATE TYPE type_objectifimmersion AS ENUM ( 'acquerir', 'confirmer', 'decouvrir', 'initier' );
+CREATE TABLE periodesimmersion(
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    cui_id                          INTEGER NOT NULL REFERENCES cuis(id),
+    nomentaccueil                   VARCHAR(50) NOT NULL,
+    numvoieentaccueil               VARCHAR(6),
+    typevoieentaccueil              VARCHAR(4) NOT NULL,
+    nomvoieentaccueil               VARCHAR(50) NOT NULL,
+    compladrentaccueil              VARCHAR(50),
+    numtelentaccueil                VARCHAR(14),
+    emailentaccueil                 VARCHAR(78),
+    codepostalentaccueil              CHAR(5) NOT NULL,
+    villeentaccueil                 VARCHAR(45) NOT NULL,
+    siretentaccueil                 CHAR(14),
+    activiteentaccueil              CHAR(14),
+    datedebperiode                  DATE,
+    datefinperiode                  DATE,
+    nbjourperiode                   INTEGER DEFAULT NULL,
+    codeposteaffectation            CHAR(5),
+    objectifimmersion               type_objectifimmersion DEFAULT NULL,
+    datesignatureimmersion          DATE
+);
+COMMENT ON TABLE cuis IS 'Table pour les CUIs';
+CREATE INDEX periodesimmersion_cui_id_idx ON periodesimmersion(cui_id);
+-- *****************************************************************************
+COMMIT;
+-- *****************************************************************************

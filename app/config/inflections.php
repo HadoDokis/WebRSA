@@ -260,6 +260,8 @@
         'aideapre66_piececomptable66' => 'aidesapres66_piecescomptables66',
         ///Bilan de parcours
 //         'bilanparcours' => 'bilansparcours', //FIXME: on utilise useTable sinon ca passe pas
+        ///Périodes d'immersion liées au CUI
+        'periodeimmersion' => 'periodesimmersion',
 
      );
 /**

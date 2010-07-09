@@ -4,7 +4,7 @@
     class CuisController extends AppController {
 
         var $name = 'Cuis';
-        var $uses = array( 'Cui', 'Option', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Adressefoyer', 'AdresseFoyer', 'Detaildroitrsa', 'Infofinanciere', 'Detailcalculdroitrsa', 'Departement' );
+        var $uses = array( 'Cui', 'Option', 'Referent', 'Personne', 'Periodeimmersion', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Adressefoyer', 'AdresseFoyer', 'Detaildroitrsa', 'Infofinanciere', 'Detailcalculdroitrsa', 'Departement' );
 
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $components = array( 'RequestHandler', 'Gedooo' );
@@ -34,7 +34,9 @@
 
             $options = array();
             $options = $this->Cui->allEnumLists();
-
+            $optionsperiode = $this->Periodeimmersion->allEnumLists();
+            $options = Set::merge( $options, $optionsperiode );
+// debug($options);
             $typevoie = $this->Option->typevoie();
             $options = Set::insert( $options, 'typevoie', $typevoie );
 //             $typevoie = $this->Option->typevoie();
@@ -126,7 +128,7 @@
             }
             else if( $this->action == 'edit' ) {
                 $cui_id = $id;
-                $cui = $this->Cui->findById( $cui_id, null, null, -1 );
+                $cui = $this->Cui->findById( $cui_id, null, null, 1 );
                 $this->assert( !empty( $cui ), 'invalidParameter' );
                 $personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
                 $valueAdressebis = Set::classicExtract( $cui, 'Cui.isadresse2' );
@@ -145,6 +147,7 @@
             $this->set( 'valueAdressebis', $valueAdressebis );
             $this->set( 'valueInscritPE', $valueInscritPE );
             $this->set( 'valueIsBeneficiaire', $valueIsBeneficiaire );
+//             $this->set( 'cui_id', $cui_id );
 
             ///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
             $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
@@ -157,26 +160,34 @@
 
             if( !empty( $this->data ) ){
 
-                $valid = $this->Cui->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) );
+                $this->{$this->modelClass}->create( $this->data );
+                $success = $this->{$this->modelClass}->save();
 
-                if( $valid  ) {
-                    $saved = $this->Cui->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+                $this->{$this->modelClass}->Periodeimmersion->create( $this->data );
+                if( $this->action == 'add' ) {
+                    $this->{$this->modelClass}->Periodeimmersion->set( 'cui_id', $this->{$this->modelClass}->getLastInsertID( ) );
+                }
+                $success = $this->{$this->modelClass}->Periodeimmersion->save() && $success;
 
-                    if( $saved ){
+                if( $success  ) {
                         $this->Jetons->release( $dossier_id );
-                        $this->Cui->commit();
+                        $this->{$this->modelClass}->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
                     }
                     else {
-                        $this->Cui->rollback();
+                        $this->{$this->modelClass}->rollback();
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                     }
-                }
+
             }
             else {
                 if( $this-> action == 'edit' ){
                     $this->data = $cui;
+                    if( !empty( $this->data['Periodeimmersion'] ) ) {
+                         $this->data['Periodeimmersion'] = $this->data['Periodeimmersion'][0];
+                    }
+
                 }
             }
 
@@ -274,6 +285,8 @@
         public function delete( $id ) {
             $this->Default->delete( $id );
         }
+
+
 
         /**
         *
