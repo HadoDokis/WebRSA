@@ -330,6 +330,7 @@ table#infosCui th, table#infosCui td {
 table#infosCui th{
     font-weight: bold;
 }
+
 /*------------------------------ Ajout/Edition PDO --------------------------------*/
 
 table#dossierInfosOrganisme {
