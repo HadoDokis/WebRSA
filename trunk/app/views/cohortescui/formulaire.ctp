@@ -85,7 +85,7 @@
                             );
 
                             if( $this->action != 'nouveaux' ){
-                                $array1[] = h( Set::extract( $decisioncui, Set::extract( $contrat, 'Cui.decisioncui' ) ).' '.date_short( $contrat['Cui']['datevalidationcui'] ) );// statut BD
+                                $array1[] = h( Set::enum( Set::extract( $contrat, 'Cui.decisioncui' ), $options['decisioncui'] ).' '.date_short( $contrat['Cui']['datevalidationcui'] ) );// statut BD
                             }
 
                             $array2 = array(

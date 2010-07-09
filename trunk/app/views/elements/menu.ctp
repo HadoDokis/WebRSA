@@ -29,13 +29,13 @@
                                 <?php  echo $html->link( 'CUI ', '#' );?>
                                     <ul>
                                         <?php if( $permissions->check( 'cohortescui', 'nouveaux' ) ): ?>
-                                            <li><?php echo $html->link( 'Contrats à valider', array( 'controller' => 'cohortescui', 'action' => 'nouveaux' ), array( 'title' => 'Contrats à valider' ) );?></li>
+                                            <li><?php echo $html->link( 'CUIs à valider', array( 'controller' => 'cohortescui', 'action' => 'nouveaux' ), array( 'title' => 'Contrats à valider' ) );?></li>
                                         <?php endif; ?>
                                         <?php if( $permissions->check( 'cohortescui', 'enattente' ) ): ?>
                                             <li><?php echo $html->link( 'En attente', array( 'controller' => 'cohortescui', 'action' => 'enattente' ), array( 'title' => 'Contrats en attente' ) );?></li>
                                         <?php endif; ?>
                                         <?php if( $permissions->check( 'cohortescui', 'valides' ) ): ?>
-                                            <li><?php echo $html->link( 'Contrats validés', array( 'controller' => 'cohortescui', 'action' => 'valides' ), array( 'title' => 'Contrats validés' ) );?></li>
+                                            <li><?php echo $html->link( 'CUIs validés', array( 'controller' => 'cohortescui', 'action' => 'valides' ), array( 'title' => 'Contrats validés' ) );?></li>
                                         <?php endif; ?>
                                     </ul>
                             </li>
