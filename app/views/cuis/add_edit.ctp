@@ -172,7 +172,7 @@
         echo $xform->create( 'Cui', array( 'id' => 'cuiform' ) );
         if( Set::check( $this->data, 'Cui.id' ) ) {
             echo '<div>'.$xform->input( 'Cui.id', array( 'type' => 'hidden' ) ).'</div>';
-            //echo '<div>'.$xform->input( 'Cui.personne_id', array( 'type' => 'hidden' ) ).'</div>';
+            echo '<div>'.$xform->input( 'Periodeimmersion.id', array( 'type' => 'hidden' ) ).'</div>';
         }
     ?>
     <!-- <fieldset class="prescripteur">
@@ -888,7 +888,7 @@
                             'Periodeimmersion.numtelentaccueil',
                             'Periodeimmersion.emailentaccueil',
                             'Periodeimmersion.activiteentaccueil',
-                            'Periodeimmersion.siret'
+                            'Periodeimmersion.siretentaccueil'
                         ),
                         array(
                             'options' => $options

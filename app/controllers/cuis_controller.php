@@ -160,14 +160,43 @@
 
             if( !empty( $this->data ) ){
 
+
                 $this->{$this->modelClass}->create( $this->data );
                 $success = $this->{$this->modelClass}->save();
 
-                $this->{$this->modelClass}->Periodeimmersion->create( $this->data );
-                if( $this->action == 'add' ) {
-                    $this->{$this->modelClass}->Periodeimmersion->set( 'cui_id', $this->{$this->modelClass}->getLastInsertID( ) );
+
+                // Nettoyage des Periodes d'immersion
+                $keys = array_keys( $this->Periodeimmersion->schema() );
+                $defaults = array_combine( $keys, array_fill( 0, count( $keys ), null ) );
+                unset( $defaults['id'] );
+                unset( $defaults['cui_id'] );
+// debug($defaults);
+                if( !empty( $this->data['Periodeimmersion'] ) ) {
+                    $this->data['Periodeimmersion'] = Set::merge( $defaults, $this->data['Periodeimmersion'] );
                 }
-                $success = $this->{$this->modelClass}->Periodeimmersion->save() && $success;
+
+                if( !empty( $this->data['Periodeimmersion'] ) ) {
+                    $Periodeimmersion = Set::filter( $this->data['Periodeimmersion'] );
+//                     debug($Periodeimmersion);
+                    if( !empty( $Periodeimmersion ) ){
+                        $this->{$this->modelClass}->Periodeimmersion->create( $this->data );
+                        if( $this->action == 'add'  ) {
+                            $this->{$this->modelClass}->Periodeimmersion->set( 'cui_id', $this->{$this->modelClass}->getLastInsertID( ) );
+                        }
+                        else if( $this->action == 'edit' ) {
+                            $this->{$this->modelClass}->Periodeimmersion->set( 'cui_id', Set::classicExtract( $this->data, 'Cui.id' ) );
+                        }
+                        $success = $this->{$this->modelClass}->Periodeimmersion->save() && $success;
+                    }
+                 }
+
+//                     $this->{$this->modelClass}->Periodeimmersion->create( $this->data );
+//                     if( $this->action == 'add' ) {
+//                         $this->{$this->modelClass}->Periodeimmersion->set( 'cui_id', $this->{$this->modelClass}->getLastInsertID( ) );
+//                     }
+//                     $success = $this->{$this->modelClass}->Periodeimmersion->save() && $success;
+//                 }
+// debug($this->Periodeimmersion->validationErrors);
 
                 if( $success  ) {
                         $this->Jetons->release( $dossier_id );

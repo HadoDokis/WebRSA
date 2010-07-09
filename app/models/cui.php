@@ -86,7 +86,7 @@
             )
         );
 
-        /*var $validate = array(
+        var $validate = array(
             'convention' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
@@ -361,7 +361,7 @@
                 'message' => 'Champ obligatoire'
             ),
         );
-*/
+
         // ********************************************************************
 
         var $queries = array(
