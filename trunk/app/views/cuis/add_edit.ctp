@@ -896,17 +896,33 @@
                     );
                 ?>
             </fieldset>
-            <fieldset>
+                        <fieldset>
                 <legend>PÉRIODE D'IMMERSION</legend>
                 <?php
                     echo $default->subform(
                         array(
-                            'Periodeimmersion.datedebperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')-2, 'empty' => false ),
-                            'Periodeimmersion.datefinperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')-2, 'empty' => false ),
-                            'Periodeimmersion.nbjourperiode',
+                            'Periodeimmersion.datedebperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false ),
+                            'Periodeimmersion.datefinperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false )
+                        ),
+                        array(
+                            'options' => $options
+                        )
+                    );
+
+                ?>
+                <table class="periodeimmersion wide aere noborder">
+                    <tr>
+                        <td class="noborder mediumSize">Soit un nombre de jours èquivalent à </td>
+                        <td class="noborder mediumSize" id="PeriodeimmersionNbjourperiode"></td>
+                    </tr>
+                </table>
+                <?php
+                    echo $default->subform(
+                        array(
+//                             'Periodeimmersion.nbjourperiode',
                             'Periodeimmersion.codeposteaffectation',
                             'Periodeimmersion.objectifimmersion' => array( 'type' => 'radio', 'separator' => '<br />', 'options' => $options['objectifimmersion'] ),
-                            'Periodeimmersion.datesignatureimmersion' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')-2, 'empty' => false )
+                            'Periodeimmersion.datesignatureimmersion' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false )
                         ),
                         array(
                             'options' => $options
@@ -917,6 +933,17 @@
         </fieldset>
     </fieldset>
 
+<script type="text/javascript" >
+
+    function calculNbDays() {
+        var Datedebperiode = $F( 'PeriodeimmersionDatedebperiodeDay' );
+        var Datefinperiode = $F( 'PeriodeimmersionDatefinperiodeDay' );
+
+        $( 'PeriodeimmersionNbjourperiode' ).update( ( Datefinperiode - Datedebperiode ) );
+    }
+
+    $( 'PeriodeimmersionDatefinperiodeDay' ).observe( 'blur', function( event ) { calculNbDays(); } );
+</script>
 <!--********************* La prise en charge (cadre réservé au prescripteur) ********************** -->
     <fieldset>
         <legend>LA PRISE EN CHARGE (CADRE RÉSERVÉ AU PRESCRIPTEUR)</legend>
