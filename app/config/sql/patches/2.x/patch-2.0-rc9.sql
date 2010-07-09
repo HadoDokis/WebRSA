@@ -114,7 +114,7 @@ CREATE TABLE periodesimmersion(
     objectifimmersion               type_objectifimmersion DEFAULT NULL,
     datesignatureimmersion          DATE
 );
-COMMENT ON TABLE cuis IS 'Table pour les CUIs';
+COMMENT ON TABLE periodesimmersion IS 'Table pour les périodes d''immersion liées aux CUIs';
 CREATE INDEX periodesimmersion_cui_id_idx ON periodesimmersion(cui_id);
 -- *****************************************************************************
 COMMIT;
