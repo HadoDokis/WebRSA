@@ -141,6 +141,11 @@
                                 <td><?php echo value( $toppersdrodevorsa, Set::extract( 'DEM.Calculdroitrsa.toppersdrodevorsa', $details ) );?></td>
                                 <td><?php echo value( $toppersdrodevorsa, Set::extract( 'CJT.Calculdroitrsa.toppersdrodevorsa', $details ) );?></td>
                             </tr>
+                            <tr class="odd">
+                                <th>DSP</th>
+                                <td><?php echo h( isset( $details['DEM']['Dsp']['id'] ) ? 'Oui' : 'Non');?></td>
+                                <td><?php echo h( isset( $details['CJT']['Dsp']['id'] ) ? 'Oui' : 'Non');?></td>
+                            </tr>
                         </tbody>
                     </table>
                 </td>
@@ -211,10 +216,6 @@
                             <tr class="even">
                                 <th>Numéro de demande RSA</th>
                                 <td><?php echo Set::extract( 'Dossier.numdemrsa', $details );?></td>
-                            </tr>
-                            <tr class="odd">
-                                <th>DSP</th>
-                                <td><?php echo h( isset( $details['Dspp']['id'] ) ? 'Oui' : 'Non');?></td>
                             </tr>
                             <tr class="even">
                                 <th>Montant RSA</th>
