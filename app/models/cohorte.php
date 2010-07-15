@@ -152,15 +152,23 @@
 		*/
 
         function search( $statutOrientation, $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers, $limit = PHP_INT_MAX ) {
+            /// Requête
+            $Situationdossierrsa =& ClassRegistry::init( 'Situationdossierrsa' );
+
             /// Conditions de base
             $conditions = array(
-                /*'calculsdroitsrsa.toppersdrodevorsa = \'1\'',*/
                 'orientsstructs.statut_orient = \''.Sanitize::clean( $statutOrientation ).'\''
             );
 
-			// INFO: nouvelle manière de générer les PDFs
 			if( $statutOrientation == 'Orienté' ) {
+				// INFO: nouvelle manière de générer les PDFs
 				$conditions[] = 'orientsstructs.id IN ( SELECT pdfs.fk_value FROM pdfs WHERE modele = \'Orientstruct\' )';
+			}
+			else {
+				// INFO: ne faire apparaître les personnes à orienter que si la personne est soumise à droits et devoirs
+                $conditions[] = 'calculsdroitsrsa.toppersdrodevorsa = \'1\'';
+				// INFO: ne faire apparaître les personnes à orienter que si le dossier se trouve dans un état ouvert
+                $conditions[] = '( situationsdossiersrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
 			}
 
             /// Filtre zone géographique
@@ -286,9 +294,6 @@
                 $conditions[] = 'orientsstructs.date_impression BETWEEN \''.$date_impression_from.'\' AND \''.$date_impression_to.'\'';
             }
 
-            /// Requête
-            $Situationdossierrsa =& ClassRegistry::init( 'Situationdossierrsa' );
-
             /*INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id )*/
             /*LEFT OUTER JOIN suivisinstruction ON ( suivisinstruction.dossier_rsa_id = dossiers_rsa.id )*/
             $this->Dossier =& ClassRegistry::init( 'Dossier' );
@@ -296,15 +301,15 @@
             $sql = 'SELECT orientsstructs.id
                     FROM personnes
                         INNER JOIN prestations ON ( prestations.personne_id = personnes.id AND prestations.natprest = \'RSA\' AND ( prestations.rolepers = \'DEM\' OR prestations.rolepers = \'CJT\' ) )
-                         INNER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
-                         '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dsps ON ( dsps.personne_id = personnes.id )' : '' ).'
+                        INNER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
+                        '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dsps ON ( dsps.personne_id = personnes.id )' : '' ).'
                         INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
                         INNER JOIN dossiers_rsa ON ( foyers.dossier_rsa_id = dossiers_rsa.id )
                         INNER JOIN adresses_foyers ON ( adresses_foyers.foyer_id = foyers.id AND adresses_foyers.rgadr = \'01\' AND adresses_foyers.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique().' )
                         INNER JOIN adresses as Adresse ON ( adresses_foyers.adresse_id = Adresse.id)
                         INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
                         INNER JOIN detailsdroitsrsa ON ( detailsdroitsrsa.dossier_rsa_id = dossiers_rsa.id )
-                        INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id /*AND ( situationsdossiersrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )*/ )
+                        INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_rsa_id = dossiers_rsa.id )
                     WHERE '.implode( ' AND ', $conditions ).'
                     LIMIT '.$limit;
 
