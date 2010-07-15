@@ -169,6 +169,11 @@
 //
 //             $this->out( 'Fin de la mise a jour des rangs adresse: '.number_format( microtime( true ) - $this_start, 2 ) );
 
+			//------------------------------------------------------------------
+
+			$this->out( "Ajout d'entrée dans la table orientsstructs pour les DEM ou CJT RSA n'en possédant pas." );
+			$t = $this->Orientstruct->fillAllocataire();
+
             /** ****************************************************************
             *   Rafraichissement de "soumis à droits et devoirs" pour la table
             *   orientsstructs

@@ -180,6 +180,11 @@
 
 			//------------------------------------------------------------------
 
+			$this->out( "Ajout d'entrée dans la table orientsstructs pour les DEM ou CJT RSA n'en possédant pas." );
+			$t = $this->Orientstruct->fillAllocataire();
+
+			//------------------------------------------------------------------
+
 			$sqlCommon = "FROM orientsstructs
 						INNER JOIN prestations ON (
 							orientsstructs.personne_id = prestations.personne_id

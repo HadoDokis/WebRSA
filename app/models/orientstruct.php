@@ -462,5 +462,22 @@
 			return $orientstruct;
 		}
 
+		/**
+		* Ajout d'entrée dans la table orientsstructs pour les DEM ou CJT RSA n'en possédant pas
+		*/
+
+		function fillAllocataire() {
+			$sql = "INSERT INTO orientsstructs (personne_id, statut_orient)
+					(
+						SELECT DISTINCT personnes.id, 'Non orienté' AS statut_orient
+							FROM personnes
+								INNER JOIN prestations ON ( prestations.personne_id = personnes.id AND prestations.natprest = 'RSA' AND ( prestations.rolepers = 'DEM' OR prestations.rolepers = 'CJT' ) )
+							WHERE personnes.id NOT IN (
+								SELECT orientsstructs.personne_id
+									FROM orientsstructs
+							)
+					);";
+			return $this->query( $sql );
+		}
     }
 ?>
