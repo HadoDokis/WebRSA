@@ -34,6 +34,7 @@ ALTER TABLE propospdos ADD COLUMN etatdossierpdo type_etatdossierpdo DEFAULT NUL
 -- Champs manquants pour le passage en version v.32 de Cristal
 ALTER TABLE personnes ADD COLUMN numagenpoleemploi CHAR(3) DEFAULT NULL;
 ALTER TABLE personnes ADD COLUMN dtinscpoleemploi DATE DEFAULT NULL;
+-- Il est possible que vous ayez à commenter la ligne suivante:
 ALTER TABLE suspensionsdroits ADD COLUMN natgroupfsus CHAR(3) DEFAULT NULL;
 
 -----------------------------  Ajout du 06/07/2010 ----------------------------
