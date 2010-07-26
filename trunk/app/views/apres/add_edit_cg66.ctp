@@ -35,6 +35,39 @@
                 'Aideapre66Themeapre66Id'
             );
 
+            //Données pour le type d'activité du bénéficiare
+            ['F', 'C', 'P'].each( function( letter ) {
+                observeDisableFieldsOnValue(
+                    '<?php echo $this->modelClass;?>Activitebeneficiaire' + letter,
+                    [
+                        '<?php echo $this->modelClass;?>DateentreeemploiDay',
+                        '<?php echo $this->modelClass;?>DateentreeemploiMonth',
+                        '<?php echo $this->modelClass;?>DateentreeemploiYear',
+                        '<?php echo $this->modelClass;?>TypecontratCDI',
+                        '<?php echo $this->modelClass;?>TypecontratCDD',
+                        '<?php echo $this->modelClass;?>TypecontratCON',
+                        '<?php echo $this->modelClass;?>TypecontratAUT'
+                    ],
+                    letter,
+                    true
+                );
+            } );
+            observeDisableFieldsOnValue(
+                '<?php echo $this->modelClass;?>ActivitebeneficiaireE',
+                [
+                    '<?php echo $this->modelClass;?>DateentreeemploiDay',
+                    '<?php echo $this->modelClass;?>DateentreeemploiMonth',
+                    '<?php echo $this->modelClass;?>DateentreeemploiYear',
+                    '<?php echo $this->modelClass;?>TypecontratCDI',
+                    '<?php echo $this->modelClass;?>TypecontratCDD',
+                    '<?php echo $this->modelClass;?>TypecontratCON',
+                    '<?php echo $this->modelClass;?>TypecontratAUT'
+                ],
+                'E',
+                false
+            );
+
+
             observeDisableFieldsetOnCheckbox( '<?php echo $this->modelClass;?>Hasfrais', $( 'Fraisdeplacement66Destination' ).up( 'fieldset' ), false );
 
             observeDisableFieldsetOnRadioValue(
@@ -230,7 +263,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" class="mediumSize noborder">
-                        <strong>Adresse : </strong><br /><?php echo Set::extract( $personne, 'Adresse.numvoie' ).' '.Set::extract( $typevoie, Set::extract( $personne, 'Adresse.typevoie' ) ).' '.Set::extract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::extract( $personne, 'Adresse.codepos' ).' '.Set::extract( $personne, 'Adresse.locaadr' );?>
+                        <strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $personne, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
                     </td>
                 </tr>
                 <tr>
