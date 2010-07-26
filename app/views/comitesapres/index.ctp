@@ -63,7 +63,7 @@
                     $datecomite_to = Set::check( $this->data, 'Comiteapre.datecomite_to' ) ? Set::extract( $this->data, 'Comiteapre.datecomite_to' ) : strtotime( 'now' );
                 ?>
                 <?php echo $xform->input( 'Comiteapre.datecomite_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_from ) );?>
-                <?php echo $xform->input( 'Comiteapre.datecomite_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_to ) );?>
+                <?php echo $xform->input( 'Comiteapre.datecomite_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_to ) );?>
             </fieldset>
             <!-- <?php echo $xform->input( 'Comiteapre.heurecomite', array( 'label' => 'Filtrer par heure de Comité d\'examen', 'type' => 'checkbox' ) );?>
             <fieldset>

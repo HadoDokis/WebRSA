@@ -42,7 +42,7 @@
                     $datecontrat_to = Set::check( $this->data, 'Filtre.datecontrat_to' ) ? Set::extract( $this->data, 'Filtre.datecontrat_to' ) : strtotime( 'now' );
                 ?>
                 <?php echo $form->input( 'Filtre.datecontrat_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecontrat_from ) );?>
-                <?php echo $form->input( 'Filtre.datecontrat_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecontrat_to ) );?>
+                <?php echo $form->input( 'Filtre.datecontrat_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $datecontrat_to ) );?>
             </fieldset>
             <?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
             <!-- <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->

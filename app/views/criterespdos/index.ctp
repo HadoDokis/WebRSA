@@ -35,7 +35,7 @@
                 $datereceptionpdo_to = Set::check( $this->data, 'Propopdo.datereceptionpdo_to' ) ? Set::extract( $this->data, 'Propopdo.datereceptionpdo_to' ) : strtotime( 'now' );
             ?>
             <?php echo $form->input( 'Propopdo.datereceptionpdo_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datereceptionpdo_from ) );?>
-            <?php echo $form->input( 'Propopdo.datereceptionpdo_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datereceptionpdo_to ) );?>
+            <?php echo $form->input( 'Propopdo.datereceptionpdo_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'maxYear' => date( 'Y' ) + 5,  'selected' => $datereceptionpdo_to ) );?>
         </fieldset>
 </fieldset>
 <fieldset>
