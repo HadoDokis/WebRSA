@@ -501,8 +501,10 @@
                     )
                 )
             );
-            $personne['Adresse'] = $adresse['Adresse'];
-
+            if( !empty( $adresse ) ) {
+                $personne['Adresse'] = $adresse['Adresse'];
+            }
+// debug($personne);
             // Recherche de la structure référente
             $this->Orientstruct->unbindModelAll();
             $this->Orientstruct->bindModel( array( 'belongsTo' => array( 'Structurereferente' ) ) );

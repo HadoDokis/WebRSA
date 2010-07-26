@@ -36,6 +36,12 @@
         var $displayField = 'numeroapre';
 
         var $validate = array(
+            'activitebeneficiaire' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
             'typedemandeapre' => array(
 				array(
 					'rule' => 'notEmpty',
