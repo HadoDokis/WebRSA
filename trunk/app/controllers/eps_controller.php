@@ -37,7 +37,7 @@
                 'Ep' => ClassRegistry::init( 'Ep' )->find( 'count' ),
                 'Fonctionpartep' => ClassRegistry::init( 'Fonctionpartep' )->find( 'count' ),
                 'Partep' => ClassRegistry::init( 'Partep' )->find( 'count' ),
-		'Seanceep' => ClassRegistry::init( 'Seanceep' )->find( 'count' ),
+                'Seanceep' => ClassRegistry::init( 'Seanceep' )->find( 'count' ),
             );
             $this->set( compact( 'compteurs' ) );
         }
@@ -139,6 +139,11 @@
 		*/
 
 		public function _add_edit( $id = null ) {
+            // Retour à la liste en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index' ) );
+            }
+
             $options = $this->_options();
             $this->set( 'options', $options );
             $zglist = $this->Zonegeographique->find( 'list' );

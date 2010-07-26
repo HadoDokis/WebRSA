@@ -87,3 +87,6 @@ msgstr "Date de l'équipe pluridisciplinaire"
 
 msgid "Search.Ep.localisation"
 msgstr "Lieu de l'équipe pluridisciplinaire"
+
+msgid "Ep.zonegeographique"
+msgstr "Veuillez sélectionner une ou plusieurs zones"
