@@ -57,7 +57,7 @@
                     $datedecisionpdo_to = Set::check( $this->data, 'Cohortepdo.datedecisionpdo_to' ) ? Set::extract( $this->data, 'Cohortepdo.datedecisionpdo_to' ) : strtotime( 'now' );
                 ?>
                 <?php echo $form->input( 'Cohortepdo.datedecisionpdo_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedecisionpdo_from ) );?>
-                <?php echo $form->input( 'Cohortepdo.datedecisionpdo_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedecisionpdo_to ) );?>
+                <?php echo $form->input( 'Cohortepdo.datedecisionpdo_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $datedecisionpdo_to ) );?>
             </fieldset>
         <?php endif;?>
     </fieldset>

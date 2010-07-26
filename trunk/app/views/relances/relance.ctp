@@ -60,7 +60,7 @@
             $daterelance_to = Set::check( $this->data, 'Relance.daterelance_to' ) ? Set::extract( $this->data, 'Relance.daterelance_to' ) : strtotime( 'now' );
         ?>
         <?php echo $form->input( 'Relance.daterelance_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_from ) );?>
-        <?php echo $form->input( 'Relance.daterelance_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_to ) );?>
+        <?php echo $form->input( 'Relance.daterelance_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_to ) );?>
     </fieldset>
     <fieldset>
         <legend>Imprimé/Non imprimé</legend>

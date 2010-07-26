@@ -55,7 +55,7 @@
     <?php
         echo $default->subform(
             array(
-                'Zonegeographique.Zonegeographique' => array( 'multiple' => 'checkbox', 'options' => $zglist ),
+                'Zonegeographique.Zonegeographique' => array( 'label' => __d( 'ep', 'Ep.zonegeographique', true ), 'multiple' => 'checkbox', 'options' => $zglist, 'empty' => false ),
             )
         );
 
