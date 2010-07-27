@@ -11,6 +11,12 @@
         *
         *** *******************************************************************/
 
+		function beforeFilter() {
+			ini_set('max_execution_time', 0);
+			ini_set('memory_limit', '512M');
+			parent::beforeFilter();
+		}
+
         function login() {
            if( $this->Auth->user() ) {
                 /* Lecture de l'utilisateur authentifié */

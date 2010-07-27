@@ -1,8 +1,4 @@
 <?php
-    @set_time_limit( 0 );
-    //@ini_set( 'memory_limit', '128M' ); // INFO: à 100, ça casse -> headers 000
-    //@ini_set( 'memory_limit', '256M' ); // INFO: à 100, ça casse -> headers 000
-    @ini_set( 'memory_limit', '512M' );
     App::import('Sanitize');
     class CohortesController extends AppController
     {
@@ -11,6 +7,12 @@
         var $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default' );
         var $components = array( 'Gedooo' );
         var $aucunDroit = array( 'progression' );
+
+		function beforeFilter() {
+			ini_set('max_execution_time', 0);
+			ini_set('memory_limit', '1024M');
+			parent::beforeFilter();
+		}
 
         var $paginate = array(
             // FIXME

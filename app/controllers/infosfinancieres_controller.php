@@ -1,5 +1,4 @@
 <?php
-    @ini_set( 'max_execution_time', 0 );
     class InfosfinancieresController  extends AppController
     {
         var $name = 'Infosfinancieres';
@@ -25,6 +24,7 @@
         *** *******************************************************************/
 
         function beforeFilter() {
+			ini_set('max_execution_time', 0);
             parent::beforeFilter();
             $this->set( 'type_allocation', $this->Option->type_allocation() );
             $this->set( 'natpfcre', $this->Option->natpfcre() );

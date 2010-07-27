@@ -1,6 +1,4 @@
 <?php
-    @set_time_limit( 0 );
-    @ini_set( 'memory_limit', '128M' );
     App::import('Sanitize');
 
     class RepsddtefpController extends AppController
@@ -17,6 +15,8 @@
 
 
         function beforeFilter() {
+			ini_set('max_execution_time', 0);
+			ini_set('memory_limit', '1024M');
             parent::beforeFilter();
             $this->set( 'sexe', $this->Option->sexe() );
             $this->set( 'qual', $this->Option->qual() );
