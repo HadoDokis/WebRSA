@@ -1,6 +1,4 @@
 <?php
-    @set_time_limit( 0 );
-    @ini_set( 'memory_limit', '128M' );
 
     App::import('Sanitize');
 
@@ -11,10 +9,12 @@
         var $components = array( 'Jetons', 'Gedooo' );
         var $helpers = array( 'Locale' );
 
-        function beforeFilter() {
+		function beforeFilter() {
+			ini_set('max_execution_time', 0);
+			ini_set('memory_limit', '1024M');
             App::import( 'Helper', 'Locale' );
             $this->Locale = new LocaleHelper();
-        }
+		}
 
         function _value( $array, $index ) {
             $keys = array_keys( $array );

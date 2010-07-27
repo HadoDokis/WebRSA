@@ -1,6 +1,4 @@
 <?php
-@set_time_limit( 0 );
-@ini_set( 'memory_limit', '128M' );
 
 class DroitsController extends AppController
 {
@@ -8,17 +6,24 @@ class DroitsController extends AppController
     var $uses = array('Groups', 'User');
     var $components = array('Menu', 'Acl', 'Droits');
     var $helpers = array('Droits');
+    var $aucunDroit = array('edit');
 
     var $tabDroits = array();
     var $iProfil = -1;
     var $iMenu = -1;
 
+	function beforeFilter() {
+		ini_set('max_execution_time', 0);
+		ini_set('memory_limit', '1024M');
+		parent::beforeFilter();
+	}
+
     /* Gestion des droits des utilisateurs sur les menus et les actions des controleurs */
     function edit() {
     	// fonction devenue inutilisable avec la gestion des droits par utilisateur et par groupe
-    	$this->Session->setFlash( 'Cette fonction n\'est plus utilisée, merci d\'utiliser la gestion des droits par utilisateur et par groupe', 'flash/error' );
+    	/*$this->Session->setFlash( 'Cette fonction n\'est plus utilisée, merci d\'utiliser la gestion des droits par utilisateur et par groupe', 'flash/error' );
 		$this->redirect('/');
-		exit();
+		exit();*/
     
 		// Initialisation de la progressBar
 		include ('vendors/progressbar.php');

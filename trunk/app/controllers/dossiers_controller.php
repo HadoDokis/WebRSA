@@ -1,6 +1,4 @@
 <?php
-    @ini_set( 'max_execution_time', 0 );
-    @ini_set( 'memory_limit', '512M' );
     App::import( 'Sanitize' );
 
     class DossiersController extends AppController
@@ -25,6 +23,8 @@
         /**
         */
         function beforeFilter() {
+			ini_set('max_execution_time', 0);
+			ini_set('memory_limit', '512M');
             $return = parent::beforeFilter();
             $this->set( 'natpf', $this->Option->natpf() );
             $this->set( 'decision_ci', $this->Option->decision_ci() );

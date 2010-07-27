@@ -1,7 +1,5 @@
 <?php
     App::import('Sanitize');
-    @ini_set( 'max_execution_time', 0 );
-    @ini_set( 'memory_limit', '1024M' );
     class CriteresController extends AppController
     {
         var $name = 'Criteres';
@@ -9,6 +7,12 @@
         //var $aucunDroit = array('index', 'menu', 'constReq');
         var $aucunDroit = array( 'constReq', 'ajaxstruc' );
         var $helpers = array( 'Csv', 'Ajax' );
+
+		function beforeFilter() {
+			ini_set('max_execution_time', 0);
+			ini_set('memory_limit', '1024M');
+			parent::beforeFilter();
+		}
 
 
         function __construct() {

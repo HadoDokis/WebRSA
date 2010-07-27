@@ -1,6 +1,4 @@
 <?php
-    @set_time_limit( 0 );
-    @ini_set( 'memory_limit', '128M' );
     App::import('Sanitize');
 
     class CriteresrdvController extends AppController
@@ -14,6 +12,12 @@
         /** ********************************************************************
         *
         ** ********************************************************************/
+
+		function beforeFilter() {
+			ini_set('max_execution_time', 0);
+			ini_set('memory_limit', '128M');
+			parent::beforeFilter();
+		}
 
         function __construct() {
             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );

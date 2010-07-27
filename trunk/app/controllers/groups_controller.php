@@ -7,6 +7,13 @@
         var $helpers = array( 'Xform' );
         var $components = array('Menu','Dbdroits');
 
+		function beforeFilter() {
+			ini_set('max_execution_time', 300);
+			ini_set('memory_limit', '512M');
+			parent::beforeFilter();
+			//debug(ini_get('maximum_execution_time'));
+		}
+
         function index() {
             // Retour à la liste en cas d'annulation
             if( isset( $this->params['form']['Cancel'] ) ) {
