@@ -8,7 +8,7 @@
         var $components = array('Menu','Dbdroits');
 
 		function beforeFilter() {
-			ini_set('max_execution_time', 300);
+			ini_set('max_execution_time', 0);
 			ini_set('memory_limit', '512M');
 			parent::beforeFilter();
 			//debug(ini_get('maximum_execution_time'));
