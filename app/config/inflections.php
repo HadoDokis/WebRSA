@@ -55,8 +55,8 @@
  */
     $irregularPlural = array(
         'modecontact'  => 'modescontact',
-        'adressefoyer' => 'adressesfoyers',
-        'adresse_foyer' => 'adresses_foyers',
+        'adressefoyer' => 'adresses_foyers',
+        'adresse' => 'adresses',
         'titre_sejour' => 'titres_sejour',
         'contratinsertion' => 'contratsinsertion',
         'structurereferente' => 'structuresreferentes',
@@ -262,7 +262,24 @@
 //         'bilanparcours' => 'bilansparcours', //FIXME: on utilise useTable sinon ca passe pas
         ///Périodes d'immersion liées au CUI
         'periodeimmersion' => 'periodesimmersion',
-
+        
+        //ajouté par gaëtan pour créer correctement les fixtures
+		'dspf_nataccosocfam' => 'dspfs_nataccosocfams',
+		'dspf_diflog' => 'dspfs_diflogs',
+		'dspp_difdisp' => 'dspps_difdisps',
+		'dspp_accoemploi' => 'dspps_accoemplois',
+		'dspp_difsoc' => 'dspps_difsocs',
+		'dspp_nataccosocindi' => 'dspps_nataccosocindis',
+		'dspp_natmob' => 'dspps_natmobs',
+		'grossesse' => 'grossesses',
+		'orientstruct_serviceinstructeur' => 'orientsstructs_servicesinstructeurs',
+		'ressource_ressourcemensuelle' => 'ressources_ressourcesmensuelles',
+		'ressourcemensuelle_detailressourcemensuelle' => 'ressourcesmensuelles_detailsressourcesmensuelles',
+		'structurereferente_zonegeographique' => 'structuresreferentes_zonesgeographiques',
+		'user_zonegeographique' => 'users_zonesgeographiques',
+		'user_contratinsertion' => 'users_contratsinsertion',
+		'zonegeographique_regroupementzonegeo' => 'zonesgeographiques_regroupementszonesgeo',
+		'dossier_rsa' => 'dossiers_rsa'		
      );
 /**
  * This is a key => value array of regex used to match words.
