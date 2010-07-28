@@ -5,6 +5,10 @@
         var $name = 'Zonesgeographiques';
         var $uses = array( 'Zonegeographique', 'User', 'Adresse', 'Structurereferente');
         var $helpers = array( 'Xform' );
+        
+        var $commeDroit = array(
+			'add' => 'Zonesgeographiques:edit'
+		);
 
         function index() {
             // Retour à la liste en cas d'annulation

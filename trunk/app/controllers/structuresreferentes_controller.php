@@ -5,6 +5,10 @@
         var $name = 'Structuresreferentes';
         var $uses = array( 'Structurereferente', 'Referent', 'Orientstruct', 'Typeorient', 'Zonegeographique', 'Apre', 'Option' );
         var $helpers = array( 'Xform' );
+        
+		var $commeDroit = array(
+			'add' => 'Structuresreferentes:edit'
+		);
 
          function beforeFilter() {
             parent::beforeFilter();

@@ -5,7 +5,11 @@
         var $name = 'Entretiens';
         var $uses = array( 'Entretien', 'Option', 'Personne', 'Dsp', 'Typerdv', 'Rendezvous', 'Structurereferente', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
-
+        
+		var $commeDroit = array(
+			'view' => 'Entretiens:index',
+			'add' => 'Entretiens:edit'
+		);
 
         /** ********************************************************************
         *

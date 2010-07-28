@@ -9,7 +9,10 @@
         var $components = array( 'Gedooo' );
 		var $helpers = array( 'Xform', 'Locale', 'Paginator', 'Apreversement' );
         var $aucunDroit = array( 'ajaxmontant' );
-
+        
+		var $commeDroit = array(
+			'add' => 'Etatsliquidatifs:edit'
+		);
 
 		/**
 		*

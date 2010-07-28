@@ -5,6 +5,10 @@
         var $name = 'Tiersprestatairesapres';
         var $uses = array( 'Tiersprestataireapre', 'Option', 'Apre' );
         var $helpers = array( 'Xform' );
+        
+		var $commeDroit = array(
+			'add' => 'Tiersprestatairesapres:edit'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();

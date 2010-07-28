@@ -4,7 +4,11 @@
 
         var $name = 'Modescontact';
         var $uses = array( 'Modecontact',  'Option' , 'Foyer');
-
+        
+		var $commeDroit = array(
+			'view' => 'Modescontact:index',
+			'add' => 'Modescontact:edit'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();

@@ -14,6 +14,11 @@
         */
 
         public $uses = array( 'PartepSeanceep' );
+        
+		var $commeDroit = array(
+			'view' => 'PartsepsSeanceseps:index',
+			'add' => 'PartsepsSeanceseps:edit'
+		);
 
         /**
         *

@@ -9,6 +9,10 @@
 			'recursive' => -1,
 			'order' => array( 'canton ASC' )
 		);
+        
+		var $commeDroit = array(
+			'add' => 'Cantons:edit'
+		);
 
 		/**
 		*	FIXME: docs

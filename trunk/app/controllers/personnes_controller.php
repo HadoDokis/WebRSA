@@ -3,6 +3,11 @@
     {
         var $name = 'Personnes';
         var $uses = array( 'Personne', 'Option', 'Grossesse' );
+        
+		var $commeDroit = array(
+			'view' => 'Personnes:index',
+			'add' => 'Personnes:edit'
+		);
 
         /**
         *

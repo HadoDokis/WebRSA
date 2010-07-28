@@ -3,7 +3,10 @@
     {
         var $name = 'Parametrages';
         var $uses = array( 'Dossier', 'Structurereferente', 'Zonegeographique' );
-
+        
+		var $commeDroit = array(
+			'view' => 'Parametrages:index'
+		);
 
         function index() {
 

@@ -5,6 +5,10 @@
         var $name = 'Permanences';
         var $uses = array( 'Permanence', 'Structurereferente', 'Option' );
         var $helpers = array( 'Xform' );
+        
+		var $commeDroit = array(
+			'add' => 'Permanences:edit'
+		);
 
         protected function _setOptions() {
             $this->set( 'typevoie', $this->Option->typevoie() );

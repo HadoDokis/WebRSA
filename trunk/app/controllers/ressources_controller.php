@@ -3,7 +3,12 @@
     {
 
         var $name = 'Ressources';
-        var $uses = array( 'Ressource',  'Option' , 'Personne', 'Ressourcemensuelle',  'Detailressourcemensuelle',);
+        var $uses = array( 'Ressource',  'Option' , 'Personne', 'Ressourcemensuelle',  'Detailressourcemensuelle');
+        
+		var $commeDroit = array(
+			'view' => 'Ressources:index',
+			'add' => 'Ressources:edit'
+		);
 
         /**
         *

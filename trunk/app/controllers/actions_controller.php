@@ -6,9 +6,12 @@
         var $name = 'Actions';
         var $uses = array( 'Actioninsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action', 'Typeaction' );
         var $helpers = array( 'Xform' );
+        
+		var $commeDroit = array(
+			'add' => 'Actions:edit'
+		);
 
-
-         function beforeFilter() {
+        function beforeFilter() {
             parent::beforeFilter();
             $libtypaction = $this->Typeaction->find( 'list', array( 'fields' => array( 'libelle' ) ) );
             $this->set( 'libtypaction', $libtypaction );

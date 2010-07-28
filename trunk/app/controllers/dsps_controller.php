@@ -29,7 +29,10 @@
 			'Detailnatmob' => '2504',
 			'Detaildiflog' => '1001'
 		);
-
+        
+		var $commeDroit = array(
+			'add' => 'Dsps:edit'
+		);
 
 		/**
 		*

@@ -6,7 +6,10 @@
         var $name = 'Typesrdv';
         var $uses = array( 'Rendezvous', 'Option', 'Typerdv' );
         var $helpers = array( 'Xform' );
-
+        
+        var $commeDroit = array(
+			'add' => 'Typesrdv:edit'
+		);
 
         function index() {
             // Retour à la liste en cas d'annulation

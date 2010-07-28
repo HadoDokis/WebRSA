@@ -5,7 +5,10 @@
         var $name = 'Referents';
         var $uses = array( 'Referent', 'Structurereferente', 'Option' );
         var $helpers = array( 'Xform' );
-
+        
+		var $commeDroit = array(
+			'add' => 'Referents:edit'
+		);
 
         public $components = array(
             'Prg' => array(

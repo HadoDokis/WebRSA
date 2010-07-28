@@ -6,8 +6,11 @@
         var $uses = array( 'Statutpdo', 'Propopdo', 'Option' );
         var $helpers = array( 'Xform', 'Default', 'Theme' );
         var $components = array( 'Default' );
-
-
+        
+		var $commeDroit = array(
+			'view' => 'Statutspdos:index',
+			'add' => 'Statutspdos:edit'
+		);
 
         /**
         *   Ajout à la suite de l'utilisation des nouveaux helpers

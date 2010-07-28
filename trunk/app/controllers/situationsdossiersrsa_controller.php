@@ -3,8 +3,11 @@
     {
 
         var $name = 'Situationsdossiersrsa';
-        var $uses = array( 'Situationdossierrsa',  'Option' , 'Dossier', 'Suspensiondroit',  'Suspensionversement',);
-
+        var $uses = array( 'Situationdossierrsa',  'Option' , 'Dossier', 'Suspensiondroit',  'Suspensionversement');
+        
+		var $commeDroit = array(
+			'view' => 'Situationsdossiersrsa:index'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();
@@ -13,7 +16,6 @@
             $this->set( 'motisusdrorsa', $this->Option->motisusdrorsa() );
             $this->set( 'motisusversrsa', $this->Option->motisusversrsa() );
         }
-
 
         function index( $dossier_rsa_id = null ){
             // TODO : vérif param

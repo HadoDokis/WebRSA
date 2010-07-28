@@ -8,8 +8,11 @@
         */
 
         public $components = array( 'Default' );
-
-
+        
+		var $commeDroit = array(
+			'view' => 'Descriptionspdos:index',
+			'add' => 'Descriptionspdos:edit'
+		);
 
         /**
         *

@@ -4,7 +4,10 @@
 
         var $name = 'Prestsform';
         var $uses = array( 'Actioninsertion', 'Contratinsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action', 'Personne');
-
+        
+		var $commeDroit = array(
+			'add' => 'Prestsform:edit'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();

@@ -4,6 +4,10 @@
         var $name = 'EpsThemes';
         var $uses = array( 'Ep', 'Demandereorient', 'Motifdemreorient', 'Parcoursdetecte' );
         var $components = array( 'Jetonsfonctions' );
+        
+		var $commeDroit = array(
+			'add' => 'EpsThemes:edit'
+		);
 
         /**
         *

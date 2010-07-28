@@ -6,6 +6,11 @@
         var $uses = array( 'Actioncandidat', 'ActioncandidatPersonne', 'ActioncandidatPartenaire', 'Option', 'Personne' );
         var $helpers = array( 'Xform', 'Default', 'Theme' );
         var $components = array( 'Default' );
+        
+		var $commeDroit = array(
+			'view' => 'Actionscandidats:index',
+			'add' => 'Actionscandidats:edit'
+		);
 
         /**
         *
@@ -13,13 +18,9 @@
 
         function beforeFilter() {
             $return = parent::beforeFilter();
-
             $options = array();
-
             $this->set( 'typevoie', $this->Option->typevoie() );
-
             $this->set( compact( 'options', 'typevoie' ) );
-
             return $return;
         }
 
@@ -77,7 +78,6 @@
         */
 
         public function view( $id ) {
-
             $this->Default->view( $id );
         }
 

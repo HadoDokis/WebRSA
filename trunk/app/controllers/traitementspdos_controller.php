@@ -9,8 +9,11 @@
         */
 
         public $components = array( 'Default' );
-
-
+        
+		var $commeDroit = array(
+			'view' => 'Traitementspdos:index',
+			'add' => 'Traitementspdos:edit'
+		);
 
         /**
         *

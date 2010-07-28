@@ -5,6 +5,10 @@
         var $name = 'Suivisaidesapres';
         var $uses = array( 'Suiviaideapre', 'Option' );
         var $helpers = array( 'Xform' );
+        
+		var $commeDroit = array(
+			'add' => 'Suivisaidesapres:edit'
+		);
 
         function beforeFilter() {
             $this->set( 'qual', $this->Option->qual() );

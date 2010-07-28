@@ -4,7 +4,10 @@
 
         var $name = 'Infosagricoles';
         var $uses = array( 'Infoagricole',  'Option' , 'Personne', 'Aideagricole');
-
+        
+		var $commeDroit = array(
+			'view' => 'Infosagricoles:index'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();

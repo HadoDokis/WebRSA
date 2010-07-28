@@ -6,6 +6,11 @@
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece', 'notificationsop' );
         var $components = array( 'Default', 'Gedooo' );
+        
+		var $commeDroit = array(
+			'view' => 'Apres66:index',
+			'add' => 'Apres66:edit'
+		);
 
         /** ********************************************************************
         *

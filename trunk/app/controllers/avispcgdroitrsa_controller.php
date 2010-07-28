@@ -3,8 +3,11 @@
     {
 
         var $name = 'Avispcgdroitrsa';
-        var $uses = array( 'Avispcgdroitrsa',  'Option' , 'Dossier', 'Condadmin',  'Reducrsa',);
-
+        var $uses = array( 'Avispcgdroitrsa',  'Option' , 'Dossier', 'Condadmin',  'Reducrsa');
+        
+		var $commeDroit = array(
+			'view' => 'Actionscandidats:index'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();

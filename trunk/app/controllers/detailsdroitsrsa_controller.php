@@ -4,7 +4,10 @@
 
         var $name = 'Detailsdroitsrsa';
         var $uses = array( 'Detaildroitrsa',  'Option' , 'Dossier', 'Detailcalculdroitrsa');
-
+        
+		var $commeDroit = array(
+			'view' => 'Detailsdroitsrsa:index'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();

@@ -6,6 +6,10 @@
         var $uses = array( 'PersonneReferent', 'Option', 'Personne', 'Orientstruct', 'Structurereferente', 'Typerdv', 'Statutrdv', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm' );
+        
+		var $commeDroit = array(
+			'add' => 'PersonnesReferents:edit'
+		);
 
         /** ********************************************************************
         *

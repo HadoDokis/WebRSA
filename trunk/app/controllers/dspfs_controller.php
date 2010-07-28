@@ -4,7 +4,10 @@
 
         var $name = 'Dspfs';
         var $uses = array( 'Dspf', 'Nataccosocfam', 'Diflog', 'Personne', 'Option' , 'Nivetu', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Foyer', 'Dspp', 'Accoemploi');
-
+        
+		var $commeDroit = array(
+			'add' => 'Dspfs:edit'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();

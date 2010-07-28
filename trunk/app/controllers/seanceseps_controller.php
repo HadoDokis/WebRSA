@@ -22,6 +22,11 @@
 			'Gedooo',
 			'Prg' => array( 'actions' => array( 'index' ) )
 		);
+        
+		var $commeDroit = array(
+			'view' => 'Seanceseps:index',
+			'add' => 'Seanceseps:edit'
+		);
 
         /**
         *

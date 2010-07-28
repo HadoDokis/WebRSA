@@ -4,6 +4,10 @@
 
         var $name = 'Dspps';
         var $uses = array( 'Dspp', 'Difsoc', 'Nataccosocindi', 'Difdisp', 'Natmob', 'Nivetu', 'Accoemploi', 'Personne', 'Option', 'Serviceinstructeur', 'Contratinsertion' );
+        
+		var $commeDroit = array(
+			'add' => 'Dspps:edit'
+		);
 
         /**
         *

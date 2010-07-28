@@ -6,6 +6,10 @@
         var $uses = array( 'Apre', 'Option', 'Personne', 'Prestation'/*, 'Dsp'*/, 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Apre', 'Relanceapre' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxpiece' );
+        
+		var $commeDroit = array(
+			'add' => 'Relancesapres:edit'
+		);
 
         /** ********************************************************************
         *

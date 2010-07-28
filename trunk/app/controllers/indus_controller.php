@@ -4,7 +4,10 @@
         var $name = 'Indus';
         var $uses = array( 'Infofinanciere', 'Indu', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
 //         var $helpers = array( 'Locale' );
-
+        
+		var $commeDroit = array(
+			'view' => 'Indus:index'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();

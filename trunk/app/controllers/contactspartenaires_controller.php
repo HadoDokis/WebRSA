@@ -6,6 +6,11 @@
         var $uses = array( 'Contactpartenaire', 'Partenaire', 'Option' );
         var $helpers = array( 'Xform', 'Default', 'Theme' );
         var $components = array( 'Default' );
+        
+		var $commeDroit = array(
+			'view' => 'Contactspartenaires:index',
+			'add' => 'Contactspartenaires:edit'
+		);
         /**
         *
         */

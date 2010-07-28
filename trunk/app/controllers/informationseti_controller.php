@@ -4,7 +4,10 @@
 
         var $name = 'Informationseti';
         var $uses = array( 'Informationeti',  'Option' , 'Personne' );
-
+        
+		var $commeDroit = array(
+			'view' => 'Informationseti:index'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();

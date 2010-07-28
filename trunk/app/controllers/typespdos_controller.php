@@ -5,6 +5,10 @@
         var $name = 'Typespdos';
         var $uses = array( 'Typepdo', 'Propopdo' );
         var $helpers = array( 'Xform' );
+        
+        var $commeDroit = array(
+			'add' => 'Typespdos:edit'
+		);
 
         function index() {
             // Retour à la liste en cas d'annulation

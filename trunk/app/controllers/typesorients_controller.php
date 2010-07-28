@@ -5,6 +5,10 @@
         var $name = 'Typesorients';
         var $uses = array( 'Typeorient', 'Structurereferente');
         var $helpers = array( 'Xform' );
+        
+        var $commeDroit = array(
+			'add' => 'Typesorients:edit'
+		);
 
         function index() {
             // Retour à la liste en cas d'annulation

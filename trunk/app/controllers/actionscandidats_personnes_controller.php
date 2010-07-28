@@ -7,6 +7,10 @@
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct' );
         var $components = array( 'Default', 'Gedooo' );
+        
+		var $commeDroit = array(
+			'add' => 'ActionscandidatsPersonnes:edit'
+		);
 
 
         /** ********************************************************************

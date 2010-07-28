@@ -2,6 +2,11 @@
     class Themesapres66Controller extends AppController
     {
         public $name = 'Themesapres66';
+        
+		var $commeDroit = array(
+			'view' => 'Themesapres66:index',
+			'add' => 'Themesapres66:edit'
+		);
 
         /**
         *

@@ -4,7 +4,10 @@
 
         var $name = 'Grossesses';
         var $uses = array( 'Grossesse',  'Option' , 'Personne' );
-
+        
+		var $commeDroit = array(
+			'view' => 'Grossesses:index'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();
