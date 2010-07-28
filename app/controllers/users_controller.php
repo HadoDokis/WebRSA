@@ -6,6 +6,10 @@
         var $aucunDroit = array('login', 'logout');
         var $helpers = array( 'Xform' );
         var $components = array('Menu','Dbdroits');
+        
+		var $commeDroit = array(
+			'add' => 'Users:edit'
+		);
 
         /** ********************************************************************
         *
@@ -167,21 +171,36 @@
                 $this->User->begin();
                 if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
                     // Définition des nouvelles permissions
-                    $saved = $this->_setNewPermissions(
+                    
+                    $this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$this->data['User']['group_id']));
+                	$this->Dbdroits->MajCruDroits(
+						array(
+							'model'=>'Utilisateur',
+							'foreign_key'=>$this->data['User']['id'],
+							'alias'=>$this->data['User']['username']
+						),
+						array (
+							'model'=>'Group',
+							'foreign_key'=>$this->data['User']['group_id']
+						),
+						$this->data['Droits']
+					);
+                    
+                    /*$saved = $this->_setNewPermissions(
                         $this->data['User']['group_id'],
                         $this->User->id,
                         $this->data['User']['username']
-                    );
+                    );*/
 
-                    if( /*false &&*/ $saved ) {
+                    //if( /*false &&*/ $saved ) {
                         $this->User->commit();
                         $this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
                         $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
-                    }
+                    /*}
                     else {
                         $this->User->rollback();
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                    }
+                    }*/
                 }
                 else {
                     $this->User->rollback();
@@ -213,7 +232,6 @@
 
             if( !empty( $this->data ) ) {
                 $this->User->begin();
-
                 // Permet de supprimer les zones associées si on ne filtre pas sur les zones
                 $filtre_zone_geo = Set::classicExtract( $this->data, 'User.filtre_zone_geo' );
                 if( empty( $filtre_zone_geo ) ) {
@@ -222,70 +240,27 @@
 
                 if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
                     if( $userDb['User']['group_id'] != $this->data['User']['group_id'] ) {
-                    	$this->Dbdroits->MajCruDroits(
-							array(
-								'model'=>'Utilisateur',
-								'foreign_key'=>$this->data['User']['id'],
-								'alias'=>$this->data['User']['username']
-							),
-							array (
-								'model'=>'Group',
-								'foreign_key'=>$this->data['User']['group_id']
-							),
-							$this->data['Droits']
-						);
-                        /*$group = $this->User->Group->findById( $this->data['User']['group_id'], null, null, -1 );
-                        $aroGroup = $this->Acl->Aro->findByAlias( $group['Group']['name'], null, null, -1 );
-
-                        $aroUserDb = $this->Acl->Aro->findByForeignKey( $this->data['User']['id'], null, null, 2 );
-
-                        $aroUserData = array( 'Aro' => $aroUserDb['Aro'] );
-                        $aroUserData['Aro']['parent_id'] = $aroGroup['Aro']['id'];
-                        // Utile SSI l'utilisateur change de username
-                        $aroUserData['Aro']['alias'] = $this->data['User']['username'];
-
-                        // Sauvegarde des bonnes données liées à l'uilisateur et à son groupe dans la table Aros
-                        $this->Acl->Aro->create( $aroUserData );
-                        $saved = $this->Acl->Aro->save();
-
-                        // Suppression des anciennes entrées liées à cet utilisateur dans la table aros_acos
-                        // FIXME: celà ne pose-t'il pas de problème ?
-                        $arosAcosDb = Set::extract( 'Aco.{n}.Permission.id', $aroUserDb );
-                        if( !empty( $arosAcosDb ) ) {
-                            $saved = $this->Acl->Aro->query( 'DELETE FROM aros_acos WHERE id IN ('.implode( ', ', $arosAcosDb ).');' ) && $saved;
-                        }*/
-
-                        // Ajout des nouvelles entrées liées à cet groupe (dont on descend) dans la table aros_acos
-                        $saved = $this->_setNewPermissions(
-                            $this->data['User']['group_id'],
-                            $this->User->id,
-                            $this->data['User']['username']
-                        );
-
-                        if( $saved ) {
-                            $this->User->commit();
-                            $this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
-                            $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
-                        }
-                        else {
-                            $this->User->rollback();
-                            $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                        }
+               			$user=$this->User->read(null, $user_id);
+                    	$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$user['User']['group_id']));
                     }
-                    else {
-                    	$this->Dbdroits->MajCruDroits(
-							array(
-								'model'=>'Utilisateur',
-								'foreign_key'=>$this->data['User']['id'],
-								'alias'=>$this->data['User']['username']
-							),
-							null,
-							$this->data['Droits']
-						);
-                        $this->User->commit();
-                        $this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
-                        $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
-                    }
+                    
+                    $new_droit= Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Utilisateur','foreign_key'=>$user_id)));
+                    
+                	$this->Dbdroits->MajCruDroits(
+						array(
+							'model'=>'Utilisateur',
+							'foreign_key'=>$this->data['User']['id'],
+							'alias'=>$this->data['User']['username']
+						),
+						array (
+							'model'=>'Group',
+							'foreign_key'=>$this->data['User']['group_id']
+						),
+						$new_droit
+					);
+                    $this->User->commit();
+                    $this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
+                    $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
                 }
                 else {
                     $this->User->rollback();

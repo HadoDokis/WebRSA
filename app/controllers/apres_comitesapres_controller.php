@@ -6,6 +6,10 @@
         var $uses = array( 'ApreComiteapre', 'Apre', 'Comiteapre' );
         var $components = array( 'Jetonsfonctions' );
         var $helpers = array( 'Xform' );
+        
+		var $commeDroit = array(
+			'add' => 'Actionscandidats:edit'
+		);
 
         /** ********************************************************************
         *

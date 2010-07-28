@@ -20,6 +20,11 @@
         var $helpers = array( 'Ajax' );
         var $components = array( 'RequestHandler', 'Gedooo' );
         var $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
+        
+		var $commeDroit = array(
+			'view' => 'Contratsinsertion:index',
+			'add' => 'Contratsinsertion:edit'
+		);
 
         /** ********************************************************************
         *

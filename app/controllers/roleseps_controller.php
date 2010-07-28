@@ -2,6 +2,11 @@
 	class RolesepsController extends AppController
 	{
 		public $name = 'Roleseps';
+        
+		var $commeDroit = array(
+			'view' => 'Roleseps:index',
+			'add' => 'Roleseps:edit'
+		);
 
 		/**
 		*

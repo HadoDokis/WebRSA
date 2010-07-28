@@ -5,8 +5,10 @@
         var $name = 'Memos';
         var $uses = array( 'Memo', 'Option', 'Personne' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
-
-
+        
+		var $commeDroit = array(
+			'add' => 'Memos:edit'
+		);
 
         /** ********************************************************************
         *

@@ -6,6 +6,10 @@
         var $uses = array( 'Group', 'User' );
         var $helpers = array( 'Xform' );
         var $components = array('Menu','Dbdroits');
+        
+		var $commeDroit = array(
+			'add' => 'Groups:edit'
+		);
 
 		function beforeFilter() {
 			ini_set('max_execution_time', 0);
@@ -50,26 +54,48 @@
 
 
             if( !empty( $this->data ) ) {
+            	$group=$this->Group->read(null,$group_id);
+            	$new_droit= Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$group_id)));
                 if( $this->Group->saveAll( $this->data ) ) {
-                	$this->Dbdroits->MajCruDroits(
-						array(
-							'model'=>'Group',
-							'foreign_key'=>$this->data['Group']['id'],
-							'alias'=>$this->data['Group']['name']
-						),
-						null,
-						$this->data['Droits']
-					);
+                	if ($group['Group']['parent_id']!=$this->data['Group']['parent_id']) {
+				    	$this->Dbdroits->MajCruDroits(
+							array(
+								'model'=>'Group',
+								'foreign_key'=>$this->data['Group']['id'],
+								'alias'=>$this->data['Group']['name']
+							),
+							array (
+								'model'=>'Group',
+								'foreign_key'=>$this->data['Group']['parent_id']
+							),
+							$new_droit
+						);
+                	}
+                	else {
+		            	$this->Dbdroits->MajCruDroits(
+							array(
+								'model'=>'Group',
+								'foreign_key'=>$this->data['Group']['id'],
+								'alias'=>$this->data['Group']['name']
+							),
+							null,
+							$new_droit
+						);
+					}
 					$Users=$this->User->find('all',array('conditions'=>array('User.group_id'=>$this->data['Group']['id']),'recursive'=>-1));
 					foreach($Users as $User) {
+						$new_droit= Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Utilisateur','foreign_key'=>$User['User']['id'])));
 						$this->Dbdroits->MajCruDroits(
 							array(
 								'model'=>'Utilisateur',
 								'foreign_key'=>$User['User']['id'],
 								'alias'=>$User['User']['username']
 							),
-							null,
-							$this->data['Droits']
+							array (
+								'model'=>'Group',
+								'foreign_key'=>$User['User']['group_id']
+							),
+							$new_droit
 						);
 					}
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );

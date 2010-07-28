@@ -6,8 +6,11 @@
         var $uses = array( 'Situationpdo', 'Propopdo', 'Option' );
         var $helpers = array( 'Xform', 'Default', 'Theme' );
         var $components = array( 'Default' );
-
-
+        
+		var $commeDroit = array(
+			'view' => 'Situationspdos:index',
+			'add' => 'Situationspdos:edit'
+		);
 
         /**
         *   Ajout à la suite de l'utilisation des nouveaux helpers

@@ -6,6 +6,11 @@
         var $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre'/*, 'ComiteapreParticipantcomite'*/, 'Participantcomite', 'Apre', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $components = array( 'Prg' => array( 'actions' => array( 'index', 'liste' ) ) );
+        
+		var $commeDroit = array(
+			'view' => 'Comitesapres:index',
+			'add' => 'Comitesapres:edit'
+		);
 
         /** ********************************************************************
         *

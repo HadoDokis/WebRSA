@@ -3,6 +3,11 @@
     {
         var $name = 'Adressesfoyers';
         var $uses = array( 'Adressefoyer', 'Option' );
+        
+		var $commeDroit = array(
+			'view' => 'Adressesfoyers:index',
+			'add' => 'Adressesfoyers:edit'
+		);
 
         /**
             Commun à toutes les fonctions

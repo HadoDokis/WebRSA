@@ -8,7 +8,11 @@
 		*/
 
 		public $components = array( 'Default' );
-
+        
+		var $commeDroit = array(
+			'view' => 'Eps:index',
+			'add' => 'Eps:edit'
+		);
 
         /**
         *

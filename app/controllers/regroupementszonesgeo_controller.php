@@ -4,6 +4,10 @@
 
         var $name = 'Regroupementszonesgeo';
         var $uses = array( 'Regroupementzonegeo', 'Zonegeographique', 'User', 'Adresse', 'Structurereferente');
+        
+		var $commeDroit = array(
+			'add' => 'Regroupementszonesgeo:edit'
+		);
 
         function index() {
 

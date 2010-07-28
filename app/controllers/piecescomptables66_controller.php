@@ -2,6 +2,11 @@
     class Piecescomptables66Controller extends AppController
     {
         public $name = 'Piecescomptables66';
+        
+		var $commeDroit = array(
+			'view' => 'Piecescomptables66:index',
+			'add' => 'Piecescomptables66:edit'
+		);
 
         /**
         *

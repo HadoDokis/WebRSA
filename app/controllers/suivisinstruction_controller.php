@@ -3,7 +3,10 @@
     {
         var $name = 'Suivisinstruction';
         var $uses = array( 'Suiviinstruction', 'Option', 'Dossier', 'Serviceinstructeur' );
-
+        
+		var $commeDroit = array(
+			'view' => 'Suivisinstruction:index'
+		);
 
         function beforeFilter() {
             parent::beforeFilter();

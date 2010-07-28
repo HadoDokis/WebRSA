@@ -8,6 +8,11 @@
 		*/
 
 		public $components = array( 'Default' );
+        
+		var $commeDroit = array(
+			'view' => 'Decisionsreorient:index',
+			'add' => 'Decisionsreorient:edit'
+		);
 
 		/**
 		*

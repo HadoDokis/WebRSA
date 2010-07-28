@@ -4,6 +4,11 @@
         public $name = 'Typesaidesapres66';
 
         var $uses = array( 'Typeaideapre66', 'Themeapre66', 'Pieceaide66', 'Piececomptable66' );
+        
+		var $commeDroit = array(
+			'view' => 'Typesaidesapres66:index',
+			'add' => 'Typesaidesapres66:edit'
+		);
 
         /**
         *

@@ -6,7 +6,10 @@
         var $name = 'Statutsrdvs';
         var $uses = array( 'Rendezvous', 'Option', 'Statutrdv' );
         var $helpers = array( 'Xform' );
-
+        
+		var $commeDroit = array(
+			'add' => 'Statutsrdvs:edit'
+		);
 
         function index() {
             // Retour à la liste en cas d'annulation

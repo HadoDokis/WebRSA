@@ -9,7 +9,11 @@
 		*/
 
 		public $components = array( 'Default' );
-
+        
+		var $commeDroit = array(
+			'view' => 'Partseps:index',
+			'add' => 'Partseps:edit'
+		);
 
         /**
         *

@@ -4,6 +4,10 @@
         var $name = 'Infosfinancieres';
         var $uses = array( 'Infofinanciere', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
         var $helpers = array( 'Paginator', 'Locale', 'Csv' );
+        
+		var $commeDroit = array(
+			'view' => 'Infosfinancieres:index'
+		);
 
 //         var $paginate = array(
 //             // FIXME

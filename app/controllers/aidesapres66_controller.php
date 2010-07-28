@@ -4,6 +4,11 @@
         public $name = 'Aidesapres66';
 
         var $uses = array( 'Aideapre66', 'Themeapre66', 'Pieceaide66' );
+        
+		var $commeDroit = array(
+			'view' => 'Aidesapres66:index',
+			'add' => 'Aidesapres66:edit'
+		);
 
         /**
         *

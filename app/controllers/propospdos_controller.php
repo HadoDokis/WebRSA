@@ -8,7 +8,11 @@
         var $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
         var $helpers = array( 'Default', 'Ajax' );
-
+        
+		var $commeDroit = array(
+			'view' => 'Propospdos:index',
+			'add' => 'Propospdos:edit'
+		);
 
         protected function _setOptions() {
             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );

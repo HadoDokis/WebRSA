@@ -6,8 +6,11 @@
         var $uses = array( 'Originepdo', 'Propopdo', 'Option' );
         var $helpers = array( 'Xform', 'Default', 'Theme' );
         var $components = array( 'Default' );
-
-
+        
+		var $commeDroit = array(
+			'view' => 'Originespdos:index',
+			'add' => 'Originespdos:edit'
+		);
 
         /**
         *   Ajout à la suite de l'utilisation des nouveaux helpers

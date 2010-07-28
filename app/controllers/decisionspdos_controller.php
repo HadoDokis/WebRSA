@@ -5,6 +5,10 @@
         var $name = 'Decisionspdos';
         var $uses = array( 'Decisionpdo', 'Propopdo' );
         var $helpers = array( 'Xform' );
+        
+		var $commeDroit = array(
+			'add' => 'Decisionspdos:edit'
+		);
 
         function index() {
             // Retour à la liste en cas d'annulation

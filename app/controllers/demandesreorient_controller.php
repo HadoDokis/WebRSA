@@ -14,6 +14,11 @@
 		*/
 
         public $uses = array( 'Demandereorient', 'Typeorient', 'Structurereferente', 'Referent' );
+        
+		var $commeDroit = array(
+			'view' => 'Demandesreorient:index',
+			'add' => 'Demandesreorient:edit'
+		);
 
 		/**
 		*

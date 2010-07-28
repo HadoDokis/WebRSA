@@ -8,6 +8,11 @@
 		*/
 
 		public $components = array( 'Default' );
+        
+		var $commeDroit = array(
+			'view' => 'EpsZonesgeographiques:index',
+			'add' => 'EpsZonesgeographiques:edit'
+		);
 
 		/**
 		*

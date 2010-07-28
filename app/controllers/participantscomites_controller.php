@@ -5,6 +5,10 @@
         var $name = 'Participantscomites';
         var $uses = array( 'Participantcomite', 'Comiteapre', 'Option' );
         var $helpers = array( 'Xform' );
+        
+		var $commeDroit = array(
+			'add' => 'Participantscomites:edit'
+		);
 
         function beforeFilter() {
             $this->set( 'qual', $this->Option->qual() );

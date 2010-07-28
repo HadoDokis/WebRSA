@@ -4,6 +4,11 @@
 
         var $name = 'Piecespdos';
         var $uses = array( 'Piecepdo', 'Propopdo' );
+        
+		var $commeDroit = array(
+			'view' => 'Piecespdos:index',
+			'add' => 'Piecespdos:edit'
+		);
 
         function index(  ) {
 

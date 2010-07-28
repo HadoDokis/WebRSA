@@ -6,6 +6,10 @@
         var $name = 'Typesactions';
         var $uses = array( 'Actioninsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action', 'Typeaction' );
         var $helpers = array( 'Xform' );
+        
+		var $commeDroit = array(
+			'add' => 'Typesactions:edit'
+		);
 
         function index() {
             // Retour à la liste en cas d'annulation

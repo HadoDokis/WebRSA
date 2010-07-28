@@ -3,6 +3,10 @@
 	{
 		var $name = 'Budgetsapres';
         var $helpers = array( 'Xform' );
+        
+		var $commeDroit = array(
+			'add' => 'Actionscandidats:edit'
+		);
 		/**
 		*
 		*/

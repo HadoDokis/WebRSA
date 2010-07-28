@@ -6,6 +6,11 @@
         var $uses = array( 'ActioncandidatPartenaire', 'Actioncandidat', 'Partenaire', 'Option', 'Personne' );
         var $helpers = array( 'Xform', 'Default', 'Theme' );
         var $components = array( 'Default' );
+        
+		var $commeDroit = array(
+			'view' => 'ActionscandidatsPartenaires:index',
+			'add' => 'ActionscandidatsPartenaires:edit'
+		);
 
         /**
         *

@@ -5,6 +5,10 @@
         var $name = 'Typoscontrats';
         var $uses = array( 'Typocontrat', 'Contratinsertion');
         var $helpers = array( 'Xform' );
+        
+        var $commeDroit = array(
+			'add' => 'Typoscontrats:edit'
+		);
 
         function index() {
             // Retour à la liste en cas d'annulation

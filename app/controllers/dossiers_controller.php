@@ -12,6 +12,10 @@
             // FIXME
             'limit' => 20
         );
+        
+		var $commeDroit = array(
+			'view' => 'Dossiers:index'
+		);
 
         /**
         */

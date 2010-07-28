@@ -5,6 +5,10 @@
         var $name = 'Servicesinstructeurs';
         var $uses = array( 'Serviceinstructeur', 'Option' );
         var $helpers = array( 'Xform' );
+        
+		var $commeDroit = array(
+			'add' => 'Servicesinstructeurs:edit'
+		);
 
          function beforeFilter() {
             parent::beforeFilter();

@@ -2,6 +2,11 @@
 	class RolespartsepsController extends AppController
 	{
 		public $name = 'Rolespartseps';
+        
+		var $commeDroit = array(
+			'view' => 'Rolespartseps:index',
+			'add' => 'Rolespartseps:edit'
+		);
 
 		/**
 		*

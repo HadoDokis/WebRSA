@@ -5,7 +5,10 @@
         var $name = 'Bilanparcours';
         var $uses = array( 'Bilanparcours', 'Option', 'Personne', 'PersonneReferent', 'Structurereferente', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
-
+        
+		var $commeDroit = array(
+			'add' => 'Bilanparcours:edit'
+		);
 
         /** ********************************************************************
         *

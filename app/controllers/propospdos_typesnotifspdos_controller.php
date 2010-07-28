@@ -4,7 +4,10 @@
 
         var $name = 'PropospdosTypesnotifspdos';
         var $uses = array( 'PropopdoTypenotifpdo', 'Typenotifpdo', 'Propopdo'/*, 'Dossier'*/ );
-
+        
+		var $commeDroit = array(
+			'add' => 'PropospdosTypesnotifspdos:edit'
+		);
 
         function beforeFilter(){
             parent::beforeFilter();

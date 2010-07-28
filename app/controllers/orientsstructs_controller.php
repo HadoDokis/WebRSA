@@ -6,8 +6,10 @@
         var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Demandereorient', 'Pdf', 'Referent' );
         var $helpers = array( 'Default' );
         var $components = array( 'Gedooo' );
-
-
+        
+		var $commeDroit = array(
+			'add' => 'Orientsstructs:edit'
+		);
 
         protected function _setOptions() {
             $this->set( 'pays', $this->Option->pays() );

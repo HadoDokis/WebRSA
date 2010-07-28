@@ -9,6 +9,11 @@
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $components = array( 'RequestHandler', 'Gedooo' );
         var $aucunDroit = array( 'gedooo' );
+        
+		var $commeDroit = array(
+			'view' => 'Periodesimmersion:index',
+			'add' => 'Periodesimmersion:edit'
+		);
 
         /** ********************************************************************
         *

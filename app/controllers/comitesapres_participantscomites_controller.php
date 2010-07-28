@@ -6,8 +6,10 @@
         var $uses = array( 'ComiteapreParticipantcomite', 'Apre', 'Participantcomite', 'Comiteapre' );
         var $components = array( 'Jetonsfonctions' );
         var $helpers = array( 'Xform' );
-
-
+        
+		var $commeDroit = array(
+			'add' => 'ComitesapresParticipantscomites:edit'
+		);
 
         protected function _setOptions() {
             $this->set( 'participants', $this->Participantcomite->find( 'all' ) );

@@ -58,6 +58,7 @@ function deleteCa($ca) {
  * $cruParent : array('model' => string, 'foreign_key' => integer)
  */
 function addCru($cru, $cruParent=null) {
+	$this->Acl->Aro->create();
 	// traitement du parent
 	if (!empty($cruParent) && !empty($cruParent['foreign_key']))
 		$cru['parent_id'] = $this->Acl->Aro->field('id', $cruParent);
@@ -65,7 +66,6 @@ function addCru($cru, $cruParent=null) {
 		$cru['parent_id'] = '0';
 
 	// creation et sauvegarde
-	$this->Acl->Aro->create();
 	if ($this->Acl->Aro->save($cru))
 		return true;
 	else
@@ -103,8 +103,8 @@ function majCru($cru, $cruParent=null) {
 			unset( $aro['Aro']['parent_id'] );
 		}
 
-		$this->Acl->Aro->create($aro);
-		$this->Acl->Aro->save();
+		$this->Acl->Aro->save($aro);
+		//$this->Acl->Aro->save();
 	}
 }
 
@@ -173,11 +173,12 @@ function majActions() {
 	// Ajout en base des controlleur-action si ils n'y sont pas déjà
 	foreach($acosMaj as $acoMaj) {
 		$trouve = false;
-		foreach($acosEnBase as $acoEnBase)
+		foreach($acosEnBase as $acoEnBase) {
 			if (($acoEnBase['alias'] === $acoMaj['alias']) && ($acoEnBase['parent_alias'] === $acoMaj['parent_alias'])) {
 				$trouve = true;
 				break;
 			}
+		}
 		if (!$trouve) $this->addCa($acoMaj['alias'], $acoMaj['parent_alias']);
 	}
 }
@@ -213,7 +214,7 @@ function litCruDroits($cru=null) {
  */
 function majCruDroits($cru, $cruParent, $tabDroits) {
 	/* mise à jour de la table acos */
-	$this->majActions();
+	//$this->majActions();
 
 	/* mise à jour de la table aros */
 	if ($this->findCru($cru))
