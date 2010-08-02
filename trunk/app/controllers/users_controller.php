@@ -174,15 +174,8 @@
                     
                     $this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$this->data['User']['group_id']));
                 	$this->Dbdroits->MajCruDroits(
-						array(
-							'model'=>'Utilisateur',
-							'foreign_key'=>$this->data['User']['id'],
-							'alias'=>$this->data['User']['username']
-						),
-						array (
-							'model'=>'Group',
-							'foreign_key'=>$this->data['User']['group_id']
-						),
+						array('model'=>'Utilisateur','foreign_key'=>$this->User->id,'alias'=>$this->data['User']['username']),
+						array ('model'=>'Group','foreign_key'=>$this->data['User']['group_id']),
 						$this->data['Droits']
 					);
                     

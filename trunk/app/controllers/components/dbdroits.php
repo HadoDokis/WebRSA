@@ -214,7 +214,7 @@ function litCruDroits($cru=null) {
  */
 function majCruDroits($cru, $cruParent, $tabDroits) {
 	/* mise à jour de la table acos */
-	//$this->majActions();
+	$this->majActions();
 
 	/* mise à jour de la table aros */
 	if ($this->findCru($cru))

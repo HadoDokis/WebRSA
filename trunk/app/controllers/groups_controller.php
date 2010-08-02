@@ -39,6 +39,31 @@
 
             if( !empty( $this->data ) ) {
                 if( $this->Group->saveAll( $this->data ) ) {
+		            if ($this->data['Group']['parent_id']!=0) {
+						$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']));
+						$this->Dbdroits->MajCruDroits(
+							array(
+								'model'=>'Group',
+								'foreign_key'=>$this->Group->id,
+								'alias'=>$this->data['Group']['name']
+							),
+							array (
+								'model'=>'Group',
+								'foreign_key'=>$this->data['Group']['parent_id']
+							),
+							$this->data['Droits']
+						);
+		        	}
+		        	else {
+			        	$this->Dbdroits->AddCru(
+							array(
+								'model'=>'Group',
+								'foreign_key'=>$this->Group->id,
+								'alias'=>$this->data['Group']['name']
+							),
+							null
+						);
+					}
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'groups', 'action' => 'index' ) );
                 }
@@ -58,26 +83,23 @@
             	$new_droit= Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$group_id)));
                 if( $this->Group->saveAll( $this->data ) ) {
                 	if ($group['Group']['parent_id']!=$this->data['Group']['parent_id']) {
-				    	$this->Dbdroits->MajCruDroits(
-							array(
-								'model'=>'Group',
-								'foreign_key'=>$this->data['Group']['id'],
-								'alias'=>$this->data['Group']['name']
-							),
-							array (
-								'model'=>'Group',
-								'foreign_key'=>$this->data['Group']['parent_id']
-							),
-							$new_droit
+		            	$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']));
+						$this->Dbdroits->MajCruDroits(
+							array('model'=>'Group','foreign_key'=>$this->data['Group']['id'],'alias'=>$this->data['Group']['name']),
+							array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']),
+							$this->data['Droits']
 						);
                 	}
-                	else {
-		            	$this->Dbdroits->MajCruDroits(
-							array(
-								'model'=>'Group',
-								'foreign_key'=>$this->data['Group']['id'],
-								'alias'=>$this->data['Group']['name']
-							),
+		        	elseif ($group['Group']['parent_id']!=0) {
+			        	$this->Dbdroits->MajCruDroits(
+							array('model'=>'Group','foreign_key'=>$this->data['Group']['id'],'alias'=>$this->data['Group']['name']),
+							array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']),
+							$new_droit
+						);
+					}
+					else {
+			        	$this->Dbdroits->MajCruDroits(
+							array('model'=>'Group','foreign_key'=>$this->data['Group']['id'],'alias'=>$this->data['Group']['name']),
 							null,
 							$new_droit
 						);
@@ -101,18 +123,19 @@
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'groups', 'action' => 'index' ) );
                 }
+                else {
+                	$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                }
             }
-            else {
-                $group = $this->Group->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Group.id' => $group_id,
-                        )
+            $group = $this->Group->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Group.id' => $group_id,
                     )
-                );
-                $this->data = $group;
-            }
+                )
+            );
+            $this->data = $group;
 
 			$this->set('listeCtrlAction', $this->Menu->menuCtrlActionAffichage());
 			$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$group_id));
