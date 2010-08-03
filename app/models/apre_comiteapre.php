@@ -63,11 +63,11 @@
                         $this->invalidate( 'montantattribue', 'Veuillez entrer un nombre positif' );
                     }
 
-                    $montantacceptable = ( $montantattribue <= $apre['Apre']['montantaverser'] );
-                    if( !$montantacceptable ) {
-                        $this->invalidate( 'montantattribue', 'Maximum: '.$apre['Apre']['montantaverser'].' €' );
-                    }
-                    $return = ( $return && $montantacceptable && $montantpositif );
+//                     $montantacceptable = ( $montantattribue <= $apre['Apre']['montantaverser'] );
+//                     if( !$montantacceptable ) {
+//                         $this->invalidate( 'montantattribue', 'Maximum: '.$apre['Apre']['montantaverser'].' €' );
+//                     }
+                    $return = ( $return /*&& $montantacceptable*/ && $montantpositif );
                 }
             }
 

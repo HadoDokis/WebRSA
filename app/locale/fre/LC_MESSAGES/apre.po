@@ -642,13 +642,16 @@ msgid "Tiersprestataireapre.nomtiturib"
 msgstr "Nom du titulaire du RIB"
 
 msgid "Tiersprestataireapre.etaban"
-msgstr "Etablissement bancaire"
+msgstr "Code banque"
 
 msgid "Tiersprestataireapre.guiban"
-msgstr "N° du guichet banque"
+msgstr "Code guichet"
 
 msgid "Tiersprestataireapre.numcomptban"
-msgstr "N° compte bancaire"
+msgstr "Numéro de compte"
+
+msgid "Tiersprestataireapre.nometaban"
+msgstr "Nom de l'établissement bancaire"
 
 msgid "Tiersprestataireapre.clerib"
 msgstr "Clé RIB"

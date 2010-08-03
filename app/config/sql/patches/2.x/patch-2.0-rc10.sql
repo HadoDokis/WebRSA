@@ -36,7 +36,7 @@ CREATE TABLE controlesadministratifs (
     mtraprsacgcontro    DECIMAL(11,2)
 );
 
-
+ALTER TABLE tiersprestatairesapres ADD COLUMN nometaban VARCHAR(24);
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

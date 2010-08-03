@@ -72,16 +72,17 @@
             'numero_poste' => array(
                 array(
                     'rule' => 'numeric',
-                    'message' => 'Le numéro de téléphone est composé de chiffres'
+                    'message' => 'Le numéro de téléphone est composé de chiffres',
+                    'allowEmpty' => true
                 ),
                 array(
                     'rule' => array( 'between', 10, 14 ),
                     'message' => 'Le N° de poste doit être composé de 10 chiffres'
-                ),
+                )/*,
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
-                )
+                )*/
             ),
             'qual' => array(
                 array(
@@ -104,13 +105,14 @@
                 'message' => 'Champ obligatoire'
             ),
             'email' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
+//                 array(
+//                     'rule' => 'notEmpty',
+//                     'message' => 'Champ obligatoire'
+//                 ),
                 array(
                     'rule' => 'email',
-                    'message' => 'Veuillez entrer une adresse email valide'
+                    'message' => 'Veuillez entrer une adresse email valide',
+                    'allowEmpty' => true
                 )
             ),
             'structurereferente_id' => array(
