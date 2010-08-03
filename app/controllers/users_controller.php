@@ -2,7 +2,7 @@
     class UsersController extends AppController
     {
         var $name = 'Users';
-        var $uses = array( 'Group', 'Zonegeographique', 'User', 'Serviceinstructeur', 'Connection', 'Option' );
+        var $uses = array( 'Group', 'Zonegeographique', 'User', 'Serviceinstructeur', 'Connection', 'Option', 'Aro' );
         var $aucunDroit = array('login', 'logout');
         var $helpers = array( 'Xform' );
         var $components = array('Menu','Dbdroits');
@@ -292,6 +292,8 @@
 
             // Tentative de suppression ... FIXME
             if( $this->User->deleteAll( array( 'User.id' => $user_id ), true ) ) {
+            	$aro_id = $this->Aro->find('first',array('conditions'=>array('model'=>'Utilisateur', 'foreign_key'=>$id),'fields'=>array('id')));
+				$this->Aro->delete($aro_id['Aro']['id']);
                 $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
                 $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
             }
