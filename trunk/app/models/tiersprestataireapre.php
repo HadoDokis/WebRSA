@@ -104,6 +104,10 @@
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
             ),
+            'nometaban' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+            ),
             'numcomptban' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
@@ -146,5 +150,34 @@
 
             return $tiersprestatairesapres;
         }
+
+
+        /**
+        *   Fonction permettant de vérifier que le RIB est correct
+        */
+
+        function check_rib( $cbanque, $cguichet, $nocompte, $clerib ) {
+            $tabcompte = "";
+            $len = strlen($nocompte);
+
+            if ($len != 11) {
+                return false;
+            }
+
+            for ($i = 0; $i < $len; $i++) {
+                $car = substr($nocompte, $i, 1);
+                if (!is_numeric($car)) {
+                    $c = ord($car) - (ord('A') - 1);
+                    $b = ($c + pow(2, ($c - 10)/9)) % 10;
+                    $tabcompte .= $b;
+                }
+                else {
+                    $tabcompte .= $car;
+                }
+            }
+            $int = $cbanque . $cguichet . $tabcompte . $clerib;
+            return (strlen($int) >= 21 && bcmod($int, 97) == 0);
+        }
+
     }
 ?>

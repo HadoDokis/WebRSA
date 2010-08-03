@@ -32,6 +32,7 @@
             echo $xform->input( 'Tiersprestataireapre.etaban', array( 'required' => true, 'domain' => 'apre' ) );
             echo $xform->input( 'Tiersprestataireapre.guiban', array( 'required' => true, 'domain' => 'apre' ) );
             echo $xform->input( 'Tiersprestataireapre.numcomptban', array( 'required' => true, 'domain' => 'apre' ) );
+            echo $xform->input( 'Tiersprestataireapre.nometaban', array( 'required' => true, 'domain' => 'apre' ) );
             echo $xform->input( 'Tiersprestataireapre.clerib', array( 'required' => true, 'domain' => 'apre', 'maxlength' => 2 ) );
         ?>
     </fieldset>
