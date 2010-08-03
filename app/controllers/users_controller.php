@@ -2,7 +2,7 @@
     class UsersController extends AppController
     {
         var $name = 'Users';
-        var $uses = array( 'Group', 'Zonegeographique', 'User', 'Serviceinstructeur', 'Connection', 'Option', 'Aro' );
+        var $uses = array( 'Group', 'Zonegeographique', 'User', 'Serviceinstructeur', 'Connection', 'Option', 'Aro', 'AroAco' );
         var $aucunDroit = array('login', 'logout');
         var $helpers = array( 'Xform' );
         var $components = array('Menu','Dbdroits');
@@ -169,16 +169,25 @@
 
             if( !empty( $this->data ) ) {
                 $this->User->begin();
+//                     debug($this->data);
+//                     die();
                 if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
                     // Définition des nouvelles permissions
                     
                     $this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$this->data['User']['group_id']));
                 	$this->Dbdroits->MajCruDroits(
-						array('model'=>'Utilisateur','foreign_key'=>$this->User->id,'alias'=>$this->data['User']['username']),
-						array ('model'=>'Group','foreign_key'=>$this->data['User']['group_id']),
+						array(
+                            'model'         =>  'Utilisateur',
+                            'foreign_key'   =>   $this->User->id,
+                            'alias'         =>  $this->data['User']['username']
+                        ),
+						array(
+                            'model'         =>  'Group',
+                            'foreign_key'   =>  $this->data['User']['group_id']
+                        ),
 						$this->data['Droits']
 					);
-                    
+
                     /*$saved = $this->_setNewPermissions(
                         $this->data['User']['group_id'],
                         $this->User->id,
@@ -290,10 +299,44 @@
                 $this->cakeError( 'error404' );
             }
 
+
+//                 $aro_id = $this->Aro->find(
+//                     'first',
+//                     array(
+//                         'conditions'=>array(
+//                             'model'=>'Utilisateur',
+//                             'foreign_key'=> $user_id
+//                         ),
+//                         'fields'=>array('id')
+//                     )
+//                 );
+//                 $test_id = Set::classicExtract( $aro_id, 'Aro.id' );
+//                 $aro_aco_id = $this->AroAco->findByAroId( $test_id, null, null, -1 );
+//                 debug($aro_id);
+//                 debug($aro_aco_id);
+//                 die();
+
             // Tentative de suppression ... FIXME
             if( $this->User->deleteAll( array( 'User.id' => $user_id ), true ) ) {
-            	$aro_id = $this->Aro->find('first',array('conditions'=>array('model'=>'Utilisateur', 'foreign_key'=>$id),'fields'=>array('id')));
-				$this->Aro->delete($aro_id['Aro']['id']);
+
+                $aro = $this->Aro->find(
+                    'first',
+                    array(
+                        'conditions'=>array(
+                            'model'=>'Utilisateur',
+                            'foreign_key'=> $user_id
+                        ),
+                        'fields'=>array('id')
+                    )
+                );
+                $aro_id = Set::classicExtract( $aro, 'Aro.id' );
+                if( !empty( $aro_id ) ) {
+                    $aro_aco = $this->AroAco->findByAroId( $aro_id, null, null, -1 );
+                }
+
+                $this->Aro->delete( $aro['Aro']['id'] );
+                $this->AroAco->delete( $aro_aco['AroAco']['id'] );
+
                 $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
                 $this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
             }

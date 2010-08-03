@@ -63,7 +63,7 @@ function addCru($cru, $cruParent=null) {
 	if (!empty($cruParent) && !empty($cruParent['foreign_key']))
 		$cru['parent_id'] = $this->Acl->Aro->field('id', $cruParent);
 	else
-		$cru['parent_id'] = '0';
+		$cru['parent_id'] = 0;
 
 	// creation et sauvegarde
 	if ($this->Acl->Aro->save($cru))
