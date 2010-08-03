@@ -97,20 +97,44 @@
                     'message' => 'Champ obligatoire'
             ),
             'etaban' => array(
+                array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                )/*,
+                array(
+                    'rule' => 'check_rib',
+                    'message' => 'RIB non valide'
+                )*/
             ),
             'guiban' => array(
+                array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                )/*,
+                array(
+                    'rule' => 'check_rib',
+                    'message' => 'RIB non valide'
+                )*/
             ),
             'nometaban' => array(
+                array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                )/*,
+                array(
+                    'rule' => 'check_rib',
+                    'message' => 'RIB non valide'
+                )*/
             ),
-            'numcomptban' => array(
+            'numcomptban' =>  array(
+                array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                )/*,
+                array(
+                    'rule' => 'check_rib',
+                    'message' => 'RIB non valide'
+                )*/
             ),
             'clerib' => array(
                 array(
@@ -120,6 +144,10 @@
                 array(
                     'rule' => 'numeric',
                     'message' => 'La clé RIB est composée de 2 chiffres'
+                ),
+                array(
+                    'rule' => 'check_rib',
+                    'message' => 'RIB non valide'
                 )
             ),
             'aidesliees' => array(
@@ -156,7 +184,16 @@
         *   Fonction permettant de vérifier que le RIB est correct
         */
 
-        function check_rib( $cbanque, $cguichet, $nocompte, $clerib ) {
+        function check_rib( $cbanque = null, $cguichet = null, $nocompte = null, $clerib = null ) {
+
+
+// debug($this->data);
+
+            $cbanque = $this->data['Tiersprestataireapre']['etaban'];
+            $cguichet = $this->data['Tiersprestataireapre']['guiban'];
+            $nocompte = $this->data['Tiersprestataireapre']['numcomptban'];
+            $clerib = $this->data['Tiersprestataireapre']['clerib'];
+
             $tabcompte = "";
             $len = strlen($nocompte);
 
@@ -176,7 +213,10 @@
                 }
             }
             $int = $cbanque . $cguichet . $tabcompte . $clerib;
-            return (strlen($int) >= 21 && bcmod($int, 97) == 0);
+            $return = (strlen($int) >= 21 && bcmod($int, 97) == 0);
+// debug( $return );
+            return $return;
+
         }
 
     }
