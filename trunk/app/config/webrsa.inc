@@ -5,7 +5,7 @@
 
     Configure::write( 'Utilisateurs.multilogin', false );
     Configure::write( 'with_parentid', false ); // true = cg66
-    Configure::write( 'nom_form_ci_cg', 'cg93' );
+    Configure::write( 'nom_form_ci_cg', 'cg58' );
     Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
     Configure::write( 'Zonesegeographiques.CodesInsee', true );
     //Configure::write( 'Etatliquidatif.limit', 1000 ); // INFO: commenter pour ne pas avoir de limite
@@ -47,7 +47,7 @@
     * Paramètre à renseigner pour l'utilisation du bon MVC
     * @default: vide (pour le CG93), sinon '66' pour le CG66
     */
-    Configure::write( 'Apre.suffixe', null );
+    Configure::write( 'Apre.suffixe', '' );
 
     /**
     * Paramètres à renseigner pour les APRE's forfaitaires
@@ -118,19 +118,19 @@
     * Champs spécifique selon le CG pour le formulaire des PDOs
     * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
     */
-    Configure::write( 'nom_form_pdo_cg', 'cg93' );
+    Configure::write( 'nom_form_pdo_cg', 'cg66' );
 
     /**
     * Champs spécifique selon le CG pour le formulaire du bilan de parcours / Fiche de saisine
     * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
     */
-    Configure::write( 'nom_form_bilan_cg', 'cg93' );
+    Configure::write( 'nom_form_bilan_cg', 'cg66' );
 
     /**
     * Champs spécifique selon le CG pour le formulaire du Contrat Unqiue d'Insertion
     * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
     */
-    Configure::write( 'nom_form_cui_cg', 'cg93' );
+    Configure::write( 'nom_form_cui_cg', 'cg66' );
 
     /**
     *   Paramètre pour connaître le pourcentage du 1er versement, lors d'un versement en 2 fois,
@@ -138,4 +138,16 @@
     *   @default: 60 ---> avant 40 %
     */
     Configure::write( 'Apre.pourcentage.montantversement', 60 );
+
+    /**
+    *   Paramètre pour définir les taux, 
+    *   Cui.taux.fixe                   => Taux fixé par l'arrêté du Préfet de région (en % )
+    *   Cui.taux.prisencharge           => Taux de prise en charge effectif si le Conseil Général fixe
+    *                                       un taux supérieur au taux fixé par le Préfet de région (en %)
+    *   Cui.taux.financementexclusif    => Financement exclusif du Conseil Général, Si oui, taux (en %)
+    *   @default: à définir par chaque CG
+    */
+    Configure::write( 'Cui.taux.fixe', 60 );
+    Configure::write( 'Cui.taux.prisencharge', 60 );
+    Configure::write( 'Cui.taux.financementexclusif', 60 );
 ?>

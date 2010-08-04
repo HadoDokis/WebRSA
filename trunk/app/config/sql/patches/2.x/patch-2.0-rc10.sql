@@ -37,6 +37,8 @@ CREATE TABLE controlesadministratifs (
 );
 
 ALTER TABLE tiersprestatairesapres ADD COLUMN nometaban VARCHAR(24);
+
+ALTER TABLE users ADD COLUMN sensibilite type_no DEFAULT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
