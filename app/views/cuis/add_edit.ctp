@@ -119,15 +119,24 @@
         );
 
         //Utilisé si le financement excclusif provient du Conseil Général
-        observeDisableFieldsOnRadioValue(
+//         observeDisableFieldsOnRadioValue(
+//             'cuiform',
+//             'data[Cui][financementexclusif]',
+//             [
+//                 'CuiTauxfinancementexclusif'
+//             ],
+//             'O',
+//             true
+//         );
+         observeDisableFieldsetOnRadioValue(
             'cuiform',
             'data[Cui][financementexclusif]',
-            [
-                'CuiTauxfinancementexclusif'
-            ],
+            $( 'financementexclusif' ),
             'O',
+            false,
             true
         );
+        financementexclusif
 
         //Utilisé si le contrat signé est de type CAE et que la periode d'immersion est à Oui
         observeDisableFieldsetOnRadioValue(
@@ -1025,28 +1034,48 @@
                 </td>
             </tr>
         </table>
-        <table class="noborder">
-            <tr>
-                <td class="noborder">
+
+            <table class="nbrCi wide noborder">
+                <tr class="nbrCi">
+                    <td class="noborder"><?php echo __d( 'cui', 'Cui.tauxfixe', true ); ?></td>
+                    <td class="noborder"> <?php echo Configure::read( 'Cui.taux.fixe' ).' %' ;?> </td>
+                </tr>
+            </table>
+            <table class="wide noborder">
+                <tr>
+                    <td class="noborder">
                     <?php
-                        echo $default->subform(
-                            array(
-                                'Cui.tauxfixe'
-                            ),
-                            array(
-                                'domain' => $domain,
-                                'options' => $options
-                            )
-                        );
+
+//                         echo $default->subform(
+//                             array(
+//                                 'Cui.tauxfixe' => array( 'value' => Configure::read( 'Cui.taux.fixe' ) )
+//                             ),
+//                             array(
+//                                 'domain' => $domain,
+//                                 'options' => $options
+//                             )
+//                         );
 
                         echo $html->tag( 'hr /');
 
                         echo $html->tag( 'p','Dans le cas d\'un contrat prescrit par le Conseil Général ou pour son compte (sur la base d\'une convention d\'objectifs et de moyens)', array( 'class' => 'aere' ) );
-                        echo $default->subform(
+                    ?>
+                    </td>
+                </tr>
+            </table>
+            <table class="nbrCi wide noborder">
+                <tr class="nbrCi">
+                    <td class="noborder"><?php echo __d( 'cui', 'Cui.tauxprisencharge', true ); ?></td>
+                    <td class="noborder"> <?php echo Configure::read( 'Cui.taux.prisencharge' ).' %' ;?> </td>
+                </tr>
+            </table>
+            <table class="wide noborder">
+                <tr>
+                    <td class="noborder">
+                    <?php    echo $default->subform(
                             array(
-                                'Cui.tauxprisencharge',
                                 'Cui.financementexclusif' => array( 'type' => 'radio', 'legend' => __d( 'cui', 'Cui.financementexclusif', true ), 'options' => $options['financementexclusif'] ),
-                                'Cui.tauxfinancementexclusif'
+//                                 'Cui.tauxfinancementexclusif'
                             ),
                             array(
                                 'domain' => $domain,
@@ -1054,7 +1083,23 @@
                             )
                         );
                     ?>
-                    <?php ?>
+                    </td>
+                </tr>
+            </table>
+            <fieldset id="financementexclusif" class="invisible">
+                <table class="nbrCi wide noborder">
+                    <tr class="nbrCi">
+
+                        <td class="noborder"><?php echo __d( 'cui', 'Cui.tauxfinancementexclusif', true ); ?></td>
+                        <td class="noborder"> <?php echo Configure::read( 'Cui.taux.financementexclusif' ).' %' ;?> </td>
+
+                    </tr>
+
+                </table>
+            </fieldset>
+            <table class="wide noborder">
+                <tr>
+                    <td class="noborder">
                     <fieldset id="organisme" class="invisible">
                         <?php
                             if( Configure::read( 'nom_form_cui_cg' ) == 'cg93' ){
