@@ -59,7 +59,7 @@ msgid "Seanceep.demandesreorient"
 msgstr "Réorientation"
 
 msgid "Search.Seanceep.structurereferente_id"
-msgstr "Structure référente"
+msgstr "Lieu de la séance"
 
 msgid "Search.Seanceep.dateseance"
 msgstr "Date de la séance"

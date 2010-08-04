@@ -29,3 +29,12 @@ msgstr "Non"
 
 msgid "ENUM::ISGESTIONNAIRE::O"
 msgstr "Oui"
+
+msgid "User.sensibilite"
+msgstr "Peut-il accéder aux données sensibles ? "
+
+msgid "ENUM::SENSIBILITE::N"
+msgstr "Non"
+
+msgid "ENUM::SENSIBILITE::O"
+msgstr "Oui"

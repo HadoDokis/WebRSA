@@ -8,7 +8,8 @@
         var $actsAs = array(
             'Enumerable' => array(
                 'fields' => array(
-                    'isgestionnaire'
+                    'isgestionnaire',
+                    'sensibilite',
                 )
             )
         );
@@ -124,6 +125,18 @@
                     'message' => 'Veuillez entrer une date valide'
                 )
             ),
+            'isgestionnaire' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'sensibilite' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            )
         );
 
         //*********************************************************************
