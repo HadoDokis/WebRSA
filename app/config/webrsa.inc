@@ -5,7 +5,7 @@
 
     Configure::write( 'Utilisateurs.multilogin', false );
     Configure::write( 'with_parentid', false ); // true = cg66
-    Configure::write( 'nom_form_ci_cg', 'cg58' );
+    Configure::write( 'nom_form_ci_cg', 'cg66' );
     Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
     Configure::write( 'Zonesegeographiques.CodesInsee', true );
     //Configure::write( 'Etatliquidatif.limit', 1000 ); // INFO: commenter pour ne pas avoir de limite
@@ -140,7 +140,7 @@
     Configure::write( 'Apre.pourcentage.montantversement', 60 );
 
     /**
-    *   Paramètre pour définir les taux, 
+    *   Paramètre pour définir les taux dans le formulaire du CUI :
     *   Cui.taux.fixe                   => Taux fixé par l'arrêté du Préfet de région (en % )
     *   Cui.taux.prisencharge           => Taux de prise en charge effectif si le Conseil Général fixe
     *                                       un taux supérieur au taux fixé par le Préfet de région (en %)
@@ -148,6 +148,6 @@
     *   @default: à définir par chaque CG
     */
     Configure::write( 'Cui.taux.fixe', 60 );
-    Configure::write( 'Cui.taux.prisencharge', 60 );
+    Configure::write( 'Cui.taux.prisencharge', 70 );
     Configure::write( 'Cui.taux.financementexclusif', 60 );
 ?>
