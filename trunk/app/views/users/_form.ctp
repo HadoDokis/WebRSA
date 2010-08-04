@@ -59,3 +59,7 @@
     <legend><?php echo required( 'Est-il gestionnaire, notamment pour les PDOs ? ' );?></legend>
     <?php echo $xform->input( 'User.isgestionnaire', array( 'legend' => false, 'type' => 'radio', 'options' => $options['isgestionnaire'] ) );?>
 </fieldset>
+<fieldset class="col2">
+    <legend><?php echo required( 'Peut-il accéder aux données sensibles ? ' );?></legend>
+    <?php echo $xform->input( 'User.sensibilite', array( 'legend' => false, 'type' => 'radio', 'options' => $options['sensibilite'] ) );?>
+</fieldset>
