@@ -79,8 +79,10 @@ function __cleanFilesForRelease() {
 
 	# Passage de tous les modèles .odt du répertoire app/vendors/modelesodt en .odt7.default
 	(
-		cd "app/vendors/modelesodt" && \
-		find . -type f -iname "*.odt" | while read -r ; do mv "$REPLY" "$REPLY.default"; done
+		if [ -e "app/vendors/modelesodt" ] ; then
+			cd "app/vendors/modelesodt" && \
+			find . -type f -iname "*.odt" | while read -r ; do mv "$REPLY" "$REPLY.default"; done
+		fi
 	)
 	echo -n "$version" > "app/VERSION.txt"
 	sed -i "s/Configure::write *( *'debug' *, *[0-9] *) *;/Configure::write('debug', 0);/" "app/config/core.php.default" >> /dev/null 2>&1
