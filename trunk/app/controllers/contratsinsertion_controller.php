@@ -20,7 +20,7 @@
         var $helpers = array( 'Ajax' );
         var $components = array( 'RequestHandler', 'Gedooo' );
         var $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
-        
+
 		var $commeDroit = array(
 			'view' => 'Contratsinsertion:index',
 			'add' => 'Contratsinsertion:edit'
@@ -83,9 +83,9 @@
         // FIXME -> à nettoyer
 //         function beforeFilter() {
 //             parent::beforeFilter();
-// 
-// 
-// 
+//
+//
+//
 //             }
 //         }
 
@@ -755,6 +755,8 @@
             $contratinsertion['Referent']['qual'] = Set::enum( Set::classicExtract( $contratinsertion, 'Referent.qual' ), $qual );
             $contratinsertion['Adresse']['typevoie'] = Set::enum( Set::classicExtract( $contratinsertion, 'Adresse.typevoie' ), $typevoie );
             $contratinsertion['Contratinsertion']['datevalidation_ci'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' ) );
+			$contratinsertion['Contratinsertion']['dd_ci'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Contratinsertion.dd_ci' ) );
+			$contratinsertion['Contratinsertion']['df_ci'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Contratinsertion.df_ci' ) );
             $contratinsertion['Dossier']['dtdemrsa'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Dossier.dtdemrsa' ) );
 
             if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
