@@ -3,17 +3,17 @@
     {
 
         var $name = 'Groups';
-        var $uses = array( 'Group', 'User' );
+        var $uses = array( 'Group', 'User', 'Aro' );
         var $helpers = array( 'Xform' );
         var $components = array('Menu','Dbdroits');
-        
+
 		var $commeDroit = array(
 			'add' => 'Groups:edit'
 		);
 
 		function beforeFilter() {
 			ini_set('max_execution_time', 0);
-			ini_set('memory_limit', '512M');
+			ini_set('memory_limit', '1024M');
 			parent::beforeFilter();
 			//debug(ini_get('maximum_execution_time'));
 		}
@@ -80,46 +80,51 @@
 
             if( !empty( $this->data ) ) {
             	$group=$this->Group->read(null,$group_id);
-            	$new_droit= Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$group_id)));
                 if( $this->Group->saveAll( $this->data ) ) {
-                	if ($group['Group']['parent_id']!=$this->data['Group']['parent_id']) {
-		            	$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']));
-						$this->Dbdroits->MajCruDroits(
-							array('model'=>'Group','foreign_key'=>$this->data['Group']['id'],'alias'=>$this->data['Group']['name']),
-							array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']),
-							$this->data['Droits']
-						);
-                	}
-		        	elseif ($group['Group']['parent_id']!=0) {
+					$new_droit=array();
+                	if ($group['Group']['parent_id']==0) {
+						$new_droit = Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Group', 'foreign_key'=>$group_id)));
 			        	$this->Dbdroits->MajCruDroits(
-							array('model'=>'Group','foreign_key'=>$this->data['Group']['id'],'alias'=>$this->data['Group']['name']),
-							array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']),
-							$new_droit
-						);
-					}
-					else {
-			        	$this->Dbdroits->MajCruDroits(
-							array('model'=>'Group','foreign_key'=>$this->data['Group']['id'],'alias'=>$this->data['Group']['name']),
+							array('model'=>'Group','foreign_key'=>$group_id,'alias'=>$this->data['Group']['name']),
 							null,
 							$new_droit
 						);
-					}
-					$Users=$this->User->find('all',array('conditions'=>array('User.group_id'=>$this->data['Group']['id']),'recursive'=>-1));
-					foreach($Users as $User) {
-						$new_droit= Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Utilisateur','foreign_key'=>$User['User']['id'])));
+                	}
+                	elseif ($group['Group']['parent_id']!=$this->data['Group']['parent_id']) {
+		            	$new_droit = Set::diff(
+							$this->Dbdroits->litCruDroits(
+								array(
+									'model'=>'Group',
+									'foreign_key'=>$this->data['Group']['parent_id']
+								)
+							),
+							$this->Dbdroits->litCruDroits(
+								array(
+									'model'=>'Group',
+									'foreign_key'=>$group_id
+								)
+							)
+						);
 						$this->Dbdroits->MajCruDroits(
-							array(
-								'model'=>'Utilisateur',
-								'foreign_key'=>$User['User']['id'],
-								'alias'=>$User['User']['username']
-							),
-							array (
-								'model'=>'Group',
-								'foreign_key'=>$User['User']['group_id']
-							),
+							array('model'=>'Group','foreign_key'=>$group_id,'alias'=>$this->data['Group']['name']),
+							array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']),
+							$new_droit
+						);
+                	}
+		        	else {
+						$new_droit = Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Group', 'foreign_key'=>$group_id)));
+			        	$this->Dbdroits->MajCruDroits(
+							array('model'=>'Group','foreign_key'=>$group_id,'alias'=>$this->data['Group']['name']),
+							array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']),
 							$new_droit
 						);
 					}
+
+					$this->Dbdroits->restreintCruEnfantsDroits(
+						array('model'=>'Group','foreign_key'=>$group_id),
+						$new_droit
+					);
+
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                     $this->redirect( array( 'controller' => 'groups', 'action' => 'index' ) );
                 }
@@ -162,6 +167,8 @@
 
             // Tentative de suppression ... FIXME
             if( $this->Group->delete( array( 'Group.id' => $group_id ) ) ) {
+           		$aro_id = $this->Aro->find('first',array('conditions'=>array('model'=>'Group', 'foreign_key'=>$id),'fields'=>array('id')));
+				$this->Aro->delete($aro_id['Aro']['id']);
                 $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
                 $this->redirect( array( 'controller' => 'groups', 'action' => 'index' ) );
             }
