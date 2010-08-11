@@ -149,7 +149,7 @@ function majActions() {
 			$aco['Aco']['parent_alias'] = '';
 		$acosEnBase[]=$aco['Aco'];
 	}
-	
+
 	// Liste des alias 'controller:action' du menu principal et des controlleurs
 	$acosMaj = $this->Menu->listeAliasMenuControlleur();
 
@@ -198,7 +198,7 @@ function litCruDroits($cru=null) {
 
 	foreach($listeMca as $mca)
 		$ret[$mca['alias']] = $this->Acl->check($cru, $mca['alias']);
-		
+
 	return $ret;
 }
 
@@ -237,21 +237,25 @@ function majCruDroits($cru, $cruParent, $tabDroits) {
  */
 function restreintCruEnfantsDroits($cru, $tabDroits) {
 	/* lectures des enfants de $cru dans aros */
-	$aroCru = $this->findCru($cru);
-	$aroEnfants = $this->Acl->Aro->children($aroCru['Aro']['id']);
-	foreach($aroEnfants as $aroEnfant) {
-		/* on resteint les droits si ils sont spécifiques à l'enfant (sinon héritage)*/
-		$droitsSpecif = $this->Acl->Aro->query('select count(*) from aros_acos where aro_id = '.$aroEnfant['Aro']['id']);
-		if (array_key_exists('count(*)', $droitsSpecif[0][0]))
-			$nbDroitsSpecif = $droitsSpecif[0][0]['count(*)'];
-		else
-			$nbDroitsSpecif = $droitsSpecif[0][0]['count'];
-		
-		if ($nbDroitsSpecif>0) {
-			$cruEnfant = array('model'=>$aroEnfant['Aro']['model'], 'foreign_key'=>$aroEnfant['Aro']['foreign_key']);
-			foreach($tabDroits as $acoAlias=>$droit)
-				if (!$droit)
-					$this->Acl->deny($cruEnfant, $acoAlias);
+	if (!empty($tabDroits)) {
+		$aroCru = $this->findCru($cru);
+		$aroEnfants = $this->Acl->Aro->children($aroCru['Aro']['id']);
+		foreach($aroEnfants as $aroEnfant) {
+			/* on resteint les droits si ils sont spécifiques à l'enfant (sinon héritage)*/
+			/*$droitsSpecif = $this->Acl->Aro->query('select count(*) from aros_acos where aro_id = '.$aroEnfant['Aro']['id']);
+			if (array_key_exists('count(*)', $droitsSpecif[0][0]))
+				$nbDroitsSpecif = $droitsSpecif[0][0]['count(*)'];
+			else
+				$nbDroitsSpecif = $droitsSpecif[0][0]['count'];
+
+			if ($nbDroitsSpecif>0) {*/
+				$cruEnfant = array('model'=>$aroEnfant['Aro']['model'], 'foreign_key'=>$aroEnfant['Aro']['foreign_key']);
+				foreach($tabDroits as $acoAlias=>$droit)
+					if (!$droit)
+						$this->Acl->deny($cruEnfant, $acoAlias);
+					else
+						$this->Acl->allow($cruEnfant, $acoAlias);
+			//}
 		}
 	}
 }
