@@ -208,7 +208,7 @@
                     $this->User->rollback();
                 }
             }
-
+			$this->Dbdroits->majActions();
             $this->render( $this->action, null, 'add_edit' );
         }
 
@@ -273,6 +273,7 @@
                 $this->data = $userDb;
             }
 			$this->set('listeCtrlAction', $this->Menu->menuCtrlActionAffichage());
+			$this->Dbdroits->majActions();
 			$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Utilisateur','foreign_key'=>$user_id));
             $this->render( $this->action, null, 'add_edit' );
         }

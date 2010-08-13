@@ -68,7 +68,7 @@
                     $this->redirect( array( 'controller' => 'groups', 'action' => 'index' ) );
                 }
             }
-
+			$this->Dbdroits->majActions();
             $this->render( $this->action, null, 'add_edit' );
         }
 
@@ -143,6 +143,7 @@
             $this->data = $group;
 
 			$this->set('listeCtrlAction', $this->Menu->menuCtrlActionAffichage());
+			$this->Dbdroits->majActions();
 			$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$group_id));
             $this->render( $this->action, null, 'add_edit' );
         }
