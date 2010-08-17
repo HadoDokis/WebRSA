@@ -53,7 +53,7 @@
             if( $hasList ) {
                 foreach( $lines as $line ) {
                     $extract = preg_match(
-                        '/^ *(?P<revision>[0-9]+) +(?P<user>[^ ]+) +(?P<size>[^ ]+) +(?P<date>.+ [0-9]+:[0-9]+) +(?P<file>.+)$/i',
+                        '/^ *(?P<revision>[0-9]+) +(?P<user>[^ ]+) +(?P<size>[^ ]+) +(?P<date>.+ [0-9]{4}(, [0-9]+:[0-9]+){0,1}) +(?P<file>.+)$/i',
                         $line,
                         $matches
                     );
