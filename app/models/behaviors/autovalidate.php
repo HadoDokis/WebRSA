@@ -67,66 +67,74 @@
 		*/
 
 		public function setup( &$model, $settings ) {
-			$defaultSettings = array( // TODO
-				'rules' => array(
-					'notEmpty' => true,
-					'maxLength' => true,
-					'numeric' => true,
-					'integer' => true,
-					'numeric' => true,
-// 					'boolean' ?
-// 					'unsigned' ?
+			$cacheKey = Inflector::underscore( __CLASS__ ).'_'.Inflector::underscore( $model->alias );
+			$validate = Cache::read( $cacheKey );
 
-				),
-				'domain' => 'default',
-				'translate' => true
-			);
+			if( $validate === false ) {
+				$defaultSettings = array( // TODO
+					'rules' => array(
+						'notEmpty' => true,
+						'maxLength' => true,
+						'numeric' => true,
+						'integer' => true,
+						'numeric' => true,
+	// 					'boolean' ?
+	// 					'unsigned' ?
 
-			$settings = Set::merge( $defaultSettings, $settings );
+					),
+					'domain' => 'default',
+					'translate' => true
+				);
 
-			if (!isset($this->settings[$model->alias])) {
-				$this->settings[$model->alias] = array();
+				$settings = Set::merge( $defaultSettings, $settings );
+
+				if (!isset($this->settings[$model->alias])) {
+					$this->settings[$model->alias] = array();
+				}
+
+				$settings = Set::normalize( $settings );
+				$this->settings[$model->alias] = array_merge(
+					$this->settings[$model->alias],
+					(array) $settings
+				);
+
+				$model->validate = Set::normalize( $model->validate );
+				$schema = $model->schema();
+
+				/// ----------------------------------------------------------------
+
+				foreach( $schema as $field => $params ) {
+					/// Prepare / cleanup
+					if( Set::check( $model->validate, "{$field}.rule" ) ) {
+						$model->validate[$field] = array( $model->validate[$field] );
+					}
+
+					/// Not null -> notEmpty
+					// FIXME: seulement quand pas de default ?
+					if( Set::check( $params, 'null' ) && $params['null'] == false && ( $field != $model->primaryKey ) ) {
+						$this->addValidationRule( $model, $field, array( 'rule' => 'notEmpty' ) );
+					}
+
+					/// MaxLength
+					if( ( $params['type'] == 'string' ) && Set::check( $params, 'length' ) && is_numeric( $params['length'] ) ) {
+						$this->addValidationRule( $model, $field, array( 'rule' => array( 'maxLength', $params['length'] ), 'allowEmpty' => true ) );
+					}
+
+					/// Numeric
+					if( $params['type'] == 'integer' ) {
+						//$this->addValidationRule( $model, $field, array( 'rule' => 'numeric', 'allowEmpty' => true ) );
+						$this->addValidationRule( $model, $field, array( 'rule' => 'integer', 'allowEmpty' => true ) );
+					}
+
+					/// Float <-> numeric ?
+					if( $params['type'] == 'float' ) {
+						$this->addValidationRule( $model, $field, array( 'rule' => 'numeric', 'allowEmpty' => true ) );
+					}
+				}
+				$validate = $model->validate;
+				Cache::write( $cacheKey, $validate );
 			}
-
-			$settings = Set::normalize( $settings );
-			$this->settings[$model->alias] = array_merge(
-				$this->settings[$model->alias],
-				(array) $settings
-			);
-
-			$model->validate = Set::normalize( $model->validate );
-			$schema = $model->schema();
-
-			/// ----------------------------------------------------------------
-
-			foreach( $schema as $field => $params ) {
-				/// Prepare / cleanup
-				if( Set::check( $model->validate, "{$field}.rule" ) ) {
-					$model->validate[$field] = array( $model->validate[$field] );
-				}
-
-				/// Not null -> notEmpty
-				// FIXME: seulement quand pas de default ?
-				if( Set::check( $params, 'null' ) && $params['null'] == false && ( $field != $model->primaryKey ) ) {
-					$this->addValidationRule( $model, $field, array( 'rule' => 'notEmpty' ) );
-				}
-
-				/// MaxLength
-				if( ( $params['type'] == 'string' ) && Set::check( $params, 'length' ) && is_numeric( $params['length'] ) ) {
-					$this->addValidationRule( $model, $field, array( 'rule' => array( 'maxLength', $params['length'] ), 'allowEmpty' => true ) );
-				}
-
-				/// Numeric
-				if( $params['type'] == 'integer' ) {
-					//$this->addValidationRule( $model, $field, array( 'rule' => 'numeric', 'allowEmpty' => true ) );
-					$this->addValidationRule( $model, $field, array( 'rule' => 'integer', 'allowEmpty' => true ) );
-				}
-
-				/// Float <-> numeric ?
-				if( $params['type'] == 'float' ) {
-					$this->addValidationRule( $model, $field, array( 'rule' => 'numeric', 'allowEmpty' => true ) );
-				}
-			}
+			$model->validate = $validate;
 		}
 
 		/**
