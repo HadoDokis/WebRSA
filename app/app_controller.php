@@ -7,20 +7,20 @@
 
 		/**
 		* Chargement et mise en cache (session) des permissions de l'utilisateur
-        * INFO: n'est réellement exécuté que la première fois
+        * INFO:
+		*	- n'est réellement exécuté que la première fois
+		* 	- http://dsi.vozibrale.com/articles/view/all-cakephp-acl-permissions-for-your-views
+		* 	- http://www.neilcrookes.com/2009/02/26/get-all-acl-permissions/
 		*/
 
         protected function _loadPermissions() {
             // FIXME:à bouger dans un composant ?
-            $Auth = $this->Session->read( 'Auth' );
-            // http://dsi.vozibrale.com/articles/view/all-cakephp-acl-permissions-for-your-views
-            // http://www.neilcrookes.com/2009/02/26/get-all-acl-permissions/
-            if( !empty( $Auth ) && !empty( $Auth['User'] ) && !$this->Session->check( 'Auth.Permissions' ) ) {
+            if( $this->Session->check( 'Auth.User' ) && !$this->Session->check( 'Auth.Permissions' ) ) {
                 $Aro = $this->Acl->Aro->find(
                     'first',
                     array(
                         'conditions' => array(
-                            'Aro.foreign_key' => $Auth['User']['id']
+                            'Aro.foreign_key' => $this->Session->read( 'Auth.User.id' )
                         )
                     )
                 );
@@ -71,13 +71,12 @@
 		*/
 
         protected function _loadZonesgeographiques() {
-            $Auth = $this->Session->read( 'Auth' );
-            if( !empty( $Auth ) && !empty( $Auth['User'] ) && !$this->Session->check( 'Auth.Zonegeographique' ) ) {
+            if( $this->Session->check( 'Auth.User' ) && !$this->Session->check( 'Auth.Zonegeographique' ) ) {
                 $sql = 'SELECT users_zonesgeographiques.zonegeographique_id, zonesgeographiques.codeinsee
                             FROM users_zonesgeographiques
                                 LEFT JOIN zonesgeographiques
                                     ON users_zonesgeographiques.zonegeographique_id = zonesgeographiques.id
-                            WHERE users_zonesgeographiques.user_id='.$Auth['User']['id'].';';
+                            WHERE users_zonesgeographiques.user_id='.$this->Session->read( 'Auth.User.id' ).';';
                 $results = $this->Dossier->query( $sql ); // FIXME: c'est sale ?
                 if( count( $results ) > 0 ) {
                     $zones = array();
