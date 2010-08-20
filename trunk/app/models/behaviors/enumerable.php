@@ -203,6 +203,10 @@
 						trigger_error( sprintf( __( 'SQL driver (%s) not supported in enumerable behavior.', true ), $driver ), E_USER_WARNING );
 				}
 
+				if( empty( $options ) ) {
+					trigger_error( sprintf( __( 'Requête de recherche de type inutile pour le champ (%s).', true ), "{$model->alias}.{$field}" ), E_USER_WARNING );
+				}
+
 				Cache::write($cacheKey, $options);
 			}
 
