@@ -6,6 +6,7 @@ WORK_DIR="$PWD"
 RELEASES_DIR="$WORK_DIR/releases"
 ChangeLog="ChangeLog.txt"
 ASNV="svn://svn.adullact.net/svnroot/webrsa"
+YUICOMPRESSOR="/home/cbuffin/Bureau/yuicompressor-2.4.2.jar" # FIXME: chemin
 
 # ------------------------------------------------------------------------------
 # INFO: rgadr sur un char -> sed -i "s/<RGADR>\([1-3]\)<\/RGADR>/<RGADR>0\1<\/RGADR>/" XXX
@@ -157,6 +158,27 @@ function __patch() {
 }
 
 # ------------------------------------------------------------------------------
+# FIXME: pour les releases, remplacer ?
+
+function __minify() {
+	JSDIR="$1/webroot/js"
+	CSSDIR="$1/webroot/css"
+
+	# Minify javascript
+	for filemaxed in `ls $JSDIR/*.js`; do
+		java -jar "$YUICOMPRESSOR" "$filemaxed" -o "$filemaxed.min"
+		mv "$filemaxed" "$filemaxed.bak"
+		mv "$filemaxed.min" "$filemaxed"
+	done
+
+	for filemaxed in `ls $CSSDIR/*.css`; do
+		java -jar "$YUICOMPRESSOR" "$filemaxed" -o "$filemaxed.min"
+		mv "$filemaxed" "$filemaxed.bak"
+		mv "$filemaxed.min" "$filemaxed"
+	done
+}
+
+# ------------------------------------------------------------------------------
 
 case $1 in
     changelog)
@@ -180,6 +202,9 @@ case $1 in
     clearlogs)
         __clearDir "$APP_DIR/tmp/logs/"
     ;;
+    minify)
+        __minify "$APP_DIR"
+    ;;
     package)
 		# Vérification de l'argument
 		__svnDirExists "$ASNV/tags/$2"
@@ -202,7 +227,7 @@ case $1 in
         __patch "$ASNV/$2" "$ASNV/$3"
     ;;
     *)
-        echo "Usage: $ME {changelog|clearcache|clear|clearlogs|package|patch}"
+        echo "Usage: $ME {changelog|clearcache|clear|clearlogs|minify|package|patch}"
         exit 1
     ;;
 esac
