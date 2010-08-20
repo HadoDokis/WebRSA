@@ -3,12 +3,14 @@
     {
         var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons'/*, 'Xcontroller'*/, 'Default' );
         var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default' );
-        var $uses = array( 'Group', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'User', 'Zonegeographique', 'Connection', 'User', 'Serviceinstructeur', 'Structurereferente' );
+        var $uses = array( 'Dossier', 'User', 'Connection', 'Structurereferente' );
 
-        //*********************************************************************
+		/**
+		* Chargement et mise en cache (session) des permissions de l'utilisateur
+        * INFO: n'est réellement exécuté que la première fois
+		*/
 
-        // INFO: n'est réellement exécuté que la première fois
-        function _loadPermissions() {
+        protected function _loadPermissions() {
             // FIXME:à bouger dans un composant ?
             $Auth = $this->Session->read( 'Auth' );
             // http://dsi.vozibrale.com/articles/view/all-cakephp-acl-permissions-for-your-views
@@ -59,15 +61,16 @@
                         $permissions[$key] = ( $permission != -1 );
                     }
                     $this->Session->write( 'Auth.Permissions', $permissions );
-// debug( $this->Session->read() );
                 }
             }
         }
 
-        //---------------------------------------------------------------------
+		/**
+		* Chargement et mise en cache (session) des zones géographiques associées à l'utilisateur
+        * INFO: n'est réellement exécuté que la première fois
+		*/
 
-        // INFO: n'est réellement exécuté que la première fois
-        function _loadZonesgeographiques() {
+        protected function _loadZonesgeographiques() {
             $Auth = $this->Session->read( 'Auth' );
             if( !empty( $Auth ) && !empty( $Auth['User'] ) && !$this->Session->check( 'Auth.Zonegeographique' ) ) {
                 $sql = 'SELECT users_zonesgeographiques.zonegeographique_id, zonesgeographiques.codeinsee
@@ -86,15 +89,13 @@
             }
         }
 
-        //*********************************************************************
-
         /**
         * Vérifie si on est dans un contrôleur de paramétrage ou non.
         * @return boolean true si on est dans une action d'administration, false sinon
         * @access protected
         */
 
-        function _isAdminAction() {
+        protected function _isAdminAction() {
 			$adminActions = array(
 				'apres', 'parametresfinanciers', 'tiersprestatairesapres',
                 'droits',
@@ -114,45 +115,54 @@
         * ou non l'Apre ou le contrat d'engagement soit décidé.
         * Si la décision n'a pas été prise pour au moins une structure, on bloque
         * l'utilisateur avec une erreur 401 et un message d'erreur approprié.
+		*
+        * INFO: n'est réellement exécuté que la première fois
+		*
         * @access protected
         */
 
-        function _checkDecisionsStructures() {
+        protected function _checkDecisionsStructures() {
             if( !$this->_isAdminAction() ) {
-                $structsSansApre = $this->Structurereferente->find(
-                    'list',
-                    array(
-                        'conditions' => array(
-                            'Structurereferente.apre' => NULL,
-                        )
-                    )
-                );
+				if( !$this->Session->read( 'AppController.checkDecisionsStructures' ) ) {
+					$structsSansApre = $this->Structurereferente->find(
+						'list',
+						array(
+							'conditions' => array(
+								'Structurereferente.apre' => NULL,
+							)
+						)
+					);
 
-                $structsSansContrat = $this->Structurereferente->find(
-                    'list',
-                    array(
-                        'conditions' => array(
-                            'Structurereferente.contratengagement' => NULL,
-                        )
-                    )
-                );
+					$structsSansContrat = $this->Structurereferente->find(
+						'list',
+						array(
+							'conditions' => array(
+								'Structurereferente.contratengagement' => NULL,
+							)
+						)
+					);
 
-                $missing = array(
-                    'structurereferente' => array(
-                        __( 'apre', true )                   => ( count( $structsSansApre ) > 0 ),
-                        __( 'contratengagement', true )      => ( count( $structsSansContrat ) > 0 )
-                    )
-                );
+					$missing = array(
+						'structurereferente' => array(
+							__( 'apre', true )                   => ( count( $structsSansApre ) > 0 ),
+							__( 'contratengagement', true )      => ( count( $structsSansContrat ) > 0 )
+						)
+					);
 
-                if( ( count( $structsSansApre ) + count( $structsSansContrat ) ) > 0/*( array_search( true, $missing['structurereferente'] ) !== false )*/ ) {
-                    $this->cakeError(
-                        'incompleteStructure',
-                        array(
-                            'missing' => $missing,
-                            'structures' => array_unique( Set::merge( $structsSansApre, $structsSansContrat ) )
-                        )
-                    );
-                }
+					if( ( count( $structsSansApre ) + count( $structsSansContrat ) ) > 0 ) {
+						$this->Session->write( 'AppController.checkDecisionsStructures', false );
+						$this->cakeError(
+							'incompleteStructure',
+							array(
+								'missing' => $missing,
+								'structures' => array_unique( Set::merge( $structsSansApre, $structsSansContrat ) )
+							)
+						);
+					}
+					else {
+						$this->Session->write( 'AppController.checkDecisionsStructures', true );
+					}
+				}
             }
         }
 
@@ -160,29 +170,37 @@
         * @access protected
         */
 
-        function _checkDonneesUtilisateursEtServices( $user ) {
+        function _checkDonneesUtilisateursEtServices() {
             if( !$this->_isAdminAction() ) {
-                $service = $this->Serviceinstructeur->findById( $user['User']['serviceinstructeur_id'] );
-                $missing = array(
-                    'user' => array(
-                        __( 'nom', true )                   => empty( $user['User']['nom'] ),
-                        __( 'prenom', true )                => empty( $user['User']['prenom'] ),
-                        __( 'service instructeur', true )   => empty( $user['User']['serviceinstructeur_id'] ),
-                        __( 'date_deb_hab', true )          => empty( $user['User']['date_deb_hab'] ),
-                        __( 'date_fin_hab', true )          => empty( $user['User']['date_fin_hab'] )
-                    ),
-                    'serviceinstructeur' => array(
-                        __( 'lib_service', true )           => empty( $service['Serviceinstructeur']['lib_service'] ),
-                        __( 'numdepins', true )             => empty( $service['Serviceinstructeur']['numdepins'] ),
-                        __( 'typeserins', true )            => empty( $service['Serviceinstructeur']['typeserins'] ),
-                        __( 'numcomins', true )             => empty( $service['Serviceinstructeur']['numcomins'] ),
-                        __( 'numagrins', true )             => empty( $service['Serviceinstructeur']['numagrins'] ),
-                    )
-                );
+				if( !$this->Session->read( 'AppController.checkDonneesUtilisateursEtServices' ) ) {
+					$user = $this->Session->read( 'Auth.User' );
+					$service = $this->Session->read( 'Auth.Serviceinstructeur' );
 
-                if( ( array_search( true, $missing['user'] ) !== false ) || ( array_search( true, $missing['serviceinstructeur'] ) !== false ) ) {
-                    $this->cakeError( 'incompleteUser', array( 'missing' => $missing ) );
-                }
+					$missing = array(
+						'user' => array(
+							__( 'nom', true )                   => empty( $user['nom'] ),
+							__( 'prenom', true )                => empty( $user['prenom'] ),
+							__( 'service instructeur', true )   => empty( $user['serviceinstructeur_id'] ),
+							__( 'date_deb_hab', true )          => empty( $user['date_deb_hab'] ),
+							__( 'date_fin_hab', true )          => empty( $user['date_fin_hab'] )
+						),
+						'serviceinstructeur' => array(
+							__( 'lib_service', true )           => empty( $service['lib_service'] ),
+							__( 'numdepins', true )             => empty( $service['numdepins'] ),
+							__( 'typeserins', true )            => empty( $service['typeserins'] ),
+							__( 'numcomins', true )             => empty( $service['numcomins'] ),
+							__( 'numagrins', true )             => empty( $service['numagrins'] ),
+						)
+					);
+
+					if( ( array_search( true, $missing['user'] ) !== false ) || ( array_search( true, $missing['serviceinstructeur'] ) !== false ) ) {
+						$this->Session->write( 'AppController.checkDonneesUtilisateursEtServices', false );
+						$this->cakeError( 'incompleteUser', array( 'missing' => $missing ) );
+					}
+					else {
+						$this->Session->write( 'AppController.checkDonneesUtilisateursEtServices', true );
+					}
+				}
             }
         }
 
@@ -214,17 +232,23 @@
 
         function _checkDonneesApre() {
             if( !$this->_isAdminAction() ) {
-				$montantMaxComplementaires = Configure::read( 'Apre.montantMaxComplementaires' );
-				$periodeMontantMaxComplementaires = Configure::read( 'Apre.periodeMontantMaxComplementaires' );
+				if( !$this->Session->read( 'AppController.checkDonneesApre' ) ) {
+					$montantMaxComplementaires = Configure::read( 'Apre.montantMaxComplementaires' );
+					$periodeMontantMaxComplementaires = Configure::read( 'Apre.periodeMontantMaxComplementaires' );
 
-				if( empty( $montantMaxComplementaires ) || empty( $periodeMontantMaxComplementaires ) ) {
-                    $this->cakeError(
-						'incompleteApre',
-						array(
-							'montantMaxComplementaires' => $montantMaxComplementaires,
-							'periodeMontantMaxComplementaires' => $periodeMontantMaxComplementaires
-						)
-					);
+					if( empty( $montantMaxComplementaires ) || empty( $periodeMontantMaxComplementaires ) ) {
+						$this->Session->write( 'AppController.checkDonneesApre', false );
+						$this->cakeError(
+							'incompleteApre',
+							array(
+								'montantMaxComplementaires' => $montantMaxComplementaires,
+								'periodeMontantMaxComplementaires' => $periodeMontantMaxComplementaires
+							)
+						);
+					}
+					else {
+						$this->Session->write( 'AppController.checkDonneesApre', true );
+					}
 				}
 			}
 		}
@@ -235,17 +259,23 @@
 
         function _checkWebrsaInc( $paths = array() ) {
             if( !$this->_isAdminAction() ) {
-				$errorPaths = array();
-				if( !empty( $paths ) ) {
-					foreach( $paths as $path ) {
-						$value = Configure::read( $path );
-						if( empty( $value ) && !is_numeric( $value ) ) {
-							$errorPaths[] = $path;
+				if( !$this->Session->read( 'AppController.checkWebrsaInc' ) ) {
+					$errorPaths = array();
+					if( !empty( $paths ) ) {
+						foreach( $paths as $path ) {
+							$value = Configure::read( $path );
+							if( empty( $value ) && !is_numeric( $value ) ) {
+								$errorPaths[] = $path;
+							}
 						}
 					}
-				}
-				if( !empty( $errorPaths ) ) {
-                    $this->cakeError( 'webrsaInc', array( 'paths' => $errorPaths ) );
+					if( !empty( $errorPaths ) ) {
+						$this->Session->write( 'AppController.checkWebrsaInc', false );
+						$this->cakeError( 'webrsaInc', array( 'paths' => $errorPaths ) );
+					}
+					else {
+						$this->Session->write( 'AppController.checkWebrsaInc', true );
+					}
 				}
 			}
 		}
@@ -256,17 +286,23 @@
 
         function _checkMissingBinaries( $binaries = array() ) {
             if( !$this->_isAdminAction() ) {
-				$missing = array();
-				if( !empty( $binaries ) ) {
-					foreach( $binaries as $binary ) {
-						$which = exec( "which {$binary}" );
-						if( empty( $which ) ) {
-							$missing[] = $binary;
+				if( !$this->Session->read( 'AppController.checkMissingBinaries' ) ) {
+					$missing = array();
+					if( !empty( $binaries ) ) {
+						foreach( $binaries as $binary ) {
+							$which = exec( "which {$binary}" );
+							if( empty( $which ) ) {
+								$missing[] = $binary;
+							}
 						}
 					}
-				}
-				if( !empty( $missing ) ) {
-                    $this->cakeError( 'missingBinaries', array( 'binaries' => $missing ) );
+					if( !empty( $missing ) ) {
+						$this->Session->write( 'AppController.checkMissingBinaries', false );
+						$this->cakeError( 'missingBinaries', array( 'binaries' => $missing ) );
+					}
+					else {
+						$this->Session->write( 'AppController.checkMissingBinaries', true );
+					}
 				}
 			}
 		}
@@ -277,18 +313,60 @@
 
         function _checkTmpPdfDirectory( $dir ) {
             if( !$this->_isAdminAction() ) {
-				$notWritable = array();
-				$oldUmask = umask(0);
+				if( !$this->Session->read( 'AppController.checkTmpPdfDirectory' ) ) {
+					$notWritable = array();
+					$oldUmask = umask(0);
 
-				if( !( is_dir( $dir ) && is_writable( $dir ) ) && !@mkdir( $dir, 0777, true ) ) {
-					$notWritable[] = $dir;
+					if( !( is_dir( $dir ) && is_writable( $dir ) ) && !@mkdir( $dir, 0777, true ) ) {
+						$notWritable[] = $dir;
+					}
+
+					umask( $oldUmask );
+
+					if( !empty( $notWritable ) ) {
+						$this->Session->write( 'AppController.checkTmpPdfDirectory', false );
+						$this->cakeError( 'notWritableDirs', array( 'directories' => $notWritable ) );
+					}
+					else {
+						$this->Session->write( 'AppController.checkTmpPdfDirectory', true );
+					}
 				}
+			}
+		}
 
-				umask( $oldUmask );
+		/**
+		*
+		*/
 
-				if( !empty( $notWritable ) ) {
-                    $this->cakeError( 'notWritableDirs', array( 'directories' => $notWritable ) );
-				}
+// 		public function afterFilter() {
+// 			echo '<pre>';var_dump( byteSize( memory_get_peak_usage( true ) ) );echo '</pre>';
+// 		}
+
+		/**
+		* Chargement du service instructeur de l'utilisateur connecté, lancement
+		* d'une erreur si aucun service instructeur n'est associé à l'utilisateur
+		* FIXME: créer un nouveau type d'erreur plutôt qu'une erreur 500
+		*/
+
+        protected function _loadServiceInstructeur() {
+            if( !$this->Session->check( 'Auth.Serviceinstructeur' ) ) {
+				$service = $this->User->Serviceinstructeur->findById( $this->Session->read( 'Auth.User.serviceinstructeur_id' ), null, null, -1 );
+				$this->assert( !empty( $service ), 'error500' );
+				$this->Session->write( 'Auth.Serviceinstructeur', $service['Serviceinstructeur'] );
+			}
+		}
+
+		/**
+		* Chargement du groupe de l'utilisateur connecté, lancement
+		* d'une erreur si aucun groupe n'est associé à l'utilisateur
+		* FIXME: créer un nouveau type d'erreur plutôt qu'une erreur 500
+		*/
+
+        protected function _loadGroup() {
+            if( !$this->Session->check( 'Auth.Group' ) ) {
+				$group = $this->User->Group->findById( $this->Session->read( 'Auth.User.group_id' ), null, null, -1 );
+				$this->assert( !empty( $group ), 'error500' );
+				$this->Session->write( 'Auth.Group', $group['Group'] );
 			}
 		}
 
@@ -299,24 +377,10 @@
         */
 
         function beforeFilter() {
-            // $this->Cookie->time = 0;  // ? http://book.cakephp.org/fr/view/179/Controller-Setup -> pb Citrix
-            $this->disableCache(); // Disable browser
+            $this->disableCache(); // Disable browser cache ?
             $this->Auth->autoRedirect = false;
-           // $this->Auth->loginRedirect = array('controller' => 'pages', 'action' => 'home');
-            $return = parent::beforeFilter();
 
-            $this->_loadPermissions();
-            $this->_loadZonesgeographiques();
-			$this->_checkWebrsaInc(
-				array(
-					'Cohorte.dossierTmpPdfs'
-				)
-			);
-			$this->_checkMissingBinaries(
-				array(
-					'pdftk'
-				)
-			);
+            $return = parent::beforeFilter();
 
             if( ( substr( $_SERVER['REQUEST_URI'], strlen( $this->base ) ) != '/users/login' ) ) {
                 if( !$this->Session->check( 'Auth' ) ) {
@@ -324,33 +388,31 @@
                     $this->redirect("/users/login");
                 }
                 else {
-                    $user = $this->Session->read( 'Auth' );
-                    if( empty( $user['User'] ) ) {
+                    if( !$this->Session->check( 'Auth.User' ) ) {
                         $this->redirect("/users/login");
                     }
 
+					$this->_checkWebrsaInc( array( 'Cohorte.dossierTmpPdfs' ) );
+					$this->_checkMissingBinaries( array( 'pdftk' ) );
+
+					$this->_loadPermissions();
+					$this->_loadZonesgeographiques();
+
                     // Utilisateurs concurrents
                     if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
-                        if( $connection = $this->Connection->findById( $user['User']['id'] ) ) {
+                        if( $connection = $this->Connection->findByUserId( $this->Session->read( 'Auth.User.id' ), null, null, -1 ) ) {
                             unset( $connection['Connection']['modified'] );
                             $this->Connection->set( $connection );
                             $this->Connection->save( $connection );
                         }
                     }
 
-                    // Groupe de l'utilisateur
-                    $group = $this->User->Group->findById( $user['User']['group_id'], null, null, -1 );
-                    $this->assert( !empty( $group ), 'error500' ); // FIXME: erreur de boulet -> en créer un nouveau type
-                    $this->Session->write( 'Auth.Group', $group['Group'] );
-
-                    // Service instructeur de l'utilisateur
-                    $service = $this->User->Serviceinstructeur->findById( $user['User']['serviceinstructeur_id'], null, null, -1 );
-                    $this->assert( !empty( $service ), 'error500' ); // FIXME: erreur de boulet -> en créer un nouveau type
-                    $this->Session->write( 'Auth.Serviceinstructeur', $service['Serviceinstructeur'] );
+					$this->_loadGroup();
+					$this->_loadServiceInstructeur();
 
                     // Vérifications de l'état complet de certaines données dans la base
                     $this->_checkDecisionsStructures();
-                    $this->_checkDonneesUtilisateursEtServices( $user );
+                    $this->_checkDonneesUtilisateursEtServices();
                     $this->_checkHabilitations();
 					$this->_checkDonneesApre();
 					$this->_checkTmpPdfDirectory( Configure::read( 'Cohorte.dossierTmpPdfs' ) );
@@ -358,7 +420,7 @@
 					// Vérification des droits d'accès à la page
                     if( $this->name != 'Pages' ) {
                         $controllerAction = $this->name . ':' . $this->action;
-                        $this->assert( $this->Droits->check( $user['User']['aroAlias'], $controllerAction ), 'error403' );
+                        $this->assert( $this->Droits->check( $this->Session->read( 'Auth.User.aroAlias' ), $controllerAction ), 'error403' );
                     }
                 }
             }
