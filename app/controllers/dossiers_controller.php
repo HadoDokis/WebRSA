@@ -4,7 +4,34 @@
     class DossiersController extends AppController
     {
         var $name = 'Dossiers';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Orientstruct', 'Typeorient', 'Contratinsertion', 'Detaildroitrsa', 'Detailcalculdroitrsa', 'Option', 'Dsp', 'Infofinanciere', 'Modecontact','Typocontrat', 'Creance', 'Adressefoyer', 'Dossiercaf', 'Serviceinstructeur', 'Jeton' , 'Indu', 'Referent', 'Zonegeographique', 'PersonneReferent', 'Cui' );
+        var $uses = array(
+			'Canton',
+			'Dossier',
+			/*'Foyer',
+			'Adresse',
+			'Personne',
+			'Structurereferente',
+			'Orientstruct',*/
+			'Typeorient',
+			'Contratinsertion',
+			/*'Detaildroitrsa',
+			'Detailcalculdroitrsa',*/
+			'Option',
+			/*'Dsp',
+			'Infofinanciere',
+			'Modecontact',
+			'Typocontrat',
+			'Creance',
+			'Adressefoyer',
+			'Dossiercaf',*/
+			'Serviceinstructeur',
+			/*'Jeton',
+			'Indu',*/
+			'Referent',
+			'Zonegeographique',
+			/*'PersonneReferent',*/
+			'Cui'
+		);
         var $aucunDroit = array( 'menu' );
         var $helpers = array( 'Csv' );
 
@@ -12,7 +39,7 @@
             // FIXME
             'limit' => 20
         );
-        
+
 		var $commeDroit = array(
 			'view' => 'Dossiers:index'
 		);
@@ -24,40 +51,47 @@
             parent::__construct();
         }
 
+		/**
+		*
+		*/
+
+		protected function _setOptions() {
+			$this->set( 'natpf', $this->Option->natpf() );
+			$this->set( 'decision_ci', $this->Option->decision_ci() );
+			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+			$this->set( 'moticlorsa', $this->Option->moticlorsa() );
+			$this->set( 'typeserins', $this->Option->typeserins() );
+			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
+			$this->set( 'typevoie', $this->Option->typevoie() );
+			$this->set( 'sitfam', $this->Option->sitfam() );
+			$this->set( 'couvsoc', $this->Option->couvsoc() );
+			$this->set( 'categorie', $this->Option->categorie() );
+			$typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
+			$this->set( 'typeservice', $typeservice );
+			$typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
+			$this->set( 'typesorient', $typesorient );
+			$this->set( 'referents', $this->Referent->find( 'list' ) );
+			$this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
+			$this->set( 'enumcui', $this->Cui->allEnumLists() );
+			///FIXME:
+			$this->set(
+				'trancheAge',
+				array(
+					'< 25',
+					'25 - 30',
+					'31 - 55',
+					'56 - 65',
+					'> 65'
+				)
+			);
+		}
+
         /**
         */
         function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			ini_set('memory_limit', '512M');
             $return = parent::beforeFilter();
-            $this->set( 'natpf', $this->Option->natpf() );
-            $this->set( 'decision_ci', $this->Option->decision_ci() );
-            $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-            $this->set( 'moticlorsa', $this->Option->moticlorsa() );
-            $this->set( 'typeserins', $this->Option->typeserins() );
-            $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
-            $this->set( 'typevoie', $this->Option->typevoie() );
-            $this->set( 'sitfam', $this->Option->sitfam() );
-            $this->set( 'couvsoc', $this->Option->couvsoc() );
-            $this->set( 'categorie', $this->Option->categorie() );
-            $typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
-            $this->set( 'typeservice', $typeservice );
-            $typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
-            $this->set( 'typesorient', $typesorient );
-            $this->set( 'referents', $this->Referent->find( 'list' ) );
-            $this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
-            $this->set( 'enumcui', $this->Cui->allEnumLists() );
-            ///FIXME:
-            $this->set(
-                'trancheAge',
-                array(
-                    '< 25',
-                    '25 - 30',
-                    '31 - 55',
-                    '56 - 65',
-                    '> 65'
-                )
-            );
             return $return;
         }
 
@@ -81,7 +115,6 @@
                 }
 
                 $this->set( 'dossiers', $dossiers );
-
             }
 
 			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
@@ -90,6 +123,8 @@
 			else {
 				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
 			}
+
+			$this->_setOptions();
         }
 
         /**
@@ -202,6 +237,7 @@
 					OK -> Contratinsertion
 					Calculsdroitrsa
 			*/
+
 			$details = array();
 
 			$tDossier = $this->Dossier->findById( $id, null, null, -1 );
@@ -339,9 +375,12 @@
 			$this->set( 'typoscontrat', $typoscontrat );
 
 			$this->set( 'details', $details );
+			$this->_setOptions();
         }
 
-        /// Export du tableau en CSV
+		/**
+        * Export du tableau en CSV
+		*/
 
         function exportcsv() {
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
@@ -354,6 +393,7 @@
 
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'headers', 'dossiers' ) );
+			$this->_setOptions();
 //             debug($dossiers);
 //             die();
         }

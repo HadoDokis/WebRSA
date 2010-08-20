@@ -2,11 +2,11 @@
     class UsersController extends AppController
     {
         var $name = 'Users';
-        var $uses = array( 'Group', 'Zonegeographique', 'User', 'Serviceinstructeur', 'Connection', 'Option', 'Aro', 'AroAco' );
+        var $uses = array( 'User', 'Connection', 'Option', 'Aro', 'AroAco' );
         var $aucunDroit = array('login', 'logout');
         var $helpers = array( 'Xform' );
         var $components = array('Menu','Dbdroits');
-        
+
 		var $commeDroit = array(
 			'add' => 'Users:edit'
 		);
@@ -61,8 +61,8 @@
                 // Fin utilisateurs concurrents
 
                 /* lecture du service de l'utilisateur authentifié */
-                $this->Utilisateur->Service->recursive=-1;
-                $group =  $this->Group->findById($authUser['User']['group_id']);
+                $this->User->Service->recursive = -1;
+                $group =  $this->User->Group->findById($authUser['User']['group_id']);
                 //$authUser['aroAlias'] = $group['Group']['name'].':'. $authUser['User']['username'];
                 $authUser['User']['aroAlias'] = $authUser['User']['username'];
                 /* lecture de la collectivite de l'utilisateur authentifié */
@@ -91,7 +91,13 @@
                     // Fin utilisateurs concurrents
                 }
             }
-            $this->Session->delete( 'Auth' );
+
+			foreach( array_keys( $this->Session->read() ) as $key ) {
+				if( !in_array( $key, array( 'Config', 'Message' ) ) ) {
+					$this->Session->delete( $key );
+				}
+            }
+
             $this->redirect( $this->Auth->logout() );
         }
 
@@ -161,9 +167,9 @@
 
         // FIXME: à l'ajout, on n'obtient pas toutes les acl de son groupe
         function add() {
-            $this->set( 'zglist', $this->Zonegeographique->find( 'list' ) );
-            $this->set( 'gp', $this->Group->find( 'list' ) );
-            $this->set( 'si', $this->Serviceinstructeur->find( 'list' ) );
+            $this->set( 'zglist', $this->User->Zonegeographique->find( 'list' ) );
+            $this->set( 'gp', $this->User->Group->find( 'list' ) );
+            $this->set( 'si', $this->User->Serviceinstructeur->find( 'list' ) );
             $this->set( 'typevoie', $this->Option->typevoie() );
             $this->set( 'options', $this->User->allEnumLists() );
 
@@ -173,7 +179,7 @@
 //                     die();
                 if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
                     // Définition des nouvelles permissions
-                    
+
                     $this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$this->data['User']['group_id']));
                 	$this->Dbdroits->MajCruDroits(
 						array(
@@ -224,9 +230,9 @@
             $userDb = $this->User->findById( $user_id );
             $this->assert( !empty( $userDb ), 'error404' );
 
-            $this->set( 'zglist', $this->Zonegeographique->find( 'list' ) );
-            $this->set( 'gp', $this->Group->find( 'list' ) );
-            $this->set( 'si', $this->Serviceinstructeur->find( 'list' ) );
+            $this->set( 'zglist', $this->User->Zonegeographique->find( 'list' ) );
+            $this->set( 'gp', $this->User->Group->find( 'list' ) );
+            $this->set( 'si', $this->User->Serviceinstructeur->find( 'list' ) );
             $this->set( 'typevoie', $this->Option->typevoie() );
             $this->set( 'options', $this->User->allEnumLists() );
 
@@ -245,9 +251,9 @@
                			$user=$this->User->read(null, $user_id);
                     	$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$user['User']['group_id']));
                     }
-                    
+
                     $new_droit= Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Utilisateur','foreign_key'=>$user_id)));
-                    
+
                 	$this->Dbdroits->MajCruDroits(
 						array(
 							'model'=>'Utilisateur',
