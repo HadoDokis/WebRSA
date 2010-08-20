@@ -138,4 +138,28 @@
 		trigger_error( "Could not extract model and field names from the following path: \"{$path}\"", E_USER_WARNING );
 		return null;
 	}
+
+	/**
+	* Returns a human-readable amount from a number of bytes
+	* SOURCE: http://www.phpfront.com/php/Convert-Bytes-to-corresponding-size/
+	*/
+
+	function byteSize( $bytes ) {
+		$size = $bytes / 1024;
+		if($size < 1024) {
+			$size = number_format($size, 2);
+			$size .= ' KB';
+		}
+		else {
+			if($size / 1024 < 1024) {
+				$size = number_format($size / 1024, 2);
+				$size .= ' MB';
+			}
+			else if ($size / 1024 / 1024 < 1024) {
+				$size = number_format($size / 1024 / 1024, 2);
+				$size .= ' GB';
+			}
+		}
+		return $size;
+	}
 ?>
