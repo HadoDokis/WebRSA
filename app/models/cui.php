@@ -15,10 +15,10 @@
                     'avenant' => array( 'domain' => 'cui' ),
                     'avenantcg' => array( 'domain' => 'cui' ),
                     'orgrecouvcotis' => array( 'domain' => 'cui' ),
-                    'assurance' => array( 'domain' => 'cui' ),
-                    'emploi' => array( 'domain' => 'cui' ),
-                    'typecontratcui' => array( 'domain' => 'cui' ),
-                    'initiative' => array( 'domain' => 'cui' ),
+//                     'assurance' => array( 'domain' => 'cui' ),
+//                     'emploi' => array( 'domain' => 'cui' ),
+//                     'typecontratcui' => array( 'domain' => 'cui' ),
+//                     'initiative' => array( 'domain' => 'cui' ),
                     'formation' => array( 'domain' => 'cui' ),
                     'orgapayeur' => array( 'domain' => 'cui' ),
                     'isadresse2' => array( 'domain' => 'cui' ),
@@ -28,7 +28,7 @@
                     'dureesansemploi' => array( 'domain' => 'cui' ),
                     'isinscritpe' => array( 'domain' => 'cui' ),
                     'dureeinscritpe' => array( 'type' => 'dureesansemploi', 'domain' => 'cui' ),
-                    'niveauemploi' => array( 'domain' => 'cui' ),
+//                     'niveauemploi' => array( 'domain' => 'cui' ),
 					'isbeneficiaire' => array( 'domain' => 'cui', 'type' => 'beneficiaire' ),
                     /*'ass' => array( 'domain' => 'cui' ),
                     'rsadept' => array( 'domain' => 'cui' ),*/
@@ -57,7 +57,7 @@
                     'financementexclusif' => array( 'domain' => 'cui' ),
                     'orgapayeur' => array( 'domain' => 'cui' ),
                     'decisioncui' => array( 'domain' => 'cui' ),
-                    'objectifimmersion'
+//                     'objectifimmersion'
                 )
             ),
             'Formattable',

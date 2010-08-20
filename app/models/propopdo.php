@@ -1,5 +1,4 @@
 <?php
-
     class Propopdo extends AppModel
     {
         var $name = 'Propopdo';
@@ -7,7 +6,7 @@
         var $actsAs = array(
             'Enumerable' => array(
 				'fields' => array(
-					'statutdecision' => array(  'domain' => 'propopdo' ),
+// 					'statutdecision' => array(  'domain' => 'propopdo' ),
                     'choixpdo' => array( 'domain' => 'propopdo' ),
                     'nonadmis' => array( 'domain' => 'propopdo' ),
                     'iscomplet' => array( 'domain' => 'propopdo' ),
