@@ -390,6 +390,28 @@
 		}
 
 		/**
+		* Vérifie que l'utilisateur a la permission d'accéder à la page
+		*/
+
+		protected function _checkPermissions() {
+			// Vérification des droits d'accès à la page
+			if( $this->name != 'Pages' ) {
+				/// Ancienne manière, génère 4 requètes SQL
+				/*$controllerAction = $this->name . ':' . $this->action;
+				$this->assert( $this->Droits->check( $this->Session->read( 'Auth.User.aroAlias' ), $controllerAction ), 'error403' );*/
+
+				/// Nouvelle manière, accès au cache se trouvant dans la session
+				$permissions = $this->Session->read( 'Auth.Permissions' );
+				if( isset( $permissions["Module:{$this->name}"] ) ) {
+					$this->assert( !empty( $permissions["Module:{$this->name}"] ), 'error403' );
+				}
+				else {
+					$this->assert( Set::classicExtract( $permissions, "{$this->name}:{$this->action}" ), 'error403' );
+				}
+			}
+		}
+
+		/**
 		*
 		*/
 
@@ -416,18 +438,14 @@
 					$this->_loadGroup();
 					$this->_loadServiceInstructeur();
 
-                    // Vérifications de l'état complet de certaines données dans la base
-                    $this->_checkDecisionsStructures();
-                    $this->_checkDonneesUtilisateursEtServices();
-                    $this->_checkHabilitations();
+					// Vérifications de l'état complet de certaines données dans la base
+					$this->_checkDecisionsStructures();
+					$this->_checkDonneesUtilisateursEtServices();
+					$this->_checkHabilitations();
 					$this->_checkDonneesApre();
 					$this->_checkTmpPdfDirectory( Configure::read( 'Cohorte.dossierTmpPdfs' ) );
 
-					// Vérification des droits d'accès à la page
-					if( $this->name != 'Pages' ) {
-						$controllerAction = $this->name . ':' . $this->action;
-						$this->assert( $this->Droits->check( $this->Session->read( 'Auth.User.aroAlias' ), $controllerAction ), 'error403' );
-					}
+					$this->_checkPermissions();
 				}
 			}
 
@@ -435,19 +453,19 @@
 			return $return;
 		}
 
-        /**
-        * INFO:
-        *   cake/libs/error.php
-        *   cake/libs/view/errors/
-        */
+		/**
+		* INFO:
+		*   cake/libs/error.php
+		*   cake/libs/view/errors/
+		*/
 
-        function assert( $condition, $error = 'error500', $parameters = array() ) {
-            if( $condition !== true ) {
-                $calledFrom = debug_backtrace();
-                $calledFromFile = substr( str_replace( ROOT, '', $calledFrom[0]['file'] ), 1 );
-                $calledFromLine = $calledFrom[0]['line'];
+		function assert( $condition, $error = 'error500', $parameters = array() ) {
+			if( $condition !== true ) {
+				$calledFrom = debug_backtrace();
+				$calledFromFile = substr( str_replace( ROOT, '', $calledFrom[0]['file'] ), 1 );
+				$calledFromLine = $calledFrom[0]['line'];
 
-                $this->log( 'Assertion failed: '.$error.' in '.$calledFromFile.' line '.$calledFromLine.' for url '.$this->here );
+				$this->log( 'Assertion failed: '.$error.' in '.$calledFromFile.' line '.$calledFromLine.' for url '.$this->here );
 
 				// Need to finish transaction ?
 				if( isset( $this->{$this->modelClass} ) ) {
@@ -457,280 +475,214 @@
 					}
 				}
 
-                $this->cakeError(
-                    $error,
-                    array_merge(
-                        array(
-                            'className' => Inflector::camelize( $this->params['controller'] ),
-                            'action'    => $this->action,
-                            'url'       => $this->params['url']['url'], // ? FIXME
-                            'file'      => $calledFromFile,
-                            'line'      => $calledFromLine
-                        ),
-                        $parameters
-                    )
-                );
+				$this->cakeError(
+					$error,
+					array_merge(
+						array(
+							'className' => Inflector::camelize( $this->params['controller'] ),
+							'action'    => $this->action,
+							'url'       => $this->params['url']['url'], // ? FIXME
+							'file'      => $calledFromFile,
+							'line'      => $calledFromLine
+						),
+						$parameters
+					)
+				);
 
-                exit();
-            }
-        }
+				exit();
+			}
+		}
 
-        /**
-        *
-        *
-        *
-        *
-        *
-        */
+		/**
+		*
+		*/
 
-        function paginate( $object = null, $scope = array(), $whitelist = array() ) {
-            if (is_array($object)) {
-                $whitelist = $scope;
-                $scope = $object;
-                $object = null;
-            }
-            $assoc = null;
+		function paginate( $object = null, $scope = array(), $whitelist = array() ) {
+			if (is_array($object)) {
+				$whitelist = $scope;
+				$scope = $object;
+				$object = null;
+			}
+			$assoc = null;
 
-            if (is_string($object)) {
-                $assoc = null;
+			if (is_string($object)) {
+				$assoc = null;
 
-                if (strpos($object, '.') !== false) {
-                    list($object, $assoc) = explode('.', $object);
-                }
+				if (strpos($object, '.') !== false) {
+					list($object, $assoc) = explode('.', $object);
+				}
 
-                if ($assoc && isset($this->{$object}->{$assoc})) {
-                    $object = $this->{$object}->{$assoc};
-                } elseif ($assoc && isset($this->{$this->modelClass}) && isset($this->{$this->modelClass}->{$assoc})) {
-                    $object = $this->{$this->modelClass}->{$assoc};
-                } elseif (isset($this->{$object})) {
-                    $object = $this->{$object};
-                } elseif (isset($this->{$this->modelClass}) && isset($this->{$this->modelClass}->{$object})) {
-                    $object = $this->{$this->modelClass}->{$object};
-                }
-            } elseif (empty($object) || $object === null) {
-                if (isset($this->{$this->modelClass})) {
-                    $object = $this->{$this->modelClass};
-                } else {
-                    $className = null;
-                    $name = $this->uses[0];
-                    if (strpos($this->uses[0], '.') !== false) {
-                        list($name, $className) = explode('.', $this->uses[0]);
-                    }
-                    if ($className) {
-                        $object = $this->{$className};
-                    } else {
-                        $object = $this->{$name};
-                    }
-                }
-            }
+				if ($assoc && isset($this->{$object}->{$assoc})) {
+					$object = $this->{$object}->{$assoc};
+				} elseif ($assoc && isset($this->{$this->modelClass}) && isset($this->{$this->modelClass}->{$assoc})) {
+					$object = $this->{$this->modelClass}->{$assoc};
+				} elseif (isset($this->{$object})) {
+					$object = $this->{$object};
+				} elseif (isset($this->{$this->modelClass}) && isset($this->{$this->modelClass}->{$object})) {
+					$object = $this->{$this->modelClass}->{$object};
+				}
+			} elseif (empty($object) || $object === null) {
+				if (isset($this->{$this->modelClass})) {
+					$object = $this->{$this->modelClass};
+				} else {
+					$className = null;
+					$name = $this->uses[0];
+					if (strpos($this->uses[0], '.') !== false) {
+						list($name, $className) = explode('.', $this->uses[0]);
+					}
+					if ($className) {
+						$object = $this->{$className};
+					} else {
+						$object = $this->{$name};
+					}
+				}
+			}
 
-            if (!is_object($object)) {
-                trigger_error(sprintf(__('Controller::paginate() - can\'t find model %1$s in controller %2$sController', true), $object, $this->name), E_USER_WARNING);
-                return array();
-            }
-            $options = array_merge($this->params, $this->params['url'], $this->passedArgs);
+			if (!is_object($object)) {
+				trigger_error(sprintf(__('Controller::paginate() - can\'t find model %1$s in controller %2$sController', true), $object, $this->name), E_USER_WARNING);
+				return array();
+			}
+			$options = array_merge($this->params, $this->params['url'], $this->passedArgs);
 
-            if (isset($this->paginate[$object->alias])) {
-                $defaults = $this->paginate[$object->alias];
-            } else {
-                $defaults = $this->paginate;
-            }
+			if (isset($this->paginate[$object->alias])) {
+				$defaults = $this->paginate[$object->alias];
+			} else {
+				$defaults = $this->paginate;
+			}
 
-            if (isset($options['show'])) {
-                $options['limit'] = $options['show'];
-            }
+			if (isset($options['show'])) {
+				$options['limit'] = $options['show'];
+			}
 
-            if (isset($options['sort'])) {
-                $direction = null;
-                if (isset($options['direction'])) {
-                    $direction = strtolower($options['direction']);
-                }
-                if ($direction != 'asc' && $direction != 'desc') {
-                    $direction = 'asc';
-                }
-                $options['order'] = array($options['sort'] => $direction);
-            }
+			if (isset($options['sort'])) {
+				$direction = null;
+				if (isset($options['direction'])) {
+					$direction = strtolower($options['direction']);
+				}
+				if ($direction != 'asc' && $direction != 'desc') {
+					$direction = 'asc';
+				}
+				$options['order'] = array($options['sort'] => $direction);
+			}
 
-            if (!empty($options['order']) && is_array( $options['order'] ) ) {
-                $alias = $object->alias ;
-                $key = $field = key($options['order']);
+			if (!empty($options['order']) && is_array( $options['order'] ) ) {
+				$alias = $object->alias ;
+				$key = $field = key($options['order']);
 
-                if (strpos($key, '.') !== false) {
-                    list($alias, $field) = explode('.', $key);
-                }
-                $value = $options['order'][$key];
-                unset($options['order'][$key]);
+				if (strpos($key, '.') !== false) {
+					list($alias, $field) = explode('.', $key);
+				}
+				$value = $options['order'][$key];
+				unset($options['order'][$key]);
 
-                if( isset($object->{$alias}) && $object->{$alias}->hasField( $field ) ) {
-                    $options['order'][$alias . '.' . $field] = $value;
-                } elseif( $object->hasField( $field ) ) {
-                    $options['order'][$alias . '.' . $field] = $value;
-                } else {
-                    // INFO: permet de trier sur d'autres champs que ceux du modèle que l'on pagine
-                    $joinAliases = Set::extract( $defaults, '/joins/alias' );
-                    if( in_array( $alias, $joinAliases ) ) {
-                        $options['order'][$alias . '.' . $field] = $value;
-                    }
-                }
-            }
+				if( isset($object->{$alias}) && $object->{$alias}->hasField( $field ) ) {
+					$options['order'][$alias . '.' . $field] = $value;
+				} elseif( $object->hasField( $field ) ) {
+					$options['order'][$alias . '.' . $field] = $value;
+				} else {
+					// INFO: permet de trier sur d'autres champs que ceux du modèle que l'on pagine
+					$joinAliases = Set::extract( $defaults, '/joins/alias' );
+					if( in_array( $alias, $joinAliases ) ) {
+						$options['order'][$alias . '.' . $field] = $value;
+					}
+				}
+			}
 
-            $vars = array('fields', 'order', 'limit', 'page', 'recursive');
-            $keys = array_keys($options);
-            $count = count($keys);
+			$vars = array('fields', 'order', 'limit', 'page', 'recursive');
+			$keys = array_keys($options);
+			$count = count($keys);
 
-            for ($i = 0; $i < $count; $i++) {
-                if (!in_array($keys[$i], $vars, true)) {
-                    unset($options[$keys[$i]]);
-                }
-                if (empty($whitelist) && ($keys[$i] === 'fields' || $keys[$i] === 'recursive')) {
-                    unset($options[$keys[$i]]);
-                } elseif (!empty($whitelist) && !in_array($keys[$i], $whitelist)) {
-                    unset($options[$keys[$i]]);
-                }
-            }
-            $conditions = $fields = $order = $limit = $page = $recursive = null;
+			for ($i = 0; $i < $count; $i++) {
+				if (!in_array($keys[$i], $vars, true)) {
+					unset($options[$keys[$i]]);
+				}
+				if (empty($whitelist) && ($keys[$i] === 'fields' || $keys[$i] === 'recursive')) {
+					unset($options[$keys[$i]]);
+				} elseif (!empty($whitelist) && !in_array($keys[$i], $whitelist)) {
+					unset($options[$keys[$i]]);
+				}
+			}
+			$conditions = $fields = $order = $limit = $page = $recursive = null;
 
-            if (!isset($defaults['conditions'])) {
-                $defaults['conditions'] = array();
-            }
+			if (!isset($defaults['conditions'])) {
+				$defaults['conditions'] = array();
+			}
 
-            $type = 'all';
+			$type = 'all';
 
-            if (isset($defaults[0])) {
-                $type = $defaults[0];
-                unset($defaults[0]);
-            }
-            extract($options = array_merge(array('page' => 1, 'limit' => 20), $defaults, $options));
+			if (isset($defaults[0])) {
+				$type = $defaults[0];
+				unset($defaults[0]);
+			}
+			extract($options = array_merge(array('page' => 1, 'limit' => 20), $defaults, $options));
 
-           // made in gaëtan -> pour les tests unitaires
-           $options['limit'] = (empty($options['limit']) || !is_numeric($options['limit'])) ? 1 : $options['limit'];
-           extract($options);
-           // fin made in gaëtan
+			// made in gaëtan -> pour les tests unitaires
+			$options['limit'] = (empty($options['limit']) || !is_numeric($options['limit'])) ? 1 : $options['limit'];
+			extract($options);
+			// fin made in gaëtan
 
 
-            if (is_array($scope) && !empty($scope)) {
-                $conditions = array_merge($conditions, $scope);
-            } elseif (is_string($scope)) {
-                $conditions = array($conditions, $scope);
-            }
-            if ($recursive === null) {
-                $recursive = $object->recursive;
-            }
+			if (is_array($scope) && !empty($scope)) {
+				$conditions = array_merge($conditions, $scope);
+			} elseif (is_string($scope)) {
+				$conditions = array($conditions, $scope);
+			}
+			if ($recursive === null) {
+				$recursive = $object->recursive;
+			}
 
-            $extra = array_diff_key($defaults, compact(
-                'conditions', 'fields', 'order', 'limit', 'page', 'recursive'
-            ));
+			$extra = array_diff_key($defaults, compact(
+				'conditions', 'fields', 'order', 'limit', 'page', 'recursive'
+			));
 
-            if ($type !== 'all') {
-                $extra['type'] = $type;
-            }
+			if ($type !== 'all') {
+				$extra['type'] = $type;
+			}
 
-            if (method_exists($object, 'paginateCount')) {
-                $count = $object->paginateCount($conditions, $recursive, $extra);
-            } else {
-                $parameters = compact('conditions');
-                if ($recursive != $object->recursive) {
-                    $parameters['recursive'] = $recursive;
-                }
-                $count = $object->find('count', array_merge($parameters, $extra));
-            }
-            $pageCount = intval(ceil($count / $limit));
+			if (method_exists($object, 'paginateCount')) {
+				$count = $object->paginateCount($conditions, $recursive, $extra);
+			} else {
+				$parameters = compact('conditions');
+				if ($recursive != $object->recursive) {
+					$parameters['recursive'] = $recursive;
+				}
+				$count = $object->find('count', array_merge($parameters, $extra));
+			}
+			$pageCount = intval(ceil($count / $limit));
 
-            if ($page === 'last' || $page >= $pageCount) {
-                $options['page'] = $page = $pageCount;
-            } elseif (intval($page) < 1) {
-                $options['page'] = $page = 1;
-            }
-            $page = $options['page'] = (integer)$page;
+			if ($page === 'last' || $page >= $pageCount) {
+				$options['page'] = $page = $pageCount;
+			} elseif (intval($page) < 1) {
+				$options['page'] = $page = 1;
+			}
+			$page = $options['page'] = (integer)$page;
 
-            if (method_exists($object, 'paginate')) {
-                $results = $object->paginate($conditions, $fields, $order, $limit, $page, $recursive, $extra);
-            } else {
-                $parameters = compact('conditions', 'fields', 'order', 'limit', 'page');
-                if ($recursive != $object->recursive) {
-                    $parameters['recursive'] = $recursive;
-                }
-                $results = $object->find($type, array_merge($parameters, $extra));
-            }
-            $paging = array(
-                'page'      => $page,
-                'current'   => count($results),
-                'count'     => $count,
-                'prevPage'  => ($page > 1),
-                'nextPage'  => ($count > ($page * $limit)),
-                'pageCount' => $pageCount,
-                'defaults'  => array_merge(array('limit' => 20, 'step' => 1), $defaults),
-                'options'   => $options
-            );
+			if (method_exists($object, 'paginate')) {
+				$results = $object->paginate($conditions, $fields, $order, $limit, $page, $recursive, $extra);
+			} else {
+				$parameters = compact('conditions', 'fields', 'order', 'limit', 'page');
+				if ($recursive != $object->recursive) {
+					$parameters['recursive'] = $recursive;
+				}
+				$results = $object->find($type, array_merge($parameters, $extra));
+			}
+			$paging = array(
+				'page'      => $page,
+				'current'   => count($results),
+				'count'     => $count,
+				'prevPage'  => ($page > 1),
+				'nextPage'  => ($count > ($page * $limit)),
+				'pageCount' => $pageCount,
+				'defaults'  => array_merge(array('limit' => 20, 'step' => 1), $defaults),
+				'options'   => $options
+			);
 
-            $this->params['paging'][$object->alias] = $paging;
+			$this->params['paging'][$object->alias] = $paging;
 
-            if (!in_array('Paginator', $this->helpers) && !array_key_exists('Paginator', $this->helpers)) {
-                $this->helpers[] = 'Paginator';
-            }
-            return $results;
-        }
-
-        /**
-        *   Ajout à la suite de l'utilisation des nouveaux helpers
-        *   - default.php
-        *   - theme.php
-        */
-
-//         public function index() {
-//             $this->set(
-//                 Inflector::tableize( $this->modelClass ),
-//                 $this->paginate( $this->modelClass )
-//             );
-//         }
-//
-//         /**
-//         *
-//         */
-//
-//         public function add() {
-//             $args = func_get_args();
-//             call_user_func_array( array( $this, '_add_edit' ), $args );
-//         }
-//
-//         /**
-//         *
-//         */
-//
-//         public function edit() {
-//             $args = func_get_args();
-//             call_user_func_array( array( $this, '_add_edit' ), $args );
-//         }
-//
-//         /**
-//         *
-//         */
-//
-//         function _add_edit(){
-//             $args = func_get_args();
-//             $this->Xcontroller->{$this->action}( $args );
-//         }
-//
-//         /**
-//         *
-//         */
-//
-//         public function delete( $id ) {
-//             $this->Xcontroller->delete( $id );
-//         }
-//
-//         /**
-//         *
-//         */
-//
-//         public function view( $id ) {
-// //          debug( $this->{$this->modelClass}->getColumnType( 'count_posts', true ) );
-// //          debug( $this->{$this->modelClass}->getColumnTypes( true ) );
-// //          debug( $this->{$this->modelClass}->findById( $id, null, null, 2 ) ); // FIXME: virtual fields avec recursive => 2
-//             $this->Xcontroller->view( $id );
-//         }
-
-
-
-    }
+			if (!in_array('Paginator', $this->helpers) && !array_key_exists('Paginator', $this->helpers)) {
+				$this->helpers[] = 'Paginator';
+			}
+			return $results;
+		}
+	}
 ?>
