@@ -78,7 +78,7 @@
 				)
 			);
 
-			if( in_array( $this->action, array( 'view', 'exportcsv' ) ) {
+			if( in_array( $this->action, array( 'view', 'exportcsv' ) ) ) {
 				// FIXME: à intégrer à la fonction view pour ne pas avoir d'énormes variables
 				if( $this->action == 'view' ) {
 					$this->set( 'referents', $this->Referent->find( 'list' ) );
