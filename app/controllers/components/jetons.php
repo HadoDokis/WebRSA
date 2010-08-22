@@ -195,6 +195,30 @@
 		}
 
 		/**
+		* Retourne vrai si les dossiers sont lockés
+		*/
+
+		public function lockedList( $dossiers_ids ) {
+			$list = $this->Jeton->find(
+				'list',
+				array(
+					'fields' => array( 'Jeton.id', 'Jeton.dossier_id' ),
+					'conditions' => array(
+						'"Jeton"."dossier_id"'  => $dossiers_ids,
+						'and NOT' => array(
+							'"Jeton"."php_sid"'     => session_id(), // FIXME: ou pas -> config
+							'"Jeton"."user_id"'     => $this->_userId
+						),
+						'"Jeton"."modified" >=' => $this->_timeoutThreshold()
+					)
+				)
+			);
+
+			return $list;
+		}
+
+
+		/**
 		* Obtient un jeton sur un dossier
 		*/
 

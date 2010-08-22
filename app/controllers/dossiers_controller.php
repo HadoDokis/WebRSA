@@ -105,25 +105,27 @@
 
         /**
         */
-        function index() {
+		function index() {
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', $this->Canton->selectList() );
 			}
 
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
-            $params = $this->data;
-            if( !empty( $params ) ) {
-                $this->paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
-                $dossiers = $this->paginate( 'Dossier' );
+			$params = $this->data;
+			if( !empty( $params ) ) {
+				$this->paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+				$dossiers = $this->paginate( 'Dossier' );
 
-                foreach( $dossiers as $key => $dossier ) {
-                    $dossiers[$key]['Dossier']['locked'] = $this->Jetons->locked( $dossier['Dossier']['id'] );
-                }
+				// Les dossiers que l'on a obtenus sont-ils lockés ?
+				$lockedList = $this->Jetons->lockedList( Set::extract( $dossiers, '/Dossier/id' ) );
+				foreach( $dossiers as $key => $dossier ) {
+					$dossiers[$key]['Dossier']['locked'] = in_array( $dossier['Dossier']['id'], $lockedList );
+				}
 
-                $this->set( 'dossiers', $dossiers );
-            }
+				$this->set( 'dossiers', $dossiers );
+			}
 
 			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
 				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
@@ -133,7 +135,7 @@
 			}
 
 			$this->_setOptions();
-        }
+		}
 
         /**
         */
