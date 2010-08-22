@@ -42,18 +42,21 @@
             }
         }
 
-        // ********************************************************************
+		/**
+		* Retourne vrai si un dossier possédant l'id passé en paramètre existe
+		*/
 
-        function _dossierExists( $dossier_id ) { // FIXME: si multiples!
-            $dossier = $this->Dossier->find(
-                'first',
-                array(
-                    'conditions' => array( 'Dossier.id' => $dossier_id ),
-                    'recursive' => -1
-                )
-            );
-            return ( !empty( $dossier ) );
-        }
+		function _dossierExists( $dossier_id ) { // FIXME: si multiples!
+			$dossier = $this->Dossier->find(
+				'count',
+				array(
+					'conditions' => array( 'Dossier.id' => $dossier_id ),
+					'recursive' => -1
+				)
+			);
+
+			return ( !empty( $dossier ) );
+		}
 
         // ********************************************************************
 
