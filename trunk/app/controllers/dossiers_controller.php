@@ -66,13 +66,6 @@
 			$this->set( 'sitfam', $this->Option->sitfam() );
 			$this->set( 'couvsoc', $this->Option->couvsoc() );
 			$this->set( 'categorie', $this->Option->categorie() );
-			$typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
-			$this->set( 'typeservice', $typeservice );
-			$typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
-			$this->set( 'typesorient', $typesorient );
-			$this->set( 'referents', $this->Referent->find( 'list' ) );
-			$this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
-			$this->set( 'enumcui', $this->Cui->allEnumLists() );
 			///FIXME:
 			$this->set(
 				'trancheAge',
@@ -84,6 +77,21 @@
 					'> 65'
 				)
 			);
+
+			if( in_array( $this->action, array( 'view', 'exportcsv' ) ) {
+				// FIXME: à intégrer à la fonction view pour ne pas avoir d'énormes variables
+				if( $this->action == 'view' ) {
+					$this->set( 'referents', $this->Referent->find( 'list' ) );
+					$this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
+					$this->set( 'enumcui', $this->Cui->allEnumLists() );
+				}
+				$typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
+				$this->set( 'typesorient', $typesorient );
+			}
+			else if( $this->action == 'index' ) {
+				$typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
+				$this->set( 'typeservice', $typeservice );
+			}
 		}
 
         /**
