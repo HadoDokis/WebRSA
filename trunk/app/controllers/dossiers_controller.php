@@ -186,7 +186,7 @@
             usort( $dossier['Foyer']['Adressefoyer'], create_function( '$a,$b', 'return strcmp( $a["rgadr"], $b["rgadr"] );' ) );
 
             foreach( $dossier['Foyer']['Adressefoyer'] as $key => $Adressefoyer ) {
-                $adresses = $this->Adresse->find(
+                $adresses = $this->Dossier->Foyer->Adressefoyer->Adresse->find(
                     'all',
                     array(
                         'conditions' => array(
@@ -246,7 +246,7 @@
 			$tFoyer = $this->Dossier->Foyer->findByDossierRsaId( $id, null, null, -1 );
 			$details = Set::merge( $details, $tFoyer );
 
-			$tDetaildroitrsa = $this->Detaildroitrsa->findByDossierRsaId( $id, null, null, 1 );
+			$tDetaildroitrsa = $this->Dossier->Detaildroitrsa->findByDossierRsaId( $id, null, null, 1 );
 			$details = Set::merge( $details, $tDetaildroitrsa );
 
 			$tSituationdossierrsa = $this->Dossier->Situationdossierrsa->findByDossierRsaId( $id, null, null, -1 );
@@ -275,7 +275,7 @@
 			);
 			$details = Set::merge( $details, $tInfofinanciere );
 
-			$adresseFoyer = $this->Adressefoyer->find(
+			$adresseFoyer = $this->Dossier->Foyer->Adressefoyer->find(
 				'first',
 				array(
 					'conditions' => array(
@@ -290,10 +290,10 @@
 			/**
 				Personnes
 			*/
-			$bindPrestation = $this->Personne->hasOne['Prestation'];
-			$this->Personne->unbindModelAll();
-			$this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Infopoleemploi', 'Calculdroitrsa', 'Prestation' => $bindPrestation ) ) );
-			$personnesFoyer = $this->Personne->find(
+			$bindPrestation = $this->Dossier->Foyer->Personne->hasOne['Prestation'];
+			$this->Dossier->Foyer->Personne->unbindModelAll();
+			$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Infopoleemploi', 'Calculdroitrsa', 'Prestation' => $bindPrestation ) ) );
+			$personnesFoyer = $this->Dossier->Foyer->Personne->find(
 				'all',
 				array(
 					'conditions' => array(
@@ -306,7 +306,7 @@
 
 			$roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
 			foreach( $roles as $index => $role ) {
-				$tPersReferent = $this->PersonneReferent->find(
+				$tPersReferent = $this->Dossier->Foyer->Personne->PersonneReferent->find(
 					'first',
 					array(
 						'conditions' => array( 'PersonneReferent.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
@@ -337,7 +337,7 @@
 				);
 				$personnesFoyer[$index]['Cui'] = $tCui['Cui'];
 
-				$tOrientstruct = $this->Orientstruct->find(
+				$tOrientstruct = $this->Dossier->Foyer->Personne->Orientstruct->find(
 					'first',
 					array(
 						'conditions' => array(
@@ -349,7 +349,7 @@
 				);
 				$personnesFoyer[$index]['Orientstruct']['premiere'] = $tOrientstruct['Orientstruct'];
 
-				$tOrientstruct = $this->Orientstruct->find(
+				$tOrientstruct = $this->Dossier->Foyer->Personne->Orientstruct->find(
 					'first',
 					array(
 						'conditions' => array(
@@ -366,9 +366,9 @@
 
 
 
-			$structuresreferentes = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
+			$structuresreferentes = ClassRegistry::init( 'Structurereferente' )->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
 			$typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
-			$typoscontrat = $this->Typocontrat->find( 'list', array( 'fields' => array( 'id', 'lib_typo' ) ) );
+			$typoscontrat = ClassRegistry::init( 'Typocontrat' )->find( 'list', array( 'fields' => array( 'id', 'lib_typo' ) ) );
 
 			$this->set( 'structuresreferentes', $structuresreferentes );
 			$this->set( 'typesorient', $typesorient );
