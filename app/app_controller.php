@@ -369,42 +369,49 @@
 			}
 		}
 
-        /**
-        *
-        *
-        *
-        */
+		/**
+		* Utilisateurs concurrents, mise à jour du dernier accès pour la connection
+		*/
 
-        function beforeFilter() {
-            $this->disableCache(); // Disable browser cache ?
-            $this->Auth->autoRedirect = false;
+		protected function _updateConnection() {
+				if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
+					$connection_id = $this->Session->read( 'Auth.Connection.id' );
 
-            $return = parent::beforeFilter();
+					if( empty( $connection_id ) ) {
+						$connection_id = $this->Connection->field( 'id', array( 'user_id' => $this->Session->read( 'Auth.User.id' ) ) );
+						$this->Session->write( 'Auth.Connection.id', $connection_id );
+					}
 
-            if( ( substr( $_SERVER['REQUEST_URI'], strlen( $this->base ) ) != '/users/login' ) ) {
-                if( !$this->Session->check( 'Auth' ) ) {
-                    //le forcer a se connecter
-                    $this->redirect("/users/login");
-                }
-                else {
-                    if( !$this->Session->check( 'Auth.User' ) ) {
-                        $this->redirect("/users/login");
-                    }
+					if( !empty( $connection_id ) ) {
+						$this->Connection->create( array( 'id' => $connection_id ) );
+						$this->Connection->saveField( 'modified', null );
+					}
+				}
+		}
 
+		/**
+		*
+		*/
+
+		function beforeFilter() {
+			$this->disableCache(); // Disable browser cache ?
+			$this->Auth->autoRedirect = false;
+
+			$return = parent::beforeFilter();
+
+			if( ( substr( $_SERVER['REQUEST_URI'], strlen( $this->base ) ) != '/users/login' ) ) {
+				if( !$this->Session->check( 'Auth' ) || !$this->Session->check( 'Auth.User' ) ) {
+					//le forcer a se connecter
+					$this->redirect("/users/login");
+				}
+				else {
 					$this->_checkWebrsaInc( array( 'Cohorte.dossierTmpPdfs' ) );
 					$this->_checkMissingBinaries( array( 'pdftk' ) );
 
 					$this->_loadPermissions();
 					$this->_loadZonesgeographiques();
 
-                    // Utilisateurs concurrents
-                    if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
-                        if( $connection = $this->Connection->findByUserId( $this->Session->read( 'Auth.User.id' ), null, null, -1 ) ) {
-                            unset( $connection['Connection']['modified'] );
-                            $this->Connection->set( $connection );
-                            $this->Connection->save( $connection );
-                        }
-                    }
+					$this->_updateConnection();
 
 					$this->_loadGroup();
 					$this->_loadServiceInstructeur();
@@ -417,25 +424,21 @@
 					$this->_checkTmpPdfDirectory( Configure::read( 'Cohorte.dossierTmpPdfs' ) );
 
 					// Vérification des droits d'accès à la page
-                    if( $this->name != 'Pages' ) {
-                        $controllerAction = $this->name . ':' . $this->action;
-                        $this->assert( $this->Droits->check( $this->Session->read( 'Auth.User.aroAlias' ), $controllerAction ), 'error403' );
-                    }
-                }
-            }
+					if( $this->name != 'Pages' ) {
+						$controllerAction = $this->name . ':' . $this->action;
+						$this->assert( $this->Droits->check( $this->Session->read( 'Auth.User.aroAlias' ), $controllerAction ), 'error403' );
+					}
+				}
+			}
 
-            $this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
-            return $return;
-        }
-
-        //*********************************************************************
+			$this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
+			return $return;
+		}
 
         /**
-        *
         * INFO:
         *   cake/libs/error.php
         *   cake/libs/view/errors/
-        *
         */
 
         function assert( $condition, $error = 'error500', $parameters = array() ) {
