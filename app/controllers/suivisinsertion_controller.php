@@ -42,10 +42,10 @@
             /**
                 Personnes
             */
-            $bindPrestation = $this->Personne->hasOne['Prestation'];
-            $this->Personne->unbindModelAll();
-            $this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Prestation' => $bindPrestation ) ) );
-            $personnesFoyer = $this->Personne->find(
+            $bindPrestation = $this->Foyer->Personne->hasOne['Prestation'];
+            $this->Foyer->Personne->unbindModelAll();
+            $this->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Prestation' => $bindPrestation ) ) );
+            $personnesFoyer = $this->Foyer->Personne->find(
                 'all',
                 array(
                     'conditions' => array(
