@@ -138,88 +138,149 @@
 		}
 
         /**
+		*
         */
-        function menu() {
-            // Ce n'est pas un appel par une URL
-            $this->assert( isset( $this->params['requested'] ), 'error404' );
+
+		function menu() {
+			$this->assert( isset( $this->params['requested'] ), 'error404' );
+			$conditions = array();
+
+			// Quel paramètre avons-nous pour trouver le bon dossier ?
+			if( !empty( $this->params['id'] ) && is_numeric( $this->params['id'] ) ) {
+				$conditions['Dossier.id'] = $this->params['id'];
+			}
+			else if( !empty( $this->params['foyer_id'] ) && is_numeric( $this->params['foyer_id'] ) ) {
+				$conditions['Foyer.id'] = $this->params['foyer_id'];
+			}
+			else if( !empty( $this->params['personne_id'] ) && is_numeric( $this->params['personne_id'] ) ) {
+				$foyer_id = $this->Dossier->Foyer->Personne->field( 'foyer_id', array( 'id' => $this->params['personne_id'] ) );
+				$this->assert( !empty( $foyer_id ), 'invalidParameter' );
+				$conditions['Foyer.id'] = $foyer_id;
+			}
+			$this->assert( !empty( $conditions ), 'invalidParameter' );
+
+			$dossier = $this->Dossier->find(
+				'first',
+				array(
+					'conditions' => $conditions,
+					'recursive' => 0
+				)
+			);
+
+			$this->Dossier->Foyer->Personne->unbindModelAll();
+			$this->Dossier->Foyer->Personne->bindModel(
+				array(
+					'hasOne' => array(
+						'Prestation' => array(
+							'conditions' => array( 'Prestation.natprest' => 'RSA' )
+						)
+					)
+				)
+			);
+			$personnes = $this->Dossier->Foyer->Personne->find(
+				'all',
+				array(
+					'conditions' => array(
+						'Personne.foyer_id' => Set::classicExtract( $dossier, 'Foyer.id' )
+					),
+					'recursive' => 0
+				)
+			);
+
+			$dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Foyer']['dossier_rsa_id'] );
+			$dossier['Foyer']['Personne'] = Set::classicExtract( $personnes, '{n}.Personne' );
+			foreach( Set::classicExtract( $personnes, '{n}.Prestation' ) as $i => $prestation ) {
+				$dossier['Foyer']['Personne'] = Set::insert( $dossier['Foyer']['Personne'], "{$i}.Prestation", $prestation );
+			}
+
+			return $dossier;
+		}
+
+        /**
+		*
+        */
+
+		/*function menu() {
+			// Ce n'est pas un appel par une URL
+			$this->assert( isset( $this->params['requested'] ), 'error404' );
 //             $this->params['id'] = 203121;
 //             $this->Dossier->query( 'SELECT 1;' );
 
-            $conditions = array();
+			$conditions = array();
 
-            if( !empty( $this->params['id'] ) && is_numeric( $this->params['id'] ) ) {
-                $conditions['"Dossier"."id"'] = $this->params['id'];
-            }
-            else if( !empty( $this->params['foyer_id'] ) && is_numeric( $this->params['foyer_id'] ) ) {
-                $conditions['"Foyer"."id"'] = $this->params['foyer_id'];
-            }
-            else if( !empty( $this->params['personne_id'] ) && is_numeric( $this->params['personne_id'] ) ) {
-                $personne = $this->Dossier->Foyer->Personne->find(
-                    'first', array(
-                        'conditions' => array(
-                            'Personne.id' => $this->params['personne_id']
-                        )
-                    )
-                );
+			if( !empty( $this->params['id'] ) && is_numeric( $this->params['id'] ) ) {
+				$conditions['"Dossier"."id"'] = $this->params['id'];
+			}
+			else if( !empty( $this->params['foyer_id'] ) && is_numeric( $this->params['foyer_id'] ) ) {
+				$conditions['"Foyer"."id"'] = $this->params['foyer_id'];
+			}
+			else if( !empty( $this->params['personne_id'] ) && is_numeric( $this->params['personne_id'] ) ) {
+				$personne = $this->Dossier->Foyer->Personne->find(
+					'first', array(
+						'conditions' => array(
+							'Personne.id' => $this->params['personne_id']
+						)
+					)
+				);
 
-                $this->assert( !empty( $personne ), 'invalidParameter' );
+				$this->assert( !empty( $personne ), 'invalidParameter' );
 
-                $conditions['"Foyer"."id"'] = $personne['Personne']['foyer_id'];
-            }
+				$conditions['"Foyer"."id"'] = $personne['Personne']['foyer_id'];
+			}
 
-            $this->assert( !empty( $conditions ), 'invalidParameter' );
+			$this->assert( !empty( $conditions ), 'invalidParameter' );
 
-            $this->Dossier->Foyer->bindModel(
-                array(
-                    'hasMany' => array(
-                        'Adressefoyer' => array(
-                            'classname'     => 'Adressefoyer',
-                            'foreignKey'    => 'foyer_id'
-                        ),
-                        'Personne' => array(
-                            'classname'     => 'Personne',
-                            'foreignKey'    => 'foyer_id'
-                        )
-                    )
-                )
-            );
-            $dossier = $this->Dossier->find(
-                'first',
-                array(
-                    'conditions' => $conditions,
-                    'recursive'  => 2
-                )
-            );
+			$this->Dossier->Foyer->bindModel(
+				array(
+					'hasMany' => array(
+						'Adressefoyer' => array(
+							'classname'     => 'Adressefoyer',
+							'foreignKey'    => 'foyer_id'
+						),
+						'Personne' => array(
+							'classname'     => 'Personne',
+							'foreignKey'    => 'foyer_id'
+						)
+					)
+				)
+			);
+			$dossier = $this->Dossier->find(
+				'first',
+				array(
+					'conditions' => $conditions,
+					'recursive'  => 2
+				)
+			);
 
-            $this->assert( !empty( $dossier ), 'invalidParameter' );
+			$this->assert( !empty( $dossier ), 'invalidParameter' );
 
-            usort( $dossier['Foyer']['Adressefoyer'], create_function( '$a,$b', 'return strcmp( $a["rgadr"], $b["rgadr"] );' ) );
+			usort( $dossier['Foyer']['Adressefoyer'], create_function( '$a,$b', 'return strcmp( $a["rgadr"], $b["rgadr"] );' ) );
 
-            foreach( $dossier['Foyer']['Adressefoyer'] as $key => $Adressefoyer ) {
-                $adresses = $this->Dossier->Foyer->Adressefoyer->Adresse->find(
-                    'all',
-                    array(
-                        'conditions' => array(
-                            'Adresse.id' => $Adressefoyer['adresse_id'] )
-                    )
-                );
-                $dossier['Foyer']['Adressefoyer'][$key] = array_merge( $dossier['Foyer']['Adressefoyer'][$key], $adresses[0] );
-            }
+			foreach( $dossier['Foyer']['Adressefoyer'] as $key => $Adressefoyer ) {
+				$adresses = $this->Dossier->Foyer->Adressefoyer->Adresse->find(
+					'all',
+					array(
+						'conditions' => array(
+							'Adresse.id' => $Adressefoyer['adresse_id'] )
+					)
+				);
+				$dossier['Foyer']['Adressefoyer'][$key] = array_merge( $dossier['Foyer']['Adressefoyer'][$key], $adresses[0] );
+			}
 
-            foreach( $dossier['Foyer']['Personne'] as $iPersonne => $personne ) {
-                $this->Dossier->Foyer->Personne->unbindModelAll();
-                $this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Prestation' ) ));
-                $prestation = $this->Dossier->Foyer->Personne->findById( $personne['id'] );
-                $dossier['Foyer']['Personne'][$iPersonne]['Prestation'] = $prestation['Prestation'];
-            }
+			foreach( $dossier['Foyer']['Personne'] as $iPersonne => $personne ) {
+				$this->Dossier->Foyer->Personne->unbindModelAll();
+				$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Prestation' ) ));
+				$prestation = $this->Dossier->Foyer->Personne->findById( $personne['id'] );
+				$dossier['Foyer']['Personne'][$iPersonne]['Prestation'] = $prestation['Prestation'];
+			}
 
-            // Dossier verrouillé
+			// Dossier verrouillé
 			$this->Dossier->begin();
-            $dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Foyer']['dossier_rsa_id'] );
+			$dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Foyer']['dossier_rsa_id'] );
 			$this->Dossier->commit();
 
-            return $dossier;
-        }
+			return $dossier;
+		}*/
 
         /**
         */
