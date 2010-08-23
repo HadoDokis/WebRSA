@@ -44,6 +44,11 @@
                 'classname' => 'Actioninsertion',
                 'foreignKey' => 'contratinsertion_id',
 				'dependent' => true
+            ),
+            'Typocontrat' => array(
+                'classname' => 'Typocontrat',
+                'foreignKey' => 'contratinsertion_id',
+				'dependent' => true
             )
         );
 
