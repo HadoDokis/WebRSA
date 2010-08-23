@@ -435,7 +435,13 @@
 			$this->disableCache(); // Disable browser cache ?
 			$this->Auth->autoRedirect = false;
 
+			$this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
 			$return = parent::beforeFilter();
+
+			// Fin du traitement pour les requestactions et les appels ajax
+			if( isset( $this->params['requested'] ) || isset( $this->params['isAjax'] ) ) {
+				return $return;
+			}
 
 			if( ( substr( $_SERVER['REQUEST_URI'], strlen( $this->base ) ) != '/users/login' ) ) {
 				if( !$this->Session->check( 'Auth' ) || !$this->Session->check( 'Auth.User' ) ) {
@@ -465,7 +471,6 @@
 				}
 			}
 
-			$this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
 			return $return;
 		}
 
