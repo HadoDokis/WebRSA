@@ -3,7 +3,7 @@
     {
 
         var $name = 'Relances';
-        var $uses = array( 'Canton', 'Orientstruct', 'Relance', 'Option', 'Personne', 'Structurereferente' );
+        var $uses = array( 'Canton', 'Orientstruct', 'Relance', 'Option', 'Personne', 'Structurereferente', 'Zonegeographique' );
         var $helpers = array( 'Csv', 'Paginator', 'Locale' );
         /**
         *

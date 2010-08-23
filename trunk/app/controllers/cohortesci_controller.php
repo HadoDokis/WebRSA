@@ -4,7 +4,7 @@
     class CohortesciController extends AppController
     {
         var $name = 'Cohortesci';
-        var $uses = array( 'Canton', 'Cohorteci', 'Option', 'Contratinsertion', 'Typeorient', 'Action', 'Orientstruct', 'Accoemploi', 'Adresse', 'Serviceinstructeur', 'Suiviinstruction', 'Referent', 'Structurereferente' );
+        var $uses = array( 'Canton', 'Cohorteci', 'Option', 'Contratinsertion', 'Typeorient', 'Action', 'Orientstruct', 'Accoemploi', 'Adresse', 'Serviceinstructeur', 'Suiviinstruction', 'Referent', 'Structurereferente', 'Zonegeographique' );
         var $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
         var $helpers = array( 'Csv', 'Ajax' );
