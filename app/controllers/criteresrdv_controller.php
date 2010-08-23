@@ -4,7 +4,7 @@
     class CriteresrdvController extends AppController
     {
         var $name = 'Criteresrdv';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Typeorient', 'Option', 'Typerdv', 'Referent', 'Permanence', 'Statutrdv' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Typeorient', 'Option', 'Typerdv', 'Referent', 'Permanence', 'Statutrdv', 'Zonegeographique' );
         var $aucunDroit = array( 'constReq', 'ajaxreferent', 'ajaxperm' );
 
         var $helpers = array( 'Csv', 'Ajax', 'Paginator' );
@@ -103,15 +103,15 @@
 //                     'recursive' => -1
 //                 )
 //             );
-// 
+//
 //             return $permanences;
-// 
+//
 //         }
-// 
+//
 //         function ajaxperm() { // FIXME
 //             Configure::write( 'debug', 0 );
 //             $permanences = $this->_selectPermanences( Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' ) );
-// 
+//
 //             $options = array( '<option value=""></option>' );
 //             foreach( $permanences as $permanence ) {
 //                 $options[] = '<option value="'.$permanence['Permanence']['id'].'">'.$permanence['Permanence']['libpermanence'].'</option>';

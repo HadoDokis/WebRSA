@@ -4,7 +4,7 @@
     class CohortesindusController extends AppController
     {
         var $name = 'Cohortesindus';
-        var $uses = array( 'Canton', 'Cohorteindu', 'Option',  'Structurereferente', 'Infofinanciere', 'Dossier' );
+        var $uses = array( 'Canton', 'Cohorteindu', 'Option',  'Structurereferente', 'Infofinanciere', 'Dossier', 'Zonegeographique' );
         var $helpers = array( 'Csv', 'Paginator', 'Locale' );
 
         var $paginate = array(

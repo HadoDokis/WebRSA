@@ -5,7 +5,7 @@
     class CriterescuisController extends AppController
     {
         var $name = 'Criterescuis';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Criterecui', 'Cui', 'Referent' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Criterecui', 'Cui', 'Referent', 'Zonegeographique' );
         var $aucunDroit = array( 'exportcsv' );
 
         var $helpers = array( 'Csv', 'Ajax' );

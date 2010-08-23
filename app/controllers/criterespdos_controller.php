@@ -5,7 +5,7 @@
     class CriterespdosController extends AppController
     {
         var $name = 'Criterespdos';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typenotifpdo', 'Typepdo', 'Option', 'Situationpdo', 'Criterepdo', 'Propopdo', 'Referent', 'Decisionpdo', 'Originepdo', 'Statutpdo', 'Statutdecisionpdo', 'Cohortepdo', 'Situationdossierrsa' );
+        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typenotifpdo', 'Typepdo', 'Option', 'Situationpdo', 'Criterepdo', 'Propopdo', 'Referent', 'Decisionpdo', 'Originepdo', 'Statutpdo', 'Statutdecisionpdo', 'Cohortepdo', 'Situationdossierrsa', 'Zonegeographique' );
         var $aucunDroit = array( 'exportcsv' );
 
         var $helpers = array( 'Csv', 'Ajax' );

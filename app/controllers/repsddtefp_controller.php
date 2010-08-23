@@ -4,7 +4,7 @@
     class RepsddtefpController extends AppController
     {
         var $name = 'Repsddtefp';
-        var $uses = array( 'Apre', 'Repddtefp', 'Option', 'Budgetapre', 'Etatliquidatif' );
+        var $uses = array( 'Apre', 'Repddtefp', 'Option', 'Budgetapre', 'Etatliquidatif', 'Zonegeographique' );
         var $helpers = array( 'Xform', 'Paginator', 'Locale', 'Xpaginator', 'Csv' );
         var $aucunDroit = array( 'exportcsv' );
 
