@@ -22,6 +22,8 @@
             $this->set( 'typedtnai', $this->Option->typedtnai() );
             $this->set( 'pieecpres', $this->Option->pieecpres() );
             $this->set( 'sexe', $this->Option->sexe() );
+            $this->set( 'sitfam', $this->Option->sitfam() );
+
         }
 
         /**
@@ -211,6 +213,9 @@
             }
             // Afficage des données
             else {
+
+                $this->Personne->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) );
+
                 $personne = $this->Personne->find(
                     'first',
                     array(
@@ -219,9 +224,13 @@
                     )
                 );
                 $this->assert( !empty( $personne ), 'invalidParameter' );
-
+// debug($personne);
+                $sitfam = $this->Option->sitfam();
+                $situationfamiliale = Set::enum( Set::classicExtract( $personne, 'Foyer.sitfam' ),  $sitfam );
+                $this->set( 'situationfamiliale', $situationfamiliale );
                 // Assignation au formulaire
                 $this->data = $personne;
+                $this->set( 'personne', $personne );
 				$this->Personne->commit();
             }
 

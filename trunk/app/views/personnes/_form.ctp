@@ -29,6 +29,20 @@
             <?php echo $form->input( 'Personne.nomcomnai', array( 'label' => __( 'nomcomnai', true ) ) );?>
             <?php echo $form->input( 'Personne.rgnai', array( 'label' => __( 'rgnai', true ), 'maxlength' => 2) );?>
             <?php echo $form->input( 'Personne.nir', array( 'label' =>  __( 'nir', true ) ) );?>
+            <?php
+
+                echo $default->view(
+                    $personne,
+                    array(
+                        'Foyer.sitfam' => array( 'options' => $sitfam ),
+                    ),
+                    array(
+                        'widget' => 'table',
+                        'id' => 'dossierInfosOrganisme'/*,
+                        'options' => $options*/
+                    )
+                );
+            ?>
             <?php echo $form->input( 'Personne.topvalec', array( 'label' => __( 'topvalec', true ) ) );?>
     </fieldset>
 

@@ -274,7 +274,7 @@ msgid "ENUM::INSCDEMEMPLOI::4301"
 msgstr "Pas encore Inscrit ou démarche en cours"
 
 msgid "ENUM::INSCDEMEMPLOI::4302"
-msgstr "moins de 1 ans"
+msgstr "Moins de 1 ans"
 
 msgid "ENUM::INSCDEMEMPLOI::4303"
 msgstr " Entre 1 et 5 ans"

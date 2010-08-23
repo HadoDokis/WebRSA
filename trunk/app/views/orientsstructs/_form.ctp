@@ -3,6 +3,7 @@
     if( !empty( $this->data['Structurereferente']['Typeorient']['id'] ) ) {
         $typeorient_id = $this->data['Structurereferente']['Typeorient']['id'];
     }
+    $domain = 'orientstruct';
 ?>
 
 <fieldset>
@@ -51,4 +52,17 @@
     <?php echo $form->input( 'Calculdroitrsa.toppersdrodevorsa', array(  'label' =>  required( __( 'toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
     <?php echo $form->input( 'Orientstruct.date_propo', array(  'label' =>  required( __( 'date_propo', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true ) );?>
     <?php echo $form->input( 'Orientstruct.date_valid', array(  'label' =>  required( __( 'date_valid', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true ) );?>
+    <?php
+        if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
+            echo $default->subform(
+                array(
+                    'Orientstruct.etatorient' => array( 'legend' => required( __d( 'orientstruct', 'Orientstruct.etatorient', true )  ), 'type' => 'radio', 'options' => $options['etatorient'] )
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+        }
+    ?>
 </fieldset>
