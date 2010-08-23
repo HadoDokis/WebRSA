@@ -159,6 +159,13 @@
 			}
 			$this->assert( !empty( $conditions ), 'invalidParameter' );
 
+			// On n'en a pas besoin pour le menu
+			$this->Dossier->unbindModel(
+				array(
+					'hasOne' => array( 'Avispcgdroitrsa', 'Detaildroitrsa' )
+				)
+			);
+
 			$dossier = $this->Dossier->find(
 				'first',
 				array(
@@ -166,8 +173,11 @@
 					'recursive' => 0
 				)
 			);
+			$dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Foyer']['dossier_rsa_id'] );
 
+			// On n'en a pas besoin pour le menu
 			$this->Dossier->Foyer->Personne->unbindModelAll();
+			// A part la prestation RSA
 			$this->Dossier->Foyer->Personne->bindModel(
 				array(
 					'hasOne' => array(
@@ -187,7 +197,7 @@
 				)
 			);
 
-			$dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Foyer']['dossier_rsa_id'] );
+			// Reformattage pour la vue
 			$dossier['Foyer']['Personne'] = Set::classicExtract( $personnes, '{n}.Personne' );
 			foreach( Set::classicExtract( $personnes, '{n}.Prestation' ) as $i => $prestation ) {
 				$dossier['Foyer']['Personne'] = Set::insert( $dossier['Foyer']['Personne'], "{$i}.Prestation", $prestation );
