@@ -3,11 +3,11 @@
     {
 
         var $name = 'ActionscandidatsPersonnes';
-        var $uses = array( 'ActioncandidatPersonne', 'Option', 'Personne', 'Actioncandidat', 'Partenaire', 'Typerdv', 'PersonneReferent', 'Referent', 'Rendezvous', 'ActioncandidatPartenaire', 'Contactpartenaire', 'Adressefoyer', 'Natmob', 'Dsp' );
+        var $uses = array( 'ActioncandidatPersonne', 'Option', 'Personne', 'Actioncandidat', 'Partenaire', 'Typerdv', 'PersonneReferent', 'Referent', 'Rendezvous', 'ActioncandidatPartenaire', 'Contactpartenaire', 'Adressefoyer', 'Natmob', 'Dsp', 'Serviceinstructeur' );
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct' );
         var $components = array( 'Default', 'Gedooo' );
-        
+
 		var $commeDroit = array(
 			'add' => 'ActionscandidatsPersonnes:edit'
 		);
@@ -54,29 +54,29 @@
 
 //         function beforeFilter() {
 //             $return = parent::beforeFilter();
-// 
+//
 //             $options = array();
 //             foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
 //                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
 // //                 debug($options);
 //             }
-// 
+//
 //             $options = Set::insert( $options, 'Adresse.typevoie', $this->Option->typevoie() );
 //             $options = Set::insert( $options, 'Personne.qual', $this->Option->qual() );
 //             $options = Set::insert( $options, 'Contratinsertion.decision_ci', $this->Option->decision_ci() );
 //             $options = Set::insert( $options, 'Dsp', $this->Dsp->allEnumLists() );
-// 
+//
 //             foreach( array( 'Actioncandidat', /*'Personne', */'Referent'/*, 'Partenaire'*/ ) as $linkedModel ) {
 //                 $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
 //                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list', array( 'recursive' => -1 ) ) );
-// 
+//
 //             }
 //             App::import( 'Helper', 'Locale' );
 //             $this->Locale = new LocaleHelper();
-// 
+//
 //             $options = Set::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Natmob->find( 'list' ) );
-// 
-// 
+//
+//
 //             $this->set( 'typevoie', $this->Option->typevoie() );
 //             $this->set( 'qual', $this->Option->qual() );
 //             $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
@@ -85,15 +85,15 @@
 //             $this->set( 'rolepers', $this->Option->rolepers() );
 //             $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
 //             $this->set( compact( 'options', 'typevoie' ) );
-// 
-// 
+//
+//
 //             ///Données nécessaire spour la création du RDV si celui-ci existe
 // //             $this->set( 'struct', $this->Structurereferente->listOptions() );
 // //             $this->set( 'sr', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
 // //             $this->set( 'referents', $this->Referent->find( 'list', array( 'recursive' => 1 ) ) );
-// 
-// 
-// 
+//
+//
+//
 //             return $return;
 //         }
 
@@ -391,7 +391,7 @@
 //                             'structurereferente_id' => Set::classicExtract( $this->data, 'Rendezvous.structurereferente_id' )
 //                         )
 //                     );
-// 
+//
 // //                     $this->ActioncandidatPersonne->Personne->Rendezvous->saveAll( $this->data, array( 'validate' => 'only' ) );
 //                 }
 
@@ -459,7 +459,7 @@
 //                             'recursive' => -1
 //                         )
 //                     );
-// 
+//
 //                     debug($rdv);
 //                 }
 

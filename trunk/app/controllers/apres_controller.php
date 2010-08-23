@@ -6,7 +6,7 @@
         var $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Prestation', 'Dsp', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb' );
-        
+
 		var $commeDroit = array(
 			'view' => 'Apres:index',
 			'add' => 'Apres:edit'
@@ -35,7 +35,7 @@
             $this->set( 'sitfam', $this->Option->sitfam() );
             $this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
             $this->set( 'rolepers', $this->Option->rolepers() );
-            $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
+            $this->set( 'typeservice', ClassRegistry::init( 'Serviceinstructeur' )->find( 'first' ) );
 
 
             $optionsaprecomite = $this->ApreComiteapre->allEnumLists();

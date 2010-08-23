@@ -6,7 +6,7 @@
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece', 'notificationsop' );
         var $components = array( 'Default', 'Gedooo' );
-        
+
 		var $commeDroit = array(
 			'view' => 'Apres66:index',
 			'add' => 'Apres66:edit'
@@ -26,7 +26,7 @@
             $this->set( 'sitfam', $this->Option->sitfam() );
             $this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
             $this->set( 'rolepers', $this->Option->rolepers() );
-            $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
+            $this->set( 'typeservice', ClassRegistry::init( 'Serviceinstructeur' )->find( 'first' ) );
 
             $this->set( 'themes', $this->Themeapre66->find( 'list' ) );
             $this->set( 'nomsTypeaide', $this->Typeaideapre66->find( 'list' ) );
@@ -253,7 +253,7 @@
                 );
 
                 $this->data['Pieceaide66']['Pieceaide66'] = Set::extract( $checked, '/Pieceaide66/id' );
-                
+
                 $checkedcomptable = $this->{$this->modelClass}->Aideapre66->Piececomptable66->find(
                     'all',
                     array(
@@ -353,11 +353,11 @@
 
                 $personne_id = $apre[$this->modelClass]['personne_id'];
                 $dossier_rsa_id = $this->{$this->modelClass}->dossierId( $apre_id );
-                
-                
+
+
                 $foyer_id = Set::classicExtract( $apre, 'Personne.foyer_id' );
-                
-                
+
+
                 $this->set( 'numapre', Set::extract( $apre, "{$this->modelClass}.numeroapre" ) );
             }
 
