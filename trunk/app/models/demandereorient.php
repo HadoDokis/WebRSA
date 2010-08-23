@@ -33,34 +33,35 @@
 			'Orientstruct',
 			'Seanceep',
 			'Motifdemreorient',
-			'VxTypeorient' => array(
-				'className' => 'Typeorient',
-				'foreignKey' => 'vx_typeorient_id'
-			),
-			'VxStructurereferente' => array(
-				'className' => 'Structurereferente',
-				'foreignKey' => 'vx_structurereferente_id'
-			),
-			'VxReferent' => array(
-				'className' => 'Referent',
-				'foreignKey' => 'vx_referent_id'
-			),
-			'NvTypeorient' => array(
-				'className' => 'Typeorient',
-				'foreignKey' => 'nv_typeorient_id'
-			),
-			'NvStructurereferente' => array(
-				'className' => 'Structurereferente',
-				'foreignKey' => 'nv_structurereferente_id'
-			),
-			'NvReferent' => array(
-				'className' => 'Referent',
-				'foreignKey' => 'nv_referent_id'
-			),
-			'NvOrientstruct' => array(
-				'className' => 'Orientstruct',
-				'foreignKey' => 'nv_orientstruct_id'
-			),
+			// FIXME: ça casse souvent à cause de ces alias
+// 			'VxTypeorient' => array(
+// 				'className' => 'Typeorient',
+// 				'foreignKey' => 'vx_typeorient_id'
+// 			),
+// 			'VxStructurereferente' => array(
+// 				'className' => 'Structurereferente',
+// 				'foreignKey' => 'vx_structurereferente_id'
+// 			),
+// 			'VxReferent' => array(
+// 				'className' => 'Referent',
+// 				'foreignKey' => 'vx_referent_id'
+// 			),
+// 			'NvTypeorient' => array(
+// 				'className' => 'Typeorient',
+// 				'foreignKey' => 'nv_typeorient_id'
+// 			),
+// 			'NvStructurereferente' => array(
+// 				'className' => 'Structurereferente',
+// 				'foreignKey' => 'nv_structurereferente_id'
+// 			),
+// 			'NvReferent' => array(
+// 				'className' => 'Referent',
+// 				'foreignKey' => 'nv_referent_id'
+// 			),
+// 			'NvOrientstruct' => array(
+// 				'className' => 'Orientstruct',
+// 				'foreignKey' => 'nv_orientstruct_id'
+// 			),
 		);
 
 		var $hasOne = array(
