@@ -19,6 +19,10 @@
             $this->set( 'referents', $this->Referent->listOptions() );
             $this->set( 'typesorients', $this->Typeorient->listOptions() );
             $this->set( 'structs', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
+            
+            $options = array();
+            $options = $this->Orientstruct->allEnumLists();
+            $this->set( compact( 'options' ) );
 //             $options = array();
 //             foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
 //                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );

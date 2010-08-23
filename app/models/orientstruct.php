@@ -16,6 +16,7 @@
                     'urgent' => array(
                         'values' => array( 0, 1 )
                     ),
+                    'etatorient' => array( 'domain' => 'orientstruct' ),
                     /*'accordrefaccueil' => array(
                         'values' => array( 0, 1 )
                     ),

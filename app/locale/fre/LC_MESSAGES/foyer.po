@@ -20,37 +20,11 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Personne.qual"
-msgstr "Civilité"
-
-msgid "Personne.nom"
-msgstr "Nom"
-
-msgid "Personne.prenom"
-msgstr "Prénom"
-
-msgid "Personne.nir"
-msgstr "NIR"
-
-msgid "Personne.nom_complet"
-msgstr "Nom de la personne"
-
-msgid "Personne.dtnai"
-msgstr "Date de naissance"
-
-msgid "Personne.nomnai"
-msgstr "Nom de naissance"
-
-msgid "Personne.nomcomnai"
-msgstr "Commune de naissance"
-
-msgid "Personne.idassedic"
-msgstr "N° identifiant Pôle Emploi"
-
-###############################################################################
-
 msgid "Foyer.Modecontact.numtel"
 msgstr "N° de téléphone"
 
 msgid "Foyer.Dossier.matricule"
 msgstr "N° CAF"
+
+msgid "Foyer.sitfam"
+msgstr "Situation familiale"

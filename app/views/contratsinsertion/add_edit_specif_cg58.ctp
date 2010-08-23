@@ -121,7 +121,7 @@
         }
     ?>
 <fieldset>
-    <fieldset class="loici">
+   <!-- <fieldset class="loici">
         <p class="caution58 center">
             <strong>CONTRAT D’ENGAGEMENT RÉCIPROQUE<br /> REVENU DE SOLIDARITÉ ACTIVE (RSA)<br /> Conditions générales</strong>
         </p>
@@ -144,7 +144,7 @@
         </tr>
         <tr class="aere">
             <td class="noborder">
-                Le bénéficiaire ci-après désigné, <strong><?php echo Set::enum( Set::classicExtract( $personne, 'Personne.qual'), $qual ).' '.$personne['Personne']['nom'].' '.$personne['Personne']['prenom'];?></strong>
+                Le bénéficiaire ci-après désigné, <strong><?php /*echo Set::enum( Set::classicExtract( $personne, 'Personne.qual'), $qual ).' '.$personne['Personne']['nom'].' '.$personne['Personne']['prenom'];*/?></strong>
             </td>
         </tr>
         <tr class="aere">
@@ -211,7 +211,7 @@
 
     <fieldset>
         <?php
-            echo $default->subform(
+            /*echo $default->subform(
                 array(
                     'Contratinsertion.typeinsertion' => array( 'type' => 'radio', 'options' => $options['typeinsertion'] )
                 ),
@@ -272,11 +272,15 @@
                 <td colspan="2" class="mediumSize noborder">
                 <?php if( Set::extract( $personne, 'Foyer.Modecontact.0.autorutiadrelec' ) == 'A' ):?>
                     <strong>Adresse mail : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.adrelec' );?> <!-- FIXME -->
-                <?php endif;?>
+                <?php endif;*/?>
                 </td>
             </tr>
         </table>
     </fieldset>
+
+
+-->
+
 
     <fieldset>
         <legend>RÉFÉRENT UNIQUE</legend>
@@ -301,10 +305,12 @@
         </table>
     </fieldset>
 
+<!--
+
     <fieldset>
         <legend>BILAN DU PRÉCÉDENT CONTRAT</legend>
             <?php
-                if( ( $nbContratsPrecedents != 0 ) ) {
+                /*if( ( $nbContratsPrecedents != 0 ) ) {
                     echo $xform->input( 'Contratinsertion.objectifs_fixes', array( 'label' => 'Objectif du dernier contrat', 'value' => Set::classicExtract( $lastContrat, '0.Contratinsertion.objectifs_fixes' ) ) );
 
                     echo $html->tag(
@@ -323,36 +329,6 @@
                 }
             ?>
 
-            <?php /*if( ( $nbContratsPrecedents != 0 ) ):?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Objectif du dernier contrat</th>
-                        <th>Durée</th>
-                        <th>Bilan</th>
-                        <th>Outils mobilisés</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-//                     debug($duree_engag);
-                        foreach( $contratsinsertion as $i => $liste ){
-
-                            echo $html->tableCells(
-                                array(
-                                    h( Set::classicExtract( $liste, 'Contratinsertion.objectifs_fixes' ) ),
-                                    h( Set::enum( Set::classicExtract( $liste, 'Contratinsertion.duree_engag' ), $duree_engag_cg66 ) ),
-                                    h( Set::classicExtract( $liste, 'Contratinsertion.nature_projet' ) ),
-                                    h( $locale->money( Set::classicExtract( $liste, 'Contratinsertion.montantaide' ) ) ),
-                                )
-                            );
-                        }
-                    ?>
-                </tbody>
-            </table>
-        <?php else:?>
-            <p class="notice">Aucun contrat antérieur présent pour cette personne</p>
-        <?php endif; */ ?>
     </fieldset>
 
     <fieldset>
@@ -407,11 +383,12 @@
         </table>
         <br />
             <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => __( 'lieu_saisi_ci', true ).REQUIRED_MARK, 'type' => 'text', 'maxlength' => 50 )  ); ?><br />
-            <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __( 'date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 /*, 'empty' => true*/ )  ); ?>
+            <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __( 'date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10  )  ); */?>
     </fieldset>
 
 </fieldset>
 
+-->
     <!-- <fieldset>
             <legend>DÉCISION DE LA COMMISSION D’ORIENTATION ET DE VALIDATION</legend>
                 <?php /*echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __( 'observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
@@ -437,6 +414,7 @@
 
     </fieldset>
 
+</fieldset>
 
     <div class="submit">
         <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>

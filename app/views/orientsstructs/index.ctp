@@ -30,6 +30,7 @@
                 <th>Date d'orientation</th>
                 <th>Préconisation d'orientation</th>
                 <th>Structure référente</th>
+                <?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ):?><th>Etat de l'orientation</th><?php endif;?>
                 <th colspan="3" class="action">Actions</th>
             </tr>
         </thead>
@@ -43,29 +44,35 @@
                         $isOrient = true;
                     }
 
-                    echo $html->tableCells(
-                        array(
-                            h( $orientstruct['Personne']['nom']),
-                            h( $orientstruct['Personne']['prenom'] ),
-                            h( date_short( $orientstruct['Orientstruct']['date_propo'] ) ),
-                            h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
-                            h( Set::classicExtract( $orientstruct, 'Typeorient.lib_type_orient' ) ) ,
-                            h( $orientstruct['Structurereferente']['lib_struc']  ),
-                            $html->editLink(
-                                'Editer l\'orientation',
-                                array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
-                                $permissions->check( 'orientsstructs', 'edit' )
-                            ),
-                            $html->printLink(
-                                'Imprimer la notification',
-                                array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
-                                $permissions->check( 'gedooos', 'orientstruct' ) && $orientstruct['Orientstruct']['imprime']
-                            ),
-                            $html->reorientLink( 'Réorientation', array( 'controller' => 'demandesreorient', 'action' => 'add', $orientstruct['Orientstruct']['id'] ), $isOrient )
-                        ),
-                        array( 'class' => 'odd' ),
-                        array( 'class' => 'even' )
+                    $cells = array(
+                        h( $orientstruct['Personne']['nom']),
+                        h( $orientstruct['Personne']['prenom'] ),
+                        h( date_short( $orientstruct['Orientstruct']['date_propo'] ) ),
+                        h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
+                        h( Set::classicExtract( $orientstruct, 'Typeorient.lib_type_orient' ) ) ,
+                        h( $orientstruct['Structurereferente']['lib_struc']  ),
                     );
+
+                    if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
+                        $cells[] = h( Set::enum( $orientstruct['Orientstruct']['etatorient'], $options['etatorient'] ) ) ;
+                    }
+
+                    array_push(
+                        $cells,
+                        $html->editLink(
+                            'Editer l\'orientation',
+                            array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
+                            $permissions->check( 'orientsstructs', 'edit' )
+                        ),
+                        $html->printLink(
+                            'Imprimer la notification',
+                            array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
+                            $permissions->check( 'gedooos', 'orientstruct' ) && $orientstruct['Orientstruct']['imprime']
+                        ),
+                        $html->reorientLink( 'Réorientation', array( 'controller' => 'demandesreorient', 'action' => 'add', $orientstruct['Orientstruct']['id'] ), $isOrient )
+                    );
+
+                    echo $html->tableCells( $cells, array( 'class' => 'odd' ), array( 'class' => 'even' ) );
                 }
             ?>
         </tbody>
