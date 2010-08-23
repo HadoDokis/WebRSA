@@ -402,12 +402,23 @@
 
 				/// Nouvelle manière, accès au cache se trouvant dans la session
 				$permissions = $this->Session->read( 'Auth.Permissions' );
-				if( isset( $permissions["Module:{$this->name}"] ) ) {
+				if( isset( $permissions["{$this->name}:{$this->action}"] ) ) {
+					$this->assert( !empty( $permissions["{$this->name}:{$this->action}"] ), 'error403' );
+				}
+				else if( isset( $permissions["Module:{$this->name}"] ) ) {
+					$this->assert( !empty( $permissions["Module:{$this->name}"] ), 'error403' );
+				}
+				else {
+					$this->cakeError( 'error403' );
+				}
+
+				/// FIXME: inverser la logique dans le Helper Permissions ?
+				/*if( isset( $permissions["Module:{$this->name}"] ) ) {
 					$this->assert( !empty( $permissions["Module:{$this->name}"] ), 'error403' );
 				}
 				else {
 					$this->assert( Set::classicExtract( $permissions, "{$this->name}:{$this->action}" ), 'error403' );
-				}
+				}*/
 			}
 		}
 
@@ -416,6 +427,11 @@
 		*/
 
 		function beforeFilter() {
+			/*
+				Désactivation du cache du navigateur: (quand on revient en arrière
+				dans l'historique de navigation, la page n'est pas cachée du côté du
+				navigateur, donc il ré-exécute la demande)
+			*/
 			$this->disableCache(); // Disable browser cache ?
 			$this->Auth->autoRedirect = false;
 
