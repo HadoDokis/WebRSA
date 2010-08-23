@@ -3,16 +3,24 @@
 
     class CriteresapresController extends AppController
     {
-        var $name = 'Criteresapres';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Critereapre', 'Apre', 'Tiersprestataireapre', 'Option',  );
+        public $name = 'Criteresapres';
 
-        var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Xpaginator' );
+        public $uses = array( 'Canton', 'Critereapre', 'Apre', 'Tiersprestataireapre', 'Option', 'Zonegeographique' );
+
+        public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Xpaginator' );
+
         /**
+        *
         */
-        function __construct() {
+
+        public function __construct() {
             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'all', 'eligible' ) ) ) );
             parent::__construct();
         }
+
+        /**
+        *
+        */
 
         protected function _setOptions() {
             $options = $this->Apre->allEnumLists();
@@ -23,61 +31,31 @@
             $this->set( 'tiers', $this->Tiersprestataireapre->find( 'list' ) );
         }
 
-/*
-        function beforeFilter() {
-            $return = parent::beforeFilter();
-            $options = $this->Apre->allEnumLists();
-            $this->set( 'options', $options );
-            $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
 
-            /// Liste des tiers prestataires
-            $this->set( 'tiers', $this->Tiersprestataireapre->find( 'list' ) );
+        /**
+        *
+        */
 
-            return $return;
-        }*/
-
-
-        //*********************************************************************
-
-        function all() {
+        public function all() {
             $this->_index( 'Critereapre::all' );
         }
 
-        //---------------------------------------------------------------------
+        /**
+        *
+        */
 
-//         function incomplete() {
-//             $this->_index( 'Critereapre::incomplete' );
-//         }
-        //---------------------------------------------------------------------
-
-        function eligible() {
+        public function eligible() {
             $this->_index( 'Critereapre::eligible' );
         }
-        //---------------------------------------------------------------------
 
-        function _index( $etatApre = null ){
+        /**
+        *
+        */
+
+        public function _index( $etatApre = null ){
             if( Configure::read( 'CG.cantons' ) ) {
                 $this->set( 'cantons', $this->Canton->selectList() );
             }
-
-/*
-            foreach( $this->Apre->modelsFormation as $model ) {
-                $aides = $this->Apre->{$model}->find(
-                    'list',
-                    array(
-                        'fields' => array(
-                           "$model.tiersprestataireapre_id"
-                        )
-                    )
-                );
-                $this->set( 'aides', $aides );
-
-            }*/
-
-
-
-
-
 
             $this->assert( !empty( $etatApre ), 'invalidParameter' );
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
@@ -85,8 +63,7 @@
 
             $params = $this->data;
             if( !empty( $params ) ) {
-// debug($params);
-                $this->Dossier->begin(); // Pour les jetons
+                $this->Critereapre->begin(); // Pour les jetons
 
                 $queryData = $this->Critereapre->search( $etatApre, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 
@@ -150,7 +127,7 @@
 
                 $this->set( 'apres', $apres );
 
-                $this->Dossier->commit();
+                $this->Critereapre->commit();
             }
 
             $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
@@ -178,8 +155,11 @@
 
         }
 
-        /// Export du tableau en CSV
-        function exportcsv( $action = 'all' ) {
+        /**
+        * Export du tableau en CSV
+        */
+
+        public function exportcsv( $action = 'all' ) {
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
