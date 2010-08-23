@@ -5,7 +5,7 @@
 
     Configure::write( 'Utilisateurs.multilogin', false );
     Configure::write( 'with_parentid', false ); // true = cg66
-    Configure::write( 'nom_form_ci_cg', 'cg66' );
+    Configure::write( 'nom_form_ci_cg', 'cg58' );
     Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
     Configure::write( 'Zonesegeographiques.CodesInsee', true );
     //Configure::write( 'Etatliquidatif.limit', 1000 ); // INFO: commenter pour ne pas avoir de limite
@@ -87,7 +87,7 @@
     * Paramètre à renseigner pour l'affichage de la bonne fiche de candidature
     * @default: 'cg93' (pour le CG93), sinon 'cg66' pour le CG66
     */
-    Configure::write( 'ActioncandidatPersonne.suffixe', 'cg93' );
+    Configure::write( 'ActioncandidatPersonne.suffixe', 'cg66' );
 
     /**
     *   Paramètre à renseigner dans le cas d'un affichage plus large du menu du dossier
