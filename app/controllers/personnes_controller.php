@@ -3,7 +3,7 @@
     {
         var $name = 'Personnes';
         var $uses = array( 'Personne', 'Option', 'Grossesse' );
-        
+
 		var $commeDroit = array(
 			'view' => 'Personnes:index',
 			'add' => 'Personnes:edit'
@@ -36,12 +36,17 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
+			// On n'a besoin que de la prestation RSA
+			$prestationRsa = $this->Personne->hasOne['Prestation'];
+			$this->Personne->unbindModelAll();
+			$this->Personne->bindModel( array( 'hasOne' => array( 'Prestation' => $prestationRsa ) ) );
+
             // Recherche des personnes du foyer
             $personnes = $this->Personne->find(
                 'all',
                 array(
                     'conditions' => array( 'Personne.foyer_id' => $foyer_id ),
-                    'recursive' => 2
+                    'recursive' => 0
                 )
             );
 
@@ -66,16 +71,21 @@
                 'first',
                 array(
                     'conditions' => array( 'Grossesse.id' => $id ),
-                    'recursive' => 2
+                    'recursive' => -1
                 )
             );
+
+			// On n'a besoin que de la prestation RSA
+			$prestationRsa = $this->Personne->hasOne['Prestation'];
+			$this->Personne->unbindModelAll();
+			$this->Personne->bindModel( array( 'hasOne' => array( 'Prestation' => $prestationRsa ) ) );
 
             // Recherche de la personne
             $personne = $this->Personne->find(
                 'first',
                 array(
                     'conditions' => array( 'Personne.id' => $id ),
-                    'recursive' => 2
+                    'recursive' => 0
                 )
             );
 
@@ -213,21 +223,30 @@
             }
             // Afficage des données
             else {
-
-                $this->Personne->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) );
+				// On n'a besoin que de la prestation RSA et du Foyer
+				$prestationRsa = $this->Personne->hasOne['Prestation'];
+				$this->Personne->unbindModelAll();
+				$this->Personne->bindModel(
+					array(
+						'belongsTo' => array( 'Foyer' ),
+						'hasOne' => array( 'Prestation' => $prestationRsa )
+					)
+				);
 
                 $personne = $this->Personne->find(
                     'first',
                     array(
                         'conditions' => array( 'Personne.id' => $id ),
-                        'recursive' => 2
+                        'recursive' => 0
                     )
                 );
+
                 $this->assert( !empty( $personne ), 'invalidParameter' );
-// debug($personne);
+
                 $sitfam = $this->Option->sitfam();
                 $situationfamiliale = Set::enum( Set::classicExtract( $personne, 'Foyer.sitfam' ),  $sitfam );
                 $this->set( 'situationfamiliale', $situationfamiliale );
+
                 // Assignation au formulaire
                 $this->data = $personne;
                 $this->set( 'personne', $personne );
