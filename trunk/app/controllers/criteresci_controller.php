@@ -1,26 +1,31 @@
 <?php
-
     App::import('Sanitize');
 
     class CriteresciController extends AppController
     {
-        var $name = 'Criteresci';
-        var $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse',  'Action', 'Personne', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Cohorteci', 'Referent' );
-        var $aucunDroit = array( 'constReq', 'ajaxreferent' );
+        public $name = 'Criteresci';
 
-        var $helpers = array( 'Csv', 'Ajax' );
+        public $uses = array( 'Cohorteci', 'Action', 'Contratinsertion', 'Option', 'Referent' );
+
+        public $aucunDroit = array( 'constReq', 'ajaxreferent' );
+
+        public $helpers = array( 'Csv', 'Ajax' );
 
         /**
+        *
         */
-        function __construct() {
+
+        public function __construct() {
             $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
             parent::__construct();
         }
 
+		/**
+		*
+		*/
 
-        function beforeFilter() {
-            $return = parent::beforeFilter();
-            $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
+        protected function _setOptions() {
+            $struct = ClassRegistry::init( 'Structurereferente' )->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
             $this->set( 'struct', $struct );
 
             $personne_suivi = $this->Contratinsertion->find(
@@ -42,15 +47,13 @@
             $this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
 
             $this->set( 'action', $this->Action->find( 'list' ) );
-
-            return $return;
         }
 
-        /** ********************************************************************
-        *   Ajax pour lien référent - structure référente
-        ********************************************************************/
+        /**
+        * Ajax pour lien référent - structure référente
+        */
 
-        function _selectReferents( $structurereferente_id ) {
+        public function _selectReferents( $structurereferente_id ) {
             $conditions = array();
 
             if( !empty( $structurereferente_id ) ) {
@@ -60,6 +63,7 @@
             $referents = $this->Referent->find(
                 'all',
                 array(
+					'fields' => array( 'Referent.id', 'Referent.nom', 'Referent.prenom' ),
                     'conditions' => $conditions,
                     'recursive' => -1
                 )
@@ -68,12 +72,12 @@
 
         }
 
-        /** ********************************************************************
+        /**
         *
-        ** ********************************************************************/
+        */
 
-        function ajaxreferent() { // FIXME
-            Configure::write( 'debug', 0 );
+        public function ajaxreferent() { // FIXME
+            Configure::write( 'debug', 2 );
             $referents = $this->_selectReferents( Set::classicExtract( $this->data, 'Filtre.structurereferente_id' ) );
             $options = array( '<option value=""></option>' );
             foreach( $referents as $referent ) {
@@ -83,9 +87,13 @@
             $this->render( null, 'ajax' );
         }
 
-        function index() {
+		/**
+		*
+		*/
+
+        public function index() {
 			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', $this->Canton->selectList() );
+				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
 			}
 
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
@@ -94,22 +102,22 @@
             $params = $this->data;
             if( !empty( $params ) ) {
 
-                $this->Dossier->begin(); // Pour les jetons
+                $this->Cohorteci->begin(); // Pour les jetons
 
                 $this->paginate = $this->Cohorteci->search( null, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
                 $this->paginate['limit'] = 10;
                 $contrats = $this->paginate( 'Contratinsertion' );
 
-                $this->Dossier->commit();
+                $this->Cohorteci->commit();
 
                 $this->set( 'contrats', $contrats );
             }
 
 			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
 			}
 			else {
-				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Adresse' )->listeCodesInsee() );
 			}
 
             /// Population du select référents liés aux structures
@@ -120,7 +128,7 @@
                 $conditions['Referent.structurereferente_id'] = Set::classicExtract( $this->data, 'Filtre.structurereferente_id' );
             }
 
-            $referents = $this->Contratinsertion->Structurereferente->Referent->find(
+            $referents = $this->Referent->find(
                 'all',
                 array(
                     'recursive' => -1,
@@ -136,10 +144,14 @@
             }
 
             $this->set( 'referents', $referents );
+            $this->_setOptions();
         }
 
-        /// Export du tableau en CSV
-        function exportcsv() {
+		/**
+        * Export du tableau en CSV
+        */
+
+        public function exportcsv() {
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
@@ -152,10 +164,9 @@
             $referents = $this->Referent->referentsListe( $structurereferente_id );
             $this->set( 'referents', $referents );
 
-// debug($contrats);
-// die();
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'contrats' ) );
+            $this->_setOptions();
         }
     }
 ?>
