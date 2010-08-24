@@ -5,17 +5,20 @@
 
         var $useTable = 'suivisaidesapres';
 
-        var $displayField = 'full_name';
+        var $displayField = 'nom_complet';
 
         var $order = array( 'nom ASC', 'prenom ASC' );
 
         var $actsAs = array(
-            'MultipleDisplayFields' => array(
-                'fields' => array( 'qual', 'nom', 'prenom' ),
-                'pattern' => '%s %s %s'
-            ),
             'SoftDeletable' => array( 'find' => false )/*,
 			'Autovalidate'*/
+        );
+
+        public $virtualFields = array(
+            'nom_complet' => array(
+                'type'      => 'string',
+                'postgres'  => '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
+            ),
         );
 
         var $validate = array(

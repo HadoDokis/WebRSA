@@ -5,15 +5,11 @@
         var $name = 'Referent';
         var $useTable = 'referents';
 
-        var $displayField = 'full_name';
+        var $displayField = 'nom_complet';
 
         var $actsAs = array(
 			'Autovalidate',
-			'Formattable',
-            'MultipleDisplayFields' => array(
-                'fields' => array( 'qual', 'nom', 'prenom' ),
-                'pattern' => '%s %s %s'
-            )
+			'Formattable'
         );
 
         var $order = array( 'Referent.nom ASC', 'Referent.prenom ASC' );
