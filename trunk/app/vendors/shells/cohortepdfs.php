@@ -5,11 +5,12 @@
 
     class CohortepdfsShell extends Shell
     {
-        var $uses = array( 'Pdf', 'Orientstruct' );
+        var $uses = array( 'Pdf', 'Orientstruct', 'User' );
 		var $script = null;
 
 		/// Aide sur les paramètres
 		var $help = array(
+			'username' => "L'identifiant de l'utilisateur qui sera utilisé pour la récupération d'informations lors de l'impression. Pas de défaut.",
 			'limit' => "Nombre d'enregistrements à traiter. Doit être un nombre entier positif. Par défaut: 10. Utiliser 0 ou null pour ne pas avoir de limite et traiter tous les enregistrements.",
 			'order' => "Permet de trier les enregistrements à traiter par date de validation de l'orentation (date_valid) en ordre ascendant ou descendant. Valeurs possibles: asc ou desc. Par défaut: asc."
 		);
@@ -20,9 +21,11 @@
 
 		var $outfile = null;
 		var $output = '';
-		var $limit = 1000;
+		var $limit = 10;
 		var $order = 'asc';
 		var $startTime = null;
+		var $username = null;
+		var $user_id = null;
 
         /**
         *
@@ -85,7 +88,7 @@
 			}
 			$this->hr();
 
-			$this->out( sprintf( "Exemple: cake/console/cake %s -limit 10 -order asc", $this->script, implode( ' ', $params ) ) );
+			$this->out( sprintf( "Exemple: cake/console/cake %s -limit 10 -order asc -userame cbuffin", $this->script, implode( ' ', $params ) ) );
 			$this->hr();
 			exit( 0 );
 		}
@@ -127,6 +130,15 @@
 					$this->err( sprintf( "Veuillez entrer asc ou desc comme valeur du paramètre order (valeur entrée: %s)", $this->params['order'] ) );
 					exit( 2 );
 				}
+			}
+			// Username
+			$user_id = $this->User->field( 'id', array( 'username' => Set::classicExtract( $this->params, 'username' ) ) );
+			if( isset( $this->params['username'] ) && is_string( $this->params['username'] ) && !empty( $user_id ) ) {
+					$this->user_id = $user_id;
+			}
+			else {
+				$this->err( sprintf( "Veuillez entrer un identifiant valide comme valeur du paramètre username (valeur entrée: %s)", Set::classicExtract( $this->params, 'username' ) ) );
+				exit( 2 );
 			}
 
 			/// Nom du fichier et titre de la page
@@ -172,7 +184,7 @@
 
 				$this->out( sprintf( "Génération du PDFs %d/%d (Orientstruct.id=%s)", ( $compteur + 1 ), count( $orientsstructs_ids ), $orientstruct_id ) );
 
-				$orientstruct = $this->Orientstruct->getDataForPdf( $orientstruct_id, null );
+				$orientstruct = $this->Orientstruct->getDataForPdf( $orientstruct_id, $this->user_id );
 				$modele = $orientstruct['Typeorient']['modele_notif'];
 
 				$modeledoc = 'Orientation/'.$modele.'.odt';
