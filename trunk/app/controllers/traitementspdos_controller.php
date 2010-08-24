@@ -3,7 +3,7 @@
     {
         public $name = 'Traitementspdos';
 
-        public $uses = array( 'Traitementpdo', 'Propopdo', 'Dossier', 'Descriptionpdo', 'Traitementtypepdo' );
+        public $uses = array( 'Traitementpdo', 'Propopdo', 'Personne', 'Dossier', 'Descriptionpdo', 'Traitementtypepdo' );
         /**
         * @access public
         */
