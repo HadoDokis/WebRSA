@@ -117,7 +117,7 @@
 					$this->limit = null;
 				}
 				else {
-					$this->err( sprintf( "Veuillez entrer un nombre comme valeur du paramètre limit (valeur entrée: %s)", $this->params['limit'] ) );
+					$this->err( sprintf( "Veuillez entrer un nombre comme valeur du paramètre -limit (valeur entrée: %s)", $this->params['limit'] ) );
 					exit( 2 );
 				}
 			}
@@ -127,7 +127,7 @@
 					$this->order = strtolower( trim( $this->params['order'] ) );
 				}
 				else {
-					$this->err( sprintf( "Veuillez entrer asc ou desc comme valeur du paramètre order (valeur entrée: %s)", $this->params['order'] ) );
+					$this->err( sprintf( "Veuillez entrer asc ou desc comme valeur du paramètre -order (valeur entrée: %s)", $this->params['order'] ) );
 					exit( 2 );
 				}
 			}
@@ -137,7 +137,7 @@
 					$this->user_id = $user_id;
 			}
 			else {
-				$this->err( sprintf( "Veuillez entrer un identifiant valide comme valeur du paramètre username (valeur entrée: %s)", Set::classicExtract( $this->params, 'username' ) ) );
+				$this->err( sprintf( "Veuillez entrer un identifiant valide comme valeur du paramètre -username (valeur entrée: %s)", Set::classicExtract( $this->params, 'username' ) ) );
 				exit( 2 );
 			}
 
