@@ -5,14 +5,14 @@
         var $useTable = 'personnes_referents';
 
 
-        var $displayField = 'full_name';
-
-        var $actsAs = array(
-            'MultipleDisplayFields' => array(
-                'fields' => array( 'qual', 'nom', 'prenom' ),
-                'pattern' => '%s %s %s'
-            )
-        );
+//         var $displayField = 'full_name';
+// 
+//         var $actsAs = array(
+//             'MultipleDisplayFields' => array(
+//                 'fields' => array( 'qual', 'nom', 'prenom' ),
+//                 'pattern' => '%s %s %s'
+//             )
+//         );
 
         var $belongsTo = array(
             'Personne' => array(

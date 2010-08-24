@@ -4,14 +4,10 @@
         var $name = 'Tiersprestataireapre';
         var $useTable = 'tiersprestatairesapres';
 
-        var $displayField = 'full_name';
+        var $displayField = 'nomtiers';
 
         var $actsAs = array(
-            'Enumerable', // FIXME ?
-            'MultipleDisplayFields' => array(
-                'fields' => array( 'nomtiers' ),
-                'pattern' => '%s'
-            )
+            'Enumerable'
         );
 
         var $order = 'Tiersprestataireapre.id ASC';
