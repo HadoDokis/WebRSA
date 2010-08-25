@@ -10,15 +10,15 @@ SET default_with_oids = false;
 -- *****************************************************************************
 BEGIN;
 -- *****************************************************************************
-
------------------------------------------------------------------------------
 -- 21/07/2010: mise à jour pour la V.30 du flux bénéficiaire
------------------------------------------------------------------------------
+-- *****************************************************************************
 
+-- Il est possible que vous ayez à commenter la commande suivante:
 ALTER TABLE situationsdossiersrsa ADD COLUMN motirefursa CHAR(3);
 
 -----------------------------------------------------------------------------
 
+-- Il est possible que vous ayez à commenter la commande suivante:
 CREATE TABLE controlesadministratifs (
     id              	SERIAL NOT NULL PRIMARY KEY,
     dteffcibcontro  	DATE,
@@ -38,7 +38,10 @@ CREATE TABLE controlesadministratifs (
 
 ALTER TABLE tiersprestatairesapres ADD COLUMN nometaban VARCHAR(24);
 
+-----------------------------------------------------------------------------
+
 ALTER TABLE users ADD COLUMN sensibilite type_no DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
