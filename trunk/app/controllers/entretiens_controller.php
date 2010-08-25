@@ -5,7 +5,7 @@
         var $name = 'Entretiens';
         var $uses = array( 'Entretien', 'Option', 'Personne', 'Dsp', 'Typerdv', 'Rendezvous', 'Structurereferente', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
-        
+
 		var $commeDroit = array(
 			'view' => 'Entretiens:index',
 			'add' => 'Entretiens:edit'
@@ -63,6 +63,7 @@
             );
             $this->Entretien->unbindModelAll();
             $this->Entretien->bindModel( array( 'belongsTo' => $belongsTo ) );
+			$this->Entretien->forceVirtualFields = true;
             $entretiens = $this->Entretien->find(
                 'all',
                 array(
@@ -71,15 +72,14 @@
                         'Entretien.personne_id',
                         'Entretien.dateentretien',
                         'Structurereferente.lib_struc',
-                        'Referent.qual',
-                        'Referent.nom',
-                        'Referent.prenom'
+                        'Referent.nom_complet'
                     ),
                     'conditions' => array(
                         'Entretien.personne_id' => $personne_id
                     )
                 )
             );
+			$this->Entretien->forceVirtualFields = false;
 
 //             $this->_setOptions();
             $this->set( compact( /*'dsps', */'entretiens' ) );
@@ -138,7 +138,7 @@
             }
             $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
 
-            ///Récupération de la liste des structures référentes 
+            ///Récupération de la liste des structures référentes
             $structs = $this->Structurereferente->listOptions( );
             $this->set( 'structs', $structs );
 
