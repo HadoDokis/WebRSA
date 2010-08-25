@@ -20,6 +20,22 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Rendezvous::index"
+msgstr "Rendez-vous"
+
+msgid "Rendezvous::index::empty"
+msgstr "Aucun rendez-vous présent"
+
+msgid "Rendezvous::add"
+msgstr "Ajouter un nouveau rendez-vous"
+
+msgid "Rendezvous::add"
+msgstr "Ajout d'un rendez-vous"
+
+msgid "Rendezvous::edit"
+msgstr "Modification du rendez-vous"
+
+
 msgid "Rendezvous.daterdv"
 msgstr "Date de RDV"
 
