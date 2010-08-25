@@ -499,7 +499,7 @@ function setDateInterval2( masterPrefix, slavePrefix, nMonths, firstDay ) {
     // Initialisation
     var d = new Date();
     d.setDate( 1 );
-    d.setMonth( $F( masterPrefix + 'Month' ) - 1 );
+    d.setMonth( $F( masterPrefix + 'Month' ) ); //FIXME: suppression du -1 afin d'obtenir le nombre de mois exact
     d.setYear( $F( masterPrefix + 'Year' ) );
 
     // Ajout de trois mois, et retour au dernier jour du mois précédent

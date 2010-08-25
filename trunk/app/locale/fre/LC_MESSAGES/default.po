@@ -750,8 +750,14 @@ msgstr "Type de structure"
 msgid "nom_referent"
 msgstr "Nom du référent"
 
-msgid "structure_referente"
+msgid "structure_referente_cg93"
 msgstr "Zone géographique"
+
+msgid "structure_referente_cg66"
+msgstr "Zone géographique"
+
+msgid "structure_referente_cg58"
+msgstr "Structure référente"
 
 msgid "contratengagement"
 msgstr "Gestion des CERs"

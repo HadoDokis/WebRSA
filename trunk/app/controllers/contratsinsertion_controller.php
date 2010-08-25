@@ -71,7 +71,7 @@
                 $this->set( 'soclmaj', $this->Option->natpfcre( 'soclmaj' ) );
                 $this->set( 'rolepers', $this->Option->rolepers() );
 
-                $this->set( 'zoneprivilegie', $this->Zonegeographique->find( 'list' ) );
+                $this->set( 'zoneprivilegie', ClassRegistry::init( 'Zonegeographique' )->find( 'list' ) );
 
 //                 $this->set( 'sr', $this->Contratinsertion->Structurereferente->listeParType( array( 'contratengagement' => true ) ) );
 //                 $this->set( 'referents', $this->Contratinsertion->Structurereferente->Referent->find( 'list' ) );

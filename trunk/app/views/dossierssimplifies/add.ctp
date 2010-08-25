@@ -56,7 +56,7 @@
             <?php echo $form->input( 'Orientstruct.0.typeorient_id', array( 'label' => "Type d'orientation / Type de structure", 'type' => 'select' , 'options' => $options, 'empty' => true ) );?>
           <!--  <?php echo $form->input( 'Typeorient.0.parent_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
             <?php echo $form->input( 'Orientstruct.0.typeorient_id', array( 'label' => __( 'lib_struc', true ), 'type' => 'select', 'options' => $typesStruct, 'empty' => true ) );?> -->
-            <?php echo $form->input( 'Orientstruct.0.structurereferente_id', array( 'label' => __( 'structure_referente', true ), 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );?>
+            <?php echo $form->input( 'Orientstruct.0.structurereferente_id', array( 'label' => __( 'structure_referente_'.Configure::read( 'nom_form_ci_cg' ), true ), 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );?>
         </fieldset>
         <fieldset>
             <h2>Autre personne à orienter (le cas échéant)</h2>
@@ -79,7 +79,7 @@
             <?php echo $form->input( 'Orientstruct.1.typeorient_id', array( 'label' => "Type d'orientation / Type de structure", 'type' => 'select' , 'options' => $options, 'empty' => true ) );?>
           <!--  <?php echo $form->input( 'Typeorient.1.parent_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
             <?php echo $form->input( 'Orientstruct.1.typeorient_id', array( 'label' => __( 'lib_struc', true ), 'type' => 'select', 'options' => $typesStruct, 'empty' => true ) );?> -->
-            <?php echo $form->input( 'Orientstruct.1.structurereferente_id', array( 'label' => __( 'structure_referente', true ), 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );?>
+            <?php echo $form->input( 'Orientstruct.1.structurereferente_id', array( 'label' => __( 'structure_referente_'.Configure::read( 'nom_form_ci_cg' ), true ), 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );?>
         </fieldset>
 
         <?php echo $form->submit( 'Enregistrer' );?>
