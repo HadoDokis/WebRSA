@@ -4,6 +4,8 @@
         var $name = 'Personne';
         var $useTable = 'personnes';
 
+        var $displayField = 'nom_complet';
+
         var $actsAs = array( 'ValidateTranslate' );
         //---------------------------------------------------------------------
 
@@ -620,7 +622,7 @@
 		public $virtualFields = array(
 			'nom_complet' => array(
 				'type'		=> 'string',
-				'postgres'	=> '( "%s"."nom" || \' \' || "%s"."prenom" )'
+				'postgres'	=> '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
 			),
 		);
     }

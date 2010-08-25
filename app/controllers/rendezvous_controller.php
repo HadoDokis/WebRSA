@@ -25,49 +25,6 @@
         }
 
 
-
-
-        /*function beforeFilter() {
-            parent::beforeFilter();
-//             $this->Rendezvous->query( 'SELECT 1;' );
-
-//             $this->set( 'struct', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
-//             $this->set( 'struct', $this->Structurereferente->listOptions() );
-//             $this->set( 'sr', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
-//             $this->set( 'referent', $this->Referent->find( 'list', array( 'recursive' => 1 ) ) );
-//             $this->set( 'permanences', $this->Permanence->find( 'list' ) );
-//             $this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
-        }*/
-
-        /** ********************************************************************
-        * Ajax pour lien référent - structure référente
-        *** *******************************************************************/
-/*
-        function _selectReferents( $structurereferente_id ) {
-            $refrdv = $this->Referent->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'Referent.structurereferente_id' => $structurereferente_id
-                    ),
-                    'recursive' => -1
-                )
-            );
-            return $refrdv;
-
-        }
-
-        function ajaxreferent() { // FIXME
-            Configure::write( 'debug', 0 );
-            $refrdv = $this->_selectReferents( Set::classicExtract( $this->data, 'Rendezvous.structurereferente_id' ) );
-            $options = array( '<option value=""></option>' );
-            foreach( $refrdv as $referent ) {
-                $options[] = '<option value="'.$referent['Referent']['id'].'">'.$referent['Referent']['nom'].' '.$referent['Referent']['prenom'].'</option>';
-            } ///FIXME: à mettre dans la vue
-            echo implode( '', $options );
-            $this->render( null, 'ajax' );
-        }*/
-
         /** ********************************************************************
         *   Ajax pour les coordonnées du référent APRE
         *** *******************************************************************/
@@ -91,49 +48,60 @@
             $this->render( 'ajaxreffonct', 'ajax' );
         }
 
-
-        /** ********************************************************************
-        *   Ajax pour la permanence liée à la structure référente
-        *** *******************************************************************/
-//         function _selectPermanences( $structurereferente_id ) {
-//             $permanences = $this->Rendezvous->Structurereferente->Permanence->find(
-//                 'all',
-//                 array(
-//                     'conditions' => array(
-//                         'Permanence.structurereferente_id' => $structurereferente_id
-//                     ),
-//                     'recursive' => -1
-//                 )
-//             );
-//
-//             return $permanences;
-//
-//         }
-
-//         function ajaxperm() { // FIXME
-//             Configure::write( 'debug', 0 );
-//             $permanences = $this->_selectPermanences( Set::classicExtract( $this->data, 'Rendezvous.structurereferente_id' ) );
-//
-//             $options = array( '<option value=""></option>' );
-//             foreach( $permanences as $permanence ) {
-//                 $options[] = '<option value="'.$permanence['Permanence']['id'].'">'.$permanence['Permanence']['libpermanence'].'</option>';
-//             }
-//             echo implode( '', $options );
-//             $this->render( null, 'ajax' );
-//         }
-
         /** ********************************************************************
         *
         *** *******************************************************************/
 
         function index( $personne_id = null ){
-            $nbrPersonnes = $this->Rendezvous->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
-
+            $nbrPersonnes = $this->Rendezvous->Personne->find(
+                'count',
+                array(
+                    'conditions' => array(
+                        'Personne.id' => $personne_id
+                    ),
+                    'recursive' => -1
+                )
+            );
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
-            $rdvs = $this->Rendezvous->find( 'all', array( 'conditions' => array( 'Rendezvous.personne_id' => $personne_id ) ) );
 
-            $this->_setOptions();
+            $belongsTo = array(
+                'Personne' => $this->Rendezvous->belongsTo['Personne'],
+                'Structurereferente' => $this->Rendezvous->belongsTo['Structurereferente'],
+                'Referent' => $this->Rendezvous->belongsTo['Referent'],
+                'Statutrdv' => $this->Rendezvous->belongsTo['Statutrdv'],
+                'Permanence' => $this->Rendezvous->belongsTo['Permanence'],
+            );
+            $hasOne = array(
+                'Typerdv' => $this->Rendezvous->hasOne['Typerdv'],
+            );
+            $this->Rendezvous->unbindModelAll();
+            $this->Rendezvous->bindModel( array( 'belongsTo' => $belongsTo, 'hasOne' => $hasOne ) );
+            $this->Rendezvous->forceVirtualFields = true;
+            $rdvs = $this->Rendezvous->find(
+                'all',
+                array(
+                    'fields' => array(
+                        'Rendezvous.id',
+                        'Rendezvous.personne_id',
+                        'Personne.nom_complet',
+                        'Structurereferente.lib_struc',
+                        'Referent.nom_complet',
+                        'Permanence.libpermanence',
+                        'Typerdv.libelle',
+                        'Statutrdv.libelle',
+                        'Rendezvous.daterdv',
+                        'Rendezvous.heurerdv',
+                        'Rendezvous.objetrdv',
+                        'Rendezvous.commentairerdv'
+                    ),
+                    'conditions' => array(
+                        'Rendezvous.personne_id' => $personne_id
+                    )
+                )
+            );
+            $this->Rendezvous->forceVirtualFields = false;
+
             $this->set( compact( 'rdvs' ) );
             $this->set( 'personne_id', $personne_id );
         }
