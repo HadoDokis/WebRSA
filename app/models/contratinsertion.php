@@ -44,12 +44,12 @@
                 'classname' => 'Actioninsertion',
                 'foreignKey' => 'contratinsertion_id',
 				'dependent' => true
-            ),
+            )/*,
             'Typocontrat' => array(
                 'classname' => 'Typocontrat',
                 'foreignKey' => 'contratinsertion_id',
 				'dependent' => true
-            )
+            )*/
         );
 
 
@@ -159,6 +159,16 @@
                 'notEmpty' => array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                )
+            ),
+            'niveausalaire' => array(
+                array(
+                    'rule' => 'numeric',
+                    'message' => 'Veuillez entrer une valeur numérique.'
+                ),
+                array(
+                    'rule' => array( 'comparison', '>=', 0 ),
+                    'message' => 'Veuillez entrer un nombre positif.'
                 )
             ),
             /**

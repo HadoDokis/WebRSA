@@ -17,6 +17,7 @@
         dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
     });
 </script>
+
 <script type="text/javascript">
     function checkDatesToRefresh() {
         if( ( $F( 'ContratinsertionDdCiMonth' ) ) && ( $F( 'ContratinsertionDdCiYear' ) ) && ( $F( 'ContratinsertionDureeEngag' ) ) ) {
@@ -43,6 +44,7 @@
 
         Event.observe( $( 'ContratinsertionDureeEngag' ), 'change', function() {
             checkDatesToRefresh();
+//             alert($F( 'ContratinsertionDureeEngag' ));
         } );
 
     });

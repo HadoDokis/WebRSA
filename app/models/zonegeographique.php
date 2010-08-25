@@ -27,12 +27,20 @@
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'isUnique',
+                    'message' => 'Valeur déjà présente'
                 )
             ),
             'codeinsee' => array(
                 array(
                     'rule' => 'notEmpty',
                     'message' => 'Champ obligatoire'
+                ),
+                array(
+                    'rule' => 'isUnique',
+                    'message' => 'Valeur déjà présente'
                 )
             )
         );
