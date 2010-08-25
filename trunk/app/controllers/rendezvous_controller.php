@@ -111,18 +111,34 @@
         *
         *** *******************************************************************/
 
-        function view( $rendezvous_id = null ){
-            $rendezvous = $this->Rendezvous->findById( $rendezvous_id );
+        function view( $rendezvous_id = null ) {
+            $this->Rendezvous->forceVirtualFields = true;
+            $rendezvous = $this->Rendezvous->find(
+                'first',
+                array(
+                    'fields' => array(
+                        'Rendezvous.personne_id',
+                        'Personne.nom_complet',
+                        'Structurereferente.lib_struc',
+                        'Referent.nom_complet',
+                        'Referent.fonction',
+                        'Permanence.libpermanence',
+                        'Typerdv.libelle',
+                        'Statutrdv.libelle',
+                        'Rendezvous.daterdv',
+                        'Rendezvous.heurerdv',
+                        'Rendezvous.objetrdv',
+                        'Rendezvous.commentairerdv'
+                    ),
+                    'conditions' => array(
+                        'Rendezvous.id' => $rendezvous_id
+                    ),
+                    'recursive' => 0
+                )
+            );
+
             $this->assert( !empty( $rendezvous ), 'invalidParameter' );
 
-            /*$typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
-            $this->set( 'typerdv', $typerdv );*/
-
-            /*$referent = $this->Referent->find( 'list', array( 'fields' => array( 'id', 'nom' ) ) );
-            $this->set( 'referent', $referent );*/
-
-            /*$referentFonction = $this->Referent->find( 'list', array( 'fields' => array( 'id', 'fonction' ) ) );
-            $this->set( 'referentFonction', $referentFonction );*/
 
             $this->set( 'rendezvous', $rendezvous );
             $this->set( 'personne_id', $rendezvous['Rendezvous']['personne_id'] );
