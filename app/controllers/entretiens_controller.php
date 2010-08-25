@@ -25,7 +25,6 @@
             $options[$this->modelClass]['typerdv_id'] = $this->{$this->modelClass}->Typerdv->find( 'list' );
             $options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
 
-
             $this->set( compact( 'options' ) );
 // debug($options);
         }
@@ -35,11 +34,19 @@
         *** *******************************************************************/
 
         function index( $personne_id = null ){
-
-            $nbrPersonnes = $this->Entretien->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
+            // On s'assure que la personne existe
+            $nbrPersonnes = $this->Entretien->Personne->find(
+                'count',
+                array(
+                    'conditions' => array(
+                        'Personne.id' => $personne_id
+                    ),
+                    'recursive' => -1
+                )
+            );
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
-            $dsps = $this->Entretien->Personne->Dsp->find(
+            /*$dsps = $this->Entretien->Personne->Dsp->find(
                 'first',
                 array(
                     'conditions' => array(
@@ -47,20 +54,35 @@
                     ),
                     'order' => 'Dsp.id ASC'
                 )
+            );*/
+
+            // On n'a besoin que de Structurereferente et Referent en modèles liés
+            $belongsTo = array(
+                'Structurereferente' => $this->Entretien->belongsTo['Structurereferente'],
+                'Referent' => $this->Entretien->belongsTo['Referent'],
             );
-
-
+            $this->Entretien->unbindModelAll();
+            $this->Entretien->bindModel( array( 'belongsTo' => $belongsTo ) );
             $entretiens = $this->Entretien->find(
                 'all',
                 array(
+                    'fields' => array(
+                        'Entretien.id',
+                        'Entretien.personne_id',
+                        'Entretien.dateentretien',
+                        'Structurereferente.lib_struc',
+                        'Referent.qual',
+                        'Referent.nom',
+                        'Referent.prenom'
+                    ),
                     'conditions' => array(
                         'Entretien.personne_id' => $personne_id
                     )
                 )
             );
 
-            $this->_setOptions();
-            $this->set( compact( 'dsps', 'entretiens' ) );
+//             $this->_setOptions();
+            $this->set( compact( /*'dsps', */'entretiens' ) );
             $this->set( 'personne_id', $personne_id );
         }
 
@@ -93,10 +115,10 @@
                 }
                 $this->redirect( array( 'action' => 'index', $id ) );
             }
+
             // Récupération des id afférents
             if( $this->action == 'add' ) {
                 $personne_id = $id;
-                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
             }
             else if( $this->action == 'edit' ) {
                 $entretien_id = $id;
@@ -115,13 +137,6 @@
                 $this->Entretien->rollback();
             }
             $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
-
-            //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-            $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
-            $user_id = Set::classicExtract( $user, 'User.id' );
-            $personne = $this->Entretien->Personne->detailsCi( $personne_id, $user_id );
-            $this->set( 'personne', $personne );
-
 
             ///Récupération de la liste des structures référentes 
             $structs = $this->Structurereferente->listOptions( );
@@ -164,6 +179,7 @@
 
             $this->_setOptions();
             $this->set( 'personne_id', $personne_id );
+
             $this->render( $this->action, null, 'add_edit' );
         }
 

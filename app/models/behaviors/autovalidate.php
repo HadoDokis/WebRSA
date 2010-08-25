@@ -160,7 +160,7 @@
 		*/
 
 		function beforeValidate( &$model ) {
-			if( Set::classicExtract( $this->settings[$model->alias], 'translate' ) ) {
+			if( Set::classicExtract( $this->settings, "{$model->alias}.translate" ) ) {
 				$modelDomain = Set::classicExtract( $this->settings, "{$model->alias}.domain" );
 
 				if( is_array( $model->validate ) ) {
