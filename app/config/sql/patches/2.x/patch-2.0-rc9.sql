@@ -39,17 +39,8 @@ ALTER TABLE suspensionsdroits ADD COLUMN natgroupfsus CHAR(3) DEFAULT NULL;
 
 -----------------------------  Ajout du 06/07/2010 ----------------------------
 ALTER TABLE traitementspdos ADD COLUMN hasficheanalyse type_booleannumber DEFAULT NULL;
--- *****************************************************************************
-COMMIT;
--- *****************************************************************************
 
 -----------------------------  Ajout du 07/07/2010 ----------------------------
--- *****************************************************************************
---  Ajout de la table Entretiens
--- *****************************************************************************
--- *****************************************************************************
-BEGIN;
--- *****************************************************************************
 
 CREATE TYPE type_typeentretien AS ENUM ( 'PHY', 'TEL', 'COU', 'MAI' );
 CREATE TABLE entretiens(
@@ -72,13 +63,8 @@ COMMENT ON TABLE entretiens IS 'Table pour les entretiens des personnes';
 CREATE INDEX entretiens_personne_id_idx ON entretiens(personne_id);
 CREATE INDEX entretiens_dateentretien_idx ON entretiens(dateentretien);
 
--- *****************************************************************************
-COMMIT;
--- *****************************************************************************
+-----------------------------  Ajout du 08/07/2010 -----------------------------
 
--- *****************************************************************************
-BEGIN;  -----------------------------  Ajout du 08/07/2010 ---------------------
--- *****************************************************************************
 ALTER TABLE cuis ALTER COLUMN organisme TYPE VARCHAR(150);
 ALTER TABLE cuis ADD COLUMN ribemployeur VARCHAR(23);
 
@@ -86,13 +72,9 @@ CREATE TYPE type_decision AS ENUM( 'E', 'V', 'A', 'R' );
 ALTER TABLE cuis ADD COLUMN observcui TEXT;
 ALTER TABLE cuis ADD COLUMN decisioncui type_decision DEFAULT 'E';
 ALTER TABLE cuis ADD COLUMN datevalidationcui DATE;
--- *****************************************************************************
-COMMIT;
--- *****************************************************************************
 
--- *****************************************************************************
-BEGIN;  -----------------------------  Ajout du 09/07/2010 ---------------------
--- *****************************************************************************
+-----------------------------  Ajout du 09/07/2010 -----------------------------
+
 CREATE TYPE type_objectifimmersion AS ENUM ( 'acquerir', 'confirmer', 'decouvrir', 'initier' );
 CREATE TABLE periodesimmersion(
     id                              SERIAL NOT NULL PRIMARY KEY,
