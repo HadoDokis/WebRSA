@@ -199,6 +199,10 @@
 		*/
 
 		public function lockedList( $dossiers_ids ) {
+			if( empty( $dossiers_ids ) ) {
+				return array();
+			}
+
 			$list = $this->Jeton->find(
 				'list',
 				array(
