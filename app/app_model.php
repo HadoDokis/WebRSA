@@ -3,8 +3,14 @@
     {
         // début champs virtuels
         public $virtualFields = array();
+
         public $_findQueryType = null;
 
+		/**
+		* Permet de forcer l'utilisation des champs virtuels pour les modèles liés
+		*/
+
+		public $forceVirtualFields = false;
 
         /**
         * INFO: avec PostgreSQL, on s'assure un accès exclusif à la table "jetons"
@@ -144,7 +150,7 @@
         */
 
         protected function _beforeFindVirtualFields( $queryData ) {
-            if( is_array( $this->virtualFields ) && !empty( $this->virtualFields ) ) {
+            if( $this->forceVirtualFields || ( is_array( $this->virtualFields ) && !empty( $this->virtualFields ) ) ) {
                 $this->dbo = ConnectionManager::getInstance()->getDataSource( $this->useDbConfig );
 
                 /*
