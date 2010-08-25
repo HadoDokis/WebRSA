@@ -16,6 +16,35 @@
 
 <div class="with_treemenu">
     <h1>Rendez-vous</h1>
+
+
+    <?php
+        echo $default->index(
+            $rdvs,
+            array(
+                'Personne.nom_complet',
+                'Structurereferente.lib_struc',
+                'Referent.nom_complet',
+                'Permanence.libpermanence',
+                'Typerdv.libelle',
+                'Statutrdv.libelle',
+                'Rendezvous.daterdv',
+                'Rendezvous.heurerdv',
+                'Rendezvous.objetrdv',
+                'Rendezvous.commentairerdv'
+            ),
+            array(
+                'actions' => array(
+                    'Rendezvous.view',
+                    'Rendezvous.edit',
+                    'Rendezvous.delete'
+                ),
+                'add' => array( 'Rendezvous.add' => $personne_id )
+            )
+        );
+    ?>
+
+
     <!-- <?php /*if( empty( $orientstruct ) ):?>
         <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas d'orientation.</p>
 
@@ -28,9 +57,9 @@
     <?php elseif( !empty( $orientstruct ) && !empty( $permanence ) && !empty( $refrdv ) && empty( $statutrdv ) ):?>
         <p class="error">Impossible d'ajouter une demande de RDV lorsqu'il n'existe pas de statut pour le RDV.</p>
 
-    <?php else:*/?> -->
+    <?php else:*/?>
 
-        <?php if( empty( $rdvs ) ):?>
+        <?php /*if( empty( $rdvs ) ):?>
             <p class="notice">Cette personne ne possède pas encore de rendez-vous.</p>
         <?php endif;?>
 
@@ -100,8 +129,8 @@
                 }
             ?>
         </tbody>
-    </table>
-    <?php  endif;?>
+    </table> 
+    <?php  endif;*/?> -->
 
 
 </div>

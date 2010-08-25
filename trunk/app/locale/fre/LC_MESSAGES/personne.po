@@ -47,6 +47,8 @@ msgstr "Commune de naissance"
 msgid "Personne.idassedic"
 msgstr "N° identifiant Pôle Emploi"
 
+msgid "Personne.nom_personne"
+msgstr "Nom/Prénom Allocataire"
 ###############################################################################
 
 msgid "Foyer.Modecontact.numtel"

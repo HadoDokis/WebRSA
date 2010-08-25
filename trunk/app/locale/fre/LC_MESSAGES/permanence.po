@@ -19,15 +19,5 @@ msgstr ""
 
 
 ###############################################################################
-
-msgid "Rendezvous.daterdv"
-msgstr "Date de RDV"
-
-msgid "Rendezvous.heurerdv"
-msgstr "Heure du RDV"
-
-msgid "Rendezvous.objetrdv"
-msgstr "Objet du RDV"
-
-msgid "Rendezvous.commentairerdv"
-msgstr "Commentaire du RDV"
+msgid "Permanence.libpermanence"
+msgstr "Permanence liée"
