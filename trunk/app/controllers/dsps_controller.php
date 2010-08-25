@@ -76,7 +76,18 @@
         public function view( $id = null ) {
 			$dsp = $this->Dsp->findByPersonneId( $id );
 			if( empty( $dsp ) ) {
-				$dsp = $this->Dsp->Personne->findById( $id );
+// 				$dsp = $this->Dsp->Personne->findById( $id );
+				//Ajout Arnaud suite aux problemes de perf
+				$dsp = $this->Dsp->Personne->find(
+				    'first',
+				    array(
+					'conditions' => array(
+					    'Personne.id' => $id
+					),
+					'recursive' => -1
+				    )
+				);
+				//Fin ajout Arnaud suite aux problemes de perf
 			}
 			$this->assert( !empty( $dsp ), 'invalidParameter' );
 			$this->set( 'dsp', $dsp );
