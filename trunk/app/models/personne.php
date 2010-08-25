@@ -164,12 +164,22 @@
             return $return;
         }
 
-        //*********************************************************************
+        /**
+        * Recherche de l'id du dossier à partir de l'id de la personne
+        */
 
         function dossierId( $personne_id ) {
             $this->unbindModelAll();
             $this->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) );
-            $personne = $this->findById( $personne_id, null, null, 0 );
+            $personne = $this->find(
+                'first',
+                array(
+                    'fields' => array( 'Foyer.dossier_rsa_id' ),
+                    'conditions' => array( 'Personne.id' => $personne_id ),
+                    'recursive' => 0
+                )
+            );
+
             if( !empty( $personne ) ) {
                 return $personne['Foyer']['dossier_rsa_id'];
             }
