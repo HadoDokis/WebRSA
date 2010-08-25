@@ -126,7 +126,7 @@
                         return null;
                     }
                     /// TODO: ... = `User`.`id` + () et espaces
-                    $virtualFields[$fieldName]['regex'] = "/(?<!\w)({$this->alias}\.){0,1}{$fieldName}(?!\w)/";
+                    $virtualFields[$fieldName]['regex'] = "/(?<!\.)(?<!\w)({$this->alias}\.){0,1}{$fieldName}(?!\w)/";
                     $virtualFields[$fieldName]['alias'] = "{$virtualFields[$fieldName]['query']} {$this->dbo->alias} {$this->dbo->startQuote}{$this->alias}__{$fieldName}{$this->dbo->endQuote}";
                 }
             }
