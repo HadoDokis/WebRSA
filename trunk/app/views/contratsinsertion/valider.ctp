@@ -5,11 +5,6 @@
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
-<script type="text/javascript">
-//     document.observe("dom:loaded", function() {
-//         observeDisableFieldsOnValue( 'ContratinsertionDecisionCi', [ 'ContratinsertionDatevalidationCiDay', 'ContratinsertionDatevalidationCiMonth', 'ContratinsertionDatevalidationCiYear' ], 'V', false );
-//     });
-</script>
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 
@@ -17,7 +12,7 @@
             <legend> PARTIE RESERVEE AU DEPARTEMENT</legend>
                 <?php echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden'/*, 'value' => $personne_id*/ ) );?>
                 <?php echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );?>
-                <?php echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden' ) );?>
+                <?php /*echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden' ) );*/?>
 
                 <?php echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __( 'observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
                 <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __( 'decision_ci', true ), 'type' => 'select', 'options' => $decision_ci ) ); ?>

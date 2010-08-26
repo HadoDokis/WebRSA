@@ -192,13 +192,13 @@
             <td class="mediumSize noborder">
                 <strong>N° Service instructeur : </strong><?php echo Set::classicExtract( $personne, 'Serviceinstructeur.lib_service');?>
                 <br />
-                <strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.numdemrsa' );?>
+                <strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Dossier.numdemrsa' );?>
                 <br />
-                <strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.matricule' );?>
+                <strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Dossier.matricule' );?>
                 <br />
                 <strong>Inscrit au Pôle emploi</strong>
                 <?php
-                    $isPoleemploi = Set::classicExtract( $personne, 'Activite.0.act' );
+                    $isPoleemploi = Set::classicExtract( $personne, 'Activite.act' );
                     if( $isPoleemploi == 'ANP' )
                         echo 'Oui';
                     else
@@ -213,19 +213,19 @@
                 <strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $personne, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
             </td>
             <td class="mediumSize noborder">
-                <?php if( Set::extract( $personne, 'Foyer.Modecontact.0.autorutitel' ) == 'A' ):?>
-                        <strong>Numéro de téléphone 1 : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?>
+                <?php if( Set::extract( $personne, 'Modecontact.0.autorutitel' ) == 'A' ):?>
+                        <strong>Numéro de téléphone 1 : </strong><?php echo Set::extract( $personne, 'Modecontact.0.numtel' );?>
                 <?php endif;?>
-                <?php if( Set::extract( $personne, 'Foyer.Modecontact.1.autorutitel' ) == 'A' ):?>
+                <?php if( Set::extract( $personne, 'Modecontact.1.autorutitel' ) == 'A' ):?>
                         <br />
-                        <strong>Numéro de téléphone 2 : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.1.numtel' );?>
+                        <strong>Numéro de téléphone 2 : </strong><?php echo Set::extract( $personne, 'Modecontact.1.numtel' );?>
                 <?php endif;?>
             </td>
         </tr>
         <tr>
             <td colspan="2" class="mediumSize noborder">
-            <?php if( Set::extract( $personne, 'Foyer.Modecontact.0.autorutiadrelec' ) == 'A' ):?>
-                <strong>Adresse mail : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.adrelec' );?> <!-- FIXME -->
+            <?php if( Set::extract( $personne, 'Modecontact.0.autorutiadrelec' ) == 'A' ):?>
+                <strong>Adresse mail : </strong><?php echo Set::extract( $personne, 'Modecontact.0.adrelec' );?> <!-- FIXME -->
             <?php endif;?>
             </td>
         </tr>
@@ -253,7 +253,7 @@
             </tr>
             <tr>
                 <td class="noborder" colspan="2">
-                    <strong>Date d'ouverture du droit ( RMI, API, rSa ) : </strong><?php echo date_short( Set::classicExtract( $personne, 'Foyer.Dossier.dtdemrsa' ) );?>
+                    <strong>Date d'ouverture du droit ( RMI, API, rSa ) : </strong><?php echo date_short( Set::classicExtract( $personne, 'Dossier.dtdemrsa' ) );?>
                 </td>
             </tr>
             <tr>
