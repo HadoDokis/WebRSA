@@ -8,7 +8,7 @@
 		Set::extract( $dsp, 'Personne.qual' ).' '.Set::extract( $dsp, 'Personne.nom' ).' '.Set::extract( $dsp, 'Personne.prenom' )
 	);
 
-	echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $dsp, 'Personne.id' ) ) );
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
 <div class="with_treemenu">
