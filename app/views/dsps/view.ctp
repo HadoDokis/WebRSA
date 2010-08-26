@@ -34,7 +34,7 @@
 					echo '<ul class="actionMenu">
 							<li>'.$html->addLink(
 								'Ajouter une DSP',
-								array( 'controller' => 'dsps', 'action' => 'add', Set::classicExtract( $dsp, 'Personne.id' ) )
+								array( 'controller' => 'dsps', 'action' => 'add', $personne_id )
 							).' </li></ul>';
 				}
 			}
