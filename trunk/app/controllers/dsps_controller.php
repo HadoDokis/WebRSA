@@ -29,7 +29,7 @@
 			'Detailnatmob' => '2504',
 			'Detaildiflog' => '1001'
 		);
-        
+
 		var $commeDroit = array(
 			'add' => 'Dsps:edit'
 		);
@@ -78,8 +78,8 @@
 
 			if( empty( $dsp ) ) {
                 //Ajout Arnaud suite aux problemes de perf
-				$nbPersonnes = $this->Dsp->Personne->find(
-				    'count',
+				$dsp = $this->Dsp->Personne->find(
+				    'first',
 				    array(
 					'conditions' => array(
 					    'Personne.id' => $id
@@ -87,11 +87,11 @@
 					'recursive' => -1
 				    )
 				);
-                $this->assert( ( $nbPersonnes == 1 ), 'invalidParameter' );
+                $this->assert( !empty( $dsp ), 'invalidParameter' );
 				//Fin ajout Arnaud suite aux problemes de perf
 			}
 
-            $this->set( 'personne_id', $id );
+			$this->set( 'personne_id', $id );
 			$this->set( 'dsp', $dsp );
         }
 
