@@ -26,12 +26,13 @@
 			'add' => 'Contratsinsertion:edit'
 		);
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
         protected function _setOptions() {
             $options = $this->Contratinsertion->allEnumLists();
             $this->set( 'options', $options );
+
             if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
                 $this->set( 'decision_ci', $this->Option->decision_ci() );
                 $forme_ci = array();
@@ -49,7 +50,6 @@
             }
 
             if( in_array( $this->action, array( 'add', 'edit'/*, 'view'*/ ) ) ) {
-
                 $this->set( 'qual', $this->Option->qual() );
                 $this->set( 'raison_ci', $this->Option->raison_ci() );
                 $this->set( 'avisraison_ci', $this->Option->avisraison_ci() );
@@ -70,28 +70,14 @@
                 $this->set( 'typo_aide', $this->Option->typo_aide() );
                 $this->set( 'soclmaj', $this->Option->natpfcre( 'soclmaj' ) );
                 $this->set( 'rolepers', $this->Option->rolepers() );
-
                 $this->set( 'zoneprivilegie', ClassRegistry::init( 'Zonegeographique' )->find( 'list' ) );
-
-//                 $this->set( 'sr', $this->Contratinsertion->Structurereferente->listeParType( array( 'contratengagement' => true ) ) );
-//                 $this->set( 'referents', $this->Contratinsertion->Structurereferente->Referent->find( 'list' ) );
-
                 $this->set( 'actions', $this->Action->grouplist( 'prest' ) );
             }
-
         }
-        // FIXME -> à nettoyer
-//         function beforeFilter() {
-//             parent::beforeFilter();
-//
-//
-//
-//             }
-//         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function _libelleTypeorientNiv0( $typeorient_id ) {
             $typeorient_niv1_id = $this->Contratinsertion->Personne->Orientstruct->Typeorient->getIdLevel0( $typeorient_id );
@@ -110,9 +96,9 @@
             return Set::classicExtract( $typeOrientation, 'Typeorient.lib_type_orient' );
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function _referentStruct( $structurereferente_id ) {
             $referents = $this->Contratinsertion->Structurereferente->Referent->find(
@@ -131,9 +117,9 @@
             return $referents;
         }
 
-        /** ********************************************************************
+        /**
         *   Ajax pour les coordonnées du référent APRE
-        *** *******************************************************************/
+        */
 
         function ajaxref( $referent_id = null ) { // FIXME
             Configure::write( 'debug', 0 );
@@ -155,9 +141,9 @@
             $this->render( 'ajaxref', 'ajax' );
         }
 
-        /** ********************************************************************
+        /**
         *   Ajax pour les coordonnées de la structure référente liée
-        *** *******************************************************************/
+        */
 
         function ajaxstruct( $structurereferente_id = null ) { // FIXME
             Configure::write( 'debug', 0 );
@@ -172,103 +158,146 @@
         }
 
 
-        /** ********************************************************************
+		/**
+		*
+		*/
+
+		public function index( $personne_id = null ){
+			// On s'assure que la personne existe
+			$nbrPersonnes = $this->Contratinsertion->Personne->find(
+				'count',
+				array(
+					'conditions' => array(
+						'Personne.id' => $personne_id ),
+						'recursive' => -1
+				)
+			);
+			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
+
+
+			// Recherche du nombre de référent lié au parcours de la personne
+			// Si aucun alors message d'erreur signalant l'absence de référent (cg66)
+			if( Configure::read( 'nom_form_ci_cg' ) ) {
+				$persreferent = $this->PersonneReferent->find(
+					'count',
+					array(
+						'conditions' => array(
+							'PersonneReferent.personne_id' => $personne_id
+						),
+						'recursive' => -1
+					)
+				);
+				$this->set( compact( 'persreferent' ) );
+			}
+
+			$contratsinsertion = $this->Contratinsertion->find(
+				'all',
+				array(
+					'fields' => array(
+						'Contratinsertion.id',
+						'Contratinsertion.forme_ci',
+						'Contratinsertion.decision_ci',
+						'Contratinsertion.num_contrat',
+						'Contratinsertion.dd_ci',
+						'Contratinsertion.df_ci',
+						'Contratinsertion.datevalidation_ci',
+					),
+					'conditions' => array(
+						'Contratinsertion.personne_id' => $personne_id
+					),
+					'recursive' => -1
+				)
+			);
+
+			$this->_setOptions();
+			$this->set( compact( 'contratsinsertion' ) );
+			$this->set( 'personne_id', $personne_id );
+			///FIXME: pas propre, mais pr le moment ça marche afin d'eviter de tout renommer
+			$this->render( $this->action, null, '/contratsinsertion/index_'.Configure::read( 'nom_form_ci_cg' ) );
+		}
+
+		/**
+		*
+		*/
+
+		public function view( $contratinsertion_id = null ) {
+			// On a seulement besoin des modèles liés Structurereferente, Referent et Typeorient
+			$binds = array(
+				'belongsTo' => array(
+					'Structurereferente' => $this->Contratinsertion->belongsTo['Structurereferente'],
+					'Referent' => $this->Contratinsertion->belongsTo['Referent'],
+					'Typeorient' => array(
+						'table'      => $this->Typeorient->getDataSource()->fullTableName( $this->Typeorient, false ),
+						'alias'      => 'Typeorient',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Structurereferente.typeorient_id = Typeorient.id' )
+					)
+				)
+			);
+			$this->Contratinsertion->unbindModelAll();
+			$this->Contratinsertion->bindModel( $binds );
+			$this->Contratinsertion->forceVirtualFields = true;
+			$contratinsertion = $this->Contratinsertion->find(
+				'first',
+				array(
+					'fields' => array(
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.forme_ci',
+						'Contratinsertion.num_contrat',
+						'Contratinsertion.dd_ci',
+						'Contratinsertion.df_ci',
+						'Contratinsertion.diplomes',
+						'Contratinsertion.expr_prof',
+						'Contratinsertion.form_compl',
+						'Contratinsertion.rg_ci',
+						'Contratinsertion.actions_prev',
+						'Contratinsertion.obsta_renc',
+						'Contratinsertion.service_soutien',
+						'Contratinsertion.pers_charg_suivi',
+						'Contratinsertion.objectifs_fixes',
+						'Contratinsertion.sect_acti_emp',
+						'Contratinsertion.emp_occupe',
+						'Contratinsertion.duree_hebdo_emp',
+						'Contratinsertion.nat_cont_trav',
+						'Contratinsertion.duree_cdd',
+						'Contratinsertion.duree_engag',
+						'Contratinsertion.nature_projet',
+						'Contratinsertion.engag_object',
+						'Action.libelle',
+						'Structurereferente.lib_struc',
+						'Structurereferente.typeorient_id',
+						'Referent.nom_complet',
+						'Typeorient.lib_type_orient',
+					),
+					'conditions' => array(
+						'Contratinsertion.id' => $contratinsertion_id
+					),
+					'joins' => array(
+						array(
+							'table'      => 'actions', // FIXME
+							'alias'      => 'Action',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( 'Contratinsertion.engag_object = Action.code' )
+						)
+					),
+					'recursive' => 0
+				)
+			);
+			$this->Contratinsertion->forceVirtualFields = false;
+			$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
+
+			$this->set( 'contratinsertion', $contratinsertion );
+
+			$this->_setOptions();
+			$this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
+		}
+
+        /**
         *
-        *** *******************************************************************/
-
-        function index( $personne_id = null ){
-            $nbrPersonnes = $this->Contratinsertion->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
-            $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
-
-            /**
-            *   Recherche du nombre de référent lié au parcours de la personne
-            *   Si aucun alors message d'erreur signalant l'absence de référent (cg66)
-            **/
-            $persreferent = $this->PersonneReferent->find( 'count', array('conditions' => array( 'PersonneReferent.personne_id' => $personne_id ), 'recursive' => -1 ) );
-            $this->set( compact( 'persreferent' ) );
-
-            $contratsinsertion = $this->Contratinsertion->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'Contratinsertion.personne_id' => $personne_id
-                    )
-                )
-            );
-
-
-            ///S'il n'y a pas d'orientation, IMPOSSIBLE de créer un contrat
-            $orientstruct = $this->Contratinsertion->Structurereferente->Orientstruct->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Orientstruct.personne_id' => $personne_id,
-                        'Orientstruct.typeorient_id IS NOT NULL',
-                        'Orientstruct.statut_orient' => 'Orienté'
-                    ),
-                    'order' => 'Orientstruct.date_valid DESC'
-                )
-            );
-
-            if( !empty( $orientstruct ) ){
-                ///S'il n'y a pas de référents, IMPOSSIBLE de créer un contrat
-                $referents = $this->Referent->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Referent.structurereferente_id' => Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' )
-                        ),
-                        'recursive' => -1
-                    )
-                );
-
-                $this->set( 'referents', $referents );
-                $sr = $this->Contratinsertion->Structurereferente->listeParType( array( 'contratengagement' => true ) );
-                $struct = Set::enum( Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' ), $sr );
-                $this->set( 'struct', $struct );
-            }
-            else if( empty( $orientstruct ) ) {
-                $sr = $this->Contratinsertion->Structurereferente->listeParType( array( 'contratengagement' => true ) );
-            }
-
-
-
-
-
-            $this->_setOptions();
-            $this->set( compact( 'orientstruct', 'contratsinsertion' ) );
-            $this->set( 'personne_id', $personne_id );
-            $this->render( $this->action, null, '/contratsinsertion/index_'.Configure::read( 'nom_form_ci_cg' ) ); ///FIXME: pas propre, mais pr le moment ça marche afin d'eviter de tout renommer
-
-        }
-
-        /** ********************************************************************
-        *
-        *** *******************************************************************/
-
-        function view( $contratinsertion_id = null ){
-            $contratinsertion = $this->Contratinsertion->findById( $contratinsertion_id );
-            $this->assert( !empty( $contratinsertion ), 'invalidParameter' );
-
-            $codesaction = $this->Action->find( 'list', array( 'fields' => array( 'code', 'libelle' ) ) );
-            $codesaction = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.engag_object' ), $codesaction );
-            $structures = $this->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ) ) );
-            $referents = $this->Referent->find( 'list', array( 'fields' => array( 'nom' ) ) );
-            $typesorients = $this->Typeorient->find( 'list', array( 'fields' => array( 'lib_type_orient' ) ) );
-//             $codesaction = empty( $contratinsertion['Contratinsertion']['engag_object'] ) ? null : $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
-            $this->set( 'codesaction', $codesaction );
-
-            $this->set( 'contratinsertion', $contratinsertion );
-            $this->set( 'structures', $structures );
-            $this->set( 'referents', $referents );
-            $this->set( 'typesorients', $typesorients );
-            $this->_setOptions();
-            $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
-        }
-
-        /** ********************************************************************
-        *
-        *** *******************************************************************/
+        */
 
         public function add() {
             $args = func_get_args();
@@ -310,9 +339,9 @@
             return $return;
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function _add_edit( $id = null ) {
             // Retour à la liste en cas d'annulation
@@ -645,9 +674,9 @@
             }
         }
 
-        /** ********************************************************************
+        /**
         *
-        *** *******************************************************************/
+        */
 
         function valider( $contratinsertion_id = null ) {
 
