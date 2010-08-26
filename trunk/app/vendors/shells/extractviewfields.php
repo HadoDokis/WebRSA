@@ -61,7 +61,7 @@
 			// Collecte
 			foreach( $this->lines as $line ) {
 				// User.name
-				if( preg_match_all( "/.*(?<!\w)([A-Z]\w+)(\.|\.[0-9]+\.)(\w+).*/", $line, $matches ) ) {
+				if( preg_match_all( "/.*'([A-Z]\w+)(\.|\.[0-9]+\.)(\w+)'.*/", $line, $matches ) ) {
 					for( $i = 0 ; $i < count( $matches[1][0] ) ; $i++ ) {
 						// Pas input->( ..
 						if( !preg_match( "/.*((\->|::)(input|read|sort|read|data)|params\.paging\.).*/", $matches[0][$i] ) ) {
