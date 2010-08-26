@@ -395,7 +395,7 @@
 
 		protected function _checkPermissions() {
 			// Vérification des droits d'accès à la page
-			if( $this->name != 'Pages' ) {
+			if( $this->name != 'Pages' && !( $this->name == 'Users' && ( $this->action == 'login' || $this->action == 'logout' ) ) ) {
 				/// Ancienne manière, génère 4 requètes SQL
 				/*$controllerAction = $this->name . ':' . $this->action;
 				$this->assert( $this->Droits->check( $this->Session->read( 'Auth.User.aroAlias' ), $controllerAction ), 'error403' );*/
