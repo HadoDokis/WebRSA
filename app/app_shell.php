@@ -148,8 +148,8 @@
 		* @access public
 		*/
 
-		public function hr($newlines = 1) {
-			$this->out( '---------------------------------------------------------------', $newlines );
+		public function hr($newlines = 1, $symbol = '-', $length = 63) {
+			$this->out( str_repeat( $symbol, $length ), $newlines );
 		}
 
 		/**
