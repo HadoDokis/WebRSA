@@ -309,6 +309,7 @@
             $this->Dsp->unbindModelAll();
 
             $personne = $this->findById( $personne_id, null, null, 2 );
+//             debug( $personne );
 
             // Récupération du service instructeur
             $suiviinstruction = $this->Foyer->Dossier->Suiviinstruction->find(
@@ -337,7 +338,7 @@
             );
 
             $personne = Set::merge( $personne, $suiviinstruction );
-
+// debug($personne);
             //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
             if( empty( $suiviinstruction ) && is_int( $user_id ) ) {
                 $user = $this->Contratinsertion->User->findById( $user_id, null, null, 0 );
@@ -625,5 +626,232 @@
 				'postgres'	=> '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
 			),
 		);
+
+
+
+
+
+        function newDetailsCi( $personne_id, $user_id = null ){
+            // TODO: début dans le modèle
+            ///Recup personne
+            /*$this->unbindModel(
+                array(
+                    'hasOne' => array( 'TitreSejour', 'Avispcgpersonne', 'Dossiercaf' ),
+                    'hasMany' => array( 'Rendezvous', 'Activite', 'Contratinsertion', 'Orientstruct' )
+                )
+            );
+            $this->Foyer->unbindModel(
+                array(
+                    'hasMany' => array( 'Personne', 'Modecontact', 'Adressefoyer' ),
+                    'hasAndBelongsToMany' => array( 'Creance' )
+                )
+            );
+            $this->Foyer->Dossier->unbindModelAll();*/
+            $this->Prestation->unbindModelAll();
+            $this->Dsp->unbindModelAll();
+
+            /*$personne = $this->findById( $personne_id, null, null, -1 );
+
+            $foyer_id = Set::classicExtract( $personne, 'Personne.foyer_id' );
+            $foyer = $this->Foyer->findById( $foyer_id, null, null, -1 );
+            $personne = Set::merge( $personne, $foyer );
+
+            $dossier_rsa_id = Set::classicExtract( $personne, 'Foyer.dossier_rsa_id' );
+            $dossier = $this->Foyer->Dossier->findById( $dossier_rsa_id, null, null, -1 );
+            $personne = Set::merge( $personne, $dossier );*/
+
+            $this->unbindModelAll();
+            $personne = $this->find(
+                'first',
+                array(
+                    'fields' => array(
+                        'Dossier.id',
+                        'Dossier.numdemrsa',
+                        'Dossier.dtdemrsa',
+                        'Dossier.matricule',
+                        'Personne.id',
+                        'Personne.foyer_id',
+                        'Personne.qual',
+                        'Personne.nom',
+                        'Personne.prenom',
+                        'Personne.dtnai',
+                        'Personne.nir',
+                        'Personne.idassedic',
+                        'Prestation.rolepers',
+                        'Adresse.numvoie',
+                        'Adresse.typevoie',
+                        'Adresse.nomvoie',
+                        'Adresse.locaadr',
+                        'Adresse.codepos',
+                        'Adresse.nomvoie',
+//                         'Modecontact.numtel',
+//                         'Modecontact.autorutitel',
+//                         'Modecontact.autorutiadrelec',
+//                         'Activite.act',
+                        'Serviceinstructeur.lib_service',
+                    ),
+                    'conditions' => array(
+                        'Personne.id' => $personne_id
+                    ),
+                    'joins' => array(
+                        array(
+                            'table'      => 'foyers', // FIXME
+                            'alias'      => 'Foyer',
+                            'type'       => 'INNER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+                        ),
+                        array(
+                            'table'      => 'dossiers_rsa', // FIXME
+                            'alias'      => 'Dossier',
+                            'type'       => 'INNER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Dossier.id = Foyer.dossier_rsa_id' )
+                        ),
+                        array(
+                            'table'      => 'prestations',
+                            'alias'      => 'Prestation',
+                            'type'       => 'INNER',
+                            'foreignKey' => false,
+                            'conditions' => array(
+                                'Personne.id = Prestation.personne_id',
+                                '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+                                'Prestation.natprest = \'RSA\''
+                            )
+                        ),
+                        array(
+                            'table'      => 'adresses_foyers',
+                            'alias'      => 'Adressefoyer',
+                            'type'       => 'LEFT OUTER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+                        ),
+                        array(
+                            'table'      => 'adresses',
+                            'alias'      => 'Adresse',
+                            'type'       => 'LEFT OUTER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                        ),
+//                         array(
+//                             'table'      => 'modescontact',
+//                             'alias'      => 'Modecontact',
+//                             'type'       => 'LEFT OUTER',
+//                             'foreignKey' => false,
+//                             'conditions' => array( 'Foyer.id = Modecontact.foyer_id' )
+//                         ),
+//                         array(
+//                             'table'      => 'activites',
+//                             'alias'      => 'Activite',
+//                             'type'       => 'LEFT OUTER',
+//                             'foreignKey' => false,
+//                             'conditions' => array( 'Activite.personne_id = Personne.id' )
+//                         ),
+                        array(
+                            'table'      => 'suivisinstruction',
+                            'alias'      => 'Suiviinstruction',
+                            'type'       => 'LEFT OUTER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Suiviinstruction.dossier_rsa_id = Dossier.id' )
+                        ),
+                        array(
+                            'table'      => 'servicesinstructeurs',
+                            'alias'      => 'Serviceinstructeur',
+                            'type'       => 'LEFT OUTER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+                        ),
+                    ),
+                    'recursive' => 1
+                )
+            );
+//             debug( $personne );
+
+
+            //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
+//             if( empty( $suiviinstruction ) && is_int( $user_id ) ) {
+//                 $user = $this->Contratinsertion->User->findById( $user_id, null, null, 0 );
+//                 $personne = Set::merge( $personne, $user );
+//             }
+
+//             FIXME -> comment distinguer ? + FIXME autorutitel / autorutiadrelec
+            $modecontact = $this->Foyer->Modecontact->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Modecontact.foyer_id' => $personne['Personne']['foyer_id']
+                    ),
+                    'recursive' => -1,
+                    'order' => 'Modecontact.nattel ASC'
+                )
+            );
+
+            foreach( $modecontact as $index => $value ) {
+                if( ( ( Set::extract( $value, 'Modecontact.autorutitel' ) != 'R' ) ) && ( Set::extract( $value, 'Modecontact.nattel' ) == 'D' ) ) {
+                    $personne = Set::merge( $personne, array( 'Modecontact' => Set::extract( $modecontact, '{n}.Modecontact' ) ) );
+                }
+            }
+
+//             $detaildroitrsa = $this->Foyer->Dossier->Detaildroitrsa->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Detaildroitrsa.dossier_rsa_id' => $personne['Foyer']['Dossier']['id']
+//                     ),
+//                     'recursive' => -1
+//                 )
+//             );//Detaildroitrsa.oridemrsa
+//             if( !empty( $detaildroitrsa ) ) {
+//                 $personne = Set::merge( $personne, $detaildroitrsa );
+//             }
+
+
+            $activite = $this->Activite->find(
+                'first',
+                array(
+                    'fields' => array(
+                        'Activite.act'
+                    ),
+                    'conditions' => array(
+                        'Activite.personne_id' => $personne_id
+                    ),
+                    'recursive' => -1,
+                    'order' => 'Activite.dfact DESC'
+                )
+            );//Activite.act
+            if( !empty( $activite ) ) {
+                $personne = Set::merge( $personne, $activite );
+
+            }
+
+
+// debug($personne);
+            // Recherche de la structure référente
+//             $this->Orientstruct->unbindModelAll();
+//             $this->Orientstruct->bindModel( array( 'belongsTo' => array( 'Structurereferente' ) ) );
+//             $orientstruct = $this->Orientstruct->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Orientstruct.personne_id' => $personne_id,
+//                         'Orientstruct.date_propo IS NOT NULL'
+//                     ),
+//                     'order' => 'Orientstruct.date_propo DESC',
+//                     'recursive' => 0
+//                 )
+//             );
+// 
+// 
+// 
+//             if( !empty( $orientstruct ) ) {
+//                 $personne = Set::merge( $personne, $orientstruct );
+//             }
+
+            return $personne;
+        }
+
+
+
+
     }
 ?>

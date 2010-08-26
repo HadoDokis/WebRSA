@@ -313,8 +313,21 @@
         protected function _getDsp( $personne_id ) {
             /// Récupération des données socio pro (notamment Niveau etude) lié au contrat
             $this->Contratinsertion->Personne->Dsp->unbindModelAll();
-            $dsp = $this->Contratinsertion->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
-
+            $dsp = $this->Contratinsertion->Personne->Dsp->find(
+                'first',
+                array(
+                    'fields' => array(
+                        'Dsp.id',
+                        'Dsp.personne_id',
+                        'Dsp.nivetu',
+                    ),
+                    'conditions' => array(
+                        'Dsp.personne_id' => $personne_id
+                    ),
+                    'recursive' => -1
+                )
+            );
+// debug($dsp);
             $dspData = Set::filter( $dsp['Dsp'] );
             if( empty( $dsp ) && !empty( $dspData )  ){
                 $dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
@@ -384,17 +397,23 @@
             /**
             *   Détails des précédents contrats
             */
-            $lastContrat = $this->Contratinsertion->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'Contratinsertion.personne_id' => $personne_id
-                    ),
-                    'recursive' => -1,
-                    'order' => 'Contratinsertion.date_saisi_ci DESC'
-                )
-            );
-            $this->set( 'lastContrat',  $lastContrat );
+//             $lastContrat = $this->Contratinsertion->find(
+//                 'all',
+//                 array(
+//                     'fields' => array(
+//                         'Contratinsertion.objectifs_fixes',
+//                         'Contratinsertion.duree_engag',
+//                         'Contratinsertion.bilancontrat',
+//                         'Contratinsertion.outilsmobilises',
+//                     ),
+//                     'conditions' => array(
+//                         'Contratinsertion.personne_id' => $personne_id
+//                     ),
+//                     'recursive' => -1,
+//                     'order' => 'Contratinsertion.date_saisi_ci DESC'
+//                 )
+//             );
+//             $this->set( 'lastContrat',  $lastContrat );
 
 
             /// Recherche du type d'orientation
@@ -441,20 +460,35 @@
             $this->set( 'dossier_id', $dossier_id );
 
 
-            $situationdossierrsa = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->findByDossierRsaId( $dossier_id, null, null, -1 );
+            $situationdossierrsa = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->find(
+                'first',
+                array(
+                    'fields' => array(
+                        'Situationdossierrsa.id',
+                        'Situationdossierrsa.dtclorsa'
+                    ),
+                    'conditions' => array(
+                        'Situationdossierrsa.dossier_rsa_id' => $dossier_id
+                    ),
+                    'recursive' => -1
+                )
+            );
             $this->assert( !empty( $situationdossierrsa ), 'error500' );
             $this->set( 'situationdossierrsa_id', $situationdossierrsa['Situationdossierrsa']['id'] );
 
             //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-            $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
-            $user_id = Set::classicExtract( $user, 'User.id' );
-            $personne = $this->Contratinsertion->Personne->detailsCi( $personne_id, $user_id );
+            $personne = $this->Contratinsertion->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
+            $this->set( 'personne', $personne );
+
 
             /// Calcul du numéro du contrat d'insertion
             $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
             $this->set( 'nbrCi', $nbrCi );
-            $this->set( 'personne', $personne );
+
             $this->set( 'valueFormeci', $valueFormeci );
+
+
+
             /// Essai de sauvegarde
             if( !empty( $this->data ) ) {
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
@@ -463,7 +497,6 @@
                 if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
                     $this->data['Contratinsertion']['forme_ci'] = 'S';
                 }
-
 
                 $contratinsertionRaisonCi = Set::classicExtract( $this->data, 'Contratinsertion.raison_ci' );
                 if( $contratinsertionRaisonCi == 'S' ) {
@@ -499,6 +532,7 @@
                 $valid = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
 
 
+
                 if( $valid ) {
                     $saved = true;
 
@@ -523,7 +557,6 @@
                     $saved = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
 
                     $saved = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
-
                     if( $saved ) {
                         $this->Jetons->release( $dossier_id );
                         $this->Contratinsertion->commit();
@@ -544,6 +577,9 @@
                     $suspensiondroit = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->find(
                         'first',
                         array(
+                            'fields' => array(
+                                'Suspensiondroit.ddsusdrorsa'
+                            ),
                             'conditions' => array(
                                 'Suspensiondroit.situationdossierrsa_id' => $situationdossierrsa['Situationdossierrsa']['id']
                             ),
@@ -578,37 +614,23 @@
                     }
 
                     ///Situation dossier rsa
-                    $situationdossierrsa = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->findByDossierRsaId( $dossier_id, null, null, -1 );
+                    $situationdossierrsa = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->find(
+                        'first',
+                        array(
+                            'fields' => array(
+                                'Situationdossierrsa.dtclorsa'
+                            ),
+                            'conditions' => array(
+                                'Situationdossierrsa.dossier_rsa_id' => $dossier_id
+                            ),
+                            'recursive' => -1
+                        )
+                    );
                     $this->data['Situationdossierrsa']['dtclorsa'] = Set::classicExtract( $situationdossierrsa, 'Situationdossierrsa.dtclorsa' );
                 }
 
-                /*/// Récupération des données socio pro (notamment Niveau etude) lié au contrat
-                $this->Contratinsertion->Personne->Dsp->unbindModelAll();
-                $dsp = $this->Contratinsertion->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
-
-                $dspData = Set::filter( $dsp['Dsp'] );
-                if( empty( $dsp ) && !empty( $dspData )  ){
-                    $dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
-
-                    $this->Contratinsertion->Personne->Dsp->set( $dsp );
-                    if( $this->Contratinsertion->Personne->Dsp->save( $dsp ) ) {
-                        $dsp = $this->Contratinsertion->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
-                    }
-                    else {
-                        $this->cakeError( 'error500' );
-                    }
-                    $this->assert( !empty( $dsp ), 'error500' );
-                }
-                $this->data['Dsp'] = array(
-                    'id' => $dsp['Dsp']['id'],
-                    'personne_id' => $dsp['Dsp']['personne_id']
-                );
-                $this->data['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );*/
                 $this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
 
-                /// Récupération du services instructeur lié au contrat
-                $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 1 );
-                $this->assert( !empty( $user ), 'error500' ); // FIXME
 
                 /// Si on est en présence d'un deuxième contrat -> Alors renouvellement
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
@@ -646,7 +668,22 @@
             $this->set( 'struct_id', $struct_id );
 
             if( !empty( $struct_id ) ) {
-                $struct = $this->Contratinsertion->Structurereferente->findbyId( Set::extract( $this->data, 'Contratinsertion.structurereferente_id' ), null, null, -1 );
+                $struct = $this->Contratinsertion->Structurereferente->find(
+                    'first',
+                    array(
+                        'fields' => array(
+                            'Structurereferente.num_voie',
+                            'Structurereferente.type_voie',
+                            'Structurereferente.nom_voie',
+                            'Structurereferente.code_postal',
+                            'Structurereferente.ville',
+                        ),
+                        'conditions' => array(
+                            'Structurereferente.id' => Set::extract( $this->data, 'Contratinsertion.structurereferente_id' )
+                        ),
+                        'recursive' => -1
+                    )
+                );
                 $this->set( 'StructureAdresse', $struct['Structurereferente']['num_voie'].' '.$struct['Structurereferente']['type_voie'].' '.$struct['Structurereferente']['nom_voie'].'<br/>'.$struct['Structurereferente']['code_postal'].' '.$struct['Structurereferente']['ville'] );
             }
 
@@ -656,16 +693,32 @@
 
             if( !empty( $referent_id ) && !empty( $this->data['Contratinsertion']['referent_id'] ) ) {
                 $contratinsertionReferentId = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Contratinsertion']['referent_id'] );
-                $referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( $contratinsertionReferentId, null, null, -1 );
+                $referent = $this->Contratinsertion->Structurereferente->Referent->find(
+                    'first',
+                    array(
+                        'fields' => array(
+                            'Referent.email',
+                            'Referent.fonction',
+                            'Referent.nom',
+                            'Referent.prenom',
+                            'Referent.numero_poste',
+                        ),
+                        'conditions' => array(
+                            'Referent.id' => $contratinsertionReferentId
+                        ),
+                        'recursive' => -1
+                    )
+                );
                 $this->set( 'ReferentEmail', $referent['Referent']['email']. '<br/>' .$referent['Referent']['numero_poste'] );
                 $this->set( 'ReferentFonction', $referent['Referent']['fonction'] );
                 $this->set( 'ReferentNom', $referent['Referent']['nom'].' '.$referent['Referent']['prenom'] );
-
+// debug($contratinsertion);
             }
-
+// debug($this->data);
             $this->Contratinsertion->commit();
             $this->_setOptions();
             $this->set( compact( 'structures', 'referents' ) );
+
             if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
                 $this->render( $this->action, null, 'add_edit_specif_cg58' );
             }
@@ -680,25 +733,45 @@
 
         function valider( $contratinsertion_id = null ) {
 
-            $contratinsertion = $this->Contratinsertion->findById( $contratinsertion_id );
+            $contratinsertion = $this->Contratinsertion->find(
+                'first',
+                array(
+                    'fields' => array(
+                        'Contratinsertion.id',
+                        'Contratinsertion.personne_id',
+                        'Contratinsertion.structurereferente_id',
+                        'Contratinsertion.observ_ci',
+                        'Contratinsertion.datevalidation_ci',
+                        'Contratinsertion.decision_ci',
+                    ),
+                    'conditions' => array(
+                        'Contratinsertion.id' => $contratinsertion_id
+                    ),
+                    'recursive' => -1
+                )
+            );
             $this->assert( !empty( $contratinsertion ), 'invalidParameter' );
+
+            $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
+
 
             // Retour à la liste en cas d'annulation
             if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
                 $this->redirect( array( 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id'] ) );
             }
 
-            $this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
-
             if( !empty( $this->data ) ) {
                 if( $this->Contratinsertion->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                    $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id']) );
+
                 }
             }
             else {
+
                 $this->data = $contratinsertion;
             }
+//                         debug($this->data);
             $this->_setOptions();
         }
 
