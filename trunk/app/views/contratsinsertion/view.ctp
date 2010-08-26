@@ -69,15 +69,15 @@
             <tbody>
                 <tr class="odd">
                     <th><?php __( 'Type d\'orientation' );?></th>
-                    <td><?php echo Set::enum( $contratinsertion['Structurereferente']['typeorient_id'], $typesorients );?></td>
+                    <td><?php echo $contratinsertion['Typeorient']['lib_type_orient'];?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Structure référente' );?></th>
-                    <td><?php echo Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.structurereferente_id' ), $structures );?></td>
+                    <td><?php echo $contratinsertion['Structurereferente']['lib_struc'];?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Référent' );?></th>
-                    <td><?php echo Set::enum( $contratinsertion['Contratinsertion']['referent_id'], $referents );?></td>
+                    <td><?php echo $contratinsertion['Referent']['nom_complet'];?></td>
                 </tr>
             </tbody>
         </table>
@@ -115,7 +115,7 @@
                 </tr>
                 <tr class="even">
                     <th><?php __( 'engag_object' );?></th>
-                    <td><?php echo $codesaction;?></td>
+                    <td><?php echo $contratinsertion['Action']['libelle'];?></td>
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'sect_acti_emp' );?></th>

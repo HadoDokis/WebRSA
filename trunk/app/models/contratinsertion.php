@@ -26,6 +26,10 @@
             'Structurereferente' => array(
                 'classname' => 'Structurereferente',
                 'foreignKey' => 'structurereferente_id'
+            ),
+            'Referent' => array(
+                'classname' => 'Referent',
+                'foreignKey' => 'referent_id'
             )
         );
 
