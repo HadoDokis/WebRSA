@@ -84,7 +84,7 @@
 
 				$theme->button( 'validate', array( 'controller' => 'etatsliquidatifs', 'action' => 'validation', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'enabled' => ( !$cloture && !empty( $apres_etatsliquidatifs ) ) ) ),
 
-				$theme->button( 'table', array( 'controller' => 'etatsliquidatifs', 'action' => 'hopeyra', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'HOPAYRA', 'enabled' => ( $cloture && !$isComplementaire ) ) ),
+				$theme->button( 'table', array( 'controller' => 'etatsliquidatifs', 'action' => 'hopeyra', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'HOPEYRA', 'enabled' => ( $cloture && !$isComplementaire ) ) ),
 				$theme->button( 'pdf', array( 'controller' => 'etatsliquidatifs', 'action' => 'pdf', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'PDF', 'title' => 'Etat liquidatif', 'enabled' => $cloture ) ),
                 $theme->button( 'table', array( 'controller' => 'etatsliquidatifs', 'action' => 'visualisationapres', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'Notifications', 'enabled' => $cloture ) )
 			);
