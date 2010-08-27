@@ -3,13 +3,15 @@
 	{
 		public $name = 'Eps';
 
+		public $uses = array( 'Ep', 'Zonegeographique' );
+
 		/**
 		* @access public
 		*/
 
 		public $components = array( 'Default' );
-        
-		var $commeDroit = array(
+
+		public $commeDroit = array(
 			'view' => 'Eps:index',
 			'add' => 'Eps:edit'
 		);
@@ -20,7 +22,7 @@
 
         protected function _options() {
 //             $options = $this->{$this->modelClass}->enums();
-            $options['Zonegeographique'] = $this->{$this->modelClass}->Zonegeographique->find( 'list' );
+            $options['Zonegeographique'] = $this->Zonegeographique->find( 'list' );
 //             $options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->find( 'list' );
 
             return $options;
