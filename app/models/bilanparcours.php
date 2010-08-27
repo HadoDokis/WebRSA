@@ -27,7 +27,7 @@
                     'changementrefparcours',
                     'reorientation',
                     'examenaudition',
-                    'aviseplocale',
+//                     'aviseplocale',
                     'maintienorientavisep',
                     'changementrefeplocale',
                     'reorientationeplocale',
