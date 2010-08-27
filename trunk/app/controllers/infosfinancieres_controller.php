@@ -4,7 +4,7 @@
         var $name = 'Infosfinancieres';
         var $uses = array( 'Infofinanciere', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
         var $helpers = array( 'Paginator', 'Locale', 'Csv' );
-        
+
 		var $commeDroit = array(
 			'view' => 'Infosfinancieres:index'
 		);
@@ -73,7 +73,7 @@
                 'all',
                 array(
                     'conditions' => array( 'Infofinanciere.dossier_rsa_id' => $dossier_rsa_id ),
-                    'recursive' => 2
+                    'recursive' => 0
                 )
             );
 

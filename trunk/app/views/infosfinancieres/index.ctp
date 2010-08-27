@@ -5,7 +5,6 @@
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 
-
     <?php if( empty( $infosfinancieres ) ):?>
         <p class="notice">Cette personne ne possède pas encore d'informations financières.</p>
 
@@ -27,7 +26,7 @@
             </tr>
             <tr>
                 <th>N° CAF</th>
-                <td> <?php echo  $infosfinancieres[0]['Dossier'][0]['matricule'];?> </td> <!-- FIXME: Voir si possibilité changer ces 0 -->
+                <td> <?php echo  $infosfinancieres[0]['Dossier']['matricule'];?> </td> <!-- FIXME: Voir si possibilité changer ces 0 -->
             </tr>
         </tbody>
     </table>
@@ -63,7 +62,7 @@
 //                                         h( $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ),
 //                                         $html->viewLink(
 //                                             'Voir le contrat',
-//                                             array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] ) 
+//                                             array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] )
 //                                         ),
 //                                     ),
 //                                     array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
@@ -77,7 +76,7 @@
 //                                         <td rowspan="'.$rowspan.'">'.h( $type_allocation[$indu['Infofinanciere']['type_allocation']] ).'</td>
 //                                         <td>'.h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ).'</td>
 //                                         <td>'.h( $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ).'</td>
-// 
+//
 //                                         <td>'.$html->viewLink(
 //                                             'Voir l\'indu',
 //                                             array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] ),
@@ -90,7 +89,7 @@
 //                             echo '<tr class="'.( $even ? 'even' : 'odd' ).'">
 //                                     <td>'.h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ).'</td>
 //                                     <td>'.h( $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ).'</td>
-// 
+//
 //                                 </tr>';
 //                         }
 
