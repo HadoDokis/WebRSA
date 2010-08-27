@@ -3,7 +3,7 @@
     {
 
         var $name = 'ActionscandidatsPersonnes';
-        var $uses = array( 'ActioncandidatPersonne', 'Option', 'Personne', 'Actioncandidat', 'Partenaire', 'Typerdv', 'PersonneReferent', 'Referent', 'Rendezvous', 'ActioncandidatPartenaire', 'Contactpartenaire', 'Adressefoyer', 'Natmob', 'Dsp', 'Serviceinstructeur' );
+        var $uses = array( 'ActioncandidatPersonne', 'Option', 'Personne', 'Actioncandidat', 'Partenaire', 'Typerdv', 'PersonneReferent', 'Referent', 'Rendezvous', 'ActioncandidatPartenaire', 'Contactpartenaire', 'Adressefoyer', 'Natmob', 'Dsp', 'Serviceinstructeur', 'Foyer' );
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct' );
         var $components = array( 'Default', 'Gedooo' );
