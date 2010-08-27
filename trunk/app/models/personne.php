@@ -632,33 +632,9 @@
 
 
         function newDetailsCi( $personne_id, $user_id = null ){
-            // TODO: début dans le modèle
             ///Recup personne
-            /*$this->unbindModel(
-                array(
-                    'hasOne' => array( 'TitreSejour', 'Avispcgpersonne', 'Dossiercaf' ),
-                    'hasMany' => array( 'Rendezvous', 'Activite', 'Contratinsertion', 'Orientstruct' )
-                )
-            );
-            $this->Foyer->unbindModel(
-                array(
-                    'hasMany' => array( 'Personne', 'Modecontact', 'Adressefoyer' ),
-                    'hasAndBelongsToMany' => array( 'Creance' )
-                )
-            );
-            $this->Foyer->Dossier->unbindModelAll();*/
             $this->Prestation->unbindModelAll();
             $this->Dsp->unbindModelAll();
-
-            /*$personne = $this->findById( $personne_id, null, null, -1 );
-
-            $foyer_id = Set::classicExtract( $personne, 'Personne.foyer_id' );
-            $foyer = $this->Foyer->findById( $foyer_id, null, null, -1 );
-            $personne = Set::merge( $personne, $foyer );
-
-            $dossier_rsa_id = Set::classicExtract( $personne, 'Foyer.dossier_rsa_id' );
-            $dossier = $this->Foyer->Dossier->findById( $dossier_rsa_id, null, null, -1 );
-            $personne = Set::merge( $personne, $dossier );*/
 
             $this->unbindModelAll();
             $personne = $this->find(
@@ -765,14 +741,6 @@
                     'recursive' => 1
                 )
             );
-//             debug( $personne );
-
-
-            //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-//             if( empty( $suiviinstruction ) && is_int( $user_id ) ) {
-//                 $user = $this->Contratinsertion->User->findById( $user_id, null, null, 0 );
-//                 $personne = Set::merge( $personne, $user );
-//             }
 
 //             FIXME -> comment distinguer ? + FIXME autorutitel / autorutiadrelec
             $modecontact = $this->Foyer->Modecontact->find(
@@ -792,20 +760,6 @@
                 }
             }
 
-//             $detaildroitrsa = $this->Foyer->Dossier->Detaildroitrsa->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array(
-//                         'Detaildroitrsa.dossier_rsa_id' => $personne['Foyer']['Dossier']['id']
-//                     ),
-//                     'recursive' => -1
-//                 )
-//             );//Detaildroitrsa.oridemrsa
-//             if( !empty( $detaildroitrsa ) ) {
-//                 $personne = Set::merge( $personne, $detaildroitrsa );
-//             }
-
-
             $activite = $this->Activite->find(
                 'first',
                 array(
@@ -818,34 +772,11 @@
                     'recursive' => -1,
                     'order' => 'Activite.dfact DESC'
                 )
-            );//Activite.act
+            );
             if( !empty( $activite ) ) {
                 $personne = Set::merge( $personne, $activite );
 
             }
-
-
-// debug($personne);
-            // Recherche de la structure référente
-//             $this->Orientstruct->unbindModelAll();
-//             $this->Orientstruct->bindModel( array( 'belongsTo' => array( 'Structurereferente' ) ) );
-//             $orientstruct = $this->Orientstruct->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array(
-//                         'Orientstruct.personne_id' => $personne_id,
-//                         'Orientstruct.date_propo IS NOT NULL'
-//                     ),
-//                     'order' => 'Orientstruct.date_propo DESC',
-//                     'recursive' => 0
-//                 )
-//             );
-// 
-// 
-// 
-//             if( !empty( $orientstruct ) ) {
-//                 $personne = Set::merge( $personne, $orientstruct );
-//             }
 
             return $personne;
         }
