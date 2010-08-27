@@ -3,12 +3,12 @@
     class PropospdosController extends AppController{
 
         var $name = 'Propospdos';
-        var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Structurereferente',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent' );
+        var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Structurereferente',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne' );
 
         var $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
         var $helpers = array( 'Default', 'Ajax' );
-        
+
 		var $commeDroit = array(
 			'view' => 'Propospdos:index',
 			'add' => 'Propospdos:edit'
@@ -62,17 +62,17 @@
 //             $this->set( 'motifpdo', $this->Option->motifpdo() );
 //             $this->set( 'categoriegeneral', $this->Option->sect_acti_emp() );
 //             $this->set( 'categoriedetail', $this->Option->emp_occupe() );
-// 
+//
 //             $this->set( 'typeserins', $this->Option->typeserins() );
 //             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
 //             $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
 //             $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
 //             $this->set( 'originepdo', $this->Originepdo->find( 'list' ) );
-// 
+//
 //             $this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
 //             $this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
 // //             $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
-// 
+//
 //             $options = $this->Propopdo->allEnumLists();
 // //             debug($options);
 //             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
@@ -95,10 +95,10 @@
 
 
 //         function ajaxfichecalcul( $iscomplet = null ) {
-// 
+//
 //             $dataIscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
 //             $iscomplet = ( empty( $iscomplet ) && !empty( $dataIscomplet ) ? $dataIscomplet : $iscomplet );
-// 
+//
 //             Configure::write( 'debug', 0 );
 //             $this->render( 'ajaxfichecalcul', 'ajax' );
 //         }
