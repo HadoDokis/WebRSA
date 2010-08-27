@@ -5,10 +5,10 @@
         var $useTable = 'infosfinancieres';
 
 
-        var $hasMany = array(
+        var $belongsTo = array(
             'Dossier' => array(
                 'classname'     => 'Dossier',
-                'foreignKey'    => 'id'
+                'foreignKey'    => 'dossier_rsa_id'
             )
         );
 
@@ -231,7 +231,7 @@
 //             foreach( $typesAllocation as $type ) {
 //                 $meu  = Inflector::singularize( Inflector::tableize( $type ) );
 //                 $query['fields'][] = '"'.$type.'"."mtmoucompta" AS mt_'.$meu;
-// 
+//
 //                 $join = array(
 //                     'table'      => 'infosfinancieres',
 //                     'alias'      => $type,
@@ -242,10 +242,10 @@
 //                         $type.'.type_allocation' => $type,
 //                     )
 //                 );
-// 
+//
 //                 $query['joins'][] = $join;
 //                // $conditionsNotNull[] = $type.'.mtmoucompta IS NOT NULL';
-// 
+//
 //             }
 
             $query['conditions'] = Set::merge( $query['conditions'], $conditions );
