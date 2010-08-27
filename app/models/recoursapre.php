@@ -4,7 +4,7 @@
         var $name = 'Recoursapre';
         var $useTable = false;
 
-        var $actsAs = array(
+        /*var $actsAs = array(
             'Enumerable' => array(
 				'fields' => array(
 					'statutapre' => array( 'type' => 'statutapre', 'domain' => 'apre' ),
@@ -12,7 +12,7 @@
 					'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' )
 				)
             )
-        );
+        );*/
 
 
         function search( $avisRecours, $criteresrecours ) {

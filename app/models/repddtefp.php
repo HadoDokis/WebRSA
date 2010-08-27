@@ -34,7 +34,14 @@
             else {
                 // FIXME: throw error
             }
-            return 'EXTRACT(YEAR FROM apres.datedemandeapre) = '.$annee.' AND EXTRACT( QUARTER FROM apres.datedemandeapre ) IN ('.implode( ',', $range ).')';
+
+			$conditions = array();
+			if( !empty( $annee ) ) {
+				$conditions[] = 'EXTRACT(YEAR FROM apres.datedemandeapre) = '.$annee;
+			}
+			$conditions[] = 'EXTRACT( QUARTER FROM apres.datedemandeapre ) IN ('.implode( ',', $range ).')';
+
+            return implode( ' AND ', $conditions );
         }
 
         /**
