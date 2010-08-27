@@ -327,7 +327,20 @@
 			$tFoyer = $this->Dossier->Foyer->findByDossierRsaId( $id, null, null, -1 );
 			$details = Set::merge( $details, $tFoyer );
 
-			$tDetaildroitrsa = $this->Dossier->Detaildroitrsa->findByDossierRsaId( $id, null, null, 1 );
+// 			$tDetaildroitrsa = $this->Dossier->Detaildroitrsa->findByDossierRsaId( $id, null, null, 1 );
+            $tDetaildroitrsa = $this->Dossier->Detaildroitrsa->find(
+                'first',
+                array(
+                    'fields' => array(
+                        'Detaildroitrsa.id',
+                        'Detaildroitrsa.dossier_rsa_id',
+                    ),
+                    'conditions' => array(
+                        'Detaildroitrsa.dossier_rsa_id' => $id
+                    ),
+                    'recursive' => 1
+                )
+            );
 			$details = Set::merge( $details, $tDetaildroitrsa );
 
 			$tSituationdossierrsa = $this->Dossier->Situationdossierrsa->findByDossierRsaId( $id, null, null, -1 );
@@ -459,7 +472,7 @@
 				$details[$role] = $personnesFoyer[$index];
 			}
 
-
+// debug($details);
 
 			$structuresreferentes = ClassRegistry::init( 'Structurereferente' )->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
 			$typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
