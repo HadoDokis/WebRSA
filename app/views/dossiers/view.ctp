@@ -270,17 +270,13 @@
                             </tr>
                             <tr class="odd">
                                 <th>Décision</th>
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.decisioncui' ), $enumcui['decisioncui'] );?></td>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui.decisioncui' ), $enumcui['decisioncui'] );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Date de décision</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Cui.datevalidation_ci', $details) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Cui.datevalidation_ci', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'DEM.Cui.datevalidationcui', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Cui.datevalidationcui', $details) );?></td>
                             </tr>
                         </tbody>
                     </table>
