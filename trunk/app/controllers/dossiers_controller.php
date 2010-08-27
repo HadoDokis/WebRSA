@@ -363,7 +363,7 @@
 						'Adressefoyer.foyer_id' => $details['Foyer']['id'],
 						'Adressefoyer.rgadr'    => '01'
 					),
-					'recursive' => 1
+					'recursive' => 0
 				)
 			);
 			$details = Set::merge( $details, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
@@ -400,6 +400,13 @@
 				$tContratinsertion = $this->Contratinsertion->find(
 					'first',
 					array(
+                        'fields' => array(
+                            'Contratinsertion.dd_ci',
+                            'Contratinsertion.df_ci',
+                            'Contratinsertion.num_contrat',
+                            'Contratinsertion.decision_ci',
+                            'Contratinsertion.datevalidation_ci'
+                        ),
 						'conditions' => array( 'Contratinsertion.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
 						'recursive' => -1,
 						'order' => array( 'Contratinsertion.rg_ci DESC' )
@@ -411,6 +418,13 @@
 				$tCui = $this->Cui->find(
 					'first',
 					array(
+                        'fields' => array(
+                            'Cui.convention',
+                            'Cui.secteur',
+                            'Cui.datecontrat',
+                            'Cui.decisioncui',
+                            'Cui.datevalidationcui'
+                        ),
 						'conditions' => array( 'Cui.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
 						'recursive' => -1,
 						'order' => array( 'Cui.datecontrat DESC' )
