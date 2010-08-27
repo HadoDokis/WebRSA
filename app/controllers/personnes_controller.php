@@ -2,7 +2,7 @@
     class PersonnesController extends AppController
     {
         var $name = 'Personnes';
-        var $uses = array( 'Personne', 'Option', 'Grossesse' );
+        var $uses = array( 'Personne', 'Option', 'Grossesse', 'Foyer' );
 
 		var $commeDroit = array(
 			'view' => 'Personnes:index',
@@ -111,6 +111,19 @@
             $dossier_id = $this->Foyer->dossierId( $foyer_id );
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
+            $personne = $this->Personne->Foyer->find(
+                'first',
+                array(
+                    'fields' => array(
+                        'Foyer.sitfam'
+                    ),
+                    'conditions' => array(
+                        'Foyer.id' => $foyer_id
+                    ),
+                    'recursive' => -1
+                )
+            );
+
             $this->Personne->begin();
 
             if( !$this->Jetons->check( $dossier_id ) ) {
@@ -129,6 +142,7 @@
                         // FIXME: mettre dans un afterSave (mais ça pose des problèmes)
                         // FIXME: valeur de retour
                         $thisPersonne = $this->Personne->findById( $this->Personne->id, null, null, -1 );
+
                         $this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
 
                         $this->Jetons->release( $dossier_id );
@@ -153,6 +167,7 @@
                             'Personne.foyer_id' => $foyer_id,
                             'Prestation.rolepers' => array( 'DEM', 'CJT' )
                         ),
+                        'recursive' => 0
                     )
                 );
                 $roles = Set::extract( '/Prestation/rolepers', $roles );
@@ -170,7 +185,7 @@
 
             $this->set( 'foyer_id', $foyer_id );
             $this->data['Personne']['foyer_id'] = $foyer_id;
-
+            $this->set( 'personne', $personne );
             $this->_setOptions();
             $this->Personne->commit();
             $this->render( $this->action, null, 'add_edit' );
