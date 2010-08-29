@@ -177,6 +177,36 @@ function __minify() {
 		mv "$filemaxed.min" "$filemaxed"
 	done
 }
+# ------------------------------------------------------------------------------
+
+function __svnbackup() {
+	APP_DIR="`readlink -f "$1"`"
+
+	NOW=`date +"%Y%m%d-%H%M%S"` # FIXME: M sur 2 chars
+	PATCH_DIR="$APP_DIR/../svnbackup_$NOW"
+	PATCH_DIR="`readlink -f "$PATCH_DIR"`"
+
+	mkdir -p "$PATCH_DIR"
+
+	(
+		cd "$APP_DIR"
+		status="`svn status . | grep -v "^!" | sed 's/^\(.\) \+\(.*\)$/\2/'`";
+		for file in `echo "$status"`; do
+			dir="`dirname "$file" | sed "s@^./@$PWD@"|sed "s@^/@@"`"
+			if [ "$dir" != '.' ] ; then
+				mkdir -p "$PATCH_DIR/app/$dir"
+			fi
+			cp "$file" "$PATCH_DIR/app/$dir"
+		done
+	)
+
+	(
+		cd "$PATCH_DIR"
+		zip -o -r -m "../svnbackup-$NOW.zip" app >> "/dev/null" 2>&1
+		cd ..
+		rmdir "$PATCH_DIR"
+	)
+}
 
 # ------------------------------------------------------------------------------
 
@@ -226,8 +256,11 @@ case $1 in
 		# ex: app/webrsa.sh patch tags/1.0.9 branches/1.0.8
         __patch "$ASNV/$2" "$ASNV/$3"
     ;;
+    svnbackup)
+		__svnbackup "$APP_DIR"
+    ;;
     *)
-        echo "Usage: $ME {changelog|clearcache|clear|clearlogs|minify|package|patch}"
+        echo "Usage: $ME {changelog|clearcache|clear|clearlogs|minify|package|patch|svnbackup}"
         exit 1
     ;;
 esac
