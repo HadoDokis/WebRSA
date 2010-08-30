@@ -7,21 +7,7 @@
 
 	class PropopdoTestCase extends CakeAppModelTestCase {
 
-		function testDossierId() {
-			///FIXME: enlever le debug dans le model à la fin de la fonction je pense pas que ce soit normal qu'il traine
-			$result=$this->Propopdo->dossierId(1);
-			$this->assertEqual(1,$result);
 
-			//------------------------------------------------------------------
-
-			$result=$this->Propopdo->dossierId(2);
-			$this->assertEqual(2,$result);
-
-			//------------------------------------------------------------------
-
-			$result=$this->Propopdo->dossierId(666);
-			$this->assertNull($result);
-		}
 
 	}
 ?>

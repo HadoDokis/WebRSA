@@ -39,7 +39,7 @@
 		public function testInput() {
 			$result = $this->Type->input( 'Item.tel' );
 			//$expected = '<div class="input text"><label for="ItemTel">Téléphone</label><input name="data[Item][tel]" type="text" maxlength="14" value="" id="ItemTel" /></div>'; // FIXME: voir avec TypeBehavior AutovalidateBehavior
-			$expected = '<div class="input text"><label for="ItemTel">Item.tel</label><input name="data[Item][tel]" type="text" value="" id="ItemTel" /></div>';
+			$expected = '<div class="input text"><label for="ItemTel">Item.tel</label><input name="data[Item][tel]" type="text" maxlength="10" value="" id="ItemTel" /></div>';
 			$this->assertEqual( $result, $expected );
 		}
 	}

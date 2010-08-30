@@ -1,40 +1,9 @@
 <?php
-	if( !defined( 'CAKEPHP_UNIT_TEST_EXECUTION' ) ) {
-		define( 'CAKEPHP_UNIT_TEST_EXECUTION', 1 );
-	}
+	
+	require_once( dirname( __FILE__ ).'/../cake_app_behavior_test_case.php' );
 
-	ClassRegistry::config(array('ds' => 'test_suite'));
-
-    class AutovalidateBehaviorTest extends CakeTestCase
+    class AutovalidateBehaviorTest extends CakeAppBehaviorTestCase
     {
-
-		var $fixtures = array( 'item' );
-
-		/**
-		* Création d'un modèle sans behavior et association du behavior à tester.
-		* Exécuté avant chaque test.
-		* TODO: une fonction pour vérifier les paramètres par défaut
-		*/
-
-        function startTest() {
-			$this->Item =& ClassRegistry::init( 'Item' );
-
-			// Detach all behaviors
-			$behaviors = array_values( $this->Item->Behaviors->attached() );
-			foreach( $behaviors as $behavior ) {
-				$this->Item->Behaviors->detach( $behavior );
-			}
-
-			// Attach only the one we're testing
-			$settings = array(
-			);
-			$this->Item->validate = array();
-			$this->Item->Behaviors->attach( 'Autovalidate', $settings );
-        }
-
-        /**
-		*
-		*/
 
         function testValidation() {
 			$expected = array(
@@ -168,7 +137,6 @@
 					)
 				),
 			);
-
 			$diff = Set::diff( $this->Item->validate, $expected );
 			$this->assertTrue( empty( $diff ) );
         }
