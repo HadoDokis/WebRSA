@@ -214,7 +214,6 @@
                     $this->User->rollback();
                 }
             }
-			$this->Dbdroits->majActions();
             $this->render( $this->action, null, 'add_edit' );
         }
 
@@ -248,8 +247,7 @@
 
                 if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
                     if( $userDb['User']['group_id'] != $this->data['User']['group_id'] ) {
-               			$user=$this->User->read(null, $user_id);
-                    	$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$user['User']['group_id']));
+                    	$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Group','foreign_key'=>$this->data['User']['group_id']));
                     }
 
                     $new_droit= Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Utilisateur','foreign_key'=>$user_id)));
@@ -279,7 +277,6 @@
                 $this->data = $userDb;
             }
 			$this->set('listeCtrlAction', $this->Menu->menuCtrlActionAffichage());
-			$this->Dbdroits->majActions();
 			$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Utilisateur','foreign_key'=>$user_id));
             $this->render( $this->action, null, 'add_edit' );
         }

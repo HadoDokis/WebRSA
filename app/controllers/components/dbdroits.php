@@ -97,14 +97,14 @@ function majCru($cru, $cruParent=null) {
 	// Mise à jour de l'occurence
 	if (!empty($aro)) {
 		$aro['Aro']['alias'] = $cru['alias'];
-		if (!empty($cruParent) && !empty($cruParent['foreign_key']))
+		if (!empty($cruParent) && !empty($cruParent['foreign_key'])) {
 			$aro['Aro']['parent_id'] = $this->Acl->Aro->field('id', $cruParent);
-		else {
-			unset( $aro['Aro']['parent_id'] );
 		}
-
+		else {
+			$aro['Aro']['parent_id'] = 0;
+		}
+		
 		$this->Acl->Aro->save($aro);
-		//$this->Acl->Aro->save();
 	}
 }
 
@@ -196,8 +196,15 @@ function litCruDroits($cru=null) {
 	// liste des Menu, Controlleur-Action (mca)
 	$listeMca = $this->Menu->listeAliasMenuControlleur();
 
-	foreach($listeMca as $mca)
-		$ret[$mca['alias']] = $this->Acl->check($cru, $mca['alias']);
+	foreach($listeMca as $mca) {
+		$droit = $this->Acl->Aco->find('count', array('conditions'=>array('alias'=>$mca['alias'])));
+		//debug($mca['alias']);
+		//debug($droit);
+		if(!empty($droit))
+			$ret[$mca['alias']] = $this->Acl->check($cru, $mca['alias']);
+		else
+			$ret[$mca['alias']] = 0;
+	}
 
 	return $ret;
 }
