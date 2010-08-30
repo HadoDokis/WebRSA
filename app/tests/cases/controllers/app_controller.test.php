@@ -20,7 +20,11 @@
 		var $renderedLayout;
 		var $renderedFile;
 		var $stopped;
+		var $variable;
 		var $name='App';
+		var $condition;
+		var $error;
+		var $parameters;
 	
 		function redirect($url, $status = null, $exit = true) {
 			$this->redirectUrl = $url;
@@ -40,6 +44,12 @@
 		function cakeError($method, $messages) {
 			global $varTest;
 			$varTest = array($method,$messages);
+		}
+
+		function assert( $condition, $error = 'error500', $parameters = array() ) {
+			$this->condition = $condition;
+			$this->error = $error;
+			$this->parameters = $parameters;
 		}
 	}
 
@@ -298,7 +308,7 @@
 					'missing' => array(
 						'structurereferente' => array(
 							'Gestion des APREs' => 1,
-							'Gestion des Contrats d\'engagement' => 1
+							'Gestion des CERs' => 1
 						)
 					),
 					'structures' => array(
@@ -326,7 +336,7 @@
 						"missing" => array(
 							"structurereferente" => array(
 								"Gestion des APREs" => 1,
-								"Gestion des Contrats d'engagement" => ""
+								"Gestion des CERs" => ""
 							)
 						),
 						"structures" => array(

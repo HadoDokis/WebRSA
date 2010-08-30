@@ -1,11 +1,11 @@
 <?php
 
-class StatutrdvFixture extends CakeTestFixture {
- var $name = 'Statutrdv';
- var $table = 'statutsrdvs';
- var $import = array( 'table' => 'statutsrdvs', 'connection' => 'default', 'records' => false);
- var $records = array(
- );
-}
+	class StatutrdvFixture extends CakeTestFixture {
+		var $name = 'Statutrdv';
+		var $table = 'statutsrdvs';
+		var $import = array( 'table' => 'statutsrdvs', 'connection' => 'default', 'records' => false);
+		var $records = array(
+		);
+	}
 
 ?>
