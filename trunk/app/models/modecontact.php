@@ -1,10 +1,10 @@
 <?php
     class Modecontact extends AppModel
     {
-        var $name = 'Modecontact';
-        var $useTable = 'modescontact';
+        public $name = 'Modecontact';
+        public $useTable = 'modescontact';
 
-        var $belongsTo = array(
+        public $belongsTo = array(
             'Foyer' => array(
                 'classname'     => 'Foyer',
                 'foreignKey'    => 'foyer_id'
@@ -13,7 +13,7 @@
 
         //*********************************************************************
 
-        function dossierId( $modecontact_id ) {
+        public function dossierId( $modecontact_id ) {
             $modecontact = $this->findById( $modecontact_id, null, null, 0 );
             if( !empty( $modecontact ) ) {
                 return $modecontact['Foyer']['dossier_rsa_id'];
@@ -25,7 +25,7 @@
 
         //*********************************************************************
 
-        var $validate = array(
+        public $validate = array(
             // Role personne
             'numtel' => array(
 //                 array(
@@ -83,5 +83,18 @@
 //                 )
 //             )
         );
+        
+        public function sqDerniere($field) {
+        	$dbo = $this->getDataSource( $this->useDbConfig );
+        	$table = $dbo->fullTableName( $this, false );
+        	return "
+		    	SELECT {$table}.id
+					FROM {$table}
+					WHERE
+						{$table}.foyer_id = ".$field."
+					ORDER BY {$table}.foyer_id DESC
+					LIMIT 1
+        	";
+        }
     }
 ?>

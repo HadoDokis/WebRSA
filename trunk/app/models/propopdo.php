@@ -1,9 +1,9 @@
 <?php
     class Propopdo extends AppModel
     {
-        var $name = 'Propopdo';
+        public $name = 'Propopdo';
 
-        var $actsAs = array(
+        public $actsAs = array(
             'Enumerable' => array(
 				'fields' => array(
 // 					'statutdecision' => array(  'domain' => 'propopdo' ),
@@ -19,7 +19,7 @@
             'Autovalidate',
         );
 
-        var $belongsTo = array(
+        public $belongsTo = array(
             'Personne' => array(
                 'classname'     => 'Personne',
                 'foreignKey'    => 'personne_id'
@@ -29,7 +29,7 @@
         );
 
 
-        var $hasMany = array(
+        public $hasMany = array(
             'Piecepdo' => array(
                 'classname'     => 'Piecepdo',
                 'foreignKey'    => 'propopdo_id'
@@ -40,13 +40,13 @@
             )
         );
 
-        var $hasAndBelongsToMany = array(
+        public $hasAndBelongsToMany = array(
             'Situationpdo' => array( 'with' => 'PropopdoSituationpdo' ),
             'Statutpdo' => array( 'with' => 'PropopdoStatutpdo' ),
             'Statutdecisionpdo' => array( 'with' => 'PropopdoStatutdecisionpdo' )
         );
 
-        var $validate = array(
+        public $validate = array(
             'structurereferente_id' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
@@ -79,7 +79,7 @@
         );
 
 
-        var $_types = array(
+        public $_types = array(
 //             'etat' => array(
 //                 'fields' => array(
 //                     '"Dossier"."id"',
@@ -202,18 +202,25 @@
                         'foreignKey' => false,
                         'conditions' => array( 'Personne.foyer_id = Foyer.id' )
                     ),
-                    array(
-                        'table'      => 'adresses_foyers',
-                        'alias'      => 'Adressefoyer',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array(
-                            'Foyer.id = Adressefoyer.foyer_id',
-                            'Adressefoyer.rgadr = \'01\'',
-                            // FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
-//                             'Adressefoyer.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique()
-                        )
-                    ),
+					array(
+						'table'      => 'adresses_foyers',
+						'alias'      => 'Adressefoyer',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Foyer.id = Adressefoyer.foyer_id',
+							'Adressefoyer.id IN (
+				        		SELECT adresses_foyers.id
+									FROM adresses_foyers
+									WHERE
+										adresses_foyers.foyer_id = Adressefoyer.foyer_id
+								        AND adresses_foyers.rgadr = \'01\'
+									ORDER BY adresses_foyers.dtemm DESC
+									LIMIT 1
+				        	)'
+				        	///FIXME: à revoir car ça ne fonctionne pas mais pourquoi ???? là est la question
+						)
+					),
                     array(
                         'table'      => 'adresses',
                         'alias'      => 'Adresse',
@@ -245,7 +252,7 @@
             )
         );
 
-        function prepare( $type, $params = array() ) {
+        public function prepare( $type, $params = array() ) {
             $types = array_keys( $this->_types );
             if( !in_array( $type, $types ) ) {
                 trigger_error( 'Invalid parameter "'.$type.'" for '.$this->name.'::prepare()', E_USER_WARNING );
@@ -266,7 +273,7 @@
             }
         }
 
-        function etatPdo( $pdo ) {
+        public function etatPdo( $pdo ) {
             $pdo = XSet::bump( Set::filter( /*Set::flatten*/( $pdo ) ) );
 
             $typepdo_id = Set::classicExtract( $pdo, 'Propopdo.typepdo_id' );
@@ -277,7 +284,7 @@
         * FIXME: bcp trop de nombres magiques
         */
 
-        function beforeSave( $options = array() ) {
+        public function beforeSave( $options = array() ) {
             $return = parent::beforeSave( $options );
 
             if( Configure::read( 'nom_form_pdo_cg' ) == 'cg66' ) {

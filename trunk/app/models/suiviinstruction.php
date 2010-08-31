@@ -1,11 +1,11 @@
 <?php
     class Suiviinstruction extends AppModel
     {
-        var $name = 'Suiviinstruction';
-        var $useTable = 'suivisinstruction';
-        var $displayField = 'typeserins';
+        public $name = 'Suiviinstruction';
+        public $useTable = 'suivisinstruction';
+        public $displayField = 'typeserins';
 
-        var $belongsTo = array(
+        public $belongsTo = array(
             'Dossier' => array(
                 'classname' => 'Dossier',
                 'foreignKey' => 'id'
@@ -13,7 +13,7 @@
         );
 
 
-        var $validate = array(
+        public $validate = array(
             'suiirsa' => array(
                 array(
                     'rule' => 'notEmpty',
@@ -62,5 +62,18 @@
             )
 
         );
+        
+        public function sqDerniere($field) {
+        	$dbo = $this->getDataSource( $this->useDbConfig );
+        	$table = $dbo->fullTableName( $this, false );
+        	return "
+		    	SELECT {$table}.id
+					FROM {$table}
+					WHERE
+						{$table}.dossier_rsa_id = ".$field."
+					ORDER BY {$table}.dossier_rsa_id DESC
+					LIMIT 1
+        	";
+        }
     }
 ?>
