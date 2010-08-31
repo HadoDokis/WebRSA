@@ -1,16 +1,16 @@
 <?php
     class Adressefoyer extends AppModel
     {
-        var $name = 'Adressefoyer';
-        var $useTable = 'adresses_foyers';
-        var $order = array( '"Adressefoyer"."rgadr" ASC' );
+        public $name = 'Adressefoyer';
+        public $useTable = 'adresses_foyers';
+        public $order = array( '"Adressefoyer"."rgadr" ASC' );
 
         //*********************************************************************
 
         /**
             Associations
         */
-        var $belongsTo = array(
+        public $belongsTo = array(
             'Adresse' => array(
                 'className'     => 'Adresse',
                 'foreignKey'    => 'adresse_id'
@@ -26,7 +26,7 @@
         /**
             Validation ... TODO
         */
-        var $validate = array(
+        public $validate = array(
             'rgadr' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Champ obligatoire'
@@ -39,7 +39,7 @@
 
         //*********************************************************************
 
-        function dossierId( $adressefoyer_id ) {
+        public function dossierId( $adressefoyer_id ) {
             $adressefoyer = $this->findById( $adressefoyer_id, null, null, 0 );
             if( !empty( $adressefoyer ) ) {
                 return $adressefoyer['Foyer']['dossier_rsa_id'];
@@ -59,7 +59,7 @@
         *   FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
         */
 
-        function sqlFoyerActuelUnique() {
+        /*function sqlFoyerActuelUnique() {
             return '(
                 SELECT tmpadresses_foyers.id FROM (
                     SELECT MAX(adresses_foyers.id) AS id, adresses_foyers.foyer_id
@@ -69,6 +69,25 @@
                         ORDER BY adresses_foyers.foyer_id
                 ) AS tmpadresses_foyers
             )';
+        }*/
+        
+        /*
+        *
+        * Remarque: envoie moins de résultat de la précédente à vérifier
+        */
+        
+        public function sqDerniereRgadr01($field) {
+        	$dbo = $this->getDataSource( $this->useDbConfig );
+        	$table = $dbo->fullTableName( $this, false );
+        	return "
+		    	SELECT {$table}.id
+					FROM {$table}
+					WHERE
+						{$table}.foyer_id = ".$field."
+                        AND {$table}.rgadr = '01'
+					ORDER BY {$table}.dtemm DESC
+					LIMIT 1
+        	";
         }
 
         //*********************************************************************

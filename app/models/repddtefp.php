@@ -225,8 +225,9 @@
                         'foreignKey' => false,
                         'conditions' => array(
 							'Foyer.id = Adressefoyer.foyer_id',
-							'Adressefoyer.rgadr = \'01\'',
-							'Adressefoyer.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique()
+							'Adressefoyer.id IN (
+                				'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+							)'
 						),
                     ),
                     array(

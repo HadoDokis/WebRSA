@@ -154,6 +154,7 @@
 
             /// Requête
             $Situationdossierrsa =& ClassRegistry::init( 'Situationdossierrsa' );
+        	$dbo = $this->getDataSource( $this->useDbConfig );
 
             $query = array(
                 'fields' => array(
@@ -198,7 +199,7 @@
                 'recursive' => -1,
                 'joins' => array(
                     array(
-                        'table'      => 'personnes',
+                        'table'      => $dbo->fullTableName( ClassRegistry::init( 'Personne' ), false ), /// FIXME: performances -> à faire pour les autres ou pas ?
                         'alias'      => 'Personne',
                         'type'       => 'INNER',
                         'foreignKey' => false,
@@ -219,7 +220,12 @@
                         'alias'      => 'Infopoleemploi',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Infopoleemploi.personne_id = Personne.id' )
+                        'conditions' => array(
+                        	'Infopoleemploi.personne_id = Personne.id',
+                        	'Infopoleemploi.personne_id IN (
+                        		'.ClassRegistry::init( 'Infopoleemploi' )->sqDerniere('Infopoleemploi.personne_id').'
+                        	)'
+                        )
                     ),
                     array(
                         'table'      => 'calculsdroitsrsa',
@@ -247,12 +253,10 @@
                         'alias'      => 'Modecontact',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array(
+						'conditions' => array(
 							'Modecontact.foyer_id = Foyer.id',
 							'Modecontact.id IN (
-								SELECT MAX(modescontact.id)
-									FROM modescontact
-									GROUP BY modescontact.foyer_id
+                        		'.ClassRegistry::init( 'Modecontact' )->sqDerniere('Modecontact.foyer_id').'
 							)'
 						)
                     ),
@@ -278,11 +282,7 @@
                         'conditions' => array(
 							'Suiviinstruction.dossier_rsa_id = Dossier.id',
 							'Suiviinstruction.id IN (
-								SELECT tmpsuivisinstruction.id FROM (
-									SELECT MAX(suivisinstruction.id) AS id
-										FROM suivisinstruction
-										GROUP BY suivisinstruction.dossier_rsa_id
-								) AS tmpsuivisinstruction
+                        		'.ClassRegistry::init( 'Suiviinstruction' )->sqDerniere('Suiviinstruction.dossier_rsa_id').'
 							)'
 						)
                     ),
@@ -322,11 +322,7 @@
                         'conditions' => array(
 							'Personne.id = PersonneReferent.personne_id',
 							'PersonneReferent.id IN (
-								SELECT tmppersonnes_referents.id FROM (
-									SELECT personnes_referents.id, MAX(personnes_referents.dddesignation)
-										FROM personnes_referents
-										GROUP BY personnes_referents.personne_id, personnes_referents.id
-								) AS tmppersonnes_referents
+                        		'.ClassRegistry::init( 'PersonneReferent' )->sqDerniere('PersonneReferent.personne_id').'
 							)'
 						)
                     ),
@@ -344,44 +340,30 @@
 
             // Permet de voir les entrées qui n'ont pas d'adresse si on ne filtre
 			// pas sur les codes INSEE pour l'utilisateur
-            if( $filtre_zone_geo ) {
-				$query['joins'][] = array(
-					'table'      => 'adresses_foyers',
-					'alias'      => 'Adressefoyer',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array(
-						'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
-						'Adressefoyer.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique()
-					)
-				);
-				$query['joins'][] = array(
-					'table'      => 'adresses',
-					'alias'      => 'Adresse',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-				);
-            }
-            else {
-				$query['joins'][] = array(
-					'table'      => 'adresses_foyers',
-					'alias'      => 'Adressefoyer',
-					'type'       => 'LEFT OUTER',
-					'foreignKey' => false,
-					'conditions' => array(
-						'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
-						'Adressefoyer.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique()
-					)
-				);
-				$query['joins'][] = array(
-					'table'      => 'adresses',
-					'alias'      => 'Adresse',
-					'type'       => 'LEFT OUTER',
-					'foreignKey' => false,
-					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-				);
-            }
+            if( $filtre_zone_geo )
+            	$type = 'INNER';
+            else
+            	$type = 'LEFT OUTER';
+            	
+			$query['joins'][] = array(
+				'table'      => 'adresses_foyers',
+				'alias'      => 'Adressefoyer',
+				'type'       => $type,
+				'foreignKey' => false,
+				'conditions' => array(
+					'Foyer.id = Adressefoyer.foyer_id',
+					'Adressefoyer.id IN (
+                		'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+                	)'
+				)
+			);
+			$query['joins'][] = array(
+				'table'      => 'adresses',
+				'alias'      => 'Adresse',
+				'type'       => $type,
+				'foreignKey' => false,
+				'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+			);
 
             return $query;
         }
