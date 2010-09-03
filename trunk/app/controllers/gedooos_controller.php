@@ -5,7 +5,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dsp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent', 'Suspensiondroit', 'Situationdossierrsa' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dsp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent', 'Suspensiondroit', 'Personne', 'Foyer', 'Situationdossierrsa' );
         var $components = array( 'Jetons', 'Gedooo' );
         var $helpers = array( 'Locale' );
 
