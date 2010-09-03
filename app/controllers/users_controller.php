@@ -67,6 +67,10 @@
                 $authUser['User']['aroAlias'] = $authUser['User']['username'];
                 /* lecture de la collectivite de l'utilisateur authentifié */
                 $this->Session->write( 'Auth', $authUser );
+                
+                // Supprimer la vue cachée du menu
+                $this->_deleteCachedMenu();
+                
                 $this->redirect( $this->Auth->redirect() );
             }
         }
@@ -78,6 +82,9 @@
         function logout() {
             if( $user_id = $this->Session->read( 'Auth.User.id' ) ) {
                 if( valid_int( $user_id ) ) {
+                	// Supprimer la vue cachée du menu
+                	$this->_deleteCachedMenu();
+                	
                     $this->Jeton = ClassRegistry::init( 'Jeton' ); // FIXME: dans Jetons
                     $this->Jeton->deleteAll(
                         array(
@@ -99,6 +106,17 @@
             }
 
             $this->redirect( $this->Auth->logout() );
+        }
+
+        /** ********************************************************************
+        *
+        *** *******************************************************************/
+        
+        //TODO: il doit y avoir une façon de faire à la CakePHP mais en attendant de trouver on fait comme ça
+        function _deleteCachedMenu() {
+        	$file = TMP.'cache'.DS.'views'.DS.'element_'.$this->Session->read( 'Auth.User.username' ).'_menu';
+        	if (file_exists($file))
+        		unlink($file);
         }
 
         /** ********************************************************************
