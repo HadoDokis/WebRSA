@@ -1,7 +1,6 @@
 <div id="menu1Wrapper">
     <div class="menu1">
         <ul>
-        <?php if( $session->check( 'Auth.User' ) ): ?>
             <?php if( $permissions->check( 'cohortes', 'index' ) ) : ?>
                 <li id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                     <?php echo $html->link( 'Cohortes', '#' );?>
@@ -324,9 +323,6 @@
                     </li>
             <?php endif;?>
             <li id="menu7one"><?php echo $html->link( 'Déconnexion '.$session->read( 'Auth.User.username' ), array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
-            <?php else: ?>
-                <li><?php echo $html->link( 'Connexion', array( 'controller' => 'users', 'action' => 'login' ) );?></li>
-            <?php endif; ?>
         </ul>
     </div>
 </div>

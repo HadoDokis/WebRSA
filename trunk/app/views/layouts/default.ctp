@@ -92,9 +92,13 @@
     <?php endif; ?>
 
         <div id="pageWrapper"<?php if( Configure::read( 'UI.menu.large' ) ) { echo ' class="treemenu_large"'; } ?>>
-            <?php echo $this->element( 'header' );?>
-            <?php echo $this->element( 'menu' );?>
-            <?php echo $this->element( 'cartouche' );?>
+            <?php
+            	echo $this->element( 'header' );
+            	if( $session->check( 'Auth.User.username' ) ) {
+            		echo $this->element( 'menu', array( 'cache' => array ( 'time' => '+1 day', 'key' => $session->read( 'Auth.User.username' ) ) ) );
+            		echo $this->element( 'cartouche' );
+        		}
+        	?>
             <div id="pageContent">
                 <?php
                     if ($session->check( 'Message.flash' ) ) {
