@@ -14,13 +14,13 @@
             'Formattable'
 		);
 
-		public $belongsTo = array(
+		/*public $belongsTo = array(
 			'Partep',
 			'Seanceep',
             'RemplacantPartep' =>array(
                 'className' => 'Partep',
                 'foreignKey' => 'remplacant_partep_id'
             )
-		);
+		);*/
 	}
 ?>
