@@ -1,5 +1,7 @@
 <?php
-    class AppModel extends Model
+    App::import('Lib', 'LazyModel.LazyModel');
+    class AppModel extends LazyModel
+//     class AppModel extends Model
     {
         // début champs virtuels
         public $virtualFields = array();

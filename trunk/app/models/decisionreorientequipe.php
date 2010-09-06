@@ -32,7 +32,7 @@
 			return true;
         }
 
-		public $belongsTo = array(
+		/*public $belongsTo = array(
 			'NvTypeorientequipe' => array(
 				'className' => 'Typeorient',
 				'foreignKey' => 'nv_typeorient_id'
@@ -45,7 +45,7 @@
 				'className' => 'Referent',
 				'foreignKey' => 'nv_referent_id'
 			),
-		);
+		);*/
 
 		/*public $hasMany = array(
 			'Decisionreorient'

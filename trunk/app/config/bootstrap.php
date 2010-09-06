@@ -506,4 +506,25 @@
 
 	// Branche de CakePHP que l'on utilise: 1.1, 1.2, 1.3
 	define( 'CAKE_BRANCH', preg_replace( '/^([0-9]+\.[0-9]+)(?![0-9]).*$/', '\1', Configure::version() ) );
+
+	// -------------------------------------------------------------------------
+
+	function is_behavior_name( $string ) {
+		return ( strpos( $string, '_behavior' ) !== false );
+	}
+
+	function is_model_name( $string ) {
+		return ( !is_behavior_name( $string ) && ( $string != 'view' ) );
+	}
+
+	function class_registry_models() {
+		$keys = ClassRegistry::keys();
+		return array_filter( $keys, 'is_model_name' );
+	}
+
+	function class_registry_models_count() {
+		return count( class_registry_models() );
+	}
+
+	// -------------------------------------------------------------------------
 ?>

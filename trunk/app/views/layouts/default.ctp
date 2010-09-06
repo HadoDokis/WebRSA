@@ -92,8 +92,10 @@
     <?php endif; ?>
 
         <div id="pageWrapper"<?php if( Configure::read( 'UI.menu.large' ) ) { echo ' class="treemenu_large"'; } ?>>
+			<div id="pageHeader">
+				&nbsp;
+			</div>
             <?php
-            	echo $this->element( 'header' );
             	if( $session->check( 'Auth.User.username' ) ) {
             		echo $this->element( 'menu', array( 'cache' => array ( 'time' => '+1 day', 'key' => $session->read( 'Auth.User.username' ) ) ) );
             		echo $this->element( 'cartouche' );
@@ -110,13 +112,18 @@
                 ?>
                 <?php echo $content_for_layout;?>
             </div>
-            <?php echo $this->element( 'footer' );?>
-			<?php if( ( Configure::read( 'debug' ) > 0 ) && ( date( 'm' ) == 12 ) ):?>
-				<div style="position: absolute; top: 80px; right: 20px;"><?php echo $html->image( 'easteregg-noel.gif' );?></div>
-			<?php endif;?>
-<?php /*echo session_id();*/?>
-<?php /*debug( $session->id() );*/?>
-<?php /*debug( session_get_cookie_params() );*/?>
+			<div id="pageFooter"<?php if( Configure::read( 'debug' ) > 0 ) { echo ' style="color: black;"'; }?>>
+				webrsa v. <?php echo app_version();?> 2009 - 2010 @ Adullact.
+				<?php
+					echo sprintf(
+						"Page construite en %s secondes. %s. %s modèles",
+						number_format( getMicrotime() - $GLOBALS['TIME_START'] , 2, ',', ' ' ),
+						$number->toReadableSize( memory_get_peak_usage( true ) ),
+						class_registry_models_count()
+					);
+				?>
+				(CakePHP v. <?php echo core_version();?>)
+			</div>
         </div>
     </body>
 </html>

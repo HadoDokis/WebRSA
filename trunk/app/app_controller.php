@@ -2,8 +2,10 @@
     class AppController extends Controller
     {
         var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons'/*, 'Xcontroller'*/, 'Default' );
-        var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default' );
+        var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number' );
         var $uses = array( 'Dossier', 'User', 'Connection', 'Structurereferente' );
+
+// 		public $persistModel = true;
 
 		/**
 		* Chargement et mise en cache (session) des permissions de l'utilisateur

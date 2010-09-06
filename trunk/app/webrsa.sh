@@ -39,6 +39,18 @@ function __clearDir() {
 
 # ------------------------------------------------------------------------------
 
+function __clear() {
+	dir="$1"
+
+	__clearDir "$dir/tmp/cache/"
+	__clearDir "$dir/tmp/logs/"
+	if [ -d "$dir/tmp/files/" ] ; then
+		rm -R "$dir/tmp/files/"
+	fi
+}
+
+# ------------------------------------------------------------------------------
+
 function __changelog() {
     version=${1}
     dir=${2}
@@ -177,6 +189,7 @@ function __minify() {
 		mv "$filemaxed.min" "$filemaxed"
 	done
 }
+
 # ------------------------------------------------------------------------------
 
 function __svnbackup() {
@@ -188,6 +201,9 @@ function __svnbackup() {
 
 	mkdir -p "$PATCH_DIR"
 
+	revision="`svn info $APP_DIR | grep "Revision" | sed 's/^Revision: \(.\+\)$/\1/g'`";
+	project="`svn info $APP_DIR | grep "Repository Root:" | sed 's/^Repository Root: .\+\/\([^\/]\+\)$/\1/g'`";
+
 	(
 		cd "$APP_DIR"
 		status="`svn status . | grep -v "^!" | sed 's/^\(.\) \+\(.*\)$/\2/'`";
@@ -196,13 +212,14 @@ function __svnbackup() {
 			if [ "$dir" != '.' ] ; then
 				mkdir -p "$PATCH_DIR/app/$dir"
 			fi
-			cp "$file" "$PATCH_DIR/app/$dir"
+# 			echo "cp \"$file\" \"$PATCH_DIR/app/$dir\""
+			cp -R "$file" "$PATCH_DIR/app/$dir"
 		done
 	)
 
 	(
 		cd "$PATCH_DIR"
-		zip -o -r -m "../svnbackup-$NOW.zip" app >> "/dev/null" 2>&1
+		zip -o -r -m "../$project-svnbackup-r$revision-$NOW.zip" app >> "/dev/null" 2>&1
 		cd ..
 		rmdir "$PATCH_DIR"
 	)
@@ -220,11 +237,7 @@ case $1 in
         __changelog "$2" .
     ;;
     clear)
-        __clearDir "$APP_DIR/tmp/cache/"
-        __clearDir "$APP_DIR/tmp/logs/"
-		if [ -d "$APP_DIR/tmp/files/" ] ; then
-			rm -R "$APP_DIR/tmp/files/"
-		fi
+        __clear "$APP_DIR"
     ;;
     clearcache)
         __clearDir "$APP_DIR/tmp/cache/"
@@ -257,6 +270,7 @@ case $1 in
         __patch "$ASNV/$2" "$ASNV/$3"
     ;;
     svnbackup)
+        __clear "$APP_DIR"
 		__svnbackup "$APP_DIR"
     ;;
     *)
