@@ -7,8 +7,7 @@
 		var $debug = '';
 		var $doDebug = true;
 
-		/// FIXME: une fois que les tables dspps et les tables liées seront supprimées, à nettoyer
-		var $tables = array( 'personnes_referents', 'activites', 'allocationssoutienfamilial', 'avispcgpersonnes', 'calculsdroitsrsa', 'contratsinsertion', 'creancesalimentaires', /*'creancesalimentaires_personnes',*/ 'dossierscaf', 'dsps', 'dspps', 'grossesses', 'informationseti', 'infosagricoles', 'orientsstructs', 'prestations', 'rattachements', 'rendezvous', 'ressources', 'titres_sejour' );
+		var $tables = array( 'personnes_referents', 'activites', 'allocationssoutienfamilial', 'avispcgpersonnes', 'calculsdroitsrsa', 'contratsinsertion', 'creancesalimentaires', /*'creancesalimentaires_personnes',*/ 'dossierscaf', 'dsps', 'grossesses', 'informationseti', 'infosagricoles', 'orientsstructs', 'prestations', 'rattachements', 'rendezvous', 'ressources', 'titressejour' );
 		var $dependances = array(
 				'dsps' => array(
 					'detailsdifsocs',
@@ -17,14 +16,6 @@
 					'detailsdifdisps',
 					'detailsnatmobs',
 					'detailsdiflogs',
-				),
-				'dspps' => array(
-					'dspps_accoemplois',
-					'dspps_difdisps',
-					'dspps_difsocs',
-					'dspps_nataccosocindis',
-					'dspps_natmobs',
-					'dspps_nivetus'
 				)
 			);
 
@@ -51,7 +42,7 @@
 				}
 				else {
 					// FIXME: voir quelles entrées sont bonnes
-					if( in_array( $table, array( 'creancesalimentaires', 'dsps', 'dspps', 'orientsstructs' ) ) ) {
+					if( in_array( $table, array( 'creancesalimentaires', 'dsps', 'orientsstructs' ) ) ) {
 						$pIdToKeep = $personneAppliId;
 						$pIdToDelete = $personneXmlId;
 					}
@@ -73,7 +64,7 @@
 
 				///
 				if( !empty( $recordsToDelete ) ) {
-					if( $table == 'dsps' || $table == 'dspps' ) {
+					if( $table == 'dsps' ) {
 						if( isset( $this->dependances[$table] ) ) {
 							$fk = strtolower( Inflector::classify( $table ) ).'_id';
 

@@ -1,23 +1,37 @@
 <?php
-    class Statutpdo extends AppModel
-    {
-        var $name = 'Statutpdo';
+	class Statutpdo extends AppModel
+	{
+		public $name = 'Statutpdo';
 
-        var $displayField = 'libelle';
+		public $displayField = 'libelle';
 
-        var $hasAndBelongsToMany = array(
-            'Propopdo' => array( 'with' => 'PropopdoStatutpdo' )
-        );
+		public $validate = array(
+			'libelle' => array(
+				array( 'rule' => 'notEmpty' )
+			)
+		);
 
-        var $validate = array(
-            'libelle' => array(
-                array( 'rule' => 'notEmpty' )
-            )
-        );
+		public $actsAs = array(
+			'ValidateTranslate'
+		);
 
-        var $actsAs = array(
-            'ValidateTranslate'
-        );
-
-    }
+		public $hasAndBelongsToMany = array(
+			'Propopdo' => array(
+				'className' => 'Propopdo',
+				'joinTable' => 'propospdos_statutspdos',
+				'foreignKey' => 'statutpdo_id',
+				'associationForeignKey' => 'propopdo_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'PropopdoStatutpdo'
+			)
+		);
+	}
 ?>

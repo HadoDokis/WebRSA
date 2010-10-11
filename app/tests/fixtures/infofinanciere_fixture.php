@@ -7,7 +7,7 @@
 		var $records = array(
 			array(
 				'id' => '1',
-				'dossier_rsa_id' => '1',
+				'dossier_id' => '1',
 				'moismoucompta' => '2009-04-13',
 				'type_allocation' => 'IndusConstates',
 				'natpfcre' => null,
@@ -22,7 +22,7 @@
 			),
 			array(
 				'id' => '2',
-				'dossier_rsa_id' => '2',
+				'dossier_id' => '2',
 				'moismoucompta' => '2009-06-21',
 				'type_allocation' => 'IndusConstates',
 				'natpfcre' => null,
@@ -37,7 +37,7 @@
 			),
 			array(
 				'id' => '3',
-				'dossier_rsa_id' => '3',
+				'dossier_id' => '3',
 				'moismoucompta' => '2010-07-13',
 				'type_allocation' => 'IndusConstates',
 				'natpfcre' => null,
@@ -52,7 +52,7 @@
 			),
 			array(
 				'id' => '4',
-				'dossier_rsa_id' => '4',
+				'dossier_id' => '4',
 				'moismoucompta' => '2009-04-13',
 				'type_allocation' => 'IndusTransferes',
 				'natpfcre' => null,
@@ -67,7 +67,7 @@
 			),
 			array(
 				'id' => '5',
-				'dossier_rsa_id' => '5',
+				'dossier_id' => '5',
 				'moismoucompta' => '2009-01-27',
 				'type_allocation' => 'IndusTransferes',
 				'natpfcre' => null,
@@ -82,7 +82,7 @@
 			),
 			array(
 				'id' => '6',
-				'dossier_rsa_id' => '6',
+				'dossier_id' => '6',
 				'moismoucompta' => '2010-09-11',
 				'type_allocation' => 'IndusTransferes',
 				'natpfcre' => null,
@@ -97,7 +97,7 @@
 			),
 			array(
 				'id' => '7',
-				'dossier_rsa_id' => '7',
+				'dossier_id' => '7',
 				'moismoucompta' => '2009-04-11',
 				'type_allocation' => 'IndusTransferes',
 				'natpfcre' => null,

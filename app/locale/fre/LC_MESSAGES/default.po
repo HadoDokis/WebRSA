@@ -402,6 +402,11 @@ msgstr "Date Nationalité"
 msgid "pieecpres"
 msgstr "Pièce d'état civil présentée"
 
+msgid "numfixe"
+msgstr "N° de téléphone fixe"
+
+msgid "numport"
+msgstr "N° de téléphone portable"
 ###############################################################################
 # Donnees socioprofessionnelles Foyers
 ###############################################################################

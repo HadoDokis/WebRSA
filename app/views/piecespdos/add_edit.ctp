@@ -1,6 +1,6 @@
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => Set::extract( $pdo, 'Propopdo.dossier_rsa_id' ) ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'id' => Set::extract( $pdo, 'Propopdo.dossier_id' ) ) );?>
 
 <?php $this->pageTitle = 'Pieces PDOs';?>
 

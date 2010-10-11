@@ -16,21 +16,21 @@
         }
 
 
-        function index( $dossier_rsa_id = null ) {
+        function index( $dossier_id = null ) {
             // Vérification du format de la variable
-            $this->assert( valid_int( $dossier_rsa_id ), 'error404' );
+            $this->assert( valid_int( $dossier_id ), 'error404' );
 
             // Recherche des adresses du foyer
             $suivisinstruction = $this->Suiviinstruction->find(
                 'all',
                 array(
-                    'conditions' => array( 'Suiviinstruction.dossier_rsa_id' => $dossier_rsa_id ),
+                    'conditions' => array( 'Suiviinstruction.dossier_id' => $dossier_id ),
                     'recursive' => -1
                 )
             );
 
             // Assignations à la vue
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+            $this->set( 'dossier_id', $dossier_id );
             $this->set( 'suivisinstruction', $suivisinstruction );
         }
 
@@ -53,7 +53,7 @@
             $this->assert( !empty( $suiviinstruction ), 'error404' );
 
             // Assignations à la vue
-            $this->set( 'dossier_id', $suiviinstruction['Suiviinstruction']['dossier_rsa_id'] );
+            $this->set( 'dossier_id', $suiviinstruction['Suiviinstruction']['dossier_id'] );
 
             $this->set( 'suiviinstruction', $suiviinstruction );
 

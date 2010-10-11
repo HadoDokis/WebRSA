@@ -328,7 +328,7 @@
             // Récupération des id afférents
             if( $this->action == 'add' ) {
                 $personne_id = $id;
-                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
+                $dossier_id = $this->Personne->dossierId( $personne_id );
 
                 ///Création automatique du N° APRE de la forme : Année / Mois / N°
                 $numapre = date('Ym').sprintf( "%010s",  $this->Apre->find( 'count' ) + 1 );
@@ -341,7 +341,7 @@
                 $this->assert( !empty( $apre ), 'invalidParameter' );
 
                 $personne_id = $apre['Apre']['personne_id'];
-                $dossier_rsa_id = $this->Apre->dossierId( $apre_id );
+                $dossier_id = $this->Apre->dossierId( $apre_id );
 
                 $this->set( 'numapre', Set::extract( $apre, 'Apre.numeroapre' ) );
             }
@@ -350,14 +350,14 @@
             if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
                 $this->redirect( array( 'action' => 'index', $personne_id ) );
             }
-            $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
-            $this->assert( !empty( $dossier_rsa_id ), 'invalidParameter' );
-            $this->set( 'dossier_id', $dossier_rsa_id );
+            $dossier_id = $this->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+            $this->set( 'dossier_id', $dossier_id );
 
-            if( !$this->Jetons->check( $dossier_rsa_id ) ) {
+            if( !$this->Jetons->check( $dossier_id ) ) {
                 $this->Apre->rollback();
             }
-            $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             ///Récupération de la liste des structures référentes liés uniquement à l'APRE
             $structs = $this->Structurereferente->listeParType( array( 'apre' => true ) );
@@ -438,7 +438,6 @@
                                     ),
                                     $piecesLiees => $this->data[$piecesLiees]
                                 );
-
                                 $saved = $this->Apre->{$model}->save( $linkedData ) && $saved;
                             }
                         }
@@ -446,7 +445,7 @@
 
                     if( $saved ) {
                         $this->Apre->supprimeFormationsObsoletes( $this->data );
-                        $this->Jetons->release( $dossier_rsa_id );
+                        $this->Jetons->release( $dossier_id );
                         $this->Apre->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 //                         debug( $this->data );
@@ -460,7 +459,7 @@
             }
             else{
                 if( $this->action == 'edit' ) {
-//                 debug($apre);
+/*//                 debug($apre);
                 ///FIXME: pour le moment on ne récupère que les pièces de la dernière aide enregistrée !!!
                     $tablesLiees = array(
                         'Formqualif' => 'Pieceformqualif',
@@ -472,8 +471,8 @@
                         'Acqmatprof' => 'Pieceacqmatprof',
                         'Locvehicinsert' => 'Piecelocvehicinsert'
                     );
-                    foreach( $tablesLiees as $model => $piecesLiees ) {
 
+                    foreach( $tablesLiees as $model => $piecesLiees ) {
                         if( !empty( $apre[$model][$piecesLiees] ) ) {
                             $linkedData = array(
                                 $model => array(
@@ -481,15 +480,16 @@
                                 ),
                                 $piecesLiees => $apre[$model][$piecesLiees]
                             );
-
+debug($linkedData);
                             $saved = $this->Apre->{$model}->{$piecesLiees}->save( $linkedData );
+debug($saved);
                         }
                         if( !empty( $linkedData ) ){
                             $this->data = Set::merge( $apre, $linkedData );
                         }
 
                     }
-
+debug($apre);*/
                     $this->data = $apre;
                     $this->data = Set::insert(
                         $this->data, 'Apre.referent_id',

@@ -1,48 +1,54 @@
 <?php
-    class Participantcomite extends AppModel
-    {
-        var $name = 'Participantcomite';
-        var $useTable = 'participantscomites';
+	class Participantcomite extends AppModel
+	{
+		public $name = 'Participantcomite';
 
+		public $order = 'Participantcomite.id ASC';
 
-        var $order = 'Participantcomite.id ASC';
+		public $actsAs = array(
+			'Enumerable'
+		);
 
-        var $actsAs = array(
-            'Enumerable'
-        );
+		public $hasAndBelongsToMany = array(
+			'Comiteapre' => array(
+				'className' => 'Comiteapre',
+				'joinTable' => 'comitesapres_participantscomites',
+				'foreignKey' => 'participantcomite_id',
+				'associationForeignKey' => 'comiteapre_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'ComiteapreParticipantcomite'
+			)
+		);
 
-        var $hasAndBelongsToMany = array(
-            'Comiteapre' => array(
-                'className'              => 'Comiteapre',
-                'joinTable'              => 'comitesapres_participantscomites',
-                'foreignKey'             => 'participantcomite_id',
-                'associationForeignKey'  => 'comiteapre_id',
-                'with'                   => 'ComiteapreParticipantcomite'
-            )
-        );
-
-
-        var $validate = array(
-            'nom' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'qual' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'prenom' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'organisme' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'fonction' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
+		public $validate = array(
+			'nom' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'qual' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'prenom' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'organisme' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'fonction' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
 //             'numtel' => array(
 //                     'rule' => 'notEmpty',
 //                     'message' => 'Champ obligatoire'
@@ -51,6 +57,6 @@
 //                     'rule' => 'notEmpty',
 //                     'message' => 'Champ obligatoire'
 //             )
-        );
-    }
+		);
+	}
 ?>

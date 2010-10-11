@@ -11,44 +11,44 @@
             $this->set( 'motifrecours', $this->Option->motifrecours() );
         }
 
-        function gracieux( $dossier_rsa_id = null ){
+        function gracieux( $dossier_id = null ){
 
-            $this->assert( valid_int( $dossier_rsa_id ), 'invalidParameter' );
+            $this->assert( valid_int( $dossier_id ), 'invalidParameter' );
 
             $gracieux = $this->Avispcgdroitrsa->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Avispcgdroitrsa.dossier_rsa_id' => $dossier_rsa_id
+                        'Avispcgdroitrsa.dossier_id' => $dossier_id
                     ),
                 'recursive' => -1
                 )
             );
 
-            $avispcg = $this->Avispcgdroitrsa->findByDossierRsaId( $dossier_rsa_id );
+            $avispcg = $this->Avispcgdroitrsa->findByDossierId( $dossier_id );
 //             $this->assert( !empty( $gracieux ), 'error404' );
 
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+            $this->set( 'dossier_id', $dossier_id );
             $this->set( 'avispcg', $avispcg );
             $this->set( 'gracieux', $gracieux );
         }
 
-        function contentieux( $dossier_rsa_id = null ){
+        function contentieux( $dossier_id = null ){
 
-            $this->assert( valid_int( $dossier_rsa_id ), 'invalidParameter' );
+            $this->assert( valid_int( $dossier_id ), 'invalidParameter' );
 
             $contentieux = $this->Avispcgdroitrsa->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Avispcgdroitrsa.dossier_rsa_id' => $dossier_rsa_id
+                        'Avispcgdroitrsa.dossier_id' => $dossier_id
                     ),
                 'recursive' => -1
                 )
             );
 //             $this->assert( !empty( $contentieux ), 'error404' );
 
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+            $this->set( 'dossier_id', $dossier_id );
             $this->set( 'contentieux', $contentieux );
         }
     }

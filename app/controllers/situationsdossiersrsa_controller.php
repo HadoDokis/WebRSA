@@ -17,17 +17,17 @@
             $this->set( 'motisusversrsa', $this->Option->motisusversrsa() );
         }
 
-        function index( $dossier_rsa_id = null ){
+        function index( $dossier_id = null ){
             // TODO : vérif param
             // Vérification du format de la variable
-            $this->assert( valid_int( $dossier_rsa_id ), 'error404' );
+            $this->assert( valid_int( $dossier_id ), 'error404' );
 
 
             $situationdossierrsa = $this->Situationdossierrsa->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Situationdossierrsa.dossier_rsa_id' => $dossier_rsa_id
+                        'Situationdossierrsa.dossier_id' => $dossier_id
                     ),
                     'recursive' => 1
                 )
@@ -35,7 +35,7 @@
 // debug( $situationdossierrsa );
 
             // Assignations à la vue
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+            $this->set( 'dossier_id', $dossier_id );
             $this->set( 'situationdossierrsa', $situationdossierrsa );
         }
 
@@ -58,7 +58,7 @@
             $this->assert( !empty( $situationdossierrsa ), 'error404' );
 
             // Assignations à la vue
-            $this->set( 'dossier_rsa_id', $situationdossierrsa['Situationdossierrsa']['dossier_rsa_id'] );
+            $this->set( 'dossier_id', $situationdossierrsa['Situationdossierrsa']['dossier_id'] );
             $this->set( 'situationdossierrsa', $situationdossierrsa );
 
         }

@@ -136,36 +136,42 @@ table thead a {
     Fiches
 *****************************************************************************/
 
-/* Affichage vue Dspp  */
-div#ficheDspp table {
+/* Affichage vue Ressource  */
+div#ficheRessource table {
     width: 800px;
     margin-bottom: 1em;
 }
 
-div#ficheDspp tbody th {
+div#ficheRessource tbody th {
     width: 600px;
 }
 
-div#ficheDspp tbody tr.even td {
+div#ficheRessource tbody tr.even td {
     background: white;
     color: black;
 }
 
-div#ficheDspp tbody tr.odd td {
+div#ficheRessource tbody tr.odd td {
     background: white;
     color: black;
 }
 
-div#ficheDspp tbody tr.even th {
+div#ficheRessource tbody tr.even th {
     background: #83c2e2;
     color: black;
 }
 
-div#ficheDspp tbody tr.odd th {
+div#ficheRessource tbody tr.odd th {
     background: #a8dbef;
     color: black;
 }
-div#ficheDspp h2 {
+
+div#ficheRessource tbody tr.even.parent td, div#ficheRessource tbody tr.odd.parent td {
+    background: #D9D9D9;
+    color: black;
+}
+
+div#ficheRessource h2 {
     font-size: 1.5em;
 }
 /* Affichage vue Données personne  */
@@ -229,38 +235,6 @@ div#ficheCI tbody tr.odd th {
     color: black;
 }
 div#ficheCI h2 {
-    font-size: 1.5em;
-}
-
-/* Affichage vue Dspf */
-div#ficheDspf table {
-    width: 800px;
-    margin-bottom: 1em;
-}
-
-div#ficheDspf tbody th {
-    width: 600px;
-}
-div#ficheDspf tbody tr.even td {
-    background: white;
-    color: black;
-}
-
-div#ficheDspf tbody tr.odd td {
-    background: white;
-    color: black;
-}
-
-div#ficheDspf tbody tr.even th {
-    background: #83c2e2;
-    color: black;
-}
-
-div#ficheDspf tbody tr.odd th {
-    background: #a8dbef;
-    color: black;
-}
-div#ficheDspf h2 {
     font-size: 1.5em;
 }
 

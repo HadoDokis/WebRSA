@@ -18,7 +18,12 @@
 			'Detailaccosocindi',
 			'Detaildifdisp',
 			'Detailnatmob',
-			'Detaildiflog'
+			'Detaildiflog',
+			'Detailmoytrans',
+			'Detaildifsocpro',
+			'Detailprojpro',
+			'Detailfreinform',
+			'Detailconfort'
 		);
 
         var $validate = array(
@@ -94,7 +99,27 @@
 					'concoformqualiemploi' => array( 'type' => 'nos', 'domain' => 'default' ),
 					'drorsarmianta2' => array( 'type' => 'nos', 'domain' => 'default' ),
                 )
-            )
+            ),
+			'Revision' => array('auto' => false)
         );
+        
+        /*
+    	* FIXME: le Set::remove est plus propre, non ?
+        */
+
+        public function filterOptions( $cg, $options ) {
+        	if( $cg == 'cg58' ) {
+        		return $options;
+        	}
+        	
+			// Detaildifdisp.difdisp
+        	$values = array( '0507', '0508', '0509', '0510', '0511', '0512', '0513' );
+        	foreach( $values as $value ) {
+	        	//$options = Set::remove( $options['Detaildifdisp']['difdisp'], $value );
+	        	unset( $options['Detaildifdisp']['difdisp'][$value] );
+        	}
+        	
+        	return $options;     	
+        }
     }
 ?>

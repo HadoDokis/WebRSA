@@ -11,7 +11,7 @@
         <?php echo $form->input( 'Adresse.pays', array( 'label' =>  required( __( 'pays', true ) ), 'type' => 'select', 'options' => $pays, 'empty' => true ) );?>
         <?php echo $form->input( 'Adresse.canton', array( 'label' =>  __( 'canton', true ) ) );?>
 
-        <?php if( $this->name == 'Adressesfoyers' ):?>
+        <?php if( $this->name == 'Adressefoyers' ):?>
             <?php echo $form->input( 'Adressefoyer.rgadr', array( 'label' => required( __( 'rgadr', true ) ), 'type' => 'select', 'options' => $rgadr, 'empty' => true ) );?>
         <?php endif;?>
         <?php echo $form->input( 'Adressefoyer.dtemm', array( 'label' =>  __( 'dtemm', true ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>

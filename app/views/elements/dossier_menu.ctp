@@ -101,6 +101,15 @@
                                                         );?>
                                                 </li>
                                             <?php endif;?>
+                                            <?php if( $permissions->check( 'dsps', 'histo' ) ):?>
+                                                <li>
+                                                    <?php
+                                                        echo $html->link(
+                                                            'DSPs CG',
+                                                            array( 'controller' => 'dsps', 'action' => 'histo', $personne['id'] )
+                                                        );?>
+                                                </li>
+                                            <?php endif;?>
                                             <!--<?php if( $permissions->check( 'dspps', 'view' ) ):?>
                                                 <li>
                                                     <?php

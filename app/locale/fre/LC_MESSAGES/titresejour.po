@@ -20,23 +20,23 @@ msgstr ""
 
 ###############################################################################
 
-msgid "TitreSejour.ddtitsej"
+msgid "Titresejour.ddtitsej"
 msgstr "Date début titre de séjour"
 
-msgid "TitreSejour.dftitsej"
+msgid "Titresejour.dftitsej"
 msgstr "Date fin titre de séjour"
 
-msgid "TitreSejour.dtentfra"
+msgid "Titresejour.dtentfra"
 msgstr "Date d'entrée en France"
 
-msgid "TitreSejour.nattitsej"
+msgid "Titresejour.nattitsej"
 msgstr "Nature du titre de séjour"
 
-msgid "TitreSejour.menttitsej"
+msgid "Titresejour.menttitsej"
 msgstr "Mention du titre de séjour"
 
-msgid "TitreSejour.numtitsej"
+msgid "Titresejour.numtitsej"
 msgstr "Numéro du titre de séjour"
 
-msgid "TitreSejour.numduptitsej"
+msgid "Titresejour.numduptitsej"
 msgstr "Numéro du duplicata du titre de séjour"

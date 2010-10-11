@@ -64,7 +64,7 @@
         <?php echo $form->input( 'Critererdv.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
-        <legend>Recherche par Contrat d'insertion</legend>
+        <legend>Recherche par RDV</legend>
             <?php echo $form->input( 'Critererdv.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
             <?php echo $form->input( 'Critererdv.locaadr', array( 'label' => __( 'locaadr', true ), 'type' => 'text' ) );?>
             <!-- <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
@@ -179,7 +179,7 @@
                                 ),
                                 $html->printLink(
                                     'Imprimer la notification',
-                                    array( 'controller' => 'gedooos', 'action' => 'rendezvous', $rdv['Rendezvous']['id'] )
+                                    array( 'controller' => 'rendezvous', 'action' => 'gedooo', $rdv['Rendezvous']['id'] )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
                             ),
@@ -202,6 +202,18 @@
                     'Télécharger le tableau',
                     array( 'controller' => 'criteresrdv', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
+            ?></li>
+            <li><?php
+//                 echo $html->printCohorteLink(
+//                     'Imprimer la cohorte',
+//                     Set::merge(
+//                         array(
+//                             'controller' => 'gedooos',
+//                             'action'     => 'notifications_relances'
+//                         ),
+//                         array_unisize( $this->data )
+//                     )
+//                 );
             ?></li>
         </ul>
      <?php echo $pagination;?>

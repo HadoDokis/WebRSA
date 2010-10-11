@@ -109,7 +109,7 @@
                 $propopdo = $this->Propopdo->findById( $id, null, null, -1 );
                 $this->set( 'propopdo', $propopdo );
                 $personne_id = Set::classicExtract( $propopdo, 'Propopdo.personne_id' );
-                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
+                $dossier_id = $this->Personne->dossierId( $personne_id );
             }
             else if( $this->action == 'edit' ) {
                 $traitement_id = $id;
@@ -118,19 +118,19 @@
 // debug($traitement);
                 $propopdo_id = Set::classicExtract( $traitement, 'Traitementpdo.propopdo_id' );
                 $personne_id = Set::classicExtract( $traitement, 'Propopdo.personne_id' );
-                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
+                $dossier_id = $this->Personne->dossierId( $personne_id );
             }
 
-            $this->assert( !empty( $dossier_rsa_id ), 'invalidParameter' );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
             $this->set( 'personne_id', $personne_id );
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+            $this->set( 'dossier_id', $dossier_id );
             $this->set( 'propopdo_id', $propopdo_id );
 
 
-            if( !$this->Jetons->check( $dossier_rsa_id ) ) {
+            if( !$this->Jetons->check( $dossier_id ) ) {
                 $this->Traitementpdo->rollback();
             }
-            $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 
             if( !empty( $this->data ) ){
@@ -139,7 +139,7 @@
                     $saved = $this->Traitementpdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 
                     if( $saved ) {
-                        $this->Jetons->release( $dossier_rsa_id );
+                        $this->Jetons->release( $dossier_id );
                         $this->Traitementpdo->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array(  'controller' => 'traitementspdos','action' => 'index', $propopdo_id ) );

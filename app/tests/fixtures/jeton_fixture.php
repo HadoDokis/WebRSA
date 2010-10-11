@@ -7,5 +7,4 @@
 		var $records = array(
 		);
 	}
-
 ?>

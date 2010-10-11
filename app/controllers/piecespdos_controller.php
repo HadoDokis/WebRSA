@@ -20,13 +20,13 @@
             $pdo = $this->Propopdo->find( 'first', array( 'conditions' => array( 'Propopdo.id' => $pdo_id ) ) );
             $this->set( 'pdo', $pdo );
 
-            $dossier_rsa_id = Set::extract( $pdo, 'Propopdo.dossier_rsa_id' );
+            $dossier_id = Set::extract( $pdo, 'Propopdo.dossier_id' );
 
             if( !empty( $this->data ) ) {
 
                 if( $this->Piecepdo->saveAll( $this->data ) ) {
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'dossierspdo', 'action' => 'index', $dossier_rsa_id ) );
+                    $this->redirect( array( 'controller' => 'dossierspdo', 'action' => 'index', $dossier_id ) );
                 }
             }
             $this->render( $this->action, null, 'add_edit' );

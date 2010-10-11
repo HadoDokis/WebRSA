@@ -1,14 +1,16 @@
 <?php
-    class Piecepdo extends AppModel
-    {
-        var $name = 'Piecepdo';
-//         var $displayField = 'Piecepdo.dateajout ASC';
+	class Piecepdo extends AppModel
+	{
+		public $name = 'Piecepdo';
 
-        var $belongsTo = array(
-            'Propopdo' => array(
-                'classname' => 'Propopdo',
-                'foreignKey' => 'propopdo_id'
-            )
-        );
-    }
+		public $belongsTo = array(
+			'Propopdo' => array(
+				'className' => 'Propopdo',
+				'foreignKey' => 'propopdo_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
+	}
 ?>

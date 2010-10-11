@@ -39,7 +39,6 @@
 
 <div class="with_treemenu">
     <h1>&nbsp;</h1> <!--FIXME: grugeage -->
-
 <div id="resumeDossier">
     <table  id="ficheDossier">
         <tbody>
@@ -74,38 +73,36 @@
                         <tbody>
                             <tr class="odd">
                                 <th>Type d'orientation</th>
-                                <td><?php echo value( $typesorient, Set::extract( 'DEM.Orientstruct.derniere.typeorient_id', $details ) );?></td>
-                                <td><?php echo value( $typesorient, Set::extract( 'CJT.Orientstruct.derniere.typeorient_id', $details ) );?></td>                            </tr>
+                                <td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Typeorient.lib_type_orient' );?></td>
+                                <td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Typeorient.lib_type_orient' );?></td>
+							</tr>
                             <tr class="even">
                                 <th>Structure référente<!--Type de structure--></th>
-                                <td><?php echo value( $structuresreferentes, Set::extract( 'DEM.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
-                                <td><?php echo value( $structuresreferentes, Set::extract( 'CJT.Orientstruct.premiere.structurereferente_id', $details ) );?></td>
+                                <td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Structurereferente.lib_struc' );?></td>
+                                <td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Structurereferente.lib_struc' );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date de l'orientation</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Orientstruct.derniere.date_valid', $details ) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Orientstruct.derniere.date_valid', $details ) );?></td>
+                                <td><?php echo date_short( Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.date_valid' ) );?></td>
+                                <td><?php echo date_short( Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.date_valid' ) );?></td>
                             </tr>
                             <tr class="even">
                                 <th>Statut de l'orientation</th>
-                                <td><?php echo Set::extract( 'DEM.Orientstruct.derniere.statut_orient', $details );?></td>
-                                <td><?php echo Set::extract( 'CJT.Orientstruct.derniere.statut_orient', $details );?></td>
-                            </tr>
-                            <!-- <tr class="odd">
-                                <th>Référent en cours</th>
-                                <td><?php echo value( $structuresreferentes, Set::extract( 'DEM.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
-                                <td><?php echo value( $structuresreferentes, Set::extract( 'CJT.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
-                            </tr> -->
+                                <td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.statut_orient' );?></td>
+                                <td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.statut_orient' );?></td>
                             <tr class="odd">
                                 <th>Référent en cours</th>
-                                <td><?php echo value( $referents, Set::extract( 'DEM.PersonneReferent.dernier.referent_id', $details ) );?></td>
-                                <td><?php echo value( $referents, Set::extract( 'CJT.PersonneReferent.dernier.referent_id', $details ) );?></td>
+                                <?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
+                                <td><?php
+									$referent = Set::extract( "{$rolepers}.Referent", $details );
+									echo implode( ' ', array( Set::classicExtract( $referent, 'qual' ), Set::classicExtract( $referent, 'nom' ), Set::classicExtract( $referent, 'prenom' ) ) );
+								?></td>
+                                <?php endforeach;?>
                             </tr>
                         </tbody>
                     </table>
                 </td>
             </tr>
-
             <tr>
                 <td>
                     <h2>Personnes</h2>
@@ -235,7 +232,7 @@
                             </tr>
                             <tr class="even">
                                 <th>Motif</th>
-                                <td><?php echo h( Set::extract( 'Creance.motiindu', $details ) );?></td>
+                                <td><?php echo h( Set::extract( 'Creance.motiindu', $details ) );/*FIXME: traduction, manque dans Option*/?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Début du traitement CAF</th>
@@ -282,7 +279,7 @@
                     </table>
                 </td>
             </tr>
-            <tr colspan="2">
+            <tr>
                 <td>
                     <h2>Informations Pôle Emploi</h2>
                     <table>

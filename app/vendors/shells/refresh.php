@@ -293,7 +293,7 @@
 								'Personne.pieecpres',
 								'Personne.idassedic',
 								'Foyer.id',
-								'Foyer.dossier_rsa_id',
+								'Foyer.dossier_id',
 								'Foyer.sitfam',
 								'Foyer.ddsitfam',
 								'Foyer.typeocclog',

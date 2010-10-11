@@ -64,20 +64,20 @@
         *
         *** *******************************************************************/
 
-        function index( $dossier_rsa_id = null ) {
+        function index( $dossier_id = null ) {
             //Vérification du format de la variable
-            $this->assert( valid_int( $dossier_rsa_id ), 'invalidParameter' );
+            $this->assert( valid_int( $dossier_id ), 'invalidParameter' );
 
              //Recherche des adresses du foyer
             $infosfinancieres = $this->Infofinanciere->find(
                 'all',
                 array(
-                    'conditions' => array( 'Infofinanciere.dossier_rsa_id' => $dossier_rsa_id ),
+                    'conditions' => array( 'Infofinanciere.dossier_id' => $dossier_id ),
                     'recursive' => 0
                 )
             );
 
-            $foyer = $this->Dossier->Foyer->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
+            $foyer = $this->Dossier->Foyer->findByDossierId( $dossier_id, null, null, -1 );
 
             $personne = $this->Dossier->Foyer->Personne->find(
                 'first',
@@ -94,7 +94,7 @@
             $this->set( 'personne', $personne );
 
 
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+            $this->set( 'dossier_id', $dossier_id );
             $this->set( 'infosfinancieres', $infosfinancieres );
 
         }
@@ -121,7 +121,7 @@
             $this->assert( !empty( $infofinanciere ), 'error404' );
 
             // Assignations à la vue
-            $this->set( 'dossier_id', $infofinanciere['Infofinanciere']['dossier_rsa_id'] );
+            $this->set( 'dossier_id', $infofinanciere['Infofinanciere']['dossier_id'] );
             $this->set( 'infofinanciere', $infofinanciere );
 
         }

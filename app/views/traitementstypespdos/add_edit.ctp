@@ -9,7 +9,7 @@
 <?php
     echo $default->form(
         array(
-            'Traitementtypepdo.name' => array( 'type' => 'text' )
+            'Traitementtypepdo.name' => array( 'type' => 'text', 'required' => true )
         ),
         array(
             'actions' => array(

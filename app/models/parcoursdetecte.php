@@ -3,57 +3,53 @@
 	{
 		var $name = 'Parcoursdetecte';
 
-        var $order = array( 'Parcoursdetecte.id ASC' );
+		var $validate = array(
+			'orientstruct_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+				),
+			),
+		);
 
 		var $belongsTo = array(
-			'Orientstruct',
-			'Ep' => array(
-				'type' => 'LEFT OUTER',
-			)
-		);
-
-        var $actsAs = array(
-            'Enumerable' => array(
-                'fields' => array(
-                    'signale' => array(
-                        'values' => array( 0, 1 )
-                    )
-                )
-            )
-        );
-
-		var $hasOne = array(
-			'Decisionparcoursequipe' => array(
-				'className' => 'Decisionparcours',
-				'type' => 'LEFT OUTER',
-				'conditions' => array(
-					'Decisionparcoursequipe.roleparcours' => 'equipe'
-				)
+			'Orientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'orientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			),
-			'Decisionparcoursconseil' => array(
-				'className' => 'Decisionparcours',
-				'type' => 'LEFT OUTER',
-				'conditions' => array(
-					'Decisionparcoursconseil.roleparcours' => 'conseil'
-				)
+			'Ep' => array(
+				'className' => 'Ep',
+				'foreignKey' => 'ep_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Osnv' => array(
+				'className' => 'Osnv',
+				'foreignKey' => 'osnv_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
 		);
 
-        /**
-        * FIXME: un behavior
-        */
+		var $hasMany = array(
+			'Decisionparcours' => array(
+				'className' => 'Decisionparcours',
+				'foreignKey' => 'parcoursdetecte_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
 
-        function beforeValidate( $options ) {
-            $this->data = Set::flatten( $this->data );
-
-            foreach( $this->data as $path => $value ) {
-                if( $path == "{$this->alias}.ep_id" && $value == 0 ) {
-                    $this->data[$path] = null;
-                }
-            }
-
-            $this->data = Xset::bump( $this->data );
-            return true;
-        }
 	}
 ?>

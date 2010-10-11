@@ -39,11 +39,20 @@
 				}
 			}
 			else {
-				if( $permissions->check( 'dsps', 'edit' ) ) {
+				
+				if( $permissions->check( 'dsps', 'edit' ) && ( (isset($rev)) && (!$rev) || ( $this->action == 'view_revs' ) ) ) {
 					echo '<ul class="actionMenu">
 							<li>'.$html->editLink(
-								'Modifier une DSP',
-								array( 'controller' => 'dsps', 'action' => 'edit', Set::classicExtract( $dsp, 'Dsp.id' ) )
+								'Modifier cette DSP',
+								array( 'controller' => 'dsps', 'action' => 'edit', Set::classicExtract( $dsp, 'Personne.id' ) )
+							).' </li></ul>';
+				}
+				
+				if( $permissions->check( 'dsps', 'revertTo' ) && ( $this->action == 'view_revs' ) ) {
+					echo '<ul class="actionMenu">
+							<li>'.$html->revertToLink(
+								'Revenir à cette version',
+								array( 'controller' => 'dsps', 'action' => 'revertTo', Set::classicExtract( $dsp, 'Dsp.id' ) )
 							).' </li></ul>';
 				}
 
@@ -127,6 +136,12 @@
 				$difficultes = $dsphm->details( $dsp, 'Detaildifsoc', 'difsoc', 'libautrdifsoc', $options['Detaildifsoc']['difsoc'] );
 				$difficultes = $html->tag( 'h3', 'Difficultés sociales' ).$difficultes;
 
+				// SituationSociale - DetailDifficulteSituationSocialeProfessionnel (0-n)
+				if ($cg=='cg58') {
+					$difficultes = $dsphm->details( $dsp, 'Detaildifsocpro', 'difsocpro', 'libautrdifsocpro', $options['Detaildifsocpro']['difsocpro'] );
+					$difficultes = $html->tag( 'h3', 'Difficultés sociales décelées par le professionel' ).$difficultes;
+				}
+
 				// SituationSociale - DetailAccompagnementSocialFamilial (0-n)
 				$accosocfam = $dsphm->details( $dsp, 'Detailaccosocfam', 'nataccosocfam', 'libautraccosocfam', $options['Detailaccosocfam']['nataccosocfam'] );
 				$accosocfam = $html->tag( 'h3', 'Difficultés accompagnement social familial' ).$accosocfam;
@@ -198,7 +213,7 @@
 				}*/
 
 				// Disponibilités emploi
-				$disponibilitésEmploi = $default->view(
+				$disponibilitesEmploi = $default->view(
 					$dsp,
 					array(
 						'Dsp.topengdemarechemploi'
@@ -208,19 +223,19 @@
 					)
 				);
 
-				if( !empty( $disponibilitésEmploi ) ) {
-					$disponibilitésEmploi = $html->tag( 'h2', 'Disponibilités emploi' ).$disponibilitésEmploi;
+				if( !empty( $disponibilitesEmploi ) ) {
+					$disponibilitesEmploi = $html->tag( 'h2', 'Disponibilités emploi' ).$disponibilitesEmploi;
 				}
 
-				/*$disponibilitésEmploi = array(
+				/*$disponibilitesEmploi = array(
 					array(
 						__d( 'dsp', 'Dsp.topengdemarechemploi', true ),
 						result( $dsp, 'Dsp.topengdemarechemploi', 'enum', $options['Dsp']['topengdemarechemploi'] ),
 					)
 				);
-				$disponibilitésEmploi = $xhtml->details( $disponibilitésEmploi, array( 'type' => 'list', 'empty' => true ) );
-				if( !empty( $disponibilitésEmploi ) ) {
-					$disponibilitésEmploi = $html->tag( 'h2', 'Disponibilités emploi' ).$disponibilitésEmploi;
+				$disponibilitesEmploi = $xhtml->details( $disponibilitesEmploi, array( 'type' => 'list', 'empty' => true ) );
+				if( !empty( $disponibilitesEmploi ) ) {
+					$disponibilitesEmploi = $html->tag( 'h2', 'Disponibilités emploi' ).$disponibilitesEmploi;
 				}*/
 
 				// Situation professionnelle
@@ -239,7 +254,23 @@
 						'Dsp.topisogrorechemploi',
 						'Dsp.accoemploi',
 						'Dsp.libcooraccoemploi',
-						'Dsp.topprojpro',
+						'Dsp.topprojpro'
+					),
+					array(
+						'options' => $options
+					)
+				);
+
+				if( !empty( $situationProfessionnelle ) ) {
+					$situationProfessionnelle = $html->tag( 'h2', 'Situation professionnelle' ).$situationProfessionnelle;
+				}
+				
+				if ($cg=='cg58')
+					$situationProfessionnelle .= $dsphm->details( $dsp, 'Detailprojpro', 'projpro', 'libautrprojpro', $options['Detailprojpro']['projpro'] );
+				
+				$situationProfessionnelle .= $default->view(
+					$dsp,
+					array(
 						'Dsp.libemploirech',
 						'Dsp.libsecactrech',
 						'Dsp.topcreareprientre',
@@ -249,9 +280,18 @@
 						'options' => $options
 					)
 				);
-
-				if( !empty( $situationProfessionnelle ) ) {
-					$situationProfessionnelle = $html->tag( 'h2', 'Situation professionnelle' ).$situationProfessionnelle;
+				
+				if ($cg=='cg58') {
+					$situationProfessionnelle .= $default->view(
+						$dsp,
+						array(
+							'Dsp.libformenv'
+						),
+						array(
+							'options' => $options
+						)
+					);
+					$situationProfessionnelle .= $dsphm->details( $dsp, 'Detailfreinform', 'freinform', null, $options['Detailfreinform']['freinform'] );
 				}
 				/*$rows = array(
 					array(
@@ -332,10 +372,7 @@
 				$mobilite = $default->view(
 					$dsp,
 					array(
-						'Dsp.topmoyloco',
-						'Dsp.toppermicondub',
-						'Dsp.topautrpermicondu',
-						'Dsp.libautrpermicondu'
+						'Dsp.topmoyloco'
 					),
 					array(
 						'options' => $options
@@ -343,6 +380,22 @@
 				);
 				if( !empty( $mobilite ) ) {
 					$mobilite = $html->tag( 'h2', 'Mobilité' ).$mobilite;
+				}
+				
+				if ($cg=='cg58') {
+					$mobilite .= $dsphm->details( $dsp, 'Detailmoytrans', 'moytrans', 'libautrmoytrans', $options['Detailmoytrans']['moytrans'] );
+				
+					$mobilite .= $default->view(
+						$dsp,
+						array(
+							'Dsp.toppermicondub',
+							'Dsp.topautrpermicondu',
+							'Dsp.libautrpermicondu'
+						),
+						array(
+							'options' => $options
+						)
+					);
 				}
 
 				/*$rows = array(
@@ -377,8 +430,7 @@
 				$difficultesLogement = $default->view(
 					$dsp,
 					array(
-						'Dsp.natlog',
-						'Dsp.demarlog',
+						'Dsp.natlog'
 						// FIXME
 	// 					'Dsp.topautrpermicondu',
 	// 					'Dsp.libautrpermicondu'
@@ -387,9 +439,23 @@
 						'options' => $options
 					)
 				);
+				
 				if( !empty( $difficultesLogement ) ) {
 					$difficultesLogement = $html->tag( 'h2', 'Difficultés logement' ).$difficultesLogement;
 				}
+				
+				if ($cg=='cg58')
+					$difficultesLogement .= $dsphm->details( $dsp, 'Detailconfort', 'confort', null, $options['Detailconfort']['confort'] );
+				
+				$difficultesLogement .= $default->view(
+					$dsp,
+					array(
+						'Dsp.demarlog'
+					),
+					array(
+						'options' => $options
+					)
+				);
 
 				/*$rows = array(
 					array(
@@ -418,7 +484,7 @@
 				$diflogs = $dsphm->details( $dsp, 'Detaildiflog', 'diflog', 'libautrdiflog', $options['Detaildiflog']['diflog'] );
 				$diflogs = $html->tag( 'h3', 'Détails difficultés logement' ).$diflogs;
 
-				$situationSolciale = array( $generalites, $difficultes, $accosocfam, $accosocindi, $difdisps, $nivetus, $disponibilitésEmploi, $situationProfessionnelle, $mobilite, $natmobs, $difficultesLogement, $diflogs );
+				$situationSolciale = array( $generalites, $difficultes, $accosocfam, $accosocindi, $difdisps, $nivetus, $disponibilitesEmploi, $situationProfessionnelle, $mobilite, $natmobs, $difficultesLogement, $diflogs );
 				$situationSolciale = implode( '', $situationSolciale );
 				if( !empty( $situationSolciale ) ) {
 					echo $html->tag( 'h2', 'Situation sociale' ).$situationSolciale;

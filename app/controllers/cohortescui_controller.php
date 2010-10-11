@@ -4,7 +4,7 @@
     class CohortescuiController extends AppController
     {
         var $name = 'Cohortescui';
-        var $uses = array( 'Canton', 'Cohortecui', 'Personne', 'Option', 'Cui', 'Typeorient', 'Action', 'Orientstruct', 'Accoemploi', 'Adresse', 'Serviceinstructeur', 'Suiviinstruction', 'Referent', 'Structurereferente', 'Zonegeographique' );
+        var $uses = array( 'Canton', 'Cohortecui', 'Personne', 'Option', 'Cui', 'Typeorient', 'Action', 'Orientstruct', /*'Accoemploi',*/ 'Adresse', 'Serviceinstructeur', 'Suiviinstruction', 'Referent', 'Structurereferente', 'Zonegeographique', 'Dossier' );
         var $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
         var $helpers = array( 'Csv', 'Ajax' );
@@ -26,7 +26,7 @@
             $return = parent::beforeFilter();
             $this->set( 'oridemrsa', $this->Option->oridemrsa() );
             $this->set( 'typeserins', $this->Option->typeserins() );
-            $this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );
+            //$this->set( 'accoemplois', $this->Accoemploi->find( 'list' ) );
             $this->set( 'printed', $this->Option->printed() );
             $struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
             $this->set( 'struct', $struct );

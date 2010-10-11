@@ -1,201 +1,374 @@
 <?php
-    class Structurereferente extends AppModel
-    {
-        var $name = 'Structurereferente';
-        var $useTable = 'structuresreferentes';
-        var $displayField = 'lib_struc';
-        var $order = array( 'lib_struc ASC' );
+	class Structurereferente extends AppModel
+	{
+		public $name = 'Structurereferente';
 
-        var $actsAs = array(
-            'Enumerable' => array(
+		public $displayField = 'lib_struc';
+
+		public $order = array( 'lib_struc ASC' );
+
+		public $actsAs = array(
+			'Enumerable' => array(
 				'fields' => array(
 					'contratengagement' => array( 'type' => 'no', 'domain' => 'default' ),
 					'apre' => array( 'type' => 'no', 'domain' => 'default' ),
-                    'orientation' => array( 'type' => 'no', 'domain' => 'default' ),
-                    'pdo' => array( 'type' => 'no', 'domain' => 'default' )
+					'orientation' => array( 'type' => 'no', 'domain' => 'default' ),
+					'pdo' => array( 'type' => 'no', 'domain' => 'default' )
 				)
-            )
-        );
+			),
+			'Formattable'
+		);
 
-
-        function list1Options( $conditions = array() ) {
-            $tmp = $this->find(
-                'all',
-                array(
-                    'conditions' => $conditions,
-                    'fields' => array(
-                        'Structurereferente.id',
-                        'Structurereferente.typeorient_id',
-                        'Structurereferente.lib_struc'
-                    ),
-                    'order'  => array( 'Structurereferente.lib_struc ASC' ),
-                    'recursive' => -1
-                )
-            );
-
-            $return = array();
-            foreach( $tmp as $key => $value ) {
-                $return[$value['Structurereferente']['typeorient_id'].'_'.$value['Structurereferente']['id']] = $value['Structurereferente']['lib_struc'];
-            }
-            return $return;
-        }
-
-
-        /** ********************************************************************
-        *
-        *** *******************************************************************/
-
-        function listOptions() {
-			return $this->find(
-				'list',
+		public $validate = array(
+			'lib_struc' => array(
 				array(
+						'rule' => 'notEmpty',
+						'message' => 'Champ obligatoire'
+				),
+				array(
+						'rule' => 'isUnique',
+						'message' => 'Valeur déjà utilisée'
+				),
+			),
+			'num_voie' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'type_voie' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'nom_voie' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'code_postal' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'ville' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'code_insee' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'typeorient_id'=> array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'apre' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			),
+			'contratengagement' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			)
+		);
+
+		public $belongsTo = array(
+			'Typeorient' => array(
+				'className' => 'Typeorient',
+				'foreignKey' => 'typeorient_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
+
+		public $hasOne = array(
+			'Contratinsertion' => array(
+				'className' => 'Contratinsertion',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+
+		public $hasMany = array(
+			'Cui' => array(
+				'className' => 'Cui',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Bilanparcours' => array(
+				'className' => 'Bilanparcours',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Entretien' => array(
+				'className' => 'Entretien',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Decisionparcours' => array(
+				'className' => 'Decisionparcours',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Apre' => array(
+				'className' => 'Apre',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Permanence' => array(
+				'className' => 'Permanence',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'PersonneReferent' => array(
+				'className' => 'PersonneReferent',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Precosreorient' => array(
+				'className' => 'Precosreorient',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Propopdo' => array(
+				'className' => 'Propopdo',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Rendezvous' => array(
+				'className' => 'Rendezvous',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Referent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Orientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+
+
+		public $hasAndBelongsToMany = array(
+			'Zonegeographique' => array(
+				'className' => 'Zonegeographique',
+				'joinTable' => 'structuresreferentes_zonesgeographiques',
+				'foreignKey' => 'structurereferente_id',
+				'associationForeignKey' => 'zonegeographique_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'StructurereferenteZonegeographique'
+			)
+		);
+
+		/**
+		* Difficile à mettre en cache du fait des conditions
+		*/
+
+		public function list1Options( $conditions = array() ) {
+			$tmp = $this->find(
+				'all',
+				array(
+					'conditions' => $conditions,
 					'fields' => array(
 						'Structurereferente.id',
-						'Structurereferente.lib_struc',
-						'Typeorient.lib_type_orient'
-					),
-					'recursive' => 0,
-					'order' => array(
-						'Typeorient.lib_type_orient ASC',
+						'Structurereferente.typeorient_id',
 						'Structurereferente.lib_struc'
-					)
+					),
+					'order'  => array( 'Structurereferente.lib_struc ASC' ),
+					'recursive' => -1
 				)
 			);
-            /*//$typesorients = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ), 'conditions' => array( 'Typeorient.parentid IS NULL' ), 'order' => array( 'Typeorient.lib_type_orient ASC' ) ) );
 
-            $list = array();
-            ///FIXME: Voir comment mieux faire (sans ça, pb array_combine), mais pour le moment fonctionne
-            if( Configure::read( 'with_parentid' ) == true ) {
-                $typesorients = $this->Typeorient->find( 'all', array( 'conditions' => array( 'Typeorient.parentid IS NOT NULL' ), 'order' => array( 'Typeorient.lib_type_orient ASC' ) ) );
-            }
-            else {
-                $typesorients = $this->Typeorient->find( 'all', array('order' => array( 'Typeorient.lib_type_orient ASC' ) ) );
-            }
+			$results = array();
+			foreach( $tmp as $key => $value ) {
+				$results[$value['Structurereferente']['typeorient_id'].'_'.$value['Structurereferente']['id']] = $value['Structurereferente']['lib_struc'];
+			}
 
-            foreach( $typesorients as $typeorient ) {
-                $optgroup = Set::classicExtract( $typeorient, 'Typeorient.lib_type_orient' );
+			return $results;
+		}
 
-				$structures = Set::extract( $typeorient, 'Structurereferente' );
-				if( !empty( $structures ) ) {
-					$structures = Set::combine( $typeorient, 'Structurereferente.{n}.id', 'Structurereferente.{n}.lib_struc' );
+
+		/**
+		* Récupère la liste des structures référentes groupées par type d'orientation
+		* Cette liste est mise en cache, donc -> FIXME: supprimer le cache quand les
+		* structuresreferentes sont modifiées.
+		*/
+
+		public function listOptions() {
+			$cacheKey = Inflector::underscore( "{$this->alias}_".__FUNCTION__ );
+			$results = Cache::read( $cacheKey );
+
+			if( $results === false ) {
+				//FIXME: à faire de façon plus propre
+				$this->unbindModelAll();
+				$this->bindModel( array( 'belongsTo' => array( 'Typeorient' ) ) );
+				$results = $this->find(
+					'list',
+					array(
+						'fields' => array(
+							'Structurereferente.id',
+							'Structurereferente.lib_struc',
+							'Typeorient.lib_type_orient'
+						),
+						'recursive' => 0,
+						'order' => array(
+							'Typeorient.lib_type_orient ASC',
+							'Structurereferente.lib_struc'
+						)
+					)
+				);
+
+				Cache::write( $cacheKey, $results );
+			}
+
+			return $results;
+		}
+
+		/**
+		*
+		*/
+
+		public function listePourApre() {
+			///Récupération de la liste des référents liés à l'APRE
+			$structsapre = $this->Structurereferente->find( 'list', array( 'conditions' => array( 'Structurereferente.apre' => 'O' ) ) );
+			$this->set( 'structsapre', $structsapre );
+		}
+
+		/**
+		*   Retourne la liste des structures référentes filtrée selon un type donné
+		* @param array $types ( array( 'apre' => true, 'contratengagement' => true ) )
+		* par défaut, toutes les clés sont considérées commen étant à false
+		*/
+
+		public function listeParType( $types ) {
+	//             $connection = ConnectionManager::getInstance();
+	//             $dbo = $connection->getDataSource( $this->useDbConfig );
+	//             $SQ = $dbo->startQuote;
+	//             $EQ = $dbo->endQuote;
+
+			$conditions = array();
+
+			foreach( array( 'apre', 'contratengagement', 'orientation', 'pdo' ) as $type ) {
+				$bool = Set::classicExtract( $types, $type );
+				if( !empty( $bool ) ) {
+					$conditions[] = "Structurereferente.{$type} = 'O'";
 				}
+			}
 
-                if( !empty( $structures ) ) {
-                    if( !empty( $typeorient ) ) {
-                        $list[$optgroup] = $structures;
-                    }
-                }
-            }
-            return $list;*/
-        }
-
-        var $hasAndBelongsToMany = array(
-            'Zonegeographique' => array(
-                'classname'             => 'Zonegeographique',
-                'joinTable'             => 'structuresreferentes_zonesgeographiques',
-                'foreignKey'            => 'structurereferente_id',
-                'associationForeignKey' => 'zonegeographique_id'
-            )
-        );
-
-        var $belongsTo = array(
-            'Typeorient' => array(
-                'classname' => 'Typeorient',
-                'foreignKey' => 'typeorient_id'
-            )
-        );
-
-        var $hasMany = array(
-            'Referent' => array(
-                'classname' => 'Referent',
-                'foreignKey' => 'structurereferente_id'
-            ),
-            'Orientstruct' => array(
-                'classname' => 'Orientstruct',
-                'foreignKey' => 'structurereferente_id'
-            ),
-            'Permanence' => array(
-                'classname' => 'Permanence',
-                'foreignKey' => 'structurereferente_id'
-            )
-        );
-
-        var $validate = array(
-            'lib_struc' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'num_voie' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'type_voie' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'nom_voie' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'code_postal' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'ville' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'code_insee' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'typeorient_id'=> array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'apre' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            ),
-            'contratengagement' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            )
-        );
-
-        /**
-        *
-        */
-
-        function listePourApre() {
-            ///Récupération de la liste des référents liés à l'APRE
-            $structsapre = $this->Structurereferente->find( 'list', array( 'conditions' => array( 'Structurereferente.apre' => 'O' ) ) );
-            $this->set( 'structsapre', $structsapre );
-        }
-
-        /**
-        *   Retourne la liste des structures référentes filtrée selon un type donné
-        * @param array $types ( array( 'apre' => true, 'contratengagement' => true ) )
-        * par défaut, toutes les clés sont considérées commen étant à false
-        */
-
-        function listeParType( $types ) {
-//             $connection = ConnectionManager::getInstance();
-//             $dbo = $connection->getDataSource( $this->useDbConfig );
-//             $SQ = $dbo->startQuote;
-//             $EQ = $dbo->endQuote;
-
-            $conditions = array();
-
-            foreach( array( 'apre', 'contratengagement', 'orientation', 'pdo' ) as $type ) {
-                $bool = Set::classicExtract( $types, $type );
-                if( !empty( $bool ) ) {
-                    $conditions[] = "Structurereferente.{$type} = 'O'";
-                }
-            }
-
-            return $this->find( 'list', array( 'conditions' => $conditions, 'recursive' => -1 ) );
-        }
-    }
-
+			return $this->find( 'list', array( 'conditions' => $conditions, 'recursive' => -1 ) );
+		}
+	}
 ?>

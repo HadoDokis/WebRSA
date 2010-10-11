@@ -70,7 +70,7 @@
                 $apre = $this->Apre->find( 'first', array( 'conditions' => array( 'Apre.id' => $id ) ) );
                 $this->set( 'apre', $apre );
 
-                $dossier_rsa_id = $this->Personne->dossierId( Set::classicExtract( $apre, 'Apre.personne_id' ) );
+                $dossier_id = $this->Personne->dossierId( Set::classicExtract( $apre, 'Apre.personne_id' ) );
             }
             else if( $this->action == 'edit' ) {
                 $relanceapre_id = $id;
@@ -80,17 +80,17 @@
                 $personne_id = Set::classicExtract( $relanceapre, 'Apre.personne_id' );
                 $apre = $this->Apre->find( 'first', array( 'conditions' => array( 'Apre.personne_id' => $personne_id ) ) );
                 $this->set( 'apre', $apre );
-                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
+                $dossier_id = $this->Personne->dossierId( $personne_id );
             }
 
-            $this->assert( !empty( $dossier_rsa_id ), 'invalidParameter' );
-            $this->set( 'dossier_id', $dossier_rsa_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+            $this->set( 'dossier_id', $dossier_id );
 
 
-            if( !$this->Jetons->check( $dossier_rsa_id ) ) {
+            if( !$this->Jetons->check( $dossier_id ) ) {
                 $this->Relanceapre->rollback();
             }
-            $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 
             if( !empty( $this->data ) ){
@@ -99,7 +99,7 @@
                     $saved = $this->Relanceapre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 
                     if( $saved ) {
-                        $this->Jetons->release( $dossier_rsa_id );
+                        $this->Jetons->release( $dossier_id );
                         $this->Relanceapre->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array(  'controller' => 'apres','action' => 'index', Set::classicExtract( $apre, 'Apre.personne_id' ) ) );

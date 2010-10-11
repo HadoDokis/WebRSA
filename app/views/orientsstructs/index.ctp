@@ -31,7 +31,7 @@
                 <th>Préconisation d'orientation</th>
                 <th>Structure référente</th>
                 <?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ):?><th>Etat de l'orientation</th><?php endif;?>
-                <th colspan="3" class="action">Actions</th>
+                <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -68,8 +68,7 @@
                             'Imprimer la notification',
                             array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
                             $permissions->check( 'gedooos', 'orientstruct' ) && $orientstruct['Orientstruct']['imprime']
-                        ),
-                        $html->reorientLink( 'Réorientation', array( 'controller' => 'demandesreorient', 'action' => 'add', $orientstruct['Orientstruct']['id'] ), $isOrient )
+                        )
                     );
 
                     echo $html->tableCells( $cells, array( 'class' => 'odd' ), array( 'class' => 'even' ) );
@@ -78,36 +77,5 @@
         </tbody>
     </table>
     <?php  endif;?>
-
-<br />
-
-<?php  if( !empty( $demandesreorients ) ):?>
-    <h2>Réorientation</h2>
-    <?php
-        echo $default->index(
-            $demandesreorients,
-            array(
-                'VxTypeorient.lib_type_orient',
-                'VxStructurereferente.lib_struc',
-                'VxReferent.nom_complet',
-//                 'Motifdemreorient.name',
-//                 'Demandereorient.urgent' => array( 'type' => 'boolean' ),
-                'Demandereorient.created',
-                'Seanceep.dateseance' => array( 'label' => 'Date de la séance' ),
-//                 'NvOrientstruct.id',
-            ),
-            array(
-                'actions' => array(
-                    'Demandereorient.view',
-                    'Demandereorient.edit',
-                    'Demandereorient.delete',
-                ),
-//                 'add' => array( 'Demandereorient.add' => $this->params['pass'][0] ),
-                'options' => $options,
-                'domain' => 'demandereorient'
-            )
-        );
-    ?>
-<?php endif;?>
 </div>
 <div class="clearer"><hr /></div>

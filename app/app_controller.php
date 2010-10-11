@@ -3,9 +3,9 @@
     {
         var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons'/*, 'Xcontroller'*/, 'Default' );
         var $helpers = array( 'Html', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number' );
-        var $uses = array( 'Dossier', 'User', 'Connection', 'Structurereferente' );
+        var $uses = array( 'User', 'Connection' );
 
-// 		public $persistModel = true;
+ 		//public $persistModel = true;
 
 		/**
 		* Chargement et mise en cache (session) des permissions de l'utilisateur
@@ -22,6 +22,7 @@
                     'first',
                     array(
                         'conditions' => array(
+							'model' => 'Utilisateur',
                             'Aro.foreign_key' => $this->Session->read( 'Auth.User.id' )
                         )
                     )
@@ -47,7 +48,6 @@
                 if( !empty( $parentAros ) && !empty( $parentAros['Aro'] ) && !empty( $parentAros['Aco'] ) ) {
 	                $permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
                 }
-
                 if( !empty( $Aro ) ) {
                     // FIXME: trié par parent / fils ? .. un seul niveau
                     $sql = 'SELECT acos.alias AS aco, aros_acos._create, aros.alias AS aro
@@ -56,7 +56,7 @@
                                     LEFT OUTER JOIN aros ON ( aros_acos.aro_id = aros.id )
                                 WHERE aros_acos.aro_id IN ( '.$Aro['Aro']['id'].','.$Aro['Aro']['parent_id'].' )
                                 ORDER BY aco, aro ASC';
-                    $data = $this->User->query( $sql ); // FIXME: c'est sale ?
+                    $data = $this->Connection->query( $sql ); // FIXME: c'est sale ?
 
                     $permissions = Set::merge( $permissions, Set::combine( $data, '{n}.0.aco', '{n}.0._create' ) );
                     foreach( $permissions as $key => $permission ) {
@@ -73,13 +73,13 @@
 		*/
 
         protected function _loadZonesgeographiques() {
-            if( $this->Session->check( 'Auth.User' ) && !$this->Session->check( 'Auth.Zonegeographique' ) ) {
+            if( $this->Session->check( 'Auth.User' ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) && !$this->Session->check( 'Auth.Zonegeographique' ) ) {
                 $sql = 'SELECT users_zonesgeographiques.zonegeographique_id, zonesgeographiques.codeinsee
                             FROM users_zonesgeographiques
                                 LEFT JOIN zonesgeographiques
                                     ON users_zonesgeographiques.zonegeographique_id = zonesgeographiques.id
                             WHERE users_zonesgeographiques.user_id='.$this->Session->read( 'Auth.User.id' ).';';
-                $results = $this->Dossier->query( $sql ); // FIXME: c'est sale ?
+                $results = $this->Connection->query( $sql ); // FIXME: c'est sale ?
                 if( count( $results ) > 0 ) {
                     $zones = array();
                     foreach( $results as $result ) {
@@ -91,249 +91,24 @@
         }
 
         /**
-        * Vérifie si on est dans un contrôleur de paramétrage ou non.
-        * @return boolean true si on est dans une action d'administration, false sinon
-        * @access protected
-        */
-
-        protected function _isAdminAction() {
-			$adminActions = array(
-				'apres', 'parametresfinanciers', 'tiersprestatairesapres',
-                'droits',
-                'parametrages',
-                'servicesinstructeurs',
-                'users',
-                'structuresreferentes'
-			);
-
-            $name = Inflector::underscore( $this->name );
-
-			return ( Configure::read( 'Admin.unlockall' ) || in_array( $name, $adminActions ) );
-        }
-
-        /**
-        * Vérifie que pour toutes les structures référentes, le fait qu'elles gèrent
-        * ou non l'Apre ou le contrat d'engagement soit décidé.
-        * Si la décision n'a pas été prise pour au moins une structure, on bloque
-        * l'utilisateur avec une erreur 401 et un message d'erreur approprié.
-		*
-        * INFO: n'est réellement exécuté que la première fois
-		*
-        * @access protected
-        */
-
-        protected function _checkDecisionsStructures() {
-            if( !$this->_isAdminAction() ) {
-				if( !$this->Session->read( 'AppController.checkDecisionsStructures' ) ) {
-					$structsSansApre = $this->Structurereferente->find(
-						'list',
-						array(
-							'conditions' => array(
-								'Structurereferente.apre' => NULL,
-							)
-						)
-					);
-
-					$structsSansContrat = $this->Structurereferente->find(
-						'list',
-						array(
-							'conditions' => array(
-								'Structurereferente.contratengagement' => NULL,
-							)
-						)
-					);
-
-					$missing = array(
-						'structurereferente' => array(
-							__( 'apre', true )                   => ( count( $structsSansApre ) > 0 ),
-							__( 'contratengagement', true )      => ( count( $structsSansContrat ) > 0 )
-						)
-					);
-
-					if( ( count( $structsSansApre ) + count( $structsSansContrat ) ) > 0 ) {
-						$this->Session->write( 'AppController.checkDecisionsStructures', false );
-						$this->cakeError(
-							'incompleteStructure',
-							array(
-								'missing' => $missing,
-								'structures' => array_unique( Set::merge( $structsSansApre, $structsSansContrat ) )
-							)
-						);
-					}
-					else {
-						$this->Session->write( 'AppController.checkDecisionsStructures', true );
-					}
-				}
-            }
-        }
-
-        /**
-        * @access protected
-        */
-
-        function _checkDonneesUtilisateursEtServices() {
-            if( !$this->_isAdminAction() ) {
-				if( !$this->Session->read( 'AppController.checkDonneesUtilisateursEtServices' ) ) {
-					$user = $this->Session->read( 'Auth.User' );
-					$service = $this->Session->read( 'Auth.Serviceinstructeur' );
-
-					$missing = array(
-						'user' => array(
-							__( 'nom', true )                   => empty( $user['nom'] ),
-							__( 'prenom', true )                => empty( $user['prenom'] ),
-							__( 'service instructeur', true )   => empty( $user['serviceinstructeur_id'] ),
-							__( 'date_deb_hab', true )          => empty( $user['date_deb_hab'] ),
-							__( 'date_fin_hab', true )          => empty( $user['date_fin_hab'] )
-						),
-						'serviceinstructeur' => array(
-							__( 'lib_service', true )           => empty( $service['lib_service'] ),
-							__( 'numdepins', true )             => empty( $service['numdepins'] ),
-							__( 'typeserins', true )            => empty( $service['typeserins'] ),
-							__( 'numcomins', true )             => empty( $service['numcomins'] ),
-							__( 'numagrins', true )             => empty( $service['numagrins'] ),
-						)
-					);
-
-					if( ( array_search( true, $missing['user'] ) !== false ) || ( array_search( true, $missing['serviceinstructeur'] ) !== false ) ) {
-						$this->Session->write( 'AppController.checkDonneesUtilisateursEtServices', false );
-						$this->cakeError( 'incompleteUser', array( 'missing' => $missing ) );
-					}
-					else {
-						$this->Session->write( 'AppController.checkDonneesUtilisateursEtServices', true );
-					}
-				}
-            }
-        }
-
-        /**
         * @access protected
         */
 
         function _checkHabilitations() {
-            if( !$this->_isAdminAction() ) {
-                $habilitations = array(
-                    'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
-                    'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' ),
-                );
+            $habilitations = array(
+                'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
+                'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' ),
+            );
 
-                if( !empty( $habilitations['date_deb_hab'] ) && ( strtotime( $habilitations['date_deb_hab'] ) >= mktime() ) ) {
-                    $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
-                }
+            if( !empty( $habilitations['date_deb_hab'] ) && ( strtotime( $habilitations['date_deb_hab'] ) >= mktime() ) ) {
+                $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
+            }
 
-				/// FIXME: si la date d'habilitation est celle du jour il n'est plus habilité du tout
-                if( !empty( $habilitations['date_fin_hab'] ) && ( strtotime( $habilitations['date_fin_hab'] ) < mktime() ) ) {
-                    $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
-                }
+			/// FIXME: si la date d'habilitation est celle du jour il n'est plus habilité du tout
+            if( !empty( $habilitations['date_fin_hab'] ) && ( strtotime( $habilitations['date_fin_hab'] ) < mktime() ) ) {
+                $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
             }
         }
-
-		/**
-		*
-		*/
-
-        function _checkDonneesApre() {
-            if( !$this->_isAdminAction() ) {
-				if( !$this->Session->read( 'AppController.checkDonneesApre' ) ) {
-					$montantMaxComplementaires = Configure::read( 'Apre.montantMaxComplementaires' );
-					$periodeMontantMaxComplementaires = Configure::read( 'Apre.periodeMontantMaxComplementaires' );
-
-					if( empty( $montantMaxComplementaires ) || empty( $periodeMontantMaxComplementaires ) ) {
-						$this->Session->write( 'AppController.checkDonneesApre', false );
-						$this->cakeError(
-							'incompleteApre',
-							array(
-								'montantMaxComplementaires' => $montantMaxComplementaires,
-								'periodeMontantMaxComplementaires' => $periodeMontantMaxComplementaires
-							)
-						);
-					}
-					else {
-						$this->Session->write( 'AppController.checkDonneesApre', true );
-					}
-				}
-			}
-		}
-
-		/**
-		*
-		*/
-
-        function _checkWebrsaInc( $paths = array() ) {
-            if( !$this->_isAdminAction() ) {
-				if( !$this->Session->read( 'AppController.checkWebrsaInc' ) ) {
-					$errorPaths = array();
-					if( !empty( $paths ) ) {
-						foreach( $paths as $path ) {
-							$value = Configure::read( $path );
-							if( empty( $value ) && !is_numeric( $value ) ) {
-								$errorPaths[] = $path;
-							}
-						}
-					}
-					if( !empty( $errorPaths ) ) {
-						$this->Session->write( 'AppController.checkWebrsaInc', false );
-						$this->cakeError( 'webrsaInc', array( 'paths' => $errorPaths ) );
-					}
-					else {
-						$this->Session->write( 'AppController.checkWebrsaInc', true );
-					}
-				}
-			}
-		}
-
-		/**
-		*
-		*/
-
-        function _checkMissingBinaries( $binaries = array() ) {
-            if( !$this->_isAdminAction() ) {
-				if( !$this->Session->read( 'AppController.checkMissingBinaries' ) ) {
-					$missing = array();
-					if( !empty( $binaries ) ) {
-						foreach( $binaries as $binary ) {
-							$which = exec( "which {$binary}" );
-							if( empty( $which ) ) {
-								$missing[] = $binary;
-							}
-						}
-					}
-					if( !empty( $missing ) ) {
-						$this->Session->write( 'AppController.checkMissingBinaries', false );
-						$this->cakeError( 'missingBinaries', array( 'binaries' => $missing ) );
-					}
-					else {
-						$this->Session->write( 'AppController.checkMissingBinaries', true );
-					}
-				}
-			}
-		}
-
-		/**
-		*
-		*/
-
-        function _checkTmpPdfDirectory( $dir ) {
-            if( !$this->_isAdminAction() ) {
-				if( !$this->Session->read( 'AppController.checkTmpPdfDirectory' ) ) {
-					$notWritable = array();
-					$oldUmask = umask(0);
-
-					if( !( is_dir( $dir ) && is_writable( $dir ) ) && !@mkdir( $dir, 0777, true ) ) {
-						$notWritable[] = $dir;
-					}
-
-					umask( $oldUmask );
-
-					if( !empty( $notWritable ) ) {
-						$this->Session->write( 'AppController.checkTmpPdfDirectory', false );
-						$this->cakeError( 'notWritableDirs', array( 'directories' => $notWritable ) );
-					}
-					else {
-						$this->Session->write( 'AppController.checkTmpPdfDirectory', true );
-					}
-				}
-			}
-		}
 
 		/**
 		*
@@ -451,8 +226,6 @@
 					$this->redirect("/users/login");
 				}
 				else {
-					$this->_checkWebrsaInc( array( 'Cohorte.dossierTmpPdfs' ) );
-					$this->_checkMissingBinaries( array( 'pdftk' ) );
 
 					$this->_loadPermissions();
 					$this->_loadZonesgeographiques();
@@ -463,11 +236,7 @@
 					$this->_loadServiceInstructeur();
 
 					// Vérifications de l'état complet de certaines données dans la base
-					$this->_checkDecisionsStructures();
-					$this->_checkDonneesUtilisateursEtServices();
 					$this->_checkHabilitations();
-					$this->_checkDonneesApre();
-					$this->_checkTmpPdfDirectory( Configure::read( 'Cohorte.dossierTmpPdfs' ) );
 
 					$this->_checkPermissions();
 				}

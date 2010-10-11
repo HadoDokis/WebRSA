@@ -86,7 +86,7 @@
                                         array(
                                             $html->viewLink(
                                                 'Voir les informations financières',
-                                                array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
+                                                array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_id'] ),
                                                 $permissions->check( 'infosfinancieres', 'view' )
                                             ),
                                             array( 'class' => 'noprint' )
@@ -108,7 +108,7 @@
                                         <td>'.$locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ).'</td>
                                         <td rowspan="'.$rowspan.'" class="noprint">'. $html->viewLink(
                                             'Voir les informations financières',
-                                            array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
+                                            array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_id'] ),
                                             $permissions->check( 'infosfinancieres', 'view' )
                                         ).'</td>
                                     </tr>';
@@ -134,7 +134,7 @@
                                 $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
                                 $html->viewLink(
                                     'Voir les informations financières',
-                                    array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_rsa_id'] ),
+                                    array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_id'] ),
                                     $permissions->check( 'infosfinancieres', 'view' )
                                 ),
 

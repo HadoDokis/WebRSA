@@ -1,6 +1,6 @@
 <?php $this->pageTitle = 'Liste des indus';?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id, 'personne_id' => $infofinanciere['Personne']['id'] ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_id, 'personne_id' => $infofinanciere['Personne']['id'] ) );?>
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
@@ -36,7 +36,7 @@
                                 h( $etatdosrsa[$infofinanciere['Situationdossierrsa']['etatdosrsa']] ),
                                 $locale->date( 'Date::short', $infofinanciere['Infofinanciere']['moismoucompta'] ),
 //                                 $locale->money( $indu[0]['mt_allocation_comptabilisee'] ),
-                                $locale->money( $infofinanciere[0]['mt_indu_constate'] ),
+                                $locale->money( $infofinanciere[0]['mt_indus_constate'] ),
                                 $locale->money( $infofinanciere[0]['mt_remises_indus'] ),
                                 $locale->money( $infofinanciere[0]['mt_indus_transferes_c_g'] ),
                                 $locale->money( $infofinanciere[0]['mt_annulations_faible_montant'] ),

@@ -99,11 +99,14 @@ function majCru($cru, $cruParent=null) {
 		$aro['Aro']['alias'] = $cru['alias'];
 		if (!empty($cruParent) && !empty($cruParent['foreign_key'])) {
 			$aro['Aro']['parent_id'] = $this->Acl->Aro->field('id', $cruParent);
+			if( empty( $aro['Aro']['parent_id'] ) ) {
+				$aro['Aro']['parent_id'] = 0;
+			}
 		}
 		else {
 			$aro['Aro']['parent_id'] = 0;
 		}
-		
+
 		$this->Acl->Aro->save($aro);
 	}
 }
@@ -201,7 +204,7 @@ function litCruDroits($cru=null) {
 		//debug($mca['alias']);
 		//debug($droit);
 		if(!empty($droit))
-			$ret[$mca['alias']] = $this->Acl->check($cru, $mca['alias']);
+			$ret[$mca['alias']] = @$this->Acl->check($cru, $mca['alias']);
 		else
 			$ret[$mca['alias']] = 0;
 	}

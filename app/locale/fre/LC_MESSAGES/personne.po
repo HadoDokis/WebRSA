@@ -49,6 +49,12 @@ msgstr "N° identifiant Pôle Emploi"
 
 msgid "Personne.nom_personne"
 msgstr "Nom/Prénom Allocataire"
+
+msgid "Personne.numfixe"
+msgstr "N° de téléphone fixe"
+
+msgid "Personne.numport"
+msgstr "N° de téléphone portable"
 ###############################################################################
 
 msgid "Foyer.Modecontact.numtel"

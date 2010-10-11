@@ -17,7 +17,7 @@
 		*/
 
         function startTest() {
-			$this->Item =& ClassRegistry::init( 'Item' );
+			$this->Item = ClassRegistry::init( 'Item' );
 
 			// Detach all behaviors
 			$behaviors = array_values( $this->Item->Behaviors->attached() );

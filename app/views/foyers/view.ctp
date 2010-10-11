@@ -29,8 +29,8 @@
             </tr>
         </thead>-->
         <tbody>
-            <?foreach( $foyer['Personne'] as $personne ):?>
-                <?php
+            <?
+				foreach( $foyer['Personne'] as $personne ) {
                     echo $html->tableCells(
                         array(
                             h( $personne['qual'] ),
@@ -66,8 +66,8 @@
                         array( 'class' => 'odd' ),
                         array( 'class' => 'even' )
                     );
-                ?>
-            <?php endforeach;?>
+				}
+			?>
         </tbody>
     </table>
 </div>

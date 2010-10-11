@@ -2,8 +2,8 @@
 
 	class AdressefoyerFixture extends CakeTestFixture {
 		var $name = 'Adressefoyer';
-		var $table = 'adresses_foyers';
-		var $import = array( 'table' => 'adresses_foyers', 'connection' => 'default', 'records' => false);
+		var $table = 'adressesfoyers';
+		var $import = array( 'table' => 'adressesfoyers', 'connection' => 'default', 'records' => false);
 		var $records = array(
 			array(
 				'id' => '1',

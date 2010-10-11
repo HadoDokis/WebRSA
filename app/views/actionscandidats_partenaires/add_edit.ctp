@@ -9,8 +9,8 @@
 <?php
     echo $default->form(
         array(
-            'ActioncandidatPartenaire.actioncandidat_id',
-            'ActioncandidatPartenaire.partenaire_id'
+            'ActioncandidatPartenaire.actioncandidat_id' => array( 'type' => 'select', 'empty' => true, 'required' => true ),
+            'ActioncandidatPartenaire.partenaire_id' => array( 'type' => 'select', 'empty' => true, 'required' => true )
         ),
         array(
             'actions' => array(

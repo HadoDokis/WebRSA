@@ -110,7 +110,7 @@
                         $title = $pdo['Dossier']['numdemrsa'];
 
 
-                    $personne_id = $pdo['Personne']['id'];//Set::extract( $pdo, 'Propopdo.dossier_rsa_id');
+                    $personne_id = $pdo['Personne']['id'];//Set::extract( $pdo, 'Propopdo.dossier_id');
 //                     $pdo_id = Set::extract( $this->data, 'Propopdo.id');
 //                     $typepdo_id = Set::extract( $pdo, 'Propopdo.typepdo_id');
 //                     $decisionpdo_id = Set::extract( $pdo, 'Propopdo.decisionpdo_id');

@@ -13,7 +13,7 @@
         /**
         */
         function __construct() {
-            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'nouvelles' ) ) ) );
+            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index', 'nouvelles' ) ) ) );
             parent::__construct();
         }
 

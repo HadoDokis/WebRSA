@@ -45,13 +45,23 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach( $contratsinsertion as $contratinsertion ):?>
+                <?php foreach( $contratsinsertion as $index => $contratinsertion ):?>
                     <?php
                         /**
                         *   Règle de blocage du bouton modifier si le contrat est validé et que 
                         *   la date du jour est comprise dans les 24heures
                         */
                         $dateValidation = Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
+
+
+                        $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+                            <tbody>
+                                <tr>
+                                    <th>Type de demande</th>
+                                    <td>'.Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.type_demande' ), $options['type_demande'] ).'</td>
+                                </tr>
+                            </tbody>
+                        </table>';
 
                         $isValid = Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' );
                         $block = true;
@@ -106,11 +116,12 @@
                                     'Supprimer le CER ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'delete', $contratinsertion['Contratinsertion']['id'] ),
                                     $permissions->check( 'contratsinsertion', 'delete' )
-                                )
+                                ),
+                                array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 
                             ),
-                            array( 'class' => 'odd' ),
-                            array( 'class' => 'even' )
+                            array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+                            array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
                         );
                     ?>
                 <?php endforeach;?>

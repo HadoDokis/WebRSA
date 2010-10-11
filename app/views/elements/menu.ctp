@@ -1,6 +1,7 @@
 <div id="menu1Wrapper">
     <div class="menu1">
         <ul>
+        <?php if( $session->check( 'Auth.User' ) ): ?>
             <?php if( $permissions->check( 'cohortes', 'index' ) ) : ?>
                 <li id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                     <?php echo $html->link( 'Cohortes', '#' );?>
@@ -285,12 +286,33 @@
             <?php endif;?>
             <!-- Fin du Nouveau menu pour les Equipes pluridisciplinaires -->
 
-            <?php if( $permissions->check( 'indicateursmensuels', 'index' ) ) :?>
+            <?php if( $permissions->check( 'indicateursmensuels', 'index' ) || $permissions->check( 'statistiquesministerielles', '#' ) ) :?>
                 <li id="menu5one" >
                     <?php echo $html->link( 'Tableaux de bord', '#' );?>
                     <ul>
                         <?php if( $permissions->check( 'indicateursmensuels', 'index' ) ):?>
                             <li><?php echo $html->link( 'Indicateurs mensuels', array( 'controller' => 'indicateursmensuels', 'action' => 'index' ) );?></li>
+                        <?php endif;?>
+
+                         <?php if( $permissions->check( 'statistiquesministerielles', 'indicateursOrientations' ) || $permissions->check( 'statistiquesministerielles', 'indicateursOrganismes' ) || $permissions->check( 'statistiquesministerielles', 'indicateursNatureContrats' ) || $permissions->check( 'statistiquesministerielles', 'indicateursCaracteristiquesContrats' ) ):?>
+                            <li>
+                                <?php echo $html->link( 'Statistiques ministérielles', '#' );?>
+                                <ul>
+                                    <li>
+                                        <?php echo $html->link( 'Indicateurs d\'orientations',  array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateursOrientations'  ) );?>
+                                    </li>
+
+                                    <li>
+                                        <?php echo $html->link( 'Indicateurs d\'organismes',  array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateursOrganismes'  ) );?>
+                                    </li>
+                                    <!--<li>
+                                        <?php /*echo $html->link( 'Indicateurs de nature de contrats',  array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateursNatureContrats'  ) );*/?>
+                                    </li>-->
+                                    <li>
+                                        <?php echo $html->link( 'Indicateurs de caractéristiques de contrats',  array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateursCaracteristiquesContrats'  ) );?>
+                                    </li>
+                                </ul>
+                            </li>
                         <?php endif;?>
                     </ul>
                 </li>
@@ -322,7 +344,22 @@
                         </ul>
                     </li>
             <?php endif;?>
+			
+			<?php if( $permissions->check( 'visionneuses', 'index' ) ) :?>
+                <li id="menu7one" >
+                    <?php echo $html->link( 'Visionneuse', '#' );?>
+                    <ul>
+                        <?php if( $permissions->check( 'visionneuses', 'index' ) ):?>
+                            <li><?php echo $html->link( 'logs', array( 'controller' => 'visionneuses', 'action' => 'index' ) );?></li>
+                        <?php endif;?>						
+                    </ul>
+                </li>
+            <?php endif;?>
+			
             <li id="menu7one"><?php echo $html->link( 'Déconnexion '.$session->read( 'Auth.User.username' ), array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
+            <?php else: ?>
+                <li><?php echo $html->link( 'Connexion', array( 'controller' => 'users', 'action' => 'login' ) );?></li>
+            <?php endif; ?>
         </ul>
     </div>
 </div>

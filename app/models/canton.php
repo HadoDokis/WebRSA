@@ -1,57 +1,67 @@
 <?php
 	class Canton extends AppModel
 	{
-		var $name = 'Canton';
-		var $displayField = 'canton';
+		public $name = 'Canton';
 
-		/**
-		*	FIXME: docs
-		*/
+		public $displayField = 'canton';
 
-	/*typevoie			VARCHAR(4),
-	nomvoie				VARCHAR(25),
-	locaadr				VARCHAR(26),
-	codepos				VARCHAR(5),
-	numcomptt			VARCHAR(5),
-	canton				VARCHAR(30)*/
+		public $belongsTo = array(
+			'Zonegeographique' => array(
+				'className' => 'Zonegeographique',
+				'foreignKey' => 'zonegeographique_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
 
-		var $validate = array(
-            'canton' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'locaadr' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'codepos' => array(
-                array(
-                    'rule' => array( 'between', 5, 5 ),
-                    'message' => 'Le code postal se compose de 5 caractères',
+		public $validate = array(
+			'canton' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'zonegeographique_id' => array(
+				array(
+					'rule' => 'integer',
+					'message' => 'Veuillez entrer un nombre entier'
+				),
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				),
+			),
+			'locaadr' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'codepos' => array(
+				array(
+					'rule' => array( 'between', 5, 5 ),
+					'message' => 'Le code postal se compose de 5 caractères',
 					'allowEmpty' => true
-                )
-            ),
-            'numcomptt' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-                array(
-                    'rule' => array( 'between', 5, 5 ),
-                    'message' => 'Le code INSEE se compose de 5 caractères'
-                )
-            ),
+				)
+			),
+			'numcomptt' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				),
+				array(
+					'rule' => array( 'between', 5, 5 ),
+					'message' => 'Le code INSEE se compose de 5 caractères'
+				)
+			),
 		);
 
 		/**
 		*	FIXME: docs
 		*/
 
-		function selectList() {
+		public function selectList() {
 			$queryData = array(
 				'fields' => array( 'DISTINCT Canton.canton' ),
 				'conditions' => array( 'Canton.canton IS NOT NULL', 'Canton.canton <> \'\'' ),
@@ -61,20 +71,20 @@
 
 			$results = parent::find( 'all', $queryData );
 
-            if( !empty( $results ) ) {
-                $cantons = Set::extract( $results, '/Canton/canton' );
+			if( !empty( $results ) ) {
+				$cantons = Set::extract( $results, '/Canton/canton' );
 				return array_combine( $cantons, $cantons );
-            }
-            else {
-                return $results;
-            }
+			}
+			else {
+				return $results;
+			}
 		}
 
 		/**
 		*	FIXME: docs
 		*/
 
-		function queryConditions( $canton ) {
+		public function queryConditions( $canton ) {
 			$cantons = $this->find(
 				'all',
 				array(
@@ -110,8 +120,8 @@
 		*	FIXME: docs
 		*/
 
-        function beforeSave( $options = array() ) {
-            $return = parent::beforeSave( $options );
+		public function beforeSave( $options = array() ) {
+			$return = parent::beforeSave( $options );
 
 			foreach( array( 'nomvoie', 'locaadr', 'canton' ) as $field ) {
 				if( !empty( $this->data[$this->name][$field] ) ) {
@@ -119,7 +129,7 @@
 				}
 			}
 
-            return $return;
-        }
+			return $return;
+		}
 	}
 ?>

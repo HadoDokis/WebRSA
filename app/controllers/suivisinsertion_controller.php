@@ -20,17 +20,17 @@
         *
         *** *******************************************************************/
 
-        function index( $dossier_rsa_id = null ){
+        function index( $dossier_id = null ){
             // Vérification du format de la variable
-            $this->assert( valid_int( $dossier_rsa_id ), 'error404' );
+            $this->assert( valid_int( $dossier_id ), 'error404' );
 
             $details = array();
 
-            $tDossier = $this->Dossier->findById( $dossier_rsa_id, null, null, -1 );
+            $tDossier = $this->Dossier->findById( $dossier_id, null, null, -1 );
             $this->assert( !empty( $tDossier ), 'invalidParameter' );
             $details = Set::merge( $details, $tDossier );
 
-            $tFoyer = $this->Dossier->Foyer->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
+            $tFoyer = $this->Dossier->Foyer->findByDossierId( $dossier_id, null, null, -1 );
             $this->assert( !empty( $tFoyer ), 'invalidParameter' );
             $details = Set::merge( $details, $tFoyer );
 
@@ -158,7 +158,7 @@
             $this->set( 'typesorient', $typesorient );
             $this->set( 'typoscontrat', $typoscontrat );
 
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+            $this->set( 'dossier_id', $dossier_id );
             $this->set( 'details', $details );
 
         }

@@ -150,4 +150,10 @@
     Configure::write( 'Cui.taux.fixe', 60 );
     Configure::write( 'Cui.taux.prisencharge', 70 );
     Configure::write( 'Cui.taux.financementexclusif', 60 );
+
+	/**
+	*
+	*/
+
+    Configure::write( 'Jetons.disabled', false );
 ?>

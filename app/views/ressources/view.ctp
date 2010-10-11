@@ -37,7 +37,7 @@
             ?>
         </ul>-->
 
-<div id="ficheDspp">
+<div id="ficheRessource">
             <h2>Généralités concernant les ressources du trimestre</h2>
 
 <table>
@@ -88,28 +88,59 @@
                     </thead>
                     <tbody>
                         <?php foreach( $ressource['Ressourcemensuelle'] as $ressourcemensuelle ):?>
-                            <?php foreach( $ressourcemensuelle['Detailressourcemensuelle'] as $detailressourcemensuelle):?>
+                        
+                            <?php /*foreach( $ressourcemensuelle['Detailressourcemensuelle'] as $detailressourcemensuelle):*/?>
                                 <?php
-                                $indexNatress = trim( $detailressourcemensuelle['natress'] );
-                                //echo '<h4>'.strftime( '%B %Y', strtotime( $ressourcemensuelle['moisress'] ) ).'</h4>';
+
                                 echo $html->tableCells(
                                     array(
                                         h( strftime( '%B %Y', strtotime( $ressourcemensuelle['moisress'] ) ) ),
                                         h( $ressourcemensuelle['nbheumentra'] ),
                                         h( $ressourcemensuelle['mtabaneu'] ),
-                                        h( ( !empty( $indexNatress ) ) ? $natress[$indexNatress] : null ),
-                                        $locale->money( $detailressourcemensuelle['mtnatressmen'] ),
-                                        h( $detailressourcemensuelle['abaneu'] ),
-                                        h( $detailressourcemensuelle['dfpercress'] ),
-                                        h( $detailressourcemensuelle['topprevsubsress']? 'Oui' : 'Non' )
-
+                                        '',
+                                        '',
+                                        '',
+                                        '',
+                                        ''
                                     ),
-                                    array( 'class' => 'odd' ),
-                                    array( 'class' => 'even' )
+                                    array( 'class' => 'odd parent' ),
+                                    array( 'class' => 'even parent' )
                                 );
 
+//                                 $count = min( 1, count( $ressourcemensuelle['Detailressourcemensuelle'] ) );
+//                                 echo '<tr>
+//                                         <td rowspan="'.$count.'">
+//                                             '.h( strftime( '%B %Y', strtotime( $ressourcemensuelle['moisress'] ) ) ).'
+//                                         </td>
+//                                         <td rowspan="'.$count.'">
+//                                             '.h( $ressourcemensuelle['nbheumentra'] ).'
+//                                         </td>
+//                                         <td rowspan="'.$count.'">
+//                                             '.h( $ressourcemensuelle['mtabaneu'] ).'
+//                                         </td>
+//                                     </tr>';
+                                
+
+                                foreach( $ressourcemensuelle['Detailressourcemensuelle'] as $detailressourcemensuelle){
+                                    $indexNatress = trim( $detailressourcemensuelle['natress'] );
+                                    echo $html->tableCells(
+                                        array(
+                                            '',
+                                            '',
+                                            '',
+                                            h( ( !empty( $indexNatress ) ) ? $natress[$indexNatress] : null ),
+                                            $locale->money( $detailressourcemensuelle['mtnatressmen'] ),
+                                            h( $detailressourcemensuelle['abaneu'] ),
+                                            h( $detailressourcemensuelle['dfpercress'] ),
+                                            h( $detailressourcemensuelle['topprevsubsress']? 'Oui' : 'Non' )
+                                        ),
+                                        array( 'class' => 'odd' ),
+                                        array( 'class' => 'even' )
+                                    );
+                                }
+
                                 ?>
-                    <?php endforeach;?>
+                    <?php /*endforeach;*/?>
                 <?php endforeach;?>
                     </tbody>
                 </table>

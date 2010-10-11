@@ -116,9 +116,10 @@
 				webrsa v. <?php echo app_version();?> 2009 - 2010 @ Adullact.
 				<?php
 					echo sprintf(
-						"Page construite en %s secondes. %s. %s modèles",
+						"Page construite en %s secondes. %s / %s. %s modèles",
 						number_format( getMicrotime() - $GLOBALS['TIME_START'] , 2, ',', ' ' ),
-						$number->toReadableSize( memory_get_peak_usage( true ) ),
+						byteSize( memory_get_peak_usage( false ) ),
+						byteSize( memory_get_peak_usage( true ) ),
 						class_registry_models_count()
 					);
 				?>

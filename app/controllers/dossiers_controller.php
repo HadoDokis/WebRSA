@@ -1,55 +1,30 @@
 <?php
-    App::import( 'Sanitize' );
+	App::import( 'Sanitize' );
 
-    class DossiersController extends AppController
-    {
-        var $name = 'Dossiers';
-        var $uses = array(
-			'Canton',
-			'Dossier',
-			/*'Foyer',
-			'Adresse',
-			'Personne',
-			'Structurereferente',
-			'Orientstruct',*/
-			'Typeorient',
-			'Contratinsertion',
-			/*'Detaildroitrsa',
-			'Detailcalculdroitrsa',*/
-			'Option',
-			/*'Dsp',
-			'Infofinanciere',
-			'Modecontact',
-			'Typocontrat',
-			'Creance',
-			'Adressefoyer',
-			'Dossiercaf',*/
-			'Serviceinstructeur',
-			/*'Jeton',
-			'Indu',*/
-			'Referent',
-			'Zonegeographique',
-			/*'PersonneReferent',*/
-			'Cui'
+	class DossiersController extends AppController
+	{
+		public $name = 'Dossiers';
+		public $uses = array( 'Dossier', 'Option' );
+		public $aucunDroit = array( 'menu' );
+		public $helpers = array( 'Csv' );
+
+		public $paginate = array(
+			// FIXME
+			'limit' => 20
 		);
-        var $aucunDroit = array( 'menu' );
-        var $helpers = array( 'Csv' );
 
-        var $paginate = array(
-            // FIXME
-            'limit' => 20
-        );
-
-		var $commeDroit = array(
+		public $commeDroit = array(
 			'view' => 'Dossiers:index'
 		);
 
-        /**
-        */
-        function __construct() {
-            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-            parent::__construct();
-        }
+		/**
+		*
+		*/
+
+		function __construct() {
+			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+			parent::__construct();
+		}
 
 		/**
 		*
@@ -64,7 +39,7 @@
 			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'sitfam', $this->Option->sitfam() );
-			$this->set( 'couvsoc', $this->Option->couvsoc() );
+			$this->set( 'couvsoc', $this->Option->couvsoc() ); // INFO: pas dans view
 			$this->set( 'categorie', $this->Option->categorie() );
 			///FIXME:
 			$this->set(
@@ -76,37 +51,37 @@
 					'56 - 65',
 					'> 65'
 				)
-			);
+			); // INFO: pas dans view
 
-			if( in_array( $this->action, array( 'view', 'exportcsv' ) ) ) {
-				// FIXME: à intégrer à la fonction view pour ne pas avoir d'énormes variables
-				if( $this->action == 'view' ) {
-					$this->set( 'referents', $this->Referent->find( 'list' ) );
-					$this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
-					$this->set( 'enumcui', $this->Cui->allEnumLists() );
-				}
-				$typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
+			// FIXME: à intégrer à la fonction view pour ne pas avoir d'énormes variables
+			if( $this->action == 'view' ) {
+				$this->set( 'numcontrat', $this->Dossier->Foyer->Personne->Contratinsertion->allEnumLists() );
+				$this->set( 'enumcui', $this->Dossier->Foyer->Personne->Cui->allEnumLists() );
+			}
+			else if( $this->action == 'exportcsv' ) {
+				$typesorient = $this->Dossier->Foyer->Personne->Orientstruct->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
 				$this->set( 'typesorient', $typesorient );
 			}
 			else if( $this->action == 'index' ) {
-				$typeservice = $this->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
+				$typeservice = $this->Dossier->Foyer->Personne->Orientstruct->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
 				$this->set( 'typeservice', $typeservice );
 			}
 		}
 
-        /**
-        */
-        function beforeFilter() {
+		/**
+		*/
+		function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			ini_set('memory_limit', '512M');
-            $return = parent::beforeFilter();
-            return $return;
-        }
+			$return = parent::beforeFilter();
+			return $return;
+		}
 
-        /**
-        */
+		/**
+		*/
 		function index() {
 			if( Configure::read( 'CG.cantons' ) ) {
+				$this->loadModel( 'Canton' );
 				$this->set( 'cantons', $this->Canton->selectList() );
 			}
 
@@ -128,7 +103,7 @@
 			}
 
 			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Personne->Cui->Structurereferente->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
 			}
 			else {
 				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
@@ -137,9 +112,9 @@
 			$this->_setOptions();
 		}
 
-        /**
+		/**
 		*
-        */
+		*/
 
 		function menu() {
 			$this->assert( isset( $this->params['requested'] ), 'error404' );
@@ -153,47 +128,51 @@
 				$conditions['Foyer.id'] = $this->params['foyer_id'];
 			}
 			else if( !empty( $this->params['personne_id'] ) && is_numeric( $this->params['personne_id'] ) ) {
-				$foyer_id = $this->Dossier->Foyer->Personne->field( 'foyer_id', array( 'id' => $this->params['personne_id'] ) );
-				$this->assert( !empty( $foyer_id ), 'invalidParameter' );
-				$conditions['Foyer.id'] = $foyer_id;
+				$conditions['Dossier.id'] = $this->Dossier->Foyer->Personne->dossierId( $this->params['personne_id'] );
 			}
 			$this->assert( !empty( $conditions ), 'invalidParameter' );
-
-			// On n'en a pas besoin pour le menu
-			$this->Dossier->unbindModel(
-				array(
-					'hasOne' => array( 'Avispcgdroitrsa', 'Detaildroitrsa' )
-				)
-			);
 
 			$dossier = $this->Dossier->find(
 				'first',
 				array(
-					'conditions' => $conditions,
-					'recursive' => 0
+					'fields' => array(
+						'Dossier.id',
+						'Dossier.matricule',
+						'Dossier.numdemrsa',
+						'Foyer.id',
+						'Situationdossierrsa.etatdosrsa'
+					),
+					'contain' => array(
+						'Foyer',
+						'Situationdossierrsa'
+					),
+					'conditions' => $conditions
 				)
 			);
-			$dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Foyer']['dossier_rsa_id'] );
 
-			// On n'en a pas besoin pour le menu
-			$this->Dossier->Foyer->Personne->unbindModelAll();
-			// A part la prestation RSA
-			$this->Dossier->Foyer->Personne->bindModel(
-				array(
-					'hasOne' => array(
-						'Prestation' => array(
-							'conditions' => array( 'Prestation.natprest' => 'RSA' )
-						)
-					)
-				)
-			);
+			$dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Dossier']['id'] );
+
+			// FIXME: bizzarre qu'il ne soit plus bindé
+			$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Prestation' ) ) );
+
+			// Les personnes du foyer
 			$personnes = $this->Dossier->Foyer->Personne->find(
 				'all',
 				array(
-					'conditions' => array(
-						'Personne.foyer_id' => Set::classicExtract( $dossier, 'Foyer.id' )
+					'fields' => array(
+						'Personne.id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Prestation.rolepers'
 					),
-					'recursive' => 0
+					'conditions' => array(
+						'Personne.foyer_id' => Set::classicExtract( $dossier, 'Foyer.id' ),
+						'Prestation.natprest' => 'RSA'
+					),
+					'contain' => array(
+						'Prestation'
+					)
 				)
 			);
 
@@ -206,95 +185,9 @@
 			return $dossier;
 		}
 
-        /**
-		*
-        */
-
-		/*function menu() {
-			// Ce n'est pas un appel par une URL
-			$this->assert( isset( $this->params['requested'] ), 'error404' );
-//             $this->params['id'] = 203121;
-//             $this->Dossier->query( 'SELECT 1;' );
-
-			$conditions = array();
-
-			if( !empty( $this->params['id'] ) && is_numeric( $this->params['id'] ) ) {
-				$conditions['"Dossier"."id"'] = $this->params['id'];
-			}
-			else if( !empty( $this->params['foyer_id'] ) && is_numeric( $this->params['foyer_id'] ) ) {
-				$conditions['"Foyer"."id"'] = $this->params['foyer_id'];
-			}
-			else if( !empty( $this->params['personne_id'] ) && is_numeric( $this->params['personne_id'] ) ) {
-				$personne = $this->Dossier->Foyer->Personne->find(
-					'first', array(
-						'conditions' => array(
-							'Personne.id' => $this->params['personne_id']
-						)
-					)
-				);
-
-				$this->assert( !empty( $personne ), 'invalidParameter' );
-
-				$conditions['"Foyer"."id"'] = $personne['Personne']['foyer_id'];
-			}
-
-			$this->assert( !empty( $conditions ), 'invalidParameter' );
-
-			$this->Dossier->Foyer->bindModel(
-				array(
-					'hasMany' => array(
-						'Adressefoyer' => array(
-							'classname'     => 'Adressefoyer',
-							'foreignKey'    => 'foyer_id'
-						),
-						'Personne' => array(
-							'classname'     => 'Personne',
-							'foreignKey'    => 'foyer_id'
-						)
-					)
-				)
-			);
-			$dossier = $this->Dossier->find(
-				'first',
-				array(
-					'conditions' => $conditions,
-					'recursive'  => 2
-				)
-			);
-
-			$this->assert( !empty( $dossier ), 'invalidParameter' );
-
-			usort( $dossier['Foyer']['Adressefoyer'], create_function( '$a,$b', 'return strcmp( $a["rgadr"], $b["rgadr"] );' ) );
-
-			foreach( $dossier['Foyer']['Adressefoyer'] as $key => $Adressefoyer ) {
-				$adresses = $this->Dossier->Foyer->Adressefoyer->Adresse->find(
-					'all',
-					array(
-						'conditions' => array(
-							'Adresse.id' => $Adressefoyer['adresse_id'] )
-					)
-				);
-				$dossier['Foyer']['Adressefoyer'][$key] = array_merge( $dossier['Foyer']['Adressefoyer'][$key], $adresses[0] );
-			}
-
-			foreach( $dossier['Foyer']['Personne'] as $iPersonne => $personne ) {
-				$this->Dossier->Foyer->Personne->unbindModelAll();
-				$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Prestation' ) ));
-				$prestation = $this->Dossier->Foyer->Personne->findById( $personne['id'] );
-				$dossier['Foyer']['Personne'][$iPersonne]['Prestation'] = $prestation['Prestation'];
-			}
-
-			// Dossier verrouillé
-			$this->Dossier->begin();
-			$dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Foyer']['dossier_rsa_id'] );
-			$this->Dossier->commit();
-
-			return $dossier;
-		}*/
-
-        /**
-        */
-        function view( $id = null ) {
+		/**
+		*/
+		function view( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			/** Tables necessaire à l'ecran de synthèse
@@ -320,63 +213,133 @@
 			*/
 
 			$details = array();
+			$details = $this->Dossier->find(
+				'first',
+				array(
+					'fields' => array(
+						'Dossier.id',
+						'Dossier.matricule',
+						'Dossier.numdemrsa',
+						'Dossier.dtdemrsa',
+						'Foyer.id',
+						'Foyer.sitfam',
+						'Situationdossierrsa.id',
+						'Situationdossierrsa.dtclorsa',
+						'Situationdossierrsa.etatdosrsa',
+						'Situationdossierrsa.moticlorsa',
+					),
+					'contain' => array(
+						'Foyer',
+						'Situationdossierrsa'
+					),
+					'conditions' => array(
+						'Dossier.id' => $id
+					)
+				)
+			);
 
-			$tDossier = $this->Dossier->findById( $id, null, null, -1 );
-			$details = Set::merge( $details, $tDossier );
+			// Dernière créance
+			$tCreance = $this->Dossier->Foyer->Creance->find(
+				'first',
+				array(
+					'fields' => array(
+						'Creance.motiindu'
+					),
+					'contain' => false,
+					'conditions' => array(
+						'Creance.foyer_id' => $details['Foyer']['id']
+					),
+					'order' => array(
+						'Creance.dtdercredcretrans DESC',
+					),
+				)
+			);
+			$details = Set::merge( $details, $tCreance );
 
-			$tFoyer = $this->Dossier->Foyer->findByDossierRsaId( $id, null, null, -1 );
-			$details = Set::merge( $details, $tFoyer );
-
-// 			$tDetaildroitrsa = $this->Dossier->Detaildroitrsa->findByDossierRsaId( $id, null, null, 1 );
-            $tDetaildroitrsa = $this->Dossier->Detaildroitrsa->find(
-                'first',
-                array(
-                    'fields' => array(
-                        'Detaildroitrsa.id',
-                        'Detaildroitrsa.dossier_rsa_id',
-                    ),
-                    'conditions' => array(
-                        'Detaildroitrsa.dossier_rsa_id' => $id
-                    ),
-                    'recursive' => 1
-                )
-            );
+			$tDetaildroitrsa = $this->Dossier->Detaildroitrsa->find(
+				'first',
+				array(
+					'fields' => array(
+						'Detaildroitrsa.id',
+						'Detaildroitrsa.dossier_id',
+					),
+					'contain' => array(
+						'Detailcalculdroitrsa' => array(
+							'fields' => array(
+								'Detailcalculdroitrsa.mtrsavers',
+								'Detailcalculdroitrsa.dtderrsavers',
+								'Detailcalculdroitrsa.natpf',
+							),
+							'order' => array(
+								'Detailcalculdroitrsa.ddnatdro DESC',
+							),
+							'limit' => 1
+						)
+					),
+					'conditions' => array(
+						'Detaildroitrsa.dossier_id' => $id
+					)
+				)
+			);
 			$details = Set::merge( $details, $tDetaildroitrsa );
 
-			$tSituationdossierrsa = $this->Dossier->Situationdossierrsa->findByDossierRsaId( $id, null, null, -1 );
-			$details = Set::merge( $details, $tSituationdossierrsa );
-
+			// Dernier suivi d'instruction
 			$tSuiviinstruction = $this->Dossier->Suiviinstruction->find(
 				'first',
 				array(
-					'conditions' => array( 'Suiviinstruction.dossier_rsa_id' => $id ),
-					'recursive' => -1,
-					'order' => array( 'Suiviinstruction.date_etat_instruction DESC' )
+					'fields' => array(
+						'Suiviinstruction.typeserins'
+					),
+					'conditions' => array(
+						'Suiviinstruction.dossier_id' => $id
+					),
+					'contain' => false,
+					'order' => array(
+						'Suiviinstruction.date_etat_instruction DESC'
+					)
 				)
 			);
 			$details = Set::merge( $details, $tSuiviinstruction );
 
+			// Dernière info financière
 			$tInfofinanciere = $this->Dossier->Infofinanciere->find(
 				'first',
 				array(
+					'fields' => array(
+						'Infofinanciere.mtmoucompta'
+					),
 					'conditions' => array(
-						'Infofinanciere.dossier_rsa_id' => $id,
+						'Infofinanciere.dossier_id' => $id,
 						'Infofinanciere.type_allocation' => 'IndusConstates'
 					),
-					'recursive' => -1,
+					'contain' => false,
 					'order' => array( 'Infofinanciere.moismoucompta DESC' )
 				)
 			);
 			$details = Set::merge( $details, $tInfofinanciere );
 
+			// Dernière adresse foyer
 			$adresseFoyer = $this->Dossier->Foyer->Adressefoyer->find(
 				'first',
 				array(
+					'fields' => array(
+						'Adressefoyer.id'
+					),
 					'conditions' => array(
 						'Adressefoyer.foyer_id' => $details['Foyer']['id'],
 						'Adressefoyer.rgadr'    => '01'
 					),
-					'recursive' => 0
+					'order' => array( 'Adressefoyer.dtemm DESC' ),
+					'contain' => array(
+						'Adresse' => array(
+							'fields' => array(
+								'Adresse.numvoie',
+								'Adresse.typevoie',
+								'Adresse.nomvoie',
+								'Adresse.locaadr',
+							)
+						)
+					)
 				)
 			);
 			$details = Set::merge( $details, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
@@ -384,15 +347,38 @@
 			/**
 				Personnes
 			*/
-			$bindPrestation = $this->Dossier->Foyer->Personne->hasOne['Prestation'];
-			$this->Dossier->Foyer->Personne->unbindModelAll();
-			$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Infopoleemploi', 'Calculdroitrsa', 'Prestation' => $bindPrestation ) ) );
+
 			$personnesFoyer = $this->Dossier->Foyer->Personne->find(
 				'all',
 				array(
+					'fields' => array(
+						'Personne.id',
+						'Personne.nom',
+						'Personne.prenom',
+						'Dsp.id',
+						'Dossiercaf.ddratdos',
+						'Dossiercaf.dfratdos',
+						'Infopoleemploi.identifiantpe',
+						'Infopoleemploi.dateinscription',
+						'Infopoleemploi.categoriepe',
+						'Infopoleemploi.datecessation',
+						'Infopoleemploi.motifcessation',
+						'Infopoleemploi.dateradiation',
+						'Infopoleemploi.motifradiation',
+						'Calculdroitrsa.toppersdrodevorsa',
+						'Prestation.rolepers',
+					),
 					'conditions' => array(
-						'Personne.foyer_id' => $tFoyer['Foyer']['id'],
+						'Personne.foyer_id' => $details['Foyer']['id'],
+						'Prestation.natprest' => 'RSA',
 						'Prestation.rolepers' => array( 'DEM', 'CJT' )
+					),
+					'contain' => array(
+						'Prestation',
+						'Dossiercaf',
+						'Dsp',
+						'Infopoleemploi',
+						'Calculdroitrsa',
 					),
 					'recursive' => 0
 				)
@@ -403,107 +389,101 @@
 				$tPersReferent = $this->Dossier->Foyer->Personne->PersonneReferent->find(
 					'first',
 					array(
+						'fields' => array(
+							'Referent.id',
+							'Referent.qual',
+							'Referent.nom',
+							'Referent.prenom',
+						),
+						'contain' => array(
+							'Referent'
+						),
 						'conditions' => array( 'PersonneReferent.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
-						'recursive' => -1,
 						'order' => array( 'PersonneReferent.dddesignation DESC' )
 					)
 				);
-				$personnesFoyer[$index]['PersonneReferent']['dernier'] = $tPersReferent['PersonneReferent'];
+				$personnesFoyer[$index]['Referent'] = $tPersReferent['Referent'];
 
-				$tContratinsertion = $this->Contratinsertion->find(
+				$tContratinsertion = $this->Dossier->Foyer->Personne->Contratinsertion->find(
 					'first',
 					array(
-                        'fields' => array(
-                            'Contratinsertion.dd_ci',
-                            'Contratinsertion.df_ci',
-                            'Contratinsertion.num_contrat',
-                            'Contratinsertion.decision_ci',
-                            'Contratinsertion.datevalidation_ci'
-                        ),
+						'fields' => array(
+							'Contratinsertion.dd_ci',
+							'Contratinsertion.df_ci',
+							'Contratinsertion.num_contrat',
+							'Contratinsertion.decision_ci',
+							'Contratinsertion.datevalidation_ci'
+						),
 						'conditions' => array( 'Contratinsertion.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
-						'recursive' => -1,
+						'contain' => false,
 						'order' => array( 'Contratinsertion.rg_ci DESC' )
 					)
 				);
 				$personnesFoyer[$index]['Contratinsertion'] = $tContratinsertion['Contratinsertion'];
 
-
-				$tCui = $this->Cui->find(
+				$tCui = $this->Dossier->Foyer->Personne->Cui->find(
 					'first',
 					array(
-                        'fields' => array(
-                            'Cui.convention',
-                            'Cui.secteur',
-                            'Cui.datecontrat',
-                            'Cui.decisioncui',
-                            'Cui.datevalidationcui'
-                        ),
+						'fields' => array(
+							'Cui.convention',
+							'Cui.secteur',
+							'Cui.datecontrat',
+							'Cui.decisioncui',
+							'Cui.datevalidationcui'
+						),
 						'conditions' => array( 'Cui.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
-						'recursive' => -1,
+						'contain' => false,
 						'order' => array( 'Cui.datecontrat DESC' )
 					)
 				);
 				$personnesFoyer[$index]['Cui'] = $tCui['Cui'];
 
+				// Dernière orientation
 				$tOrientstruct = $this->Dossier->Foyer->Personne->Orientstruct->find(
 					'first',
 					array(
-						'conditions' => array(
-							'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id']
-						),
-						'order' => 'Orientstruct.date_valid ASC',
-						'recursive' => -1
-					)
-				);
-				$personnesFoyer[$index]['Orientstruct']['premiere'] = $tOrientstruct['Orientstruct'];
+						'fields' => array(
+							'Orientstruct.date_valid',
+							'Orientstruct.statut_orient',
+							'Typeorient.lib_type_orient',
+							'Structurereferente.lib_struc'
 
-				$tOrientstruct = $this->Dossier->Foyer->Personne->Orientstruct->find(
-					'first',
-					array(
+						),
+						'contain' => array(
+							'Typeorient',
+							'Structurereferente'
+						),
 						'conditions' => array(
 							'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id']
 						),
-						'order' => 'Orientstruct.date_valid DESC',
-						'recursive' => -1
+						'order' => "Orientstruct.date_valid DESC",
 					)
 				);
-				$personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct['Orientstruct'];
+				$personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct;
 
 				$details[$role] = $personnesFoyer[$index];
 			}
 
-// debug($details);
-
-			$structuresreferentes = ClassRegistry::init( 'Structurereferente' )->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
-			$typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
-			$typoscontrat = ClassRegistry::init( 'Typocontrat' )->find( 'list', array( 'fields' => array( 'id', 'lib_typo' ) ) );
-
-			$this->set( 'structuresreferentes', $structuresreferentes );
-			$this->set( 'typesorient', $typesorient );
-			$this->set( 'typoscontrat', $typoscontrat );
-
 			$this->set( 'details', $details );
 			$this->_setOptions();
-        }
+		}
 
 		/**
-        * Export du tableau en CSV
+		* Export du tableau en CSV
 		*/
 
-        function exportcsv() {
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+		public function exportcsv() {
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
-            $querydata = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ) );
-            unset( $querydata['limit'] );
+			$querydata = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ) );
+			unset( $querydata['limit'] );
 
-            $dossiers = $this->Dossier->find( 'all', $querydata );
+			$dossiers = $this->Dossier->find( 'all', $querydata );
 
-            $this->layout = ''; // FIXME ?
-            $this->set( compact( 'headers', 'dossiers' ) );
+			$this->layout = ''; // FIXME ?
+			$this->set( compact( 'headers', 'dossiers' ) );
 			$this->_setOptions();
-//             debug($dossiers);
-//             die();
-        }
-    }
+		}
+	}
 ?>

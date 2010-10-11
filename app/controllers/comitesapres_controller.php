@@ -3,10 +3,10 @@
     {
 
         var $name = 'Comitesapres';
-        var $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre'/*, 'ComiteapreParticipantcomite'*/, 'Participantcomite', 'Apre', 'Referent' );
+        var $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre', 'Dossier'/*, 'ComiteapreParticipantcomite'*/, 'Participantcomite', 'Apre', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $components = array( 'Prg' => array( 'actions' => array( 'index', 'liste' ) ) );
-        
+
 		var $commeDroit = array(
 			'view' => 'Comitesapres:index',
 			'add' => 'Comitesapres:edit'
@@ -50,14 +50,14 @@
         *** *******************************************************************/
 
         function _index( $display = null ){
-
+            $this->Comiteapre->Apre->deepAfterFind = false;
             if( !empty( $this->data ) ) {
                 $this->Dossier->begin(); // Pour les jetons
                 $comitesapres = $this->Comiteapre->search( $display, $this->data );
                 $comitesapres['limit'] = 10;
                 $comitesapres['recursive'] = 1;
                 $this->paginate = $comitesapres;
-                $comitesapres = $this->paginate( 'Comiteapre' );
+                $comitesapres = $this->paginate( $this->Comiteapre );
 // debug($comitesapres);
                 $this->Dossier->commit();
                 $this->_setOptions();
@@ -82,6 +82,7 @@
         *** *************************************************************************************/
 
         function view( $comiteapre_id = null ){
+            $this->Comiteapre->Apre->deepAfterFind = false;
             $comiteapre = $this->Comiteapre->find(
                 'first',
                 array(
@@ -89,6 +90,7 @@
                     'recursive' => 2
                 )
             );
+//             debug($comiteapre);die();
             $this->assert( !empty( $comiteapre ), 'invalidParameter' );
 
             foreach( $comiteapre['Apre'] as $key => $apre ) {
@@ -101,7 +103,7 @@
                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $foyer );
 
                 // Dossier
-                $dossier = $this->Apre->Personne->Foyer->Dossier->findById( $foyer['Foyer']['dossier_rsa_id'], null, null, -1 );
+                $dossier = $this->Apre->Personne->Foyer->Dossier->findById( $foyer['Foyer']['dossier_id'], null, null, -1 );
                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $dossier );
 
                 // Adresse
@@ -122,6 +124,7 @@
         function rapport( $comiteapre_id = null ){
             $this->assert( valid_int( $comiteapre_id ), 'invalidParameter' );
 
+            $this->Comiteapre->Apre->deepAfterFind = false;
             $comiteapre = $this->Comiteapre->find(
                 'first',
                 array(
@@ -140,7 +143,7 @@
                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $foyer );
 
                 // Dossier
-                $dossier = $this->Apre->Personne->Foyer->Dossier->findById( $foyer['Foyer']['dossier_rsa_id'], null, null, -1 );
+                $dossier = $this->Apre->Personne->Foyer->Dossier->findById( $foyer['Foyer']['dossier_id'], null, null, -1 );
                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $dossier );
 
                 // Adresse

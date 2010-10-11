@@ -1,24 +1,33 @@
 <?php
-    class Statutrdv extends AppModel
-    {
-        var $name = 'Statutrdv';
-        var $useTable = 'statutsrdvs';
-        var $displayField = 'libelle';
-        var $order = 'Statutrdv.id ASC';
+	class Statutrdv extends AppModel
+	{
+		public $name = 'Statutrdv';
 
-        var $hasMany = array(
-            'Rendezvous' => array(
-                'classname' => 'Rendezvous',
-                'foreignKey' => 'statutrdv_id'
-            )
-        );
+		public $displayField = 'libelle';
 
+		public $order = 'Statutrdv.id ASC';
 
-        var $validate = array(
-            'libelle' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            )
-        );
-    }
+		public $validate = array(
+			'libelle' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			)
+		);
+
+		public $hasMany = array(
+			'Rendezvous' => array(
+				'className' => 'Rendezvous',
+				'foreignKey' => 'statutrdv_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+	}
 ?>

@@ -9,12 +9,12 @@
 <?php
     echo $default->form(
         array(
-            'Contactpartenaire.qual' => array( 'options' => $qual, 'empty' => true ),
-            'Contactpartenaire.nom',
-            'Contactpartenaire.prenom',
+            'Contactpartenaire.qual' => array( 'options' => $qual, 'empty' => true, 'required' => true ),
+            'Contactpartenaire.nom' => array( 'required' => true ),
+            'Contactpartenaire.prenom' => array( 'required' => true ),
             'Contactpartenaire.numtel',
             'Contactpartenaire.email',
-            'Contactpartenaire.partenaire_id'
+            'Contactpartenaire.partenaire_id' => array( 'type' => 'select', 'empty' => true, 'required' => true )
         ),
         array(
             'actions' => array(

@@ -461,9 +461,6 @@ msgstr "Parmi les propositions suivantes certaines constituent elles des obstacl
 
 ###############################################################################
 
-msgid "ENUM::DIFDISP::0416"
-msgstr "Santé"
-
 msgid "ENUM::DIFDISP::0501"
 msgstr "Aucun obstacle"
 
@@ -481,6 +478,27 @@ msgstr "La charge de proche(s) dépendant(s)"
 
 msgid "ENUM::DIFDISP::0506"
 msgstr "L'éloignement de parent ou de conjoint causé par une hospitalisation longue durée ou incarcération"
+
+msgid "ENUM::DIFDISP::0507"
+msgstr "Mobilité"
+
+msgid "ENUM::DIFDISP::0508"
+msgstr "Santé"
+
+msgid "ENUM::DIFDISP::0509"
+msgstr "Logement"
+
+msgid "ENUM::DIFDISP::0510"
+msgstr "Illétrisme"
+
+msgid "ENUM::DIFDISP::0511"
+msgstr "Absence de qualification"
+
+msgid "ENUM::DIFDISP::0512"
+msgstr "Qualification trop spécifique"
+
+msgid "ENUM::DIFDISP::0513"
+msgstr "Discrimination (âge-sexe-origine ethnique)"
 
 ###############################################################################
 # Detailaccosocindi
@@ -511,7 +529,7 @@ msgid "Detaildiflog.diflog"
 msgstr "Difficultés logement ?"
 
 msgid "Detaildiflog.libautrdiflog"
-msgstr "Autres Difficultés de logement ?"
+msgstr "Autres difficultés de logement ?"
 
 ###############################################################################
 
@@ -541,5 +559,182 @@ msgstr "Eloignement entre le lieu de résidence et le lieu de travail"
 
 msgid "ENUM::DIFLOG::1009"
 msgstr "Autres situations particulières"
+
+###############################################################################
+# Detailsmoytrans
+###############################################################################
+
+msgid "ENUM::MOYTRANS::2001"
+msgstr "Transport en commun"
+
+msgid "ENUM::MOYTRANS::2002"
+msgstr "Véhicule personnel"
+
+msgid "ENUM::MOYTRANS::2003"
+msgstr "Voiture"
+
+msgid "ENUM::MOYTRANS::2004"
+msgstr "Moto"
+
+msgid "ENUM::MOYTRANS::2005"
+msgstr "Mobylette"
+
+msgid "ENUM::MOYTRANS::2006"
+msgstr "Vélo"
+
+msgid "ENUM::MOYTRANS::2007"
+msgstr "Covoiturage"
+
+msgid "ENUM::MOYTRANS::2008"
+msgstr "Autre"
+
+msgid "Detailmoytrans.moytrans"
+msgstr "Quel moyen de transport ?"
+
+msgid "Detailmoytrans.libautrmoytrans"
+msgstr "Merci d'indiquer le(s) autre(s) moyen(s) de transport :"
+
+###############################################################################
+# Detailsdifsocpros
+###############################################################################
+
+msgid "ENUM::DIFSOCPRO::2101"
+msgstr "Santé"
+
+msgid "ENUM::DIFSOCPRO::2102"
+msgstr "Logement"
+
+msgid "ENUM::DIFSOCPRO::2103"
+msgstr "Familiale"
+
+msgid "ENUM::DIFSOCPRO::2104"
+msgstr "Surendettement"
+
+msgid "ENUM::DIFSOCPRO::2105"
+msgstr "Administratif"
+
+msgid "ENUM::DIFSOCPRO::2106"
+msgstr "Linguistique"
+
+msgid "ENUM::DIFSOCPRO::2107"
+msgstr "Mobilisation"
+
+msgid "ENUM::DIFSOCPRO::2108"
+msgstr "Qualification professionnelle"
+
+msgid "ENUM::DIFSOCPRO::2109"
+msgstr "Accès à l’emploi"
+
+msgid "ENUM::DIFSOCPRO::2110"
+msgstr "Autres"
+
+msgid "Detaildifsocpro.difsocpro"
+msgstr "Quelles sont les difficultés sociales décelées par le professionnel ?"
+
+msgid "Detaildifsocpro.libautrdifsocpro"
+msgstr "Merci de préciser les quelles :"
+
+###############################################################################
+# Detailsprojpros
+###############################################################################
+
+msgid "ENUM::PROJPRO::2201"
+msgstr "Agriculture-Sylviculture-Pêche"
+
+msgid "ENUM::PROJPRO::2202"
+msgstr "Industrie"
+
+msgid "ENUM::PROJPRO::2203"
+msgstr "Métiers de l'énergie (matière premières-eau-combustibles)"
+
+msgid "ENUM::PROJPRO::2204"
+msgstr "Construction-Bâtiment-Travaux publics"
+
+msgid "ENUM::PROJPRO::2205"
+msgstr "Banques-Assurances"
+
+msgid "ENUM::PROJPRO::2206"
+msgstr "Hôtellerie-Restauration-Tourisme"
+
+msgid "ENUM::PROJPRO::2207"
+msgstr "Aide à la personne"
+
+msgid "ENUM::PROJPRO::2208"
+msgstr "Education-Santé-Action sociale"
+
+msgid "ENUM::PROJPRO::2209"
+msgstr "Administration"
+
+msgid "ENUM::PROJPRO::2210"
+msgstr "Arts-Spectacles-Activités récréatives"
+
+msgid "ENUM::PROJPRO::2211"
+msgstr "Commerce"
+
+msgid "ENUM::PROJPRO::2212"
+msgstr "Transports"
+
+msgid "ENUM::PROJPRO::2213"
+msgstr "Autres"
+
+msgid "Detailprojpro.projpro"
+msgstr "Le(s) quel(s) ?"
+
+msgid "Detailprojpro.libautrprojpro"
+msgstr "Merci de préciser :"
+
+###############################################################################
+
+msgid "Dsp.libformenv"
+msgstr "Formation envisagée :"
+
+msgid "Detailfreinform.freinform"
+msgstr "Frein(s) à la formation :"
+
+msgid "ENUM::FREINFORM::2301"
+msgstr "Coûts"
+
+msgid "ENUM::FREINFORM::2302"
+msgstr "Raisons familiales"
+
+msgid "ENUM::FREINFORM::2303"
+msgstr "Réticence vis à vis système scolaire"
+
+msgid "ENUM::FREINFORM::2304"
+msgstr "Mobilité"
+
+msgid "ENUM::FREINFORM::2305"
+msgstr "Santé"
+
+msgid "ENUM::FREINFORM::2306"
+msgstr "Illétrisme"
+
+msgid "ENUM::FREINFORM::2307"
+msgstr "Pas d'offre"
+
+msgid "ENUM::FREINFORM::2308"
+msgstr "Age"
+
+###############################################################################
+
+msgid "Detailconfort.confort"
+msgstr "Confort :"
+
+msgid "ENUM::CONFORT::2401"
+msgstr "Electricité"
+
+msgid "ENUM::CONFORT::2402"
+msgstr "Eau courante"
+
+msgid "ENUM::CONFORT::2403"
+msgstr "WC"
+
+msgid "ENUM::CONFORT::2404"
+msgstr "Salle d'eau"
+
+###############################################################################
+
+msgid "Dsp::index::empty"
+msgstr "Aucun historique de DSP pour cette personne"
 
 

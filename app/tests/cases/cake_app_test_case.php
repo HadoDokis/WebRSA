@@ -10,12 +10,14 @@
 
 		/**
 		* Tables de données à utiliser
+		* TODO: certaines tables ont été supprimées, d'autres renommées -> le répercuter
+		* sur les fixtures, les cas pour les modèles et pour les contrôleurs.
 		*/
 
 		public $fixtures = array (
 			'app.acccreaentr',
 			'app.acccreaentr_pieceacccreaentr',
-			'app.accoemploi',
+			//'app.accoemploi',
 			'app.aco',
 			'app.acqmatprof',
 			'app.acqmatprof_pieceacqmatprof',
@@ -61,6 +63,7 @@
 			'app.creance',
 			'app.creancealimentaire',
 			'app.cui',
+			'app.contratinsertion_user',
 			'app.decisionpdo',
 			'app.decisionreorient',
 			'app.decisionsparcour',
@@ -77,11 +80,11 @@
 			'app.detaildroitrsa',
 			'app.detailnatmob',
 			'app.detailressourcemensuelle',
-			'app.difdisp',
-			'app.diflog',
-			'app.difsoc',
+// 			'app.difdisp',
+// 			'app.diflog',
+// 			'app.difsoc',
 			'app.domiciliationbancaire',
-			'app.dossier_rsa',
+			'app.dossier',
 			'app.dossiercaf',
 			'app.dsp',
 			'app.dspf_diflog',
@@ -95,9 +98,9 @@
 			'app.dspp_natmob',
 			'app.dspp_nivetu',
 			'app.entretien',
-			'app.ep',
-			'app.ep_zonegeographique',
-			'app.eps_partsep',
+// 			'app.ep',
+// 			'app.ep_zonegeographique',
+// 			'app.eps_partsep',
 			'app.etatliquidatif',
 			'app.evenement',
 			'app.fonctionpartep',
@@ -126,10 +129,10 @@
 			'app.modecontact',
 			'app.montantconsomme',
 			'app.motifdemreorient',
-			'app.nataccosocfam',
-			'app.nataccosocindi',
-			'app.natmob',
-			'app.nivetus',
+// 			'app.nataccosocfam',
+// 			'app.nataccosocindi',
+// 			'app.natmob',
+// 			'app.nivetus',
 			'app.orientation',
 			'app.orientstruct',
 			'app.orientstruct_serviceinstructeur',
@@ -208,14 +211,14 @@
 			'app.transmissionflux',
 			'app.typeaction',
 			'app.typeaideapre66',
-			'app.typeaideapre66_pieceaide66',
-			'app.typeaideapre66_piececomptable66',
+			'app.pieceaide66_typeaideapre66',
+			'app.piececomptable66_typeaideapre66',
 			'app.typenotifpdo',
 			'app.typeorient',
 			'app.typepdo',
 			'app.typerdv',
 			'app.typocontrat',
-			'app.user_contratinsertion',
+			//'app.user_contratinsertion',
 			'app.user',
 			'app.user_zonegeographique',
 			'app.zonegeographique',
@@ -223,7 +226,5 @@
 		);
 
 		function startCase() { Cache::clear(); clearCache(); }
-
 	}
-
 ?>

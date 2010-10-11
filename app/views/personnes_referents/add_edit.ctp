@@ -48,7 +48,9 @@
             }
 
             echo $xform->input( 'PersonneReferent.dddesignation', array( 'label' => required( 'Début de désignation' ), 'type' => 'date' , 'dateFormat' => 'DMY' ) );
-            echo $xform->input( 'PersonneReferent.dfdesignation', array( 'label' => ( 'Fin de désignation' ), 'type' => 'date' , 'dateFormat' => 'DMY', 'empty' => true ) );
+            if( $this->action == 'edit' ) {
+                echo $xform->input( 'PersonneReferent.dfdesignation', array( 'label' => ( 'Fin de désignation' ), 'type' => 'date' , 'dateFormat' => 'DMY', 'empty' => true ) );
+            }
         ?>
     </fieldset>
 

@@ -1,157 +1,314 @@
 <?php
-    class Referent extends AppModel
-    {
+	class Referent extends AppModel
+	{
+		public $name = 'Referent';
 
-        var $name = 'Referent';
-        var $useTable = 'referents';
+		public $displayField = 'nom_complet';
 
-        var $displayField = 'nom_complet';
-
-        var $actsAs = array(
+		public $actsAs = array(
 			'Autovalidate',
 			'Formattable'
-        );
+		);
 
-        var $order = array( 'Referent.nom ASC', 'Referent.prenom ASC' );
+		public $order = array( 'Referent.nom ASC', 'Referent.prenom ASC' );
 
-        var $hasAndBelongsToMany = array(
-            'Actioncandidat' => array( 'with' => 'ActioncandidatPersonne' ),
-//             'Personne' => array( 'with' => 'ActioncandidatPersonne' ), // FIXME
-            'Personne' => array( 'with' => 'PersonneReferent' )
-        );
+		public $virtualFields = array(
+			'nom_complet' => array(
+				'type'      => 'string',
+				'postgres'  => '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
+			),
+		);
 
-        var $belongsTo = array(
-            'Structurereferente' => array(
-                'classname'     => 'Structurereferente',
-                'foreignKey'    => 'structurereferente_id'
-            )
-        );
+		public $validate = array(
+			'numero_poste' => array(
+				array(
+					'rule' => 'numeric',
+					'message' => 'Le numéro de téléphone est composé de chiffres',
+					'allowEmpty' => true
+				),
+				array(
+					'rule' => array( 'between', 10, 14 ),
+					'message' => 'Le N° de poste doit être composé de 10 chiffres'
+				)/*,
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)*/
+			),
+			'qual' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'nom' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'prenom' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			),
+			'fonction' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			),
+			'email' => array(
+	//                 array(
+	//                     'rule' => 'notEmpty',
+	//                     'message' => 'Champ obligatoire'
+	//                 ),
+				array(
+					'rule' => 'email',
+					'message' => 'Veuillez entrer une adresse email valide',
+					'allowEmpty' => true
+				)
+			),
+			'structurereferente_id' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			),
+		);
 
-        var $hasMany = array(
-            'Demandereorient' => array(
-				'VxReferent',
-				'foreignKey' => 'vx_referent_id'
+		public $belongsTo = array(
+			'Structurereferente' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'structurereferente_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
-        );
+		);
 
-        public $virtualFields = array(
-            'nom_complet' => array(
-                'type'      => 'string',
-                'postgres'  => '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
-            ),
-        );
+		public $hasMany = array(
+			'Cui' => array(
+				'className' => 'Cui',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'ActioncandidatPersonne' => array(
+				'className' => 'ActioncandidatPersonne',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Bilanparcours' => array(
+				'className' => 'Bilanparcours',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Entretien' => array(
+				'className' => 'Entretien',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Decisionparcours' => array(
+				'className' => 'Decisionparcours',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Contratinsertion' => array(
+				'className' => 'Contratinsertion',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Apre' => array(
+				'className' => 'Apre',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Precosreorient' => array(
+				'className' => 'Precosreorient',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Propopdo' => array(
+				'className' => 'Propopdo',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Rendezvous' => array(
+				'className' => 'Rendezvous',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Orientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
 
-        function listOptions() {
-            $tmp = $this->find(
-                'all',
-                array (
-                    'fields' => array(
-                        'Referent.id',
-                        'Referent.structurereferente_id',
-                        'Referent.qual',
-                        'Referent.nom',
-                        'Referent.prenom'
-                    ),
-                    'recursive' => -1,
-                    'order' => 'Referent.nom ASC',
-                )
-            );
 
-            $return = array();
-            foreach( $tmp as $key => $value ) {
-                $return[$value['Referent']['structurereferente_id'].'_'.$value['Referent']['id']] = $value['Referent']['qual'].' '.$value['Referent']['nom'].' '.$value['Referent']['prenom'];
-            }
-            return $return;
-        }
+		public $hasAndBelongsToMany = array(
+			'Personne' => array(
+				'className' => 'Personne',
+				'joinTable' => 'personnes_referents',
+				'foreignKey' => 'referent_id',
+				'associationForeignKey' => 'personne_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'PersonneReferent'
+			)
+		);
 
-        var $validate = array(
-            'numero_poste' => array(
-                array(
-                    'rule' => 'numeric',
-                    'message' => 'Le numéro de téléphone est composé de chiffres',
-                    'allowEmpty' => true
-                ),
-                array(
-                    'rule' => array( 'between', 10, 14 ),
-                    'message' => 'Le N° de poste doit être composé de 10 chiffres'
-                )/*,
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )*/
-            ),
-            'qual' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'nom' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'prenom' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            ),
-            'fonction' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            ),
-            'email' => array(
-//                 array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 ),
-                array(
-                    'rule' => 'email',
-                    'message' => 'Veuillez entrer une adresse email valide',
-                    'allowEmpty' => true
-                )
-            ),
-            'structurereferente_id' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            ),
-        );
+		/**
+		*
+		*/
 
+		public function listOptions() {
+			$this->unbindModelAll();
+			$tmp = $this->find(
+				'all',
+				array (
+					'fields' => array(
+						'Referent.id',
+						'Referent.structurereferente_id',
+						'Referent.qual',
+						'Referent.nom',
+						'Referent.prenom'
+					),
+					'contain' => false,
+					'order' => 'Referent.nom ASC',
+				)
+			);
 
+			$return = array();
+			foreach( $tmp as $key => $value ) {
+				$return[$value['Referent']['structurereferente_id'].'_'.$value['Referent']['id']] = $value['Referent']['qual'].' '.$value['Referent']['nom'].' '.$value['Referent']['prenom'];
+			}
+			return $return;
+		}
 
-        /** ********************************************************************
-        *   Retourne la liste des Referents
-        ** ********************************************************************/
+		/**
+		*   Retourne la liste des Referents
+		*/
 
-        function referentsListe( $structurereferente_id = null ) {
-            // Population du select référents liés aux structures
-            $conditions = array();
-            if( !empty( $structurereferente_id ) ) {
-                $conditions['Referent.structurereferente_id'] = $structurereferente_id;
-            }
+		public function referentsListe( $structurereferente_id = null ) {
+			// Population du select référents liés aux structures
+			$conditions = array();
+			if( !empty( $structurereferente_id ) ) {
+				$conditions['Referent.structurereferente_id'] = $structurereferente_id;
+			}
 
-            $referents = $this->find(
-                'all',
-                array(
-                    'recursive' => -1,
-                    'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom' ),
-                    'conditions' => $conditions
-                )
-            );
+			$referents = $this->find(
+				'all',
+				array(
+					'recursive' => -1,
+					'fields' => array( 'Referent.id', 'Referent.qual', 'Referent.nom', 'Referent.prenom' ),
+					'conditions' => $conditions
+				)
+			);
 
-            if( !empty( $referents ) ) {
-                $ids = Set::extract( $referents, '/Referent/id' );
-                $values = Set::format( $referents, '{0} {1} {2}', array( '{n}.Referent.qual', '{n}.Referent.nom', '{n}.Referent.prenom' ) );
-                $referents = array_combine( $ids, $values );
-            }
-            return $referents;
-        }
+			if( !empty( $referents ) ) {
+				$ids = Set::extract( $referents, '/Referent/id' );
+				$values = Set::format( $referents, '{0} {1} {2}', array( '{n}.Referent.qual', '{n}.Referent.nom', '{n}.Referent.prenom' ) );
+				$referents = array_combine( $ids, $values );
+			}
+			return $referents;
+		}
 
 		/**
 		* Retourne l'id du référent lié à une personne
 		*/
 
-		function readByPersonneId( $personne_id ) {
+		public function readByPersonneId( $personne_id ) {
 			$referent_id = null;
 
 			// Valeur par défaut préférée: à partir de personnes_referents
@@ -217,5 +374,5 @@
 
 			return null;
 		}
-    }
+	}
 ?>

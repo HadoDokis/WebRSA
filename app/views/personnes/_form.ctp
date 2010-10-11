@@ -30,20 +30,25 @@
             <?php echo $form->input( 'Personne.rgnai', array( 'label' => __( 'rgnai', true ), 'maxlength' => 2) );?>
             <?php echo $form->input( 'Personne.nir', array( 'label' =>  __( 'nir', true ) ) );?>
             <?php
-
-                echo $default->view(
-                    $personne,
-                    array(
-                        'Foyer.sitfam' => array( 'options' => $sitfam ),
-                    ),
-                    array(
-                        'widget' => 'table',
-                        'id' => 'dossierInfosOrganisme'/*,
-                        'options' => $options*/
-                    )
-                );
+                if( $this->action != 'wizard' ){
+                    echo $default->view(
+                        $personne,
+                        array(
+                            'Foyer.sitfam' => array( 'options' => $sitfam ),
+                        ),
+                        array(
+                            'widget' => 'table',
+                            'id' => 'dossierInfosOrganisme'/*,
+                            'options' => $options*/
+                        )
+                    );
+                }
             ?>
-            <?php echo $form->input( 'Personne.topvalec', array( 'label' => __( 'topvalec', true ) ) );?>
+            <?php
+                echo $form->input( 'Personne.topvalec', array( 'label' => __( 'topvalec', true ) ) );
+                echo $form->input( 'Personne.numfixe', array( 'label' => __( 'numfixe', true ) ) );
+                echo $form->input( 'Personne.numport', array( 'label' => __( 'numport', true ) ) );
+            ?>
     </fieldset>
 
     <fieldset>

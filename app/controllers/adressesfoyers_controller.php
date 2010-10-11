@@ -1,12 +1,12 @@
 <?php
     class AdressesFoyersController extends AppController
     {
-        var $name = 'Adressesfoyers';
+        var $name = 'Adressefoyers';
         var $uses = array( 'Adressefoyer', 'Option' );
         
 		var $commeDroit = array(
-			'view' => 'Adressesfoyers:index',
-			'add' => 'Adressesfoyers:edit'
+			'view' => 'Adressefoyers:index',
+			'add' => 'Adressefoyers:edit'
 		);
 
         /**

@@ -9,7 +9,7 @@
 		public function startTest() {
 			$name = preg_replace( '/TestCase$/', '', get_class( $this ) );
 			ClassRegistry::config( array( 'ds' => 'test' ) );
-			$this->{$name} =& ClassRegistry::init( $name );
+			$this->{$name} = ClassRegistry::init( $name );
 		}
 
 		/**

@@ -30,10 +30,10 @@
 				'queryData' => array(
 					'conditions' => array(
 						'Foyer.id IN (
-							SELECT DISTINCT( dossiers_rsa.id )
-								FROM dossiers_rsa
+							SELECT DISTINCT( dossiers.id )
+								FROM dossiers
 							EXCEPT
-							SELECT DISTINCT( foyers.dossier_rsa_id )
+							SELECT DISTINCT( foyers.dossier_id )
 								FROM foyers
 						)'
 					)
@@ -75,7 +75,7 @@
 				)
 			),
 			array(
-				'text' => 'foyers sans adresse_foyer',
+				'text' => 'foyers sans adressefoyer',
 				'model' => 'Foyer',
 				'queryData' => array(
 					'conditions' => array(
@@ -83,14 +83,14 @@
 							SELECT DISTINCT( foyers.id )
 								FROM foyers
 							EXCEPT
-							SELECT DISTINCT( adresses_foyers.foyer_id )
-								FROM adresses_foyers
+							SELECT DISTINCT( adressesfoyers.foyer_id )
+								FROM adressesfoyers
 						)'
 					)
 				)
 			),
 			array(
-				'text' => 'foyers sans adresse_foyer de rang 01',
+				'text' => 'foyers sans adressefoyer de rang 01',
 				'model' => 'Foyer',
 				'queryData' => array(
 					'conditions' => array(
@@ -98,15 +98,15 @@
 							SELECT DISTINCT( foyers.id )
 								FROM foyers
 							EXCEPT
-							SELECT DISTINCT( adresses_foyers.foyer_id )
-								FROM adresses_foyers
-								WHERE adresses_foyers.rgadr = \'01\'
+							SELECT DISTINCT( adressesfoyers.foyer_id )
+								FROM adressesfoyers
+								WHERE adressesfoyers.rgadr = \'01\'
 						)'
 					)
 				)
 			),
 			array(
-				'text' => 'adresses_foyers de rang incorrect',
+				'text' => 'adressesfoyers de rang incorrect',
 				'model' => 'Adressefoyer',
 				'queryData' => array(
 					'conditions' => array(
@@ -115,14 +115,14 @@
 				)
 			),
 			array(
-				'text' => 'adresses_foyers en doublons',
+				'text' => 'adressesfoyers en doublons',
 				'model' => 'Adressefoyer',
 				'queryData' => array(
 					'conditions' => array(
 						'Adressefoyer.id IN (
 							SELECT DISTINCT(a1.id)
-								FROM adresses_foyers AS a1,
-									adresses_foyers AS a2
+								FROM adressesfoyers AS a1,
+									adressesfoyers AS a2
 								WHERE
 									a1.id < a2.id
 									AND a1.foyer_id = a2.foyer_id
@@ -132,14 +132,14 @@
 				)
 			),
 			array(
-				'text' => 'adresses_foyers faisant reference au meme adresse_id',
+				'text' => 'adressesfoyers faisant reference au meme adresse_id',
 				'model' => 'Adressefoyer',
 				'queryData' => array(
 					'conditions' => array(
 						'Adressefoyer.id IN (
 							SELECT DISTINCT(a1.id)
-								FROM adresses_foyers AS a1,
-									adresses_foyers AS a2
+								FROM adressesfoyers AS a1,
+									adressesfoyers AS a2
 								WHERE
 									a1.id < a2.id
 									AND a1.adresse_id = a2.adresse_id
@@ -148,7 +148,7 @@
 				)
 			),
 			array(
-				'text' => 'adresses sans adresses_foyers',
+				'text' => 'adresses sans adressesfoyers',
 				'model' => 'Adresse',
 				'queryData' => array(
 					'conditions' => array(
@@ -156,8 +156,8 @@
 							SELECT DISTINCT( adresses.id )
 								FROM adresses
 							EXCEPT
-							SELECT DISTINCT( adresses_foyers.adresse_id )
-								FROM adresses_foyers
+							SELECT DISTINCT( adressesfoyers.adresse_id )
+								FROM adressesfoyers
 						)'
 					)
 				)
@@ -296,13 +296,10 @@
 		*/
 
 		protected $_personnesLinkedTables = array(
-// 			'actionscandidats_personnes',
 			'apres',
 			'avispcgpersonnes',
 			'calculsdroitsrsa',
 			'contratsinsertion',
-			'demandesreorient',
-// 			'dspps',
 			'dsps',
 			'informationseti',
 			'infosagricoles',
@@ -391,7 +388,7 @@
 						$row = '';
 
 						foreach( $item[$check['model']] as $field => $value ) {
-							if( $field == 'dossier_rsa_id' ) {
+							if( $field == 'dossier_id' ) {
 								$row .= '<td><a href="'.Router::url(
 									array(
 										'controller' => 'dossiers',

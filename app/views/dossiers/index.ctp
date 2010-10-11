@@ -136,10 +136,7 @@
                                     <th>Code INSEE</th>
                                     <td>'.$dossier['Adresse']['numcomptt'].'</td>
                                 </tr>
-                                <tr>
-                                    <th>NIR</th>
-                                    <td>'.$dossier['Personne']['nir'].'</td>
-                                </tr>
+
                             </tbody>
                         </table>';
 

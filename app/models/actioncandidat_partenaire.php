@@ -1,30 +1,49 @@
 <?php
-    class ActioncandidatPartenaire extends AppModel
-    {
-        var $name = 'ActioncandidatPartenaire';
-//         var $useTable = 'actionscandidats_partenaires';
+	class ActioncandidatPartenaire extends AppModel
+	{
+		public $name = 'ActioncandidatPartenaire';
 
+		public $displayField = 'libstruc';
 
-        var $displayField = 'libstruc';
+		public $actsAs = array (
+			'Nullable',
+			'ValidateTranslate'
+		);
 
-        var $belongsTo = array(
-            'Actioncandidat',
-            'Partenaire'
-        );
+		public $validate = array(
+			'actioncandidat_id' => array(
+				array(
+					'rule' => array('numeric'),
+				),
+				array(
+					'rule' => array('notEmpty'),
+				),
+			),
+			'partenaire_id' => array(
+				array(
+					'rule' => array('numeric'),
+				),
+				array(
+					'rule' => array('notEmpty'),
+				),
+			),
+		);
 
-        var $actsAs = array (
-            'Nullable',
-            'ValidateTranslate'
-        );
-
-        var $validate = array(
-            'actioncandidat_id' => array(
-                array( 'rule' => 'notEmpty' )
-            ),
-            'partenaire_id' => array(
-                array( 'rule' => 'notEmpty' )
-            )
-        );
-
-    }
+		public $belongsTo = array(
+			'Actioncandidat' => array(
+				'className' => 'Actioncandidat',
+				'foreignKey' => 'actioncandidat_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Partenaire' => array(
+				'className' => 'Partenaire',
+				'foreignKey' => 'partenaire_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
+	}
 ?>

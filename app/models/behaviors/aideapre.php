@@ -4,7 +4,7 @@
         function beforeSave( &$model, $options = array() ) {
             $return = parent::beforeSave( $model, $options );
 
-            $suivi =& ClassRegistry::init( 'Suiviaideapretypeaide' );
+            $suivi = ClassRegistry::init( 'Suiviaideapretypeaide' );
 
             $personne = $suivi->findByTypeaide( $model->name );
             if( !empty( $personne ) ) {

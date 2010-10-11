@@ -1,94 +1,116 @@
 <?php
-    class Situationdossierrsa extends AppModel
-    {
-        var $name = 'Situationdossierrsa';
-        var $useTable = 'situationsdossiersrsa';
+	class Situationdossierrsa extends AppModel
+	{
+		public $name = 'Situationdossierrsa';
 
-        //*********************************************************************
+		public $useTable = 'situationsdossiersrsa';
 
-        var $belongsTo = array(
-            'Dossier' => array(
-                'classname'     => 'Dossier',
-                'foreignKey'    => 'dossier_rsa_id'
-            )
-        );
+		public $validate = array(
+			'etatdosrsa' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'dtrefursa' => array(
+				array(
+					'rule' => 'date',
+					'message' => 'Veuillez vérifier le format de la date.'
+				),
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'moticlorsa' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			)
+		);
 
-        var $hasMany = array(
-            'Suspensiondroit' => array(
-                'classname'     => 'Suspensiondroit',
-                'foreignKey'    => 'situationdossierrsa_id'
-            ),
-            'Suspensionversement' => array(
-                'classname'     => 'Suspensionversement',
-                'foreignKey'    => 'situationdossierrsa_id'
-            ),
-        );
-        //*********************************************************************
+		public $belongsTo = array(
+			'Dossier' => array(
+				'className' => 'Dossier',
+				'foreignKey' => 'dossier_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
 
-        var $validate = array(
-            'etatdosrsa' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'dtrefursa' => array(
-                array(
-                    'rule' => 'date',
-                    'message' => 'Veuillez vérifier le format de la date.'
-                ),
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'moticlorsa' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-//             'dtclorsa' => array(
-//                 array(
-//                     'rule' => 'date',
-//                     'message' => 'Veuillez vérifier le format de la date.'
-//                 ),
-//                 array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             )
-        );
+		public $hasMany = array(
+			'Suspensiondroit' => array(
+				'className' => 'Suspensiondroit',
+				'foreignKey' => 'situationdossierrsa_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Suspensionversement' => array(
+				'className' => 'Suspensionversement',
+				'foreignKey' => 'situationdossierrsa_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
 
-        //*********************************************************************
+		/**
+		*
+		*/
 
-        function etatOuvert() {
-            return array( 'Z', 2, 3, 4 ); // Z => dossier ajouté avec le formulaire "Préconisation ..."
-        }
+		public function etatOuvert() {
+			return array( 'Z', 2, 3, 4 ); // Z => dossier ajouté avec le formulaire "Préconisation ..."
+		}
 
-        function etatAttente() {
-            return array( 0, 'Z' );
-        }
-        //---------------------------------------------------------------------
+		/**
+		*
+		*/
 
-        function droitsOuverts( $dossier_rsa_id ) {
-            if( valid_int( $dossier_rsa_id ) ) {
-                $situation = $this->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
-                return in_array( Set::extract( $situation, 'Situationdossierrsa.etatdosrsa' ), $this->etatOuvert() );
-            }
-            else {
-                return false;
-            }
-        }
+		public function etatAttente() {
+			return array( 0, 'Z' );
+		}
 
-        function droitsEnAttente( $dossier_rsa_id ) {
-            if( valid_int( $dossier_rsa_id ) ) {
-                $situation = $this->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
-                return in_array( Set::extract( $situation, 'Situationdossierrsa.etatdosrsa' ), $this->etatAttente() );
-            }
-            else {
-                return false;
-            }
-        }
-    }
+		/**
+		*
+		*/
+
+		public function droitsOuverts( $dossier_id ) {
+			if( valid_int( $dossier_id ) ) {
+				$situation = $this->findByDossierId( $dossier_id, null, null, -1 );
+				return in_array( Set::extract( $situation, 'Situationdossierrsa.etatdosrsa' ), $this->etatOuvert() );
+			}
+			else {
+				return false;
+			}
+		}
+
+		/**
+		*
+		*/
+
+		public function droitsEnAttente( $dossier_id ) {
+			if( valid_int( $dossier_id ) ) {
+				$situation = $this->findByDossierId( $dossier_id, null, null, -1 );
+				return in_array( Set::extract( $situation, 'Situationdossierrsa.etatdosrsa' ), $this->etatAttente() );
+			}
+			else {
+				return false;
+			}
+		}
+	}
 ?>

@@ -16,8 +16,8 @@
             * 		App::import( 'Model', 'Typeorient' );
             * 		$this->Typeorient = new Typeorient();
             * par
-            *       $this->Structurereferente =& ClassRegistry::init( 'Structurereferente' );
-            * 		$this->Typeorient =& ClassRegistry::init( 'Typeorient' );
+            *       $this->Structurereferente = ClassRegistry::init( 'Structurereferente' );
+            * 		$this->Typeorient = ClassRegistry::init( 'Typeorient' );
 			*/
 			$expected=array(
 				2 => array(

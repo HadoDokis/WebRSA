@@ -1,9 +1,8 @@
 <?php
+	class Recours extends AppModel
+	{
+		public $name = 'Recours';
 
-    class Recours extends AppModel{
-
-        var $name = 'Recours';
-        var $usetable = array( 'Infofinanciere' );
-
-    }
+		public $usetable = array( 'Infofinanciere' );
+	}
 ?>

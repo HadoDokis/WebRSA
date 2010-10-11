@@ -1,188 +1,190 @@
 <?php
-    class Ressource extends AppModel
-    {
-        var $name = 'Ressource';
-        var $useTable = 'ressources';
+	class Ressource extends AppModel
+	{
+		var $name = 'Ressource';
 
-        var $belongsTo = array(
-            'Personne' => array(
-                'classname'     => 'Personne',
-                'foreignKey'    => 'personne_id'
-            )
-        );
+		var $validate = array(
+			'ddress' => array(
+				'rule' => 'date',
+				'message' => 'Veuillez entrer une date valide'
+			),
+			'dfress' => array(
+				'rule' => 'date',
+				'message' => 'Veuillez entrer une date valide'
+			)
+		);
 
-        var $hasMany = array(
-            'Ressourcemensuelle' => array(
-                'classname'     => 'Ressourcemensuelle',
-                'foreignKey'    => 'ressource_id'
-            ),
-//             'Detailressourcemensuelle' => array(
-//                 'classname'     => 'Detailressourcemensuelle',
-//                 'foreignKey'    => 'ressource_id'
-//             )
-        );
+		var $belongsTo = array(
+			'Personne' => array(
+				'className' => 'Personne',
+				'foreignKey' => 'personne_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
 
-        var $validate = array(
-//             'topressnotnul' => array(
-//                 'rule' => 'notEmpty',
-//                 'message' => 'Champ obligatoire'
-//             ),
-//             'topressnul' => array(
-//                 'rule' => 'notEmpty',
-//                 'message' => 'Champ obligatoire'
-//             ),
-            /*'mtpersressmenrsa' => array(
-                array(
-                    // FIXME INFO ailleurs aussi => 123,25 ne passe pas
-                    'rule' => 'numeric',
-                    'message' => 'Veuillez entrer une valeur numérique.'
-                ),
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-            ),*/
-            'ddress' => array(
-                'rule' => 'date',
-                'message' => 'Veuillez entrer une date valide'
-            ),
-            'dfress' => array(
-                'rule' => 'date',
-                'message' => 'Veuillez entrer une date valide'
-            )
-        );
+		var $hasMany = array(
+			'Ressourcemensuelle' => array(
+				'className' => 'Ressourcemensuelle',
+				'foreignKey' => 'ressource_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
 
-        //*********************************************************************
 
-        function afterFind( $results, $primary = false ) {
-            $return = parent::afterFind( $results, $primary );
+		var $hasAndBelongsToMany = array(
+			'Ressourcemensuelle' => array(
+				'className' => 'Ressourcemensuelle',
+				'joinTable' => 'ressources_ressourcesmensuelles',
+				'foreignKey' => 'ressource_id',
+				'associationForeignKey' => 'ressourcemensuelle_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'RessourceRessourcemensuelle'
+			)/*,
+			'Detailressourcemensuelle' => array(
+				'className' => 'Detailressourcemensuelle',
+				'joinTable' => 'detailsressourcesmensuelles_ressourcesmensuelles',
+				'foreignKey' => 'ressource_id',
+				'associationForeignKey' => 'detailressourcemensuelle_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'DetailressourcemensuelleRessource'
+			)*/
+		);
 
-            if( !empty( $results ) ) {
-                foreach( $results as $key => $result ) {
-                    if( isset( $result['Ressource'] ) ) {
-                        if( isset( $result['Ressource']['topressnul'] ) ) {
-                            $result['Ressource']['topressnotnul'] = !$result['Ressource']['topressnul'];
-                        }
-                    }
-                    $results[$key] = $result;
-                }
-            }
+		/**
+		*
+		*/
 
-            return $results;
-        }
+		public function afterFind( $results, $primary = false ) {
+			$return = parent::afterFind( $results, $primary );
 
-        //*********************************************************************
+			if( !empty( $results ) ) {
+				foreach( $results as $key => $result ) {
+					if( isset( $result['Ressource'] ) ) {
+						if( isset( $result['Ressource']['topressnul'] ) ) {
+							$result['Ressource']['topressnotnul'] = !$result['Ressource']['topressnul'];
+						}
+					}
+					$results[$key] = $result;
+				}
+			}
 
-        function moyenne( $ressource ) {
-            $somme = 0;
-            $moyenne = 0;
+			return $results;
+		}
 
-            $montants = Set::extract( $ressource, '/Ressourcemensuelle/Detailressourcemensuelle/mtnatressmen' );
+		/**
+		*
+		*/
+
+		public function moyenne( $ressource ) {
+			$somme = 0;
+			$moyenne = 0;
+
+			$montants = Set::extract( $ressource, '/Ressourcemensuelle/Detailressourcemensuelle/mtnatressmen' );
 			if( empty( $montants ) ) {
 				$montants = Set::extract( $ressource, '/Detailressourcemensuelle/mtnatressmen' );
 			}
 
-            if( count( $montants ) > 0 ) {
-                foreach( $montants as $montant ) {
-                    $somme += $montant;
-                }
-                $moyenne = ( $somme / count( $montants ) );
-            }
+			if( count( $montants ) > 0 ) {
+				foreach( $montants as $montant ) {
+					$somme += $montant;
+				}
+				$moyenne = ( $somme / count( $montants ) );
+			}
 
-            return $moyenne;
-        }
+			return $moyenne;
+		}
 
-        //*********************************************************************
+		/**
+		*
+		*/
 
-        function refresh( $personne_id ) {
-            $this->unbindModel( array( 'belongsTo' => array( 'Personne' ) ) );
+		public function refresh( $personne_id ) {
+			$this->unbindModel( array( 'belongsTo' => array( 'Personne' ) ) );
 
-            $ressource  = $this->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Ressource.personne_id' => $personne_id
-                    ),
-                    'order' => 'Ressource.dfress DESC',
-                    'recursive' => 2
-                )
-            );
+			$ressource  = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Ressource.personne_id' => $personne_id
+					),
+					'order' => 'Ressource.dfress DESC',
+					'recursive' => 2
+				)
+			);
 
-            if( !empty( $ressource ) ) {
-                $moyenne = $this->moyenne( $ressource );
-                $ressource['Ressource']['topressnotnul'] = ( $moyenne != 0 );
-                $ressource['Ressource']['topressnul'] = !$ressource['Ressource']['topressnotnul'];
-                $this->create( $ressource );
-                $saved = $this->save();
+			if( !empty( $ressource ) ) {
+				$moyenne = $this->moyenne( $ressource );
+				$ressource['Ressource']['topressnotnul'] = ( $moyenne != 0 );
+				$ressource['Ressource']['topressnul'] = !$ressource['Ressource']['topressnotnul'];
+				$this->create( $ressource );
+				$saved = $this->save();
 
 				// INFO: en version2 c'est dans Calculdroitrsa
 				$ModelCalculdroitrsa = ClassRegistry::init( 'Calculdroitrsa' );
 				$calculdroitrsa = $ModelCalculdroitrsa->findByPersonneId( $personne_id, null, null, -1 );
-                $calculdroitrsa['Calculdroitrsa']['personne_id'] = $personne_id;
-                $calculdroitrsa['Calculdroitrsa']['mtpersressmenrsa'] = number_format( $moyenne, 2, '.', '' );
-                $ModelCalculdroitrsa->create( $calculdroitrsa );
-                $saved = $ModelCalculdroitrsa->save() && $saved;
+				$calculdroitrsa['Calculdroitrsa']['personne_id'] = $personne_id;
+				$calculdroitrsa['Calculdroitrsa']['mtpersressmenrsa'] = number_format( $moyenne, 2, '.', '' );
+				$ModelCalculdroitrsa->create( $calculdroitrsa );
+				$saved = $ModelCalculdroitrsa->save() && $saved;
 
 				return $saved;
-            }
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        //*********************************************************************
+		/**
+		*
+		*/
 
-//         function beforeValidate( $options = array() ) {
-//             $return = parent::beforeValidate( $options );
-// debug( $this->data );
-//             $moyenne = $this->moyenne( $this->data );
-//             $this->data['Ressource']['topressnotnul'] = ( $moyenne != 0 );
-//             $this->data['Ressource']['topressnul'] = ( $moyenne == 0 );
-//             $this->data['Ressource']['mtpersressmenrsa'] = number_format( $moyenne, 2 );
-//
-// //             if( !empty( $this->data['Ressource']['topressnotnul'] ) ) {
-// //                 $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
-// //             }
-// //
-// //             $this->data['Ressource']['mtpersressmenrsa'] = 0;
-// //             if( ( !empty( $this->data['Ressource']['topressnul'] ) ) && ( $this->data['Ressource']['topressnul'] != 0 ) && !empty( $this->data['Detailressourcemensuelle'] ) ) {
-// //                 $this->data['Ressource']['mtpersressmenrsa'] = number_format( array_sum( Set::extract( $this->data['Detailressourcemensuelle'], '{n}.mtnatressmen' ) ) / 3, 2 );
-// //             }
-//
-//             return $return;
-//         }
+		public function beforeSave( $options = array() ) {
+			$return = parent::beforeSave( $options );
 
+			$moyenne = $this->moyenne( $this->data );
+			$this->data['Ressource']['topressnotnul'] = ( $moyenne != 0 );
+			$this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
 
-        //*********************************************************************
+			return $return;
+		}
 
-        function beforeSave( $options = array() ) {
-            $return = parent::beforeSave( $options );
+		/**
+		*
+		*/
 
-            $moyenne = $this->moyenne( $this->data );
-            $this->data['Ressource']['topressnotnul'] = ( $moyenne != 0 );
-            $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
-
-//             if( !empty( $this->data['Ressource']['topressnotnul'] ) ) {
-//                 $this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
-//             }
-//
-//             $this->data['Ressource']['mtpersressmenrsa'] = 0;
-//             if( ( $this->data['Ressource']['topressnul'] == false ) && !empty( $this->data['Detailressourcemensuelle'] ) ) {
-//                 $this->data['Ressource']['mtpersressmenrsa'] = number_format( array_sum( Set::extract( $this->data['Detailressourcemensuelle'], '{n}.mtnatressmen' ) ) / 3, 2, '.', '' );
-//             }
-
-            return $return;
-        }
-
-        //*********************************************************************
-
-        function afterSave( $created ) {
-            $return = parent::afterSave( $created );
+		public function afterSave( $created ) {
+			$return = parent::afterSave( $created );
 
 			$personne_id = Set::classicExtract( $this->data, 'Ressource.personne_id' );
 			$modelCalculdroitrsa = ClassRegistry::init( 'Calculdroitrsa' );
 
 			// Mise à jour de Calculdroitrsa
-            $moyenne = $this->moyenne( $this->data );
+			$moyenne = $this->moyenne( $this->data );
 			$calculdroitrsa = $modelCalculdroitrsa->findByPersonneId( $personne_id, null, null, -1 );
 
 			// FIXME: si $calculdroitrsa est vide ? Ne doit pas arriver
@@ -190,45 +192,41 @@
 			$calculdroitrsa[$modelCalculdroitrsa->alias]['mtpersressmenrsa'] = number_format( $moyenne, 2, '.', '' );
 			$modelCalculdroitrsa->create( $calculdroitrsa );
 			$modelCalculdroitrsa->save();
-// debug( $return );
-// debug( $personne_id );
-// debug( $moyenne );
-// debug( $calculdroitrsa );
-// debug( $this->data );
-// die();
 
-            $thisPersonne = $this->Personne->findById( $personne_id, null, null, -1 );
-            $this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
+			$thisPersonne = $this->Personne->findById( $personne_id, null, null, -1 );
+			$this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
 
-            return $return;
-        }
+			return $return;
+		}
 
-        //*********************************************************************
+		/**
+		*
+		*/
 
-        function dossierId( $ressource_id ) {
-            $this->unbindModelAll();
-            $this->bindModel(
-                array(
-                    'hasOne' => array(
-                        'Personne' => array(
-                            'foreignKey' => false,
-                            'conditions' => array( 'Personne.id = Ressource.personne_id' )
-                        ),
-                        'Foyer' => array(
-                            'foreignKey' => false,
-                            'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-                        )
-                    )
-                )
-            );
-            $ressource = $this->findById( $ressource_id, null, null, 1 );
+		public function dossierId( $ressource_id ) {
+			$this->unbindModelAll();
+			$this->bindModel(
+				array(
+					'hasOne' => array(
+						'Personne' => array(
+							'foreignKey' => false,
+							'conditions' => array( 'Personne.id = Ressource.personne_id' )
+						),
+						'Foyer' => array(
+							'foreignKey' => false,
+							'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+						)
+					)
+				)
+			);
+			$ressource = $this->findById( $ressource_id, null, null, 1 );
 
-            if( !empty( $ressource ) ) {
-                return $ressource['Foyer']['dossier_rsa_id'];
-            }
-            else {
-                return null;
-            }
-        }
-    }
+			if( !empty( $ressource ) ) {
+				return $ressource['Foyer']['dossier_id'];
+			}
+			else {
+				return null;
+			}
+		}
+	}
 ?>

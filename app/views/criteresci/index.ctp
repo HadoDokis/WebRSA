@@ -47,6 +47,7 @@
     <fieldset>
         <legend>Recherche par CER</legend>
             <?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+            <?php echo $form->input( 'Filtre.forme_ci', array( 'label' => false, 'type' => 'radio', 'options' => array( 'S' => 'Simple', 'C' => 'Complexe' ), 'legend' => 'Forme du contrat', 'default' => 'S' ) ); ?>
             <?php echo $form->input( 'Filtre.date_saisi_ci', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de saisie du contrat</legend>

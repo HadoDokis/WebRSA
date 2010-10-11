@@ -42,11 +42,15 @@
         *** *******************************************************************/
 
         function _add_edit( $id = null ){
+
+
+
             $this->Comiteapre->begin();
 
             if( $this->Jetonsfonctions->get( $this->name, $this->action ) ) {
                 $isRecours = Set::classicExtract( $this->params, 'named.recours' );
                 $isRapport = Set::classicExtract( $this->params, 'named.rapport' );
+
 
 
                 if( $isRecours ) {
@@ -60,23 +64,35 @@
                     );
                 }
 
+
+                $this->Apre->deepAfterFind = false;
                 $apres = $this->Apre->find(
                     'all',
                     array(
-                        'conditions' => $conditions,
-                        'recursive' => 0
+                        'fields' => array(
+                            'Apre.id',
+                            'Apre.numeroapre',
+                            'Apre.datedemandeapre',
+                            'Personne.qual',
+                            'Personne.nom',
+                            'Personne.prenom',
+                        ),
+                       'conditions' => $conditions,
+                       'contain' => array(
+                            'Personne'
+                        )/*,
+                        'limit' => 10*/
                     )
                 );
 
-
-                $hasAide = Set::extract( $apres, '/Apre/Natureaide' );
+                /*$hasAide = Set::extract( $apres, '/Apre/Natureaide' );
                 foreach( $hasAide as $key => $hasAideComplementaire ){
                     $sumAides = ( array_sum( $hasAideComplementaire['Natureaide'] ) );
                     if( $sumAides == 0 ){
                         unset( $apres[$key] );
                     }
-                }
-    //     debug($apres);
+                }*/
+
                 $this->set( 'apres', $apres );
 
                 if( $this->action == 'add' ) {
@@ -99,6 +115,7 @@
 
                 }
 
+                // Formulaire renvoyé
                 if( !empty( $this->data ) ) {
                     if( isset( $this->data['Apre'] ) && isset( $this->data['Apre']['Apre'] ) ) {
                         $success = true;

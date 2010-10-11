@@ -12,7 +12,8 @@
 						'type' => 'nataccosocindi', 'domain' => 'dsp'
 					),
 				)
-			)
+			),
+			'Revision' => array('auto'=>false)
 		);
     }
 ?>

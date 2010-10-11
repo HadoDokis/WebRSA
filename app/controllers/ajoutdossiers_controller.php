@@ -365,16 +365,16 @@
                 $saved = $this->Dossier->save( $data['dossier']['Dossier'] );
 
                 // Détails du droit
-                $data['dossier']['Detaildroitrsa']['dossier_rsa_id'] = $this->Dossier->id;
+                $data['dossier']['Detaildroitrsa']['dossier_id'] = $this->Dossier->id;
                 $saved = $this->Detaildroitrsa->save( $data['dossier']['Detaildroitrsa'] ) && $saved;
 
                 // Situation dossier RSA
-                $situationdossierrsa = array( 'Situationdossierrsa' => array( 'dossier_rsa_id' => $this->Dossier->id, 'etatdosrsa' => 'Z' ) ); ///FIXME Remplacement de l'état de Null à Z
+                $situationdossierrsa = array( 'Situationdossierrsa' => array( 'dossier_id' => $this->Dossier->id, 'etatdosrsa' => 'Z' ) ); ///FIXME Remplacement de l'état de Null à Z
                 $this->Dossier->Situationdossierrsa->validate = array();
                 $saved = $this->Dossier->Situationdossierrsa->save( $situationdossierrsa ) && $saved;
 
                 // Foyer
-                $saved = $this->Foyer->save( array( 'dossier_rsa_id' => $this->Dossier->id ) ) && $saved;
+                $saved = $this->Foyer->save( array( 'dossier_id' => $this->Dossier->id ) ) && $saved;
 
                 // Adresse
                 $saved = $this->Adresse->save( $data['adresse']['Adresse'] ) && $saved;
@@ -482,7 +482,7 @@
 
                 $suiviinstruction = array(
                     'Suiviinstruction' => array(
-                        'dossier_rsa_id'           => $this->Dossier->id,
+                        'dossier_id'           => $this->Dossier->id,
                         'suiirsa'                  => '01',
                         'date_etat_instruction'    => strftime( '%Y-%m-%d' ),
                         'nomins'                   => $user['User']['nom'],

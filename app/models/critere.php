@@ -93,7 +93,7 @@
             /// Critères sur l'adresse - canton
 			if( Configure::read( 'CG.cantons' ) ) {
 				if( isset( $criteres['Canton']['canton'] ) && !empty( $criteres['Canton']['canton'] ) ) {
-					$this->Canton =& ClassRegistry::init( 'Canton' );
+					$this->Canton = ClassRegistry::init( 'Canton' );
 					$conditions[] = $this->Canton->queryConditions( $criteres['Canton']['canton'] );
 				}
 			}
@@ -153,7 +153,7 @@
             }
 
             /// Requête
-            $Situationdossierrsa =& ClassRegistry::init( 'Situationdossierrsa' );
+            $Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
         	$dbo = $this->getDataSource( $this->useDbConfig );
 
             $query = array(
@@ -242,11 +242,11 @@
                         'conditions' => array( 'Personne.foyer_id = Foyer.id' )
                     ),
                     array(
-                        'table'      => 'dossiers_rsa',
+                        'table'      => 'dossiers',
                         'alias'      => 'Dossier',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Foyer.dossier_rsa_id = Dossier.id' )
+                        'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
                     ),
                     array(
                         'table'      => 'modescontact',
@@ -280,9 +280,9 @@
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array(
-							'Suiviinstruction.dossier_rsa_id = Dossier.id',
+							'Suiviinstruction.dossier_id = Dossier.id',
 							'Suiviinstruction.id IN (
-                        		'.ClassRegistry::init( 'Suiviinstruction' )->sqDerniere('Suiviinstruction.dossier_rsa_id').'
+                        		'.ClassRegistry::init( 'Suiviinstruction' )->sqDerniere('Suiviinstruction.dossier_id').'
 							)'
 						)
                     ),
@@ -298,14 +298,14 @@
                         'alias'      => 'Situationdossierrsa',
                         'type'       => 'INNER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Situationdossierrsa.dossier_rsa_id = Dossier.id /*AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )*/' )
+                        'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id /*AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )*/' )
                     ),
                     array(
                         'table'      => 'detailsdroitsrsa',
                         'alias'      => 'Detaildroitrsa',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array( 'Detaildroitrsa.dossier_rsa_id = Dossier.id' )
+                        'conditions' => array( 'Detaildroitrsa.dossier_id = Dossier.id' )
                     ),
                     /*array(
                         'table'      => 'detailscalculsdroitsrsa',
@@ -346,7 +346,7 @@
             	$type = 'LEFT OUTER';
             	
 			$query['joins'][] = array(
-				'table'      => 'adresses_foyers',
+				'table'      => 'adressesfoyers',
 				'alias'      => 'Adressefoyer',
 				'type'       => $type,
 				'foreignKey' => false,

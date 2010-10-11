@@ -1,46 +1,36 @@
 <?php
-    class Prestform extends AppModel
-    {
-        var $name = 'Prestform';
-        var $useTable = 'prestsform';
+	class Prestform extends AppModel
+	{
+		public $name = 'Prestform';
 
+		public $validate = array(
+			'actioninsertion_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+				),
+			),
+			'refpresta_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+				),
+			),
+		);
 
-        var $belongsTo = array(
-            'Actioninsertion' => array(
-                'classname' => 'Actioninsertion',
-                'foreignKey' => 'actioninsertion_id',
-            ),
-            'Refpresta' => array(
-                'classname' => 'Refpresta',
-                'foreignKey' => 'refpresta_id',
-            )
-        );
-
-/*
-        var $validate = array(
-            'nomrefpresta' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'lib_presta' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'date_presta' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-                array(
-                    'rule' => 'date',
-                    'message' => 'Champ obligatoire'
-                )
-            )
-        );*/
-
-    }
+		public $belongsTo = array(
+			'Actioninsertion' => array(
+				'className' => 'Actioninsertion',
+				'foreignKey' => 'actioninsertion_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Refpresta' => array(
+				'className' => 'Refpresta',
+				'foreignKey' => 'refpresta_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
+	}
 ?>

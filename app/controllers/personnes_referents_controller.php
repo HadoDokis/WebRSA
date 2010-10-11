@@ -75,15 +75,10 @@
         function _add_edit( $id = null ) {
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
-            // Retour à la liste en cas d'annulation
-            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-                $this->redirect( array( 'action' => 'index', $id ) );
-            }
-
             // Récupération des id afférents
             if( $this->action == 'add' ) {
                 $personne_id = $id;
-                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
+                $dossier_id = $this->Personne->dossierId( $personne_id );
             }
             else if( $this->action == 'edit' ) {
                 $personne_referent_id = $id;
@@ -96,13 +91,18 @@
 
 // debug($referent);
                 $personne_id = $personne_referent['PersonneReferent']['personne_id'];
-                $dossier_rsa_id = $this->PersonneReferent->dossierId( $personne_referent_id );
+                $dossier_id = $this->PersonneReferent->dossierId( $personne_referent_id );
+            }
+
+            // Retour à la liste en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index', $personne_id ) );
             }
 
             $this->PersonneReferent->begin();
 
-            $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
-            $this->assert( !empty( $dossier_rsa_id ), 'invalidParameter' );
+            $dossier_id = $this->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
             $this->set( 'referents', $this->Referent->listOptions() );
 
@@ -117,17 +117,17 @@
 
 
 
-            if( !$this->Jetons->check( $dossier_rsa_id ) ) {
+            if( !$this->Jetons->check( $dossier_id ) ) {
                 $this->PersonneReferent->rollback();
             }
-            $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             if( !empty( $this->data ) ){
 
                 if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 // debug( $this->data );
-                        $this->Jetons->release( $dossier_rsa_id );
+                        $this->Jetons->release( $dossier_id );
                         $this->PersonneReferent->commit(); /// FIXE
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array(  'controller' => 'personnes_referents','action' => 'index', $personne_id ) );

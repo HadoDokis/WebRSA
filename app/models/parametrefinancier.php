@@ -1,69 +1,69 @@
 <?php
 	class Parametrefinancier extends AppModel
 	{
-		var $name = 'Parametrefinancier';
+		public $name = 'Parametrefinancier';
 
-        var $validate = array(
-            'entitefi' => array(
+		public $validate = array(
+			'entitefi' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-            ),
-            'tiers' => array(
+			),
+			'tiers' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-            ),
-            'codecdr' => array(
+			),
+			'codecdr' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-            ),
-            'libellecdr' => array(
+			),
+			'libellecdr' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-            ),
-            'natureanalytique' => array(
+			),
+			'natureanalytique' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-            ),
-            'lib_natureanalytique' => array(
+			),
+			'lib_natureanalytique' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-            ),
-            'programme' => array(
+			),
+			'programme' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-            ),
-            'lib_programme' => array(
+			),
+			'lib_programme' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-            ),
-            'apreforfait' => array(
+			),
+			'apreforfait' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-            ),
-            'natureimput' => array(
+			),
+			'natureimput' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-            ),
-        );
+			),
+		);
 	}
 ?>

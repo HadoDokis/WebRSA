@@ -1,8 +1,8 @@
 <?php
     class Dossiersimplifie extends AppModel
     {
-        var $name = 'Dossiersimplifie';
-        var $useTable = false;
+        public $name = 'Dossiersimplifie';
 
+        public $useTable = false;
     }
 ?>

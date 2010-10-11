@@ -25,6 +25,10 @@
 		observeDisableFieldsOnValue( 'DspTopautrpermicondu', [ 'DspLibautrpermicondu' ], '1', false );
 		// FIXME: pas de niveau = pas de diplôme ?
 		observeDisableFieldsOnValue( 'DspNivetu', [ 'DspNivdipmaxobt', 'DspAnnobtnivdipmax' ], [ '', '1207' ], true );
+		
+		observeDisableFieldsOnValue( 'DspTopmoyloco', [ 'Detailmoytrans0Moytrans', 'Detailmoytrans1Moytrans', 'Detailmoytrans2Moytrans', 'Detailmoytrans3Moytrans', 'Detailmoytrans4Moytrans', 'Detailmoytrans5Moytrans', 'Detailmoytrans6Moytrans', 'Detailmoytrans7Moytrans' ], '1', false );
+		
+		observeDisableFieldsOnValue( 'DspTopprojpro', [ 'Detailprojpro0Projpro', 'Detailprojpro1Projpro', 'Detailprojpro2Projpro', 'Detailprojpro3Projpro', 'Detailprojpro4Projpro', 'Detailprojpro5Projpro', 'Detailprojpro6Projpro', 'Detailprojpro7Projpro', 'Detailprojpro8Projpro', 'Detailprojpro9Projpro', 'Detailprojpro10Projpro', 'Detailprojpro11Projpro', 'Detailprojpro12Projpro' ], '1', false );
 
 		observeDisableFieldsOnCheckbox( 'Detailnatmob0Natmob', [ 'Detailnatmob1Natmob', 'Detailnatmob2Natmob', 'Detailnatmob3Natmob' ], true );
 		observeDisableFieldsOnCheckbox( 'Detaildifdisp0Difdisp', [ 'Detaildifdisp1Difdisp', 'Detaildifdisp2Difdisp', 'Detaildifdisp3Difdisp', 'Detaildifdisp4Difdisp', 'Detaildifdisp5Difdisp' ], true );
@@ -120,6 +124,10 @@ Plan:
 		<?php
 			// SituationSociale - DetailDifficulteSituationSociale (0-n)
 			echo $dsphm->fieldset( 'Detaildifsoc', 'difsoc', 'libautrdifsoc', $dsp_id, '0407', $options['Detaildifsoc']['difsoc'] );
+			
+			// SituationSociale - DetailDifficulteSituationSocialeProfessionel (0-n)
+			if ($cg=='cg58')
+				echo $dsphm->fieldset( 'Detaildifsocpro', 'difsocpro', 'libautrdifsocpro', $dsp_id, '2110', $options['Detaildifsocpro']['difsocpro'] );
 
 			// SituationSociale - DetailAccompagnementSocialFamilial (0-n)
 			echo $dsphm->fieldset( 'Detailaccosocfam', 'nataccosocfam', 'libautraccosocfam', $dsp_id, '0413', $options['Detailaccosocfam']['nataccosocfam'] );
@@ -191,7 +199,18 @@ Plan:
 					'Dsp.topisogrorechemploi',
 					'Dsp.accoemploi',
 					'Dsp.libcooraccoemploi' => array( 'type' => 'textarea' ),
-					'Dsp.topprojpro',
+					'Dsp.topprojpro'
+				),
+				array(
+					'options' => $options
+				)
+			);
+				
+			if ($cg=='cg58')
+				echo $dsphm->fieldset( 'Detailprojpro', 'projpro', 'libautrprojpro', $dsp_id, '2213', $options['Detailprojpro']['projpro'] );
+			
+			echo $default->subform(
+				array(
 					'Dsp.libemploirech',
 					'Dsp.libsecactrech',
 					'Dsp.topcreareprientre',
@@ -201,6 +220,18 @@ Plan:
 					'options' => $options
 				)
 			);
+			
+			if ($cg=='cg58') {
+				echo $default->subform(
+					array(
+						'Dsp.libformenv'
+					),
+					array(
+						'options' => $options
+					)
+				);
+				echo $dsphm->fieldset( 'Detailfreinform', 'freinform', null, $dsp_id, null, $options['Detailfreinform']['freinform'] );
+			}
 			/*echo $xform->enum( 'Dsp.hispro', array( 'options' => $options['hispro'] ) );
 			echo $xform->input( 'Dsp.libderact', array( 'domain' => 'dsp' ) );
 			echo $xform->input( 'Dsp.libsecactderact', array( 'domain' => 'dsp' ) );
@@ -229,7 +260,18 @@ Plan:
 			<?php
 				echo $default->subform(
 					array(
-						'Dsp.topmoyloco',
+						'Dsp.topmoyloco'
+					),
+					array(
+						'options' => $options
+					)
+				);
+				
+				if ($cg=='cg58')
+					echo $dsphm->fieldset( 'Detailmoytrans', 'moytrans', 'libautrmoytrans', $dsp_id, '2008', $options['Detailmoytrans']['moytrans'] );
+				
+				echo $default->subform(
+					array(
 						'Dsp.toppermicondub',
 						'Dsp.topautrpermicondu',
 						'Dsp.libautrpermicondu'
@@ -256,7 +298,18 @@ Plan:
 		<?php
 			echo $default->subform(
 				array(
-					'Dsp.natlog',
+					'Dsp.natlog'
+				),
+				array(
+					'options' => $options
+				)
+			);
+			
+			if ($cg=='cg58')
+				echo $dsphm->fieldset( 'Detailconfort', 'confort', null, $dsp_id, null, $options['Detailconfort']['confort'] );
+			
+			echo $default->subform(
+				array(
 					'Dsp.demarlog'
 				),
 				array(

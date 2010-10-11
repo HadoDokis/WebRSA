@@ -45,7 +45,7 @@
                 </tr>
                 <tr class="odd">
                     <th><?php __( 'Avis du comité d\'examen' );?></th>
-                    <td><?php echo Set::enum( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ), $optionsaprecomite['decisioncomite'] );?></td>
+                    <td><?php if( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ) ) { echo Set::enum( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ), $optionsaprecomite['decisioncomite']); }?></td>
                 </tr>
                 <tr class="even">
                     <th><?php __( 'Montant aide complémentaire accordée' );?></th>

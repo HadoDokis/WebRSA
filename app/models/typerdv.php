@@ -1,28 +1,50 @@
 <?php
-    class Typerdv extends AppModel
-    {
-        var $name = 'Typerdv';
-        var $useTable = 'typesrdv';
-        var $displayField = 'libelle';
-        var $order = 'Typerdv.id ASC';
+	class Typerdv extends AppModel
+	{
+		public $name = 'Typerdv';
 
-        var $hasMany = array(
-            'Rendezvous' => array(
-                'classname' => 'Rendezvous',
-                'foreignKey' => 'typerdv_id'
-            )
-        );
+		public $displayField = 'libelle';
 
+		public $order = 'Typerdv.id ASC';
 
-        var $validate = array(
-            'libelle' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            ),
-            'modelenotifrdv' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Champ obligatoire'
-            )
-        );
-    }
+		public $validate = array(
+			'libelle' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			),
+			'modelenotifrdv' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			)
+		);
+
+		public $hasMany = array(
+			'Entretien' => array(
+				'className' => 'Entretien',
+				'foreignKey' => 'typerdv_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Rendezvous' => array(
+				'className' => 'Rendezvous',
+				'foreignKey' => 'typerdv_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+	}
 ?>

@@ -10,7 +10,8 @@
 						'type' => 'difsoc', 'domain' => 'dsp'
 					),
 				)
-			)
+			),
+			'Revision' => array('auto'=>false)
 		);
 
         var $belongsTo = array( 'Dsp' );

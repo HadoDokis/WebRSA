@@ -71,12 +71,12 @@
                 Foyer
             ******************************************************************/
             $foyerXml = array( 'Foyer' => (array) $demandeXml->donneesadministratives->logement );
-            $foyerXml['Foyer']['dossier_rsa_id'] = $this->Dossier->id;
+            $foyerXml['Foyer']['dossier_id'] = $this->Dossier->id;
 
             $foyerDb = $this->Foyer->find(
                 'first',
                 array(
-                    'conditions' => array( 'Foyer.dossier_rsa_id' => $this->Dossier->id ),
+                    'conditions' => array( 'Foyer.dossier_id' => $this->Dossier->id ),
                     'recursive' => -1
                 )
             );
@@ -237,7 +237,7 @@
             //          Si erreur -> créer un fichier à retraiter juste avec les erreurs,
             //          mais au même format
             $this->Dossier->begin();
-//             $this->Dossier->query( 'TRUNCATE TABLE dossiers_rsa CASCADE;' );
+//             $this->Dossier->query( 'TRUNCATE TABLE dossiers CASCADE;' );
 
             while( $data = fread( $this->_xmlFile, 4096 ) ) {
                 if( !xml_parse( $this->_xmlParser, $data, feof($this->_xmlFile ) ) ) {

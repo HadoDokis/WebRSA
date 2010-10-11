@@ -1,24 +1,33 @@
 <?php
-    class Typepdo extends AppModel
-    {
-        var $name = 'Typepdo';
-        var $useTable = 'typespdos';
-        var $displayField = 'libelle';
-        var $order = 'Typepdo.id ASC';
+	class Typepdo extends AppModel
+	{
+		public $name = 'Typepdo';
 
-        var $hasMany = array(
-            'Propopdo' => array(
-                'classname' => 'Propopdo',
-                'foreignKey' => 'typepdo_id'
-            )
-        );
+		public $displayField = 'libelle';
 
+		public $order = 'Typepdo.id ASC';
 
-        var $validate = array(
-            'libelle' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            )
-        );
-    }
+		public $validate = array(
+			'libelle' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			)
+		);
+
+		public $hasMany = array(
+			'Propopdo' => array(
+				'className' => 'Propopdo',
+				'foreignKey' => 'typepdo_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+	}
 ?>

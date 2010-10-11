@@ -11,7 +11,7 @@
     <?php echo $form->input( 'Contratinsertion.observ_benef', array( 'label' => false, 'type' => 'textarea', 'rows' => 10 ) );?>
 </fieldset>
 <fieldset>
-    <legend class="title" title="Projets et démarches que le bénéficiaire du contrat s'engage à entreprendre au regard de la proposition du référent">Projet négocié</legend>
+    <legend class="title" title="Projets et démarches que le bénéficiaire du contrat s'engage à entreprendre au regard de la proposition du référent">Projet négocié <?php echo REQUIRED_MARK;?></legend>
     <?php echo $form->input( 'Contratinsertion.nature_projet', array( 'label' => false, 'type' => 'textarea', 'rows' => 10 ) );?>
 </fieldset>
 

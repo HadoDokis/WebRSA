@@ -63,9 +63,21 @@
             // Vérification du format de la variable
             $this->assert( valid_int( $ressource_id ), 'invalidParameter' );
 
-            $ressource = $this->Ressource->findById( $ressource_id, null, null, 2 );
+            $ressource = $this->Ressource->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Ressource.id' => $ressource_id
+                    ),
+                    'contain' => array(
+                        'Ressourcemensuelle' => array(
+                            'Detailressourcemensuelle'
+                        )
+                    )
+                )
+            );
             $this->assert( !empty( $ressource ), 'invalidParameter' );
-
+// debug($ressource);
             $this->set( 'ressource', $ressource );
             $this->set( 'personne_id', $ressource['Ressource']['personne_id'] );
         }

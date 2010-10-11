@@ -1,24 +1,33 @@
 <?php
-    class Decisionpdo extends AppModel
-    {
-        var $name = 'Decisionpdo';
-        var $useTable = 'decisionspdos';
-        var $displayField = 'libelle';
-        var $order = 'Decisionpdo.id ASC';
+	class Decisionpdo extends AppModel
+	{
+		public $name = 'Decisionpdo';
 
-        var $hasMany = array(
-            'Propopdo' => array(
-                'classname' => 'Propopdo',
-                'foreignKey' => 'decisionpdo_id'
-            )
-        );
+		public $displayField = 'libelle';
 
+		public $order = 'Decisionpdo.id ASC';
 
-        var $validate = array(
-            'libelle' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            )
-        );
-    }
+		public $hasMany = array(
+			'Propopdo' => array(
+				'className' => 'Propopdo',
+				'foreignKey' => 'decisionpdo_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+
+		public $validate = array(
+			'libelle' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			)
+		);
+	}
 ?>

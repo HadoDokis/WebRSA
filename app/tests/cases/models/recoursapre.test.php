@@ -82,12 +82,12 @@
 						)
 					),
 					4 => array(
-						'table' => 'dossiers_rsa',
+						'table' => 'dossiers',
 						'alias' => 'Dossier',
 						'type' => 'INNER',
 						'foreignKey' => '',
 						'conditions' => array(
-							0 => 'Foyer.dossier_rsa_id = Dossier.id'
+							0 => 'Foyer.dossier_id = Dossier.id'
 						)
 					),
 					5 => array(
@@ -102,7 +102,7 @@
 						)
 					),
 					6 => array(
-						'table' => 'adresses_foyers',
+						'table' => 'adressesfoyers',
 						'alias' => 'Adressefoyer',
 						'type' => 'INNER',
 						'foreignKey' => '',
@@ -207,12 +207,12 @@
 						)
 					),
 					4 => array(
-						'table' => 'dossiers_rsa',
+						'table' => 'dossiers',
 						'alias' => 'Dossier',
 						'type' => 'INNER',
 						'foreignKey' => '',
 						'conditions' => array(
-							0 => 'Foyer.dossier_rsa_id = Dossier.id'
+							0 => 'Foyer.dossier_id = Dossier.id'
 						)
 					),
 					5 => array(
@@ -227,7 +227,7 @@
 						)
 					),
 					6 => array(
-						'table' => 'adresses_foyers',
+						'table' => 'adressesfoyers',
 						'alias' => 'Adressefoyer',
 						'type' => 'INNER',
 						'foreignKey' => '',
@@ -328,12 +328,12 @@
 						)
 					),
 					4 => array(
-						'table' => 'dossiers_rsa',
+						'table' => 'dossiers',
 						'alias' => 'Dossier',
 						'type' => 'INNER',
 						'foreignKey' => '',
 						'conditions' => array(
-							0 => 'Foyer.dossier_rsa_id = Dossier.id'
+							0 => 'Foyer.dossier_id = Dossier.id'
 						)
 					),
 					5 => array(
@@ -348,7 +348,7 @@
 						)
 					),
 					6 => array(
-						'table' => 'adresses_foyers',
+						'table' => 'adressesfoyers',
 						'alias' => 'Adressefoyer',
 						'type' => 'INNER',
 						'foreignKey' => '',

@@ -1,60 +1,76 @@
 <?php
-    class Avispcgdroitrsa extends AppModel
-    {
-        var $name = 'Avispcgdroitrsa';
-        var $useTable = 'avispcgdroitrsa';
+	class Avispcgdroitrsa extends AppModel
+	{
+		public $name = 'Avispcgdroitrsa';
 
-        //*********************************************************************
+		public $belongsTo = array(
+			'Dossier' => array(
+				'classname'     => 'Dossier',
+				'foreignKey'    => 'id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
 
-        var $belongsTo = array(
-            'Dossier' => array(
-                'classname'     => 'Dossier',
-                'foreignKey'    => 'id'
-            )
-        );
+		public $hasMany = array(
+			'Condadmin' => array(
+				'classname'     => 'Condadmin',
+				'foreignKey'    => 'avispcgdroitrsa_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Reducrsa' => array(
+				'classname'     => 'Reducrsa',
+				'foreignKey'    => 'avispcgdroitrsa_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+		);
 
-        var $hasMany = array(
-            'Condadmin' => array(
-                'classname'     => 'Condadmin',
-                'foreignKey'    => 'avispcgdroitrsa_id'
-            ),
-            'Reducrsa' => array(
-                'classname'     => 'Reducrsa',
-                'foreignKey'    => 'avispcgdroitrsa_id'
-            ),
-        );
-        //*********************************************************************
-
-        var $validate = array(
-            'avisdestpairsa' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'dtavisdestpairsa' => array(
-                array(
-                    'rule' => 'date',
-                    'message' => 'Veuillez vérifier le format de la date.'
-                ),
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'nomtie' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'typeperstie' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            )
-        );
-
-    }
+		public $validate = array(
+			'avisdestpairsa' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'dtavisdestpairsa' => array(
+				array(
+					'rule' => 'date',
+					'message' => 'Veuillez vérifier le format de la date.'
+				),
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'nomtie' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'typeperstie' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			)
+		);
+	}
 ?>

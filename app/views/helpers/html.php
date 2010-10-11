@@ -244,7 +244,7 @@ class HtmlHelper extends AppHelper {
         if ($inline) {
             return $this->output($out);
         } else {
-            $view =& ClassRegistry::getObject('view');
+            $view = ClassRegistry::getObject('view');
             $view->addScript($out);
         }
     }
@@ -372,7 +372,7 @@ class HtmlHelper extends AppHelper {
         if ($inline) {
             return $out;
         } else {
-            $view =& ClassRegistry::getObject('view');
+            $view = ClassRegistry::getObject('view');
             $view->addScript($out);
         }
     }
@@ -960,7 +960,7 @@ class HtmlHelper extends AppHelper {
         ).' Imprimer la cohorte';
 
         if( $enabled ) {
-            $View =& ClassRegistry::getObject('view');
+            $View = ClassRegistry::getObject('view');
             return $View->element( 'popup' ).$this->link(
                 $content,
                 $url,

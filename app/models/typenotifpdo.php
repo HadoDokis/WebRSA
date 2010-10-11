@@ -1,22 +1,37 @@
 <?php
-    class Typenotifpdo extends AppModel
-    {
-        var $name = 'Typenotifpdo';
-        var $useTable = 'typesnotifspdos';
-        var $displayField = 'libelle';
-        var $order = 'Typenotifpdo.id ASC';
+	class Typenotifpdo extends AppModel
+	{
+		public $name = 'Typenotifpdo';
 
+		public $displayField = 'libelle';
 
+		public $order = 'Typenotifpdo.id ASC';
 
-        var $validate = array(
-            'libelle' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            ),
-            'modelenotifpdo' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            )
-        );
-    }
+		public $validate = array(
+			'libelle' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			),
+			'modelenotifpdo' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			)
+		);
+
+		public $hasMany = array(
+			'Propopdo' => array(
+				'className' => 'Propopdo',
+				'foreignKey' => 'typenotifpdo_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+	}
 ?>

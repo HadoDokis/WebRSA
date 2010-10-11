@@ -250,8 +250,8 @@
 				}
 				$row[] = count( Set::filter( $dsp ) );
 
-				$TitreSejour = Set::filter( Set::classicExtract( $p, 'TitreSejour' ) );
-				$row[] = ( empty( $TitreSejour ) ? 0 : 1 );
+				$Titresejour = Set::filter( Set::classicExtract( $p, 'Titresejour' ) );
+				$row[] = ( empty( $Titresejour ) ? 0 : 1 );
 
 				$grossesses = $this->Personne->query( 'SELECT COUNT(*) AS count FROM grossesses WHERE personne_id = '.Set::classicExtract( $p, 'Personne.id' ) );
 				$row[] = Set::classicExtract( $grossesses, '0.0.count' );
@@ -425,13 +425,13 @@
 			$this->output .= '<body><h1>'.$this->pageTitle.'</h1>';
 
 			/// Dossiers avec n° de demande en doublon => 0
-			// SELECT d1.id, d1.numdemrsa, d1.dtdemrsa FROM dossiers_rsa AS d1, dossiers_rsa AS d2 WHERE d1.numdemrsa = d2.numdemrsa AND d1.id <> d2.id;
+			// SELECT d1.id, d1.numdemrsa, d1.dtdemrsa FROM dossiers AS d1, dossiers AS d2 WHERE d1.numdemrsa = d2.numdemrsa AND d1.id <> d2.id;
 
 			/// Foyers vides
 			if( $this->dossiersvides == true ) {
-				$sql = "SELECT dossiers_rsa.id, dossiers_rsa.numdemrsa, dossiers_rsa.dtdemrsa
-							FROM dossiers_rsa
-								INNER JOIN foyers ON ( dossiers_rsa.id = foyers.dossier_rsa_id )
+				$sql = "SELECT dossiers.id, dossiers.numdemrsa, dossiers.dtdemrsa
+							FROM dossiers
+								INNER JOIN foyers ON ( dossiers.id = foyers.dossier_id )
 							WHERE foyers.id NOT IN ( SELECT personnes.foyer_id FROM personnes GROUP BY personnes.foyer_id )
 							{$this->limit};";
 				$results = $this->Personne->query( $sql );
@@ -449,9 +449,9 @@
 
 			/// Dossiers contenant des personnes mais sans demandeur RSA
 			if( $this->dossierssansdemandeur == true ) {
-				$sql = "SELECT dossiers_rsa.id, dossiers_rsa.numdemrsa, dossiers_rsa.dtdemrsa
-							FROM dossiers_rsa
-								INNER JOIN foyers ON dossiers_rsa.id = foyers.dossier_rsa_id
+				$sql = "SELECT dossiers.id, dossiers.numdemrsa, dossiers.dtdemrsa
+							FROM dossiers
+								INNER JOIN foyers ON dossiers.id = foyers.dossier_id
 							WHERE foyers.id NOT IN ( SELECT personnes.foyer_id FROM personnes INNER JOIN prestations ON ( prestations.personne_id = personnes.id AND prestations.rolepers = 'DEM' AND prestations.natprest = 'RSA' ) )
 								AND foyers.id IN ( SELECT personnes.foyer_id FROM personnes GROUP BY personnes.foyer_id )
 							{$this->limit};";

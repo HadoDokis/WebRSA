@@ -19,17 +19,17 @@
         }
 
 
-        function index( $dossier_rsa_id = null ){
+        function index( $dossier_id = null ){
             // TODO : vérif param
             // Vérification du format de la variable
-            $this->assert( valid_int( $dossier_rsa_id ), 'error404' );
+            $this->assert( valid_int( $dossier_id ), 'error404' );
 
 
             $detaildroitrsa = $this->Detaildroitrsa->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Detaildroitrsa.dossier_rsa_id' => $dossier_rsa_id
+                        'Detaildroitrsa.dossier_id' => $dossier_id
                     ),
                     'recursive' => 1
                 )
@@ -37,7 +37,7 @@
 
 
             // Assignations à la vue
-            $this->set( 'dossier_rsa_id', $dossier_rsa_id );
+            $this->set( 'dossier_id', $dossier_id );
             $this->set( 'detaildroitrsa', $detaildroitrsa );
         }
 
@@ -60,7 +60,7 @@
             $this->assert( !empty( $detaildroitrsa ), 'error404' );
 
             // Assignations à la vue
-            $this->set( 'dossier_id', $detaildroitrsa['Detaildroitrsa']['dossier_rsa_id'] );
+            $this->set( 'dossier_id', $detaildroitrsa['Detaildroitrsa']['dossier_id'] );
             $this->set( 'detaildroitrsa', $detaildroitrsa );
 
         }

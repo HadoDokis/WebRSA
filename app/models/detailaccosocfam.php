@@ -12,7 +12,8 @@
 						'type' => 'nataccosocfam', 'domain' => 'dsp'
 					),
 				)
-			)
+			),
+			'Revision' => array('auto'=>false)
 		);
     }
 ?>

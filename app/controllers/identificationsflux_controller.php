@@ -49,7 +49,7 @@
 //             $this->assert( !empty( $infofinanciere ), 'error404' );
 // 
 //             // Assignations à la vue
-//             $this->set( 'dossier_id', $infofinanciere['Infofinanciere']['dossier_rsa_id'] );
+//             $this->set( 'dossier_id', $infofinanciere['Infofinanciere']['dossier_id'] );
 // 
 //             $this->set( 'infofinanciere', $infofinanciere );
 // 

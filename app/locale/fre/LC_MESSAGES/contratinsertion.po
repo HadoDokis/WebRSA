@@ -50,3 +50,6 @@ msgstr "Date de fin de contrat"
 
 msgid "Contratinsertion.duree_engag"
 msgstr "Durée du contrat"
+
+msgid "Contratinsertion.date_saisi_ci"
+msgstr "Contrat signé le "

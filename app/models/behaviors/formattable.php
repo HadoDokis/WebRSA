@@ -75,8 +75,8 @@
 
 		/**
 		* INFO: true par défaut (pour tous les champs qui peuvent être null -> ?)
-		* OK -> 0.Demandereorient.id => null if type of value is string and its length is 0
-		* TODO: vérifier Demandereorient.0.id
+		* OK -> 0.Model.id => null if type of value is string and its length is 0
+		* TODO: vérifier Model.0.id
 		*/
 
 		public function formatNull( &$model, $datas ) {

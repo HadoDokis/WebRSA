@@ -1,8 +1,8 @@
 <?php
-    class Tempinscription extends AppModel
-    {
-        var $name = 'Tempinscription';
-        var $useTable = 'tempinscriptions';
-        var $displayField = 'nir';
-    }
+	class Tempinscription extends AppModel
+	{
+		public $name = 'Tempinscription';
+
+		public $displayField = 'nir';
+	}
 ?>

@@ -1,6 +1,6 @@
 <?php $this->pageTitle = 'Détails des indus';?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id, 'personne_id' => $infofinanciere['Personne']['id'] ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_id, 'personne_id' => $infofinanciere['Personne']['id'] ) );?>
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
@@ -44,23 +44,23 @@
             <tbody>
                 <tr class="even">
                     <th class="aere">Montant initial de l'indu</th>
-                    <td class="number"><?php echo $locale->money( $infofinanciere[0]['mt_indu_constate'] );?></td>
-                    <td><?php /*echo $locale->money( $infofinanciere[0]['mt_indu_constate'] );*/?></td>
+                    <td class="number"><?php echo $locale->money( $infofinanciere[0]['mt_indus_constate'] );?></td>
+                    <td><?php /*echo $locale->money( $infofinanciere[0]['mt_indus_constate'] );*/?></td>
                 </tr>
                 <tr class="odd">
                     <th class="aere">Recouvrement par la CAF</th>
                     <td class="number"><?php echo $locale->money( $infofinanciere[0]['mt_remises_indus'] );?></td>
-                    <td><?php /*echo $locale->money( $infofinanciere[0]['mt_indu_constate'] );*/?></td>
+                    <td><?php /*echo $locale->money( $infofinanciere[0]['mt_indus_constate'] );*/?></td>
                 </tr>
                 <tr class="even">
                     <th class="aere">Remise accordée par la CAF</th>
                     <td class="number"><?php echo $locale->money( $infofinanciere[0]['mt_remises_indus'] );?></td>
-                    <td><?php /*echo $locale->money( $infofinanciere[0]['mt_indu_constate'] );*/?></td>
+                    <td><?php /*echo $locale->money( $infofinanciere[0]['mt_indus_constate'] );*/?></td>
                 </tr>
                 <tr class="odd">
                     <th class="aere">Montant transféré</th>
                     <td class="number"><?php echo $locale->money( $infofinanciere[0]['mt_indus_transferes_c_g'] );?></td>
-                    <td><?php /*echo $locale->money( $infofinanciere[0]['mt_indu_constate'] );*/?></td>
+                    <td><?php /*echo $locale->money( $infofinanciere[0]['mt_indus_constate'] );*/?></td>
                 </tr>
                 <tr class="even">
                     <th class="aere">Remise CG</th>
@@ -99,6 +99,6 @@
                     );
                 ?>
             </li>
-        </ul> 
+        </ul>
 </div>
 <div class="clearer"><hr /></div>

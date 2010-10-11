@@ -12,7 +12,8 @@
 						'type' => 'natmob', 'domain' => 'dsp'
 					),
 				)
-			)
+			),
+			'Revision' => array('auto'=>false)
 		);
     }
 ?>

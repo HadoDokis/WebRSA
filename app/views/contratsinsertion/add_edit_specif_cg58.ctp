@@ -27,7 +27,7 @@
                 $duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
                 foreach( $$duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
 
-            setDateInterval2( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
+            setDateIntervalCer( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
         }
     }
 
@@ -415,7 +415,7 @@
         <?php echo $xform->input( 'Contratinsertion.df_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.df_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true ) ) ;?>
 
     </fieldset>
-
+        <?php echo $xform->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2  ) ) ;?>
 </fieldset>
 
     <div class="submit">

@@ -1,23 +1,37 @@
 <?php
-    class Situationpdo extends AppModel
-    {
-        var $name = 'Situationpdo';
+	class Situationpdo extends AppModel
+	{
+		public $name = 'Situationpdo';
 
-        var $displayField = 'libelle';
+		public $displayField = 'libelle';
 
-        var $hasAndBelongsToMany = array(
-            'Propopdo' => array( 'with' => 'PropopdoSituationpdo' )
-        );
+		public $validate = array(
+			'libelle' => array(
+				array( 'rule' => 'notEmpty' )
+			)
+		);
 
-        var $validate = array(
-            'libelle' => array(
-                array( 'rule' => 'notEmpty' )
-            )
-        );
+		public $actsAs = array(
+			'ValidateTranslate'
+		);
 
-        var $actsAs = array(
-            'ValidateTranslate'
-        );
-
-    }
+		public $hasAndBelongsToMany = array(
+			'Propopdo' => array(
+				'className' => 'Propopdo',
+				'joinTable' => 'propospdos_situationspdos',
+				'foreignKey' => 'situationpdo_id',
+				'associationForeignKey' => 'propopdo_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'PropopdoSituationpdo'
+			)
+		);
+	}
 ?>

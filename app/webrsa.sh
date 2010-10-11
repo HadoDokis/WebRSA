@@ -6,7 +6,7 @@ WORK_DIR="$PWD"
 RELEASES_DIR="$WORK_DIR/releases"
 ChangeLog="ChangeLog.txt"
 ASNV="svn://svn.adullact.net/svnroot/webrsa"
-YUICOMPRESSOR="/home/cbuffin/Bureau/yuicompressor-2.4.2.jar" # FIXME: chemin
+YUICOMPRESSOR="/home/cbuffin/Bureau/Webrsa/_optimisations/logiciel/yuicompressor-2.4.2.jar" # FIXME: chemin
 
 # ------------------------------------------------------------------------------
 # INFO: rgadr sur un char -> sed -i "s/<RGADR>\([1-3]\)<\/RGADR>/<RGADR>0\1<\/RGADR>/" XXX
@@ -41,12 +41,15 @@ function __clearDir() {
 
 function __clear() {
 	dir="$1"
-
 	__clearDir "$dir/tmp/cache/"
 	__clearDir "$dir/tmp/logs/"
+
+	dir="$1"
 	if [ -d "$dir/tmp/files/" ] ; then
 		rm -R "$dir/tmp/files/"
 	fi
+
+	rm -f $dir/tmp/logs/*.log
 }
 
 # ------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 <?php $this->pageTitle = 'Visualisation des situations du dossier';?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_rsa_id ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );?>
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>

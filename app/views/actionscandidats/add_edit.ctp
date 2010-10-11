@@ -9,8 +9,8 @@
 <?php
     echo $default->form(
         array(
-            'Actioncandidat.intitule' => array( 'domain' => 'actioncandidat' ),
-            'Actioncandidat.code' => array( 'domain' => 'actioncandidat' ),
+            'Actioncandidat.intitule' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.code' => array( 'domain' => 'actioncandidat', 'required' => true ),
         ),
         array(
             'actions' => array(

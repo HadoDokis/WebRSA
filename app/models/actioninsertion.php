@@ -1,63 +1,58 @@
 <?php
-    class Actioninsertion extends AppModel
-    {
-        var $name = 'Actioninsertion';
-        var $useTable = 'actionsinsertion';
+class Actioninsertion extends AppModel {
+	var $name = 'Actioninsertion';
+	var $validate = array(
+		'contratinsertion_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+	);
+	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
+	var $belongsTo = array(
+		'Contratinsertion' => array(
+			'className' => 'Contratinsertion',
+			'foreignKey' => 'contratinsertion_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
 
-//         var $hasAndBelongsToMany = array(
-//             'Contratinsertion' => array(
-//                 'classname' => 'Contratinsertion',
-//                 'joinTable' => 'actionsinsertion_liees',
-//                 'foreignKey' => 'actioninsertion_id',
-//                 'associationForeignKey' => 'contratinsertion_id'
-//             )
-//         );
-        var $belongsTo = array(
-            'Contratinsertion' => array(
-                'classname' => 'Contratinsertion',
-                'foreignKey' => 'contratinsertion_id',
-            )
-        );
+	var $hasMany = array(
+		'Aidedirecte' => array(
+			'className' => 'Aidedirecte',
+			'foreignKey' => 'actioninsertion_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'Prestform' => array(
+			'className' => 'Prestform',
+			'foreignKey' => 'actioninsertion_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
 
-        var $hasMany = array(
-            'Aidedirecte' => array(
-                'classname' => 'Aidedirecte',
-                'foreignKey' => 'actioninsertion_id',
-                'dependent' => true
-            ),
-            'Prestform' => array(
-                'classname' => 'Prestform',
-                'foreignKey' => 'actioninsertion_id',
-                'dependent' => true
-            )
-        );
-
-//         var $validate = array(
-//             'lib_action' => array(
-//                 array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
-//             'lib_aide' => array(
-//                 array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             ),
-//             'date_aide' => array(
-//                 array(
-//                     'rule' => 'date',
-//                     'message' => 'Veuillez entrer une date valide.'
-//                 )
-//             ),
-//             'lib_presta' => array(
-//                 array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//                 )
-//             )
-//         );
-    }
+}
 ?>

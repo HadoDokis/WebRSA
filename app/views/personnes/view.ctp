@@ -98,6 +98,20 @@
                 <th><?php __( 'sexe' );?></th>
                 <td><?php echo $sexe[$personne['Personne']['sexe']];?></td>
             </tr>
+            <?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' && $rolepers[$personne['Prestation']['rolepers']] != 'Enfant' ):?>
+                <tr class="even">
+                    <th><?php __( 'sitfam' );?></th>
+                    <td><?php echo ( isset( $sitfam[$personne['Foyer']['sitfam']] ) ?  $sitfam[$personne['Foyer']['sitfam']] : null );?></td>
+                </tr>
+            <?php endif;?>
+            <tr class="odd">
+                <th><?php __( 'numfixe' );?></th>
+                <td><?php echo $personne['Personne']['numfixe'];?></td>
+            </tr>
+            <tr class="even">
+                <th><?php __( 'numport' );?></th>
+                <td><?php echo $personne['Personne']['numport'];?></td>
+            </tr>
         </tbody>
     </table>
 <!--            <h2></h2>-->

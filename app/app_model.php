@@ -4,6 +4,8 @@
 //     class AppModel extends Model
     {
         // début champs virtuels
+        public $actsAs = array( 'Containable' );
+
         public $virtualFields = array();
 
         public $_findQueryType = null;
@@ -171,8 +173,6 @@
                 /*
                     INFO:
                     var $belongsTo = array(
-                        'Ep',
-                        'Motifdemreorient',
                         'Reforigine' => array(
                             'className' => 'Referent'
                         ),

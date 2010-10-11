@@ -64,13 +64,13 @@
                         echo $theme->tableDemandeurConjoint(
                             $details,
                             array(
-                                'TitreSejour.dtentfra',
-                                'TitreSejour.nattitsej',
-                                'TitreSejour.menttitsej',
-                                'TitreSejour.ddtitsej',
-                                'TitreSejour.dftitsej',
-                                'TitreSejour.numtitsej',
-                                'TitreSejour.numduptitsej'
+                                'Titresejour.dtentfra',
+                                'Titresejour.nattitsej',
+                                'Titresejour.menttitsej',
+                                'Titresejour.ddtitsej',
+                                'Titresejour.dftitsej',
+                                'Titresejour.numtitsej',
+                                'Titresejour.numduptitsej'
                             )
                         );
                     ?>

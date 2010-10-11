@@ -3,10 +3,10 @@
     {
 
         var $name = 'Orientsstructs';
-        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Demandereorient', 'Pdf', 'Referent' );
+        var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Pdf', 'Referent' );
         var $helpers = array( 'Default' );
         var $components = array( 'Gedooo' );
-        
+
 		var $commeDroit = array(
 			'add' => 'Orientsstructs:edit'
 		);
@@ -19,7 +19,7 @@
             $this->set( 'referents', $this->Referent->listOptions() );
             $this->set( 'typesorients', $this->Typeorient->listOptions() );
             $this->set( 'structs', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
-            
+
             $options = array();
             $options = $this->Orientstruct->allEnumLists();
             $this->set( compact( 'options' ) );
@@ -39,21 +39,11 @@
 
         function beforeFilter() {
             $return = parent::beforeFilter();
-//             $this->set( 'pays', $this->Option->pays() );
-//             $this->set( 'qual', $this->Option->qual() );
-//             $this->set( 'rolepers', $this->Option->rolepers() );
-//             $this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
-
-//             $this->set( 'structs', $this->Structurereferente->list1Options() );
-
             $options = array();
             foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
             }
-            /*foreach( array( 'Demandereorient' ) as $linkedModel ) {
-                $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
-                $options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
-            }*/
+
             $this->set( compact( 'options' ) );
 
             return $return;
@@ -78,7 +68,7 @@
                 )
             );
 
-            $dossier_rsa_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_rsa_id' );*/
+            $dossier_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_id' );*/
 
             $orientstructs = $this->Orientstruct->find(
                 'all',
@@ -103,55 +93,9 @@
 				$orientstructs[$key] = $orientstruct;
 			}
 
-            $dossier_rsa_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_rsa_id' );
+            $dossier_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_id' );
 
-			$this->Demandereorient->unbindModelAll();
-			$this->Demandereorient->bindModel(
-				array(
-					'belongsTo' => array(
-						'Seanceep',
-						'VxTypeorient' => array(
-							'className' => 'Typeorient',
-							'foreignKey' => 'vx_typeorient_id'
-						),
-						'VxStructurereferente' => array(
-							'className' => 'Structurereferente',
-							'foreignKey' => 'vx_structurereferente_id'
-						),
-						'VxReferent' => array(
-							'className' => 'Referent',
-							'foreignKey' => 'vx_referent_id'
-						),
-					)
-				)
-			);
-            $demandesreorients = $this->Demandereorient->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'Demandereorient.personne_id' => $personne_id
-                    ),
-					'recursive' => 0
-                )
-            );
-            $this->set( 'demandesreorients', $demandesreorients );
-
-            /*if( !empty( $orientstructs ) ) {
-// debug($orientstructs);
-                foreach( $orientstructs as $orientstruct ) {
-                    $demandesreorients = $this->Demandereorient->find(
-                        'all',
-                        array(
-                            'conditions' => array(
-                                'Demandereorient.orientstruct_id' => Set::classicExtract( $orientstruct, 'Orientstruct.id' )
-                            )
-                        )
-                    );
-                    $this->set( 'demandesreorients', $demandesreorients );
-                }
-            }*/
-
-            $this->set( 'droitsouverts', $this->Dossier->Situationdossierrsa->droitsOuverts( $dossier_rsa_id ) );
+            $this->set( 'droitsouverts', $this->Dossier->Situationdossierrsa->droitsOuverts( $dossier_id ) );
             $this->set( 'orientstructs', $orientstructs );
             $this->_setOptions();
             $this->set( 'personne_id', $personne_id );

@@ -5,7 +5,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dsp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent', 'Suspensiondroit', 'Personne', 'Foyer', 'Situationdossierrsa' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dsp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent', 'Suspensiondroit', 'Personne', 'Foyer', 'Situationdossierrsa', 'Zonegeographique' );
         var $components = array( 'Jetons', 'Gedooo' );
         var $helpers = array( 'Locale' );
 
@@ -221,11 +221,11 @@
                 'first',
                 array(
                     'conditions' => array(
-                        'Dossier.id' => $contratinsertion['Foyer']['dossier_rsa_id']
+                        'Dossier.id' => $contratinsertion['Foyer']['dossier_id']
                     )
                 )
             );
-            $contratinsertion['Foyer']['dossier_rsa_id'] = $dossier['Dossier']['id'];
+            $contratinsertion['Foyer']['dossier_id'] = $dossier['Dossier']['id'];
             //////////////////////////////////////////////////////////////////////////
             $modecontact = $this->Modecontact->find(
                 'first',
@@ -242,7 +242,7 @@
                 'first',
                 array(
                     'conditions' => array(
-                        'Infofinanciere.dossier_rsa_id' => $contratinsertion['Foyer']['dossier_rsa_id']
+                        'Infofinanciere.dossier_id' => $contratinsertion['Foyer']['dossier_id']
                     )
                 )
             );
@@ -286,18 +286,18 @@
                 'first',
                 array(
                     'conditions' => array(
-                        'Detaildroitrsa.dossier_rsa_id' => $dossier['Dossier']['id']
+                        'Detaildroitrsa.dossier_id' => $dossier['Dossier']['id']
                     )
                 )
             );
-            $dossier['Dossier']['id'] = $ddrsa['Detaildroitrsa']['dossier_rsa_id'];
+            $dossier['Dossier']['id'] = $ddrsa['Detaildroitrsa']['dossier_id'];
 
             /// Récupération des données de la table Suspension
             $situationdossierrsa = $this->Situationdossierrsa->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Situationdossierrsa.dossier_rsa_id' => $dossier['Dossier']['id']
+                        'Situationdossierrsa.dossier_id' => $dossier['Dossier']['id']
                     )
                 )
             );
@@ -544,7 +544,7 @@
             $this->Personne->unbindModel(
                 array(
                     'hasMany' => array( 'Contratinsertion', 'Rendezvous' ),
-                    'hasOne' => array( 'Avispcgpersonne', 'Dsp', 'Dossiercaf', 'TitreSejour' )
+                    'hasOne' => array( 'Avispcgpersonne', 'Dsp', 'Dossiercaf', 'Titresejour' )
                 )
             );
             // TODO: error404/error500 si on ne trouve pas les données
@@ -726,110 +726,6 @@
 
 
         /**
-        * Notification de RDV
-        **/
-        function rendezvous( $rdv_id = null ) {
-            // TODO: error404/error500 si on ne trouve pas les données
-            $qual = $this->Option->qual();
-            $typevoie = $this->Option->typevoie();
-
-            $rdv = $this->Rendezvous->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Rendezvous.id' => $rdv_id
-                    )
-                )
-            );
-
-
-            ///Pour le choix entre les différentes notifications possibles
-            $modele = $rdv['Typerdv']['modelenotifrdv'];
-
-            $this->Adressefoyer->bindModel(
-                array(
-                    'belongsTo' => array(
-                        'Adresse' => array(
-                            'className'     => 'Adresse',
-                            'foreignKey'    => 'adresse_id'
-                        )
-                    )
-                )
-            );
-
-            $adresse = $this->Adressefoyer->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Adressefoyer.foyer_id' => $rdv['Personne']['foyer_id'],
-                        'Adressefoyer.rgadr' => '01',
-                    )
-                )
-            );
-            $rdv['Adresse'] = $adresse['Adresse'];
-
-            // Récupération de l'utilisateur
-            $user = $this->User->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'User.id' => $this->Session->read( 'Auth.User.id' )
-                    )
-                )
-            );
-            $rdv['User'] = $user['User'];
-            $rdv['Serviceinstructeur'] = $user['Serviceinstructeur'];
-
-            $dossier = $this->Dossier->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dossier.id' => $rdv['Personne']['foyer_id']
-                    )
-                )
-            );
-            $rdv['Dossier_RSA'] = $dossier['Dossier'];
-
-            ///Pour la qualité de la personne
-            $rdv['Personne']['qual'] = Set::extract( $qual, Set::extract( $rdv, 'Personne.qual' ) );
-            ///Pour l'adresse de la structure référente
-            $rdv['Structurereferente']['type_voie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Structurereferente.type_voie' ) );
-            ///Pour la date du rendez-vous
-
-            $rdv['Rendezvous']['daterdv'] =  $this->Locale->date( '%d/%m/%Y', Set::classicExtract( $rdv, 'Rendezvous.daterdv' ) );
-//             debug( $this->Locale->date( '%d-%m-%Y', Set::classicExtract( $rdv, 'Rendezvous.daterdv' ) ) );
-            $rdv['Rendezvous']['heurerdv'] = $this->Locale->date( 'Time::short', Set::classicExtract( $rdv, 'Rendezvous.heurerdv' ) );
-            ///Pour l'adresse de la personne
-            $rdv['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $rdv, 'Adresse.typevoie' ) );
-
-            ///Pour le référent lié au RDV
-            $structurereferente_id = Set::classicExtract( $rdv, 'Structurereferente.id' );
-            $referents = $this->Referent->referentsListe( $structurereferente_id );
-            $this->set( 'referents', $referents );
-            $rdv['Rendezvous']['referent_id'] = Set::extract( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) );
-
-            ///Pour les permanences liées aux structures référentes
-            $perm = $this->Permanence->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Permanence.id' => Set::classicExtract( $rdv, 'Rendezvous.permanence_id' )
-                    )
-                )
-            );
-            $rdv['Permanence'] = $perm['Permanence'];
-            if( !empty( $perm ) ){
-                $rdv['Permanence']['typevoie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Permanence.typevoie' ) );
-            }
-// debug( $rdv  );
-// die();
-
-            $this->_ged( $rdv, 'RDV/'.$modele.'.odt' );
-        }
-
-
-
-        /**
         * Notification d'APRE
         **/
         function apre( $apre_id = null ) {
@@ -948,7 +844,7 @@
                 'first',
                 array(
                     'conditions' => array(
-                        'Dossier.id' => $apre['Foyer']['dossier_rsa_id']
+                        'Dossier.id' => $apre['Foyer']['dossier_id']
                     )
                 )
             );

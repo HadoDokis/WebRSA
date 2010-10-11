@@ -1,45 +1,56 @@
-<?php 
-    class Entretien extends AppModel
-    {
-        var $name = 'Entretien';
-        var $useTable = 'entretiens';
+<?php
+	class Entretien extends AppModel
+	{
+		public $name = 'Entretien';
 
-        var $actsAs = array(
-            'Formattable' => array(
-                'suffix' => array( 'structurereferente_id', 'referent_id' ),
-            ),
-            'Autovalidate',
-            'Enumerable' => array(
-                'fields' => array(
-                    'typeentretien'
-                )
-            )
-        );
+		public $actsAs = array(
+			'Formattable' => array(
+				'suffix' => array( 'structurereferente_id', 'referent_id' ),
+			),
+			'Autovalidate',
+			'Enumerable' => array(
+				'fields' => array(
+					'typeentretien'
+				)
+			)
+		);
 
-        var $belongsTo = array(
-            'Personne' => array(
-                'classname' => 'Personne',
-                'foreignKey' => 'personne_id'
-            ),
-            'Rendezvous' => array(
-                'classname' => 'Rendezvous',
-                'foreignKey' => 'rendezvous_id'
-            ),
-            'Structurereferente' => array(
-                'classname' => 'Structurereferente',
-                'foreignKey' => 'structurereferente_id'
-            ),
-            'Referent' => array(
-                'classname' => 'Referent',
-                'foreignKey' => 'referent_id'
-            ),
-            'Typerdv' => array(
-                'classname' => 'Typerdv',
-                'foreignKey' => 'typerdv_id'
-            )
-        );
-
-
-    }
-
+		public $belongsTo = array(
+			'Personne' => array(
+				'className' => 'Personne',
+				'foreignKey' => 'personne_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Referent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referent_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Structurereferente' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'structurereferente_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Typerdv' => array(
+				'className' => 'Typerdv',
+				'foreignKey' => 'typerdv_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Rendezvous' => array(
+				'className' => 'Rendezvous',
+				'foreignKey' => 'rendezvous_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
+	}
 ?>

@@ -139,7 +139,7 @@
             // Récupération des id afférents
             if( $this->action == 'add' ) {
                 $personne_id = $id;
-                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
+                $dossier_id = $this->Personne->dossierId( $personne_id );
             }
             else if( $this->action == 'edit' ) {
                 $bilanparcours_id = $id;
@@ -147,18 +147,18 @@
                 $this->assert( !empty( $bilanparcours ), 'invalidParameter' );
 
                 $personne_id = $bilanparcours['Bilanparcours']['personne_id'];
-//                 $dossier_rsa_id = $this->Bilanparcours->dossierId( $bilanparcours_id );
+//                 $dossier_id = $this->Bilanparcours->dossierId( $bilanparcours_id );
             }
 
             $this->Bilanparcours->begin();
 
-            $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
-            $this->assert( !empty( $dossier_rsa_id ), 'invalidParameter' );
+            $dossier_id = $this->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-            if( !$this->Jetons->check( $dossier_rsa_id ) ) {
+            if( !$this->Jetons->check( $dossier_id ) ) {
                 $this->Bilanparcours->rollback();
             }
-            $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
             $user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
@@ -171,7 +171,7 @@
                 if( $this->Bilanparcours->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     if( $this->Bilanparcours->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 
-                        $this->Jetons->release( $dossier_rsa_id );
+                        $this->Jetons->release( $dossier_id );
                         $this->Bilanparcours->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array(  'controller' => 'bilanparcours','action' => 'index', $personne_id ) );

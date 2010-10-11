@@ -1,56 +1,72 @@
 <?php
-    class ApreEtatliquidatif extends AppModel {
+	class ApreEtatliquidatif extends AppModel
+	{
+		public $name = 'ApreEtatliquidatif';
 
-        var $name = 'ApreEtatliquidatif';
-        var $actsAs = array(
-            'Enumerable', // FIXME ?
-            'Frenchfloat' => array(
-                'fields' => array(
-                    'montantattribue',
-                )
-            )
-        );
+		public $actsAs = array(
+			'Enumerable', // FIXME ?
+			'Frenchfloat' => array(
+				'fields' => array(
+					'montantattribue',
+				)
+			)
+		);
 
-        var $belongsTo = array( 'Apre', 'Etatliquidatif' );
+		public $validate = array(
+			'montantattribue' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				),
+				array(
+					'rule' => 'numeric',
+					'message' => 'Valeur numérique seulement'
+				)
+			)
+		);
 
-        var $validate = array(
-            'montantattribue' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                ),
-                array(
-                    'rule' => 'numeric',
-                    'message' => 'Valeur numérique seulement'
-                )
-            )
-        );
+		public $belongsTo = array(
+			'Apre' => array(
+				'className' => 'Apre',
+				'foreignKey' => 'apre_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Etatliquidatif' => array(
+				'className' => 'Etatliquidatif',
+				'foreignKey' => 'etatliquidatif_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
 
-        /**
-        *   Before Validate
-        **/
+		/**
+		*   Before Validate
+		**/
 
-        function beforeValidate( $options = array() ) {
-            if( $return = parent::beforeValidate( $options ) ) {
-                $apre_id = Set::classicExtract( $this->data, "{$this->name}.apre_id" );
-                $apre = $this->Apre->findById( $apre_id, null, null, -1 );
+		public function beforeValidate( $options = array() ) {
+			if( $return = parent::beforeValidate( $options ) ) {
+				$apre_id = Set::classicExtract( $this->data, "{$this->name}.apre_id" );
+				$apre = $this->Apre->findById( $apre_id, null, null, -1 );
 
-                $montantattribue = Set::classicExtract( $this->data, "{$this->name}.montantattribue" );
-                $montantdejaverse = Set::classicExtract( $apre, 'Apre.montantdejaverse' );
-                $montantaverser = Set::classicExtract( $this->data, "{$this->name}.montantaverser" );
+				$montantattribue = Set::classicExtract( $this->data, "{$this->name}.montantattribue" );
+				$montantdejaverse = Set::classicExtract( $apre, 'Apre.montantdejaverse' );
+				$montantaverser = Set::classicExtract( $this->data, "{$this->name}.montantaverser" );
 
-                $montantversable = ( $montantaverser - $montantdejaverse );
+				$montantversable = ( $montantaverser - $montantdejaverse );
 
-                // FIXME: règles de validation ?
-                if( $montantattribue < 0 ) {
-                    $this->validationErrors['montantattribue'] = "Le montant doit être positif";
-                }
-                if( (float)$montantdejaverse + $montantattribue > $montantaverser ) {
-                    $this->validationErrors['montantattribue'] = "Montant trop élevé (max: {$montantversable})";
-                }
-            }
+				// FIXME: règles de validation ?
+				if( $montantattribue < 0 ) {
+					$this->validationErrors['montantattribue'] = "Le montant doit être positif";
+				}
+				if( (float)$montantdejaverse + $montantattribue > $montantaverser ) {
+					$this->validationErrors['montantattribue'] = "Montant trop élevé (max: {$montantversable})";
+				}
+			}
 
-            return $return;
-        }
-    }
+			return $return;
+		}
+	}
 ?>

@@ -53,26 +53,26 @@
 						)
 					),
 					2 => array(
-				        'table' => 'dossiers_rsa',
+				        'table' => 'dossiers',
 				        'alias' => 'Dossier',
 				        'type' => 'INNER',
 				        'foreignKey' => '',
 				        'conditions' => array(
-				                0 => 'Foyer.dossier_rsa_id = Dossier.id'
+				                0 => 'Foyer.dossier_id = Dossier.id'
 				            )
 				    ),
 					3 => array(
-						'table' => 'adresses_foyers',
+						'table' => 'adressesfoyers',
 						'alias' => 'Adressefoyer',
 						'type' => 'LEFT OUTER',
 						'foreignKey' => '',
 						'conditions' => array(
 							0 => 'Foyer.id = Adressefoyer.foyer_id',
 							1 => 'Adressefoyer.rgadr = \'01\'',
-							2 => 'Adressefoyer.id IN ( SELECT MAX(adresses_foyers.id)
-								FROM adresses_foyers
-								WHERE adresses_foyers.rgadr = \'01\'
-								GROUP BY adresses_foyers.foyer_id
+							2 => 'Adressefoyer.id IN ( SELECT MAX(adressesfoyers.id)
+								FROM adressesfoyers
+								WHERE adressesfoyers.rgadr = \'01\'
+								GROUP BY adressesfoyers.foyer_id
 							)'
 						)
 					),

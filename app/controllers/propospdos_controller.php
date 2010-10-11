@@ -3,7 +3,7 @@
     class PropospdosController extends AppController{
 
         var $name = 'Propospdos';
-        var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Propopdo', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Structurereferente',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne' );
+        var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Structurereferente',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier' );
 
         var $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
@@ -47,7 +47,7 @@
             );
 
             $options = $this->Propopdo->allEnumLists();
-// debug($options);
+// ($options);
             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
             $this->set( compact( 'options' ) );
         }
@@ -296,7 +296,7 @@
 //             $step = 0;
             if( $this->action == 'add' ) {
                 $personne_id = $id;
-                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
+                $dossier_id = $this->Personne->dossierId( $personne_id );
 
 //                 $nbrDossiers = $this->Dossier->find( 'count', array( 'conditions' => array( 'Dossier.id' => $personne_id ), 'recursive' => -1 ) );
 //                 debug($nbrDossiers);
@@ -308,17 +308,18 @@
 
                 $this->assert( !empty( $pdo ), 'invalidParameter' );
                 $personne_id = Set::classicExtract( $pdo, 'Propopdo.personne_id' );
-                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
+                $dossier_id = $this->Personne->dossierId( $personne_id );
 //                 $step ++;
             }
 
             $this->Dossier->Suiviinstruction->order = 'Suiviinstruction.id DESC';
+
             $dossier = $this->Dossier->findById( $personne_id, null, null, -1 );
             // Recherche de la dernière entrée des suivis instruction  associée au dossier
             $suiviinstruction = $this->Dossier->Suiviinstruction->find(
                 'first',
                 array(
-                    'conditions' => array( 'Suiviinstruction.dossier_rsa_id' => $dossier_rsa_id ),
+                    'conditions' => array( 'Suiviinstruction.dossier_id' => $dossier_id ),
                     'order' => array( 'Suiviinstruction.date_etat_instruction DESC' ),
                     'recursive' => -1
                 )
@@ -327,12 +328,12 @@
             $this->set( compact( 'dossier' ) );
 
             $this->Propopdo->begin();
-            $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
-            $this->assert( !empty( $dossier_rsa_id ), 'invalidParameter' );
-            if( !$this->Jetons->check( $dossier_rsa_id ) ) {
+            $dossier_id = $this->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+            if( !$this->Jetons->check( $dossier_id ) ) {
                 $this->PersonneReferent->rollback();
             }
-            $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             $this->set( 'referents', $this->Referent->find( 'list' ) );
 
@@ -357,7 +358,7 @@
                 if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 
-                        $this->Jetons->release( $dossier_rsa_id );
+                        $this->Jetons->release( $dossier_id );
                         $this->Propopdo->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
                         $this->redirect( array(  'controller' => 'propospdos','action' => 'index', $personne_id ) );
@@ -373,7 +374,7 @@
                     $this->data = $pdo;
 
                 }
-                // $this->Propopdo->findByDossierRsaId( $personne_id, null, null, -1 );
+                // $this->Propopdo->findByDossierId( $personne_id, null, null, -1 );
 
 //                 if( $this->action == 'add' ) {
 //                     $this->assert( empty( $this->data ), 'invalidParameter' );

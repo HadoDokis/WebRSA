@@ -1,8 +1,9 @@
 <?php
     class JetonsComponent extends Component
     {
-        var $components = array( 'Session' );
-        var $_userId;
+        public $components = array( 'Session' );
+        protected $_userId;
+
 
         /**
         *	The initialize method is called before the controller's beforeFilter method.
@@ -10,13 +11,15 @@
 
 		public function initialize( &$controller, $settings = array() ) {
 			$this->controller = &$controller;
-			// FIXME
+
+			if( Configure::read( 'Jetons.disabled' ) ) {
+				return;
+			}
+
 			if( $this->_userId = $this->Session->read( 'Auth.User.id' ) ) {
 				$this->controller->assert( valid_int( $this->_userId ), 'invalidParamForToken' ); // FIXME
 			}
 
-			$this->User = ClassRegistry::init( 'User' );
-			$this->Dossier = ClassRegistry::init( 'Dossier' );
 			$this->Jeton = ClassRegistry::init( 'Jeton' );
 		}
 
@@ -37,33 +40,17 @@
 							'conditions' => array(
 								'Personne.id' => $params['Personne.id']
 							),
-							'recursive' => 2
+							'recursive' => 2 // FIXME
 						)
 					);
 
 					$this->controller->assert( !empty( $personne ), 'invalidParamForToken' );
-					return $personne['Foyer']['dossier_rsa_id'];
+					return $personne['Foyer']['dossier_id'];
 				}
 				else if( array_key_exists( 'Dossier.id', $params ) ) {
 					return $params['Dossier.id'];
 				}
 			}
-		}
-
-		/**
-		* Retourne vrai si un dossier possédant l'id passé en paramètre existe
-		*/
-
-		protected function _dossierExists( $dossier_id ) {
-			$count = $this->Dossier->find(
-				'count',
-				array(
-					'conditions' => array( 'Dossier.id' => $dossier_id ),
-					'recursive' => -1
-				)
-			);
-
-			return ( !empty( $count ) );
 		}
 
 		/**
@@ -83,7 +70,8 @@
 			$count = $this->Jeton->find(
 				'count',
 				array(
-					'conditions' => array( '"Jeton"."modified" <' => $this->_timeoutThreshold() )
+					'conditions' => array( 'Jeton.modified <' => $this->_timeoutThreshold() ),
+					'recursive' => -1
 				)
 			);
 
@@ -91,7 +79,7 @@
 				$this->_lock();
 				return $this->Jeton->deleteAll(
 					array(
-						'"Jeton"."modified" <' => $this->_timeoutThreshold()
+						'Jeton.modified <' => $this->_timeoutThreshold()
 					)
 				);
 			}
@@ -104,6 +92,10 @@
 		*/
 
 		public function ids() {
+			if( Configure::read( 'Jetons.disabled' ) ) {
+				return array();
+			}
+
 			$jetons = $this->Jeton->find(
 				'list',
 				array(
@@ -113,10 +105,12 @@
 					),
 					'conditions' => array(
 						'NOT' => array(
-							'"Jeton"."php_sid"'     => session_id(), // FIXME: ou pas -> config
-							'"Jeton"."user_id"'     => $this->_userId
+							// FIXME, si la session n'est pas gérée par PHP ?
+							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
+							'Jeton.user_id'     => $this->_userId
 						)
-					)
+					),
+					'recursive' => -1
 				)
 			);
 
@@ -128,26 +122,30 @@
 		*/
 
 		public function check( $params ) {
+			if( Configure::read( 'Jetons.disabled' ) ) {
+				return true;
+			}
+
 			$dossier_id = $this->_dossierId( $params );
 
-			$this->controller->assert( $this->_dossierExists( $dossier_id ), 'invalidParamForToken' );
 			$this->_clean();
 
 			$jeton = $this->Jeton->find(
 				'first',
 				array(
 					'conditions' => array(
-						'"Jeton"."dossier_id"'  => $dossier_id,
+						'Jeton.dossier_id'  => $dossier_id,
 						'and NOT' => array(
-							'"Jeton"."php_sid"'     => session_id(), // FIXME: ou pas -> config
-							'"Jeton"."user_id"'     => $this->_userId
+							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
+							'Jeton.user_id'     => $this->_userId
 						)
-					)
+					),
+					'recursive' => -1
 				)
 			);
 
 			if( !empty( $jeton ) ) {
-				$lockingUser = $this->User->find(
+				$lockingUser = $this->Jeton->User->find(
 					'first',
 					array(
 						'conditions' => array(
@@ -174,20 +172,24 @@
 		*/
 
 		public function locked( $params ) {
+			if( Configure::read( 'Jetons.disabled' ) ) {
+				return false;
+			}
+
 			$dossier_id = $this->_dossierId( $params );
-			$this->controller->assert( $this->_dossierExists( $dossier_id ), 'invalidParamForToken' );
 
 			$count = $this->Jeton->find(
 				'count',
 				array(
 					'conditions' => array(
-						'"Jeton"."dossier_id"'  => $dossier_id,
+						'Jeton.dossier_id'  => $dossier_id,
 						'and NOT' => array(
-							'"Jeton"."php_sid"'     => session_id(), // FIXME: ou pas -> config
-							'"Jeton"."user_id"'     => $this->_userId
+							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
+							'Jeton.user_id'     => $this->_userId
 						),
-						'"Jeton"."modified" >=' => $this->_timeoutThreshold()
-					)
+						'Jeton.modified >=' => $this->_timeoutThreshold()
+					),
+					'recursive' => -1
 				)
 			);
 
@@ -199,6 +201,10 @@
 		*/
 
 		public function lockedList( $dossiers_ids ) {
+			if( Configure::read( 'Jetons.disabled' ) ) {
+				return array();
+			}
+
 			if( empty( $dossiers_ids ) ) {
 				return array();
 			}
@@ -208,13 +214,14 @@
 				array(
 					'fields' => array( 'Jeton.id', 'Jeton.dossier_id' ),
 					'conditions' => array(
-						'"Jeton"."dossier_id"'  => $dossiers_ids,
+						'Jeton.dossier_id'  => $dossiers_ids,
 						'and NOT' => array(
-							'"Jeton"."php_sid"'     => session_id(), // FIXME: ou pas -> config
-							'"Jeton"."user_id"'     => $this->_userId
+							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
+							'Jeton.user_id'     => $this->_userId
 						),
-						'"Jeton"."modified" >=' => $this->_timeoutThreshold()
-					)
+						'Jeton.modified >=' => $this->_timeoutThreshold()
+					),
+					'recursive' => -1
 				)
 			);
 
@@ -227,10 +234,12 @@
 		*/
 
 		public function get( $params ) {
+			if( Configure::read( 'Jetons.disabled' ) ) {
+				return true;
+			}
+
 			$this->_lock();
 			$dossier_id = $this->_dossierId( $params );
-
-			$this->controller->assert( $this->_dossierExists( $dossier_id ), 'invalidParamForToken' );
 
 			if( $this->check( $params ) ) {
 				$jeton = array(
@@ -245,10 +254,11 @@
 					'first',
 					array(
 						'conditions' => array(
-							'"Jeton"."dossier_id"'  => $dossier_id,
-							'"Jeton"."php_sid"'     => session_id(), // FIXME: ou pas -> config
-							'"Jeton"."user_id"'     => $this->_userId
-						)
+							'Jeton.dossier_id'  => $dossier_id,
+							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
+							'Jeton.user_id'     => $this->_userId
+						),
+						'recursive' => -1
 					)
 				);
 
@@ -270,8 +280,11 @@
 		*/
 
 		public function release( $params ) {
+			if( Configure::read( 'Jetons.disabled' ) ) {
+				return true;
+			}
+
 			$dossier_id = $this->_dossierId( $params );
-			$this->controller->assert( $this->_dossierExists( $dossier_id ), 'invalidParamForToken' );
 
 			$this->_lock();
 
@@ -299,18 +312,19 @@
 		* ACCESS EXCLUSIVE			-> 1 transaction puis l'autre			->
 		*/
 
-		function _lock() {
+		public function _lock() {
 			$sql = 'LOCK TABLE "jetons" IN SHARE ROW EXCLUSIVE MODE;';
 			$this->Jeton->query( $sql );
 		}
 
-		/** *******************************************************************
-			The beforeRedirect method is invoked when the controller's redirect method
-			is called but before any further action. If this method returns false the
-			controller will not continue on to redirect the request.
-			The $url, $status and $exit variables have same meaning as for the controller's method.
-		******************************************************************** */
-		function beforeRedirect( &$controller, $url, $status = null, $exit = true ) {
+		/**
+		* The beforeRedirect method is invoked when the controller's redirect method
+		* is called but before any further action. If this method returns false the
+		* controller will not continue on to redirect the request.
+		* The $url, $status and $exit variables have same meaning as for the controller's method.
+		**/
+
+		public function beforeRedirect( &$controller, $url, $status = null, $exit = true ) {
 			parent::beforeRedirect( $controller, $url, $status , $exit );
 			return $url;
 		}

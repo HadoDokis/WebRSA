@@ -2,7 +2,7 @@
     class Apres66Controller extends AppController
     {
         var $name = 'Apres66';
-        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Typeaideapre66Pieceaide66', 'Adressefoyer', 'Fraisdeplacement66',  'Structurereferente', 'Referent', 'Typeaideapre66Piececomptable66', 'Piececomptable66' );
+        var $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66',  'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66' );
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
         var $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece', 'notificationsop' );
         var $components = array( 'Default', 'Gedooo' );
@@ -190,13 +190,13 @@
                         'fields' => array( 'Pieceaide66.id', 'Pieceaide66.name' ),
                         'joins' => array(
                             array(
-                                'table'      => 'typesaidesapres66_piecesaides66',
-                                'alias'      => 'Typeaideapre66Pieceaide66',
+                                'table'      => 'piecesaides66_typesaidesapres66',
+                                'alias'      => 'Pieceaide66Typeaideapre66',
                                 'type'       => 'INNER',
                                 'foreignKey' => false,
                                 'conditions' => array(
-                                    'Typeaideapre66Pieceaide66.pieceaide66_id = Pieceaide66.id',
-                                    'Typeaideapre66Pieceaide66.typeaideapre66_id' => $typeaideapre66_id,
+                                    'Pieceaide66Typeaideapre66.pieceaide66_id = Pieceaide66.id',
+                                    'Pieceaide66Typeaideapre66.typeaideapre66_id' => $typeaideapre66_id,
                                 )
                             )
                         ),
@@ -211,13 +211,13 @@
                         'fields' => array( 'Piececomptable66.id', 'Piececomptable66.name' ),
                         'joins' => array(
                             array(
-                                'table'      => 'typesaidesapres66_piecescomptables66',
-                                'alias'      => 'Typeaideapre66Piececomptable66',
+                                'table'      => 'piecescomptables66_typesaidesapres66',
+                                'alias'      => 'Piececomptable66Typeaideapre66',
                                 'type'       => 'INNER',
                                 'foreignKey' => false,
                                 'conditions' => array(
-                                    'Typeaideapre66Piececomptable66.piececomptable66_id = Piececomptable66.id',
-                                    'Typeaideapre66Piececomptable66.typeaideapre66_id' => $typeaideapre66_id,
+                                    'Piececomptable66Typeaideapre66.piececomptable66_id = Piececomptable66.id',
+                                    'Piececomptable66Typeaideapre66.typeaideapre66_id' => $typeaideapre66_id,
                                 )
                             )
                         ),
@@ -334,10 +334,10 @@
             // Récupération des id afférents
             if( $this->action == 'add' ) {
                 $personne_id = $id;
-                $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
+                $dossier_id = $this->Personne->dossierId( $personne_id );
                 $valueIsDecision = 'N';
 
-                $foyer = $this->Foyer->findByDossierRsaId( $dossier_rsa_id, null, null, -1 );
+                $foyer = $this->Foyer->findByDossierId( $dossier_id, null, null, -1 );
                 $foyer_id = Set::classicExtract( $foyer, 'Foyer.id' );
                 ///Création automatique du N° APRE de la forme : Année / Mois / N°
                 $numapre = date('Ym').sprintf( "%010s",  $this->{$this->modelClass}->find( 'count' ) + 1 );
@@ -352,7 +352,7 @@
                 $valueIsDecision = Set::classicExtract( $this->data, "{$this->modelClass}.isdecision" );
 
                 $personne_id = $apre[$this->modelClass]['personne_id'];
-                $dossier_rsa_id = $this->{$this->modelClass}->dossierId( $apre_id );
+                $dossier_id = $this->{$this->modelClass}->dossierId( $apre_id );
 
 
                 $foyer_id = Set::classicExtract( $apre, 'Personne.foyer_id' );
@@ -368,15 +368,15 @@
             if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
                 $this->redirect( array( 'action' => 'index', $personne_id ) );
             }
-            $dossier_rsa_id = $this->Personne->dossierId( $personne_id );
-            $this->assert( !empty( $dossier_rsa_id ), 'invalidParameter' );
-            $this->set( 'dossier_id', $dossier_rsa_id );
+            $dossier_id = $this->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+            $this->set( 'dossier_id', $dossier_id );
             $this->set( 'valueIsDecision', $valueIsDecision );
 
-            if( !$this->Jetons->check( $dossier_rsa_id ) ) {
+            if( !$this->Jetons->check( $dossier_id ) ) {
                 $this->{$this->modelClass}->rollback();
             }
-            $this->assert( $this->Jetons->get( $dossier_rsa_id ), 'lockedDossier' );
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             /**
             *   Liste des APREs de la personne pour l'affichage de l'historique
@@ -543,7 +543,7 @@
 
 // debug($this->validationErrors);
 				if( $success ) {
-					$this->Jetons->release( $dossier_rsa_id );
+					$this->Jetons->release( $dossier_id );
 					$this->{$this->modelClass}->commit(); // FIXME
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 

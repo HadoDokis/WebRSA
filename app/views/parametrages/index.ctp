@@ -33,17 +33,6 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
-                    array(
-                        h( 'Equipes pluridisciplinaires' ),
-                        $html->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'eps', 'action' => 'indexparams' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
                 if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg66' ){
                     echo $html->tableCells(
                         array(
@@ -209,6 +198,17 @@
                         $html->viewLink(
                             'Voir la table',
                             array( 'controller' => 'users', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $html->tableCells(
+                    array(
+                        h( 'Vérification de l\'application' ),
+                        $html->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'checks', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),

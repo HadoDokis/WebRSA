@@ -1,12 +1,16 @@
 <?php
-    class Suiviaideapretypeaide extends AppModel
-    {
-        var $name = 'Suiviaideapretypeaide';
-        var $useTable = 'suivisaidesaprestypesaides';
+	class Suiviaideapretypeaide extends AppModel
+	{
+		public $name = 'Suiviaideapretypeaide';
 
-
-        var $belongsTo = array(
-            'Suiviaideapre'
-        );
-    }
+		public $belongsTo = array(
+			'Suiviaideapre' => array(
+				'className' => 'Suiviaideapre',
+				'foreignKey' => 'suiviaideapre_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
+	}
 ?>

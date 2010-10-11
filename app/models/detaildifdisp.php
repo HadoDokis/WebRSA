@@ -12,7 +12,8 @@
 						'type' => 'difdisp', 'domain' => 'dsp'
 					),
 				)
-			)
+			),
+			'Revision' => array('auto'=>false)
 		);
     }
 ?>

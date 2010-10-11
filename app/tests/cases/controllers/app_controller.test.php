@@ -95,7 +95,7 @@
 		* Détruit la session et supprime les jetons
 		*/
 		function logout() {
-			$this->Connection =& ClassRegistry::init( "Connection" );
+			$this->Connection = ClassRegistry::init( "Connection" );
 			if( $user_id = $this->AppController->Session->read( 'Auth.User.id' ) ) {
                 if( valid_int( $user_id ) ) {
                     $this->Jeton = ClassRegistry::init( 'Jeton' ); // FIXME: dans Jetons
@@ -130,8 +130,8 @@
 		*/
 		function testLoadPermissions() {
 			// instantiation des classes Group et AroAco
-			$this->Group =& ClassRegistry::init( "Group" );
-			$this->AppController->AroAco =& ClassRegistry::init( "AroAco" );
+			$this->Group = ClassRegistry::init( "Group" );
+			$this->AppController->AroAco = ClassRegistry::init( "AroAco" );
 
 			/// Test pour 3 permissions accordées sur 3
 
@@ -292,7 +292,7 @@
 		* Fonction de test des structures
 		*/
 		function testCheckDecisionsStructures() {
-			$this->Structurereferente =& ClassRegistry::init( "Structurereferente" );
+			$this->Structurereferente = ClassRegistry::init( "Structurereferente" );
 			// variable utilisée lors de la réécriture de la fonction cakeError
 			global $varTest;
 
@@ -367,7 +367,7 @@
 		* Fonction vérifiant que toutes les informations requises pour un utilisateur sont présentes
 		*/
 		function testCheckDonneesUtilisateursEtServices() {
-			$this->Structurereferente =& ClassRegistry::init( "Structurereferente" );
+			$this->Structurereferente = ClassRegistry::init( "Structurereferente" );
 			global $varTest;
 
 			//------------------------------------------------------------------

@@ -24,10 +24,10 @@
  				'sql' => 'SELECT COUNT(*)
 							FROM
 							(
-									SELECT DISTINCT( dossiers_rsa.id )
-										FROM dossiers_rsa
+									SELECT DISTINCT( dossiers.id )
+										FROM dossiers
 								EXCEPT
-									SELECT DISTINCT( foyers.dossier_rsa_id )
+									SELECT DISTINCT( foyers.dossier_id )
 										FROM foyers
 							) AS FOO'
 			),
@@ -61,66 +61,66 @@
 							) AS FOO'
 			),
 			array(
-				'text' => 'foyers sans adresse_foyer',
+				'text' => 'foyers sans adressefoyer',
 				'sql' => 'SELECT COUNT(*)
 							FROM
 							(
 									SELECT DISTINCT( foyers.id )
 										FROM foyers
 								EXCEPT
-									SELECT DISTINCT( adresses_foyers.foyer_id )
-										FROM adresses_foyers
+									SELECT DISTINCT( adressesfoyers.foyer_id )
+										FROM adressesfoyers
 							) AS FOO;'
 			),
 			array(
-				'text' => 'foyers sans adresse_foyer de rang 01',
+				'text' => 'foyers sans adressefoyer de rang 01',
 				'sql' => 'SELECT COUNT(*)
 							FROM
 							(
 									SELECT DISTINCT( foyers.id )
 										FROM foyers
 								EXCEPT
-									SELECT DISTINCT( adresses_foyers.foyer_id )
-										FROM adresses_foyers
-										WHERE adresses_foyers.rgadr = \'01\'
+									SELECT DISTINCT( adressesfoyers.foyer_id )
+										FROM adressesfoyers
+										WHERE adressesfoyers.rgadr = \'01\'
 							) AS FOO;'
 			),
 			array(
-				'text' => 'adresses_foyers de rang incorrect',
-				'sql' => 'SELECT COUNT(adresses_foyers.*)
-							FROM adresses_foyers
+				'text' => 'adressesfoyers de rang incorrect',
+				'sql' => 'SELECT COUNT(adressesfoyers.*)
+							FROM adressesfoyers
 							WHERE
-								adresses_foyers.rgadr NOT IN ( \'01\', \'02\', \'03\' );'
+								adressesfoyers.rgadr NOT IN ( \'01\', \'02\', \'03\' );'
 			),
 			array(
-				'text' => 'adresses_foyers en doublons',
+				'text' => 'adressesfoyers en doublons',
 				'sql' => 'SELECT COUNT(a1.*)
-							FROM adresses_foyers AS a1,
-								adresses_foyers AS a2
+							FROM adressesfoyers AS a1,
+								adressesfoyers AS a2
 							WHERE
 								a1.id < a2.id
 								AND a1.foyer_id = a2.foyer_id
 								AND a1.rgadr = a2.rgadr;'
 			),
 			array(
-				'text' => 'adresses_foyers faisant reference au meme adresse_id',
+				'text' => 'adressesfoyers faisant reference au meme adresse_id',
 				'sql' => 'SELECT COUNT(a1.*)
-							FROM adresses_foyers AS a1,
-								adresses_foyers AS a2
+							FROM adressesfoyers AS a1,
+								adressesfoyers AS a2
 							WHERE
 								a1.id < a2.id
 								AND a1.adresse_id = a2.adresse_id;'
 			),
 			array(
-				'text' => 'adresses sans adresses_foyers',
+				'text' => 'adresses sans adressesfoyers',
 				'sql' => 'SELECT COUNT(*)
 							FROM
 							(
 									SELECT DISTINCT( adresses.id )
 										FROM adresses
 								EXCEPT
-									SELECT DISTINCT( adresses_foyers.adresse_id )
-										FROM adresses_foyers
+									SELECT DISTINCT( adressesfoyers.adresse_id )
+										FROM adressesfoyers
 							) AS FOO;'
 			),
 			array(
@@ -299,8 +299,6 @@
 			'avispcgpersonnes',
 			'calculsdroitsrsa',
 			'contratsinsertion',
-			'demandesreorient',
-// 			'dspps',
 			'dsps',
 			'informationseti',
 			'infosagricoles',

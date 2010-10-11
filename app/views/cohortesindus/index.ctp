@@ -129,7 +129,6 @@
                             </tbody>
                         </table>';
                             $title = $indu['Dossier']['numdemrsa'];
-
                             echo $html->tableCells(
                                 array(
                                     h( $indu['Dossier']['numdemrsa'] ),
@@ -138,7 +137,7 @@
                                     h( $etatdosrsa[$indu['Situationdossierrsa']['etatdosrsa']] ),
                                     $locale->date( 'Date::miniLettre', $indu[0]['moismoucompta'] ),
 //                                     $locale->money( $indu[0]['mt_allocation_comptabilisee'] ),
-                                    $html->tag( 'span', $locale->money( $indu[0]['mt_indu_constate'] ), array( 'class' => 'number' ) ),
+                                    $html->tag( 'span', $locale->money( $indu[0]['mt_indus_constate'] ), array( 'class' => 'number' ) ),
                                     $html->tag( 'span', $locale->money( $indu[0]['mt_indus_transferes_c_g'] ), array( 'class' => 'number' ) ),
                                     $html->tag( 'span', $locale->money( $indu[0]['mt_remises_indus'] ), array( 'class' => 'number' ) ),
 //                                     $locale->money( $indu[0]['mt_annulations_faible_montant'] ),

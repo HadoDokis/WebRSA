@@ -1,24 +1,33 @@
 <?php
-    class Typocontrat extends AppModel
-    {
-        var $name = 'Typocontrat';
-        var $useTable = 'typoscontrats';
-        var $displayField = 'lib_typo';
-        var $order = 'Typocontrat.id ASC';
+	class Typocontrat extends AppModel
+	{
+		public $name = 'Typocontrat';
 
-        var $hasMany = array(
-            'Contratinsertion' => array(
-                'classname' => 'Contratinsertion',
-                'foreignKey' => 'typocontrat_id'
-            )
-        );
+		public $displayField = 'lib_typo';
 
+		public $order = 'Typocontrat.id ASC';
 
-        var $validate = array(
-            'lib_typo' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-            )
-        );
-    }
+		public $validate = array(
+			'lib_typo' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+			)
+		);
+
+		public $hasMany = array(
+			'Contratinsertion' => array(
+				'className' => 'Contratinsertion',
+				'foreignKey' => 'typocontrat_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+	}
 ?>

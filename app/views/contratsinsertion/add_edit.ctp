@@ -52,7 +52,7 @@
 
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
             //echo $form->input( 'Suspensiondroit.id', array( 'type' => 'hidden' ) );
-//             echo $form->input( 'Suspensiondroit.dossier_rsa_id', array( 'type' => 'hidden', 'value' => $dossier_id ) );
+//             echo $form->input( 'Suspensiondroit.dossier_id', array( 'type' => 'hidden', 'value' => $dossier_id ) );
             echo '</div>';
         }
 
@@ -343,7 +343,7 @@
                 <td class="noborder">
                     <?php
                         echo $form->input( 'Situationdossierrsa.id', array( 'type' => 'hidden', 'value' => $situationdossierrsa_id ) );
-                        echo $form->input( 'Situationdossierrsa.dossier_rsa_id', array( 'type' => 'hidden', 'value' => $dossier_id ) );
+                        echo $form->input( 'Situationdossierrsa.dossier_id', array( 'type' => 'hidden', 'value' => $dossier_id ) );
 
                         echo $form->input( 'Situationdossierrsa.dtclorsa', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
                     ?>

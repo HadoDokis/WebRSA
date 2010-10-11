@@ -12,7 +12,8 @@
 						'type' => 'diflog', 'domain' => 'dsp'
 					),
 				)
-			)
+			),
+			'Revision' => array('auto'=>false)
 		);
     }
 ?>

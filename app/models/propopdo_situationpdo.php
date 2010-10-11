@@ -1,25 +1,41 @@
 <?php
-    class PropopdoSituationpdo extends AppModel
-    {
-        var $name = 'PropopdoSituationpdo';
+	class PropopdoSituationpdo extends AppModel
+	{
+		public $name = 'PropopdoSituationpdo';
 
-        var $belongsTo = array(
-            'Propopdo',
-            'Situationpdo'
-        );
+		public $actsAs = array (
+			'Nullable',
+			'ValidateTranslate'
+		);
 
-        var $actsAs = array (
-            'Nullable',
-            'ValidateTranslate'
-        );
+		public $validate = array(
+			'propopdo_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+				),
+			),
+			'situationpdo_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+				),
+			),
+		);
 
-        var $validate = array(
-            'propopdo_id' => array(
-                array( 'rule' => 'notEmpty' )
-            ),
-            'situationpdo_id' => array(
-                array( 'rule' => 'notEmpty' )
-            )
-        );
-    }
+		public $belongsTo = array(
+			'Propopdo' => array(
+				'className' => 'Propopdo',
+				'foreignKey' => 'propopdo_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Situationpdo' => array(
+				'className' => 'Situationpdo',
+				'foreignKey' => 'situationpdo_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
+	}
 ?>

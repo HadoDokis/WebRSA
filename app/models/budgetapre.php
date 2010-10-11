@@ -1,41 +1,72 @@
 <?php
 	class Budgetapre extends AppModel
 	{
-		var $name = 'Budgetapre';
+		public $name = 'Budgetapre';
 
-		var $displayField = 'exercicebudgetai';
+		public $displayField = 'exercicebudgetai';
 
-        var $validate = array(
-            'exercicebudgetai' => array(
+		public $validate = array(
+			'exercicebudgetai' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				),
+				array(
+					'rule' => 'numeric',
+					'message' => 'Veuillez entrer une valeur numérique.',
+					'allowEmpty' => true
+				),
 				array(
 					'rule' => 'isUnique',
 					'message' => 'Valeur déjà utilisée'
 				),
+			),
+			'montantattretat' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-            ),
-            'montantattretat' => array(
-                array(
-                    'rule' => array( 'inclusiveRange', 0, 99999999 ),
-                    'message' => 'Veuillez saisir un montant compris entre 0 et 99 999 999 € maximum.'
-                ),
-                array(
-                    'rule' => 'numeric',
-                    'message' => 'Veuillez entrer une valeur numérique.',
-                    'allowEmpty' => true
-                ),
 				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
+					'rule' => array( 'inclusiveRange', 0, 99999999 ),
+					'message' => 'Veuillez saisir un montant compris entre 0 et 99 999 999 € maximum.'
 				),
-            ),
+				array(
+					'rule' => 'numeric',
+					'message' => 'Veuillez entrer une valeur numérique.',
+					'allowEmpty' => true
+				),
+			),
+			'ddexecutionbudge' => array(
+				array(
+					'rule' => 'date',
+					'message' => 'Veuillez entrer une date correcte',
+					'allowEmpty' => true
+				),
+			),
+			'dfexecutionbudge' => array(
+				array(
+					'rule' => 'date',
+					'message' => 'Veuillez entrer une date correcte',
+					'allowEmpty' => true
+				),
+			),
 			// FIXME: faire les autres
-        );
+		);
 
-		var $hasMany = array(
-			'Etatliquidatif'
+		public $hasMany = array(
+			'Etatliquidatif' => array(
+				'className' => 'Etatliquidatif',
+				'foreignKey' => 'budgetapre_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
 		);
 	}
 ?>

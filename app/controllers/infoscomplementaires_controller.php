@@ -2,7 +2,7 @@
     class InfoscomplementairesController extends AppController {
 
         var $name = 'Infoscomplementaires';
-        var $uses = array( 'Personne', 'Creancealimentaire', 'TitreSejour', 'Activite', 'Allocationsoutienfamilial', 'Option' );
+        var $uses = array( 'Personne', 'Creancealimentaire', 'Titresejour', 'Activite', 'Allocationsoutienfamilial', 'Option', 'Dossier' );
         var $helpers = array( 'Theme' );
 
 
@@ -57,7 +57,7 @@
             $tDossier = $this->Dossier->findById( $id, null, null, -1 );
             $details = Set::merge( $details, $tDossier );
 
-            $tFoyer = $this->Dossier->Foyer->findByDossierRsaId( $id, null, null, -1 );
+            $tFoyer = $this->Dossier->Foyer->findByDossierId( $id, null, null, -1 );
             $details = Set::merge( $details, $tFoyer );
 
             /**
@@ -91,17 +91,17 @@
                 $personnesFoyer[$index]['Creancealimentaire'] = $tCreancealimentaire['Creancealimentaire'];
 
                 ///Titres séjour
-                $tTitreSejour = $this->TitreSejour->find(
+                $tTitresejour = $this->Titresejour->find(
                     'first',
                     array(
                         'conditions' => array(
-                            'TitreSejour.personne_id' => $personnesFoyer[$index]['Personne']['id']
+                            'Titresejour.personne_id' => $personnesFoyer[$index]['Personne']['id']
                         ),
-                        'order' => 'TitreSejour.ddtitsej DESC',
+                        'order' => 'Titresejour.ddtitsej DESC',
                         'recursive' => -1
                     )
                 );
-                $personnesFoyer[$index]['TitreSejour'] = $tTitreSejour['TitreSejour'];
+                $personnesFoyer[$index]['Titresejour'] = $tTitresejour['Titresejour'];
 
                 ///Activités
                 $tActivite = $this->Activite->find(

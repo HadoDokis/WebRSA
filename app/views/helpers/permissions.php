@@ -6,9 +6,9 @@
         /**
             FIXME: http://localhost/adullact/webrsa/adressesfoyers/edit/1
             avec
-                [Module:Adressesfoyers] =>
-                [Adressesfoyers:index] => 1
-                [Adressesfoyers:view] => 1
+                [Module:Adressefoyers] =>
+                [Adressefoyers:index] => 1
+                [Adressefoyers:view] => 1
         */
 
         function check( $controller, $action ) {

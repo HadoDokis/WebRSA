@@ -1,7 +1,17 @@
-<?php $this->pageTitle = 'Paramétrage des utilisateurs';?>
-<?php echo $xform->create( 'User' );?>
+<?php
+	$this->pageTitle = 'Paramétrage des utilisateurs';
+	$authUser = $session->read( 'Auth.User.id' );
+
+	$paginationBlock = $xpaginator->paginationBlock(
+		'User',
+		Set::merge(
+			$this->params['pass'],
+			$this->params['named']
+		)
+	);
+?>
 <div>
-    <h1><?php echo 'Visualisation de la table  ';?></h1>
+    <h1><?php echo $this->pageTitle;?></h1>
 
     <ul class="actionMenu">
         <?php
@@ -13,18 +23,19 @@
     </ul>
     <div>
         <h2>Table Utilisateur</h2>
+        <?php echo $paginationBlock;?>
         <table>
         <thead>
             <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Login</th>
-                <th>Date de naissance</th>
-                <th>N° téléphone</th>
-                <th>Date début habilitation</th>
-                <th>Date fin habilitation</th>
-                <th>Groupe d'utilisateur</th>
-                <th>Service instructeur</th>
+                <th><?php echo $paginator->sort( 'Nom', 'User.nom' );?></th>
+                <th><?php echo $paginator->sort( 'Prénom', 'User.prenom' );?></th>
+                <th><?php echo $paginator->sort( 'Login', 'User.username' );?></th>
+                <th><?php echo $paginator->sort( 'Date de naissance', 'User.date_naissance' );?></th>
+                <th><?php echo $paginator->sort( 'N° téléphone', 'User.numtel' );?></th>
+                <th><?php echo $paginator->sort( 'Date début habilitation', 'User.date_deb_hab' );?></th>
+                <th><?php echo $paginator->sort( 'Date fin habilitation', 'User.date_fin_hab' );?></th>
+                <th><?php echo $paginator->sort( 'Groupe d\'utilisateur', 'Group.name' );?></th>
+                <th><?php echo $paginator->sort( 'Service instructeur', 'Serviceinstructeur.lib_service' );?></th>
                 <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
@@ -57,13 +68,14 @@
             <?php endforeach;?>
             </tbody>
         </table>
+		<?php echo $paginationBlock;?>
+	</div>
 </div>
+<div class="submit">
+	<?php
+		echo $xform->create( 'User' );
+		echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+		echo $xform->end();
+	?>
 </div>
-    <div class="submit">
-        <?php
-            echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-        ?>
-    </div>
-
 <div class="clearer"><hr /></div>
-<?php echo $xform->end();?>

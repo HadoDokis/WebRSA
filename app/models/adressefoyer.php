@@ -2,7 +2,6 @@
     class Adressefoyer extends AppModel
     {
         public $name = 'Adressefoyer';
-        public $useTable = 'adresses_foyers';
         public $order = array( '"Adressefoyer"."rgadr" ASC' );
 
         //*********************************************************************
@@ -42,7 +41,7 @@
         public function dossierId( $adressefoyer_id ) {
             $adressefoyer = $this->findById( $adressefoyer_id, null, null, 0 );
             if( !empty( $adressefoyer ) ) {
-                return $adressefoyer['Foyer']['dossier_rsa_id'];
+                return $adressefoyer['Foyer']['dossier_id'];
             }
             else {
                 return null;
@@ -54,28 +53,28 @@
 
         //*********************************************************************
         /**
-        *   Foyers avec plusieurs adresses_foyers.rgadr = 01
+        *   Foyers avec plusieurs adressesfoyers.rgadr = 01
         *   donc on s'assure de n'en prendre qu'un seul et celui dont l'ID est le + élevé
         *   FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
         */
 
-        /*function sqlFoyerActuelUnique() {
+        public function sqlFoyerActuelUnique() {
             return '(
-                SELECT tmpadresses_foyers.id FROM (
-                    SELECT MAX(adresses_foyers.id) AS id, adresses_foyers.foyer_id
-                        FROM adresses_foyers
-                        WHERE adresses_foyers.rgadr = \'01\'
-                        GROUP BY adresses_foyers.foyer_id
-                        ORDER BY adresses_foyers.foyer_id
-                ) AS tmpadresses_foyers
+                SELECT tmpadressesfoyers.id FROM (
+                    SELECT MAX(adressesfoyers.id) AS id, adressesfoyers.foyer_id
+                        FROM adressesfoyers
+                        WHERE adressesfoyers.rgadr = \'01\'
+                        GROUP BY adressesfoyers.foyer_id
+                        ORDER BY adressesfoyers.foyer_id
+                ) AS tmpadressesfoyers
             )';
-        }*/
-        
+        }
+
         /*
         *
         * Remarque: envoie moins de résultat de la précédente à vérifier
         */
-        
+
         public function sqDerniereRgadr01($field) {
         	$dbo = $this->getDataSource( $this->useDbConfig );
         	$table = $dbo->fullTableName( $this, false );

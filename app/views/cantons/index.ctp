@@ -30,6 +30,7 @@
 	if( !empty( $cantons ) ) {
 		$headers = array(
 			$paginator->sort( 'Canton', 'Canton.canton' ),
+			$paginator->sort( 'Zone géographique', 'Zonegeographique.libelle' ),
 			$paginator->sort( 'Type de voie', 'Canton.typevoie' ),
 			$paginator->sort( 'Nom de voie', 'Canton.nomvoie' ),
 			$paginator->sort( 'Localité', 'Canton.locaadr' ),
@@ -43,6 +44,7 @@
 		foreach( $cantons as $canton ) {
 			$rows[] = array(
 				h( Set::extract( $canton, 'Canton.canton' ) ),
+				h( Set::extract( $canton, 'Zonegeographique.libelle' ) ),
 				h( isset( $typevoie[Set::extract( $canton, 'Canton.typevoie' )] ) ? $typevoie[Set::extract( $canton, 'Canton.typevoie' )] : Set::extract( $canton, 'Canton.typevoie' ) ),
 				h( Set::extract( $canton, 'Canton.nomvoie' ) ),
 				h( Set::extract( $canton, 'Canton.locaadr' ) ),

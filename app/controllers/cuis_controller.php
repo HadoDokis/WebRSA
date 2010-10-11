@@ -4,7 +4,7 @@
     class CuisController extends AppController {
 
         var $name = 'Cuis';
-        var $uses = array( 'Cui', 'Option', 'Referent', 'Personne', 'Periodeimmersion', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Adressefoyer', 'AdresseFoyer', 'Detaildroitrsa', 'Infofinanciere', 'Detailcalculdroitrsa', 'Departement' );
+        var $uses = array( 'Cui', 'Option', 'Referent', 'Personne', 'Periodeimmersion', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Adressefoyer', 'Detaildroitrsa', 'Infofinanciere', 'Detailcalculdroitrsa', 'Departement' );
 
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $components = array( 'RequestHandler', 'Gedooo' );
