@@ -1,0 +1,127 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+
+###############################################################################
+# Enum Propopdo.statutdecision
+###############################################################################
+msgid "Criterespdos::index"
+msgstr "Recherche de PDOs"
+
+msgid "ENUM::STATUTDECISION::DEF"
+msgstr "Définitive"
+
+msgid "ENUM::STATUTDECISION::UND"
+msgstr "Non définitive"
+
+msgid "ENUM::CHOIXPDO::PDO"
+msgstr "PDO"
+
+msgid "ENUM::CHOIXPDO::JUS"
+msgstr "Justificatifs arrivés"
+
+msgid "Propopdo.structurereferente_id"
+msgstr "Structure référente traitant le dossier"
+
+msgid "Propopdo.typepdo_id"
+msgstr "Type de dossier"
+
+msgid "Propopdo.decisionpdo_id"
+msgstr "Proposition de décision"
+
+msgid "Propopdo.user_id"
+msgstr "Dossier instruit par"
+
+msgid "Propopdo.datereceptionpdo"
+msgstr "Date de réception de la PDO"
+
+msgid "Propopdo.originepdo_id"
+msgstr "Origine de la PDO"
+
+msgid "Propopdo.motifpdo"
+msgstr "Motif de la PDO"
+
+msgid "ENUM::NONADMIS::CAN"
+msgstr "Conditions d'admission non remplies"
+
+msgid "ENUM::NONADMIS::RSP"
+msgstr "Ressources > au plafond"
+
+msgid "Propopdo.categoriegeneral"
+msgstr "Métiers ( général )"
+
+msgid "Propopdo.categoriedetail"
+msgstr "Métiers ( détaillé )"
+
+msgid "Criterespdos::nouvelles"
+msgstr "Liste des personnes pouvant bénéficier d'une PDO"
+
+msgid "ENUM::ISCOMPLET::COM"
+msgstr "Dossier complet"
+
+msgid "ENUM::ISCOMPLET::INC"
+msgstr "Dossier incomplet"
+
+msgid "Propopdo.isvalidation"
+msgstr "Validation"
+
+msgid "Propopdo.validationdecision"
+msgstr "Décision validée"
+
+msgid "Propopdo.datevalidationdecision"
+msgstr "Date de validation de la décision"
+
+msgid "ENUM::VALIDATIONDECISION::N"
+msgstr "Non"
+
+msgid "ENUM::VALIDATIONDECISION::O"
+msgstr "Oui"
+
+msgid "ENUM::DECISIONOP::REF"
+msgstr "Refus"
+
+msgid "ENUM::DECISIONOP::ACC"
+msgstr "Accord"
+
+msgid "ENUM::DECISIONOP::AJ"
+msgstr "Ajournement"
+
+msgid "Propopdo.observationop"
+msgstr "Observations"
+
+msgid "Propopdo.datedecisionop"
+msgstr "Date transimission à l\'OP"
+
+msgid "ENUM::ETATDOSSIERPDO::1"
+msgstr "En attente d'instruction"
+
+msgid "ENUM::ETATDOSSIERPDO::2"
+msgstr "Instruction en cours"
+
+msgid "ENUM::ETATDOSSIERPDO::3"
+msgstr "En attente de validation"
+
+msgid "ENUM::ETATDOSSIERPDO::4"
+msgstr "Décision validée"
+
+msgid "ENUM::ETATDOSSIERPDO::5"
+msgstr "Dossier traité"
+
+msgid "ENUM::ETATDOSSIERPDO::6"
+msgstr "En attente de pièces"

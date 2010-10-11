@@ -1,0 +1,548 @@
+/******************************************************************************
+    Général
+******************************************************************************/
+
+* { line-height: 1.2; }
+
+body {
+    font-family: sans-serif;
+    font-size: 13px;
+}
+
+p, ul, ol, dl { margin: 0.75em 0; }
+
+p {
+    line-height: 1.4em;
+    text-align: justify;
+}
+
+sup { vertical-align: super; }
+sub { vertical-align: sub; }
+sup, sub { font-size: 65%; }
+
+a { text-decoration: underline;}
+
+/******************************************************************************
+    Titres
+******************************************************************************/
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    line-height: 1.2em;
+}
+
+h1 { font-size: 1.95em; }
+h2 { font-size: 1.56em; }
+h3 { font-size: 1.25em; }
+
+body.home h2 { font-size: 1.95em; }
+body.home h3 { font-size: 1.56em; }
+body.home h4 { font-size: 1.25em; }
+
+/******************************************************************************
+    Abbréviations
+******************************************************************************/
+
+abbr, acronym, .abbr {
+    border-bottom: 1px dotted black;
+    cursor: help;
+}
+
+/* FIXME ? */
+
+*[lang|=en] abbr[lang|=fr], *[lang|=en] acronym[lang|=fr], *[lang|=en] .abbr[lang|=fr],
+*[lang|=fr] abbr[lang|=en], *[lang|=fr] acronym[lang|=en], *[lang|=fr] .abbr[lang|=en] {
+    font-style: normal;
+}
+
+/**[title] {
+    border-bottom: 1px dotted black;
+    cursor: help;
+}*/
+
+a[title] {
+    cursor: pointer;
+}
+
+
+/******************************************************************************
+    Mise en évidence
+******************************************************************************/
+
+b, strong {
+    font-weight: bold;
+}
+
+i, em/*, *[lang|=en]*/, cite {
+    font-style: italic;
+}
+
+*[lang|=en] *[lang|=fr], *[lang|=fr] *[lang|=en] {
+    font-style: italic;
+}
+
+/******************************************************************************
+    Code
+******************************************************************************/
+
+code {
+    font-family: monospace;
+    border: 1px solid silver;
+    background: #ffffdd;
+}
+
+/******************************************************************************
+    Listes
+******************************************************************************/
+
+ul { list-style-type: disc; }
+ol { list-style-type: decimal; }
+li { margin-left: 1.8em; }
+
+/******************************************************************************
+    Citations
+******************************************************************************/
+
+q {
+    font-style: italic;
+    /*border-bottom: 1px dotted black;*/
+}
+
+blockquote {
+    border-bottom: 0;
+    border-left: 1px dotted black;
+    margin-left: 1em;
+    padding: 0 0.5em;
+}
+
+blockquote[title] {
+    border-bottom: 0;
+    border-left: 1px dotted black;
+    margin-left: 1em;
+    padding: 0 0.5em;
+}
+
+/******************************************************************************
+    Tableaux
+******************************************************************************/
+
+table {
+    border-collapse: collapse;
+    margin-top: 0.5em;
+}
+
+th, td {
+    padding: 0.25em 0.5em;
+    border: 1px solid black;
+    vertical-align: top;
+    background: white;
+}
+
+th {
+    font-weight: normal;
+    text-align: center;
+}
+
+thead th {
+    text-align: center;
+}
+
+table ol, table ul {
+    margin: 0;
+}
+
+table li {
+    margin-left: 1em;
+}
+
+caption {
+    line-height: 1em;
+    padding: 0 0 0.5em 0;
+    caption-side: bottom;
+}
+
+tbody th {
+    text-align: left;
+}
+
+td.number {
+    text-align: right;
+}
+/* FIXME */
+div.submit {
+    text-align: center;
+    padding: 0.5em;
+}
+
+/******************************************************************************
+    Droits
+******************************************************************************/
+table#tableDroits {
+        border-collapse: separate;
+        color: black;
+}
+#tableDroits th {
+        border: 1px solid Black;
+        padding-left: 10px;
+        padding-right: 10px;
+        text-align: left;
+        background-color: #f4f4f4;
+}
+#tableDroits td {
+        border: 1px solid Black;
+        border-top: 0;
+        padding-left: 10px;
+        padding-right: 10px;
+}
+#tableDroits tr {
+        background: transparent;
+        color: black;
+}
+#tableDroits tr.ligneProfil {
+        background-color: #DFEE8F;
+}
+#tableDroits tr.altLigneProfil {
+        background-color: #CFF358;
+}
+#tableDroits tr.ligneUtilisateur {
+        background-color: #E8E8E8;
+}
+#tableDroits tr.altLigneUtilisateur {
+        background-color: #D9D9D9;
+}
+#tableDroits img {
+        border: 0;
+}
+.droits {
+    color: black;
+}
+
+/* FIXME: class details */
+
+dt {
+	border: 1px solid silver;
+	background: #eef;
+	padding: 0.5em;
+}
+
+dd {
+	border: 1px solid silver;
+	border-top: 0;
+	padding: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+dt.answered, dd.answered {
+	font-weight: bold;
+}
+
+/******************************************************************************
+    Apre
+******************************************************************************/
+
+form#Apre div.checkbox label {
+	width: auto;
+}
+
+/*****************************************************************************/
+
+table.etatliquidatif.header, table.etatliquidatif.apres {
+	font-size: 9px;
+	width: 100%;
+}
+
+/*----------------------------------------------------------------------------*/
+
+table.etatliquidatif.header {
+	width: 100%;
+	border: 0;
+	margin-bottom: 1.5em;
+}
+
+table.etatliquidatif.header tbody {
+	border: 0;
+}
+
+table.etatliquidatif.header th, table.etatliquidatif.header td {
+	background: none;
+	border: 0;
+	color: black;
+}
+
+table.etatliquidatif.header th {
+	font-weight: bold;
+	width: 15em;
+}
+
+/*----------------------------------------------------------------------------*/
+
+table.etatliquidatif.apres th {
+	background: none;
+	color: black;
+	font-weight: bold;
+}
+
+table.etatliquidatif.apres tbody, table.etatliquidatif.apres thead, table.etatliquidatif.apres tfoot {
+	border-color: black;
+}
+
+/*----------------------------------------------------------------------------*/
+
+table td span.number {
+    display: block;
+    text-align: right;
+}
+
+/*----------------------------------------------------------------------------*/
+
+dl.allocataire.infos dt, dl.allocataire.infos dd {
+    display: inline;
+    border: 0;
+    background: inherit;
+}
+
+dl.allocataire.infos dt {
+    font-weight: bold;
+}
+
+/*------------------------------ Ajout/Edition Période Immersion --------------------------------*/
+
+table#infosCui {
+    width: 100%;
+    border: 0;
+}
+
+table#infosCui tbody {
+    border: 0;
+}
+
+table#infosCui th {
+    width: 48%;
+}
+
+table#infosCui th, table#infosCui td {
+    background: transparent;
+    color: black;
+    border: 0;
+    padding: 0.25em 0;
+}
+
+table#infosCui th{
+    font-weight: bold;
+}
+
+/*------------------------------ Ajout/Edition PDO --------------------------------*/
+
+table#dossierInfosOrganisme {
+    width: 100%;
+    border: 0;
+}
+
+table#dossierInfosOrganisme tbody {
+    border: 0;
+}
+
+table#dossierInfosOrganisme th {
+    width: 48%;
+}
+
+table#dossierInfosOrganisme th, table#dossierInfosOrganisme td {
+    background: transparent;
+    color: black;
+    border: 0;
+    padding: 0.25em 0;
+}
+
+
+table#infosPdo {
+    width: 100%;
+    border: 0;
+}
+
+table#infosPdo tbody {
+    border: 0;
+}
+
+table#infosPdo th {
+    width: 48%;
+}
+
+table#infosPdo th, table#infosPdo td {
+    background: transparent;
+    color: black;
+    border: 0;
+    padding: 0.25em 0;
+}
+
+/**
+* Dsps
+*/
+
+#dsps dt, #dsps dd {
+	font-weight: bold;
+}
+
+#dsps dt.empty, #dsps dd.empty {
+	font-weight: normal;
+}
+
+#dsps dt.empty {
+	margin-bottom: 0.5em;
+}
+
+#dsps dd.empty {
+	display: none;
+}
+
+/*form#Apre  td.fraisdepct input {
+    width: 30%;
+}*/
+
+form#Apre  div.fraisdepct {
+    width: 25%;
+	float: left;
+}
+
+
+form#Apre  table.fraisdepct {
+    width: 15em;
+}
+
+form#Apre  table.fraisdepct caption {
+    caption-side: top;
+	border: 1px solid #235F7D;
+	background: #235F7D;
+	text-align: center;
+	color: white;
+	padding: 0;
+	margin: 0;
+}
+
+
+form#Apre  table.fraisdepct th {
+    width: 8em;
+}
+
+form#Apre  table.fraisdepct td.fraisdepct {
+    width: 3em;
+	max-width: 3em;
+}
+
+form#Apre  table.fraisdepct td.fraisdepct input {
+    width: 5em;
+	max-width: 5em;
+}
+
+
+
+form#Apre  table.fraisdepct2 td.fraisdepct2 {
+    width: 1em;
+    max-width: 1em;
+}
+form#Apre  table.fraisdepct2 td.fraisdepct2 input {
+    width: 1em;
+    max-width: 1em;
+}
+
+/***************************************/
+/*****     Partie pour le CUI      *****/
+/**************************************/
+form#cuiform fieldset.prescripteur{
+    position: center;
+}
+
+form#cuiform fieldset#Adressebis{
+    border: 0;
+}
+
+form#cuiform .cui1 {
+    width: 50%;
+}
+
+form#cuiform table.cui3 tbody tr td {
+    width: 48%;
+}
+
+form#cuiform .cui2 {
+    width: 50%;
+}
+
+form#cuiform .cui3 {
+    width: 100%;
+}
+
+form#cuiform .cui4 {
+    width: 50%;
+}
+
+
+form#cuiform table.cui5 tbody tr td {
+    width: 48%;
+}
+
+
+
+form#cuiform .cui5 td div.select select {
+    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;
+    width: 10%;
+}
+
+form#cuiform .cui5 td div.radio {
+/*    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;*/
+    width: 50%;
+}
+
+form#cuiform table.cui5  p {
+    font-weight: bold;
+}
+
+form#cuiform input#CuiTauxfixe {
+    width: 10%;
+}
+
+form#cuiform input#CuiTauxprisencharge {
+    width: 10%;
+}
+
+form#cuiform input#CuiTauxfinancementexclusif {
+    width: 10%;
+}
+
+form#cuiform table.cuiduree td.dureehebdo{
+    width: 33%;
+}
+
+form#cuiform table.cuiduree td.dureehebdo input {
+    width: 8%;
+}
+
+form#cuiform fieldset div.text {
+    clear: none;
+}
+
+form#cuiform td div.text input, form#cuiform td div.password input, form#cuiform td div.select select {
+    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;
+    width: 48%; /* Grrrr */
+}
+
+/*----------------------------------------------------------------------------*/
+form#cuiform dl.allocataire.cuis dt, dl.allocataire.cuis dd {
+    border: 0;
+    background: inherit;
+}
+
+form#cuiform dl.allocataire.cuis dt {
+    font-weight: bold;
+}
+
+/*----------------------------------------------------------------------------*/
+
+#tableEditDroits td {
+	vertical-align: middle;
+}

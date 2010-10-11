@@ -1,0 +1,148 @@
+form {
+    width: auto;
+    text-align: left;
+}
+
+div.text, div.password, div.select, div.radio, div.date, div.textarea, div.input.text {
+    margin-bottom: 0.5em;
+    width: auto;
+}
+
+div.input label, div.input span.label, dl.inform dt {
+    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;
+    width: 48%;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+div.input.checkbox label {
+    width: 90%;
+}
+
+div.textarea label, div.textarea textarea {
+    display: block;
+    width: 100%;
+}
+
+div.text input, div.password input, div.select select, div.input.text span.input, dl.inform dd {
+    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;
+    width: 48%; /* Grrrr */
+	font-size: 1em;
+}
+
+dl.inform dt, dl.inform dd {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 0.5em;
+}
+
+td div.text input, td div.password input, td div.select select {
+    display: block;
+    width: auto;
+}
+
+div.submit {
+    text-align: center;
+    padding: 0.5em;
+}
+
+div.submit input {
+    font-size: 1em;
+}
+
+abbr.required, acronym.required { color: #cc0000; border: 0; }
+
+form div.error {
+    border: 1px solid silver;
+    padding: 0.5em;
+    background: #fff2f2;
+}
+
+form div.error div.error-message {
+    color: #cc0000;
+}
+
+fieldset {
+    margin: 0 0 1em 0;
+    padding: 0.5em;
+}
+
+fieldset div.text {
+    clear: both;
+}
+
+fieldset.col2 div.checkbox, fieldset.col2 div.radio {
+    display: block;
+    width: 50%;
+    float: left;
+}
+
+fieldset.col3 div.checkbox, fieldset.col3 div.radio {
+    display: block;
+    width: 33%;
+    float: left;
+}
+
+div.input.disabled, div.checkbox.disabled {
+    color: silver;
+}
+
+.disabled * {
+    color: silver;
+}
+
+fieldset.boolean {
+    border: 0;
+    padding: 0;
+    margin: 1em 0;
+}
+
+fieldset.boolean label {
+    margin-right: 1em;
+}
+
+fieldset.invisible {
+    border: 0;
+    padding: 0;
+}
+
+div.textarea.address label, div.textarea.address textarea {
+    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;
+    width: 48%;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+/*********************************************************************/
+
+fieldset.partenaire.bilan div.radio {
+    display: block;
+    width: 50%;
+    float: left;
+}
+
+div.input.radio label, div.input.radio input {
+	width: auto;
+}
+
+td.error {
+    background: #fff2f2;
+}
+
+/*********************************************************************/
+
+th.entete, td.entete {
+    background: #fff2f2;
+    color: black;
+}
+/*tbody tr th.entete{
+    background: red;
+}*/
