@@ -12,7 +12,7 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 ).'</ul>';
 //}
 ?>
-<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => '/indicateursMotifsReorientations/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'unfolded' : 'folded' ) ) );?>
+<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => '/indicateursMotifsReorientations/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 <fieldset><legend>Critères</legend>
 <?php echo $form->input( 'Statistiquesministerielle.localisation', array('disabled'=>true, 'label' => 'Localité') ); ?>
 <?php echo $form->input( 'Statistiquesministerielle.service', array('disabled'=>true, 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) ); ?>
@@ -22,6 +22,7 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 <?php echo $form->button( 'Réinitialiser', array( 'type'=>'reset' ) );?>
 </div>
 <?php echo $form->end();?>
+<?php if( !empty( $this->data ) ):?>
 <?php
 echo $html->tag(
         'h1',
@@ -86,3 +87,4 @@ $this->pageTitle = 'Indicateurs motifs de réorientations'
 		</tr>		
 	</tbody>
 </table>
+<?php endif;?>

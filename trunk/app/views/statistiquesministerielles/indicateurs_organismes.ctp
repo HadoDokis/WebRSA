@@ -12,7 +12,7 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 ).'</ul>';
 //}
 ?>
-<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => '/indicateursOrganismes/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'unfolded' : 'folded' ) ) );?>
+<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => '/indicateursOrganismes/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 <fieldset><legend>Critères</legend>
 <?php echo $form->input( 'Statistiquesministerielle.localisation', array('disabled'=>false, 'label' => 'Localité') ); ?>
 <?php echo $form->input( 'Statistiquesministerielle.service', array('disabled'=>false, 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) ); ?>
@@ -22,6 +22,7 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 <?php echo $form->button( 'Réinitialiser', array( 'type'=>'reset' ) );?>
 </div>
 <?php echo $form->end();?>
+<?php if( !empty( $this->data ) ):?>
 <?php
 echo $html->tag(
         'h1',
@@ -110,3 +111,4 @@ loi à compter de sa date d'entrée en vigueur, pour examiner l'ensemble
 des situations des anciens bénéficiaires du RMI et de l'API, ou d’autre
 part, si la décision d’orientation est en attente de validation par le
 président du conseil général.</p>
+<?php endif;?>

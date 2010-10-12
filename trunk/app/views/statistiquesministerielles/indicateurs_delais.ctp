@@ -12,7 +12,7 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 ).'</ul>';
 //}
 ?>
-<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => '/indicateursDelais/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'unfolded' : 'folded' ) ) );?>
+<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => '/indicateursDelais/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 <fieldset><legend>Critères</legend>
 <?php echo $form->input( 'Statistiquesministerielle.localisation', array('disabled'=>false, 'label' => 'Localité') ); ?>
 <?php echo $form->input( 'Statistiquesministerielle.service', array('disabled'=>false, 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) ); ?>
@@ -22,6 +22,7 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 <?php echo $form->button( 'Réinitialiser', array( 'type'=>'reset' ) );?>
 </div>
 <?php echo $form->end();?>
+<?php if( !empty( $this->data ) ):?>
 <?php
 echo $html->tag(
         'h1',
@@ -117,3 +118,4 @@ $this->pageTitle = 'Indicateurs de délais'
 <p>
 (**) Il serait souhaitable, qu’à terme, les flux d’échanges entre Pôle emploi et les Conseils généraux permettent de recueillir ces informations sur le PPAE.
 </p>
+<?php endif;?>

@@ -12,7 +12,7 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 ).'</ul>';
 //}
 ?>
-<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => '/indicateursReorientations/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'unfolded' : 'folded' ) ) );?>
+<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => '/indicateursReorientations/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 <fieldset><legend>Critères</legend>
 <?php echo $form->input( 'Statistiquesministerielle.localisation', array('disabled'=>true, 'label' => 'Localité') ); ?>
 <?php echo $form->input( 'Statistiquesministerielle.service', array('disabled'=>true, 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) ); ?>
@@ -22,6 +22,7 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 <?php echo $form->button( 'Réinitialiser', array( 'type'=>'reset' ) );?>
 </div>
 <?php echo $form->end();?>
+<?php if( !empty( $this->data ) ):?>
 <?php
 echo $html->tag(
         'h1',
@@ -244,3 +245,4 @@ $this->pageTitle = 'Indicateurs de réorientations'
 <p>
 (*) On entend par réorientation, le passage d’une « orientation à dominante sociale » vers une « orientation à dominante professionnelle » ou réciproquement. Un changement d’organisme au sein d’une même orientation  (exemple de Pôle emploi vers un organisme privé de placement) n’est pas considéré comme une réorientation.
 </p>
+<?php endif;?>
