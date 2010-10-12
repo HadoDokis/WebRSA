@@ -305,11 +305,17 @@
                                     <li>
                                         <?php echo $html->link( 'Indicateurs d\'organismes',  array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateursOrganismes'  ) );?>
                                     </li>
-                                    <!--<li>
-                                        <?php /*echo $html->link( 'Indicateurs de nature de contrats',  array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateursNatureContrats'  ) );*/?>
-                                    </li>-->
+                                    <li>
+                                        <?php echo $html->link( 'Indicateurs de nature de contrats',  array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateursDelais'  ) );?>
+                                    </li>
                                     <li>
                                         <?php echo $html->link( 'Indicateurs de caractéristiques de contrats',  array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateursCaracteristiquesContrats'  ) );?>
+                                    </li>
+                                    <li>
+                                        <?php echo $html->link( 'Indicateurs de réorientations',  array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateursReorientation'  ) );?>
+                                    </li>
+                                    <li>
+                                        <?php echo $html->link( 'Indicateurs de motifs de réorientations',  array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateursMotifsReorientation'  ) );?>
                                     </li>
                                 </ul>
                             </li>
