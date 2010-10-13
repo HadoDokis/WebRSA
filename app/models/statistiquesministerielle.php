@@ -563,20 +563,20 @@
 		{ 	
 			set_time_limit(0);
 			$filtres = array(
-				" AND engag_object IN ( '29', '41','42', '43', '45', '46', '48') ", // a01 Activités, stages ou formation destinés à acquérir des compétences professionnelles
-				" AND engag_object IN ( '51') ", // a02 Orientation vers le service public de l'emploi, parcours de recherche d'emploi
-				"  ", // a03 Mesures d'insertion par l'activité économique (IAE)
-				" AND engag_object IN ( '55' ) ", // a04 Aide à la réalisation d’un projet de création, de reprise ou de poursuite d’une activité non salariée
-				" AND engag_object IN ( '52', '53', '54', '56') ", // a05 Emploi aidé
-				" AND engag_object IN ( '57', '58', '59') ", // a06 Emploi non aidé
-				" AND engag_object IN ( '26') ", // a07 Actions facilitant le lien social (développement de l'autonomie sociale, activités collectives,…)
-				" AND engag_object IN ( '44' ) ", // a08 Actions facilitant la mobilité (permis de conduire, acquisition / location de véhicule, frais de transport…)
-				" AND engag_object IN ( '05', '06', '31', '33') ", // a09 Actions visant l'accès à un logement, relogement ou à l'amélioration de l'habitat
-				" AND engag_object IN ( '21') ", // a10 Actions facilitant l'accès aux soins
-				" AND engag_object IN ( '07') ", // a11 Actions visant l'autonomie financière (constitution d'un dossier de surendettement,...)
-				" AND engag_object IN ( '1P', '1F', '02', '03', '04') ", // a12 Actions visant la famille et la parentalité (soutien familiale, garde d'enfant, …)
-				" AND engag_object IN ( '22') ", // a13 Lutte contre l'illettrisme ; acquisition des savoirs de base
-				" AND engag_object IN ( '10', '23', '24') "  // a14 Autres actions
+				" AND ci.engag_object IN ( '45', '46', '53') ", // a01 Activités, stages ou formation destinés à acquérir des compétences professionnelles
+				" AND ci.engag_object IN ( '41', '42', '48', '51') ", // a02 Orientation vers le service public de l'emploi, parcours de recherche d'emploi
+				" AND ci.engag_object IN ( '43', '54', '57') ", // a03 Mesures d'insertion par l'activité économique (IAE)
+				" AND ci.engag_object IN ( '55' ) ", // a04 Aide à la réalisation d’un projet de création, de reprise ou de poursuite d’une activité non salariée
+				" AND ci.engag_object IN ( '52', '56') ", // a05 Emploi aidé
+				" AND ci.engag_object IN ( '58', '59') ", // a06 Emploi non aidé
+				" AND ci.engag_object IN ( '26', '29') ", // a07 Actions facilitant le lien social (développement de l'autonomie sociale, activités collectives,…)
+				" AND ci.engag_object IN ( '44' ) ", // a08 Actions facilitant la mobilité (permis de conduire, acquisition / location de véhicule, frais de transport…)
+				" AND ci.engag_object IN ( '05', '06', '31') ", // a09 Actions visant l'accès à un logement, relogement ou à l'amélioration de l'habitat
+				" AND ci.engag_object IN ( '21') ", // a10 Actions facilitant l'accès aux soins
+				" AND ci.engag_object IN ( '07', '33') ", // a11 Actions visant l'autonomie financière (constitution d'un dossier de surendettement,...)
+				" AND ci.engag_object IN ( '1P', '1F', '02', '03', '04', '23') ", // a12 Actions visant la famille et la parentalité (soutien familiale, garde d'enfant, …)
+				" AND ci.engag_object IN ( '22') ", // a13 Lutte contre l'illettrisme ; acquisition des savoirs de base
+				" AND ci.engag_object IN ( '10', '24') "  // a14 Autres actions
 			);
 			$blocs = array(
 				"L262-35" => " AND sr.typeorient_id = 3 ",
