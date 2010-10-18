@@ -147,7 +147,7 @@
                     </table>
                 </td>
                 <td>
-                    <h2>CER</h2>
+                    <h2>Contrat d'Engagement Réciproque</h2>
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>
@@ -246,7 +246,7 @@
                     </table>
                 </td>
                 <td>
-                    <h2>CUI</h2>
+                    <h2>Contrat Unique d'Insertion</h2>
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>
