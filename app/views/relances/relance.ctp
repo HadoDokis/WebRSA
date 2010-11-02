@@ -45,6 +45,7 @@
         <?php echo $form->input( 'Relance.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Relance.matricule', array( 'label' => 'N° CAF ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Relance.nir', array( 'label' => 'NIR ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Relance.hasContrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );?>
         <?php echo $form->input( 'Relance.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
         <?php
 			if( Configure::read( 'CG.cantons' ) ) {

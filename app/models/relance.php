@@ -251,16 +251,28 @@
             $matricule = Set::extract( $criteresrelance, 'Relance.matricule' );
             $nir = Set::extract( $criteresrelance, 'Relance.nir' );
 			$date_impression_relance = Set::extract( $criteresrelance, 'Relance.date_impression_relance' );
+            $hasContrat = Set::extract( $criteresrelance, 'Relance.hasContrat' );
+            $datederniercontrat = Set::extract( $criteresrelance, 'Relance.datederniercontrat' );
 
-			// Statut impression
-			if( !empty( $date_impression_relance ) && in_array( $date_impression_relance, array( 'I', 'N' ) ) ) {
-				if( $date_impression_relance == 'I' ) {
-					$conditions[] = 'Orientstruct.date_impression_relance IS NOT NULL';
+			/// Statut contrat engagement reciproque
+			if( !empty( $hasContrat ) && in_array( $hasContrat, array( 'O', 'N' ) ) ) {
+				if( $hasContrat == 'O' ) {
+					$conditions[] = 'Contratinsertion.date_saisi_ci IS NOT NULL';
 				}
 				else {
-					$conditions[] = 'Orientstruct.date_impression_relance IS NULL';
+					$conditions[] = 'Contratinsertion.date_saisi_ci IS NULL';
 				}
 			}
+
+            // Statut impression
+            if( !empty( $date_impression_relance ) && in_array( $date_impression_relance, array( 'I', 'N' ) ) ) {
+                if( $date_impression_relance == 'I' ) {
+                    $conditions[] = 'Orientstruct.date_impression_relance IS NOT NULL';
+                }
+                else {
+                    $conditions[] = 'Orientstruct.date_impression_relance IS NULL';
+                }
+            }
 
             if( !empty( $matricule) ) {
                 $conditions[] = "Dossier.matricule ILIKE '%".Sanitize::paranoid( $matricule )."%'";
@@ -287,6 +299,22 @@
 				}
 			}
 
+            ///Date de CER > à
+            if( isset( $criteresrelance['Relance']['datederniercontrat'] ) && !empty( $criteresrelance['Relance']['datederniercontrat'] ) ) {
+                $valid_date = ( valid_int( $criteresrelance['Relance']['datederniercontrat']['year'] ) && valid_int( $criteresrelance['Relance']['datederniercontrat']['month'] ) && valid_int( $criteresrelance['Relance']['datederniercontrat']['day'] ) );
+                if( $valid_date ) {
+                    $conditions[] = 'Contratinsertion.df_ci > \''.implode( '-', array( $criteresrelance['Relance']['datederniercontrat']['year'], $criteresrelance['Relance']['datederniercontrat']['month'], $criteresrelance['Relance']['datederniercontrat']['day'] ) ).'\'';
+                }
+            }
+
+            ///Date d'orientation
+            if( isset( $criteresrelance['Relance']['dateorientation'] ) && !empty( $criteresrelance['Relance']['dateorientation'] ) ) {
+                $valid_date = ( valid_int( $criteresrelance['Relance']['dateorientation']['year'] ) && valid_int( $criteresrelance['Relance']['dateorientation']['month'] ) && valid_int( $criteresrelance['Relance']['dateorientation']['day'] ) );
+                if( $valid_date ) {
+                    $conditions[] = 'Orientstruct.date_valid = \''.implode( '-', array( $criteresrelance['Relance']['dateorientation']['year'], $criteresrelance['Relance']['dateorientation']['month'], $criteresrelance['Relance']['dateorientation']['day'] ) ).'\'';
+                }
+            }
+
 			if( !empty( $compare ) && !empty( $nbjours ) ) {
 				$conditions[] = '( DATE( NOW() ) - "Orientstruct"."date_valid" ) '.$compare.' '.Sanitize::clean( $nbjours );
 			}
@@ -310,6 +338,8 @@
 					'"Dossier"."numdemrsa"',
 					'"Dossier"."dtdemrsa"',
 					'"Dossier"."matricule"',
+                    '"Contratinsertion"."date_saisi_ci"',
+                    '"Contratinsertion"."df_ci"',
 					'"Personne"."id"',
 					'"Personne"."nom"',
 					'"Personne"."prenom"',
@@ -329,6 +359,13 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Personne.id = Orientstruct.personne_id' )
 					),
+                    array(
+                        'table'      => 'contratsinsertion',
+                        'alias'      => 'Contratinsertion',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.id = Contratinsertion.personne_id' )
+                    ),
 					array(
 						'table'      => 'prestations',
 						'alias'      => 'Prestation',
