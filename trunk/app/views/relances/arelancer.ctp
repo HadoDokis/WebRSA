@@ -49,6 +49,13 @@
         <?php echo $form->input( 'Relance.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Relance.matricule', array( 'label' => 'N° CAF ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Relance.nir', array( 'label' => 'NIR ', 'type' => 'text' ) );?>
+        <?php
+            echo $form->input( 'Relance.hasContrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
+            //Si oui -> date de fin de contrat > à
+            echo $form->input( 'Relance.datederniercontrat', array( 'label' => 'Date de fin de contrat supérieure à ', 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ) );
+            //Si non -> date orientation
+            echo $form->input( 'Relance.dateorientation', array( 'label' => 'Date d\'orientation ', 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ) );
+        ?>
         <?php echo $form->input( 'Relance.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
         <?php
             if( Configure::read( 'CG.cantons' ) ) {
@@ -120,6 +127,10 @@
                                 <tr>
                                     <th>Code postal</th>
                                     <td>'.h( $orientstruct['Adresse']['codepos'] ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Date fin CER</th>
+                                    <td>'.h( $orientstruct['Contratinsertion']['df_ci'] ).'</td>
                                 </tr>
 
                             </tbody>

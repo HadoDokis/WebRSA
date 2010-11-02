@@ -283,7 +283,7 @@
 				$conditions[] = "Dossier.id IN ( SELECT detailsdroitsrsa.dossier_id FROM detailsdroitsrsa INNER JOIN detailscalculsdroitsrsa ON detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id WHERE detailscalculsdroitsrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%' )";
 			}
 
-			// Critères sur le dossier - date de demande
+			/// Critères sur le dossier - date de demande
 			if( isset( $params['Dossier']['dtdemrsa'] ) && !empty( $params['Dossier']['dtdemrsa'] ) ) {
 				$valid_from = ( valid_int( $params['Dossier']['dtdemrsa_from']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['day'] ) );
 				$valid_to = ( valid_int( $params['Dossier']['dtdemrsa_to']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_to']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_to']['day'] ) );
@@ -292,7 +292,7 @@
 				}
 			}
 
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			/// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
 			$filtersPersonne = array();
 			foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
 				if( isset( $params['Personne'][$criterePersonne] ) && !empty( $params['Personne'][$criterePersonne] ) ) {
@@ -301,7 +301,7 @@
 				}
 			}
 
-			// Critères sur une personne du foyer - date de naissance -> FIXME: seulement demandeur pour l'instant
+			/// Critères sur une personne du foyer - date de naissance -> FIXME: seulement demandeur pour l'instant
 			if( isset( $params['Personne']['dtnai'] ) && !empty( $params['Personne']['dtnai'] ) ) {
 				if( valid_int( $params['Personne']['dtnai']['year'] ) ) {
 					$conditions[] = 'EXTRACT(YEAR FROM Personne.dtnai) = '.$params['Personne']['dtnai']['year'];
