@@ -43,6 +43,8 @@
         <legend>Recherche par personne</legend>
         <?php echo $form->input( 'Relance.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Relance.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Relance.matricule', array( 'label' => 'N° CAF ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Relance.nir', array( 'label' => 'NIR ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Relance.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
         <?php
 			if( Configure::read( 'CG.cantons' ) ) {

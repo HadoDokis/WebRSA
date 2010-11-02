@@ -44,6 +44,19 @@
 ?>
 <?php echo $form->create( 'Relance', array( 'url'=> Router::url( null, true ) ) );?>
     <fieldset>
+        <legend>Recherche par personne</legend>
+        <?php echo $form->input( 'Relance.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Relance.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Relance.matricule', array( 'label' => 'N° CAF ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Relance.nir', array( 'label' => 'NIR ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Relance.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+        <?php
+            if( Configure::read( 'CG.cantons' ) ) {
+                echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+            }
+        ?>
+    </fieldset>
+    <fieldset>
         <?php echo $form->input( 'Relance.compare', array( 'label' => 'Opérateurs', 'type' => 'select', 'options' =>             $comparators = array( '<' => '<' ,'>' => '>','<=' => '<=', '>=' => '>=' ), 'empty' => true ) );?>
         <?php echo $form->input( 'Relance.nbjours', array( 'label' => 'Nombre de jours depuis l\'orientation', 'type' => 'text' ) );?>
     </fieldset>

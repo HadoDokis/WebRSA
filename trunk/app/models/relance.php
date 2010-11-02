@@ -248,6 +248,8 @@
 			$nbjours = Set::extract( $criteresrelance, 'Relance.nbjours' );
 			$compare = Set::extract( $criteresrelance, 'Relance.compare' );
 			$numcomptt = Set::extract( $criteresrelance, 'Relance.numcomptt' );
+            $matricule = Set::extract( $criteresrelance, 'Relance.matricule' );
+            $nir = Set::extract( $criteresrelance, 'Relance.nir' );
 			$date_impression_relance = Set::extract( $criteresrelance, 'Relance.date_impression_relance' );
 
 			// Statut impression
@@ -259,6 +261,10 @@
 					$conditions[] = 'Orientstruct.date_impression_relance IS NULL';
 				}
 			}
+
+            if( !empty( $matricule) ) {
+                $conditions[] = "Dossier.matricule ILIKE '%".Sanitize::paranoid( $matricule )."%'";
+            }
 
 			// Commune au sens INSEE
 			if( !empty( $numcomptt ) ) {
@@ -275,7 +281,7 @@
 
 			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
 			$filtersPersonne = array();
-			foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
+			foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
 				if( isset( $criteresrelance['Relance'][$criterePersonne] ) && !empty( $criteresrelance['Relance'][$criterePersonne] ) ) {
 					$conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( replace_accents( $criteresrelance['Relance'][$criterePersonne] ) ).'\'';
 				}
