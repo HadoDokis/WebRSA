@@ -2,6 +2,31 @@
 
 <?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+        $( 'RelanceHasContrat' ).observe( 'change', function( ) {
+			changeFields($( 'RelanceHasContrat' ).getValue());
+		} );
+		
+		changeFields($( 'RelanceHasContrat' ).getValue());
+	} );
+        
+    function changeFields(value) {
+    	if (value=='O') {
+    		$( 'datederniercontrat' ).show();
+    		$( 'dateorientation' ).hide();
+    	}
+    	else if (value=='N') {
+    		$( 'datederniercontrat' ).hide();
+    		$( 'dateorientation' ).show();
+    	}
+    	else {
+    		$( 'datederniercontrat' ).hide();
+    		$( 'dateorientation' ).hide();
+    	}
+    }
+</script>
+
 <?php if( isset( $orientsstructs ) ):?>
     <script type="text/javascript">
         document.observe("dom:loaded", function() {
@@ -19,10 +44,11 @@
                     true
                 );
             <?php endforeach;?>
+            
         });
+        
     </script>
 <?php endif;?>
-
 
 <?php
     if( isset( $orientsstructs ) ) {
@@ -52,9 +78,23 @@
         <?php
             echo $form->input( 'Relance.hasContrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
             //Si oui -> date de fin de contrat > à
-            echo $form->input( 'Relance.datederniercontrat', array( 'label' => 'Date de fin de contrat supérieure à ', 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ) );
+            echo $html->tag(
+            	'div',
+            	$form->input( 'Relance.datederniercontrat', array( 'label' => 'Date de fin de contrat supérieure à ', 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true, 'div' => false ) ),
+            	array(
+            		'class' => 'input date',
+            		'id' => 'datederniercontrat'
+            	)
+            );
             //Si non -> date orientation
-            echo $form->input( 'Relance.dateorientation', array( 'label' => 'Date d\'orientation ', 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ) );
+            echo $html->tag(
+            	'div',
+            	$form->input( 'Relance.dateorientation', array( 'label' => 'Date d\'orientation ', 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ) ),
+            	array(
+            		'class' => 'input date',
+            		'id' => 'dateorientation'
+            	)
+            );
         ?>
         <?php echo $form->input( 'Relance.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
         <?php

@@ -55,6 +55,8 @@
                     'recursive' => 0
                 )
             );
+            
+            $this->set(compact('personnesFoyer'));
 
             $roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
             foreach( $roles as $index => $role ) {

@@ -258,9 +258,25 @@
 			if( !empty( $hasContrat ) && in_array( $hasContrat, array( 'O', 'N' ) ) ) {
 				if( $hasContrat == 'O' ) {
 					$conditions[] = 'Contratinsertion.date_saisi_ci IS NOT NULL';
+
+				    ///Date de CER > à
+				    if( isset( $criteresrelance['Relance']['datederniercontrat'] ) && !empty( $criteresrelance['Relance']['datederniercontrat'] ) ) {
+				        $valid_date = ( valid_int( $criteresrelance['Relance']['datederniercontrat']['year'] ) && valid_int( $criteresrelance['Relance']['datederniercontrat']['month'] ) && valid_int( $criteresrelance['Relance']['datederniercontrat']['day'] ) );
+				        if( $valid_date ) {
+				            $conditions[] = 'Contratinsertion.df_ci > \''.implode( '-', array( $criteresrelance['Relance']['datederniercontrat']['year'], $criteresrelance['Relance']['datederniercontrat']['month'], $criteresrelance['Relance']['datederniercontrat']['day'] ) ).'\'';
+				        }
+				    }
 				}
 				else {
 					$conditions[] = 'Contratinsertion.date_saisi_ci IS NULL';
+					
+					///Date d'orientation
+				    if( isset( $criteresrelance['Relance']['dateorientation'] ) && !empty( $criteresrelance['Relance']['dateorientation'] ) ) {
+				        $valid_date = ( valid_int( $criteresrelance['Relance']['dateorientation']['year'] ) && valid_int( $criteresrelance['Relance']['dateorientation']['month'] ) && valid_int( $criteresrelance['Relance']['dateorientation']['day'] ) );
+				        if( $valid_date ) {
+				            $conditions[] = 'Orientstruct.date_valid = \''.implode( '-', array( $criteresrelance['Relance']['dateorientation']['year'], $criteresrelance['Relance']['dateorientation']['month'], $criteresrelance['Relance']['dateorientation']['day'] ) ).'\'';
+				        }
+				    }
 				}
 			}
 
@@ -298,22 +314,6 @@
 					$conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( replace_accents( $criteresrelance['Relance'][$criterePersonne] ) ).'\'';
 				}
 			}
-
-            ///Date de CER > à
-            if( isset( $criteresrelance['Relance']['datederniercontrat'] ) && !empty( $criteresrelance['Relance']['datederniercontrat'] ) ) {
-                $valid_date = ( valid_int( $criteresrelance['Relance']['datederniercontrat']['year'] ) && valid_int( $criteresrelance['Relance']['datederniercontrat']['month'] ) && valid_int( $criteresrelance['Relance']['datederniercontrat']['day'] ) );
-                if( $valid_date ) {
-                    $conditions[] = 'Contratinsertion.df_ci > \''.implode( '-', array( $criteresrelance['Relance']['datederniercontrat']['year'], $criteresrelance['Relance']['datederniercontrat']['month'], $criteresrelance['Relance']['datederniercontrat']['day'] ) ).'\'';
-                }
-            }
-
-            ///Date d'orientation
-            if( isset( $criteresrelance['Relance']['dateorientation'] ) && !empty( $criteresrelance['Relance']['dateorientation'] ) ) {
-                $valid_date = ( valid_int( $criteresrelance['Relance']['dateorientation']['year'] ) && valid_int( $criteresrelance['Relance']['dateorientation']['month'] ) && valid_int( $criteresrelance['Relance']['dateorientation']['day'] ) );
-                if( $valid_date ) {
-                    $conditions[] = 'Orientstruct.date_valid = \''.implode( '-', array( $criteresrelance['Relance']['dateorientation']['year'], $criteresrelance['Relance']['dateorientation']['month'], $criteresrelance['Relance']['dateorientation']['day'] ) ).'\'';
-                }
-            }
 
 			if( !empty( $compare ) && !empty( $nbjours ) ) {
 				$conditions[] = '( DATE( NOW() ) - "Orientstruct"."date_valid" ) '.$compare.' '.Sanitize::clean( $nbjours );

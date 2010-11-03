@@ -32,14 +32,28 @@
                 <tbody>
                 <?php foreach( $modescontact as $index => $modecontact ):?>
                     <?php
+                    	if (isset( $autorutitel[$modecontact['Modecontact']['autorutitel']] ) && $modecontact['Modecontact']['autorutitel'] != 'R' ) {
+	                    	$numtel = h( $modecontact['Modecontact']['numtel'] );
+	                    	$numposte = h( $modecontact['Modecontact']['numposte']);
+	                    }
+	                    else {
+	                    	$numtel = null;
+	                    	$numposte = null;
+	                    }
+	                    
+	                    if (isset( $autorutiadrelec[$modecontact['Modecontact']['autorutiadrelec']] ) && $modecontact['Modecontact']['autorutiadrelec'] != 'R' )
+	                    	$adrelec = h( $modecontact['Modecontact']['adrelec']);
+	                    else
+	                    	$adrelec = null;
+	                    
                         echo $html->tableCells(
                             array(
-                                h( $modecontact['Modecontact']['numtel']),
-                                h( $modecontact['Modecontact']['numposte']),
+                                $numtel,
+                                $numposte,
                                 h( isset( $nattel[$modecontact['Modecontact']['nattel']] ) ? $nattel[$modecontact['Modecontact']['nattel']] : null ),
                                 h( isset( $matetel[$modecontact['Modecontact']['matetel']] ) ? $matetel[$modecontact['Modecontact']['matetel']] : null ),
                                 h( isset( $autorutitel[$modecontact['Modecontact']['autorutitel']] ) ?  $autorutitel[$modecontact['Modecontact']['autorutitel']] : null ),
-                                h( $modecontact['Modecontact']['adrelec']),
+                                $adrelec,
                                 h( isset( $autorutiadrelec[$modecontact['Modecontact']['autorutiadrelec']] ) ? $autorutiadrelec[$modecontact['Modecontact']['autorutiadrelec']] : null ),
                                 $html->viewlink(
                                     'Voir le mode de contact',

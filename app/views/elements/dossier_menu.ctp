@@ -120,26 +120,54 @@
                                                 </li>
                                             <?php endif;?>-->
 
-                                            <?php if( $permissions->check( 'orientsstructs', 'index' ) ):?>
-                                                <li>
-                                                    <?php
-                                                        echo $html->link(
-                                                            h( 'Orientation' ),
-                                                            array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
-                                                        );
-                                                    ?>
-                                                </li>
-                                            <?php endif;?>
-                                            <?php if( $permissions->check( 'propospdos', 'index' ) ):?>
-                                                <li>
-                                                    <?php
-                                                        echo $html->link(
-                                                            'Consultation dossier PDO',
-                                                            array( 'controller' => 'propospdos', 'action' => 'index', $personne['id'] )
-                                                        );
-                                                    ?>
-                                                </li>
-                                            <?php endif;?>
+											<?php if (Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) { ?>
+
+		                                        <?php if( $permissions->check( 'propospdos', 'index' ) ):?>
+		                                            <li>
+		                                                <?php
+		                                                    echo $html->link(
+		                                                        'Consultation dossier PDO',
+		                                                        array( 'controller' => 'propospdos', 'action' => 'index', $personne['id'] )
+		                                                    );
+		                                                ?>
+		                                            </li>
+		                                        <?php endif;?>
+		                                        <?php if( $permissions->check( 'orientsstructs', 'index' ) ):?>
+		                                            <li>
+		                                                <?php
+		                                                    echo $html->link(
+		                                                        h( 'Orientation' ),
+		                                                        array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
+		                                                    );
+		                                                ?>
+		                                            </li>
+		                                        <?php endif;?>
+
+											<?php } else { ?>
+
+		                                        <?php if( $permissions->check( 'orientsstructs', 'index' ) ):?>
+		                                            <li>
+		                                                <?php
+		                                                    echo $html->link(
+		                                                        h( 'Orientation' ),
+		                                                        array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
+		                                                    );
+		                                                ?>
+		                                            </li>
+		                                        <?php endif;?>
+		                                        <?php if( $permissions->check( 'propospdos', 'index' ) ):?>
+		                                            <li>
+		                                                <?php
+		                                                    echo $html->link(
+		                                                        'Consultation dossier PDO',
+		                                                        array( 'controller' => 'propospdos', 'action' => 'index', $personne['id'] )
+		                                                    );
+		                                                ?>
+		                                            </li>
+		                                        <?php endif;?>
+
+											<?php } ?>
+
                                         </ul>
                                     </li>
                                 <?php endif;?>
