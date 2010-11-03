@@ -45,6 +45,7 @@
 			$date_saisi_ci = Set::extract( $criteresci, 'Filtre.date_saisi_ci' );
 			$decision_ci = Set::extract( $criteresci, 'Filtre.decision_ci' );
 			$datevalidation_ci = Set::extract( $criteresci, 'Filtre.datevalidation_ci' );
+			$df_ci = Set::extract( $criteresci, 'Filtre.df_ci' );
 			$locaadr = Set::extract( $criteresci, 'Filtre.locaadr' );
 			$numcomptt = Set::extract( $criteresci, 'Filtre.numcomptt' );
 			$nir = Set::extract( $criteresci, 'Filtre.nir' );
@@ -82,6 +83,12 @@
 			if( !empty( $datevalidation_ci ) && dateComplete( $criteresci, 'Filtre.datevalidation_ci' ) ) {
 				$datevalidation_ci = $datevalidation_ci['year'].'-'.$datevalidation_ci['month'].'-'.$datevalidation_ci['day'];
 				$conditions[] = 'Contratinsertion.datevalidation_ci = \''.$datevalidation_ci.'\'';
+			}
+
+			// ...
+			if( !empty( $df_ci ) && dateComplete( $criteresci, 'Filtre.df_ci' ) ) {
+				$df_ci = $df_ci['year'].'-'.$df_ci['month'].'-'.$df_ci['day'];
+				$conditions[] = 'Contratinsertion.df_ci = \''.$df_ci.'\'';
 			}
 
 			// Localité adresse

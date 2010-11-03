@@ -509,6 +509,8 @@
                 // Fin de la transaction
                 if( $saved ) {
                    $this->Dossier->commit();
+                   if (Configure::read( 'nom_form_ci_cg' ) == 'cg58' )
+                    $this->redirect(array('controller'=>'dossiers', 'action'=>'view', $this->Dossier->id));
                 }
                 // Annulation de la transaction
                 else {

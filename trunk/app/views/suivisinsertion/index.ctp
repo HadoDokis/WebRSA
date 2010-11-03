@@ -28,7 +28,14 @@
 
 
 <div class="with_treemenu">
-    <h1><?php echo $this->pageTitle;?></h1>
+    <h1><?php
+    	echo $this->pageTitle;
+    	foreach($personnesFoyer as $personne) {
+    		if ($personne['Prestation']['rolepers']=='DEM') {
+    			echo ' de '.$personne['Personne']['nom'].'&nbsp;'.$personne['Personne']['prenom'];
+    		}
+    	}
+    ?></h1>
 
     <div id="resumeDossier">
     <!-- Etape 1 : Affichage des instructions du Dossier (valable pour le Demandeur et le Conjoint) -->
