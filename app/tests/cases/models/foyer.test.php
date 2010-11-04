@@ -26,11 +26,25 @@
 		function testNbEnfants() {
 			// nombre d'enfant dans le foyer 1
 			$result = $this->Foyer->nbEnfants(1);
-			$this->assertEqual(1, $result);
+			$this->assertEqual(0, $result);
 
 			// nombre d'enfant dans le foyer 2
 			$result = $this->Foyer->nbEnfants(2);
 			$this->assertEqual(0, $result);
+
+			// nombre d'enfant dans le foyer inexistant (foyer_id == 42)
+			$result = $this->Foyer->nbEnfants(42);
+			$this->assertEqual(0, $result);
+
+			// nombre d'enfant dans le foyer inexistant (foyer_id == -42)
+			$result = $this->Foyer->nbEnfants(-42);
+			$this->assertNull($result);
+
+			// nombre d'enfant dans le foyer inexistant (foyer_id == string)
+			$result = $this->Foyer->nbEnfants("toto");
+			$this->assertNull($result);
+			///FIXME: Le test passe lorsque on passe une 'string' a la place d'un 'foyer_id' 
+			/// a la fonction nbEnfant (ligne 44-45).
 		}
 
 		/**
