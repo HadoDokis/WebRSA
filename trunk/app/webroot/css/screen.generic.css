@@ -25,7 +25,7 @@ p {
 
 /*---------------------------------------------------------------------------*/
 
-#pageCartouche * { font-size: 10px; }
+#pageCartouche * { font-size: 10px; color:black; }
 #pageCartouche thead { display: none; }
 
 #pageCartouche {

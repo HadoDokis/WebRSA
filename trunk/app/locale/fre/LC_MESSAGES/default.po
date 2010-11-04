@@ -815,6 +815,15 @@ msgstr "Fonction du référent"
 msgid "password"
 msgstr "Mot de passe"
 
+msgid "oldpassword"
+msgstr "Ancien mot de passe"
+
+msgid "newpassword"
+msgstr "Nouveau mot de passe"
+
+msgid "confnewpassword"
+msgstr "Confirmation du nouveau mot de passe"
+
 msgid "type_voie"
 msgstr "Type de voie"
 

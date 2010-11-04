@@ -177,7 +177,7 @@
         ?>
     } );
 </script>
-
+<?php debug($personne); ?>
 <fieldset>
     <table class="wide noborder">
         <tr>

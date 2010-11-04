@@ -72,6 +72,16 @@
 					'message' => 'Veuillez saisir une valeur positive.',
 					'allowEmpty' => true
 				)
+			),
+			'datedemandeapre' => array(
+				'rule' => 'date',
+				'message' => 'Veuillez vérifier le format de la date.',
+				'allowEmpty' => true
+			),
+			'dateentreeemploi' => array(
+				'rule' => 'date',
+				'message' => 'Veuillez vérifier le format de la date.',
+				'allowEmpty' => true
 			)
 		);
 
