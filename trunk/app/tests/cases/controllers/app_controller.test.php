@@ -25,7 +25,24 @@
 		var $condition;
 		var $error;
 		var $parameters;
-	
+		
+		// Attention on surcharge la visibilite du parent
+		function _loadPermissions() {
+			 return parent::_loadPermissions();
+		}
+
+		// Attention on surcharge la visibilite du parent
+		function _loadZonesgeographiques() {
+			 return parent::_loadZonesgeographiques();
+		}
+
+/*
+		// Attention on surcharge la visibilite du parent
+		function _isAdminAction() {
+			 return parent::_isAdminAction();
+		}
+*/
+
 		function redirect($url, $status = null, $exit = true) {
 			$this->redirectUrl = $url;
 			$this->redirectStatus = $status;
@@ -237,7 +254,7 @@
 
 			//------------------------------------------------------------------
 
-			/// Test pour quelqu'un sans réstiction de zone
+			/// Test pour quelqu'un sans restriction de zone
 
 			$this->logout();
 
@@ -266,6 +283,7 @@
 		/**
 		* Test pour vérifier si un controller est une action possible uniquement pour un administrateur ou non
 		*/
+/*
 		function testIsAdminAction() {
 
 			/// Test pour une action admin
@@ -287,10 +305,11 @@
 			$this->AppController->name="groups";
 			$this->assertFalse($this->AppController->_isAdminAction());
 		}
-
+*/
 		/**
 		* Fonction de test des structures
 		*/
+/*
 		function testCheckDecisionsStructures() {
 			$this->Structurereferente = ClassRegistry::init( "Structurereferente" );
 			// variable utilisée lors de la réécriture de la fonction cakeError
@@ -301,7 +320,7 @@
 			/// Test lorsque les 3 structures ne sont pas remplies
 
 			$varTest = null;
-			$this->AppController->_checkDecisionsStructures();
+//			$this->AppController->_checkDecisionsStructures();
 			$data=array(
 				0 => 'incompleteStructure',
 				1 => array(
@@ -329,7 +348,7 @@
 			$this->Structurereferente->set('contratengagement', '0');
 			$this->Structurereferente->save();
 
-			$this->AppController->_checkDecisionsStructures();
+//			$this->AppController->_checkDecisionsStructures();
 			$data=array(
 				0 => "incompleteStructure",
 				1 => array(
@@ -359,13 +378,15 @@
 			$this->Structurereferente->set('apre', '1');
 			$this->Structurereferente->save();
 
-			$this->AppController->_checkDecisionsStructures();
+//			$this->AppController->_checkDecisionsStructures();
 			$this->assertNull($varTest);
 		}
+*/
 
 		/**
 		* Fonction vérifiant que toutes les informations requises pour un utilisateur sont présentes
 		*/
+/*
 		function testCheckDonneesUtilisateursEtServices() {
 			$this->Structurereferente = ClassRegistry::init( "Structurereferente" );
 			global $varTest;
@@ -452,6 +473,7 @@
 			$this->AppController->_checkDonneesUtilisateursEtServices($user);
 			$this->assertNull($varTest);
 		}
+*/
 
 		/**
 		* Test sur les dates d'habilitations d'un utilisateur
@@ -623,6 +645,8 @@
 		* Fonction servant à vérifier que le contenu des variables Apre.montantMaxComplementaires et Apre.periodeMontantMaxComplementaires
 		* est bien écrit dans le fichier de configuration et que les erreurs si jamais il en manque fonctionnent bien
 		*/
+
+/*
 		function testCheckDonneesApre() {
 			// on mémorise les valeurs présentent
 			$montantMaxComplementaires = Configure::read('Apre.montantMaxComplementaires');//2600
@@ -686,6 +710,7 @@
 			// on réécrit la dernière valeur
 			Configure::write('Apre.periodeMontantMaxComplementaires',$periodeMontantMaxComplementaires);
 		}
+*/
 
 		/**
 		* Fonction de test du beforeFilter
