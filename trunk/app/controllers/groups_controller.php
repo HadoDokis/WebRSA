@@ -125,8 +125,6 @@
 					);
 
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-debug(byteSize( memory_get_peak_usage( false ) ));
-die();
                     $this->redirect( array( 'controller' => 'groups', 'action' => 'index' ) );
                 }
                 else {
