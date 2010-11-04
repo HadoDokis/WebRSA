@@ -408,7 +408,7 @@
                     echo $xform->input( 'Formqualif.modevalidation', array( 'domain' => 'apre' ) );
                     echo $xform->input( 'Formqualif.coutform', array( 'required' => true, 'domain' => 'apre' ) );
                     echo $xform->input( 'Formqualif.cofinanceurs', array( 'domain' => 'apre' ) );
-                    echo $xform->input( 'Formqualif.montantaide', array( 'required' => true, 'domain' => 'apre' ) );;
+                    echo $xform->input( 'Formqualif.montantaide', array( 'required' => true, 'domain' => 'apre' ) );
                 ?>
                 <?php
                     $selected = Set::extract( $this->data, '/Formqualif/Pieceformqualif/id' );

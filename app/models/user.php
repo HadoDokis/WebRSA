@@ -38,6 +38,18 @@
 					'message' => 'Champ obligatoire'
 				)
 			),
+			'newpasswd' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'confnewpasswd' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
 			'group_id' => array(
 				array(
 					'rule' => 'notEmpty',
@@ -227,5 +239,15 @@
 			debug( $this->data );
 			die();
 		}
+
+		function validatesPassword($data) {
+			return ((!empty($data['User']['newpasswd'])) && (!empty($data['User']['confnewpasswd'])) && ($data['User']['newpasswd']==$data['User']['confnewpasswd']));
+		}
+	
+		function validOldPassword($data) {
+			$oldPass = $this->find('first',array('conditions'=>array('id'=>$data['User']['id']),'fields'=>array('password'),'recursive'=>-1));
+			return (Security::hash($data['User']['passwd'], null, true)==$oldPass['User']['password']);
+		}
+
 	}
 ?>

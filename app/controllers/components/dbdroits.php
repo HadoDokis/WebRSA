@@ -143,7 +143,7 @@ function majActions() {
 	$acosMaj = array();
 
 	// Liste des aco en base
-	$acos = $this->Acl->Aco->find('all', array('fields'=>array('id', 'alias', 'parent_id')));
+	$acos = $this->Acl->Aco->find('all', array('fields'=>array('id', 'alias', 'parent_id'), 'recursive'=>-1));
 	foreach ($acos as $aco) {
 		// Recherche de l'alias du parent
 		if (!empty($aco['Aco']['parent_id']))
@@ -200,7 +200,7 @@ function litCruDroits($cru=null) {
 	$listeMca = $this->Menu->listeAliasMenuControlleur();
 
 	foreach($listeMca as $mca) {
-		$droit = $this->Acl->Aco->find('count', array('conditions'=>array('alias'=>$mca['alias'])));
+		$droit = $this->Acl->Aco->find('count', array('conditions'=>array('alias'=>$mca['alias']), 'recursive'=>-1));
 		//debug($mca['alias']);
 		//debug($droit);
 		if(!empty($droit))

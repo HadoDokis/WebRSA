@@ -377,5 +377,27 @@
 				$this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
 			}
 		}
+		
+		/**
+		 *
+		 */
+		 
+		public function changepass() {
+			if (!empty($this->data)) {
+				if (($this->User->validatesPassword($this->data)) && ($this->User->validOldPassword($this->data))) {
+					$this->User->id = $this->Session->read('Auth.User.id');
+					if ($this->User->saveField('password', Security::hash($this->data['User']['confnewpasswd'], null, true))) {
+						$this->Session->setFlash('Votre mot de passe a bien été modifié', 'flash/success');
+						$this->redirect('/');
+					}
+					else
+						$this->Session->setFlash('Erreur lors de la saisie des mots de passe.', 'flash/error');
+				}
+				else
+					$this->Session->setFlash('Erreur lors de la saisie des mots de passe.', 'flash/error');
+			}
+			else
+				$this->data['User']['id']=$this->Session->read('Auth.User.id');
+		}
 	}
 ?>
