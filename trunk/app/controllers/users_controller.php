@@ -324,9 +324,9 @@
 			}
 			else {
 				$this->data = $userDb;
+				$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Utilisateur','foreign_key'=>$user_id));
 			}
 			$this->set('listeCtrlAction', $this->Menu->menuCtrlActionAffichage());
-			$this->data['Droits'] = $this->Dbdroits->litCruDroits(array('model'=>'Utilisateur','foreign_key'=>$user_id));
 			$this->render( $this->action, null, 'add_edit' );
 		}
 

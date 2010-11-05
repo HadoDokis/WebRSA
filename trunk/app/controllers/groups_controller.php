@@ -80,44 +80,44 @@
             if( !empty( $this->data ) ) {
             	$group=$this->Group->read(null,$group_id);
                 if( $this->Group->saveAll( $this->data ) ) {
-					$new_droit=array();
-                	if ($group['Group']['parent_id']==0) {
-						$new_droit = Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Group', 'foreign_key'=>$group_id)));
-			        	$this->Dbdroits->MajCruDroits(
-							array('model'=>'Group','foreign_key'=>$group_id,'alias'=>$this->data['Group']['name']),
-							null,
-							$new_droit
-						);
-                	}
-                	elseif ($group['Group']['parent_id']!=$this->data['Group']['parent_id']) {
+			$new_droit=array();
+			if ($group['Group']['parent_id']!=$this->data['Group']['parent_id']) {
 		            	$new_droit = Set::diff(
-							$this->Dbdroits->litCruDroits(
-								array(
-									'model'=>'Group',
-									'foreign_key'=>$this->data['Group']['parent_id']
-								)
-							),
-							$this->Dbdroits->litCruDroits(
-								array(
-									'model'=>'Group',
-									'foreign_key'=>$group_id
-								)
-							)
-						);
-						$this->Dbdroits->MajCruDroits(
-							array('model'=>'Group','foreign_key'=>$group_id,'alias'=>$this->data['Group']['name']),
-							array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']),
-							$new_droit
-						);
+					$this->Dbdroits->litCruDroits(
+						array(
+							'model'=>'Group',
+							'foreign_key'=>$this->data['Group']['parent_id']
+						)
+					),
+					$this->Dbdroits->litCruDroits(
+						array(
+							'model'=>'Group',
+							'foreign_key'=>$group_id
+						)
+					)
+				);
+				$this->Dbdroits->MajCruDroits(
+					array('model'=>'Group','foreign_key'=>$group_id,'alias'=>$this->data['Group']['name']),
+					array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']),
+					$new_droit
+				);
                 	}
-		        	else {
-						$new_droit = Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Group', 'foreign_key'=>$group_id)));
-			        	$this->Dbdroits->MajCruDroits(
-							array('model'=>'Group','foreign_key'=>$group_id,'alias'=>$this->data['Group']['name']),
-							array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']),
-							$new_droit
-						);
-					}
+                	elseif ($this->data['Group']['parent_id']==0) {
+				$new_droit = Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Group', 'foreign_key'=>$group_id)));
+			        $this->Dbdroits->MajCruDroits(
+					array('model'=>'Group','foreign_key'=>$group_id,'alias'=>$this->data['Group']['name']),
+					null,
+					$new_droit
+				);
+                	}
+		        else {
+				$new_droit = Set::diff($this->data['Droits'],$this->Dbdroits->litCruDroits(array('model'=>'Group', 'foreign_key'=>$group_id)));
+			       	$this->Dbdroits->MajCruDroits(
+					array('model'=>'Group','foreign_key'=>$group_id,'alias'=>$this->data['Group']['name']),
+					array('model'=>'Group','foreign_key'=>$this->data['Group']['parent_id']),
+					$new_droit
+				);
+			}
 
 					$this->Dbdroits->restreintCruEnfantsDroits(
 						array('model'=>'Group','foreign_key'=>$group_id),
