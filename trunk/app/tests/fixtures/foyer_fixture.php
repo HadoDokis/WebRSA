@@ -14,6 +14,8 @@
 				'mtvallocterr' => null,
 				'mtvalloclog' => null,
 				'contefichliairsa' => null,
+				'mtestrsa' => null,
+				'raisoctieelectdom' => null,
 			),
 			array(
 				'id' => '2',
@@ -24,6 +26,8 @@
 				'mtvallocterr' => null,
 				'mtvalloclog' => null,
 				'contefichliairsa' => null,
+				'mtestrsa' => null,
+				'raisoctieelectdom' => null,
 			),
 			array(
 				'id' => '3',
@@ -34,6 +38,8 @@
 				'mtvallocterr' => null,
 				'mtvalloclog' => null,
 				'contefichliairsa' => null,
+				'mtestrsa' => null,
+				'raisoctieelectdom' => null,
 			),
 			array(
 				'id' => '4',
@@ -44,6 +50,8 @@
 				'mtvallocterr' => null,
 				'mtvalloclog' => null,
 				'contefichliairsa' => null,
+				'mtestrsa' => null,
+				'raisoctieelectdom' => null,
 			),
 			array(
 				'id' => '5',
@@ -54,6 +62,8 @@
 				'mtvallocterr' => null,
 				'mtvalloclog' => null,
 				'contefichliairsa' => null,
+				'mtestrsa' => null,
+				'raisoctieelectdom' => null,
 			),
 		 );
 	}
