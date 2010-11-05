@@ -26,21 +26,21 @@
 		function testNbEnfants() {
 			// nombre d'enfant dans le foyer 1
 			$result = $this->Foyer->nbEnfants(1);
-			$this->assertEqual(0, $result);
+			$this->assertEqual(1, $result);
 
 			// nombre d'enfant dans le foyer 2
 			$result = $this->Foyer->nbEnfants(2);
 			$this->assertEqual(0, $result);
 
-			// nombre d'enfant dans le foyer inexistant (foyer_id == 42)
+			// nombre d'enfant dans un foyer inexistant (foyer_id == 42)
 			$result = $this->Foyer->nbEnfants(42);
 			$this->assertEqual(0, $result);
 
-			// nombre d'enfant dans le foyer inexistant (foyer_id == -42)
+			// nombre d'enfant dans un foyer inexistant (foyer_id == -42)
 			$result = $this->Foyer->nbEnfants(-42);
-			$this->assertNull($result);
+			$this->assertEqual(0, $result);
 
-			// nombre d'enfant dans le foyer inexistant (foyer_id == string)
+			// nombre d'enfant dans un foyer inexistant (foyer_id == string)
 			$result = $this->Foyer->nbEnfants("toto");
 			$this->assertNull($result);
 			///FIXME: Le test passe lorsque on passe une 'string' a la place d'un 'foyer_id' 
@@ -50,6 +50,7 @@
 		/**
 		* Test de la fonction montantForfaitaire
 		*/
+
 		function testMontantForfaitaire() {
 			// test pour le foyer 1
 			$result = $this->Foyer->montantForfaitaire(1);
@@ -75,6 +76,14 @@
 			// test pour le foyer 666 (inexistant)
 			//$result = $this->Foyer->montantForfaitaire(666);
 			//$this->assertFalse($result);
+
+			// test avec un foyer_id incoherent (-42)
+			//$result = $this->Foyer->montantForfaitaire(-42);
+			//$this->assertFalse($result);
+
+			// test avec un foyer_id incoherent ("toto")
+			//$result = $this->Foyer->montantForfaitaire("toto");
+			//$this->assertFalse($result);			
 		}
 
 		/**
