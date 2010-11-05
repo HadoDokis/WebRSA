@@ -8,7 +8,7 @@
 	class ActionTestCase extends CakeAppModelTestCase {
 
 		function testGrouplist() {
-			$expected=array(
+			$expected = array(
     			0 => array(
 					'1P' => 'Soutien, suivi social, accompagnement personnel',
 					'1F' => 'Soutien, suivi social, accompagnement familial',
@@ -46,8 +46,7 @@
 				)
 			);
 			$this->assertEqual($expected,$this->Action->grouplist());
-
-			$expected=array(
+			$expected = array(
 				0 => array(
 					'02' => '02 - Aide au retour d\'enfants placés',
 					'04' => 'Aide pour la garde des enfants',
