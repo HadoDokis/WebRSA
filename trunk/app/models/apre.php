@@ -38,6 +38,10 @@
 		);
 
 		public $validate = array(
+			'secteurprofessionnel' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			),
 			'typedemandeapre' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
