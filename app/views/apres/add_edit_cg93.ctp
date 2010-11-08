@@ -1,4 +1,5 @@
 <?php
+//debug($this->validationErrors);
     echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
     $this->modelClass = $this->params['models'][0];
 
@@ -16,8 +17,7 @@
     function radioApre( $view, $path, $value, $label ) {
         $name = 'data['.implode( '][', explode( '.', $path ) ).']';
         $notEmptyValues = Set::filter( Set::classicExtract( $view->data, $value ) );
-		$valueRadioChecked = ( (isset($view->data['Apre']['Natureaide'])) ? $view->data['Apre']['Natureaide'] : null );
-        $checked = ( ( !empty( $notEmptyValues ) || ( $valueRadioChecked == $value ) ) ? 'checked="checked"' : '' );
+        $checked = ( ( !empty( $notEmptyValues ) ) ? 'checked="checked"' : '' );
         return "<label><input type=\"radio\" name=\"{$name}\" value=\"{$value}\" {$checked} />{$label}</label>";
     }
 ?>
@@ -258,8 +258,8 @@
                     <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.projetprofessionnel', array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
                 </tr>
                 <tr>
-                    <td class="mediumsize noborder"><strong>Secteur professionnel en lien avec la demande *</strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  'Apre.secteurprofessionnel', array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
+                    <td class="mediumsize noborder"><strong><?php echo $xform->_label( 'Secteur professionnel en lien avec la demande', array('required'=>true) ); ?></strong></td>
+                    <td class="mediumsize noborder"><?php echo $xform->input( 'Apre.secteurprofessionnel', array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
                 </tr>
             </table>
         </fieldset>
