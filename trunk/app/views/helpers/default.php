@@ -80,6 +80,14 @@
                     $icon = 'icons/tick'.$iconFileSuffix.'.png';
                     $text = __( 'Périodes d\'immersion', true );
                     break;
+                case 'ficheanalyse':
+                    $icon = 'icons/table'.$iconFileSuffix.'.png';
+                    $text = __( 'Fiche d\'analyse', true );
+                    break;
+                case 'fichecalcul':
+                    $icon = 'icons/table'.$iconFileSuffix.'.png';
+                    $text = __( 'Fiche de calcul', true );
+                    break;
                 default:
                     $this->cakeError( 'error500' ); // FIXME -> proprement --> $this->cakeError( 'wrongParameter' )
             }
