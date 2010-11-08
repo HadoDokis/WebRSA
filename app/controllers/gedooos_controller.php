@@ -157,6 +157,8 @@
             $rolepers = $this->Option->rolepers();
             $this->set( 'rolepers', $rolepers );
 
+            $forme_ci = array( 'S' => 'Simple', 'C' => 'Complexe' );
+
             $act = $this->Option->act();
             $this->set( 'act', $act );
             $soclmaj = $this->Option->natpfcre( 'soclmaj' );
@@ -171,7 +173,7 @@
             $this->set( 'avisraison_ci', $avisraison_ci );
             $options = $this->Contratinsertion->allEnumLists();
             $this->set( 'options', $options );
-
+// debug($options);
 
 
             $contratinsertion = $this->Contratinsertion->find(
@@ -182,6 +184,11 @@
                     )
                 )
             );
+            ///Ajout pour distinguer un CER simple (particulier) d'un CER complexe
+            $modele = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci  );
+            ///Fin ajout
+
+
             //////////////////////////////////////////////////////////////////////////
             $this->Adressefoyer->bindModel(
                 array(
@@ -477,7 +484,8 @@
                 $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
             }
 
-//             $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
+            ///Ajout pour le type de modèle de document
+//             $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion_'.$modele.'.odt' );
         }
 
         function orientstruct( $orientstruct_id = null ) {
