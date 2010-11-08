@@ -406,19 +406,23 @@
             $nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
             $this->set( 'nbEnfants', $nbEnfants );
 
-
             if( !empty( $this->data ) ){
+//debug($this->data);
                 // FIXME: pourquoi doit-on faire ceci ?
                 $this->Apre->bindModel( array( 'hasOne' => array( 'Formqualif', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' ) ), false );
 
                 ///Mise en place lors de la sauvegarde du statut de l'APRE à Complémentaire
                 $this->data['Apre']['statutapre'] = 'C';
+            	
+            	$saveApre = array();
+		        $saveApre['Apre'] = $this->data['Apre'];
+		        $saveApre['Dsp'] = $this->data['Dsp'];
+		        $saveApre['Pieceapre'] = $this->data['Pieceapre'];
 
-
-                if( $this->Apre->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-// debug( $this->data );
-                    $saved = $this->Apre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
-
+                if( $this->Apre->saveAll( $saveApre, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+//debug( $this->data );
+                    $saved = $this->Apre->saveAll( $saveApre, array( 'validate' => 'first', 'atomic' => false ) );
+                    
                     if( $saved ) {
                         $tablesLiees = array(
                             'Formqualif' => 'Pieceformqualif',
@@ -432,12 +436,10 @@
                         );
                         foreach( $tablesLiees as $model => $piecesLiees ) {
                             if( !empty( $this->data[$piecesLiees] ) ) {
-                                $linkedData = array(
-                                    $model => array(
-                                        'id' => $this->Apre->{$model}->id
-                                    ),
-                                    $piecesLiees => $this->data[$piecesLiees]
-                                );
+                            	$linkedData[$model] = $this->data[$model];
+                            	$linkedData[$model]['apre_id'] = $this->Apre->id;
+                            	$linkedData[$piecesLiees] = $this->data[$piecesLiees];
+                            	
                                 $saved = $this->Apre->{$model}->save( $linkedData ) && $saved;
                             }
                         }
@@ -448,7 +450,7 @@
                         $this->Jetons->release( $dossier_id );
                         $this->Apre->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-//                         debug( $this->data );
+//                        debug( $this->data );
                         $this->redirect( array(  'controller' => 'apres','action' => 'index', $personne_id ) );
                     }
                     else {
