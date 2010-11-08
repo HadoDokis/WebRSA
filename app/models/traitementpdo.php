@@ -16,19 +16,29 @@
 
 		public $validate = array(
 			'propopdo_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-				),
+				'rule' => 'numeric',
+				'message' => 'Champ obligatoire',
+				'allowEmpty' => false
 			),
 			'descriptionpdo_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-				),
+				'rule' => 'numeric',
+				'message' => 'Champ obligatoire',
+				'allowEmpty' => false
 			),
 			'traitementtypepdo_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-				),
+				'rule' => 'numeric',
+				'message' => 'Champ obligatoire',
+				'allowEmpty' => false
+			),
+			'datereception' => array(
+				'rule' => 'date',
+				'message' => 'Veuillez entrer une date valide.',
+				'allowEmpty' => true
+			),
+			'datedepart' => array(
+				'rule' => 'date',
+				'message' => 'Veuillez entrer une date valide.',
+				'allowEmpty' => true
 			),
 		);
 

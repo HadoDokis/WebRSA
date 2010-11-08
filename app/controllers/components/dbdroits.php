@@ -168,7 +168,7 @@ function majActions() {
 		}
 		if (!$trouve) $acosASupprimer[] = array('id'=>$acoEnBase['id'], 'iTab'=>$i);
 	}
-	foreach($acosASupprimer as $acoASupprimer)	{
+	foreach($acosASupprimer as $acoASupprimer) {
 			$this->Acl->Aco->delete($acoASupprimer['id'], true);
 			unset($acosEnBase[$acoASupprimer['iTab']]);
 	}

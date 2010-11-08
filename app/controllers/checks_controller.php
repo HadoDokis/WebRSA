@@ -3,10 +3,13 @@
 	class ChecksController extends AppController {
 
 		public $name = 'Checks';
+		
+		public $components = array( 'Dbdroits' );
 
 		public $uses = array( 'Structurereferente', 'User' );
 
 		public function index() {
+			$this->Dbdroits->majActions();
 			$this->set('webrsaIncExist', $this->_checkWebrsaInc( array( 'Cohorte.dossierTmpPdfs' ) ) );
 			$this->set('pdftkInstalled', $this->_checkMissingBinaries( array( 'pdftk' ) ) );
 			$this->_checkDecisionsStructures();
