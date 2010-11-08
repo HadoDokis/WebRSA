@@ -456,6 +456,10 @@
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                     }
                 }
+                else {
+                    $this->Apre->rollback();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                }
             }
             else{
                 if( $this->action == 'edit' ) {
