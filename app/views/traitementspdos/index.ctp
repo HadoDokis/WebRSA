@@ -22,13 +22,15 @@
                 'Traitementpdo.datereception',
                 'Traitementpdo.datedepart',
                 'Traitementpdo.traitementtypepdo_id',
-                'Traitementpdo.hascourrier',
-                'Traitementpdo.hasrevenu',
-                'Traitementpdo.hasficheanalyse',
-                'Traitementpdo.haspiecejointe'
+//                 'Traitementpdo.hascourrier',
+//                 'Traitementpdo.hasrevenu',
+//                 'Traitementpdo.hasficheanalyse',
+//                 'Traitementpdo.haspiecejointe'
             ),
             array(
                 'actions' => array(
+                    'Traitementpdo.fichecalcul' => array( 'controller' => '#' ),
+                    'Traitementpdo.ficheanalyse' => array( 'controller' => '#' ),
                     'Traitementpdo.edit',
                     'Traitementpdo.print' => array( 'controller' => 'traitementspdos', 'action' => 'gedooo' ),
                     'Traitementpdo.delete'
