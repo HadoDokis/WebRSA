@@ -167,21 +167,6 @@
 			$log = array();
 
 			$aco =& $this->Acl->Aco;
-			$root = $aco->node( '/' );
-			if (!$root) {
-				$aco->create(
-					array(
-						'parent_id' => 0,
-						'model' => null,
-						'alias' => '/'
-					)
-				);
-				$root = $aco->save();
-				$root['Aco']['id'] = $aco->id;
-				$log[] = 'Created Aco node for controllers';
-			} else {
-				$root = $root[0];
-			}
 
 			App::import('Core', 'File');
 			$Controllers = Configure::listObjects('controller');
@@ -228,7 +213,7 @@
 					} else {
 						$aco->create(
 							array(
-								'parent_id' => ( !empty( $root['Aco']['id'] ) ? $root['Aco']['id'] : 0 ),
+								'parent_id' => 0,
 								'model' => null,
 								'alias' => 'Module:'.$ctrlName
 							)

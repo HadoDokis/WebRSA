@@ -45,6 +45,16 @@
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			),
+			'datedecisionpdo' => array(
+				'rule' => 'date',
+				'message' => 'Veuillez entrer une date valide.',
+				'allowEmpty' => true
+			),
+			'datereceptionpdo' => array(
+				'rule' => 'date',
+				'message' => 'Veuillez entrer une date valide.',
+				'allowEmpty' => true
+			),
 	//             'validationdecision' => array(
 	//                 'rule' => array( 'allEmpty', 'isvalidation' ),
 	//                 'message' => 'Si validation, choisir une valeur'

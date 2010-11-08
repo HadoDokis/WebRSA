@@ -367,6 +367,9 @@
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                     }
                 }
+                else {
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                }
             }
             //Affichage des données
             else {
