@@ -18,7 +18,7 @@
         observeDisableFieldsetOnCheckbox( 'PropopdoSuivi', $( 'PropopdoDaterevisionDay' ).up( 'fieldset' ), false );
 //         observeDisableFieldsetOnCheckbox( 'PropopdoAutres', $( 'PropopdoCommentairepdo' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnCheckbox( 'PropopdoIsvalidation', $( 'PropopdoDatevalidationdecisionDay' ).up( 'fieldset' ), false );
-        observeDisableFieldsetOnCheckbox( 'PropopdoIsdecisionop', $( 'PropopdoObservationop' ).up( 'fieldset' ), false );
+//         observeDisableFieldsetOnCheckbox( 'PropopdoIsdecisionop', $( 'PropopdoObservationop' ).up( 'fieldset' ), false );
 
 
 //         observeDisableFieldsetOnCheckbox( 'PropopdoMotifpdo', $( 'PropopdoNonadmis' ).up( 'fieldset' ), false );
@@ -84,8 +84,8 @@
                             Set::extract( $this->data, 'Propopdo.typepdo_id' ),
                             Set::extract( $this->data, 'Propopdo.iscomplet' ),
                             Set::extract( $this->data, 'Propopdo.decisionpdo_id' ),
-                            Set::extract( $this->data, 'Propopdo.isvalidation' ),
-                            Set::extract( $this->data, 'Propopdo.isdecisionop' )
+                            Set::extract( $this->data, 'Propopdo.isvalidation' )/*,
+                            Set::extract( $this->data, 'Propopdo.isdecisionop' )*/
                         ),
                         true
                     )
@@ -348,9 +348,9 @@
 
     <fieldset id="Etatpdo4" class="invisible"></fieldset>
 
-    <fieldset>
+    <!-- <fieldset>
         <?php
-            echo $form->input( 'Propopdo.isdecisionop', array( 'label' => 'Décison de l\'OP', 'type' => 'checkbox' ) );
+            /*echo $form->input( 'Propopdo.isdecisionop', array( 'label' => 'Décison de l\'OP', 'type' => 'checkbox' ) );
         ?>
         <fieldset id="Decisionop" class="invisible">
         <?php
@@ -365,11 +365,11 @@
                     'options' => $options
                 )
             );
-            echo $ajax->observeField( 'PropopdoIsdecisionop', array( 'update' => 'Etatpdo5', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
+            echo $ajax->observeField( 'PropopdoIsdecisionop', array( 'update' => 'Etatpdo5', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) ); */
         ?>
         </fieldset>
     </fieldset>
-    <fieldset id="Etatpdo5" class="invisible"></fieldset>
+    <fieldset id="Etatpdo5" class="invisible"></fieldset> -->
 
 
     <fieldset>
