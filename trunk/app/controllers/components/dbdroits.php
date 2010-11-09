@@ -7,6 +7,7 @@
  *
 */
 class DbdroitsComponent extends Object
+//class DbdroitsComponent extends Component
 {
 	var $components = array('Acl', 'Menu');
 

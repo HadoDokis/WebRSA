@@ -1,6 +1,6 @@
 <?php
 
-    class ActionsController extends Appcontroller
+    class ActionsController extends AppController
     {
 
         var $name = 'Actions';
