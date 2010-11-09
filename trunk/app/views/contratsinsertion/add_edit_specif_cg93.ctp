@@ -2,7 +2,7 @@
     document.observe( "dom:loaded", function() {
         Event.observe( $( 'ActionCode' ), 'keyup', function() {
             var value = $F( 'ActionCode' );
-            if( value.length == 2 ) { // FIXME: in_array
+            if( value.length == 2 ) { //FIXME: in_array
                 $$( '#ContratinsertionEngagObject option').each( function ( option ) {
                     if( $( option ).value == value ) {
                         $( option ).selected = 'selected';
@@ -12,13 +12,13 @@
         } );
 
         //observeDisableFieldsOnBoolean( 'ContratinsertionActionsPrev', [ 'ContratinsertionObstaRenc' ], '1', false );
-        observeDisableFieldsOnRadioValue(
-            'testform',
-            'data[Contratinsertion][actions_prev]',
-            [ 'ContratinsertionObstaRenc' ],
-            'N',
-            true
-        );
+//        observeDisableFieldsOnRadioValue(
+//            'testform',
+//            'data[Contratinsertion][actions_prev]',
+//            [ 'ContratinsertionObstaRenc' ],
+//            'N',
+//            true
+//        );
 
         observeDisableFieldsOnValue( 'ContratinsertionNatContTrav', [ 'ContratinsertionDureeCdd' ], 'TCT3', false );
 
@@ -32,60 +32,74 @@
     } );
 </script>
 
-<fieldset>
-    <legend> CONTRATS D'INSERTION </legend>
-        <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __( 'dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );?>
-        <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => required( __( 'duree_engag', true ) ), 'type' => 'select', 'options' => $duree_engag_cg93, 'empty' => true )  ); ?>
-        <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true ) ) ;?>
-</fieldset>
-
 <fieldset >
     <legend> FORMATION ET EXPERIENCE </legend>
     <?php echo $form->input( 'Dsp.id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
     <?php echo $form->input( 'Dsp.personne_id', array( 'label' => false, 'div' => false, /*'value' => Set::classicExtract( $personne, 'Personne.id' ), */ 'type' => 'hidden' ) );?>
     <?php echo $form->input( 'Dsp.nivetu', array( 'label' => __d( 'dsp', 'Dsp.nivetu', true ), 'options' => $nivetus, 'empty' => true ) );?>
-    <?php echo $form->input( 'Contratinsertion.diplomes', array( 'label' => __( 'diplomes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
-    <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __( 'expr_prof', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
+    <?php echo $form->input( 'Dsp.nivdipmaxobt', array( 'label' => __d( 'dsp', 'Dsp.nivdipmaxobt', true ), 'options' => $nivdipmaxobt, 'empty' => true ) );?>
+    <?php echo $form->input( 'Dsp.annobtnivdipmax', array( 'label' => __d( 'dsp', 'Dsp.annobtnivdipmax', true ) )) ;?>    
+    <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __( 'expr_prof', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
     <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' =>  __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 </fieldset>
 <fieldset>
-    <legend> PARCOURS D'INSERTION ANTERIEUR </legend>
-        <?php
-            echo $widget->booleanRadio( 'Contratinsertion.actions_prev', array( 'legend' => required( __( 'actions_prev', true ) ) ) );
-        ?>
-
-        <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => __( 'obsta_renc', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
+    <legend> HISTORIQUE DU PARCOURS D'INSERTION </legend>
+        <h4>( les 5 derniers contrats du plus récent au plus ancien) </h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rang</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th>Service d'accompagnement (structure référente)</th>
+                    <th>Thématique du contrat</th>
+                    <th>Statut (validé, rejeté, ajourné, en attente)</th>
+                    <th>Motif</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                    foreach( $lastContrat as $key => $value)
+                    {
+                        echo '<tr>';
+                            echo $html->tag('td', $html->tag('strong',$value['Contratinsertion']['rg_ci']));
+                            echo $html->tag('td', date_short( $value['Contratinsertion']['dd_ci'] ) );
+                            echo $html->tag('td', date_short( $value['Contratinsertion']['df_ci'] ) );
+                            echo $html->tag('td', $value['Structurereferente']['lib_struc']);
+                            echo $html->tag('td', '?');
+                            echo $html->tag('td', value( $decision_ci, Set::extract( 'Contratinsertion.decision_ci', $value ) ));
+                            echo $html->tag('td', $value['Contratinsertion']['observ_ci']);
+                        echo '</tr>';
+                    }
+                ?>
+            </tbody>
+        </table>
 </fieldset>
 <fieldset>
-    <legend> PROJET ET ACTIONS D'INSERTION </legend>
-        <?php echo $form->input( 'Contratinsertion.objectifs_fixes', array( 'label' => __( 'objectifs_fixes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
-
-        <?php
-            echo $form->input( 'Action.id', array( 'type' => 'hidden' ) );
-            echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
-            echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __( 'engag_object', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  );
+    <legend> BILAN DU CONTRAT PRÉCÉDENT</legend>
+        <span>Le précédent contrat portait sur&nbsp;:&nbsp;</span>
+        <?php 
+            $value = isset($lastContrat[0]['Contratinsertion']['engag_object']) ? $lastContrat[0]['Contratinsertion']['engag_object'] : 'NC';
+            foreach($actions as $type => $action)
+            {
+                if(isset($action[$value]))
+                {
+                    $value = "{$type} / {$action[$value]}";
+                    break;
+                }       
+            }
+            echo $html->tag('span', $value);
+            echo $form->input( 'Ci.autre', array( 'label' => 'Si autre (préciser)', 'type'=>'text'));
         ?>
-        <?php
-            ///FIXME
-            $contratinsertion_id = Set::extract( $this->data, 'Actioninsertion.contratinsertion_id' );
-            if( $this->action == 'edit' && !empty( $contratinsertion_id ) ) :?>
-            <?php echo $form->input( 'Actioninsertion.contratinsertion_id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
-        <?php endif;?>
-        <?php
-            echo $form->input( 'Actioninsertion.dd_action', array( 'label' => __( 'dd_action', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  );
-            echo $form->input( 'Contratinsertion.commentaire_action', array( 'label' => __( 'commentaire_action', true ), 'type' => 'textarea', 'rows' => 3 )  );
-        ?>
-        <?php
-            echo $widget->booleanRadio( 'Contratinsertion.emp_trouv', array( 'legend' => required( __( 'emp_trouv', true ) )) );
-        ?>
-        Si oui, veuillez préciser :
-        <?php echo $form->input( 'Contratinsertion.sect_acti_emp', array( 'label' => required( __( 'sect_acti_emp', true ) ), 'type' => 'select', 'options' => $sect_acti_emp, 'empty' => true )  ); ?>
-        <?php echo $form->input( 'Contratinsertion.emp_occupe', array( 'label' => required( __( 'emp_occupe', true ) ), 'type' => 'select', 'options' => $emp_occupe, 'empty' => true )  ); ?>
-        <?php echo $form->input( 'Contratinsertion.duree_hebdo_emp', array( 'label' => required( __( 'duree_hebdo_emp', true ) ), 'type' => 'select', 'options' => $duree_hebdo_emp, 'empty' => true )  ); ?>
-        <?php echo $form->input( 'Contratinsertion.nat_cont_trav', array( 'label' => required( __( 'nat_cont_trav', true ) ), 'type' => 'select', 'options' => $nat_cont_trav, 'empty' => true )  ); ?>
-        <?php echo $form->input( 'Contratinsertion.duree_cdd', array( 'label' => required( __( 'duree_cdd', true ) ), 'type' => 'select', 'options' => $duree_cdd, 'empty' => true )  ); ?>
+        <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => 'Quel bilan faites vous des actions précisées dans le précédent contrat (les avancées et/ou les freins)  ? ', 'type' => 'textarea', 'rows' => 3)  ); ?>
 </fieldset>
-
+<fieldset>
+    <legend> PROJET DE CE NOUVEAU CONTRAT</legend>
+        <?php echo $form->input( 'Contratinsertion.objectifs_fixes', array( 'label' => __( 'objectifs_fixes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
+        <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __( 'dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );?>
+        <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => required( __( 'duree_engag', true ) ), 'type' => 'select', 'options' => $duree_engag_cg93, 'empty' => true )  ); ?>
+        <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true ) ) ;?>
+</fieldset>
 <fieldset>
         <?php echo $form->input( 'Contratinsertion.nature_projet', array( 'label' => required( __( 'nature_projet', true ) ), 'type' => 'textarea', 'rows' => 6)  ); ?>
         <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => required( __( 'lieu_saisi_ci', true ) ), 'type' => 'text', 'maxlength' => 50 )  ); ?><br />
