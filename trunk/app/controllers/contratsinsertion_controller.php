@@ -524,7 +524,7 @@
                     if( $contratinsertionDecisionCi == 'S' ) {
                         ///Validation si le contrat est simple (CG66)
                         $this->data['Contratinsertion']['decision_ci'] = 'V';
-                        $this->data['Contratinsertion']['datevalidation_ci'] = date( 'Y-m-d' );
+                        $this->data['Contratinsertion']['datevalidation_ci'] = $this->data['Contratinsertion']['date_saisi_ci'];
                     }
                 }
                 /// Validation
@@ -544,7 +544,10 @@
                 }*/
 
                 $dspStockees = $this->_getDsp( $personne_id );
-                $this->data['Dsp'] = Set::merge( $dspStockees['Dsp'], $this->data['Dsp'] );
+                $this->data['Dsp'] = Set::merge(
+                    isset( $dspStockees['Dsp'] ) ? $dspStockees['Dsp'] : array(),
+                    isset( $this->data['Dsp'] ) ? $this->data['Dsp'] : array()
+                );
 
 // debug($this->data);
                 ///FIXME
@@ -592,7 +595,7 @@
                         $this->Jetons->release( $dossier_id );
                         $this->Contratinsertion->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-//                         $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
+                        $this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
                     }
                     else {
                         $this->Contratinsertion->rollback();
