@@ -97,6 +97,8 @@
 			$this->assertEqual(1,$this->Apre->dossierId(1));
 			$this->assertEqual(3,$this->Apre->dossierId(2));
 			$this->assertNull($this->Apre->dossierId(666));
+			$this->assertNull($this->Apre->dossierId("toto"));
+			$this->assertNull($this->Apre->dossierId(-42));
 		}
 
 		function testDetails() {

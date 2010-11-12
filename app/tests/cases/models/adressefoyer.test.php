@@ -20,7 +20,7 @@
 			///FIXME
 			// Le fait de passer une string a la place d'un entier creer des exeptions
 		}
-/*
+		/*
 		function testSqDerniereRgadr01() {
 			$field = "toto";
 			$expected = " SELECT adressesfoyers.id FROM adressesfoyers WHERE adressesfoyers.foyer_id = " . $field . " AND 						adressesfoyers.rgadr = '01' ORDER BY adressesfoyers.dtemm DESC LIMIT 1 ";
@@ -41,6 +41,6 @@
 			$result = $this->Adressefoyer->sqlFoyerActuelUnique("couverture_de_code");
 			$this->assertEqual($expected, $result);			
 		}
-*/
+		*/
 	}
 ?>

@@ -18,6 +18,14 @@
 			// Foyer non existant
 			$result = $this->Foyer->dossierId(666);
 			$this->assertNull($result);
+
+			// foyer_id incoherent
+			$result = $this->Foyer->dossierId("toto");
+			$this->assertNull($result);
+
+			// foyer_id incoherent
+			$result = $this->Foyer->dossierId(-42);
+			$this->assertNull($result);
 		}
 
 		/**
@@ -74,16 +82,16 @@
 
 			///FIXME: renvoie vrai pour un foyer non existant c'est normal ???
 			// test pour le foyer 666 (inexistant)
-			//$result = $this->Foyer->montantForfaitaire(666);
-			//$this->assertFalse($result);
+			$result = $this->Foyer->montantForfaitaire(666);
+			$this->assertFalse($result);
 
 			// test avec un foyer_id incoherent (-42)
-			//$result = $this->Foyer->montantForfaitaire(-42);
-			//$this->assertFalse($result);
+			$result = $this->Foyer->montantForfaitaire(-42);
+			$this->assertFalse($result);
 
 			// test avec un foyer_id incoherent ("toto")
-			//$result = $this->Foyer->montantForfaitaire("toto");
-			//$this->assertFalse($result);			
+			$result = $this->Foyer->montantForfaitaire("toto");
+			$this->assertFalse($result);			
 		}
 
 		/**
