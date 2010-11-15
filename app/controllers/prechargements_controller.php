@@ -7,8 +7,8 @@
 		*
 		*/
 
-		public function beforeFilter() {
-		}
+// 		public function beforeFilter() {
+// 		}
 
 		/**
 		* Returns a list of all application models (including plugins)
@@ -50,28 +50,23 @@
 		*/
 
 		public function index() {
+			// Modèles
 			$initialized = array();
 			$uninitialized = array();
-			$missing = array();
-
-			$missing = $tables = $this->_listTables();
+			$tables = $missing = $this->_listTables();
 
 			$models = $this->_getModels();
 			foreach( $models as $model ) {
 				App::import( 'Model', $model );
-
-				/*$reflection = new ReflectionClass( $model );
-				$attributs = array_keys( $reflection->getdefaultProperties() );
-				debug( $attributs );*/
 
 				$init = true;
 				$attributes = get_class_vars( $model );
 				if( $attributes['useTable'] === false ) {
 					$init = false;
 				}
-				/*else if( !is_null( $attributes['useTable'] ) ) {
-					$init = false;
-				}*/
+// 				else if( !is_null( $attributes['useTable'] ) ) {
+// 					$init = false;
+// 				}
 				else if( $attributes['useDbConfig'] != 'default' ) {
 					$init = false;
 				}
@@ -91,6 +86,26 @@
 			}
 
 			$this->set( compact( 'initialized', 'uninitialized', 'missing' ) );
+
+			// Traductions
+			App::import( 'Core', 'Folder' );
+			$folder = new Folder();
+			$folder->cd( APP.'locale/fre/LC_MESSAGES/' );
+			$files = $folder->find('.+\.po$');
+			$domaines = array();
+
+			foreach( $files as $file ) {
+				$domain = preg_replace( '/\.po$/', '', $file );
+				if( $domain != 'default' ) {
+					__d( $domain, 'Foo::bar', true );
+				}
+				else {
+					__( 'January', true );
+				}
+				$domaines[] = $domain;
+			}
+
+			$this->set( compact( 'domaines' ) );
 		}
 	}
 ?>
