@@ -3,6 +3,6 @@
 	{
 		public $name = 'Recours';
 
-		public $usetable = array( 'Infofinanciere' );
+		public $useTable = 'infosfinancieres';
 	}
 ?>
