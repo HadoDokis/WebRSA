@@ -1,7 +1,7 @@
 <?php
 	class PrechargementsController extends AppController
 	{
-		public $uses = array();
+		public $uses = array( 'Connection' );
 
 		/**
 		*
@@ -17,6 +17,7 @@
 		* @access public
 		* @url http://variable3.com/blog/2010/05/list-all-the-models-and-plugins-of-a-cakephp-application/
 		*/
+
 		protected function _getModels() {
 			$models = Configure::listObjects( 'model' );
 			/*$plugins = Configure::listObjects('plugin');
@@ -34,6 +35,15 @@
 			return $models;
 		}
 
+		/**
+		*
+		*/
+
+		protected function _listTables() {
+			$tables = $this->Connection->query( 'SELECT table_name as name FROM INFORMATION_SCHEMA.tables WHERE table_schema = \'public\' ORDER BY name ASC;' );
+			return Set::extract( $tables, '{n}.0.name' );
+		}
+
 
 		/**
 		*
@@ -41,6 +51,10 @@
 
 		public function index() {
 			$initialized = array();
+			$uninitialized = array();
+			$missing = array();
+
+			$missing = $tables = $this->_listTables();
 
 			$models = $this->_getModels();
 			foreach( $models as $model ) {
@@ -66,9 +80,17 @@
 					$initialized[] = $model;
 					ClassRegistry::init( $model );
 				}
+				else {
+					$uninitialized[] = $model;
+				}
+
+				$key = array_search( Inflector::tableize( $model ), $missing );
+				if( $key !== false ) {
+					unset( $missing[$key] );
+				}
 			}
 
-			$this->set( compact( 'initialized' ) );
+			$this->set( compact( 'initialized', 'uninitialized', 'missing' ) );
 		}
 	}
 ?>
