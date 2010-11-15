@@ -332,11 +332,12 @@
                 )
             );
 
-            $dspData = Set::filter( $dsp['Dsp'] );
+//             $dspData = Set::filter( $dsp['Dsp'] );
 
-            if( empty( $dsp ) && !empty( $dspData )  ){
+            if( empty( $dsp )/* && !empty( $dspData )*/  ){
                 $dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
 
+// debug($dsp);
                 $this->Contratinsertion->Personne->Dsp->set( $dsp );
                 if( $this->Contratinsertion->Personne->Dsp->save( $dsp ) ) {
                     $dsp = $this->Contratinsertion->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
@@ -504,6 +505,7 @@
 
             /// Essai de sauvegarde
             if( !empty( $this->data ) ) {
+
                 $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
 
 
@@ -543,13 +545,7 @@
                     $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
                 }*/
 
-                $dspStockees = $this->_getDsp( $personne_id );
-                $this->data['Dsp'] = Set::merge(
-                    isset( $dspStockees['Dsp'] ) ? $dspStockees['Dsp'] : array(),
-                    isset( $this->data['Dsp'] ) ? $this->data['Dsp'] : array()
-                );
 
-// debug($this->data);
                 ///FIXME
 //                     $valid = $this->Contratinsertion->Structurereferente->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
                 //
@@ -557,10 +553,21 @@
 //                 $valid = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
 // 
 //                 $valid = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
+                $success = $this->Contratinsertion->save( $this->data );
 
-                $success = $this->Contratinsertion->save( $this->data);
-                $success = $this->Contratinsertion->Personne->Dsp->save( array( 'Dsp' => $this->data['Dsp'] ) ) && $success;
+                if( Configure::read( 'nom_form_ci_cg' ) != 'cg66' ) {
+                    $dspStockees = $this->_getDsp( $personne_id );
+                    $this->data['Dsp'] = Set::merge(
+                        isset( $dspStockees['Dsp'] ) ? Set::filter( $dspStockees['Dsp'] ) : array(),
+                        isset( $this->data['Dsp'] ) ? Set::filter( $this->data['Dsp'] ) : array()
+                    );
 
+                    $isDsp = Set::filter( $this->data['Dsp'] );
+                    if( !empty( $isDsp ) ){
+                        $success = $this->Contratinsertion->Personne->Dsp->save( array( 'Dsp' => $this->data['Dsp'] ) ) && $success;
+                    }
+                }
+// debug($success);
                 if( $success ) {
                     $saved = true;
 /*
