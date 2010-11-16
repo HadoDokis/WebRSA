@@ -137,19 +137,19 @@
             <?php echo thead( 10 );?>
             <tbody>
                 <tr class="odd">
-                    <th><?php __( 'ddgro' );?></th>
+                    <th><?php __d( 'grossesse', 'Grossesse.ddgro' );?></th>
                     <td><?php echo date_short( isset( $grossesse['Grossesse']['ddgro'] ) ) ? date_short( $grossesse['Grossesse']['ddgro'] ) : null;?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'dfgro' );?></th>
+                    <th><?php __d( 'grossesse', 'Grossesse.dfgro' );?></th>
                     <td><?php echo date_short( isset( $grossesse['Grossesse']['dfgro'] ) ) ? date_short( $grossesse['Grossesse']['dfgro'] ) : null;?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'dtdeclgro' );?></th>
+                    <th><?php __d( 'grossesse', 'Grossesse.dtdeclgro' );?></th>
                     <td><?php echo date_short( isset( $grossesse['Grossesse']['dtdeclgro'] ) ) ? date_short( $grossesse['Grossesse']['dtdeclgro'] ) : null;?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'natfingro' );?></th>
+                    <th><?php __d( 'grossesse', 'Grossesse.natfingro' );?></th>
                     <td><?php echo isset( $grossesse['Grossesse']['natfingro'] ) ? $grossesse['Grossesse']['natfingro'] : null;?></td>
                 </tr>
             </tbody>

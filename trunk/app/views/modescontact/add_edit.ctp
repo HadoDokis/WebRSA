@@ -30,12 +30,12 @@
         <?php echo $form->input( 'Modecontact.foyer_id', array( 'type' => 'hidden', 'div' => 'div', 'value' => $foyer_id ) );?>
     </div>
     <?php echo $form->input( 'Modecontact.numtel', array( 'label' =>  __( 'numtel', true ) ) );?>
-    <?php echo $form->input( 'Modecontact.numposte', array( 'label' => __( 'numposte', true ), 'maxlength' => 4 ) );?>
-    <?php echo $form->input( 'Modecontact.nattel', array( 'label' =>  __( 'nattel', true ), 'type' => 'select', 'options' => $nattel, 'empty' => true  ) );?>
-    <?php echo $form->input( 'Modecontact.matetel', array( 'label' => __( 'matetel', true ), 'type' => 'select', 'options' => $matetel, 'empty' => true  ) );?>
-    <?php echo $form->input( 'Modecontact.autorutitel', array( 'label' => __( 'autorutitel', true ), 'type' => 'select', 'options' => $autorutitel, 'empty' => true  ) );?>
-    <?php echo $form->input( 'Modecontact.adrelec', array( 'label' => __( 'adrelec', true ) ) );?>
-    <?php echo $form->input( 'Modecontact.autorutiadrelec', array( 'label' => __( 'autorutiadrelec', true ), 'type' => 'select', 'options' => $autorutiadrelec, 'empty' => true  ) );?>
+    <?php echo $form->input( 'Modecontact.numposte', array( 'label' => __d( 'modecontact', 'Modecontact.numposte', true ), 'maxlength' => 4 ) );?>
+    <?php echo $form->input( 'Modecontact.nattel', array( 'label' =>  __d( 'modecontact', 'Modecontact.nattel', true ), 'type' => 'select', 'options' => $nattel, 'empty' => true  ) );?>
+    <?php echo $form->input( 'Modecontact.matetel', array( 'label' => __d( 'modecontact', 'Modecontact.matetel', true ), 'type' => 'select', 'options' => $matetel, 'empty' => true  ) );?>
+    <?php echo $form->input( 'Modecontact.autorutitel', array( 'label' => __d( 'modecontact', 'Modecontact.autorutitel', true ), 'type' => 'select', 'options' => $autorutitel, 'empty' => true  ) );?>
+    <?php echo $form->input( 'Modecontact.adrelec', array( 'label' => __d( 'modecontact', 'Modecontact.adrelec', true ) ) );?>
+    <?php echo $form->input( 'Modecontact.autorutiadrelec', array( 'label' => __d( 'modecontact', 'Modecontact.autorutiadrelec', true ), 'type' => 'select', 'options' => $autorutiadrelec, 'empty' => true  ) );?>
 
     <?php echo $form->submit( 'Enregistrer' );?>
     <?php echo $form->end();?>
