@@ -14,8 +14,8 @@
                 <?php echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );?>
                 <?php /*echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden' ) );*/?>
 
-                <?php echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __( 'observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
-                <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __( 'decision_ci', true ), 'type' => 'select', 'options' => $decision_ci ) ); ?>
+                <?php echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
+                <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.decision_ci', true ), 'type' => 'select', 'options' => $decision_ci ) ); ?>
                 <?php echo $form->input( 'Contratinsertion.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?><br />
                 <!-- <?php echo $form->input( 'Contratinsertion.faita', array( 'label' => 'Fait à : ', 'type' => 'text')  ); ?><br />
                 <?php echo $form->input( 'Contratinsertion.le ', array( 'label' => 'Le : ', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>

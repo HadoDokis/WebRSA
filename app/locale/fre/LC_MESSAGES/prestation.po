@@ -20,11 +20,5 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Foyer.Modecontact.numtel"
-msgstr "N° de téléphone"
-
-msgid "Foyer.Dossier.matricule"
-msgstr "N° CAF"
-
-msgid "Foyer.sitfam"
-msgstr "Situation familiale"
+msgid "Prestation.rolepers"
+msgstr "Rôle personne"

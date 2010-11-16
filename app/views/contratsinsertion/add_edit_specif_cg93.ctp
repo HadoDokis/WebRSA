@@ -39,8 +39,8 @@
     <?php echo $form->input( 'Dsp.nivetu', array( 'label' => __d( 'dsp', 'Dsp.nivetu', true ), 'options' => $nivetus, 'empty' => true ) );?>
     <?php echo $form->input( 'Dsp.nivdipmaxobt', array( 'label' => __d( 'dsp', 'Dsp.nivdipmaxobt', true ), 'options' => $nivdipmaxobt, 'empty' => true ) );?>
     <?php echo $form->input( 'Dsp.annobtnivdipmax', array( 'label' => __d( 'dsp', 'Dsp.annobtnivdipmax', true ) )) ;?>    
-    <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __( 'expr_prof', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
-    <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' =>  __( 'form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
+    <?php echo $form->input( 'Contratinsertion.expr_prof', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.expr_prof', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
+    <?php echo $form->input( 'Contratinsertion.form_compl', array( 'label' =>  __d( 'contratinsertion', 'Contratinsertion.form_compl', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
 </fieldset>
 <fieldset>
     <legend> HISTORIQUE DU PARCOURS D'INSERTION </legend>
@@ -95,15 +95,15 @@
 </fieldset>
 <fieldset>
     <legend> PROJET DE CE NOUVEAU CONTRAT</legend>
-        <?php echo $form->input( 'Contratinsertion.objectifs_fixes', array( 'label' => __( 'objectifs_fixes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
-        <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __( 'dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );?>
-        <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => required( __( 'duree_engag', true ) ), 'type' => 'select', 'options' => $duree_engag_cg93, 'empty' => true )  ); ?>
-        <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __( 'df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true ) ) ;?>
+        <?php echo $form->input( 'Contratinsertion.objectifs_fixes', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.objectifs_fixes', true ), 'type' => 'textarea', 'rows' => 3)  ); ?>
+        <?php echo $form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.dd_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );?>
+        <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.duree_engag', true ) ), 'type' => 'select', 'options' => $duree_engag_cg93, 'empty' => true )  ); ?>
+        <?php echo $form->input( 'Contratinsertion.df_ci', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.df_ci', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true ) ) ;?>
 </fieldset>
 <fieldset>
-        <?php echo $form->input( 'Contratinsertion.nature_projet', array( 'label' => required( __( 'nature_projet', true ) ), 'type' => 'textarea', 'rows' => 6)  ); ?>
-        <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => required( __( 'lieu_saisi_ci', true ) ), 'type' => 'text', 'maxlength' => 50 )  ); ?><br />
-        <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __( 'date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
+        <?php echo $form->input( 'Contratinsertion.nature_projet', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.nature_projet', true ) ), 'type' => 'textarea', 'rows' => 6)  ); ?>
+        <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.lieu_saisi_ci', true ) ), 'type' => 'text', 'maxlength' => 50 )  ); ?><br />
+        <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
         <?php
             echo $xhtml->tag(
                 'div',

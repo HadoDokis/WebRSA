@@ -23,7 +23,7 @@
                 <?php
 //                     echo $form->input( 'Action.id', array( 'type' => 'hidden' ) );
 //                     echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
-//                     echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __( 'engag_object', true ), 'type' => 'textarea', 'rows' => 10 )  );
+//                     echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.engag_object', true ), 'type' => 'textarea', 'rows' => 10 )  );
                 ?>
                  <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => 'Intitulé de ( ou des ) actions', 'type' => 'textarea' ) );?>
                 <?php
@@ -96,7 +96,7 @@
         </tr>
     </table>
     <br />
-        <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => __( 'lieu_saisi_ci', true ).REQUIRED_MARK, 'type' => 'text', 'maxlength' => 50 )  ); ?><br />
-        <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __( 'date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 /*, 'empty' => true*/ )  ); ?>
+        <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.lieu_saisi_ci', true ).REQUIRED_MARK, 'type' => 'text', 'maxlength' => 50 )  ); ?><br />
+        <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 /*, 'empty' => true*/ )  ); ?>
 
 </fieldset>

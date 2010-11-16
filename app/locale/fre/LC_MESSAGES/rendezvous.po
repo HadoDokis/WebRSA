@@ -47,3 +47,12 @@ msgstr "Objet du RDV"
 
 msgid "Rendezvous.commentairerdv"
 msgstr "Commentaire du RDV"
+
+msgid "Rendezvous.statutrdv"
+msgstr "Statut du RDV"
+
+msgid "Rendezvous.lib_rdv"
+msgstr "Objet du RDV"
+
+msgid "Rendezvous.commentairerdv"
+msgstr "Commentaires suite au RDV"

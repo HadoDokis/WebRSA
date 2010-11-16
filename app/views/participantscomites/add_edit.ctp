@@ -14,9 +14,9 @@
     ?>
 
     <fieldset>
-        <?php echo $xform->input( 'Participantcomite.qual', array( 'label' => required( __( 'qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
-        <?php echo $xform->input( 'Participantcomite.nom', array( 'label' => required( __( 'nom', true ) ), 'type' => 'text' ) );?>
-        <?php echo $xform->input( 'Participantcomite.prenom', array( 'label' => required( __( 'prenom', true ) ), 'type' => 'text' ) );?>
+        <?php echo $xform->input( 'Participantcomite.qual', array( 'label' => required( __d( 'personne', 'Personne.qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
+        <?php echo $xform->input( 'Participantcomite.nom', array( 'label' => required( __d( 'personne', 'Personne.nom', true ) ), 'type' => 'text' ) );?>
+        <?php echo $xform->input( 'Participantcomite.prenom', array( 'label' => required( __d( 'personne', 'Personne.prenom', true ) ), 'type' => 'text' ) );?>
         <?php echo $xform->input( 'Participantcomite.fonction', array( 'label' => required( __( 'Fonction du participant', true ) ), 'type' => 'text' ) );?>
         <?php echo $xform->input( 'Participantcomite.organisme', array( 'label' => required( __( 'Organisme du participant', true ) ), 'type' => 'text' ) );?>
         <?php echo $xform->input( 'Participantcomite.numtel', array( 'label' =>  __( 'numtel', true ), 'type' => 'text', 'maxlength' => 10 ) );?>

@@ -49,9 +49,9 @@
 
         echo $form->input( 'Orientstruct.referent_id', array(  'label' => __( 'nom_referent', true  ), 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $this->data['Orientstruct']['referent_id'] ) );
     ?>
-    <?php echo $form->input( 'Calculdroitrsa.toppersdrodevorsa', array(  'label' =>  required( __( 'toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
-    <?php echo $form->input( 'Orientstruct.date_propo', array(  'label' =>  required( __( 'date_propo', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true ) );?>
-    <?php echo $form->input( 'Orientstruct.date_valid', array(  'label' =>  required( __( 'date_valid', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true ) );?>
+    <?php echo $form->input( 'Calculdroitrsa.toppersdrodevorsa', array(  'label' =>  required( __d( 'calculdroitrsa', 'Calculdroitrsa.toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
+    <?php echo $form->input( 'Orientstruct.date_propo', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_propo', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true ) );?>
+    <?php echo $form->input( 'Orientstruct.date_valid', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_valid', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true ) );?>
     <?php
         if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
             echo $default->subform(

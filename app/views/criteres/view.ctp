@@ -12,7 +12,7 @@
                     <th><?php __( 'Numéro dossier' );?></th>
                     <th><?php __( 'Allocataire' );?></th>
                     <th><?php __( 'numtel' );?></th>
-                    <th><?php __( 'locaadr' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.locaadr' );?></th>
                     <th><?php __( 'Date d\'ouverture droits' );?></th>
                     <th><?php __( 'Date d\'orientation' );?></th>
                     <th><?php __( 'Structure référente' );?></th>

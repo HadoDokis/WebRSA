@@ -18,6 +18,120 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+
+# msgid "Contratinsertion.dd_ci"
+# msgstr "Date de début du contrat ?"
+
+# msgid "Contratinsertion.df_ci"
+# msgstr "Date de fin du contrat ?"
+
+msgid "Contratinsertion.niv_etude"
+msgstr "Niveau d'études ? "
+
+msgid "Contratinsertion.diplomes"
+msgstr "Diplômes (scolaires, universitaires et/ou professionnels)"
+
+msgid "Contratinsertion.expr_prof"
+msgstr "Quelles expériences professionnelles avez-vous ( emploi occupé, dates, ...) ?"
+
+msgid "Contratinsertion.form_compl"
+msgstr "Autres expériences, savoir, connaissances"
+
+msgid "Contratinsertion.type_ci"
+msgstr "Type de CER "
+
+msgid "Contratinsertion.rg_ci"
+msgstr "Rang du présent contrat "
+
+msgid "Contratinsertion.actions_prev"
+msgstr "Avez-vous pu réaliser les actions prévues dans votre contrat précédent ? "
+
+msgid "Contratinsertion.obsta_renc"
+msgstr "Si vous n\'avez pas pu les réaliser, quels obstacles avez-vous rencontrés ? "
+
+msgid "Contratinsertion.service_soutien"
+msgstr "Le présent contrat a été établi avec le soutien du service: (désignation, adresse, téléphone)"
+
+msgid "Contratinsertion.pers_charg_suivi"
+msgstr "Personne chargée du suivi"
+
+msgid "Contratinsertion.objectifs_fixes"
+msgstr "Quels objectifs vous fixez-vous pour les mois à venir"
+
+msgid "Contratinsertion.engag_object"
+msgstr "Que prévoyez-vous de faire pour atteindre ces objectifs (démarches d\'insertion dans les domaines de la santé, du logement et de la vie sociale et quotidienne, de la formation, de la recherche d\'emploi,...)"
+
+msgid "Contratinsertion.emp_trouv"
+msgstr "Avez-vous trouvé un emploi ? "
+
+msgid "Contratinsertion.sect_acti_emp"
+msgstr "Le secteur d\'activité"
+
+msgid "Contratinsertion.emp_occupe"
+msgstr "L\'emploi occupé"
+
+msgid "Contratinsertion.duree_hebdo_emp"
+msgstr "La durée hebdomadaire de travail"
+
+msgid "Contratinsertion.nat_cont_trav"
+msgstr "La nature du contrat de travail"
+
+msgid "Contratinsertion.duree_cdd"
+msgstr "S\'il s\'agit d\'un CDD, sa durée"
+
+# msgid "Contratinsertion.duree_engag"
+# msgstr "Engagement sur une durée de  (en mois)"
+
+msgid "Contratinsertion.nature_projet"
+msgstr "Nature du projet "
+
+msgid "Contratinsertion.observ_ci"
+msgstr "Observations"
+
+msgid "Contratinsertion.decision_ci"
+msgstr "Décision "
+
+msgid "Contratinsertion.typocontrat"
+msgstr "Typologie du contrat"
+
+msgid "Contratinsertion.referent"
+msgstr "Référent du contrat"
+
+msgid "Contratinsertion.date_propo"
+msgstr "Date de la demande"
+
+msgid "Contratinsertion.date_valid"
+msgstr "Date de l'orientation"
+
+msgid "Contratinsertion.lieu_saisi_ci"
+msgstr "Réalisé à "
+
+# msgid "Contratinsertion.date_saisi_ci"
+# msgstr "Le "
+
+msgid "Contratinsertion.forme_ci"
+msgstr "Forme du contrat "
+
+msgid "Contratinsertion.commentaire_action"
+msgstr "Commentaire concernant l'action"
+
+msgid "Contratinsertion.niveausalaire"
+msgstr "Niveau de salaire attendu"
+
+msgid "Contratinsertion.dd_ci"
+msgstr "Date de début de contrat"
+
+msgid "Contratinsertion.df_ci"
+msgstr "Date de fin de contrat"
+
+msgid "Contratinsertion.duree_engag"
+msgstr "Durée du contrat"
+
+msgid "Contratinsertion.date_saisi_ci"
+msgstr "Contrat signé le "
+
+#-------------------------------------------------------------------------------
+
 msgid "ENUM::TYPE_DEMANDE::DOD"
 msgstr "Demande ouverture de droit"
 
@@ -38,18 +152,3 @@ msgstr "Insertion Sociale"
 
 msgid "ENUM::INSERTION::EMP"
 msgstr "Insertion Professionnelle"
-
-msgid "Contratinsertion.niveausalaire"
-msgstr "Niveau de salaire attendu"
-
-msgid "Contratinsertion.dd_ci"
-msgstr "Date de début de contrat"
-
-msgid "Contratinsertion.df_ci"
-msgstr "Date de fin de contrat"
-
-msgid "Contratinsertion.duree_engag"
-msgstr "Durée du contrat"
-
-msgid "Contratinsertion.date_saisi_ci"
-msgstr "Contrat signé le "

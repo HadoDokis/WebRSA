@@ -77,15 +77,15 @@
                 echo $form->input( 'Rendezvous.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'selected' => $struct_id.'_'.$permanence_id, 'empty' => true ) );
 
 
-                echo $form->input( 'Rendezvous.typerdv_id', array( 'label' =>  required( __( 'lib_rdv', true ) ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
+                echo $form->input( 'Rendezvous.typerdv_id', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.lib_rdv', true ) ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
             ?>
-            <?php echo $form->input( 'Rendezvous.statutrdv_id', array( 'label' =>  required( __( 'statutrdv', true ) ), 'type' => 'select', 'options' => $statutrdv, 'empty' => true ) );?>
-            <?php echo $form->input( 'Rendezvous.daterdv', array( 'label' =>  required( __( 'daterdv', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+1, 'minYear'=>date('Y')-1 ) );?>
+            <?php echo $form->input( 'Rendezvous.statutrdv_id', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.statutrdv', true ) ), 'type' => 'select', 'options' => $statutrdv, 'empty' => true ) );?>
+            <?php echo $form->input( 'Rendezvous.daterdv', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.daterdv', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+1, 'minYear'=>date('Y')-1 ) );?>
             <?php
-                echo $xform->input( 'Rendezvous.heurerdv', array( 'label' =>  required( __( 'heurerdv', true ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ) ) );
+                echo $xform->input( 'Rendezvous.heurerdv', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.heurerdv', true ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ) ) );
             ?>
-            <?php echo $form->input( 'Rendezvous.objetrdv', array( 'label' =>  ( __( 'objetrdv', true ) ), 'type' => 'text', 'rows' => 2, 'empty' => true ) );?>
-            <?php echo $form->input( 'Rendezvous.commentairerdv', array( 'label' =>  ( __( 'commentairerdv', true ) ), 'type' => 'text', 'rows' => 3, 'empty' => true ) );?>
+            <?php echo $form->input( 'Rendezvous.objetrdv', array( 'label' =>  ( __d( 'rendezvous', 'Rendezvous.objetrdv', true ) ), 'type' => 'text', 'rows' => 2, 'empty' => true ) );?>
+            <?php echo $form->input( 'Rendezvous.commentairerdv', array( 'label' =>  ( __d( 'rendezvous', 'Rendezvous.commentairerdv', true ) ), 'type' => 'text', 'rows' => 3, 'empty' => true ) );?>
         </fieldset>
     </div>
     <div class="submit">

@@ -39,16 +39,16 @@
             <div><?php echo $form->input( 'Prestation.0.natprest', array( 'label' => false, 'value' => 'RSA', 'type' => 'hidden') );?></div>
             <!-- <div><?php echo $form->input( 'Prestation.0.rolepers', array( 'label' => false, 'value' => 'DEM', 'type' => 'hidden') );?></div> -->
 
-            <?php echo $form->input( 'Prestation.0.rolepers', array( 'label' => required( __( 'rolepers', true ) ), 'type' => 'select', 'options' => $rolepers, 'empty' => true ) );?>
+            <?php echo $form->input( 'Prestation.0.rolepers', array( 'label' => required( __d( 'prestation', 'Prestation.rolepers', true ) ), 'type' => 'select', 'options' => $rolepers, 'empty' => true ) );?>
 
 
             <div><?php echo $form->input( 'Personne.0.id', array( 'label' => required( __( 'id', true ) ),  'type' => 'hidden') );?></div>
-            <?php echo $form->input( 'Personne.0.qual', array( 'label' => required( __( 'qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
-            <?php echo $form->input( 'Personne.0.nom', array( 'label' => required( __( 'nom', true ) ) ) );?>
-            <?php echo $form->input( 'Personne.0.prenom', array( 'label' => required( __( 'prenom', true ) ) ) );?>
-            <?php echo $form->input( 'Personne.0.nir', array( 'label' => ( __( 'nir', true ) ) ) );?>
-            <?php echo $form->input( 'Personne.0.dtnai', array( 'label' => required( __( 'dtnai', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
-            <?php echo $form->input( 'Calculdroitrsa.0.toppersdrodevorsa', array(  'label' =>  required( __( 'toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
+            <?php echo $form->input( 'Personne.0.qual', array( 'label' => required( __d( 'personne', 'Personne.qual', true ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
+            <?php echo $form->input( 'Personne.0.nom', array( 'label' => required( __d( 'personne', 'Personne.nom', true ) ) ) );?>
+            <?php echo $form->input( 'Personne.0.prenom', array( 'label' => required( __d( 'personne', 'Personne.prenom', true ) ) ) );?>
+            <?php echo $form->input( 'Personne.0.nir', array( 'label' => ( __d( 'personne', 'Personne.nir', true ) ) ) );?>
+            <?php echo $form->input( 'Personne.0.dtnai', array( 'label' => required( __d( 'personne', 'Personne.dtnai', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
+            <?php echo $form->input( 'Calculdroitrsa.0.toppersdrodevorsa', array(  'label' =>  required( __d( 'calculdroitrsa', 'Calculdroitrsa.toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
         </fieldset>
         <fieldset>
             <h3>Orientation</h3>
@@ -63,15 +63,15 @@
             <div><?php echo $form->input( 'Prestation.1.natprest', array( 'label' => false, 'value' => 'RSA', 'type' => 'hidden') );?></div>
             <!-- <div><?php echo $form->input( 'Prestation.1.rolepers', array( 'label' => false, 'value' => 'CJT', 'type' => 'hidden') );?></div> -->
 
-            <?php echo $form->input( 'Prestation.1.rolepers', array( 'label' => __( 'rolepers', true ), 'type' => 'select', 'options' => $rolepers , 'empty' => true ) );?>
+            <?php echo $form->input( 'Prestation.1.rolepers', array( 'label' => __d( 'prestation', 'Prestation.rolepers', true ), 'type' => 'select', 'options' => $rolepers , 'empty' => true ) );?>
 
             <div><?php  echo $form->input( 'Personne.1.id', array( 'label' => required( __( 'id', true ) ), 'type' => 'hidden') );?></div>
-            <?php echo $form->input( 'Personne.1.qual', array( 'label' =>  __( 'qual', true ) , 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
-            <?php echo $form->input( 'Personne.1.nom', array( 'label' =>  __( 'nom', true )  ) );?>
-            <?php echo $form->input( 'Personne.1.prenom', array( 'label' =>  __( 'prenom', true  ) ) );?>
-            <?php echo $form->input( 'Personne.1.nir', array( 'label' =>  __( 'nir', true ) ) );?>
-            <?php echo $form->input( 'Personne.1.dtnai', array( 'label' =>  __( 'dtnai', true  ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
-            <?php echo $form->input( 'Calculdroitrsa.1.toppersdrodevorsa', array(  'label' =>   __( 'toppersdrodevorsa', true ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
+            <?php echo $form->input( 'Personne.1.qual', array( 'label' =>  __d( 'personne', 'Personne.qual', true ) , 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
+            <?php echo $form->input( 'Personne.1.nom', array( 'label' =>  __d( 'personne', 'Personne.nom', true )  ) );?>
+            <?php echo $form->input( 'Personne.1.prenom', array( 'label' =>  __d( 'personne', 'Personne.prenom', true  ) ) );?>
+            <?php echo $form->input( 'Personne.1.nir', array( 'label' =>  __d( 'personne', 'Personne.nir', true ) ) );?>
+            <?php echo $form->input( 'Personne.1.dtnai', array( 'label' =>  __d( 'personne', 'Personne.dtnai', true  ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
+            <?php echo $form->input( 'Calculdroitrsa.1.toppersdrodevorsa', array(  'label' =>   __d( 'calculdroitrsa', 'Calculdroitrsa.toppersdrodevorsa', true ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
         </fieldset>
         <fieldset>
             <h3>Orientation</h3>

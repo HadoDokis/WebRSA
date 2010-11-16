@@ -17,14 +17,7 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-
 ###############################################################################
 
-msgid "Foyer.Modecontact.numtel"
-msgstr "N° de téléphone"
-
-msgid "Foyer.Dossier.matricule"
-msgstr "N° CAF"
-
-msgid "Foyer.sitfam"
-msgstr "Situation familiale"
+msgid "Calculdroitrsa.toppersdrodevorsa"
+msgstr "Personne soumise à droits et devoirs ?"

@@ -39,23 +39,23 @@
                     <td><?php echo Set::classicExtract( $rendezvous, 'Typerdv.libelle' );?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'statutrdv' );?></th>
+                    <th><?php __d( 'rendezvous', 'Rendezvous.statutrdv' );?></th>
                     <td><?php echo Set::classicExtract( $rendezvous, 'Statutrdv.libelle' );?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'daterdv' );?></th>
+                    <th><?php __d( 'rendezvous', 'Rendezvous.daterdv' );?></th>
                     <td><?php echo date_short( Set::classicExtract( $rendezvous, 'Rendezvous.daterdv' ) );?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'heurerdv' );?></th>
+                    <th><?php __d( 'rendezvous', 'Rendezvous.heurerdv' );?></th>
                     <td><?php echo Set::classicExtract( $rendezvous, 'Rendezvous.heurerdv' );?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'objetrdv' );?></th>
+                    <th><?php __d( 'rendezvous', 'Rendezvous.objetrdv' );?></th>
                     <td><?php echo Set::classicExtract( $rendezvous, 'Rendezvous.objetrdv' );?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'commentairerdv' );?></th>
+                    <th><?php __d( 'rendezvous', 'Rendezvous.commentairerdv' );?></th>
                     <td><?php echo Set::classicExtract( $rendezvous, 'Rendezvous.commentairerdv' );?></td>
                 </tr>
             </tbody>

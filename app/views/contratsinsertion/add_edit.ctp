@@ -246,7 +246,7 @@
                         if( !empty( $thisDataFormeCi ) ) {
                             $valueFormeci = $thisDataFormeCi;
                         }
-                        $input =  $form->input( 'Contratinsertion.forme_ci', array( 'type' => 'radio' , 'options' => $forme_ci, /*'div' => false,*/ 'legend' => required( __( 'forme_ci', true )  ), 'value' => $valueFormeci ) );
+                        $input =  $form->input( 'Contratinsertion.forme_ci', array( 'type' => 'radio' , 'options' => $forme_ci, /*'div' => false,*/ 'legend' => required( __d( 'contratinsertion', 'Contratinsertion.forme_ci', true )  ), 'value' => $valueFormeci ) );
 
                         echo $xhtml->tag( 'div', $input, array( 'class' => $class ) );
                     ?>
