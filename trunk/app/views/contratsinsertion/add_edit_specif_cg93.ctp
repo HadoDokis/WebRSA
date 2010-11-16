@@ -62,13 +62,13 @@
                     foreach( $lastContrat as $key => $value)
                     {
                         echo '<tr>';
-                            echo $html->tag('td', $html->tag('strong',$value['Contratinsertion']['rg_ci']));
-                            echo $html->tag('td', date_short( $value['Contratinsertion']['dd_ci'] ) );
-                            echo $html->tag('td', date_short( $value['Contratinsertion']['df_ci'] ) );
-                            echo $html->tag('td', $value['Structurereferente']['lib_struc']);
-                            echo $html->tag('td', '?');
-                            echo $html->tag('td', value( $decision_ci, Set::extract( 'Contratinsertion.decision_ci', $value ) ));
-                            echo $html->tag('td', $value['Contratinsertion']['observ_ci']);
+                            echo $xhtml->tag('td', $xhtml->tag('strong',$value['Contratinsertion']['rg_ci']));
+                            echo $xhtml->tag('td', date_short( $value['Contratinsertion']['dd_ci'] ) );
+                            echo $xhtml->tag('td', date_short( $value['Contratinsertion']['df_ci'] ) );
+                            echo $xhtml->tag('td', $value['Structurereferente']['lib_struc']);
+                            echo $xhtml->tag('td', '?');
+                            echo $xhtml->tag('td', value( $decision_ci, Set::extract( 'Contratinsertion.decision_ci', $value ) ));
+                            echo $xhtml->tag('td', $value['Contratinsertion']['observ_ci']);
                         echo '</tr>';
                     }
                 ?>
@@ -88,7 +88,7 @@
                     break;
                 }       
             }
-            echo $html->tag('span', $value);
+            echo $xhtml->tag('span', $value);
             echo $form->input( 'Ci.autre', array( 'label' => 'Si autre (préciser)', 'type'=>'text'));
         ?>
         <?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => 'Quel bilan faites vous des actions précisées dans le précédent contrat (les avancées et/ou les freins)  ? ', 'type' => 'textarea', 'rows' => 3)  ); ?>
@@ -105,10 +105,10 @@
         <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => required( __( 'lieu_saisi_ci', true ) ), 'type' => 'text', 'maxlength' => 50 )  ); ?><br />
         <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __( 'date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
         <?php
-            echo $html->tag(
+            echo $xhtml->tag(
                 'div',
-                $html->tag( 'span', 'Le bénéficiaire :', array( 'class' => 'label' ) ).
-                $html->tag( 'span', $personne['Personne']['nom'].' '.$personne['Personne']['prenom'], array( 'class' => 'input' ) ),
+                $xhtml->tag( 'span', 'Le bénéficiaire :', array( 'class' => 'label' ) ).
+                $xhtml->tag( 'span', $personne['Personne']['nom'].' '.$personne['Personne']['prenom'], array( 'class' => 'input' ) ),
                 array( 'class' => 'input text' )
             );
         ?>

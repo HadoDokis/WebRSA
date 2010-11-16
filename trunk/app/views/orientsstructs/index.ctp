@@ -12,7 +12,7 @@
     <?php if( $permissions->check( 'orientsstructs', 'add' ) ):?>
         <ul class="actionMenu">
             <?php
-                echo '<li>'.$html->addLink(
+                echo '<li>'.$xhtml->addLink(
                     'Préconiser une orientation',
                     array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id )
                 ).' </li>';
@@ -59,19 +59,19 @@
 
                     array_push(
                         $cells,
-                        $html->editLink(
+                        $xhtml->editLink(
                             'Editer l\'orientation',
                             array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
                             $permissions->check( 'orientsstructs', 'edit' )
                         ),
-                        $html->printLink(
+                        $xhtml->printLink(
                             'Imprimer la notification',
                             array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
                             $permissions->check( 'gedooos', 'orientstruct' ) && $orientstruct['Orientstruct']['imprime']
                         )
                     );
 
-                    echo $html->tableCells( $cells, array( 'class' => 'odd' ), array( 'class' => 'even' ) );
+                    echo $xhtml->tableCells( $cells, array( 'class' => 'odd' ), array( 'class' => 'even' ) );
                 }
             ?>
         </tbody>

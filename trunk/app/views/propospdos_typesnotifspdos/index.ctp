@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php  $this->pageTitle = 'Situation PDO';?>
 
@@ -29,7 +29,7 @@
 
         <ul class="actionMenu">
             <?php
-                echo '<li>'.$html->addLink(
+                echo '<li>'.$xhtml->addLink(
                     'Ajouter Traitement',
                     array( 'controller' => 'propospdos_typesnotifspdos', 'action' => 'add', $pdo_id )
                 ).' </li>';
@@ -59,14 +59,14 @@
                                 ?>
                             </td>
                             <td><?php
-                                    echo $html->editLink(
+                                    echo $xhtml->editLink(
                                         'Modifier la notification',
                                         array( 'controller' => 'propospdos_typesnotifspdos', 'action' => 'edit', Set::classicExtract( $notif, 'PropopdoTypenotifpdo.id' ) )
                                     );
                                 ?>
                             </td>
                             <!-- <td><?php
-//                                     echo $html->printLink(
+//                                     echo $xhtml->printLink(
 //                                         'Imprimer la notification',
 //                                         array( 'controller' => 'gedooos', 'action' => 'notifpdo', Set::classicExtract( $pdos, 'PropopdoTypenotifpdo.propopdo_id' ) )
 //                                     );

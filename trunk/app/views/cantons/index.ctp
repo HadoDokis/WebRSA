@@ -3,7 +3,7 @@
 
     echo $xform->create( 'Canton' );
 
-	echo $html->tag( 'h1', $this->pageTitle );
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 
 	///
 	$paginator->options( array( 'url' => $this->passedArgs ) );
@@ -16,12 +16,12 @@
 		$paginator->next( '>' ),
 		$paginator->last( '>>' )
 	);
-	$paginationLinks = $html->tag( 'p', implode( ' ', $paginationLinks ) );
+	$paginationLinks = $xhtml->tag( 'p', implode( ' ', $paginationLinks ) );
 
 	if( true || $permissions->check( 'cantons', 'add' ) ) { // FIXME
-		echo $html->tag( 'ul',
-			$html->tag( 'li',
-				$html->addLink( 'Ajouter un canton', array( 'action' => 'add' ) )
+		echo $xhtml->tag( 'ul',
+			$xhtml->tag( 'li',
+				$xhtml->addLink( 'Ajouter un canton', array( 'action' => 'add' ) )
 			),
 			array( 'class' => 'actionMenu' )
 		);
@@ -37,7 +37,7 @@
 			$paginator->sort( 'Code postal', 'Canton.codepos' ),
 			$paginator->sort( 'Code INSEE', 'Canton.numcomptt' )
 		);
-		$thead = $html->tag( 'thead', $html->tableHeaders( $headers ) );
+		$thead = $xhtml->tag( 'thead', $xhtml->tableHeaders( $headers ) );
 		$thead = str_replace( '</th></tr>', '</th><th colspan="2">Actions</th></tr>', $thead );
 
 		$rows = array();
@@ -50,19 +50,19 @@
 				h( Set::extract( $canton, 'Canton.locaadr' ) ),
 				h( Set::extract( $canton, 'Canton.codepos' ) ),
 				h( Set::extract( $canton, 'Canton.numcomptt' ) ),
-				$html->editLink( 'Modifier le canton', array( 'action' => 'edit', Set::extract( $canton, 'Canton.id' ) ), true || $permissions->check( 'cantons', 'edit' ) ), // FIXME
-				$html->deleteLink( 'Supprimer le canton', array( 'action' => 'delete', Set::extract( $canton, 'Canton.id' ) ), true || $permissions->check( 'cantons', 'delete' ) ), // FIXME
+				$xhtml->editLink( 'Modifier le canton', array( 'action' => 'edit', Set::extract( $canton, 'Canton.id' ) ), true || $permissions->check( 'cantons', 'edit' ) ), // FIXME
+				$xhtml->deleteLink( 'Supprimer le canton', array( 'action' => 'delete', Set::extract( $canton, 'Canton.id' ) ), true || $permissions->check( 'cantons', 'delete' ) ), // FIXME
 			);
 		}
-		$tbody = $html->tag( 'tbody', $html->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
+		$tbody = $xhtml->tag( 'tbody', $xhtml->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
 
-		echo $html->tag( 'p', $paginator->counter( $params ) );
+		echo $xhtml->tag( 'p', $paginator->counter( $params ) );
         echo $paginationLinks;
-		echo $html->tag( 'table', $thead.$tbody );
+		echo $xhtml->tag( 'table', $thead.$tbody );
         echo $paginationLinks;
 	}
 	else {
-		echo $html->tag( 'p', 'Aucun canton n\'est renseigné pour l\'instant.', array( 'class' => 'notice' ) );
+		echo $xhtml->tag( 'p', 'Aucun canton n\'est renseigné pour l\'instant.', array( 'class' => 'notice' ) );
 	}
 
     echo '<div class="submit">';

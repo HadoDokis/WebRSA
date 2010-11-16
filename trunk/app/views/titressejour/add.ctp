@@ -17,6 +17,6 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('List Titressejour', true), array('action' => 'index'));?></li>
+		<li><?php echo $xhtml->link(__('List Titressejour', true), array('action' => 'index'));?></li>
 	</ul>
 </div>

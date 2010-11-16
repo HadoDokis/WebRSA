@@ -19,7 +19,7 @@
             </thead>
             <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $identflux['Identificationflux']['applieme'] ),
                                 h( $identflux['Identificationflux']['numversionapplieme'] ),

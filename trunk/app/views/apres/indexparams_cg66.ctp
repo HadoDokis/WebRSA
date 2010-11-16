@@ -11,10 +11,10 @@
         <tbody>
             <?php
 
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Liste des aides de l\'APRE' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'typesaidesapres66', 'action' => 'index' ),
 							( ( $compteurs['Pieceaide66'] > 0 ) && ( $compteurs['Themeapre66'] > 0 ) )
@@ -23,10 +23,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Liste des pièces administratives' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'piecesaides66', 'action' => 'index' )
                         )
@@ -34,10 +34,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Liste des pièces comptables' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'piecescomptables66', 'action' => 'index' )
                         )
@@ -45,10 +45,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Thèmes de la demande d\'aide APRE' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'themesapres66', 'action' => 'index' )
                         )

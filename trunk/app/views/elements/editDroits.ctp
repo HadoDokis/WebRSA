@@ -30,7 +30,7 @@
 	<?php
 				
 	echo $javascript->link('droits', true);
-	echo $html->tag('table', null, array('cellspacing'=>'0', 'cellpadding'=>'0', 'id'=>'tableEditDroits', 'class'=>'table', 'style'=>'margin-top:20px;'));
+	echo $xhtml->tag('table', null, array('cellspacing'=>'0', 'cellpadding'=>'0', 'id'=>'tableEditDroits', 'class'=>'table', 'style'=>'margin-top:20px;'));
 	foreach($listeCtrlAction as $rownum => $ctrlAction) {
 		$classTd = 'niveau'.$ctrlAction['niveau'];
 		if ($ctrlAction['niveau']==0) $ctrlAction['title']='<b>'.$ctrlAction['title'].'</b>';
@@ -44,14 +44,14 @@
 		if ($ctrlAction['nbSousElements']>0)
 			$optionsCheckBox['onclick'] = 'toggleCheckBoxDroits('.$rownum.', '.$ctrlAction['nbSousElements'].');';
 
-		echo $html->tag('tr', null,  array('class'=>"$classTd") );
-			echo $html->tag('td', ' '.$indentation.$ctrlAction['title'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', array('class'=>"$classTd label"));
+		echo $xhtml->tag('tr', null,  array('class'=>"$classTd") );
+			echo $xhtml->tag('td', ' '.$indentation.$ctrlAction['title'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', array('class'=>"$classTd label"));
 			if ($ctrlAction['modifiable']) {
-				echo $html->tag('td', $form->input('Droits.'.$ctrlAction['acosAlias'], $optionsCheckBox), array('class'=>$classTd));
+				echo $xhtml->tag('td', $form->input('Droits.'.$ctrlAction['acosAlias'], $optionsCheckBox), array('class'=>$classTd));
 			}
 			else
-				echo $html->tag('td', $form->hidden('Droits.'.$ctrlAction['acosAlias']), array('class'=>$classTd));
-		echo $html->tag('/tr');
+				echo $xhtml->tag('td', $form->hidden('Droits.'.$ctrlAction['acosAlias']), array('class'=>$classTd));
+		echo $xhtml->tag('/tr');
 	}
-	echo $html->tag('/table');
+	echo $xhtml->tag('/table');
 ?>

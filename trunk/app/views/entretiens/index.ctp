@@ -3,7 +3,7 @@
 <div class="with_treemenu">
 
         <?php
-            echo $html->tag(
+            echo $xhtml->tag(
                 'h1',
                 $this->pageTitle = __d( 'entretien', "Entretiens::{$this->action}", true )
             );
@@ -105,7 +105,7 @@
                 <?php else:?>
                     <ul class="actionMenu">
                         <?php
-                            echo '<li>'.$html->addLink(
+                            echo '<li>'.$xhtml->addLink(
                                 'Ajouter des Dsps',
                                 array( 'controller' => 'dsps', 'action' => 'add', $personne_id )
                             ).' </li>';
@@ -122,7 +122,7 @@
             <h2 class="title">DSP CG</h2>
                 <ul class="actionMenu">
                     <?php
-                        echo '<li>'.$html->addLink(
+                        echo '<li>'.$xhtml->addLink(
                             'Ajouter des Dsps',
                             array( 'controller' => 'dsps', 'action' => 'add', $personne_id )
                         ).' </li>';

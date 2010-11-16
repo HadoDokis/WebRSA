@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Recherche par critères';?>
 
 <h1>Recherche par critères</h1>
@@ -6,15 +6,15 @@
 <ul class="actionMenu">
     <?php
         if( $session->read( 'Auth.User.username' ) == 'cg66' ) { // FIXME
-            echo '<li>'.$html->addSimpleLink(
+            echo '<li>'.$xhtml->addSimpleLink(
                 'Ajouter une préconisation d\'orientation',
                 array( 'controller' => 'dossierssimplifies', 'action' => 'add' )
             ).' </li>';
         }
 
         if( is_array( $this->data ) ) {
-            echo '<li>'.$html->link(
-                $html->image(
+            echo '<li>'.$xhtml->link(
+                $xhtml->image(
                     'icons/application_form_magnify.png',
                     array( 'alt' => '' )
                 ).' Formulaire',
@@ -83,7 +83,7 @@
                             </tbody>
                         </table>';
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h($critere['Dossier']['Dossier']['numdemrsa']),
                                 h($critere['Dossier']['Dossier']['dtdemrsa']),
@@ -97,7 +97,7 @@
                                     )
                                 ),
                                 h(' '),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir le dossier « '.$critere['Dossier']['Dossier']['numdemrsa'].' »',
                                     array( 'controller' => 'personnes', 'action' => 'view', $critere[0]['id'] )
                                 ),

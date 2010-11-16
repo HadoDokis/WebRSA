@@ -8,7 +8,7 @@
     <?php if( $permissions->check( 'personnes', 'add' ) ) :?>
         <ul class="actionMenu">
             <?php
-                echo '<li>'.$html->addLink(
+                echo '<li>'.$xhtml->addLink(
                     'Ajouter une personne au foyer',
                     array( 'controller' => 'personnes', 'action' => 'add', $foyer_id )
                 ).' </li>';
@@ -47,19 +47,19 @@
                             </tbody>
                         </table>';
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $rolepers[$personne['Prestation']['rolepers']] ),
                                 h( ( Set::extract( $personne, 'Personne.qual' ) != '' ) ? $qual[$personne['Personne']['qual']] : null ),
                                 h( $personne['Personne']['nom'] ),
                                 h( $personne['Personne']['prenom'] ),
                                 h( $locale->date( 'Date::short', $personne['Personne']['dtnai'] ) ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir la personne « '.$title.' »',
                                     array( 'controller' => 'personnes', 'action' => 'view', $personne['Personne']['id'] ),
                                     $permissions->check( 'personnes', 'view' )
                                 ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer la personne « '.$title.' »',
                                     array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] ),
                                     $permissions->check( 'personnes', 'edit' )

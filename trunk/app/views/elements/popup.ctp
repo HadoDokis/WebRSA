@@ -1,4 +1,4 @@
-<?php echo $html->css( 'popup.css', null, array(), false );?>
+<?php echo $xhtml->css( 'popup.css', null, array(), false );?>
 
 <script type="text/javascript">
     function impressionCohorte( link ) {
@@ -14,7 +14,7 @@
                 <div class="fade" style="z-index: 31"></div>
                 <div class="popup_block">
                     <div class="popup">
-                        <a href="#" onclick="$('progressBarContainer').hide(); return false;"><?php echo $html->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
+                        <a href="#" onclick="$('progressBarContainer').hide(); return false;"><?php echo $xhtml->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
                         <div id="popup-content">Edition en cours ... <br /> Une fois terminée, veuillez cliquer sur la croix rouge afin de fermer cette fenêtre.</div>
                     </div>
                 </div>

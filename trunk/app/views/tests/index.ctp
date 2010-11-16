@@ -13,7 +13,7 @@
 		$total += $nombre;
 	}
 
-	echo $html->tag( 'table', $html->tableCells( $cells )."<tr><th>Total</th><td id=\"tt\">{$total}</td></tr>" );
+	echo $xhtml->tag( 'table', $xhtml->tableCells( $cells )."<tr><th>Total</th><td id=\"tt\">{$total}</td></tr>" );
 	echo $xform->input( "Ep.nombretotal", array( 'type' => 'text', 'value' => $total ) );
 	echo $xform->submit( 'Enregistrer' );
 	echo $xform->end();

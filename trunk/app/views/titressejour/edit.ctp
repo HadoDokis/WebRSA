@@ -18,7 +18,7 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Delete', true), array('action' => 'delete', $form->value('Titresejour.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $form->value('Titresejour.id'))); ?></li>
-		<li><?php echo $html->link(__('List Titressejour', true), array('action' => 'index'));?></li>
+		<li><?php echo $xhtml->link(__('Delete', true), array('action' => 'delete', $form->value('Titresejour.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $form->value('Titresejour.id'))); ?></li>
+		<li><?php echo $xhtml->link(__('List Titressejour', true), array('action' => 'index'));?></li>
 	</ul>
 </div>

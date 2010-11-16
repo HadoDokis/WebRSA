@@ -1,12 +1,12 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Liste des Comités d\'examen APRE';?>
 
 <h1>Liste des Comités d'examen</h1>
 
 <?php
     if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -27,7 +27,7 @@
     if( isset( $comitesapres ) ) {
         $paginator->options( array( 'url' => $this->params['named'] ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<< ' );
         $pages .= $paginator->prev( ' < ' );
@@ -35,7 +35,7 @@
         $pages .= $paginator->next( ' > ' );
         $pages .= $paginator->last( ' >>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -92,7 +92,7 @@
                     foreach( $comitesapres as $comiteapre ) {
 // debug($comiteapre);
                         $comiteapre = $comiteapre['Comiteapre'];
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( Set::classicExtract( $comiteapre, 'intitulecomite' ) ),
                                 h( Set::classicExtract( $comiteapre, 'lieucomite' ) ),
@@ -102,7 +102,7 @@
                                 h( Set::classicExtract( $comiteapre, 'Participantabsent.Comiteapre' ) ),
                                 h( Set::classicExtract( $comiteapre, 'intitulecomite' ) ),
                                 h( Set::classicExtract( $comiteapre, 'ApreComiteapre.observationcomite' ) ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir le comité',
                                     array( 'controller' => 'comitesapres', 'action' => 'view', Set::classicExtract( $comiteapre, 'id' ) ),
                                     $permissions->check( 'comitesapres', 'index' )
@@ -118,7 +118,7 @@
     <?php echo $pagination;?>
     <ul class="actionMenu">
         <li><?php
-            echo $html->exportLink(
+            echo $xhtml->exportLink(
                 'Télécharger le tableau',
                 array( 'controller' => 'comitesapres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
             );

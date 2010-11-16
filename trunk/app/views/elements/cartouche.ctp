@@ -12,7 +12,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td> <?php echo $html->link(
+                    <td> <?php echo $xhtml->link(
                     	$session->read('Auth.User.nom' ),
                     	array(
                     		'controller'=>'users',

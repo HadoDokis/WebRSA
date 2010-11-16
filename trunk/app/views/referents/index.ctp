@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'referents', 'action' => 'add' )
             ).' </li>';
@@ -33,7 +33,7 @@
         </thead>
         <tbody>
             <?php foreach( $referents as $referent ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( $qual[$referent['Referent']['qual']] ),
                                 h( $referent['Referent']['nom'] ),
@@ -42,11 +42,11 @@
                                 h( $referent['Referent']['numero_poste'] ),
                                 h( $referent['Referent']['email'] ),
                                 h( $sr[$referent['Referent']['structurereferente_id']] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le référent',
                                     array( 'controller' => 'referents', 'action' => 'edit', $referent['Referent']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le référent',
                                     array( 'controller' => 'referents', 'action' => 'delete', $referent['Referent']['id'] )
                                 )

@@ -1,6 +1,6 @@
 <?php
 //debug($this->validationErrors);
-    echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
     $this->modelClass = $this->params['models'][0];
 
     $this->pageTitle = 'APRE';
@@ -387,7 +387,7 @@
             <?php
                 /// Formation qualifiante
                 $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Formqualif', 'Formations individuelles qualifiantes' );
-                echo $html->tag( 'h3', $tmp );
+                echo $xhtml->tag( 'h3', $tmp );
             ?>
             <fieldset id="Formqualif" class="invisible">
                 <?php
@@ -398,9 +398,9 @@
                     echo $xform->input( 'Formqualif.intituleform', array(  'required' => true, 'domain' => 'apre' ) );
                     echo $xform->enum( 'Formqualif.tiersprestataireapre_id', array( 'required' => true, 'domain' => 'apre', 'options' => $tiersFormqualif, 'empty' => true ) );
                     echo $ajax->observeField( 'FormqualifTiersprestataireapreId', array( 'update' => 'FormqualifCoordonnees', 'url' => Router::url( array( 'action' => 'ajaxtiersprestaformqualif' ), true ) ) );
-                    echo $html->tag(
+                    echo $xhtml->tag(
                         'div',
-                        $html->tag( 'div', ( isset( $FormqualifCoordonnees ) ? $FormqualifCoordonnees : ' ' ), array( 'id' => 'FormqualifCoordonnees' ) ).'<br />'
+                        $xhtml->tag( 'div', ( isset( $FormqualifCoordonnees ) ? $FormqualifCoordonnees : ' ' ), array( 'id' => 'FormqualifCoordonnees' ) ).'<br />'
                     );
 
                     echo $xform->input( 'Formqualif.ddform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
@@ -421,7 +421,7 @@
             <?php
                 /// Formation qualifiante Perm FIMO
                 $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Formpermfimo', 'Formation permis de conduire Poids Lourd + FIMO' );
-                echo $html->tag( 'h3', $tmp );
+                echo $xhtml->tag( 'h3', $tmp );
 
             ?>
             <fieldset id="Formpermfimo" class="invisible">
@@ -434,9 +434,9 @@
 //                     echo $xform->address( 'Formpermfimo.organismeform', array( 'required' => true, 'domain' => 'apre' ) );
                     echo $xform->enum( 'Formpermfimo.tiersprestataireapre_id', array( 'required' => true, 'domain' => 'apre', 'options' => $tiersFormpermfimo, 'empty' => true ) );
                     echo $ajax->observeField( 'FormpermfimoTiersprestataireapreId', array( 'update' => 'FormpermfimoCoordonnees', 'url' => Router::url( array( 'action' => 'ajaxtiersprestaformpermfimo' ), true ) ) );
-                    echo $html->tag(
+                    echo $xhtml->tag(
                         'div',
-                        $html->tag( 'div', ( isset( $FormpermfimoCoordonnees ) ? $FormpermfimoCoordonnees : ' ' ), array( 'id' => 'FormpermfimoCoordonnees' ) ).'<br />'
+                        $xhtml->tag( 'div', ( isset( $FormpermfimoCoordonnees ) ? $FormpermfimoCoordonnees : ' ' ), array( 'id' => 'FormpermfimoCoordonnees' ) ).'<br />'
                     );
 
                     echo $xform->input( 'Formpermfimo.ddform', array( 'required' => true, 'domain' => 'apre', 'type' => 'date', 'dateFormat' => 'DMY' ) );
@@ -457,7 +457,7 @@
             <?php
                 /// Action de professionnalisation
                 $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Actprof', 'Action de professionnalisation des contrats aides et salariés dans les SIAE' );
-                echo $html->tag( 'h3', $tmp );
+                echo $xhtml->tag( 'h3', $tmp );
 
             ?>
             <fieldset id="Actprof" class="invisible">
@@ -468,9 +468,9 @@
                     }
                     echo $xform->enum( 'Actprof.tiersprestataireapre_id', array( 'required' => true, 'domain' => 'apre', 'options' => $tiersActprof, 'empty' => true ) );
                     echo $ajax->observeField( 'ActprofTiersprestataireapreId', array( 'update' => 'ActprofAdresseemployeur', 'url' => Router::url( array( 'action' => 'ajaxtiersprestaactprof' ), true ) ) );
-                    echo $html->tag(
+                    echo $xhtml->tag(
                         'div',
-                        $html->tag( 'div', ( isset( $ActprofAdresseemployeur ) ? $ActprofAdresseemployeur : ' ' ), array( 'id' => 'ActprofAdresseemployeur' ) ).'<br />'
+                        $xhtml->tag( 'div', ( isset( $ActprofAdresseemployeur ) ? $ActprofAdresseemployeur : ' ' ), array( 'id' => 'ActprofAdresseemployeur' ) ).'<br />'
                     );
 //                     echo $xform->input( 'Actprof.nomemployeur', array( 'required' => true, 'domain' => 'apre' ) );
 //                     echo $xform->address( 'Actprof.adresseemployeur', array( 'required' => true, 'domain' => 'apre' ) );
@@ -496,7 +496,7 @@
             <?php
                 /// Permis B
                 $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Permisb', 'Permis de conduire B' );
-                echo $html->tag( 'h3', $tmp );
+                echo $xhtml->tag( 'h3', $tmp );
 
             ?>
             <fieldset id="Permisb" class="invisible">
@@ -508,9 +508,9 @@
 
                     echo $xform->enum( 'Permisb.tiersprestataireapre_id', array( 'required' => true, 'domain' => 'apre', 'options' => $tiersPermisb, 'empty' => true ) );
                     echo $ajax->observeField( 'PermisbTiersprestataireapreId', array( 'update' => 'PermisbAdresseautoecole', 'url' => Router::url( array( 'action' => 'ajaxtiersprestapermisb' ), true ) ) );
-                    echo $html->tag(
+                    echo $xhtml->tag(
                         'div',
-                        $html->tag( 'div', ( isset( $PermisbAdresseautoecole ) ? $PermisbAdresseautoecole : ' ' ), array( 'id' => 'PermisbAdresseautoecole' ) ).'<br />'
+                        $xhtml->tag( 'div', ( isset( $PermisbAdresseautoecole ) ? $PermisbAdresseautoecole : ' ' ), array( 'id' => 'PermisbAdresseautoecole' ) ).'<br />'
                     );
 //                     echo $xform->input( 'Permisb.nomautoecole', array( 'required' => true, 'domain' => 'apre' ) );
 //                     echo $xform->address( 'Permisb.adresseautoecole', array( 'required' => true, 'domain' => 'apre' ) );
@@ -536,7 +536,7 @@
                 /// Amenagement logement
 
                 $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Amenaglogt', 'Aide à l\'installation' );
-                echo $html->tag( 'h3', $tmp );
+                echo $xhtml->tag( 'h3', $tmp );
             ?>
             <fieldset id="Amenaglogt" class="invisible">
                 <?php
@@ -565,7 +565,7 @@
                 /// Accompagnement à la création d'entreprise
 
                 $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Acccreaentr', 'Accompagnement à la création d\'entreprise' );
-                echo $html->tag( 'h3', $tmp );
+                echo $xhtml->tag( 'h3', $tmp );
             ?>
             <fieldset id="Acccreaentr" class="invisible">
                 <?php
@@ -589,7 +589,7 @@
                 /// Acquisition de matériels professionnels
 
                 $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Acqmatprof', 'Acquisition de matériels professionnels' );
-                echo $html->tag( 'h3', $tmp );
+                echo $xhtml->tag( 'h3', $tmp );
             ?>
             <fieldset id="Acqmatprof" class="invisible">
                 <?php
@@ -612,7 +612,7 @@
                 /// Aide à la location d'un véhicule d'insertion
 
                 $tmp = radioApre( $this, "{$this->modelClass}.Natureaide", 'Locvehicinsert', 'Aide à la location d\'un véhicule d\'insertion' );
-                echo $html->tag( 'h3', $tmp );
+                echo $xhtml->tag( 'h3', $tmp );
             ?>
             <fieldset id="Locvehicinsert" class="invisible">
                 <?php

@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'regroupementszonesgeo', 'action' => 'add' )
             ).' </li>';
@@ -22,14 +22,14 @@
         </thead>
         <tbody>
             <?php foreach( $rgpts as $rgpt ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( $rgpt['Regroupementzonegeo']['lib_rgpt'] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer la région',
                                     array( 'controller' => 'regroupementszonesgeo', 'action' => 'edit', $rgpt['Regroupementzonegeo']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer la région',
                                     array( 'controller' => 'regroupementszonesgeo', 'action' => 'delete', $rgpt['Regroupementzonegeo']['id'] )
                                 )

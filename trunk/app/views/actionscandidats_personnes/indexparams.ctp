@@ -20,10 +20,10 @@
         </thead>
         <tbody>
             <?php
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Actions d\'insertion pour fiches de '.$typefiche ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'actionscandidats', 'action' => 'index' )
                         )
@@ -31,10 +31,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Contacts des partenaires' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'contactspartenaires', 'action' => 'index' )
                         )
@@ -42,10 +42,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Partenaires pour fiche de '.$typefiche ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'partenaires', 'action' => 'index' )
                         )
@@ -53,10 +53,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Types d\'actions par partenaires' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'actionscandidats_partenaires', 'action' => 'index' )
                         )

@@ -1,6 +1,6 @@
 <?php
 	// CSS
-	echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
 	// Titre
 	$this->pageTitle = sprintf(
@@ -15,7 +15,7 @@
 	<div class="tab_histo_dsp">
 		<?php
 		
-			echo $html->tag( 'h1', $this->pageTitle );
+			echo $xhtml->tag( 'h1', $this->pageTitle );
 			
 			if (!empty($histos[0]['DspRev'])) {
 				echo "<table>";
@@ -26,11 +26,11 @@
 					if (isset($histo['DspRev']['created'])) echo $histo['DspRev']['created'];
 					echo "</td><td>";
 					if (isset($histo['DspRev']['modified'])) echo $histo['DspRev']['modified'];
-					echo "</td><td>".$html->link($html->image('icons/zoom.png', array()).'Voir', '/dsps/view_revs/'.$histo['DspRev']['id'], array('escape'=>false))."</td><td>".$html->link($html->image('icons/pencil.png', array()).'Modifier', '/dsps/edit/'.$dsp['Personne']['id'].'/'.$histo['DspRev']['id'], array('escape'=>false))."</td><td>".$html->link($html->image('icons/arrow_redo.png', array()).'Revenir à cette version', '/dsps/revertTo/'.$histo['DspRev']['id'], array('escape'=>false))."</td><td>".$histo['diff'].'</td>';
+					echo "</td><td>".$xhtml->link($xhtml->image('icons/zoom.png', array()).'Voir', '/dsps/view_revs/'.$histo['DspRev']['id'], array('escape'=>false))."</td><td>".$xhtml->link($xhtml->image('icons/pencil.png', array()).'Modifier', '/dsps/edit/'.$dsp['Personne']['id'].'/'.$histo['DspRev']['id'], array('escape'=>false))."</td><td>".$xhtml->link($xhtml->image('icons/arrow_redo.png', array()).'Revenir à cette version', '/dsps/revertTo/'.$histo['DspRev']['id'], array('escape'=>false))."</td><td>".$histo['diff'].'</td>';
 					if ($histo['diff']>0)
-						echo '<td>'.$html->link($html->image('icons/style.png', array()).' Voir les différences', '/dsps/view_diff/'.$histo['DspRev']['id'], array('escape'=>false)).'</td>';
+						echo '<td>'.$xhtml->link($xhtml->image('icons/style.png', array()).' Voir les différences', '/dsps/view_diff/'.$histo['DspRev']['id'], array('escape'=>false)).'</td>';
 					else
-						echo '<td><span class="disabled">'.$html->image('icons/style.png', array()).' Voir les différences</span></td>';
+						echo '<td><span class="disabled">'.$xhtml->image('icons/style.png', array()).' Voir les différences</span></td>';
 					echo "</tr>";
 				}
 			

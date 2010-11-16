@@ -7,7 +7,7 @@
     <?php if( $permissions->check( 'modescontact', 'add' ) ) :?>
         <ul class="actionMenu">
             <?php
-                echo '<li>'.$html->addLink(
+                echo '<li>'.$xhtml->addLink(
                     'Ajouter un mode de contact au foyer',
                     array( 'controller' => 'modescontact', 'action' => 'add', $foyer_id )
                 ).' </li>';
@@ -46,7 +46,7 @@
 	                    else
 	                    	$adrelec = null;
 	                    
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 $numtel,
                                 $numposte,
@@ -55,12 +55,12 @@
                                 h( isset( $autorutitel[$modecontact['Modecontact']['autorutitel']] ) ?  $autorutitel[$modecontact['Modecontact']['autorutitel']] : null ),
                                 $adrelec,
                                 h( isset( $autorutiadrelec[$modecontact['Modecontact']['autorutiadrelec']] ) ? $autorutiadrelec[$modecontact['Modecontact']['autorutiadrelec']] : null ),
-                                $html->viewlink(
+                                $xhtml->viewlink(
                                     'Voir le mode de contact',
                                     array( 'controller' => 'modescontact', 'action' => 'view', $modecontact['Modecontact']['id'] ),
                                     $permissions->check( 'modescontact', 'view' )
                                 ),
-                                $html->editlink(
+                                $xhtml->editlink(
                                     'Modifier le mode de contact',
                                     array( 'controller' => 'modescontact', 'action' => 'edit', $modecontact['Modecontact']['id'] ),
                                     $permissions->check( 'modescontact', 'edit' )

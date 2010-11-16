@@ -1,12 +1,12 @@
 <?php
 	$this->pageTitle = 'État liquidatif';
-	echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
-	echo $html->tag( 'h1', $this->pageTitle );
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 
 	echo $xform->create( 'Etatliquidatif' );
 	if( $this->action == 'edit' && isset( $this->data['Etatliquidatif']['id'] ) ) {
-		echo $html->tag( 'div', $xform->input( 'Etatliquidatif.id' ) );
+		echo $xhtml->tag( 'div', $xform->input( 'Etatliquidatif.id' ) );
 	}
 
 	echo $xform->input( 'Etatliquidatif.budgetapre_id', array( 'required' => true, 'options' => $budgetsapres, 'empty' => true, 'domain' => 'apre' ) );

@@ -1,13 +1,13 @@
 <?php
-    echo $html->tag(
+    echo $xhtml->tag(
         'h1',
         $this->pageTitle = __d( 'referent', "Referents::{$this->action}", true )
     )
 ?>
 <?php
     if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',

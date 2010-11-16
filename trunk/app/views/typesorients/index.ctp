@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'typesorients', 'action' => 'add' )
             ).' </li>';
@@ -29,18 +29,18 @@
 				<?php
 					$nbOccurences = Set::enum( $typeorient['Typeorient']['id'], $occurences );
 					$nbOccurences = ( is_numeric( $nbOccurences ) ? $nbOccurences : 0 );
-					echo $html->tableCells(
+					echo $xhtml->tableCells(
                             array(
                                 h( $typeorient['Typeorient']['id'] ),
                                 h( $typeorient['Typeorient']['lib_type_orient'] ),
                                 h( $typeorient['Typeorient']['parentid'] ),
                                 h( $typeorient['Typeorient']['modele_notif'] ),
                                 h( $typeorient['Typeorient']['modele_notif_cohorte'] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le type d\'orientation',
                                     array( 'controller' => 'typesorients', 'action' => 'edit', $typeorient['Typeorient']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le type d\'orientation',
                                     array( 'controller' => 'typesorients', 'action' => 'delete', $typeorient['Typeorient']['id'] ),
                                     ( $permissions->check( 'typesorients', 'delete' ) && ( $nbOccurences == 0 ) )

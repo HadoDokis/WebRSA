@@ -1,12 +1,12 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Gestion des PDOs';?>
 
 <h1>Gestion des PDOs</h1>
 
 <?php
 //     if( !empty( $this->data ) ) {
-//         echo '<ul class="actionMenu"><li>'.$html->link(
-//             $html->image(
+//         echo '<ul class="actionMenu"><li>'.$xhtml->link(
+//             $xhtml->image(
 //                 'icons/application_form_magnify.png',
 //                 array( 'alt' => '' )
 //             ).' Formulaire',
@@ -30,7 +30,7 @@
     if( isset( $cohortepdo ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -38,7 +38,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -95,7 +95,7 @@
                         $title = $pdo['Dossier']['numdemrsa'];
 // debug($pdo);
 
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
                             h( Set::extract( $pdo, 'Dossier.matricule' ) ),
@@ -106,7 +106,7 @@
 //                             h( date_short( Set::extract( 'Propopdo.datedecisionpdo', $pdo ) ) ),
                             h( Set::classicExtract( $gestionnaire, Set::classicExtract( $pdo, 'Propopdo.user_id' ) ) ),
                             h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),
-                            $html->viewLink(
+                            $xhtml->viewLink(
                                 'Voir la PDO « '.$title.' »',
                                 array( 'controller' => 'propospdos', 'action' => 'index', $pdo['Personne']['id'] )
                             ),
@@ -122,14 +122,14 @@
         <?php echo $pagination;?>
        <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;' )
                 );
             ?></li>
 
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'cohortespdos', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );

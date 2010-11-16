@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'typesrdv', 'action' => 'add' )
             ).' </li>';
@@ -23,15 +23,15 @@
         </thead>
         <tbody>
             <?php foreach( $typesrdv as $typerdv ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( $typerdv['Typerdv']['libelle'] ),
                                 h( $typerdv['Typerdv']['modelenotifrdv'] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le type d\'action',
                                     array( 'controller' => 'typesrdv', 'action' => 'edit', $typerdv['Typerdv']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le type d\'action',
                                     array( 'controller' => 'typesrdv', 'action' => 'delete', $typerdv['Typerdv']['id'] )
                                 )

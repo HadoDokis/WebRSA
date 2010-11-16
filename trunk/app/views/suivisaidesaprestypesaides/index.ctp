@@ -4,7 +4,7 @@
     <?php if( empty( $suivisaidesaprestypesaides ) ):?>
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'suivisaidesaprestypesaides', 'action' => 'add' )
             ).' </li>';
@@ -15,7 +15,7 @@
     <?php else:?>
         <ul class="actionMenu">
             <?php
-                echo '<li>'.$html->editLink(
+                echo '<li>'.$xhtml->editLink(
                     'Modifier',
                     array( 'controller' => 'suivisaidesaprestypesaides', 'action' => 'edit' )
                 ).' </li>';
@@ -33,15 +33,15 @@
         </thead>
         <tbody>
             <?php foreach( $suivisaidesaprestypesaides as $suiviaideapretypeaide ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                     array(
                         h( Set::enum( Set::classicExtract( $suiviaideapretypeaide, 'Suiviaideapretypeaide.typeaide' ), $natureAidesApres ) ),
                         h( Set::enum( Set::classicExtract( $suiviaideapretypeaide, 'Suiviaideapretypeaide.suiviaideapre_id' ), $personnessuivis ) ),
-//                         $html->editLink(
+//                         $xhtml->editLink(
 //                             'Éditer le suivi d\'aide ',
 //                             array( 'controller' => 'suivisaidesaprestypesaides', 'action' => 'edit', $suiviaideapretypeaide['Suiviaideapretypeaide']['id'] )
 //                         ),
-//                         $html->deleteLink(
+//                         $xhtml->deleteLink(
 //                             'Supprimer le suivi d\'aide ',
 //                             array( 'controller' => 'suivisaidesaprestypesaides', 'action' => 'delete', $suiviaideapretypeaide['Suiviaideapretypeaide']['id'] )
 //                         )

@@ -14,7 +14,7 @@
             <?php if( $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'add' ) ):?>
                 <ul class="actionMenu">
                     <?php
-                        echo '<li>'.$html->addLink(
+                        echo '<li>'.$xhtml->addLink(
                             'Ajouter APRE',
                             array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'add', $personne_id )
                         ).' </li>';
@@ -25,9 +25,9 @@
     <?php if( !empty( $apres ) ):?>
     <?php
         if( $alerteMontantAides ) {
-            echo $html->tag(
+            echo $xhtml->tag(
                 'p',
-                $html->image( 'icons/error.png', array( 'alt' => 'Remarque' ) ).' '.sprintf( 'Cette personne risque de bénéficier de plus de %s € d\'aides complémentaires au cours des %s derniers mois', Configure::read( 'Apre.montantMaxComplementaires' ), Configure::read( 'Apre.periodeMontantMaxComplementaires' ) ),
+                $xhtml->image( 'icons/error.png', array( 'alt' => 'Remarque' ) ).' '.sprintf( 'Cette personne risque de bénéficier de plus de %s € d\'aides complémentaires au cours des %s derniers mois', Configure::read( 'Apre.montantMaxComplementaires' ), Configure::read( 'Apre.periodeMontantMaxComplementaires' ) ),
                 array( 'class' => 'error' )
             );
         }
@@ -87,7 +87,7 @@
                         </tbody>
                     </table>';
 
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( date_short( Set::classicExtract( $apre, 'Aideapre66.datedemande' ) ) ),
                             h( $etat ),
@@ -96,23 +96,23 @@
                             h( $locale->money( $mtforfait ) ),
                             h( $locale->money( $mtattribue ) ),
                             h(  Set::enum( Set::classicExtract( $apre, 'Aideapre66.decisionapre' ), $options['decisionapre'] ) ),
-//                             $html->viewLink(
+//                             $xhtml->viewLink(
 //                                 'Voir la demande APRE',
 //                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'view', $apre[$this->modelClass]['id'] ),
 //                                 $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'view' )
 //                             ),
-                            $html->editLink(
+                            $xhtml->editLink(
                                 'Editer la demande APRE',
                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'edit', $apre[$this->modelClass]['id'] ),
                                 $buttonEnabled,
                                 $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'edit' )
                             ),
-                            $html->notificationsApreLink(
+                            $xhtml->notificationsApreLink(
                                 'Notifier la décision',
                                 array( 'controller' => 'apres66', 'action' => 'notificationsop', $apre[$this->modelClass]['id'] ),
                                 $permissions->check( 'gedooos', 'notificationsop' )
                             ),
-                            $html->printLink(
+                            $xhtml->printLink(
                                 'Imprimer la demande APRE',
                                 array( 'controller' => 'gedooos', 'action' => 'apre', $apre[$this->modelClass]['id'] ),
                                 $buttonEnabled,

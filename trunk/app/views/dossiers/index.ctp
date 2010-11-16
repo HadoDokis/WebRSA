@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Recherche par dossier/allocataire';?>
 
 <h1>Recherche par dossier / allocataire</h1>
@@ -6,7 +6,7 @@
 <ul class="actionMenu">
     <?php
         if( $permissions->check( 'ajoutdossiers', 'wizard' ) ) {
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter un dossier',
                 array( 'controller' => 'ajoutdossiers', 'action' => 'wizard' )
             ).' </li>';
@@ -15,7 +15,7 @@
         if( $permissions->check( 'dossierssimplifies', 'add' ) ) {
 //        if( $session->read( 'Auth.User.username' ) == 'cg66' ) { // FIXME
 
-            echo '<li>'.$html->addSimpleLink(
+            echo '<li>'.$xhtml->addSimpleLink(
                 'Ajouter une préconisation d\'orientation',
                 array( 'controller' => 'dossierssimplifies', 'action' => 'add' )
             ).' </li>';
@@ -23,8 +23,8 @@
         }
 
         if( is_array( $this->data ) ) {
-            echo '<li>'.$html->link(
-                $html->image(
+            echo '<li>'.$xhtml->link(
+                $xhtml->image(
                     'icons/application_form_magnify.png',
                     array( 'alt' => '' )
                 ).' Formulaire',
@@ -140,7 +140,7 @@
                             </tbody>
                         </table>';
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $dossier['Dossier']['numdemrsa'] ),
                                 h( date_short( $dossier['Dossier']['dtdemrsa'] ) ),
@@ -158,7 +158,7 @@
                                 h( Set::extract(  $dossier, 'Adresse.locaadr' ) ),
                                 //h( isset( $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] ) ? $etatdosrsa[$dossier['Situationdossierrsa']['etatdosrsa']] : null ),
                                 array(
-                                    $html->viewLink(
+                                    $xhtml->viewLink(
                                         'Voir le dossier « '.$title.' »',
                                         array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] )
                                     ),
@@ -166,7 +166,7 @@
                                 ),
                                 array(
                                     ( $dossier['Dossier']['locked'] ?
-                                        $html->image(
+                                        $xhtml->image(
                                             'icons/lock.png',
                                             array( 'alt' => '', 'title' => 'Dossier verrouillé' )
                                         ) : null
@@ -183,17 +183,17 @@
             </tbody>
         </table>
         <?php if( Set::extract( $paginator, 'params.paging.Dossier.count' ) > 65000 ):?>
-            <p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $html->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
+            <p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $xhtml->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
         <?php endif;?>
        <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'dossiers', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );

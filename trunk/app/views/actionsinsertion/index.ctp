@@ -1,5 +1,5 @@
 <?php $this->pageTitle = 'Actions d\'insertion pour le contrat';?>
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
 
@@ -20,7 +20,7 @@
     <?php if( empty( $actionsinsertion ) ):?>
         <b>Aides</b>
             <?php 
-                echo $html->addLink(
+                echo $xhtml->addLink(
                     'Ajouter une aide',
                     array( 'controller' => 'aidesdirectes', 'action' => 'add', $contratinsertion_id )
                 );
@@ -28,7 +28,7 @@
             <p class="notice">Ce contrat ne possède pas d'aides d'insertion.</p>
 
        <b>Prestations</b>
-            <?php       echo $html->addLink(
+            <?php       echo $xhtml->addLink(
                                 'Ajouter une prestation',
                                 array( 'controller' => 'prestsform', 'action' => 'add', $contratinsertion_id )
                             );
@@ -39,7 +39,7 @@
 <br />
         <h2>Aides</h2>
         <?php 
-            echo $html->addLink(
+            echo $xhtml->addLink(
                 'Ajouter une aide',
                 array( 'controller' => 'aidesdirectes', 'action' => 'add', $contratinsertion_id )
             );
@@ -58,12 +58,12 @@
                     <?php foreach( $actioninsertion['Aidedirecte'] as $aidedirecte ):?>
                     <?php
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $typo_aide[$aidedirecte['typo_aide']] ),
                                 h( $actions[$aidedirecte['lib_aide']] ),
                                 h( date_short( $aidedirecte['date_aide'] ) ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer l\'aide ',
                                     array( 'controller' => 'aidesdirectes', 'action' => 'edit', $aidedirecte['id'] )
                                 )
@@ -77,7 +77,7 @@
 <br />
         <h2>Prestations</h2>
         <?php
-            echo $html->addLink(
+            echo $xhtml->addLink(
                 'Ajouter une prestation',
                 array( 'controller' => 'prestsform', 'action' => 'add', $contratinsertion_id)
             );
@@ -96,12 +96,12 @@
                 <?php foreach( $actionsinsertion as $actioninsertion ):?>
                     <?php foreach( $actioninsertion['Prestform'] as $prestform ):?>
                         <?php
-                            echo $html->tableCells(
+                            echo $xhtml->tableCells(
                                 array(
                                     h( $actions[$prestform['lib_presta']] ),
                                     h( $prestform['Refpresta']['nomrefpresta'].' '.$prestform['Refpresta']['prenomrefpresta']),
                                     h( date_short( $prestform['date_presta'] ) ),
-                                    $html->editLink(
+                                    $xhtml->editLink(
                                         'Éditer la prestation ',
                                         array( 'controller' => 'prestsform', 'action' => 'edit', $prestform['id'] )
                                     )

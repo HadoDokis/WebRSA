@@ -28,7 +28,7 @@
             </thead>
             <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $infofinanciere['Personne']['nir'] ),
                                 h( $infofinanciere['Personne']['nom'].' '.$infofinanciere['Personne']['prenom'] ),
@@ -41,7 +41,7 @@
                                 $locale->money( $infofinanciere[0]['mt_indus_transferes_c_g'] ),
                                 $locale->money( $infofinanciere[0]['mt_annulations_faible_montant'] ),
 //                                 $locale->money( $indu[0]['mt_autre_annulation'] ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Détails d\'indu',
                                     array( 'controller' => 'indus', 'action' => 'view', $infofinanciere['Dossier']['id'] )
                                 ),

@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Recherche d\'APREs';?>
 
 <h1>Etat des demandes d'APRE</h1>
@@ -16,7 +16,7 @@
     if( isset( $apres ) ) {
         $paginator->options( array( 'url' => $this->params['named'] ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -24,7 +24,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -33,8 +33,8 @@
 ?>
 <?php
     if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -163,7 +163,7 @@
                             }
                         }
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( Set::classicExtract( $apre, 'Dossier.numdemrsa' ) ),
                                 h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
@@ -175,7 +175,7 @@
                                 h( $locale->date( 'Date::short', Set::classicExtract( $apre, 'Relanceapre.daterelance' ) ) ),
                                 h( $locale->date( 'Date::short', Set::classicExtract( $apre, 'Comiteapre.datecomite' ) ) ),
                                 array(
-                                    $html->viewLink(
+                                    $xhtml->viewLink(
                                         'Voir le dossier « '.$title.' »',
                                         array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $apre['Apre']['personne_id'] )
                                     ),
@@ -193,13 +193,13 @@
     <?php echo $pagination;?>
         <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'criteresapres', 'action' => 'exportcsv', $this->action, implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );

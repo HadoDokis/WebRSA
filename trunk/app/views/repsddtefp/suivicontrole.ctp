@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <h1><?php echo $this->pageTitle='APRE: Suivi et contrôle de l\'enveloppe';?></h1>
 
 
@@ -14,7 +14,7 @@
 		// FIXME: utiliser xpaginator ?
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ), array( 'class' => 'pagination' ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ), array( 'class' => 'pagination' ) );
 
         $pages = implode(
 			'&nbsp;&nbsp;',
@@ -27,7 +27,7 @@
 			)
 		);
 
-        $pagination .= $html->tag( 'p', $pages, array( 'class' => 'pagination' ) );
+        $pagination .= $xhtml->tag( 'p', $pages, array( 'class' => 'pagination' ) );
     }
     else {
         $pagination = '';
@@ -36,8 +36,8 @@
 ?>
 <?php
     if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -173,7 +173,7 @@
                         $mtforfait = Set::classicExtract( $apre, 'Apre.mtforfait' );
                     }
 // debug($apre);
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
                             h( Set::enum( Set::classicExtract( $apre, 'Personne.sexe' ), $sexe ) ),
@@ -200,13 +200,13 @@
 
         <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'repsddtefp', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );

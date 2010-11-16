@@ -25,7 +25,7 @@
                 </thead>
                 <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $topsansdomfixe[$detaildroitrsa['Detaildroitrsa']['topsansdomfixe']]),
                                 h( $oridemrsa[$detaildroitrsa['Detaildroitrsa']['oridemrsa']]),
@@ -55,7 +55,7 @@
                 <tbody>
                     <?php foreach( $detaildroitrsa['Detailcalculdroitrsa'] as $detailcalcul ):?>
                         <?php
-                            echo $html->tableCells(
+                            echo $xhtml->tableCells(
                                 array(
                                     h( $natpf[$detailcalcul['natpf']]),
                                     h( $sousnatpf[$detailcalcul['sousnatpf']]),

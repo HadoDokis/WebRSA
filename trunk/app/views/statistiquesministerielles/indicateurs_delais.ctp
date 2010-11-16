@@ -1,9 +1,9 @@
 <?php //debug($results);?>
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ); ?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ); ?>
 <?php
 //if( is_array( $this->data ) ) {
-echo '<ul class="actionMenu"><li>'.$html->link(
-$html->image(
+echo '<ul class="actionMenu"><li>'.$xhtml->link(
+$xhtml->image(
                 'icons/application_form_magnify.png',
 array( 'alt' => '' )
 ).' Formulaire',
@@ -24,7 +24,7 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 <?php echo $form->end();?>
 <?php if( !empty( $this->data ) ):?>
 <?php
-echo $html->tag(
+echo $xhtml->tag(
         'h1',
 $this->pageTitle = 'Indicateurs de délais'
 )

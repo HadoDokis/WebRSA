@@ -13,11 +13,11 @@
 
 <?php
     if( !empty( $structures ) ) {
-        echo $html->tag( 'h2', 'Structures référentes à compléter' );
+        echo $xhtml->tag( 'h2', 'Structures référentes à compléter' );
         $lis = array();
         foreach( $structures as $structure ) {
-            $lis[] = $html->tag( 'li', $structure );
+            $lis[] = $xhtml->tag( 'li', $structure );
         }
-        echo $html->tag( 'ul', implode( null, $lis ) );
+        echo $xhtml->tag( 'ul', implode( null, $lis ) );
     }
 ?>

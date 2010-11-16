@@ -1,11 +1,11 @@
 <?php
-    echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
     echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <div class="with_treemenu">
     <?php
-        echo $html->tag(
+        echo $xhtml->tag(
             'h1',
             $this->pageTitle = __d( 'traitementpdo', "Traitementspdos::{$this->action}", true )
         );

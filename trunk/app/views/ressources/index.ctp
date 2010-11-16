@@ -11,7 +11,7 @@
         <?php if( $permissions->check( 'ressources', 'add' ) ) :?>
             <ul class="actionMenu">
                 <?php
-                    echo '<li>'.$html->addLink(
+                    echo '<li>'.$xhtml->addLink(
                         'Déclarer une ressource',
                         array( 'controller' => 'ressources', 'action' => 'add', $personne_id )
                     ).' </li>';
@@ -24,7 +24,7 @@
         <?php if( $permissions->check( 'ressources', 'add' ) ) :?>
             <ul class="actionMenu">
                 <?php
-                    echo '<li>'.$html->addLink(
+                    echo '<li>'.$xhtml->addLink(
                         'Déclarer une ressource',
                         array( 'controller' => 'ressources', 'action' => 'add', $personne_id )
                     ).' </li>';
@@ -67,19 +67,19 @@
                         $ressource['Ressource']['dfress'] ,
                      ));
 
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
 //                             h( $ressource['Ressource']['id']),
                             h( $ressource['Ressource']['topressnotnul']  ? 'Oui' : 'Non'),
                             $locale->money( $avg ),
                             h( date_short( $ressource['Ressource']['ddress'] ) ),
                             h( date_short( $ressource['Ressource']['dfress'] ) ),
-                            $html->viewLink(
+                            $xhtml->viewLink(
                                 'Voir la ressource',
                                 array( 'controller' => 'ressources', 'action' => 'view', $ressource['Ressource']['id'] ),
                                 $permissions->check( 'ressources', 'view' )
                             ),
-                            $html->editLink(
+                            $xhtml->editLink(
                                 'Éditer la ressource ',
                                 array( 'controller' => 'ressources', 'action' => 'edit', $ressource['Ressource']['id'] ),
                                 $permissions->check( 'ressources', 'edit' )

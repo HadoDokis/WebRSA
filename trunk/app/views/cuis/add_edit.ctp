@@ -1,7 +1,7 @@
 <?php
     $domain = 'cui';
     echo $this->element( 'dossier_menu', array( 'id' => $dossier_id, 'personne_id' => $personne_id ) );
-    echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 ?>
 
 
@@ -164,12 +164,12 @@
 
 <div class="with_treemenu">
     <?php
-        echo $html->tag(
+        echo $xhtml->tag(
             'h1',
             $this->pageTitle = __d( 'cui', "Cuis::{$this->action}", true )
         );
 
-        echo $html->tag(
+        echo $xhtml->tag(
             'p',
             '<strong>CONTRAT UNIQUE D\'INSERTION</strong>'.'<br />'.' CONVENTION ENTRE LE CONSEIL GÉNÉRAL, L\'EMPLOYEUR et LE SALARIÉ'.'<br />'.' ou L\'ÉTAT, L\'EMPLOYEUR et LE SALARIÉ',
             array(
@@ -249,7 +249,7 @@
                                 )
                             );
 
-                            echo $html->tag(
+                            echo $xhtml->tag(
                                 'p',
                                 'Si l\'adresse à laquelle les documents administratifs et financiers doivent etre envoyés est différente de l\'adresse ci-dessus, remplir la partie ci-dessous',
                                 array(
@@ -264,7 +264,7 @@
                                 $valueAdressebis = $thisDataAdressebis;
                             }
                             $input =  $form->input( 'Cui.isadresse2', array( 'type' => 'radio' , 'options' => $options['isadresse2'], 'div' => false, 'legend' => required( __d( 'cui', 'Cui.isadresse2', true )  ), 'value' => $valueAdressebis ) );
-                            echo $html->tag( 'div', $input, array( 'class' => $class ) );
+                            echo $xhtml->tag( 'div', $input, array( 'class' => $class ) );
 
                         ?>
                         <fieldset id="Adressebis">
@@ -306,7 +306,7 @@
                                     'options' => $options
                                 )
                             );
-                            echo $html->tag( 'p', 'Paiement par virement: fournir un RIB de l\'employeur', array( 'class' => 'remarque center' ) );
+                            echo $xhtml->tag( 'p', 'Paiement par virement: fournir un RIB de l\'employeur', array( 'class' => 'remarque center' ) );
                             echo $default->subform(
                                 array(
                                     'Cui.ribemployeur'
@@ -356,7 +356,7 @@
         </table>
         <fieldset id="iscie" class="invisible">
             <?php
-                echo $html->tag( 'p', 'Si CIE, je déclare sur l\'honneur être à jour des versements de mes cotisations et contributions sociales, que cette embauche ne résulte pas du licenciement d\'un salarié en CDI, ne pas avoir procédé à un licenciement pour motif économique au cours des 6 derniers mois ou pour une raison autre que la faute grave' );
+                echo $xhtml->tag( 'p', 'Si CIE, je déclare sur l\'honneur être à jour des versements de mes cotisations et contributions sociales, que cette embauche ne résulte pas du licenciement d\'un salarié en CDI, ne pas avoir procédé à un licenciement pour motif économique au cours des 6 derniers mois ou pour une raison autre que la faute grave' );
                 echo $default->subform(
                     array(
                         'Cui.iscie' => array( 'type' => 'radio', 'options' => $options['iscie'], 'label' => false  )
@@ -458,7 +458,7 @@
                 }
 
                 $input =  $form->input( 'Cui.isinscritpe', array( 'type' => 'radio' , 'options' => $options['isinscritpe'], /*'div' => false,*/ 'legend' => required( __d( 'cui', 'Cui.isinscritpe', true )  ), 'value' => $valueInscritPE ) );
-                echo $html->tag( 'div', $input, array( 'class' => $class ) );
+                echo $xhtml->tag( 'div', $input, array( 'class' => $class ) );
             ?>
             <fieldset id="InscritPE" class="invisible">
                 <?php
@@ -570,7 +570,7 @@
                                 'options' => $options
                             )
                         );
-                        echo $html->tag( 'p', '( Pour les bénéficiaires du RSA, y compris la période antérieure au 01/06/2009 en RMI ou API )', array( 'class' => 'remarque' ) );
+                        echo $xhtml->tag( 'p', '( Pour les bénéficiaires du RSA, y compris la période antérieure au 01/06/2009 en RMI ou API )', array( 'class' => 'remarque' ) );
                     ?>
                 </fieldset>
                 <?php
@@ -722,7 +722,7 @@
         </table>
 
         <?php
-            echo $html->tag( 'p', 'Lieu d\'exécution du contrat s\'il est différent de l\'adresse de l\'employeur :' );
+            echo $xhtml->tag( 'p', 'Lieu d\'exécution du contrat s\'il est différent de l\'adresse de l\'employeur :' );
             echo $default->subform(
                 array(
                     'Cui.numlieucontrat',
@@ -765,7 +765,7 @@
             <tr>
                 <td class="noborder">
                     <?php
-                        echo $html->tag(
+                        echo $xhtml->tag(
                             'p',
                             'Actions d\'accompagnement professionnel',
                             array(
@@ -776,7 +776,7 @@
                 </td>
                 <td class="noborder">
                     <?php
-                        echo $html->tag(
+                        echo $xhtml->tag(
                             'p',
                             'Actions de formation',
                             array(
@@ -789,7 +789,7 @@
             <tr>
                 <td colspan="2" class="noborder">
                     <?php
-                        echo $html->tag(
+                        echo $xhtml->tag(
                             'div',
                             'Indiquez 1, 2 ou 3 dans la case selon que l\'action est mobilisée à l\'initiative de: 1 l\'employeur, 2 le salarié, 3 le prescripteur',
                             array(
@@ -802,7 +802,7 @@
             <tr>
                 <td class="cui5 noborder">
                     <?php
-                        echo $html->tag( 'p', 'Type d\'actions : ' );
+                        echo $xhtml->tag( 'p', 'Type d\'actions : ' );
                         echo $default->subform(
                             array(
                                 'Cui.remobilisation' => array( 'type' => 'select', 'empty' => true, 'options' => $options['remobilisation'] ),
@@ -822,7 +822,7 @@
                 </td>
                 <td class="cui5 noborder">
                     <?php
-                        echo $html->tag( 'p', 'Type d\'actions : ' );
+                        echo $xhtml->tag( 'p', 'Type d\'actions : ' );
                         echo $default->subform(
                             array(
                                 'Cui.adaptation' => array( 'type' => 'select', 'empty' => true, 'options' => $options['adaptation'] ),
@@ -853,7 +853,7 @@
                         ?>
                     </fieldset>
                     <?php
-                        echo $html->tag( 'p', 'Une ou plusieurs de ces actions s\'inscrivent elles dans le cadre de la validation des acquis de l\'expérience ?' );
+                        echo $xhtml->tag( 'p', 'Une ou plusieurs de ces actions s\'inscrivent elles dans le cadre de la validation des acquis de l\'expérience ?' );
                         echo $default->subform(
                             array(
                                 'Cui.validacquis' => array( 'type' => 'radio', 'legend' => false, 'options' => $options['validacquis'] )
@@ -969,7 +969,7 @@
                                 'options' => $options
                             )
                         );
-                        echo $html->tag( 'em','(identique à la date d\'embauche si convention initiale)' );
+                        echo $xhtml->tag( 'em','(identique à la date d\'embauche si convention initiale)' );
                     ?>
                 </td>
                 <td class="noborder">
@@ -1056,9 +1056,9 @@
 //                             )
 //                         );
 
-                        echo $html->tag( 'hr /');
+                        echo $xhtml->tag( 'hr /');
 
-                        echo $html->tag( 'p','Dans le cas d\'un contrat prescrit par le Conseil Général ou pour son compte (sur la base d\'une convention d\'objectifs et de moyens)', array( 'class' => 'aere' ) );
+                        echo $xhtml->tag( 'p','Dans le cas d\'un contrat prescrit par le Conseil Général ou pour son compte (sur la base d\'une convention d\'objectifs et de moyens)', array( 'class' => 'aere' ) );
                     ?>
                     </td>
                 </tr>
@@ -1146,7 +1146,7 @@
         </table>
     </fieldset>
     <?php
-        echo $html->tag( 'p', 'En cas de non exécution de la présente convention, les sommes déjà versées font l\'objet d\'un ordre de reversement. L\'employeur et le salarié déclarent avoir pris connaissance des conditions générales jointes', array( 'class' => 'remarque' ) );
+        echo $xhtml->tag( 'p', 'En cas de non exécution de la présente convention, les sommes déjà versées font l\'objet d\'un ordre de reversement. L\'employeur et le salarié déclarent avoir pris connaissance des conditions générales jointes', array( 'class' => 'remarque' ) );
     ?>
 
     <div class="submit">

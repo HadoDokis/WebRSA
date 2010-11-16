@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
     $domain = 'bilanparcours';
@@ -213,7 +213,7 @@
             <?php
                 /// Traitement de l'orientation sans passage en EP locale
                 $tmp = radioBilan( $this, 'Bilanparcours.proposition', 'traitement', 'Traitement de l\'orientation du dossier sans passage en EP Locale' );
-                echo $html->tag( 'h3', $tmp );
+                echo $xhtml->tag( 'h3', $tmp );
             ?>
             <fieldset id="traitement" class="invisible">
                 <?php
@@ -264,7 +264,7 @@
             <?php
                 /// "Commission Parcours": Examen du dossier avec passage en EP Locale
                 $tmp = radioBilan( $this, 'Bilanparcours.proposition', 'parcours', '"Commission Parcours": Examen du dossier avec passage en EP Locale' );
-                echo $html->tag( 'h3', $tmp );
+                echo $xhtml->tag( 'h3', $tmp );
             ?>
             <fieldset id="parcours" class="invisible">
                 <?php
@@ -323,7 +323,7 @@
             <?php
                 /// "Commission Audition": Examen du dossier par la commission EP Locale
                 $tmp = radioBilan( $this, 'Bilanparcours.proposition', 'audition', '"Commission Audition": Examen du dossier par la commission EP Locale' );
-                echo $html->tag( 'h3', $tmp );
+                echo $xhtml->tag( 'h3', $tmp );
             ?>
             <fieldset id="audition" class="invisible">
                 <?php

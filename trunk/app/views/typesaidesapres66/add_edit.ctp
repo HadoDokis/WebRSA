@@ -1,5 +1,5 @@
 <?php
-    echo $html->tag(
+    echo $xhtml->tag(
         'h1',
         $this->pageTitle = __d( 'typeaideapre66', "Typesaidesapres66::{$this->action}", true )
     )

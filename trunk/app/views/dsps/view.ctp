@@ -1,6 +1,6 @@
 <?php
 	// CSS
-	echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
 	// Titre
 	$this->pageTitle = sprintf(
@@ -14,7 +14,7 @@
 <div class="with_treemenu">
 	<div id="dsps">
 		<?php
-			echo $html->tag( 'h1', $this->pageTitle );
+			echo $xhtml->tag( 'h1', $this->pageTitle );
 
 			function result( $data, $path, $type, $options = array() ) {
 				$result = Set::classicExtract( $data, $path );
@@ -32,7 +32,7 @@
 
 				if( $permissions->check( 'dsps', 'add' ) ) {
 					echo '<ul class="actionMenu">
-							<li>'.$html->addLink(
+							<li>'.$xhtml->addLink(
 								'Ajouter une DSP',
 								array( 'controller' => 'dsps', 'action' => 'add', $personne_id )
 							).' </li></ul>';
@@ -42,7 +42,7 @@
 				
 				if( $permissions->check( 'dsps', 'edit' ) && ( (isset($rev)) && (!$rev) || ( $this->action == 'view_revs' ) ) ) {
 					echo '<ul class="actionMenu">
-							<li>'.$html->editLink(
+							<li>'.$xhtml->editLink(
 								'Modifier cette DSP',
 								array( 'controller' => 'dsps', 'action' => 'edit', Set::classicExtract( $dsp, 'Personne.id' ) )
 							).' </li></ul>';
@@ -50,7 +50,7 @@
 				
 				if( $permissions->check( 'dsps', 'revertTo' ) && ( $this->action == 'view_revs' ) ) {
 					echo '<ul class="actionMenu">
-							<li>'.$html->revertToLink(
+							<li>'.$xhtml->revertToLink(
 								'Revenir à cette version',
 								array( 'controller' => 'dsps', 'action' => 'revertTo', Set::classicExtract( $dsp, 'Dsp.id' ) )
 							).' </li></ul>';
@@ -82,7 +82,7 @@
 				);
 
 				if( !empty( $generalites ) ) {
-					echo $html->tag( 'h2', 'Généralités' ).$generalites;
+					echo $xhtml->tag( 'h2', 'Généralités' ).$generalites;
 				}
 
 				$generalites = $default->view(
@@ -100,7 +100,7 @@
 				);
 
 				if( !empty( $generalites ) ) {
-					echo $html->tag( 'h3', 'Généralités' ).$generalites;
+					echo $xhtml->tag( 'h3', 'Généralités' ).$generalites;
 				}
 
 				// Situation SituationSociale
@@ -129,30 +129,30 @@
 				);
 				$generalites = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
 				if( !empty( $generalites ) ) {
-					$generalites = $html->tag( 'h3', 'Généralités' ).$generalites;
+					$generalites = $xhtml->tag( 'h3', 'Généralités' ).$generalites;
 				}*/
 
 				// SituationSociale - DetailDifficulteSituationSociale (0-n)
 				$difficultes = $dsphm->details( $dsp, 'Detaildifsoc', 'difsoc', 'libautrdifsoc', $options['Detaildifsoc']['difsoc'] );
-				$difficultes = $html->tag( 'h3', 'Difficultés sociales' ).$difficultes;
+				$difficultes = $xhtml->tag( 'h3', 'Difficultés sociales' ).$difficultes;
 
 				// SituationSociale - DetailDifficulteSituationSocialeProfessionnel (0-n)
 				if ($cg=='cg58') {
 					$difficultes = $dsphm->details( $dsp, 'Detaildifsocpro', 'difsocpro', 'libautrdifsocpro', $options['Detaildifsocpro']['difsocpro'] );
-					$difficultes = $html->tag( 'h3', 'Difficultés sociales décelées par le professionel' ).$difficultes;
+					$difficultes = $xhtml->tag( 'h3', 'Difficultés sociales décelées par le professionel' ).$difficultes;
 				}
 
 				// SituationSociale - DetailAccompagnementSocialFamilial (0-n)
 				$accosocfam = $dsphm->details( $dsp, 'Detailaccosocfam', 'nataccosocfam', 'libautraccosocfam', $options['Detailaccosocfam']['nataccosocfam'] );
-				$accosocfam = $html->tag( 'h3', 'Difficultés accompagnement social familial' ).$accosocfam;
+				$accosocfam = $xhtml->tag( 'h3', 'Difficultés accompagnement social familial' ).$accosocfam;
 
 				// SituationSociale - DetailAccompagnementSocialIndividuel (0-n)
 				$accosocindi = $dsphm->details( $dsp, 'Detailaccosocindi', 'nataccosocindi', 'libautraccosocindi', $options['Detailaccosocindi']['nataccosocindi'] );
-				$accosocindi = $html->tag( 'h3', 'Difficultés accompagnement social individuel' ).$accosocindi;
+				$accosocindi = $xhtml->tag( 'h3', 'Difficultés accompagnement social individuel' ).$accosocindi;
 
 				// SituationSociale - DetailDifficulteDisponibilite (0-n)
 				$difdisps = $dsphm->details( $dsp, 'Detaildifdisp', 'difdisp', null, $options['Detaildifdisp']['difdisp'] );
-				$difdisps = $html->tag( 'h3', 'Difficultés disponibilités' ).$difdisps;
+				$difdisps = $xhtml->tag( 'h3', 'Difficultés disponibilités' ).$difdisps;
 
 	// debug( array_keys( $options ) );
 
@@ -173,7 +173,7 @@
 				);
 
 				if( !empty( $nivetus ) ) {
-					$nivetus = $html->tag( 'h2', 'Niveau d\'étude' ).$nivetus;
+					$nivetus = $xhtml->tag( 'h2', 'Niveau d\'étude' ).$nivetus;
 				}
 
 				// Niveau d'étude
@@ -209,7 +209,7 @@
 				);
 				$nivetus = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
 				if( !empty( $nivetus ) ) {
-					$nivetus = $html->tag( 'h2', 'Niveau d\'étude' ).$nivetus;
+					$nivetus = $xhtml->tag( 'h2', 'Niveau d\'étude' ).$nivetus;
 				}*/
 
 				// Disponibilités emploi
@@ -224,7 +224,7 @@
 				);
 
 				if( !empty( $disponibilitesEmploi ) ) {
-					$disponibilitesEmploi = $html->tag( 'h2', 'Disponibilités emploi' ).$disponibilitesEmploi;
+					$disponibilitesEmploi = $xhtml->tag( 'h2', 'Disponibilités emploi' ).$disponibilitesEmploi;
 				}
 
 				/*$disponibilitesEmploi = array(
@@ -235,7 +235,7 @@
 				);
 				$disponibilitesEmploi = $xhtml->details( $disponibilitesEmploi, array( 'type' => 'list', 'empty' => true ) );
 				if( !empty( $disponibilitesEmploi ) ) {
-					$disponibilitesEmploi = $html->tag( 'h2', 'Disponibilités emploi' ).$disponibilitesEmploi;
+					$disponibilitesEmploi = $xhtml->tag( 'h2', 'Disponibilités emploi' ).$disponibilitesEmploi;
 				}*/
 
 				// Situation professionnelle
@@ -262,7 +262,7 @@
 				);
 
 				if( !empty( $situationProfessionnelle ) ) {
-					$situationProfessionnelle = $html->tag( 'h2', 'Situation professionnelle' ).$situationProfessionnelle;
+					$situationProfessionnelle = $xhtml->tag( 'h2', 'Situation professionnelle' ).$situationProfessionnelle;
 				}
 				
 				if ($cg=='cg58')
@@ -365,7 +365,7 @@
 				);
 				$situationProfessionnelle = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
 				if( !empty( $situationProfessionnelle ) ) {
-					$situationProfessionnelle = $html->tag( 'h2', 'Situation professionnelle' ).$situationProfessionnelle;
+					$situationProfessionnelle = $xhtml->tag( 'h2', 'Situation professionnelle' ).$situationProfessionnelle;
 				}*/
 
 				// Mobilité
@@ -379,7 +379,7 @@
 					)
 				);
 				if( !empty( $mobilite ) ) {
-					$mobilite = $html->tag( 'h2', 'Mobilité' ).$mobilite;
+					$mobilite = $xhtml->tag( 'h2', 'Mobilité' ).$mobilite;
 				}
 				
 				if ($cg=='cg58') {
@@ -418,12 +418,12 @@
 				);
 				$mobilite = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
 				if( !empty( $mobilite ) ) {
-					$mobilite = $html->tag( 'h2', 'Mobilité' ).$mobilite;
+					$mobilite = $xhtml->tag( 'h2', 'Mobilité' ).$mobilite;
 				}*/
 
 				// Mobilite - DetailMobilite (0-n)
 				$natmobs = $dsphm->details( $dsp, 'Detailnatmob', 'natmob', null, $options['Detailnatmob']['natmob'] );
-				$natmobs = $html->tag( 'h3', 'Code mobilité' ).$natmobs;
+				$natmobs = $xhtml->tag( 'h3', 'Code mobilité' ).$natmobs;
 
 
 				// Difficultés logement
@@ -441,7 +441,7 @@
 				);
 				
 				if( !empty( $difficultesLogement ) ) {
-					$difficultesLogement = $html->tag( 'h2', 'Difficultés logement' ).$difficultesLogement;
+					$difficultesLogement = $xhtml->tag( 'h2', 'Difficultés logement' ).$difficultesLogement;
 				}
 				
 				if ($cg=='cg58')
@@ -477,17 +477,17 @@
 				);
 				$difficultesLogement = $xhtml->details( $rows, array( 'type' => 'list', 'empty' => true ) );
 				if( !empty( $difficultesLogement ) ) {
-					$difficultesLogement = $html->tag( 'h2', 'Difficultés logement' ).$difficultesLogement;
+					$difficultesLogement = $xhtml->tag( 'h2', 'Difficultés logement' ).$difficultesLogement;
 				}*/
 
 				// DifficulteLogement - DetailDifficulteLogement
 				$diflogs = $dsphm->details( $dsp, 'Detaildiflog', 'diflog', 'libautrdiflog', $options['Detaildiflog']['diflog'] );
-				$diflogs = $html->tag( 'h3', 'Détails difficultés logement' ).$diflogs;
+				$diflogs = $xhtml->tag( 'h3', 'Détails difficultés logement' ).$diflogs;
 
 				$situationSolciale = array( $generalites, $difficultes, $accosocfam, $accosocindi, $difdisps, $nivetus, $disponibilitesEmploi, $situationProfessionnelle, $mobilite, $natmobs, $difficultesLogement, $diflogs );
 				$situationSolciale = implode( '', $situationSolciale );
 				if( !empty( $situationSolciale ) ) {
-					echo $html->tag( 'h2', 'Situation sociale' ).$situationSolciale;
+					echo $xhtml->tag( 'h2', 'Situation sociale' ).$situationSolciale;
 				}
 			}
 		?>

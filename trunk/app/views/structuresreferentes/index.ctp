@@ -6,7 +6,7 @@
     <?php if( $permissions->check( 'structuresreferentes', 'add' ) ):?>
         <ul class="actionMenu">
             <?php
-                echo '<li>'.$html->addLink(
+                echo '<li>'.$xhtml->addLink(
                     'Ajouter',
                     array( 'controller' => 'structuresreferentes', 'action' => 'add' )
                 ).' </li>';
@@ -33,7 +33,7 @@
             <?php foreach( $structuresreferentes as $structurereferente ):?>
                 <?php
 
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( $structurereferente['Structurereferente']['lib_struc'] ),
                             h( $structurereferente['Structurereferente']['num_voie'] ),
@@ -43,11 +43,11 @@
                             h( $structurereferente['Structurereferente']['ville'] ),
                             h( $structurereferente['Structurereferente']['code_insee'] ),
                             h( $typeorient[$structurereferente['Structurereferente']['typeorient_id']] ),
-                            $html->editLink(
+                            $xhtml->editLink(
                                 'Éditer la structure référente ',
                                 array( 'controller' => 'structuresreferentes', 'action' => 'edit', $structurereferente['Structurereferente']['id'] )
                             ),
-                            $html->deleteLink(
+                            $xhtml->deleteLink(
                                 'Supprimer la structure référente ',
                                 array( 'controller' => 'structuresreferentes', 'action' => 'delete', $structurereferente['Structurereferente']['id'] )
                             )

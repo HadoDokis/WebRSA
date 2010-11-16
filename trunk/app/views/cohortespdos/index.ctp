@@ -1,12 +1,12 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Gestion des PDOs';?>
 
 <h1>Gestion des PDOs</h1>
 
 <?php
     if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -30,7 +30,7 @@
     if( isset( $cohortepdo ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -38,7 +38,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -110,7 +110,7 @@
 
                     $statut_avis = Set::extract( $pdo, 'Pdo.'.$index.'.avisdero' );
 // debug( $statut_avis );
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( $pdo['Pdo']['id'] ),
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
@@ -120,7 +120,7 @@
                             h( date_short( Set::extract( 'Pdo.datedecisionpdo', $pdo ) ) ),
                             h( value( $decisionpdo, Set::extract( 'Pdo.decisionpdo_id', $pdo ) ) ),
 
-                            $html->viewLink(
+                            $xhtml->viewLink(
                                 'Voir le contrat « '.$title.' »',
                                 array( 'controller' => 'propospdos', 'action' => 'index', $pdo['Propopdo']['personne_id'] )
                             ),

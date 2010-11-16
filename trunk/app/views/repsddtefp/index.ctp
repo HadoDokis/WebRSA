@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <h1><?php echo $this->pageTitle='APRE: Reporting bi-mensuel DDTEFP';?></h1>
 
 <?php
@@ -113,18 +113,18 @@
             $headers2[] = 'Total';
         }
 
-        $headers1 = str_replace( '<th>', '<th colspan="3">', $html->tableHeaders( $headers1 ) );
+        $headers1 = str_replace( '<th>', '<th colspan="3">', $xhtml->tableHeaders( $headers1 ) );
         $headers1 = str_replace( '<tr>', '<tr><th></th>', $headers1 );
 
-        $headers2 = $html->tableHeaders( $headers2 );
+        $headers2 = $xhtml->tableHeaders( $headers2 );
         $headers2 = str_replace( '<tr>', '<tr id="datesApre">', $headers2 );
 
         //**************************************************************************
 
 
-        $thead = $html->tag( 'thead', $headers1.$headers2 );
-        $tbody = $html->tag( 'tbody', '<tr><th colspan="19">Sexe</th></tr>'.implode( '', lines( $listeSexe, $this->data, $locale ) ) );
-        $tbody .= $html->tag( 'tbody', '<tr><th colspan="19">Âge</th></tr>'.implode( '', lines( $listeAge, $this->data, $locale ) ) );
-        echo $html->tag( 'table', $thead.$tbody, array( 'id' => 'repddtefp' ) );
+        $thead = $xhtml->tag( 'thead', $headers1.$headers2 );
+        $tbody = $xhtml->tag( 'tbody', '<tr><th colspan="19">Sexe</th></tr>'.implode( '', lines( $listeSexe, $this->data, $locale ) ) );
+        $tbody .= $xhtml->tag( 'tbody', '<tr><th colspan="19">Âge</th></tr>'.implode( '', lines( $listeAge, $this->data, $locale ) ) );
+        echo $xhtml->tag( 'table', $thead.$tbody, array( 'id' => 'repddtefp' ) );
     }
 ?>

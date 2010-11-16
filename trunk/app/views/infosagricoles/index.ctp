@@ -20,7 +20,7 @@
                 </thead>
                 <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $infoagricole['Infoagricole']['mtbenagri']),
                                 h( $regfisagri[$infoagricole['Infoagricole']['regfisagri']]),
@@ -45,7 +45,7 @@
                 <tbody>
                     <?php foreach( $infoagricole['Aideagricole'] as $aideagricole ):?>
                         <?php
-                            echo $html->tableCells(
+                            echo $xhtml->tableCells(
                                 array(
                                     h( $aideagricole['annrefaideagri']),
                                     h( $aideagricole['libnataideagri']),

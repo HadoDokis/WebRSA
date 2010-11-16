@@ -54,13 +54,13 @@
 //                         if( Set::extract( $infosfinancieres, ( $index-1 ).'.Infofinanciere.type_allocation' ) != Set::extract( $infosfinancieres, $index.'.Infofinanciere.type_allocation' ) ) {
 //                             if( $rowspan == 1 ) {
 //                                 $even = !$even;
-//                                 echo $html->tableCells(
+//                                 echo $xhtml->tableCells(
 //                                     array(
 //                                         h( $locale->date( 'Date::miniLettre', $indu['Infofinanciere']['moismoucompta'] ) ),
 //                                         h( $type_allocation[$indu['Infofinanciere']['type_allocation']] ),
 //                                         h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ),
 //                                         h( $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ),
-//                                         $html->viewLink(
+//                                         $xhtml->viewLink(
 //                                             'Voir le contrat',
 //                                             array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] )
 //                                         ),
@@ -77,7 +77,7 @@
 //                                         <td>'.h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ).'</td>
 //                                         <td>'.h( $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ).'</td>
 //
-//                                         <td>'.$html->viewLink(
+//                                         <td>'.$xhtml->viewLink(
 //                                             'Voir l\'indu',
 //                                             array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] ),
 //                                             $permissions->check( 'infosfinancieres', 'view' )
@@ -93,13 +93,13 @@
 //                                 </tr>';
 //                         }
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $locale->date( 'Date::miniLettre', $indu['Infofinanciere']['moismoucompta'] ) ),
                                 h( $type_allocation[$indu['Infofinanciere']['type_allocation']] ),
                                 h( $natpfcre[$indu['Infofinanciere']['natpfcre']] ),
                                 h(  $locale->money( $indu['Infofinanciere']['mtmoucompta'] ) ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir l\'indu',
                                     array( 'controller' => 'infosfinancieres', 'action' => 'view', $indu['Infofinanciere']['id'] )
                                 ),

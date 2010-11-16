@@ -1,8 +1,8 @@
 <h1><?php echo $this->pageTitle = $pageTitle;?></h1>
 <?php
     if( !empty( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -145,7 +145,7 @@
 
 // debug( array( $typeorient_id, $structurereferente_id, $statut_orient ) );
 
-                            echo $html->tableCells(
+                            echo $xhtml->tableCells(
                                 array(
 
                                     h( $personne['Adresse']['locaadr'] ),

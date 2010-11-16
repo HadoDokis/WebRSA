@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( date_short( $grossesse['Grossesse']['ddgro'] ) ),
                                 h( date_short( $grossesse['Grossesse']['dfgro'] ) ),

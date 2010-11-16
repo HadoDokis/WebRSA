@@ -56,9 +56,9 @@ foreach ($titressejour as $titresejour):
 			<?php echo $titresejour['Titresejour']['numduptitsej']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link(__('View', true), array('action' => 'view', $titresejour['Titresejour']['id'])); ?>
-			<?php echo $html->link(__('Edit', true), array('action' => 'edit', $titresejour['Titresejour']['id'])); ?>
-			<?php echo $html->link(__('Delete', true), array('action' => 'delete', $titresejour['Titresejour']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $titresejour['Titresejour']['id'])); ?>
+			<?php echo $xhtml->link(__('View', true), array('action' => 'view', $titresejour['Titresejour']['id'])); ?>
+			<?php echo $xhtml->link(__('Edit', true), array('action' => 'edit', $titresejour['Titresejour']['id'])); ?>
+			<?php echo $xhtml->link(__('Delete', true), array('action' => 'delete', $titresejour['Titresejour']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $titresejour['Titresejour']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -71,6 +71,6 @@ foreach ($titressejour as $titresejour):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('New Titresejour', true), array('action' => 'add')); ?></li>
+		<li><?php echo $xhtml->link(__('New Titresejour', true), array('action' => 'add')); ?></li>
 	</ul>
 </div>

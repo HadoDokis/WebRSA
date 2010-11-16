@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php  $this->pageTitle = 'Rendez-vous';?>
 
@@ -65,7 +65,7 @@
 // debug($struct);
                 echo $ajax->observeField( 'RendezvousReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
 
-                echo $html->tag(
+                echo $xhtml->tag(
                     'div',
                     '<b></b>',
                     array(

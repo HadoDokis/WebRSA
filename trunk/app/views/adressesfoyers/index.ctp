@@ -8,7 +8,7 @@
     <?php if( $permissions->check( 'adressesfoyers', 'add' ) ):?>
         <ul class="actionMenu">
             <?php
-                echo '<li>'.$html->addLink(
+                echo '<li>'.$xhtml->addLink(
                     'Ajouter une adresse au foyer',
                     array( 'controller' => 'adressesfoyers', 'action' => 'add', $foyer_id )
                 ).' </li>';
@@ -48,17 +48,17 @@
                                 </tr>
                             </tbody>
                         </table>';
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( !empty( $adresse['Adressefoyer']['rgadr'] ) ? $rgadr[$adresse['Adressefoyer']['rgadr']] : null ),
                                 h( implode( ' ', array( $adresse['Adresse']['numvoie'], isset( $typevoie[$adresse['Adresse']['typevoie']] ) ? $typevoie[$adresse['Adresse']['typevoie']] : null, $adresse['Adresse']['nomvoie'] ) ) ),
                                 h( implode( ' ', array( $adresse['Adresse']['codepos'], $adresse['Adresse']['locaadr'] ) ) ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir l\'adresse « '.$title.' »',
                                     array( 'controller' => 'adressesfoyers', 'action' => 'view', $adresse['Adressefoyer']['id'] ),
                                     $permissions->check( 'adressesfoyers', 'view' )
                                 ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer l\'adresse « '.$title.' »',
                                     array( 'controller' => 'adressesfoyers', 'action' => 'edit', $adresse['Adressefoyer']['id'] ),
                                     $permissions->check( 'adressesfoyers', 'edit' )

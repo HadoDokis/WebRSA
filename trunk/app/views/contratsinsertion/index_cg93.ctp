@@ -20,7 +20,7 @@
         <?php if( $permissions->check( 'contratsinsertion', 'add' ) ):?>
             <ul class="actionMenu">
                 <?php
-                    echo '<li>'.$html->addLink(
+                    echo '<li>'.$xhtml->addLink(
                         'Ajouter un CER',
                         array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id )
                     ).' </li>';
@@ -54,28 +54,28 @@
                             $block;
                         }
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci ) ),
                                 h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ),  $options['num_contrat'] ) ),
                                 h( date_short( isset( $contratinsertion['Contratinsertion']['dd_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['dd_ci']  ) : null ),
                                 h( date_short( isset( $contratinsertion['Contratinsertion']['df_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['df_ci'] ) : null ),
                                 h( Set::enum( Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' ), $decision_ci ).' '.$locale->date( 'Date::short', Set::extract( $contratinsertion, 'Contratinsertion.datevalidation_ci' ) ) ),
-                                $html->validateLink(
+                                $xhtml->validateLink(
                                     'Valider le CER ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] )
                                 ),
-                                $html->actionsLink(
+                                $xhtml->actionsLink(
                                     'Actions pour le CER',
                                     array( 'controller' => 'actionsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['id'] ),
                                     $permissions->check( 'actionsinsertion', 'index' )
                                 ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir le CER',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'view', $contratinsertion['Contratinsertion']['id']),
                                     $permissions->check( 'contratsinsertion', 'view' )
                                 ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le CER ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'edit', $contratinsertion['Contratinsertion']['id'] ),
 //                                     array(
@@ -83,12 +83,12 @@
                                         $permissions->check( 'contratsinsertion', 'edit' )
 //                                     )
                                 ),
-                                $html->printLink(
+                                $xhtml->printLink(
                                     'Imprimer le CER',
                                     array( 'controller' => 'gedooos', 'action' => 'contratinsertion', $contratinsertion['Contratinsertion']['id'] ),
                                     $permissions->check( 'gedooos', 'contratinsertion' )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le CER ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'delete', $contratinsertion['Contratinsertion']['id'] ),
                                     $permissions->check( 'contratsinsertion', 'delete' )

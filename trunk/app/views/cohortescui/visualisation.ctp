@@ -5,7 +5,7 @@
     if( isset( $cohortecui ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -13,7 +13,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -83,7 +83,7 @@
                         </table>';
                         $title = $contrat['Dossier']['numdemrsa'];
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $contrat['Dossier']['numdemrsa'] ),
                                 h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
@@ -91,7 +91,7 @@
                                 h( date_short( $contrat['Cui']['datecontrat'] ) ),
                                 h( Set::enum( $contrat['Cui']['decisioncui'], $options['decisioncui'] ).' '.date_short( $contrat['Cui']['datevalidationcui'] ) ),
                                 h( $contrat['Cui']['observcui'] ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir le contrat',
                                     array( 'controller' => 'cuis', 'action' => 'index', $contrat['Cui']['personne_id'] ),
                                     $permissions->check( 'cuis', 'index' )
@@ -108,13 +108,13 @@
         <?php echo $pagination;?>
         <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'cohortescui', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );

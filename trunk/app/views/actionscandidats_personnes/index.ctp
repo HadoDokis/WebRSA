@@ -7,7 +7,7 @@
 
     <?php
 
-        echo $html->tag(
+        echo $xhtml->tag(
             'h1',
             $this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true )
         );

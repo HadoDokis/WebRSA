@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php  $this->pageTitle = 'Synthèse du parcours d\'insertion';?>
 
@@ -52,8 +52,8 @@
                 <tr>
                     <td><?php echo Set::extract( 'Serviceinstructeur.lib_service', $details );?></td>
                     <td><?php echo date_short( $details['Dossier']['dtdemrsa'] );?></td>
-                    <td><?php echo $html->boolean( !empty( $details['Dossier']['dtdemrsa'] ) );?></td>
-                    <td><?php echo $html->viewLink(
+                    <td><?php echo $xhtml->boolean( !empty( $details['Dossier']['dtdemrsa'] ) );?></td>
+                    <td><?php echo $xhtml->viewLink(
                         'Voir le dossier',
                         array( 'controller' => 'dossiers', 'action' => 'view', $details['Dossier']['id'] )
                         );?>
@@ -90,10 +90,10 @@
                     <td><?php echo value( $structuresreferentes, Set::extract( 'DEM.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
                     <td><?php echo date_short( Set::extract( 'DEM.Orientstruct.derniere.date_valid', $details ) );?></td>
                     <td><?php echo date_short( Set::extract( 'DEM.Orientstruct.derniere.daterelance', $details ) );?></td>
-                    <td><?php echo $html->boolean( !empty( $details['DEM']['Orientstruct']['derniere']['date_valid'] ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['DEM']['Orientstruct']['derniere']['date_valid'] ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Orientstruct']['derniere']['structurereferente_id'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir l\'orientation',
                                 array( 'controller' => 'orientsstructs', 'action' => 'index', Set::extract( 'DEM.Orientstruct.derniere.personne_id', $details ) )
                             );
@@ -104,10 +104,10 @@
                     <td><?php echo value( $structuresreferentes, Set::extract( 'CJT.Orientstruct.derniere.structurereferente_id', $details ) );?></td>
                     <td><?php echo date_short( Set::extract( 'CJT.Orientstruct.derniere.date_valid', $details ) );?></td>
                     <td><?php echo date_short( Set::extract( 'CJT.Orientstruct.derniere.daterelance', $details ) );?></td>
-                    <td><?php echo $html->boolean( !empty( $details['CJT']['Orientstruct']['derniere']['date_valid'] ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['CJT']['Orientstruct']['derniere']['date_valid'] ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Orientstruct']['derniere']['structurereferente_id'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir l\'orientation',
                                 array( 'controller' => 'orientsstructs', 'action' => 'index', Set::extract( 'CJT.Orientstruct.derniere.personne_id', $details ) )
                             );
@@ -139,10 +139,10 @@
                 </tr>
                 <tr>
                     <td><?php echo date_short( Set::extract( 'DEM.Rendezvous.dernier.daterdv', $details ) );?></td>
-                    <td colspan="2"><?php echo $html->boolean( !empty( $details['DEM']['Rendezvous']['dernier']['daterdv'] ) );?></td>
+                    <td colspan="2"><?php echo $xhtml->boolean( !empty( $details['DEM']['Rendezvous']['dernier']['daterdv'] ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Rendezvous']['dernier']['daterdv'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir l\'entretien',
                                 array( 'controller' => 'rendezvous', 'action' => 'index', Set::extract( 'DEM.Rendezvous.dernier.personne_id', $details ) )
                             );
@@ -151,10 +151,10 @@
                     </td>
 
                     <td><?php echo date_short( Set::extract( 'CJT.Rendezvous.dernier.daterdv', $details ) );?></td>
-                    <td colspan="2" ><?php echo $html->boolean( !empty( $details['CJT']['Rendezvous']['dernier']['daterdv'] ) );?></td>
+                    <td colspan="2" ><?php echo $xhtml->boolean( !empty( $details['CJT']['Rendezvous']['dernier']['daterdv'] ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Rendezvous']['dernier']['daterdv'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir l\'entretien',
                                 array( 'controller' => 'rendezvous', 'action' => 'index', Set::extract( 'CJT.Rendezvous.dernier.personne_id', $details ) )
                             );
@@ -206,10 +206,10 @@
                 </tr>
                 <tr>
                     <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.date_saisi_ci', $details ) );?></td>
-                    <td colspan="2"><?php echo $html->boolean( !empty( $details['DEM']['Contratinsertion']['date_saisi_ci'] ) );?></td>
+                    <td colspan="2"><?php echo $xhtml->boolean( !empty( $details['DEM']['Contratinsertion']['date_saisi_ci'] ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Contratinsertion']['date_saisi_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
                             );
@@ -218,10 +218,10 @@
                     </td>
 
                     <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.date_saisi_ci', $details ) );?></td>
-                    <td colspan="2" ><?php echo $html->boolean( !empty( $details['CJT']['Contratinsertion']['date_saisi_ci'] ) );?></td>
+                    <td colspan="2" ><?php echo $xhtml->boolean( !empty( $details['CJT']['Contratinsertion']['date_saisi_ci'] ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Contratinsertion']['date_saisi_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
                             );
@@ -233,10 +233,10 @@
 
                     <!-- CUI -->
                     <td><?php echo date_short( Set::extract( 'DEM.Cui.datecontrat', $details ) );?></td>
-                    <td colspan="2"><?php echo $html->boolean( !empty( $details['DEM']['Cui']['datecontrat'] ) );?></td>
+                    <td colspan="2"><?php echo $xhtml->boolean( !empty( $details['DEM']['Cui']['datecontrat'] ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Cui']['datecontrat'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
                             );
@@ -245,10 +245,10 @@
                     </td>
 
                     <td><?php echo date_short( Set::extract( 'CJT.Cui.datecontrat', $details ) );?></td>
-                    <td colspan="2" ><?php echo $html->boolean( !empty( $details['CJT']['Cui']['datecontrat'] ) );?></td>
+                    <td colspan="2" ><?php echo $xhtml->boolean( !empty( $details['CJT']['Cui']['datecontrat'] ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Cui']['datecontrat'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
                             );
@@ -296,10 +296,10 @@
                 </tr>
                 <tr>
                     <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.datevalidation_ci', $details ) );?></td>
-                    <td colspan="2"><?php echo $html->boolean( !empty( $details['DEM']['Contratinsertion']['datevalidation_ci'] ) );?></td>
+                    <td colspan="2"><?php echo $xhtml->boolean( !empty( $details['DEM']['Contratinsertion']['datevalidation_ci'] ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Contratinsertion']['datevalidation_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
                             );
@@ -308,10 +308,10 @@
                     </td>
 
                     <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.datevalidation_ci', $details ) );?></td>
-                    <td colspan="2" ><?php echo $html->boolean( !empty( $details['CJT']['Contratinsertion']['datevalidation_ci'] ) );?></td>
+                    <td colspan="2" ><?php echo $xhtml->boolean( !empty( $details['CJT']['Contratinsertion']['datevalidation_ci'] ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Contratinsertion']['datevalidation_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
                             );
@@ -320,10 +320,10 @@
                     </td>
                     <td></td>
                     <td><?php echo date_short( Set::extract( 'DEM.Cui.datevalidation_ci', $details ) );?></td>
-                    <td colspan="2"><?php echo $html->boolean( !empty( $details['DEM']['Cui']['datevalidation_ci'] ) );?></td>
+                    <td colspan="2"><?php echo $xhtml->boolean( !empty( $details['DEM']['Cui']['datevalidation_ci'] ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Cui']['datevalidation_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
                             );
@@ -332,10 +332,10 @@
                     </td>
 
                     <td><?php echo date_short( Set::extract( 'CJT.Cui.datevalidation_ci', $details ) );?></td>
-                    <td colspan="2" ><?php echo $html->boolean( !empty( $details['CJT']['Cui']['datevalidation_ci'] ) );?></td>
+                    <td colspan="2" ><?php echo $xhtml->boolean( !empty( $details['CJT']['Cui']['datevalidation_ci'] ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Cui']['datevalidation_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
                             );
@@ -369,10 +369,10 @@
                 <tr>
                     <td><?php echo count( Set::extract( 'DEM.Actioninsertion', $details ) );?></td>
                     <td><?php echo date_short( Set::extract( 'DEM.Actioninsertion.0.Actioninsertion.dd_action', $details ) );?></td>
-                    <td><?php echo $html->boolean( !empty( $details['DEM']['Contratinsertion']['datevalidation_ci'] ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['DEM']['Contratinsertion']['datevalidation_ci'] ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Contratinsertion'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir les actions d\'insertion',
                                 array( 'controller' => 'actionsinsertion', 'action' => 'index', Set::extract( 'DEM.Contratinsertion.id', $details ) )
                             );
@@ -382,10 +382,10 @@
 
                     <td><?php echo count( Set::extract( 'CJT.Actioninsertion', $details ) );?></td>
                     <td><?php echo date_short( Set::extract( 'CJT.Actioninsertion.0.Actioninsertion.dd_action', $details ) );?></td>
-                    <td><?php echo $html->boolean( !empty( $details['CJT']['Actioninsertion']['dd_action'] ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['CJT']['Actioninsertion']['dd_action'] ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Contratinsertion'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir les actions d\'insertion',
                                 array( 'controller' => 'actionsinsertion', 'action' => 'index', Set::extract( 'CJT.Contratinsertion.id', $details ) )
                             );
@@ -440,10 +440,10 @@
                 <tr>
                     <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.df_ci', $details ) );?></td>
                     <td><?php echo 'Non défini'?></td>
-                    <td><?php echo $html->boolean( !empty( $details['DEM']['Contratinsertion']['df_ci'] ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['DEM']['Contratinsertion']['df_ci'] ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Contratinsertion']['df_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
                             );
@@ -453,10 +453,10 @@
 
                     <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.df_ci', $details ) );?></td>
                     <td><?php echo 'Non défini'?></td>
-                    <td><?php echo $html->boolean( !empty( $details['CJT']['Contratinsertion']['df_ci'] ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['CJT']['Contratinsertion']['df_ci'] ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Contratinsertion']['df_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
                             );
@@ -468,10 +468,10 @@
                     
                     <td><?php echo date_short( Set::extract( 'DEM.Cui.df_ci', $details ) );?></td>
                     <td><?php echo 'Non défini'?></td>
-                    <td><?php echo $html->boolean( !empty( $details['DEM']['Cui']['df_ci'] ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['DEM']['Cui']['df_ci'] ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Cui']['df_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
                             );
@@ -481,10 +481,10 @@
 
                     <td><?php echo date_short( Set::extract( 'CJT.Cui.df_ci', $details ) );?></td>
                     <td><?php echo 'Non défini'?></td>
-                    <td><?php echo $html->boolean( !empty( $details['CJT']['Cui']['df_ci'] ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['CJT']['Cui']['df_ci'] ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Cui']['df_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'cuis', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
                             );
@@ -519,10 +519,10 @@
                 <tr>
                     <td><?php echo value( $decision_ci, Set::extract( 'DEM.Contratinsertion.decision_ci', $details ) );?></td>
                     <td><?php echo date_short( Set::extract( 'DEM.Contratinsertion.datevalidation_ci', $details ) );?></td>
-                    <td><?php echo $html->boolean( !empty( $details['DEM']['Contratinsertion']['decision_ci'] )  && ( $details['DEM']['Contratinsertion']['decision_ci'] != 'E' ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['DEM']['Contratinsertion']['decision_ci'] )  && ( $details['DEM']['Contratinsertion']['decision_ci'] != 'E' ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Contratinsertion']['datevalidation_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
                             );
@@ -532,10 +532,10 @@
 
                     <td><?php echo value( $decision_ci, Set::extract( 'CJT.Contratinsertion.decision_ci', $details ) );?></td>
                     <td><?php echo date_short( Set::extract( 'CJT.Contratinsertion.datevalidation_ci', $details ) );?></td>
-                    <td><?php echo $html->boolean( !empty( $details['CJT']['Contratinsertion']['decision_ci'] ) && ( $details['CJT']['Contratinsertion']['decision_ci'] != 'E' ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['CJT']['Contratinsertion']['decision_ci'] ) && ( $details['CJT']['Contratinsertion']['decision_ci'] != 'E' ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Contratinsertion']['datevalidation_ci'] ) ){
-                            echo $html->viewLink(
+                            echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
                             );

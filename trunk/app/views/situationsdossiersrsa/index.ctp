@@ -19,7 +19,7 @@
                 </thead>
                 <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $etatdosrsa[$situationdossierrsa['Situationdossierrsa']['etatdosrsa']]),
                             ),
@@ -41,7 +41,7 @@
                 </thead>
                 <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $etatdosrsa[$situationdossierrsa['Situationdossierrsa']['etatdosrsa']]),
                                 h( date_short($situationdossierrsa['Situationdossierrsa']['dtrefursa'] ) ) ,
@@ -61,7 +61,7 @@
                 </thead>
                 <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $etatdosrsa[$situationdossierrsa['Situationdossierrsa']['etatdosrsa']]),
                             ),
@@ -89,7 +89,7 @@
                             $listmotisusdos[] = h( $motisusdrorsa[$suspensiondroit['motisusdrorsa']] );
                             $listddsusdrorsa[] = h( date_short( $suspensiondroit['ddsusdrorsa'] ) );
                         }
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $etatdosrsa[$situationdossierrsa['Situationdossierrsa']['etatdosrsa']]),
                                 ( ( count( $listmotisusdos ) > 0 ) ? '<ul><li>'.implode( '</li><li>', $listmotisusdos ).'</li></ul>' : null ),
@@ -119,7 +119,7 @@
                             $listmotisusvers[] = h( $motisusversrsa[$suspensionversement['motisusversrsa']] );
                             $listddsusversrsa[] = h( date_short( $suspensionversement['ddsusversrsa'] ) );
                         }
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $etatdosrsa[$situationdossierrsa['Situationdossierrsa']['etatdosrsa']]),
                                 ( ( count( $listmotisusvers ) > 0 ) ? '<ul><li>'.implode( '</li><li>', $listmotisusvers ).'</li></ul>' : null ),
@@ -143,7 +143,7 @@
                 </thead>
                 <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $etatdosrsa[$situationdossierrsa['Situationdossierrsa']['etatdosrsa']]),
                                 h( $moticlorsa[$situationdossierrsa['Situationdossierrsa']['moticlorsa']]),
@@ -167,7 +167,7 @@
                 </thead>
                 <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $etatdosrsa[$situationdossierrsa['Situationdossierrsa']['etatdosrsa']]),
                                 h( $moticlorsa[$situationdossierrsa['Situationdossierrsa']['moticlorsa']]),
@@ -201,7 +201,7 @@
                                 $listmotisusdos[] = h( $motisusdrorsa[$suspensiondroit['motisusdrorsa']] );
                                 $listddsusdrorsa[] = h( date_short( $suspensiondroit['ddsusdrorsa'] ) );
                             }
-                            echo $html->tableCells(
+                            echo $xhtml->tableCells(
                                 array(
                                     ( ( count( $listmotisusdos ) > 0 ) ? '<ul><li>'.implode( '</li><li>', $listmotisusdos ).'</li></ul>' : null ),
                                     ( ( count( $listddsusdrorsa ) > 0 ) ? '<ul><li>'.implode( '</li><li>', $listddsusdrorsa ).'</li></ul>' : null ),
@@ -235,7 +235,7 @@
                                 $listmotisusvers[] = h( $motisusversrsa[$suspensionversement['motisusversrsa']] );
                                 $listddsusversrsa[] = h( date_short( $suspensionversement['ddsusversrsa'] ) );
                             }
-                            echo $html->tableCells(
+                            echo $xhtml->tableCells(
                                 array(
                                     ( ( count( $listmotisusvers ) > 0 ) ? '<ul><li>'.implode( '</li><li>', $listmotisusvers ).'</li></ul>' : null ),
                                     ( ( count( $listddsusversrsa ) > 0 ) ? '<ul><li>'.implode( '</li><li>', $listddsusversrsa ).'</li></ul>' : null ),

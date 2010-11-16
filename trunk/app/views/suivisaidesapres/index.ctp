@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'suivisaidesapres', 'action' => 'add' )
             ).' </li>';
@@ -28,17 +28,17 @@
         </thead>
         <tbody>
             <?php foreach( $suivisaidesapres as $suiviaideapre ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( Set::classicExtract( $qual, Set::classicExtract( $suiviaideapre, 'Suiviaideapre.qual' ) ) ),
                                 h( Set::classicExtract( $suiviaideapre, 'Suiviaideapre.nom' ) ),
                                 h( Set::classicExtract( $suiviaideapre, 'Suiviaideapre.prenom' ) ),
                                 h( Set::classicExtract( $suiviaideapre, 'Suiviaideapre.numtel' ) ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer la personne ',
                                     array( 'controller' => 'suivisaidesapres', 'action' => 'edit', $suiviaideapre['Suiviaideapre']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer la personne ',
                                     array( 'controller' => 'suivisaidesapres', 'action' => 'delete', $suiviaideapre['Suiviaideapre']['id'] )
                                 )

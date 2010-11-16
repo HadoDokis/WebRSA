@@ -3,7 +3,7 @@
 <?php if( $permissions->check( 'comitesapres', 'add' ) ):?>
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->editLink(
+            echo '<li>'.$xhtml->editLink(
                 'Modifier Comité',
                 array( 'controller' => 'comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
             ).' </li>';
@@ -47,7 +47,7 @@
 			<?php if( is_array( $comiteapre['Participantcomite'] ) && count( $comiteapre['Participantcomite'] ) > 0  ):?>
 				<ul class="actionMenu">
 					<?php
-						echo '<li>'.$html->editLink(
+						echo '<li>'.$xhtml->editLink(
 							'Modifier Liste des participants',
 							array( 'controller' => 'comitesapres_participantscomites', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
 						).' </li>';
@@ -68,13 +68,13 @@
 							<?php
 								foreach( $comiteapre['Participantcomite'] as $participant ) {
 
-									echo $html->tableCells(
+									echo $xhtml->tableCells(
 										array(
 											h( Set::classicExtract( $participant, 'qual' ).' '.Set::classicExtract( $participant, 'nom' ).' '.Set::classicExtract( $participant, 'prenom' ) ),
 											h( Set::classicExtract( $participant, 'fonction' ) ),
 											h( Set::classicExtract( $participant, 'organisme' ) ),
 											h( Set::classicExtract( $participant, 'numtel' ) ),
-											$html->viewLink(
+											$xhtml->viewLink(
 												'Voir les participants',
 												array( 'controller' => 'participantscomites', 'action' => 'index', Set::classicExtract( $participant, 'id' ) ),
 												$permissions->check( 'comitesapres', 'index' )
@@ -91,7 +91,7 @@
 			<?php else:?>
 				<ul class="actionMenu">
 					<?php
-						echo '<li>'.$html->editLink(
+						echo '<li>'.$xhtml->editLink(
 							'Modifier Participant',
 							array( 'controller' => 'comitesapres_participantscomites', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
 						).' </li>';
@@ -129,7 +129,7 @@
 			<?php if( is_array( $apresSansRecours ) && count( $apresSansRecours ) > 0 ):?>
 				<ul class="actionMenu">
 					<?php
-						echo '<li>'.$html->editLink(
+						echo '<li>'.$xhtml->editLink(
 							'Modifier Liste APRES',
 							array( 'controller' => 'apres_comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
 						).' </li>';
@@ -158,7 +158,7 @@
 									$isRecours = !empty( $isRecours );
 //                                     debug($apre);
 									if( !$isRecours ) {
-										echo $html->tableCells(
+										echo $xhtml->tableCells(
 											array(
 												h( Set::classicExtract( $apre, 'numeroapre' ) ),
 												h( Set::classicExtract( $apre, 'Personne.nir' ) ),
@@ -167,7 +167,7 @@
 												h( Set::enum( Set::classicExtract( $apre, 'referent_id' ), $referent) ),
 												h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
 												h( Set::classicExtract( $apre, 'quota' ) ),
-												$html->viewLink(
+												$xhtml->viewLink(
 													'Voir les apres',
 													array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $apre, 'personne_id' ) ),
 													$permissions->check( 'comitesapres', 'index' )
@@ -185,7 +185,7 @@
 			<?php else:?>
 				<ul class="actionMenu">
 					<?php
-						echo '<li>'.$html->editLink(
+						echo '<li>'.$xhtml->editLink(
 							'Modifier Liste APRE',
 							array( 'controller' => 'apres_comitesapres', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
 						).' </li>';
@@ -203,7 +203,7 @@
 			<?php if( is_array( $apresAvecRecours ) && count( $apresAvecRecours ) > 0 ):?>
 				<ul class="actionMenu">
 					<?php
-						echo '<li>'.$html->editLink(
+						echo '<li>'.$xhtml->editLink(
 							'Modifier Liste APRES en Recours',
 							array( 'controller' => 'apres_comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'recours' => 1 )
 						).' </li>';
@@ -231,7 +231,7 @@
 									$isRecours = !empty( $isRecours );
 
 									if( $isRecours ) {
-										echo $html->tableCells(
+										echo $xhtml->tableCells(
 											array(
 												h( Set::classicExtract( $apre, 'numeroapre' ) ),
 												h( Set::classicExtract( $apre, 'Personne.nir' ) ),
@@ -240,7 +240,7 @@
 												h( Set::enum( Set::classicExtract( $apre, 'referent_id' ), $referent ) ),
 												h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
 												h( Set::enum( Set::classicExtract( $apre, 'ApreComiteapre.recoursapre' ), $options['recoursapre'] ) ),
-												$html->viewLink(
+												$xhtml->viewLink(
 													'Voir les apres',
 													array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $apre, 'personne_id' ) ),
 													$permissions->check( 'comitesapres', 'index' )
@@ -258,7 +258,7 @@
 			<?php else:?>
 				<ul class="actionMenu">
 					<?php
-						echo '<li>'.$html->editLink(
+						echo '<li>'.$xhtml->editLink(
 							'Modifier Liste APRES en Recours',
 							array( 'controller' => 'apres_comitesapres', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'recours' => 1 )
 						).' </li>';
@@ -277,7 +277,7 @@
     <fieldset class="noborder center invisible">
         <ul class="actionMenu">
             <?php
-                echo $html->decisionLink(
+                echo $xhtml->decisionLink(
                     'Prise de décision du comité',
                     array( 'controller' => 'cohortescomitesapres', 'action' => 'aviscomite', 'Cohortecomiteapre__id' => Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
                 );

@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Recherche par contrats d\'engagement réciproque';?>
 
 <h1>Recherche par CER</h1>
@@ -23,8 +23,8 @@
 ?>
 <?php
     if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -133,7 +133,7 @@
                             </tbody>
                         </table>';
 //                         debug( $contrat );
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
                                 h( $contrat['Adresse']['locaadr'] ),
@@ -143,7 +143,7 @@
                                 h( $contrat['Contratinsertion']['rg_ci'] ),
                                 h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
                                 array(
-                                    $html->viewLink(
+                                    $xhtml->viewLink(
                                         'Voir le dossier « '.$title.' »',
                                         array( 'controller' => 'contratsinsertion', 'action' => 'index', $contrat['Contratinsertion']['personne_id'] )
                                     ),
@@ -160,13 +160,13 @@
         </table>
         <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'criteresci', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );

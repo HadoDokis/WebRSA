@@ -1,6 +1,6 @@
 <?php
 	// CSS
-	echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
 	// Titre
 	$this->pageTitle = sprintf(
@@ -90,7 +90,7 @@ debug( $options );*/
 				else return "";
 			}
 		
-			echo $html->tag( 'h1', $this->pageTitle );
+			echo $xhtml->tag( 'h1', $this->pageTitle );
 			
 			echo "<table>";
 			echo "<tr><th><h2 style='text-align:center'>DSP précédente</h2></th><th><h2 style='text-align:center'>DSP choisie</h2></th></tr>";

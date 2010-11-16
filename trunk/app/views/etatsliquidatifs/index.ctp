@@ -1,14 +1,14 @@
 <?php
 	$this->pageTitle = 'États liquidatifs APRE';
 
-	echo $html->tag( 'h1', $this->pageTitle );
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 
 	if( $permissions->check( 'etatsliquidatifs', 'add' ) ) {
-		echo $html->tag(
+		echo $xhtml->tag(
 			'ul',
-			$html->tag(
+			$xhtml->tag(
 				'li',
-				$html->addLink(
+				$xhtml->addLink(
 					'Ajouter un état liquidatif',
 					array( 'controller' => 'etatsliquidatifs', 'action' => 'add' )
 				)
@@ -18,13 +18,13 @@
 	}
 
 	if( empty( $etatsliquidatifs ) ) {
-		echo $html->tag( 'p', 'Aucun état liquidatif pour l\'instant.', array( 'class' => 'notice' ) );
+		echo $xhtml->tag( 'p', 'Aucun état liquidatif pour l\'instant.', array( 'class' => 'notice' ) );
 	}
 	else {
         $pagination = $xpaginator->paginationBlock( 'Etatliquidatif', $this->passedArgs );
 // 		$paginator->options( array( 'url' => $this->passedArgs ) );
 // 		$params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-// 		$pagination = $html->tag( 'p', $paginator->counter( $params ) );
+// 		$pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 // 
 // 		$pages = $paginator->first( '<<' );
 // 		$pages .= $paginator->prev( '<' );
@@ -32,7 +32,7 @@
 // 		$pages .= $paginator->next( '>' );
 // 		$pages .= $paginator->last( '>>' );
 // 
-// 		$pagination .= $html->tag( 'p', $pages );
+// 		$pagination .= $xhtml->tag( 'p', $pages );
 
 		//----------------------------------------------------------------------
 
@@ -47,7 +47,7 @@
 		);
 
 		///
-		$thead = $html->tag( 'thead', $html->tableHeaders( $headers ) );
+		$thead = $xhtml->tag( 'thead', $xhtml->tableHeaders( $headers ) );
 		$thead = str_replace( '</tr>', '<th colspan="7">Action</th></tr>', $thead );
 
 
@@ -89,11 +89,11 @@
                 $theme->button( 'table', array( 'controller' => 'etatsliquidatifs', 'action' => 'visualisationapres', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'Notifications', 'enabled' => $cloture ) )
 			);
 		}
-		$tbody = $html->tag( 'tbody', $html->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
+		$tbody = $xhtml->tag( 'tbody', $xhtml->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
 
 		///
 		echo $pagination;
-		echo $html->tag( 'table', $thead.$tbody );
+		echo $xhtml->tag( 'table', $thead.$tbody );
 		echo $pagination;
 	}
 ?>

@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'decisionspdos', 'action' => 'add' )
             ).' </li>';
@@ -22,14 +22,14 @@
         </thead>
         <tbody>
             <?php foreach( $decisionspdos as $decisionpdo ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( $decisionpdo['Decisionpdo']['libelle'] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer la décision de PDO ',
                                     array( 'controller' => 'decisionspdos', 'action' => 'edit', $decisionpdo['Decisionpdo']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer la décision de PDO ',
                                     array( 'controller' => 'decisionspdos', 'action' => 'delete', $decisionpdo['Decisionpdo']['id'] )
                                 )

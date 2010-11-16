@@ -4,7 +4,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'permanences', 'action' => 'add' )
             ).' </li>';
@@ -34,7 +34,7 @@
             </thead>
             <tbody>
                 <?php foreach( $permanences as $permanence ):?>
-                    <?php echo $html->tableCells(
+                    <?php echo $xhtml->tableCells(
                         array(
                             h( Set::classicExtract( $permanence, 'Permanence.libpermanence' ) ),
                             h( Set::classicExtract( $sr, Set::classicExtract( $permanence, 'Permanence.structurereferente_id' ) ) ),
@@ -45,11 +45,11 @@
                             h( Set::classicExtract( $permanence, 'Permanence.codepos' ) ),
                             h( Set::classicExtract( $permanence, 'Permanence.ville' ) ),
 //                             h( Set::classicExtract( $permanence, 'Permanence.canton' ) ),
-                            $html->editLink(
+                            $xhtml->editLink(
                                 'Éditer la structure référente ',
                                 array( 'controller' => 'permanences', 'action' => 'edit', Set::classicExtract( $permanence, 'Permanence.id' ) )
                             ),
-                            $html->deleteLink(
+                            $xhtml->deleteLink(
                                 'Supprimer la structure référente ',
                                 array( 'controller' => 'permanences', 'action' => 'delete', Set::classicExtract( $permanence, 'Permanence.id' ) )
                             )

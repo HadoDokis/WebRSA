@@ -80,9 +80,9 @@
             <td class="signature noborder center">
                 <strong>Le Référent</strong><br />
                 <?php
-                    echo $html->tag(
+                    echo $xhtml->tag(
                         'div',
-                        $html->tag( 'span', ( isset( $ReferentNom ) ? $ReferentNom : ' ' ), array( 'id' => 'ReferentNom' ) )
+                        $xhtml->tag( 'span', ( isset( $ReferentNom ) ? $ReferentNom : ' ' ), array( 'id' => 'ReferentNom' ) )
                     );
                     echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentNom', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) );
                 ?>

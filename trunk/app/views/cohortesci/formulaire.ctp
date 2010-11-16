@@ -4,7 +4,7 @@
     if( isset( $cohorteci ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
 //         $pages = $paginator->first( '<<' );
 //         $pages .= $paginator->prev( '<' );
@@ -12,7 +12,7 @@
 //         $pages .= $paginator->next( '>' );
 //         $pages .= $paginator->last( '>>' );
 // 
-//         $pagination .= $html->tag( 'p', $pages );
+//         $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -111,14 +111,14 @@
 
                                 $form->input( 'Contratinsertion.'.$index.'.observ_ci', array( 'label' => false, 'type' => 'text', 'rows' => 2, 'value' => $contrat['Contratinsertion']['observ_ci'] ) ),
 
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir le contrat « '.$title.' »',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'view', $contrat['Contratinsertion']['id'] )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) )
                             );
 
-                            echo $html->tableCells(
+                            echo $xhtml->tableCells(
                                 Set::merge( $array1, $array2 ),
                                 array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
                                 array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
