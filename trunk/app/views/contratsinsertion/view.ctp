@@ -18,7 +18,7 @@
         <table>
             <tbody>
                 <tr class="even">
-                    <th><?php __( 'forme_ci' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.forme_ci' );?></th>
                     <td><?php echo $formeci[$contratinsertion['Contratinsertion']['forme_ci']];?></td>
                 </tr>
                 <tr class="odd">
@@ -26,11 +26,11 @@
                     <td><?php echo Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ), $options['num_contrat'] );?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'dd_ci' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.dd_ci' );?></th>
                     <td><?php echo date_short( $contratinsertion['Contratinsertion']['dd_ci'] );?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'df_ci' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.df_ci' );?></th>
                     <td><?php echo date_short( $contratinsertion['Contratinsertion']['df_ci'] );?></td>
                 </tr>
             </tbody>
@@ -39,7 +39,7 @@
         <table>
             <tbody>
                 <tr class="even">
-                    <th><?php __( 'niv_etude');?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.niv_etude');?></th>
                     <td>
                         <?php if( !empty( $contratinsertion['Nivetu'] ) ):?>
                             <ul>
@@ -51,15 +51,15 @@
                     </td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'diplomes' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.diplomes' );?></th>
                     <td><?php echo $contratinsertion['Contratinsertion']['diplomes'];?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'expr_prof' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.expr_prof' );?></th>
                     <td><?php echo $contratinsertion['Contratinsertion']['expr_prof'];?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'form_compl' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.form_compl' );?></th>
                     <td><?php echo $contratinsertion['Contratinsertion']['form_compl'];?></td>
                 </tr>
             </tbody>
@@ -85,23 +85,23 @@
         <table>
             <tbody>
                 <tr class="even">
-                    <th><?php __( 'rg_ci' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.rg_ci' );?></th>
                     <td><?php echo $contratinsertion['Contratinsertion']['rg_ci'];?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'actions_prev' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.actions_prev' );?></th>
                     <td><?php echo isset( $contratinsertion['Contratinsertion']['actions_prev'] ) ? 'Oui' : 'Non';?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'obsta_renc' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.obsta_renc' );?></th>
                     <td><?php echo $contratinsertion['Contratinsertion']['obsta_renc'];?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'service_soutien' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.service_soutien' );?></th>
                     <td><?php echo $contratinsertion['Contratinsertion']['service_soutien'];?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'pers_charg_suivi' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.pers_charg_suivi' );?></th>
                     <td><?php echo $contratinsertion['Contratinsertion']['pers_charg_suivi'];?></td>
                 </tr>
             </tbody>
@@ -110,31 +110,31 @@
         <table>
             <tbody>
                 <tr class="odd">
-                    <th><?php __( 'objectifs_fixes' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.objectifs_fixes' );?></th>
                     <td><?php echo $contratinsertion['Contratinsertion']['objectifs_fixes'];?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'engag_object' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.engag_object' );?></th>
                     <td><?php echo $contratinsertion['Action']['libelle'];?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'sect_acti_emp' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.sect_acti_emp' );?></th>
                     <td><?php echo isset( $sect_acti_emp[$contratinsertion['Contratinsertion']['sect_acti_emp']] ) ? $sect_acti_emp[$contratinsertion['Contratinsertion']['sect_acti_emp']] : null ;?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'emp_occupe' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.emp_occupe' );?></th>
                     <td><?php echo isset( $emp_occupe[$contratinsertion['Contratinsertion']['emp_occupe']] ) ? $emp_occupe[$contratinsertion['Contratinsertion']['emp_occupe']] : null ;?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'duree_hebdo_emp' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.duree_hebdo_emp' );?></th>
                     <td><?php echo isset( $duree_hebdo_emp[$contratinsertion['Contratinsertion']['duree_hebdo_emp']] ) ? $duree_hebdo_emp[$contratinsertion['Contratinsertion']['duree_hebdo_emp']] : null ;?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'nat_cont_trav' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.nat_cont_trav' );?></th>
                     <td><?php echo isset( $nat_cont_trav[$contratinsertion['Contratinsertion']['nat_cont_trav']] ) ? $nat_cont_trav[$contratinsertion['Contratinsertion']['nat_cont_trav']] : null ;?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'duree_cdd' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.duree_cdd' );?></th>
                     <td><?php echo isset( $duree_cdd[$contratinsertion['Contratinsertion']['duree_cdd']] ) ? $duree_cdd[$contratinsertion['Contratinsertion']['duree_cdd']] : null ;?></td>
                 </tr>
             </tbody>
@@ -143,11 +143,11 @@
         <table>
             <tbody>
                 <tr class="even">
-                    <th><?php __( 'duree_engag' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.duree_engag' );?></th>
                     <td><?php echo isset( $duree_engag[$contratinsertion['Contratinsertion']['duree_engag']] ) ? $duree_engag[$contratinsertion['Contratinsertion']['duree_engag']] : null ;?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'nature_projet' );?></th>
+                    <th><?php __d( 'contratinsertion', 'Contratinsertion.nature_projet' );?></th>
                     <td><?php echo $contratinsertion['Contratinsertion']['nature_projet'];?></td>
                 </tr>
             </tbody>

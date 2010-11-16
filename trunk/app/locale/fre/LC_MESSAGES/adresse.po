@@ -37,3 +37,27 @@ msgstr "Nom de commune"
 
 msgid "Adresse.localite"
 msgstr "Commune de résidence"
+#--
+msgid "Adresse.complideadr"
+msgstr "Complément identification adresse"
+
+msgid "Adresse.compladr"
+msgstr "Complément d'adresse"
+
+msgid "Adresse.lieudist"
+msgstr "Lieu de distribution"
+
+msgid "Adresse.numcomrat"
+msgstr "Numéro de commune"
+
+msgid "Adresse.numcomptt"
+msgstr "Numéro de commune sens INSEE"
+
+# msgid "locaadr"
+# msgstr "Localité adresse"
+
+msgid "Adresse.pays"
+msgstr "Code Pays"
+
+msgid "Adresse.canton"
+msgstr "Code Canton"

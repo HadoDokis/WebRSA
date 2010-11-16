@@ -20,7 +20,7 @@
         <table class="tooltips">
             <thead>
                 <tr>
-                    <th><?php __( 'rgadr' );?></th>
+                    <th><?php __d( 'adressefoyer', 'Adressefoyer.rgadr' );?></th>
                     <th>Adresse</th>
                     <th>Localité</th>
                     <th colspan="2" class="action">Actions</th>
@@ -35,11 +35,11 @@
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                             <tbody>
                                 <tr>
-                                    <th>'.__( 'dtemm', true ).'</th>
+                                    <th>'.__d( 'adressefoyer', 'Adressefoyer.dtemm', true ).'</th>
                                     <td>'.h( date_short( $adresse['Adressefoyer']['dtemm'] ) ).'</td>
                                 </tr>
                                 <tr>
-                                    <th>'.__( 'typeadr', true ).'</th>
+                                    <th>'.__d( 'adressefoyer', 'Adressefoyer.typeadr', true ).'</th>
                                     <td>'.h( $typeadr[$adresse['Adressefoyer']['typeadr']] ).'</td>
                                 </tr>
                                 <tr>

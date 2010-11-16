@@ -41,6 +41,12 @@ msgstr "Date de naissance"
 msgid "Personne.nomnai"
 msgstr "Nom de naissance"
 
+msgid "Personne.prenom2"
+msgstr "2ème prénom"
+
+msgid "Personne.prenom3"
+msgstr "3ème prénom"
+
 msgid "Personne.nomcomnai"
 msgstr "Commune de naissance"
 
@@ -50,11 +56,36 @@ msgstr "N° identifiant Pôle Emploi"
 msgid "Personne.nom_personne"
 msgstr "Nom/Prénom Allocataire"
 
+msgid "Personne.rgnai"
+msgstr "Rang naissance"
+
+msgid "Personne.typedtnai"
+msgstr "Type date de naissance"
+
+# msgid "Personne.nir"
+# msgstr "N° national d'identification (SECU)"
+
+msgid "Personne.topvalec"
+msgstr "Certification de l'état civil de la personne"
+
+msgid "Personne.sexe"
+msgstr "Sexe"
+
+msgid "Personne.nati"
+msgstr "Nationalité"
+
+msgid "Personne.dtnati"
+msgstr "Date Nationalité"
+
+msgid "Personne.pieecpres"
+msgstr "Pièce d'état civil présentée"
+
 msgid "Personne.numfixe"
 msgstr "N° de téléphone fixe"
 
 msgid "Personne.numport"
 msgstr "N° de téléphone portable"
+
 ###############################################################################
 
 msgid "Foyer.Modecontact.numtel"

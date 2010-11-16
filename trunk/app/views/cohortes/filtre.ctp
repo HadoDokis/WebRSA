@@ -32,10 +32,10 @@
 				echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 			}
 		?>
-        <?php echo $form->input( 'Filtre.locaadr', array( 'label' => __( 'locaadr', true ), 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Filtre.locaadr', array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ) );?>
         <!-- <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
         <?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-        <?php echo $form->input( 'Filtre.codepos', array( 'label' => __( 'codepos', true ), 'type' => 'text', 'maxlength' => 5 ) );?>
+        <?php echo $form->input( 'Filtre.codepos', array( 'label' => __d( 'adresse', 'Adresse.codepos', true ), 'type' => 'text', 'maxlength' => 5 ) );?>
     </fieldset>
 
     <?php if( $this->action == 'orientees' ):?>

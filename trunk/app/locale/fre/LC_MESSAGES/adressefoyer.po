@@ -20,11 +20,11 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Foyer.Modecontact.numtel"
-msgstr "N° de téléphone"
+msgid "Adressefoyer.rgadr"
+msgstr "Rang Adresse"
 
-msgid "Foyer.Dossier.matricule"
-msgstr "N° CAF"
+msgid "Adressefoyer.dtemm"
+msgstr "Date emménagement"
 
-msgid "Foyer.sitfam"
-msgstr "Situation familiale"
+msgid "Adressefoyer.typeadr"
+msgstr "Code nature adresse"

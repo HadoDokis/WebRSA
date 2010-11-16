@@ -36,7 +36,7 @@
         <table>
             <tbody>
                 <tr class="odd">
-                    <th><?php __( 'typepdo' );?></th>
+                    <th><?php __d( 'propopdo', 'Propopdo.typepdo' );?></th>
                     <td><?php echo value( $typepdo, Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ) ) ;?></td>
                 </tr>
                 <tr class="even">
@@ -60,7 +60,7 @@
                     <td><?php echo date_short( Set::classicExtract( $pdo, 'PropopdoTypenotifpdo.datenotif' ) );?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'commentairepdo' );?></th>
+                    <th><?php __d( 'propopdo', 'Propopdo.commentairepdo' );?></th>
                     <td><?php echo Set::classicExtract( $pdo, 'Propopdo.commentairepdo' );?></td>
                 </tr>
             </tbody>

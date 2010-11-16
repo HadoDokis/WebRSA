@@ -110,17 +110,17 @@
                         <?php echo thead( 10 );?>
                         <tbody>
                             <tr class="odd">
-                                <th><?php __( 'nom' );?></th>
+                                <th><?php __d( 'personne', 'Personne.nom' );?></th>
                                 <td><?php echo Set::extract( 'DEM.Personne.nom', $details );?></td>
                                 <td><?php echo Set::extract( 'CJT.Personne.nom', $details );?></td>
                             </tr>
                             <tr class="even">
-                                <th><?php __( 'prenom' );?></th>
+                                <th><?php __d( 'personne', 'Personne.prenom' );?></th>
                                 <td><?php echo Set::extract( 'DEM.Personne.prenom', $details );?></td>
                                 <td><?php echo Set::extract( 'CJT.Personne.prenom', $details );?></td>
                             </tr>
                             <tr class="odd">
-                                <th><?php __( 'sitfam' );?></th>
+                                <th><?php __d( 'foyer', 'Foyer.sitfam' );?></th>
                                 <td colspan="2"><?php echo ( isset( $sitfam[$details['Foyer']['sitfam']] ) ?  $sitfam[$details['Foyer']['sitfam']] : null );?></td>
                             </tr>
                             <tr class="even">
@@ -130,7 +130,7 @@
                                 </td>
                             </tr>
                             <tr class="odd">
-                                <th><?php __( 'locaadr' );?></th>
+                                <th><?php __d( 'adresse', 'Adresse.locaadr' );?></th>
                                 <td colspan="2"><?php echo ( isset( $details['Adresse']['locaadr'] ) ? $details['Adresse']['locaadr'] : null );?></td>
                             </tr>
                             <tr class="even">

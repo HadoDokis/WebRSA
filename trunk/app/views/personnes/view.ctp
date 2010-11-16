@@ -43,73 +43,73 @@
     <table>
         <tbody>
             <tr class="even">
-                <th><?php __( 'rolepers' );?></th>
+                <th><?php __d( 'prestation', 'Prestation.rolepers' );?></th>
                 <td><?php echo isset( $rolepers[$personne['Prestation']['rolepers']] ) ? $rolepers[$personne['Prestation']['rolepers']] : null ;?></td>
             </tr>
             <tr class="odd">
-                <th><?php __( 'qual' );?></th>
+                <th><?php __d( 'personne', 'Personne.qual' );?></th>
                 <td><?php echo isset( $qual[$personne['Personne']['qual']] ) ? $qual[$personne['Personne']['qual']] : null ;?></td>
             </tr>
             <tr class="even">
-                <th><?php __( 'nom' );?></th>
+                <th><?php __d( 'personne', 'Personne.nom' );?></th>
                 <td><?php echo $personne['Personne']['nom'];?></td>
             </tr>
             <tr class="odd">
-                <th><?php __( 'prenom' );?></th>
+                <th><?php __d( 'personne', 'Personne.prenom' );?></th>
                 <td><?php echo $personne['Personne']['prenom'];?></td>
             </tr>
               <tr class="even">
-                <th><?php __( 'nomnai' );?></th>
+                <th><?php __d( 'personne', 'Personne.nomnai' );?></th>
                 <td><?php echo $personne['Personne']['nomnai'];?></td>
             </tr>
             <tr class="odd">
-                <th><?php __( 'prenom2' );?></th>
+                <th><?php __d( 'personne', 'Personne.prenom2' );?></th>
                 <td><?php echo $personne['Personne']['prenom2'];?></td>
             </tr>
             <tr class="even">
-                <th><?php __( 'prenom3' );?></th>
+                <th><?php __d( 'personne', 'Personne.prenom3' );?></th>
                 <td><?php echo $personne['Personne']['prenom3'];?></td>
             </tr>
             <tr class="odd">
-                <th><?php __( 'nomcomnai' );?></th>
+                <th><?php __d( 'personne', 'Personne.nomcomnai' );?></th>
                 <td><?php echo $personne['Personne']['nomcomnai'];?></td>
             </tr>
             <tr class="even">
-                <th><?php __( 'dtnai' );?></th>
+                <th><?php __d( 'personne', 'Personne.dtnai' );?></th>
                 <td><?php echo date_short( $personne['Personne']['dtnai'] );?></td>
             </tr>
              <tr class="odd">
-                <th><?php __( 'rgnai' );?></th>
+                <th><?php __d( 'personne', 'Personne.rgnai' );?></th>
                 <td><?php echo $personne['Personne']['rgnai'];?></td>
             </tr>
             <tr class="even">
-                <th><?php __( 'typedtnai' );?></th>
+                <th><?php __d( 'personne', 'Personne.typedtnai' );?></th>
                 <td><?php echo isset( $typedtnai[$personne['Personne']['typedtnai']] ) ? $typedtnai[$personne['Personne']['typedtnai']] : null;?></td>
             </tr>
             <tr class="odd">
-                <th><?php __( 'nir' );?></th>
+                <th><?php __d( 'personne', 'Personne.nir' );?></th>
                 <td><?php echo $personne['Personne']['nir'];?></td>
             </tr>
             <tr class="even">
-                <th><?php __( 'topvalec' );?></th>
+                <th><?php __d( 'personne', 'Personne.topvalec' );?></th>
                 <td><?php echo ( $personne['Personne']['topvalec'] ? 'Oui' : 'Non' );?></td>
             </tr>
             <tr class="odd">
-                <th><?php __( 'sexe' );?></th>
+                <th><?php __d( 'personne', 'Personne.sexe' );?></th>
                 <td><?php echo $sexe[$personne['Personne']['sexe']];?></td>
             </tr>
             <?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' && $rolepers[$personne['Prestation']['rolepers']] != 'Enfant' ):?>
                 <tr class="even">
-                    <th><?php __( 'sitfam' );?></th>
+                    <th><?php __d( 'foyer', 'Foyer.sitfam' );?></th>
                     <td><?php echo ( isset( $sitfam[$personne['Foyer']['sitfam']] ) ?  $sitfam[$personne['Foyer']['sitfam']] : null );?></td>
                 </tr>
             <?php endif;?>
             <tr class="odd">
-                <th><?php __( 'numfixe' );?></th>
+                <th><?php __d( 'personne', 'Personne.numfixe' );?></th>
                 <td><?php echo $personne['Personne']['numfixe'];?></td>
             </tr>
             <tr class="even">
-                <th><?php __( 'numport' );?></th>
+                <th><?php __d( 'personne', 'Personne.numport' );?></th>
                 <td><?php echo $personne['Personne']['numport'];?></td>
             </tr>
         </tbody>
@@ -118,15 +118,15 @@
     <table>
         <tbody>
             <tr class="even">
-                <th><?php __( 'nati' );?></th>
+                <th><?php __d( 'personne', 'Personne.nati' );?></th>
                 <td><?php echo isset( $nationalite[$personne['Personne']['nati']] ) ? $nationalite[$personne['Personne']['nati']] : null;?></td>
             </tr>
             <tr class="odd">
-                <th><?php __( 'dtnati' );?></th>
+                <th><?php __d( 'personne', 'Personne.dtnati' );?></th>
                 <td><?php echo date_short( isset( $personne['Personne']['dtnati'] ) ) ? date_short( $personne['Personne']['dtnati'] ) : null;?></td>
             </tr>
             <tr class="even">
-                <th><?php __( 'pieecpres' );?></th>
+                <th><?php __d( 'personne', 'Personne.pieecpres' );?></th>
                 <td><?php echo isset( $pieecpres[$personne['Personne']['pieecpres']] ) ? $pieecpres[$personne['Personne']['pieecpres']] : null;?></td>
             </tr>
         </tbody>

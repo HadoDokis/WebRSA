@@ -15,5 +15,5 @@
         <?php echo $form->input( 'Prestform.actioninsertion_id', array( 'type' => 'hidden') ); ?> 
         <!-- <?php echo $form->input( 'Refpresta.id', array( 'type' => 'hidden' )); ?> -->
         <?php echo $form->input( 'Prestform.lib_presta', array( 'label' => __( 'lib_presta', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
-        <?php echo $form->input( 'Refpresta.nomrefpresta', array( 'label' => __( 'nom', true ), 'type' => 'text')); ?>
+        <?php echo $form->input( 'Refpresta.nomrefpresta', array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text')); ?>
 </fieldset>

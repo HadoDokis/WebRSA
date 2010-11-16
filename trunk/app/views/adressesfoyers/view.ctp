@@ -37,15 +37,15 @@
         <table>
             <tbody>
                 <tr class="odd">
-                    <th><?php __( 'rgadr' );?></th>
+                    <th><?php __d( 'adressefoyer', 'Adressefoyer.rgadr' );?></th>
                     <td><?php echo isset( $rgadr[$adresse['Adressefoyer']['rgadr']] ) ? $rgadr[$adresse['Adressefoyer']['rgadr']] : null ;?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'dtemm' );?></th>
+                    <th><?php __d( 'adressefoyer', 'Adressefoyer.dtemm' );?></th>
                     <td><?php echo date_short( $adresse['Adressefoyer']['dtemm'] );?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'typeadr' );?></th>
+                    <th><?php __d( 'adressefoyer', 'Adressefoyer.typeadr' );?></th>
                     <td><?php echo $typeadr[$adresse['Adressefoyer']['typeadr']];?></td>
                 </tr>
             </tbody>
@@ -54,51 +54,51 @@
         <table>
             <tbody>
                 <tr class="even">
-                    <th><?php __( 'numvoie' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.numvoie' );?></th>
                     <td><?php echo $adresse['Adresse']['numvoie'];?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'typevoie' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.typevoie' );?></th>
                     <td><?php echo isset( $typevoie[$adresse['Adresse']['typevoie']] ) ? $typevoie[$adresse['Adresse']['typevoie']] : null;?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'nomvoie' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.nomvoie' );?></th>
                     <td><?php echo $adresse['Adresse']['nomvoie'];?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'complideadr' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.complideadr' );?></th>
                     <td><?php echo $adresse['Adresse']['complideadr'];?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'compladr' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.compladr' );?></th>
                     <td><?php echo $adresse['Adresse']['compladr'];?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'lieudist' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.lieudist' );?></th>
                     <td><?php echo $adresse['Adresse']['lieudist'];?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'numcomrat' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.numcomrat' );?></th>
                     <td><?php echo $adresse['Adresse']['numcomrat'];?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'numcomptt' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.numcomptt' );?></th>
                     <td><?php echo $adresse['Adresse']['numcomptt'];?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'codepos' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.codepos' );?></th>
                     <td><?php echo $adresse['Adresse']['codepos'];?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'locaadr' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.locaadr' );?></th>
                     <td><?php echo $adresse['Adresse']['locaadr'];?></td>
                 </tr>
                 <tr class="even">
-                    <th><?php __( 'pays' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.pays' );?></th>
                     <td><?php echo $pays[$adresse['Adresse']['pays']];?></td>
                 </tr>
                 <tr class="odd">
-                    <th><?php __( 'canton' );?></th>
+                    <th><?php __d( 'adresse', 'Adresse.canton' );?></th>
                     <td><?php echo $adresse['Adresse']['canton'];?></td>
                 </tr>
             </tbody>

@@ -18,7 +18,7 @@
 //                         'Cui.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ),
 //                         'Cui.structurereferente_id', array( 'type' => 'hidden' ),
                         'Cui.observcui',
-                        'Cui.decisioncui', array( 'label' => __( 'decision_ci', true ), 'type' => 'select', 'options' => $options['decisioncui'] ),
+                        'Cui.decisioncui', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.decision_ci', true ), 'type' => 'select', 'options' => $options['decisioncui'] ),
                         'Cui.datevalidationcui', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2, 'empty' => true)
                     ),
                     array(
@@ -30,8 +30,8 @@
             <?php echo $xform->input( 'Cui.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );?>
             <?php echo $xform->input( 'Cui.structurereferente_id', array( 'type' => 'hidden' ) );?>
 
-            <?php echo $xform->input( 'Cui.observcui', array( 'label' => __( 'observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
-            <?php echo $xform->input( 'Cui.decisioncui', array( 'label' => __( 'decision_ci', true ), 'type' => 'select', 'options' => $options['decisioncui'], 'empty' => true ) ); ?>
+            <?php echo $xform->input( 'Cui.observcui', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.observ_ci', true ), 'type' => 'textarea', 'rows' => 6)  ); ?>
+            <?php echo $xform->input( 'Cui.decisioncui', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.decision_ci', true ), 'type' => 'select', 'options' => $options['decisioncui'], 'empty' => true ) ); ?>
             <?php echo $xform->input( 'Cui.datevalidationcui', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true)  ); ?>
         </fieldset>
     <div class="submit">
