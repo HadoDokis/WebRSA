@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
     $isRecours = Set::classicExtract( $this->params, 'named.recours' );
@@ -15,13 +15,13 @@
     <h1><?php echo $this->pageTitle;?></h1>
     <?php
         ///
-        echo $html->tag(
+        echo $xhtml->tag(
             'ul',
             implode(
                 '',
                 array(
-                    $html->tag( 'li', $html->link( 'Tout sélectionner', '#', array( 'onclick' => 'allCheckboxes( true ); return false;' ) ) ),
-                    $html->tag( 'li', $html->link( 'Tout désélectionner', '#', array( 'onclick' => 'allCheckboxes( false ); return false;' ) ) ),
+                    $xhtml->tag( 'li', $xhtml->link( 'Tout sélectionner', '#', array( 'onclick' => 'allCheckboxes( true ); return false;' ) ) ),
+                    $xhtml->tag( 'li', $xhtml->link( 'Tout désélectionner', '#', array( 'onclick' => 'allCheckboxes( false ); return false;' ) ) ),
                 )
             )
         );
@@ -55,7 +55,7 @@
                                     $apreApre = array();
                                 }
 
-                                echo $html->tableCells(
+                                echo $xhtml->tableCells(
                                     array(
                                         h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
                                         h( Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),

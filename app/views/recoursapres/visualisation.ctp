@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Visualisation des décisions des recours';?>
 
 <h1>Décisions des recours</h1>
@@ -7,7 +7,7 @@
     if( isset( $recoursapres ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -15,7 +15,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -73,7 +73,7 @@
                         $title = $recours['Dossier']['numdemrsa'];
 
 // debug($recours);
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( Set::classicExtract( $recours, 'Apre.numeroapre' ) ),
                             h( Set::classicExtract( $recours, 'Personne.qual' ).' '.Set::classicExtract( $recours, 'Personne.nom' ).' '.Set::classicExtract( $recours, 'Personne.prenom' ) ),
@@ -84,12 +84,12 @@
                             h( Set::enum( Set::classicExtract( $recours, 'ApreComiteapre.recoursapre' ), $options['recoursapre'] ) ),
                             h( $locale->date( 'Date::short', Set::classicExtract( $recours, 'ApreComiteapre.daterecours' ) ) ),
                             h( Set::classicExtract( $recours, 'ApreComiteapre.observationrecours' ) ),
-                            $html->printLink(
+                            $xhtml->printLink(
                                 'Imprimer pour le bénéficiaire',
                                 array( 'controller' => 'recoursapres', 'action' => 'notificationsrecoursgedooo', Set::classicExtract( $recours, 'ApreComiteapre.apre_id' ), 'dest' => 'beneficiaire' ),
                                 $permissions->check( 'recoursapres', 'notificationsrecoursgedooo' )
                             ),
-                            $html->printLink(
+                            $xhtml->printLink(
                                 'Imprimer pour le référent',
                                 array( 'controller' => 'recoursapres', 'action' => 'notificationsrecoursgedooo', Set::classicExtract( $recours, 'ApreComiteapre.apre_id' ), 'dest' => 'referent' ),
                                 $permissions->check( 'recoursapres', 'notificationsrecoursgedooo' )
@@ -106,14 +106,14 @@
         <?php echo $pagination;?>
        <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;' )
                 );
             ?></li>
 
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'recoursapres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );

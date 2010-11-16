@@ -1,8 +1,8 @@
 <?php
 	$this->pageTitle = 'Paramètres financiers pour la gestion de l\'APRE';
-	echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
-	echo $html->tag( 'h1', $this->pageTitle );
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 
 	echo $xform->create( 'Parametrefinancier' );
 	if( isset( $this->data['Parametrefinancier']['id'] ) ) {

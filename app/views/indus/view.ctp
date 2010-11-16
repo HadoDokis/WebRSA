@@ -78,14 +78,14 @@
 
         <ul class="actionMenu">
              <!-- <li><?php
-                echo $html->remiseLink(
+                echo $xhtml->remiseLink(
                     'Enregistrer les remises',
                     array( 'controller' => 'gedooos', 'action' => 'notifications_cohortes' )
                 );
             ?> </li> -->
             <li>
                 <?php
-                    echo $html->recgraLink(
+                    echo $xhtml->recgraLink(
                         'Recours gracieux',
                         array( 'controller' => 'recours', 'action' => 'gracieux', $infofinanciere['Dossier']['id'] )
                     );
@@ -93,7 +93,7 @@
             </li>
             <li>
                 <?php
-                    echo $html->recconLink(
+                    echo $xhtml->recconLink(
                         'Recours contentieux',
                         array( 'controller' => 'recours', 'action' => 'contentieux', $infofinanciere['Dossier']['id'] )
                     );

@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'CER';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
@@ -315,7 +315,7 @@
                 /*if( ( $nbContratsPrecedents != 0 ) ) {
                     echo $xform->input( 'Contratinsertion.objectifs_fixes', array( 'label' => 'Objectif du dernier contrat', 'value' => Set::classicExtract( $lastContrat, '0.Contratinsertion.objectifs_fixes' ) ) );
 
-                    echo $html->tag(
+                    echo $xhtml->tag(
                         'p',
                         'Sur une durée de '.Set::enum( Set::classicExtract( $lastContrat, '0.Contratinsertion.duree_engag' ), $duree_engag_cg58 ),
                         array(

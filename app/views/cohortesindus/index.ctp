@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Gestion des indus';?>
 
 <h1>Recherche par Indus</h1>
@@ -6,8 +6,8 @@
 
 <?php
     if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -21,7 +21,7 @@
     if( isset( $cohorteindu ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -29,7 +29,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -129,7 +129,7 @@
                             </tbody>
                         </table>';
                             $title = $indu['Dossier']['numdemrsa'];
-                            echo $html->tableCells(
+                            echo $xhtml->tableCells(
                                 array(
                                     h( $indu['Dossier']['numdemrsa'] ),
                                     h( $indu['Personne']['nom'].' '.$indu['Personne']['prenom'] ),
@@ -137,12 +137,12 @@
                                     h( $etatdosrsa[$indu['Situationdossierrsa']['etatdosrsa']] ),
                                     $locale->date( 'Date::miniLettre', $indu[0]['moismoucompta'] ),
 //                                     $locale->money( $indu[0]['mt_allocation_comptabilisee'] ),
-                                    $html->tag( 'span', $locale->money( $indu[0]['mt_indus_constate'] ), array( 'class' => 'number' ) ),
-                                    $html->tag( 'span', $locale->money( $indu[0]['mt_indus_transferes_c_g'] ), array( 'class' => 'number' ) ),
-                                    $html->tag( 'span', $locale->money( $indu[0]['mt_remises_indus'] ), array( 'class' => 'number' ) ),
+                                    $xhtml->tag( 'span', $locale->money( $indu[0]['mt_indus_constate'] ), array( 'class' => 'number' ) ),
+                                    $xhtml->tag( 'span', $locale->money( $indu[0]['mt_indus_transferes_c_g'] ), array( 'class' => 'number' ) ),
+                                    $xhtml->tag( 'span', $locale->money( $indu[0]['mt_remises_indus'] ), array( 'class' => 'number' ) ),
 //                                     $locale->money( $indu[0]['mt_annulations_faible_montant'] ),
 //                                     $locale->money( $indu[0]['mt_autre_annulation'] ),
-                                    $html->viewLink(
+                                    $xhtml->viewLink(
                                         'Voir le contrat « '.$title.' »',
                                         array( 'controller' => 'indus', 'action' => 'view', $indu['Dossier']['id'] )
                                     ),
@@ -160,7 +160,7 @@
 
        <ul class="actionMenu">
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'cohortesindus', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );

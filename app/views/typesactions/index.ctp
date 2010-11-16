@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'typesactions', 'action' => 'add' )
             ).' </li>';
@@ -22,14 +22,14 @@
         </thead>
         <tbody>
             <?php foreach( $typesactions as $typeaction ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( $typeaction['Typeaction']['libelle'] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le type d\'action',
                                     array( 'controller' => 'typesactions', 'action' => 'edit', $typeaction['Typeaction']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le type d\'action',
                                     array( 'controller' => 'typesactions', 'action' => 'delete', $typeaction['Typeaction']['id'] )
                                     //$permissions->check( 'typesactions', 'delete' )

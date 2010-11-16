@@ -1,6 +1,6 @@
 <h1><?php echo $this->pageTitle = $pageTitle;?></h1>
 
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -54,7 +54,7 @@
     if( isset( $orientsstructs ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
 //         $pages = $paginator->first( '<<' );
 //         $pages .= $paginator->prev( '<' );
@@ -62,7 +62,7 @@
 //         $pages .= $paginator->next( '>' );
 //         $pages .= $paginator->last( '>>' );
 //
-//         $pagination .= $html->tag( 'p', $pages );
+//         $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -78,7 +78,7 @@
         <?php
             echo $form->input( 'Relance.hasContrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
             //Si oui -> date de fin de contrat > à
-            echo $html->tag(
+            echo $xhtml->tag(
             	'div',
             	$form->input( 'Relance.datederniercontrat', array( 'label' => 'Date de fin de contrat supérieure à ', 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true, 'div' => false ) ),
             	array(
@@ -87,7 +87,7 @@
             	)
             );
             //Si non -> date orientation
-            echo $html->tag(
+            echo $xhtml->tag(
             	'div',
             	$form->input( 'Relance.dateorientation', array( 'label' => 'Date d\'orientation ', 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ) ),
             	array(
@@ -179,7 +179,7 @@
                         $statutRelance = Set::extract( $orientstruct, 'Orientstruct.'.$index.'.statutrelance' );
                         $orientstruct_id = Set::extract( $orientstruct, 'Orientstruct.id');
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $orientstruct['Dossier']['numdemrsa'] ),
                                 h( $orientstruct['Dossier']['matricule'] ),

@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <h1><?php echo $this->pageTile = 'Indicateurs de suivis mensuels';?></h1>
 
 <?php
@@ -59,8 +59,8 @@
 		}
 		$headers[] = 'Total / Moyenne '.$annee;
 
-		$thead = $html->tag( 'thead', $html->tableHeaders( $headers ) );
-		$tbody = $html->tag( 'tbody', implode( '', $rows ) );
-		echo $html->tag( 'table', $thead.$tbody );
+		$thead = $xhtml->tag( 'thead', $xhtml->tableHeaders( $headers ) );
+		$tbody = $xhtml->tag( 'tbody', implode( '', $rows ) );
+		echo $xhtml->tag( 'table', $thead.$tbody );
 	}
 ?>

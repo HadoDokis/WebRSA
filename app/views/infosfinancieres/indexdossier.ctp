@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php  $this->pageTitle = 'Paiement des allocations';?>
 
@@ -6,8 +6,8 @@
 
 <?php
     if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -75,7 +75,7 @@
                                     $rowspan++;
                             }
                             if( $rowspan == 1 ) {
-                                echo $html->tableCells(
+                                echo $xhtml->tableCells(
                                     array(
                                         h( $infofinanciere['Dossier']['numdemrsa'] ),
                                         h( $infofinanciere['Dossier']['matricule'] ),
@@ -84,7 +84,7 @@
                                         h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
                                         $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
                                         array(
-                                            $html->viewLink(
+                                            $xhtml->viewLink(
                                                 'Voir les informations financières',
                                                 array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_id'] ),
                                                 $permissions->check( 'infosfinancieres', 'view' )
@@ -106,7 +106,7 @@
 
                                         <td>'.h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]).'</td>
                                         <td>'.$locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ).'</td>
-                                        <td rowspan="'.$rowspan.'" class="noprint">'. $html->viewLink(
+                                        <td rowspan="'.$rowspan.'" class="noprint">'. $xhtml->viewLink(
                                             'Voir les informations financières',
                                             array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_id'] ),
                                             $permissions->check( 'infosfinancieres', 'view' )
@@ -123,7 +123,7 @@
                         }
 
 
-                       /* echo $html->tableCells(
+                       /* echo $xhtml->tableCells(
                             array(
                                 h( $infofinanciere['Dossier']['numdemrsa'] ),
                                 h( $infofinanciere['Dossier']['matricule'] ),
@@ -132,7 +132,7 @@
                                 $locale->date( 'Date::short', $infofinanciere['Personne']['dtnai'] ),
                                 h( $type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]),
                                 $locale->money( $infofinanciere['Infofinanciere']['mtmoucompta'] ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir les informations financières',
                                     array( 'controller' => 'infosfinancieres', 'action' => 'index', $infofinanciere['Infofinanciere']['dossier_id'] ),
                                     $permissions->check( 'infosfinancieres', 'view' )
@@ -153,18 +153,18 @@
             </tbody>
         </table>
         <?php if( Set::extract( $paginator, 'params.paging.Infofinanciere.count' ) > 65000 ):?>
-            <p style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $html->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
+            <p style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $xhtml->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
         <?php endif;?>
         <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
 
              <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'infosfinancieres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );

@@ -11,10 +11,10 @@
         </thead>
         <tbody>
             <?php
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Décision PDOs' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'decisionspdos', 'action' => 'index' )
                         )
@@ -22,10 +22,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Description pour traitements PDOs' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'descriptionspdos', 'action' => 'index' )
                         )
@@ -33,10 +33,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Origine PDOs' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'originespdos', 'action' => 'index' )
                         )
@@ -44,10 +44,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Situation PDOs' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'situationspdos', 'action' => 'index' )
                         )
@@ -55,10 +55,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-//                 echo $html->tableCells(
+//                 echo $xhtml->tableCells(
 //                     array(
 //                         h( 'Statut décisions PDOs' ),
-//                         $html->viewLink(
+//                         $xhtml->viewLink(
 //                             'Voir la table',
 //                             array( 'controller' => 'statutsdecisionspdos', 'action' => 'index' )
 //                         )
@@ -66,10 +66,10 @@
 //                     array( 'class' => 'odd' ),
 //                     array( 'class' => 'even' )
 //                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Statut PDOs' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'statutspdos', 'action' => 'index' )
                         )
@@ -77,10 +77,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Type de notification' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'typesnotifspdos', 'action' => 'index' )
                         )
@@ -88,10 +88,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Types de traitements PDOs' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'traitementstypespdos', 'action' => 'index' )
                         )
@@ -99,10 +99,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Type de PDOs' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'typespdos', 'action' => 'index' )
                         )

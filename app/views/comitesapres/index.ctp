@@ -1,10 +1,10 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Comité examen APRE';?>
 
 <h1>Recherche de Comité d'examen</h1>
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addComiteLink(
+            echo '<li>'.$xhtml->addComiteLink(
                 'Ajouter Comité',
                 array( 'controller' => 'comitesapres', 'action' => 'add' )
             ).' </li>';
@@ -12,8 +12,8 @@
     </ul>
 <?php
     if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -35,7 +35,7 @@
     if( isset( $comitesapres ) ) {
         $paginator->options( array( 'url' => $this->params['named'] ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<< ' );
         $pages .= $paginator->prev( ' < ' );
@@ -43,7 +43,7 @@
         $pages .= $paginator->next( ' > ' );
         $pages .= $paginator->last( ' >>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -114,24 +114,24 @@
                             $decisionPrise = false;
                         }
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( Set::classicExtract( $comiteapre, 'Comiteapre.intitulecomite' ) ),
                                 h( Set::classicExtract( $comiteapre, 'Comiteapre.lieucomite' ) ),
                                 h( date_short( Set::classicExtract( $comiteapre, 'Comiteapre.datecomite' ) ) ),
                                 h( $locale->date( 'Time::short', Set::classicExtract( $comiteapre, 'Comiteapre.heurecomite' ) ) ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir le comité',
                                     array( 'controller' => 'comitesapres', 'action' => 'view', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
                                     $decisionPrise,
                                     $permissions->check( 'comitesapres', 'index' )
                                 ),
-                                $html->rapportLink(
+                                $xhtml->rapportLink(
                                     'Rapport',
                                     array( 'controller' => 'comitesapres', 'action' => 'rapport', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
                                     $permissions->check( 'comitesapres', 'rapport' )
                                 ),
-                                $html->notificationsApreLink(
+                                $xhtml->notificationsApreLink(
                                     'Notifier la décision',
                                     array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomite', 'Cohortecomiteapre__id' => Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
                                     $permissions->check( 'cohortescomitesapres', 'notificationscomite' )
@@ -147,7 +147,7 @@
         <?php echo $pagination;?>
     <ul class="actionMenu">
         <li><?php
-            echo $html->exportLink(
+            echo $xhtml->exportLink(
                 'Télécharger le tableau',
                 array( 'controller' => 'comitesapres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
             );

@@ -1,6 +1,6 @@
 <?php
 	// CSS
-	echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
 	// Titre
 	$this->pageTitle = sprintf(
@@ -39,7 +39,7 @@
 
 <div class="with_treemenu">
 	<?php
-		echo $html->tag( 'h1', $this->pageTitle );
+		echo $xhtml->tag( 'h1', $this->pageTitle );
 
 		// Formulaire
 		echo $xform->create( null );
@@ -50,7 +50,7 @@
 			$tmp .= $xform->input( 'Dsp.id', array( 'type' => 'hidden' ) );
 		}
 		$tmp .= $xform->input( 'Dsp.personne_id', array( 'type' => 'hidden', 'value' => Set::extract( $dsp, 'Personne.id' ) ) );
-		echo $html->tag( 'div', $tmp );
+		echo $xhtml->tag( 'div', $tmp );
 
 // 		asort( $options['sitpersdemrsa'] );
 /*

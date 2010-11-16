@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
     echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
@@ -6,7 +6,7 @@
 <div class="with_treemenu">
     <?php echo $xform->create( 'Entretien' );?>
     <?php
-        echo $html->tag(
+        echo $xhtml->tag(
             'h1',
             $this->pageTitle = __d( 'entretien', "Entretiens::{$this->action}", true )
         );

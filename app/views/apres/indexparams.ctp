@@ -10,10 +10,10 @@
         </thead>
         <tbody>
             <?php
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Paramètres financiers pour la gestion de l\'APRE' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'parametresfinanciers', 'action' => 'index' )
                         )
@@ -21,10 +21,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Participants comités APRE' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'participantscomites', 'action' => 'index' )
                         )
@@ -32,10 +32,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Personnes chargées du suivi des Aides APREs' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'suivisaidesapres', 'action' => 'index' )
                         )
@@ -43,10 +43,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Tiers prestataires de l\'APRE' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'tiersprestatairesapres', 'action' => 'index' )
                         )
@@ -54,10 +54,10 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( 'Types d\'aides liées au personne chargée du suivi de l\'APRE' ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'suivisaidesaprestypesaides', 'action' => 'index' )
                         )

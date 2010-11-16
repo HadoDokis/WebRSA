@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Décisions des comités';?>
 
 <?php if( isset( $comitesapres ) && is_array( $comitesapres ) && count( $comitesapres ) > 0 ):?>
@@ -17,7 +17,7 @@
     if( isset( $comitesapres ) ) {
         $paginator->options( array( 'url' => $this->params['named'] ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -25,7 +25,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -96,7 +96,7 @@
                     $comiteapre_id = Set::extract( $comite, 'ApreComiteapre.comiteapre_id');
                     $aprecomiteapre_id = Set::extract( $comite, 'ApreComiteapre.id');
 // debug($comite);
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( Set::classicExtract( $comite, 'Dossier.numdemrsa') ),
                             h( Set::classicExtract( $comite, 'Personne.qual').' '.Set::classicExtract( $comite, 'Personne.nom').' '.Set::classicExtract( $comite, 'Personne.prenom') ),
@@ -116,7 +116,7 @@
 //                             $xform->input( 'ApreComiteapre.'.$index.'.montantdemande', array( 'label' => false, 'type' => 'text' ) ),
                             $xform->input( 'ApreComiteapre.'.$index.'.montantattribue', array( 'label' => false, 'type' => 'text', /*'maxlength' => 4,*/ 'value' => Set::classicExtract( $comite, 'Apre.montanttotal' ) ) ),
                             $xform->input( 'ApreComiteapre.'.$index.'.observationcomite', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
-                            $html->viewLink(
+                            $xhtml->viewLink(
                                 'Voir l\'APRE',
                                 array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $comite, 'Personne.id' ) ),
                                 true,

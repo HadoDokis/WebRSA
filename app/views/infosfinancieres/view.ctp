@@ -7,7 +7,7 @@
 <!--
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->editLink(
+            echo '<li>'.$xhtml->editLink(
                 'Éditer des informations',
                 array( 'controller' => 'infosfinancieres', 'action' => 'edit', $infofinanciere['Infofinanciere']['id'] )
             ).' </li>';

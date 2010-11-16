@@ -1,18 +1,18 @@
 <?php
     $this->pageTitle = 'Impression des APREs pour l\'état liquidatif';
 
-    echo $html->tag( 'h1', $this->pageTitle );
+    echo $xhtml->tag( 'h1', $this->pageTitle );
 
     ///Fin pagination
 
 
     if( empty( $apres ) ) {
-        echo $html->tag( 'p', 'Aucune APRE à sélectionner.', array( 'class' => 'notice' ) );
+        echo $xhtml->tag( 'p', 'Aucune APRE à sélectionner.', array( 'class' => 'notice' ) );
     }
     else {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -20,7 +20,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
 
         $headers = array(
             $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' ),
@@ -38,7 +38,7 @@
         );
 
         ///
-        $thead = $html->tag( 'thead', $html->tableHeaders( $headers ) );
+        $thead = $xhtml->tag( 'thead', $xhtml->tableHeaders( $headers ) );
 
         echo $xform->create( 'Etatliquidatif' );
         // FIXME
@@ -102,11 +102,11 @@
                 $theme->button( 'print', array( 'controller' => 'etatsliquidatifs', 'action' => 'impressiongedoooapres', Set::classicExtract( $apre, 'Apre.id' ), $this->params['pass'][0], 'dest' => 'tiersprestataire' ), array( 'enabled' =>  $isTiers ) ),
             );
         }
-        $tbody = $html->tag( 'tbody', $html->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
+        $tbody = $xhtml->tag( 'tbody', $xhtml->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
 
 
         echo $pagination;
-        echo $html->tag( 'table', $thead.$tbody );
+        echo $xhtml->tag( 'table', $thead.$tbody );
         echo $pagination;
 
         echo $xform->end();
@@ -117,7 +117,7 @@
 
 <ul class="actionMenu">
     <li><?php
-        echo $html->printCohorteLink(
+        echo $xhtml->printCohorteLink(
             'Imprimer la cohorte',
             Set::merge(
                 array(

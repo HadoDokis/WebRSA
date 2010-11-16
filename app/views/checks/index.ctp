@@ -24,7 +24,7 @@
 					?><table>
 					<?php
 						foreach( $structs as $struct ) {
-							echo $html->tableCells(
+							echo $xhtml->tableCells(
 								array(
 									( empty( $struct['Structurereferente']['lib_struc'] ) ? 'FIXME' : $struct['Structurereferente']['lib_struc'] ),
 									( empty( $struct['Structurereferente']['apre'] ) ? 'FIXME' : $struct['Structurereferente']['apre'] ),
@@ -44,7 +44,7 @@
 					echo "Non";
 					?><table>
 					<?php
-						echo $html->tableHeaders(
+						echo $xhtml->tableHeaders(
 							array(
 								'Nom',
 								'Prénom',
@@ -59,7 +59,7 @@
 							)
 						);
 						foreach( $users as $user ) {
-							echo $html->tableCells(
+							echo $xhtml->tableCells(
 								array(
 									( empty( $user['User']['nom'] ) ? 'FIXME' : $user['User']['nom'] ),
 									( empty( $user['User']['prenom'] ) ? 'FIXME' : $user['User']['prenom'] ),

@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Modification Décisions du comité';?>
 
 <?php if( isset( $apre['Comiteapre'] ) && is_array( $apre['Comiteapre'] ) && count( $apre['Comiteapre'] ) > 0 ):?>
@@ -54,7 +54,7 @@
                     $aprecomiteapre_id = Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.id');
 
 // debug($comiteapre);
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( Set::classicExtract( $apre, 'Dossier.numdemrsa') ),
                             h( Set::classicExtract( $apre, 'Personne.qual').' '.Set::classicExtract( $apre, 'Personne.nom').' '.Set::classicExtract( $apre, 'Personne.prenom') ),
@@ -72,7 +72,7 @@
                             $xform->input( 'ApreComiteapre.montantattribue', array( 'label' => false, 'type' => 'text', 'maxlength' => 7, 'value' => Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.montantattribue') ) ),
 
                             $xform->input( 'ApreComiteapre.observationcomite', array( 'label' => false, 'type' => 'text', 'rows' => 3, 'value' => Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.observationcomite') ) ),
-                            $html->viewLink(
+                            $xhtml->viewLink(
                                 'Voir le comite « '.Set::extract( $aprecomiteapre, 'Comiteapre.id' ).' »',
                                 array( 'controller' => 'comitesapres', 'action' => 'view', Set::extract( $aprecomiteapre, 'Comiteapre.id' ) ),
                                 true,

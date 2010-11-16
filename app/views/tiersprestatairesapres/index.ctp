@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'tiersprestatairesapres', 'action' => 'add' )
             ).' </li>';
@@ -34,7 +34,7 @@
         </thead>
         <tbody>
             <?php foreach( $tiersprestatairesapres as $tiersprestataire ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( Set::classicExtract( $tiersprestataire, 'Tiersprestataireapre.nomtiers' ) ),
                                 h( Set::classicExtract( $tiersprestataire, 'Tiersprestataireapre.siret' ) ),
@@ -48,11 +48,11 @@
                                 h( Set::classicExtract( $tiersprestataire, 'Tiersprestataireapre.guiban' ) ),
                                 h( Set::classicExtract( $tiersprestataire, 'Tiersprestataireapre.numcomptban' ) ),
                                 h( Set::classicExtract( $tiersprestataire, 'Tiersprestataireapre.clerib' ) ),*/
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le tiers prestataire APRE ',
                                     array( 'controller' => 'tiersprestatairesapres', 'action' => 'edit', $tiersprestataire['Tiersprestataireapre']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le tiers prestataire APRE ',
                                     array( 'controller' => 'tiersprestatairesapres', 'action' => 'delete', $tiersprestataire['Tiersprestataireapre']['id'] ),
                                     $permissions->check( 'tiersprestatairesapres', 'delete' ) && Set::classicExtract( $tiersprestataire, 'Tiersprestataireapre.deletable' )

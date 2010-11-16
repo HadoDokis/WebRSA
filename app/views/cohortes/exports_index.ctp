@@ -3,7 +3,7 @@
 <table>
     <thead>
     <?php
-        echo $html->tableHeaders(
+        echo $xhtml->tableHeaders(
             array("Fichier", "Action")
         ); 
     ?></thead>
@@ -13,12 +13,12 @@
         <tr>
             <td><?php echo $row; ?></td>
             <td>
-                <?php echo $html->link( "Télécharger", 'export_download/'.$row ); ?> 
-                <?php echo $html->link( "Supprimer", 'export_delete/'.$row, null, "Etes-vous sûr de vouloir supprimer ?" ); ?> 
+                <?php echo $xhtml->link( "Télécharger", 'export_download/'.$row ); ?> 
+                <?php echo $xhtml->link( "Supprimer", 'export_delete/'.$row, null, "Etes-vous sûr de vouloir supprimer ?" ); ?> 
             </td>
         </tr>
     <?php endforeach; ?> 
     </tbody>
 </table>
  
-<p><?php echo $html->link("Créer un nouvel export", 'export'); ?></p>
+<p><?php echo $xhtml->link("Créer un nouvel export", 'export'); ?></p>

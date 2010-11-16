@@ -1,5 +1,5 @@
 <?php
-    echo $html->tag(
+    echo $xhtml->tag(
         'h1',
         $this->pageTitle = __d( 'actioncandidat', "Actionscandidats::{$this->action}", true )
     )

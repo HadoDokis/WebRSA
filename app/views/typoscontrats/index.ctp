@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'typoscontrats', 'action' => 'add' )
             ).' </li>';
@@ -22,14 +22,14 @@
         </thead>
         <tbody>
             <?php foreach( $typoscontrats as $typocontrat ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( $typocontrat['Typocontrat']['lib_typo'] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le type de contrat d\'insertion ',
                                     array( 'controller' => 'typoscontrats', 'action' => 'edit', $typocontrat['Typocontrat']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le type de contrat d\'insertion ',
                                     array( 'controller' => 'typoscontrats', 'action' => 'delete', $typocontrat['Typocontrat']['id'] )
                                 )

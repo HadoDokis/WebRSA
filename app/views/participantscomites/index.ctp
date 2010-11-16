@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'participantscomites', 'action' => 'add' )
             ).' </li>';
@@ -31,7 +31,7 @@
         </thead>
         <tbody>
             <?php foreach( $participants as $participant ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( Set::classicExtract( $qual, Set::classicExtract( $participant, 'Participantcomite.qual' ) ) ),
                                 h( Set::classicExtract( $participant, 'Participantcomite.nom' ) ),
@@ -40,11 +40,11 @@
                                 h( Set::classicExtract( $participant, 'Participantcomite.organisme' ) ),
                                 h( Set::classicExtract( $participant, 'Participantcomite.numtel' ) ),
                                 h( Set::classicExtract( $participant, 'Participantcomite.mail' ) ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le participant ',
                                     array( 'controller' => 'participantscomites', 'action' => 'edit', $participant['Participantcomite']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le participant ',
                                     array( 'controller' => 'participantscomites', 'action' => 'delete', $participant['Participantcomite']['id'] )
                                 )

@@ -5,10 +5,10 @@
 <ul>
 	<?php
 		if( empty( $this->viewVars['params']['montantMaxComplementaires'] ) ) {
-			echo $html->tag( 'li', 'Apre.montantMaxComplementaires' );
+			echo $xhtml->tag( 'li', 'Apre.montantMaxComplementaires' );
 		}
 		if( empty( $this->viewVars['params']['periodeMontantMaxComplementaires'] ) ) {
-			echo $html->tag( 'li', 'Apre.periodeMontantMaxComplementaires' );
+			echo $xhtml->tag( 'li', 'Apre.periodeMontantMaxComplementaires' );
 		}
 	?>
 </ul>

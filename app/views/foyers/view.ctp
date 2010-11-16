@@ -6,8 +6,8 @@
     <?php /*debug( $foyer );*/?>
 
     <?php
-        echo $html->link(
-            $html->image(
+        echo $xhtml->link(
+            $xhtml->image(
                 'icons/add.png',
                 array( 'alt' => 'Ajouter', 'title' => 'Ajouter une personne au foyer' )
             ),
@@ -31,7 +31,7 @@
         <tbody>
             <?
 				foreach( $foyer['Personne'] as $personne ) {
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( $personne['qual'] ),
                             h( $personne['nom'] ),
@@ -46,16 +46,16 @@
                             h( $personne['nir'] ),
                             h( $personne['topvalec'] ),
                             h( $personne['sexe'] ),
-                            $html->link(
-                                $html->image(
+                            $xhtml->link(
+                                $xhtml->image(
                                     'icons/pencil.png',
                                     array( 'alt' => 'Éditer' )
                                 ),
                                 array( 'controller' => 'personnes', 'action' => 'edit', $personne['id'] ),
                                 array( 'escape' => false )
                             ),
-                            $html->link(
-                                $html->image(
+                            $xhtml->link(
+                                $xhtml->image(
                                     'icons/delete.png',
                                     array( 'alt' => 'Supprimer', 'title' => 'Supprimer' )
                                 ),

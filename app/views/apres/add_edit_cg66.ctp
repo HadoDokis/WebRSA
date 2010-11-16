@@ -1,5 +1,5 @@
 <?php
-    echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
     $this->modelClass = $this->params['models'][0];
 
     $this->pageTitle = 'APRE';
@@ -413,8 +413,8 @@
 
         echo $ajax->observeField( 'Aideapre66Typeaideapre66Id', array( 'update' => 'Piece66', 'url' => Router::url( array( 'action' => 'ajaxpiece', 'aideapre_id' => Set::classicExtract( $this->data, 'Aideapre66.id' ) ), true ) ) );
 
-        echo $html->tag( 'div', null, array( 'id' => 'Piece66' ) );
-        echo $html->tag( '/div' );
+        echo $xhtml->tag( 'div', null, array( 'id' => 'Piece66' ) );
+        echo $xhtml->tag( '/div' );
 
 
         echo $default->subform(
@@ -430,7 +430,7 @@
             )
         );
 
-        echo $html->tag(
+        echo $xhtml->tag(
             'fieldset',
             'Je soussigné '. '<strong>'.Set::enum( Set::classicExtract( $personne, 'Personne.qual') , $qual ).' '.$personne['Personne']['nom'].' '.$personne['Personne']['prenom'].'</strong>'.' souhaite que mon aide ( si elle est acceptée ) soit versée sur le compte du '.$default->subform( 'Aideapre66.creancier', array( 'rows' => 2 ) ),
             array( 'id' => 'Soussigne' )
@@ -464,7 +464,7 @@
                 <?php
                     foreach( $listesAidesSelonApre as $i => $liste ){
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( date_short( Set::classicExtract( $liste, 'Aideapre66.datedemande' ) ) ),
                                 h( Set::enum( Set::classicExtract( $liste, 'Aideapre66.themeapre66_id' ), $themes ) ),
@@ -624,7 +624,7 @@
         $valueIsDecision = $thisDataIsDecision;
     }
     $input = $form->input( "{$this->modelClass}.isdecision", array( 'type' => 'radio' , 'options' => $options['isdecision'], 'legend' => required( __d( 'apre', "{$this->modelClass}.isdecision", true )  ), 'value' => $valueIsDecision ) );
-    echo $html->tag( 'div', $input, array( 'class' => $class ) );
+    echo $xhtml->tag( 'div', $input, array( 'class' => $class ) );
 ?>
 
 <fieldset id="DecisionApre">

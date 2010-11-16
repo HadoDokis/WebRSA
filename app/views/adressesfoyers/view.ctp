@@ -19,13 +19,13 @@
     <ul class="actionMenu">
         <?php
             if( $permissions->check( 'adressesfoyers', 'edit' ) ) {
-                echo '<li>'.$html->editLink(
+                echo '<li>'.$xhtml->editLink(
                     'Éditer l\'adresse « '.$title.' »',
                     array( 'controller' => 'adressesfoyers', 'action' => 'edit', $adresse['Adressefoyer']['id'] )
                 ).' </li>';
             }
 
-//             echo '<li>'.$html->deleteLink(
+//             echo '<li>'.$xhtml->deleteLink(
 //                 'Supprimer l\'adresse « '.$title.' »',
 //                 array( 'controller' => 'adressesfoyers', 'action' => 'delete', $adresse['Adressefoyer']['id'] )
 //             ).' </li>';

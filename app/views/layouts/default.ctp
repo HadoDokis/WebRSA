@@ -2,18 +2,18 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
     <head>
-        <?php echo $html->charset(); ?>
+        <?php echo $xhtml->charset(); ?>
         <title>
             <?php echo $title_for_layout; ?>
         </title>
         <?php
-            //echo $html->meta('icon');
-            echo $html->css( array( 'all.reset' ), 'stylesheet', array( 'media' => 'all' ) );
-            echo $html->css( array( 'all.base' ), 'stylesheet', array( 'media' => 'all' ) );
-            echo $html->css( array( 'screen.generic' ), 'stylesheet', array( 'media' => 'screen,presentation' ) );
-            echo $html->css( array( 'print.generic' ), 'stylesheet', array( 'media' => 'print' ) );
+            //echo $xhtml->meta('icon');
+            echo $xhtml->css( array( 'all.reset' ), 'stylesheet', array( 'media' => 'all' ) );
+            echo $xhtml->css( array( 'all.base' ), 'stylesheet', array( 'media' => 'all' ) );
+            echo $xhtml->css( array( 'screen.generic' ), 'stylesheet', array( 'media' => 'screen,presentation' ) );
+            echo $xhtml->css( array( 'print.generic' ), 'stylesheet', array( 'media' => 'print' ) );
 
-            echo $html->css( array( 'menu' ), 'stylesheet', array( 'media' => 'all' ) );
+            echo $xhtml->css( array( 'menu' ), 'stylesheet', array( 'media' => 'all' ) );
             echo $scripts_for_layout;
         ?>
         <?php

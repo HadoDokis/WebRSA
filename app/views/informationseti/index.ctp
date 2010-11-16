@@ -33,7 +33,7 @@
                 </thead>
                 <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $topcreaentre[$informationeti['Informationeti']['topcreaentre']]),	
                                 h( $topaccre[$informationeti['Informationeti']['topaccre']]),

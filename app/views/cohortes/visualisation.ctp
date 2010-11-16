@@ -4,8 +4,8 @@
 
 
     if( !empty( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -31,7 +31,7 @@
 //     if( isset( $cohorte ) ) {
 //         $paginator->options( array( 'url' => $this->params['named'] ) );
 //         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-//         $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+//         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 //
 //         $pages = $paginator->first( '<< ' );
 //         $pages .= $paginator->prev( ' < ' );
@@ -39,7 +39,7 @@
 //         $pages .= $paginator->next( ' > ' );
 //         $pages .= $paginator->last( ' >>' );
 //
-//         $pagination .= $html->tag( 'p', $pages );
+//         $pagination .= $xhtml->tag( 'p', $pages );
 //     }
 //     else {
 //         $pagination = '';
@@ -137,7 +137,7 @@
                             </tbody>
                         </table>';
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $personne['Adresse']['locaadr'] ),
                                 h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
@@ -150,7 +150,7 @@
                                 h( $personne['Orientstruct']['statut_orient'] ),
                                 h( date_short( $personne['Orientstruct']['date_propo'] ) ),
                                 h( date_short( $personne['Contratinsertion']['dd_ci'] ) ),
-                                $html->printLink(
+                                $xhtml->printLink(
                                     'Imprimer la notification',
                                     array( 'controller' => 'gedooos', 'action' => 'orientstruct', $personne['Orientstruct']['id'] ),
                                     $permissions->check( 'gedooos', 'orientstruct' )
@@ -192,7 +192,7 @@
                         'onclick' => 'impressionCohorte( this );'
                     )
                 );
-                /*echo $html->printCohorteLink(
+                /*echo $xhtml->printCohorteLink(
                     'Imprimer la cohorte',
                     Set::merge(
                         array(
@@ -207,7 +207,7 @@
 
 
             <!--<li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     Set::merge(
                         array( 'controller' => 'cohortes', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )

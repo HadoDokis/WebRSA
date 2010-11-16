@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Demandes de recours';?>
 
 
@@ -8,7 +8,7 @@
     if( isset( $recoursapres ) ) {
         $paginator->options( array( 'url' => $this->params['named'] ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -16,7 +16,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -80,7 +80,7 @@
 // debug($recours);
 
                     $valueRecourapre = Set::classicExtract( $this->data, 'ApreComiteapre.'.$index.'.recoursapre' );
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( Set::classicExtract( $recours, 'Apre.numeroapre') ),
                             h( Set::classicExtract( $recours, 'Personne.qual').' '.Set::classicExtract( $recours, 'Personne.nom').' '.Set::classicExtract( $recours, 'Personne.prenom') ),
@@ -97,7 +97,7 @@
 
                             $xform->input( 'ApreComiteapre.'.$index.'.daterecours', array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY' ) ),
                             $xform->input( 'ApreComiteapre.'.$index.'.observationrecours', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
-                            $html->viewLink(
+                            $xhtml->viewLink(
                                 'Voir le comite « '.Set::extract( $recours, 'Comiteapre.id' ).' »',
                                 array( 'controller' => 'comitesapres', 'action' => 'view', Set::extract( $recours, 'Comiteapre.id' ) ),
                                 true,

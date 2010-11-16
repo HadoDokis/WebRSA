@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Notifications des décisions des comités';?>
 
 <h1>Notification des Comités</h1>
@@ -7,7 +7,7 @@
     if( isset( $comitesapres ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -15,7 +15,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -101,7 +101,7 @@
 
 					$apreComiteapreId = Set::classicExtract( $comite, 'ApreComiteapre.id' );
 
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( Set::classicExtract( $comite, 'Dossier.numdemrsa' ) ),
                             h( Set::classicExtract( $comite, 'Personne.qual' ).' '.Set::classicExtract( $comite, 'Personne.nom' ).' '.Set::classicExtract( $comite, 'Personne.prenom' ) ),
@@ -111,17 +111,17 @@
                             h( $locale->date( 'Date::short', Set::classicExtract( $comite, 'Comiteapre.datecomite' ) ) ),
                             h( Set::classicExtract( $comite, 'ApreComiteapre.montantattribue' ) ),
                             h( Set::classicExtract( $comite, 'ApreComiteapre.observationcomite' ) ),
-                            $html->printLink(
+                            $xhtml->printLink(
                                 'Imprimer pour le bénéficiaire',
                                 array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', $apreComiteapreId, 'dest' => 'beneficiaire' ),
                                 $permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
                             ),
-                            $html->printLink(
+                            $xhtml->printLink(
                                 'Imprimer pour le référent',
                                 array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', $apreComiteapreId, 'dest' => 'referent' ),
                                 $permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
                             ),
-                            $html->printLink(
+                            $xhtml->printLink(
                                 'Imprimer pour le tiers prestataire',
                                 array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', $apreComiteapreId, 'dest' => 'tiers' ),
                                 $isTiers,
@@ -139,14 +139,14 @@
         <?php echo $pagination;?>
        <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;' )
                 );
             ?></li>
 
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'cohortescomitesapres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );

@@ -1,4 +1,4 @@
-<?php  echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php  echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Recherche par Orientation';?>
 
 <h1>Recherche par Orientation</h1>
@@ -23,8 +23,8 @@
     }
 
     if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -155,7 +155,7 @@
                             </tbody>
                         </table>';
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
 
                             array(
                                 h( $orient['Dossier']['numdemrsa'] ),
@@ -166,9 +166,9 @@
                                 h( date_short( $orient['Orientstruct']['date_valid'] ) ),
                                 h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
                                 h( $orient['Orientstruct']['statut_orient'] ),
-                                $html->boolean( $orient['Calculdroitrsa']['toppersdrodevorsa'] ),
+                                $xhtml->boolean( $orient['Calculdroitrsa']['toppersdrodevorsa'] ),
                                 array(
-                                    $html->viewLink(
+                                    $xhtml->viewLink(
                                         'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
                                         array( 'controller' => 'personnes', 'action' => 'view', $orient['Personne']['id'] )
                                     ),
@@ -185,17 +185,17 @@
         </table>
 
         <?php if( Set::extract( $paginator, 'params.paging.Orientstruct.count' ) > 65000 ):?>
-            <p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $html->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
+            <p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $xhtml->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
         <?php endif;?>
         <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'criteres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );

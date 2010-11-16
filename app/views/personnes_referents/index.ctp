@@ -21,7 +21,7 @@
             <p class="notice">Cette personne ne possède pas encore de référents.</p>
             <ul class="actionMenu">
                 <?php
-                    echo '<li>'.$html->addLink(
+                    echo '<li>'.$xhtml->addLink(
                         'Ajouter un Référent',
                         array( 'controller' => 'personnes_referents', 'action' => 'add', $personne_id )
                     ).' </li>';
@@ -36,7 +36,7 @@
         ?>
                 <ul class="actionMenu">
                     <?php
-                        echo '<li>'.$html->addLink(
+                        echo '<li>'.$xhtml->addLink(
                             'Ajouter un Référent',
                             array( 'controller' => 'personnes_referents', 'action' => 'add', $personne_id ), $cloture
                         ).' </li>';
@@ -66,7 +66,7 @@
                     $cloture = Set::classicExtract( $personne_referent, 'PersonneReferent.dfdesignation' );
                     $cloture = ( !empty( $cloture ) );
 
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( Set::classicExtract( $personne_referent, 'Referent.qual' ).' '.Set::classicExtract( $personne_referent, 'Referent.nom' ).' '.Set::classicExtract( $personne_referent, 'Referent.prenom' ) ),
                             h( Set::classicExtract( $personne_referent, 'Referent.fonction' ) ),
@@ -76,7 +76,7 @@
                             h( $locale->date( 'Date::short', Set::classicExtract( $personne_referent, 'PersonneReferent.dddesignation' ) ) ),
                             h( $locale->date( 'Date::short', Set::classicExtract( $personne_referent, 'PersonneReferent.dfdesignation' ) ) ),
 
-                            $html->editLink(
+                            $xhtml->editLink(
                                 'Editer le référent',
                                 array( 'controller' => 'personnes_referents', 'action' => 'edit',
                                 $personne_referent['PersonneReferent']['id'] ),

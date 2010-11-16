@@ -37,18 +37,18 @@
                             $suiviinstruction['Suiviinstruction']['numagrins']
                         ));
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $suiirsa[$suiviinstruction['Suiviinstruction']['suiirsa']]),
                                 h( date_short($suiviinstruction['Suiviinstruction']['date_etat_instruction'] ) ) ,
                                 h( $suiviinstruction['Suiviinstruction']['nomins']),
                                 h( $suiviinstruction['Suiviinstruction']['numdepins']),
                                 h( isset( $typeserins[$suiviinstruction['Suiviinstruction']['typeserins']] ) ? $typeserins[$suiviinstruction['Suiviinstruction']['typeserins']] : null ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir les informations financières',
                                     array( 'controller' => 'suivisinstruction', 'action' => 'view', $suiviinstruction['Suiviinstruction']['id'])
                                 ),
-//                                 $html->editLink(
+//                                 $xhtml->editLink(
 //                                     'Éditer les informations financières ',
 //                                     array( 'controller' => 'infosfinancieres', 'action' => 'edit', $suiviinstruction['Suiviinstruction']['id'] )
 //                                 )

@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php  $this->pageTitle = 'PDO';?>
 
@@ -29,7 +29,7 @@
         <?php if( $permissions->check( 'propospdos', 'add' ) ):?>
             <ul class="actionMenu">
                 <?php
-                    echo '<li>'.$html->addLink(
+                    echo '<li>'.$xhtml->addLink(
                         'Ajouter un dossier PDO',
                         array( 'controller' => 'propospdos', 'action' => 'add', $personne_id )
                     ).' </li>';
@@ -54,7 +54,7 @@
                 <?php foreach( $pdos as $pdo ):?>
                     <?php
 // debug($pdo);
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ), $typepdo ) ),
                                 h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ) ),
@@ -62,16 +62,16 @@
                                 h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
                                 h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),
                                 h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.etatdossierpdo' ), $options['etatdossierpdo'] ) ),
-                                $html->treatmentLink(
+                                $xhtml->treatmentLink(
                                     'Traitements sur la PDO',
                                     array( 'controller' => 'traitementspdos', 'action' => 'index', $pdo['Propopdo']['id'])
                                 ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir le dossier PDO',
                                     array( 'controller' => 'propospdos', 'action' => 'view', $pdo['Propopdo']['id']),
                                     $permissions->check( 'propospdos', 'view' )
                                 ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le dossier PDO',
                                     array( 'controller' => 'propospdos', 'action' => 'edit', $pdo['Propopdo']['id'] ),
                                     $permissions->check( 'propospdos', 'edit' )

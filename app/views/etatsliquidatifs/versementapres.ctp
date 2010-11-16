@@ -1,18 +1,18 @@
 <?php
     $this->pageTitle = 'Versements pour les APREs complémentaires pour l\'état liquidatif';
 
-    echo $html->tag( 'h1', $this->pageTitle );
+    echo $xhtml->tag( 'h1', $this->pageTitle );
 
     ///Fin pagination
 
 
     if( empty( $apres ) ) {
-        echo $html->tag( 'p', 'Aucune APRE à sélectionner.', array( 'class' => 'notice' ) );
+        echo $xhtml->tag( 'p', 'Aucune APRE à sélectionner.', array( 'class' => 'notice' ) );
     }
     else {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -20,7 +20,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
 
         $headers = array(
             $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' ),
@@ -38,7 +38,7 @@
         );
 
         ///
-        $thead = $html->tag( 'thead', $html->tableHeaders( $headers ) );
+        $thead = $xhtml->tag( 'thead', $xhtml->tableHeaders( $headers ) );
 
         echo $xform->create( 'ApreEtatliquidatif' );
         // FIXME
@@ -49,7 +49,7 @@
         $ajaxes = array();
         foreach( $apres as $i => $apre ) {
             $params = array( 'id' => "apre_{$i}", 'class' => ( ( $i % 2 == 1 ) ? 'odd' : 'even' ) );
-            $rows[] = $html->tag( 'tr', $apreversement->cells( $i, $apre, $nbpaiementsouhait ), $params );
+            $rows[] = $xhtml->tag( 'tr', $apreversement->cells( $i, $apre, $nbpaiementsouhait ), $params );
 
             /**
             *   Ajax
@@ -71,18 +71,18 @@
             );
 
         }
-        $tbody = $html->tag( 'tbody', implode( '', $rows ) );
+        $tbody = $xhtml->tag( 'tbody', implode( '', $rows ) );
 
 // debug($etatliquidatif);
 
         echo $pagination;
-        echo $html->tag( 'table', $thead.$tbody );
+        echo $xhtml->tag( 'table', $thead.$tbody );
         echo $pagination;
 
         $buttons = array();
         $buttons[] = $xform->submit( 'Valider la liste', array( 'div' => false ) );
         $buttons[] = $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
-        echo $html->tag( 'div', implode( '', $buttons ), array( 'class' => 'submit' ) );
+        echo $xhtml->tag( 'div', implode( '', $buttons ), array( 'class' => 'submit' ) );
 
         echo $xform->end();
         echo implode( '', $ajaxes );

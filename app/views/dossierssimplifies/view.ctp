@@ -27,7 +27,7 @@
 //             debug($details);
                 foreach( $personnes as $personne ) {
 
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
 
                         array(
                             h( $personne['Personne']['nom'] ),
@@ -37,11 +37,11 @@
                             h( $personne['Orientstruct']['statut_orient'] ),
                             h( Set::enum( Set::classicExtract( $personne, 'Structurereferente.typeorient_id' ), $typeorient ) ) ,
                             h( Set::classicExtract( $personne, 'Structurereferente.lib_struc' )  ),
-                            $html->editLink(
+                            $xhtml->editLink(
                                 'Editer l\'orientation',
                                 array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personne['Personne']['id'] )
                             ),
-                            $html->printLink(
+                            $xhtml->printLink(
                                 'Imprimer la notification',
                                 array( 'controller' => 'gedooos', 'action' => 'orientstruct', $personne['Orientstruct']['id'] ),
                                 !empty( $personne['Orientstruct']['typeorient_id'] )

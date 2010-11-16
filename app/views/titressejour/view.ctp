@@ -50,9 +50,9 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Edit Titresejour', true), array('action' => 'edit', $titresejour['Titresejour']['id'])); ?> </li>
-		<li><?php echo $html->link(__('Delete Titresejour', true), array('action' => 'delete', $titresejour['Titresejour']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $titresejour['Titresejour']['id'])); ?> </li>
-		<li><?php echo $html->link(__('List Titressejour', true), array('action' => 'index')); ?> </li>
-		<li><?php echo $html->link(__('New Titresejour', true), array('action' => 'add')); ?> </li>
+		<li><?php echo $xhtml->link(__('Edit Titresejour', true), array('action' => 'edit', $titresejour['Titresejour']['id'])); ?> </li>
+		<li><?php echo $xhtml->link(__('Delete Titresejour', true), array('action' => 'delete', $titresejour['Titresejour']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $titresejour['Titresejour']['id'])); ?> </li>
+		<li><?php echo $xhtml->link(__('List Titressejour', true), array('action' => 'index')); ?> </li>
+		<li><?php echo $xhtml->link(__('New Titresejour', true), array('action' => 'add')); ?> </li>
 	</ul>
 </div>

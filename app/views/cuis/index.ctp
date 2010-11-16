@@ -1,20 +1,20 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Contrat Unique d\'Insertion';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
 <div class="with_treemenu">
     <?php
-        echo $html->tag(
+        echo $xhtml->tag(
             'h1',
             $this->pageTitle = __d( 'cui', "Cuis::{$this->action}", true )
         );
     ?>
     <?php
 //         if( $alerteRsaSocle ) {
-//             echo $html->tag(
+//             echo $xhtml->tag(
 //                 'p',
-//                 $html->image( 'icons/error.png', array( 'alt' => 'Remarque' ) ).' '.sprintf( 'Cette personne ne peux bénéficier d\'un contrat Unique d\'insertion car elle ne possède pas de Rsa Socle' ),
+//                 $xhtml->image( 'icons/error.png', array( 'alt' => 'Remarque' ) ).' '.sprintf( 'Cette personne ne peux bénéficier d\'un contrat Unique d\'insertion car elle ne possède pas de Rsa Socle' ),
 //                 array( 'class' => 'error' )
 //             );
 //         }
@@ -48,7 +48,7 @@
         <?php if( $permissions->check( 'cuis', 'add' ) ):?>
             <ul class="actionMenu">
                 <?php
-                    echo '<li>'.$html->addLink(
+                    echo '<li>'.$xhtml->addLink(
                         'Ajouter un CUI',
                         array( 'controller' => 'cuis', 'action' => 'add', $personne_id )
                     ).' </li>';
@@ -78,34 +78,34 @@
                             $isPeriodeImmersion = true;
                         }
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( date_short( Set::classicExtract( $cui, 'Cui.datecontrat' ) ) ),
                                 h( Set::enum( Set::classicExtract( $cui, 'Cui.secteur' ), $options['secteur'] ) ),
                                 h( Set::classicExtract( $cui, 'Cui.nomemployeur' ) ),
                                 h( Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['decisioncui'] ) ),
                                 h( date_short( Set::classicExtract( $cui, 'Cui.datevalidationcui' ) ) ),
-                                $html->validateLink(
+                                $xhtml->validateLink(
                                     'Valider le CUI',
                                     array( 'controller' => 'cuis', 'action' => 'valider',  Set::classicExtract( $cui, 'Cui.id' ) )
                                 ),
-                                $html->periodeImmersionLink(
+                                $xhtml->periodeImmersionLink(
                                     'Périodes d\'immersion',
                                     array( 'controller' => 'periodesimmersion', 'action' => 'index', Set::classicExtract( $cui, 'Cui.id' ) ),
                                     $isPeriodeImmersion,
                                     $permissions->check( 'periodesimmersion', 'index' )
                                 ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le CUI',
                                     array( 'controller' => 'cuis', 'action' => 'edit', Set::classicExtract( $cui, 'Cui.id' ) ),
                                     $permissions->check( 'cuis', 'edit' )
                                 ),
-                                $html->printLink(
+                                $xhtml->printLink(
                                     'Imprimer le CUI',
                                     array( 'controller' => 'cuis', 'action' => 'gedooo', Set::classicExtract( $cui, 'Cui.id' ) ),
                                     $permissions->check( 'cuis', 'gedooo' )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le CUI',
                                     array( 'controller' => 'cuis', 'action' => 'delete', Set::classicExtract( $cui, 'Cui.id' ) ),
                                     $permissions->check( 'cuis', 'delete' )

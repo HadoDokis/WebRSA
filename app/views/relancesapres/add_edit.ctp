@@ -1,5 +1,5 @@
 <?php
-    echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
     $this->pageTitle = 'Relance';
 
@@ -70,7 +70,7 @@
             $piecesManquantesAides = Set::classicExtract( $apre, "Apre.Piece.Manquante" );
             foreach( $piecesManquantesAides as $model => $pieces ) {
                 if( !empty( $pieces ) ) {
-                    echo $html->tag( 'h2', $model );
+                    echo $xhtml->tag( 'h2', $model );
                     echo '<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
                 }
             }

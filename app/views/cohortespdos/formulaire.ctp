@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Gestion des PDOs';?>
 
 <h1>Gestion des PDOs</h1>
@@ -19,7 +19,7 @@
     if( isset( $cohortepdo ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
 //         $pages = $paginator->first( '<<' );
 //         $pages .= $paginator->prev( '<' );
@@ -27,7 +27,7 @@
 //         $pages .= $paginator->next( '>' );
 //         $pages .= $paginator->last( '>>' );
 // 
-//         $pagination .= $html->tag( 'p', $pages );
+//         $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -117,7 +117,7 @@
 
 // debug($pdo);
 // die();
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
                             h( date_short( $pdo['Dossier']['dtdemrsa'] ) ),
@@ -148,7 +148,7 @@
                             $form->input( 'Propopdo.'.$index.'.user_id', array('label' => false, 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) ),
 
                             $form->input( 'Propopdo.'.$index.'.commentairepdo', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
-                            $html->viewLink(
+                            $xhtml->viewLink(
                                 'Voir le dossier « '.$pdo['Dossier']['numdemrsa'].' »',
                                 array( 'controller' => 'suivisinsertion', 'action' => 'index', $pdo['Dossier']['id'] ),
                                 true,

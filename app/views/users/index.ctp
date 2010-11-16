@@ -15,7 +15,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'users', 'action' => 'add' )
             ).' </li>';
@@ -41,7 +41,7 @@
         </thead>
         <tbody>
             <?php foreach( $users as $user ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( $user['User']['nom'] ),
                                 h( $user['User']['prenom'] ),
@@ -52,11 +52,11 @@
                                 h( date_short( $user['User']['date_fin_hab'] ) ),
                                 h( $user['Group']['name'] ) ,
                                 h( $user['Serviceinstructeur']['lib_service'] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer l\'utilisateur',
                                     array( 'controller' => 'users', 'action' => 'edit', $user['User']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer l\'utilisateur',
                                     array( 'controller' => 'users', 'action' => 'delete', $user['User']['id'] ), $permissions->check( 'users', 'delete' ) && ( $user['User']['id'] != $authUser )
                                 )

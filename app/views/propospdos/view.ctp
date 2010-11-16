@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php  $this->pageTitle = 'Détails demande PDO';?>
 
@@ -24,7 +24,7 @@
     <ul class="actionMenu">
         <?php
             if( $permissions->check( 'propospdos', 'edit' ) ) {
-                echo '<li>'.$html->editLink(
+                echo '<li>'.$xhtml->editLink(
                     'Éditer PDO',
                     array( 'controller' => 'propospdos', 'action' => 'edit', Set::classicExtract( $pdo, 'Propopdo.id' ) )
                 ).' </li>';
@@ -82,11 +82,11 @@
                     </tr>
                     <tr>
                         <td><?php echo value( $pieecpres, Set::extract( 'Personne.pieecpres', $pdo ) );?></td>
-                        <td><?php echo $html->boolean( !empty( $pdo['Personne']['pieecpres'] ) );?></td>
+                        <td><?php echo $xhtml->boolean( !empty( $pdo['Personne']['pieecpres'] ) );?></td>
                         <td><?php echo '';?></td> <!-- FIXME: Voir pour la date à afficher pour les pièces jointes -->
                         <td><?php
                             if( !empty( $pdo['Personne']['pieecpres'] ) ){
-                                echo $html->attachLink(
+                                echo $xhtml->attachLink(
                                     'Voir PDO',
                                     array( 'controller' => 'propospdos', 'action' => 'view', $pdo['Propopdo']['id'] )
                                 );

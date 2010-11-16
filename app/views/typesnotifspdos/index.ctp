@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'typesnotifspdos', 'action' => 'add' )
             ).' </li>';
@@ -23,15 +23,15 @@
         </thead>
         <tbody>
                 <?php foreach( $typesnotifspdos as $typenotifpdo ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( $typenotifpdo['Typenotifpdo']['libelle'] ),
                                 h( $typenotifpdo['Typenotifpdo']['modelenotifpdo'] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le type de PDO ',
                                     array( 'controller' => 'typesnotifspdos', 'action' => 'edit', $typenotifpdo['Typenotifpdo']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le type de PDO ',
                                     array( 'controller' => 'typesnotifspdos', 'action' => 'delete', $typenotifpdo['Typenotifpdo']['id'] )
                                 )

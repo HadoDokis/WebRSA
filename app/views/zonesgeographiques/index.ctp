@@ -6,7 +6,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'zonesgeographiques', 'action' => 'add' )
             ).' </li>';
@@ -24,15 +24,15 @@
         </thead>
         <tbody>
             <?php foreach( $zones as $zone ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( $zone['Zonegeographique']['libelle'] ),
                                 h( $zone['Zonegeographique']['codeinsee'] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer la zone géographique ',
                                     array( 'controller' => 'zonesgeographiques', 'action' => 'edit', $zone['Zonegeographique']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer la zone géographique ',
                                     array( 'controller' => 'zonesgeographiques', 'action' => 'delete', $zone['Zonegeographique']['id'] )
                                 )

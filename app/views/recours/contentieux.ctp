@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php  $this->pageTitle = 'Recours contentieux';?>
 
@@ -42,11 +42,11 @@
         </thead>
         <tbody>
             <?php
-                echo $html->tableCells(
+                echo $xhtml->tableCells(
                     array(
                         h( $contentieux['Infofinanciere']['id'] ),
                         h( $contentieux['Infofinanciere']['id'] ),
-                        $html->viewLink(
+                        $xhtml->viewLink(
                             'Voir le document',
                             array( 'controller' => 'recours', 'action' => 'contentieux', $contentieux['Infofinanciere']['id'] )
                         ),

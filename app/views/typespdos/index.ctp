@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'typespdos', 'action' => 'add' )
             ).' </li>';
@@ -22,14 +22,14 @@
         </thead>
         <tbody>
                 <?php foreach( $typespdos as $typepdo ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( $typepdo['Typepdo']['libelle'] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le type de PDO ',
                                     array( 'controller' => 'typespdos', 'action' => 'edit', $typepdo['Typepdo']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le type de PDO ',
                                     array( 'controller' => 'typespdos', 'action' => 'delete', $typepdo['Typepdo']['id'] )
                                 )

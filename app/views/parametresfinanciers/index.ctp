@@ -1,17 +1,17 @@
 <?php
 	$this->pageTitle = 'Paramètres financiers pour la gestion de l\'APRE';
-	echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
-	echo $html->tag( 'h1', $this->pageTitle );
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 
     echo $xform->create( 'ParametreFinancier' );
 
 	if( $permissions->check( 'parametresfinanciers', 'edit' ) ) {
-		echo $html->tag(
+		echo $xhtml->tag(
 			'ul',
-			$html->tag(
+			$xhtml->tag(
 				'li',
-				$html->editLink(
+				$xhtml->editLink(
 					'Modifier les paramètres',
 					array( 'controller' => 'parametresfinanciers', 'action' => 'edit' )
 				)

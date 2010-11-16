@@ -5,10 +5,10 @@
 
 	$this->pageTitle = 'Visionneuse';
 
-	echo $html->tag( 'h1', $this->pageTitle );
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 
 	if( empty( $visionneuses ) ) {
-		echo $html->tag( 'p', 'Aucun fichier intégré pour l\'instant.', array( 'class' => 'notice' ) );
+		echo $xhtml->tag( 'p', 'Aucun fichier intégré pour l\'instant.', array( 'class' => 'notice' ) );
 	}
 	else {
         $pagination = $xpaginator->paginationBlock( 'Visionneuse', $this->passedArgs );
@@ -31,7 +31,7 @@
 			'DSP MAJ',			
 			);
 
-		$thead = $html->tag( 'thead', $html->tableHeaders( $headers ) );
+		$thead = $xhtml->tag( 'thead', $xhtml->tableHeaders( $headers ) );
 		//$thead = str_replace( '</tr>', '<th colspan="7">Rejet</th></tr>', $thead );
 
 
@@ -56,7 +56,7 @@
 				strftime( '%d/%m/%Y %H:%M:%S' , strtotime( Set::classicExtract( $visionneuse, 'Visionneuse.dtfin') ) ),
 				strftime('%H:%M:%S', $duree),							
 				$dossier,				
-				(0<$rejet)?$html->Link(
+				(0<$rejet)?$xhtml->Link(
                                     $rejet,                                    								
 									array( 'controller' => 'rejet_historique', 'action' => 'affrej',$visionneuse['Visionneuse']['nomfic'] ),
 									$permissions->check( 'Visionneuses', 'affrej' )
@@ -70,10 +70,10 @@
 			);
 		}
 		
-		$tbody = $html->tag( 'tbody', $html->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
+		$tbody = $xhtml->tag( 'tbody', $xhtml->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
 		
 		echo $pagination;
-		echo $html->tag( 'table', $thead.$tbody );
+		echo $xhtml->tag( 'table', $thead.$tbody );
 		echo $pagination;
 	
 		$options = array(

@@ -30,7 +30,7 @@
     <ul class="actionMenu">
         <?php
             if( $permissions->check( 'personnes', 'edit' ) ) {
-                echo '<li>'.$html->editLink(
+                echo '<li>'.$xhtml->editLink(
                     'Éditer la personne « '.$title.' »',
                     array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] )
                 ).' </li>';

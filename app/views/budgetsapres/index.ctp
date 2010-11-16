@@ -1,14 +1,14 @@
 <?php
 	$this->pageTitle = 'Budgets APRE';
 
-	echo $html->tag( 'h1', $this->pageTitle );
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 
 	if( $permissions->check( 'budgetsapres', 'add' ) ) {
-		echo $html->tag(
+		echo $xhtml->tag(
 			'ul',
-			$html->tag(
+			$xhtml->tag(
 				'li',
-				$html->addLink(
+				$xhtml->addLink(
 					'Ajouter un budget',
 					array( 'controller' => 'budgetsapres', 'action' => 'add' )
 				)
@@ -18,12 +18,12 @@
 	}
 
 	if( empty( $budgetsapres ) ) {
-		echo $html->tag( 'p', 'Aucun budget pour l\'instant.', array( 'class' => 'notice' ) );
+		echo $xhtml->tag( 'p', 'Aucun budget pour l\'instant.', array( 'class' => 'notice' ) );
 	}
 	else {
 		$paginator->options( array( 'url' => $this->passedArgs ) );
 		$params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-		$pagination = $html->tag( 'p', $paginator->counter( $params ) );
+		$pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
 		$pages = $paginator->first( '<<' );
 		$pages .= $paginator->prev( '<' );
@@ -31,7 +31,7 @@
 		$pages .= $paginator->next( '>' );
 		$pages .= $paginator->last( '>>' );
 
-		$pagination .= $html->tag( 'p', $pages );
+		$pagination .= $xhtml->tag( 'p', $pages );
 
 		//----------------------------------------------------------------------
 
@@ -45,7 +45,7 @@
 		);
 
 		///
-		$thead = $html->tag( 'thead', $html->tableHeaders( $headers ) );
+		$thead = $xhtml->tag( 'thead', $xhtml->tableHeaders( $headers ) );
 		$thead = str_replace( '</tr>', '<th colspan="2">Action</th></tr>', $thead );
 
 		/// Corps du tableau
@@ -65,16 +65,16 @@
 				$locale->money( $montanttotalapre, 2 ), // FIXME -> $montantattretat < $montanttotalapre
 				$locale->number( ( $montanttotalapre / $montantattretat ) * 100, 2 ).'&nbsp;%',
 				// FIXME: droits
-				$html->editLink( 'Éditer le budget', array( 'controller' => 'budgetsapres', 'action' => 'edit', Set::classicExtract( $budgetapre, 'Budgetapre.id' ) ) ),
-				//$html->viewLink( 'Voir états liquidatifs', array( 'controller' => 'etatsliquidatifs', 'action' => 'index', 'budgetapre_id' => Set::classicExtract( $budgetapre, 'Budgetapre.id' ) ) ),
+				$xhtml->editLink( 'Éditer le budget', array( 'controller' => 'budgetsapres', 'action' => 'edit', Set::classicExtract( $budgetapre, 'Budgetapre.id' ) ) ),
+				//$xhtml->viewLink( 'Voir états liquidatifs', array( 'controller' => 'etatsliquidatifs', 'action' => 'index', 'budgetapre_id' => Set::classicExtract( $budgetapre, 'Budgetapre.id' ) ) ),
 				$theme->button( 'view', array( 'controller' => 'etatsliquidatifs', 'action' => 'index', 'budgetapre_id' => Set::classicExtract( $budgetapre, 'Budgetapre.id' ) ), array( 'text' => 'Voir états liquidatifs' ) ),
 			);
 		}
-		$tbody = $html->tag( 'tbody', $html->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
+		$tbody = $xhtml->tag( 'tbody', $xhtml->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
 
 		///
 		echo $pagination;
-		echo $html->tag( 'table', $thead.$tbody );
+		echo $xhtml->tag( 'table', $thead.$tbody );
 		echo $pagination;
 	}
 ?>

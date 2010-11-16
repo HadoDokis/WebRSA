@@ -1,6 +1,6 @@
 <?php
     $domain = 'pdo';
-    echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 ?>
 
 <?php  $this->pageTitle = 'Validation PDO';?>
@@ -244,7 +244,7 @@
         </table>
         <?php
 
-            echo $html->tag(
+            echo $xhtml->tag(
                 'p',
                 'Catégories : '
             );

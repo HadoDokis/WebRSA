@@ -1,15 +1,15 @@
 <?php
 	$this->pageTitle = 'Journal d\'intégration des fichiers CSV pour l\'APRE';
-	echo $html->tag( 'h1', $this->pageTitle );
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 ?>
 
 <?php if( !empty( $integrationfichiersapre ) ):?>
 	<?php
 		$paginator->options( array( 'url' => $this->passedArgs ) );
 		$params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-		$pagination = $html->tag( 'p', $paginator->counter( $params ) );
+		$pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
-		$pagination .= $html->tag(
+		$pagination .= $xhtml->tag(
 			'p',
 			implode(
 				' ',
@@ -39,14 +39,14 @@
         <tbody>
             <?php
                 foreach( $integrationfichiersapre as $integration ) {
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             $locale->date( 'Datetime::short', Set::classicExtract( $integration, 'Integrationfichierapre.date_integration' ) ),
                             $locale->number( Set::classicExtract( $integration, 'Integrationfichierapre.nbr_atraiter' ) ),
                             $locale->number( Set::classicExtract( $integration, 'Integrationfichierapre.nbr_succes' ) ),
                             $locale->number( Set::classicExtract( $integration, 'Integrationfichierapre.nbr_erreurs' ) ),
                             h( Set::classicExtract( $integration, 'Integrationfichierapre.fichier_in' ) ),
-                            $html->link(
+                            $xhtml->link(
                                 'Télécharger rejet',
                                 array( 'controller' => 'integrationfichiersapre', 'action' => 'download', Set::classicExtract( $integration, 'Integrationfichierapre.id' ) )/*,
                                 $permissions->check( 'apres', 'view' )*/

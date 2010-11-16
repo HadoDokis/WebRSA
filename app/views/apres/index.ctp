@@ -22,7 +22,7 @@
             <?php if( $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'add' ) /*&& ( $apre_forfait > 0 )*/ ):?>
                 <ul class="actionMenu">
                     <?php
-                        echo '<li>'.$html->addLink(
+                        echo '<li>'.$xhtml->addLink(
                             'Ajouter APRE',
                             array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'add', $personne_id )
                         ).' </li>';
@@ -35,9 +35,9 @@
     <?php if( !empty( $apres ) ):?>
 	<?php
 		if( $alerteMontantAides ) {
-			echo $html->tag(
+			echo $xhtml->tag(
 				'p',
-				$html->image( 'icons/error.png', array( 'alt' => 'Remarque' ) ).' '.sprintf( 'Cette personne risque de bénéficier de plus de %s € d\'aides complémentaires au cours des %s derniers mois', Configure::read( 'Apre.montantMaxComplementaires' ), Configure::read( 'Apre.periodeMontantMaxComplementaires' ) ),
+				$xhtml->image( 'icons/error.png', array( 'alt' => 'Remarque' ) ).' '.sprintf( 'Cette personne risque de bénéficier de plus de %s € d\'aides complémentaires au cours des %s derniers mois', Configure::read( 'Apre.montantMaxComplementaires' ), Configure::read( 'Apre.periodeMontantMaxComplementaires' ) ),
 				array( 'class' => 'error' )
 			);
 		}
@@ -130,31 +130,31 @@
 						</tbody>
 					</table>';
 
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( Set::enum( $statutApre, $options['statutapre'] ) ),
                             h( date_short( Set::classicExtract( $apre, "{$this->modelClass}.datedemandeapre" ) ) ),
                             h( $etat ),
                             h( $locale->money( $mtforfait ) ),
                             h( $locale->money( $mtattribue ) ),
-                            $html->viewLink(
+                            $xhtml->viewLink(
                                 'Voir la demande APRE',
                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'view', $apre[$this->modelClass]['id'] ),
                                 $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'view' )
                             ),
-                            $html->editLink(
+                            $xhtml->editLink(
                                 'Editer la demande APRE',
                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'edit', $apre[$this->modelClass]['id'] ),
                                 $buttonEnabled,
                                 $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'edit' )
                             ),
-                            $html->relanceLink(
+                            $xhtml->relanceLink(
                                 'Relancer la demande APRE',
                                 array( 'controller' => 'relancesapres', 'action' => 'add', $apre[$this->modelClass]['id'] ),
                                 $buttonEnabledInc,
                                 $permissions->check( 'relancesapres', 'add' ) && ( $apre[$this->modelClass]['etatdossierapre'] == 'INC' )
                             ),
-                            $html->printLink(
+                            $xhtml->printLink(
                                 'Imprimer la demande APRE',
                                 array( 'controller' => 'gedooos', 'action' => 'apre', $apre[$this->modelClass]['id'] ),
                                 $buttonEnabled,
@@ -200,27 +200,27 @@
                         $textePiecesManquantes = '';
                         foreach( $piecesManquantesAides as $model => $pieces ) {
                             if( !empty( $pieces ) ) {
-                                $textePiecesManquantes .= $html->tag( 'h3', __d( 'apre', $model, true ) ).'<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
+                                $textePiecesManquantes .= $xhtml->tag( 'h3', __d( 'apre', $model, true ) ).'<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
                             }
                         }
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( Set::classicExtract( $relanceapre, "{$this->modelClass}.numeroapre" ) ),
                                 h( date_short( Set::classicExtract( $relanceapre, 'Relanceapre.daterelance' ) ) ),
                                 $textePiecesManquantes,
                                 h( Set::classicExtract( $relanceapre, 'Relanceapre.commentairerelance' ) ),
-//                                 $html->viewLink(
+//                                 $xhtml->viewLink(
 //                                     'Voir la relance',
 //                                     array( 'controller' => 'relancesapres', 'action' => 'view', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
 //                                     $permissions->check( 'relancesapres', 'view' )
 //                                 ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Editer la relance',
                                     array( 'controller' => 'relancesapres', 'action' => 'edit', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
                                     $permissions->check( 'relancesapres', 'edit' )
                                 ),
-                                $html->printLink(
+                                $xhtml->printLink(
                                     'Imprimer la notification de relance',
                                     array( 'controller' => 'gedooos', 'action' => 'relanceapre', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
                                     $permissions->check( 'gedooos', 'relanceapre' )

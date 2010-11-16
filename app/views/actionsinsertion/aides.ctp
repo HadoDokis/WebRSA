@@ -15,7 +15,7 @@
     <h1><?php echo 'Aides d\'insertion  ';?></h1>
         <ul class="actionMenu">
             <?php
-                echo '<li>'.$html->addLink(
+                echo '<li>'.$xhtml->addLink(
                     'Ajouter une aide d\'insertion',
                     array( 'controller' => 'actionsinsertion', 'action' => 'add', $personne_id )
                 ).' </li>';
@@ -44,14 +44,14 @@
                         $actioninsertion['dd_ci'],
                         $actioninsertion['df_ci']*/) );
 
-                    echo $html->tableCells(
+                    echo $xhtml->tableCells(
                         array(
                             h( $actioninsertion['lib_action'] ),
-                            $html->viewLink(
+                            $xhtml->viewLink(
                                 'Ajouter une action d\'insertion',
                                 array( 'controller' => 'actionsinsertion', 'action' => 'index', $actioninsertion['id'])
                             ),
-                            $html->editLink(
+                            $xhtml->editLink(
                                 'Éditer l\'action d\'insertion ',
                                 array( 'controller' => 'actionsinsertion', 'action' => 'edit', $actioninsertion['id'] )
                             )

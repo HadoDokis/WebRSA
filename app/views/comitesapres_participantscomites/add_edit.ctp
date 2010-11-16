@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php  $this->pageTitle = 'Ajout de participant au comité d\'examen';?>
 <script type="text/javascript">
@@ -24,13 +24,13 @@
     <h1><?php echo $this->pageTitle;?></h1>
     <?php
         ///
-        echo $html->tag(
+        echo $xhtml->tag(
             'ul',
             implode(
                 '',
                 array(
-                    $html->tag( 'li', $html->link( 'Tout sélectionner', '#', array( 'onclick' => 'allCheckboxes( true ); return false;' ) ) ),
-                    $html->tag( 'li', $html->link( 'Tout désélectionner', '#', array( 'onclick' => 'allCheckboxes( false ); return false;' ) ) ),
+                    $xhtml->tag( 'li', $xhtml->link( 'Tout sélectionner', '#', array( 'onclick' => 'allCheckboxes( true ); return false;' ) ) ),
+                    $xhtml->tag( 'li', $xhtml->link( 'Tout désélectionner', '#', array( 'onclick' => 'allCheckboxes( false ); return false;' ) ) ),
                 )
             )
         );
@@ -60,7 +60,7 @@
                                     $pcPc = array();
                                 }
 // debug($this->data);
-                                echo $html->tableCells(
+                                echo $xhtml->tableCells(
                                     array(
                                         h( Set::classicExtract( $participant, 'Participantcomite.qual' ).' '.Set::classicExtract( $participant, 'Participantcomite.nom' ).' '.Set::classicExtract( $participant, 'Participantcomite.prenom' ) ),
                                         h( Set::classicExtract( $participant, 'Participantcomite.fonction' ) ),

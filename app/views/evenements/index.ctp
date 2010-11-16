@@ -20,7 +20,7 @@
                 <?php
                     foreach( $evenements as $evenement ) {
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $locale->date( 'Date::short', Set::classicExtract( $evenement, 'Evenement.dtliq' ) ) ),
                                 h( $locale->date( 'Time::short', Set::classicExtract( $evenement, 'Evenement.heuliq' ) ) ),

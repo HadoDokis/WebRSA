@@ -1,7 +1,7 @@
 <?php
     $domain = "actioncandidat_personne_".Configure::read( 'ActioncandidatPersonne.suffixe' );
     echo $this->element( 'dossier_menu', array( 'id' => $dossierId, 'personne_id' => $personne_id ) );
-    echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 ?>
     <?php echo $javascript->link( 'dependantselect.js' ); ?>
 <script type="text/javascript">
@@ -65,7 +65,7 @@
 
 <div class="with_treemenu">
     <?php
-        echo $html->tag(
+        echo $xhtml->tag(
             'h1',
             $this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true ),
             array(
@@ -73,7 +73,7 @@
             )
         );
 
-        echo $html->tag(
+        echo $xhtml->tag(
             'p',
             'La fiche de liaison est un document conventionnel partagé qui engage tous les acteurs du PDI',
             array(
@@ -104,7 +104,7 @@
             ///Ajax pour les données du référent et de l'organisme auquel il est lié
             echo $ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPersonneStructurereferente', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) );
 
-            echo $html->tag(
+            echo $xhtml->tag(
                 'div',
                 '<b></b>',
                 array(
@@ -139,10 +139,10 @@
             );
 
             ///Données propre à l'adresse de la Personne
-            echo $html->tag(
+            echo $xhtml->tag(
                 'dl',
-                $html->tag( 'dt', 'Adresse' ).
-                $html->tag(
+                $xhtml->tag( 'dt', 'Adresse' ).
+                $xhtml->tag(
                     'dd',
                     $default->format( $personne, 'Adresse.numvoie' ).' '.$default->format( $personne, 'Adresse.typevoie', array( 'options' => $options ) ).' '.$default->format( $personne, 'Adresse.nomvoie' ).' '.$default->format( $personne, 'Adresse.codepos' ).' '.$default->format( $personne, 'Adresse.locaadr' )
                 ),
@@ -181,15 +181,15 @@
             }
 
 
-            echo $html->tag(
+            echo $xhtml->tag(
                 'dl',
-                $html->tag( 'dt', 'Inscrit au Pole Emploi' ).
-                $html->tag(
+                $xhtml->tag( 'dt', 'Inscrit au Pole Emploi' ).
+                $xhtml->tag(
                     'dd',
                     $isInscrit
                 ).
-                $html->tag( 'dt', ' N° identifiant : ' ).
-                $html->tag(
+                $xhtml->tag( 'dt', ' N° identifiant : ' ).
+                $xhtml->tag(
                     'dd',
                     $idassedic
                 ),
@@ -253,7 +253,7 @@
             }
             else{
                 echo '<strong>Contrat d\'engagement : </strong>';
-                echo $html->tag(
+                echo $xhtml->tag(
                     'p',
                     'Aucun contrat présent pour cette personne',
                     array( 'class' => 'notice' )
@@ -288,7 +288,7 @@
             ///Ajax pour les données du référent et de l'organisme auquel il est lié
             echo $ajax->observeField( 'RendezvousReferentId', array( 'update' => 'StructureData', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
 
-            echo $html->tag(
+            echo $xhtml->tag(
                 'div',
                 '<b></b>',
                 array(
@@ -338,7 +338,7 @@
 
             ///Ajax pour les données de l'action entreprise et de son partenaire lié
             echo $ajax->observeField( 'ActioncandidatPersonneActioncandidatId', array( 'update' => 'ActioncandidatPartenairePartenaireId', 'url' => Router::url( array( 'action' => 'ajaxpart' ), true ) ) );
-            echo $html->tag(
+            echo $xhtml->tag(
                 'div',
                 '<b></b>',
                 array(

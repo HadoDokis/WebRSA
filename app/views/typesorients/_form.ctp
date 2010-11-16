@@ -17,7 +17,7 @@
 </thead>
 <tbody>
     <?php foreach( $typesorients as $typeorient ):?>
-        <?php echo $html->tableCells(
+        <?php echo $xhtml->tableCells(
                     array(
                         h( $typeorient['Typeorient']['id'] ),
                         h( $typeorient['Typeorient']['lib_type_orient'] ),

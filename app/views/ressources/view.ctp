@@ -19,7 +19,7 @@
         <?php if( $permissions->check( 'ressources', 'add' ) ):?>
             <ul class="actionMenu">
                 <?php
-                    echo '<li>'.$html->addLink(
+                    echo '<li>'.$xhtml->addLink(
                         'Déclarer des ressources',
                         array( 'controller' => 'ressources', 'action' => 'add', $personne_id )
                     ).' </li>';
@@ -30,7 +30,7 @@
     <?php else:?>
 <!--        <ul class="actionMenu">
             <?php
-                echo '<li>'.$html->editLink(
+                echo '<li>'.$xhtml->editLink(
                     'Éditer des ressources',
                     array( 'controller' => 'ressources', 'action' => 'edit', $personne_id )
                 ).' </li>';
@@ -92,7 +92,7 @@
                             <?php /*foreach( $ressourcemensuelle['Detailressourcemensuelle'] as $detailressourcemensuelle):*/?>
                                 <?php
 
-                                echo $html->tableCells(
+                                echo $xhtml->tableCells(
                                     array(
                                         h( strftime( '%B %Y', strtotime( $ressourcemensuelle['moisress'] ) ) ),
                                         h( $ressourcemensuelle['nbheumentra'] ),
@@ -123,7 +123,7 @@
 
                                 foreach( $ressourcemensuelle['Detailressourcemensuelle'] as $detailressourcemensuelle){
                                     $indexNatress = trim( $detailressourcemensuelle['natress'] );
-                                    echo $html->tableCells(
+                                    echo $xhtml->tableCells(
                                         array(
                                             '',
                                             '',

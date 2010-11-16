@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
                     <?php
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( ( trim( Set::extract( $avispcgdroitrsa, 'Avispcgdroitrsa.avisdestpairsa' ) )  != '' ) ? $avisdestpairsa[$avispcgdroitrsa['Avispcgdroitrsa']['avisdestpairsa']] : null ),
                                 h( $locale->date( 'Date::short', $avispcgdroitrsa['Avispcgdroitrsa']['dtavisdestpairsa'] ) ),
@@ -50,7 +50,7 @@
                 <tbody>
                     <?php foreach( $avispcgdroitrsa['Condadmin'] as $condadmin ):?>
                         <?php
-                            echo $html->tableCells(
+                            echo $xhtml->tableCells(
                                 array(
                                     h( ( trim( Set::extract( $avispcgdroitrsa, 'Avispcgdroitrsa.avisdestpairsa' ) ) != '' ) ?$avisdestpairsa[$avispcgdroitrsa['Avispcgdroitrsa']['avisdestpairsa']] : null ),
                                     h( $aviscondadmrsa[$condadmin['aviscondadmrsa']]),
@@ -82,7 +82,7 @@
                         <?php foreach( $avispcgdroitrsa['Reducrsa'] as $reducrsa ):?>
 
                                 <?php
-                                    echo $html->tableCells(
+                                    echo $xhtml->tableCells(
                                         array(
                                             h( $reducrsa['mtredrsa']),
                                             h( $reducrsa['ddredrsa']),

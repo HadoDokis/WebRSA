@@ -1,13 +1,13 @@
 <?php
 	$this->pageTitle = 'Budget APRE';
-	echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
-	echo $html->tag( 'h1', $this->pageTitle );
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 
 	echo $xform->create( 'Budgetapre', array( 'url' => Router::url( null, true ) ) );
 
 	if( isset( $this->data['Budgetapre']['id'] ) ) {
-		echo $html->tag( 'div', $xform->input( 'Budgetapre.id' ) );
+		echo $xhtml->tag( 'div', $xform->input( 'Budgetapre.id' ) );
 	}
 	echo $xform->input( 'Budgetapre.exercicebudgetai', array( 'domain' => 'apre', 'options' => array_range( date( 'Y' ) + 1, date( 'Y' ) - 10 ), 'empty' => true ) );
 	echo $xform->input( 'Budgetapre.montantattretat', array( 'domain' => 'apre', 'maxlength' => 10  ) );

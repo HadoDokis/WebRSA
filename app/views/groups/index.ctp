@@ -5,7 +5,7 @@
 
     <ul class="actionMenu">
         <?php
-            echo '<li>'.$html->addLink(
+            echo '<li>'.$xhtml->addLink(
                 'Ajouter',
                 array( 'controller' => 'groups', 'action' => 'add' )
             ).' </li>';
@@ -23,15 +23,15 @@
         </thead>
         <tbody>
             <?php foreach( $groups as $group ):?>
-                <?php echo $html->tableCells(
+                <?php echo $xhtml->tableCells(
                             array(
                                 h( $group['Group']['name'] ),
                                 h( $group['Group']['parent_id'] ),
-                                $html->editLink(
+                                $xhtml->editLink(
                                     'Éditer le groupe',
                                     array( 'controller' => 'groups', 'action' => 'edit', $group['Group']['id'] )
                                 ),
-                                $html->deleteLink(
+                                $xhtml->deleteLink(
                                     'Supprimer le groupe',
                                     array( 'controller' => 'groups', 'action' => 'delete', $group['Group']['id'] )
                                 )

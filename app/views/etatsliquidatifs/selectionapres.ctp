@@ -1,14 +1,14 @@
 <?php
 	$this->pageTitle = 'Sélection des APREs pour l\'état liquidatif';
 
-	echo $html->tag( 'h1', $this->pageTitle );
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 
 	if( empty( $apres ) ) {
         echo $xform->create( 'Etatliquidatif' );
-		echo $html->tag( 'p', 'Aucune APRE à sélectionner.', array( 'class' => 'notice' ) );
+		echo $xhtml->tag( 'p', 'Aucune APRE à sélectionner.', array( 'class' => 'notice' ) );
         $buttons = array();
         $buttons[] = $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-        echo $html->tag( 'div', implode( '', $buttons ), array( 'class' => 'submit' ) );
+        echo $xhtml->tag( 'div', implode( '', $buttons ), array( 'class' => 'submit' ) );
         echo $xform->end();
 	}
 	else {
@@ -34,7 +34,7 @@
 		);
 
 		///
-		$thead = $html->tag( 'thead', $html->tableHeaders( $headers ) );
+		$thead = $xhtml->tag( 'thead', $xhtml->tableHeaders( $headers ) );
 		//$thead = str_replace( '</tr>', '<th colspan="2">Action</th></tr>', $thead );
 
 		echo $xform->create( 'Etatliquidatif' );
@@ -66,27 +66,27 @@
 			);
 		}
 //         }
-		$tbody = $html->tag( 'tbody', $html->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
+		$tbody = $xhtml->tag( 'tbody', $xhtml->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
 
 		///
-		echo $html->tag(
+		echo $xhtml->tag(
 			'ul',
 			implode(
 				'',
 				array(
-					$html->tag( 'li', $html->link( 'Tout sélectionner', '#', array( 'onclick' => 'allCheckboxes( true ); return false;' ) ) ),
-					$html->tag( 'li', $html->link( 'Tout désélectionner', '#', array( 'onclick' => 'allCheckboxes( false ); return false;' ) ) ),
+					$xhtml->tag( 'li', $xhtml->link( 'Tout sélectionner', '#', array( 'onclick' => 'allCheckboxes( true ); return false;' ) ) ),
+					$xhtml->tag( 'li', $xhtml->link( 'Tout désélectionner', '#', array( 'onclick' => 'allCheckboxes( false ); return false;' ) ) ),
 				)
 			)
 		);
 
-		echo $html->tag( 'p', sprintf( '%s APREs dans la liste', $locale->number( count( $apres ) ) ) );
-		echo $html->tag( 'table', $thead.$tbody );
+		echo $xhtml->tag( 'p', sprintf( '%s APREs dans la liste', $locale->number( count( $apres ) ) ) );
+		echo $xhtml->tag( 'table', $thead.$tbody );
 
         $buttons = array();
         $buttons[] = $xform->submit( 'Valider la liste', array( 'div' => false ) );
         $buttons[] = $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
-        echo $html->tag( 'div', implode( '', $buttons ), array( 'class' => 'submit' ) );
+        echo $xhtml->tag( 'div', implode( '', $buttons ), array( 'class' => 'submit' ) );
 
 		echo $xform->end();
 

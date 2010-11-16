@@ -1,6 +1,6 @@
 <h1><?php echo $this->pageTitle = $pageTitle;?></h1>
 
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
@@ -12,7 +12,7 @@
     if( isset( $orientsstructs ) ) {
         $paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $html->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
         $pages = $paginator->first( '<<' );
         $pages .= $paginator->prev( '<' );
@@ -20,7 +20,7 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $html->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
         $pagination = '';
@@ -117,7 +117,7 @@
                             </tbody>
                         </table>';
 
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( $orientstruct['Dossier']['numdemrsa'] ),
                                 h( $orientstruct['Dossier']['matricule'] ),
@@ -125,11 +125,11 @@
                                 h( $locale->date( 'Date::short', Set::extract( $orientstruct, 'Orientstruct.date_valid' ) ) ),
                                 h( $locale->date( 'Date::short', Set::extract( $orientstruct, 'Orientstruct.daterelance' ) ) ),
                                 h( value( $statutrelance, Set::extract( $orientstruct, 'Orientstruct.statutrelance' ) ) ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir l\'orientation de la personne',
                                     array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Personne']['id'] )
                                 ),
-                                $html->printLink(
+                                $xhtml->printLink(
                                     'Imprimer la notification',
                                     array( 'controller' => 'gedooos', 'action' => 'notification_relance', $orientstruct['Personne']['id'] ),
                                     $permissions->check( 'gedooos', 'notification_relance' )
@@ -146,20 +146,20 @@
         <?php echo $pagination;?>
         <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;' )
                 );
             ?></li>
 
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'relances', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
             ?></li>
              <li><?php
-                echo $html->printCohorteLink(
+                echo $xhtml->printCohorteLink(
                     'Imprimer la cohorte',
                     Set::merge(
                         array(

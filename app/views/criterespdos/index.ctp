@@ -1,6 +1,6 @@
 <?php
     $domain = 'propopdo';
-    echo $html->tag(
+    echo $xhtml->tag(
         'h1',
         $this->pageTitle = __d( 'propopdo', "Criterespdos::{$this->action}", true )
     )
@@ -13,8 +13,8 @@
 </script>
 <?php
     if( is_array( $this->data ) ) {
-        echo '<ul class="actionMenu"><li>'.$html->link(
-            $html->image(
+        echo '<ul class="actionMenu"><li>'.$xhtml->link(
+            $xhtml->image(
                 'icons/application_form_magnify.png',
                 array( 'alt' => '' )
             ).' Formulaire',
@@ -126,7 +126,7 @@
 
                             </tbody>
                         </table>';
-                        echo $html->tableCells(
+                        echo $xhtml->tableCells(
                             array(
                                 h( Set::classicExtract( $criterepdo, 'Dossier.numdemrsa' ) ),
                                 h( Set::enum( Set::classicExtract( $criterepdo, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criterepdo, 'Personne.nom' ).' '.Set::classicExtract( $criterepdo, 'Personne.prenom' ) ),
@@ -135,7 +135,7 @@
                                 h( Set::enum( Set::classicExtract( $criterepdo, 'Propopdo.motifpdo' ), $motifpdo ) ),
                                 h( $locale->date( 'Locale->date',  Set::classicExtract( $criterepdo, 'Propopdo.datereceptionpdo' ) ) ),
                                 h( Set::enum( Set::classicExtract( $criterepdo, 'Propopdo.user_id' ), $gestionnaire ) ),
-                                $html->viewLink(
+                                $xhtml->viewLink(
                                     'Voir',
                                     array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $criterepdo, 'Propopdo.personne_id' ) )
                                 ),
@@ -151,13 +151,13 @@
         <?php echo $pagination;?>
         <ul class="actionMenu">
             <li><?php
-                echo $html->printLinkJs(
+                echo $xhtml->printLinkJs(
                     'Imprimer le tableau',
                     array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
                 );
             ?></li>
             <li><?php
-                echo $html->exportLink(
+                echo $xhtml->exportLink(
                     'Télécharger le tableau',
                     array( 'controller' => 'criterespdos', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
