@@ -7,8 +7,9 @@
 		*
 		*/
 
-// 		public function beforeFilter() {
-// 		}
+		public function beforeFilter() {
+			$this->Auth->allow( '*' );
+		}
 
 		/**
 		* Returns a list of all application models (including plugins)
