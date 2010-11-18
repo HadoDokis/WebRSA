@@ -11,7 +11,7 @@
 		function testIdFromDossierId() {
 			$this->assertEqual(1,$this->Avispcgpersonne->idFromDossierId(1));
 			$this->assertNull($this->Avispcgpersonne->idFromDossierId(2));
-			$this->assertNull($this->Avispcgpersonne->idFromDossierId(666));
+			$this->assertNull($this->Avispcgpersonne->idFromDossierId(1337));
 		}
 
 	}

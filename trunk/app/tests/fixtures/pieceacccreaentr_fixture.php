@@ -5,6 +5,14 @@
 		var $table = 'piecesaccscreaentr';
 		var $import = array( 'table' => 'piecesaccscreaentr', 'connection' => 'default', 'records' => false);
 		var $records = array(
+			array(
+				'id' => '1',
+				'libelle' => 'libellé1',
+			),
+			array(
+				'id' => '2',
+				'libelle' => 'libellé2',
+			),
 		);
 	}
 
