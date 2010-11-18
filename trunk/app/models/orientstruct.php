@@ -87,7 +87,7 @@
 				'order' => ''
 			)
 		);
-
+/*
 		public $hasMany = array(
 			'Parcoursdetecte' => array(
 				'className' => 'Parcoursdetecte',
@@ -102,7 +102,7 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			)
-		);
+		);*/
 
 
 		public $hasAndBelongsToMany = array(
