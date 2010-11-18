@@ -202,6 +202,7 @@
 						'Contratinsertion.num_contrat',
 						'Contratinsertion.dd_ci',
 						'Contratinsertion.df_ci',
+						'Contratinsertion.date_saisi_ci',
 						'Contratinsertion.datevalidation_ci',
 					),
 					'conditions' => array(
@@ -570,6 +571,25 @@
 // debug($success);
                 if( $success ) {
                     $saved = true;
+                    
+                    $lastrdvorient = $this->Contratinsertion->Referent->Rendezvous->find(
+                    	'first',
+                    	array(
+                    		'fields'=>array(
+                    			'Rendezvous.id'
+                    		),
+                    		'conditions'=>array(
+                    			'Rendezvous.typerdv_id' => 1,
+                    			'Rendezvous.personne_id' => $this->data['Contratinsertion']['personne_id'],
+                    			'Rendezvous.statutrdv_id' => 17
+                    		),
+                    		'contain'=>false
+                    	)
+                    );
+                    
+                    $lastrdvorient['Rendezvous']['statutrdv_id'] = 1;
+                    
+                    $saved = $this->Contratinsertion->Referent->Rendezvous->save($lastrdvorient) && $saved;
 /*
 //                     if( !empty( $dspData ) ){
 //                         $this->Contratinsertion->Personne->Dsp->create();
