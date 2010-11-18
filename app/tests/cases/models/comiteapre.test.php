@@ -5,7 +5,13 @@
 	App::import('Model', 'Comiteapre');
 
 	class ComiteapreTestCase extends CakeAppModelTestCase {
+		/*
+		// test fonction search
+		function testSearch() {
+			$result = $this->Comiteapre->search();
 
+		}
+		*/
 	}
 
 ?>

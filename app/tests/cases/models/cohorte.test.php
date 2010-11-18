@@ -28,5 +28,11 @@
 			$this->assertEqual($result,$expected);
 		}
 
+		/*
+		function testSearch2() {
+			$result = $this->Cohorte->search2();
+			var_dump($result);
+		}
+		*/
 	}
 ?>

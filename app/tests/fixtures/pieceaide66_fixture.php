@@ -5,6 +5,14 @@
 		var $table = 'piecesaides66';
 		var $import = array( 'table' => 'piecesaides66', 'connection' => 'default', 'records' => false);
 		var $records = array(
+			array(
+				'id' => '1',
+				'name' => 'libellé1',
+			),
+			array(
+				'id' => '2',
+				'name' => 'libellé2',
+			),
 		);
 	}
 

@@ -6,13 +6,13 @@
 
 	class Aideapre66TestCase extends CakeAppModelTestCase {
 
-		//test de la fonction plafondMontantAideapre()
+		// test de la fonction plafondMontantAideapre()
 		function testPlafondMontantAideapre() {
 			$result = $this->Aideapre66->plafondMontantAideapre(1);
-			$this->assertEqual($result, 1);
+			$this->assertIsA($result, bool);
 		}
 
-		//test de la fonction
+		// test de la fonction
 		function test_nbrNormalPieces() {
 			$result = $this->Aideapre66->_nbrNormalPieces();
 			$this->assertIsA($result, bool);

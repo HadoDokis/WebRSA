@@ -6,6 +6,14 @@
 
 	class ApreEtatliquidatifTestCase extends CakeAppModelTestCase {
 
+		// test function beforevalidate()
+		function testBeforeValidate() {
+			$result = $this->ApreEtatliquidatif->beforeValidate();
+			$this->assertTrue($result);
+
+			$result = $this->ApreEtatliquidatif->beforeValidate();
+			$this->assertEqual($result, true);
+		}
 	}
 
 ?>
