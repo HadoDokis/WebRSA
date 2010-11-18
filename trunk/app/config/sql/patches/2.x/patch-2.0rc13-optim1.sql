@@ -51,9 +51,6 @@ CREATE INDEX controlesadministratifs_foyer_id_idx
 -- Corrections mauvaises valeurs par défaut pour le type time -> voir avec Gaétan
 -- ALTER TABLE comitesapres ALTER COLUMN heurecomite SET DEFAULT now();
 
-ALTER TABLE personnes ADD COLUMN numfixe VARCHAR(14);
-ALTER TABLE personnes ADD COLUMN numport VARCHAR(14);
-
 
 -- *****************************************************************************
 COMMIT;
