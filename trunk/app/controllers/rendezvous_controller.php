@@ -93,6 +93,10 @@ App::import( 'Helper', 'Locale' );
 					),
 					'conditions' => array(
 						'Rendezvous.personne_id' => $personne_id
+					),
+					'order' => array(
+						'Rendezvous.daterdv DESC',
+						'Rendezvous.heurerdv DESC'
 					)
 				)
 			);

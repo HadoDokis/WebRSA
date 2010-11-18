@@ -202,7 +202,8 @@
 		public function avisraison_ci() {
 			return array(
 				'D' => 'Défaut de conclusion',
-				'N' => 'Non respect du contrat'
+				'N' => 'Non respect du contrat',
+				'A' => 'Autre'
 			);
 		}
 
