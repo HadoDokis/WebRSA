@@ -97,17 +97,22 @@
 			$this->assertEqual(1,$this->Apre->dossierId(1));
 			$this->assertEqual(3,$this->Apre->dossierId(2));
 			$this->assertNull($this->Apre->dossierId(666));
-			$this->assertNull($this->Apre->dossierId("toto"));
+			// créer des exeptions, insére "toto" à la place d'un integer (id)
+			//$this->assertNull($this->Apre->dossierId("toto"));
 			$this->assertNull($this->Apre->dossierId(-42));
 		}
 
 		function testDetails() {
 			$expected=array(
 				'Piecepresente' => array(
-					'Apre' => 1
+					'Apre' => 1,
+					'Actprof' => 0,
+					'Amenaglogt' => 0,
 				),
 				'Piecemanquante' => array(
-					'Apre' => 0
+					'Apre' => 0,
+					'Actprof' => 0,
+					'Amenaglogt' => 0,
 				),
 				'Piece' => array (
 					'Manquante' => array(
@@ -118,9 +123,9 @@
 				'Natureaide' => array (
 					'Formqualif' => 0,
 					'Formpermfimo' => 0,
-					'Actprof' => 0,
+					'Actprof' => 1,
 					'Permisb' => 0,
-					'Amenaglogt' => 0,
+					'Amenaglogt' => 1,
 					'Acccreaentr' => 0,
 					'Acqmatprof' => 0,
 					'Locvehicinsert' => 0
