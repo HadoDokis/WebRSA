@@ -166,10 +166,35 @@
 			);
 			$result=$this->Etatliquidatif->listeApres("ici ma condition");
 			$this->assertEqual($result,$expected);
+			$this->assertNotNull($result);
 		}
 
 		function testListeApresEtatLiquidatif() {
-			
+
+		}
+	
+		function testListeApresEtatLiquidatifNonTermine() {
+
+		}
+
+		function testListeApresEtatLiquidatifNonTerminePourVersement() {
+
+		}
+
+		function testListeApresSansEtatLiquidatif() {
+
+		}
+
+		function testListeApresPourEtatLiquidatif() {
+
+		}
+
+		function testHopeyra() {
+
+		}
+
+		function testPdf() {
+
 		}
 
 	}

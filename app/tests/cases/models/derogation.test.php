@@ -11,6 +11,10 @@
 		function testDossierId() {
 			$this->assertEqual(1,$this->Derogation->dossierId(1));
 			$this->assertNull($this->Derogation->dossierId(666));
+			// valeurs en entrée incohérentes
+			$this->assertNull($this->Derogation->dossierId(-42));
+			// Erreur PHP -> insére "toto" à la place d'un 'interger'
+			//$this->assertNull($this->Derogation->dossierId("toto"));
 		}
 
 	}

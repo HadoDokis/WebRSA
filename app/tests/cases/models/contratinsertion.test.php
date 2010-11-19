@@ -6,6 +6,12 @@
 
 	class ContratinsertionTestCase extends CakeAppModelTestCase {
 
+		/*
+		// test fonction beforesave
+		function testBeforesave() {
+			$result = $this->Contratinsertion->beforesave();
+		}
+		*/
 	}
 
 ?>
