@@ -11,8 +11,6 @@
 			$result = $this->ApreEtatliquidatif->beforeValidate();
 			$this->assertTrue($result);
 
-			$result = $this->ApreEtatliquidatif->beforeValidate();
-			$this->assertEqual($result, true);
 		}
 	}
 

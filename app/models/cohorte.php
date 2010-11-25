@@ -192,7 +192,6 @@
 			//-------------------------------------------------------
 			$cantons = Set::extract( $criteres, 'Filtre.cantons' );
 
-
 			/// FIXME: dans le modèle
 			$typeorient = Set::classicExtract( $criteres, 'Filtre.typeorient' );
 			if( !empty( $typeorient ) ) {

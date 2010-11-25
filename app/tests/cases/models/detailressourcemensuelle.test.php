@@ -5,7 +5,7 @@
 	App::import('Model', 'Detailressourcemensuelle');
 
 	class DetailressourcemensuelleTestCase extends CakeAppModelTestCase {
-
+		
 	}
 
 ?>

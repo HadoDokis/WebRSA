@@ -5,7 +5,11 @@
 	App::import('Model', 'Criterecui');
 
 	class CriterecuiTestCase extends CakeAppModelTestCase {
-
+		// test fonction search
+		function testSearch() {
+			$result = $this->Criterecui->search(null, null, null, null);
+			$this->assertTrue($result);
+		}
 	}
 
 ?>

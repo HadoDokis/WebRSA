@@ -5,7 +5,11 @@
 	App::import('Model', 'Cohorteci');
 
 	class CohorteciTestCase extends CakeAppModelTestCase {
-
+		// test fonction search
+		function testSearch() {
+		$result = $this->Cohorteci->search();
+		var_dump($result);
+		}
 	}
 
 ?>
