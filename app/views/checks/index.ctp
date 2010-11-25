@@ -9,13 +9,13 @@
 				if ($webrsaIncExist==true) echo "Oui";
 				else echo "Non";
 			?>
-			
+
 			<h3>Logiciel pdftk installé ?</h3>
 			<?php
 				if ($pdftkInstalled==true) echo "Oui";
 				else echo "Non";
 			?>
-			
+
 			<h3>Toutes les structures référentes sont renseignées ?</h3>
 			<?php
 				if (empty($structs)) echo "Oui";
@@ -36,7 +36,7 @@
 					</table><?php
 				}
 			?>
-			
+
 			<h3>Données présentes dans la table users ?</h3>
 			<?php
 				if (empty($users)) echo "Oui";
@@ -78,7 +78,7 @@
 					</table><?php
 				}
 			?>
-			
+
 			<h3>Données des apres correctement renseignées dans le fichier webrsa.inc ?</h3>
 			<?php
 				if ($donneesApreExist==null) echo "Oui";
@@ -89,12 +89,18 @@
 					}
 				}
 			?>
-			
+
 			<h3>Dossier temporaire des pdfs inscriptible ?</h3>
 			<?php
 				if ($checkWritePdfDirectory==true) echo "Oui";
 				else echo "Non";
 			?>
+
+			<h3>Fichiers Javascript et css concaténés et minifiés ?</h3>
+			<ul>
+				<li>webrsa.css: <?php echo ( $compressedAssets['webrsa.css'] ? 'Oui' : 'Non' );?></li>
+				<li>webrsa.js: <?php echo ( $compressedAssets['webrsa.js'] ? 'Oui' : 'Non' );?></li>
+			</ul>
         </table>
     </div>
 </div>
