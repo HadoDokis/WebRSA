@@ -6,7 +6,7 @@ WORK_DIR="$PWD"
 RELEASES_DIR="$WORK_DIR/releases"
 ChangeLog="ChangeLog.txt"
 ASNV="svn://svn.adullact.net/svnroot/webrsa"
-YUICOMPRESSOR="/home/cbuffin/Bureau/Webrsa/_optimisations/logiciel/yuicompressor-2.4.2.jar" # FIXME: chemin
+YUICOMPRESSOR="/home/cbuffin/Install/yuicompressor-2.4.2.jar"
 
 # ------------------------------------------------------------------------------
 # INFO: rgadr sur un char -> sed -i "s/<RGADR>\([1-3]\)<\/RGADR>/<RGADR>0\1<\/RGADR>/" XXX
@@ -50,42 +50,45 @@ function __clear() {
 	fi
 
 	rm -f $dir/tmp/logs/*.log
+
+	rm "$dir/webroot/js/webrsa.js ">> /dev/null 2>&1
+	rm "$dir/webroot/css/webrsa.css" >> /dev/null 2>&1
 }
 
 # ------------------------------------------------------------------------------
 
 function __changelog() {
-    version=${1}
-    dir=${2}
-    (
-        cd $dir
+	version=${1}
+	dir=${2}
+	(
+		cd $dir
 
-        ChangeLogTmp="$ChangeLog.tmp"
+		ChangeLogTmp="$ChangeLog.tmp"
 
-        svn log $ASNV > $ChangeLogTmp
+		svn log $ASNV > $ChangeLogTmp
 
-        startrev=`svn ls --verbose $ASNV/tags | grep " $version/" | sed -e 's/^ *//' | cut -d " " -f1`
-        startline=`grep -n "^r$startrev" $ChangeLogTmp | cut -d ":" -f1`
-        maxlines=`cat $ChangeLogTmp | wc -l`
-        numlines=`expr $maxlines - $startline + 1`
+		startrev=`svn ls --verbose $ASNV/tags | grep " $version/" | sed -e 's/^ *//' | cut -d " " -f1`
+		startline=`grep -n "^r$startrev" $ChangeLogTmp | cut -d ":" -f1`
+		maxlines=`cat $ChangeLogTmp | wc -l`
+		numlines=`expr $maxlines - $startline + 1`
 
-        tail -n $numlines $ChangeLogTmp > $ChangeLog
-        rm $ChangeLogTmp
+		tail -n $numlines $ChangeLogTmp > $ChangeLog
+		rm $ChangeLogTmp
 
-        for tag in `svn ls --verbose $ASNV/tags | sed 's/^\W*\([0-9]\+\)\W\+.* \+\([^ ]\+\)\/$/\1 \2/g' | grep -v "^[0-9]\+ .$" | sort -n -r -k1 | sed 's/^\([^ ]\+\) \([^ ]\+\)$/\1\/\2/g'`; do
-            rev=`echo "$tag" | cut -d "/" -f1`
-            tag=`echo "$tag" | cut -d "/" -sf2`
-            sed -i "s/^r$rev /\n************************************************************************\n Version $tag\n************************************************************************\n\nr$rev /" $ChangeLog
-        done
-    )
+		for tag in `svn ls --verbose $ASNV/tags | sed 's/^\W*\([0-9]\+\)\W\+.* \+\([^ ]\+\)\/$/\1 \2/g' | grep -v "^[0-9]\+ .$" | sort -n -r -k1 | sed 's/^\([^ ]\+\) \([^ ]\+\)$/\1\/\2/g'`; do
+			rev=`echo "$tag" | cut -d "/" -f1`
+			tag=`echo "$tag" | cut -d "/" -sf2`
+			sed -i "s/^r$rev /\n************************************************************************\n Version $tag\n************************************************************************\n\nr$rev /" $ChangeLog
+		done
+	)
 }
 
 
 # ------------------------------------------------------------------------------
 
 function __cleanFilesForRelease() {
-    dir="$1"
-    version="$2"
+	dir="$1"
+	version="$2"
 
 	cd "$dir"
 	rm -f "app/config/database.php.default" >> /dev/null 2>&1
@@ -120,23 +123,24 @@ function __cleanFilesForRelease() {
 # svn ls --verbose svn://svn.adullact.net/svnroot/webrsa/tags
 
 function __package() {
-    version=${1}
-    mkdir -p "$RELEASES_DIR/webrsa-$version" >> "/dev/null" 2>&1 && \
-    (
-        cd "$RELEASES_DIR/webrsa-$version" >> "/dev/null" 2>&1 && \
-        # TODO: RC pour trunk
-        # svn export svn://svn.adullact.net/svnroot/webrsa/trunk >> "/dev/null" 2>&1 && \
+	version=${1}
+	mkdir -p "$RELEASES_DIR/webrsa-$version" >> "/dev/null" 2>&1 && \
+	(
+		cd "$RELEASES_DIR/webrsa-$version" >> "/dev/null" 2>&1 && \
+		# TODO: RC pour trunk
+		# svn export svn://svn.adullact.net/svnroot/webrsa/trunk >> "/dev/null" 2>&1 && \
 #         svn export svn://svn.adullact.net/svnroot/webrsa/tags/$version/app >> "/dev/null" 2>&1 && \
-        svn export $ASNV/tags/$version/app >> "/dev/null" 2>&1 && \
+		svn export $ASNV/tags/$version/app >> "/dev/null" 2>&1 && \
 
 		__cleanFilesForRelease "$RELEASES_DIR/webrsa-$version" "$version"
-    ) && \
-    (
-        cd "$RELEASES_DIR" >> "/dev/null" 2>&1 && \
-        __changelog "$version" "$RELEASES_DIR/webrsa-$version/app" && \
-        zip -o -r -m "$RELEASES_DIR/webrsa-$version.zip" "webrsa-$version" >> "/dev/null" 2>&1
-    ) && \
-    echo $version
+	) && \
+	(
+		cd "$RELEASES_DIR" >> "/dev/null" 2>&1 && \
+		__minify "$RELEASES_DIR/webrsa-$version/app" && \
+		__changelog "$version" "$RELEASES_DIR/webrsa-$version/app" && \
+		zip -o -r -m "$RELEASES_DIR/webrsa-$version.zip" "webrsa-$version" >> "/dev/null" 2>&1
+	) && \
+	echo $version
 }
 
 # ------------------------------------------------------------------------------
@@ -173,24 +177,48 @@ function __patch() {
 }
 
 # ------------------------------------------------------------------------------
-# FIXME: pour les releases, remplacer ?
 
 function __minify() {
+	if [ ! -e "$YUICOMPRESSOR" ];then
+		echo "Le fichier $YUICOMPRESSOR n'existe pas (pensez à changer le chemin vers le yuicompressor dans ce script)."
+		return 1
+	fi
+
 	JSDIR="$1/webroot/js"
 	CSSDIR="$1/webroot/css"
 
-	# Minify javascript
-	for filemaxed in `ls $JSDIR/*.js`; do
-		java -jar "$YUICOMPRESSOR" "$filemaxed" -o "$filemaxed.min"
-		mv "$filemaxed" "$filemaxed.bak"
-		mv "$filemaxed.min" "$filemaxed"
-	done
+	# CSS
+	CSSFILE="$CSSDIR/webrsa.tmp.css"
+	echo "@media all {" > "$CSSFILE"
+	cat "$CSSDIR/all.reset.css" "$CSSDIR/all.base.css" "$CSSDIR/all.form.css" >> "$CSSFILE"
+	echo "}" >> "$CSSFILE"
 
-	for filemaxed in `ls $CSSDIR/*.css`; do
-		java -jar "$YUICOMPRESSOR" "$filemaxed" -o "$filemaxed.min"
-		mv "$filemaxed" "$filemaxed.bak"
-		mv "$filemaxed.min" "$filemaxed"
-	done
+	echo "@media screen,presentation {" >> "$CSSFILE"
+	cat "$CSSDIR/menu.css" "$CSSDIR/popup.css" "$CSSDIR/screen.generic.css" >> "$CSSFILE"
+	echo "}" >> "$CSSFILE"
+
+	echo "@media print {" >> "$CSSFILE"
+	cat "$CSSDIR/print.generic.css" >> "$CSSFILE"
+	echo "}" >> "$CSSFILE"
+
+	java -jar "$YUICOMPRESSOR" "$CSSFILE" -o "$CSSDIR/webrsa.css" --charset utf-8
+	rm "$CSSFILE"
+
+	# Javascript (Prototype)
+	JSFILE="$JSDIR/webrsa.tmp.js"
+	# "$JSDIR/jquery.domec.js"
+	# "$JSDIR/jquery.js"
+	# "$JSDIR/webrsa.common.jquery.js"
+	cat "$JSDIR/prototype.js" \
+	"$JSDIR/prototype.livepipe.js" \
+	"$JSDIR/prototype.tabs.js" \
+	"$JSDIR/tooltip.prototype.js" \
+	"$JSDIR/webrsa.common.prototype.js" \
+	"$JSDIR/dependantselect.js" \
+	"$JSDIR/droits.js" > "$JSFILE"
+
+	java -jar "$YUICOMPRESSOR" "$JSFILE" -o "$JSDIR/webrsa.js" --charset utf-8 --preserve-semi
+	rm "$JSFILE"
 }
 
 # ------------------------------------------------------------------------------
@@ -231,36 +259,36 @@ function __svnbackup() {
 # ------------------------------------------------------------------------------
 
 case $1 in
-    changelog)
+	changelog)
 		__svnDirExists "$ASNV/tags/$2"
 		existsDir=$?
 		if [[ $existsDir -ne 0 ]] ; then
 			exit 1
 		fi
-        __changelog "$2" .
-    ;;
-    clear)
-        __clear "$APP_DIR"
-    ;;
-    clearcache)
-        __clearDir "$APP_DIR/tmp/cache/"
-    ;;
-    clearlogs)
-        __clearDir "$APP_DIR/tmp/logs/"
-    ;;
-    minify)
-        __minify "$APP_DIR"
-    ;;
-    package)
+		__changelog "$2" .
+	;;
+	clear)
+		__clear "$APP_DIR"
+	;;
+	clearcache)
+		__clearDir "$APP_DIR/tmp/cache/"
+	;;
+	clearlogs)
+		__clearDir "$APP_DIR/tmp/logs/"
+	;;
+	minify)
+		__minify "$APP_DIR"
+	;;
+	package)
 		# Vérification de l'argument
 		__svnDirExists "$ASNV/tags/$2"
 		if [[ $? -ne 0 ]] ; then
 			exit 1
 		fi
 
-        __package $2
-    ;;
-    patch)
+		__package $2
+	;;
+	patch)
 		# Vérification des arguments
 		__svnDirExists "$ASNV/$2"
 		existsDir1=$?
@@ -270,16 +298,16 @@ case $1 in
 			exit 1
 		fi
 		# ex: app/webrsa.sh patch tags/1.0.9 branches/1.0.8
-        __patch "$ASNV/$2" "$ASNV/$3"
-    ;;
-    svnbackup)
-        __clear "$APP_DIR"
+		__patch "$ASNV/$2" "$ASNV/$3"
+	;;
+	svnbackup)
+		__clear "$APP_DIR"
 		__svnbackup "$APP_DIR"
-    ;;
-    *)
-        echo "Usage: $ME {changelog|clearcache|clear|clearlogs|minify|package|patch|svnbackup}"
-        exit 1
-    ;;
+	;;
+	*)
+		echo "Usage: $ME {changelog|clearcache|clear|clearlogs|minify|package|patch|svnbackup}"
+		exit 1
+	;;
 esac
 
 #  Afin d'enlever l'extension defualt des fichiers ODT sans avoir à le faire à la main

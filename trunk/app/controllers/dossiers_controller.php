@@ -63,7 +63,13 @@
 				$this->set( 'typesorient', $typesorient );
 			}
 			else if( $this->action == 'index' ) {
-				$typeservice = $this->Dossier->Foyer->Personne->Orientstruct->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
+				/// Mise en cache de la liste des services instructeurs
+				/// TODO: nettoyer ce cache lors de l'ajout/modification/suppression d'un service instructeur
+				$typeservice = Cache::read( 'servicesinstructeurs_liste' );
+				if( $typeservice === false ) {
+					$typeservice = $this->Dossier->Foyer->Personne->Orientstruct->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
+					Cache::write( 'servicesinstructeurs_liste', $typeservice );
+				}
 				$this->set( 'typeservice', $typeservice );
 			}
 		}
@@ -102,12 +108,29 @@
 				$this->set( 'dossiers', $dossiers );
 			}
 
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+			/// Mise en cache (session) de la liste des codes Insee pour les selects
+			/// TODO: Une fonction ?
+			/// TODO: Voir où l'utiliser ailleurs
+			if( !$this->Session->check( 'Cache.mesCodesInsee' ) ) {
+				if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+					$listeCodesInseeLocalites = $this->Dossier->Foyer->Personne->Cui->Structurereferente->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
+				}
+				else {
+					$listeCodesInseeLocalites = $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee();
+				}
+				$this->Session->write( 'Cache.mesCodesInsee', $listeCodesInseeLocalites );
+			}
+			else {
+				$listeCodesInseeLocalites = $this->Session->read( 'Cache.mesCodesInsee' );
+			}
+			$this->set( 'mesCodesInsee', $listeCodesInseeLocalites );
+
+			/*if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
 				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Personne->Cui->Structurereferente->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
 			}
 			else {
 				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
-			}
+			}*/
 
 			$this->_setOptions();
 		}
