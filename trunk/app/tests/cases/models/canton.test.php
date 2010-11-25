@@ -58,7 +58,7 @@
 				'or' => array()
 			);
 
-			//#FIXME cause plus de 200 exeptions !
+			//#FIXME cause plus de 200 exceptions !
 			/*
 			$this->assertEqual($result,$expected);
 

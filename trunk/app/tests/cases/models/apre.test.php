@@ -97,7 +97,7 @@
 			$this->assertEqual(1,$this->Apre->dossierId(1));
 			$this->assertEqual(3,$this->Apre->dossierId(2));
 			$this->assertNull($this->Apre->dossierId(666));
-			// créer des exeptions, insére "toto" à la place d'un integer (id)
+			// créer des exceptions, insére "toto" à la place d'un integer (id)
 			//$this->assertNull($this->Apre->dossierId("toto"));
 			$this->assertNull($this->Apre->dossierId(-42));
 		}
@@ -191,7 +191,10 @@
 			$this->assertEqual($expected,$result);
 		}
 
-		
+		function testBeforeSave() {
+			$result = $this->Apre->beforeSave();
+			$this->assertTrue($result);
+		}		
 
 	}
 ?>

@@ -48,7 +48,7 @@
 			$result = $this->Foyer->nbEnfants(-42);
 			$this->assertEqual(0, $result);
 
-			//FIXME nombre d'enfant dans un foyer inexistant, crée des exeptions
+			//FIXME nombre d'enfant dans un foyer inexistant, crée des exceptions
 			//$result = $this->Foyer->nbEnfants("toto");
 			//$this->assertNull($result);
 		}

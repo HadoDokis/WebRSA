@@ -5,7 +5,11 @@
 	App::import('Model', 'Critererdv');
 
 	class CritererdvTestCase extends CakeAppModelTestCase {
-
+		// test fonction search
+		function testSearch() {
+			$result = $this->Critererdv->search(null, null, null, null);
+			$this->assertTrue($result);
+		}
 	}
 
 ?>

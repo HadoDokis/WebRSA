@@ -10,9 +10,6 @@
 		function testBeforeSave() {
 			$result = $this->ApreComiteapre->beforeSave();
 			$this->assertTrue($result);
-
-			$result = $this->ApreComiteapre->beforeSave();
-			$this->assertEqual($result, true);
 		}
 	}
 

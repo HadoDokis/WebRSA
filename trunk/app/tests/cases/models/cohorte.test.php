@@ -28,11 +28,15 @@
 			$this->assertEqual($result,$expected);
 		}
 
-		/*
+/*
+		function testSearch() {
+			$result = $this->Cohorte->search('Orienté', null, null, null, null, 2147483647);
+		}
+
 		function testSearch2() {
 			$result = $this->Cohorte->search2();
 			var_dump($result);
 		}
-		*/
+*/
 	}
 ?>

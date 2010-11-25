@@ -5,7 +5,11 @@
 	App::import('Model', 'Critereapre');
 
 	class CritereapreTestCase extends CakeAppModelTestCase {
-
+		// test fonction search
+		function testSearch() {
+			$result = $this->Critereapre->search(null, null, null, null, null);
+			$this->assertTrue($result);
+		}
 	}
 
 ?>

@@ -46,6 +46,8 @@
 				)
 			);
 			$this->assertEqual($expected,$this->Action->grouplist());
+			//FIXME la fonction grouplist renvoie un tableau vide quel que soit le paramètre d'entrée
+			//var_dump($this->Action->grouplist());
 			$expected = array(
 				0 => array(
 					'02' => '02 - Aide au retour d\'enfants placés',
@@ -58,7 +60,8 @@
 				)
 			);
 			$this->assertEqual($expected,$this->Action->grouplist('aide'));
-
+			//FIXME la fonction grouplist renvoie un tableau vide quel que soit le paramètre d'entrée
+			//var_dump($this->Action->grouplist('aide'));
 			$expected=array(
 				0 => array(
 					'1P' => 'Soutien, suivi social, accompagnement personnel',
@@ -82,6 +85,7 @@
 				)
 			);
 			$this->assertEqual($expected,$this->Action->grouplist('prestation'));
+			//FIXME la fonction grouplist renvoie un tableau vide quel que soit le paramètre d'entrée
 		}
 	}
 ?>

@@ -68,7 +68,7 @@
 				'mtforfait' => null,
 				'secteuractivite' => null,
 				'nbenf12' => null,
-				'statutapre' => 'F',
+				'statutapre' => 'C',
 				'justificatif' => null,
 				'structurereferente_id' => 1,
 				'referent_id' => 1,

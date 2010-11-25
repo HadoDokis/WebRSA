@@ -22,5 +22,18 @@
 			$this->assertNull($result);
 		}
 
+		/*
+		function testChoixStructure() {
+			$result = $this->Orientstruct->choixStructure();
+		}
+
+		function testGetDataPdf() {
+			$result = $this->Orientstruct->getDataPdf();
+		}
+
+		function testFillAllocataire() {
+			$result = $this->Orientstruct->fillAllocataire();
+		}
+		*/
 	}
 ?>
