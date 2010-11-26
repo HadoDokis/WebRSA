@@ -139,6 +139,14 @@
     */
     Configure::write( 'Apre.pourcentage.montantversement', 60 );
 
+	/**
+	* Permet de désactiver l'utilisation des jetons sur les dossiers
+	* Si à false, on utilise les jetons sur les dossiers.
+	* Si à true, on n'utilise pas les jetons sur les dossiers.
+	* @default false
+	*/
+	Configure::write( 'Jetons.disabled', false );
+
     /**
     *   Paramètre pour définir les taux dans le formulaire du CUI :
     *   Cui.taux.fixe                   => Taux fixé par l'arrêté du Préfet de région (en % )
