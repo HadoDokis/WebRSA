@@ -355,9 +355,9 @@
     *
     *** ***********************************************************************/
 
-    require_once( 'webrsa.inc' );
-    require_once( 'lib.basics.php' );
-    require_once( 'lib.xset.php' );
+    require_once( CONFIGS.'webrsa.inc' );
+    require_once( CONFIGS.'lib.basics.php' );
+    require_once( CONFIGS.'lib.xset.php' );
 
     /** ************************************************************************
     *
@@ -419,7 +419,7 @@
         return $match;
     }*/
 
-	require_once( 'app.enumerable.php' );
+	require_once( CONFIGS.'app.enumerable.php' );
 	/// TODO: options par défaut pour dans les vues -> Configure::read( 'View.display.phone' );
 
 	Configure::write( 'Typeable.phone', array( 'country' => 'fr', 'maxlength' => 14/*, 'rule' => 'phoneFr'*/ ) );
