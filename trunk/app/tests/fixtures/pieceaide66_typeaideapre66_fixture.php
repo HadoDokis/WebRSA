@@ -9,7 +9,7 @@
 				'id' => '1',
 				'typeaideapre66_id' => '1',
 				'pieceaide66_id' => '1',
-			),
+			)
 		);
 	}
 
