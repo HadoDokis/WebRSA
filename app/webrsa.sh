@@ -51,8 +51,8 @@ function __clear() {
 
 	rm -f $dir/tmp/logs/*.log
 
-	rm "$dir/webroot/js/webrsa.js ">> /dev/null 2>&1
-	rm "$dir/webroot/css/webrsa.css" >> /dev/null 2>&1
+# 	rm "$dir/webroot/js/webrsa.js">> /dev/null 2>&1
+# 	rm "$dir/webroot/css/webrsa.css" >> /dev/null 2>&1
 }
 
 # ------------------------------------------------------------------------------
@@ -202,7 +202,7 @@ function __minify() {
 	echo "}" >> "$CSSFILE"
 
 	java -jar "$YUICOMPRESSOR" "$CSSFILE" -o "$CSSDIR/webrsa.css" --charset utf-8
-	rm "$CSSFILE"
+ 	rm "$CSSFILE"
 
 	# Javascript (Prototype)
 	JSFILE="$JSDIR/webrsa.tmp.js"
@@ -266,18 +266,23 @@ case $1 in
 			exit 1
 		fi
 		__changelog "$2" .
+		exit 0
 	;;
 	clear)
 		__clear "$APP_DIR"
+		exit 0
 	;;
 	clearcache)
 		__clearDir "$APP_DIR/tmp/cache/"
+		exit 0
 	;;
 	clearlogs)
 		__clearDir "$APP_DIR/tmp/logs/"
+		exit 0
 	;;
 	minify)
 		__minify "$APP_DIR"
+		exit 0
 	;;
 	package)
 		# Vérification de l'argument
@@ -287,6 +292,7 @@ case $1 in
 		fi
 
 		__package $2
+		exit 0
 	;;
 	patch)
 		# Vérification des arguments
@@ -299,10 +305,12 @@ case $1 in
 		fi
 		# ex: app/webrsa.sh patch tags/1.0.9 branches/1.0.8
 		__patch "$ASNV/$2" "$ASNV/$3"
+		exit 0
 	;;
 	svnbackup)
 		__clear "$APP_DIR"
 		__svnbackup "$APP_DIR"
+		exit 0
 	;;
 	*)
 		echo "Usage: $ME {changelog|clearcache|clear|clearlogs|minify|package|patch|svnbackup}"
