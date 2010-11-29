@@ -155,16 +155,16 @@
 		*
 		*/
 
-		protected function _montantsIndusTransferes( $annee ) {
-			$sql = 'SELECT EXTRACT(MONTH FROM infosfinancieres.moismoucompta) AS mois, EXTRACT(YEAR FROM infosfinancieres.moismoucompta) AS annee, SUM(infosfinancieres.mtmoucompta) AS indicateur
-						FROM infosfinancieres
-						WHERE infosfinancieres.type_allocation = \'IndusTransferes\'
-							AND EXTRACT(YEAR FROM infosfinancieres.moismoucompta) = '.Sanitize::clean( $annee ).'
-							AND infosfinancieres.moismoucompta IS NOT NULL
-						GROUP BY annee, mois
-						ORDER BY annee, mois;';
-			return $this->_query( $sql );
-		}
+        protected function _montantsIndusTransferes( $annee ) {
+            $sql = 'SELECT EXTRACT(MONTH FROM infosfinancieres.moismoucompta) AS mois, EXTRACT(YEAR FROM infosfinancieres.moismoucompta) AS annee, SUM(infosfinancieres.mtmoucompta) AS indicateur
+                        FROM infosfinancieres
+                        WHERE infosfinancieres.type_allocation = \'IndusTransferesCG\'
+                            AND EXTRACT(YEAR FROM infosfinancieres.moismoucompta) = '.Sanitize::clean( $annee ).'
+                            AND infosfinancieres.moismoucompta IS NOT NULL
+                        GROUP BY annee, mois
+                        ORDER BY annee, mois;';
+            return $this->_query( $sql );
+        }
 
 		/**
 		*
