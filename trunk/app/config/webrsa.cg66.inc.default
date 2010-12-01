@@ -158,4 +158,16 @@
     Configure::write( 'Cui.taux.fixe', 60 );
     Configure::write( 'Cui.taux.prisencharge', 70 );
     Configure::write( 'Cui.taux.financementexclusif', 60 );
+
+	/**
+	* Permet la pagination progressive, cad. qu'on ne compte pas le nombre
+	* d'enregistrements totaux, mais que l'on regarde seulement si la
+	* page suivante existe.
+	*
+	* Pour l'instant, celà concerne seulement la recherche par
+	* dossier/allocataire.
+	*
+	* @default: false (pagination normale)
+	*/
+	Configure::write( 'Optimisations.progressivePaginate', false );
 ?>
