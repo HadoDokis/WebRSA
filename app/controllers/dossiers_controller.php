@@ -84,6 +84,194 @@
 		}
 
 		/**
+		* Pagination progressive (nombre de résultats totaux non connu)
+		*/
+
+		public function progressivePaginate( $object = null, $scope = array(), $whitelist = array() ) {
+			if (is_array($object)) {
+				$whitelist = $scope;
+				$scope = $object;
+				$object = null;
+			}
+			$assoc = null;
+
+			if (is_string($object)) {
+				$assoc = null;
+
+				if (strpos($object, '.') !== false) {
+					list($object, $assoc) = explode('.', $object);
+				}
+
+				if ($assoc && isset($this->{$object}->{$assoc})) {
+					$object = $this->{$object}->{$assoc};
+				} elseif ($assoc && isset($this->{$this->modelClass}) && isset($this->{$this->modelClass}->{$assoc})) {
+					$object = $this->{$this->modelClass}->{$assoc};
+				} elseif (isset($this->{$object})) {
+					$object = $this->{$object};
+				} elseif (isset($this->{$this->modelClass}) && isset($this->{$this->modelClass}->{$object})) {
+					$object = $this->{$this->modelClass}->{$object};
+				}
+			} elseif (empty($object) || $object === null) {
+				if (isset($this->{$this->modelClass})) {
+					$object = $this->{$this->modelClass};
+				} else {
+					$className = null;
+					$name = $this->uses[0];
+					if (strpos($this->uses[0], '.') !== false) {
+						list($name, $className) = explode('.', $this->uses[0]);
+					}
+					if ($className) {
+						$object = $this->{$className};
+					} else {
+						$object = $this->{$name};
+					}
+				}
+			}
+
+			if (!is_object($object)) {
+				trigger_error(sprintf(__('Controller::paginate() - can\'t find model %1$s in controller %2$sController', true), $object, $this->name), E_USER_WARNING);
+				return array();
+			}
+			$options = array_merge($this->params, $this->params['url'], $this->passedArgs);
+
+			if (isset($this->paginate[$object->alias])) {
+				$defaults = $this->paginate[$object->alias];
+			} else {
+				$defaults = $this->paginate;
+			}
+
+			if (isset($options['show'])) {
+				$options['limit'] = $options['show'];
+			}
+
+			if (isset($options['sort'])) {
+				$direction = null;
+				if (isset($options['direction'])) {
+					$direction = strtolower($options['direction']);
+				}
+				if ($direction != 'asc' && $direction != 'desc') {
+					$direction = 'asc';
+				}
+				$options['order'] = array($options['sort'] => $direction);
+			}
+
+			if (!empty($options['order']) && is_array( $options['order'] ) ) {
+				$alias = $object->alias ;
+				$key = $field = key($options['order']);
+
+				if (strpos($key, '.') !== false) {
+					list($alias, $field) = explode('.', $key);
+				}
+				$value = $options['order'][$key];
+				unset($options['order'][$key]);
+
+				if( isset($object->{$alias}) && $object->{$alias}->hasField( $field ) ) {
+					$options['order'][$alias . '.' . $field] = $value;
+				} elseif( $object->hasField( $field ) ) {
+					$options['order'][$alias . '.' . $field] = $value;
+				} else {
+					// INFO: permet de trier sur d'autres champs que ceux du modèle que l'on pagine
+					$joinAliases = Set::extract( $defaults, '/joins/alias' );
+					if( in_array( $alias, $joinAliases ) ) {
+						$options['order'][$alias . '.' . $field] = $value;
+					}
+				}
+			}
+
+			$vars = array('fields', 'order', 'limit', 'page', 'recursive');
+			$keys = array_keys($options);
+			$count = count($keys);
+
+			for ($i = 0; $i < $count; $i++) {
+				if (!in_array($keys[$i], $vars, true)) {
+					unset($options[$keys[$i]]);
+				}
+				if (empty($whitelist) && ($keys[$i] === 'fields' || $keys[$i] === 'recursive')) {
+					unset($options[$keys[$i]]);
+				} elseif (!empty($whitelist) && !in_array($keys[$i], $whitelist)) {
+					unset($options[$keys[$i]]);
+				}
+			}
+			$conditions = $fields = $order = $limit = $page = $recursive = null;
+
+			if (!isset($defaults['conditions'])) {
+				$defaults['conditions'] = array();
+			}
+
+			$type = 'all';
+
+			if (isset($defaults[0])) {
+				$type = $defaults[0];
+				unset($defaults[0]);
+			}
+			extract($options = array_merge(array('page' => 1, 'limit' => 20), $defaults, $options));
+
+			// made in gaëtan -> pour les tests unitaires
+			$options['limit'] = (empty($options['limit']) || !is_numeric($options['limit'])) ? 1 : $options['limit'];
+			extract($options);
+			// fin made in gaëtan
+
+
+			if (is_array($scope) && !empty($scope)) {
+				$conditions = array_merge($conditions, $scope);
+			} elseif (is_string($scope)) {
+				$conditions = array($conditions, $scope);
+			}
+			if ($recursive === null) {
+				$recursive = $object->recursive;
+			}
+
+			$extra = array_diff_key($defaults, compact(
+				'conditions', 'fields', 'order', 'limit', 'page', 'recursive'
+			));
+
+			if ($type !== 'all') {
+				$extra['type'] = $type;
+			}
+
+			$queryData = array(
+				'conditions' => $conditions,
+				'fields' => $fields,
+				'order' => $order,
+				'limit' => ( $limit + 1 ),
+				'offset' => ( max( 0, $page - 1 ) * $limit ),
+				'recursive' => $recursive,
+				'joins' => $extra['joins']
+			);
+
+			// TODO: ici OK, mais pour le mettre dans AppController, prévoir les
+			// autres cas - voir la fonction originale.
+			$results = $object->find( $type, $queryData );
+			$count = count( $results ) + ( ( $page - 1 ) * $limit );
+			$pageCount = intval(ceil($count / $limit));
+
+			if ($page === 'last' || $page >= $pageCount) {
+				$options['page'] = $page = $pageCount;
+			} elseif (intval($page) < 1) {
+				$options['page'] = $page = 1;
+			}
+			$page = $options['page'] = (integer)$page;
+
+			$paging = array(
+				'page'      => $page,
+				'current'   => count($results),
+				'count'     => $count,
+				'prevPage'  => ($page > 1),
+				'nextPage'  => ($count > ($page * $limit)),
+				'pageCount' => $pageCount,
+				'defaults'  => array_merge(array('limit' => 20, 'step' => 1), $defaults),
+				'options'   => $options
+			);
+
+			$this->params['paging'][$object->alias] = $paging;
+
+			if (!in_array('Paginator', $this->helpers) && !array_key_exists('Paginator', $this->helpers)) {
+				$this->helpers[] = 'Paginator';
+			}
+			return array_slice( $results, 0, $limit );
+		}
+
+		/**
 		*/
 		function index() {
 			if( Configure::read( 'CG.cantons' ) ) {
@@ -97,7 +285,13 @@
 			$params = $this->data;
 			if( !empty( $params ) ) {
 				$this->paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
-				$dossiers = $this->paginate( 'Dossier' );
+
+				if( Configure::read( 'Optimisations.progressivePaginate' ) ) {
+					$dossiers = $this->progressivePaginate( 'Dossier' );
+				}
+				else {
+					$dossiers = $this->paginate( 'Dossier' );
+				}
 
 				// Les dossiers que l'on a obtenus sont-ils lockés ?
 				$lockedList = $this->Jetons->lockedList( Set::extract( $dossiers, '/Dossier/id' ) );
