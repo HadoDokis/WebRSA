@@ -4,7 +4,7 @@
 <?php
 	echo $form->create( 'Indicateurmensuel', array( 'type' => 'post', 'url' => Router::url( null, true ), 'class' => 'noprint' ) );
 
-	echo $form->input( 'Indicateurmensuel.annee', array( 'label' => __( 'Indicateurmensuel.annee', true ), 'type' => 'select', 'empty' => true, 'options' => array_range( date( 'Y' ), date( 'Y' ) - 20 ) ) );
+	echo $form->input( 'Indicateurmensuel.annee', array( 'label' => __d( 'indicateurmensuel', 'Indicateurmensuel.annee', true ), 'type' => 'select', 'empty' => true, 'options' => array_range( date( 'Y' ), date( 'Y' ) - 20 ) ) );
 
 	echo $form->submit( 'Calculer' );
 	echo $form->end();

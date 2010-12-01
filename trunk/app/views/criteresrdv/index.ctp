@@ -75,7 +75,7 @@
 				}
 			?>
             <?php echo $form->input( 'Critererdv.statutrdv_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.statutrdv', true ), 'type' => 'select' , 'options' => $statutrdv, 'empty' => true ) );?>
-            <?php echo $form->input( 'Critererdv.structurereferente_id', array( 'label' => __( 'lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
+            <?php echo $form->input( 'Critererdv.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
 
             <?php echo $form->input( 'Critererdv.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
             <?php /*echo $ajax->observeField( 'CritererdvStructurereferenteId', array( 'update' => 'CritererdvReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );*/?>

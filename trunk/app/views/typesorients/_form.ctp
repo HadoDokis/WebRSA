@@ -1,9 +1,9 @@
 <fieldset>
     <?php echo $form->input( 'Typeorient.id', array( 'label' => 'id', 'type' => 'hidden' ) );?>
-    <?php echo $form->input( 'Typeorient.lib_type_orient', array( 'label' => required(  __( 'lib_type_orient', true ) ), 'type' => 'text' ) );?>
+    <?php echo $form->input( 'Typeorient.lib_type_orient', array( 'label' => required(  __d( 'structurereferente', 'Structurereferente.lib_type_orient', true ) ), 'type' => 'text' ) );?>
     <?php echo $form->input( 'Typeorient.parentid', array( 'label' =>  __( 'parentid', true ), 'type' => 'select', 'options' => $parentid, 'empty' => true )  );?>
-    <?php echo $form->input( 'Typeorient.modele_notif', array( 'label' => required( __( 'modele_notif', true ) ), 'type' => 'text' )  );?>
-   <?php echo $form->input( 'Typeorient.modele_notif_cohorte', array( 'label' => required( __( 'modele_notif_cohorte', true ) ), 'type' => 'text' ) );?>
+    <?php echo $form->input( 'Typeorient.modele_notif', array( 'label' => required( __d( 'typeorient', 'Typeorient.modele_notif', true ) ), 'type' => 'text' )  );?>
+   <?php echo $form->input( 'Typeorient.modele_notif_cohorte', array( 'label' => required( __d( 'typeorient', 'Typeorient.modele_notif_cohorte', true ) ), 'type' => 'text' ) );?>
 </fieldset>
 <table>
 <thead>

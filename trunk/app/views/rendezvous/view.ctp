@@ -19,7 +19,7 @@
         <table>
             <tbody>
                 <tr class="even">
-                    <th><?php __( 'lib_struc' );?></th>
+                    <th><?php __d( 'structurereferente', 'Structurereferente.lib_struc' );?></th>
                     <td><?php echo Set::classicExtract( $rendezvous, 'Structurereferente.lib_struc' );?></td>
                 </tr>
                 <tr class="odd">

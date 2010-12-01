@@ -18,12 +18,26 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+# Identification flux
+##############################################################################
 
-msgid "Typeorient.lib_type_orient"
-msgstr "Type d'orientation"
+msgid "Identificationflux.applieme"
+msgstr "Code de l'application émettrice"
 
-msgid "Typeorient.modele_notif"
-msgstr "Modèle de notification"
+msgid "Identificationflux.numversionapplieme"
+msgstr "Numéro de version de l'application émettrice"
 
-msgid "Typeorient.modele_notif_cohorte"
-msgstr "Modèle de notification pour les cohortes"
+msgid "Identificationflux.typeflux"
+msgstr "Type de fréquence du flux Xml"
+
+msgid "Identificationflux.natflux"
+msgstr "Nature du flux Xml"
+
+msgid "Identificationflux.dtcreaflux"
+msgstr "Date de création du flux Xml"
+
+msgid "Identificationflux.heucreaflux"
+msgstr "Heure de création du flux Xml"
+
+msgid "Identificationflux.dtref"
+msgstr "Mois de référence du flux Xml"

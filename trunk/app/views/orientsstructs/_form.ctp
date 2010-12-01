@@ -8,7 +8,7 @@
 
 <fieldset>
     <legend>Ajout d'une orientation</legend>
-    <?php echo $form->input( 'Orientstruct.typeorient_id', array( 'label' =>  required( __( 'lib_type_orient', true ) ), 'type' => 'select', 'options' => $typesorients, 'empty' => true, 'value' => $typeorient_id ) );?>
+    <?php echo $form->input( 'Orientstruct.typeorient_id', array( 'label' =>  required( __d( 'structurereferente', 'Structurereferente.lib_type_orient', true ) ), 'type' => 'select', 'options' => $typesorients, 'empty' => true, 'value' => $typeorient_id ) );?>
     <?php
         if( $this->action == 'edit' ) {
             if( !empty( $this->data['Orientstruct']['structurereferente_id'] ) ) {
@@ -45,9 +45,9 @@
 
     ?>
     <?php
-        echo $form->input( 'Orientstruct.structurereferente_id', array( 'label' => required(__( 'lib_struc', true  )), 'type' => 'select', 'options' => $structs, 'empty' => true, 'selected' => $this->data['Orientstruct']['structurereferente_id'] ) );
+        echo $form->input( 'Orientstruct.structurereferente_id', array( 'label' => required(__d( 'structurereferente', 'Structurereferente.lib_struc', true  )), 'type' => 'select', 'options' => $structs, 'empty' => true, 'selected' => $this->data['Orientstruct']['structurereferente_id'] ) );
 
-        echo $form->input( 'Orientstruct.referent_id', array(  'label' => __( 'nom_referent', true  ), 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $this->data['Orientstruct']['referent_id'] ) );
+        echo $form->input( 'Orientstruct.referent_id', array(  'label' => __d( 'structurereferente', 'Structurereferente.nom_referent', true  ), 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $this->data['Orientstruct']['referent_id'] ) );
     ?>
     <?php echo $form->input( 'Calculdroitrsa.toppersdrodevorsa', array(  'label' =>  required( __d( 'calculdroitrsa', 'Calculdroitrsa.toppersdrodevorsa', true ) ), 'options' => $toppersdrodevorsa, 'type' => 'select', 'empty' => 'Non défini'  ) );?>
     <?php echo $form->input( 'Orientstruct.date_propo', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_propo', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true ) );?>

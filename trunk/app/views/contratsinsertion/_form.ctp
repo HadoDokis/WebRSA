@@ -121,19 +121,19 @@
 <!--</fieldset>
 <fieldset>-->
         <?php if( $this->action != 'edit' ) :?>
-            <!-- <?php /*echo $form->input( 'Actioninsertion.lib_action', array( 'label' =>  __( 'lib_action', true ), 'type' => 'select', 'options' => $lib_action, 'empty' => true ) ); ?>
-            <?php echo $form->input( 'Actioninsertion.dd_action', array( 'label' =>  __( 'dd_action', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
-            <?php echo $form->input( 'Actioninsertion.df_action', array( 'label' => __( 'df_action', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
+            <!-- <?php /*echo $form->input( 'Actioninsertion.lib_action', array( 'label' =>  __d( 'action', 'Action.lib_action', true ), 'type' => 'select', 'options' => $lib_action, 'empty' => true ) ); ?>
+            <?php echo $form->input( 'Actioninsertion.dd_action', array( 'label' =>  __d( 'action', 'Action.dd_action', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
+            <?php echo $form->input( 'Actioninsertion.df_action', array( 'label' => __d( 'action', 'Action.df_action', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true) ); ?>
 
-            <?php echo $form->input( 'Aidedirecte.0.typo_aide', array( 'label' => __( 'typo_aide', true ), 'type' => 'select', 'options' => $typo_aide, 'empty' => true )  ); ?>
-            <!-- <?php echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'maxlength' => 2  ) ); ?> -->
-            <?php echo $form->input( 'Aidedirecte.0.lib_aide', array( 'label' => __( 'lib_aide', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
-            <?php echo $form->input( 'Aidedirecte.0.date_aide', array( 'label' =>  __( 'date_aide', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
+            <?php echo $form->input( 'Aidedirecte.0.typo_aide', array( 'label' => __d( 'action', 'Action.typo_aide', true ), 'type' => 'select', 'options' => $typo_aide, 'empty' => true )  ); ?>
+            <!-- <?php echo $form->input( 'Action.code', array( 'label' => __d( 'action', 'Action.code_action', true ), 'type' => 'text', 'maxlength' => 2  ) ); ?> -->
+            <?php echo $form->input( 'Aidedirecte.0.lib_aide', array( 'label' => __d( 'action', 'Action.lib_aide', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
+            <?php echo $form->input( 'Aidedirecte.0.date_aide', array( 'label' =>  __d( 'action', 'Action.date_aide', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
 
-            <?php echo $form->input( 'Prestform.0.lib_presta', array( 'label' =>  __( 'lib_presta', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
-            <?php echo $form->input( 'Refpresta.nomrefpresta', array( 'label' =>  __( 'nomrefpresta', true ), 'type' => 'text')); ?>
-            <?php echo $form->input( 'Refpresta.prenomrefpresta', array( 'label' =>  __( 'prenomrefpresta', true ), 'type' => 'text')); ?>
-            <?php echo $form->input( 'Prestform.0.date_presta', array( 'label' => __( 'date_presta', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  ); */?> -->
+            <?php echo $form->input( 'Prestform.0.lib_presta', array( 'label' =>  __d( 'action', 'Action.lib_presta', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
+            <?php echo $form->input( 'Refpresta.nomrefpresta', array( 'label' =>  __d( 'action', 'Action.nomrefpresta', true ), 'type' => 'text')); ?>
+            <?php echo $form->input( 'Refpresta.prenomrefpresta', array( 'label' =>  __d( 'action', 'Action.prenomrefpresta', true ), 'type' => 'text')); ?>
+            <?php echo $form->input( 'Prestform.0.date_presta', array( 'label' => __d( 'action', 'Action.date_presta', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  ); */?> -->
         <?php endif;?>
 </fieldset>
 <fieldset>
@@ -143,7 +143,7 @@
         <!-- <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.engag_object', true ), 'type' => 'textarea', 'rows' => 4)  ); ?> -->
         <?php
             echo $form->input( 'Action.id', array( 'type' => 'hidden' ) );
-            echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
+            echo $form->input( 'Action.code', array( 'label' => __d( 'action', 'Action.code_action', true ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
             echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.engag_object', true ), 'type' => 'select', 'options' => $actions, 'empty' => true )  );
         ?>
         <?php
@@ -153,7 +153,7 @@
             <?php echo $form->input( 'Actioninsertion.contratinsertion_id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
         <?php endif;?>
         <?php
-            echo $form->input( 'Actioninsertion.dd_action', array( 'label' => __( 'dd_action', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  );
+            echo $form->input( 'Actioninsertion.dd_action', array( 'label' => __d( 'action', 'Action.dd_action', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  );
             echo $form->input( 'Contratinsertion.commentaire_action', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.commentaire_action', true ), 'type' => 'textarea', 'rows' => 3 )  );
         ?>
         <?php

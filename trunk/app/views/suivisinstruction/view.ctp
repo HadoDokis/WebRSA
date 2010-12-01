@@ -9,31 +9,31 @@
         <table>
             <tbody>
                 <tr class="even">
-                    <th ><?php __( 'suiirsa' );?></th>
+                    <th ><?php __d( 'suiviinstruction', 'Suiviinstruction.suiirsa' );?></th>
                     <td><?php echo  h( $suiirsa[$suiviinstruction['Suiviinstruction']['suiirsa']] );?></td>
                 </tr>
                 <tr class="odd">
-                    <th ><?php __( 'date_etat_instruction' );?></th>
+                    <th ><?php __d( 'suiviinstruction', 'Suiviinstruction.date_etat_instruction' );?></th>
                     <td><?php echo (date_short( $suiviinstruction['Suiviinstruction']['date_etat_instruction'] ) );?></td>
                 </tr>
                 <tr class="even">
-                    <th ><?php __( 'nomins' );?></th>
+                    <th ><?php __d( 'suiviinstruction', 'Suiviinstruction.nomins' );?></th>
                     <td><?php echo ($suiviinstruction['Suiviinstruction']['nomins']);?></td>
                 </tr>
                 <tr class="odd">
-                    <th ><?php __( 'prenomins' );?></th>
+                    <th ><?php __d( 'suiviinstruction', 'Suiviinstruction.prenomins' );?></th>
                     <td><?php echo ($suiviinstruction['Suiviinstruction']['prenomins']);?></td>
                 </tr>
                 <tr class="even">
-                    <th ><?php __( 'numdepins' );?></th>
+                    <th ><?php __d( 'suiviinstruction', 'Suiviinstruction.numdepins' );?></th>
                     <td><?php echo ($suiviinstruction['Suiviinstruction']['numdepins']);?></td>
                 </tr>
                 <tr class="odd">
-                    <th ><?php __( 'typeserins' );?></th>
+                    <th ><?php __d( 'suiviinstruction', 'Suiviinstruction.typeserins' );?></th>
                     <td><?php echo ( isset( $typeserins[$suiviinstruction['Suiviinstruction']['typeserins']] ) ? $typeserins[$suiviinstruction['Suiviinstruction']['typeserins']] : null );?></td>
                 </tr>
                 <tr class="even">
-                    <th ><?php __( 'numcomins' );?></th>
+                    <th ><?php __d( 'suiviinstruction', 'Suiviinstruction.numcomins' );?></th>
                     <td><?php echo ($suiviinstruction['Suiviinstruction']['numcomins']);?></td>
                 </tr>
                 <tr class="odd">

@@ -18,6 +18,30 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+# Srucuture referente
+##############################################################################
+
+msgid "Structurereferente.lib_type_orient"
+msgstr "Type d'orientation"
 
 msgid "Structurereferente.lib_struc"
+msgstr "Type de structure"
+# msgstr "Structure référente"
+
+msgid "Structurereferente.nom_referent"
+msgstr "Nom du référent"
+
+msgid "Structurereferente.structure_referente_cg93"
+msgstr "Zone géographique"
+
+msgid "Structurereferente.structure_referente_cg66"
+msgstr "Zone géographique"
+
+msgid "Structurereferente.structure_referente_cg58"
 msgstr "Structure référente"
+
+msgid "Structurereferente.contratengagement"
+msgstr "Gestion des CERs"
+
+msgid "Structurereferente.apre"
+msgstr "Gestion des APREs"

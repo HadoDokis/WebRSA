@@ -17,9 +17,9 @@
 ?>
 
 <fieldset>
-    <?php echo $form->input( 'Action.code', array( 'label' =>  required( __( 'code_action', true ) ), 'type' => 'text', 'maxlength' => 2 ) );?>
-    <?php echo $form->input( 'Action.libelle', array( 'label' =>  required( __( 'lib_action', true ) ), 'type' => 'text' ) );?>
-    <?php echo $form->input( 'Action.typeaction_id', array( 'label' =>  required( __( 'type_action', true ) ), 'type' => 'select', 'options' => $libtypaction, 'empty' => true ) );?>
+    <?php echo $form->input( 'Action.code', array( 'label' =>  required( __d( 'action', 'Action.code_action', true ) ), 'type' => 'text', 'maxlength' => 2 ) );?>
+    <?php echo $form->input( 'Action.libelle', array( 'label' =>  required( __d( 'action', 'Action.lib_action', true ) ), 'type' => 'text' ) );?>
+    <?php echo $form->input( 'Action.typeaction_id', array( 'label' =>  required( __d( 'action', 'Action.type_action', true ) ), 'type' => 'select', 'options' => $libtypaction, 'empty' => true ) );?>
 </fieldset>
 
     <?php echo $form->submit( 'Enregistrer' );?>

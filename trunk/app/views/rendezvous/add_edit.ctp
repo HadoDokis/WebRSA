@@ -58,7 +58,7 @@
     <div class="aere">
         <fieldset>
             <?php
-                echo $form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'lib_struct', true ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
+                echo $form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.lib_struct', true ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
                 echo $form->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $struct_id.'_'.$referent_id ) );
                 ///Ajax
 //                 echo $ajax->observeField( 'RendezvousStructurereferenteId', array( 'update' => 'RendezvousReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );

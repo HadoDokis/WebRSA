@@ -81,7 +81,7 @@
                 <?php echo $form->input( 'Critere.date_valid_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $date_valid_to ) );?>
             </fieldset>
 
-        <?php echo $form->input( 'Critere.typeorient_id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
+        <?php echo $form->input( 'Critere.typeorient_id', array( 'label' =>  __d( 'structurereferente', 'Structurereferente.lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
 
 
         <?php echo $form->input( 'Critere.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>

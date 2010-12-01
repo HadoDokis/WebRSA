@@ -18,12 +18,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+# Situation dossier rsa
+##############################################################################
 
-msgid "Typeorient.lib_type_orient"
-msgstr "Type d'orientation"
+msgid "Situationdossierrsa.etatdosrsa"
+msgstr "Etat du dossier"
 
-msgid "Typeorient.modele_notif"
-msgstr "Modèle de notification"
+msgid "Situationdossierrsa.dtrefursa"
+msgstr "Date de refus"
 
-msgid "Typeorient.modele_notif_cohorte"
-msgstr "Modèle de notification pour les cohortes"
+msgid "Situationdossierrsa.dtclorsa"
+msgstr "Date de fin des droits"
+
+msgid "Situationdossierrsa.moticlorsa"
+msgstr "Motif de fin des droits"

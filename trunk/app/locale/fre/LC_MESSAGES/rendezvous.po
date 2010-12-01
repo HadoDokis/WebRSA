@@ -19,6 +19,14 @@ msgstr ""
 
 
 ###############################################################################
+# Rendez-vous
+###############################################################################
+
+msgid "Rendezvous.lib_struct"
+msgstr "Structure référente"
+
+msgid "Rendezvous.modelenotifrdv"
+msgstr "Modèle de notification lié au type de RDV"
 
 msgid "Rendezvous::index"
 msgstr "Rendez-vous"
