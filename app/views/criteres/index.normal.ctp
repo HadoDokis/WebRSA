@@ -28,7 +28,7 @@
 
     <fieldset>
         <legend>Recherche par types d'orientations</legend>
-	    <?php echo $form->input( 'Typeorient.id', array( 'label' =>  __( 'lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
+	    <?php echo $form->input( 'Typeorient.id', array( 'label' =>  __d( 'structurereferente', 'Structurereferente.lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
     </fieldset>
     <fieldset>
         <legend>Recherche par Structures référentes</legend>

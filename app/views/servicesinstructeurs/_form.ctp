@@ -34,16 +34,16 @@
     <?php
 		echo $default->subform(
 			array(
-				'Serviceinstructeur.numdepins' => array( 'label' => required( __( 'numdepins', true ) ) ),
-				'Serviceinstructeur.typeserins' => array( 'label' => required( __( 'typeserins', true ) ), 'empty' => true ),
-				'Serviceinstructeur.numcomins' => array( 'label' => required( __( 'numcomins', true ) ) ),
+				'Serviceinstructeur.numdepins' => array( 'label' => required( __d( 'suiviinstruction', 'Suiviinstruction.numdepins', true ) ) ),
+				'Serviceinstructeur.typeserins' => array( 'label' => required( __d( 'suiviinstruction', 'Suiviinstruction.typeserins', true ) ), 'empty' => true ),
+				'Serviceinstructeur.numcomins' => array( 'label' => required( __d( 'suiviinstruction', 'Suiviinstruction.numcomins', true ) ) ),
 				'Serviceinstructeur.numagrins' => array( 'label' => required( __( 'numagrins', true ) ), 'maxlength' => 2 ),
 			)
 		);
 		/*echo '<hr/>';
-		echo $form->input( 'Serviceinstructeur.numdepins', array( 'label' =>  required( __( 'numdepins', true ) ), 'type' => 'text', 'maxlength' => 3 ) );
-		echo $form->input( 'Serviceinstructeur.typeserins', array( 'label' => required( __( 'typeserins', true ) ), 'type' => 'select', 'empty' => true ) );
-		echo $form->input( 'Serviceinstructeur.numcomins', array( 'label' =>  required( __( 'numcomins', true ) ), 'type' => 'text', 'maxlength' => 3 ) );
+		echo $form->input( 'Serviceinstructeur.numdepins', array( 'label' =>  required( __d( 'suiviinstruction', 'Suiviinstruction.numdepins', true ) ), 'type' => 'text', 'maxlength' => 3 ) );
+		echo $form->input( 'Serviceinstructeur.typeserins', array( 'label' => required( __d( 'suiviinstruction', 'Suiviinstruction.typeserins', true ) ), 'type' => 'select', 'empty' => true ) );
+		echo $form->input( 'Serviceinstructeur.numcomins', array( 'label' =>  required( __d( 'suiviinstruction', 'Suiviinstruction.numcomins', true ) ), 'type' => 'text', 'maxlength' => 3 ) );
 		echo $form->input( 'Serviceinstructeur.numagrins', array( 'label' => required( __( 'numagrins', true ) ), 'type' => 'text', 'maxlength' => 2 ) );*/
 	?>
 </fieldset>

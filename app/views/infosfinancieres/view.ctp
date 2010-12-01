@@ -18,43 +18,43 @@
         <table>
             <tbody>
                 <tr class="even">
-                    <th ><?php __( 'moismoucompta' );?></th>
+                    <th ><?php __d( 'infofinanciere', 'Infofinanciere.moismoucompta' );?></th>
                     <td><?php echo  h( strftime('%B %Y', strtotime( $infofinanciere['Infofinanciere']['moismoucompta'] ) ) );?></td>
                 </tr>
                 <tr class="odd">
-                    <th ><?php __( 'type_allocation' );?></th>
+                    <th ><?php __d( 'infofinanciere', 'Infofinanciere.type_allocation' );?></th>
                     <td><?php echo ($type_allocation[$infofinanciere['Infofinanciere']['type_allocation']]);?></td>
                 </tr>
                 <tr class="even">
-                    <th ><?php __( 'natpfcre' );?></th>
+                    <th ><?php __d( 'infofinanciere', 'Infofinanciere.natpfcre' );?></th>
                     <td><?php echo ($natpfcre[$infofinanciere['Infofinanciere']['natpfcre']]);?></td>
                 </tr>
                 <tr class="odd">
-                    <th ><?php __( 'rgcre' );?></th>
+                    <th ><?php __d( 'infofinanciere', 'Infofinanciere.rgcre' );?></th>
                     <td><?php echo ($infofinanciere['Infofinanciere']['rgcre']);?></td>
                 </tr>
                 <tr class="even">
-                    <th ><?php __( 'numintmoucompta' );?></th>
+                    <th ><?php __d( 'infofinanciere', 'Infofinanciere.numintmoucompta' );?></th>
                     <td><?php echo ($infofinanciere['Infofinanciere']['numintmoucompta']);?></td>
                 </tr>
                 <tr class="odd">
-                    <th ><?php __( 'typeopecompta' );?></th>
+                    <th ><?php __d( 'infofinanciere', 'Infofinanciere.typeopecompta' );?></th>
                     <td><?php echo ($typeopecompta[$infofinanciere['Infofinanciere']['typeopecompta']]);?></td>
                 </tr>
                 <tr class="even">
-                    <th ><?php __( 'sensopecompta' );?></th>
+                    <th ><?php __d( 'infofinanciere', 'Infofinanciere.sensopecompta' );?></th>
                     <td><?php echo ($sensopecompta[$infofinanciere['Infofinanciere']['sensopecompta']]);?></td>
                 </tr>
                 <tr class="odd">
-                    <th ><?php __( 'mtmoucompta' );?></th>
+                    <th ><?php __d( 'infofinanciere', 'Infofinanciere.mtmoucompta' );?></th>
                     <td><?php echo ($infofinanciere['Infofinanciere']['mtmoucompta']);?></td>
                 </tr>
                 <tr class="even">
-                    <th ><?php __( 'ddregu' );?></th>
+                    <th ><?php __d( 'infofinanciere', 'Infofinanciere.ddregu' );?></th>
                     <td><?php echo (  date_short( $infofinanciere['Infofinanciere']['ddregu'] ) );?></td>
                 </tr>
                 <tr class="odd">
-                    <th ><?php __( 'dttraimoucompta' );?></th>
+                    <th ><?php __d( 'infofinanciere', 'Infofinanciere.dttraimoucompta' );?></th>
                     <td><?php echo h( date_short( $infofinanciere['Infofinanciere']['dttraimoucompta'] ) );?></td>
                 </tr>
                 <tr class="even">

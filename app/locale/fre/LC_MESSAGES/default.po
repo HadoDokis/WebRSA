@@ -176,88 +176,6 @@ msgid "Reset"
 msgstr "Remise à zéro"
 
 ###############################################################################
-# Actions d'insertion
-###############################################################################
-msgid "code_action"
-msgstr "Code de l'action"
-
-msgid "lib_action"
-msgstr "Libellé de l'action"
-
-msgid "type_action"
-msgstr "Type d'action"
-
-msgid "dd_action"
-msgstr "Date de début de l'action"
-
-msgid "df_action"
-msgstr "Date de fin de l'action"
-
-msgid "lib_aide"
-msgstr "Libellé de l'aide"
-
-msgid "date_aide"
-msgstr "A partir de quelle date cette aide prend-elle effet"
-
-msgid "lib_presta"
-msgstr "Libellé de la prestation"
-
-msgid "typo_aide"
-msgstr "Type d'aide"
-
-msgid "date_presta"
-msgstr "A partir de quelle date cette prestation prend-elle effet"
-
-msgid "nomrefpresta"
-msgstr "Nom du référent de la prestation"
-
-msgid "prenomrefpresta"
-msgstr "Prénom du référent de la prestation"
-
-###############################################################################
-# Ressources
-###############################################################################
-
-msgid "topressnul"
-msgstr "Percevez-vous des ressources ? "
-
-msgid "topressnotnul"
-msgstr "Percevez-vous des ressources ? "
-
-msgid "mtpersressmenrsa"
-msgstr "Montant des ressources mensuelles prises en compte pour le RSA "
-
-msgid "ddress"
-msgstr "Date de début de la période correspondant à la DTR RSA "
-
-msgid "dfress"
-msgstr "Date de fin  de la période correspondant à la DTR RSA "
-
-msgid "abaneu"
-msgstr "Abattement / Neutralisation "
-
-msgid "natress"
-msgstr "Nature de la ressource "
-
-msgid "mtnatressmen"
-msgstr "Montant de la ressource selon la nature "
-
-msgid "topprevsubsress"
-msgstr "Percevez-vous des revenus de substitution ? "
-
-msgid "dfpercress"
-msgstr "Date de fin de perception des ressources "
-
-msgid "moisress"
-msgstr "Mois des ressources déclarées "
-
-msgid "nbheumentra"
-msgstr "Nombre d'heures mensuelles effectuées "
-
-msgid "mtabaneu"
-msgstr "Montant d\'abattement / neutralisation "
-
-###############################################################################
 # Adresses
 ###############################################################################
 
@@ -265,156 +183,10 @@ msgid "dtemm"
 msgstr "Date d\'emménagement"
 
 ###############################################################################
-# Informations financières
-##############################################################################
-msgid "dtdemrsa"
-msgstr "Date d'ouverture des droits"
-
-msgid "moismoucompta"
-msgstr "Mois du mouvement comptable"
-
-msgid "type_allocation"
-msgstr "Type d\'allocation"
-
-msgid "natpfcre"
-msgstr "Nature de la prestation pour la créance"
-
-msgid "rgcre"
-msgstr "Rang de la créance"
-
-msgid "numintmoucompta"
-msgstr "Numéro interne du mouvement comptable"
-
-msgid "typeopecompta"
-msgstr "Type d\'opération comptable"
-
-msgid "sensopecompta"
-msgstr "Signification/sens de l\'opération comptable"
-
-msgid "mtmoucompta"
-msgstr "Montant du mouvement comptable"
-
-msgid "ddregu"
-msgstr "Date pour la régulation"
-
-msgid "dttraimoucompta"
-msgstr "Date de traitement du mouvement comptable"
-
-msgid "heutraimoucompta"
-msgstr "Heure de traitement du mouvement comptable"
-
-###############################################################################
-# Totalisation acompte / Identification flux
-##############################################################################
-msgid "mttotsoclrsa"
-msgstr "Montant total pour le  Rsa socle"
-
-msgid "mttotsoclmajorsa"
-msgstr "Montant total pour le  Rsa socle majoré"
-
-msgid "mttotlocalrsa"
-msgstr "Montant total pour le Rsa local"
-
-msgid "mttotrsa"
-msgstr "Montant total pour le Rsa"
-######
-msgid "applieme"
-msgstr "Code de l'application émettrice"
-
-msgid "numversionapplieme"
-msgstr "Numéro de version de l'application émettrice"
-
-msgid "typeflux"
-msgstr "Type de fréquence du flux Xml"
-
-msgid "natflux"
-msgstr "Nature du flux Xml"
-
-msgid "dtcreaflux"
-msgstr "Date de création du flux Xml"
-
-msgid "heucreaflux"
-msgstr "Heure de création du flux Xml"
-
-msgid "dtref"
-msgstr "Mois de référence du flux Xml"
-
-###############################################################################
-# Suivi instruction
-##############################################################################
-
-msgid "suiirsa"
-msgstr "Suivi de l'instruction @RSA"
-
-msgid "date_etat_instruction"
-msgstr "Date de l'état de l'instruction"
-
-msgid "nomins"
-msgstr "Nom de l'agent instructeur"
-
-msgid "prenomins"
-msgstr "Prénom de l'agent instructeur"
-
-msgid "numdepins"
-msgstr "Numéro du département du service instructeur"
-
-msgid "typeserins"
-msgstr "Type de service instructeur"
-
-msgid "numcomins"
-msgstr "Numéro de la commune du service instructeur"
-
-msgid "numagrins"
-msgstr "Numero d'agréement du service instructeur"
-
-###############################################################################
-# Situation dossier rsa
-##############################################################################
-
-msgid "etatdosrsa"
-msgstr "Etat du dossier"
-
-msgid "dtrefursa"
-msgstr "Date de refus"
-
-msgid "dtclorsa"
-msgstr "Date de fin des droits"
-
-msgid "moticlorsa"
-msgstr "Motif de fin des droits"
-
-###############################################################################
-# Srucuture referente
-##############################################################################
-
-msgid "lib_type_orient"
-msgstr "Type d'orientation"
-
-msgid "lib_struc"
-msgstr "Type de structure"
-
-msgid "nom_referent"
-msgstr "Nom du référent"
-
-msgid "structure_referente_cg93"
-msgstr "Zone géographique"
-
-msgid "structure_referente_cg66"
-msgstr "Zone géographique"
-
-msgid "structure_referente_cg58"
-msgstr "Structure référente"
-
-msgid "contratengagement"
-msgstr "Gestion des CERs"
-
-msgid "apre"
-msgstr "Gestion des APREs"
-
-###############################################################################
 # Paramétrage des tables
 ##############################################################################
 
+# User
 msgid "date_naissance"
 msgstr "Date de naissance"
 
@@ -433,6 +205,7 @@ msgstr "Code insee"
 msgid "libelle"
 msgstr "Libellé de la zone géographique"
 
+# Typeorient
 msgid "id"
 msgstr "ID"
 
@@ -442,12 +215,7 @@ msgstr "ID parent"
 msgid "parent_id"
 msgstr "Parent"
 
-msgid "modele_notif"
-msgstr "Modèle de notification"
-
-msgid "modele_notif_cohorte"
-msgstr "Modèle de notification pour les cohortes"
-
+# User
 msgid "numero_poste"
 msgstr "Numéro de poste"
 
@@ -502,6 +270,7 @@ msgstr "Complément d'adresse"
 msgid "email"
 msgstr "Email"
 
+# contratsinsertion
 msgid "lib_typo"
 msgstr "Type de contrat d'insertion"
 
@@ -527,62 +296,6 @@ msgstr "Échec de la connexion. Identifiant ou mot de passe invalide."
 
 msgid "lib_rgpt"
 msgstr "Libellé de la région"
-
-###############################################################################
-# Indicateurs mensuels
-###############################################################################
-
-msgid "Indicateurmensuel.annee"
-msgstr "Recherche indicateurs pour l'année"
-
-msgid "Indicateurmensuel.nbrDossiersInstruits"
-msgstr "Nombre de dossiers instruits"
-
-msgid "Indicateurmensuel.nbrDossiersRejetesCaf"
-msgstr "Nombre de dossiers rejetés par la CAF"
-
-msgid "Indicateurmensuel.nbrOuverturesDroits"
-msgstr "Nombre d'ouvertures de droits"
-
-msgid "Indicateurmensuel.nbrAllocatairesDroitsEtDevoirs"
-msgstr "Nombre d'allocataires en droits et devoirs"
-
-msgid "Indicateurmensuel.nbrPreorientationsEmploi"
-msgstr "Nombre de préorientations vers l'emploi"
-
-msgid "Indicateurmensuel.nbrPreorientationsSocial"
-msgstr "Nombre de préorientations vers le SSD"
-
-msgid "Indicateurmensuel.nbrPreorientationsSocioprofessionnelle"
-msgstr "Nombre de préorientations vers le PDV RMI"
-
-msgid "Indicateurmensuel.delaiOuvertureNotification"
-msgstr "Délai entre l'ouverture de droit et la notification d'orientation"
-
-msgid "Indicateurmensuel.delaiNotificationSignature"
-msgstr "Délai entre la notification d'orientation et la signature du contrat"
-
-msgid "Indicateurmensuel.montantsIndusConstates"
-msgstr "Montant des indus constatés"
-
-msgid "Indicateurmensuel.montantsIndusTransferes"
-msgstr "Montant des indus transférés"
-
-msgid "Indicateurmensuel.nbrCiNouveauxEntrantsCg"
-msgstr "Nombre de contrats d'insertion pour les nouveaux entrants CG"
-
-msgid "Indicateurmensuel.nbrSuspensionsDroits"
-msgstr "Nombre de suspensions de droits"
-
-###############################################################################
-# Rendez-vous
-###############################################################################
-
-msgid "lib_struct"
-msgstr "Structure référente"
-
-msgid "modelenotifrdv"
-msgstr "Modèle de notification lié au type de RDV"
 
 ###############################################################################
 # Formulaires

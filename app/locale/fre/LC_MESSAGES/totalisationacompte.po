@@ -18,12 +18,16 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+# Totalisation acompte
+##############################################################################
+msgid "Totalisationacompte.mttotsoclrsa"
+msgstr "Montant total pour le  Rsa socle"
 
-msgid "Typeorient.lib_type_orient"
-msgstr "Type d'orientation"
+msgid "Totalisationacompte.mttotsoclmajorsa"
+msgstr "Montant total pour le  Rsa socle majoré"
 
-msgid "Typeorient.modele_notif"
-msgstr "Modèle de notification"
+msgid "Totalisationacompte.mttotlocalrsa"
+msgstr "Montant total pour le Rsa local"
 
-msgid "Typeorient.modele_notif_cohorte"
-msgstr "Modèle de notification pour les cohortes"
+msgid "Totalisationacompte.mttotrsa"
+msgstr "Montant total pour le Rsa"

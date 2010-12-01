@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-msgid ""
+msgid "Suiviinstruction."
 msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: \n"
@@ -17,7 +17,32 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
+#############################################################################
+# Suivi instruction
+##############################################################################
 
-###############################################################################
+msgid "Suiviinstruction.suiirsa"
+msgstr "Suivi de l'instruction @RSA"
+
+msgid "Suiviinstruction.date_etat_instruction"
+msgstr "Date de l'état de l'instruction"
+
+msgid "Suiviinstruction.nomins"
+msgstr "Nom de l'agent instructeur"
+
+msgid "Suiviinstruction.prenomins"
+msgstr "Prénom de l'agent instructeur"
+
+msgid "Suiviinstruction.numdepins"
+msgstr "Numéro du département du service instructeur"
+
 msgid "Suiviinstruction.typeserins"
-msgstr "Organisme instructeur"
+msgstr "Type de service instructeur"
+# msgstr "Organisme instructeur"
+
+
+msgid "Suiviinstruction.numcomins"
+msgstr "Numéro de la commune du service instructeur"
+
+msgid "Suiviinstruction.numagrins"
+msgstr "Numero d'agréement du service instructeur"

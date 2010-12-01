@@ -14,7 +14,7 @@
 ?>
 
 <fieldset>
-    <?php echo $form->input( 'Typeaction.libelle', array( 'label' =>  required( __( 'lib_action', true ) ), 'type' => 'text' ) );?>
+    <?php echo $form->input( 'Typeaction.libelle', array( 'label' =>  required( __d( 'action', 'Action.lib_action', true ) ), 'type' => 'text' ) );?>
 </fieldset>
 
     <?php echo $form->submit( 'Enregistrer' );?>

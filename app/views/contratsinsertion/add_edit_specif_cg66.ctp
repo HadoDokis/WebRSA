@@ -22,7 +22,7 @@
                 <strong>Positionnement éventuel sur l'action d'insertion</strong>
                 <?php
 //                     echo $form->input( 'Action.id', array( 'type' => 'hidden' ) );
-//                     echo $form->input( 'Action.code', array( 'label' => __( 'code_action', true ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
+//                     echo $form->input( 'Action.code', array( 'label' => __d( 'action', 'Action.code_action', true ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
 //                     echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.engag_object', true ), 'type' => 'textarea', 'rows' => 10 )  );
                 ?>
                  <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => 'Intitulé de ( ou des ) actions', 'type' => 'textarea' ) );?>
@@ -33,7 +33,7 @@
                     <?php echo $form->input( 'Actioninsertion.contratinsertion_id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
                 <?php endif;?>
                 <?php
-//                     echo $form->input( 'Actioninsertion.dd_action', array( 'label' => __( 'dd_action', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  );
+//                     echo $form->input( 'Actioninsertion.dd_action', array( 'label' => __d( 'action', 'Action.dd_action', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  );
                 ?>
             </td>
             <td class="mediumSize noborder">
@@ -41,7 +41,7 @@
                 <?php echo $form->input( 'Contratinsertion.current_action', array( 'label' => 'Intitulé de ( ou des ) actions', 'type' => 'textarea' ) );?>
 
                 <?php
-                    /*echo $form->input( 'Actioninsertion.dd_action', array( 'label' => __( 'dd_action', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  );*/
+                    /*echo $form->input( 'Actioninsertion.dd_action', array( 'label' => __d( 'action', 'Action.dd_action', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  );*/
                 ?>
             </td>
         </tr>

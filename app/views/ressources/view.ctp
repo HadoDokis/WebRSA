@@ -43,11 +43,11 @@
 <table>
         <tbody>
             <tr class="odd">
-                <th ><?php __( 'topressnotnul' );?></th>
+                <th ><?php __d( 'ressource', 'Ressource.topressnotnul' );?></th>
                 <td><?php echo ($ressource['Ressource']['topressnotnul']? 'Oui' : 'Non' );?></td>
             </tr>
             <tr class="even">
-                <th><?php __( 'mtpersressmenrsa' );?></th>
+                <th><?php __d( 'ressource', 'Ressource.mtpersressmenrsa' );?></th>
                 <td><?php
 					// FIXME: abaneu ?
 					$mtnatressmens = Set::extract( $ressource, '/Ressourcemensuelle/Detailressourcemensuelle/mtnatressmen' );
@@ -62,11 +62,11 @@
 				?></td>
             </tr>
             <tr class="odd">
-                <th><?php __( 'ddress' );?></th>
+                <th><?php __d( 'ressource', 'Ressource.ddress' );?></th>
                 <td><?php echo date_short( $ressource['Ressource']['ddress'] );?></td>
             </tr>
             <tr class="even">
-                <th><?php __( 'dfress' );?></th>
+                <th><?php __d( 'ressource', 'Ressource.dfress' );?></th>
                 <td><?php echo date_short( $ressource['Ressource']['dfress'] );?></td>
             </tr>
         </tbody>
@@ -76,14 +76,14 @@
                 <table>
                     <thead>
                         <tr>
-                            <th><abbr title="<?php __( 'moisress' );?>">Mois</abbr></th>
-                            <th><abbr title="<?php __( 'nbheumentra' );?>">Nb heures</abbr></th>
+                            <th><abbr title="<?php __d( 'ressource', 'Ressource.moisress' );?>">Mois</abbr></th>
+                            <th><abbr title="<?php __d( 'ressource', 'Ressource.nbheumentra' );?>">Nb heures</abbr></th>
                             <th><abbr title="<?php __( 'mtabaneu' );?>">Montant A/N</abbr></th>
-                            <th><abbr title="<?php __( 'natress' );?>">Nature</abbr></th>
-                            <th><abbr title="<?php __( 'mtnatressmen' );?>">Montant ressource</abbr></th>
-                            <th><abbr title="<?php __( 'abaneu' );?>">A/N</abbr></th>
-                            <th><abbr title="<?php __( 'dfpercress' );?>">Date fin</abbr></th>
-                            <th><abbr title="<?php __( 'topprevsubsress' );?>">Revenus de substitution?</abbr></th>
+                            <th><abbr title="<?php __d( 'ressource', 'Ressource.natress' );?>">Nature</abbr></th>
+                            <th><abbr title="<?php __d( 'ressource', 'Ressource.mtnatressmen' );?>">Montant ressource</abbr></th>
+                            <th><abbr title="<?php __d( 'ressource', 'Ressource.abaneu' );?>">A/N</abbr></th>
+                            <th><abbr title="<?php __d( 'ressource', 'Ressource.dfpercress' );?>">Date fin</abbr></th>
+                            <th><abbr title="<?php __d( 'ressource', 'Ressource.topprevsubsress' );?>">Revenus de substitution?</abbr></th>
                         </tr>
                     </thead>
                     <tbody>
