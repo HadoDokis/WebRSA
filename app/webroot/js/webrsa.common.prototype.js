@@ -22,7 +22,7 @@ function make_treemenus( absoluteBaseUrl, large ) {
             else  {
                 var img = new Element( 'img', { 'src': dir + '/bullet_toggle_plus2.png', 'alt': 'Étendre' } );
             }
-            var link = img.wrap( 'a', { 'href': '#', 'class' : 'toggler' } );
+            var link = img.wrap( 'a', { 'href': '#', 'class' : 'toggler', 'onclick' : 'return false;' } );
             var sign = '+';
 
             $( link ).observe( 'click', function( event ) {
