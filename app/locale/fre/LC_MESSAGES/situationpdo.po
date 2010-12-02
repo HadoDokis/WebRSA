@@ -36,5 +36,8 @@ msgstr "Modification d'une situation"
 msgid "Situationpdo.libelle"
 msgstr "Intitulé de la situation"
 
+msgid "Situationpdo.declencheepd"
+msgstr "Déclenche une EPD ?"
+
 
 ###############################################################################

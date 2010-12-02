@@ -1,9 +1,9 @@
 <?php
-    class AdressesFoyersController extends AppController
+    class AdressesfoyersController extends AppController
     {
-        var $name = 'Adressefoyers';
+        var $name = 'Adressesfoyers';
         var $uses = array( 'Adressefoyer', 'Option' );
-        
+
 		var $commeDroit = array(
 			'view' => 'Adressefoyers:index',
 			'add' => 'Adressefoyers:edit'

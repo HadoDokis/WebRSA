@@ -6,20 +6,22 @@
 ?>
 
 <?php
-    echo $default->index(
+    echo $default2->index(
         $descriptionspdos,
         array(
             'Descriptionpdo.name',
             'Descriptionpdo.modelenotification',
-            'Descriptionpdo.sensibilite'
+            'Descriptionpdo.sensibilite'/* => array ('type'=>'boolean')*/,
+            'Descriptionpdo.dateactive',
+            'Descriptionpdo.declencheep'/* => array ('type'=>'boolean')*/
         ),
         array(
             'cohorte' => false,
             'actions' => array(
-                'Descriptionpdo.edit',
-                'Descriptionpdo.delete',
+                'descriptionspdos::edit',
+                'descriptionspdos::delete',
             ),
-            'add' => 'Descriptionpdo.add',
+            'add' => 'descriptionspdos::add',
             'options' => $options
         )
     );

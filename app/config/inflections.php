@@ -53,7 +53,7 @@
         'permisb',
         'avisref',
         'bilanparcours',
-        //Harry     
+        //Harry
         'rejet_historique',
         //Fin harry
     );
@@ -235,6 +235,27 @@
 		'typocontrat' => 'typoscontrats',
 		'user_zonegeographique' => 'users_zonesgeographiques',
 		'zonegeographique' => 'zonesgeographiques',
+		// Béta EPs
+		'avissrmrep93' => 'avissrmreps93',
+		'saisineep66' => 'saisineseps66',
+		'bilanparcours66' => 'bilansparcours66',
+		'nvsrepreorientsr93' => 'nvsrsepsreorientsrs93',
+		'saisineepreorientsr93' => 'saisinesepsreorientsrs93',
+		'saisineepbilanparcours66' => 'saisinesepsbilansparcours66',
+		'saisineepdpdo66' => 'saisinesepdspdos66',
+		'maintienreorientep' => 'maintiensreorientseps',
+		'dossierep' => 'dossierseps',
+		'ep_zonegeographique' => 'eps_zonesgeographiques',
+		'membreep' => 'membreseps',
+        'presencemembreep' => 'presencesmembreseps',
+		'fonctionmembreep' => 'fonctionsmembreseps',
+		'seanceep' => 'seanceseps',
+		'ep' => 'eps',
+		'regroupementep' => 'regroupementseps',
+        'gestionep' => 'gestionseps',
+		'motifreorient' => 'motifsreorients',
+		'nvsrepreorient66' => 'nvsrsepsreorient66',
+		'nvsepdpdo66' => 'nvsepdspdos66',
 	);
 /**
  * This is a key => value array of regex used to match words.

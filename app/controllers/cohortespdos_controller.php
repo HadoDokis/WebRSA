@@ -3,7 +3,7 @@
     class CohortespdosController extends AppController {
 
         var $name = 'Cohortespdos';
-        var $uses = array( 'Canton', 'Cohortepdo', 'Option', 'Dossier', 'Situationdossierrsa', 'Propopdo', 'Typenotifpdo', 'Typepdo', 'Decisionpdo', 'User', 'Zonegeographique', 'Personne' );
+        var $uses = array( 'Canton', 'Cohortepdo', 'Option', 'Dossier', 'Situationdossierrsa', 'Propopdo', 'Typenotifpdo', 'Typepdo', 'Decisionpdo', 'Traitementtypepdo',  'User', 'Zonegeographique', 'Personne' );
         var $helpers = array( 'Csv', 'Paginator' );
 
         var $paginate = array(
@@ -26,6 +26,7 @@
             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
             $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
             $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
+            $this->set( 'traitementtypepdo', $this->Traitementtypepdo->find( 'list' ) );
             $this->set( 'pieecpres', $this->Option->pieecpres() );
             $this->set( 'commission', $this->Option->commission() );
             $this->set( 'motidempdo', $this->Option->motidempdo() );

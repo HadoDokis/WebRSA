@@ -87,23 +87,6 @@ msgstr "Décision validée"
 msgid "Propopdo.datevalidationdecision"
 msgstr "Date de validation de la décision"
 
-msgid "Propopdo.typepdo"
-msgstr "Type de PDO"
-
-msgid "Propopdo.commentairepdo"
-msgstr "Commentaires PDO"
-
-msgid "Propopdo.decisionpdo"
-msgstr "Décision CG"
-
-msgid "Propopdo.datedecisionpdo"
-msgstr "Date de décision PDO"
-
-msgid "Propopdo.motifpdo"
-msgstr "Motif de la PDO"
-
-#-------------------------------------------------------------------------------
-
 msgid "ENUM::VALIDATIONDECISION::N"
 msgstr "Non"
 
@@ -142,3 +125,10 @@ msgstr "Dossier traité"
 
 msgid "ENUM::ETATDOSSIERPDO::6"
 msgstr "En attente de pièces"
+
+msgid "Propopdo.serviceinstructeur_id"
+msgstr "Service instructeur"
+
+msgid "Propopdo.orgpayeur"
+msgstr "Organisme payeur"
+

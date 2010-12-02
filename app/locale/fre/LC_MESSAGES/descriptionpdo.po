@@ -47,3 +47,21 @@ msgstr "Non"
 
 msgid "ENUM::SENSIBILITE::O"
 msgstr "Oui"
+
+msgid "ENUM::DECLENCHEEP::0"
+msgstr "Non"
+
+msgid "ENUM::DECLENCHEEP::1"
+msgstr "Oui"
+
+msgid "ENUM::DATEACTIVE::datedepart"
+msgstr "Date de départ"
+
+msgid "ENUM::DATEACTIVE::datereception"
+msgstr "Date de réception"
+
+msgid "Descriptionpdo.dateactive"
+msgstr "Date à activer"
+
+msgid "Descriptionpdo.declencheep"
+msgstr "Déclenche un passage en EP ?"

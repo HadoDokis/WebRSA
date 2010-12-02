@@ -205,6 +205,24 @@
 												?>
 											</li>
 										<?php endif;?>
+										<?php if( $permissions->check( 'bilansparcours66', 'index' ) ):?>
+											<li>
+												<?php
+													if( Configure::read( 'nom_form_bilan_cg' ) == 'cg93' ){
+														echo $xhtml->link(
+															'Fiche de saisine',
+															array( 'controller' => 'bilanparcours', 'action' => 'index', $personne['id'] )
+														);
+													}
+													else{
+														echo $xhtml->link(
+															'Bilan du parcours',
+															array( 'controller' => 'bilansparcours66', 'action' => 'index', $personne['id'] )
+														);
+													}
+												?>
+											</li>
+										<?php endif;?>
 											<li><span>Contrats</span>
 												<ul>
 												<?php if( $permissions->check( 'contratsinsertion', 'index' ) ):?>
@@ -288,7 +306,7 @@
 													<?php endif;?>
 												</ul>
 											</li>
-											<li><span>Saisine EP</span>
+											<!--<li><span>Saisine EP</span>
 												<ul>
 													<?php if( $permissions->check( 'bilanparcours', 'index' ) ):?>
 													<li>
@@ -309,7 +327,7 @@
 													</li>
 													<?php endif;?>
 												</ul>
-											</li>
+											</li>-->
 											<li><span>Documents scannés</span>
 												<ul>
 													<li>

@@ -146,3 +146,17 @@ th.entete, td.entete {
 /*tbody tr th.entete{
     background: red;
 }*/
+
+/*********************************************************************/
+
+#EpAddEditForm fieldset div.checkbox {
+	display: -moz-inline-box;
+	display: inline-table;
+	display: inline-block;
+	width: 32%;
+	vertical-align: top;
+}
+
+#EpAddEditForm fieldset div.checkbox label {
+	width: auto;
+}

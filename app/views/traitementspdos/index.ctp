@@ -15,30 +15,40 @@
 
 // debug($traitementspdos);
 
-        echo $default->index(
+        echo $default2->index(
             $traitementspdos,
             array(
-                'Traitementpdo.descriptionpdo_id',
+                'Traitementpdo.descriptionpdo_id' => array( 'type'=>'string' ),
                 'Traitementpdo.datereception',
                 'Traitementpdo.datedepart',
-                'Traitementpdo.traitementtypepdo_id',
-//                 'Traitementpdo.hascourrier',
-//                 'Traitementpdo.hasrevenu',
-//                 'Traitementpdo.hasficheanalyse',
-//                 'Traitementpdo.haspiecejointe'
+                'Traitementpdo.traitementtypepdo_id' => array( 'type'=>'string' ),
+                'Traitementpdo.hascourrier',
+                'Traitementpdo.hasrevenu',
+                'Traitementpdo.hasficheanalyse',
+                'Traitementpdo.haspiecejointe'
             ),
             array(
                 'actions' => array(
-                    'Traitementpdo.fichecalcul' => array( 'controller' => '#' ),
-                    'Traitementpdo.ficheanalyse' => array( 'controller' => '#' ),
-                    'Traitementpdo.edit',
-                    'Traitementpdo.print' => array( 'controller' => 'traitementspdos', 'action' => 'gedooo' ),
-                    'Traitementpdo.delete'
+                    'Traitementspdos::edit' => array( 'disabled' => '\'#Traitementpdo.clos#\' != 0' ),
+                    'Traitementspdos::clore' => array( 'disabled' => '\'#Traitementpdo.clos#\' != 0' ),
+                    'Traitementspdos::print' => array( 'controller' => 'traitementspdos', 'action' => 'gedooo' )
                 ),
-                'add' => array( 'Traitementpdo.add' => $pdo_id ),
+                'add' => array( 'Traitementpdo.add' => array( 'controller'=>'traitementspdos', 'action'=>'add', $pdo_id ) ),
                 'options' => $options
             )
         );
+        
+		echo $default->button(
+		    'back',
+		    array(
+		        'controller' => 'propospdos',
+		        'action'     => 'index',
+		        $personne_id
+		    ),
+		    array(
+		        'id' => 'Back'
+		    )
+		);
 
     ?>
 </div>

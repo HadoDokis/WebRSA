@@ -20,9 +20,8 @@
 		);
 
 		public $validate = array(
-			'structurereferente_id' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+			'orgpayeur' => array(
+				'rule' => array( 'notEmpty' )
 			),
 			'typepdo_id' => array(
 				'rule' => 'notEmpty',
@@ -114,6 +113,13 @@
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'structurereferente_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Serviceinstructeur' => array(
+				'className' => 'Serviceinstructeur',
+				'foreignKey' => 'serviceinstructeur_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''

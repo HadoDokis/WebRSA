@@ -72,6 +72,17 @@
                 );
                 echo $xhtml->tableCells(
                     array(
+                        h( 'Gestion des EPs' ),
+                        $xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'gestionseps', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $xhtml->tableCells(
+                    array(
                         h( 'Groupes d\'utilisateurs' ),
                         $xhtml->viewLink(
                             'Voir la table',

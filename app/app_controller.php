@@ -1,114 +1,114 @@
 <?php
-    class AppController extends Controller
-    {
-        var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons'/*, 'Xcontroller'*/, 'Default' );
-        var $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number' );
-        var $uses = array( 'User', 'Connection', 'Avispcgdroitrsa' );
+	class AppController extends Controller
+	{
+		var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons'/*, 'Xcontroller'*/, 'Default' );
+		var $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number' );
+		var $uses = array( 'User', 'Connection', 'Avispcgdroitrsa' );
 
- 		//public $persistModel = true;
+		//public $persistModel = true;
 
 		/**
 		* Chargement et mise en cache (session) des permissions de l'utilisateur
-        * INFO:
+		* INFO:
 		*	- n'est réellement exécuté que la première fois
 		* 	- http://dsi.vozibrale.com/articles/view/all-cakephp-acl-permissions-for-your-views
 		* 	- http://www.neilcrookes.com/2009/02/26/get-all-acl-permissions/
 		*/
 
-        protected function _loadPermissions() {
-            // FIXME:à bouger dans un composant ?
-            if( $this->Session->check( 'Auth.User' ) && !$this->Session->check( 'Auth.Permissions' ) ) {
-                $Aro = $this->Acl->Aro->find(
-                    'first',
-                    array(
-                        'conditions' => array(
+		protected function _loadPermissions() {
+			// FIXME:à bouger dans un composant ?
+			if( $this->Session->check( 'Auth.User' ) && !$this->Session->check( 'Auth.Permissions' ) ) {
+				$Aro = $this->Acl->Aro->find(
+					'first',
+					array(
+						'conditions' => array(
 							'model' => 'Utilisateur',
-                            'Aro.foreign_key' => $this->Session->read( 'Auth.User.id' )
-                        )
-                    )
-                );
+							'Aro.foreign_key' => $this->Session->read( 'Auth.User.id' )
+						)
+					)
+				);
 
-                // Recherche des droits pour les sous-groupes
-                $parent_id = Set::extract( $Aro, 'Aro.parent_id' );
-                $parentAros = array();
-                while( !empty( $parent_id ) && ( $parent_id != 0 ) ) {
-                    $parentAro = $this->Acl->Aro->find(
-                        'first',
-                        array(
-                            'conditions' => array(
-                                'Aro.id' => $parent_id
-                            )
-                        )
-                    );
-                    $parentAros[] = $parentAro;
-                    $parent_id = Set::extract( $parentAro, 'Aro.parent_id' );
-                }
+				// Recherche des droits pour les sous-groupes
+				$parent_id = Set::extract( $Aro, 'Aro.parent_id' );
+				$parentAros = array();
+				while( !empty( $parent_id ) && ( $parent_id != 0 ) ) {
+					$parentAro = $this->Acl->Aro->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Aro.id' => $parent_id
+							)
+						)
+					);
+					$parentAros[] = $parentAro;
+					$parent_id = Set::extract( $parentAro, 'Aro.parent_id' );
+				}
 
 				$permissions = array();
-                if( !empty( $parentAros ) && !empty( $parentAros['Aro'] ) && !empty( $parentAros['Aco'] ) ) {
-	                $permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
-                }
-                if( !empty( $Aro ) ) {
-                    // FIXME: trié par parent / fils ? .. un seul niveau
-                    $sql = 'SELECT acos.alias AS aco, aros_acos._create, aros.alias AS aro
-                                FROM aros_acos
-                                    LEFT OUTER JOIN acos ON ( aros_acos.aco_id = acos.id )
-                                    LEFT OUTER JOIN aros ON ( aros_acos.aro_id = aros.id )
-                                WHERE aros_acos.aro_id IN ( '.$Aro['Aro']['id'].','.$Aro['Aro']['parent_id'].' )
-                                ORDER BY aco, aro ASC';
-                    $data = $this->Connection->query( $sql ); // FIXME: c'est sale ?
+				if( !empty( $parentAros ) && !empty( $parentAros['Aro'] ) && !empty( $parentAros['Aco'] ) ) {
+					$permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
+				}
+				if( !empty( $Aro ) ) {
+					// FIXME: trié par parent / fils ? .. un seul niveau
+					$sql = 'SELECT acos.alias AS aco, aros_acos._create, aros.alias AS aro
+								FROM aros_acos
+									LEFT OUTER JOIN acos ON ( aros_acos.aco_id = acos.id )
+									LEFT OUTER JOIN aros ON ( aros_acos.aro_id = aros.id )
+								WHERE aros_acos.aro_id IN ( '.$Aro['Aro']['id'].','.$Aro['Aro']['parent_id'].' )
+								ORDER BY aco, aro ASC';
+					$data = $this->Connection->query( $sql ); // FIXME: c'est sale ?
 
-                    $permissions = Set::merge( $permissions, Set::combine( $data, '{n}.0.aco', '{n}.0._create' ) );
-                    foreach( $permissions as $key => $permission ) {
-                        $permissions[$key] = ( $permission != -1 );
-                    }
-                    $this->Session->write( 'Auth.Permissions', $permissions );
-                }
-            }
-        }
+					$permissions = Set::merge( $permissions, Set::combine( $data, '{n}.0.aco', '{n}.0._create' ) );
+					foreach( $permissions as $key => $permission ) {
+						$permissions[$key] = ( $permission != -1 );
+					}
+					$this->Session->write( 'Auth.Permissions', $permissions );
+				}
+			}
+		}
 
 		/**
 		* Chargement et mise en cache (session) des zones géographiques associées à l'utilisateur
-        * INFO: n'est réellement exécuté que la première fois
+		* INFO: n'est réellement exécuté que la première fois
 		*/
 
-        protected function _loadZonesgeographiques() {
-            if( $this->Session->check( 'Auth.User' ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) && !$this->Session->check( 'Auth.Zonegeographique' ) ) {
-                $sql = 'SELECT users_zonesgeographiques.zonegeographique_id, zonesgeographiques.codeinsee
-                            FROM users_zonesgeographiques
-                                LEFT JOIN zonesgeographiques
-                                    ON users_zonesgeographiques.zonegeographique_id = zonesgeographiques.id
-                            WHERE users_zonesgeographiques.user_id='.$this->Session->read( 'Auth.User.id' ).';';
-                $results = $this->Connection->query( $sql ); // FIXME: c'est sale ?
-                if( count( $results ) > 0 ) {
-                    $zones = array();
-                    foreach( $results as $result ) {
-                        $zones[$result[0]['zonegeographique_id']] = $result[0]['codeinsee'];
-                    }
-                    $this->Session->write( 'Auth.Zonegeographique', $zones ); // FIXME: vide -> rééxécute ?
-                }
-            }
-        }
+		protected function _loadZonesgeographiques() {
+			if( $this->Session->check( 'Auth.User' ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) && !$this->Session->check( 'Auth.Zonegeographique' ) ) {
+				$sql = 'SELECT users_zonesgeographiques.zonegeographique_id, zonesgeographiques.codeinsee
+							FROM users_zonesgeographiques
+								LEFT JOIN zonesgeographiques
+									ON users_zonesgeographiques.zonegeographique_id = zonesgeographiques.id
+							WHERE users_zonesgeographiques.user_id='.$this->Session->read( 'Auth.User.id' ).';';
+				$results = $this->Connection->query( $sql ); // FIXME: c'est sale ?
+				if( count( $results ) > 0 ) {
+					$zones = array();
+					foreach( $results as $result ) {
+						$zones[$result[0]['zonegeographique_id']] = $result[0]['codeinsee'];
+					}
+					$this->Session->write( 'Auth.Zonegeographique', $zones ); // FIXME: vide -> rééxécute ?
+				}
+			}
+		}
 
-        /**
-        * @access protected
-        */
+		/**
+		* @access protected
+		*/
 
-        function _checkHabilitations() {
-            $habilitations = array(
-                'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
-                'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' ),
-            );
+		function _checkHabilitations() {
+			$habilitations = array(
+				'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
+				'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' ),
+			);
 
-            if( !empty( $habilitations['date_deb_hab'] ) && ( strtotime( $habilitations['date_deb_hab'] ) >= mktime() ) ) {
-                $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
-            }
+			if( !empty( $habilitations['date_deb_hab'] ) && ( strtotime( $habilitations['date_deb_hab'] ) >= mktime() ) ) {
+				$this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
+			}
 
 			/// FIXME: si la date d'habilitation est celle du jour il n'est plus habilité du tout
-            if( !empty( $habilitations['date_fin_hab'] ) && ( strtotime( $habilitations['date_fin_hab'] ) < mktime() ) ) {
-                $this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
-            }
-        }
+			if( !empty( $habilitations['date_fin_hab'] ) && ( strtotime( $habilitations['date_fin_hab'] ) < mktime() ) ) {
+				$this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
+			}
+		}
 
 		/**
 		*
@@ -124,8 +124,8 @@
 		* FIXME: créer un nouveau type d'erreur plutôt qu'une erreur 500
 		*/
 
-        protected function _loadServiceInstructeur() {
-            if( !$this->Session->check( 'Auth.Serviceinstructeur' ) ) {
+		protected function _loadServiceInstructeur() {
+			if( !$this->Session->check( 'Auth.Serviceinstructeur' ) ) {
 				$service = $this->User->Serviceinstructeur->findById( $this->Session->read( 'Auth.User.serviceinstructeur_id' ), null, null, -1 );
 				$this->assert( !empty( $service ), 'error500' );
 				$this->Session->write( 'Auth.Serviceinstructeur', $service['Serviceinstructeur'] );
@@ -138,8 +138,8 @@
 		* FIXME: créer un nouveau type d'erreur plutôt qu'une erreur 500
 		*/
 
-        protected function _loadGroup() {
-            if( !$this->Session->check( 'Auth.Group' ) ) {
+		protected function _loadGroup() {
+			if( !$this->Session->check( 'Auth.Group' ) ) {
 				$group = $this->User->Group->findById( $this->Session->read( 'Auth.User.group_id' ), null, null, -1 );
 				$this->assert( !empty( $group ), 'error500' );
 				$this->Session->write( 'Auth.Group', $group['Group'] );
@@ -475,6 +475,19 @@
 				$this->helpers[] = 'Paginator';
 			}
 			return $results;
+		}
+
+		/**
+		*
+		*/
+
+		protected function _setFlashResult( $message, $result ) {
+			$class = ( $result ? 'success' : 'error' );
+			$this->Session->setFlash(
+				__( "{$message}->{$class}", true ),
+				'default',
+				array( 'class' => $class )
+			);
 		}
 	}
 ?>

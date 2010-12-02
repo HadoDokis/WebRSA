@@ -20,6 +20,12 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Orientstruct.date_propo"
+msgstr "Date de la demande"
+
+msgid "Orientstruct.date_valid"
+msgstr "Date d'orientation"
+
 msgid "Orientstruct.etatorient"
 msgstr "Etat de l'orientation"
 

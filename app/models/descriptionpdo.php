@@ -6,7 +6,9 @@
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(
-					'sensibilite'
+					'sensibilite',
+					'dateactive',
+					'declencheep'
 				)
 			),
 			'ValidateTranslate'
