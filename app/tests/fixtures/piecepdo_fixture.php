@@ -8,7 +8,7 @@
 			array(
 				'id' => '1',
 				'propopdo_id' => '1',
-				'libelle' => null,
+				'libelle' => 'libellé',
 				'dateajout' => null,
 			)
 		);

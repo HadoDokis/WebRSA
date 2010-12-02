@@ -45,7 +45,8 @@
 					'59' => 'Autre forme d\'emploi: CDD, CNE'
 				)
 			);
-			$this->assertEqual($expected,$this->Action->grouplist());
+			$result = $this->Action->grouplist();
+			$this->assertEqual($expected, $result);
 			//FIXME la fonction grouplist renvoie un tableau vide quel que soit le paramètre d'entrée
 			//var_dump($this->Action->grouplist());
 			$expected = array(
@@ -59,7 +60,8 @@
 					'33' => 'Demande d\'intervention d\'un organisme ou d\'un fonds d\'aide'
 				)
 			);
-			$this->assertEqual($expected,$this->Action->grouplist('aide'));
+			$result = $this->Action->grouplist('aide');
+			$this->assertEqual($expected, $result);
 			//FIXME la fonction grouplist renvoie un tableau vide quel que soit le paramètre d'entrée
 			//var_dump($this->Action->grouplist('aide'));
 			$expected=array(
@@ -84,7 +86,8 @@
 					'51' => 'Aide ou suivi pour une recherche d\'emploi'
 				)
 			);
-			$this->assertEqual($expected,$this->Action->grouplist('prestation'));
+			$result = $this->Action->grouplist('prestation');
+			$this->assertEqual($expected, $result);
 			//FIXME la fonction grouplist renvoie un tableau vide quel que soit le paramètre d'entrée
 		}
 	}

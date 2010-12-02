@@ -7,7 +7,7 @@
 		var $records = array(
 			array(
 				'id' => '1',
-				'libelle' => 'libellé1',
+				'libelle' => 'libellé',
 			),
 			array(
 				'id' => '2',
