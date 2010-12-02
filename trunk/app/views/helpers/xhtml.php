@@ -797,5 +797,27 @@
 				return $alt;
 			}
 		}
+
+		/**
+		* Bouton traitement utilisé pour les DSPs CG
+		*/
+
+		function revertToLink( $title, $url, $enabled = true ){
+			$content = $this->image(
+				'icons/arrow_undo.png',
+				array( 'alt' => '' )
+			).' Revenir à cette version';
+
+			if( $enabled ) {
+				return $this->link(
+					$content,
+					$url,
+					array( 'escape' => false, 'title' => $title )
+				);
+			}
+			else {
+				return '<span class="disabled">'.$content.'</span>';
+			}
+		}
 	}
 ?>
