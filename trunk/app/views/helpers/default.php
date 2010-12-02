@@ -1,128 +1,135 @@
 <?php
 	class DefaultHelper extends AppHelper
 	{
-        public $helpers = array( 'Html', 'Xpaginator', 'Locale', 'Xform', 'Type', 'Permissions' );
+		public $helpers = array( 'Html', 'Xpaginator', 'Locale', 'Xform', 'Type', 'Permissions' );
 
 		/**
 		* FIXME docs
 		*/
 
-        public function button( $type, $url, $htmlAttributes = array(), $confirmMessage = false, $escapeTitle = true ) {
-            $enabled = ( isset( $htmlAttributes['enabled'] ) ? $htmlAttributes['enabled'] : true );
-            $iconFileSuffix = ( ( $enabled ) ? '' : '_disabled' ); // TODO: les autres aussi
+		public function button( $type, $url, $htmlAttributes = array(), $confirmMessage = false, $escapeTitle = true ) {
+			$enabled = ( isset( $htmlAttributes['enabled'] ) ? $htmlAttributes['enabled'] : true );
+			$iconFileSuffix = ( ( $enabled ) ? '' : '_disabled' ); // TODO: les autres aussi
 
-            switch( $type ) {
-                case 'add':
-                    $icon = 'icons/add'.$iconFileSuffix.'.png';
-                    $text = __( 'Add', true );
-                    break;
-                case 'edit':
-                    $icon = 'icons/pencil'.$iconFileSuffix.'.png';
-                    $text = __( 'Edit', true );
-                    break;
-                case 'delete':
-                    $icon = 'icons/delete'.$iconFileSuffix.'.png';
-                    $text = __( 'Delete', true );
-                    break;
-                case 'process':
-                    $icon = 'icons/lightning'.$iconFileSuffix.'.png';
-                    $text = __( 'Process', true );
-                    break;
-                case 'view':
-                    $icon = 'icons/zoom'.$iconFileSuffix.'.png';
-                    $text = __( 'View', true );
-                    break;
-                case 'print':
-                    $icon = 'icons/printer'.$iconFileSuffix.'.png';
-                    $text = __( 'Imprimer', true );
-                    break;
-                case 'gedooo':
-                    $icon = 'icons/printer'.$iconFileSuffix.'.png';
-                    $text = __( 'Imprimer', true );
-                    break;
-                case 'printcohorte':
-                    $icon = 'icons/printer'.$iconFileSuffix.'.png';
-                    $text = __( 'Imprimer en cohorte', true );
-                    break;
-                case 'back':
-                    $icon = 'icons/arrow_left'.$iconFileSuffix.'.png';
-                    $text = __( 'Retour', true );
-                    break;
-                case 'equipe':
-                    $icon = 'icons/door_out'.$iconFileSuffix.'.png';
-                    $text = __( 'Traitement équipe', true );
-                    break;
-                case 'conseil':
-                    $icon = 'icons/door_out'.$iconFileSuffix.'.png';
-                    $text = __( 'Traitement conseil général', true );
-                    break;
-                case 'ordre':
-                    $icon = 'icons/book_open'.$iconFileSuffix.'.png';
-                    $text = __( 'Ordre du jour', true );
-                    break;
-                case 'valider':
-                    $icon = 'icons/tick'.$iconFileSuffix.'.png';
-                    $text = __( 'Valider', true );
-                    break;
-                case 'valid':
-                    $icon = 'icons/tick'.$iconFileSuffix.'.png';
-                    $text = __( 'Finaliser', true );
-                    break;
-                case 'decision':
-                    $icon = 'icons/user_comment'.$iconFileSuffix.'.png';
-                    $text = __( 'Décisions', true );
-                    break;
-                case 'liste_demande_reorient':
-                    $icon = 'icons/user_comment'.$iconFileSuffix.'.png';
-                    $text = __( 'Demandes de réorientation', true );
-                    break;
-                case 'periodeimmersion':
-                    $icon = 'icons/tick'.$iconFileSuffix.'.png';
-                    $text = __( 'Périodes d\'immersion', true );
-                    break;
-                case 'ficheanalyse':
-                    $icon = 'icons/table'.$iconFileSuffix.'.png';
-                    $text = __( 'Fiche d\'analyse', true );
-                    break;
-                case 'fichecalcul':
-                    $icon = 'icons/table'.$iconFileSuffix.'.png';
-                    $text = __( 'Fiche de calcul', true );
-                    break;
-                default:
-                    $this->cakeError( 'error500' ); // FIXME -> proprement --> $this->cakeError( 'wrongParameter' )
-            }
+			switch( $type ) {
+				case 'add':
+					$icon = null;
+					$text = __( 'Add', true );
+					break;
+				case 'edit':
+					$icon = null;
+					$text = __( 'Edit', true );
+					break;
+				case 'delete':
+					$icon = null;
+					$text = __( 'Delete', true );
+					break;
+				case 'process':
+					$icon = 'icons/lightning'.$iconFileSuffix.'.png';
+					$text = __( 'Process', true );
+					break;
+				case 'view':
+					$icon = 'icons/zoom'.$iconFileSuffix.'.png';
+					$text = __( 'View', true );
+					break;
+				case 'print':
+					$icon = 'icons/printer'.$iconFileSuffix.'.png';
+					$text = __( 'Imprimer', true );
+					break;
+				case 'gedooo':
+					$icon = 'icons/printer'.$iconFileSuffix.'.png';
+					$text = __( 'Imprimer', true );
+					break;
+				case 'printcohorte':
+					$icon = 'icons/printer'.$iconFileSuffix.'.png';
+					$text = __( 'Imprimer en cohorte', true );
+					break;
+				case 'back':
+					$icon = 'icons/arrow_left'.$iconFileSuffix.'.png';
+					$text = __( 'Retour', true );
+					break;
+				case 'equipe':
+					$icon = 'icons/door_out'.$iconFileSuffix.'.png';
+					$text = __( 'Traitement équipe', true );
+					break;
+				case 'conseil':
+					$icon = 'icons/door_out'.$iconFileSuffix.'.png';
+					$text = __( 'Traitement conseil général', true );
+					break;
+				case 'ordre':
+					$icon = 'icons/book_open'.$iconFileSuffix.'.png';
+					$text = __( 'Ordre du jour', true );
+					break;
+				case 'valider':
+					$icon = 'icons/tick'.$iconFileSuffix.'.png';
+					$text = __( 'Valider', true );
+					break;
+				case 'valid':
+					$icon = 'icons/tick'.$iconFileSuffix.'.png';
+					$text = __( 'Finaliser', true );
+					break;
+				case 'decision':
+					$icon = 'icons/user_comment'.$iconFileSuffix.'.png';
+					$text = __( 'Décisions', true );
+					break;
+				case 'liste_demande_reorient':
+					$icon = 'icons/user_comment'.$iconFileSuffix.'.png';
+					$text = __( 'Demandes de réorientation', true );
+					break;
+				case 'periodeimmersion':
+					$icon = 'icons/tick'.$iconFileSuffix.'.png';
+					$text = __( 'Périodes d\'immersion', true );
+					break;
+				case 'ficheanalyse':
+					$icon = 'icons/table'.$iconFileSuffix.'.png';
+					$text = __( 'Fiche d\'analyse', true );
+					break;
+				case 'fichecalcul':
+					$icon = 'icons/table'.$iconFileSuffix.'.png';
+					$text = __( 'Fiche de calcul', true );
+					break;
+				case 'decision':
+					$icon = 'icons/'.$url['action'].$iconFileSuffix.'.png';
+					$text = __( sprintf( '%s::%s', Inflector::classify( $url['controller'] ), $url['action'] ), true );
+					break;
+				default:
+					$this->cakeError( 'error500' ); // FIXME -> proprement --> $this->cakeError( 'wrongParameter' )
+			}
 
-            $content = $this->Html->image( $icon, array( 'alt' => '' ) ).' '.$text;
+			if (!empty($icon))
+				$content = $this->Html->image( $icon, array( 'alt' => '' ) ).' '.$text;
+			else
+				$content = $text;
 
-            $class = implode(
-                ' ',
-                array(
-                    'widget button',
-                    $type,
-                    ( $enabled ? 'enabled' : 'disabled' ),
-                    ( isset( $htmlAttributes['class'] ) ? $htmlAttributes['class'] : null ),
-                )
-            );
-            $htmlAttributes['class'] = $class;
+			$class = implode(
+				' ',
+				array(
+					'widget button',
+					$type,
+					( $enabled ? 'enabled' : 'disabled' ),
+					( isset( $htmlAttributes['class'] ) ? $htmlAttributes['class'] : null ),
+				)
+			);
+			$htmlAttributes['class'] = $class;
 
 			//$htmlAttributes = array_filter_keys( $htmlAttributes, array( 'enabled' ), true );
 			unset( $htmlAttributes['enabled'] );
 
 
-            if( $enabled ) {
-                return $this->Html->link(
-                    $content,
-                    $url,
-                    $htmlAttributes,
-                    $confirmMessage,
-                    false
-                );
+			if( $enabled ) {
+				return $this->Html->link(
+					$content,
+					$url,
+					$htmlAttributes,
+					$confirmMessage,
+					false
+				);
 
-            }
-            else {
-                return $this->Html->tag( 'span', $content, $htmlAttributes, false, false );
-            }
-        }
+			}
+			else {
+				return $this->Html->tag( 'span', $content, $htmlAttributes, false, false );
+			}
+		}
 
 		/**
 		* @param string $path ie. User.id, User.0.id
@@ -197,9 +204,9 @@
 			$actions = Set::classicExtract( $params, 'actions' );
 
 			foreach( Set::normalize( $columns ) as $column => $options ) {
-                if( !Set::check( $options, 'domain' ) && Set::check( $params, 'domain' ) ) {
-                    $options['domain'] = $params['domain'];
-                }
+				if( !Set::check( $options, 'domain' ) && Set::check( $params, 'domain' ) ) {
+					$options['domain'] = $params['domain'];
+				}
 
 				$label = $this->label( $column, $options );
 
@@ -240,16 +247,16 @@
 				foreach( $actions as $action => $actionParams ) {
 					list( $modelName, $action ) = model_field( $action );
 
-                    if( Set::check( $actionParams, 'domain' ) ) {
-                        $domain = $actionParams['domain'];
-                        unset( $actionParams['domain'] );
-                    }
-                    else if( Set::check( $params, 'domain' ) ) {
-                        $domain = $params['domain'];
-                    }
-                    else {
-                        $domain = Inflector::singularize( Inflector::tableize( $modelName ) );
-                    }
+					if( Set::check( $actionParams, 'domain' ) ) {
+						$domain = $actionParams['domain'];
+						unset( $actionParams['domain'] );
+					}
+					else if( Set::check( $params, 'domain' ) ) {
+						$domain = $params['domain'];
+					}
+					else {
+						$domain = Inflector::singularize( Inflector::tableize( $modelName ) );
+					}
 
 					$controller = Inflector::tableize( $modelName );
 					$controllerName = Inflector::camelize( $modelName );
@@ -265,14 +272,14 @@
 					if( $action == 'delete' ) {
 						$value = $this->button(
 							'delete',
-                            Set::merge(
-                                array(
-                                    'controller' => $controller,
-                                    'action' => 'delete',
-                                    Set::classicExtract( $line, "{$model->name}.{$model->primaryKey}" )
-                                ),
-                                $actionParams
-                            ),
+							Set::merge(
+								array(
+									'controller' => $controller,
+									'action' => 'delete',
+									Set::classicExtract( $line, "{$model->name}.{$model->primaryKey}" )
+								),
+								$actionParams
+							),
 							array(
 								'title' => sprintf(
 									__d( $domain, "{$controllerName}::{$action}", true ),
@@ -289,14 +296,14 @@
 					else {
 						$value = $this->button(
 							$action,
-                            Set::merge(
-                                array(
-                                    'controller' => $controller,
-                                    'action' => $action,
-                                    Set::classicExtract( $line, "{$model->name}.{$model->primaryKey}" ),
-                                ),
-                                $actionParams
-                            ),
+							Set::merge(
+								array(
+									'controller' => $controller,
+									'action' => $action,
+									Set::classicExtract( $line, "{$model->name}.{$model->primaryKey}" ),
+								),
+								$actionParams
+							),
 							array(
 								'title' => sprintf(
 									__d( $domain, "{$controllerName}::{$action}", true ),
@@ -340,12 +347,12 @@
 			$modelClass = ClassRegistry::init( Inflector::classify( $modelName ) );
 			$cohorte = Set::classicExtract( $cohorteParams, 'cohorte' );
 
-            if( Set::check( $cohorteParams, 'domain' ) ) {
-                $domain = $cohorteParams['domain'];
-            }
-            else {
-                $domain = Inflector::singularize( Inflector::tableize( $modelName ) );
-            }
+			if( Set::check( $cohorteParams, 'domain' ) ) {
+				$domain = $cohorteParams['domain'];
+			}
+			else {
+				$domain = Inflector::singularize( Inflector::tableize( $modelName ) );
+			}
 			///
 
 			$cells = Set::normalize( $cells );
@@ -407,7 +414,7 @@
 						}
 					}
 
-                    if( !empty( $type ) ) {
+					if( !empty( $type ) ) {
 						switch( $type ) {
 							case 'radio':
 							case 'checkbox':
@@ -492,21 +499,21 @@
 
 			/// Liste d'actions communes à la table
 			if( Set::check( $cohorteParams, 'add' ) ) { // FIXME: ensemble d'actions
-                $actions = Set::normalize( Set::classicExtract( $cohorteParams, 'add' ) );
+				$actions = Set::normalize( Set::classicExtract( $cohorteParams, 'add' ) );
 
-                // FIXME + faire un fonction, voir actions dans la table
-                $actionModelField = array_keys( $actions );
-                $actionModelField = $actionModelField[0];
+				// FIXME + faire un fonction, voir actions dans la table
+				$actionModelField = array_keys( $actions );
+				$actionModelField = $actionModelField[0];
 
 				list( $actionModel, $actionAction ) = model_field( $actionModelField );
 
-                $url = Set::merge(
-                    array(
-                        'controller' => Inflector::tableize( $actionModel ),
-                        'action' => $actionAction
-                    ),
-                    $actions[$actionModelField]
-                );
+				$url = Set::merge(
+					array(
+						'controller' => Inflector::tableize( $actionModel ),
+						'action' => $actionAction
+					),
+					$actions[$actionModelField]
+				);
 
 				$return .= $this->Html->tag(
 					'p',
@@ -595,7 +602,7 @@
 
 		/**
 		* FIXME: corriger affichage des montants lorsque le champ est DECIMAL(10,2)
-        *           TEXTAREA au lieu de champ text : 'type' => 'text' corrige le problème
+		*           TEXTAREA au lieu de champ text : 'type' => 'text' corrige le problème
 		*/
 
 		public function subform( $fields, $formParams = array() ) {
@@ -622,9 +629,9 @@
 					}
 				}
 
-                if( !Set::check( $params, 'domain' ) || empty( $params['domain'] ) ) {
-                    $params['domain'] = Inflector::singularize( Inflector::tableize( $fieldModelName ) );
-                }*/
+				if( !Set::check( $params, 'domain' ) || empty( $params['domain'] ) ) {
+					$params['domain'] = Inflector::singularize( Inflector::tableize( $fieldModelName ) );
+				}*/
 
 				if( !Set::check( $params, 'options' ) ) {
 					$options = Set::extract( $formParams, "options.{$fieldModelName}.{$fieldModelfield}" );
@@ -633,9 +640,9 @@
 					}
 				}
 
-                if( Set::check( $formParams, 'domain' ) ) {
-                    $params['domain'] = $formParams['domain'];
-                }
+				if( Set::check( $formParams, 'domain' ) ) {
+					$params['domain'] = $formParams['domain'];
+				}
 
 				$return .= $this->Type->input( $path, $params );
 			}
@@ -656,6 +663,19 @@
 			$domain = Inflector::singularize( Inflector::tableize( $modelClass->name ) );
 
 			$primaryKey = Set::classicExtract( $this->data, "{$modelName}.{$modelClass->primaryKey}" );
+
+			// TODO: plus de paramètres + reporter dans Default2
+			$params = array(
+				'id' => Set::classicExtract( $formParams, 'id' ),
+				'class' => Set::classicExtract( $formParams, 'class' ),
+				'domain' => Set::classicExtract( $formParams, 'domain' )
+			);
+			$params = Set::filter( $params );
+			$params = Set::merge(
+				array( 'inputDefaults' => array( 'domain' => $domain ) ),
+				$params
+			);
+			// Fin TODO
 
 			$return = '';
 			$return .= $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => $domain ) ) );
@@ -764,7 +784,7 @@
 		*	- options ie. array( 'User' => array( 'status' => array( 1 => 'Enabled', 0 => 'Disabled' ) ) )
 		*   - domain
 		* TODO: $this->defaultModel() à la place de $this->params, 'controller'
-        * FIXME: ajouter domain_suffix. (voir avec ActioncandidatPersonne)
+		* FIXME: ajouter domain_suffix. (voir avec ActioncandidatPersonne)
 		*/
 
 		public function view( $item, $columns, $options = array() ) { // FIXME: rename options en viewParams
@@ -783,13 +803,13 @@
 				$columnDomain = Inflector::singularize( Inflector::tableize( $columnModel ) );
 				/// dans une fonction ?
 
-                /// FIXME -> domain
-                if( Set::check( $options, 'domain' ) ) {
-                    $columnOptions['domain'] = $options['domain'];
-                }
-                else if( !Set::check( $columnOptions, 'domain' ) ) {
-                    $columnOptions['domain'] = $columnDomain;
-                }
+				/// FIXME -> domain
+				if( Set::check( $options, 'domain' ) ) {
+					$columnOptions['domain'] = $options['domain'];
+				}
+				else if( !Set::check( $columnOptions, 'domain' ) ) {
+					$columnOptions['domain'] = $columnDomain;
+				}
 
 				$formatOptions = $labelOptions = $columnOptions = $this->addClass( $columnOptions, ( ( $lineNr % 2 ) ?  'odd' : 'even' ) );
 
@@ -800,30 +820,30 @@
 					}
 				}
 
-                /// FIXME
-                unset(
-                    $columnOptions['domain'],
-                    $columnOptions['type'],
-                    $columnOptions['null'],
-                    $columnOptions['default'],
-                    $columnOptions['country'],
-                    $columnOptions['length'],
-                    $columnOptions['virtual'],
-                    $columnOptions['key'],
-                    $columnOptions['options'],
-                    $columnOptions['dateFormat'],
-                    $columnOptions['maxlength'],
-                    $columnOptions['suffix'],
-                    $columnOptions['currency']
-                );
+				/// FIXME
+				unset(
+					$columnOptions['domain'],
+					$columnOptions['type'],
+					$columnOptions['null'],
+					$columnOptions['default'],
+					$columnOptions['country'],
+					$columnOptions['length'],
+					$columnOptions['virtual'],
+					$columnOptions['key'],
+					$columnOptions['options'],
+					$columnOptions['dateFormat'],
+					$columnOptions['maxlength'],
+					$columnOptions['suffix'],
+					$columnOptions['currency']
+				);
 
 				if( $widget == 'dl' ) {
 					$params['class'] = $columnOptions['class'];
 				}
 
-                if( Set::check( $options, 'options' ) && !Set::check( $params, 'options' ) ) {
-                    $params['options'] = $options['options'];
-                }
+				if( Set::check( $options, 'options' ) && !Set::check( $params, 'options' ) ) {
+					$params['options'] = $options['options'];
+				}
 
 				$params = Set::merge( $params, $formatOptions );
 				unset( $params['null'], $params['country'], $params['length'] );

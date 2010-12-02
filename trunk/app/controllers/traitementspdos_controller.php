@@ -9,6 +9,8 @@
         */
 
         public $components = array( 'Default' );
+
+        public $helpers = array( 'Default2' );
         
 		var $commeDroit = array(
 			'view' => 'Traitementspdos:index',
@@ -35,8 +37,9 @@
                     )
                 )
             );
-
-
+            
+            $options[$this->modelClass]['listeDescription'] = $this->Descriptionpdo->find( 'all', array( 'contain' => false ) );
+            
             return $options;
         }
 
@@ -120,7 +123,51 @@
                 $personne_id = Set::classicExtract( $traitement, 'Propopdo.personne_id' );
                 $dossier_id = $this->Personne->dossierId( $personne_id );
             }
-
+            
+            $personnes = $this->Personne->Foyer->Dossier->find(
+            	'all',
+            	array(
+            		'fields'=>array(
+            			'Personne.id',
+            			'Personne.qual',
+            			'Personne.nom',
+            			'Personne.prenom'
+            		),
+            		'conditions'=>array(
+            			'Dossier.id'=>$dossier_id
+            		),
+					'recursive' => -1,
+					'joins' => array(
+						array(
+							'table'      => 'foyers',
+							'alias'      => 'Foyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+						),
+						array(
+							'table'      => 'personnes',
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+						)
+					)
+				)
+			);
+			$listepersonnes = array();
+			foreach($personnes as $personne) {
+				$listepersonnes[$personne['Personne']['id']] = implode(
+					' ',
+					array(
+						$personne['Personne']['qual'],
+						$personne['Personne']['nom'],
+						$personne['Personne']['prenom']
+					)
+				);
+			}
+			$this->set(compact('listepersonnes'));
+            
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
             $this->set( 'personne_id', $personne_id );
             $this->set( 'dossier_id', $dossier_id );
@@ -134,20 +181,25 @@
 
 
             if( !empty( $this->data ) ){
-
                 if( $this->Traitementpdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-                    $saved = $this->Traitementpdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+                    $saved = true;
+                    
+                    $saved = $this->Traitementpdo->sauvegardeTraitement( $this->data );
 
                     if( $saved ) {
                         $this->Jetons->release( $dossier_id );
                         $this->Traitementpdo->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array(  'controller' => 'traitementspdos','action' => 'index', $propopdo_id ) );
+                        $this->redirect( array( 'controller' => 'traitementspdos', 'action' => 'index', $propopdo_id ) );
                     }
                     else {
                         $this->Traitementpdo->rollback();
                         $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                     }
+                }
+                else {
+                    $this->Traitementpdo->rollback();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                 }
             }
             else{
@@ -156,17 +208,19 @@
                 }
             }
             $this->Traitementpdo->commit();
-
+            
+            $traitementspdosouverts = $this->{$this->modelClass}->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Traitementpdo.propopdo_id' => $id,
+                        'Traitementpdo.clos' => 0
+                    )
+                )
+            );
+            $this->set( compact( 'traitementspdosouverts' ) );
 
             $this->render( $this->action, null, 'add_edit' );
-        }
-
-        /**
-        *
-        */
-
-        public function delete( $id = null ) {
-            $this->Default->delete( $id, array( 'action' => 'index' ) );
         }
         
 
@@ -176,6 +230,22 @@
 
         public function gedooo( $id = null ) {
 
+        }
+        
+        public function clore($id = null) {
+        	$traitementpdo = $this->Traitementpdo->find(
+        		'first',
+        		array(
+        			'conditions'=>array(
+        				'Traitementpdo.id'=>$id
+        			)
+        		)
+        	);
+        	$this->assert( !empty( $traitementpdo ), 'invalidParameter' );
+        	
+        	$this->Traitementpdo->id=$id;
+        	$this->Traitementpdo->saveField('clos', 1);
+        	$this->redirect(array( 'controller'=> 'traitementspdos', 'action'=>'index', $traitementpdo['Traitementpdo']['propopdo_id']));
         }
     }
 ?>

@@ -49,6 +49,24 @@
 			$matricule = Set::extract( $criterespdo, 'Cohortepdo.matricule' );
 			$numcomptt = Set::extract( $criterespdo, 'Cohortepdo.numcomptt' );
 			$gestionnaire = Set::extract( $criterespdo, 'Cohortepdo.user_id' );
+			
+			$daterevision = Set::extract( $criterespdo, 'Cohortepdo.daterevision' );
+			$traitementCheck = false;
+			if (!empty($daterevision)) {
+				$valid_daterevision = ( valid_int( $criterespdo['Cohortepdo']['daterevision']['year'] ) && valid_int( $criterespdo['Cohortepdo']['daterevision']['month'] ) && valid_int( $criterespdo['Cohortepdo']['daterevision']['day'] ) );
+				if ($valid_daterevision) {
+					$conditions[] = 'Traitementpdo.daterevision BETWEEN \''.implode( '-', array( '1970', '01', '01' ) ).'\' AND \''.implode( '-', array( $criterespdo['Cohortepdo']['daterevision']['year'], $criterespdo['Cohortepdo']['daterevision']['month'], $criterespdo['Cohortepdo']['daterevision']['day'] ) ).'\'';
+					$conditions[] = 'Traitementpdo.clos = 0';
+					$traitementCheck = true;
+				}
+			}
+			
+			$traitementtypepdo_id = Set::extract( $criterespdo, 'Cohortepdo.traitementtypepdo_id' );
+			if( !empty( $traitementtypepdo_id ) ) {
+				$conditions[] = 'Traitementpdo.traitementtypepdo_id = \''.$traitementtypepdo_id.'\'';
+				if (!$traitementCheck)
+					$conditions[] = 'Traitementpdo.clos = 0';
+			}
 
 			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
 			$filtersPersonne = array();
@@ -138,6 +156,13 @@
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array( 'Propopdo.personne_id = Personne.id' )
+					),
+					array(
+						'table'      => 'traitementspdos',
+						'alias'      => 'Traitementpdo',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Traitementpdo.propopdo_id = Propopdo.id' )
 					),
 					array(
 						'table'      => 'adressesfoyers',

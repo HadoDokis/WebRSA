@@ -1,4 +1,4 @@
-<?php echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'CER';?>
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
@@ -250,7 +250,7 @@
                         }
                         $input =  $form->input( 'Contratinsertion.forme_ci', array( 'type' => 'radio' , 'options' => $forme_ci, /*'div' => false,*/ 'legend' => required( __d( 'contratinsertion', 'Contratinsertion.forme_ci', true )  ), 'value' => $valueFormeci ) );
 
-                        echo $html->tag( 'div', $input, array( 'class' => $class ) );
+                        echo $xhtml->tag( 'div', $input, array( 'class' => $class ) );
                     ?>
                 </td>
             </tr>

@@ -15,21 +15,21 @@
 //         observeDisableFieldsOnValue( 'PropopdoMotifpdo', [ 'PropopdoNonadmis' ], 'N', false );
 
         observeDisableFieldsetOnCheckbox( 'PropopdoDecision', $( 'PropopdoDecisionpdoId' ).up( 'fieldset' ), false );
-        observeDisableFieldsetOnCheckbox( 'PropopdoSuivi', $( 'PropopdoDaterevisionDay' ).up( 'fieldset' ), false );
+//        observeDisableFieldsetOnCheckbox( 'PropopdoSuivi', $( 'PropopdoDaterevisionDay' ).up( 'fieldset' ), false );
 //         observeDisableFieldsetOnCheckbox( 'PropopdoAutres', $( 'PropopdoCommentairepdo' ).up( 'fieldset' ), false );
         observeDisableFieldsetOnCheckbox( 'PropopdoIsvalidation', $( 'PropopdoDatevalidationdecisionDay' ).up( 'fieldset' ), false );
-//         observeDisableFieldsetOnCheckbox( 'PropopdoIsdecisionop', $( 'PropopdoObservationop' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'PropopdoIsdecisionop', $( 'PropopdoObservationop' ).up( 'fieldset' ), false );
 
 
 //         observeDisableFieldsetOnCheckbox( 'PropopdoMotifpdo', $( 'PropopdoNonadmis' ).up( 'fieldset' ), false );
-        observeDisableFieldsetOnRadioValue(
+        /*observeDisableFieldsetOnRadioValue(
             'propopdoform',
             'data[Propopdo][motifpdo]',
             $( 'nonadmis' ),
             'N',
             false,
             true
-        );
+        );*/
     });
 </script>
 
@@ -62,19 +62,6 @@
         } );
 
         <?php
-
-            echo $ajax->remoteFunction(
-                array(
-                    'update' => 'AdresseStruct',
-                    'url' => Router::url(
-                        array(
-                            'action' => 'ajaxstruct',
-                            Set::extract( $this->data, 'Propopdo.structurereferente_id' )
-                        ),
-                        true
-                    )
-                )
-            ).';';
             echo $ajax->remoteFunction(
                 array(
                     'update' => 'Etatpdo6',
@@ -84,8 +71,8 @@
                             Set::extract( $this->data, 'Propopdo.typepdo_id' ),
                             Set::extract( $this->data, 'Propopdo.iscomplet' ),
                             Set::extract( $this->data, 'Propopdo.decisionpdo_id' ),
-                            Set::extract( $this->data, 'Propopdo.isvalidation' )/*,
-                            Set::extract( $this->data, 'Propopdo.isdecisionop' )*/
+                            Set::extract( $this->data, 'Propopdo.isvalidation' ),
+                            Set::extract( $this->data, 'Propopdo.isdecisionop' )
                         ),
                         true
                     )
@@ -180,9 +167,8 @@
         <?php
             echo $default->subform(
                 array(
-                    'Propopdo.etatdossierpdo' => array( 'type' => 'hidden' ),
-                    'Propopdo.structurereferente_id' => array( 'label' =>  __d( 'propopdo','Propopdo.structurereferente_id', true ), 'type' => 'select', 'options' => $structs ),
-                    'Propopdo.user_id' => array( 'label' =>  'Gestionnaire du dossier PDO (instructeur en charge du dossier)', 'type' => 'select', 'options' => $gestionnaire )
+                    'Propopdo.etatdossierpdo' => array( 'type' => 'hidden' )/*,
+                    'Propopdo.user_id' => array( 'label' =>  'Gestionnaire du dossier PDO (instructeur en charge du dossier)', 'type' => 'select', 'options' => $gestionnaire )*/
                 ),
                 array(
                     'domain' => $domain,
@@ -199,27 +185,15 @@
                     'Propopdo.typepdo_id' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.typepdo_id', true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ),
                     'Propopdo.datereceptionpdo' => array( 'label' =>  ( __( 'Date de réception de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
 //                     'Propopdo.choixpdo' => array( 'label' =>  ( __( 'Choix', true ) ), 'type' => 'radio', 'options' => $options['choixpdo'], 'empty' => true ),
-                    'Propopdo.originepdo_id' => array( 'label' =>  ( __( 'Origine', true ) ), 'type' => 'select', 'options' => $originepdo, 'empty' => true )
+                    'Propopdo.originepdo_id' => array( 'label' =>  ( __( 'Origine', true ) ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
+                   'Propopdo.orgpayeur' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.orgpayeur', true ) ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true ),
+                   'Propopdo.serviceinstructeur_id' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.serviceinstructeur_id', true ) ), 'type' => 'select', 'options' => $serviceinstructeur, 'empty' => true )
                 ),
                 array(
                     'domain' => $domain,
                     'options' => $options
                 )
             );
-
-                echo $default->view(
-                    $dossier,
-                    array(
-                        'Dossier.fonorg',
-                        'Suiviinstruction.typeserins',
-                    ),
-                    array(
-                        'widget' => 'table',
-                        'id' => 'dossierInfosOrganisme',
-                        'options' => $options
-                    )
-                );
-                echo $ajax->observeField( 'PropopdoStructurereferenteId', array( 'update' => 'AdresseStruct', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) );
 
         ?>
     </fieldset>
@@ -232,7 +206,7 @@
             <tr>
                 <td class="mediumSize noborder">
                     <?php
-                        echo $xform->input( 'Situationpdo.Situationpdo', array( 'type' => 'select', 'label' => 'Situation de la PDO', 'multiple' => 'checkbox' , 'options' => $situationlist ) );
+                        echo $xform->input( 'Situationpdo.Situationpdo', array( 'type' => 'select', 'label' => 'Motif de la PDO', 'multiple' => 'checkbox' , 'options' => $situationlist ) );
                     ?>
                 </td>
                 <td class="mediumSize noborder">
@@ -244,7 +218,7 @@
         </table>
         <?php
 
-            echo $xhtml->tag(
+            /*echo $xhtml->tag(
                 'p',
                 'Catégories : '
             );
@@ -253,6 +227,16 @@
                 array(
                     'Propopdo.categoriegeneral' => array( 'label' => __d( 'propopdo', 'Propopdo.categoriegeneral', true ), 'type' => 'select', 'empty' => true, 'options' => $categoriegeneral ),
                     'Propopdo.categoriedetail' => array( 'label' => __d( 'propopdo', 'Propopdo.categoriedetail', true ), 'type' => 'select', 'empty' => true, 'options' => $categoriedetail ),
+                    'Propopdo.iscomplet' => array( 'legend' => false, 'type' => 'radio', 'options' => $options['iscomplet'] )
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );*/
+
+            echo $default->subform(
+                array(
                     'Propopdo.iscomplet' => array( 'legend' => false, 'type' => 'radio', 'options' => $options['iscomplet'] )
                 ),
                 array(
@@ -285,7 +269,8 @@
                     array(
                         'Propopdo.datedecisionpdo' => array( 'label' =>  ( __( 'Date de décision de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
                         'Propopdo.decisionpdo_id' => array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ),
-                        'Propopdo.motifpdo' => array( 'label' =>  ( __( 'Motif de la décision', true ) ), 'type' => 'radio', 'options' => $motifpdo, 'empty' => true )
+                        //'Propopdo.dateenvoiop' => array( 'label' =>  ( __( 'Date d\'envoi à l\'OP', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
+                        //'Propopdo.motifpdo' => array( 'label' =>  ( __( 'Motif de la décision', true ) ), 'type' => 'radio', 'options' => $motifpdo, 'empty' => true )
                     ),
                     array(
                         'domain' => $domain,
@@ -293,7 +278,7 @@
                     )
                 );
             ?>
-                <fieldset id="nonadmis" class="invisible">
+                <!--<fieldset id="nonadmis" class="invisible">
                     <?php
                         echo $default->subform(
                             array(
@@ -305,7 +290,7 @@
                             )
                         );
                     ?>
-                </fieldset>
+                </fieldset>-->
             <?php
                 echo $default->subform(
                     array(
@@ -333,8 +318,7 @@
                 echo $default->subform(
                     array(
                         'Propopdo.validationdecision' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.validationdecision', true ) ), 'type' => 'radio', 'options' => $options['validationdecision'] ),
-                        'Propopdo.datevalidationdecision' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.datevalidationdecision', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false ),
-                        'Propopdo.dateenvoiop' => array( 'label' =>  ( __( 'Date d\'envoi à l\'OP', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
+                        'Propopdo.datevalidationdecision' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.datevalidationdecision', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
                     ),
                     array(
                         'domain' => $domain,
@@ -348,9 +332,9 @@
 
     <fieldset id="Etatpdo4" class="invisible"></fieldset>
 
-    <!-- <fieldset>
+    <fieldset>
         <?php
-            /*echo $form->input( 'Propopdo.isdecisionop', array( 'label' => 'Décison de l\'OP', 'type' => 'checkbox' ) );
+            echo $form->input( 'Propopdo.isdecisionop', array( 'label' => 'Décison de l\'OP', 'type' => 'checkbox' ) );
         ?>
         <fieldset id="Decisionop" class="invisible">
         <?php
@@ -365,14 +349,14 @@
                     'options' => $options
                 )
             );
-            echo $ajax->observeField( 'PropopdoIsdecisionop', array( 'update' => 'Etatpdo5', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) ); */
+            echo $ajax->observeField( 'PropopdoIsdecisionop', array( 'update' => 'Etatpdo5', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
         ?>
         </fieldset>
     </fieldset>
-    <fieldset id="Etatpdo5" class="invisible"></fieldset> -->
+    <fieldset id="Etatpdo5" class="invisible"></fieldset>
 
 
-    <fieldset>
+    <!--<fieldset>
         <?php
             echo $form->input( 'Propopdo.suivi', array( 'label' => 'Suivi', 'type' => 'checkbox' ) );
         ?>
@@ -392,7 +376,7 @@
         ?>
         </fieldset>
     </fieldset>
-    <fieldset id="Etatpdo6" class="invisible"></fieldset>
+    <fieldset id="Etatpdo6" class="invisible"></fieldset>-->
     </div>
     <div class="submit">
         <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
@@ -401,7 +385,7 @@
 
     <?php echo $xform->end();?>
     <?php
-        echo $ajax->observeForm( 'propopdoform', array( 'update' => 'Etatpdo6', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
+        //echo $ajax->observeForm( 'propopdoform', array( 'update' => 'Etatpdo6', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
     ?>
 </div>
 <div class="clearer"><hr /></div>

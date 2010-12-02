@@ -1,0 +1,76 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+
+msgid "Saisineepreorientsr93.created"
+msgstr "Date de demande de réorientation"
+
+msgid "Saisineepreorientsr93.typeorient_id"
+msgstr "Nouvelle orientation préconisée"
+
+msgid "Saisineepreorientsr93.structurereferente_id"
+msgstr "Nouvelle structure préconisée"
+
+msgid "Saisineepreorientsr93.motifreorient_id"
+msgstr "Pour quel motif ?"
+
+msgid "Saisineepreorientsr93.commentaire"
+msgstr "Commentaire"
+
+msgid "Saisineepreorientsr93.accordaccueil"
+msgstr "Le référent d'accueil est-il d'accord avec cette réorientation ?"
+
+msgid "Saisineepreorientsr93.desaccordaccueil"
+msgstr "Si non, indiquer pourquoi"
+
+msgid "Saisineepreorientsr93.accordallocataire"
+msgstr "L'allocataire est-il d'accord avec cette réorientation ?"
+
+msgid "Saisineepreorientsr93.urgent"
+msgstr "La demande est-elle urgente ?"
+
+msgid "ENUM::ACCORDACCUEIL::0"
+msgstr "Refus"
+
+msgid "ENUM::ACCORDACCUEIL::1"
+msgstr "Accord"
+
+msgid "ENUM::ACCORDALLOCATAIRE::0"
+msgstr "Refus"
+
+msgid "ENUM::ACCORDALLOCATAIRE::1"
+msgstr "Accord"
+
+msgid "ENUM::URGENT::0"
+msgstr "Non"
+
+msgid "ENUM::URGENT::1"
+msgstr "Oui"
+
+# Moteur de recherche
+
+msgid "Search.Saisineepreorientsr93.mode"
+msgstr "Type de dossiers à rechercher"
+
+msgid "Search.Dossierep.seanceep_id"
+msgstr "Date de la séance"
+
+msgid "Saisineepreorientsr93::index::empty"
+msgstr "Aucune demande de réorientation étudiée en EP"

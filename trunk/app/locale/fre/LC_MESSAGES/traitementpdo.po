@@ -51,8 +51,20 @@ msgstr "Date de réception"
 msgid "Traitementpdo.datedepart"
 msgstr "Date de départ"
 
+msgid "Traitementpdo.dateecheance"
+msgstr "Date d'échéance"
+
+msgid "Traitementpdo.daterevision"
+msgstr "Date de révision"
+
 msgid "Traitementpdo.traitementtypepdo_id"
 msgstr "Type de traitement"
+
+msgid "Traitementpdo.personne_id"
+msgstr "Personne concernée"
+
+msgid "Traitementpdo.ficheanalyse"
+msgstr "Fiche d'analyse"
 
 msgid "Traitementpdo.hascourrier"
 msgstr "Courrier"
@@ -89,3 +101,10 @@ msgstr "Non"
 
 msgid "ENUM::HASFICHEANALYSE::1"
 msgstr "Oui"
+
+msgid "Traitementpdo.cloreprev"
+msgstr "Fermer un ou plusieurs traitement(s) associé(s) ?"
+
+msgid "Traitementpdo.questionclore"
+msgstr "Clore ?"
+

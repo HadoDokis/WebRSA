@@ -3,6 +3,8 @@
 	{
 		public $name = 'Typeorient';
 
+		public $displayField = 'lib_type_orient';
+
 		public $hasMany = array(
 			'Decisionparcours' => array(
 				'className' => 'Decisionparcours',

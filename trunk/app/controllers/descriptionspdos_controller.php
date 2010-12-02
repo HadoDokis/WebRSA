@@ -9,6 +9,8 @@
 
         public $components = array( 'Default' );
         
+        public $helpers = array( 'Default2' );
+        
 		var $commeDroit = array(
 			'view' => 'Descriptionspdos:index',
 			'add' => 'Descriptionspdos:edit'

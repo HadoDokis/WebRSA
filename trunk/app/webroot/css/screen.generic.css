@@ -993,3 +993,82 @@ fieldset.actioncandidat legend {
     text-align: center;
     font-weight: bold;
 }
+
+/**
+ * Pour les icones du DefaultHelper2
+ */
+
+ul.actions {
+	display: block;
+	list-style: none;
+	padding: 0;
+	margin: 1em 0;
+}
+
+ul.actions li {
+	display: inline;
+	padding: 0.33em 0.5em;
+	margin: 0 1.5em 0 0;
+	border: 1px solid #235F7D;
+}
+
+ul.actions li a {
+	background-repeat: no-repeat;
+	padding-left: 20px;
+	text-decoration: none;
+	background-position: left center;
+}
+
+ul.actions li.add a {
+	background-image: url( ../img/icons/add.png );
+}
+
+/**/
+
+td.button a, td.action a, td.button span, td span.button {
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-left: 20px;
+	text-decoration: none;
+	display: block;
+}
+
+td span.button.disabled {
+	color: silver;
+}
+
+td.button.view a, td.action a.view, td.button span.link, td span.button.view {
+	background-image: url( ../img/icons/zoom.png );
+}
+
+td.button.edit a, td.action a.edit, td span.button.edit {
+	background-image: url( ../img/icons/pencil.png );
+}
+
+td.button.clore a, td.action a.clore, td span.button.clore {
+	background-image: url( ../img/icons/page_white_link.png );
+}
+
+td.button.print a, td.action a.print, td span.button.print {
+	background-image: url( ../img/icons/printer.png );
+}
+
+td.button.delete a, td.action a.delete, td span.button.delete {
+	background-image: url( ../img/icons/delete.png );
+}
+
+/**/
+
+td.boolean span, table tr:nth-child(2n) td.boolean span {
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-left: 20px;
+}
+
+td.boolean.true span {
+	background-image: url( ../img/icons/tick.png );
+}
+
+td.boolean.false span {
+	background-image: url( ../img/icons/cross.png );
+}

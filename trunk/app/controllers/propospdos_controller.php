@@ -3,9 +3,9 @@
     class PropospdosController extends AppController{
 
         var $name = 'Propospdos';
-        var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Structurereferente',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier' );
+        var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier' );
 
-        var $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
+        var $aucunDroit = array( 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
         var $helpers = array( 'Default', 'Ajax' );
 
@@ -31,7 +31,8 @@
 
             $this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
             $this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
-            $this->set( 'structs', $this->Structurereferente->listOptions() );
+            $this->set( 'serviceinstructeur', $this->Propopdo->Serviceinstructeur->listOptions() );
+            $this->set( 'orgpayeur', array('CAF'=>'CAF', 'MSA'=>'MSA') );
 //             $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
             $this->set( 'gestionnaire', $this->User->find(
                     'list',
@@ -79,19 +80,6 @@
 //             $this->set( compact( 'options' ) );
 //             return $return;
 //         }
-
-        function ajaxstruct( $structurereferente_id = null ) {
-
-            $dataStructurereferente_id = Set::extract( $this->data, 'Propopdo.structurereferente_id' );
-            $structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
-
-            $struct = $this->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
-
-            $this->set( 'struct', $struct );
-
-            Configure::write( 'debug', 0 );
-            $this->render( 'ajaxstruct', 'ajax' );
-        }
 
 
 //         function ajaxfichecalcul( $iscomplet = null ) {
@@ -357,7 +345,6 @@
 
                 if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
                     if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-
                         $this->Jetons->release( $dossier_id );
                         $this->Propopdo->commit();
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -390,8 +377,8 @@
 
             $this->set( 'personne_id', $personne_id );
             $this->_setOptions();
+			$this->set( 'structs', $this->Propopdo->Structurereferente->find( 'list' ) );
             $this->render( $this->action, null, 'add_edit_'.Configure::read( 'nom_form_pdo_cg' ) );
         }
     }
-
 ?>

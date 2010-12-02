@@ -14,14 +14,16 @@
 
 	echo $default->form(
 		array(
-			'Descriptionpdo.name' => array( 'required' => true  ),
-			'Descriptionpdo.modelenotification' => array( 'required' => true  ),
-			'Descriptionpdo.sensibilite' => array( 'type' => 'radio', 'value' => $sensibilite, 'required' => true  )
+			'Descriptionpdo.name',
+			'Descriptionpdo.modelenotification',
+			'Descriptionpdo.sensibilite' => array( 'type' => 'radio', ),
+			'Descriptionpdo.dateactive' => array( 'type' => 'select' ),
+			'Descriptionpdo.declencheep' => array( 'type' => 'radio' )
 		),
 		array(
 			'actions' => array(
-				'Descriptionpdo.save',
-				'Descriptionpdo.cancel'
+				'descriptionspdos::save',
+				'descriptionspdos::cancel'
 			),
 			'options' => $options
 		)

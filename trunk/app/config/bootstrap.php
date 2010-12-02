@@ -358,6 +358,7 @@
     require_once( CONFIGS.'webrsa.inc' );
     require_once( CONFIGS.'lib.basics.php' );
     require_once( CONFIGS.'lib.xset.php' );
+    require_once( CONFIGS.'lib.xinflector.php' );
 
     /** ************************************************************************
     *

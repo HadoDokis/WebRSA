@@ -1,0 +1,77 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+
+msgid "Bilanparcours66.presenceallocataire"
+msgstr "Allocataire est-il présent ?"
+
+msgid "ENUM::PRESENCEALLOCATAIRE::0"
+msgstr "Non"
+
+msgid "ENUM::PRESENCEALLOCATAIRE::1"
+msgstr "Oui"
+
+msgid "Bilanparcours66.situationallocataire"
+msgstr "Situation de l'allocataire"
+
+msgid "Bilanparcours66.bilanparcours"
+msgstr "Bilan du parcours"
+
+msgid "Bilanparcours66.infoscomplementaires"
+msgstr "Informations complémentaires"
+
+msgid "Bilanparcours66.observationsallocataire"
+msgstr "Observations de l'allocataire"
+
+msgid "Bilanparcours66.maintienorientation"
+msgstr "Maitien de l'orientation ?"
+
+msgid "ENUM::MAINTIENORIENTATION::0"
+msgstr "Non"
+
+msgid "ENUM::MAINTIENORIENTATION::1"
+msgstr "Oui"
+
+msgid "Bilanparcours66.ddreconductoncontrat"
+msgstr "Date de début de reconduction du contrat"
+
+msgid "Bilanparcours66.dfreconductoncontrat"
+msgstr "Date de fin de reconduction du contrat"
+
+msgid "Bilanparcours66.saisineepparcours"
+msgstr "Saisine EP"
+
+msgid "Bilanparcours66.created"
+msgstr "Date du bilan"
+
+msgid "Bilanparcours66::index::empty"
+msgstr "Aucun bilan de parcours présent"
+
+msgid "Bilansparcours66::add"
+msgstr "Ajout d'un bilan de parcours"
+
+msgid "Bilanparcours66.duree_engag"
+msgstr "Durée de la reconduction du contrat"
+
+msgid "Bilanparcours66.structurereferente_id"
+msgstr "MSP"
+
+msgid "Bilanparcours66.referent_id"
+msgstr "Rédigé par"
