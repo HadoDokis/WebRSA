@@ -68,47 +68,49 @@
 			// Vérification du format de la variable
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			$personne = $this->Personne->find(
-				'first',
-				array(
-					'fields' => array(
-						'Personne.id',
-						'Personne.foyer_id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Personne.nomnai',
-						'Personne.prenom2',
-						'Personne.prenom3',
-						'Personne.nomcomnai',
-						'Personne.dtnai',
-						'Personne.rgnai',
-						'Personne.typedtnai',
-						'Personne.nir',
-						'Personne.topvalec',
-						'Personne.sexe',
-						'Personne.nati',
-						'Personne.dtnati',
-						'Personne.pieecpres',
-						'Personne.idassedic',
-						'Personne.numagenpoleemploi',
-						'Personne.dtinscpoleemploi',
-						'Personne.numfixe',
-						'Personne.numport',
-						'Prestation.rolepers',
-						'Foyer.sitfam'
-					),
-					'conditions' => array( 'Personne.id' => $id ),
-					'contain' => array(
-						'Prestation',
-						'Foyer',
-						'Grossesse' => array(
-							'order' => array( 'Grossesse.ddgro DESC' ),
-							'limit' => 1
-						)
+			$queryData = array(
+				'fields' => array(
+					'Personne.id',
+					'Personne.foyer_id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.nomnai',
+					'Personne.prenom2',
+					'Personne.prenom3',
+					'Personne.nomcomnai',
+					'Personne.dtnai',
+					'Personne.rgnai',
+					'Personne.typedtnai',
+					'Personne.nir',
+					'Personne.topvalec',
+					'Personne.sexe',
+					'Personne.nati',
+					'Personne.dtnati',
+					'Personne.pieecpres',
+					'Personne.idassedic',
+					'Personne.numagenpoleemploi',
+					'Personne.dtinscpoleemploi',
+					'Personne.numfixe',
+					'Personne.numport',
+					'Prestation.rolepers',
+				),
+				'conditions' => array( 'Personne.id' => $id ),
+				'contain' => array(
+					'Prestation',
+					'Grossesse' => array(
+						'order' => array( 'Grossesse.ddgro DESC' ),
+						'limit' => 1
 					)
 				)
 			);
+
+			if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
+				$queryData['fields'][] = 'Foyer.sitfam';
+				$queryData['contain'][] = 'Foyer';
+			}
+
+			$personne = $this->Personne->find( 'first', $queryData );
 
 			// Mauvais paramètre ?
 			$this->assert( !empty( $personne ), 'invalidParameter' );
