@@ -1,6 +1,5 @@
 Versions de CakePHP supportées:
-    * version minimale requise: 1.2.4.8284
-    * version recommandée: 1.2.5
+    * version minimale requise / version recommandée: 1.2.9
 
 * Version 1.3-rc5
     - Correctifs:
