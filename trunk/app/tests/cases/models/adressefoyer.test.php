@@ -15,18 +15,14 @@
 			// test avec un adressefoyer_id incoherent
 			$this->assertFalse($this->Adressefoyer->dossierId(-42));
 
-			// test avec un adressefoyer_id incoherent
-			//$this->assertFalse($this->Adressefoyer->dossierId("toto"));
-			///FIXME
-			// Le fait de passer une string a la place d'un entier creer des exceptions
 		}
-		/*
+
 		function testSqDerniereRgadr01() {
 			$field = "toto";
 			$expected = " SELECT adressesfoyers.id FROM adressesfoyers WHERE adressesfoyers.foyer_id = " . $field . " AND 						adressesfoyers.rgadr = '01' ORDER BY adressesfoyers.dtemm DESC LIMIT 1 ";
 			$this->assertEqual($expected, $this->Adressefoyer->SqDerniereRgadr01("toto"));
 		}
-		*/
+
 		// test effectué sur cette fonction uniquement pour la couverture de code
 		function testSqlFoyerActuelUnique() {
 			$expected = '(

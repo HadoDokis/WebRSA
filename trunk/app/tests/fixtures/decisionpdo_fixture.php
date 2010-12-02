@@ -7,11 +7,11 @@
 		var $records = array(
 			array(
 				'id' => '1',
-				'libelle' => null,
+				'libelle' => 'libellé',
 			),
 			array(
 				'id' => '2',
-				'libelle' => null,
+				'libelle' => 'libellé2',
 			),
 		);
 	}

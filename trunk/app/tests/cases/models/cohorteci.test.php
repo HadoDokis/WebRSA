@@ -7,8 +7,17 @@
 	class CohorteciTestCase extends CakeAppModelTestCase {
 		// test fonction search
 		function testSearch() {
-		$result = $this->Cohorteci->search();
-		var_dump($result);
+		$result = $this->Cohorteci->search(null, 34000, null, null, null);
+		$this->assertTrue($result);
+
+		$result = $this->Cohorteci->search('Decisionci::nonvalide', 34080, null, null, null);
+		$this->assertTrue($result);
+
+		$result = $this->Cohorteci->search('Decisionci::enattente', 34080, null, null, null);
+		$this->assertTrue($result);
+
+		$result = $this->Cohorteci->search('Decisionci::valides', 34080, null, null, null);
+		$this->assertTrue($result);
 		}
 	}
 

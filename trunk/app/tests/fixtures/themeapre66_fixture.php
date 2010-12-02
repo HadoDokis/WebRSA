@@ -5,6 +5,10 @@
 		var $table = 'themesapres66';
 		var $import = array( 'table' => 'themesapres66', 'connection' => 'default', 'records' => false);
 		var $records = array(
+			array(
+				'id' => '1',
+				'name' => 'typesaidepar66name',
+			),
 		);
 	}
 

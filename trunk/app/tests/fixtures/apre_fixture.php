@@ -8,8 +8,8 @@
 			array(
 				'id' => '1',
 				'personne_id' => '1',
-				'numeroapre' => null,
-				'typedemandeapre' => null,
+				'numeroapre' => '1',
+				'typedemandeapre' => '1',
 				'datedemandeapre' => null,
 				'naturelogement' => null,
 				'precisionsautrelogement' => null,

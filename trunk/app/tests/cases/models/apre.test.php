@@ -106,28 +106,38 @@
 			$expected=array(
 				'Piecepresente' => array(
 					'Apre' => 1,
-					'Actprof' => 0,
-					'Amenaglogt' => 0,
+					'Actprof' => 1,
+					'Permisb' => 1,
+					'Amenaglogt' => 1,
+					'Acccreaentr' => 1,
+					'Acqmatprof' => 1,
 				),
 				'Piecemanquante' => array(
 					'Apre' => 0,
-					'Actprof' => 0,
-					'Amenaglogt' => 0,
+					'Actprof' => 1,
+					'Permisb' => 1,
+					'Amenaglogt' => 1,
+					'Acccreaentr' => 1,
+					'Acqmatprof' => 1,
 				),
 				'Piece' => array (
 					'Manquante' => array(
-						'Apre' => array(
-						)
+						'Apre' => array(),
+						'Actprof' => array('2' => 'libellé2'),
+						'Permisb' => array('2' => 'libellé2'),
+						'Amenaglogt' => array('2' => 'libellé2'),
+						'Acccreaentr' => array('2' => 'libellé2'),
+						'Acqmatprof' => array('2' => 'libellé2'),
 					)
 				),
 				'Natureaide' => array (
 					'Formqualif' => 0,
 					'Formpermfimo' => 0,
 					'Actprof' => 1,
-					'Permisb' => 0,
+					'Permisb' => 1,
 					'Amenaglogt' => 1,
-					'Acccreaentr' => 0,
-					'Acqmatprof' => 0,
+					'Acccreaentr' => 1,
+					'Acqmatprof' => 1,
 					'Locvehicinsert' => 0
 				)
 			);
