@@ -125,7 +125,7 @@
 					)
 				);
 
-			if ($dossierep==0 && $data['Traitementpdo']['traitementtypepdo_id']==1) {
+			if ($dossierep==0 && $data['Traitementpdo']['traitementtypepdo_id']==Configure::read( 'traitementEnCoursId' )) {
 				$descriptionpdo = $this->Descriptionpdo->find(
 					'first',
 					array(

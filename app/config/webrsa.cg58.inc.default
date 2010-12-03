@@ -193,4 +193,7 @@
 	* Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
 	*/
 	Configure::write( 'traitementResultatId', 2 );
+	
+	Configure::write( 'traitementEnCoursId', 2 );
+	Configure::write( 'traitementClosId', 1 );
 ?>
