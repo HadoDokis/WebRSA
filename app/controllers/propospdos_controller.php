@@ -5,7 +5,7 @@
         var $name = 'Propospdos';
         var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier' );
 
-        var $aucunDroit = array( 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
+        var $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
         var $helpers = array( 'Default', 'Ajax' );
 
@@ -80,6 +80,19 @@
 //             $this->set( compact( 'options' ) );
 //             return $return;
 //         }
+
+           function ajaxstruct( $structurereferente_id = null ) {
+
+                $dataStructurereferente_id = Set::extract( $this->data, 'Propopdo.structurereferente_id' );
+                $structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
+
+                $struct = $this->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
+
+                $this->set( 'struct', $struct );
+
+                Configure::write( 'debug', 0 );
+                $this->render( 'ajaxstruct', 'ajax' );
+           }
 
 
 //         function ajaxfichecalcul( $iscomplet = null ) {
