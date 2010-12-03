@@ -40,6 +40,29 @@ INSERT INTO motifsreorients ( name ) VALUES
 SELECT pg_catalog.setval('seanceseps_id_seq', 1, true);
 INSERT INTO seanceseps VALUES ( 1, 1, 25, '2010-10-28 10:00:00', NULL );
 
+TRUNCATE situationspdos;
+SELECT pg_catalog.setval('situationspdos_id_seq', ( SELECT max(situationspdos.id) + 1 FROM situationspdos ), false);
+INSERT INTO situationspdos (libelle) VALUES
+	('Evaluation revenus non salariés')
+;
+
+TRUNCATE statutspdos;
+SELECT pg_catalog.setval('statutspdos_id_seq', ( SELECT max(statutspdos.id) + 1 FROM statutspdos ), false);
+INSERT INTO statutspdos (libelle) VALUES
+	('TI')
+;
+
+TRUNCATE descriptionspdos;
+SELECT pg_catalog.setval('descriptionspdos_id_seq', ( SELECT max(descriptionspdos.id) + 1 FROM descriptionspdos ), false);
+INSERT INTO descriptionspdos (name, dateactive, declencheep) VALUES
+	('Courrier à l\'allocataire', 'datedepart', '0'),
+	('Pièces arrivées', 'datereception', '0'),
+	('Courrier Révision de ressources', 'datedepart', '0'),
+	('Enquête administrative demandée', 'datedepart', '0'),
+	('Enquête administrative reçue', 'datereception', '0'),
+	('Saisine EP Dépt', 'datedepart', '1')
+;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
