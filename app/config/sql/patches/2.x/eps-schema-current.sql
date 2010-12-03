@@ -44,6 +44,7 @@ DROP TABLE IF EXISTS eps CASCADE;
 DROP TABLE IF EXISTS regroupementseps CASCADE;
 DROP TABLE IF EXISTS motifsreorients CASCADE;
 DROP TABLE IF EXISTS saisinesepdspdos66 CASCADE;
+DROP TABLE IF EXISTS nvsepdspdos66 CASCADE;
 
 DROP TYPE IF EXISTS TYPE_THEMEEP CASCADE;
 DROP TYPE IF EXISTS TYPE_DECISIONEP CASCADE;
@@ -429,7 +430,7 @@ CREATE INDEX avissrmreps93_signalesr_idx ON avissrmreps93(signalesr);*/
 -- *****************************************************************************
 
 SELECT add_missing_table_field ('public', 'propospdos', 'serviceinstructeur_id', 'integer');
-ALTER TABLE propospdos ALTER COLUMN ADD FOREIGN KEY (serviceinstructeur_id) REFERENCES servicesinstructeurs (id);
+ALTER TABLE propospdos ADD FOREIGN KEY (serviceinstructeur_id) REFERENCES servicesinstructeurs (id);
 
 SELECT add_missing_table_field ('public', 'propospdos', 'created', 'TIMESTAMP WITHOUT TIME ZONE');
 SELECT add_missing_table_field ('public', 'propospdos', 'modified', 'TIMESTAMP WITHOUT TIME ZONE');
@@ -439,20 +440,23 @@ SELECT add_missing_table_field ('public', 'propospdos', 'orgpayeur', 'type_orgpa
 
 CREATE TYPE type_dateactive AS ENUM ( 'datedepart', 'datereception' );
 SELECT add_missing_table_field ('public', 'descriptionspdos', 'dateactive', 'type_dateactive');
-ALTER TABLE descriptionspdos ALTER COLUMN dateactive SET NOT NULL;
+UPDATE descriptionspdos SET dateactive = 'datedepart' WHERE dateactive IS NULL;
 ALTER TABLE descriptionspdos ALTER COLUMN dateactive SET DEFAULT 'datedepart';
+ALTER TABLE descriptionspdos ALTER COLUMN dateactive SET NOT NULL;
 SELECT add_missing_table_field ('public', 'descriptionspdos', 'declencheep', 'type_booleannumber');
-ALTER TABLE descriptionspdos ALTER COLUMN declencheep SET NOT NULL;
+UPDATE descriptionspdos SET declencheep = '0' WHERE declencheep IS NULL;
 ALTER TABLE descriptionspdos ALTER COLUMN declencheep SET DEFAULT '0';
+ALTER TABLE descriptionspdos ALTER COLUMN declencheep SET NOT NULL;
 
 SELECT add_missing_table_field ('public', 'traitementspdos', 'dateecheance', 'DATE');
 SELECT add_missing_table_field ('public', 'traitementspdos', 'daterevision', 'DATE');
 SELECT add_missing_table_field ('public', 'traitementspdos', 'personne_id', 'integer');
-ALTER TABLE propospdos ALTER COLUMN ADD FOREIGN KEY (personne_id) REFERENCES personnes (id);
+ALTER TABLE propospdos ADD FOREIGN KEY (personne_id) REFERENCES personnes (id);
 SELECT add_missing_table_field ('public', 'traitementspdos', 'ficheanalyse', 'TEXT');
 SELECT add_missing_table_field ('public', 'descriptionspdos', 'clos', 'INTEGER');
-ALTER TABLE descriptionspdos ALTER COLUMN declencheep SET NOT NULL;
-ALTER TABLE descriptionspdos ALTER COLUMN declencheep SET DEFAULT 0;
+UPDATE descriptionspdos SET clos = '0' WHERE clos IS NULL;
+ALTER TABLE descriptionspdos ALTER COLUMN clos SET DEFAULT '0';
+ALTER TABLE descriptionspdos ALTER COLUMN clos SET NOT NULL;
 
 CREATE TABLE saisinesepdspdos66 (
 	id      				SERIAL NOT NULL PRIMARY KEY,
