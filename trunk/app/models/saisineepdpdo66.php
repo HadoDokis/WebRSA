@@ -140,7 +140,7 @@
 					$success = $this->Traitementpdo->save($traitementpdo) && $success;
 
 					$this->Traitementpdo->id = $dossierep['Traitementpdo']['id'];
-					$success = $this->Traitementpdo->saveField('clos', 1) && $success;
+					$success = $this->Traitementpdo->saveField('clos', Configure::read( 'traitementClosId' )) && $success;
 				}
 			}
 
