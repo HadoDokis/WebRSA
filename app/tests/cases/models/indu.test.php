@@ -5,7 +5,13 @@
 	App::import('Model', 'Indu');
 
 	class InduTestCase extends CakeAppModelTestCase {
-
+		/*
+		//test fonction search($mescodesinsee, $filtre_zone_geo, $criteres)
+		function testSearch() {
+			$result = $this->Indu->search(array('toto' => 'titi'), array('tata' => 'tuut'), array('Dossier.id' => '1'));
+			$this->assertTrue($result);
+		}
+		*/
 	}
 
 ?>
