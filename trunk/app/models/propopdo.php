@@ -41,10 +41,6 @@
 				'rule' => array( 'allEmpty', 'decision' ),
 				'message' => 'Si prise de décision, choisir un type de décision'
 			),
-			'iscomplet' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
 			'datedecisionpdo' => array(
 				'rule' => 'date',
 				'message' => 'Veuillez entrer une date valide.',
