@@ -14,6 +14,7 @@
 			),
 			'numposte' => array(
 				array(
+					'rule' => 'alphaNumeric',
 					'allowEmpty' => true
 				),
 
