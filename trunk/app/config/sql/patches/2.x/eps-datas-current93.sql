@@ -41,19 +41,19 @@ SELECT pg_catalog.setval('seanceseps_id_seq', 1, true);
 INSERT INTO seanceseps VALUES ( 1, 1, 104, '2010-10-28 10:00:00', NULL );
 
 TRUNCATE situationspdos CASCADE;
-SELECT pg_catalog.setval('situationspdos_id_seq', ( SELECT max(situationspdos.id) + 1 FROM situationspdos ), false);
+SELECT pg_catalog.setval('situationspdos_id_seq', ( SELECT COALESCE( max(situationspdos.id) + 1, 1 ) FROM situationspdos ), false);
 INSERT INTO situationspdos (libelle) VALUES
 	('Evaluation revenus non salariés')
 ;
 
 TRUNCATE statutspdos CASCADE;
-SELECT pg_catalog.setval('statutspdos_id_seq', ( SELECT max(statutspdos.id) + 1 FROM statutspdos ), false);
+SELECT pg_catalog.setval('statutspdos_id_seq', ( SELECT COALESCE( max(statutspdos.id) + 1, 1 ) FROM statutspdos ), false);
 INSERT INTO statutspdos (libelle) VALUES
 	('TI')
 ;
 
 TRUNCATE descriptionspdos CASCADE;
-SELECT pg_catalog.setval('descriptionspdos_id_seq', ( SELECT max(descriptionspdos.id) + 1 FROM descriptionspdos ), false);
+SELECT pg_catalog.setval('descriptionspdos_id_seq', ( SELECT COALESCE( max(descriptionspdos.id) + 1, 1 ) FROM descriptionspdos ), false);
 INSERT INTO descriptionspdos (name, dateactive, declencheep) VALUES
 	('Courrier à l\'allocataire', 'datedepart', '0'),
 	('Pièces arrivées', 'datereception', '0'),
