@@ -206,16 +206,14 @@
 
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->data ) ) {
-debug($this->data);
 				$this->Bilanparcours66->begin();
 
 				$success = $this->Bilanparcours66->sauvegardeBilan( $this->data );
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
-					$this->Bilanparcours66->rollback();
- 					/*$this->Bilanparcours66->commit();
-					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );*/
+ 					$this->Bilanparcours66->commit();
+					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->Bilanparcours66->rollback();

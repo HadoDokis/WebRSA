@@ -120,7 +120,7 @@
 		*/
 
 		public function sauvegardeBilan( $data ) {
-			$data[$this->alias]['saisineepparcours'] = !$data[$this->alias]['maintienorientation'];
+			$data[$this->alias]['saisineepparcours'] = !isset($data[$this->alias]['maintienorientation']);
 			// Recondution du contrat
 			if( !empty( $data[$this->alias]['maintienorientation'] ) ) {
 				$cleanedData = $data;
