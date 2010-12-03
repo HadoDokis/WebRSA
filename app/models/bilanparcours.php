@@ -15,7 +15,6 @@
 					'accordprojet',
 					'maintienorientsansep',
 					'choixparcours',
-					'maintienorientsansep',
 					'changementrefsansep',
 					'maintienorientparcours',
 					'changementrefparcours',

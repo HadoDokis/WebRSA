@@ -23,12 +23,29 @@
 		*/
 
 		protected function _setOptions() {
-			$options = $this->Bilanparcours66->enums();
+            $options = array();
+            $options = $this->Bilanparcours66->allEnumLists();
+            $typevoie = $this->Option->typevoie();
+            $this->set( 'rolepers', $this->Option->rolepers() );
+            $this->set( 'qual', $this->Option->qual() );
+            $this->set( 'nationalite', $this->Option->nationalite() );
+
+            $options = Set::insert( $options, 'typevoie', $typevoie );
+
+            $options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
+            $options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->listOptions();
+            $options[$this->modelClass]['nvsansep_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
+            $options[$this->modelClass]['nvparcours_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
+
+            $this->set( compact( 'options' ) );
+
+            $this->set( 'rsaSocle', $this->Option->natpf() );
+            
 			$options['Saisineepbilanparcours66']['typeorient_id'] = $this->Bilanparcours66->Typeorient->listOptions();
 			$options['Saisineepbilanparcours66']['structurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag_cg66();
-            $options['Bilanparcours66']['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
-            $options['Bilanparcours66']['referent_id'] = $this->{$this->modelClass}->Referent->listOptions();
+            
+			//$options = $this->Bilanparcours66->enums();
 
 			$this->set( compact( 'options' ) );
 		}
@@ -311,7 +328,7 @@
 
 			$this->set( compact( 'personne' ) );
 			$this->_setOptions();
-			$this->render( null, null, 'add_edit' );
+			$this->render( null, null, 'add_edit_afaire' );
 		}
 
 		/**

@@ -29,6 +29,21 @@
 					'saisineepparcours',
 					'maintienorientation',
 					'changereferent',
+					'accordprojet',
+					'maintienorientsansep',
+					'choixparcours',
+					'changementrefsansep',
+					'maintienorientparcours',
+					'changementrefparcours',
+					'reorientation',
+					'examenaudition',
+					'maintienorientavisep',
+					'changementrefeplocale',
+					'reorientationeplocale',
+					'typeeplocale',
+					'decisioncommission',
+					'decisioncoordonnateur',
+					'decisioncga'
 				)
 			)
 		);
