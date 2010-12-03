@@ -114,5 +114,31 @@ ALTER TABLE nvsepdspdos66 ADD COLUMN motifpdo VARCHAR(1);
 ALTER TABLE nvsepdspdos66 ADD COLUMN datedecisionpdo DATE;
 
 -- *****************************************************************************
+-- Modification pour reprendre l'ancien bilan de parcours du 66
+-- *****************************************************************************
+
+ALTER TABLE bilansparcours66 ADD COLUMN accordprojet type_booleannumber;
+ALTER TABLE bilansparcours66 ADD COLUMN maintienorientsansep type_orient;
+ALTER TABLE bilansparcours66 ADD COLUMN choixparcours type_choixparcours;
+ALTER TABLE bilansparcours66 ADD COLUMN changementrefsansep type_no;
+ALTER TABLE bilansparcours66 ADD COLUMN maintienorientparcours type_orient;
+ALTER TABLE bilansparcours66 ADD COLUMN changementrefparcours type_no;
+ALTER TABLE bilansparcours66 ADD COLUMN reorientation type_reorientation;
+ALTER TABLE bilansparcours66 ADD COLUMN examenaudition type_type_demande;
+ALTER TABLE bilansparcours66 ADD COLUMN maintienorientavisep type_orient;
+ALTER TABLE bilansparcours66 ADD COLUMN changementrefeplocale type_no;
+ALTER TABLE bilansparcours66 ADD COLUMN reorientationeplocale type_reorientation;
+ALTER TABLE bilansparcours66 ADD COLUMN typeeplocale type_typeeplocale;
+ALTER TABLE bilansparcours66 ADD COLUMN decisioncommission type_aviscommission;
+ALTER TABLE bilansparcours66 ADD COLUMN decisioncoordonnateur type_aviscoordonnateur;
+ALTER TABLE bilansparcours66 ADD COLUMN decisioncga type_aviscoordonnateur;
+
+
+
+-- *****************************************************************************
+-- Fin modification
+-- *****************************************************************************
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
