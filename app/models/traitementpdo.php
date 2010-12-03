@@ -103,19 +103,19 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		public function beforeSave($options = array()) {
 			if ((!isset($this->data['Traitementpdo']['daterevision']) || empty($this->data['Traitementpdo']['daterevision']) ) && (!isset($this->data['Traitementpdo']['dateecheance']) || empty($this->data['Traitementpdo']['dateecheance']))) {
 				$this->data['Traitementpdo']['clos'] = 1;
 			}
 			return parent::beforeSave($options);
 		}
-		
+
 		public function sauvegardeTraitement($data) {
 			$passageEpd = false;
-			
+
 			$dossierep = 0;
-			if (isset($data['Traitementpdo']['id'])) 
+			if (isset($data['Traitementpdo']['id']))
 				$dossierep = $this->Saisineepdpdo66->find(
 					'count',
 					array(
@@ -124,7 +124,7 @@
 						)
 					)
 				);
-			
+
 			if ($dossierep==0 && $data['Traitementpdo']['traitementtypepdo_id']==1) {
 				$descriptionpdo = $this->Descriptionpdo->find(
 					'first',
@@ -137,7 +137,7 @@
 				);
 				$passageEpd = ($descriptionpdo['Descriptionpdo']['declencheep']==1) ? true : false;
 			}
-			
+
 			$success = true;
 
 			$has = array('hascourrier', 'hasrevenu', 'haspiecejointe', 'hasficheanalyse');
@@ -146,15 +146,15 @@
 					unset($data['Traitementpdo'][$field]);
 			}
 			$success = $this->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
-			
+
 			if ($data['Traitementpdo']['cloreprev']==1) {
 				foreach($data['Traitementpdo']['traitmentpdoIdClore'] as $id=>$clore) {
 					if ($clore==1) {
-						$success = $this->updateAll(array('clos'=>1),array('Traitementpdo.id'=>$id)) && $success;
+						$success = $this->updateAll(array('Traitementpdo.clos'=>1),array('"Traitementpdo"."id"'=>$id)) && $success;
 					}
 				}
 			}
-			
+
 			if ($passageEpd) {
 				$propopdo = $this->Propopdo->find(
 					'first',
@@ -164,17 +164,17 @@
 						)
 					)
 				);
-				
+
 				$dataDossierEp = array(
 					'Dossierep' => array(
 						'personne_id' => $propopdo['Propopdo']['personne_id'],
 						'themeep' => 'saisinesepdspdos66'
 					)
 				);
-				
+
 				$this->Saisineepdpdo66->Dossierep->create( $dataDossierEp );
 				$success = $this->Saisineepdpdo66->Dossierep->save() && $success;
-				
+
 				$dataSaisineepdpdo66 = array(
 					'Saisineepdpdo66' => array(
 						'traitementpdo_id' => $this->id,

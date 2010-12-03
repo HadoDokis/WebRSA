@@ -61,7 +61,7 @@
 
 		public function finaliser( $seanceep_id, $etape ) {
 			$success = true;
-			
+
 			if ($etape=='cg') {
 				$dossierseps = $this->find(
 					'all',
@@ -78,7 +78,7 @@
 						)
 					)
 				);
-			
+
 				foreach( $dossierseps as $dossierep ) {
 					$propopdo = $this->Traitementpdo->Propopdo->find(
 						'first',
@@ -87,7 +87,7 @@
 								'Propopdo.id' => $dossierep['Traitementpdo']['propopdo_id']
 							),
 							'contain' => array(
-							
+
 							)
 						)
 					);
@@ -97,17 +97,17 @@
 					//$propopdo['Propopdo']['motifpdo'] = $dossierep['Nvsepdpdo66'][1]['motifpdo'];
 					//$propopdo['Propopdo']['nonadmis'] = $dossierep['Nvsepdpdo66'][1]['nonadmis'];
 					$propopdo['Propopdo']['commentairepdo'] = $dossierep['Nvsepdpdo66'][1]['commentaire'];
-				
+
 					$success = $this->Traitementpdo->Propopdo->save($propopdo) && $success;
 				}
 			}
-			
+
 			return $success;
 		}
-		
+
 		public function verrouiller( $seanceep_id, $etape ) {
 			$success = true;
-			
+
 			if ($etape=='ep') {
 				$dossierseps = $this->find(
 					'all',
@@ -127,7 +127,7 @@
 						)
 					)
 				);
-			
+
 				foreach( $dossierseps as $dossierep ) {
 					$traitementpdo['Traitementpdo']['descriptionpdo_id'] = Configure::read( 'traitementResultatId' );
 					$traitementpdo['Traitementpdo']['traitementtypepdo_id'] = 2;
@@ -136,14 +136,14 @@
 					$traitementpdo['Traitementpdo']['datereception'] = $jour;
 					$traitementpdo['Traitementpdo']['personne_id'] = $dossierep['Traitementpdo']['personne_id'];
 					$traitementpdo['Traitementpdo']['propopdo_id'] = $dossierep['Traitementpdo']['Propopdo']['id'];
-			
+
 					$success = $this->Traitementpdo->save($traitementpdo) && $success;
-					
+
 					$this->Traitementpdo->id = $dossierep['Traitementpdo']['id'];
 					$success = $this->Traitementpdo->saveField('clos', 1) && $success;
 				}
 			}
-			
+
 			return $success;
 		}
 
@@ -177,13 +177,13 @@
 							'Descriptionpdo',
 							'Propopdo' => array(
 								'Situationpdo'
-							)		
+							)
 						)
 					)
 				)
 			);
 		}
-		
+
 		/**
 		 *
 		 */
@@ -206,7 +206,7 @@
 
 			$this->Dossierep->updateAll(
 				array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-				array( 'Dossierep.id' => Set::extract( $data, '/Dossierep/id' ) )
+				array( '"Dossierep"."id"' => Set::extract( $data, '/Dossierep/id' ) )
 			);
 
 			return $success;
@@ -251,7 +251,7 @@
 			}
 			return $formData;
 		}
-		
+
 		public function prepareFormDataUnique( $dossierep_id, $dossierep, $niveauDecision ) {
 			$formData = array();
 			if ($niveauDecision=='cg') {
@@ -268,7 +268,7 @@
 					//$formData['Nvsepdpdo66']['motifpdo'] = $dossierep[$this->alias]['Nvsepdpdo66'][1]['motifpdo'];
 					//$formData['Nvsepdpdo66']['nonadmis'] = $dossierep[$this->alias]['Nvsepdpdo66'][1]['nonadmis'];
 				}
-				
+
 				$formData['Saisineepdpdo66']['id'] = $dossierep[$this->alias]['id'];
 				$formData['Dossierep']['id'] = $dossierep['Dossierep']['id'];
 			}
@@ -281,10 +281,10 @@
 
 		public function saveDecisionUnique( $data, $niveauDecision ) {
 			$success = $this->Nvsepdpdo66->save( $data, array( 'atomic' => false ) );
-			
+
 			$this->Dossierep->updateAll(
 				array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-				array( 'Dossierep.id' => Set::extract( $data, '/Dossierep/id' ) )
+				array( '"Dossierep"."id"' => Set::extract( $data, '/Dossierep/id' ) )
 			);
 
 			return $success;

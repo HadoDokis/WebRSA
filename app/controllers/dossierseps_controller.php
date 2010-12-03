@@ -4,19 +4,19 @@
 	class DossiersepsController extends AppController
 	{
 		public $helpers = array( 'Default' );
-		
+
 		var $uses = array( 'Option', 'Dossierep', 'Decisionpdo', 'Propopdo' );
 
 		/**
 		* FIXME: evite les droits
 		*/
-		
+
         protected function _setOptions() {
             $this->set( 'motifpdo', $this->Option->motifpdo() );
             $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
 
             $options = $this->Propopdo->allEnumLists();
-            
+
             $this->set( compact( 'options' ) );
         }
 
@@ -121,7 +121,7 @@
 							'Dossierep.seanceep_id' => null,
 							'Dossierep.etapedossierep' => '\'cree\''
 						),
-						array( 'Dossierep.id IN ( \''.implode( '\', \'', $notInEp ).'\' )' )
+						array( '"Dossierep"."id" IN ( \''.implode( '\', \'', $notInEp ).'\' )' )
 					) && $success;
 
 				}
@@ -132,7 +132,7 @@
 							'Dossierep.seanceep_id' => $seanceep_id,
 							'Dossierep.etapedossierep' => '\'seance\''
 						),
-						array( 'Dossierep.id IN ( \''.implode( '\', \'', $inEp ).'\' )' )
+						array( '"Dossierep"."id" IN ( \''.implode( '\', \'', $inEp ).'\' )' )
 					) && $success;
 
 				}
@@ -147,7 +147,7 @@
 					$this->Dossierep->rollback();
 				}
 			}
-			
+
 			$themes = $this->Dossierep->Seanceep->themesTraites($seanceep_id);
 			$listeThemes['OR'] = array();
 			foreach($themes as $theme=>$niveauDecision) {
@@ -234,11 +234,11 @@
 
 			$this->set( compact( 'options', 'dossierseps', 'seanceep' ) );
 		}
-		
+
 		public function decisioncg ( $dossierep_id ) {
 			$this->_decision( $dossierep_id, 'cg' );
 		}
-		
+
 		public function _decision ( $dossierep_id, $niveauDecision ) {
 			$themeTraite = $this->Dossierep->themeTraite($dossierep_id);
 			$dossierep = array();

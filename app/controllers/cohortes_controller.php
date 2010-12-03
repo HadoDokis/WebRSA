@@ -564,7 +564,10 @@
 
 			$success = ( $content !== false ) && $this->Orientstruct->updateAll(
 				array( 'Orientstruct.date_impression' => date( "'Y-m-d'" ) ),
-				array( 'Orientstruct.id' => $cohorte, 'Orientstruct.date_impression IS NULL' )
+				array(
+					'"Orientstruct"."id"' => $cohorte,
+					'"Orientstruct"."date_impression" IS NULL'
+				)
 			);
 
 			if( $content !== false ) { // date_impression
