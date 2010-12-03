@@ -5,7 +5,10 @@
 	App::import('Model', 'Ep');
 
 	class EpTestCase extends CakeAppModelTestCase {
-
+		function testThemes() {
+			$result = $this->Ep->themes();
+			//var_dump($result);
+		}
 	}
 
 ?>

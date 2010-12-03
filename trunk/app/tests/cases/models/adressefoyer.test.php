@@ -18,12 +18,21 @@
 		}
 
 		function testSqDerniereRgadr01() {
-			$field = "toto";
-			$expected = " SELECT adressesfoyers.id FROM adressesfoyers WHERE adressesfoyers.foyer_id = " . $field . " AND 						adressesfoyers.rgadr = '01' ORDER BY adressesfoyers.dtemm DESC LIMIT 1 ";
-			$this->assertEqual($expected, $this->Adressefoyer->SqDerniereRgadr01("toto"));
+			$field = "1";
+        		$table = "adressesfoyers";
+			$expected = "
+		    	SELECT {$table}.id
+					FROM {$table}
+					WHERE
+						{$table}.foyer_id = ".$field."
+                        AND {$table}.rgadr = '01'
+					ORDER BY {$table}.dtemm DESC
+					LIMIT 1
+        	";
+			$this->assertEqual($expected, $this->Adressefoyer->SqDerniereRgadr01($field));
 		}
 
-		// test effectué sur cette fonction uniquement pour la couverture de code
+		// test SqlFoyerUnique
 		function testSqlFoyerActuelUnique() {
 			$expected = '(
                 SELECT tmpadressesfoyers.id FROM (
