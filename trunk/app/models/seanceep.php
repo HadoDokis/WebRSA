@@ -218,8 +218,8 @@
 						$this->Dossierep->updateAll(
 							array( 'Dossierep.etapedossierep' => '\'traite\'' ),
 							array(
-								'Dossierep.seanceep_id' => $seanceep_id,
-								'Dossierep.themeep' => $themeTraite
+								'"Dossierep"."seanceep_id"' => $seanceep_id,
+								'"Dossierep"."themeep"' => $themeTraite
 							)
 						);
 					}
@@ -227,8 +227,8 @@
 						$this->Dossierep->updateAll(
 							array( 'Dossierep.etapedossierep' => '\'decisioncg\'' ),
 							array(
-								'Dossierep.seanceep_id' => $seanceep_id,
-								'Dossierep.themeep' => $themeTraite
+								'"Dossierep"."seanceep_id"' => $seanceep_id,
+								'"Dossierep"."themeep"' => $themeTraite
 							)
 						);
 					}
@@ -278,20 +278,20 @@
 
 			return $success && empty( $totalErrors );
 		}
-		
+
 		/**
 		 * Savoir si la séance est cloturée ou non (suivant le thème l'EP et le CG ce sont prononcés)
 		 */
-		
+
 		public function clotureSeance($datas) {
 			$cloture = true;
-			
+
 			foreach( $this->themesTraites( $datas['Seanceep']['id'] ) as $theme => $decision ) {
 				$cloture = ($datas['Ep'][$theme]==$datas['Seanceep']['finalisee']) && $cloture;
 			}
-			
+
 			return $cloture;
 		}
-		
+
 	}
 ?>

@@ -140,22 +140,22 @@
 					$this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->updateAll(
 						array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
 						array(
-							'Contratinsertion.personne_id' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
-							'Contratinsertion.id' => $dossierep['Bilanparcours66']['contratinsertion_id']
+							'"Contratinsertion"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
+							'"Contratinsertion"."id"' => $dossierep['Bilanparcours66']['contratinsertion_id']
 						)
 					);
 
 					// TODO
 					/*$this->Bilanparcours66->Orientstruct->Personne->Cui->updateAll(
 						array( 'Cui.datefincontrat' => "'".date( 'Y-m-d' )."'" ),
-						array( 'Cui.personne_id' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'] )
+						array( '"Cui"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'] )
 					);*/
 
 					$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->updateAll(
 						array( 'PersonneReferent.dfdesignation' => "'".date( 'Y-m-d' )."'" ),
 						array(
-							'PersonneReferent.personne_id' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
-							'PersonneReferent.dfdesignation IS NULL'
+							'"PersonneReferent"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
+							'"PersonneReferent"."dfdesignation" IS NULL'
 						)
 					);
 				}
@@ -163,11 +163,11 @@
 
 			return $success;
 		}
-		
+
 		/**
 		 * INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
 		 */
-		
+
 		public function verrouiller( $seanceep_id, $etape ) {
 			return true;
 		}
@@ -221,7 +221,7 @@
 
 			$this->Dossierep->updateAll(
 				array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-				array( 'Dossierep.id' => Set::extract( $data, '/Dossierep/id' ) )
+				array( '"Dossierep"."id"' => Set::extract( $data, '/Dossierep/id' ) )
 			);
 
 			return $success;
