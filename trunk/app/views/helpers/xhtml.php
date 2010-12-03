@@ -819,5 +819,27 @@
 				return '<span class="disabled">'.$content.'</span>';
 			}
 		}
+
+		/**
+		*
+		*/
+
+		function saisineEpLink( $title, $url, $enabled = true ) {
+			$content = $this->image(
+				'icons/folder_table.png',
+				array( 'alt' => '' )
+			).' '.$title;
+
+			if( $enabled ) {
+				return $this->link(
+					$content,
+					$url,
+					array( 'escape' => false, 'title' => $title )
+				);
+			}
+			else {
+				return '<span class="disabled">'.$content.'</span>';
+			}
+		}
 	}
 ?>
