@@ -244,7 +244,7 @@
         	$this->assert( !empty( $traitementpdo ), 'invalidParameter' );
         	
         	$this->Traitementpdo->id=$id;
-        	$this->Traitementpdo->saveField('clos', 1);
+        	$this->Traitementpdo->saveField('clos', Configure::read( 'traitementClosId' ));
         	$this->redirect(array( 'controller'=> 'traitementspdos', 'action'=>'index', $traitementpdo['Traitementpdo']['propopdo_id']));
         }
     }
