@@ -38,7 +38,7 @@ INSERT INTO motifsreorients ( name ) VALUES
 SELECT pg_catalog.setval('seanceseps_id_seq', 1, true);
 INSERT INTO seanceseps VALUES ( 1, 1, 22, '2010-10-28 10:00:00', NULL );
 
-TRUNCATE situationspdos;
+TRUNCATE situationspdos CASCADE;
 SELECT pg_catalog.setval('situationspdos_id_seq', ( SELECT max(situationspdos.id) + 1 FROM situationspdos ), false);
 INSERT INTO situationspdos (libelle) VALUES
 	('Evaluation revenus non salariés'),
@@ -61,7 +61,7 @@ INSERT INTO situationspdos (libelle) VALUES
 	('Subsidiarité')
 ;
 
-TRUNCATE statutspdos;
+TRUNCATE statutspdos CASCADE;
 SELECT pg_catalog.setval('statutspdos_id_seq', ( SELECT max(statutspdos.id) + 1 FROM statutspdos ), false);
 INSERT INTO statutspdos (libelle) VALUES
 	('TI'),
@@ -83,7 +83,7 @@ INSERT INTO statutspdos (libelle) VALUES
 	('Stagiaire rémunéré')
 ;
 
-TRUNCATE descriptionspdos;
+TRUNCATE descriptionspdos CASCADE;
 SELECT pg_catalog.setval('descriptionspdos_id_seq', ( SELECT max(descriptionspdos.id) + 1 FROM descriptionspdos ), false);
 INSERT INTO descriptionspdos (name, dateactive, declencheep) VALUES
 	('Courrier à l\'allocataire', 'datedepart', '0'),
