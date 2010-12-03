@@ -269,7 +269,7 @@
 				}
 				else {
 					$conditions[] = 'Contratinsertion.date_saisi_ci IS NULL';
-					
+
 					///Date d'orientation
 				    if( isset( $criteresrelance['Relance']['dateorientation'] ) && !empty( $criteresrelance['Relance']['dateorientation'] ) ) {
 				        $valid_date = ( valid_int( $criteresrelance['Relance']['dateorientation']['year'] ) && valid_int( $criteresrelance['Relance']['dateorientation']['month'] ) && valid_int( $criteresrelance['Relance']['dateorientation']['day'] ) );
@@ -359,13 +359,24 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Personne.id = Orientstruct.personne_id' )
 					),
-                    array(
-                        'table'      => 'contratsinsertion',
-                        'alias'      => 'Contratinsertion',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Personne.id = Contratinsertion.personne_id' )
-                    ),
+					array(
+						'table'      => 'contratsinsertion',
+						'alias'      => 'Contratinsertion',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Personne.id = Contratinsertion.personne_id',
+							'"Contratinsertion"."id" IN (
+								SELECT tmpcontratsinsertion.id FROM (
+									SELECT contratsinsertion.id AS id, contratsinsertion.personne_id
+										FROM contratsinsertion
+										WHERE contratsinsertion.personne_id = "Personne"."id"
+										ORDER BY contratsinsertion.dd_ci DESC
+										LIMIT 1
+								) AS tmpcontratsinsertion
+							)'
+						)
+					),
 					array(
 						'table'      => 'prestations',
 						'alias'      => 'Prestation',
