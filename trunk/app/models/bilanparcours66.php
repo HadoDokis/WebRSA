@@ -40,10 +40,7 @@
 					'maintienorientavisep',
 					'changementrefeplocale',
 					'reorientationeplocale',
-					'typeeplocale',
-					'decisioncommission',
-					'decisioncoordonnateur',
-					'decisioncga'
+					'typeeplocale'
 				)
 			)
 		);

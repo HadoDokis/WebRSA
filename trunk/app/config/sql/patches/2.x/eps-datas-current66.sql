@@ -38,6 +38,62 @@ INSERT INTO motifsreorients ( name ) VALUES
 SELECT pg_catalog.setval('seanceseps_id_seq', 1, true);
 INSERT INTO seanceseps VALUES ( 1, 1, 22, '2010-10-28 10:00:00', NULL );
 
+TRUNCATE situationspdos;
+SELECT pg_catalog.setval('situationspdos_id_seq', ( SELECT max(situationspdos.id) + 1 FROM situationspdos ), false);
+INSERT INTO situationspdos (libelle) VALUES
+	('Evaluation revenus non salariés'),
+	('Evaluation revenus de capitaux placés ou non'),
+	('Evaluation de revenus de capitaux mobiliers'),
+	('Démission, disponibilité, congé sans solde'),
+	('Eléments non déclarés'),
+	('Refus de ctrl'),
+	('Dispense pension alimentaire'),
+	('Parcours scolaire'),
+	('Parcours de stage'),
+	('Neutralisation'),
+	('Droit au déjour EEE'),
+	('Droit au déjour Hors EEE'),
+	('Révision du droit'),
+	('Défaut de conclusion contrat'),
+	('Non respect du contrat'),
+	('Radiation list Pôle Emploi'),
+	('Dérogation'),
+	('Subsidiarité')
+;
+
+TRUNCATE statutspdos;
+SELECT pg_catalog.setval('statutspdos_id_seq', ( SELECT max(statutspdos.id) + 1 FROM statutspdos ), false);
+INSERT INTO statutspdos (libelle) VALUES
+	('TI'),
+	('Ex TI'),
+	('Exploitant agricole'),
+	('Ex exploitant agricole'),
+	('Auto-entrepreneur'),
+	('Ex auto-entrepreneur'),
+	('Gérant de Sté'),
+	('Ex gérant de Sté'),
+	('EEE'),
+	('Hors EEE'),
+	('Salarié'),
+	('Ex salarié'),
+	('Chômeur indemnisé'),
+	('Chômeur non indemnisé'),
+	('Etudiant'),
+	('Stagiaire non rémunéré'),
+	('Stagiaire rémunéré')
+;
+
+TRUNCATE descriptionspdos;
+SELECT pg_catalog.setval('descriptionspdos_id_seq', ( SELECT max(descriptionspdos.id) + 1 FROM descriptionspdos ), false);
+INSERT INTO descriptionspdos (name, dateactive, declencheep) VALUES
+	('Courrier à l\'allocataire', 'datedepart', '0'),
+	('Pièces arrivées', 'datereception', '0'),
+	('Courrier Révision de ressources', 'datedepart', '0'),
+	('Enquête administrative demandée', 'datedepart', '0'),
+	('Enquête administrative reçue', 'datereception', '0'),
+	('Saisine EP Dépt', 'datedepart', '1')
+;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

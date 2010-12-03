@@ -62,7 +62,9 @@
 				}
 			}
 			else if( isset( $params['options'] ) ) {
-				$params['type'] = 'select';
+				if( $params['type'] != 'radio' ) {
+					$params['type'] = 'select';
+				}
 				if( !isset( $params['empty'] ) ) {
 					$params['empty'] = true;
 				}

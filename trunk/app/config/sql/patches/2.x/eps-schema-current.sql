@@ -43,6 +43,7 @@ DROP TABLE IF EXISTS seanceseps CASCADE;
 DROP TABLE IF EXISTS eps CASCADE;
 DROP TABLE IF EXISTS regroupementseps CASCADE;
 DROP TABLE IF EXISTS motifsreorients CASCADE;
+DROP TABLE IF EXISTS saisinesepdspdos66 CASCADE;
 
 DROP TYPE IF EXISTS TYPE_THEMEEP CASCADE;
 DROP TYPE IF EXISTS TYPE_DECISIONEP CASCADE;
@@ -53,6 +54,43 @@ DROP TYPE IF EXISTS TYPE_ETAPEDOSSIEREP CASCADE;
 DROP TYPE IF EXISTS TYPE_TYPEREORIENTATION66 CASCADE;
 DROP TYPE IF EXISTS TYPE_ETAPERELANCECONTENTIEUSE CASCADE;
 DROP TYPE IF EXISTS TYPE_TYPERELANCECONTENTIEUSE CASCADE;
+DROP TYPE IF EXISTS type_orgpayeur CASCADE;
+DROP TYPE IF EXISTS type_dateactive CASCADE;
+
+-- INFO: http://archives.postgresql.org/pgsql-sql/2005-09/msg00266.php
+CREATE OR REPLACE FUNCTION public.add_missing_table_field (text, text, text, text)
+returns bool as '
+DECLARE
+  p_namespace alias for $1;
+  p_table     alias for $2;
+  p_field     alias for $3;
+  p_type      alias for $4;
+  v_row       record;
+  v_query     text;
+BEGIN
+  select 1 into v_row from pg_namespace n, pg_class c, pg_attribute a
+     where
+         --public.slon_quote_brute(n.nspname) = p_namespace and
+         n.nspname = p_namespace and
+         c.relnamespace = n.oid and
+         --public.slon_quote_brute(c.relname) = p_table and
+         c.relname = p_table and
+         a.attrelid = c.oid and
+         --public.slon_quote_brute(a.attname) = p_field;
+         a.attname = p_field;
+  if not found then
+    raise notice ''Upgrade table %.% - add field %'', p_namespace, p_table, p_field;
+    v_query := ''alter table '' || p_namespace || ''.'' || p_table || '' add column '';
+    v_query := v_query || p_field || '' '' || p_type || '';'';
+    execute v_query;
+    return ''t'';
+  else
+    return ''f'';
+  end if;
+END;' language plpgsql;
+
+COMMENT ON FUNCTION public.add_missing_table_field (text, text, text, text)
+IS 'Add a column of a given type to a table if it is missing';
 
 -- -----------------------------------------------------------------------------
 
@@ -72,7 +110,8 @@ CREATE TABLE eps (
 	name						VARCHAR(255) NOT NULL,
 	regroupementep_id			INTEGER NOT NULL REFERENCES regroupementseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	saisineepreorientsr93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
-	saisineepbilanparcours66	TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite'
+	saisineepbilanparcours66	TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
+	saisineepdpdo66				TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite'
 );
 
 CREATE UNIQUE INDEX eps_name_idx ON eps(name);
@@ -123,7 +162,7 @@ CREATE TYPE TYPE_ETAPEDECISIONEP AS ENUM ( 'ep', 'cg' );
 CREATE TABLE seanceseps (
 	id      				SERIAL NOT NULL PRIMARY KEY,
 	ep_id					INTEGER NOT NULL REFERENCES eps(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	structurereferente_id	INTEGER NOT NULL REFERENCES structuresreferentes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	structurereferente_id	INTEGER REFERENCES structuresreferentes(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	dateseance				TIMESTAMP WITHOUT TIME ZONE NOT NULL,
 	finalisee				TYPE_ETAPEDECISIONEP DEFAULT NULL
 );
@@ -134,7 +173,7 @@ ALTER TABLE seanceseps OWNER TO webrsa;
 
 -- -----------------------------------------------------------------------------
 
-CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', 'suspensionreductionallocations93' );
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', 'suspensionsreductionsallocations93', 'saisinesepdspdos66' );
 CREATE TYPE TYPE_ETAPEDOSSIEREP AS ENUM ( 'cree', '...', 'seance', 'decisionep', 'decisioncg', 'traite' );
 
 CREATE TABLE dossierseps (
@@ -256,7 +295,7 @@ CREATE TABLE nvsrsepsreorient66 (
 	id      					SERIAL NOT NULL PRIMARY KEY,
 	saisineepbilanparcours66_id	INTEGER NOT NULL REFERENCES saisinesepsbilansparcours66(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	etape						TYPE_ETAPEDECISIONEP NOT NULL,
-	decision					TYPE_DECISIONEP NOT NULL,
+	decision					TYPE_DECISIONEP,
 	typeorient_id				INTEGER DEFAULT NULL REFERENCES typesorients(id) ON DELETE SET NULL ON UPDATE CASCADE,
 	structurereferente_id		INTEGER DEFAULT NULL REFERENCES structuresreferentes(id) ON DELETE SET NULL ON UPDATE CASCADE,
 	commentaire					TEXT DEFAULT NULL,
@@ -386,6 +425,85 @@ COMMENT ON TABLE avissrmreps93 IS 'Signalement (avis) des structures référente
 CREATE UNIQUE INDEX avissrmreps93_maintienreorientep_id_idx ON avissrmreps93(maintienreorientep_id);
 CREATE INDEX avissrmreps93_avissr_idx ON avissrmreps93(avissr);
 CREATE INDEX avissrmreps93_signalesr_idx ON avissrmreps93(signalesr);*/
+
+-- *****************************************************************************
+
+SELECT add_missing_table_field ('public', 'propospdos', 'serviceinstructeur_id', 'integer');
+ALTER TABLE propospdos ALTER COLUMN ADD FOREIGN KEY (serviceinstructeur_id) REFERENCES servicesinstructeurs (id);
+
+SELECT add_missing_table_field ('public', 'propospdos', 'created', 'TIMESTAMP WITHOUT TIME ZONE');
+SELECT add_missing_table_field ('public', 'propospdos', 'modified', 'TIMESTAMP WITHOUT TIME ZONE');
+
+CREATE TYPE type_orgpayeur AS ENUM ( 'CAF', 'MSA' );
+SELECT add_missing_table_field ('public', 'propospdos', 'orgpayeur', 'type_orgpayeur');
+
+CREATE TYPE type_dateactive AS ENUM ( 'datedepart', 'datereception' );
+SELECT add_missing_table_field ('public', 'descriptionspdos', 'dateactive', 'type_dateactive');
+ALTER TABLE descriptionspdos ALTER COLUMN dateactive SET NOT NULL;
+ALTER TABLE descriptionspdos ALTER COLUMN dateactive SET DEFAULT 'datedepart';
+SELECT add_missing_table_field ('public', 'descriptionspdos', 'declencheep', 'type_booleannumber');
+ALTER TABLE descriptionspdos ALTER COLUMN declencheep SET NOT NULL;
+ALTER TABLE descriptionspdos ALTER COLUMN declencheep SET DEFAULT '0';
+
+SELECT add_missing_table_field ('public', 'traitementspdos', 'dateecheance', 'DATE');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'daterevision', 'DATE');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'personne_id', 'integer');
+ALTER TABLE propospdos ALTER COLUMN ADD FOREIGN KEY (personne_id) REFERENCES personnes (id);
+SELECT add_missing_table_field ('public', 'traitementspdos', 'ficheanalyse', 'TEXT');
+SELECT add_missing_table_field ('public', 'descriptionspdos', 'clos', 'INTEGER');
+ALTER TABLE descriptionspdos ALTER COLUMN declencheep SET NOT NULL;
+ALTER TABLE descriptionspdos ALTER COLUMN declencheep SET DEFAULT 0;
+
+CREATE TABLE saisinesepdspdos66 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	traitementpdo_id		INTEGER NOT NULL REFERENCES traitementspdos (id),
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE TABLE nvsepdspdos66 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	saisineepdpdo66_id		INTEGER NOT NULL REFERENCES saisinesepdspdos66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	etape					TYPE_ETAPEDECISIONEP NOT NULL,
+	decisionpdo_id			INTEGER REFERENCES decisionspdos (id),
+	commentaire				TEXT DEFAULT NULL,
+	nonadmis				type_nonadmis,
+	motifpdo				VARCHAR(1),
+	datedecisionpdo			DATE,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+
+-- *****************************************************************************
+-- Modification pour reprendre l'ancien bilan de parcours du 66
+-- *****************************************************************************
+
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'accordprojet', 'type_booleannumber');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'maintienorientsansep', 'type_orient');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'choixparcours', 'type_choixparcours');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'changementrefsansep', 'type_no');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'maintienorientparcours', 'type_orient');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'changementrefparcours', 'type_no');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'reorientation', 'type_reorientation');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'examenaudition', 'type_type_demande');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'maintienorientavisep', 'type_orient');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'changementrefeplocale', 'type_no');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'reorientationeplocale', 'type_reorientation');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'typeeplocale', 'type_typeeplocale');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'decisioncommission', 'type_aviscommission');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'decisioncoordonnateur', 'type_aviscoordonnateur');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'decisioncga', 'type_aviscoordonnateur');
+
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'datebilan', 'DATE');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'observbenef', 'TEXT');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'objinit', 'TEXT');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'objatteint', 'TEXT');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'objnew', 'TEXT');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'motifsaisine', 'TEXT');
+
+ALTER TABLE bilansparcours66 ALTER COLUMN situationallocataire DROP NOT NULL;
+ALTER TABLE bilansparcours66 ALTER COLUMN bilanparcours DROP NOT NULL;
 
 -- *****************************************************************************
 COMMIT;

@@ -11,70 +11,12 @@ SET default_with_oids = false;
 BEGIN;
 -- *****************************************************************************
 
-ALTER TABLE seanceseps ALTER COLUMN structurereferente_id DROP NOT NULL;
-
-ALTER TABLE nvsrsepsreorient66 ALTER COLUMN decision DROP NOT NULL;
-
-ALTER TABLE propospdos ADD COLUMN serviceinstructeur_id INTEGER REFERENCES servicesinstructeurs (id);
-ALTER TABLE propospdos ADD COLUMN created TIMESTAMP WITHOUT TIME ZONE;
-ALTER TABLE propospdos ADD COLUMN modified TIMESTAMP WITHOUT TIME ZONE;
-
 CREATE TYPE type_orgpayeur AS ENUM ( 'CAF', 'MSA' );
 ALTER TABLE propospdos ADD COLUMN orgpayeur type_orgpayeur;
-
-INSERT INTO situationspdos (libelle) VALUES
-	('Evaluation revenus non salariés'),
-	('Evaluation revenus de capitaux placés ou non'),
-	('Evaluation de revenus de capitaux mobiliers'),
-	('Démission, disponibilité, congé sans solde'),
-	('Eléments non déclarés'),
-	('Refus de ctrl'),
-	('Dispense pension alimentaire'),
-	('Parcours scolaire'),
-	('Parcours de stage'),
-	('Neutralisation'),
-	('Droit au déjour EEE'),
-	('Droit au déjour Hors EEE'),
-	('Révision du droit'),
-	('Défaut de conclusion contrat'),
-	('Non respect du contrat'),
-	('Radiation list Pôle Emploi'),
-	('Dérogation'),
-	('Subsidiarité')
-;
-
-INSERT INTO statutspdos (libelle) VALUES
-	('TI'),
-	('Ex TI'),
-	('Exploitant agricole'),
-	('Ex exploitant agricole'),
-	('Auto-entrepreneur'),
-	('Ex auto-entrepreneur'),
-	('Gérant de Sté'),
-	('Ex gérant de Sté'),
-	('EEE'),
-	('Hors EEE'),
-	('Salarié'),
-	('Ex salarié'),
-	('Chômeur indemnisé'),
-	('Chômeur non indemnisé'),
-	('Etudiant'),
-	('Stagiaire non rémunéré'),
-	('Stagiaire rémunéré')
-;
 
 CREATE TYPE type_dateactive AS ENUM ( 'datedepart', 'datereception' );
 ALTER TABLE descriptionspdos ADD COLUMN dateactive type_dateactive NOT NULL DEFAULT 'datedepart';
 ALTER TABLE descriptionspdos ADD COLUMN declencheep type_booleannumber NOT NULL DEFAULT '0';
-
-INSERT INTO descriptionspdos (name, dateactive, declencheep) VALUES
-	('Courrier à l\'allocataire', 'datedepart', '0'),
-	('Pièces arrivées', 'datereception', '0'),
-	('Courrier Révision de ressources', 'datedepart', '0'),
-	('Enquête administrative demandée', 'datedepart', '0'),
-	('Enquête administrative reçue', 'datereception', '0'),
-	('Saisine EP Dépt', 'datedepart', '1')
-;
 
 ALTER TABLE traitementspdos ADD COLUMN dateecheance DATE;
 ALTER TABLE traitementspdos ADD COLUMN daterevision DATE;
@@ -133,7 +75,11 @@ ALTER TABLE bilansparcours66 ADD COLUMN decisioncommission type_aviscommission;
 ALTER TABLE bilansparcours66 ADD COLUMN decisioncoordonnateur type_aviscoordonnateur;
 ALTER TABLE bilansparcours66 ADD COLUMN decisioncga type_aviscoordonnateur;
 
-
+ALTER TABLE bilansparcours66 ADD COLUMN datebilan date;
+ALTER TABLE bilansparcours66 ADD COLUMN observbenef TEXT;
+ALTER TABLE bilansparcours66 ADD COLUMN objinit TEXT;
+ALTER TABLE bilansparcours66 ADD COLUMN objatteint TEXT;
+ALTER TABLE bilansparcours66 ADD COLUMN objnew TEXT;
 
 -- *****************************************************************************
 -- Fin modification

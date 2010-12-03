@@ -24,7 +24,9 @@
 
 		protected function _setOptions() {
             $options = array();
-            $options = $this->Bilanparcours66->allEnumLists();
+            //$options = $this->Bilanparcours66->allEnumLists();
+            
+			$options = $this->Bilanparcours66->enums();
             $typevoie = $this->Option->typevoie();
             $this->set( 'rolepers', $this->Option->rolepers() );
             $this->set( 'qual', $this->Option->qual() );
@@ -44,8 +46,6 @@
 			$options['Saisineepbilanparcours66']['typeorient_id'] = $this->Bilanparcours66->Typeorient->listOptions();
 			$options['Saisineepbilanparcours66']['structurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag_cg66();
-            
-			//$options = $this->Bilanparcours66->enums();
 
 			$this->set( compact( 'options' ) );
 		}
@@ -206,14 +206,16 @@
 
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->data ) ) {
+debug($this->data);
 				$this->Bilanparcours66->begin();
 
 				$success = $this->Bilanparcours66->sauvegardeBilan( $this->data );
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
- 					$this->Bilanparcours66->commit();
-					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
+					$this->Bilanparcours66->rollback();
+ 					/*$this->Bilanparcours66->commit();
+					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );*/
 				}
 				else {
 					$this->Bilanparcours66->rollback();
@@ -328,7 +330,7 @@
 
 			$this->set( compact( 'personne' ) );
 			$this->_setOptions();
-			$this->render( null, null, 'add_edit_afaire' );
+			$this->render( null, null, 'add_edit' );
 		}
 
 		/**
