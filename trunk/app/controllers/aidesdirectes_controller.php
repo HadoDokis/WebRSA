@@ -45,7 +45,8 @@
                 $this->Aidedirecte->set( $this->data );
 
                 $validates = $this->Actioninsertion->validates();
-                $validates = $this->Aidedirecte->validates() && $validates;
+
+//                $validates = $this->Aidedirecte->validates() && $validates;
 
                 if( $validates ) {
                     $this->Actioninsertion->begin();

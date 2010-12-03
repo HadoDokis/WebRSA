@@ -46,8 +46,8 @@
 
 
                 $validates = $this->Actioninsertion->validates();
-                $validates = $this->Prestform->validates() && $validates;
-                $validates = $this->Refpresta->validates() && $validates;
+                //$validates = $this->Prestform->validates() && $validates;
+                //$validates = $this->Refpresta->validates() && $validates;
 
                 if( $validates ) {
                     $this->Actioninsertion->begin();
