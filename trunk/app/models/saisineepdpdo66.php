@@ -130,7 +130,7 @@
 
 				foreach( $dossierseps as $dossierep ) {
 					$traitementpdo['Traitementpdo']['descriptionpdo_id'] = Configure::read( 'traitementResultatId' );
-					$traitementpdo['Traitementpdo']['traitementtypepdo_id'] = 2;
+					$traitementpdo['Traitementpdo']['traitementtypepdo_id'] = Configure::read( 'traitementClosId' );
 					$dateseance = $dossierep['Dossierep']['Seanceep']['dateseance'];
 					list($jour, $heure) = explode(' ', $dateseance);
 					$traitementpdo['Traitementpdo']['datereception'] = $jour;
