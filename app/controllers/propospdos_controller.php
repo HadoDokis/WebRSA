@@ -206,7 +206,8 @@
         function index( $personne_id = null ){
 
             $nbrPersonnes = $this->Propopdo->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
-            $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
+            //$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
+			$this->assert( ( $nbrPersonnes >= 1 ), 'invalidParameter' );
 
             $conditions = array( 'Propopdo.personne_id' => $personne_id );
 
