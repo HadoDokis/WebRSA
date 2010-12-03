@@ -586,10 +586,11 @@
                     		'contain'=>false
                     	)
                     );
-                    
-                    $lastrdvorient['Rendezvous']['statutrdv_id'] = 1;
-                    
-                    $saved = $this->Contratinsertion->Referent->Rendezvous->save($lastrdvorient) && $saved;
+			if( !empty( $lastrdvorient ) ){                   
+                	    $lastrdvorient['Rendezvous']['statutrdv_id'] = 1;
+        	            
+	                    $saved = $this->Contratinsertion->Referent->Rendezvous->save($lastrdvorient) && $saved;
+			}
 /*
 //                     if( !empty( $dspData ) ){
 //                         $this->Contratinsertion->Personne->Dsp->create();
