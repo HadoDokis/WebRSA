@@ -21,7 +21,8 @@
 
 		public $validate = array(
 			'orgpayeur' => array(
-				'rule' => array( 'notEmpty' )
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
 			),
 			'typepdo_id' => array(
 				'rule' => 'notEmpty',

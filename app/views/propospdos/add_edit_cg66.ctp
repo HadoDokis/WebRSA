@@ -167,8 +167,8 @@
         <?php
             echo $default->subform(
                 array(
-                    'Propopdo.etatdossierpdo' => array( 'type' => 'hidden' )/*,
-                    'Propopdo.user_id' => array( 'label' =>  'Gestionnaire du dossier PDO (instructeur en charge du dossier)', 'type' => 'select', 'options' => $gestionnaire )*/
+                    'Propopdo.etatdossierpdo' => array( 'type' => 'hidden' ),
+                    'Propopdo.user_id' => array( 'label' =>  'Gestionnaire du dossier PDO (instructeur en charge du dossier)', 'type' => 'select', 'options' => $gestionnaire )
                 ),
                 array(
                     'domain' => $domain,
@@ -332,7 +332,7 @@
 
     <fieldset id="Etatpdo4" class="invisible"></fieldset>
 
-    <fieldset>
+    <!--<fieldset>
         <?php
             echo $form->input( 'Propopdo.isdecisionop', array( 'label' => 'Décison de l\'OP', 'type' => 'checkbox' ) );
         ?>
@@ -353,7 +353,7 @@
         ?>
         </fieldset>
     </fieldset>
-    <fieldset id="Etatpdo5" class="invisible"></fieldset>
+    <fieldset id="Etatpdo5" class="invisible"></fieldset>-->
 
 
     <!--<fieldset>
