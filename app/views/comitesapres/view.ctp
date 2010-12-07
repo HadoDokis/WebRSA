@@ -290,8 +290,10 @@
 <!-- *********************************************************************** -->
 
 <?php
-	echo $javascript->link( 'prototype.livepipe.js' );
-	echo $javascript->link( 'prototype.tabs.js' );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( 'prototype.livepipe.js' );
+		echo $javascript->link( 'prototype.tabs.js' );
+	}
 ?>
 
 <script type="text/javascript">
