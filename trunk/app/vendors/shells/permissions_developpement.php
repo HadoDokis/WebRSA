@@ -64,17 +64,24 @@
 		*/
 
 		protected function _clean() {
-			$success = $this->Controller->Acl->Aro->deleteAll( array( '1 = 1' ) )
+			/*$success = $this->Controller->Acl->Aro->deleteAll( array( '1 = 1' ) )
 				&& $this->Controller->Acl->Aco->deleteAll( array( '1 = 1' ) )
-				&& $this->Controller->Acl->Aro->Permission->deleteAll( array( '1 = 1' ) );
+				&& $this->Controller->Acl->Aro->Permission->deleteAll( array( '1 = 1' ) );*/
+			$this->out( 'Suppression des données de la table aros.' );
+			$this->Controller->Acl->Aro->query( 'DELETE FROM aros;' );
 
+			$this->out( 'Suppression des données de la table acos.' );
+			$this->Controller->Acl->Aco->query( 'DELETE FROM acos;' );
+
+			$this->out( 'Suppression des données de la table aros_acos.' );
+			$this->Controller->Acl->Aro->Permission->query( 'DELETE FROM aros_acos;' );
 
 			foreach( array( 'aros', 'acos', 'aros_acos' ) as $table ) {
 				$sql = "SELECT pg_catalog.setval( '{$table}_id_seq', ( CASE WHEN ( SELECT max({$table}.id) FROM {$table} ) IS NOT NULL THEN ( SELECT max({$table}.id) + 1 FROM {$table} ) ELSE 1 END ), false);";
-				$success = $this->Controller->Acl->Aro->query( $sql ) && $success;
+				$this->Controller->Acl->Aro->query( $sql );
 			}
 
-			return $success;
+			return true;
 		}
 
 		/**
