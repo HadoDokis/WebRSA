@@ -220,7 +220,7 @@
 					'count',
 					array(
 						'conditions'=>array(
-							'Saisineepdpdo66.traitementpdo66_id'=>$data['Traitementpdo']['id']
+							'Saisineepdpdo66.traitementpdo_id'=>$data['Traitementpdo']['id']
 						)
 					)
 				);
