@@ -40,6 +40,8 @@
             
             $options[$this->modelClass]['listeDescription'] = $this->Descriptionpdo->find( 'all', array( 'contain' => false ) );
             
+            $this->set( 'regimes', Set::classicExtract($this->Traitementpdo->Fichecalcul->enums(), 'Fichecalcul.name') );
+            
             return $options;
         }
 
