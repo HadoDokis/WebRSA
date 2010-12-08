@@ -60,7 +60,8 @@
                     $conditions = array(
                         '( Apre.id NOT IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite IS NOT NULL )
                         OR Apre.id IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite = \'AJ\' ) )
-                        AND Apre.statutapre = \'C\''
+                        AND Apre.statutapre = \'C\'
+			AND Apre.etatdossierapre = \'COM\''
                     );
                 }
 
