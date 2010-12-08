@@ -102,12 +102,12 @@
 					$enumFields[$field] = Set::merge( $default, $options );
 
 					/// Load from config
-					if( Set::check( $enumFields[$field], 'type' ) ) {
+					/*if( Set::check( $enumFields[$field], 'type' ) ) {
 						$config = Configure::read( "Enumerable.{$enumFields[$field]['type']}" );
 						if( is_array( $config ) && !empty( $config ) ) {
 							$enumFields[$field] = Set::merge( $enumFields[$field], $config );
 						}
-					}
+					}*/
 
 					$enumFields[$field]['type'] = strtoupper( $enumFields[$field]['type'] );
 				}

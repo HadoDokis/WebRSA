@@ -420,7 +420,7 @@
         return $match;
     }*/
 
-	require_once( CONFIGS.'app.enumerable.php' );
+	//require_once( CONFIGS.'app.enumerable.php' );
 	/// TODO: options par défaut pour dans les vues -> Configure::read( 'View.display.phone' );
 
 	Configure::write( 'Typeable.phone', array( 'country' => 'fr', 'maxlength' => 14/*, 'rule' => 'phoneFr'*/ ) );
