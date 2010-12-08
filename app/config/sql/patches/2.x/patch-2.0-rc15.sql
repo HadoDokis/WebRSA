@@ -120,6 +120,32 @@ CREATE TYPE type_statutoccupation AS ENUM ( 'proprietaire', 'locataire' );
 ALTER TABLE dsps ADD COLUMN statutoccupation type_statutoccupation DEFAULT NULL;
 ALTER TABLE dsps_revs ADD COLUMN statutoccupation type_statutoccupation DEFAULT NULL;
 
+-- *****************************************************************************
+-- Ajout de champs dans la table traitementspdos pour gérer la fiche de calcul
+-- *****************************************************************************
+
+CREATE TYPE TYPE_REGIMEFICHECALCUL AS ENUM ( 'fagri', 'ragri', 'reel', 'microbic', 'microbnc' );
+
+SELECT add_missing_table_field ('public', 'traitementspdos', 'regime', 'TYPE_REGIMEFICHECALCUL');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'saisonnier', 'TYPE_BOOLEANNUMBER');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'nrmrcs', 'VARCHAR(20)');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'dtdebutactivite', 'DATE');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'raisonsocial', 'VARCHAR(100)');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'dtdebutperiode', 'DATE');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'dtfinperiode', 'DATE');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'dtprisecompte', 'DATE');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'dtecheance', 'DATE');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'forfait', 'FLOAT');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'mtaidesub', 'FLOAT');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'chaffvnt', 'FLOAT');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'chaffsrv', 'FLOAT');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'benefoudef', 'FLOAT');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'ammortissements', 'FLOAT');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'salaireexploitant', 'FLOAT');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'provisionsnonded', 'FLOAT');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'moinsvaluescession', 'FLOAT');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'autrecorrection', 'FLOAT');
+
 
 -- *****************************************************************************
 COMMIT;

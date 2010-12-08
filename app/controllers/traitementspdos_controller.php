@@ -40,8 +40,6 @@
             
             $options[$this->modelClass]['listeDescription'] = $this->Descriptionpdo->find( 'all', array( 'contain' => false ) );
             
-            $this->set( 'regimes', Set::classicExtract($this->Traitementpdo->Fichecalcul->enums(), 'Fichecalcul.name') );
-            
             return $options;
         }
 
@@ -204,11 +202,9 @@
                     $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                 }
             }
-            else{
-                if( $this->action == 'edit' ) {
-                    $this->data = $traitement;
-                }
-            }
+            elseif( $this->action == 'edit' )
+                $this->data = $traitement;
+                
             $this->Traitementpdo->commit();
             
             $traitementspdosouverts = $this->{$this->modelClass}->find(
