@@ -113,6 +113,14 @@ SELECT
 		) = 0
 	LIMIT 10;
 
+
+
+
+CREATE TYPE type_statutoccupation AS ENUM ( 'proprietaire', 'locataire' );
+ALTER TABLE dsps ADD COLUMN statutoccupation type_statutoccupation DEFAULT NULL;
+ALTER TABLE dsps_revs ADD COLUMN statutoccupation type_statutoccupation DEFAULT NULL;
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

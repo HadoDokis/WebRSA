@@ -738,3 +738,12 @@ msgid "Dsp::index::empty"
 msgstr "Aucun historique de DSP pour cette personne"
 
 
+###############################################################################
+msgid "Dsp.statutoccupation"
+msgstr "Statut d'occupation "
+
+msgid "ENUM::STATUTOCCUPATION::proprietaire"
+msgstr "Propriétaire"
+
+msgid "ENUM::STATUTOCCUPATION::locataire"
+msgstr "Locataire"
