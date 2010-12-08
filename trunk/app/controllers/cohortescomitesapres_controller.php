@@ -82,8 +82,8 @@
 							$apre = $this->Apre->findById( $apre_id, null, null, -1 );
 							$apre['Apre']['montantaverser'] = ( !empty( $montantattribue ) ? $montantattribue : 0 );
 							$this->Apre->create( $apre );
-//                 debug($apre);
 							$saved = $this->Apre->save( $apre ) && $saved;
+//debug($this->Apre->save( $apre ));
 						}
 
 						if( $saved /*&& empty( $this->Apre->ApreComiteapre->validationErrors )*/ ) {
