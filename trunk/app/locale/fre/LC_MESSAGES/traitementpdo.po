@@ -18,6 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+
 msgid "Traitementpdo::index::empty"
 msgstr "Aucun traitement pour cette PDO présent"
 
@@ -107,4 +108,106 @@ msgstr "Fermer un ou plusieurs traitement(s) associé(s) ?"
 
 msgid "Traitementpdo.questionclore"
 msgstr "Clore ?"
+
+###############################################################################
+
+msgid "ENUM::REGIME::fagri"
+msgstr "Forfait Agricole"
+
+msgid "ENUM::REGIME::ragri"
+msgstr "Réel Agricole"
+
+msgid "ENUM::REGIME::reel"
+msgstr "Réel"
+
+msgid "ENUM::REGIME::microbic"
+msgstr "Régime Micro-bic (dont auto-entrepreneur)"
+
+msgid "ENUM::REGIME::microbnc"
+msgstr "Régime Micro BNC"
+
+msgid "Traitementpdo.regime"
+msgstr "Régime"
+
+msgid "Traitementpdo.saisonnier"
+msgstr "Saisonnier"
+
+msgid "Traitementpdo.nrmrcs"
+msgstr "Numéro RM ou RCS"
+
+msgid "Traitementpdo.dtdebutactivite"
+msgstr "Date début d'activité"
+
+msgid "Traitementpdo.raisonsocial"
+msgstr "Raison sociale"
+
+msgid "Traitementpdo.dtdebutperiode"
+msgstr "Début de période"
+
+msgid "Traitementpdo.dtfinperiode"
+msgstr "Fin de période"
+
+msgid "Traitementpdo.nbmoisactivite"
+msgstr "Nombre de mois d'activité"
+
+msgid "Traitementpdo.forfait"
+msgstr "Forfait (n-2)"
+
+msgid "Traitementpdo.coefannee1"
+msgstr "Coef Année 1"
+
+msgid "Traitementpdo.coefannee2"
+msgstr "Coef Année 2"
+
+msgid "Traitementpdo.aidesubvreint"
+msgstr "Aides-Subventions réintégrées"
+
+msgid "Traitementpdo.mtaidesub"
+msgstr "Montant aide subvention"
+
+msgid "Traitementpdo.mnttotal"
+msgstr "Montant total pris en compte"
+
+msgid "Traitementpdo.revenus"
+msgstr "Revenus arrêtés à"
+
+msgid "Traitementpdo.dtprisecompte"
+msgstr "Date début de prise en compte"
+
+msgid "Traitementpdo.dtecheance"
+msgstr "Date d'échéance"
+
+msgid "Traitementpdo.chaffvnt"
+msgstr "Chiffre d'Affaire Ventes"
+
+msgid "Traitementpdo.chaffsrv"
+msgstr "Chiffre d'Affaire Services"
+
+msgid "Traitementpdo.benefoudef"
+msgstr "Bénéfice ou déficit"
+
+msgid "Traitementpdo.correction"
+msgstr "Correction (à réintégrer)"
+
+msgid "Traitementpdo.amortissements"
+msgstr "Ammortissements"
+
+msgid "Traitementpdo.salaireexploitant"
+msgstr "Salaire de l'exploitant"
+
+msgid "Traitementpdo.provisionsnonded"
+msgstr "Provisions non déductibles"
+
+msgid "Traitementpdo.moinsvaluescession"
+msgstr "Moins-values de cession"
+
+msgid "Traitementpdo.autrecorrection"
+msgstr "Autre correction"
+
+msgid "Traitementpdo.abattement"
+msgstr "Abattement"
+
+msgid "Traitementpdo.benefpriscompte"
+msgstr "Bénéfice pris en compte"
+
 

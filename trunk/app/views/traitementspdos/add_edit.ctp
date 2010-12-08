@@ -17,17 +17,6 @@
             echo $xform->input( 'Traitementpdo.id', array( 'type' => 'hidden' ) );
         }
 
-//         echo $default->view(
-//             $propopdo,
-//             array(
-//                 'Propopdo.user_id'
-//             ),
-//             array(
-//                 'widget' => 'table',
-//                 'id' => 'dossierInfosOrganisme',
-//                 'options' => $gestionnaire
-//             )
-//         );
         echo $default->subform(
             array(
                 'Traitementpdo.propopdo_id' => array( 'type' => 'hidden', 'value' => $propopdo_id ),
@@ -126,19 +115,19 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.name', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.regime', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.name', array('label'=>false, 'type'=>'select', 'options'=>$regimes, 'empty'=>true))
+        			$form->input('Traitementpdo.regime', array('label'=>false, 'type'=>'select', 'options'=>$options['Traitementpdo']['regime'], 'empty'=>true))
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.saisonnier', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.saisonnier', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.saisonnier', array('label'=>false, 'type'=>'checkbox'))
+        			$form->input('Traitementpdo.saisonnier', array('label'=>false, 'type'=>'checkbox'))
         		)
         	);
         	
@@ -146,11 +135,11 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.nrmrcs', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.nrmrcs', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.nrmrcs', array('label'=>false, 'type'=>'text'))
+        			$form->input('Traitementpdo.nrmrcs', array('label'=>false, 'type'=>'text'))
         		).
         		$html->tag(
         			'td',
@@ -165,14 +154,15 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.dtdebutactivite', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.dtdebutactivite', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.dtdebutactivite',
+        			$form->input('Traitementpdo.dtdebutactivite',
         				array(
         					'label'=>false,
         					'type'=>'date',
+        					'empty'=>true,
         					'dateFormat' => 'DMY',
         					'minYear' => date('Y') - 5,
         					'maxYear' => date('Y')
@@ -181,11 +171,11 @@
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.raisonsocial', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.raisonsocial', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.raisonsocial', array('label'=>false, 'type'=>'text'))
+        			$form->input('Traitementpdo.raisonsocial', array('label'=>false, 'type'=>'text'))
         		)
         	);
         	
@@ -193,14 +183,15 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.dtdebutperiode', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.dtdebutperiode', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.dtdebutperiode',
+        			$form->input('Traitementpdo.dtdebutperiode',
         				array(
         					'label'=>false,
         					'type'=>'date',
+        					'empty'=>true,
         					'dateFormat' => 'DMY',
         					'minYear' => date('Y') - 5,
         					'maxYear' => date('Y')
@@ -209,14 +200,15 @@
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.dtfinperiode', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.dtfinperiode', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.dtfinperiode',
+        			$form->input('Traitementpdo.dtfinperiode',
         				array(
         					'label'=>false,
         					'type'=>'date',
+        					'empty'=>true,
         					'dateFormat' => 'DMY',
         					'minYear' => date('Y') - 5,
         					'maxYear' => date('Y') + 1
@@ -229,7 +221,7 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.nbmoisactivite', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.nbmoisactivite', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
@@ -251,11 +243,11 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.forfait', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.forfait', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.forfait', array('label'=>false, 'type'=>'text'))
+        			$form->input('Traitementpdo.forfait', array('label'=>false, 'type'=>'text'))
         		).
         		$html->tag(
         			'td',
@@ -273,22 +265,22 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.coefannee1', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.coefannee1', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
-        			Configure::read('fichecalcul_coefannee1').' %',
+        			Configure::read('Traitementpdo.fichecalcul_coefannee1').' %',
         			array(
         				'id' => 'coefannee1'
         			)
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.aidesubvreint', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.aidesubvreint', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.aidesubvreint', array('label'=>false, 'type'=>'select'))
+        			$form->input('Traitementpdo.aidesubvreint', array('label'=>false, 'type'=>'select'))
         		),
         		array(
         			'class' => 'fagri'
@@ -299,22 +291,22 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.coefannee2', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.coefannee2', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
-        			Configure::read('fichecalcul_coefannee2').' %',
+        			Configure::read('Traitementpdo.fichecalcul_coefannee2').' %',
         			array(
         				'id' => 'coefannee2'
         			)
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.mtaidesub', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.mtaidesub', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.mtaidesub', array('label'=>false, 'type'=>'text'))
+        			$form->input('Traitementpdo.mtaidesub', array('label'=>false, 'type'=>'text'))
         		),
         		array(
         			'class' => 'fagri'
@@ -325,22 +317,30 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.chaffvnt', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.chaffvnt', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.chaffvnt', array('label'=>false, 'type'=>'text'))
+        			$form->input('Traitementpdo.chaffvnt', array('label'=>false, 'type'=>'text')).
+        			$html->tag(
+        				'p',
+        				'Attention CA dépassant '.Configure::read('Traitementpdo.fichecalcul_cavntmax').' €',
+        				array(
+        					'class' => 'notice',
+        					'id' => 'infoChaffvnt'
+        				)
+	        		)
         		).
         		$html->tag(
         			'td',
-        			'Abattement',
+        			$xform->_label('Traitementpdo.abattement', array('domain'=>'traitementpdo')),
         			array(
         				'class' => 'microbic'
         			)
         		).
         		$html->tag(
         			'td',
-        			Configure::read('fichecalcul_abattbicvnt').' %',
+        			Configure::read('Traitementpdo.fichecalcul_abattbicvnt').' %',
         			array(
         				'class' => 'microbic',
         				'id' => 'abattbicvnt'
@@ -350,7 +350,6 @@
         			'td',
         			'',
         			array(
-        				'id' => 'infoChaffvnt',
         				'colspan' => '2',
         				'class' => 'fagri ragri reel microbnc'
         			)
@@ -364,22 +363,30 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.chaffsrv', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.chaffsrv', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.chaffsrv', array('label'=>false, 'type'=>'text'))
+	        		$form->input('Traitementpdo.chaffsrv', array('label'=>false, 'type'=>'text')).
+        			$html->tag(
+        				'p',
+        				'Attention CA dépassant '.Configure::read('Traitementpdo.fichecalcul_casrvmax').' €',
+        				array(
+        					'class' => 'notice',
+        					'id' => 'infoChaffsrv'
+        				)
+	        		)
         		).
         		$html->tag(
         			'td',
-        			'Abattement',
+        			$xform->_label('Traitementpdo.abattement', array('domain'=>'traitementpdo')),
         			array(
         				'class' => 'microbic microbnc'
         			)
         		).
         		$html->tag(
         			'td',
-        			Configure::read('fichecalcul_abattbicsrv').' %',
+        			Configure::read('Traitementpdo.fichecalcul_abattbicsrv').' %',
         			array(
         				'class' => 'microbic',
         				'id' => 'abattbicsrv'
@@ -387,7 +394,7 @@
         		).
         		$html->tag(
         			'td',
-        			Configure::read('fichecalcul_abattbncsrv').' %',
+        			Configure::read('Traitementpdo.fichecalcul_abattbncsrv').' %',
         			array(
         				'class' => 'microbnc',
         				'id' => 'abattbncsrv'
@@ -397,7 +404,6 @@
         			'td',
         			'',
         			array(
-        				'id' => 'infoChaffsrv',
         				'colspan' => '2',
         				'class' => 'fagri ragri reel'
         			)
@@ -411,7 +417,7 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.benefpriscompte', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.benefpriscompte', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
@@ -436,11 +442,11 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.benefoudef', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.benefoudef', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.benefoudef', array('label'=>false, 'type'=>'text'))
+        			$form->input('Traitementpdo.benefoudef', array('label'=>false, 'type'=>'text'))
         		).
         		$html->tag(
         			'td',
@@ -458,15 +464,15 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.correction', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.correction', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.amortissements', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.amortissements', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.amortissements', array('label'=>false, 'type'=>'text')),
+        			$form->input('Traitementpdo.amortissements', array('label'=>false, 'type'=>'text')),
         			array(
         				'colspan' => 2
         			)
@@ -484,11 +490,11 @@
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.salaireexploitant', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.salaireexploitant', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.salaireexploitant', array('label'=>false, 'type'=>'text')),
+        			$form->input('Traitementpdo.salaireexploitant', array('label'=>false, 'type'=>'text')),
         			array(
         				'colspan' => 2
         			)
@@ -506,11 +512,11 @@
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.provisionsnonded', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.provisionsnonded', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.provisionsnonded', array('label'=>false, 'type'=>'text')),
+        			$form->input('Traitementpdo.provisionsnonded', array('label'=>false, 'type'=>'text')),
         			array(
         				'colspan' => 2
         			)
@@ -528,11 +534,11 @@
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.moinsvaluescession', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.moinsvaluescession', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.moinsvaluescession', array('label'=>false, 'type'=>'text')),
+        			$form->input('Traitementpdo.moinsvaluescession', array('label'=>false, 'type'=>'text')),
         			array(
         				'colspan' => 2
         			)
@@ -550,11 +556,11 @@
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.autrecorrection', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.autrecorrection', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.autrecorrection', array('label'=>false, 'type'=>'text')),
+        			$form->input('Traitementpdo.autrecorrection', array('label'=>false, 'type'=>'text')),
         			array(
         				'colspan' => 2
         			)
@@ -568,7 +574,7 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.mnttotal', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.mnttotal', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
@@ -593,7 +599,7 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.revenus', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.revenus', array('domain'=>'traitementpdo'))
         		).
         		$html->tag(
         			'td',
@@ -615,14 +621,15 @@
         		'tr',
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.dtprisecompte', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.dtprisecompte', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.dtprisecompte',
+        			$form->input('Traitementpdo.dtprisecompte',
         				array(
         					'label'=>false,
         					'type'=>'date',
+        					'empty'=>true,
         					'dateFormat' => 'DMY',
         					'minYear' => date('Y') - 5,
         					'maxYear' => date('Y')
@@ -631,14 +638,15 @@
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Fichecalcul.dtecheance', array('domain'=>'fichecalcul'))
+        			$xform->_label('Traitementpdo.dtecheance', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Fichecalcul.dtecheance',
+        			$form->input('Traitementpdo.dtecheance',
         				array(
         					'label'=>false,
         					'type'=>'date',
+        					'empty'=>true,
         					'dateFormat' => 'DMY',
         					'minYear' => date('Y') - 5,
         					'maxYear' => date('Y') + 1
@@ -829,7 +837,7 @@
 			 true
 		 );
 		 
-		<?php foreach ($regimes as $enumname=>$enumvalue): ?>
+		<?php foreach ($options['Traitementpdo']['regime'] as $enumname=>$enumvalue): ?>
 			$$('tr.<?php echo $enumname; ?>').each(function (element) {
 				element.hide();
 			});
@@ -838,112 +846,91 @@
 			});
 		<?php endforeach; ?>
 			
-		$('FichecalculName').observe( 'change', function (event) {
-			var value = $F('FichecalculName');
-			$$('#fichecalcul tr').each(function (element) {
-				var classes = $( element ).classNames();
-				if( classes.size() > 0 ) {
-					if( $( element ).hasClassName( value ) ) {
-						element.show();
-					}
-					else {
-						element.hide();
-					}
-				}
-			});
-			$$('#fichecalcul tr td').each(function (element) {
-				var classes = $( element ).classNames();
-				if( classes.size() > 0 ) {
-					if( $( element ).hasClassName( value ) ) {
-						element.show();
-					}
-					else {
-						element.hide();
-					}
-				}
+		$('TraitementpdoRegime').observe( 'change', function (event) {
+			loadFiche();
+		});
+		loadFiche();
+		
+		[ $('TraitementpdoDtdebutperiodeDay'), $('TraitementpdoDtdebutperiodeMonth'), $('TraitementpdoDtdebutperiodeYear'), $('TraitementpdoDtfinperiodeDay'), $('TraitementpdoDtfinperiodeMonth'), $('TraitementpdoDtfinperiodeYear') ].each( function(element) {
+			element.observe( 'change', function (event) {
+				recalculnbmoisactivite();
 			});
 		});
 		
-		$('FichecalculDtdebutperiodeDay').observe( 'change', function (event) {
-			recalculnbmoisactivite();
+		[ $('TraitementpdoForfait'), $('TraitementpdoMtaidesub'), $('TraitementpdoBenefoudef'), $('TraitementpdoAmortissements'), $('TraitementpdoSalaireexploitant'), $('TraitementpdoProvisionsnonded'), $('TraitementpdoMoinsvaluescession'), $('TraitementpdoAutrecorrection'),  ].each( function (element) {
+			element.observe( 'change', function (event) {
+				recalculmnttotal();
+			});
 		});
-		$('FichecalculDtdebutperiodeMonth').observe( 'change', function (event) {
-			recalculnbmoisactivite();
-		});
-		$('FichecalculDtdebutperiodeYear').observe( 'change', function (event) {
-			recalculnbmoisactivite();
-		});
-		$('FichecalculDtfinperiodeDay').observe( 'change', function (event) {
-			recalculnbmoisactivite();
-		});
-		$('FichecalculDtfinperiodeMonth').observe( 'change', function (event) {
-			recalculnbmoisactivite();
-		});
-		$('FichecalculDtfinperiodeYear').observe( 'change', function (event) {
-			recalculnbmoisactivite();
-		});
-		recalculnbmoisactivite();
-		 
-		$('FichecalculForfait').observe( 'change', function (event) {
-			recalculmnttotal();
-		});
-		$('FichecalculMtaidesub').observe( 'change', function (event) {
-			recalculmnttotal();
-		});
-		$('FichecalculBenefoudef').observe( 'change', function (event) {
-			recalculmnttotal();
-		});
-		$('FichecalculAmortissements').observe( 'change', function (event) {
-			recalculmnttotal();
-		});
-		$('FichecalculSalaireexploitant').observe( 'change', function (event) {
-			recalculmnttotal();
-		});
-		$('FichecalculProvisionsnonded').observe( 'change', function (event) {
-			recalculmnttotal();
-		});
-		$('FichecalculMoinsvaluescession').observe( 'change', function (event) {
-			recalculmnttotal();
-		});
-		$('FichecalculAutrecorrection').observe( 'change', function (event) {
-			recalculmnttotal();
-		});
-		recalculmnttotal();
 		
-		$('FichecalculChaffvnt').observe( 'change', function (event) {
+		$('TraitementpdoChaffvnt').observe( 'change', function (event) {
 			recalculbenefpriscompte();
 			// Infobulle
-			var td = $('infoChaffvnt');
-			td.update( '' );
+			infobulle('vnt');
+		});
+		$('TraitementpdoChaffsrv').observe( 'change', function (event) {
+			recalculbenefpriscompte();
+			// Infobulle
+			infobulle('srv');
+		});
+	} );
+	
+	function loadFiche() {
+		var value = $F('TraitementpdoRegime');
+		$$('#fichecalcul tr').each(function (element) {
+			var classes = $( element ).classNames();
+			if( classes.size() > 0 ) {
+				if( $( element ).hasClassName( value ) ) {
+					element.show();
 
-			if( $F('FichecalculChaffvnt') > <?php echo Configure::read( 'fichecalcul_cavntmax' )?> ) {
-				var p = new Element( 'p', { class:'notice'} ).update('Choucroute');
-				td.update( p );
+					// Réactiver les champs
+					$( element ).getElementsBySelector( 'select', 'input' ).each( function( input ) {
+						input.disabled = '';
+					} );
+				}
+				else {
+					element.hide();
+
+					// Désactiver les champs
+					$( element ).getElementsBySelector( 'select', 'input' ).each( function( input ) {
+						input.disabled = 'disabled';
+					} );
+				}
 			}
 		});
-		$('FichecalculChaffsrv').observe( 'change', function (event) {
-			recalculbenefpriscompte();
+		$$('#fichecalcul tr td').each(function (element) {
+			var classes = $( element ).classNames();
+			if( classes.size() > 0 ) {
+				if( $( element ).hasClassName( value ) ) {
+					element.show();
+				}
+				else {
+					element.hide();
+				}
+			}
 		});
+		recalculnbmoisactivite();
+		recalculmnttotal();
 		recalculbenefpriscompte();
-		
-		recalculrevenus();
-	} );
+		infobulle('vnt');
+		infobulle('srv');
+	}
 	
 	function recalculnbmoisactivite() {
 		var nbmois = 0;
-		if ($F('FichecalculDtfinperiodeYear') >= $F('FichecalculDtdebutperiodeYear')) {
-			nbmois += 12 * ($F('FichecalculDtfinperiodeYear') - $F('FichecalculDtdebutperiodeYear'));
+		if ($F('TraitementpdoDtfinperiodeYear') >= $F('TraitementpdoDtdebutperiodeYear')) {
+			nbmois += 12 * ($F('TraitementpdoDtfinperiodeYear') - $F('TraitementpdoDtdebutperiodeYear'));
 			if (
-				($F('FichecalculDtfinperiodeMonth') >= $F('FichecalculDtdebutperiodeMonth'))
+				($F('TraitementpdoDtfinperiodeMonth') >= $F('TraitementpdoDtdebutperiodeMonth'))
 				||
 				(
-					($F('FichecalculDtfinperiodeMonth') < $F('FichecalculDtdebutperiodeMonth'))
+					($F('TraitementpdoDtfinperiodeMonth') < $F('TraitementpdoDtdebutperiodeMonth'))
 					&&
-					($F('FichecalculDtfinperiodeYear') > $F('FichecalculDtdebutperiodeYear'))
+					($F('TraitementpdoDtfinperiodeYear') > $F('TraitementpdoDtdebutperiodeYear'))
 				)
 			)
-				nbmois += $F('FichecalculDtfinperiodeMonth') - $F('FichecalculDtdebutperiodeMonth');
-			if ($F('FichecalculDtfinperiodeDay') > $F('FichecalculDtdebutperiodeDay'))
+				nbmois += $F('TraitementpdoDtfinperiodeMonth') - $F('TraitementpdoDtdebutperiodeMonth');
+			if ($F('TraitementpdoDtfinperiodeDay') > $F('TraitementpdoDtdebutperiodeDay'))
 				nbmois++;
 		}
 		if (nbmois < 0)
@@ -956,28 +943,28 @@
 	function recalculmnttotal() {
 		var mttotal = 0;
 		
-		if ($F('FichecalculName')=='fagri') {
+		if ($F('TraitementpdoRegime')=='fagri') {
 			var coefannee1 = $('coefannee1').innerHTML.split(' ');
 			var valuecoefannee1 = coefannee1[0].replace(',', '.');
 			valuecoefannee1 = parseFloat(valuecoefannee1)/100;
 			var coefannee2 = $('coefannee2').innerHTML.split(' ');
 			var valuecoefannee2 = coefannee2[0].replace(',', '.');
 			valuecoefannee2 = parseFloat(valuecoefannee2)/100;
-			var forfait = parseFloat($F('FichecalculForfait').replace(',', '.'));
-			var mtaidesub = parseFloat($F('FichecalculMtaidesub').replace(',', '.'));
+			var forfait = parseFloat($F('TraitementpdoForfait').replace(',', '.'));
+			var mtaidesub = parseFloat($F('TraitementpdoMtaidesub').replace(',', '.'));
 			
 			if (!isNaN(valuecoefannee1) && !isNaN(valuecoefannee2) && !isNaN(forfait) && forfait!=0)
 				mttotal += Math.round( ( forfait + ( ( forfait + ( forfait * valuecoefannee1 ) ) * valuecoefannee2 ) ) * 100 ) / 100;
 			if (!isNaN(mtaidesub) && mtaidesub!=0)
 				mttotal += Math.round( mtaidesub * 100 ) / 100;
 		}
-		else if ($F('FichecalculName')=='ragri' || $F('FichecalculName')=='reel') {
-			var benefoudef = parseFloat($F('FichecalculBenefoudef').replace(',', '.'));
-			var amortissements = parseFloat($F('FichecalculAmortissements').replace(',', '.'));
-			var salaireexploitant = parseFloat($F('FichecalculSalaireexploitant').replace(',', '.'));
-			var provisionsnonded = parseFloat($F('FichecalculProvisionsnonded').replace(',', '.'));
-			var moinsvaluescession = parseFloat($F('FichecalculMoinsvaluescession').replace(',', '.'));
-			var autrecorrection = parseFloat($F('FichecalculAutrecorrection').replace(',', '.'));
+		else if ($F('TraitementpdoRegime')=='ragri' || $F('TraitementpdoRegime')=='reel') {
+			var benefoudef = parseFloat($F('TraitementpdoBenefoudef').replace(',', '.'));
+			var amortissements = parseFloat($F('TraitementpdoAmortissements').replace(',', '.'));
+			var salaireexploitant = parseFloat($F('TraitementpdoSalaireexploitant').replace(',', '.'));
+			var provisionsnonded = parseFloat($F('TraitementpdoProvisionsnonded').replace(',', '.'));
+			var moinsvaluescession = parseFloat($F('TraitementpdoMoinsvaluescession').replace(',', '.'));
+			var autrecorrection = parseFloat($F('TraitementpdoAutrecorrection').replace(',', '.'));
 			
 			if (!isNaN(benefoudef))
 				mttotal += Math.round( ( benefoudef ) * 100 ) / 100;
@@ -1001,9 +988,9 @@
 	function recalculbenefpriscompte() {
 		var benefpriscompte = 0;
 		
-		if ($F('FichecalculName')=='microbic') {
-			var chaffvnt = parseFloat($F('FichecalculChaffvnt').replace(',', '.'));
-			var chaffsrv = parseFloat($F('FichecalculChaffsrv').replace(',', '.'));
+		if ($F('TraitementpdoRegime')=='microbic') {
+			var chaffvnt = parseFloat($F('TraitementpdoChaffvnt').replace(',', '.'));
+			var chaffsrv = parseFloat($F('TraitementpdoChaffsrv').replace(',', '.'));
 			var abattbicvnt = $('abattbicvnt').innerHTML.split(' ');
 			var valueabattbicvnt = abattbicvnt[0].replace(',', '.');
 			valueabattbicvnt = 1 - parseFloat(valueabattbicvnt)/100;
@@ -1016,8 +1003,8 @@
 			if (!isNaN(chaffvnt) && !isNaN(valueabattbicvnt))
 				benefpriscompte += Math.round( ( chaffvnt * valueabattbicvnt ) * 100 ) / 100;
 		}
-		else if ($F('FichecalculName')=='microbnc') {
-			var chaffsrv = parseFloat($F('FichecalculChaffsrv').replace(',', '.'));
+		else if ($F('TraitementpdoRegime')=='microbnc') {
+			var chaffsrv = parseFloat($F('TraitementpdoChaffsrv').replace(',', '.'));
 			var abattbncsrv = $('abattbncsrv').innerHTML.split(' ');
 			var valueabattbncsrv = abattbncsrv[0].replace(',', '.');
 			valueabattbncsrv = 1 - parseFloat(valueabattbncsrv)/100;
@@ -1031,10 +1018,27 @@
 		recalculrevenus();
 	}
 	
+	function infobulle(champ) {
+		var p = $('infoChaff'+champ);
+		if ($F('TraitementpdoRegime')=='reel' || $F('TraitementpdoRegime')=='microbic' || $F('TraitementpdoRegime')=='microbnc') {
+			var valuemax = 0;
+			if (champ=='srv')
+				valuemax = <?php echo Configure::read( 'Traitementpdo.fichecalcul_casrvmax' ) ?>;
+			else if (champ=='vnt')
+				valuemax = <?php echo Configure::read( 'Traitementpdo.fichecalcul_cavntmax' ) ?>;
+			if( $F('TraitementpdoChaff'+champ) > valuemax )
+				p.show();
+			else
+				p.hide();
+		}
+		else
+			p.hide();
+	}
+	
 	function recalculrevenus() {
 		var revenus = 0;
 		
-		if ($F('FichecalculName')=='fagri' || $F('FichecalculName')=='ragri' || $F('FichecalculName')=='reel') {
+		if ($F('TraitementpdoRegime')=='fagri' || $F('TraitementpdoRegime')=='ragri' || $F('TraitementpdoRegime')=='reel') {
 			var mnttotal = $('mnttotal').innerHTML.split(' ');
 			var valuemnttotal = mnttotal[0].replace(',', '.');
 			valuemnttotal = parseFloat(valuemnttotal);
@@ -1044,7 +1048,7 @@
 			if (!isNaN(valuemnttotal) && !isNaN(valuenbmois) && valuemnttotal!=0 && valuenbmois!=0)
 				revenus = Math.round( parseFloat( valuemnttotal ) / parseFloat( valuenbmois ) * 100 ) / 100;
 		}
-		else if ($F('FichecalculName')=='microbic' || $F('FichecalculName')=='microbnc') {
+		else if ($F('TraitementpdoRegime')=='microbic' || $F('TraitementpdoRegime')=='microbnc') {
 			var benefpriscompte = $('benefpriscompte').innerHTML.split(' ');
 			var valuebenefpriscompte = benefpriscompte[0].replace(',', '.');
 			valuebenefpriscompte = parseFloat(valuebenefpriscompte);
@@ -1058,5 +1062,4 @@
 		revenus = revenus.toString().replace('.', ',');
 		$('revenus').innerHTML = revenus + ' € par mois';
 	}
-	
 </script>

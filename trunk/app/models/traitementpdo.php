@@ -9,9 +9,11 @@
 					'hascourrier',
 					'hasrevenu',
 					'haspiecejointe',
-					'hasficheanalyse'
+					'hasficheanalyse',
+					'regime'
 				)
-			)
+			),
+			'Autovalidate'
 		);
 
 		public $validate = array(
@@ -61,6 +63,104 @@
 					'allowEmpty' => false,
 					'message' => 'Merci de rentrer une date valide'
 				)
+			),
+			'regime' => array(
+				array(
+					'rule' => 'notEmpty',
+					'required' => false,
+					'allowEmpty' => false,
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'dtdebutactivite' => array(
+				'date' => array(
+					'rule' => 'date',
+					'required' => false,
+					'allowEmpty' => false,
+					'message' => 'Merci de rentrer une date valide'
+				)
+			),
+			'nrmrcs' => array(
+				array(
+					'rule' => 'numeric',
+					'required' => false,
+					'allowEmpty' => false
+				)
+			),
+			'raisonsocial' => array(
+				array(
+					'rule' => 'notEmpty',
+					'required' => false,
+					'allowEmpty' => false,
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'dtdebutperiode' => array(
+				'date' => array(
+					'rule' => 'date',
+					'required' => false,
+					'allowEmpty' => false,
+					'message' => 'Merci de rentrer une date valide'
+				)
+			),
+			'dtfinperiode' => array(
+				'date' => array(
+					'rule' => 'date',
+					'required' => false,
+					'allowEmpty' => false,
+					'message' => 'Merci de rentrer une date valide'
+				)
+			),
+			'dtprisecompte' => array(
+				'date' => array(
+					'rule' => 'date',
+					'required' => false,
+					'allowEmpty' => false,
+					'message' => 'Merci de rentrer une date valide'
+				)
+			),
+			'dtecheance' => array(
+				'date' => array(
+					'rule' => 'date',
+					'required' => false,
+					'allowEmpty' => false,
+					'message' => 'Merci de rentrer une date valide'
+				)
+			),
+			'chaffvnt' => array(
+				array(
+					'rule' => 'numeric',
+					'required' => false,
+					'allowEmpty' => false
+				)
+			),
+			'chaffsrv' => array(
+				array(
+					'rule' => 'numeric',
+					'required' => false,
+					'allowEmpty' => false
+				)
+			),
+			'benefoudef' => array(
+				array(
+					'rule' => 'numeric',
+					'required' => false,
+					'allowEmpty' => false
+				)
+			),
+			'amortissements' => array(
+				array(
+					'rule' => 'numeric',
+					'required' => false,
+					'allowEmpty' => false
+				)
+			),
+			'autrecorrection' => array(
+				array(
+					'rule' => 'numeric',
+					'required' => false,
+					'allowEmpty' => false
+				)
 			)
 		);
 
@@ -91,19 +191,6 @@
 		public $hasOne = array(
 			'Saisineepdpdo66' => array(
 				'className' => 'Saisineepdpdo66',
-				'foreignKey' => 'traitementpdo_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-			'Fichecalcul' => array(
-				'className' => 'Fichecalcul',
 				'foreignKey' => 'traitementpdo_id',
 				'dependent' => true,
 				'conditions' => '',

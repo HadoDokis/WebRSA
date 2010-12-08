@@ -255,9 +255,7 @@
         'gestionep' => 'gestionseps',
 		'motifreorient' => 'motifsreorients',
 		'nvsrepreorient66' => 'nvsrsepsreorient66',
-		'nvsepdpdo66' => 'nvsepdspdos66',
-		// Ajout de la fiche de calcul dans le journal des traitements des PDOs
-		'fichecalcul' => 'fichescalculs',
+		'nvsepdpdo66' => 'nvsepdspdos66'
 	);
 /**
  * This is a key => value array of regex used to match words.
