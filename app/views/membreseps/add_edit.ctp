@@ -9,14 +9,15 @@
 ?>
 </h1>
 
-<?php		
-	echo $default->form(
+<?php
+	echo $default2->form(
 		array(
 			'Membreep.ep_id',
 			'Membreep.fonctionmembreep_id',
 			'Membreep.qual',
 			'Membreep.nom',
-			'Membreep.prenom'
+			'Membreep.prenom',
+			'Membreep.suppleant_id'
 		),
 		array(
 			'id' => 'MembreepAddEditForm',
@@ -35,3 +36,26 @@
         )
     );
 ?>
+
+<script type="text/javascript">
+	function updateSuppleant () {
+		new Ajax.Updater(
+			$( 'MembreepSuppleantId' ).up(),
+			'<?php echo Router::url( "/membreseps/ajaxfindsuppleant", true );?>'+'/'+$F('MembreepEpId')+'/'+$F('MembreepSuppleantId'),
+			 {
+			 	asynchronous:true,
+			 	evalScripts:true,
+//			 	parameters:Form.Element.serialize('MembreepEpId'),
+			 	requestHeaders:['X-Update', $( 'MembreepSuppleantId' ).up()]
+		 	}
+		 )
+	 }
+
+	document.observe("dom:loaded", function() {
+		updateSuppleant();
+	});
+
+new Form.Element.EventObserver(
+	'MembreepEpId', function(element, value) {   updateSuppleant(); }
+);
+</script>
