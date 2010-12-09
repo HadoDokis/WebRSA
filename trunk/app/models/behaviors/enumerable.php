@@ -23,6 +23,8 @@
 
 	class EnumerableBehavior extends ModelBehavior
 	{
+		protected $_options = array();
+
 		public $settings = array();
 
 		public $defaultSettings = array(
@@ -36,7 +38,7 @@
 
 		/**
 		*
-		*	Add validation rule for model->field
+		* Add validation rule for model->field
 		*
 		*/
 
@@ -56,7 +58,7 @@
 
 		/**
 		*
-		*	Read settings, add validation rules if needed.
+		* Read settings, add validation rules if needed.
 		*
 		*/
 
@@ -114,6 +116,8 @@
 				$this->settings[$model->alias]['fields'] = $enumFields;
 			}
 
+// 			$this->_readEnums( $model );
+
 			// Add validation rules if needed
 			if( $this->settings[$model->alias]['addValidation'] && !empty( $this->settings[$model->alias]['fields'] ) ) {
 				foreach( $this->settings[$model->alias]['fields'] as $field => $data ) {
@@ -123,15 +127,16 @@
 		}
 
 		/**
-		*	Fetches the enum type options for a specific field for mysql and
-		*	mysqli drivers.
+		* Fetches the enum type options for a specific field for mysql and
+		* mysqli drivers.
 		*
-		*	@param string $field
-		*	@return void
-		*	@access public
+		* @param string $field
+		* @return void
+		* @access public
+		* @deprecated
 		*/
 
-		function _mysqlEnumOptions( $model, $field ) {
+		/*function _mysqlEnumOptions( $model, $field ) {
 			$options = false;
 			$sql = "SHOW COLUMNS FROM `{$model->useTable}` LIKE '{$field}'";
 			$enumData = $model->query($sql);
@@ -141,18 +146,19 @@
 				$options = explode(',', $enumData);
 			}
 			return $options;
-		}
+		}*/
 
 		/**
-		*	Fetches the enum type options for a specific field for postgres
-		*	driver.
+		* Fetches the enum type options for a specific field for postgres
+		* driver.
 		*
-		*	@param string $field
-		*	@return void
-		*	@access public
+		* @param string $field
+		* @return void
+		* @access public
+		* @deprecated
 		*/
 
-		function _postgresEnumOptions( $model, $field ) {
+		/*function _postgresEnumOptions( $model, $field ) {
 			$options = false;
 			$sql = "SELECT udt_name FROM information_schema.columns WHERE table_name = '{$model->useTable}' AND column_name = '{$field}';";
 			$enumType = $model->query( $sql );
@@ -169,18 +175,95 @@
 				}
 			}
 			return $options;
+		}*/
+
+		/**
+		* Recherche et mise en cache des valeurs des enums pour tous les champs
+		* d'un modèle pour le SGBD PostgreSQL.
+		* Retourne la liste des champs ainsi que leurs valeurs.
+		*
+		* @param AppModel $model
+		* @return array
+		* @access public
+		*/
+
+		protected function _postgresEnums( $model ) {
+			if( !empty( $this->_options[$model->alias] ) ) {
+				$options = $this->_options[$model->alias];
+			}
+			else {
+				$cacheKey = Inflector::underscore( __CLASS__ ).'_'.$model->useDbConfig.'_'.$model->alias;
+				$options = Cache::read( $cacheKey );
+
+				if( $options === false ) {
+					$sql = "SELECT column_name, udt_name FROM information_schema.columns WHERE table_name = '{$model->useTable}' AND data_type = 'USER-DEFINED';";
+					$enums = $model->query( $sql );
+
+					if( empty( $enums ) ) {
+						trigger_error( sprintf( __( 'Requête inutile générée par %s pour le modèle %s.', true ), __CLASS__, $model->alias ), E_USER_WARNING );
+					}
+					else {
+						$types = array();
+						$options = array();
+						foreach( $enums as $enum ) {
+							if( !isset( $types[$enum[0]['udt_name']] ) ) {
+								$sql = "SELECT enum_range(null::{$enum[0]['udt_name']});";
+								$enumData = $model->query( $sql );
+								if(!empty($enumData)) {
+									$patterns = array( '{', '}' );
+									$enumData = r( $patterns, '', Set::extract( $enumData, '0.0.enum_range' ) );
+									$types[$enum[0]['udt_name']] = explode( ',', $enumData );
+								}
+							}
+							$options[$enum[0]['column_name']] = $types[$enum[0]['udt_name']];
+						}
+
+						$this->_options[$model->alias] = $options;
+						Cache::write( $cacheKey, $options );
+					}
+				}
+			}
+
+			return $options;
 		}
+
+		/**
+		*
+		*/
+
+		protected function _readEnums( $model ) {
+			$conn = ConnectionManager::getInstance();
+			$driver = $conn->config->{$model->useDbConfig}['driver'];
+			switch( $driver ) {
+				case 'postgres':
+					$options = $this->_postgresEnums( $model );
+					break;
+				case 'mysql':
+				case 'mysqli':
+// 					$options = $this->_mysqlEnumOptions( $model, $field );
+					trigger_error( sprintf( __( 'FIXME: la méthode pour le SGBD MySQL/ reste à faire.', true ) ), E_USER_WARNING );
+					break;
+				default:
+					trigger_error( sprintf( __( 'SQL driver (%s) not supported in enumerable behavior.', true ), $driver ), E_USER_WARNING );
+			}
+
+			return $options;
+		}
+
 
 		/**
 		* 	Fetches the enum type options for a specific field
 		*
-		*	@param string $field
-		*	@return void
-		*	@access public
+		* @param string $field
+		* @return void
+		* @access public
 		*/
 
 		function enumOptions( $model, $field ) {
-			$cacheKey = $model->alias . '_' . $field . '_enum_options';
+			$options = $this->_readEnums( $model );
+			return @$options[$field];
+
+			/*$cacheKey = $model->alias . '_' . $field . '_enum_options';
 			$options = Cache::read($cacheKey);
 
 			if( !$options ) {
@@ -202,7 +285,7 @@
 					default:
 						trigger_error( sprintf( __( 'SQL driver (%s) not supported in enumerable behavior.', true ), $driver ), E_USER_WARNING );
 				}
-// debug($options);
+
 				if( empty( $options ) ) {
 					trigger_error( sprintf( __( 'Requête de recherche de type inutile pour le champ (%s).', true ), "{$model->alias}.{$field}" ), E_USER_WARNING );
 				}
@@ -210,11 +293,11 @@
 				Cache::write($cacheKey, $options);
 			}
 
-			return $options;
+			return $options;*/
 		}
 
 		/**
-		*	Fetches the enum translated list for a field
+		* Fetches the enum translated list for a field
 		*/
 
 		function enumList( $model, $field ) {
