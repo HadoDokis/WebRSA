@@ -39,9 +39,14 @@
 
 <script type="text/javascript">
 	function updateSuppleant () {
+		var ep_id = $F('MembreepEpId');
+		var suppleant_id = $F('MembreepSuppleantId');
+		if (suppleant_id == '')
+			suppleant_id=0;
+		var membreep_id = $F('MembreepId');
 		new Ajax.Updater(
 			$( 'MembreepSuppleantId' ).up(),
-			'<?php echo Router::url( "/membreseps/ajaxfindsuppleant", true );?>'+'/'+$F('MembreepEpId')+'/'+$F('MembreepSuppleantId'),
+			'<?php echo Router::url( "/membreseps/ajaxfindsuppleant", true );?>'+'/'+ep_id+'/'+suppleant_id+'/'+membreep_id,
 			 {
 			 	asynchronous:true,
 			 	evalScripts:true,

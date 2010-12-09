@@ -82,7 +82,7 @@
 			}
 			elseif( $this->action == 'edit' ) {
 				$this->data = $this->Membreep->find(
-					'all',
+					'first',
 					array(
 						'contain' => false,
 						'conditions' => array( 'Membreep.id' => $id )
@@ -90,7 +90,7 @@
 				);
 				$this->assert( !empty( $this->data ), 'error404' );
 			}
-					
+			
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );
 		}
@@ -105,13 +105,14 @@
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 
-		public function ajaxfindsuppleant( $ep_id = null, $defaultvalue = '' ) {
+		public function ajaxfindsuppleant( $ep_id = null, $defaultvalue = '', $membreEp_id = 0 ) {
             Configure::write( 'debug', 0 );
             $suppleants = $this->Membreep->find(
             	'all',
             	array(
             		'conditions'=>array(
-            			'Membreep.ep_id'=>$ep_id
+            			'Membreep.ep_id'=>$ep_id,
+            			'Membreep.id <>'=>$membreEp_id
             		),
             		'contain'=>false
             	)
