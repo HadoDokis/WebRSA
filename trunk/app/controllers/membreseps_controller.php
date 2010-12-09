@@ -90,13 +90,7 @@
 				);
 				$this->assert( !empty( $this->data ), 'error404' );
 			}
-			
-			$listeMembresEps = array();
-			foreach($listeMembres as $membreEp) {
-				$listeMembresEps[$membreEp['Membreep']['id']] = $membreEp['Membreep']['qual'].' '.$membreEp['Membreep']['nom'].' '.$membreEp['Membreep']['prenom'];
-			}
-			$this->set(compact('listeMembresEps'));
-			
+					
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );
 		}
