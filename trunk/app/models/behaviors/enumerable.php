@@ -228,6 +228,52 @@
 		}
 
 		/**
+		* Recherche et mise en cache des valeurs des enums pour tous les champs
+		* d'un modèle pour le SGBD MySQL.
+		* Retourne la liste des champs ainsi que leurs valeurs.
+		*
+		* @param AppModel $model
+		* @return array
+		* @access public
+		*/
+
+		protected function _mysqlEnums( $model ) {
+			if( !empty( $this->_options[$model->alias] ) ) {
+				$options = $this->_options[$model->alias];
+			}
+			else {
+				$cacheKey = Inflector::underscore( __CLASS__ ).'_'.$model->useDbConfig.'_'.$model->alias;
+				$options = Cache::read( $cacheKey );
+
+				if( $options === false ) {
+					$sql = "SHOW COLUMNS FROM `{$model->useTable}` WHERE Type LIKE 'enum(%'";
+					$enums = $model->query( $sql );
+
+					if( empty( $enums ) ) {
+						trigger_error( sprintf( __( 'Requête inutile générée par %s pour le modèle %s.', true ), __CLASS__, $model->alias ), E_USER_WARNING );
+					}
+					else {
+						$types = array();
+						$options = array();
+
+						foreach( $enums as $enum ) {
+							if( !empty( $enum ) ) {
+								$patterns = array( 'enum(', ')', '\'' );
+								$enumData = r( $patterns, '', Set::extract( $enum, 'COLUMNS.Type' ) );
+								$options[$enum['COLUMNS']['Field']] = explode( ',', $enumData );
+							}
+						}
+
+						$this->_options[$model->alias] = $options;
+						Cache::write( $cacheKey, $options );
+					}
+				}
+			}
+
+			return $options;
+		}
+
+		/**
 		*
 		*/
 
@@ -240,8 +286,7 @@
 					break;
 				case 'mysql':
 				case 'mysqli':
-// 					$options = $this->_mysqlEnumOptions( $model, $field );
-					trigger_error( sprintf( __( 'FIXME: la méthode pour le SGBD MySQL/ reste à faire.', true ) ), E_USER_WARNING );
+					$options = $this->_mysqlEnums( $model );
 					break;
 				default:
 					trigger_error( sprintf( __( 'SQL driver (%s) not supported in enumerable behavior.', true ), $driver ), E_USER_WARNING );
