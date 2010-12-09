@@ -256,7 +256,7 @@
 		'motifreorient' => 'motifsreorients',
 		'nvsrepreorient66' => 'nvsrsepsreorient66',
 		'nvsepdpdo66' => 'nvsepdspdos66',
-		'membreep_seanceep' => 'membreseps_seanceseps',
+		'membreep_seanceep' => 'membreseps_seanceseps'
 	);
 /**
  * This is a key => value array of regex used to match words.

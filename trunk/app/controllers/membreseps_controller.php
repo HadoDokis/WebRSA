@@ -70,9 +70,9 @@
 					$this->redirect( array( 'action' => 'index' ) );
 				}
 			}
-			else if( $this->action == 'edit' ) {
+			elseif( $this->action == 'edit' ) {
 				$this->data = $this->Membreep->find(
-					'first',
+					'all',
 					array(
 						'contain' => false,
 						'conditions' => array( 'Membreep.id' => $id )
@@ -80,7 +80,32 @@
 				);
 				$this->assert( !empty( $this->data ), 'error404' );
 			}
-
+			
+			if ($this->action == 'edit') {
+				$listeMembres = $this->Membreep->find(
+					'all',
+					array(
+						'conditions'=>array(
+							'Membreep.id <>' => $id
+						),
+						'contain'=>false
+					)
+				);
+			}
+			else {
+				$listeMembres = $this->Membreep->find(
+					'all',
+					array(
+						'contain'=>false
+					)
+				);
+			}
+			$listeMembresEps = array();
+			foreach($listeMembres as $membreEp) {
+				$listeMembresEps[$membreEp['Membreep']['id']] = $membreEp['Membreep']['qual'].' '.$membreEp['Membreep']['nom'].' '.$membreEp['Membreep']['prenom'];
+			}
+			$this->set(compact('listeMembresEps'));
+			
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );
 		}
@@ -95,7 +120,25 @@
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 
-
+		public function ajaxfindsuppleant( $ep_id = null, $defaultvalue = '' ) {
+            Configure::write( 'debug', 0 );
+            $suppleants = $this->Membreep->find(
+            	'all',
+            	array(
+            		'conditions'=>array(
+            			'Membreep.ep_id'=>$ep_id
+            		),
+            		'contain'=>false
+            	)
+            );
+			$listeSuppleant = array();
+			foreach($suppleants as $suppleant) {
+				$listeSuppleant[$suppleant['Membreep']['id']] = $suppleant['Membreep']['qual'].' '.$suppleant['Membreep']['nom'].' '.$suppleant['Membreep']['prenom'];
+			}
+            $this->set( compact( 'listeSuppleant' ) );
+            $this->set( compact( 'defaultvalue' ) );
+            $this->render( $this->action, 'ajax', '/membreseps/ajaxfindsuppleant' );
+		}
 
 
 	}
