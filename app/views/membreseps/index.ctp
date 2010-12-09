@@ -2,14 +2,15 @@
 
 <?php
 	echo $default2->index(
-		$membreeps,
+		$membreseps,
 		array(
 // 			'Membreep.id',
 			'Fonctionmembreep.name',
 			'Ep.name',
 			'Membreep.qual',
 			'Membreep.nom',
-			'Membreep.prenom'		
+			'Membreep.prenom',
+			'Membreep.nomcompletsuppleant'=>array('type'=>'text')	
 		),
 		array(
 			'actions' => array(

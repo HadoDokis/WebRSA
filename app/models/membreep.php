@@ -28,7 +28,7 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Membreep' => array(
+			'Suppleant' => array(
 				'className' => 'Membreep',
 				'foreignKey' => 'suppleant_id',
 				'conditions' => '',
