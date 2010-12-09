@@ -102,6 +102,22 @@
 			$this->assertNull($this->Apre->dossierId(-42));
 		}
 
+		function test_nbrNormalPieces() {
+			$result = $this->Apre->_nbrNormalPieces();
+			$expected = array(
+				'Apre' => '1',
+				'Formqualif' => '2',
+				'Formpermfimo' => '2',
+				'Actprof' => '2',
+				'Permisb' => '2',
+				'Amenaglogt' => '2',
+				'Acccreaentr' => '2',
+				'Acqmatprof' => '2',
+				'Locvehicinsert' => '2'
+			);
+			$this->assertEqual($expected, $result);
+		}
+
 		function testDetails() {
 			$expected=array(
 				'Piecepresente' => array(
@@ -202,7 +218,7 @@
 		}
 
 		function testBeforeSave() {
-			$result = $this->Apre->beforeSave();
+			$result = $this->Apre->beforeSave(null);
 			$this->assertTrue($result);
 		}		
 

@@ -6,12 +6,13 @@
 	App::import('Model', 'Infofinanciere');
 
 	class InfofinanciereTestCase extends CakeAppModelTestCase {
-		/*
+	
 		function testSearch() {
 			$result = $this->Infofinanciere->search(null, null, null);
-			$this->asserTrue($result);
+			$this->assertTrue($result);
+			var_dump($result);
 		}
-		*/
+		
 		function testRange() {
 			$result=$this->Infofinanciere->range();
 			$expected=array(

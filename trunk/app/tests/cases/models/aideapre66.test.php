@@ -5,7 +5,7 @@
 	App::import('Model', 'Aideapre66');
 
 	class Aideapre66TestCase extends CakeAppModelTestCase {
-
+/*
 		// test de la fonction plafondMontantAideapre()
 		function testPlafondMontantAideapre() {
 			$result = $this->Aideapre66->plafondMontantAideapre(array(700));
