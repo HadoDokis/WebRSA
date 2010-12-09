@@ -25,17 +25,27 @@
 					'Ep.name',
 					'Membreep.qual',
 					'Membreep.nom',
-					'Membreep.prenom'
+					'Membreep.prenom',
+					'Membreep.suppleant_id',
+					'Suppleant.qual',
+					'Suppleant.nom',
+					'Suppleant.prenom'
 				),
 				'contain' => array(
 					'Fonctionmembreep',
-					'Ep'
+					'Ep',
+					'Suppleant'
 				),
 				'limit' => 10
 			);
+			$membreseps = $this->paginate( $this->Membreep );
+			foreach( $membreseps as &$membreep) {
+				if (isset($membreep['Suppleant']['id']) && !empty($membreep['Suppleant']['id']))
+					$membreep['Membreep']['nomcompletsuppleant'] = $membreep['Suppleant']['qual'].' '.$membreep['Suppleant']['nom'].' '.$membreep['Suppleant']['prenom'];
+			}
 
 			$this->_setOptions();
-			$this->set( 'membreeps', $this->paginate( $this->Membreep ) );
+			$this->set( compact( 'membreseps' ) );
 		}
 
 		/**
@@ -81,25 +91,6 @@
 				$this->assert( !empty( $this->data ), 'error404' );
 			}
 			
-			if ($this->action == 'edit') {
-				$listeMembres = $this->Membreep->find(
-					'all',
-					array(
-						'conditions'=>array(
-							'Membreep.id <>' => $id
-						),
-						'contain'=>false
-					)
-				);
-			}
-			else {
-				$listeMembres = $this->Membreep->find(
-					'all',
-					array(
-						'contain'=>false
-					)
-				);
-			}
 			$listeMembresEps = array();
 			foreach($listeMembres as $membreEp) {
 				$listeMembresEps[$membreEp['Membreep']['id']] = $membreEp['Membreep']['qual'].' '.$membreEp['Membreep']['nom'].' '.$membreEp['Membreep']['prenom'];
