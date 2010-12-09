@@ -55,7 +55,7 @@
 				'counterQuery' => ''
 			),
 		);
-
+/*
 		public $hasAndBelongsToMany = array(
 			'Zonegeographique' => array(
 				'className' => 'Zonegeographique',
@@ -74,7 +74,7 @@
 				'with' => 'EpZonegeographique' // TODO
 			),
 		);
-
+*/
 		/**
 		* Retourne la liste des thèmes traités par les EPs
 		*/

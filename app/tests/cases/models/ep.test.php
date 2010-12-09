@@ -7,7 +7,8 @@
 	class EpTestCase extends CakeAppModelTestCase {
 		function testThemes() {
 			$result = $this->Ep->themes();
-			//var_dump($result);
+			$expected = array("saisineepreorientsr93", "saisineepbilanparcours66", "saisineepdpdo66");
+			$this->assertEqual($result, $expected);
 		}
 	}
 

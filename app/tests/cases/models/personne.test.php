@@ -46,7 +46,7 @@
 			// test pour la personne 2
 			$this->assertEqual(2,$this->Personne->dossierId(3));
 
-			// test pour une personne inexistente
+			// test pour une personne inexistante
 			$this->assertNull($this->Personne->dossierId(666));
 		}
 		/*
@@ -86,7 +86,7 @@
 			$this->assertEqual($result, $expected);
 		}
 
-		/*
+		
 		function testDetailsCi() {
 			//test personne_id == 1
 			$result = $this->Personne->detailsCi(1, null);
@@ -132,6 +132,6 @@
 			$result = $this->Personne->newDetailsCi(1337, null);
 			$this->assertFalse($result);
 		}
-		*/
+		
 	}
 ?>

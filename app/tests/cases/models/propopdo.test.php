@@ -6,12 +6,22 @@
 	App::import('Model', 'Propopdo');
 
 	class PropopdoTestCase extends CakeAppModelTestCase {
-		/*
+
 		function testPrepare() {
-			$result = $this->Propopdo->prepare();
-			var_dump($result);
+			$type = 'propopdo';
+			$result = $this->Propopdo->prepare($type, null);
+			$this->assertTrue($result);
+
+/*
+			$type = 'etat';
+			$result = $this->Propopdo->prepare($type, null);
+			$this->assertTrue($result);
+*/
+			$type = 'other';
+			$result = $this->Propopdo->prepare($type, null);
+			$this->assertFalse($result);
 		}
-		*/
+
 
 		function testEtatPdo() {
 

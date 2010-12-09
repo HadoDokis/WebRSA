@@ -5,7 +5,7 @@
 	App::import('Model', 'Cohortecomiteapre');
 
 	class CohortecomiteapreTestCase extends CakeAppModelTestCase {
-		/*
+		
 		// test function testSearch($avisComite, $criterescomite)
 		function testSearch() {
 			$criterescomite = array(
@@ -19,8 +19,9 @@
 						),
 				);
 			$result = $this->Cohortecomiteapre->search('Cohortecomiteapre::aviscomite', $criterescomite);
+			$this->assertTrue($result);
 		}
-		*/
+		
 	}
 
 ?>

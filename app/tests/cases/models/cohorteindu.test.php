@@ -9,12 +9,11 @@
 			$result = $this->Cohorteindu->beforeValidate();
 			$this->assertFalse($result);
 		}
-/*
+
 		function testSearch() {
 			//$criteresindu = array();
 			$result = $this->Cohorteindu->search(null, null, null, null);
 			$this->assertTrue($result);
 		}
 	}
-*/
 ?>

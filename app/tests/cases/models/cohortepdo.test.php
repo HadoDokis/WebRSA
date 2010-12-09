@@ -6,7 +6,6 @@
 
 	class CohortepdoTestCase extends CakeAppModelTestCase {
 
-		/*
 		//function search( $statutValidationAvis, $mesCodesInsee, $filtre_zone_geo, $criterespdo, $lockedDossiers )
 		function testSearch() {
 
@@ -27,7 +26,6 @@
 			$result = $this->Cohortepdo->search('Decisionpdo::nonvalide', null, null, null, $criteres);
 			$this->assertTrue($result);
 		}
-		*/
 	}
 
 ?>

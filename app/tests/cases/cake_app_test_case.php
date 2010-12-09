@@ -13,6 +13,7 @@
 		*/
 
 		public $fixtures = array (
+			'app.ep',
 			'app.decisionpdo',
 			'app.pieceformpermfimo',
 			'app.pieceaide66',
@@ -56,7 +57,6 @@
 			'app.derogation',
 			'app.budgetapre',
 			'app.avispcgdroitrsa',
-			'app.parcoursdetecte',
 			'app.pieceacqmatprof',
 			'app.contratinsertion',
 			'app.detailmoytrans_rev',
