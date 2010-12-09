@@ -509,6 +509,72 @@ SELECT add_missing_table_field ('public', 'bilansparcours66', 'motifsaisine', 'T
 ALTER TABLE bilansparcours66 ALTER COLUMN situationallocataire DROP NOT NULL;
 ALTER TABLE bilansparcours66 ALTER COLUMN bilanparcours DROP NOT NULL;
 
+-- -----------------------------------------------------------------------------
+-- Développement Thierry :
+-- -----------------------------------------------------------------------------
+
+-- Liste des participants aux séances EPs.
+
+-- Suppresion de tables et des types
+DROP TABLE IF EXISTS membreseps_seanceseps CASCADE;
+DROP TYPE IF EXISTS type_reponseseanceep CASCADE;
+DROP TYPE IF EXISTS type_presenceseanceep CASCADE;
+
+-- -----------------------------------------------------------------------------
+-- Création des types :
+CREATE TYPE type_reponseseanceep AS ENUM ( 'confirme', 'decline', 'nonrenseigne' );
+CREATE TYPE type_presenceseanceep AS ENUM ( 'present', 'excuse', 'remplacepar');
+
+CREATE TABLE membreseps_seanceseps
+(
+  id serial NOT NULL,
+  seanceep_id integer NOT NULL,
+  membreep_id integer NOT NULL,
+  suppleant type_booleannumber DEFAULT '0' NOT NULL,
+  suppleant_id integer DEFAULT NULL,
+  reponse type_reponseseanceep NOT NULL DEFAULT 'nonrenseigne',
+  presence type_presenceseanceep DEFAULT NULL,
+  CONSTRAINT membreseps_seanceseps_pkey PRIMARY KEY (id),
+  CONSTRAINT membreseps_seanceseps_seanceep_id_fkey FOREIGN KEY (seanceep_id)
+      REFERENCES seanceseps (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT membreseps_seanceseps_membreep_id_fkey FOREIGN KEY (membreep_id)
+      REFERENCES membreseps (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION 
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE membreseps_seanceseps OWNER TO webrsa;
+
+COMMENT ON COLUMN membreseps_seanceseps.suppleant IS 'booléen pour désigner si le membre est un suppléant';
+COMMENT ON COLUMN membreseps_seanceseps.suppleant_id IS 'clé étrangère sur la table membresepsseanceseps';
+COMMENT ON COLUMN membreseps_seanceseps.reponse IS 'À confirmé, À décliné, Non renseigné';
+COMMENT ON COLUMN membreseps_seanceseps.presence IS 'Présent, Excusé, Remplacé par <suppléant>';
+
+
+-- Index: membreseps_seanceseps_seanceep_id_idx
+
+-- DROP INDEX membreseps_seanceseps_seanceep_id_idx;
+
+CREATE INDEX membreseps_seanceseps_seanceep_id_idx
+  ON membreseps_seanceseps
+  USING btree
+  (seanceep_id);
+
+  
+-- Index: membreseps_seanceseps_membresep_id_idx
+
+-- DROP INDEX membreseps_seanceseps_membresep_id_idx;
+
+CREATE INDEX membreseps_seanceseps_membresep_id_idx
+  ON membreseps_seanceseps
+  USING btree
+  (membreep_id);
+  
+ 
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
