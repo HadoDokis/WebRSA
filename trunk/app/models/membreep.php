@@ -29,5 +29,24 @@
 				'order' => ''
 			)
 		);
+		
+		public $hasAndBelongsToMany = array(
+			'Seanceep' => array(
+				'className' => 'Seanceep',
+				'joinTable' => 'membreseps_seanceseps',
+				'foreignKey' => 'membreep_id',
+				'associationForeignKey' => 'seanceep_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'MembreepSeanceep'
+			)
+		);					
 	}
 ?>
