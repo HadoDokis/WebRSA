@@ -160,11 +160,11 @@
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
-				)/*,
+				),
 				array(
-					'rule' => 'check_rib',
-					'message' => 'RIB non valide'
-				)*/
+					'rule' => array( 'between', 11, 11 ),
+					'message' => 'Le numéro de compte doit contenir 11 caractères'
+				)
 			),
 			'clerib' => array(
 				array(
