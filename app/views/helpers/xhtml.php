@@ -841,5 +841,28 @@
 				return '<span class="disabled">'.$content.'</span>';
 			}
 		}
+		
+			/**
+		*
+		*/
+
+		function presenceLink( $title, $url, $enabled = true ) {
+			$content = $this->image(
+				'icons/pencil.png',
+				array( 'alt' => '' )
+			).' Présences';
+
+			if( $enabled ) {
+				return $this->link(
+					$content,
+					$url,
+					array( 'escape' => false, 'title' => $title )
+				);
+			}
+			else {
+				return '<span class="disabled">'.$content.'</span>';
+			}
+		}		
+		
 	}
 ?>
