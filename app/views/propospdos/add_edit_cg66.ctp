@@ -61,73 +61,6 @@
             checkDatesToRefresh();
         } );
 
-        <?php
-            echo $ajax->remoteFunction(
-                array(
-                    'update' => 'Etatpdo6',
-                    'url' => Router::url(
-                        array(
-                            'action' => 'ajaxetatpdo',
-                            Set::extract( $this->data, 'Propopdo.typepdo_id' ),
-                            Set::extract( $this->data, 'Propopdo.iscomplet' ),
-                            Set::extract( $this->data, 'Propopdo.decisionpdo_id' ),
-                            Set::extract( $this->data, 'Propopdo.isvalidation' ),
-                            Set::extract( $this->data, 'Propopdo.isdecisionop' )
-                        ),
-                        true
-                    )
-                )
-            ).';';
-             echo $ajax->remoteFunction(
-                 array(
-                     'update' => 'Etatpdo2',
-                     'url' => Router::url(
-                         array(
-                             'action' => 'ajaxetat2',
-                             Set::extract( $this->data, 'Propopdo.iscomplet' )
-                         ),
-                         true
-                     )
-                 )
-             ).';';
-             echo $ajax->remoteFunction(
-                 array(
-                     'update' => 'Etatpdo3',
-                     'url' => Router::url(
-                         array(
-                             'action' => 'ajaxetat3',
-                             Set::extract( $this->data, 'Propopdo.decisionpdo_id' )
-                         ),
-                         true
-                     )
-                 )
-             ).';';
-             echo $ajax->remoteFunction(
-                 array(
-                     'update' => 'Etatpdo4',
-                     'url' => Router::url(
-                         array(
-                             'action' => 'ajaxetat4',
-                             Set::extract( $this->data, 'Propopdo.isvalidation' )
-                         ),
-                         true
-                     )
-                 )
-             ).';';
-             echo $ajax->remoteFunction(
-                 array(
-                     'update' => 'Etatpdo5',
-                     'url' => Router::url(
-                         array(
-                             'action' => 'ajaxetat5',
-                             Set::extract( $this->data, 'Propopdo.isdecisionop' )
-                         ),
-                         true
-                     )
-                 )
-             ).';';
-        ?>
-
         observeDisableFieldsetOnRadioValue(
             'propopdoform',
             'data[Propopdo][iscomplet]',
@@ -370,11 +303,14 @@
                     'options' => $options
                 )
             );
+            
+        	//echo $ajax->observeForm( 'propopdoform', array( 'update' => 'Etatpdo6', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
 
         ?>
         </fieldset>
     </fieldset>
     <fieldset id="Etatpdo6" class="invisible"></fieldset>-->
+    
     </div>
     <div class="submit">
         <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
@@ -382,8 +318,70 @@
     </div>
 
     <?php echo $xform->end();?>
-    <?php
-        //echo $ajax->observeForm( 'propopdoform', array( 'update' => 'Etatpdo6', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
-    ?>
 </div>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php echo $ajax->remoteFunction(
+			array(
+				'url' => Router::url(
+					array(
+						'action' => 'ajaxetat1',
+						@$this->data['Propopdo']['typepdo_id']
+					),
+					true
+				),
+				'update' => 'Etatpdo1'
+			)
+		); ?>;
+		<?php echo $ajax->remoteFunction(
+			array(
+				'url' => Router::url(
+					array(
+						'action' => 'ajaxetat2',
+						@$this->data['Propopdo']['iscomplet']
+					),
+					true
+				),
+				'update' => 'Etatpdo2'
+			)
+		); ?>;
+		<?php echo $ajax->remoteFunction(
+			array(
+				'url' => Router::url(
+					array(
+						'action' => 'ajaxetat3',
+						@$this->data['Propopdo']['decisionpdo_id']
+					),
+					true
+				),
+				'update' => 'Etatpdo3'
+			)
+		); ?>;
+		<?php echo $ajax->remoteFunction(
+			array(
+				'url' => Router::url(
+					array(
+						'action' => 'ajaxetat4',
+						@$this->data['Propopdo']['isvalidation']
+					),
+					true
+				),
+				'update' => 'Etatpdo4'
+			)
+		); ?>;
+		<?php echo $ajax->remoteFunction(
+			array(
+				'url' => Router::url(
+					array(
+						'action' => 'ajaxetat5',
+						@$this->data['Propopdo']['isdecisionop']
+					),
+					true
+				),
+				'update' => 'Etatpdo5'
+			)
+		); ?>;
+	});
+</script>
+
 <div class="clearer"><hr /></div>
