@@ -125,7 +125,16 @@
             $this->render( 'ajaxetat2', 'ajax' );
         }
 
-        function ajaxetat3( $decisionpdo_id = null ) {
+        function ajaxetat3( $isvalidation = null ) {
+            $dataIsvalidation = Set::extract( $this->data, 'Propopdo.isvalidation' );
+            $isvalidation = ( empty( $isvalidation ) && !empty( $dataIsvalidation ) ? $dataIsvalidation : $isvalidation );
+            $this->set( 'isvalidation', $isvalidation );
+
+            Configure::write( 'debug', 0 );
+            $this->render( 'ajaxetat3', 'ajax' );
+        }
+
+        function ajaxetat4( $decisionpdo_id = null ) {
             $dataDecisionpdo_id = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
             $decisionpdo_id = ( empty( $decisionpdo_id ) && !empty( $dataDecisionpdo_id ) ? $dataDecisionpdo_id : $decisionpdo_id );
 //             $this->Propopdo->etatPdo( $this->data );
@@ -137,29 +146,18 @@
 
             $this->set( 'value', $value );*/
             Configure::write( 'debug', 0 );
-            $this->render( 'ajaxetat3', 'ajax' );
-        }
-
-        function ajaxetat4( $isvalidation = null ) {
-            $dataIsvalidation = Set::extract( $this->data, 'Propopdo.isvalidation' );
-            $isvalidation = ( empty( $isvalidation ) && !empty( $dataIsvalidation ) ? $dataIsvalidation : $isvalidation );
-            $this->set( 'isvalidation', $isvalidation );
-
-            Configure::write( 'debug', 0 );
             $this->render( 'ajaxetat4', 'ajax' );
         }
 
         function ajaxetat5( $isdecisionop = null ) {
-
             $dataIsdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
             $isdecisionop = ( empty( $isdecisionop ) && !empty( $dataIsdecisionop ) ? $dataIsdecisionop : $isdecisionop );
             $this->set( 'isdecisionop', $isdecisionop );
+            
             Configure::write( 'debug', 0 );
             $this->render( 'ajaxetat5', 'ajax' );
         }
-
-
-
+        
         function ajaxetatpdo( $typepdo_id = null, $iscomplet = null, $decisionpdo_id = null, $isvalidation = null, $isdecisionop = null ) {
 
             //Etat 1
@@ -178,7 +176,6 @@
             $dataIsvalidation = Set::extract( $this->data, 'Propopdo.validationdecision' );
             $isvalidation = ( empty( $isvalidation ) && !empty( $dataIsvalidation ) ? $dataIsvalidation : $isvalidation );
             $this->set( 'isvalidation', $isvalidation );
-
             //Etat 5
             $dataIsdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
             $isdecisionop = ( empty( $isdecisionop ) && !empty( $dataIsdecisionop ) ? $dataIsdecisionop : $isdecisionop );
@@ -246,7 +243,6 @@
             $this->set( 'personne_id', $personne_id );
             $this->_setOptions();
             $this->set( 'pdos', $pdos );
-
         }
 
 
@@ -304,7 +300,7 @@
 //                 debug($nbrDossiers);
 //                 $this->assert( ( $nbrDossiers == 0 ), 'invalidParameter' );
             }
-            else if( $this->action == 'edit' ) {
+            elseif( $this->action == 'edit' ) {
                 $pdo_id = $id;
                 $pdo = $this->Propopdo->findById( $pdo_id, null, null, 1 );
 
@@ -373,19 +369,8 @@
                 }
             }
             //Affichage des données
-            else {
-                if( $this->action == 'edit' ) {
+            elseif( $this->action == 'edit' ) {
                     $this->data = $pdo;
-
-                }
-                // $this->Propopdo->findByDossierId( $personne_id, null, null, -1 );
-
-//                 if( $this->action == 'add' ) {
-//                     $this->assert( empty( $this->data ), 'invalidParameter' );
-//                 }
-//                 else if( $this->action == 'edit' ) {
-//                     $this->assert( !empty( $this->data ), 'invalidParameter' );
-//                 }
             }
             $this->Propopdo->commit();
 

@@ -1,6 +1,6 @@
 <?php
-    if( !empty( $decisionpdo_id ) ) {
-        echo 'Etat du dossier : <strong>En attente de validation</strong>';
+    if( $isvalidation == '1' ) {
+        echo 'Etat du dossier : <strong>Décision validée</strong>';
     }
     else {
         echo '';

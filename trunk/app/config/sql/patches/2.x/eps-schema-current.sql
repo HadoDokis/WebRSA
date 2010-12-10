@@ -573,7 +573,9 @@ CREATE INDEX membreseps_seanceseps_membresep_id_idx
   (membreep_id);
   
  
-
+-- Ajout du suppléant dans la table des membres des EPs
+SELECT add_missing_table_field ('public', 'membreseps', 'suppleant_id', 'integer');
+ALTER TABLE membreseps ADD FOREIGN KEY (suppleant_id) REFERENCES membreseps (id);
 
 -- *****************************************************************************
 COMMIT;
