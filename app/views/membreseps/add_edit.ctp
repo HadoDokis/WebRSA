@@ -40,10 +40,12 @@
 <script type="text/javascript">
 	function updateSuppleant () {
 		var ep_id = $F('MembreepEpId');
-		var suppleant_id = $F('MembreepSuppleantId');
-		if (suppleant_id == '')
-			suppleant_id=0;
-		var membreep_id = $F('MembreepId');
+		var suppleant_id=0;
+		if ($('MembreepSuppleantId') != undefined)
+			suppleant_id = $F('MembreepSuppleantId');
+		var membreep_id=0;
+		if ($('MembreepId') != undefined)
+			membreep_id = $F('MembreepId');
 		new Ajax.Updater(
 			$( 'MembreepSuppleantId' ).up(),
 			'<?php echo Router::url( "/membreseps/ajaxfindsuppleant", true );?>'+'/'+ep_id+'/'+suppleant_id+'/'+membreep_id,
@@ -57,10 +59,13 @@
 	 }
 
 	document.observe("dom:loaded", function() {
+		$('MembreepEpId').observe('change', function(event) {
+			updateSuppleant();
+		});
 		updateSuppleant();
 	});
 
-new Form.Element.EventObserver(
+/*new Form.Element.EventObserver(
 	'MembreepEpId', function(element, value) {   updateSuppleant(); }
-);
+);*/
 </script>
