@@ -47,3 +47,6 @@ msgstr "Mademoiselle"
 
 msgid "Membreep.nomcompletsuppleant"
 msgstr "Suppléant"
+
+msgid "Membreep.suppleant_id"
+msgstr "Suppléant"
