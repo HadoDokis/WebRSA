@@ -21,7 +21,7 @@
                     </thead>
                     <tbody>
                         <?php
-                            foreach( $participants as $index => $participant ) {
+                            foreach( $comiteparticipant as $index => $participant ) {
                                 $participantcomite_id = Set::classicExtract( $participant, 'ComiteapreParticipantcomite.participantcomite_id');
                                 $comiteapre_id = Set::classicExtract( $participant, 'ComiteapreParticipantcomite.comiteapre_id');
                                 $comiteapreparticipantcomite_id = Set::classicExtract( $participant, 'ComiteapreParticipantcomite.id');

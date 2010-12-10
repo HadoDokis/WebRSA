@@ -121,7 +121,7 @@
                 )
             );
             $this->assert( !empty( $comiteparticipant ), 'invalidParameter' );
-            $this->set( 'participants', $comiteparticipant );
+            $this->set( 'comiteparticipant', $comiteparticipant );
 
             if( !empty( $this->data ) ) {
                 $this->ComiteapreParticipantcomite->begin();
