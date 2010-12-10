@@ -310,7 +310,6 @@
 
 		public function prepare( $type, $params = array() ) {
 			$types = array_keys( $this->_types );
-			var_dump($types);
 			if( !in_array( $type, $types ) ) {
 				trigger_error( 'Invalid parameter "'.$type.'" for '.$this->name.'::prepare()', E_USER_WARNING );
 			}
