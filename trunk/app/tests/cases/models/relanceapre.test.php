@@ -6,6 +6,12 @@
 
 	class RelanceapreTestCase extends CakeAppModelTestCase {
 
+		function testAfterFind() {
+			$results = $this->Relanceapre->find();
+			$primary = null;
+			$result = $this->Relanceapre->afterfind( $results, $primary);
+			$this->assertEqual($results, $result);
+		}
 	}
 
 ?>
