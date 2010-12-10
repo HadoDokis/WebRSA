@@ -63,6 +63,25 @@
 				'counterQuery' => ''
 			),
 		);
+		
+		public $hasAndBelongsToMany = array(
+			'Membreep' => array(
+				'className' => 'Membreep',
+				'joinTable' => 'membreseps_seanceseps',
+				'foreignKey' => 'seanceep_id',
+				'associationForeignKey' => 'membreep_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'MembreepSeanceep'
+			)
+		);
 
 		/**
 		* Renvoie un array associatif contenant les thèmes traités par l'équipe
