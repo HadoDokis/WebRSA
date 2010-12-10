@@ -126,6 +126,32 @@
             $this->render( $this->action, 'ajax', '/membreseps/ajaxfindsuppleant' );
 		}
 
+		/**
+		 * Dresse la liste de tous les membres de l'EP pour enregistrer ceux, parmis-eux, qui participeront à la séance.
+		 * @param integer $ep_id Index de l'EP dont on veut récupérer tous les membres.
+		 */
+		public function editliste( $ep_id, $seance_id )
+		{
+			$membres = $this->Membreep->find('all', array(
+				'conditions' => array(
+					'Membreep.ep_id' => $ep_id
+				),
+				'contain' => array(
+					'Seanceep',
+					'Fonctionmembreep'
+				)
+			));
+//			debug($membres);
+			$this->set('membres', $membres);
+			$this->set('seance_id', $seance_id);
+			$this->_setOptions();
+			if( !empty( $this->data ) )
+			{
+				debug($this->data);
+				
+			}
+			
+		}
 
 	}
 ?>
