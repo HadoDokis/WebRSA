@@ -30,3 +30,12 @@ msgstr "Equipe dont dépend la séance"
 
 msgid "Seanceep.structurereferente_id"
 msgstr "Lieu de la séance"
+
+msgid "Seanceep.edit"
+msgstr "Modifier la liste des participants à l'EP"
+
+msgid "Seanceep.presence"
+msgstr "Noter les presences des participants à l'EP"
+
+msgid "Seanceep::index::empty"
+msgstr "Aucun participant présent pour la séance de l'EP."
