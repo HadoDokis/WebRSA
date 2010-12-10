@@ -137,21 +137,63 @@
 					'Membreep.ep_id' => $ep_id
 				),
 				'contain' => array(
-					'Seanceep',
+					'Seanceep' => array(
+						'conditions' => array(
+							'MembreepSeanceep.seanceep_id' => $seance_id
+						)
+					),
 					'Fonctionmembreep'
 				)
 			));
-//			debug($membres);
+
 			$this->set('membres', $membres);
 			$this->set('seance_id', $seance_id);
 			$this->_setOptions();
 			if( !empty( $this->data ) )
-			{
-				debug($this->data);
-				
-			}
-			
-		}
+			{		
+				$enBase  =Set::extract( $membres, '/Seanceep/MembreepSeanceep/membreep_id' ); 
 
+				$ajouts = array();
+				$suppressions = array();
+				foreach($this->data['Membreep'] as $i => $membre)
+				{
+					if( $membre['checked'] && !in_array( $membre['id'], $enBase ) ) {
+						$ajouts[] = array(
+							'membreep_id' => $membre['id'],
+							'seanceep_id' => $seance_id,
+						);
+					}
+					else if( !$membre['checked'] && in_array( $membre['id'], $enBase ) ) {
+						$suppressions[] = $membre['id'];
+					}
+				}
+
+				if( !empty( $ajouts ) || !empty( $suppressions ) ) {
+					$success = true;
+					$this->Membreep->MembreepSeanceep->begin();
+	
+					if( !empty( $ajouts ) ) {
+						$success = $this->Membreep->MembreepSeanceep->saveAll( $ajouts, array( 'atomic' => false ) ) && $success;
+					}
+					if( !empty( $suppressions ) ) {
+							$success = $this->Membreep->MembreepSeanceep->deleteAll(
+								array(
+									'MembreepSeanceep.membreep_id' => $suppressions,
+									'MembreepSeanceep.seanceep_id' => $seance_id,
+								)
+							) && $success;
+					}
+	
+					if( $success ) {
+						$this->Membreep->MembreepSeanceep->commit();
+						$this->Session->setFlash('Enregistrement effectué', 'flash/success');
+						$this->redirect( array( 'controller' => 'seanceseps', 'action' => 'view', $seance_id ));
+					}
+					else {
+						$this->Membreep->MembreepSeanceep->rollback();
+					}
+				}
+			}
+		}
 	}
 ?>
