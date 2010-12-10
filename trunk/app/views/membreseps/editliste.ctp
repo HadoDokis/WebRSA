@@ -36,7 +36,7 @@
         <div class="aere">
             <fieldset>
                 <legend>Participants à la séance d'EP</legend>
-                <?php echo $xform->input( 'MembreepSeanceep.seanceep_id', array( 'label' => false, 'type' => 'hidden', 'value'=>$seance_id ) ) ;?>
+                <?php echo $xform->input( 'Seanceep.id', array( 'label' => false, 'type' => 'hidden', 'value'=>$seance_id ) ) ;?>
                 <table>
                     <thead>
                         <tr>
@@ -64,7 +64,8 @@
                                         h( '?' ), // h( Set::classicExtract( $membre, 'Membreep.tel' ) ), 
                                         h( '?' ), // h( Set::classicExtract( $membre, 'Membreep.emaail' ) ),
                                         h( $suppleant ),
-                                        $xform->checkbox( 'MembreepSeanceep.'.$i.'.membreep_id', array( 'value' => $membre['Membreep']['id'], 'id' => 'MembreepSeanceep'.$membre['Membreep']['id'] , 'checked' => !empty( $membre['Seanceep'] ), 'class' => 'checkbox'  ) ),
+                                        $xform->input( 'Membreep.'.$i.'.id', array( 'value' => $membre['Membreep']['id'] ) ).
+                                        $xform->input( 'Membreep.'.$i.'.checked', array( 'checked' => !empty( $membre['Seanceep'] ), 'type' => 'checkbox', 'div' => false, 'label' => false ) ),
                                     ),
                                     array( 'class' => 'odd' ),
                                     array( 'class' => 'even' )
