@@ -1,0 +1,36 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>insert_IdentificationFlux=>dtref" expression="row1.dtref == null || row1.dtref.equals(&quot;&quot;)?null:parseDate(&quot;yyyy-MM-dd&quot;, row1.dtref)">
+    <variables name="row1.applieme" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.numversionapplieme" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typeflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.natflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtcreaflux" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row1.heucreaflux" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row1.dtref" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row2.applieme" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numversionapplieme" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.natflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtcreaflux" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row2.heucreaflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtref" value="null" talendType="id_Date" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var1" expression="(!&quot;&quot;.equals(row1.heucreaflux) &amp;&amp; row1.heucreaflux != null)?TalendDate.formatDate(&quot;HH:mm:ss.SSSS&quot;,row1.heucreaflux):null ">
+    <variables name="row1.applieme" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.numversionapplieme" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typeflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.natflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtcreaflux" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row1.heucreaflux" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row1.dtref" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row2.applieme" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numversionapplieme" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.natflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtcreaflux" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row2.heucreaflux" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row2.dtref" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="Var.var1" value="null" talendType="id_String"/>
+  </expression:EMFExpression>
+</xmi:XMI>

@@ -1,0 +1,115 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>Var=>var1" expression="row1.topasf==null?false:row1.topasf.equals(&quot;0&quot;)  ">
+    <variables name="row1.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row1.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="row1.sitasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topdemasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topenfreconn" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var6" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var2" expression="row1.topasf==null?false:row1.topasf.equals(&quot;1&quot;)  ">
+    <variables name="row1.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row1.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="row1.sitasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topdemasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topenfreconn" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var6" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var3" expression="row1.topdemasf==null?false:row1.topdemasf.equals(&quot;0&quot;)  ">
+    <variables name="row1.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row1.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="row1.sitasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topdemasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topenfreconn" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var6" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var4" expression="row1.topdemasf==null?false:row1.topdemasf.equals(&quot;1&quot;)  ">
+    <variables name="row1.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row1.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="row1.sitasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topdemasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topenfreconn" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var6" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var5" expression="row1.topenfreconn==null?false:row1.topenfreconn.equals(&quot;0&quot;)">
+    <variables name="row1.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row1.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="row1.sitasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topdemasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topenfreconn" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var6" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var6" expression="row1.topenfreconn==null?false:row1.topenfreconn.equals(&quot;1&quot;)">
+    <variables name="row1.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row1.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="row1.sitasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topdemasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topenfreconn" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var6" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>ins_asf=>topdemasf" expression="(&quot;&quot;.equals(row1.topdemasf)||row1.topdemasf==null)?null:row1.topdemasf">
+    <variables name="row1.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row1.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="row1.sitasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topdemasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topenfreconn" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var6" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>ins_asf=>topenfreconn" expression="(&quot;&quot;.equals(row1.topenfreconn)||row1.topenfreconn==null)?null:row1.topenfreconn">
+    <variables name="row1.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row1.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="row1.sitasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topdemasf" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.topenfreconn" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var6" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+</xmi:XMI>
