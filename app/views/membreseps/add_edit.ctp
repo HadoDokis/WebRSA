@@ -12,7 +12,7 @@
 <?php
 	echo $default2->form(
 		array(
-			'Membreep.ep_id',
+			'Membreep.ep_id' => array ('type'=>'select'),
 			'Membreep.fonctionmembreep_id',
 			'Membreep.qual',
 			'Membreep.nom',
