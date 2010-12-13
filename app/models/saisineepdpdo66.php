@@ -86,11 +86,10 @@
 							'conditions' => array(
 								'Propopdo.id' => $dossierep['Traitementpdo']['propopdo_id']
 							),
-							'contain' => array(
-
-							)
+							'contain' => false
 						)
 					);
+
 					$propopdo['Propopdo']['decision'] = '1';
 					$propopdo['Propopdo']['datedecisionpdo'] = $dossierep['Nvsepdpdo66'][1]['datedecisionpdo'];
 					$propopdo['Propopdo']['decisionpdo_id'] = $dossierep['Nvsepdpdo66'][1]['decisionpdo_id'];
@@ -101,7 +100,6 @@
 					$success = $this->Traitementpdo->Propopdo->save($propopdo) && $success;
 				}
 			}
-
 			return $success;
 		}
 

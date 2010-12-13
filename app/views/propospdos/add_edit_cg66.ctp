@@ -188,29 +188,6 @@
     </fieldset>
 
     <fieldset id="Etatpdo2" class="invisible"></fieldset>
-    
-    <fieldset>
-        <?php
-            echo $form->input( 'Propopdo.isvalidation', array( 'label' => 'Validation', 'type' => 'checkbox' ) );
-        ?>
-        <fieldset id="Isvalidation" class="invisible">
-            <?php
-                echo $default->subform(
-                    array(
-                        'Propopdo.validationdecision' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.validationdecision', true ) ), 'type' => 'radio', 'options' => $options['validationdecision'] ),
-                        'Propopdo.datevalidationdecision' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.datevalidationdecision', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
-                    ),
-                    array(
-                        'domain' => $domain,
-                        'options' => $options
-                    )
-                );
-                echo $ajax->observeField( 'PropopdoIsvalidation', array( 'update' => 'Etatpdo3', 'url' => Router::url( array( 'action' => 'ajaxetat3' ), true ) ) );
-            ?>
-        </fieldset>
-    </fieldset>
-
-    <fieldset id="Etatpdo3" class="invisible"></fieldset>
 
     <fieldset>
         <?php
@@ -262,6 +239,29 @@
     </fieldset>
 
     <fieldset id="Etatpdo4" class="invisible"></fieldset>
+    
+    <fieldset>
+        <?php
+            echo $form->input( 'Propopdo.isvalidation', array( 'label' => 'Validation', 'type' => 'checkbox' ) );
+        ?>
+        <fieldset id="Isvalidation" class="invisible">
+            <?php
+                echo $default->subform(
+                    array(
+                        'Propopdo.validationdecision' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.validationdecision', true ) ), 'type' => 'radio', 'options' => $options['validationdecision'] ),
+                        'Propopdo.datevalidationdecision' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.datevalidationdecision', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
+                    ),
+                    array(
+                        'domain' => $domain,
+                        'options' => $options
+                    )
+                );
+                echo $ajax->observeField( 'PropopdoIsvalidation', array( 'update' => 'Etatpdo3', 'url' => Router::url( array( 'action' => 'ajaxetat3' ), true ) ) );
+            ?>
+        </fieldset>
+    </fieldset>
+
+    <fieldset id="Etatpdo3" class="invisible"></fieldset>
 
     <fieldset>
         <?php
@@ -349,24 +349,24 @@
 			array(
 				'url' => Router::url(
 					array(
-						'action' => 'ajaxetat3',
+						'action' => 'ajaxetat4',
 						@$this->data['Propopdo']['decisionpdo_id']
 					),
 					true
 				),
-				'update' => 'Etatpdo3'
+				'update' => 'Etatpdo4'
 			)
 		); ?>;
 		<?php echo $ajax->remoteFunction(
 			array(
 				'url' => Router::url(
 					array(
-						'action' => 'ajaxetat4',
+						'action' => 'ajaxetat3',
 						@$this->data['Propopdo']['isvalidation']
 					),
 					true
 				),
-				'update' => 'Etatpdo4'
+				'update' => 'Etatpdo3'
 			)
 		); ?>;
 		<?php echo $ajax->remoteFunction(

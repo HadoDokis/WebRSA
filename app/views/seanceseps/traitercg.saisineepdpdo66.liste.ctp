@@ -15,7 +15,7 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 }
 	echo '<table><thead>
 <tr>
-<th>Dossier EP</th>
+<!--<th>Dossier EP</th>-->
 <th>Qualité</th>
 <th>Date de naissance</th>
 <th>Création du dossier EP</th>
@@ -24,19 +24,20 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 <th>Avis de l\'EP</th>
 <th>Commentaire de l\'EP</th>
 <th>CGA s\'est prononcé ?</th>
+<th>Actions</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		echo $xhtml->tableCells(
 			array(
-				$xhtml->link(
+				/*$xhtml->link(
 					$dossierep['Dossierep']['id'],
 					array(
 						'controller'=>'dossierseps',
 						'action'=>'decisioncg',
 						$dossierep['Dossierep']['id']
 					)
-				),
+				),*/
 				$dossierep['Personne']['qual'],
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
@@ -44,10 +45,29 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 				$formData['Saisineepdpdo66'][$i]['Descriptionpdo'],
 				$dossierep['Saisineepdpdo66']['Nvsepdpdo66'][0]['Decisionpdo']['libelle'],
 				$dossierep['Saisineepdpdo66']['Nvsepdpdo66'][0]['commentaire'],
-				isset($dossierep['Saisineepdpdo66']['Nvsepdpdo66'][1]) ? 'Oui' : 'Non'
+				isset($dossierep['Saisineepdpdo66']['Nvsepdpdo66'][1]) ? 'Oui' : 'Non',
+				$xhtml->link(
+					'Décision',
+					array(
+						'controller'=>'dossierseps',
+						'action'=>'decisioncg',
+						$dossierep['Dossierep']['id']
+					)
+				)
 			)
 		);
 	}
 	echo '</tbody></table>';
+
+	echo $default->button(
+		'back',
+		array(
+			'controller' => 'seanceseps',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
 
 ?>
