@@ -453,10 +453,10 @@ SELECT add_missing_table_field ('public', 'traitementspdos', 'daterevision', 'DA
 SELECT add_missing_table_field ('public', 'traitementspdos', 'personne_id', 'integer');
 ALTER TABLE propospdos ADD FOREIGN KEY (personne_id) REFERENCES personnes (id);
 SELECT add_missing_table_field ('public', 'traitementspdos', 'ficheanalyse', 'TEXT');
-SELECT add_missing_table_field ('public', 'descriptionspdos', 'clos', 'INTEGER');
-UPDATE descriptionspdos SET clos = '0' WHERE clos IS NULL;
-ALTER TABLE descriptionspdos ALTER COLUMN clos SET DEFAULT '0';
-ALTER TABLE descriptionspdos ALTER COLUMN clos SET NOT NULL;
+SELECT add_missing_table_field ('public', 'traitementspdos', 'clos', 'INTEGER');
+UPDATE traitementspdos SET clos = '0' WHERE clos IS NULL;
+ALTER TABLE traitementspdos ALTER COLUMN clos SET DEFAULT '0';
+ALTER TABLE traitementspdos ALTER COLUMN clos SET NOT NULL;
 
 CREATE TABLE saisinesepdspdos66 (
 	id      				SERIAL NOT NULL PRIMARY KEY,
