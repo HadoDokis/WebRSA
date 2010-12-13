@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:DatabaseConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" ContextMode="true" ContextId="_WfusgCmXEd6ysP7-oNBRpg" DatabaseType="PostgreSQL" URL="jdbc:postgresql://rsa-psql-q01:5432/STAGING_RSA" Port="context.Administration_webrsa_Port" Username="context.Administration_webrsa_Login" Password="context.Administration_webrsa_Password" ServerName="context.Administration_webrsa_Server" Schema="context.Administration_webrsa_Schema" SID="context.Administration_webrsa_Database" SqlSynthax="Syntaxe SQL" DbmsId="postgres_id" ProductId="POSTGRESQL" StandardSQL="true">
+  <tables id="_ZcZR8CmXEd6ysP7-oNBRpg" label="donneeentete" sourceName="donneeentete" tableType="TABLE">
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" key="true" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="balisededonnee" sourceType="VARCHAR" talendType="id_String" length="100000" precision="0" originalField="balisededonnee"/>
+  </tables>
+  <tables id="_ZcZR8SmXEd6ysP7-oNBRpg" label="donneetampon" sourceName="donneetampon" tableType="TABLE">
+    <columns label="cledemandersa" sourceType="INT4" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="cledemandersa"/>
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="balisededonnee" sourceType="VARCHAR" talendType="id_String" length="100000" precision="0" originalField="balisededonnee"/>
+  </tables>
+  <tables id="_ZcjC8CmXEd6ysP7-oNBRpg" label="donneepied" sourceName="donneepied" tableType="TABLE">
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" key="true" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="balisededonnee" sourceType="VARCHAR" talendType="id_String" length="100000" precision="0" originalField="balisededonnee"/>
+  </tables>
+  <tables id="_Zcsz8CmXEd6ysP7-oNBRpg" label="refdspid" sourceName="refdspid" tableType="TABLE">
+    <columns label="dsp_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="dsp_id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="personne_id"/>
+    <columns label="infodemandersa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="infodemandersa"/>
+    <columns label="clepersonne" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="clepersonne"/>
+  </tables>
+  <tables id="_Zc194CmXEd6ysP7-oNBRpg" label="donneereference" sourceName="donneereference" tableType="TABLE">
+    <columns label="cledemandersa" sourceType="INT4" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="cledemandersa"/>
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="numdemrsa" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="numdemrsa"/>
+    <columns label="matricule" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="matricule"/>
+  </tables>
+  <tables id="_Zc194SmXEd6ysP7-oNBRpg" label="nomfichier" sourceName="nomfichier" tableType="TABLE">
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" key="true" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="nom" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="nom"/>
+  </tables>
+  <tables id="_Zc_u4CmXEd6ysP7-oNBRpg" label="refinfoagricolesid" sourceName="refinfoagricolesid" tableType="TABLE">
+    <columns label="infosagricoles_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="infosagricoles_id"/>
+    <columns label="personnes_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="personnes_id"/>
+    <columns label="infodemandersa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="infodemandersa"/>
+    <columns label="clepersonne" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="clepersonne"/>
+  </tables>
+  <tables id="_ZdJf4CmXEd6ysP7-oNBRpg" label="reffoyersid" sourceName="reffoyersid" tableType="TABLE">
+    <columns label="cledossierrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cledossierrsa"/>
+    <columns label="clefoyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="clefoyers"/>
+    <columns label="cleinfodemandersa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="cleinfodemandersa"/>
+  </tables>
+  <tables id="_ZdSp0CmXEd6ysP7-oNBRpg" label="refdossierrsaid" sourceName="refdossierrsaid" tableType="TABLE">
+    <columns label="cleinfodemandersa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfodemandersa"/>
+    <columns label="cledossierrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="cledossierrsa"/>
+  </tables>
+  <tables id="_ZdSp0SmXEd6ysP7-oNBRpg" label="rejet" sourceName="rejet" tableType="TABLE">
+    <columns label="cleinfodemandersa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfodemandersa"/>
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="flux"/>
+    <columns label="etape" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="etape"/>
+    <columns label="table_en_erreur" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="table_en_erreur"/>
+    <columns label="log" sourceType="VARCHAR" talendType="id_String" length="1000" precision="0" originalField="log"/>
+  </tables>
+  <tables id="_Zdca0CmXEd6ysP7-oNBRpg" label="refadressesid" sourceName="refadressesid" tableType="TABLE">
+    <columns label="infodemandersa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="infodemandersa"/>
+    <columns label="foyers_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="foyers_id"/>
+    <columns label="adresses_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="adresses_id"/>
+  </tables>
+  <tables id="_ZdvVwCmXEd6ysP7-oNBRpg" label="refressourcesid" sourceName="refressourcesid" tableType="TABLE">
+    <columns label="ressources_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="ressources_id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="personne_id"/>
+    <columns label="infodemandersa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="infodemandersa"/>
+    <columns label="clepersonne" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="clepersonne"/>
+  </tables>
+  <tables id="_ZdvVwSmXEd6ysP7-oNBRpg" label="refresmensuellesid" sourceName="refresmensuellesid" tableType="TABLE">
+    <columns label="resmensuelles_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="resmensuelles_id"/>
+    <columns label="ressources_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="ressources_id"/>
+    <columns label="infodemandersa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="infodemandersa"/>
+    <columns label="clepersonne" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="clepersonne"/>
+    <columns label="cleresmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="cleresmensuelles"/>
+  </tables>
+  <tables id="_Zd5GwCmXEd6ysP7-oNBRpg" label="refpersid" sourceName="refpersid" tableType="TABLE">
+    <columns label="clepersonne_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="clepersonne_id"/>
+    <columns label="cleinfodemandersa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="cleinfodemandersa"/>
+    <columns label="nomnai" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nomnai"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom"/>
+    <columns label="dtnai" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtnai" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="clepersonne_source" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="clepersonne_source"/>
+  </tables>
+  <tables id="_29k-MFkfEd-uyvQpiMk7Cg" label="b_refsitdossierrsa" sourceName="b_refsitdossierrsa" tableType="TABLE">
+    <columns label="cleinfosfoyerrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfosfoyerrsa"/>
+    <columns label="sitdossrsa_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="sitdossrsa_id"/>
+  </tables>
+  <tables id="_294gMFkfEd-uyvQpiMk7Cg" label="b_refressourceid" sourceName="b_refressourceid" tableType="TABLE">
+    <columns label="cleinfosfoyerrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfosfoyerrsa"/>
+    <columns label="clepersonne" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="clepersonne"/>
+    <columns label="personneid" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="personneid"/>
+    <columns label="ressourcesid" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="ressourcesid"/>
+  </tables>
+  <tables id="_2-7CAFkfEd-uyvQpiMk7Cg" label="b_refressmensid" sourceName="b_refressmensid" tableType="TABLE">
+    <columns label="cleinfosfoyerrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfosfoyerrsa"/>
+    <columns label="clepersonne" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="clepersonne"/>
+    <columns label="personneid" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="personneid"/>
+    <columns label="ressourcesid" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="ressourcesid"/>
+    <columns label="ressmensid" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="ressmensid"/>
+  </tables>
+  <tables id="_3CDOgFkfEd-uyvQpiMk7Cg" label="b_refpersid" sourceName="b_refpersid" tableType="TABLE">
+    <columns label="clepersonne_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="clepersonne_id"/>
+    <columns label="cleinfodemandersa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="cleinfodemandersa"/>
+    <columns label="nomnai" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nomnai"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom"/>
+    <columns label="dtnai" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtnai" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="clepersonne_source" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="clepersonne_source"/>
+  </tables>
+  <tables id="_3GXt0FkfEd-uyvQpiMk7Cg" label="b_refpcgdroitrsa" sourceName="b_refpcgdroitrsa" tableType="TABLE">
+    <columns label="cleinfosfoyerrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfosfoyerrsa"/>
+    <columns label="pcgdroitrsa_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="pcgdroitrsa_id"/>
+  </tables>
+  <tables id="_3ORFkFkfEd-uyvQpiMk7Cg" label="b_refdossierrsaid" sourceName="b_refdossierrsaid" tableType="TABLE">
+    <columns label="cleinfosfoyerrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfosfoyerrsa"/>
+    <columns label="cledossierrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="cledossierrsa"/>
+  </tables>
+  <tables id="_3UFZsFkfEd-uyvQpiMk7Cg" label="b_refdetdroitrsa" sourceName="b_refdetdroitrsa" tableType="TABLE">
+    <columns label="cleinfosfoyerrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfosfoyerrsa"/>
+    <columns label="detdroitrsa_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="detdroitrsa_id"/>
+  </tables>
+  <tables id="_3ZJf4FkfEd-uyvQpiMk7Cg" label="b_refadresseid" sourceName="b_refadresseid" tableType="TABLE">
+    <columns label="cleinfosfoyerrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfosfoyerrsa"/>
+    <columns label="cle" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="cle"/>
+    <columns label="adresseid" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="adresseid"/>
+  </tables>
+  <tables id="_3dU1QFkfEd-uyvQpiMk7Cg" label="b_pcgpersid" sourceName="b_pcgpersid" tableType="TABLE">
+    <columns label="cleinfosfoyerrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfosfoyerrsa"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="personne_id"/>
+    <columns label="pcgpersid" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="pcgpersid"/>
+  </tables>
+  <tables id="_Xplr8FkhEd-uyvQpiMk7Cg" label="b_reffoyersid" sourceName="b_reffoyersid" tableType="TABLE">
+    <columns label="cleinfodemandersa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="cleinfodemandersa"/>
+    <columns label="dossierrsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dossierrsa_id"/>
+    <columns label="foyers_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="foyers_id"/>
+  </tables>
+  <tables id="_VJHGsMIxEd-_pf9SVpIBLw" label="visionneuses" sourceName="visionneuses" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('administration.visionneuses_id_seq'::regclass)&quot;" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="flux" sourceType="BPCHAR" talendType="id_String" length="15" precision="0" originalField="flux"/>
+    <columns label="nomfic" sourceType="BPCHAR" talendType="id_String" length="40" precision="0" originalField="nomfic"/>
+    <columns label="dtdeb" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="dtdeb" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dtfin" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="dtfin" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="nbrejete" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="nbrejete"/>
+    <columns label="nbinser" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="nbinser"/>
+    <columns label="nbmaj" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="nbmaj"/>
+    <columns label="dspcree" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="dspcree"/>
+    <columns label="dspmaj" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="dspmaj"/>
+    <columns label="perscree" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="perscree"/>
+    <columns label="persmaj" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="persmaj"/>
+  </tables>
+  <tables id="_VpnywMIxEd-_pf9SVpIBLw" label="rejet_historique" sourceName="rejet_historique" tableType="TABLE">
+    <columns label="cleinfodemandersa" sourceType="INT4" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="cleinfodemandersa"/>
+    <columns label="flux" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" key="true" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="etape" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="etape"/>
+    <columns label="table_en_erreur" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="50" precision="0" originalField="table_en_erreur"/>
+    <columns label="log" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="1000" precision="0" originalField="log"/>
+    <columns label="numdemrsa" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="20" precision="0" originalField="numdemrsa"/>
+    <columns label="matricule" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="20" precision="0" originalField="matricule"/>
+    <columns label="DT_INSERT" sourceType="TIMESTAMP" defaultValue="&quot;now()&quot;" talendType="id_Date" key="true" nullable="false" length="8" precision="6" originalField="DT_INSERT" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="fic" sourceType="VARCHAR" talendType="id_String" length="40" precision="0" originalField="fic"/>
+    <columns label="balisededonnee" sourceType="VARCHAR" talendType="id_String" length="100000" precision="0" originalField="balisededonnee"/>
+  </tables>
+  <tables id="_F4F34MSbEd-ddOuX-xTpNA" label="statintegrationbeneficiaire" sourceName="statintegrationbeneficiaire" tableType="TABLE">
+    <columns label="nom_fichier" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="nom_fichier"/>
+    <columns label="date_debut" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="date_debut" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="date_fin" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="date_fin" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="elem_activites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_activites"/>
+    <columns label="elem_adresses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_adresses"/>
+    <columns label="elem_adresses_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_adresses_foyers"/>
+    <columns label="elem_allocationssoutienfamilial" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_allocationssoutienfamilial"/>
+    <columns label="elem_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_anomalies"/>
+    <columns label="elem_avispcgdroitrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_avispcgdroitrsa"/>
+    <columns label="elem_avispcgpersonnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_avispcgpersonnes"/>
+    <columns label="elem_calculsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_calculsdroitsrsa"/>
+    <columns label="elem_condsadmins" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_condsadmins"/>
+    <columns label="elem_controlesadministratifs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_controlesadministratifs"/>
+    <columns label="elem_creances" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_creances"/>
+    <columns label="elem_creancesalimentaires" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_creancesalimentaires"/>
+    <columns label="elem_derogations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_derogations"/>
+    <columns label="elem_detailscalculsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_detailscalculsdroitsrsa"/>
+    <columns label="elem_detailsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_detailsdroitsrsa"/>
+    <columns label="elem_detailsressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_detailsressourcesmensuelles"/>
+    <columns label="elem_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_dossiers_rsa"/>
+    <columns label="elem_dossierscaf" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_dossierscaf"/>
+    <columns label="elem_evenements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_evenements"/>
+    <columns label="elem_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_foyers"/>
+    <columns label="elem_grossesses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_grossesses"/>
+    <columns label="elem_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_identificationsflux"/>
+    <columns label="elem_infosagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_infosagricoles"/>
+    <columns label="elem_liberalites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_liberalites"/>
+    <columns label="elem_personnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_personnes"/>
+    <columns label="elem_prestations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_prestations"/>
+    <columns label="elem_rattachements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_rattachements"/>
+    <columns label="elem_reducsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_reducsrsa"/>
+    <columns label="elem_ressources" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_ressources"/>
+    <columns label="elem_ressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_ressourcesmensuelles"/>
+    <columns label="elem_situationsdossiersrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_situationsdossiersrsa"/>
+    <columns label="elem_suspensionsdroits" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_suspensionsdroits"/>
+    <columns label="elem_suspensionsversements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_suspensionsversements"/>
+    <columns label="elem_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_transmissionsflux"/>
+    <columns label="webav_activites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_activites"/>
+    <columns label="webav_adresses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_adresses"/>
+    <columns label="webav_adresses_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_adresses_foyers"/>
+    <columns label="webav_allocationssoutienfamilial" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_allocationssoutienfamilial"/>
+    <columns label="webav_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_anomalies"/>
+    <columns label="webav_avispcgdroitrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_avispcgdroitrsa"/>
+    <columns label="webav_avispcgpersonnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_avispcgpersonnes"/>
+    <columns label="webav_calculsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_calculsdroitsrsa"/>
+    <columns label="webav_condsadmins" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_condsadmins"/>
+    <columns label="webav_controlesadministratifs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_controlesadministratifs"/>
+    <columns label="webav_creances" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_creances"/>
+    <columns label="webav_creancesalimentaires" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_creancesalimentaires"/>
+    <columns label="webav_derogations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_derogations"/>
+    <columns label="webav_detailscalculsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_detailscalculsdroitsrsa"/>
+    <columns label="webav_detailsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_detailsdroitsrsa"/>
+    <columns label="webav_detailsressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_detailsressourcesmensuelles"/>
+    <columns label="webav_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_dossiers_rsa"/>
+    <columns label="webav_dossierscaf" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_dossierscaf"/>
+    <columns label="webav_evenements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_evenements"/>
+    <columns label="webav_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_foyers"/>
+    <columns label="webav_grossesses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_grossesses"/>
+    <columns label="webav_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_identificationsflux"/>
+    <columns label="webav_infosagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_infosagricoles"/>
+    <columns label="webav_liberalites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_liberalites"/>
+    <columns label="webav_personnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_personnes"/>
+    <columns label="webav_prestations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_prestations"/>
+    <columns label="webav_rattachements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_rattachements"/>
+    <columns label="webav_reducsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_reducsrsa"/>
+    <columns label="webav_ressources" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_ressources"/>
+    <columns label="webav_ressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_ressourcesmensuelles"/>
+    <columns label="webav_situationsdossiersrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_situationsdossiersrsa"/>
+    <columns label="webav_suspensionsdroits" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_suspensionsdroits"/>
+    <columns label="webav_suspensionsversements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_suspensionsversements"/>
+    <columns label="webav_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_transmissionsflux"/>
+    <columns label="webap_activites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_activites"/>
+    <columns label="webap_adresses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_adresses"/>
+    <columns label="webap_adresses_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_adresses_foyers"/>
+    <columns label="webap_allocationssoutienfamilial" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_allocationssoutienfamilial"/>
+    <columns label="webap_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_anomalies"/>
+    <columns label="webap_avispcgdroitrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_avispcgdroitrsa"/>
+    <columns label="webap_avispcgpersonnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_avispcgpersonnes"/>
+    <columns label="webap_calculsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_calculsdroitsrsa"/>
+    <columns label="webap_condsadmins" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_condsadmins"/>
+    <columns label="webap_controlesadministratifs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_controlesadministratifs"/>
+    <columns label="webap_creances" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_creances"/>
+    <columns label="webap_creancesalimentaires" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_creancesalimentaires"/>
+    <columns label="webap_derogations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_derogations"/>
+    <columns label="webap_detailscalculsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_detailscalculsdroitsrsa"/>
+    <columns label="webap_detailsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_detailsdroitsrsa"/>
+    <columns label="webap_detailsressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_detailsressourcesmensuelles"/>
+    <columns label="webap_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_dossiers_rsa"/>
+    <columns label="webap_dossierscaf" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_dossierscaf"/>
+    <columns label="webap_evenements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_evenements"/>
+    <columns label="webap_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_foyers"/>
+    <columns label="webap_grossesses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_grossesses"/>
+    <columns label="webap_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_identificationsflux"/>
+    <columns label="webap_infosagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_infosagricoles"/>
+    <columns label="webap_liberalites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_liberalites"/>
+    <columns label="webap_personnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_personnes"/>
+    <columns label="webap_prestations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_prestations"/>
+    <columns label="webap_rattachements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_rattachements"/>
+    <columns label="webap_reducsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_reducsrsa"/>
+    <columns label="webap_ressources" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_ressources"/>
+    <columns label="webap_ressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_ressourcesmensuelles"/>
+    <columns label="webap_situationsdossiersrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_situationsdossiersrsa"/>
+    <columns label="webap_suspensionsdroits" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_suspensionsdroits"/>
+    <columns label="webap_suspensionsversements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_suspensionsversements"/>
+    <columns label="webap_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_transmissionsflux"/>
+    <columns label="flux_activites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_activites"/>
+    <columns label="flux_adresses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_adresses"/>
+    <columns label="flux_adresses_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_adresses_foyers"/>
+    <columns label="flux_allocationssoutienfamilial" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_allocationssoutienfamilial"/>
+    <columns label="flux_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_anomalies"/>
+    <columns label="flux_avispcgdroitrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_avispcgdroitrsa"/>
+    <columns label="flux_avispcgpersonnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_avispcgpersonnes"/>
+    <columns label="flux_calculsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_calculsdroitsrsa"/>
+    <columns label="flux_condsadmins" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_condsadmins"/>
+    <columns label="flux_controlesadministratifs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_controlesadministratifs"/>
+    <columns label="flux_creances" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_creances"/>
+    <columns label="flux_creancesalimentaires" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_creancesalimentaires"/>
+    <columns label="flux_derogations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_derogations"/>
+    <columns label="flux_detailscalculsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_detailscalculsdroitsrsa"/>
+    <columns label="flux_detailsdroitsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_detailsdroitsrsa"/>
+    <columns label="flux_detailsressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_detailsressourcesmensuelles"/>
+    <columns label="flux_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_dossiers_rsa"/>
+    <columns label="flux_dossierscaf" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_dossierscaf"/>
+    <columns label="flux_evenements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_evenements"/>
+    <columns label="flux_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_foyers"/>
+    <columns label="flux_grossesses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_grossesses"/>
+    <columns label="flux_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_identificationsflux"/>
+    <columns label="flux_infosagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_infosagricoles"/>
+    <columns label="flux_liberalites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_liberalites"/>
+    <columns label="flux_personnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_personnes"/>
+    <columns label="flux_prestations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_prestations"/>
+    <columns label="flux_rattachements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_rattachements"/>
+    <columns label="flux_reducsrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_reducsrsa"/>
+    <columns label="flux_ressources" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_ressources"/>
+    <columns label="flux_ressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_ressourcesmensuelles"/>
+    <columns label="flux_situationsdossiersrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_situationsdossiersrsa"/>
+    <columns label="flux_suspensionsdroits" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_suspensionsdroits"/>
+    <columns label="flux_suspensionsversements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_suspensionsversements"/>
+    <columns label="flux_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_transmissionsflux"/>
+  </tables>
+  <tables id="_alOV0MS9Ed-dfPkpcABh2A" label="f_refdossierrsaid" sourceName="f_refdossierrsaid" tableType="TABLE">
+    <columns label="cleinfosfoyerrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfosfoyerrsa"/>
+    <columns label="cledossierrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="cledossierrsa"/>
+  </tables>
+  <tables id="_a-Gv4MS9Ed-dfPkpcABh2A" label="statintegrationfinancier" sourceName="statintegrationfinancier" tableType="TABLE">
+    <columns label="nom_fichier" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="nom_fichier"/>
+    <columns label="date_debut" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="date_debut" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="date_fin" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="date_fin" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="elem_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_anomalies"/>
+    <columns label="elem_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_dossiers_rsa"/>
+    <columns label="elem_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_identificationsflux"/>
+    <columns label="elem_infosfinancieres" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_infosfinancieres"/>
+    <columns label="elem_totalisationsacomptes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_totalisationsacomptes"/>
+    <columns label="elem_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_transmissionsflux"/>
+    <columns label="webav_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_anomalies"/>
+    <columns label="webav_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_dossiers_rsa"/>
+    <columns label="webav_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_identificationsflux"/>
+    <columns label="webav_infosfinancieres" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_infosfinancieres"/>
+    <columns label="webav_totalisationsacomptes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_totalisationsacomptes"/>
+    <columns label="webav_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_transmissionsflux"/>
+    <columns label="webap_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_anomalies"/>
+    <columns label="webap_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_dossiers_rsa"/>
+    <columns label="webap_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_identificationsflux"/>
+    <columns label="webap_infosfinancieres" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_infosfinancieres"/>
+    <columns label="webap_totalisationsacomptes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_totalisationsacomptes"/>
+    <columns label="webap_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_transmissionsflux"/>
+    <columns label="flux_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_anomalies"/>
+    <columns label="flux_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_dossiers_rsa"/>
+    <columns label="flux_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_identificationsflux"/>
+    <columns label="flux_infosfinancieres" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_infosfinancieres"/>
+    <columns label="flux_totalisationsacomptes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_totalisationsacomptes"/>
+    <columns label="flux_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_transmissionsflux"/>
+  </tables>
+  <tables id="_bClAMMS9Ed-dfPkpcABh2A" label="statintegrationinstruction" sourceName="statintegrationinstruction" tableType="TABLE">
+    <columns label="nom_fichier" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="nom_fichier"/>
+    <columns label="date_debut" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="date_debut" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="date_fin" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="date_fin" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="elem_activites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_activites"/>
+    <columns label="elem_adresses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_adresses"/>
+    <columns label="elem_adresses_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_adresses_foyers"/>
+    <columns label="elem_aidesagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_aidesagricoles"/>
+    <columns label="elem_allocationssoutienfamilial" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_allocationssoutienfamilial"/>
+    <columns label="elem_creancesalimentaires" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_creancesalimentaires"/>
+    <columns label="elem_detailsaccosocfams" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_detailsaccosocfams"/>
+    <columns label="elem_detailsaccosocindis" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_detailsaccosocindis"/>
+    <columns label="elem_detailsdifdisps" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_detailsdifdisps"/>
+    <columns label="elem_detailsdiflogs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_detailsdiflogs"/>
+    <columns label="elem_detailsdifsocs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_detailsdifsocs"/>
+    <columns label="elem_detailsnatmobs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_detailsnatmobs"/>
+    <columns label="elem_detailsressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_detailsressourcesmensuelles"/>
+    <columns label="elem_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_dossiers_rsa"/>
+    <columns label="elem_dossierscaf" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_dossierscaf"/>
+    <columns label="elem_dsps" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_dsps"/>
+    <columns label="elem_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_foyers"/>
+    <columns label="elem_grossesses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_grossesses"/>
+    <columns label="elem_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_identificationsflux"/>
+    <columns label="elem_informationseti" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_informationseti"/>
+    <columns label="elem_infosagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_infosagricoles"/>
+    <columns label="elem_modescontact" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_modescontact"/>
+    <columns label="elem_orientations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_orientations"/>
+    <columns label="elem_paiementsfoyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_paiementsfoyers"/>
+    <columns label="elem_parcours" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_parcours"/>
+    <columns label="elem_personnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_personnes"/>
+    <columns label="elem_prestations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_prestations"/>
+    <columns label="elem_rattachements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_rattachements"/>
+    <columns label="elem_ressources" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_ressources"/>
+    <columns label="elem_ressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_ressourcesmensuelles"/>
+    <columns label="elem_suivisappuisorientation" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_suivisappuisorientation"/>
+    <columns label="elem_suivisinstruction" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_suivisinstruction"/>
+    <columns label="elem_titres_sejour" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_titres_sejour"/>
+    <columns label="elem_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_transmissionsflux"/>
+    <columns label="webav_activites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_activites"/>
+    <columns label="webav_adresses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_adresses"/>
+    <columns label="webav_adresses_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_adresses_foyers"/>
+    <columns label="webav_aidesagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_aidesagricoles"/>
+    <columns label="webav_allocationssoutienfamilial" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_allocationssoutienfamilial"/>
+    <columns label="webav_creancesalimentaires" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_creancesalimentaires"/>
+    <columns label="webav_detailsaccosocfams" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_detailsaccosocfams"/>
+    <columns label="webav_detailsaccosocindis" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_detailsaccosocindis"/>
+    <columns label="webav_detailsdifdisps" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_detailsdifdisps"/>
+    <columns label="webav_detailsdiflogs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_detailsdiflogs"/>
+    <columns label="webav_detailsdifsocs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_detailsdifsocs"/>
+    <columns label="webav_detailsnatmobs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_detailsnatmobs"/>
+    <columns label="webav_detailsressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_detailsressourcesmensuelles"/>
+    <columns label="webav_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_dossiers_rsa"/>
+    <columns label="webav_dossierscaf" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_dossierscaf"/>
+    <columns label="webav_dsps" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_dsps"/>
+    <columns label="webav_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_foyers"/>
+    <columns label="webav_grossesses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_grossesses"/>
+    <columns label="webav_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_identificationsflux"/>
+    <columns label="webav_informationseti" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_informationseti"/>
+    <columns label="webav_infosagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_infosagricoles"/>
+    <columns label="webav_modescontact" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_modescontact"/>
+    <columns label="webav_orientations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_orientations"/>
+    <columns label="webav_paiementsfoyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_paiementsfoyers"/>
+    <columns label="webav_parcours" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_parcours"/>
+    <columns label="webav_personnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_personnes"/>
+    <columns label="webav_prestations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_prestations"/>
+    <columns label="webav_rattachements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_rattachements"/>
+    <columns label="webav_ressources" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_ressources"/>
+    <columns label="webav_ressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_ressourcesmensuelles"/>
+    <columns label="webav_suivisappuisorientation" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_suivisappuisorientation"/>
+    <columns label="webav_suivisinstruction" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_suivisinstruction"/>
+    <columns label="webav_titres_sejour" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_titres_sejour"/>
+    <columns label="webav_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_transmissionsflux"/>
+    <columns label="webap_activites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_activites"/>
+    <columns label="webap_adresses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_adresses"/>
+    <columns label="webap_adresses_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_adresses_foyers"/>
+    <columns label="webap_aidesagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_aidesagricoles"/>
+    <columns label="webap_allocationssoutienfamilial" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_allocationssoutienfamilial"/>
+    <columns label="webap_creancesalimentaires" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_creancesalimentaires"/>
+    <columns label="webap_detailsaccosocfams" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_detailsaccosocfams"/>
+    <columns label="webap_detailsaccosocindis" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_detailsaccosocindis"/>
+    <columns label="webap_detailsdifdisps" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_detailsdifdisps"/>
+    <columns label="webap_detailsdiflogs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_detailsdiflogs"/>
+    <columns label="webap_detailsdifsocs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_detailsdifsocs"/>
+    <columns label="webap_detailsnatmobs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_detailsnatmobs"/>
+    <columns label="webap_detailsressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_detailsressourcesmensuelles"/>
+    <columns label="webap_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_dossiers_rsa"/>
+    <columns label="webap_dossierscaf" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_dossierscaf"/>
+    <columns label="webap_dsps" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_dsps"/>
+    <columns label="webap_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_foyers"/>
+    <columns label="webap_grossesses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_grossesses"/>
+    <columns label="webap_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_identificationsflux"/>
+    <columns label="webap_informationseti" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_informationseti"/>
+    <columns label="webap_infosagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_infosagricoles"/>
+    <columns label="webap_modescontact" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_modescontact"/>
+    <columns label="webap_orientations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_orientations"/>
+    <columns label="webap_paiementsfoyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_paiementsfoyers"/>
+    <columns label="webap_parcours" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_parcours"/>
+    <columns label="webap_personnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_personnes"/>
+    <columns label="webap_prestations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_prestations"/>
+    <columns label="webap_rattachements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_rattachements"/>
+    <columns label="webap_ressources" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_ressources"/>
+    <columns label="webap_ressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_ressourcesmensuelles"/>
+    <columns label="webap_suivisappuisorientation" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_suivisappuisorientation"/>
+    <columns label="webap_suivisinstruction" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_suivisinstruction"/>
+    <columns label="webap_titres_sejour" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_titres_sejour"/>
+    <columns label="webap_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_transmissionsflux"/>
+    <columns label="flux_activites" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_activites"/>
+    <columns label="flux_adresses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_adresses"/>
+    <columns label="flux_adresses_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_adresses_foyers"/>
+    <columns label="flux_aidesagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_aidesagricoles"/>
+    <columns label="flux_allocationssoutienfamilial" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_allocationssoutienfamilial"/>
+    <columns label="flux_creancesalimentaires" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_creancesalimentaires"/>
+    <columns label="flux_detailsaccosocfams" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_detailsaccosocfams"/>
+    <columns label="flux_detailsaccosocindis" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_detailsaccosocindis"/>
+    <columns label="flux_detailsdifdisps" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_detailsdifdisps"/>
+    <columns label="flux_detailsdiflogs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_detailsdiflogs"/>
+    <columns label="flux_detailsdifsocs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_detailsdifsocs"/>
+    <columns label="flux_detailsnatmobs" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_detailsnatmobs"/>
+    <columns label="flux_detailsressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_detailsressourcesmensuelles"/>
+    <columns label="flux_dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_dossiers_rsa"/>
+    <columns label="flux_dossierscaf" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_dossierscaf"/>
+    <columns label="flux_dsps" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_dsps"/>
+    <columns label="flux_foyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_foyers"/>
+    <columns label="flux_grossesses" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_grossesses"/>
+    <columns label="flux_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_identificationsflux"/>
+    <columns label="flux_informationseti" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_informationseti"/>
+    <columns label="flux_infosagricoles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_infosagricoles"/>
+    <columns label="flux_modescontact" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_modescontact"/>
+    <columns label="flux_orientations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_orientations"/>
+    <columns label="flux_paiementsfoyers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_paiementsfoyers"/>
+    <columns label="flux_parcours" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_parcours"/>
+    <columns label="flux_personnes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_personnes"/>
+    <columns label="flux_prestations" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_prestations"/>
+    <columns label="flux_rattachements" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_rattachements"/>
+    <columns label="flux_ressources" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_ressources"/>
+    <columns label="flux_ressourcesmensuelles" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_ressourcesmensuelles"/>
+    <columns label="flux_suivisappuisorientation" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_suivisappuisorientation"/>
+    <columns label="flux_suivisinstruction" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_suivisinstruction"/>
+    <columns label="flux_titres_sejour" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_titres_sejour"/>
+    <columns label="flux_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_transmissionsflux"/>
+  </tables>
+</TalendMetadata:DatabaseConnection>

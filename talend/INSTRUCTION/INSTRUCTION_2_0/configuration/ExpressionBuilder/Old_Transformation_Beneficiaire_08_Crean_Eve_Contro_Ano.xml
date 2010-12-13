@@ -1,0 +1,149 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>ins_controleadmin=>dteffcibcontro" expression="Var.var1?TalendDate.parseDate(&quot;yyyy-MM-dd&quot;,row1.dteffcibcontro):null">
+    <variables name="row1.infosfoyerrsa" value="0" talendType="id_Integer"/>
+    <variables name="row1.cle" value="0" talendType="id_Integer"/>
+    <variables name="row1.dteffcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.cibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtdeteccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtclocontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.libcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.famcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.natcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.commacontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typecontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typeimpaccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtindursacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtraprsacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>ins_controleadmin=>dtdeteccontro" expression="Var.var2?TalendDate.parseDate(&quot;yyyy-MM-dd&quot;,row1.dtdeteccontro):null">
+    <variables name="row1.infosfoyerrsa" value="0" talendType="id_Integer"/>
+    <variables name="row1.cle" value="0" talendType="id_Integer"/>
+    <variables name="row1.dteffcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.cibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtdeteccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtclocontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.libcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.famcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.natcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.commacontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typecontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typeimpaccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtindursacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtraprsacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>ins_controleadmin=>dtclocontro" expression="Var.var3?TalendDate.parseDate(&quot;yyyy-MM-dd&quot;,row1.dtclocontro):null">
+    <variables name="row1.infosfoyerrsa" value="0" talendType="id_Integer"/>
+    <variables name="row1.cle" value="0" talendType="id_Integer"/>
+    <variables name="row1.dteffcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.cibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtdeteccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtclocontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.libcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.famcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.natcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.commacontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typecontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typeimpaccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtindursacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtraprsacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var1" expression="TalendDate.isDate(row1.dteffcibcontro,&quot;yyyy-MM-dd&quot;) ">
+    <variables name="row1.infosfoyerrsa" value="0" talendType="id_Integer"/>
+    <variables name="row1.cle" value="0" talendType="id_Integer"/>
+    <variables name="row1.dteffcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.cibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtdeteccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtclocontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.libcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.famcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.natcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.commacontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typecontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typeimpaccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtindursacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtraprsacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="null" talendType="id_String"/>
+    <variables name="Var.var3" value="null" talendType="id_String"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var2" expression="TalendDate.isDate(row1.dtdeteccontro,&quot;yyyy-MM-dd&quot;)">
+    <variables name="row1.infosfoyerrsa" value="0" talendType="id_Integer"/>
+    <variables name="row1.cle" value="0" talendType="id_Integer"/>
+    <variables name="row1.dteffcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.cibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtdeteccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtclocontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.libcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.famcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.natcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.commacontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typecontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typeimpaccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtindursacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtraprsacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="null" talendType="id_String"/>
+    <variables name="Var.var3" value="null" talendType="id_String"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var3" expression="TalendDate.isDate(row1.dtclocontro,&quot;yyyy-MM-dd&quot;) ">
+    <variables name="row1.infosfoyerrsa" value="0" talendType="id_Integer"/>
+    <variables name="row1.cle" value="0" talendType="id_Integer"/>
+    <variables name="row1.dteffcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.cibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtdeteccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtclocontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.libcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.famcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.natcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.commacontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typecontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typeimpaccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtindursacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtraprsacgcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="null" talendType="id_String"/>
+    <variables name="Var.var3" value="null" talendType="id_String"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>ins_controleadmin=>mtindursacgcontro" expression="row1.mtindursacgcontro == null || row1.mtindursacgcontro.equals(&quot;&quot;)?null:Double.valueOf(row1.mtindursacgcontro) ">
+    <variables name="row1.infosfoyerrsa" value="0" talendType="id_Integer"/>
+    <variables name="row1.cle" value="0" talendType="id_Integer"/>
+    <variables name="row1.dteffcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.cibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtdeteccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtclocontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.libcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.famcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.natcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.commacontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typecontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typeimpaccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtindursacgcontro" value="null" talendType="id_Double" nullable="true"/>
+    <variables name="row1.mtraprsacgcontro" value="null" talendType="id_Double" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>ins_controleadmin=>mtraprsacgcontro" expression="row1.mtraprsacgcontro == null || row1.mtraprsacgcontro.equals(&quot;&quot;)?null:Double.valueOf(row1.mtraprsacgcontro) ">
+    <variables name="row1.infosfoyerrsa" value="0" talendType="id_Integer"/>
+    <variables name="row1.cle" value="0" talendType="id_Integer"/>
+    <variables name="row1.dteffcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.cibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtdeteccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtclocontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.libcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.famcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.natcibcontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.commacontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typecontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typeimpaccontro" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.mtindursacgcontro" value="null" talendType="id_Double" nullable="true"/>
+    <variables name="row1.mtraprsacgcontro" value="null" talendType="id_Double" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+</xmi:XMI>

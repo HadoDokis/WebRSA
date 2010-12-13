@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:GenericSchemaConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" comment="connectionComment" label="connectionLabel">
+  <tables label="metadata">
+    <columns id="2002" label="cleinfodemandersa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfodemandersa"/>
+    <columns id="2003" label="etape" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="etape"/>
+  </tables>
+</TalendMetadata:GenericSchemaConnection>

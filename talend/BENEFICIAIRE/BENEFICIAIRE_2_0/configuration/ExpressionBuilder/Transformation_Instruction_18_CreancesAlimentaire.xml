@@ -1,0 +1,129 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>Var=>var1" expression="extraitCreanceAlim.ddcrealim==null?false:TalendDate.isDate(extraitCreanceAlim.ddcrealim , &quot;yyyy-MM-dd&quot;)">
+    <variables name="extraitCreanceAlim.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.topdemdisproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.engproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.etatcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.ddcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.dfcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.orioblalim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.motidiscrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.commcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.mtsancrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.verspa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.topjugpa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var2" expression="extraitCreanceAlim.dfcrealim==null?false:TalendDate.isDate(extraitCreanceAlim.dfcrealim , &quot;yyyy-MM-dd&quot;)">
+    <variables name="extraitCreanceAlim.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.topdemdisproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.engproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.etatcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.ddcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.dfcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.orioblalim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.motidiscrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.commcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.mtsancrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.verspa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.topjugpa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool0" expression="extraitCreanceAlim.topdemdisproccrealim==null?false:extraitCreanceAlim.topdemdisproccrealim.equals(&quot;0&quot;)">
+    <variables name="extraitCreanceAlim.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.topdemdisproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.engproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.etatcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.ddcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.dfcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.orioblalim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.motidiscrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.commcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.mtsancrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.verspa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.topjugpa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool1" expression="extraitCreanceAlim.topdemdisproccrealim==null?false:extraitCreanceAlim.topdemdisproccrealim.equals(&quot;1&quot;)">
+    <variables name="extraitCreanceAlim.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.topdemdisproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.engproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.etatcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.ddcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.dfcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.orioblalim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.motidiscrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.commcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.mtsancrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.verspa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.topjugpa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool2" expression="extraitCreanceAlim.topjugpa==null?false:extraitCreanceAlim.topjugpa.equals(&quot;0&quot;)">
+    <variables name="extraitCreanceAlim.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.topdemdisproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.engproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.etatcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.ddcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.dfcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.orioblalim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.motidiscrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.commcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.mtsancrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.verspa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.topjugpa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool3" expression="extraitCreanceAlim.topjugpa==null?false:extraitCreanceAlim.topjugpa.equals(&quot;1&quot;)">
+    <variables name="extraitCreanceAlim.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitCreanceAlim.topdemdisproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.engproccrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.etatcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.ddcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.dfcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.orioblalim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.motidiscrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.commcrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.mtsancrealim" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.verspa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitCreanceAlim.topjugpa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+</xmi:XMI>
