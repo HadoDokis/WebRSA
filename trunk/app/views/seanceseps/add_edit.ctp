@@ -13,7 +13,7 @@
 	echo $default->form(
 		array(
 			'Seanceep.ep_id',
-			'Seanceep.dateseance' => array( 'dateFormat' => __( 'Locale->dateFormat', true ), 'timeFormat' => __( 'Locale->timeFormat', true ) ), // TODO: à mettre par défaut dans Default2Helper
+			'Seanceep.dateseance' => array( 'dateFormat' => __( 'Locale->dateFormat', true ), 'timeFormat' => __( 'Locale->timeFormat', true ), 'interval'=>15 ), // TODO: à mettre par défaut dans Default2Helper
 // 			'Seanceep.finalisee'
 		),
 		array(

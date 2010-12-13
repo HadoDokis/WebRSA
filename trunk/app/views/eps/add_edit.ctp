@@ -64,25 +64,46 @@
 		)
 	);
 
-	echo $default->subform(
-		array(
-			'Zonegeographique.Zonegeographique' => array( 'required' => true, 'multiple' => 'checkbox', 'empty' => false, 'domain' => 'ep' )
+	echo $html->tag(
+		'div',
+		$default->subform(
+			array(
+				'Zonegeographique.Zonegeographique' => array( 'required' => true, 'multiple' => 'checkbox', 'empty' => false, 'domain' => 'ep', 'id' => 'listeZonesgeographiques' )
+			),
+			array(
+				'options' => $options
+			)
 		),
 		array(
-			'options' => $options
+			'id' => 'listeZonesgeographiques'
 		)
 	);
 
+	echo $form->button('Tout cocher', array('onclick' => "GereChkbox('listeZonesgeographiques','cocher');"));
+
+	echo $form->button('Tout décocher', array('onclick' => "GereChkbox('listeZonesgeographiques','decocher');"));
+
 	echo $xform->end( __( 'Save', true ) );
 
-    echo $default->button(
-        'back',
-        array(
-            'controller' => 'eps',
-            'action'     => 'index'
-        ),
-        array(
-            'id' => 'Back'
-        )
-    );
+        echo $default->button(
+		'back',
+	        array(
+	        	'controller' => 'eps',
+	        	'action'     => 'index'
+	        ),
+	        array(
+	        	'id' => 'Back'
+	        )
+	);
 ?>
+
+<script type="text/javascript">
+	function GereChkbox(conteneur, a_faire) {
+		$( conteneur ).getElementsBySelector( 'input[type="checkbox"]' ).each( function( input ) {
+			if (a_faire=='cocher') blnEtat = true;
+			else if (a_faire=='decocher') blnEtat = false;
+		
+			$(input).checked = blnEtat;
+		} );
+	}
+</script>
