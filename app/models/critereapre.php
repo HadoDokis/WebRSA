@@ -64,7 +64,12 @@
 				$valid_from = ( valid_int( $criteresapres['Filtre']['daterelance_from']['year'] ) && valid_int( $criteresapres['Filtre']['daterelance_from']['month'] ) && valid_int( $criteresapres['Filtre']['daterelance_from']['day'] ) );
 				$valid_to = ( valid_int( $criteresapres['Filtre']['daterelance_to']['year'] ) && valid_int( $criteresapres['Filtre']['daterelance_to']['month'] ) && valid_int( $criteresapres['Filtre']['daterelance_to']['day'] ) );
 				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Relanceapre.daterelance BETWEEN \''.implode( '-', array( $criteresapres['Filtre']['daterelance_from']['year'], $criteresapres['Filtre']['daterelance_from']['month'], $criteresapres['Filtre']['daterelance_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresapres['Filtre']['daterelance_to']['year'], $criteresapres['Filtre']['daterelance_to']['month'], $criteresapres['Filtre']['daterelance_to']['day'] ) ).'\'';
+// 					$conditions[] = 'Relanceapre.daterelance BETWEEN \''.implode( '-', array( $criteresapres['Filtre']['daterelance_from']['year'], $criteresapres['Filtre']['daterelance_from']['month'], $criteresapres['Filtre']['daterelance_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresapres['Filtre']['daterelance_to']['year'], $criteresapres['Filtre']['daterelance_to']['month'], $criteresapres['Filtre']['daterelance_to']['day'] ) ).'\'';
+                    $conditions[] = 'Apre.id IN (
+                        SELECT relancesapres.apre_id
+                            FROM relancesapres
+                            WHERE relancesapres.daterelance BETWEEN \''.implode( '-', array( $criteresapres['Filtre']['daterelance_from']['year'], $criteresapres['Filtre']['daterelance_from']['month'], $criteresapres['Filtre']['daterelance_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresapres['Filtre']['daterelance_to']['year'], $criteresapres['Filtre']['daterelance_to']['month'], $criteresapres['Filtre']['daterelance_to']['day'] ) ).'\'
+                    )';
 				}
 			}
 
@@ -176,8 +181,8 @@
 					'"Adresse"."codepos"',
 					'"Adressefoyer"."rgadr"',
 					'"Adresse"."numcomptt"',
-					'"Relanceapre"."id"',
-					'"Relanceapre"."daterelance"',
+// 					'"Relanceapre"."id"',
+// 					'"Relanceapre"."daterelance"',
 	//                     '"ApreComiteapre"."comiteapre_id"',
 	//                     '"ApreComiteapre"."apre_id"',
 	//                     '"ApreComiteapre"."decisioncomite"',
@@ -208,13 +213,13 @@
 	//                             'ApreComiteapre.comiteapre_id = Comiteapre.id'
 	//                         )
 	//                     ),
-					array(
-						'table'      => 'relancesapres',
-						'alias'      => 'Relanceapre',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Relanceapre.apre_id = Apre.id' )
-					),
+// 					array(
+// 						'table'      => 'relancesapres',
+// 						'alias'      => 'Relanceapre',
+// 						'type'       => 'LEFT OUTER',
+// 						'foreignKey' => false,
+// 						'conditions' => array( 'Relanceapre.apre_id = Apre.id' )
+// 					),
 					array(
 						'table'      => 'prestations',
 						'alias'      => 'Prestation',
