@@ -776,7 +776,7 @@
 				'TraitementpdoDaterevisionMonth',
 				'TraitementpdoDaterevisionYear'
 			],
-			'2',
+			'<?php echo Configure::read('traitementClosId') ?>',
 			true
 		);
 		
