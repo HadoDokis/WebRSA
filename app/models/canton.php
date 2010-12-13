@@ -137,14 +137,17 @@
 		*/
 
 		public function queryConditionsByZonesgeographiques( $zonesgeographiques ) {
-			$cantons = $this->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Canton.zonegeographique_id' => $zonesgeographiques
+			$cantons = array();
+			if( !empty( $zonesgeographiques ) ) {
+				$cantons = $this->find(
+					'all',
+					array(
+						'conditions' => array(
+							'Canton.zonegeographique_id' => $zonesgeographiques
+						)
 					)
-				)
-			);
+				);
+			}
 			$_conditions = array();
 			foreach( $cantons as $canton ) {
 				$_condition = array();
