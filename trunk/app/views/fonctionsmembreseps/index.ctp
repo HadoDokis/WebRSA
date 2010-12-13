@@ -20,7 +20,7 @@
     echo $default->button(
         'back',
         array(
-            'controller' => 'gestionseps',
+            'controller' => 'seanceseps',
             'action'     => 'index'
         ),
         array(
