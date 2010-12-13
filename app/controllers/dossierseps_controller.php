@@ -142,6 +142,7 @@
 
 				if( $success ) {
 					$this->Dossierep->commit();
+					$this->redirect(array('controller'=>'seanceseps', 'action'=>'index'));
 				}
 				else {
 					$this->Dossierep->rollback();
@@ -209,7 +210,7 @@
 					$conditionsAdresses,
 					$listeThemes
 				),
-				'limit' => 10,
+				'limit' => 100,
 				'order' => array( 'Dossierep.created ASC' )
 			);
 
