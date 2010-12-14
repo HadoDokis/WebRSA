@@ -39,3 +39,27 @@ msgstr "Noter les presences des participants à l'EP"
 
 msgid "Seanceep::index::empty"
 msgstr "Aucun participant présent pour la séance de l'EP."
+
+msgid "Seanceseps::add"
+msgstr "Ajouter une nouvelle séance d'EP"
+
+msgid "Seanceseps::edit"
+msgstr "Modifier la séance d'EP"
+
+msgid "Seanceseps::delete"
+msgstr "Supprimer la séance d'EP"
+
+msgid "Seanceseps::choose"
+msgstr "Choisir les dossiers à passer à la séance d'EP"
+
+msgid "Seanceseps::traiterep"
+msgstr "Emettre l'avis de l'EP"
+
+msgid "Seanceseps::finaliserep"
+msgstr "Finaliser la séance d'EP"
+
+msgid "Seanceseps::traitercg"
+msgstr "Emettre la décision du CG"
+
+msgid "Seanceseps::finalisercg"
+msgstr "Finaliser la décision CG"
