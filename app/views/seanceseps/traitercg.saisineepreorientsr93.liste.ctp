@@ -21,7 +21,8 @@
 	echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
-<th>Qualité</th>
+<th>Nom du demandeur</th>
+<th>Adresse</th>
 <th>Date de naissance</th>
 <th>Création du dossier EP</th>
 <th>Motif de la demande</th>
@@ -38,7 +39,8 @@
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
-				$dossierep['Personne']['qual'],
+				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
+				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$dossierep['Saisineepreorientsr93']['Motifreorient']['name'],
