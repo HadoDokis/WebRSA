@@ -278,3 +278,9 @@ msgstr "Motivation du ré-examen"
 
 msgid "Bilanparcours::index::empty"
 msgstr "Aucun bilan de parcours présent pour cette personne"
+
+msgid "Bilanparcours66.motifsaisine"
+msgstr "Motifs justifiant la demande"
+
+msgid "Bilanparcours66.reorientation"
+msgstr "Réorientation"
