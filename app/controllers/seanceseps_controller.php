@@ -28,7 +28,8 @@
 			$options = Set::merge(
 				$this->Seanceep->Dossierep->Saisineepreorientsr93->Nvsrepreorientsr93->enums(),
 				$this->Seanceep->Dossierep->Saisineepbilanparcours66->Nvsrepreorient66->enums(),
-				$this->Seanceep->enums()
+				$this->Seanceep->enums(),
+				$this->Seanceep->MembreepSeanceep->enums()
 			);
 			$options['Seanceep']['ep_id'] = $this->Seanceep->Ep->find( 'list' );
 			if( !in_array( $this->action, array( 'add', 'edit' ) ) ) {
@@ -238,5 +239,49 @@
 		public function finalisercg( $seanceep_id ) {
 			$this->_finaliser( $seanceep_id, 'cg' );
 		}
+
+	
+		/**
+		 * Affiche la séance EP avec la liste de ses membres.
+		 * @param integer $seanceep_id
+		 */
+		public function view($seanceep_id = null) {
+			
+			$seanceep = $this->Seanceep->find('first', array(
+				'conditions' => array( 'Seanceep.id' => $seanceep_id ),
+				'contain' => array(
+						'Structurereferente',
+						'Ep' => array( 'Regroupementep')
+				)
+			));
+			$this->set('seanceep', $seanceep);
+			$this->_setOptions();	
+			
+			$fields = array(
+				'MembreepSeanceep.id',
+				'MembreepSeanceep.seanceep_id',
+				'MembreepSeanceep.membreep_id',
+				'MembreepSeanceep.reponse',
+				'MembreepSeanceep.presence',
+				'Membreep.nom',
+				'Membreep.prenom',
+				'Membreep.fonctionmembreep_id',
+				'Membreep.qual',
+			);
+			
+            $membresepsseanceseps = $this->Seanceep->MembreepSeanceep->find( 'all', array(
+            	'fields' => $fields,
+            	'conditions'=> array(
+            		'Seanceep.id' => $seanceep_id
+            	),
+            	'contain' => array(
+					'Seanceep',
+					'Membreep' => array( 'Fonctionmembreep')
+				),
+            
+            ));
+            $this->set('membresepsseanceseps', $membresepsseanceseps);
+		}
+	
 	}
 ?>
