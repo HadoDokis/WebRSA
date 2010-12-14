@@ -84,9 +84,15 @@
 							'Imprimer la notification',
 							array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
 							$permissions->check( 'gedooos', 'orientstruct' ) && $orientstruct['Orientstruct']['imprime']
-						),
-						$lienSaisineEp
+						)
 					);
+
+					if (Configure::read('Ep.departement')==93) {
+						array_push(
+							$cells,
+							$lienSaisineEp
+						);
+					}
 
 					echo $xhtml->tableCells( $cells, array( 'class' => 'odd' ), array( 'class' => 'even' ) );
 				}
