@@ -57,7 +57,7 @@
     <table class="wide noborder">
         <tr>
             <td colspan="2" class="noborder center">
-                <em>Le présent contrat est conclu pour une durée de</em>
+                <em>Le présent contrat est conclu pour une durée de <?php echo REQUIRED_MARK;?></em>
                 <?php echo $form->input( 'Contratinsertion.duree_engag', array( 'label' => false, 'div' => false, 'type' => 'select', 'options' => $duree_engag_cg66, 'empty' => true )  ); ?>
             </td>
         </tr>

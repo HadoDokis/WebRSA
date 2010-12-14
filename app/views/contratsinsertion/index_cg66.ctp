@@ -50,7 +50,7 @@
                     <?php
                         /**
                         *   Règle de blocage du bouton modifier si le contrat est validé et que 
-                        *   la date du jour est comprise dans les 24heures
+                        *   la date du jour est comprise dans les .... (voir webrsa.inc)
                         */
                         $dateValidation = Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
 
@@ -67,7 +67,7 @@
                         $isValid = Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' );
                         $block = true;
 
-                        if( $isValid == 'V' && ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiable.nbheure' ) ) ) ){
+                        if( $isValid == 'V' && ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
                             $block = false;
                         }
 

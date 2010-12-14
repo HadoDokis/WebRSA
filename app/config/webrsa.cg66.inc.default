@@ -1,6 +1,6 @@
 <?php
-	define( 'GEDOOO_WSDL', 'http://gedooo.rsa:8080/axis2/services/OfficeService?wsdl' );
-//         define( 'GEDOOO_WSDL', 'http://gedooo.services.adullact.org:8080/axis2/services/OfficeService?wsdl' );
+	//define( 'GEDOOO_WSDL', 'http://gedooo.rsa:8080/axis2/services/OfficeService?wsdl' );
+        define( 'GEDOOO_WSDL', 'http://gedooo.services.adullact.org:8080/axis2/services/OfficeService?wsdl' );
 
 
     Configure::write( 'Utilisateurs.multilogin', true );
@@ -110,7 +110,7 @@
     *   @default: 48 --> nombre d'heures pendant lesquelles on pourra accéder au bouton
     */
     Configure::write( 'Periode.modifiable.nbheure', 48 );
-
+    Configure::write( 'Periode.modifiablecer.nbheure', 240 );
 
 
     /**
