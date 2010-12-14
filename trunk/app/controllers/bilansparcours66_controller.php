@@ -173,6 +173,14 @@
 		*/
 
 		protected function _add_edit( $id = null ) {
+            // Retour à la liste en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                    if( $this->action == 'edit' ) {
+                        $id = $this->Bilanparcours->field( 'personne_id', array( 'id' => $id ) );
+                    }
+                    $this->redirect( array( 'action' => 'index', $id ) );
+            }
+
 			if( $this->action == 'add' ) {
 				$personne_id = $id;
 			}
