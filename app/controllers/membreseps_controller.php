@@ -195,5 +195,25 @@
 				}
 			}
 		}
+		
+		
+		public function editpresence( $ep_id, $seance_id )
+		{
+			$presences = $this->Membreep->find('all', array(
+				'conditions' => array(
+					'Membreep.ep_id' => $ep_id
+				),
+				'contain' => array(
+					'Seanceep' => array(
+						'conditions' => array(
+							'MembreepSeanceep.seanceep_id' => $seance_id
+						)
+					),
+					'Fonctionmembreep'
+				)
+			));
+						$this->set('seance_id', $seance_id);
+			$this->set('presences', Set::extract( $presences, '/Seanceep/MembreepSeanceep/membreep_id' ));
+		}
 	}
 ?>
