@@ -45,6 +45,8 @@ DROP TABLE IF EXISTS regroupementseps CASCADE;
 DROP TABLE IF EXISTS motifsreorients CASCADE;
 DROP TABLE IF EXISTS saisinesepdspdos66 CASCADE;
 DROP TABLE IF EXISTS nvsepdspdos66 CASCADE;
+DROP TABLE IF EXISTS nonrespectssanctionseps93 CASCADE;
+DROP TABLE IF EXISTS relancesnonrespectssanctionseps93 CASCADE;
 
 DROP TYPE IF EXISTS TYPE_THEMEEP CASCADE;
 DROP TYPE IF EXISTS TYPE_DECISIONEP CASCADE;
@@ -112,7 +114,8 @@ CREATE TABLE eps (
 	regroupementep_id			INTEGER NOT NULL REFERENCES regroupementseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	saisineepreorientsr93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
 	saisineepbilanparcours66	TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
-	saisineepdpdo66				TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite'
+	saisineepdpdo66				TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
+	nonrespectsanctionep93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite'
 );
 
 CREATE UNIQUE INDEX eps_name_idx ON eps(name);
@@ -174,7 +177,7 @@ ALTER TABLE seanceseps OWNER TO webrsa;
 
 -- -----------------------------------------------------------------------------
 
-CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', 'suspensionsreductionsallocations93', 'saisinesepdspdos66' );
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93' );
 CREATE TYPE TYPE_ETAPEDOSSIEREP AS ENUM ( 'cree', '...', 'seance', 'decisionep', 'decisioncg', 'traite' );
 
 CREATE TABLE dossierseps (
@@ -309,7 +312,7 @@ ALTER TABLE nvsrsepsreorient66 OWNER TO webrsa;
 
 -- =============================================================================
 
-CREATE TYPE TYPE_ETAPERELANCECONTENTIEUSE AS ENUM ( 'relance1', 'relance2', 'relancecontentieuse1', 'relancecontentieuse2' );
+/*CREATE TYPE TYPE_ETAPERELANCECONTENTIEUSE AS ENUM ( 'relance1', 'relance2', 'relancecontentieuse1', 'relancecontentieuse2' );
 CREATE TYPE TYPE_TYPERELANCECONTENTIEUSE AS ENUM ( 'absence', 'echeance' ); -- relance pour absence de contrat ou non renouvellement d'un contrat arrivé à échéance
 
 CREATE TABLE relancesdetectionscontrats93 (
@@ -329,14 +332,14 @@ CREATE TABLE relancesdetectionscontrats93 (
 );
 
 COMMENT ON TABLE relancesdetectionscontrats93 IS 'Relances liées à la procédure de détection de suspension et réduction d''allocations alimentant les EPs (CG93)';
-
+*/
 -- TODO: ajouter un check afin que dossierep_id puisse ne pas être NULL SSI le tuple représente l'étape relancecontentieuse2 ?
 -- TODO: ajouter un champ vers le nouveau contrat lorsqu'on sort de la procédure ?
 -- TODO: ajouter une colonne pour dire que le tuble doit encore être traité à cette étape ?
 
 -- -----------------------------------------------------------------------------
 
-CREATE TABLE saisinesepssignalementsnrscers93 (
+/*CREATE TABLE saisinesepssignalementsnrscers93 (
 	id      				SERIAL NOT NULL PRIMARY KEY,
 	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	orientstruct_id			INTEGER NOT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -347,7 +350,7 @@ CREATE TABLE saisinesepssignalementsnrscers93 (
 );
 
 COMMENT ON TABLE saisinesepssignalementsnrscers93 IS 'Saisines d''EPs de signalement pour non respect du contrat d''engagement réciproque (CG93)';
-
+*/
 -- =============================================================================
 
 /*CREATE TYPE TYPE_TYPEREORIENTATION66 AS ENUM ( 'social_pro', 'pro_social' ); -- FIXME: autres valeurs
@@ -540,7 +543,7 @@ CREATE TABLE membreseps_seanceseps
       ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT membreseps_seanceseps_membreep_id_fkey FOREIGN KEY (membreep_id)
       REFERENCES membreseps (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION 
+      ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (
   OIDS=FALSE
@@ -562,7 +565,7 @@ CREATE INDEX membreseps_seanceseps_seanceep_id_idx
   USING btree
   (seanceep_id);
 
-  
+
 -- Index: membreseps_seanceseps_membresep_id_idx
 
 -- DROP INDEX membreseps_seanceseps_membresep_id_idx;
@@ -571,11 +574,255 @@ CREATE INDEX membreseps_seanceseps_membresep_id_idx
   ON membreseps_seanceseps
   USING btree
   (membreep_id);
-  
- 
 -- Ajout du suppléant dans la table des membres des EPs
 SELECT add_missing_table_field ('public', 'membreseps', 'suppleant_id', 'integer');
 ALTER TABLE membreseps ADD FOREIGN KEY (suppleant_id) REFERENCES membreseps (id);
+
+-- *****************************************************************************
+-- Non respect / sanctions 93
+-- -> supprimer plus haut relancesdetectionscontrats93
+-- *****************************************************************************
+
+CREATE TABLE nonrespectssanctionseps93 (
+	id					SERIAL NOT NULL,
+	dossierep_id		INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	propopdo_id			INTEGER DEFAULT NULL REFERENCES propospdos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	orientstruct_id		INTEGER DEFAULT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	contratinsertion_id	INTEGER DEFAULT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	-- declencheur entrée procedure ? (les ids ?)
+	-- declencheur sortie procedure ? (nvcontratinsertion_id)
+	active				TYPE_BOOLEANNUMBER NOT NULL DEFAULT '1',
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE INDEX nonrespectssanctionseps93_dossierep_id_idx
+	ON nonrespectssanctionseps93
+	(dossierep_id);
+
+CREATE INDEX nonrespectssanctionseps93_propopdo_id_idx
+	ON nonrespectssanctionseps93
+	(propopdo_id);
+
+CREATE INDEX nonrespectssanctionseps93_orientstruct_id_idx
+	ON nonrespectssanctionseps93
+	(orientstruct_id);
+
+CREATE INDEX nonrespectssanctionseps93_contratinsertion_id_idx
+	ON nonrespectssanctionseps93
+	(contratinsertion_id);
+
+CREATE INDEX nonrespectssanctionseps93_active_idx
+	ON nonrespectssanctionseps93
+	(active);
+
+--DROP CONSTRAINT nonrespectssanctionseps_valid_entry_chk;
+ALTER TABLE nonrespectssanctionseps93 ADD CONSTRAINT nonrespectssanctionseps93_valid_entry_chk CHECK (
+	( propopdo_id IS NOT NULL ) OR ( orientstruct_id IS NOT NULL ) OR ( contratinsertion_id IS NOT NULL )
+);
+
+CREATE TABLE relancesnonrespectssanctionseps93 (
+	id      					SERIAL NOT NULL PRIMARY KEY,
+	nonrespectsanctionep93_id	INTEGER NOT NULL/* REFERENCES nonrespectssanctionseps93(id) ON DELETE CASCADE ON UPDATE CASCADE*/,
+	numrelance					INTEGER NOT NULL DEFAULT 1,
+	dateecheance				DATE NOT NULL,
+	dateimpression				DATE DEFAULT NULL,
+	daterelance					TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE INDEX relancesnonrespectssanctionseps93_nonrespectsanctionep93_id_idx
+	ON relancesnonrespectssanctionseps93
+	(nonrespectsanctionep93_id);
+
+CREATE INDEX relancesnonrespectssanctionseps93_numrelance_idx
+	ON relancesnonrespectssanctionseps93
+	(numrelance);
+
+CREATE INDEX relancesnonrespectssanctionseps93_dateecheancee_idx
+	ON relancesnonrespectssanctionseps93
+	(dateecheance);
+
+-- Import des relances de la table orientsstructs dans les tables ...
+/*
+	SELECT
+			orientsstructs.id AS orientstruct_id,
+			orientsstructs.date_valid,
+			orientsstructs.daterelance,		-- si E + NULL -> pas de relance
+			orientsstructs.statutrelance,	-- E -> en attente / R -> relancé
+			orientsstructs.date_impression_relance,
+			contratsinsertion.datevalidation_ci,
+			contratsinsertion.dd_ci,
+			( CASE
+				WHEN (
+					contratsinsertion.datevalidation_ci >= orientsstructs.daterelance
+					OR contratsinsertion.dd_ci >= orientsstructs.daterelance
+				) THEN '1'
+				ELSE '0'
+				END
+			) AS sortieprocedure
+		FROM orientsstructs
+			LEFT OUTER JOIN contratsinsertion ON (
+				orientsstructs.personne_id = contratsinsertion.personne_id
+				AND contratsinsertion.id IN (
+					SELECT "tmpcontratsinsertion"."id" FROM (
+						SELECT
+								"contratsinsertion"."id" AS id,
+								"contratsinsertion"."personne_id"
+							FROM contratsinsertion
+							WHERE
+								"contratsinsertion"."personne_id" = orientsstructs.personne_id
+							ORDER BY "contratsinsertion"."dd_ci" DESC
+							LIMIT 1
+					) AS tmpcontratsinsertion
+				)
+			)
+		WHERE
+			orientsstructs.daterelance IS NOT NULL
+			AND orientsstructs.statutrelance = 'R';
+*/
+
+-- Population ... en cours
+INSERT INTO nonrespectssanctionseps93 ( orientstruct_id, active, created, modified )
+	SELECT
+			orientsstructs.id AS orientstruct_id,
+			CAST( CASE
+				WHEN (
+					contratsinsertion.datevalidation_ci >= orientsstructs.daterelance
+					OR contratsinsertion.dd_ci >= orientsstructs.daterelance
+				) THEN '0'
+				ELSE '1'
+				END
+				AS TYPE_BOOLEANNUMBER
+			) AS active,
+			orientsstructs.daterelance,
+			NULL
+-- 			orientsstructs.date_impression_relance,
+		FROM orientsstructs
+			LEFT OUTER JOIN contratsinsertion ON (
+				orientsstructs.personne_id = contratsinsertion.personne_id
+				AND contratsinsertion.id IN (
+					SELECT "tmpcontratsinsertion"."id" FROM (
+						SELECT
+								"contratsinsertion"."id" AS id,
+								"contratsinsertion"."personne_id"
+							FROM contratsinsertion
+							WHERE
+								"contratsinsertion"."personne_id" = orientsstructs.personne_id
+							ORDER BY "contratsinsertion"."dd_ci" DESC
+							LIMIT 1
+					) AS tmpcontratsinsertion
+				)
+			)
+		WHERE
+			orientsstructs.daterelance IS NOT NULL
+			AND orientsstructs.statutrelance = 'R';
+
+INSERT INTO relancesnonrespectssanctionseps93 ( nonrespectsanctionep93_id, numrelance, dateecheance, dateimpression, daterelance )
+	SELECT
+			nonrespectssanctionseps93.id AS nonrespectsanctionep93_id,
+			1 AS numrelance,
+			( orientsstructs.daterelance + INTERVAL '2 mons' ) AS dateecheance,
+			orientsstructs.date_impression_relance AS dateimpression,
+			orientsstructs.daterelance AS daterelance
+		FROM orientsstructs
+			INNER JOIN nonrespectssanctionseps93 ON (
+				nonrespectssanctionseps93.orientstruct_id = orientsstructs.id
+				AND nonrespectssanctionseps93.active = '1'
+			)
+			LEFT OUTER JOIN contratsinsertion ON (
+				orientsstructs.personne_id = contratsinsertion.personne_id
+				AND contratsinsertion.id IN (
+					SELECT "tmpcontratsinsertion"."id" FROM (
+						SELECT
+								"contratsinsertion"."id" AS id,
+								"contratsinsertion"."personne_id"
+							FROM contratsinsertion
+							WHERE
+								"contratsinsertion"."personne_id" = orientsstructs.personne_id
+							ORDER BY "contratsinsertion"."dd_ci" DESC
+							LIMIT 1
+					) AS tmpcontratsinsertion
+				)
+			)
+		WHERE
+			orientsstructs.daterelance IS NOT NULL
+			AND orientsstructs.statutrelance = 'R';
+
+/*
+	SELECT
+			*
+		FROM "orientsstructs" AS "Orientstruct"
+			INNER JOIN personnes AS "Personne" ON ("Personne"."id" = "Orientstruct"."personne_id")
+			--INNER JOIN contratsinsertion AS "Contratinsertion" ON ("Personne"."id" = "Contratinsertion"."personne_id" AND "Contratinsertion"."id" IN ( SELECT "tmpcontratsinsertion"."id" FROM ( SELECT "contratsinsertion"."id" AS id, "contratsinsertion"."personne_id" FROM contratsinsertion WHERE "contratsinsertion"."personne_id" = "Personne"."id" ORDER BY "contratsinsertion"."dd_ci" DESC LIMIT 1 ) AS tmpcontratsinsertion ))
+			INNER JOIN prestations AS "Prestation" ON ("Personne"."id" = "Prestation"."personne_id" AND "Prestation"."natprest" = 'RSA' AND ( "Prestation"."rolepers" = 'DEM' OR "Prestation"."rolepers" = 'CJT' ))
+			INNER JOIN foyers AS "Foyer" ON ("Personne"."foyer_id" = "Foyer"."id")
+			INNER JOIN dossiers AS "Dossier" ON ("Foyer"."dossier_id" = "Dossier"."id")
+			--INNER JOIN adressesfoyers AS "Adressefoyer" ON ("Foyer"."id" = "Adressefoyer"."foyer_id" AND "Adressefoyer"."rgadr" = '01')
+			--INNER JOIN adresses AS "Adresse" ON ("Adresse"."id" = "Adressefoyer"."adresse_id")
+		WHERE
+				"Orientstruct"."statut_orient" = 'Orienté'
+				AND "Orientstruct"."statutrelance" ILIKE 'R'
+		ORDER BY "Orientstruct"."date_valid" ASC
+		LIMIT 10;
+*/
+
+/*
+-- Toutes les propospdos en DO 19 qui n'ont pas eu de contratinsertion signé 1 mois après la décision
+-- FIXME: comment faire pour l'arriéré ?
+-- TODO: et qui ne sont pas encore dans la liste
+SELECT propospdos.*
+	FROM propospdos
+		INNER JOIN decisionspdos ON (
+			propospdos.decisionpdo_id = decisionspdos.id
+		)
+	WHERE
+		decisionspdos.libelle LIKE 'DO 19%'
+		AND propospdos.personne_id NOT IN (
+			SELECT contratsinsertion.personne_id
+				FROM contratsinsertion
+				WHERE
+					contratsinsertion.personne_id = propospdos.personne_id
+					AND date_trunc( 'day', contratsinsertion.datevalidation_ci ) >= propospdos.datedecisionpdo
+					--AND date_trunc( 'day', contratsinsertion.datevalidation_ci ) <= ( propospdos.datedecisionpdo + INTERVAL '1 mons' )
+		);
+*/
+
+/*
+-- Toutes les orientsstructs qui n'ont pas eu de contratinsertion signé 2 mois après la décision
+-- FIXME: comment faire pour l'arriéré ?
+-- TODO: et qui ne sont pas encore dans la liste
+SELECT orientsstructs.*
+	FROM orientsstructs
+	WHERE
+		orientsstructs.statut_orient = 'Orienté'
+		AND orientsstructs.date_valid IS NOT NULL
+		AND orientsstructs.personne_id NOT IN (
+			SELECT contratsinsertion.personne_id
+				FROM contratsinsertion
+				WHERE
+					contratsinsertion.personne_id = orientsstructs.personne_id
+					AND date_trunc( 'day', contratsinsertion.datevalidation_ci ) >= orientsstructs.date_valid
+					--AND date_trunc( 'day', contratsinsertion.datevalidation_ci ) <= ( orientsstructs.date_valid + INTERVAL '2 mons' )
+		);
+*/
+
+/*
+-- Toutes les contratsinsertion qui n'ont pas été "renouvellés" 2 mois après la décision
+-- FIXME: comment faire pour l'arriéré ?
+-- TODO: et qui ne sont pas encore dans la liste
+SELECT *
+	FROM contratsinsertion
+	WHERE
+		( contratsinsertion.df_ci + INTERVAL '2 mons' ) < NOW()
+		AND contratsinsertion.decision_ci = 'V'
+		AND contratsinsertion.datevalidation_ci IS NOT NULL
+		AND contratsinsertion.personne_id NOT IN (
+			SELECT ci2.personne_id
+			FROM contratsinsertion AS ci2
+			WHERE ci2.personne_id = contratsinsertion.personne_id
+				AND ci2.df_ci > contratsinsertion.df_ci
+		);
+*/
 
 -- *****************************************************************************
 COMMIT;

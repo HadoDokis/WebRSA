@@ -342,6 +342,7 @@
 								case 'checkbox':
 								case 'select':
 								case 'text':
+								case 'date':
 									$params['type'] = $type;
 									$params['label'] = false;
 									$params['legend'] = false;
