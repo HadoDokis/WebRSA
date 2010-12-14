@@ -11,6 +11,7 @@
 	class SeancesepsController extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2' );
+		public $uses = array( 'Seanceep', 'Option' );
 
 		/**
 		* FIXME: evite les droits
@@ -37,6 +38,7 @@
 				$options['Seanceep']['decisionpdo_id'] = $this->Seanceep->Dossierep->Saisineepdpdo66->Nvsepdpdo66->Decisionpdo->find('list');
 			}
 			$this->set( compact( 'options' ) );
+			$this->set( 'typevoie', $this->Option->typevoie() );
 		}
 
 		/**
