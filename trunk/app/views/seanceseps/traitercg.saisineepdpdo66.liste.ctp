@@ -15,8 +15,9 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 }
 	echo '<table><thead>
 <tr>
-<!--<th>Dossier EP</th>-->
-<th>Qualité</th>
+<th>Dossier EP</th>
+<th>Nom du demandeur</th>
+<th>Adresse</th>
 <th>Date de naissance</th>
 <th>Création du dossier EP</th>
 <th>Motif(s) de la PDO</th>
@@ -30,15 +31,9 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		echo $xhtml->tableCells(
 			array(
-				/*$xhtml->link(
-					$dossierep['Dossierep']['id'],
-					array(
-						'controller'=>'dossierseps',
-						'action'=>'decisioncg',
-						$dossierep['Dossierep']['id']
-					)
-				),*/
-				$dossierep['Personne']['qual'],
+				$dossierep['Dossierep']['id'],
+				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
+				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$formData['Saisineepdpdo66'][$i]['Situationpdo'],

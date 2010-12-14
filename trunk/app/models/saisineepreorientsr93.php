@@ -202,7 +202,16 @@
 
 				),
 				'contain' => array(
-					'Personne',
+					'Personne' => array(
+						'Foyer' => array(
+							'Adressefoyer' => array(
+								'conditions' => array(
+									'Adressefoyer.rgadr' => '01'
+								),
+								'Adresse'
+							)
+						)
+					),
 					$this->alias => array(
 						'Nvsrepreorientsr93',
 						'Motifreorient',

@@ -18,7 +18,8 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 	echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
-<th>Qualité</th>
+<th>Nom du demandeur</th>
+<th>Adresse</th>
 <th>Date de naissance</th>
 <th>Création du dossier EP</th>
 <th>Motif(s) de la PDO</th>
@@ -31,7 +32,8 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
-				$dossierep['Personne']['qual'],
+				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
+				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$formData['Saisineepdpdo66'][$i]['Situationpdo'],

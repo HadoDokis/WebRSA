@@ -193,7 +193,16 @@
 					'Dossierep.seanceep_id' => $seanceep_id,
 				),
 				'contain' => array(
-					'Personne',
+					'Personne' => array(
+						'Foyer' => array(
+							'Adressefoyer' => array(
+								'conditions' => array(
+									'Adressefoyer.rgadr' => '01'
+								),
+								'Adresse'
+							)
+						)
+					),
 					$this->alias => array(
 						'Typeorient',
 						'Structurereferente',
