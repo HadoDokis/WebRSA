@@ -47,7 +47,7 @@
 					).' </li>';
 					echo '<li>'.$xhtml->presenceLink(
 						__d('Seanceep','Seanceep.presence',true),
-						array( 'controller' => 'membreseps_seanceseps', 'action' => 'editpresence', $seanceep['Seanceep']['id'] )
+						array( 'controller' => 'membreseps', 'action' => 'editpresence', $seanceep['Seanceep']['ep_id'], $seanceep['Seanceep']['id'] )
 					).' </li>';					
 					
 				?>				
