@@ -231,14 +231,21 @@
 		*/
 
 		public function saveDecisions( $data, $niveauDecision ) {
-			$success = $this->Nvsrepreorientsr93->saveAll( Set::extract( $data, '/Nvsrepreorientsr93' ), array( 'atomic' => false ) );
+			// FIXME: filtrer les données
+			$themeData = Set::extract( $data, '/Nvsrepreorientsr93' );
+			if( empty( $themeData ) ) {
+				return true;
+			}
+			else {
+				$success = $this->Nvsrepreorientsr93->saveAll( $themeData, array( 'atomic' => false ) );
 
-			$this->Dossierep->updateAll(
-				array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-				array( '"Dossierep"."id"' => Set::extract( $data, '/Dossierep/id' ) )
-			);
+				$this->Dossierep->updateAll(
+					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Dossierep"."id"' => Set::extract( $data, '/Dossierep/id' ) )
+				);
 
-			return $success;
+				return $success;
+			}
 		}
 
 		/**

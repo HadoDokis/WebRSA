@@ -47,6 +47,7 @@ DROP TABLE IF EXISTS saisinesepdspdos66 CASCADE;
 DROP TABLE IF EXISTS nvsepdspdos66 CASCADE;
 DROP TABLE IF EXISTS nonrespectssanctionseps93 CASCADE;
 DROP TABLE IF EXISTS relancesnonrespectssanctionseps93 CASCADE;
+DROP TABLE IF EXISTS decisionsnonrespectssanctionseps93 CASCADE;
 
 DROP TYPE IF EXISTS TYPE_THEMEEP CASCADE;
 DROP TYPE IF EXISTS TYPE_DECISIONEP CASCADE;
@@ -59,6 +60,7 @@ DROP TYPE IF EXISTS TYPE_ETAPERELANCECONTENTIEUSE CASCADE;
 DROP TYPE IF EXISTS TYPE_TYPERELANCECONTENTIEUSE CASCADE;
 DROP TYPE IF EXISTS type_orgpayeur CASCADE;
 DROP TYPE IF EXISTS type_dateactive CASCADE;
+DROP TYPE IF EXISTS TYPE_DECISIONEPSANCTION CASCADE;
 
 -- INFO: http://archives.postgresql.org/pgsql-sql/2005-09/msg00266.php
 CREATE OR REPLACE FUNCTION public.add_missing_table_field (text, text, text, text)
@@ -583,12 +585,17 @@ ALTER TABLE membreseps ADD FOREIGN KEY (suppleant_id) REFERENCES membreseps (id)
 -- -> supprimer plus haut relancesdetectionscontrats93
 -- *****************************************************************************
 
+CREATE TYPE TYPE_DECISIONEPSANCTION AS ENUM ( '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien' );
+
 CREATE TABLE nonrespectssanctionseps93 (
 	id					SERIAL NOT NULL,
 	dossierep_id		INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	propopdo_id			INTEGER DEFAULT NULL REFERENCES propospdos(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	orientstruct_id		INTEGER DEFAULT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	contratinsertion_id	INTEGER DEFAULT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	decision			TYPE_DECISIONEPSANCTION DEFAULT NULL,
+	montantreduction	FLOAT DEFAULT NULL,
+	dureesursis			INTEGER DEFAULT NULL,
 	-- declencheur entrée procedure ? (les ids ?)
 	-- declencheur sortie procedure ? (nvcontratinsertion_id)
 	active				TYPE_BOOLEANNUMBER NOT NULL DEFAULT '1',
@@ -643,44 +650,6 @@ CREATE INDEX relancesnonrespectssanctionseps93_dateecheancee_idx
 	(dateecheance);
 
 -- Import des relances de la table orientsstructs dans les tables ...
-/*
-	SELECT
-			orientsstructs.id AS orientstruct_id,
-			orientsstructs.date_valid,
-			orientsstructs.daterelance,		-- si E + NULL -> pas de relance
-			orientsstructs.statutrelance,	-- E -> en attente / R -> relancé
-			orientsstructs.date_impression_relance,
-			contratsinsertion.datevalidation_ci,
-			contratsinsertion.dd_ci,
-			( CASE
-				WHEN (
-					contratsinsertion.datevalidation_ci >= orientsstructs.daterelance
-					OR contratsinsertion.dd_ci >= orientsstructs.daterelance
-				) THEN '1'
-				ELSE '0'
-				END
-			) AS sortieprocedure
-		FROM orientsstructs
-			LEFT OUTER JOIN contratsinsertion ON (
-				orientsstructs.personne_id = contratsinsertion.personne_id
-				AND contratsinsertion.id IN (
-					SELECT "tmpcontratsinsertion"."id" FROM (
-						SELECT
-								"contratsinsertion"."id" AS id,
-								"contratsinsertion"."personne_id"
-							FROM contratsinsertion
-							WHERE
-								"contratsinsertion"."personne_id" = orientsstructs.personne_id
-							ORDER BY "contratsinsertion"."dd_ci" DESC
-							LIMIT 1
-					) AS tmpcontratsinsertion
-				)
-			)
-		WHERE
-			orientsstructs.daterelance IS NOT NULL
-			AND orientsstructs.statutrelance = 'R';
-*/
-
 -- Population ... en cours
 INSERT INTO nonrespectssanctionseps93 ( orientstruct_id, active, created, modified )
 	SELECT
@@ -747,6 +716,21 @@ INSERT INTO relancesnonrespectssanctionseps93 ( nonrespectsanctionep93_id, numre
 		WHERE
 			orientsstructs.daterelance IS NOT NULL
 			AND orientsstructs.statutrelance = 'R';
+
+-- Avis et décisions ep/cg pour le thème non respect / sanctions (CG 93)
+CREATE TABLE decisionsnonrespectssanctionseps93 (
+	id      					SERIAL NOT NULL PRIMARY KEY,
+	nonrespectsanctionep93_id	INTEGER NOT NULL/* REFERENCES nonrespectssanctionseps93(id) ON DELETE CASCADE ON UPDATE CASCADE*/,
+	etape						TYPE_ETAPEDECISIONEP NOT NULL,
+	decision					TYPE_DECISIONEPSANCTION DEFAULT NULL,
+	montantreduction			FLOAT DEFAULT NULL,
+	dureesursis					INTEGER DEFAULT NULL,
+	commentaire					TEXT DEFAULT NULL,
+	created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
+);
+
+COMMENT ON TABLE decisionsnonrespectssanctionseps93 IS 'Avis et décisions ep/cg pour le thème non respect / sanctions (CG 93)';
 
 /*
 	SELECT

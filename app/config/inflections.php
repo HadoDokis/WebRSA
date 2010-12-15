@@ -259,6 +259,7 @@
 		'membreep_seanceep' => 'membreseps_seanceseps',
 		'nonrespectsanctionep93' => 'nonrespectssanctionseps93',
 		'relancenonrespectsanctionep93' => 'relancesnonrespectssanctionseps93',
+		'decisionnonrespectsanctionep93' => 'decisionsnonrespectssanctionseps93',
 	);
 /**
  * This is a key => value array of regex used to match words.
