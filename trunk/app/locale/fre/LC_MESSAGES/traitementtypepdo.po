@@ -35,3 +35,12 @@ msgstr "Modification d'une traitement"
 
 msgid "Traitementtypepdo.name"
 msgstr "Intitulé du type de traitement"
+
+msgid "Traitementtypepdo::edit"
+msgstr "Modifier le type de traitement"
+
+msgid "Traitementtypepdo::delete::confirm"
+msgstr "Etes-vous sûr de vouloir supprimer ?"
+
+msgid "Traitementtypepdo::delete"
+msgstr "Supprimer le type de traitement"

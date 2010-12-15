@@ -209,5 +209,3 @@ msgstr "Abattement"
 
 msgid "Traitementpdo.benefpriscompte"
 msgstr "Bénéfice pris en compte"
-
-
