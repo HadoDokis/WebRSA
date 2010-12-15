@@ -92,7 +92,19 @@
         
         echo $default->subform(
             array(
-                'Traitementpdo.personne_id' => array( 'empty' => false, 'type' => 'select', 'options' => $listepersonnes ),
+                'Traitementpdo.personne_id' => array( 'empty' => true, 'type' => 'select', 'options' => $listepersonnes, 'required' => true )
+            ),
+            array(
+                'options' => $options
+            )
+        );
+        
+        echo $ajax->observeField( 'TraitementpdoPersonneId', array( 'update' => 'statutPersonne', 'url' => Router::url( array( 'action' => 'ajaxstatutpersonne' ), true ) ) );
+        
+        ?><fieldset id="statutPersonne" class="invisible"></fieldset><?php
+        
+        echo $default->subform(
+            array(
                 'Traitementpdo.hascourrier' => array( 'type' => 'radio' )
             ),
             array(
@@ -748,6 +760,20 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
+    
+		<?php echo $ajax->remoteFunction(
+			array(
+				'url' => Router::url(
+					array(
+						'action' => 'ajaxstatutpersonne',
+						@$this->data['Traitementpdo']['personne_id']
+					),
+					true
+				),
+				'update' => 'statutPersonne'
+			)
+		); ?>;
+		
 		observeDisableFieldsetOnRadioValue(
 			'traitementpdoform',
 			'data[Traitementpdo][hasficheanalyse]',

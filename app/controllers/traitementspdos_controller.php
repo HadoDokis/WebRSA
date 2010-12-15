@@ -10,12 +10,14 @@
 
         public $components = array( 'Default' );
 
-        public $helpers = array( 'Default2' );
+        public $helpers = array( 'Default2', 'Ajax' );
         
-		var $commeDroit = array(
+		public $commeDroit = array(
 			'view' => 'Traitementspdos:index',
 			'add' => 'Traitementspdos:edit'
 		);
+		
+		public $aucunDroit = array( 'ajaxstatutpersonne' );
 
         /**
         *
@@ -221,6 +223,27 @@
             $this->render( $this->action, null, 'add_edit' );
         }
         
+        function ajaxstatutpersonne( $personne_id = null ) {
+            $dataTraitementpdo_id = Set::extract( $this->data, 'Traitementpdo.personne_id' );
+            $personne_id = ( empty( $personne_id ) && !empty( $dataTraitementpdo_id ) ? $dataTraitementpdo_id : $personne_id );
+            $personne = $this->Traitementpdo->Propopdo->find(
+            	'first',
+            	array(
+            		'conditions'=>array(
+            			'Propopdo.personne_id' => $personne_id
+            		),
+            		'contain'=>array(
+            			'Statutpdo'
+            		),
+            		'order'=>array(
+            			'Propopdo.datereceptionpdo DESC'
+            		)
+            	)
+            );
+            $this->set( 'values', $personne );
+            Configure::write( 'debug', 0 );
+            $this->render( 'statutpersonne', 'ajax' );
+        }
 
         /**
         *
