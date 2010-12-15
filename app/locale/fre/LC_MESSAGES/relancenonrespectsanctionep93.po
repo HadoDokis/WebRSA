@@ -20,20 +20,8 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Orientstruct.date_propo"
-msgstr "Date de la demande"
+msgid "Relancenonrespectsanctionep93.daterelance"
+msgstr "Date de relance"
 
-msgid "Orientstruct.date_valid"
-msgstr "Date d'orientation"
-
-msgid "Orientstruct.etatorient"
-msgstr "Etat de l'orientation"
-
-msgid "ENUM::ETATORIENT::proposition"
-msgstr "Proposition d'orientation"
-
-msgid "ENUM::ETATORIENT::decision"
-msgstr "Orientation décidée"
-
-msgid "Orientstruct.nbjours"
-msgstr "Nombre de jours depuis l'orientation"
+msgid "Relancenonrespectsanctionep93.arelancer"
+msgstr "Statut relance"

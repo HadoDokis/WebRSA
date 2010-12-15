@@ -151,8 +151,8 @@
 
 			$themes = $this->Dossierep->Seanceep->themesTraites($seanceep_id);
 			$listeThemes['OR'] = array();
-			foreach($themes as $theme=>$niveauDecision) {
-				$listeThemes['OR'] = array('Dossierep.themeep'=>Inflector::tableize($theme));
+			foreach($themes as $theme => $niveauDecision) {
+				$listeThemes['OR'][] = array( 'Dossierep.themeep' => Inflector::tableize( $theme ) );
 			}
 
 			$this->paginate = array(

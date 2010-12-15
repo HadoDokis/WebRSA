@@ -46,7 +46,7 @@ UPDATE orientsstructs
 
 
 -- actuellement relancesdetectionscontrats93
-CREATE TABLE relancesxxx (
+/*CREATE TABLE relancesxxx (
 	id					SERIAL NOT NULL,
 	personne_id			INTEGER DEFAULT NULL REFERENCES personnes(id),
 	propopdo_id			INTEGER DEFAULT NULL REFERENCES propospdos(id),
@@ -56,11 +56,11 @@ CREATE TABLE relancesxxx (
 	contratinsertion_id	INTEGER DEFAULT NULL REFERENCES contratsinsertion(id),
 	cui_id				INTEGER DEFAULT NULL REFERENCES cuis(id)
 	-- ppae -- bool
-);
+);*/
 
 -- Combien de dernières orientsstructs qui n'ont pas signé de contrat lié à cette orientation
 -- TODO: when au lieu du count (pour les performances) ?
-SELECT
+/*SELECT
 		orientsstructs.personne_id,
 		( DATE( NOW() ) - orientsstructs.date_valid ) AS nbjours
 	FROM orientsstructs
@@ -111,7 +111,7 @@ SELECT
 					LIMIT 1
 			) AS dernierscuis
 		) = 0
-	LIMIT 10;
+	LIMIT 10;*/
 
 
 

@@ -627,7 +627,7 @@ CREATE TABLE relancesnonrespectssanctionseps93 (
 	numrelance					INTEGER NOT NULL DEFAULT 1,
 	dateecheance				DATE NOT NULL,
 	dateimpression				DATE DEFAULT NULL,
-	daterelance					TIMESTAMP WITHOUT TIME ZONE
+	daterelance					DATE NOT NULL
 );
 
 CREATE INDEX relancesnonrespectssanctionseps93_nonrespectsanctionep93_id_idx
@@ -695,7 +695,7 @@ INSERT INTO nonrespectssanctionseps93 ( orientstruct_id, active, created, modifi
 				AS TYPE_BOOLEANNUMBER
 			) AS active,
 			orientsstructs.daterelance,
-			NULL
+			orientsstructs.daterelance
 -- 			orientsstructs.date_impression_relance,
 		FROM orientsstructs
 			LEFT OUTER JOIN contratsinsertion ON (
