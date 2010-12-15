@@ -189,10 +189,28 @@
     Configure::write( 'Ep.tablesaisine', 'saisineepreorientsr93' );
 
 	/**
-	* Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
-	*/
+	 * Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
+	 */
 	Configure::write( 'traitementResultatId', 2 );
 	
-	Configure::write( 'traitementEnCoursId', 2 );
-	Configure::write( 'traitementClosId', 1 );
+	Configure::write( 'traitementEnCoursId', 1 );
+	Configure::write( 'traitementClosId', 2 );
+	
+	/**
+	 * Variables apparaissant dans la fiche de calcul du journal de traitement d'une PDO
+	 */
+	Configure::write('Traitementpdo.fichecalcul_coefannee1', 34);
+	Configure::write('Traitementpdo.fichecalcul_coefannee2', 25);
+	
+	Configure::write('Traitementpdo.fichecalcul_cavntmax', 80300);
+	Configure::write('Traitementpdo.fichecalcul_casrvmax', 32100);
+	
+	Configure::write('Traitementpdo.fichecalcul_abattbicvnt', 71);
+	Configure::write('Traitementpdo.fichecalcul_abattbicsrv', 50);
+	Configure::write('Traitementpdo.fichecalcul_abattbncsrv', 34);
+	
+	/**
+	 * Affiche ou non l'alerte de fin de session et exécute la redirection
+	 */
+	Configure::write( 'alerteFinSession', true );
 ?>
