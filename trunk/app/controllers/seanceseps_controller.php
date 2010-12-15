@@ -28,6 +28,7 @@
 			$options = Set::merge(
 				$this->Seanceep->Dossierep->Saisineepreorientsr93->Nvsrepreorientsr93->enums(),
 				$this->Seanceep->Dossierep->Saisineepbilanparcours66->Nvsrepreorient66->enums(),
+				$this->Seanceep->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enums(),
 				$this->Seanceep->enums(),
 				$this->Seanceep->MembreepSeanceep->enums()
 			);
@@ -65,9 +66,9 @@
 				'limit' => 10,
 				'order' => array( 'Seanceep.dateseance DESC' )
 			);
-			
+
 			$seanceseps = $this->paginate( $this->Seanceep );
-			
+
 			foreach($seanceseps as &$seanceep) {
 				$nbdossiers = $this->Seanceep->Dossierep->find(
 					'count',
@@ -81,7 +82,7 @@
 					$seanceep['Seanceep']['existe_dossier']=false;
 				else
 					$seanceep['Seanceep']['existe_dossier']=true;
-				
+
 				$seanceep['Seanceep']['cloture'] = $this->Seanceep->clotureSeance($seanceep);
 			}
 
@@ -240,13 +241,13 @@
 			$this->_finaliser( $seanceep_id, 'cg' );
 		}
 
-	
+
 		/**
-		 * Affiche la séance EP avec la liste de ses membres.
-		 * @param integer $seanceep_id
-		 */
+		* Affiche la séance EP avec la liste de ses membres.
+		* @param integer $seanceep_id
+		*/
 		public function view($seanceep_id = null) {
-			
+
 			$seanceep = $this->Seanceep->find('first', array(
 				'conditions' => array( 'Seanceep.id' => $seanceep_id ),
 				'contain' => array(
@@ -255,8 +256,8 @@
 				)
 			));
 			$this->set('seanceep', $seanceep);
-			$this->_setOptions();	
-			
+			$this->_setOptions();
+
 			$fields = array(
 				'MembreepSeanceep.id',
 				'MembreepSeanceep.seanceep_id',
@@ -268,20 +269,20 @@
 				'Membreep.fonctionmembreep_id',
 				'Membreep.qual',
 			);
-			
-            $membresepsseanceseps = $this->Seanceep->MembreepSeanceep->find( 'all', array(
-            	'fields' => $fields,
-            	'conditions'=> array(
-            		'Seanceep.id' => $seanceep_id
-            	),
-            	'contain' => array(
+
+			$membresepsseanceseps = $this->Seanceep->MembreepSeanceep->find( 'all', array(
+				'fields' => $fields,
+				'conditions'=> array(
+					'Seanceep.id' => $seanceep_id
+				),
+				'contain' => array(
 					'Seanceep',
 					'Membreep' => array( 'Fonctionmembreep')
 				),
-            
-            ));
-            $this->set('membresepsseanceseps', $membresepsseanceseps);
+
+			));
+			$this->set('membresepsseanceseps', $membresepsseanceseps);
 		}
-	
+
 	}
 ?>

@@ -27,6 +27,9 @@
 <th>Création du dossier EP</th>
 <th>Origine du dossier</th>
 <th>Date d\'orientation</th>
+<th>Nombre de passages en EP</th>
+<th>Nombre d\'enfants</th>
+<th>Avis EP</th>
 <!--<th>Orientation actuelle</th>
 <th>Structure référente actuelle</th>
 <th>Orientation préconisée</th>
@@ -43,6 +46,13 @@
 			$origine = 'Non contractualisation';
 		}
 
+		$lineOptions = array();
+		foreach( $options['Decisionnonrespectsanctionep93']['decision'] as $key => $label ) {
+			if( $key[0] == $dossierep['Nonrespectsanctionep93']['nbpassages'] ) {
+				$lineOptions[$key] = $label;
+			}
+		}
+
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -52,6 +62,12 @@
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$origine,
 				$locale->date( __( 'Locale->date', true ), $dossierep['Nonrespectsanctionep93']['Orientstruct']['date_valid'] ),
+				@$dossierep['Nonrespectsanctionep93']['nbpassages'],
+				@$dossierep['Personne']['Foyer']['nbenfants'],
+				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
+				$form->input( "Decisionnonrespectsanctionep93.{$i}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => $dossierep['Nonrespectsanctionep93']['id'] ) ).
+				$form->input( "Decisionnonrespectsanctionep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
+				$form->input( "Decisionnonrespectsanctionep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) )
 				/*$dossierep['Saisineepreorientsr93']['Motifreorient']['name'],
 				$dossierep['Saisineepreorientsr93']['Orientstruct']['Typeorient']['lib_type_orient'],
 				$dossierep['Saisineepreorientsr93']['Orientstruct']['Structurereferente']['lib_struc'],
@@ -71,7 +87,7 @@
 	echo $form->submit( 'Enregistrer' );
 	echo $form->end();
 
-// 	debug( $dossiers );
+	debug( $dossiers );
 // 	debug( $seanceep );
 // 	debug( $options );
 ?>

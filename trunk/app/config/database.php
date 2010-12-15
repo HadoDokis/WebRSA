@@ -84,8 +84,7 @@ class DATABASE_CONFIG {
         'host'        => 'localhost',
         'login'       => 'webrsa',
         'password'    => 'webrsa',
-// 		'database'    => 'poc_optim1_cg93',
-		'database'    => 'poc_optim1_cg66',
+		'database'    => 'cg93_20101203_2046_eps',
         'prefix'      => ''
     );
 
