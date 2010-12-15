@@ -124,6 +124,7 @@
 							'propopdo_id',
 							'orientstruct_id',
 							'contratinsertion_id',
+							'origine',
 							/// FIXME: nombre de passages pour pdo et contratinsertion_id à faire
 							"( SELECT COUNT(DISTINCT(id)) FROM {$this->table} WHERE orientstruct_id = \"{$this->alias}\".\"orientstruct_id\" ) AS \"{$this->alias}__nbpassages\"",
 							'active',
@@ -157,6 +158,15 @@
 		*/
 
 		public function prepareFormData( $seanceep_id, $datas, $niveauDecision ) {
+			//FIXME: continuer
+			$formData = array();
+			foreach( $datas as $key => $dossierep ) {
+				if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
+					$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = '1maintien';
+				}
+			}
+
+			return $formData;
 		}
 
 		/**
