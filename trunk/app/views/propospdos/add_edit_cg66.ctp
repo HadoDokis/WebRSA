@@ -115,11 +115,11 @@
         <?php
             echo $default->subform(
                 array(
-                    'Propopdo.typepdo_id' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.typepdo_id', true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ),
+                    'Propopdo.typepdo_id' => array( 'label' =>  required( __d( 'propopdo', 'Propopdo.typepdo_id', true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ),
                     'Propopdo.datereceptionpdo' => array( 'label' =>  ( __( 'Date de réception de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
                      'Propopdo.choixpdo' => array( 'label' =>  ( __( 'Choix', true ) ), 'type' => 'radio', 'options' => $options['choixpdo'], 'empty' => true ),
-                    'Propopdo.originepdo_id' => array( 'label' =>  ( __( 'Origine', true ) ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
-                   'Propopdo.orgpayeur' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.orgpayeur', true ) ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true ),
+                    'Propopdo.originepdo_id' => array( 'label' =>  required( __( 'Origine', true ) ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
+                   'Propopdo.orgpayeur' => array( 'label' =>  required( __d( 'propopdo', 'Propopdo.orgpayeur', true ) ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true ),
                    'Propopdo.serviceinstructeur_id' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.serviceinstructeur_id', true ) ), 'type' => 'select', 'options' => $serviceinstructeur, 'empty' => true )
                 ),
                 array(
