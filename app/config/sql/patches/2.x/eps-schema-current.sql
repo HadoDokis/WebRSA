@@ -60,7 +60,8 @@ DROP TYPE IF EXISTS TYPE_ETAPERELANCECONTENTIEUSE CASCADE;
 DROP TYPE IF EXISTS TYPE_TYPERELANCECONTENTIEUSE CASCADE;
 DROP TYPE IF EXISTS type_orgpayeur CASCADE;
 DROP TYPE IF EXISTS type_dateactive CASCADE;
-DROP TYPE IF EXISTS TYPE_DECISIONEPSANCTION CASCADE;
+DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93 CASCADE;
+DROP TYPE IF EXISTS TYPE_ORIGINESANCTIONEP93 CASCADE;
 
 -- INFO: http://archives.postgresql.org/pgsql-sql/2005-09/msg00266.php
 CREATE OR REPLACE FUNCTION public.add_missing_table_field (text, text, text, text)
@@ -585,7 +586,8 @@ ALTER TABLE membreseps ADD FOREIGN KEY (suppleant_id) REFERENCES membreseps (id)
 -- -> supprimer plus haut relancesdetectionscontrats93
 -- *****************************************************************************
 
-CREATE TYPE TYPE_DECISIONEPSANCTION AS ENUM ( '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien' );
+CREATE TYPE TYPE_DECISIONSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien' );
+CREATE TYPE TYPE_ORIGINESANCTIONEP93 AS ENUM ( 'orientstruct', 'contratinsertion', 'pdo' );
 
 CREATE TABLE nonrespectssanctionseps93 (
 	id					SERIAL NOT NULL,
@@ -593,7 +595,8 @@ CREATE TABLE nonrespectssanctionseps93 (
 	propopdo_id			INTEGER DEFAULT NULL REFERENCES propospdos(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	orientstruct_id		INTEGER DEFAULT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	contratinsertion_id	INTEGER DEFAULT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	decision			TYPE_DECISIONEPSANCTION DEFAULT NULL,
+	origine				TYPE_ORIGINESANCTIONEP93 NOT NULL,
+	decision			TYPE_DECISIONSANCTIONEP93 DEFAULT NULL,
 	montantreduction	FLOAT DEFAULT NULL,
 	dureesursis			INTEGER DEFAULT NULL,
 	-- declencheur entrée procedure ? (les ids ?)
@@ -651,9 +654,10 @@ CREATE INDEX relancesnonrespectssanctionseps93_dateecheancee_idx
 
 -- Import des relances de la table orientsstructs dans les tables ...
 -- Population ... en cours
-INSERT INTO nonrespectssanctionseps93 ( orientstruct_id, active, created, modified )
+INSERT INTO nonrespectssanctionseps93 ( orientstruct_id, origine, active, created, modified )
 	SELECT
 			orientsstructs.id AS orientstruct_id,
+			'orientstruct' AS origine,
 			CAST( CASE
 				WHEN (
 					contratsinsertion.datevalidation_ci >= orientsstructs.daterelance
@@ -722,7 +726,7 @@ CREATE TABLE decisionsnonrespectssanctionseps93 (
 	id      					SERIAL NOT NULL PRIMARY KEY,
 	nonrespectsanctionep93_id	INTEGER NOT NULL/* REFERENCES nonrespectssanctionseps93(id) ON DELETE CASCADE ON UPDATE CASCADE*/,
 	etape						TYPE_ETAPEDECISIONEP NOT NULL,
-	decision					TYPE_DECISIONEPSANCTION DEFAULT NULL,
+	decision					TYPE_DECISIONSANCTIONEP93 DEFAULT NULL,
 	montantreduction			FLOAT DEFAULT NULL,
 	dureesursis					INTEGER DEFAULT NULL,
 	commentaire					TEXT DEFAULT NULL,

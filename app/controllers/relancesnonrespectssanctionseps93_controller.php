@@ -44,6 +44,7 @@
 									$item = array(
 										'Nonrespectsanctionep93' => array(
 											'orientstruct_id' => $relance['orientstruct_id'],
+											'origine' => 'orientstruct',//FIXME
 											'active' => $this->data['Relance']['numrelance'],
 										),
 										'Relancenonrespectsanctionep93' => array(

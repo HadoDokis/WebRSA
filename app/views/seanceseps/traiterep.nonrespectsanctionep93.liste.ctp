@@ -40,12 +40,6 @@
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		// FIXME: ailleurs
-		$origine = 'Iconnue';
-		if( !empty( $dossierep['Nonrespectsanctionep93']['orientstruct_id'] ) ) {
-			$origine = 'Non contractualisation';
-		}
-
 		$lineOptions = array();
 		foreach( $options['Decisionnonrespectsanctionep93']['decision'] as $key => $label ) {
 			if( $key[0] == $dossierep['Nonrespectsanctionep93']['nbpassages'] ) {
@@ -60,7 +54,7 @@
 				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
-				$origine,
+				@$dossierep['Nonrespectsanctionep93']['origine'],
 				$locale->date( __( 'Locale->date', true ), $dossierep['Nonrespectsanctionep93']['Orientstruct']['date_valid'] ),
 				@$dossierep['Nonrespectsanctionep93']['nbpassages'],
 				@$dossierep['Personne']['Foyer']['nbenfants'],
@@ -87,7 +81,7 @@
 	echo $form->submit( 'Enregistrer' );
 	echo $form->end();
 
-	debug( $dossiers );
+// 	debug( $dossiers );
 // 	debug( $seanceep );
 // 	debug( $options );
 ?>

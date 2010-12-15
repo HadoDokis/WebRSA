@@ -10,6 +10,7 @@
 			// Orientation de départ
 			'Orientstruct.date_valid',
 			// Dossier EP
+			'Nonrespectsanctionep93.origine',
 			'Dossierep.etapedossierep',
 			'Nonrespectsanctionep93.decision',
 			'Nonrespectsanctionep93.montantreduction',
