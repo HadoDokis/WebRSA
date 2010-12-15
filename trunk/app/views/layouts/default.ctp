@@ -69,7 +69,7 @@
 					};
 				} );
 				
-				if ('<?php echo Router::url( "/users/login", true ); ?>' != location.href) {
+				if ('<?php echo Router::url( "/users/login", true ); ?>' != location.href && '<?php echo Configure::read("alerteFinSession"); ?>') {
 					var sessionTime = parseInt('<?php echo ini_get("session.gc_maxlifetime") ?>');
 					var warning5minutes = sessionTime - (5*60);
 					setTimeout(alert5minutes, warning5minutes*1000);
@@ -115,7 +115,7 @@
                 <div class="popup_block">
                     <div class="popup">
 		    	<a href="#" onclick="$('alertEndSession').hide(); return false;"><?php echo $xhtml->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
-                        <div id="popup-content">Attention votre session expirer dans 5 minutes.</div>
+                        <div id="popup-content">Attention votre session expire dans 5 minutes.</div>
                     </div>
                 </div>
             </div>
