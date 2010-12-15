@@ -6,6 +6,16 @@
     echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id') ) );
 ?>
 
+<?php echo $javascript->link( 'dependantselect.js' ); ?>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		dependantSelect( 'Saisineepbilanparcours66StructurereferenteId', 'Saisineepbilanparcours66TypeorientId' );
+		try { $( 'Saisineepbilanparcours66StructurereferenteId' ).onchange(); } catch(id) { }
+
+		dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
+	});
+</script>
+
 <?php
     if( $this->action == 'add'  ) {
         if( Configure::read( 'nom_form_bilan_cg' ) == 'cg66' ) {
@@ -43,10 +53,23 @@
         echo '</div>';
     ?>
 
-<?php echo $javascript->link( 'dependantselect.js' ); ?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
+
+		$( 'Bilanparcours66DdreconductoncontratYear' ).observe( 'change', function(event) {
+			checkDatesToRefresh();
+		} );
+		$( 'Bilanparcours66DdreconductoncontratMonth' ).observe( 'change', function(event) {
+			checkDatesToRefresh();
+		} );
+		$( 'Bilanparcours66DdreconductoncontratDay' ).observe( 'change', function(event) {
+			checkDatesToRefresh();
+		} );
+		$( 'Bilanparcours66DureeEngag' ).observe( 'change', function(event) {
+			checkDatesToRefresh();
+		} );
+		
     });
     
 	function checkDatesToRefresh() {
@@ -62,20 +85,8 @@
 				false
 			);
 		}
+		
 	}
-
-	Event.observe( $( 'Bilanparcours66DdreconductoncontratYear' ), 'change', function() {
-		checkDatesToRefresh();
-	} );
-	Event.observe( $( 'Bilanparcours66DdreconductoncontratMonth' ), 'change', function() {
-		checkDatesToRefresh();
-	} );
-	Event.observe( $( 'Bilanparcours66DdreconductoncontratDay' ), 'change', function() {
-		checkDatesToRefresh();
-	} );
-	Event.observe( $( 'Bilanparcours66DureeEngag' ), 'change', function() {
-		checkDatesToRefresh();
-	} );
 	
 </script>
 
@@ -222,6 +233,15 @@
 
         observeDisableFieldsetOnRadioValue(
             'Bilan',
+            'data[Bilanparcours66][choixparcours]',
+            $( 'Precoreorient' ),
+            'reorientation',
+            false,
+            true
+        );
+
+        observeDisableFieldsetOnRadioValue(
+            'Bilan',
             'data[Bilanparcours66][changementrefparcours]',
             $( 'NvparcoursReferent' ),
             'O',
@@ -352,6 +372,20 @@
                                 'options' => $options
                             )
                         );
+                    ?>
+                </fieldset>
+                <fieldset id="Precoreorient">
+                	<legend>Préconisation de réorientation</legend>
+                    <?php
+						echo $default->subform(
+							array(
+								'Saisineepbilanparcours66.typeorient_id',
+								'Saisineepbilanparcours66.structurereferente_id'
+							),
+							array(
+								'options' => $options
+							)
+						);
                     ?>
                 </fieldset>
             </fieldset>
