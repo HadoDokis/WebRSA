@@ -3,7 +3,7 @@
     // * si on veut avoir les valeurs exactes des select, on peut voir
     //   pour les enlever / remettre avec des classes
     // * les textes qu'on met dans la BDD pour les selects ne peuvent
-    //   pas comprendre ' - ' ... ou alors faire ue variable
+    //   pas comprendre ' - ' ... ou alors faire une variable
     //
     // - http://codylindley.com/Webdev/315/ie-hiding-option-elements-with-css-and-dealing-with-innerhtml
     // - http://bytes.com/forum/thread92041.html
