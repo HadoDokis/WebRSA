@@ -35,19 +35,7 @@
 		);
 
 		public $hasOne = array(
-			'Saisineepreorientsr93' => array(
-				'className' => 'Saisineepreorientsr93',
-				'foreignKey' => 'dossierep_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
+			// Thèmes 66
 			'Saisineepbilanparcours66' => array(
 				'className' => 'Saisineepbilanparcours66',
 				'foreignKey' => 'dossierep_id',
@@ -63,6 +51,33 @@
 			),
 			'Saisineepdpdo66' => array(
 				'className' => 'Saisineepdpdo66',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			// Thèmes 93
+			'Saisineepreorientsr93' => array(
+				'className' => 'Saisineepreorientsr93',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Nonrespectsanctionep93' => array(
+				'className' => 'Nonrespectsanctionep93',
 				'foreignKey' => 'dossierep_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -120,7 +135,7 @@
 
 			return $data;
 		}
-		
+
 		public function sauvegardeUnique( $dossierep_id, $data, $niveauDecision ) {
 			$success = true;
 

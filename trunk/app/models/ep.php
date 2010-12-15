@@ -10,9 +10,12 @@
 			'ValidateTranslate',
 			'Enumerable' => array(
 				'fields' => array(
-					'saisineepreorientsr93',
+					// Thèmes 66
 					'saisineepbilanparcours66',
 					'saisineepdpdo66',
+					// Thèmes 93
+					'nonrespectsanctionep93',
+					'saisineepreorientsr93',
 				)
 			)
 		);

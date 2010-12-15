@@ -89,6 +89,16 @@
 								</ul>
 							</li>
 						<?php endif; ?>
+						<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'index' ) ): ?>
+							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+								<?php echo $xhtml->link( 'Relances (EP)','#' );?>
+								<ul>
+									<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'index' ) ): ?>
+										<li><?php echo $xhtml->link( 'Dossiers à relancer (EP)', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index' ), array( 'title' => 'Dossiers à relancer (EP)' ) );?></li>
+									<?php endif;?>
+								</ul>
+							</li>
+						<?php endif; ?>
 					</ul>
 				</li>
 			<?php endif;?>

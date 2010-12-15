@@ -63,7 +63,7 @@
 				'counterQuery' => ''
 			),
 		);
-		
+
 		public $hasAndBelongsToMany = array(
 			'Membreep' => array(
 				'className' => 'Membreep',

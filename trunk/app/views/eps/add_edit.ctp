@@ -14,7 +14,7 @@
 <?php
 
 	echo $xform->create( null, array( 'id' => 'EpAddEditForm' ) );
-	
+
 	if (isset($this->data['Ep']['id']))
 		echo $form->input('Ep.id', array('type'=>'hidden'));
 
@@ -37,13 +37,14 @@
 		$default->subform(
 			array(
 				'Ep.saisineepreorientsr93' => array( 'required' => true ),
+				'Ep.nonrespectsanctionep93' => array( 'required' => true ),
 			),
 			array(
 				'options' => $options
 			)
 		)
 	);
-	
+
 	echo $xhtml->tag(
 		'fieldset',
 		$xhtml->tag(
@@ -102,7 +103,7 @@
 		$( conteneur ).getElementsBySelector( 'input[type="checkbox"]' ).each( function( input ) {
 			if (a_faire=='cocher') blnEtat = true;
 			else if (a_faire=='decocher') blnEtat = false;
-		
+
 			$(input).checked = blnEtat;
 		} );
 	}
