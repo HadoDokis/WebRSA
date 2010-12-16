@@ -43,7 +43,7 @@
 			$searchMode = Set::classicExtract( $searchData, 'Saisineepreorientsr93.mode' );
 
 			if( !empty( $searchData ) ) {
-				$conditions = array();
+				$conditions = array( 'Dossierep.themeep' => 'saisinesepsreorientsrs93' );
 
 				if( $searchMode == 'traite' ) {
 					$conditions[]['Dossierep.etapedossierep'] = 'traite';

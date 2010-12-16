@@ -31,11 +31,11 @@
 <th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
 <th>Avis EP</th>
+<th>Décision CG</th>
 <!--<th>Orientation actuelle</th>
 <th>Structure référente actuelle</th>
 <th>Orientation préconisée</th>
 <th>Structure référente préconisée</th>
-<th>Avis EP</th>
 <th>Orientation choisie</th>
 <th>Structure référente choisie</th>-->
 </tr>
@@ -60,9 +60,10 @@
 				@$dossierep['Nonrespectsanctionep93']['rgpassage'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
+				@$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0]['decision'],
 				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => $dossierep['Nonrespectsanctionep93']['id'] ) ).
-				$form->input( "Decisionnonrespectsanctionep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
+				$form->input( "Decisionnonrespectsanctionep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) )
 				/*$dossierep['Saisineepreorientsr93']['Motifreorient']['name'],
 				$dossierep['Saisineepreorientsr93']['Orientstruct']['Typeorient']['lib_type_orient'],

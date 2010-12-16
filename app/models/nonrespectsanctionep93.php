@@ -34,6 +34,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Contratinsertion' => array(
+				'className' => 'Contratinsertion',
+				'foreignKey' => 'contratinsertion_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		public $hasMany = array(
@@ -157,11 +164,15 @@
 		*/
 
 		public function prepareFormData( $seanceep_id, $datas, $niveauDecision ) {
-			//FIXME: continuer
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
-				if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
-					$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = '1maintien';
+				if( $niveauDecision == 'ep' ) {
+					if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
+						$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = '1maintien';
+					}
+				}
+				else if( $niveauDecision == 'cg' ) {
+					$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0]['decision'];
 				}
 			}
 
