@@ -247,18 +247,29 @@
 												<?php endif;?>
 												</ul>
 											</li>
-											<?php if( $permissions->check( 'entretiens', 'index' ) ):?>
+											<?php if( $permissions->check( 'entretiens', 'index' ) || $permissions->check( 'relancesnonrespectssanctionseps93', 'index' ) ):?>
 											<li><span>Actualisation suivi</span>
 												<ul>
-													<li>
-														<?php
-															echo $xhtml->link(
-																'Entretiens',
-																array( 'controller' => 'entretiens', 'action' => 'index', $personne['id'] )
-															);
-														?>
-													</li>
-
+													<?php if( $permissions->check( 'entretiens', 'index' ) ):?>
+														<li>
+															<?php
+																echo $xhtml->link(
+																	'Entretiens',
+																	array( 'controller' => 'entretiens', 'action' => 'index', $personne['id'] )
+																);
+															?>
+														</li>
+													<?php endif;?>
+													<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'index' ) ):?>
+														<li>
+															<?php
+																echo $xhtml->link(
+																	'Relances',
+																	array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index', $personne['id'] )
+																);
+															?>
+														</li>
+													<?php endif;?>
 												</ul>
 											</li>
 											<?php endif;?>

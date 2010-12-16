@@ -27,7 +27,8 @@
 <th>Création du dossier EP</th>
 <th>Origine du dossier</th>
 <th>Date d\'orientation</th>
-<th>Nombre de passages en EP</th>
+<th>Rang du passage en EP</th>
+<th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
 <th>Avis EP</th>
 <!--<th>Orientation actuelle</th>
@@ -42,7 +43,7 @@
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		$lineOptions = array();
 		foreach( $options['Decisionnonrespectsanctionep93']['decision'] as $key => $label ) {
-			if( $key[0] == $dossierep['Nonrespectsanctionep93']['nbpassages'] ) {
+			if( $key[0] == min( 2, $dossierep['Nonrespectsanctionep93']['rgpassage'] ) ) {
 				$lineOptions[$key] = $label;
 			}
 		}
@@ -55,8 +56,9 @@
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				@$dossierep['Nonrespectsanctionep93']['origine'],
-				$locale->date( __( 'Locale->date', true ), $dossierep['Nonrespectsanctionep93']['Orientstruct']['date_valid'] ),
-				@$dossierep['Nonrespectsanctionep93']['nbpassages'],
+				$locale->date( __( 'Locale->date', true ), @$dossierep['Nonrespectsanctionep93']['Orientstruct']['date_valid'] ),
+				@$dossierep['Nonrespectsanctionep93']['rgpassage'],
+				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
 				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => $dossierep['Nonrespectsanctionep93']['id'] ) ).
@@ -81,7 +83,7 @@
 	echo $form->submit( 'Enregistrer' );
 	echo $form->end();
 
-// 	debug( $dossiers );
+	debug( $dossiers );
 // 	debug( $seanceep );
 // 	debug( $options );
 ?>

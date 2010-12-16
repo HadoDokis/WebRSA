@@ -125,8 +125,7 @@
 							'orientstruct_id',
 							'contratinsertion_id',
 							'origine',
-							/// FIXME: nombre de passages pour pdo et contratinsertion_id à faire
-							"( SELECT COUNT(DISTINCT(id)) FROM {$this->table} WHERE orientstruct_id = \"{$this->alias}\".\"orientstruct_id\" ) AS \"{$this->alias}__nbpassages\"",
+							'rgpassage',
 							'active',
 							'created',
 							'modified'
@@ -229,8 +228,13 @@
 					$nonrespectsanctionep93 = array( 'Nonrespectsanctionep93' => $dossierep['Nonrespectsanctionep93'] );
 					$nonrespectsanctionep93['Nonrespectsanctionep93']['active'] = 0;
 					$nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] = $dossierep['Decisionnonrespectsanctionep93'][0]['decision'];
-					$nonrespectsanctionep93['Nonrespectsanctionep93']['montantreduction'] = $dossierep['Decisionnonrespectsanctionep93'][0]['montantreduction'];
-					$nonrespectsanctionep93['Nonrespectsanctionep93']['dureesursis'] = $dossierep['Decisionnonrespectsanctionep93'][0]['dureesursis'];
+
+					if( $nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] == '1reduction' ) {
+						$nonrespectsanctionep93['Nonrespectsanctionep93']['montantreduction'] = Configure::read( 'Nonrespectsanctionep93.montantReduction' );
+					}
+					else if( $nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] == '1sursis' ) {
+						$nonrespectsanctionep93['Nonrespectsanctionep93']['dureesursis'] = Configure::read( 'Nonrespectsanctionep93.dureeSursis' );
+					}
 
 					$this->create( $nonrespectsanctionep93 );
 					$success = $this->save() && $success;
