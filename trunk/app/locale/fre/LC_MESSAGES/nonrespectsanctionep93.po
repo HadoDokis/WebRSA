@@ -30,3 +30,10 @@ msgstr "Durée sursis"
 
 msgid "Nonrespectsanctionep93.origine"
 msgstr "Origine"
+
+
+msgid "Nonrespectsanctionep93.contratinsertion_id"
+msgstr "Présence contrat (oui/non)"
+
+msgid "Nonrespectsanctionep93.rgpassage"
+msgstr "Rang passage en EP"

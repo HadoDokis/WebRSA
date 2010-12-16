@@ -11,6 +11,7 @@
 			'Dossier.matricule' => array( 'type' => 'text' ),
 			'Dossiercaf.nomtitulaire' => array( 'type' => 'text' ),
 			'Dossiercaf.prenomtitulaire' => array( 'type' => 'text' ),*/
+			'Relance.contrat' => array( 'type' => 'radio', 'options' => array( 0 => 'Personne orientée sans contrat', 1 => 'Personne orientée avec contrat' ), 'value' => ( isset( $this->data['Relance']['contrat'] ) ? @$this->data['Relance']['contrat'] : 0 ) ),
 			'Relance.numrelance' => array( 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Seconde relance', 3 => 'Troisième relance' ), 'value' => ( isset( $this->data['Relance']['numrelance'] ) ? @$this->data['Relance']['numrelance'] : 1 ) ),
 		),
 		array(
@@ -34,8 +35,10 @@
 					<th>Nom / Prénom Allocataire</th>
 					<th>NIR</th>
 					<th>Nom de commune</th>
-					<th>Date d\'orientation</th>
-					<th>'.__d( 'orientstruct', 'Orientstruct.nbjours', true ).'</th>
+					'.( ( $this->data['Relance']['contrat'] == 0 ) ? '<th>Date d\'orientation</th>' : '' ).'
+					'.( ( $this->data['Relance']['contrat'] == 0 ) ? '<th>'.__d( 'orientstruct', 'Orientstruct.nbjours', true ).'</th>' : '' ).'
+					'.( ( $this->data['Relance']['contrat'] == 1 ) ? '<th>Date de fin du contrat</th>' : '' ).'
+					'.( ( $this->data['Relance']['contrat'] == 1 ) ? '<th>Nombre de jours depuis la fin du contrat</th>' : '' ).'
 					'.( ( $this->data['Relance']['numrelance'] == 2 ) ? '<th>Date de première relance</th>' : '' ).'
 					'.( ( $this->data['Relance']['numrelance'] == 3 ) ? '<th>Date de seconde relance</th>' : '' ).'
 					<th style="width: 19em;">'.__d( 'relancenonrespectsanctionep93', 'Relancenonrespectsanctionep93.daterelance', true ).'</th>
@@ -58,10 +61,17 @@
 					h( @$result['Personne']['Foyer']['Dossier']['matricule'] ),
 					h( @$result['Personne']['nom'].' '.@$result['Personne']['prenom'] ),
 					h( @$result['Personne']['nir'] ),
-					h( @$result['Personne']['Foyer']['Adressefoyer']['0']['Adresse']['locaadr'] ),
-					h( date_short( @$result['Orientstruct']['date_valid'] ) ),
-					h( @$result['Orientstruct']['nbjours'] )
+					h( @$result['Personne']['Foyer']['Adressefoyer']['0']['Adresse']['locaadr'] )
 				);
+
+				if( $this->data['Relance']['contrat'] == 0 ) {
+					$row[] = h( date_short( @$result['Orientstruct']['date_valid'] ) );
+					$row[] = h( @$result['Orientstruct']['nbjours'] );
+				}
+				else {
+					$row[] = date_short( @$result['Contratinsertion']['df_ci'] );
+					$row[] = h( @$result['Contratinsertion']['nbjours'] );
+				}
 
 				if( $this->data['Relance']['numrelance'] == 2 ) {
 					$row[] = date_short( @$result['Nonrespectsanctionep93'][0]['Relancenonrespectsanctionep93'][0]['daterelance'] );
@@ -76,6 +86,7 @@
 						( ( @$this->data['Relance']['numrelance'] > 1 ) ? $xform->input( "Relancenonrespectsanctionep93.{$index}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => @$result['Nonrespectsanctionep93'][0]['id'] ) ) : '' ).
 						$xform->input( "Relancenonrespectsanctionep93.{$index}.numrelance", array( 'type' => 'hidden', 'value' => @$this->data['Relance']['numrelance'] ) ).
 						$xform->input( "Relancenonrespectsanctionep93.{$index}.orientstruct_id", array( 'type' => 'hidden', 'value' => @$result['Orientstruct']['id'] ) ).
+						$xform->input( "Relancenonrespectsanctionep93.{$index}.contratinsertion_id", array( 'type' => 'hidden', 'value' => @$result['Contratinsertion']['id'] ) ).
 						$xform->input( "Relancenonrespectsanctionep93.{$index}.daterelance", array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5, 'label' => false, 'div' => false ) ),
 						$xform->input( "Relancenonrespectsanctionep93.{$index}.arelancer", array( 'type' => 'radio', 'options' => array( 'R' => 'Relancer', 'E' => 'En attente' ), 'legend' => false, 'div' => false, 'separator' => '<br />', 'value' => ( isset( $this->data['Relancenonrespectsanctionep93'][$index]['arelancer'] ) ? @$this->data['Relancenonrespectsanctionep93'][$index]['arelancer'] : 'E' ) ) ),
 						array( $innerTable, array( 'class' => 'innerTableCell' ) )
@@ -110,3 +121,4 @@
 	// 	( form, radioName, fieldsIds, value, condition )
 	</script>
 <?php endif;?>
+<?php if( isset( $results ) ) { debug( $results ); }?>

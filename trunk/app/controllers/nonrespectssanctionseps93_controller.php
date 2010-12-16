@@ -39,7 +39,82 @@
 		*/
 
 		public function index() {
-			$searchData = $this->data;
+			$searchData = Set::classicExtract( $this->data, 'Search' );
+			$searchMode = Set::classicExtract( $searchData, 'Nonrespectsanctionep93.mode' );
+
+			if( !empty( $searchData ) ) {
+				$conditions = array( 'Dossierep.themeep' => 'nonrespectssanctionseps93' );
+
+				if( $searchMode == 'traite' ) {
+					$conditions[]['Dossierep.etapedossierep'] = 'traite';
+
+					$searchDossierepSeanceepId = Set::classicExtract( $searchData, 'Dossierep.seanceep_id' );
+					if( !empty( $searchDossierepSeanceepId ) ) {
+						$conditions[]['Dossierep.seanceep_id'] = $searchDossierepSeanceepId;
+					}
+				}
+				else {
+					$conditions[]['Dossierep.etapedossierep <>'] = 'traite';
+				}
+
+				$this->paginate = array(
+					'contain' => array(
+						'Dossierep' => array(
+							'Personne' => array(
+								'Foyer' => array(
+									'Dossier',
+									'Adressefoyer' => array(
+										'conditions' => array( 'Adressefoyer.rgadr' => '01' ),
+										'Adresse'
+									)
+								)
+							),
+							'Seanceep'
+						),
+						'Orientstruct',
+						'Contratinsertion',
+					),
+					'conditions' => $conditions,
+					'order' => array( 'Nonrespectsanctionep93.created DESC' ),
+					'limit' => 10
+				);
+
+				$this->set( 'nonrespectssanctionseps93', $this->paginate( $this->Nonrespectsanctionep93 ) );
+			}
+
+			// INFO: containable ne fonctionne pas avec les find('list')
+			$seanceseps = array();
+			$tmpSeanceseps = $this->Nonrespectsanctionep93->Dossierep->Seanceep->find(
+				'all',
+				array(
+					'fields' => array(
+						'Seanceep.id',
+						'Seanceep.dateseance',
+						'Ep.name'
+					),
+					'contain' => array(
+						'Ep'
+					),
+					'order' => array( 'Ep.name ASC', 'Seanceep.dateseance DESC' )
+				)
+			);
+
+			if( !empty( $tmpSeanceseps ) ) {
+				foreach( $tmpSeanceseps as $key => $seanceep ) {
+					$seanceseps[$seanceep['Ep']['name']][$seanceep['Seanceep']['id']] = $seanceep['Seanceep']['dateseance'];
+				}
+			}
+
+			$options = Set::merge(
+				$this->Nonrespectsanctionep93->Dossierep->enums(),
+				array( 'Dossierep' => array( 'seanceep_id' => $seanceseps ) )
+			);
+			$this->set( compact( 'options' ) );
+
+			$view = implode( '_', Set::filter( array( 'index', $searchMode ) ) );
+			$this->render( null, null, $view );
+
+			/*$searchData = $this->data;
 
 			if( true || !empty( $searchData ) ) { // FIXME: moteur de recherche
 				$conditions = array( 'Nonrespectsanctionep93.dossierep_id IS NOT NULL' );
@@ -91,7 +166,7 @@
 // 			$this->set( compact( 'options' ) );
 
 // 			$view = implode( '_', Set::filter( array( 'index', $searchMode ) ) );
-// 			$this->render( null, null, $view );
+// 			$this->render( null, null, $view );*/
 		}
 	}
 ?>
