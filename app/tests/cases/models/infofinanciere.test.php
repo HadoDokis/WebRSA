@@ -10,7 +10,6 @@
 		function testSearch() {
 			$result = $this->Infofinanciere->search(null, null, null);
 			$this->assertTrue($result);
-			var_dump($result);
 		}
 		
 		function testRange() {

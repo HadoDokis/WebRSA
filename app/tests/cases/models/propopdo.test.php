@@ -63,7 +63,6 @@
 					'etatdossierpdo' => null,
 					);
 			$result = $this->Propopdo->beforeSave($options);
-			var_dump($result);
 			$this->assertTrue($result);
 		}
 	}

@@ -6,6 +6,11 @@
 
 	class Typeaideapre66TestCase extends CakeAppModelTestCase {
 
+		function testListOptions() {
+			$result = $this->Typeaideapre66->listOptions();
+			$expected = array('1_1' => 'typesaidepar66name');
+			$this->assertEqual($expected, $result);
+		}
 	}
 
 ?>

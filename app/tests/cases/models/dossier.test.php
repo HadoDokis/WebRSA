@@ -149,7 +149,7 @@
 			// Si $params est initialisé, la classe 'Sanitize' n'est pas trouvée
 			// Fatal error: Class 'Sanitize' not found in /home/localhost/www/webrsa/app/models/dossier.php on line 250 
 			$result = $this->Dossier->search(null, null, $params);
-			var_dump($result);
+			//var_dump($result);
 			//$result = $this->Dossier->search($zonegeo, null);
 		}
 	}
