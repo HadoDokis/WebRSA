@@ -262,6 +262,15 @@
 				$this->Propopdo->begin();
 				$success = true;
 				foreach( $propospdos as $propopdo ) {
+					$nbpassagespcd = $this->Nonrespectsanctionep93->Dossierep->find(
+						'count',
+						array(
+							'conditions' => array(
+								'Dossierep.personne_id' => $propopdo['Propopdo']['personne_id'],
+								'Dossierep.themeep' => 'nonrespectssanctionseps93',
+							)
+						)
+					);
 					$dossierep = array(
 						'Dossierep' => array(
 							'personne_id' => $propopdo['Propopdo']['personne_id'],
@@ -270,6 +279,8 @@
 						),
 						'Nonrespectsanctionep93' => array(
 							'propopdo_id' => $propopdo['Propopdo']['id'],
+							'origine' => 'pdo',
+							'rgpassage' => ( $nbpassagespcd + 1 )
 						)
 					);
 
@@ -278,15 +289,15 @@
 
 				if( $success ) {
 					$this->Propopdo->commit();
-					$this->out( 'W00T' );
+					$this->out( sprintf( 'Succès pour l\'enregistrement des %s dossiers EP pour la thématique "non respect / sanctions (CG 93)"', count( $propospdos ) ) );
 				}
 				else {
 					$this->Propopdo->rollback();
-					$this->out( 'FAIL' );
+					$this->err( sprintf( 'Erreur(s) lors de l\'enregistrement des %s dossiers EP pour la thématique "non respect / sanctions (CG 93)"', count( $propospdos ) ) );
 				}
 			}
 			else {
-				$this->out( 'RIEN A FAIRE' );
+				$this->out( 'Aucun dossiers EP pour la thématique "non respect / sanctions (CG 93)" à traiter' );
 			}
 		}
 

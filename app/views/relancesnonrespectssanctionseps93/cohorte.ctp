@@ -36,6 +36,8 @@
 					<th>Nom de commune</th>
 					<th>Date d\'orientation</th>
 					<th>'.__d( 'orientstruct', 'Orientstruct.nbjours', true ).'</th>
+					'.( ( $this->data['Relance']['numrelance'] == 2 ) ? '<th>Date de première relance</th>' : '' ).'
+					'.( ( $this->data['Relance']['numrelance'] == 3 ) ? '<th>Date de seconde relance</th>' : '' ).'
 					<th style="width: 19em;">'.__d( 'relancenonrespectsanctionep93', 'Relancenonrespectsanctionep93.daterelance', true ).'</th>
 					<th style="width: 8em;">'.__d( 'relancenonrespectsanctionep93', 'Relancenonrespectsanctionep93.arelancer', true ).'</th>
 					<th class="innerTableHeader">Informations complémentaires</th>
@@ -52,25 +54,40 @@
 					</tbody>
 				</table>';
 
-				echo $xhtml->tableCells(
+				$row = array(
+					h( @$result['Personne']['Foyer']['Dossier']['matricule'] ),
+					h( @$result['Personne']['nom'].' '.@$result['Personne']['prenom'] ),
+					h( @$result['Personne']['nir'] ),
+					h( @$result['Personne']['Foyer']['Adressefoyer']['0']['Adresse']['locaadr'] ),
+					h( date_short( @$result['Orientstruct']['date_valid'] ) ),
+					h( @$result['Orientstruct']['nbjours'] )
+				);
+
+				if( $this->data['Relance']['numrelance'] == 2 ) {
+					$row[] = date_short( @$result['Nonrespectsanctionep93'][0]['Relancenonrespectsanctionep93'][0]['daterelance'] );
+				}
+				else if( $this->data['Relance']['numrelance'] == 3 ) {
+					$row[] = date_short( @$result['Nonrespectsanctionep93'][0]['Relancenonrespectsanctionep93'][0]['daterelance'] );
+				}
+
+				$row = Set::merge(
+					$row,
 					array(
-						h( @$result['Personne']['Foyer']['Dossier']['matricule'] ),
-						h( @$result['Personne']['nom'].' '.@$result['Personne']['prenom'] ),
-						h( @$result['Personne']['nir'] ),
-						h( @$result['Personne']['Foyer']['Adressefoyer']['0']['Adresse']['locaadr'] ),
-						h( date_short( @$result['Orientstruct']['date_valid'] ) ),
-						h( @$result['Orientstruct']['nbjours'] ),
 						( ( @$this->data['Relance']['numrelance'] > 1 ) ? $xform->input( "Relancenonrespectsanctionep93.{$index}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => @$result['Nonrespectsanctionep93'][0]['id'] ) ) : '' ).
 						$xform->input( "Relancenonrespectsanctionep93.{$index}.numrelance", array( 'type' => 'hidden', 'value' => @$this->data['Relance']['numrelance'] ) ).
 						$xform->input( "Relancenonrespectsanctionep93.{$index}.orientstruct_id", array( 'type' => 'hidden', 'value' => @$result['Orientstruct']['id'] ) ).
 						$xform->input( "Relancenonrespectsanctionep93.{$index}.daterelance", array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5, 'label' => false, 'div' => false ) ),
 						$xform->input( "Relancenonrespectsanctionep93.{$index}.arelancer", array( 'type' => 'radio', 'options' => array( 'R' => 'Relancer', 'E' => 'En attente' ), 'legend' => false, 'div' => false, 'separator' => '<br />', 'value' => ( isset( $this->data['Relancenonrespectsanctionep93'][$index]['arelancer'] ) ? @$this->data['Relancenonrespectsanctionep93'][$index]['arelancer'] : 'E' ) ) ),
-						array( $innerTable, array( 'class' => 'innerTableCell' ) ),
-					),
+						array( $innerTable, array( 'class' => 'innerTableCell' ) )
+					)
+				);
+
+				echo $xhtml->tableCells(
+					$row,
 					array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 					array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
 				);
-				}
+			}
 		echo '</tbody></table>';
 		echo $xform->end( __( 'Save', true ) );
 	}

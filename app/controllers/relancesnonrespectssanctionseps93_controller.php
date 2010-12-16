@@ -17,7 +17,72 @@
 		*
 		*/
 
-		public function index() {
+		public function index( $personne_id ) {
+			$conditions = array( 'OR' => array(), 'origine' => array( 'orientstruct', 'contratinsertion' ) );
+
+			$orientsstructs = $this->Orientstruct->find(
+				'list',
+				array(
+					'conditions' => array(
+						'Orientstruct.personne_id' => $personne_id
+					)
+				)
+			);
+			if( !empty( $orientsstructs ) ) {
+				$conditions['OR']['Nonrespectsanctionep93.orientstruct_id'] = $orientsstructs;
+			}
+
+			$contratsinsertion = $this->Contratinsertion->find(
+				'list',
+				array(
+					'conditions' => array(
+						'Contratinsertion.personne_id' => $personne_id
+					)
+				)
+			);
+			if( !empty( $contratsinsertion ) ) {
+				$conditions['OR']['Nonrespectsanctionep93.contratinsertion_id'] = $contratsinsertion;
+			}
+
+			$relances = array();
+			if( !empty( $conditions['OR'] ) ) {
+				$relances = $this->Nonrespectsanctionep93->find(
+					'all',
+					array(
+						'conditions' => $conditions,
+						'contain' => array(
+							'Orientstruct' => array(
+								'Personne' => array(
+									'Foyer' => array(
+										'Dossier',
+										'Adressefoyer' => array(
+											'conditions' => array(
+												'Adressefoyer.rgadr' => '01'
+											),
+											'Adresse'
+										)
+									)
+								)
+							),
+							'Relancenonrespectsanctionep93' => array(
+								'order' => array( 'Relancenonrespectsanctionep93.daterelance DESC' ),
+								'limit' => 1
+							)
+						),
+						'order' => array( 'Nonrespectsanctionep93.created DESC' ),
+					)
+				);
+			}
+
+			$this->set( compact( 'relances' ) );
+			$this->set( 'personne_id', $personne_id );
+		}
+
+		/**
+		*
+		*/
+
+		public function cohorte() {
 			if( !empty( $this->data ) ) {
 				/// Enregistrement de la cohorte de relances
 				if( isset( $this->data['Relancenonrespectsanctionep93'] ) ) {
@@ -41,11 +106,23 @@
 									$dateecheance = strtotime( "{$relance['daterelance']['year']}{$relance['daterelance']['month']}{$relance['daterelance']['day']}" );
 									$dateecheance = date( 'Y-m-d', strtotime( '+2 month', $dateecheance ) );// FIXME: paramétrage
 
+									$this->Nonrespectsanctionep93->Orientstruct->id = $relance['orientstruct_id'];
+									$nbpassagespcd = $this->Nonrespectsanctionep93->Dossierep->find(
+										'count',
+										array(
+											'conditions' => array(
+												'Dossierep.personne_id' => $this->Nonrespectsanctionep93->Orientstruct->field( 'personne_id' ),
+												'Dossierep.themeep' => 'nonrespectssanctionseps93',
+											)
+										)
+									);
+
 									$item = array(
 										'Nonrespectsanctionep93' => array(
 											'orientstruct_id' => $relance['orientstruct_id'],
 											'origine' => 'orientstruct',//FIXME
 											'active' => $this->data['Relance']['numrelance'],
+											'rgpassage' => 1,
 										),
 										'Relancenonrespectsanctionep93' => array(
 											array(
@@ -223,6 +300,13 @@
 							)
 						),
 						'Nonrespectsanctionep93' => array(
+							'Relancenonrespectsanctionep93' => array(
+								'fields' => array(
+									'Relancenonrespectsanctionep93.daterelance'
+								),
+								'order' => array( 'Relancenonrespectsanctionep93.daterelance DESC' ),
+								'limit' => 1
+							),
 							'fields' => array(
 								'Nonrespectsanctionep93.id'
 							),

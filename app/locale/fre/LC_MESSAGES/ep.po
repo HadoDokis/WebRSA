@@ -58,6 +58,9 @@ msgstr "Décision émise par le CG"
 msgid "Ep.saisineepreorientsr93"
 msgstr "Prise de décision saisine demandes de réorientation"
 
+msgid "Ep.nonrespectsanctionep93"
+msgstr "Prise de décision non respect des obligations / sanctions"
+
 msgid "ENUM::SAISINEEPREORIENTSR93::nontraite"
 msgstr "Décision non traitée"
 
@@ -67,3 +70,11 @@ msgstr "Décision émise par l'EP"
 msgid "ENUM::SAISINEEPREORIENTSR93::cg"
 msgstr "Décision émise par le CG"
 
+msgid "ENUM::NONRESPECTSANCTIONEP93::nontraite"
+msgstr "Décision non traitée"
+
+msgid "ENUM::NONRESPECTSANCTIONEP93::ep"
+msgstr "Décision émise par l'EP"
+
+msgid "ENUM::NONRESPECTSANCTIONEP93::cg"
+msgstr "Décision émise par le CG"

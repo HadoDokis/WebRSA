@@ -192,25 +192,37 @@
 	 * Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
 	 */
 	Configure::write( 'traitementResultatId', 2 );
-	
+
 	Configure::write( 'traitementEnCoursId', 1 );
 	Configure::write( 'traitementClosId', 2 );
-	
+
 	/**
 	 * Variables apparaissant dans la fiche de calcul du journal de traitement d'une PDO
 	 */
 	Configure::write('Traitementpdo.fichecalcul_coefannee1', 34);
 	Configure::write('Traitementpdo.fichecalcul_coefannee2', 25);
-	
+
 	Configure::write('Traitementpdo.fichecalcul_cavntmax', 80300);
 	Configure::write('Traitementpdo.fichecalcul_casrvmax', 32100);
-	
+
 	Configure::write('Traitementpdo.fichecalcul_abattbicvnt', 71);
 	Configure::write('Traitementpdo.fichecalcul_abattbicsrv', 50);
 	Configure::write('Traitementpdo.fichecalcul_abattbncsrv', 34);
-	
+
 	/**
 	 * Affiche ou non l'alerte de fin de session et exécute la redirection
 	 */
 	Configure::write( 'alerteFinSession', true );
+
+	/**
+	* Montant de la réduction d'allocation lors d'un premier passage en EP pour
+	* le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.montantReduction', 100 );
+
+	/**
+	* Durée du sursis (en mois) lors d'un premier passage en EP pour
+	* le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.dureeSursis', 1 )
 ?>

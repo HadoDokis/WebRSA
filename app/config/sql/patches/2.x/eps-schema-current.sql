@@ -597,6 +597,7 @@ CREATE TABLE nonrespectssanctionseps93 (
 	contratinsertion_id	INTEGER DEFAULT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	origine				TYPE_ORIGINESANCTIONEP93 NOT NULL,
 	decision			TYPE_DECISIONSANCTIONEP93 DEFAULT NULL,
+	rgpassage			INTEGER NOT NULL,
 	montantreduction	FLOAT DEFAULT NULL,
 	dureesursis			INTEGER DEFAULT NULL,
 	-- declencheur entrée procedure ? (les ids ?)
@@ -654,7 +655,7 @@ CREATE INDEX relancesnonrespectssanctionseps93_dateecheancee_idx
 
 -- Import des relances de la table orientsstructs dans les tables ...
 -- Population ... en cours
-INSERT INTO nonrespectssanctionseps93 ( orientstruct_id, origine, active, created, modified )
+INSERT INTO nonrespectssanctionseps93 ( orientstruct_id, origine, active, rgpassage, created, modified )
 	SELECT
 			orientsstructs.id AS orientstruct_id,
 			'orientstruct' AS origine,
@@ -667,6 +668,7 @@ INSERT INTO nonrespectssanctionseps93 ( orientstruct_id, origine, active, create
 				END
 				AS TYPE_BOOLEANNUMBER
 			) AS active,
+			1 AS rgpassage,
 			orientsstructs.daterelance,
 			orientsstructs.daterelance
 -- 			orientsstructs.date_impression_relance,

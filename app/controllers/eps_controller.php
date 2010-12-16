@@ -28,13 +28,22 @@
 		*/
 
 		public function index() {
+			$fields = array(
+				'Ep.id',
+				'Ep.name',
+				'Regroupementep.name'
+			);
+
+			$themes = array();
+			foreach( $this->Ep->themes() as $theme ) {
+				if( strstr( $theme, Configure::read( 'Ep.departement' ) ) ) {
+					$fields[] = "Ep.{$theme}";
+					$themes[] = $theme;
+				}
+			}
+
 			$this->paginate = array(
-				'fields' => array(
-					'Ep.id',
-					'Ep.name',
-					'Regroupementep.name',
-					'Ep.'.Configure::read( 'Ep.tablesaisine' )
-				),
+				'fields' => $fields,
 				'contain' => array(
 					'Regroupementep'
 				),
@@ -43,6 +52,7 @@
 
 			$this->_setOptions();
 			$this->set( 'eps', $this->paginate( $this->Ep ) );
+			$this->set( compact( 'themes' ) );
 		}
 
 		/**

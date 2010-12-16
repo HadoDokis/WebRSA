@@ -1,13 +1,18 @@
 <h1><?php echo $this->pageTitle = 'Liste des équipes pluridisciplinaires';?></h1>
 
 <?php
+	$fields = array(
+		'Ep.name',
+		'Regroupementep.name'
+	);
+
+	foreach( $themes as $theme ) {
+		$fields["Ep.{$theme}"] = array( 'type' => 'text' );
+	}
+
 	echo $default2->index(
 		$eps,
-		array(
-			'Ep.name',
-			'Regroupementep.name',
-			'Ep.'.Configure::read( 'Ep.tablesaisine' ) => array( 'type' => 'text' )
-		),
+		$fields,
 		array(
 			'actions' => array(
 				'Eps::edit',
