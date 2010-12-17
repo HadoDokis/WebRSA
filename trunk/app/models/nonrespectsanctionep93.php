@@ -15,6 +15,11 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'origine'
+				)
+			),
 			'Autovalidate',
 			'ValidateTranslate'
 		);
@@ -95,6 +100,13 @@
 		*/
 
 		public function qdDossiersParListe( $seanceep_id, $niveauDecision ) {
+			// Doit-on prendre une décision à ce niveau ?
+			$themes = $this->Dossierep->Seanceep->themesTraites( $seanceep_id );
+			$niveauFinal = $themes[Inflector::underscore($this->alias)];
+			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
+				return array();
+			}
+
 			return array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
@@ -164,6 +176,13 @@
 		*/
 
 		public function prepareFormData( $seanceep_id, $datas, $niveauDecision ) {
+			// Doit-on prendre une décision à ce niveau ?
+			$themes = $this->Dossierep->Seanceep->themesTraites( $seanceep_id );
+			$niveauFinal = $themes[Inflector::underscore($this->alias)];
+			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
+				return array();
+			}
+
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
 				if( $niveauDecision == 'ep' ) {
@@ -238,7 +257,10 @@
 				if( $niveauDecisionFinale == $etape ) {
 					$nonrespectsanctionep93 = array( 'Nonrespectsanctionep93' => $dossierep['Nonrespectsanctionep93'] );
 					$nonrespectsanctionep93['Nonrespectsanctionep93']['active'] = 0;
-					$nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] = $dossierep['Decisionnonrespectsanctionep93'][0]['decision'];
+					if( !isset( $dossierep['Decisionnonrespectsanctionep93'][0]['decision'] ) ) {
+						$success = false;
+					}
+					$nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] = @$dossierep['Decisionnonrespectsanctionep93'][0]['decision'];
 
 					if( $nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] == '1reduction' ) {
 						$nonrespectsanctionep93['Nonrespectsanctionep93']['montantreduction'] = Configure::read( 'Nonrespectsanctionep93.montantReduction' );

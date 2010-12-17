@@ -29,6 +29,7 @@
 				$this->Seanceep->Dossierep->Saisineepreorientsr93->Nvsrepreorientsr93->enums(),
 				$this->Seanceep->Dossierep->Saisineepbilanparcours66->Nvsrepreorient66->enums(),
 				$this->Seanceep->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enums(),
+				$this->Seanceep->Dossierep->Nonrespectsanctionep93->enums(),
 				$this->Seanceep->enums(),
 				$this->Seanceep->MembreepSeanceep->enums(),
 				array( 'Foyer' => array( 'sitfam' => $this->Option->sitfam() ) )
