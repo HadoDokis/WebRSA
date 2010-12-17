@@ -1,3 +1,20 @@
+<h1><?php echo $this->pageTitle = __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true );?></h1>
+
+<ul class="actionMenu">
+	<?php
+		if( is_array( $this->data ) ) {
+			echo '<li>'.$xhtml->link(
+				$xhtml->image(
+					'icons/application_form_magnify.png',
+					array( 'alt' => '' )
+				).' Formulaire',
+				'#',
+				array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "var form = $$( 'form' ); form = form[0]; $( form ).toggle(); return false;" )
+			).'</li>';
+		}
+	?>
+</ul>
+
 <?php
 	echo $default2->form(
 		array(
@@ -105,6 +122,59 @@
 ?>
 <?php if( isset( $results ) ):?>
 	<script type="text/javascript">
+		// Ne désactive que la valeur
+		function disableFieldsOnRadioValue2( form, radioName, fieldsIds, value, condition ) {
+			var v = $( form ).getInputs( 'radio', radioName );
+			var currentValue = undefined;
+			$( v ).each( function( radio ) {
+				if( radio.checked ) {
+					currentValue = radio.value;
+				}
+			} );
+
+
+			var disabled = !( ( currentValue == value ) == condition );
+
+			fieldsIds.each( function ( fieldId ) {
+				var field = $( fieldId );
+				if( !disabled ) {
+					field.enable();
+					/*var label = $$( 'label[for=' + fieldId + ']' );
+					$( label ).removeClassName( 'disabled' );*/
+				}
+				else {
+					field.disable();
+					/*var label = $$( 'label[for=' + fieldId + ']' );
+					$( label ).addClassName( 'disabled' );*/
+				}
+			} );
+		}
+
+		function observeDisableFieldsOnRadioValue2( form, radioName, fieldsIds, value, condition ) {
+			disableFieldsOnRadioValue2( form, radioName, fieldsIds, value, condition );
+
+			var v = $( form ).getInputs( 'radio', radioName );
+			var currentValue = undefined;
+			$( v ).each( function( radio ) {
+				$( radio ).observe( 'change', function( event ) {
+					disableFieldsOnRadioValue2( form, radioName, fieldsIds, value, condition );
+				} );
+			} );
+		}
+
+		var form = $$( 'form' );
+		form = form[0];
+
+		$( form ).hide();
+
+		observeDisableFieldsOnRadioValue2(
+			form,
+			'data[Relance][contrat]',
+			[ 'RelanceNumrelance3' ],
+			'1',
+			false
+		);
+
 		<?php foreach( $results as $index => $result ):?>
 		observeDisableFieldsOnRadioValue(
 			'Relancenonrespectsanctionep93Form',
@@ -118,7 +188,5 @@
 			false
 		);
 		<?php endforeach;?>
-	// 	( form, radioName, fieldsIds, value, condition )
 	</script>
 <?php endif;?>
-<?php if( isset( $results ) ) { debug( $results ); }?>

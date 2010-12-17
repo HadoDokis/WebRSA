@@ -9,7 +9,7 @@
 			'Dossierep.Personne.nom',
 			'Dossierep.Personne.prenom',
 			'Dossierep.Personne.nir',
-			'Nonrespectsanctionep93.contratinsertion_id',
+			'Nonrespectsanctionep93.contratinsertion_id' => array( 'type' => 'boolean' ),
 			'Contratinsertion.df_ci',
 			'Orientstruct.date_valid',
 			'Nonrespectsanctionep93.rgpassage',
@@ -46,3 +46,11 @@
 // debug( $options );
 // 	debug( Set::flatten( $nonrespectssanctionseps93 ) );
 ?>
+<ul class="actionMenu">
+	<li><?php
+		echo $xhtml->exportLink(
+			'Télécharger le tableau',
+			array( 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+		);
+	?></li>
+</ul>
