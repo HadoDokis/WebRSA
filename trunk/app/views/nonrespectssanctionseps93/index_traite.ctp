@@ -12,6 +12,7 @@
 			'Nonrespectsanctionep93.contratinsertion_id' => array( 'type' => 'boolean' ),
 			'Contratinsertion.df_ci',
 			'Orientstruct.date_valid',
+			'Dossierep.Seanceep.dateseance' => array( 'type' => 'date' ),
 			'Nonrespectsanctionep93.rgpassage',
 			'Nonrespectsanctionep93.decision',
 			'Nonrespectsanctionep93.montantreduction',
