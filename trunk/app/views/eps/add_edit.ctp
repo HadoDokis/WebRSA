@@ -83,18 +83,53 @@
 	echo $form->button('Tout cocher', array('onclick' => "GereChkbox('listeZonesgeographiques','cocher');"));
 
 	echo $form->button('Tout décocher', array('onclick' => "GereChkbox('listeZonesgeographiques','decocher');"));
+	
+	if ($this->action == 'edit') {
+		echo "<fieldset><legend>Participants</legend>";
+			foreach($listeFonctionsMembres as $fonction_id => $fonction) {
+				echo $html->tag(
+					'p',
+					$fonction.' :'
+				);
+				$listeMembre = array();
+				foreach($this->data['Membreep'] as $membre) {
+					if ($membre['fonctionmembreep_id']==$fonction_id)
+						$listeMembre[] = $membre;
+				}
+				if (!empty($listeMembre)) {
+					echo "<table>";
+						foreach ($listeMembre as $participant) {
+							echo $html->tag(
+								'tr',
+								$html->tag(
+									'td',
+									implode( ' ', array( $participant['qual'], $participant['nom'], $participant['prenom'] ) )
+								).
+								$html->tag(
+									'td',
+									$xhtml->deleteLink('Supprimer', array('controller'=>'eps', 'action'=> 'deleteparticipant', $ep_id, $participant['id']))
+								)
+							);
+						}
+					echo "</table>";
+				}
+				
+				echo $xhtml->addLink('Ajouter', array('controller'=>'eps', 'action'=> 'addparticipant', $ep_id, $fonction_id));
+			}
+		echo "</fieldset>";
+	}
 
 	echo $xform->end( __( 'Save', true ) );
 
-        echo $default->button(
+    echo $default->button(
 		'back',
-	        array(
-	        	'controller' => 'eps',
-	        	'action'     => 'index'
-	        ),
-	        array(
-	        	'id' => 'Back'
-	        )
+        array(
+        	'controller' => 'eps',
+        	'action'     => 'index'
+        ),
+        array(
+        	'id' => 'Back'
+        )
 	);
 ?>
 

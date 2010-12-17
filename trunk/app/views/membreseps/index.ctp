@@ -4,12 +4,10 @@
 	echo $default2->index(
 		$membreseps,
 		array(
-// 			'Membreep.id',
+			'Membreep.nomcomplet'=>array('type'=>'text'),
 			'Fonctionmembreep.name',
-			'Ep.name',
-			'Membreep.qual',
-			'Membreep.nom',
-			'Membreep.prenom',
+			'Membreep.tel',
+			'Membreep.mail',
 			'Membreep.nomcompletsuppleant'=>array('type'=>'text')	
 		),
 		array(

@@ -31,19 +31,6 @@
 		);
 
 		public $hasMany = array(
-			'Membreep' => array(
-				'className' => 'Membreep',
-				'foreignKey' => 'ep_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
 			'Seanceep' => array(
 				'className' => 'Seanceep',
 				'foreignKey' => 'ep_id',
@@ -75,6 +62,22 @@
 				'deleteQuery' => '',
 				'insertQuery' => '',
 				'with' => 'EpZonegeographique' // TODO
+			),
+			'Membreep' => array(
+				'className' => 'Membreep',
+				'joinTable' => 'eps_membreseps',
+				'foreignKey' => 'ep_id',
+				'associationForeignKey' => 'membreep_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'EpMembreep' // TODO
 			),
 		);
 

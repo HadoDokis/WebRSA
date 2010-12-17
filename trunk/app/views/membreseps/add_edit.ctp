@@ -12,12 +12,14 @@
 <?php
 	echo $default2->form(
 		array(
-			'Membreep.ep_id' => array ('type'=>'select'),
-			'Membreep.fonctionmembreep_id',
+			//'Membreep.ep_id' => array('type'=>'select'),
+			'Membreep.fonctionmembreep_id' => array('type'=>'select'),
 			'Membreep.qual',
 			'Membreep.nom',
 			'Membreep.prenom',
-			'Membreep.suppleant_id'
+			'Membreep.tel',
+			'Membreep.mail',
+			'Membreep.suppleant_id' => array('type'=>'select', 'options'=>$listeSuppleants)
 		),
 		array(
 			'id' => 'MembreepAddEditForm',
@@ -37,7 +39,7 @@
     );
 ?>
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
 	function updateSuppleant () {
 		var ep_id = $F('MembreepEpId');
 		var suppleant_id=0;
@@ -68,4 +70,4 @@
 /*new Form.Element.EventObserver(
 	'MembreepEpId', function(element, value) {   updateSuppleant(); }
 );*/
-</script>
+</script>-->

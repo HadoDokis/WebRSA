@@ -21,13 +21,6 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Ep' => array(
-				'className' => 'Ep',
-				'foreignKey' => 'ep_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
 			'Suppleant' => array(
 				'className' => 'Membreep',
 				'foreignKey' => 'suppleant_id',
@@ -69,7 +62,23 @@
 				'deleteQuery' => '',
 				'insertQuery' => '',
 				'with' => 'MembreepSeanceep'
-			)
+			),
+			'Ep' => array(
+				'className' => 'Ep',
+				'joinTable' => 'eps_membreseps',
+				'foreignKey' => 'membreep_id',
+				'associationForeignKey' => 'ep_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'EpMembreep' // TODO
+			),
 		);					
 	}
 ?>
