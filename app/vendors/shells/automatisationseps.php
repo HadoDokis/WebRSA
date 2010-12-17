@@ -29,21 +29,6 @@
 			parent::initialize();
 
 			$this->verbose = $this->_getNamedValue( 'verbose', 'boolean' );
-
-			/*$connectionName = $this->_getNamedValue( 'connection', 'string' );
-
-			try {
-				$this->connection = @ConnectionManager::getDataSource( $connectionName );
-			} catch (Exception $e) {
-			}
-
-			if( !$this->connection || !$this->connection->connected ) {
-				$this->error( "Impossible de se connecter avec la connexion {$connectionName}" );
-			}
-
-			if( $this->connection->config['driver'] != 'postgres' ) {
-				$this->error( "La connexion {$connectionName} n'utilise pas le driver postgres" );
-			}*/
 		}
 
 		/**
@@ -51,10 +36,7 @@
 		*/
 
 		public function _welcome() {
-			/*$psqlVersion = $this->connection->query( 'SELECT version();' );
-			$psqlVersion = Set::classicExtract( $psqlVersion, '0.0.version' );
-
-			$this->out();
+			/*$this->out();
 			$this->out( 'Script de maintenance de base de données PostgreSQL' );
 			$this->out();
 			$this->hr();
@@ -66,156 +48,6 @@
 			$this->hr();*/
 		}
 
-		/**
-		* Effectue une requête SQL simple et affiche ou retourne si la requête
-		* s'est déroulée sans erreur.
-		*/
-
-		/*protected function _singleQuery( $sql ) {
-			$this->connection->query( $sql );
-
-			if( $this->verbose ) {
-				$this->out(
-					sprintf(
-						"$sql\t-- terminé avec %s en %s ms",
-						( empty( $this->connection->error ) ? 'succès' : 'erreur' ),
-						$this->connection->took
-					)
-				);
-			}
-
-			if( $this->command == 'all' ) {
-				return empty( $this->connection->error );
-			}
-			else {
-				$this->out();
-				return $this->_stop( !empty( $this->connection->error ) );
-			}
-		}*/
-
-		/**
-		* Reconstruction des indexes
-		*/
-
-		/*public function reindex() {
-			$this->out( "\n".date('H:i:s')." - {$this->commandDescriptions['reindex']} (reindex)" );
-			return $this->_singleQuery( "REINDEX DATABASE {$this->connection->config['database']};" );
-		}*/
-
-		/**
-		* Mise à jour des compteurs des champs auto-incrémentés
-		*/
-
-		/*public function sequences() {
-			$this->out( "\n".date('H:i:s')." - {$this->commandDescriptions['sequences']} (sequences)" );
-
-			if( $this->verbose ) {
-				$this->out( 'BEGIN;' );
-			}
-			$this->connection->query( 'BEGIN;' );
-
-			$took = 0;
-			$success = true;
-
-			$sql = "SELECT table_name AS \"Model__table\",
-						column_name	AS \"Model__column\",
-						column_default AS \"Model__sequence\"
-						FROM information_schema.columns
-						WHERE table_schema = 'public'
-							AND column_default LIKE 'nextval(%::regclass)'
-						ORDER BY table_name, column_name";
-
-			foreach( $this->connection->query( $sql ) as $model ) {
-				$sequence = preg_replace( '/^nextval\(\'(.*)\'.*\)$/', '\1', $model['Model']['sequence'] );
-
-				$sql = "SELECT setval('{$sequence}', max({$model['Model']['column']})) FROM {$model['Model']['table']};";
-				$result = $this->connection->query( $sql );
-
-				$tmpSuccess = empty( $this->connection->error );
-				$success = $success && $tmpSuccess;
-
-				if( $this->verbose ) {
-					$this->out(
-						sprintf(
-							"$sql\t-- terminé avec %s en %s ms - nouvelle valeur: %s",
-							( empty( $this->connection->error ) ? 'succès' : 'erreur' ),
-							$this->connection->took,
-							$result[0][0]['setval']
-						)
-					);
-				}
-			}
-
-			if( $success ) {
-				if( $this->verbose ) {
-					$this->out( 'COMMIT;' );
-				}
-				$this->connection->query( 'COMMIT;' );
-			}
-			else {
-				if( $this->verbose ) {
-					$this->err( 'ROLLBACK;' );
-				}
-				$this->connection->query( 'ROLLBACK;' );
-			}
-
-			if( $this->command == 'all' ) {
-				return $success;
-			}
-			else {
-				$this->out();
-				return $this->_stop( !$success );
-			}
-		}*/
-
-		/**
-		* Nettoyage de la base de données et mise à jour des statistiques du planificateur
-		* INFO: pas FULL -> http://docs.postgresqlfr.org/8.2/maintenance.html
-		*/
-
-		/*public function vacuum() {
-			$this->out( "\n".date('H:i:s')." - {$this->commandDescriptions['vacuum']} (vacuum)" );
-			return $this->_singleQuery( "VACUUM ANALYZE;" );
-		}*/
-
-		/**
-		* Réalisation de toutes les opérations
-		*/
-
-		/*public function all() {
-			$error = false;
-			$operations = array(
-				'vacuum',
-				'sequences',
-				'reindex'
-			);
-
-			foreach( $operations as $operation ) {
-				$error = !$this->{$operation}() && $error;
-			}
-
-			$this->out();
-			$this->_stop( $error );
-		}*/
-
-		/**
-		*
-		*/
-/*SELECT propospdos.*
-	FROM propospdos
-		INNER JOIN decisionspdos ON (
-			propospdos.decisionpdo_id = decisionspdos.id
-		)
-	WHERE
-		decisionspdos.libelle LIKE 'DO 19%'
-		AND propospdos.personne_id NOT IN (
-			SELECT contratsinsertion.personne_id
-				FROM contratsinsertion
-				WHERE
-					contratsinsertion.personne_id = propospdos.personne_id
-					AND date_trunc( 'day', contratsinsertion.datevalidation_ci ) >= propospdos.datedecisionpdo
-					--AND date_trunc( 'day', contratsinsertion.datevalidation_ci ) <= ( propospdos.datedecisionpdo + INTERVAL '1 mons' )
-		);*/
 		public function main() {
 			$this->Propopdo = ClassRegistry::init( 'Propopdo' );
 			$this->Nonrespectsanctionep93 = ClassRegistry::init( 'Nonrespectsanctionep93' );
@@ -235,6 +67,7 @@
 					'contain' => false,
 					'conditions' => array(
 						'Decisionpdo.libelle LIKE' => 'DO 19%',
+						'Propopdo.datedecisionpdo IS NOT NULL',
 						'Propopdo.personne_id NOT IN (
 							SELECT contratsinsertion.personne_id
 								FROM contratsinsertion
