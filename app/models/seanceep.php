@@ -153,8 +153,12 @@
 				$model = Inflector::classify( $theme );
 				$queryData = $this->Dossierep->{$model}->qdDossiersParListe( $seanceep_id, $niveauDecision );
 
-				$dossiers[$model]['liste'] = $this->Dossierep->find( 'all', $queryData );
+				$dossiers[$model]['liste'] = array();
+				if( !empty( $queryData ) ) {
+					$dossiers[$model]['liste'] = $this->Dossierep->find( 'all', $queryData );
+				}
 			}
+
 			return $dossiers;
 		}
 
