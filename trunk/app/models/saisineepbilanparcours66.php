@@ -187,6 +187,13 @@
 		*/
 
 		public function qdDossiersParListe( $seanceep_id, $niveauDecision ) {
+			// Doit-on prendre une décision à ce niveau ?
+			$themes = $this->Dossierep->Seanceep->themesTraites( $seanceep_id );
+			$niveauFinal = $themes[Inflector::underscore($this->alias)];
+			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
+				return array();
+			}
+
 			return array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
@@ -250,6 +257,13 @@
 		*/
 
 		public function prepareFormData( $seanceep_id, $datas, $niveauDecision ) {
+			// Doit-on prendre une décision à ce niveau ?
+			$themes = $this->Dossierep->Seanceep->themesTraites( $seanceep_id );
+			$niveauFinal = $themes[Inflector::underscore($this->alias)];
+			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
+				return array();
+			}
+
 			$formData = array();
 			if( $niveauDecision == 'ep' ) {
 				foreach( $datas as $key => $dossierep ) {
