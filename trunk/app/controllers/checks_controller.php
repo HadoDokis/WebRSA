@@ -13,6 +13,39 @@
 			$this->set('donneesApreExist', $this->_checkDonneesApre() );
 			$this->set('checkWritePdfDirectory', $this->_checkTmpPdfDirectory( Configure::read( 'Cohorte.dossierTmpPdfs' ) ) );
 			$this->set('compressedAssets', $this->_compressedAssets() );
+			$this->set('checkEpNonrespectsanctionep93', $this->_checkEpNonrespectsanctionep93() );
+		}
+
+		/**
+		* Vérification du paramétrage pour les EPs, thématique "Non respect et
+		* sanctions" pour le CG 93
+		*/
+
+		protected function _checkEpNonrespectsanctionep93() {
+			$keys = array(
+				'Nonrespectsanctionep93.montantReduction' => 'numeric',
+				'Nonrespectsanctionep93.montantReduction' => 'integer'
+			);
+
+			$errors = array();
+			foreach( $keys as $key => $type ) {
+				$value = Configure::read( $key );
+
+				switch( $type ) {
+					case 'integer':
+						if( is_null( $value ) || !is_integer( $value ) ) {
+							$errors[$key] = $type;
+						}
+						break;
+					case 'numeric':
+						if( is_null( $value ) || !is_numeric( $value ) ) {
+							$errors[$key] = $type;
+						}
+						break;
+				}
+			}
+
+			return $errors;
 		}
 
 		/**

@@ -101,6 +101,21 @@
 				<li>webrsa.css: <?php echo ( $compressedAssets['webrsa.css'] ? 'Oui' : 'Non' );?></li>
 				<li>webrsa.js: <?php echo ( $compressedAssets['webrsa.js'] ? 'Oui' : 'Non' );?></li>
 			</ul>
+
+			<h3>Paramétrage de la thématique "non respect et sanctions du CG 93"</h3>
+			<?php
+				if( !empty( $checkEpNonrespectsanctionep93 ) ) {
+					echo '<p>Paramétrage incorrect, valeur non renseignée ou type de valeur incorrect dans le webrsa.inc:</p>';
+					echo '<ul>';
+					foreach( $checkEpNonrespectsanctionep93 as $key => $type ) {
+						echo "<li>{$key} (type {$type})</li>";
+					}
+					echo '</ul>';
+				}
+				else {
+					echo '<p>Paramétrage correct.</p>';
+				}
+			?>
         </table>
     </div>
 </div>
