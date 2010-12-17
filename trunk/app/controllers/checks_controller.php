@@ -24,7 +24,12 @@
 		protected function _checkEpNonrespectsanctionep93() {
 			$keys = array(
 				'Nonrespectsanctionep93.montantReduction' => 'numeric',
-				'Nonrespectsanctionep93.montantReduction' => 'integer'
+				'Nonrespectsanctionep93.montantReduction' => 'integer',
+				'Nonrespectsanctionep93.relanceOrientstructCer1' => 'integer',
+				'Nonrespectsanctionep93.relanceOrientstructCer2' => 'integer',
+				'Nonrespectsanctionep93.relanceOrientstructCer3' => 'integer',
+				'Nonrespectsanctionep93.relanceCerCer1' => 'integer',
+				'Nonrespectsanctionep93.relanceCerCer2' => 'integer',
 			);
 
 			$errors = array();

@@ -194,55 +194,78 @@
 									);
 									$this->Relancenonrespectsanctionep93->create( $item );
 									$success = $this->Relancenonrespectsanctionep93->save() && $success;
-									break;
-								case 3:
-									// FIXME: Cer -> que 2 relances
-									$months = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer3' );
-									$dateecheance = strtotime( "{$relance['daterelance']['year']}{$relance['daterelance']['month']}{$relance['daterelance']['day']}" );
-									$dateecheance = date( 'Y-m-d', strtotime( "+{$months} month", $dateecheance ) );
 
-									$item = array(
-										'Relancenonrespectsanctionep93' => array(
-											'nonrespectsanctionep93_id' => $relance['nonrespectsanctionep93_id'],
-											'numrelance' => $relance['numrelance'],
-											'dateecheance' => $dateecheance,
-											'daterelance' => $relance['daterelance']
-										)
-									);
-									$this->Relancenonrespectsanctionep93->create( $item );
-									$success = $this->Relancenonrespectsanctionep93->save() && $success;
-
-									// Dossier EP
-									if( $this->data['Relance']['contrat'] == 0 ) {
-										$this->Nonrespectsanctionep93->Orientstruct->id = $relance['orientstruct_id'];
-										$personne_id = $this->Nonrespectsanctionep93->Orientstruct->field( 'personne_id' );
-									}
-									else {
+									if( $this->data['Relance']['contrat'] == 1 ) {
 										$this->Nonrespectsanctionep93->Contratinsertion->id = $relance['contratinsertion_id'];
 										$personne_id = $this->Nonrespectsanctionep93->Contratinsertion->field( 'personne_id' );
+
+										$dossierep = array(
+											'Dossierep' => array(
+												'personne_id' => $personne_id,
+												'themeep' => 'nonrespectssanctionseps93',
+											),
+										);
+
+										$this->Dossierep->create( $dossierep );
+										$success = $this->Dossierep->save() && $success;
+
+										// Nonrespectsanctionep93
+										$nonrespectsanctionep93 = array(
+											'Nonrespectsanctionep93' => array(
+												'id' => $relance['nonrespectsanctionep93_id'],
+												'dossierep_id' => $this->Dossierep->id,
+												'active' => 0,
+											)
+										);
+
+										$this->Nonrespectsanctionep93->create( $nonrespectsanctionep93 );
+										$success = $this->Nonrespectsanctionep93->save() && $success;
 									}
+									break;
+								case 3:
+									if( $this->data['Relance']['contrat'] == 0 ) {
+										$months = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer3' );
+										$dateecheance = strtotime( "{$relance['daterelance']['year']}{$relance['daterelance']['month']}{$relance['daterelance']['day']}" );
+										$dateecheance = date( 'Y-m-d', strtotime( "+{$months} month", $dateecheance ) );
 
-									$dossierep = array(
-										'Dossierep' => array(
-											'personne_id' => $personne_id,
-											'themeep' => 'nonrespectssanctionseps93',
-										),
-									);
+										$item = array(
+											'Relancenonrespectsanctionep93' => array(
+												'nonrespectsanctionep93_id' => $relance['nonrespectsanctionep93_id'],
+												'numrelance' => $relance['numrelance'],
+												'dateecheance' => $dateecheance,
+												'daterelance' => $relance['daterelance']
+											)
+										);
+										$this->Relancenonrespectsanctionep93->create( $item );
+										$success = $this->Relancenonrespectsanctionep93->save() && $success;
 
-									$this->Dossierep->create( $dossierep );
-									$success = $this->Dossierep->save() && $success;
+										// Dossier EP
+										$this->Nonrespectsanctionep93->Orientstruct->id = $relance['orientstruct_id'];
+										$personne_id = $this->Nonrespectsanctionep93->Orientstruct->field( 'personne_id' );
 
-									// Nonrespectsanctionep93
-									$nonrespectsanctionep93 = array(
-										'Nonrespectsanctionep93' => array(
-											'id' => $relance['nonrespectsanctionep93_id'],
-											'dossierep_id' => $this->Dossierep->id,
-											'active' => 0,
-										)
-									);
+										$dossierep = array(
+											'Dossierep' => array(
+												'personne_id' => $personne_id,
+												'themeep' => 'nonrespectssanctionseps93',
+											),
+										);
 
-									$this->Nonrespectsanctionep93->create( $nonrespectsanctionep93 );
-									$success = $this->Nonrespectsanctionep93->save() && $success;
+										$this->Dossierep->create( $dossierep );
+										$success = $this->Dossierep->save() && $success;
+
+										// Nonrespectsanctionep93
+										$nonrespectsanctionep93 = array(
+											'Nonrespectsanctionep93' => array(
+												'id' => $relance['nonrespectsanctionep93_id'],
+												'dossierep_id' => $this->Dossierep->id,
+												'active' => 0,
+											)
+										);
+
+										$this->Nonrespectsanctionep93->create( $nonrespectsanctionep93 );
+										$success = $this->Nonrespectsanctionep93->save() && $success;
+
+									}
 									break;
 							}
 						}

@@ -10,7 +10,7 @@
 
 	class Nonrespectssanctionseps93Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2' );
+		public $helpers = array( 'Default', 'Default2', 'Csv' );
 
 		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
 
@@ -38,46 +38,58 @@
 		*
 		*/
 
+		protected function _queryData( $searchData ) {
+			$searchMode = Set::classicExtract( $searchData, 'Nonrespectsanctionep93.mode' );
+
+			$conditions = array( 'Dossierep.themeep' => 'nonrespectssanctionseps93' );
+
+			if( $searchMode == 'traite' ) {
+				$conditions[]['Dossierep.etapedossierep'] = 'traite';
+
+				$searchDossierepSeanceepId = Set::classicExtract( $searchData, 'Dossierep.seanceep_id' );
+				if( !empty( $searchDossierepSeanceepId ) ) {
+					$conditions[]['Dossierep.seanceep_id'] = $searchDossierepSeanceepId;
+				}
+			}
+			else {
+				$conditions[]['Dossierep.etapedossierep <>'] = 'traite';
+			}
+
+			return array(
+				'contain' => array(
+					'Dossierep' => array(
+						'Personne' => array(
+							'Foyer' => array(
+								'Dossier',
+								'Adressefoyer' => array(
+									'conditions' => array( 'Adressefoyer.rgadr' => '01' ),
+									'Adresse'
+								)
+							)
+						),
+						'Seanceep'
+					),
+					'Orientstruct',
+					'Contratinsertion',
+				),
+				'conditions' => $conditions,
+				'order' => array( 'Nonrespectsanctionep93.created DESC' )
+			);
+		}
+
+		/**
+		*
+		*/
+
 		public function index() {
 			$searchData = Set::classicExtract( $this->data, 'Search' );
 			$searchMode = Set::classicExtract( $searchData, 'Nonrespectsanctionep93.mode' );
 
 			if( !empty( $searchData ) ) {
-				$conditions = array( 'Dossierep.themeep' => 'nonrespectssanctionseps93' );
+				$queryData = $this->_queryData( $searchData );
+				$queryData['limit'] = 10;
 
-				if( $searchMode == 'traite' ) {
-					$conditions[]['Dossierep.etapedossierep'] = 'traite';
-
-					$searchDossierepSeanceepId = Set::classicExtract( $searchData, 'Dossierep.seanceep_id' );
-					if( !empty( $searchDossierepSeanceepId ) ) {
-						$conditions[]['Dossierep.seanceep_id'] = $searchDossierepSeanceepId;
-					}
-				}
-				else {
-					$conditions[]['Dossierep.etapedossierep <>'] = 'traite';
-				}
-
-				$this->paginate = array(
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne' => array(
-								'Foyer' => array(
-									'Dossier',
-									'Adressefoyer' => array(
-										'conditions' => array( 'Adressefoyer.rgadr' => '01' ),
-										'Adresse'
-									)
-								)
-							),
-							'Seanceep'
-						),
-						'Orientstruct',
-						'Contratinsertion',
-					),
-					'conditions' => $conditions,
-					'order' => array( 'Nonrespectsanctionep93.created DESC' ),
-					'limit' => 10
-				);
+				$this->paginate = $queryData;
 
 				$this->set( 'nonrespectssanctionseps93', $this->paginate( $this->Nonrespectsanctionep93 ) );
 			}
@@ -113,60 +125,21 @@
 
 			$view = implode( '_', Set::filter( array( 'index', $searchMode ) ) );
 			$this->render( null, null, $view );
+		}
 
-			/*$searchData = $this->data;
+		/**
+		* Export du tableau en CSV
+		*/
 
-			if( true || !empty( $searchData ) ) { // FIXME: moteur de recherche
-				$conditions = array( 'Nonrespectsanctionep93.dossierep_id IS NOT NULL' );
+		public function exportcsv() {
+			$searchData = Set::classicExtract( Xset::bump( $this->params['named'], '__' ), 'Search' );
+			$searchMode = Set::classicExtract( $searchData, 'Nonrespectsanctionep93.mode' );
 
-				$this->paginate = array(
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne',
-							'Seanceep'
-						),
-						'Orientstruct'
-					),
-					'conditions' => $conditions,
-					'order' => array( 'Nonrespectsanctionep93.created DESC' ),
-					'limit' => 10
-				);
+			$dossiers = $this->Nonrespectsanctionep93->find( 'all', $this->_queryData( $searchData ) );
 
-				$this->set( 'nonrespectssanctionseps93', $this->paginate( $this->Nonrespectsanctionep93 ) );
-			}
-
-			// INFO: containable ne fonctionne pas avec les find('list')
-			$seanceseps = array();
-			$tmpSeanceseps = $this->Nonrespectsanctionep93->Dossierep->Seanceep->find(
-				'all',
-				array(
-					'fields' => array(
-						'Seanceep.id',
-						'Seanceep.dateseance',
-						'Ep.name'
-					),
-					'contain' => array(
-						'Ep'
-					),
-					'order' => array( 'Ep.name ASC', 'Seanceep.dateseance DESC' )
-				)
-			);
-
-			if( !empty( $tmpSeanceseps ) ) {
-				foreach( $tmpSeanceseps as $key => $seanceep ) {
-					$seanceseps[$seanceep['Ep']['name']][$seanceep['Seanceep']['id']] = $seanceep['Seanceep']['dateseance'];
-				}
-			}
-
-// 			$options = Set::merge(
-// 				$this->Saisineepreorientsr93->Dossierep->enums(),
-// 				$this->Saisineepreorientsr93->Nvsrepreorientsr93->enums(),
-// 				array( 'Dossierep' => array( 'seanceep_id' => $seanceseps ) )
-// 			);
-// 			$this->set( compact( 'options' ) );
-
-// 			$view = implode( '_', Set::filter( array( 'index', $searchMode ) ) );
-// 			$this->render( null, null, $view );*/
+			$this->layout = ''; // FIXME ?
+			$this->set( compact( 'headers', 'dossiers' ) );
+			$this->_setOptions();
 		}
 	}
 ?>

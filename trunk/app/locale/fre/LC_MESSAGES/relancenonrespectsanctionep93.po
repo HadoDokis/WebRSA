@@ -20,6 +20,9 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Relancesnonrespectssanctionseps93::cohorte"
+msgstr "Dossiers à relancer (EP)"
+
 msgid "Relancenonrespectsanctionep93.daterelance"
 msgstr "Date de relance"
 

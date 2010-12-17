@@ -94,7 +94,7 @@
 								<?php echo $xhtml->link( 'Relances (EP)','#' );?>
 								<ul>
 									<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) ): ?>
-										<li><?php echo $xhtml->link( 'Dossiers à relancer (EP)', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'cohorte' ), array( 'title' => 'Dossiers à relancer (EP)' ) );?></li>
+										<li><?php echo $xhtml->link( __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ), array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'cohorte' ), array( 'title' => __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ) ) );?></li>
 									<?php endif;?>
 								</ul>
 							</li>
