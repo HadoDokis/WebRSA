@@ -22,7 +22,6 @@
 				'fields' => array(
 					'Membreep.id',
 					'Fonctionmembreep.name',
-					'Ep.name',
 					'Membreep.qual',
 					'Membreep.nom',
 					'Membreep.prenom',
@@ -33,7 +32,6 @@
 				),
 				'contain' => array(
 					'Fonctionmembreep',
-					'Ep',
 					'Suppleant'
 				),
 				'limit' => 10
@@ -41,7 +39,9 @@
 			$membreseps = $this->paginate( $this->Membreep );
 			foreach( $membreseps as &$membreep) {
 				if (isset($membreep['Suppleant']['id']) && !empty($membreep['Suppleant']['id']))
-					$membreep['Membreep']['nomcompletsuppleant'] = $membreep['Suppleant']['qual'].' '.$membreep['Suppleant']['nom'].' '.$membreep['Suppleant']['prenom'];
+					$membreep['Membreep']['nomcompletsuppleant'] = implode ( ' ', array( $membreep['Suppleant']['qual'], $membreep['Suppleant']['nom'], $membreep['Suppleant']['prenom']) );
+				$membreep['Membreep']['nomcomplet'] = implode ( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom']) );
+					
 			}
 
 			$this->_setOptions();
@@ -90,6 +90,31 @@
 				);
 				$this->assert( !empty( $this->data ), 'error404' );
 			}
+			
+			$listeSuppleants = array();
+			if( $this->action == 'add' ) {
+				$membres = $this->Membreep->find(
+					'all',
+					array(
+						'contain'=>false
+					)
+				);
+			}
+			elseif( $this->action == 'edit' ) {
+				$membres = $this->Membreep->find(
+					'all',
+					array(
+						'conditions'=>array(
+							'Membreep.id <>'=>$id
+						),
+						'contain'=>false
+					)
+				);
+			}
+			foreach($membres as $membre) {
+				$listeSuppleants[$membre['Membreep']['id']] = implode(' ', array($membre['Membreep']['qual'], $membre['Membreep']['nom'], $membre['Membreep']['prenom']));
+			}
+			$this->set(compact('listeSuppleants'));
 			
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );

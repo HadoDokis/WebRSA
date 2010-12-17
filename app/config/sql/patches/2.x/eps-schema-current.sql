@@ -114,6 +114,7 @@ CREATE TYPE TYPE_NIVEAUDECISIONEP AS ENUM ( 'nontraite', 'ep', 'cg' );
 CREATE TABLE eps (
 	id      					SERIAL NOT NULL PRIMARY KEY,
 	name						VARCHAR(255) NOT NULL,
+	identifiant					VARCHAR(255),
 	regroupementep_id			INTEGER NOT NULL REFERENCES regroupementseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	saisineepreorientsr93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
 	saisineepbilanparcours66	TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
@@ -139,17 +140,24 @@ CREATE TYPE TYPE_QUAL AS ENUM ( 'M.', 'Mlle.', 'Mme.' );
 
 CREATE TABLE membreseps (
 	id      			SERIAL NOT NULL PRIMARY KEY,
-	ep_id				INTEGER NOT NULL REFERENCES eps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	fonctionmembreep_id	INTEGER NOT NULL REFERENCES fonctionsmembreseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	qual				TYPE_QUAL NOT NULL,
 	nom					VARCHAR(255) NOT NULL,
-	prenom				VARCHAR(255) NOT NULL
-	-- TODO: adresse, tél, etc ...
+	prenom				VARCHAR(255) NOT NULL,
+	tel					VARCHAR(10),
+	mail				VARCHAR(50),
+	suppleant_id		INTEGER REFERENCES membreseps (id) ON DELETE SET NULL
 );
 
-CREATE INDEX membreseps_ep_id_idx ON membreseps(ep_id);
 CREATE INDEX membreseps_fonctionmembreep_id_idx ON membreseps(fonctionmembreep_id);
 ALTER TABLE membreseps OWNER TO webrsa;
+-- -----------------------------------------------------------------------------
+
+CREATE TABLE eps_membreseps (
+	id      			SERIAL NOT NULL PRIMARY KEY,
+	ep_id				INTEGER NOT NULL REFERENCES eps(id),
+	membreep_id			INTEGER NOT NULL REFERENCES membreseps(id)
+);
 -- -----------------------------------------------------------------------------
 
 CREATE TABLE eps_zonesgeographiques (
@@ -577,9 +585,6 @@ CREATE INDEX membreseps_seanceseps_membresep_id_idx
   ON membreseps_seanceseps
   USING btree
   (membreep_id);
--- Ajout du suppléant dans la table des membres des EPs
-SELECT add_missing_table_field ('public', 'membreseps', 'suppleant_id', 'integer');
-ALTER TABLE membreseps ADD FOREIGN KEY (suppleant_id) REFERENCES membreseps (id);
 
 -- *****************************************************************************
 -- Non respect / sanctions 93

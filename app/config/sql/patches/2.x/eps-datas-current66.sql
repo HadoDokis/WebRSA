@@ -24,11 +24,11 @@ INSERT INTO fonctionsmembreseps ( name ) VALUES
 	( 'Représentant de Pôle Emploi' ),
 	( 'Chargé d''insertion' );
 
-INSERT INTO membreseps ( ep_id, fonctionmembreep_id, qual, nom, prenom ) VALUES
-	( 1, 1, 'Mlle.', 'Dupont', 'Anne' ),
-	( 1, 1, 'M.', 'Martin', 'Pierre' ),
-	( 1, 2, 'M.', 'Dubois', 'Alphonse' ),
-	( 1, 2, 'Mme.', 'Roland', 'Adeline' );
+INSERT INTO membreseps ( fonctionmembreep_id, qual, nom, prenom ) VALUES
+	( 1, 'Mlle.', 'Dupont', 'Anne' ),
+	( 1, 'M.', 'Martin', 'Pierre' ),
+	( 2, 'M.', 'Dubois', 'Alphonse' ),
+	( 2, 'Mme.', 'Roland', 'Adeline' );
 
 INSERT INTO eps_zonesgeographiques ( ep_id, zonegeographique_id ) VALUES
 	( 1, 8 ); -- Perpignan 1
