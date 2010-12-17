@@ -1,16 +1,7 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php  $this->pageTitle = 'Ajout de participants à la séance d\'EP';?>
-<script type="text/javascript">
-//<![CDATA[
-    function allCheckboxes( checked ) {
-        $$('input.checkbox').each( function ( checkbox ) {
-            $( checkbox ).checked = checked;
-        } );
-        return false;
-    }
-//]]>
-</script>
+
 <?php
     if( $this->action == 'add' ) {
         $this->pageTitle = 'Ajout participants';
@@ -20,64 +11,74 @@
     }
 ?>
     <h1><?php echo $this->pageTitle;?></h1>
-    <?php
-        echo $xhtml->tag(
-            'ul',
-            implode(
-                '',
-                array(
-                    $xhtml->tag( 'li', $xhtml->link( 'Tout sélectionner', '#', array( 'onclick' => 'allCheckboxes( true ); return false;' ) ) ),
-                    $xhtml->tag( 'li', $xhtml->link( 'Tout désélectionner', '#', array( 'onclick' => 'allCheckboxes( false ); return false;' ) ) ),
-                )
-            )
-        );
-    ?>
-    <?php echo $xform->create( 'Membreep', array( 'type' => 'post', 'url' => Router::url( null, true ) ) ); ?>
+    
+    <?php echo $xform->create( 'Membreep', array( 'type' => 'post', 'url' => '/membreseps/editliste/'.$ep_id.'/'.$seance_id ) ); ?>
         <div class="aere">
             <fieldset>
-                <legend>Participants à la séance d'EP</legend>
-                <?php echo $xform->input( 'Seanceep.id', array( 'label' => false, 'type' => 'hidden', 'value'=>$seance_id ) ) ;?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nom/Prénom</th>
-                            <th>Fonction</th>
-                            <th>N° Téléphone</th>
-                            <th>Email</th>
-                            <th>Suppléant</th>
-                            <th>Sélectionner</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            foreach( $membres as $i => $membre ) {
-                            	$suppleant = '';
-                            	if( isset($membre['Membreep']['suppleant_id']))
-                            	{
-                            		$membreSuppleant = Set::Extract($membres, "/Membreep[id={$membre['Membreep']['suppleant_id']}]");
-									$suppleant = ( Set::classicExtract( $membreSuppleant[0], 'Membreep.qual' ).' '.Set::classicExtract( $membreSuppleant[0], 'Membreep.nom' ).' '.Set::classicExtract( $membreSuppleant[0], 'Membreep.prenom' ) );
-                            	}
-                                echo $xhtml->tableCells(
-                                    array(
-                                        h( Set::classicExtract( $membre, 'Membreep.qual' ).' '.Set::classicExtract( $membre, 'Membreep.nom' ).' '.Set::classicExtract( $membre, 'Membreep.prenom' ) ),
-                                        h( Set::classicExtract( $membre, 'Fonctionmembreep.name' ) ),
-                                        h( '?' ), // h( Set::classicExtract( $membre, 'Membreep.tel' ) ), 
-                                        h( '?' ), // h( Set::classicExtract( $membre, 'Membreep.emaail' ) ),
-                                        h( $suppleant ),
-                                        $xform->input( 'Membreep.'.$i.'.id', array( 'value' => $membre['Membreep']['id'] ) ).
-                                        $xform->input( 'Membreep.'.$i.'.checked', array( 'checked' => !empty( $membre['Seanceep'] ), 'type' => 'checkbox', 'div' => false, 'label' => false ) ),
-                                    ),
-                                    array( 'class' => 'odd' ),
-                                    array( 'class' => 'even' )
-                                );
-                            }
-                        ?>
-                    </tbody>
-                </table>
+                <legend>Liste des participants</legend>
+                <?php
+                	echo "<table>";
+                	foreach($fonctionsmembres as $fonction) {
+                		echo $html->tag(
+                			'tr',
+                			$html->tag(
+                				'td',
+                				$fonction['Fonctionmembreep']['name'].' :',
+                				array(
+                					'colspan' => 3
+                				)
+                			)
+                		);
+                		foreach($membres as $membre) {
+                			if ($membre['Membreep']['fonctionmembreep_id']==$fonction['Fonctionmembreep']['id']) {
+				        		echo $html->tag(
+				        			'tr',
+				        			$html->tag(
+				        				'td',
+				        				implode(' ', array($membre['Membreep']['qual'], $membre['Membreep']['nom'], $membre['Membreep']['prenom']))
+				        			).
+				        			$html->tag(
+				        				'td',
+				        				$form->input(
+				        					'MembreepSeanceep.Membreep_id.'.$membre['Membreep']['id'].'.reponse',
+				        					array(
+				        						'type'=>'select',
+				        						'label'=>false,
+				        						'default'=>'nonrenseigne',
+				        						'options'=>$options['MembreepSeanceep']['reponse'],
+				        						'value' => $membre['MembreepSeanceep']['reponse']
+				        					)
+				        				)
+				        			).
+				        			$html->tag(
+				        				'td',
+				        				'',
+				        				array(
+				        					'id' => 'withSuppleant'
+				        				)
+				        			)/*.
+				        			$html->tag(
+				        				'td',
+				        				'',
+				        				array(
+				        					'id' => 'withoutSuppleant'
+				        				)
+				        			)*/
+				        		);
+                			}
+                		}
+                	}
+                	echo "</table>";
+                ?>
             </fieldset>
         </div>
 
-        <?php echo $xform->submit( 'Enregistrer' );?>
-    <?php echo $xform->end();?>
+    <?php echo $xform->end( 'Enregistrer' );?>
+
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        //$('MembreepSeanceepMembreep2Reponse')
+    });
+</script>
 
 <div class="clearer"><hr /></div>

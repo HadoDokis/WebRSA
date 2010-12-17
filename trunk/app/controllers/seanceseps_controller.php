@@ -10,8 +10,10 @@
 
 	class SeancesepsController extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2' );
+		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 		public $uses = array( 'Seanceep', 'Option' );
+		
+		public $aucunDroit = array( 'ajaxadresse' );
 
 		/**
 		* FIXME: evite les droits
@@ -34,13 +36,15 @@
 				$this->Seanceep->MembreepSeanceep->enums(),
 				array( 'Foyer' => array( 'sitfam' => $this->Option->sitfam() ) )
 			);
-			$options['Seanceep']['ep_id'] = $this->Seanceep->Ep->find( 'list' );
+			//$options['Seanceep']['ep_id'] = $this->Seanceep->Ep->find( 'list' );
 			if( !in_array( $this->action, array( 'add', 'edit' ) ) ) {
 				/// TODO: est-ce que ça a  du sens ?
 				$options['Seanceep']['typeorient_id'] = $this->Seanceep->Structurereferente->Typeorient->listOptions();
 				$options['Seanceep']['structurereferente_id'] = $this->Seanceep->Structurereferente->list1Options();
 				$options['Seanceep']['decisionpdo_id'] = $this->Seanceep->Dossierep->Saisineepdpdo66->Nvsepdpdo66->Decisionpdo->find('list');
 			}
+			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions();
+			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
 			$this->set( compact( 'options' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 		}
@@ -50,45 +54,14 @@
 		*/
 
 		public function index() {
-			$fields = array(
-				'Seanceep.id',
-				'Ep.name',
-				'Seanceep.dateseance',
-				'Seanceep.finalisee'
-			);
-			foreach( $this->Seanceep->Ep->themes() as $theme ) {
-				$fields[] = "Ep.{$theme}";
-			}
-
-			$this->paginate = array(
-				'fields' => $fields,
-				'contain' => array(
-					'Ep'
-				),
-				'limit' => 10,
-				'order' => array( 'Seanceep.dateseance DESC' )
-			);
-
-			$seanceseps = $this->paginate( $this->Seanceep );
-
-			foreach($seanceseps as &$seanceep) {
-				$nbdossiers = $this->Seanceep->Dossierep->find(
-					'count',
-					array(
-						'conditions' => array(
-							'Dossierep.seanceep_id' => $seanceep['Seanceep']['id']
-						)
-					)
-				);
-				if ($nbdossiers=='0')
-					$seanceep['Seanceep']['existe_dossier']=false;
-				else
-					$seanceep['Seanceep']['existe_dossier']=true;
-
-				$seanceep['Seanceep']['cloture'] = $this->Seanceep->clotureSeance($seanceep);
-			}
-
-			$this->set( compact( 'seanceseps' ) );
+            if( !empty( $this->data ) ) {
+                $seanceseps = $this->Seanceep->search( $this->data );
+                $seanceseps['limit'] = 10;
+                $this->paginate = $seanceseps;
+                $seanceseps = $this->paginate( $this->Seanceep );
+                $this->set( 'seanceseps', $seanceseps );
+            }
+            $this->_setOptions();
 		}
 
 		/**
@@ -137,6 +110,21 @@
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );
 		}
+		
+		/**
+		 *
+		 */
+		 
+        function ajaxadresse( $structurereferente_id = null ) { // FIXME
+            Configure::write( 'debug', 0 );
+            $dataStructurereferente_id = Set::extract( $this->data, 'Seanceep.structurereferente_id' );
+            $structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
+
+            $struct = $this->Seanceep->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
+            $this->set( 'struct', $struct );
+            $this->set( 'typevoie', $this->Option->typevoie() );
+            $this->render( 'ajaxadresse', 'ajax' );
+        }
 
 		/**
 		*

@@ -83,6 +83,65 @@
 			)
 		);
 
+		public function search( $criteresseanceep ) {
+			/// Conditions de base
+			
+			$conditions = array();
+			
+			if ( isset($criteresseanceep['Ep']['regroupementep_id']) && !empty($criteresseanceep['Ep']['regroupementep_id']) ) {
+				$conditions[] = array('Ep.regroupementep_id'=>$criteresseanceep['Ep']['regroupementep_id']);
+			}
+			
+			if ( isset($criteresseanceep['Seanceep']['name']) && !empty($criteresseanceep['Seanceep']['name']) ) {
+				$conditions[] = array('Seanceep.name'=>$criteresseanceep['Seanceep']['name']);
+			}
+			
+			if ( isset($criteresseanceep['Seanceep']['identifiant']) && !empty($criteresseanceep['Seanceep']['identifiant']) ) {
+				$conditions[] = array('Seanceep.identifiant'=>$criteresseanceep['Seanceep']['identifiant']);
+			}
+			
+			if ( isset($criteresseanceep['Seanceep']['structurereferente_id']) && !empty($criteresseanceep['Seanceep']['structurereferente_id']) ) {
+				$conditions[] = array('Seanceep.structurereferente_id'=>$criteresseanceep['Seanceep']['structurereferente_id']);
+			}
+			
+			if ( isset($criteresseanceep['Structurereferente']['ville']) && !empty($criteresseanceep['Structurereferente']['ville']) ) {
+				$conditions[] = array('Structurereferente.ville'=>$criteresseanceep['Structurereferente']['ville']);
+			}
+
+			/// Critères sur le Comité - date du comité
+			if( isset( $criteresseanceep['Seanceep']['dateseance'] ) && !empty( $criteresseanceep['Seanceep']['dateseance'] ) ) {
+				$valid_from = ( valid_int( $criteresseanceep['Seanceep']['dateseance_from']['year'] ) && valid_int( $criteresseanceep['Seanceep']['dateseance_from']['month'] ) && valid_int( $criteresseanceep['Seanceep']['dateseance_from']['day'] ) );
+				$valid_to = ( valid_int( $criteresseanceep['Seanceep']['dateseance_to']['year'] ) && valid_int( $criteresseanceep['Seanceep']['dateseance_to']['month'] ) && valid_int( $criteresseanceep['Seanceep']['dateseance_to']['day'] ) );
+				if( $valid_from && $valid_to ) {
+					$conditions[] = 'Seanceep.dateseance BETWEEN \''.implode( '-', array( $criteresseanceep['Seanceep']['dateseance_from']['year'], $criteresseanceep['Seanceep']['dateseance_from']['month'], $criteresseanceep['Seanceep']['dateseance_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresseanceep['Seanceep']['dateseance_to']['year'], $criteresseanceep['Seanceep']['dateseance_to']['month'], $criteresseanceep['Seanceep']['dateseance_to']['day'] ) ).'\'';
+				}
+			}
+
+			$query = array(
+				'fields' => array(
+					'"Seanceep"."id"',
+					'"Seanceep"."name"',
+					'"Seanceep"."structurereferente_id"',
+					'"Seanceep"."dateseance"',
+					'"Seanceep"."observations"'
+				),
+				'contain'=>array(
+					'Structurereferente',
+					'Ep' => array(
+						'fields'=>array(
+							'id',
+							'name'
+						),
+						'Regroupementep'
+					)
+				),
+				'order' => array( '"Seanceep"."dateseance" ASC' ),
+				'conditions' => $conditions
+			);
+
+			return $query;
+		}
+
 		/**
 		* Renvoie un array associatif contenant les thèmes traités par l'équipe
 		* ainsi que le niveau de décision pour chacun de ces thèmes.
