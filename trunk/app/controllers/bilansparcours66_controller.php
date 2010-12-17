@@ -62,6 +62,16 @@
 				$conditions = array();
 			}
 
+            $nborientstruct = $this->Bilanparcours66->Orientstruct->find(
+                'count',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.personne_id' => $personne_id,
+                        'Orientstruct.date_valid IS NOT NULL'
+                    )
+                )
+            );
+
 			$this->paginate = array(
 				'fields' => array(
 					'Bilanparcours66.referent_id',
@@ -134,7 +144,7 @@
 				);
 			}
 
-			$this->set( compact( 'bilansparcours66' )  );
+			$this->set( compact( 'bilansparcours66', 'nborientstruct' )  );
 		}
 
 		/**

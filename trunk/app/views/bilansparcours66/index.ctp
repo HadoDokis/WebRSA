@@ -78,21 +78,27 @@
 // 						'add' => true
 // 					)
 // 				);
-				echo $default->index(
-					$bilansparcours66,
-					array(
-						'Bilanparcours66.created' => array( 'type' => 'date' ),
-						'Orientstruct.Structurereferente.lib_struc',
-						'Referent.nom_complet'
-					),
-					array(
-// 						'actions' => array(
-// 							'Bilanparcours66.edit',
-// 							'Bilanparcours66.delete'
-// 						),
-						'add' => array( 'Bilanparcours66.add' => $personne_id )
-					)
-				)
+
+                if( empty( $nborientstruct ) ) {
+                  echo '<p class="error">Cette personne ne possède pas d\'orientation. Veuillez en saisir une pour pouvoir poursuivre.</p>';
+                }
+                else {
+                  echo $default->index(
+                      $bilansparcours66,
+                      array(
+                          'Bilanparcours66.created' => array( 'type' => 'date' ),
+                          'Orientstruct.Structurereferente.lib_struc',
+                          'Referent.nom_complet'
+                      ),
+                      array(
+  // 						'actions' => array(
+  // 							'Bilanparcours66.edit',
+  // 							'Bilanparcours66.delete'
+  // 						),
+                          'add' => array( 'Bilanparcours66.add' => $personne_id )
+                      )
+                  );
+                }
 			?>
 
 	</div>
