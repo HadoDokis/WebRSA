@@ -81,6 +81,33 @@
 			),
 		);
 
+		public function listOptions() {
+			$results = $this->find(
+				'list',
+				array(
+					'fields' => array(
+						'Ep.id',
+						'Ep.name'
+					),
+					'contain' => array(
+						'Regroupementep'=>array(
+							'fields'=>array(
+								'name'
+							),
+							'order'=>array(
+								'Regroupementep.name ASC'
+							)
+						)
+					),
+					'order' => array(
+						'Ep.name'
+					)
+				)
+			);
+
+			return $results;
+		}
+
 		/**
 		* Retourne la liste des thèmes traités par les EPs
 		*/

@@ -25,6 +25,18 @@ msgstr "Date de la séance"
 msgid "Seanceep.finalisee"
 msgstr "Décision finale"
 
+msgid "Seanceep.identifiant"
+msgstr "Identifiant"
+
+msgid "Seanceep.name"
+msgstr "Intitulé"
+
+msgid "Seanceep.salle"
+msgstr "Salle"
+
+msgid "Seanceep.observations"
+msgstr "Observations"
+
 msgid "Seanceep.ep_id"
 msgstr "Equipe dont dépend la séance"
 

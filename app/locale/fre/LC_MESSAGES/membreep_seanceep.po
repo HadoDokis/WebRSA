@@ -41,10 +41,10 @@ msgid "MembreepSeanceep.presence"
 msgstr "Présence"
 
 msgid "ENUM::REPONSE::confirme"
-msgstr "À confirmé"
+msgstr "A confirmé"
 
 msgid "ENUM::REPONSE::decline"
-msgstr "À décliné"
+msgstr "A décliné"
 
 msgid "ENUM::REPONSE::nonrenseigne"
 msgstr "Non renseigné"

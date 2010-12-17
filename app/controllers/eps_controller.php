@@ -31,6 +31,7 @@
 			$fields = array(
 				'Ep.id',
 				'Ep.name',
+				'Ep.identifiant',
 				'Regroupementep.name'
 			);
 

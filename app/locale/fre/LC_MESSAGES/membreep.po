@@ -30,6 +30,15 @@ msgstr "Nom"
 msgid "Membreep.prenom"
 msgstr "Prénom"
 
+msgid "Membreep.nomcomplet"
+msgstr "Nom du participant"
+
+msgid "Membreep.tel"
+msgstr "Téléphone"
+
+msgid "Membreep.mail"
+msgstr "Email"
+
 msgid "Membreep.ep_id"
 msgstr "Nom de l'EP"
 

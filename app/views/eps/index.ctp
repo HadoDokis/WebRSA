@@ -2,8 +2,9 @@
 
 <?php
 	$fields = array(
-		'Ep.name',
-		'Regroupementep.name'
+		'Ep.identifiant',
+		'Regroupementep.name',
+		'Ep.name'
 	);
 
 	foreach( $themes as $theme ) {
