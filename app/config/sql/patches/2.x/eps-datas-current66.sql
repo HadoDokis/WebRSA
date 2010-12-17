@@ -15,9 +15,13 @@ INSERT INTO regroupementseps ( name ) VALUES
 	( 'Équipe pluridisciplinaire locale, commission Parcours' ),
 	( 'Équipe pluridisciplinaire départementale' );
 
-INSERT INTO eps ( name, regroupementep_id, saisineepbilanparcours66, saisineepdpdo66 ) VALUES
-	( 'EP locale Parcours, Perpignan 1', 1, 'cg', 'nontraite' ),
-	( 'EP départementale', 2, 'nontraite', 'cg' );
+
+INSERT INTO eps ( name, identifiant, regroupementep_id, saisineepreorientsr93, nonrespectsanctionep93 ) VALUES
+	( 'CLI 1, équipe 1.1', 'EP1', 1, 'ep', 'cg' );
+	
+INSERT INTO eps ( name, identifiant, regroupementep_id, saisineepbilanparcours66, saisineepdpdo66 ) VALUES
+	( 'EP locale Parcours, Perpignan 1', 'EPL1', 1, 'cg', 'nontraite' ),
+	( 'EP départementale', 'EPD', 2, 'nontraite', 'cg' );
 
 INSERT INTO fonctionsmembreseps ( name ) VALUES
 -- 	( 'Chef de projet de ville' ),
@@ -38,7 +42,7 @@ INSERT INTO motifsreorients ( name ) VALUES
 	( 'Motif réorientation 2' );
 
 SELECT pg_catalog.setval('seanceseps_id_seq', 1, true);
-INSERT INTO seanceseps VALUES ( 1, 1, 22, '2010-10-28 10:00:00', NULL );
+INSERT INTO seanceseps VALUES ( 1, 'COM1', 1, 22, '2010-10-28 10:00:00', NULL );
 
 TRUNCATE situationspdos CASCADE;
 SELECT pg_catalog.setval('situationspdos_id_seq', ( SELECT COALESCE( max(situationspdos.id) + 1, 1 ) FROM situationspdos ), false);

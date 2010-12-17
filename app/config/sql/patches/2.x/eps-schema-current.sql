@@ -37,6 +37,7 @@ DROP TABLE IF EXISTS saisinesepsbilansparcours66 CASCADE;
 DROP TABLE IF EXISTS maintiensreorientseps CASCADE;
 DROP TABLE IF EXISTS dossierseps CASCADE;
 DROP TABLE IF EXISTS eps_zonesgeographiques CASCADE;
+DROP TABLE IF EXISTS eps_membreseps CASCADE;
 DROP TABLE IF EXISTS membreseps CASCADE;
 DROP TABLE IF EXISTS fonctionsmembreseps CASCADE;
 DROP TABLE IF EXISTS seanceseps CASCADE;
@@ -114,7 +115,7 @@ CREATE TYPE TYPE_NIVEAUDECISIONEP AS ENUM ( 'nontraite', 'ep', 'cg' );
 CREATE TABLE eps (
 	id      					SERIAL NOT NULL PRIMARY KEY,
 	name						VARCHAR(255) NOT NULL,
-	identifiant					VARCHAR(255),
+	identifiant					VARCHAR(255) NOT NULL,
 	regroupementep_id			INTEGER NOT NULL REFERENCES regroupementseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	saisineepreorientsr93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
 	saisineepbilanparcours66	TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
@@ -176,6 +177,7 @@ CREATE TYPE TYPE_ETAPEDECISIONEP AS ENUM ( 'ep', 'cg' );
 
 CREATE TABLE seanceseps (
 	id      				SERIAL NOT NULL PRIMARY KEY,
+	identifiant				VARCHAR(255) NOT NULL,
 	ep_id					INTEGER NOT NULL REFERENCES eps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	structurereferente_id	INTEGER REFERENCES structuresreferentes(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	dateseance				TIMESTAMP WITHOUT TIME ZONE NOT NULL,
