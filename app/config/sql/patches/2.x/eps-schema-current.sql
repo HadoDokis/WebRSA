@@ -64,41 +64,6 @@ DROP TYPE IF EXISTS type_dateactive CASCADE;
 DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93 CASCADE;
 DROP TYPE IF EXISTS TYPE_ORIGINESANCTIONEP93 CASCADE;
 
--- INFO: http://archives.postgresql.org/pgsql-sql/2005-09/msg00266.php
-CREATE OR REPLACE FUNCTION public.add_missing_table_field (text, text, text, text)
-returns bool as '
-DECLARE
-  p_namespace alias for $1;
-  p_table     alias for $2;
-  p_field     alias for $3;
-  p_type      alias for $4;
-  v_row       record;
-  v_query     text;
-BEGIN
-  select 1 into v_row from pg_namespace n, pg_class c, pg_attribute a
-     where
-         --public.slon_quote_brute(n.nspname) = p_namespace and
-         n.nspname = p_namespace and
-         c.relnamespace = n.oid and
-         --public.slon_quote_brute(c.relname) = p_table and
-         c.relname = p_table and
-         a.attrelid = c.oid and
-         --public.slon_quote_brute(a.attname) = p_field;
-         a.attname = p_field;
-  if not found then
-    raise notice ''Upgrade table %.% - add field %'', p_namespace, p_table, p_field;
-    v_query := ''alter table '' || p_namespace || ''.'' || p_table || '' add column '';
-    v_query := v_query || p_field || '' '' || p_type || '';'';
-    execute v_query;
-    return ''t'';
-  else
-    return ''f'';
-  end if;
-END;' language plpgsql;
-
-COMMENT ON FUNCTION public.add_missing_table_field (text, text, text, text)
-IS 'Add a column of a given type to a table if it is missing';
-
 -- -----------------------------------------------------------------------------
 
 CREATE TABLE regroupementseps (
@@ -323,126 +288,6 @@ CREATE TABLE nvsrsepsreorient66 (
 COMMENT ON TABLE nvsrsepsreorient66 IS 'Décisions des nouvelles structures referentes concernant les saisines d''EPs suite au bilan de parcours (CG66)';
 ALTER TABLE nvsrsepsreorient66 OWNER TO webrsa;
 
--- =============================================================================
-
-/*CREATE TYPE TYPE_ETAPERELANCECONTENTIEUSE AS ENUM ( 'relance1', 'relance2', 'relancecontentieuse1', 'relancecontentieuse2' );
-CREATE TYPE TYPE_TYPERELANCECONTENTIEUSE AS ENUM ( 'absence', 'echeance' ); -- relance pour absence de contrat ou non renouvellement d'un contrat arrivé à échéance
-
-CREATE TABLE relancesdetectionscontrats93 (
-	id      			SERIAL NOT NULL PRIMARY KEY,
-	personne_id			INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	orientstruct_id		INTEGER NOT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	contratinsertion_id	INTEGER DEFAULT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	etaperelance		TYPE_ETAPERELANCECONTENTIEUSE NOT NULL,
-	typerelance			TYPE_TYPERELANCECONTENTIEUSE NOT NULL,
-	-- Indique si l'allocataire est sorti de la procédure de relance à cette étape
-	sortieprocedure		TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0',
-	-- courrier_id ...
-	-- dossier d'EP qui sera crée lors de la relance contentieuse 2
-	dossierep_id		INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE SET NULL ON UPDATE CASCADE,
-	created				TIMESTAMP WITHOUT TIME ZONE,
-	modified			TIMESTAMP WITHOUT TIME ZONE
-);
-
-COMMENT ON TABLE relancesdetectionscontrats93 IS 'Relances liées à la procédure de détection de suspension et réduction d''allocations alimentant les EPs (CG93)';
-*/
--- TODO: ajouter un check afin que dossierep_id puisse ne pas être NULL SSI le tuple représente l'étape relancecontentieuse2 ?
--- TODO: ajouter un champ vers le nouveau contrat lorsqu'on sort de la procédure ?
--- TODO: ajouter une colonne pour dire que le tuble doit encore être traité à cette étape ?
-
--- -----------------------------------------------------------------------------
-
-/*CREATE TABLE saisinesepssignalementsnrscers93 (
-	id      				SERIAL NOT NULL PRIMARY KEY,
-	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	orientstruct_id			INTEGER NOT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	contratinsertion_id		INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	obligationsnonremplies	TEXT NOT NULL,
-	created					TIMESTAMP WITHOUT TIME ZONE,
-	modified				TIMESTAMP WITHOUT TIME ZONE
-);
-
-COMMENT ON TABLE saisinesepssignalementsnrscers93 IS 'Saisines d''EPs de signalement pour non respect du contrat d''engagement réciproque (CG93)';
-*/
--- =============================================================================
-
-/*CREATE TYPE TYPE_TYPEREORIENTATION66 AS ENUM ( 'social_pro', 'pro_social' ); -- FIXME: autres valeurs
-
-CREATE TABLE maintiensreorientseps (
-	id      				SERIAL NOT NULL PRIMARY KEY,
-	dossierep_id			INTEGER NOT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	contratinsertion_id		INTEGER DEFAULT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	cui_id					INTEGER DEFAULT NULL REFERENCES cuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	orientstruct_id			INTEGER DEFAULT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-COMMENT ON TABLE maintiensreorientseps IS 'Partie "Maintien ou réorientation de parcours" du dossier EP d''un allocataire';
-
-CREATE INDEX maintiensreorientseps_dossierep_id_idx ON maintiensreorientseps(dossierep_id);
-CREATE INDEX maintiensreorientseps_contratinsertion_id_idx ON maintiensreorientseps(contratinsertion_id);
-CREATE INDEX maintiensreorientseps_cui_id_idx ON maintiensreorientseps(cui_id);
-CREATE INDEX maintiensreorientseps_orientstruct_id_idx ON maintiensreorientseps(orientstruct_id);
-
--- -----------------------------------------------------------------------------
-
-CREATE TABLE bilansparcours66 (
-	id      				SERIAL NOT NULL PRIMARY KEY,
-	referent_id				INTEGER NOT NULL REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	contratinsertion_id		INTEGER DEFAULT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	cui_id					INTEGER DEFAULT NULL REFERENCES cuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	presenceallocataire		TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0',
-	situationallocataire	TEXT NOT NULL,
-	bilanparcours			TEXT NOT NULL, -- Plus précis ? (diviser en sous-questions)
-	infoscomplementaires	TEXT DEFAULT NULL, -- bp "normal"
-	preconisationpe			TEXT DEFAULT NULL, -- bp "PE"
-	observationsallocataire	TEXT DEFAULT NULL,
-	saisineepparcours		TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0',
-	maintienorientation		TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0',
-	changereferent			TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0',
-	ddreconductoncontrat	DATE DEFAULT NULL,
-	dfreconductoncontrat	DATE DEFAULT NULL
-);
-
-COMMENT ON TABLE bilansparcours66 IS 'Bilan de parcours pour le CG 66';
-
-CREATE INDEX bilansparcours66_referent_id_idx ON bilansparcours66(referent_id);
-CREATE INDEX bilansparcours66_contratinsertion_id_idx ON bilansparcours66(contratinsertion_id);
-CREATE INDEX bilansparcours66_cui_id_idx ON bilansparcours66(cui_id);
-
--- -----------------------------------------------------------------------------
-
-CREATE TABLE saisineseps66 (
-	id      				SERIAL NOT NULL PRIMARY KEY,
-	bilanparcours66_id		INTEGER NOT NULL REFERENCES bilansparcours66(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	maintienreorientep_id	INTEGER DEFAULT NULL REFERENCES maintiensreorientseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	maintienorientation		TYPE_BOOLEANNUMBER NOT NULL,
-	changereferent			TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0',
-	ddreconductoncontrat	DATE DEFAULT NULL,
-	dfreconductoncontrat	DATE DEFAULT NULL,
-	typereorientation		TYPE_TYPEREORIENTATION66 DEFAULT NULL,
-	commentaire				TEXT DEFAULT NULL
-);
-
-COMMENT ON TABLE saisineseps66 IS 'Fiche de saisine des EPs pour le CG 66';
-
--- -----------------------------------------------------------------------------
-
-CREATE TABLE avissrmreps93 (
-	id      				SERIAL NOT NULL PRIMARY KEY,
-	maintienreorientep_id	INTEGER NOT NULL REFERENCES maintiensreorientseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	dttransmission			DATE DEFAULT NULL,
-	dtlimite				DATE DEFAULT NULL,
-	dtavissr				DATE DEFAULT NULL,
-	avissr					TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0',
-	signalesr				TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0'
-);
-
-COMMENT ON TABLE avissrmreps93 IS 'Signalement (avis) des structures référentes pour le thème "Maintien ou réorientation de parcours" des EPs pour le CG 93';
-
-CREATE UNIQUE INDEX avissrmreps93_maintienreorientep_id_idx ON avissrmreps93(maintienreorientep_id);
-CREATE INDEX avissrmreps93_avissr_idx ON avissrmreps93(avissr);
-CREATE INDEX avissrmreps93_signalesr_idx ON avissrmreps93(signalesr);*/
-
 -- *****************************************************************************
 
 SELECT add_missing_table_field ('public', 'propospdos', 'serviceinstructeur_id', 'integer');
@@ -590,7 +435,6 @@ CREATE INDEX membreseps_seanceseps_membresep_id_idx
 
 -- *****************************************************************************
 -- Non respect / sanctions 93
--- -> supprimer plus haut relancesdetectionscontrats93
 -- *****************************************************************************
 
 CREATE TYPE TYPE_DECISIONSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien' );
@@ -607,7 +451,6 @@ CREATE TABLE nonrespectssanctionseps93 (
 	rgpassage			INTEGER NOT NULL,
 	montantreduction	FLOAT DEFAULT NULL,
 	dureesursis			INTEGER DEFAULT NULL,
-	-- declencheur entrée procedure ? (les ids ?)
 	-- declencheur sortie procedure ? (nvcontratinsertion_id)
 	active				TYPE_BOOLEANNUMBER NOT NULL DEFAULT '1',
 	created				TIMESTAMP WITHOUT TIME ZONE,
@@ -744,82 +587,6 @@ CREATE TABLE decisionsnonrespectssanctionseps93 (
 );
 
 COMMENT ON TABLE decisionsnonrespectssanctionseps93 IS 'Avis et décisions ep/cg pour le thème non respect / sanctions (CG 93)';
-
-/*
-	SELECT
-			*
-		FROM "orientsstructs" AS "Orientstruct"
-			INNER JOIN personnes AS "Personne" ON ("Personne"."id" = "Orientstruct"."personne_id")
-			--INNER JOIN contratsinsertion AS "Contratinsertion" ON ("Personne"."id" = "Contratinsertion"."personne_id" AND "Contratinsertion"."id" IN ( SELECT "tmpcontratsinsertion"."id" FROM ( SELECT "contratsinsertion"."id" AS id, "contratsinsertion"."personne_id" FROM contratsinsertion WHERE "contratsinsertion"."personne_id" = "Personne"."id" ORDER BY "contratsinsertion"."dd_ci" DESC LIMIT 1 ) AS tmpcontratsinsertion ))
-			INNER JOIN prestations AS "Prestation" ON ("Personne"."id" = "Prestation"."personne_id" AND "Prestation"."natprest" = 'RSA' AND ( "Prestation"."rolepers" = 'DEM' OR "Prestation"."rolepers" = 'CJT' ))
-			INNER JOIN foyers AS "Foyer" ON ("Personne"."foyer_id" = "Foyer"."id")
-			INNER JOIN dossiers AS "Dossier" ON ("Foyer"."dossier_id" = "Dossier"."id")
-			--INNER JOIN adressesfoyers AS "Adressefoyer" ON ("Foyer"."id" = "Adressefoyer"."foyer_id" AND "Adressefoyer"."rgadr" = '01')
-			--INNER JOIN adresses AS "Adresse" ON ("Adresse"."id" = "Adressefoyer"."adresse_id")
-		WHERE
-				"Orientstruct"."statut_orient" = 'Orienté'
-				AND "Orientstruct"."statutrelance" ILIKE 'R'
-		ORDER BY "Orientstruct"."date_valid" ASC
-		LIMIT 10;
-*/
-
-/*
--- Toutes les propospdos en DO 19 qui n'ont pas eu de contratinsertion signé 1 mois après la décision
--- FIXME: comment faire pour l'arriéré ?
--- TODO: et qui ne sont pas encore dans la liste
-SELECT propospdos.*
-	FROM propospdos
-		INNER JOIN decisionspdos ON (
-			propospdos.decisionpdo_id = decisionspdos.id
-		)
-	WHERE
-		decisionspdos.libelle LIKE 'DO 19%'
-		AND propospdos.personne_id NOT IN (
-			SELECT contratsinsertion.personne_id
-				FROM contratsinsertion
-				WHERE
-					contratsinsertion.personne_id = propospdos.personne_id
-					AND date_trunc( 'day', contratsinsertion.datevalidation_ci ) >= propospdos.datedecisionpdo
-					--AND date_trunc( 'day', contratsinsertion.datevalidation_ci ) <= ( propospdos.datedecisionpdo + INTERVAL '1 mons' )
-		);
-*/
-
-/*
--- Toutes les orientsstructs qui n'ont pas eu de contratinsertion signé 2 mois après la décision
--- FIXME: comment faire pour l'arriéré ?
--- TODO: et qui ne sont pas encore dans la liste
-SELECT orientsstructs.*
-	FROM orientsstructs
-	WHERE
-		orientsstructs.statut_orient = 'Orienté'
-		AND orientsstructs.date_valid IS NOT NULL
-		AND orientsstructs.personne_id NOT IN (
-			SELECT contratsinsertion.personne_id
-				FROM contratsinsertion
-				WHERE
-					contratsinsertion.personne_id = orientsstructs.personne_id
-					AND date_trunc( 'day', contratsinsertion.datevalidation_ci ) >= orientsstructs.date_valid
-					--AND date_trunc( 'day', contratsinsertion.datevalidation_ci ) <= ( orientsstructs.date_valid + INTERVAL '2 mons' )
-		);
-*/
-
-/*
--- Toutes les contratsinsertion qui n'ont pas été "renouvellés" 2 mois après la décision
--- FIXME: comment faire pour l'arriéré ?
--- TODO: et qui ne sont pas encore dans la liste
-SELECT *
-	FROM contratsinsertion
-	WHERE
-		( contratsinsertion.df_ci + INTERVAL '2 mons' ) < NOW()
-		AND contratsinsertion.decision_ci = 'V'
-		AND contratsinsertion.datevalidation_ci IS NOT NULL
-		AND contratsinsertion.personne_id NOT IN (
-			SELECT ci2.personne_id
-			FROM contratsinsertion AS ci2
-			WHERE ci2.personne_id = contratsinsertion.personne_id
-				AND ci2.df_ci > contratsinsertion.df_ci
-		);
-*/
 
 -- *****************************************************************************
 COMMIT;
