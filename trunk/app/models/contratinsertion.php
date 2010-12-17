@@ -383,14 +383,80 @@
 		}
 
 		/**
+		*
+		*/
+
+		public function valider( $data ) {
+			$this->begin();
+			$success = $this->saveAll( $data, array( 'atomic' => false ) );
+
+			// Sortie de la procédure de relances / sanctions 93 en cas de validation d'un nouveau contrat
+			if( $success && Configure::read( 'Ep.departement' ) == '93' ) {
+				$nonrespectssanctionseps93 = $this->Nonrespectsanctionep93->find(
+					'all',
+					array(
+						'fields' => array(
+							'Nonrespectsanctionep93.id'
+						),
+						'conditions' => array(
+							'Nonrespectsanctionep93.dossierep_id IS NULL',
+							'Nonrespectsanctionep93.decision IS NULL',
+							'Nonrespectsanctionep93.sortienvcontrat <>' => '1',
+							'Nonrespectsanctionep93.active' => '1',
+							'Nonrespectsanctionep93.created <' => "{$data['Contratinsertion']['datevalidation_ci']['year']}-{$data['Contratinsertion']['datevalidation_ci']['month']}-{$data['Contratinsertion']['datevalidation_ci']['day']}",
+							'OR' => array(
+								'Nonrespectsanctionep93.propopdo_id IN (
+									SELECT propospdos.id
+										FROM propospdos
+										WHERE propospdos.personne_id = \''.$data['Contratinsertion']['personne_id'].'\'
+								)',
+								'Nonrespectsanctionep93.orientstruct_id IN (
+									SELECT orientsstructs.id
+										FROM orientsstructs
+										WHERE orientsstructs.personne_id = \''.$data['Contratinsertion']['personne_id'].'\'
+								)',
+								'Nonrespectsanctionep93.contratinsertion_id IN (
+									SELECT contratsinsertion.id
+										FROM contratsinsertion
+										WHERE contratsinsertion.personne_id = \''.$data['Contratinsertion']['personne_id'].'\'
+								)',
+							)
+						),
+					)
+				);
+
+				if( !empty( $nonrespectssanctionseps93 ) ) {
+					$ids = Set::extract( $nonrespectssanctionseps93, '/Nonrespectsanctionep93/id' );
+
+					$success = $this->Nonrespectsanctionep93->updateAll(
+						array(
+							'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'1\'',
+							'"Nonrespectsanctionep93"."active"' => '\'0\''
+						),
+						array( '"Nonrespectsanctionep93"."id"' => $ids )
+					) && $success;
+				}
+			}
+
+			if( $success ) {
+				$this->commit();
+			}
+			else {
+				$this->rollback();
+			}
+
+			return $success;
+		}
+
+		/**
 		*   AfterSave
 		*/
 
 		public function afterSave( $created ) {
 			$return = parent::afterSave( $created );
 
+			// Mise à jour des APREs
 			$return = $this->query( "UPDATE apres SET eligibiliteapre = 'O' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'COM';" ) && $return;
-
 			$return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'INC';" ) && $return;
 
 			return $return;
