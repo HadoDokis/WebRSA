@@ -142,7 +142,7 @@
 
 				if( $success ) {
 					$this->Dossierep->commit();
-					$this->redirect(array('controller'=>'seanceseps', 'action'=>'index'));
+					$this->redirect( array( 'controller'=>'seanceseps', 'action'=>'view', $seanceep_id, '#dossiers' ) );
 				}
 				else {
 					$this->Dossierep->rollback();

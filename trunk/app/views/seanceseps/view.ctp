@@ -1,15 +1,15 @@
 <h1><?php	echo $this->pageTitle = 'Affichage séance d\'EP'; ?></h1>
 <div  id="ficheCI">
 	<ul class="actionMenu">
-	<?php 
+	<?php
 		echo '<li>'.$xhtml->editLink(
 			__d('Seanceep','Seanceep.edit',true),
 			array( 'controller' => 'seanceseps', 'action' => 'edit', $seanceep['Seanceep']['id'] )
 		).' </li>';
-	?>				
+	?>
 	</ul>
 	<table>
-		<tbody>		
+		<tbody>
 			<tr class="odd">
 				<th><?php echo "Date de la séance";?></th>
 				<td><?php echo isset( $seanceep['Seanceep']['dateseance'] ) ? strftime( '%d/%m/%Y %H:%M', strtotime( $seanceep['Seanceep']['dateseance'])) : null ;?></td>
@@ -33,7 +33,7 @@
 			<!--<tr class="even">
 				<th><?php echo "Décision finale";?></th>
 				<td><?php echo isset( $seanceep['Seanceep']['finalisee'] ) ? $seanceep['Seanceep']['finalisee'] : null ;?></td>
-			</tr>-->		
+			</tr>-->
 		</tbody>
 	</table>
 </div>
@@ -44,7 +44,7 @@
 			<h2 class="title">Liste des participants</h2>
 			<div>
 				<ul class="actionMenu">
-				<?php 
+				<?php
 					echo '<li>'.$xhtml->editLink(
 						__d('Seanceep','Seanceep.edit',true),
 						array( 'controller' => 'membreseps', 'action' => 'editliste', $seanceep['Seanceep']['ep_id'], $seanceep['Seanceep']['id'] )
@@ -52,9 +52,9 @@
 					echo '<li>'.$xhtml->presenceLink(
 						__d('Seanceep','Seanceep.presence',true),
 						array( 'controller' => 'membreseps', 'action' => 'editpresence', $seanceep['Seanceep']['ep_id'], $seanceep['Seanceep']['id'] )
-					).' </li>';					
-					
-				?>				
+					).' </li>';
+
+				?>
 				</ul>
 			<?php
 				echo $default2->index(
@@ -78,16 +78,48 @@
 						),
 						'options' => $options
 					)
-				);	
+				);
 			?>
 			</div>
 		</div>
-	<?php endif;?>	
+	<?php endif;?>
 		<div id="dossiers">
 			<h2 class="title">Liste des dossiers</h2>
-			<div>--</div>
+			<ul class="actionMenu">
+				<?php
+					echo '<li>'.$xhtml->editLink(
+						'Modifier',
+						array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $seanceep, 'Seanceep.id' ) )
+					).' </li>';
+				?>
+			</ul>
+			<div id="dossierseps">
+				<?php
+					foreach( $themes as $theme ) {
+// 						debug( Set::flatten( $dossiers[$theme] ) );
+						echo "<div id=\"$theme\"><h3 class=\"title\">$theme</h3>";
+						echo $default->index(
+							$dossiers[$theme],
+							array(
+								'Personne.qual',
+								'Personne.nom',
+								'Personne.prenom',
+								'Personne.dtnai',
+								'Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+								'Dossierep.created',
+								'Dossierep.themeep',
+								'Dossierep.etapedossierep',
+							),
+							array(
+								'options' => $options
+							)
+						);
+						echo "</div>";
+					}
+				?>
+			</div>
 		</div>
-		
+
 		<div id="reorientations">
 			<h2 class="title">Réorientations</h2>
 			<div>--</div>
@@ -102,4 +134,5 @@
 
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
+	makeTabbed( 'dossierseps', 3 );
 </script>

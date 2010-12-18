@@ -12,7 +12,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 		public $uses = array( 'Seanceep', 'Option' );
-		
+
 		public $aucunDroit = array( 'ajaxadresse' );
 
 		/**
@@ -32,6 +32,7 @@
 				$this->Seanceep->Dossierep->Saisineepbilanparcours66->Nvsrepreorient66->enums(),
 				$this->Seanceep->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enums(),
 				$this->Seanceep->Dossierep->Nonrespectsanctionep93->enums(),
+				$this->Seanceep->Dossierep->enums(),
 				$this->Seanceep->enums(),
 				$this->Seanceep->MembreepSeanceep->enums(),
 				array( 'Foyer' => array( 'sitfam' => $this->Option->sitfam() ) )
@@ -110,21 +111,21 @@
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );
 		}
-		
+
 		/**
 		 *
 		 */
-		 
-        function ajaxadresse( $structurereferente_id = null ) { // FIXME
-            Configure::write( 'debug', 0 );
-            $dataStructurereferente_id = Set::extract( $this->data, 'Seanceep.structurereferente_id' );
-            $structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
 
-            $struct = $this->Seanceep->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
-            $this->set( 'struct', $struct );
-            $this->set( 'typevoie', $this->Option->typevoie() );
-            $this->render( 'ajaxadresse', 'ajax' );
-        }
+		function ajaxadresse( $structurereferente_id = null ) { // FIXME
+			Configure::write( 'debug', 0 );
+			$dataStructurereferente_id = Set::extract( $this->data, 'Seanceep.structurereferente_id' );
+			$structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
+
+			$struct = $this->Seanceep->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
+			$this->set( 'struct', $struct );
+			$this->set( 'typevoie', $this->Option->typevoie() );
+			$this->render( 'ajaxadresse', 'ajax' );
+		}
 
 		/**
 		*
@@ -237,16 +238,48 @@
 		* @param integer $seanceep_id
 		*/
 		public function view($seanceep_id = null) {
-
 			$seanceep = $this->Seanceep->find('first', array(
 				'conditions' => array( 'Seanceep.id' => $seanceep_id ),
 				'contain' => array(
-						'Structurereferente',
-						'Ep' => array( 'Regroupementep')
+					'Structurereferente',
+// 					'Dossierep' => array(
+// 						'Personne'
+// 					),
+					'Ep' => array( 'Regroupementep')
 				)
 			));
+// 			debug( $seanceep );
 			$this->set('seanceep', $seanceep);
 			$this->_setOptions();
+
+			// Dossiers à passer en séance, par thème traité
+			$themes = array_keys( $this->Seanceep->themesTraites( $seanceep_id ) );
+			$dossiers = array();
+			foreach( $themes as $theme ) {
+				$class = Inflector::classify( $theme );
+				$dossiers[$theme] = $this->Seanceep->Dossierep->find(
+					'all',
+					array(
+						'conditions' => array(
+							'Dossierep.seanceep_id' => $seanceep_id,
+							'Dossierep.themeep' => Inflector::tableize( $class )
+						),
+						'contain' => array(
+							'Personne' => array(
+								'Foyer' => array(
+									'Adressefoyer' => array(
+										'conditions' => array(
+											'Adressefoyer.rgadr' => '01'
+										),
+										'Adresse'
+									)
+								)
+							)
+						),
+					)
+				);
+			}
+			$this->set( compact( 'dossiers', 'themes' ) );
 
 			$fields = array(
 				'MembreepSeanceep.id',
