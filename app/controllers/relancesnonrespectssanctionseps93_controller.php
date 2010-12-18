@@ -293,7 +293,7 @@
 				// FIXME: jointures (Dossier)
 				foreach( $search as $field => $condition ) {
 					if( in_array( $field, array( 'Personne.nom', 'Personne.prenom' ) ) ) {
-						$conditions["UPPER({$field}) LIKE"] = str_replace( '*', '%', $condition );
+						$conditions["UPPER({$field}) LIKE"] = $this->Relancenonrespectsanctionep93->wildcard( strtoupper( replace_accents( $condition ) ) );
 					}
 					else if( !in_array( $field, array( 'Relance.numrelance', 'Relance.contrat' ) ) ) {
 						$conditions[$field] = $condition;
@@ -306,6 +306,8 @@
 				// FIXME: sauvegarder le PDF
 
 				// Relances pour personnes sans contrat
+				/// FIXME: que les dernières orientations / les derniers contrats
+				/// Exemple: 1ère relance de /orientsstructs/index/351610
 				if( $search['Relance.contrat'] == 0 ) {
 					switch( $search['Relance.numrelance'] ) {
 						case 1:
