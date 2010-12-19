@@ -97,7 +97,7 @@
 				<?php
 					foreach( $themes as $theme ) {
 // 						debug( Set::flatten( $dossiers[$theme] ) );
-						echo "<div id=\"$theme\"><h3 class=\"title\">$theme</h3>";
+						echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossierep',  'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true )."</h3>";
 						echo $default->index(
 							$dossiers[$theme],
 							array(
@@ -118,11 +118,6 @@
 					}
 				?>
 			</div>
-		</div>
-
-		<div id="reorientations">
-			<h2 class="title">Réorientations</h2>
-			<div>--</div>
 		</div>
 </div>
 <?php

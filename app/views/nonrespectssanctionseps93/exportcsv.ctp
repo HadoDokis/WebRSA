@@ -32,20 +32,20 @@
 	foreach( $dossiers as $dossier ) {
 		$row = array(
 			'="'.Set::extract( $dossier, 'Dossierep.Personne.Foyer.Dossier.matricule' ).'"',
-			'"'.Set::extract( $dossier, 'Dossierep.Personne.nom' ).'"',
-			'"'.Set::extract( $dossier, 'Dossierep.Personne.prenom' ).'"',
+			Set::extract( $dossier, 'Dossierep.Personne.nom' ),
+			Set::extract( $dossier, 'Dossierep.Personne.prenom' ),
 			'="'.Set::extract( $dossier, 'Dossierep.Personne.nir' ).'"',
-			'"'.( Set::extract( $dossier, 'Nonrespectsanctionep93.contratinsertion_id' ) != '' ? 'Oui' : 'Non' ).'"',
-			'"'.date_short( Set::extract( $dossier, 'Contratinsertion.df_ci' ) ).'"',
-			'"'.date_short( Set::extract( $dossier, 'Orientstruct.date_valid' ) ).'"',
-			'"'.date_short( Set::extract( $dossier, 'Dossierep.Seanceep.dateseance' ) ).'"',
-			'"'.Set::extract( $dossier, 'Nonrespectsanctionep93.rgpassage' ).'"',
-			'"'.Set::extract( $dossier, 'Nonrespectsanctionep93.decision' ).'"',
-			'"'.Set::extract( $dossier, 'Nonrespectsanctionep93.montantreduction' ).'"',
-			'"'.Set::extract( $dossier, 'Nonrespectsanctionep93.dureesursis' ).'"',
+			( Set::extract( $dossier, 'Nonrespectsanctionep93.contratinsertion_id' ) != '' ? 'Oui' : 'Non' ),
+			date_short( Set::extract( $dossier, 'Contratinsertion.df_ci' ) ),
+			date_short( Set::extract( $dossier, 'Orientstruct.date_valid' ) ),
+			date_short( Set::extract( $dossier, 'Dossierep.Seanceep.dateseance' ) ),
+			Set::extract( $dossier, 'Nonrespectsanctionep93.rgpassage' ),
+			Set::enum( Set::extract( $dossier, 'Nonrespectsanctionep93.decision' ), $options['Nonrespectsanctionep93']['decision'] ),
+			Set::extract( $dossier, 'Nonrespectsanctionep93.montantreduction' ),
+			Set::extract( $dossier, 'Nonrespectsanctionep93.dureesursis' ),
 		);
 		$csv->addRow($row);
 	}
 	Configure::write( 'debug', 0 );
-	echo $csv->render( 'dossiers-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $csv->render( 'dossiers-'.date( 'Ymd-His' ).'.csv', Configure::read( 'App.encoding' ) );
 ?>

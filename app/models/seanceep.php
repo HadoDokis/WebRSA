@@ -85,25 +85,25 @@
 
 		public function search( $criteresseanceep ) {
 			/// Conditions de base
-			
+
 			$conditions = array();
-			
+
 			if ( isset($criteresseanceep['Ep']['regroupementep_id']) && !empty($criteresseanceep['Ep']['regroupementep_id']) ) {
 				$conditions[] = array('Ep.regroupementep_id'=>$criteresseanceep['Ep']['regroupementep_id']);
 			}
-			
+
 			if ( isset($criteresseanceep['Seanceep']['name']) && !empty($criteresseanceep['Seanceep']['name']) ) {
 				$conditions[] = array('Seanceep.name'=>$criteresseanceep['Seanceep']['name']);
 			}
-			
+
 			if ( isset($criteresseanceep['Seanceep']['identifiant']) && !empty($criteresseanceep['Seanceep']['identifiant']) ) {
 				$conditions[] = array('Seanceep.identifiant'=>$criteresseanceep['Seanceep']['identifiant']);
 			}
-			
+
 			if ( isset($criteresseanceep['Seanceep']['structurereferente_id']) && !empty($criteresseanceep['Seanceep']['structurereferente_id']) ) {
 				$conditions[] = array('Seanceep.structurereferente_id'=>$criteresseanceep['Seanceep']['structurereferente_id']);
 			}
-			
+
 			if ( isset($criteresseanceep['Structurereferente']['ville']) && !empty($criteresseanceep['Structurereferente']['ville']) ) {
 				$conditions[] = array('Structurereferente.ville'=>$criteresseanceep['Structurereferente']['ville']);
 			}
@@ -119,11 +119,12 @@
 
 			$query = array(
 				'fields' => array(
-					'"Seanceep"."id"',
-					'"Seanceep"."name"',
-					'"Seanceep"."structurereferente_id"',
-					'"Seanceep"."dateseance"',
-					'"Seanceep"."observations"'
+					'Seanceep.id',
+					'Seanceep.name',
+					'Seanceep.structurereferente_id',
+					'Seanceep.dateseance',
+					'Seanceep.finalisee',
+					'Seanceep.observations'
 				),
 				'contain'=>array(
 					'Structurereferente',
@@ -211,7 +212,6 @@
 			foreach( $this->themesTraites( $seanceep_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
 				$queryData = $this->Dossierep->{$model}->qdDossiersParListe( $seanceep_id, $niveauDecision );
-
 				$dossiers[$model]['liste'] = array();
 				if( !empty( $queryData ) ) {
 					$dossiers[$model]['liste'] = $this->Dossierep->find( 'all', $queryData );

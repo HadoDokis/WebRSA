@@ -17,7 +17,8 @@
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(
-					'origine'
+					'origine',
+					'decision' => array( 'domain' => 'decisionnonrespectsanctionep93' ),
 				)
 			),
 			'Autovalidate',

@@ -208,6 +208,9 @@
 					'conditions' => array(
 						'Contratinsertion.personne_id' => $personne_id
 					),
+					'order' => array(
+						'Contratinsertion.df_ci DESC'
+					),
 					'recursive' => -1
 				)
 			);

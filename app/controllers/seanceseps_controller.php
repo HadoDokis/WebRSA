@@ -12,7 +12,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 		public $uses = array( 'Seanceep', 'Option' );
-
+		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
 		public $aucunDroit = array( 'ajaxadresse' );
 
 		/**
@@ -55,14 +55,14 @@
 		*/
 
 		public function index() {
-            if( !empty( $this->data ) ) {
-                $seanceseps = $this->Seanceep->search( $this->data );
-                $seanceseps['limit'] = 10;
-                $this->paginate = $seanceseps;
-                $seanceseps = $this->paginate( $this->Seanceep );
-                $this->set( 'seanceseps', $seanceseps );
-            }
-            $this->_setOptions();
+			if( !empty( $this->data ) ) {
+				$queryData = $this->Seanceep->search( $this->data );
+				$queryData['limit'] = 10;
+				$this->paginate = $queryData;
+				$seanceseps = $this->paginate( $this->Seanceep );
+				$this->set( 'seanceseps', $seanceseps );
+			}
+			$this->_setOptions();
 		}
 
 		/**
