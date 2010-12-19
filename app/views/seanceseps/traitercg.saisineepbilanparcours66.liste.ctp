@@ -15,7 +15,7 @@
 </script>
 
 <?php
-	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
+// 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
 	echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
@@ -49,7 +49,8 @@
 				@$dossierep['Saisineepbilanparcours66']['Nvsrepreorient66'][0]['Typeorient']['lib_type_orient'],
 				@$dossierep['Saisineepbilanparcours66']['Nvsrepreorient66'][0]['Structurereferente']['lib_struc'],
 				$form->input( "Nvsrepreorient66.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data['Nvsrepreorient66'][$i]['id'] ) ).
-				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
+// 				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
+				$form->input( "Saisineepbilanparcours66.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 				$form->input( "Nvsrepreorient66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
 				$form->input( "Nvsrepreorient66.{$i}.saisineepbilanparcours66_id", array( 'type' => 'hidden', 'value' => @$dossierep['Saisineepbilanparcours66']['id'] ) ).
 				$form->input( "Nvsrepreorient66.{$i}.decision", array( 'label' => false, 'options' => @$options['Nvsrepreorient66']['decision'], 'empty' => true ) ),
@@ -59,8 +60,8 @@
 		);
 	}
 	echo '</tbody></table>';
-	echo $form->submit( 'Enregistrer' );
-	echo $form->end();
+// 	echo $form->submit( 'Enregistrer' );
+// 	echo $form->end();
 
 // 	debug( $seanceep );
 // 	debug( $options );

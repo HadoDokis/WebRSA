@@ -18,15 +18,15 @@
 <fieldset id="Decision" class="invisible">
     <?php
     	echo $form->create('Dossierep', array('url'=>'/dossierseps/decisioncg/'.$dossierep_id, 'id'=>'DossierepDecisioncg'));
-    	
+
     	if (isset($this->data['Nvsepdpdo66']['id']))
 	    	echo $form->input('Nvsepdpdo66.id', array('type'=>'hidden'));
-    	
+
     	echo $form->input('Nvsepdpdo66.saisineepdpdo66_id', array('type'=>'hidden'));
     	echo $form->input('Saisineepdpdo66.id', array('type'=>'hidden'));
     	echo $form->input('Nvsepdpdo66.etape', array('type'=>'hidden', 'value'=>'cg'));
-    	echo $form->input('Dossierep.id', array('type'=>'hidden'));
-    	
+    	echo $form->input('Saisineepdpdo66.dossierep_id', array('type'=>'hidden', 'value' => $dossierep_id ));
+
         echo $default->subform(
             array(
                 'Nvsepdpdo66.datedecisionpdo' => array( 'label' =>  ( __( 'Date de décision de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
@@ -63,7 +63,7 @@
                 'options' => $options
             )
         );
-        
+
         echo $form->end('Enregistrer');
     ?>
 </fieldset>

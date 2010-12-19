@@ -1,4 +1,4 @@
-<h2>Demandes de réorientation 93 par liste</h2>
+<!-- <h2>Demandes de réorientation 93 par liste</h2> -->
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -17,7 +17,7 @@
 </script>
 
 <?php
-	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
+// 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
 	echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
@@ -49,7 +49,8 @@
 				@$dossierep['Saisineepreorientsr93']['Typeorient']['lib_type_orient'],
 				@$dossierep['Saisineepreorientsr93']['Structurereferente']['lib_struc'],
 // 				$form->input( "Nvsrepreorientsr93.{$i}.id", array( 'type' => 'hidden', 'value' => @$dossierep['Saisineepreorientsr93']['id'] ) ).
-				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
+// 				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
+				$form->input( "Saisineepreorientsr93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 				$form->input( "Nvsrepreorientsr93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
 				$form->input( "Nvsrepreorientsr93.{$i}.saisineepreorientsr93_id", array( 'type' => 'hidden', 'value' => @$dossierep['Saisineepreorientsr93']['id'] ) ).
 				$form->input( "Nvsrepreorientsr93.{$i}.decision", array( 'label' => false, 'options' => @$options['Nvsrepreorientsr93']['decision'], 'empty' => true ) ),
@@ -59,8 +60,8 @@
 		);
 	}
 	echo '</tbody></table>';
-	echo $form->submit( 'Enregistrer' );
-	echo $form->end();
+// 	echo $form->submit( 'Enregistrer' );
+// 	echo $form->end();
 
 // 	debug( $seanceep );
 // 	debug( $options );

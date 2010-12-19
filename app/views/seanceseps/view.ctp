@@ -6,6 +6,46 @@
 			__d('Seanceep','Seanceep.edit',true),
 			array( 'controller' => 'seanceseps', 'action' => 'edit', $seanceep['Seanceep']['id'] )
 		).' </li>';
+
+		if( empty( $seanceep['Seanceep']['finalisee'] ) ) {
+			echo '<li>'.$xhtml->link(
+				__d( 'seanceep','Seanceseps::traiterep',true ),
+				array( 'controller' => 'seanceseps', 'action' => 'traiterep', $seanceep['Seanceep']['id'] )
+			).' </li>';
+		}
+		else {
+			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::traiterep',true ).'</span></li>';
+		}
+
+		if( empty( $seanceep['Seanceep']['finalisee'] ) ) {
+			echo '<li>'.$xhtml->link(
+				__d( 'seanceep','Seanceseps::finaliserep',true ),
+				array( 'controller' => 'seanceseps', 'action' => 'finaliserep', $seanceep['Seanceep']['id'] )
+			).' </li>';
+		}
+		else {
+			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::finaliserep',true ).'</span></li>';
+		}
+
+		if( $seanceep['Seanceep']['finalisee'] == 'ep' ) {
+			echo '<li>'.$xhtml->link(
+				__d( 'seanceep','Seanceseps::traitercg',true ),
+				array( 'controller' => 'seanceseps', 'action' => 'traitercg', $seanceep['Seanceep']['id'] )
+			).' </li>';
+		}
+		else {
+			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::traitercg',true ).'</span></li>';
+		}
+
+		if( $seanceep['Seanceep']['finalisee'] == 'ep' ) {
+			echo '<li>'.$xhtml->link(
+				__d( 'seanceep','Seanceseps::finalisercg',true ),
+				array( 'controller' => 'seanceseps', 'action' => 'finalisercg', $seanceep['Seanceep']['id'] )
+			).' </li>';
+		}
+		else {
+			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::traitercg',true ).'</span></li>';
+		}
 	?>
 	</ul>
 	<table>
@@ -30,10 +70,10 @@
 				<th><?php echo "Observations de la commision";?></th>
 				<td><?php echo isset( $seanceep['Seanceep']['observations'] ) ? $seanceep['Seanceep']['observations'] : null ;?></td>
 			</tr>
-			<!--<tr class="even">
+			<tr class="even">
 				<th><?php echo "Décision finale";?></th>
 				<td><?php echo isset( $seanceep['Seanceep']['finalisee'] ) ? $seanceep['Seanceep']['finalisee'] : null ;?></td>
-			</tr>-->
+			</tr>
 		</tbody>
 	</table>
 </div>
@@ -87,10 +127,15 @@
 			<h2 class="title">Liste des dossiers</h2>
 			<ul class="actionMenu">
 				<?php
-					echo '<li>'.$xhtml->editLink(
-						'Modifier',
-						array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $seanceep, 'Seanceep.id' ) )
-					).' </li>';
+					if( empty( $seanceep['Seanceep']['finalisee'] ) ) {
+						echo '<li>'.$xhtml->editLink(
+							'Modifier',
+							array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $seanceep, 'Seanceep.id' ) )
+						).' </li>';
+					}
+					else {
+						echo '<li><span class="disabled"> Modifier</span></li>';
+					}
 				?>
 			</ul>
 			<div id="dossierseps">

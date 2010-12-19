@@ -1,4 +1,4 @@
-<h2>Non respect des obligations et sanctions</h2>
+<!-- <h2>Non respect des obligations et sanctions</h2> -->
 
 <!--<script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -17,7 +17,7 @@
 </script>-->
 
 <?php
-	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
+// 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
 	echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
@@ -60,7 +60,8 @@
 				@$dossierep['Nonrespectsanctionep93']['rgpassage'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
-				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
+// 				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
+				$form->input( "Nonrespectsanctionep93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => $dossierep['Nonrespectsanctionep93']['id'] ) ).
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) )
@@ -80,8 +81,8 @@
 		);
 	}
 	echo '</tbody></table>';
-	echo $form->submit( 'Enregistrer' );
-	echo $form->end();
+// 	echo $form->submit( 'Enregistrer' );
+// 	echo $form->end();
 
 // 	debug( $dossiers );
 // 	debug( $seanceep );

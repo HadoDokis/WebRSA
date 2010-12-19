@@ -14,7 +14,7 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 	$formData['Dossierep'][$key]['id'] = $dossierep['Dossierep']['id'];
 }
 
-	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
+// 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
 	echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
@@ -44,12 +44,14 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 				$form->input( "Nvsepdpdo66.{$i}.saisineepdpdo66_id", array( 'type' => 'hidden', 'value' => @$dossierep['Saisineepdpdo66']['id'] ) ).
 				$form->input( "Nvsepdpdo66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
 				$form->input( "Saisineepdpdo66.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data['Saisineepdpdo66'][$i]['id'] ) ).
-				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) )
+				$form->input( "Saisineepdpdo66.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data['Saisineepdpdo66'][$i]['id'] ) ).
+// 				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) )
+				$form->input( "Saisineepdpdo66.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) )
 			)
 		);
 	}
 	echo '</tbody></table>';
-	echo $form->submit( 'Enregistrer' );
-	echo $form->end();
+// 	echo $form->submit( 'Enregistrer' );
+// 	echo $form->end();
 
 ?>

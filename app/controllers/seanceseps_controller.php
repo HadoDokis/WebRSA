@@ -155,15 +155,15 @@
 			);
 
 			$this->assert( !empty( $seanceep ), 'error404' );
-
+// debug( $this->data );
 			if( !empty( $this->data ) ) {
 				$this->Seanceep->begin();
 				$success = $this->Seanceep->saveDecisions( $seanceep_id, $this->data, $niveauDecision );
 
 				$this->_setFlashResult( 'Save', $success );
-				if( $success ) {
+				if( /*false &&*/ $success ) {
 					$this->Seanceep->commit();
-					$this->redirect( array( 'action' => 'index' ) );
+					$this->redirect( array( 'action' => 'view', $seanceep_id, '#dossiers' ) );
 				}
 				else {
 					$this->Seanceep->rollback();
@@ -203,7 +203,7 @@
 			else {
 				$this->Seanceep->rollback();
 			}
-			$this->redirect( array( 'action' => 'index' ) );
+			$this->redirect( array( 'action' => 'view', $seanceep_id, '#dossiers' ) );
 		}
 
 		/**
