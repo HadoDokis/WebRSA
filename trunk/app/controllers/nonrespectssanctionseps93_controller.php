@@ -27,11 +27,11 @@
 		*/
 
 		protected function _setOptions() {
-			/*$options = $this->Saisineepreorientsr93->enums();
-			$options['Saisineepreorientsr93']['typeorient_id'] = $this->Saisineepreorientsr93->Typeorient->listOptions();
-			$options['Saisineepreorientsr93']['structurereferente_id'] = $this->Saisineepreorientsr93->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
-			$options['Saisineepreorientsr93']['motifreorient_id'] = $this->Saisineepreorientsr93->Motifreorient->find( 'list' );
-			$this->set( compact( 'options' ) );*/
+			$options = Set::merge(
+				$this->Nonrespectsanctionep93->enums(),
+				$this->Nonrespectsanctionep93->Dossierep->enums()
+			);
+			$this->set( compact( 'options' ) );
 		}
 
 		/**
@@ -117,9 +117,10 @@
 				}
 			}
 
+			$this->_setOptions();
 			$options = Set::merge(
-				$this->Nonrespectsanctionep93->Dossierep->enums(),
-				array( 'Dossierep' => array( 'seanceep_id' => $seanceseps ) )
+				array( 'Dossierep' => array( 'seanceep_id' => $seanceseps ) ),
+				$this->viewVars['options']
 			);
 			$this->set( compact( 'options' ) );
 

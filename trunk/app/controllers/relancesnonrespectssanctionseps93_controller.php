@@ -311,6 +311,18 @@
 				if( $search['Relance.contrat'] == 0 ) {
 					switch( $search['Relance.numrelance'] ) {
 						case 1:
+							// Dernière Orientstruct
+							$conditions[] = 'Orientstruct.id IN (
+								SELECT orientsstructs.id
+									FROM orientsstructs
+									WHERE
+										orientsstructs.date_valid IS NOT NULL
+										AND orientsstructs.date_valid < NOW() + \''.Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ).' mons\'
+										AND orientsstructs.personne_id = Personne.id
+									ORDER by orientsstructs.date_valid DESC
+									LIMIT 1
+							)';
+
 							$conditions[] = 'Orientstruct.id NOT IN (
 								SELECT nonrespectssanctionseps93.orientstruct_id
 									FROM nonrespectssanctionseps93
@@ -412,6 +424,18 @@
 				else {
 					switch( $search['Relance.numrelance'] ) {
 						case 1:
+							// Dernièr contrat
+							$conditions[] = 'Contratinsertion.id IN (
+								SELECT contratsinsertion.id
+									FROM contratsinsertion
+									WHERE
+										contratsinsertion.datevalidation_ci IS NOT NULL
+										AND contratsinsertion.datevalidation_ci < NOW() + \''.Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' ).' mons\'
+										AND contratsinsertion.personne_id = Personne.id
+									ORDER by contratsinsertion.datevalidation_ci DESC
+									LIMIT 1
+							)';
+
 							$conditions[] = 'Contratinsertion.id NOT IN (
 								SELECT nonrespectssanctionseps93.orientstruct_id
 									FROM nonrespectssanctionseps93

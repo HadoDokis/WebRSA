@@ -26,7 +26,7 @@
         observeDisableFieldsetOnCheckbox( 'SeanceepDateseance', $( 'SeanceepDateseanceFromDay' ).up( 'fieldset' ), false );
     });
 </script>
-    
+
 <?php echo $xform->create( 'Seanceep', array( 'type' => 'post', 'action' => 'index', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
     <fieldset>
@@ -58,7 +58,7 @@
                 	)
                 ); ?>
             </fieldset>
-            
+
             <?php echo $xform->input( 'Seanceep.dateseance', array( 'label' => 'Filtrer par date de Séance', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Filtrer par période</legend>
@@ -87,6 +87,7 @@
 				'Ep.name',
 				'Structurereferente.lib_struc',
 				'Seanceep.dateseance',
+				'Seanceep.finalisee',
 				'Seanceep.observations'/*,
 				'Seanceep.finalisee'*/
 			),
@@ -101,10 +102,26 @@
 				'actions' => array(
 					'Seanceseps::participants' => array(
 						'url' => array( 'controller' => 'seanceseps', 'action' => 'view', '#Seanceep.id#')
-					)
+					),
+					'Seanceseps::traiterep' => array(
+						'disabled' => "'#Seanceep.finalisee#' != ''",
+						'url' => array( 'controller' => 'seanceseps', 'action' => 'traiterep', '#Seanceep.id#')
+					),
+					'Seanceseps::finaliserep' => array(
+						'disabled' => "'#Seanceep.finalisee#' != ''",
+						'url' => array( 'controller' => 'seanceseps', 'action' => 'finaliserep', '#Seanceep.id#')
+					),
+					'Seanceseps::traitercg' => array(
+						'disabled' => "'#Seanceep.finalisee#' == 'cg' || '#Seanceep.finalisee#' != 'ep'",
+						'url' => array( 'controller' => 'seanceseps', 'action' => 'traitercg', '#Seanceep.id#')
+					),
+					'Seanceseps::finalisercg' => array(
+						'disabled' => "'#Seanceep.finalisee#' == 'cg' || '#Seanceep.finalisee#' != 'ep'",
+						'url' => array( 'controller' => 'seanceseps', 'action' => 'finalisercg', '#Seanceep.id#')
+					),
 				)
 			)
 		);
 	}
-	
+// debug( $seanceseps );
 ?>

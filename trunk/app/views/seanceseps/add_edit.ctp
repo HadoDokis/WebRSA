@@ -11,29 +11,30 @@
 ?>
 </h1>
 
-    <script type="text/javascript">
-        document.observe("dom:loaded", function() {
+	<script type="text/javascript">
+		document.observe("dom:loaded", function() {
 			<?php
 				echo $ajax->remoteFunction(
-				    array(
-				        'update' => 'Adresse',
-				        'url' => Router::url(
-				            array(
-				                'action' => 'ajaxadresse',
-				                Set::extract( $this->data, 'Seanceep.structurereferente_id' )
-				            ),
-				            true
-				        )
-				    )
+					array(
+						'update' => 'Adresse',
+						'url' => Router::url(
+							array(
+								'action' => 'seanceseps',
+								'action' => 'ajaxadresse',
+								Set::classicExtract( $this->data, 'Seanceep.structurereferente_id' )
+							),
+							true
+						)
+					)
 				);
 			?>
 		});
-    </script>
+	</script>
 
 <?php
-	
+
 	echo $form->create( 'Seanceep', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
-	
+
 	echo $default->subform(
 		array(
 			'Seanceep.id' => array('type'=>'hidden'),
@@ -47,9 +48,9 @@
 			'options' => $options
 		)
 	);
-	
+
 	echo $ajax->observeField( 'SeanceepStructurereferenteId', array( 'update' => 'Adresse', 'url' => Router::url( array( 'action' => 'ajaxadresse' ) ), true ) );
-	
+
 	echo $html->tag(
 		'div',
 		'',
@@ -57,7 +58,7 @@
 			'id' => 'Adresse'
 		)
 	);
-	
+
 	echo $default->subform(
 		array(
 			'Seanceep.salle',
@@ -68,7 +69,7 @@
 			'options' => $options
 		)
 	);
-	
-    echo $form->end( 'Enregistrer' );
-    
+
+	echo $form->end( 'Enregistrer' );
+
 ?>
