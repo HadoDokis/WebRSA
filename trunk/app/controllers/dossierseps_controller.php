@@ -11,14 +11,14 @@
 		* FIXME: evite les droits
 		*/
 
-        protected function _setOptions() {
-            $this->set( 'motifpdo', $this->Option->motifpdo() );
-            $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
+		protected function _setOptions() {
+			$this->set( 'motifpdo', $this->Option->motifpdo() );
+			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
 
-            $options = $this->Propopdo->allEnumLists();
+			$options = $this->Propopdo->allEnumLists();
 
-            $this->set( compact( 'options' ) );
-        }
+			$this->set( compact( 'options' ) );
+		}
 
 		public function beforeFilter() {
 		}
@@ -77,8 +77,10 @@
 					$seanceep,
 					'Ep.Zonegeographique.{n}.codeinsee'
 				);
-				foreach( $zonesgeographiques as $zonegeographique ) {
-						$conditionsAdresses['OR'][] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $zonegeographique )."%'";
+				if( !empty( $zonesgeographiques ) ) {
+					foreach( $zonesgeographiques as $zonegeographique ) {
+							$conditionsAdresses['OR'][] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $zonegeographique )."%'";
+					}
 				}
 			}
 			// Fin conditions zones géographiques CG 93
@@ -153,6 +155,10 @@
 			$listeThemes['OR'] = array();
 			foreach($themes as $theme => $niveauDecision) {
 				$listeThemes['OR'][] = array( 'Dossierep.themeep' => Inflector::tableize( $theme ) );
+			}
+
+			if( empty( $conditionsAdresses['OR'] ) ) {
+				$conditionsAdresses = array();
 			}
 
 			$this->paginate = array(

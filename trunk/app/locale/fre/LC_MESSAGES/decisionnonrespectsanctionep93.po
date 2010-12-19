@@ -20,22 +20,22 @@ msgstr ""
 ###############################################################################
 
 msgid "ENUM::DECISION::1maintien"
-msgstr "Maintien de l'allocation (1er passage)"
+msgstr "Maintien"
 
 msgid "ENUM::DECISION::1reduction"
-msgstr "Réduction de 100,00 € de l'allocation pour 1 mois"
+msgstr "Réduction"
 
 msgid "ENUM::DECISION::1sursis"
-msgstr "Sursis d'un mois avant suspension"
+msgstr "Sursis"
 
 msgid "ENUM::DECISION::2maintien"
-msgstr "Maintien de l'allocation (2ème passage)"
+msgstr "Maintien"
 
 msgid "ENUM::DECISION::2suspensiontotale"
-msgstr "Suspension totale de l'allocation RSA"
+msgstr "Suspension totale"
 
 msgid "ENUM::DECISION::2suspensionpartielle"
-msgstr "Suspension partielle de l'allocation RSA"
+msgstr "Suspension partielle"
 
 msgid "ENUM::ETAPE::ep"
 msgstr "EP"

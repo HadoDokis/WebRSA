@@ -237,7 +237,7 @@
 
 			$this->Dossierep->updateAll(
 				array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-				array( '"Dossierep"."id"' => Set::extract( $data, '/Dossierep/id' ) )
+				array( '"Dossierep"."id"' => Set::extract( $data, '/Saisineepbilanparcours66/dossierep_id' ) )
 			);
 
 			return $success;

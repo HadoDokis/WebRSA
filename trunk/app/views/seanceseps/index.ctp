@@ -103,22 +103,22 @@
 					'Seanceseps::participants' => array(
 						'url' => array( 'controller' => 'seanceseps', 'action' => 'view', '#Seanceep.id#')
 					),
-					'Seanceseps::traiterep' => array(
-						'disabled' => "'#Seanceep.finalisee#' != ''",
-						'url' => array( 'controller' => 'seanceseps', 'action' => 'traiterep', '#Seanceep.id#')
-					),
-					'Seanceseps::finaliserep' => array(
-						'disabled' => "'#Seanceep.finalisee#' != ''",
-						'url' => array( 'controller' => 'seanceseps', 'action' => 'finaliserep', '#Seanceep.id#')
-					),
-					'Seanceseps::traitercg' => array(
-						'disabled' => "'#Seanceep.finalisee#' == 'cg' || '#Seanceep.finalisee#' != 'ep'",
-						'url' => array( 'controller' => 'seanceseps', 'action' => 'traitercg', '#Seanceep.id#')
-					),
-					'Seanceseps::finalisercg' => array(
-						'disabled' => "'#Seanceep.finalisee#' == 'cg' || '#Seanceep.finalisee#' != 'ep'",
-						'url' => array( 'controller' => 'seanceseps', 'action' => 'finalisercg', '#Seanceep.id#')
-					),
+// 					'Seanceseps::traiterep' => array(
+// 						'disabled' => "'#Seanceep.finalisee#' != ''",
+// 						'url' => array( 'controller' => 'seanceseps', 'action' => 'traiterep', '#Seanceep.id#')
+// 					),
+// 					'Seanceseps::finaliserep' => array(
+// 						'disabled' => "'#Seanceep.finalisee#' != ''",
+// 						'url' => array( 'controller' => 'seanceseps', 'action' => 'finaliserep', '#Seanceep.id#')
+// 					),
+// 					'Seanceseps::traitercg' => array(
+// 						'disabled' => "'#Seanceep.finalisee#' == 'cg' || '#Seanceep.finalisee#' != 'ep'",
+// 						'url' => array( 'controller' => 'seanceseps', 'action' => 'traitercg', '#Seanceep.id#')
+// 					),
+// 					'Seanceseps::finalisercg' => array(
+// 						'disabled' => "'#Seanceep.finalisee#' == 'cg' || '#Seanceep.finalisee#' != 'ep'",
+// 						'url' => array( 'controller' => 'seanceseps', 'action' => 'finalisercg', '#Seanceep.id#')
+// 					),
 				)
 			)
 		);
