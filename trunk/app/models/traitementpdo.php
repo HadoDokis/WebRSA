@@ -10,7 +10,8 @@
 					'hasrevenu',
 					'haspiecejointe',
 					'hasficheanalyse',
-					'regime'
+					'regime',
+					'aidesubvreint'
 				)
 			),
 			'Autovalidate'

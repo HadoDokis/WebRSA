@@ -160,7 +160,8 @@ ALTER TABLE dsps_revs ADD COLUMN statutoccupation type_statutoccupation DEFAULT 
 -- Ajout de champs dans la table traitementspdos pour gérer la fiche de calcul
 -- *****************************************************************************
 
-CREATE TYPE TYPE_REGIMEFICHECALCUL AS ENUM ( 'fagri', 'ragri', 'reel', 'microbic', 'microbnc' );
+DROP TYPE IF EXISTS TYPE_REGIMEFICHECALCUL CASCADE;
+CREATE TYPE TYPE_REGIMEFICHECALCUL AS ENUM ( 'fagri', 'ragri', 'reel', 'microbic', 'microbicauto', 'microbnc' );
 
 SELECT add_missing_table_field ('public', 'traitementspdos', 'regime', 'TYPE_REGIMEFICHECALCUL');
 SELECT add_missing_table_field ('public', 'traitementspdos', 'saisonnier', 'TYPE_BOOLEANNUMBER');
@@ -182,6 +183,14 @@ SELECT add_missing_table_field ('public', 'traitementspdos', 'provisionsnonded',
 SELECT add_missing_table_field ('public', 'traitementspdos', 'moinsvaluescession', 'FLOAT');
 SELECT add_missing_table_field ('public', 'traitementspdos', 'autrecorrection', 'FLOAT');
 
+SELECT add_missing_table_field ('public', 'traitementspdos', 'nbmoisactivite', 'INTEGER');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'mnttotalpriscompte', 'FLOAT');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'revenus', 'FLOAT');
+SELECT add_missing_table_field ('public', 'traitementspdos', 'benefpriscompte', 'FLOAT');
+
+DROP TYPE IF EXISTS TYPE_AIDESUBVREINT CASCADE;
+CREATE TYPE TYPE_AIDESUBVREINT AS ENUM ( 'aide1', 'aide2', 'subv1', 'subv2' );
+SELECT add_missing_table_field ('public', 'traitementspdos', 'aidesubvreint', 'TYPE_AIDESUBVREINT');
 
 -- *****************************************************************************
 COMMIT;

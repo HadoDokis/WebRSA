@@ -121,7 +121,10 @@ msgid "ENUM::REGIME::reel"
 msgstr "Réel"
 
 msgid "ENUM::REGIME::microbic"
-msgstr "Régime Micro-bic (dont auto-entrepreneur)"
+msgstr "Régime Micro-bic"
+
+msgid "ENUM::REGIME::microbicauto"
+msgstr "Régime Micro-bic Auto-Entrepreneur"
 
 msgid "ENUM::REGIME::microbnc"
 msgstr "Régime Micro BNC"
@@ -209,3 +212,17 @@ msgstr "Abattement"
 
 msgid "Traitementpdo.benefpriscompte"
 msgstr "Bénéfice pris en compte"
+
+msgid "ENUM::AIDESUBVREINT::aide1"
+msgstr "Aide 1"
+
+msgid "ENUM::AIDESUBVREINT::aide2"
+msgstr "Aide 2"
+
+msgid "ENUM::AIDESUBVREINT::subv1"
+msgstr "Subvention 1"
+
+msgid "ENUM::AIDESUBVREINT::subv2"
+msgstr "Subvention 2"
+
+

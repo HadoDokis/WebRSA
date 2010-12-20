@@ -123,6 +123,18 @@
         
         echo "<fieldset id='fichecalcul' class='noborder invisible'><table>";
         
+		    echo $default->subform(
+		        array(
+		            'Traitementpdo.nbmoisactivite' => array( 'type' => 'hidden' ),
+		            'Traitementpdo.mnttotalpriscompte' => array( 'type' => 'hidden' ),
+		            'Traitementpdo.revenus' => array( 'type' => 'hidden' ),
+		            'Traitementpdo.benefpriscompte' => array( 'type' => 'hidden' )
+		        ),
+		        array(
+		            'options' => $options
+		        )
+		    );
+        
         	echo $html->tag(
         		'tr',
         		$html->tag(
@@ -272,7 +284,7 @@
         			'class' => 'fagri'
         		)
         	);
-        
+        	
         	echo $html->tag(
         		'tr',
         		$html->tag(
@@ -292,7 +304,14 @@
         		).
         		$html->tag(
         			'td',
-        			$form->input('Traitementpdo.aidesubvreint', array('label'=>false, 'type'=>'select'))
+					$default->subform(
+						array(
+							'Traitementpdo.aidesubvreint' => array( 'type' => 'select', 'label' => false, 'empty' => true )
+						),
+						array(
+							'options' => $options
+						)
+					)
         		),
         		array(
         			'class' => 'fagri'
@@ -347,14 +366,14 @@
         			'td',
         			$xform->_label('Traitementpdo.abattement', array('domain'=>'traitementpdo')),
         			array(
-        				'class' => 'microbic'
+        				'class' => 'microbic microbicauto'
         			)
         		).
         		$html->tag(
         			'td',
         			Configure::read('Traitementpdo.fichecalcul_abattbicvnt').' %',
         			array(
-        				'class' => 'microbic',
+        				'class' => 'microbic microbicauto',
         				'id' => 'abattbicvnt'
         			)
         		).
@@ -367,7 +386,7 @@
         			)
         		),
         		array(
-        			'class' => 'ragri reel microbic'
+        			'class' => 'ragri reel microbic microbicauto'
         		)
         	);
         	
@@ -393,14 +412,14 @@
         			'td',
         			$xform->_label('Traitementpdo.abattement', array('domain'=>'traitementpdo')),
         			array(
-        				'class' => 'microbic microbnc'
+        				'class' => 'microbic microbicauto microbnc'
         			)
         		).
         		$html->tag(
         			'td',
         			Configure::read('Traitementpdo.fichecalcul_abattbicsrv').' %',
         			array(
-        				'class' => 'microbic',
+        				'class' => 'microbic microbicauto',
         				'id' => 'abattbicsrv'
         			)
         		).
@@ -421,7 +440,7 @@
         			)
         		),
         		array(
-        			'class' => 'ragri reel microbic microbnc'
+        			'class' => 'ragri reel microbic microbicauto microbnc'
         		)
         	);
         	
@@ -446,7 +465,7 @@
         			)
         		),
         		array(
-        			'class' => 'microbic microbnc'
+        			'class' => 'microbic microbicauto microbnc'
         		)
         	);
         	
@@ -963,6 +982,7 @@
 			nbmois = 0;
 		
 		$('nbmoisactivite').innerHTML = ''+nbmois+' mois';
+		$('TraitementpdoNbmoisactivite').setValue(nbmois);
 		recalculrevenus();
 	}
 	
@@ -1006,6 +1026,7 @@
 				mttotal += Math.round( ( autrecorrection ) * 100 ) / 100;
 		}
 		
+		$('TraitementpdoMnttotalpriscompte').setValue(mttotal);
 		mttotal = mttotal.toString().replace('.', ',');
 		$('mnttotal').innerHTML = mttotal+' €';
 		recalculrevenus();
@@ -1014,7 +1035,7 @@
 	function recalculbenefpriscompte() {
 		var benefpriscompte = 0;
 		
-		if ($F('TraitementpdoRegime')=='microbic') {
+		if ($F('TraitementpdoRegime')=='microbic' || $F('TraitementpdoRegime')=='microbicauto') {
 			var chaffvnt = parseFloat($F('TraitementpdoChaffvnt').replace(',', '.'));
 			var chaffsrv = parseFloat($F('TraitementpdoChaffsrv').replace(',', '.'));
 			var abattbicvnt = $('abattbicvnt').innerHTML.split(' ');
@@ -1039,6 +1060,7 @@
 				benefpriscompte = Math.round( ( chaffsrv * valueabattbncsrv ) * 100 ) / 100;
 		}
 		
+		$('TraitementpdoBenefpriscompte').setValue(benefpriscompte);
 		benefpriscompte = benefpriscompte.toString().replace('.', ',');
 		$('benefpriscompte').innerHTML = benefpriscompte + ' €';
 		recalculrevenus();
@@ -1046,7 +1068,7 @@
 	
 	function infobulle(champ) {
 		var p = $('infoChaff'+champ);
-		if ($F('TraitementpdoRegime')=='reel' || $F('TraitementpdoRegime')=='microbic' || $F('TraitementpdoRegime')=='microbnc') {
+		if ($F('TraitementpdoRegime')=='reel' || $F('TraitementpdoRegime')=='microbic' || $F('TraitementpdoRegime')=='microbicauto' || $F('TraitementpdoRegime')=='microbnc') {
 			var valuemax = 0;
 			if (champ=='srv')
 				valuemax = <?php echo Configure::read( 'Traitementpdo.fichecalcul_casrvmax' ) ?>;
@@ -1074,7 +1096,7 @@
 			if (!isNaN(valuemnttotal) && !isNaN(valuenbmois) && valuemnttotal!=0 && valuenbmois!=0)
 				revenus = Math.round( parseFloat( valuemnttotal ) / parseFloat( valuenbmois ) * 100 ) / 100;
 		}
-		else if ($F('TraitementpdoRegime')=='microbic' || $F('TraitementpdoRegime')=='microbnc') {
+		else if ($F('TraitementpdoRegime')=='microbic' || $F('TraitementpdoRegime')=='microbicauto' || $F('TraitementpdoRegime')=='microbnc') {
 			var benefpriscompte = $('benefpriscompte').innerHTML.split(' ');
 			var valuebenefpriscompte = benefpriscompte[0].replace(',', '.');
 			valuebenefpriscompte = parseFloat(valuebenefpriscompte);
@@ -1085,6 +1107,7 @@
 				revenus = Math.round( parseFloat( valuebenefpriscompte ) / parseFloat( valuenbmois ) * 100 ) / 100;
 		}
 		
+		$('TraitementpdoRevenus').setValue(revenus);
 		revenus = revenus.toString().replace('.', ',');
 		$('revenus').innerHTML = revenus + ' € par mois';
 	}
