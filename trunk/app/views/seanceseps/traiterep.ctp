@@ -19,14 +19,27 @@
 
 		echo $form->submit( 'Enregistrer' );
 		echo $form->end();
+
+		echo $default->button(
+		    'back',
+		    array(
+		        'controller' => 'seanceseps',
+		        'action'     => 'view',
+		        $seanceep_id
+		    ),
+		    array(
+		        'id' => 'Back'
+		    )
+		);
+		
 	?>
 </div>
 
 <?php
-	if( Configure::read( 'debug' ) > 0 ) {
+	//if( Configure::read( 'debug' ) > 0 ) {
 		echo $javascript->link( 'prototype.livepipe.js' );
 		echo $javascript->link( 'prototype.tabs.js' );
-	}
+	//}
 ?>
 
 <script type="text/javascript">

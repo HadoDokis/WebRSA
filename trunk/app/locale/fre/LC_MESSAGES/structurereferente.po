@@ -45,3 +45,6 @@ msgstr "Gestion des CERs"
 
 msgid "Structurereferente.apre"
 msgstr "Gestion des APREs"
+
+msgid "Structurereferente.ville"
+msgstr "Ville"

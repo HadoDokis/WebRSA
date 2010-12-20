@@ -2,12 +2,13 @@
 <div  id="ficheCI">
 	<ul class="actionMenu">
 	<?php
+		
 		echo '<li>'.$xhtml->editLink(
 			__d('Seanceep','Seanceep.edit',true),
 			array( 'controller' => 'seanceseps', 'action' => 'edit', $seanceep['Seanceep']['id'] )
 		).' </li>';
 
-		if( empty( $seanceep['Seanceep']['finalisee'] ) ) {
+		if( empty( $seanceep['Seanceep']['finalisee'] ) && $countDossiers > 0 && !empty($membresepsseanceseps) ) {
 			echo '<li>'.$xhtml->link(
 				__d( 'seanceep','Seanceseps::traiterep',true ),
 				array( 'controller' => 'seanceseps', 'action' => 'traiterep', $seanceep['Seanceep']['id'] )
@@ -17,7 +18,7 @@
 			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::traiterep',true ).'</span></li>';
 		}
 
-		if( empty( $seanceep['Seanceep']['finalisee'] ) ) {
+		if( empty( $seanceep['Seanceep']['finalisee'] ) && $countDossiers > 0 && !empty($membresepsseanceseps) ) {
 			echo '<li>'.$xhtml->link(
 				__d( 'seanceep','Seanceseps::finaliserep',true ),
 				array( 'controller' => 'seanceseps', 'action' => 'finaliserep', $seanceep['Seanceep']['id'] )
