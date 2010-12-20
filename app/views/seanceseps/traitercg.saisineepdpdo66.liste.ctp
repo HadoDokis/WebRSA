@@ -54,15 +54,4 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 	}
 	echo '</tbody></table>';
 
-	echo $default->button(
-		'back',
-		array(
-			'controller' => 'seanceseps',
-			'action'     => 'index'
-		),
-		array(
-			'id' => 'Back'
-		)
-	);
-
 ?>
