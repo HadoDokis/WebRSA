@@ -33,11 +33,11 @@
 				)
 			),
 			'matricule' => array(
-				array(
+				/*array(
 					'rule' => 'isUnique',
 					'message' => 'Ce numéro CAF est déjà utilisé',
 					'allowEmpty' => true
-				),
+				),*/
 				array(
 					'rule' => array( 'between', 15, 15 ),
 					'message' => 'Le numéro CAF est composé de 15 chiffres',
