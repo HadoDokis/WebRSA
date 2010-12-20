@@ -94,7 +94,7 @@
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
-					$this->redirect( array( 'action' => 'index' ) );
+					$this->redirect( array( 'action' => 'view', $this->Seanceep->id ) );
 				}
 			}
 			else if( $this->action == 'edit' ) {
@@ -177,6 +177,7 @@
 			}
 
 			$this->set( compact( 'seanceep', 'dossiers' ) );
+			$this->set( 'seanceep_id', $seanceep_id);
 			$this->_setOptions();
 		}
 
@@ -254,7 +255,9 @@
 
 			// Dossiers à passer en séance, par thème traité
 			$themes = array_keys( $this->Seanceep->themesTraites( $seanceep_id ) );
+			$this->set(compact('themes'));
 			$dossiers = array();
+			$countDossiers = 0;
 			foreach( $themes as $theme ) {
 				$class = Inflector::classify( $theme );
 				$dossiers[$theme] = $this->Seanceep->Dossierep->find(
@@ -265,6 +268,7 @@
 							'Dossierep.themeep' => Inflector::tableize( $class )
 						),
 						'contain' => array(
+							$class,
 							'Personne' => array(
 								'Foyer' => array(
 									'Adressefoyer' => array(
@@ -278,8 +282,11 @@
 						),
 					)
 				);
+				$countDossiers += count($dossiers[$theme]);
 			}
-			$this->set( compact( 'dossiers', 'themes' ) );
+//debug($dossiers);
+			$this->set(compact('dossiers'));
+			$this->set(compact('countDossiers'));
 
 			$fields = array(
 				'MembreepSeanceep.id',
