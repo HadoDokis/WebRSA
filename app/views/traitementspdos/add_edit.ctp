@@ -1035,8 +1035,8 @@
 			var valueabattbncsrv = abattbncsrv[0].replace(',', '.');
 			valueabattbncsrv = 1 - parseFloat(valueabattbncsrv)/100;
 			
-			if (!isNaN(chaffvnt) && !isNaN(valueabattbncsrv))
-				benefpriscompte = Math.round( ( chaffvnt * valueabattbncsrv ) * 100 ) / 100;
+			if (!isNaN(chaffsrv) && !isNaN(valueabattbncsrv))
+				benefpriscompte = Math.round( ( chaffsrv * valueabattbncsrv ) * 100 ) / 100;
 		}
 		
 		benefpriscompte = benefpriscompte.toString().replace('.', ',');
