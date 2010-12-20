@@ -268,7 +268,6 @@
 							'Dossierep.themeep' => Inflector::tableize( $class )
 						),
 						'contain' => array(
-							$class,
 							'Personne' => array(
 								'Foyer' => array(
 									'Adressefoyer' => array(
