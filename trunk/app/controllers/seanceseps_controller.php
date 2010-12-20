@@ -45,7 +45,7 @@
 				$options['Seanceep']['decisionpdo_id'] = $this->Seanceep->Dossierep->Saisineepdpdo66->Nvsepdpdo66->Decisionpdo->find('list');
 			}
 			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions();
-			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
+			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->list1Options();
 			$this->set( compact( 'options' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 		}
