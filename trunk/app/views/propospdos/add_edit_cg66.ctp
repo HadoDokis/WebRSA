@@ -189,7 +189,7 @@
 
     <fieldset id="Etatpdo2" class="invisible"></fieldset>
 
-    <fieldset>
+    <!--<fieldset>
         <?php
             echo $form->input( 'Propopdo.decision', array( 'label' => 'Décision', 'type' => 'checkbox' ) );
         ?>
@@ -207,7 +207,7 @@
                         'options' => $options
                     )
                 );
-            ?>
+            ?>-->
                 <!--<fieldset id="nonadmis" class="invisible">
                     <?php
                         echo $default->subform(
@@ -221,7 +221,7 @@
                         );
                     ?>
                 </fieldset>-->
-            <?php
+            <!--<?php
                 echo $default->subform(
                     array(
 
@@ -261,9 +261,9 @@
         </fieldset>
     </fieldset>
 
-    <fieldset id="Etatpdo3" class="invisible"></fieldset>
+    <fieldset id="Etatpdo3" class="invisible"></fieldset>-->
 
-    <fieldset>
+    <!--<fieldset>
         <?php
             echo $form->input( 'Propopdo.isdecisionop', array( 'label' => 'Décison de l\'OP', 'type' => 'checkbox' ) );
         ?>
@@ -284,7 +284,7 @@
         ?>
         </fieldset>
     </fieldset>
-    <fieldset id="Etatpdo5" class="invisible"></fieldset>
+    <fieldset id="Etatpdo5" class="invisible"></fieldset>-->
 
 
     <!--<fieldset>
@@ -311,10 +311,50 @@
     </fieldset>
     <fieldset id="Etatpdo6" class="invisible"></fieldset>-->
     
+    <?php
+    	if ($this->action=='edit') {
+		    echo $default2->index(
+		        $traitementspdos,
+		        array(
+		            'Descriptionpdo.name',
+		            'Traitementpdo.datereception',
+		            'Traitementpdo.datedepart',
+		            'Traitementtypepdo.name'
+		        ),
+		        array(
+		            'actions' => array(
+		                'Traitementspdos::edit',
+		                'Traitementspdos::clore' => array( 'disabled' => '\'#Traitementpdo.clos#\' != 0' )
+		            ),
+		            'add' => array( 'Traitementpdo.add' => array( 'controller'=>'traitementspdos', 'action'=>'add', $pdo_id ) ),
+		            'options' => $options
+		        )
+		    );
+		    
+		    echo $default2->index(
+		        $decisionspropospdos,
+		        array(
+		            'Decisionpropopdo.datedecisionpdo',
+		            'Decisionpdo.libelle',
+		            'Decisionpropopdo.validationdecision',
+		            'Decisionpropopdo.datevalidationdecision',
+		            'Decisionpropopdo.etatdossierpdo'
+		        ),
+		        array(
+		            'actions' => array(
+		                'Decisionspropospdos::edit'
+		            ),
+		            'add' => array( 'Decisionpropopdo.add' => array( 'controller'=>'decisionspropospdos', 'action'=>'add', $pdo_id ) ),
+		            'options' => $options
+		        )
+		    );
+		}
+	?>
+    
     </div>
     <div class="submit">
-        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
-        <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) ); ?>
+        <?php echo $form->submit('Retour', array( 'name' => 'Cancel', 'div' => false ) ); ?>
     </div>
 
     <?php echo $xform->end();?>
