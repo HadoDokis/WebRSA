@@ -35,10 +35,10 @@
 
 <?php
     if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout d\'une PDO';
+        $this->pageTitle = 'Ajout d\'un dossier';
     }
     else {
-        $this->pageTitle = 'Édition de la PDO';
+        $this->pageTitle = 'Édition du dossier';
     }
 ?>
 
@@ -101,7 +101,7 @@
             echo $default->subform(
                 array(
                     'Propopdo.etatdossierpdo' => array( 'type' => 'hidden' ),
-                    'Propopdo.user_id' => array( 'label' =>  'Gestionnaire du dossier PDO (instructeur en charge du dossier)', 'type' => 'select', 'options' => $gestionnaire )
+                    'Propopdo.user_id' => array( 'label' =>  'Gestionnaire du dossier (instructeur en charge du dossier)', 'type' => 'select', 'options' => $gestionnaire )
                 ),
                 array(
                     'domain' => $domain,
@@ -116,8 +116,8 @@
             echo $default->subform(
                 array(
                     'Propopdo.typepdo_id' => array( 'label' =>  required( __d( 'propopdo', 'Propopdo.typepdo_id', true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ),
-                    'Propopdo.datereceptionpdo' => array( 'label' =>  ( __( 'Date de réception de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
-                     'Propopdo.choixpdo' => array( 'label' =>  ( __( 'Choix', true ) ), 'type' => 'radio', 'options' => $options['choixpdo'], 'empty' => true ),
+                    'Propopdo.datereceptionpdo' => array( 'label' =>  ( __( 'Date de réception du dossier', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
+                     //'Propopdo.choixpdo' => array( 'label' =>  ( __( 'Choix', true ) ), 'type' => 'radio', 'options' => $options['choixpdo'], 'empty' => true ),
                     'Propopdo.originepdo_id' => array( 'label' =>  required( __( 'Origine', true ) ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
                    'Propopdo.orgpayeur' => array( 'label' =>  __d( 'propopdo', 'Propopdo.orgpayeur', true ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true ),
                    'Propopdo.serviceinstructeur_id' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.serviceinstructeur_id', true ) ), 'type' => 'select', 'options' => $serviceinstructeur, 'empty' => true )
@@ -141,12 +141,12 @@
             <tr>
                 <td class="mediumSize noborder">
                     <?php
-                        echo $xform->input( 'Situationpdo.Situationpdo', array( 'type' => 'select', 'label' => 'Motif de la PDO', 'multiple' => 'checkbox' , 'options' => $situationlist ) );
+                        echo $xform->input( 'Situationpdo.Situationpdo', array( 'type' => 'select', 'label' => 'Motif de la décision', 'multiple' => 'checkbox' , 'options' => $situationlist ) );
                     ?>
                 </td>
                 <td class="mediumSize noborder">
                     <?php
-                        echo $xform->input( 'Statutpdo.Statutpdo', array( 'type' => 'select', 'label' => 'Statut de la PDO', 'multiple' => 'checkbox' , 'options' => $statutlist ) );
+                        echo $xform->input( 'Statutpdo.Statutpdo', array( 'type' => 'select', 'label' => 'Statut de la personne', 'multiple' => 'checkbox' , 'options' => $statutlist ) );
                     ?>
                 </td>
             </tr>

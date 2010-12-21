@@ -30,7 +30,7 @@
             <ul class="actionMenu">
                 <?php
                     echo '<li>'.$xhtml->addLink(
-                        'Ajouter un dossier PDO',
+                        'Ajouter un dossier',
                         array( 'controller' => 'propospdos', 'action' => 'add', $personne_id )
                     ).' </li>';
                 ?>
@@ -76,12 +76,12 @@
 		                            h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),
 		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.etatdossierpdo' ), $options['etatdossierpdo'] ) ),
 		                            $xhtml->viewLink(
-		                                'Voir le dossier PDO',
+		                                'Voir le dossier',
 		                                array( 'controller' => 'propospdos', 'action' => 'view', $pdo['Propopdo']['id']),
 		                                $permissions->check( 'propospdos', 'view' )
 		                            ),
 		                            $xhtml->editLink(
-		                                'Éditer le dossier PDO',
+		                                'Éditer le dossier',
 		                                array( 'controller' => 'propospdos', 'action' => 'edit', $pdo['Propopdo']['id'] ),
 		                                $permissions->check( 'propospdos', 'edit' )
 		                            )

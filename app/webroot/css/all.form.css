@@ -17,6 +17,15 @@ div.input label, div.input span.label, dl.inform dt {
     cursor: pointer;
 }
 
+fieldset.multiple div.input div.checkbox label {
+    display: -moz-inline-box;
+    display: inline-table;
+    display: inline-block;
+    width: 95%;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
 div.input.checkbox label {
     width: 90%;
 }
