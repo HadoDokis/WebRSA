@@ -38,14 +38,16 @@
 				array( 'Foyer' => array( 'sitfam' => $this->Option->sitfam() ) )
 			);
 			//$options['Seanceep']['ep_id'] = $this->Seanceep->Ep->find( 'list' );
-			if( !in_array( $this->action, array( 'add', 'edit' ) ) ) {
+			if( !in_array( $this->action, array( 'add', 'edit', 'index' ) ) ) {
 				/// TODO: est-ce que ça a  du sens ?
 				$options['Seanceep']['typeorient_id'] = $this->Seanceep->Structurereferente->Typeorient->listOptions();
 				$options['Seanceep']['structurereferente_id'] = $this->Seanceep->Structurereferente->list1Options();
 				$options['Seanceep']['decisionpdo_id'] = $this->Seanceep->Dossierep->Saisineepdpdo66->Nvsepdpdo66->Decisionpdo->find('list');
 			}
+			else{
+				$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
+			}
 			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions();
-			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->list1Options();
 			$this->set( compact( 'options' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 		}
