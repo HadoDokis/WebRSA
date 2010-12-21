@@ -3,6 +3,10 @@ form {
     text-align: left;
 }
 
+div.aere {
+  margin-top: 0.5em;
+}
+
 div.text, div.password, div.select, div.radio, div.date, div.textarea, div.input.text {
     margin-bottom: 0.5em;
     width: auto;
