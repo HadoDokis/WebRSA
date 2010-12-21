@@ -138,4 +138,7 @@ msgstr "Organisme payeur"
 msgid "Propopdo::index::empty"
 msgstr "Aucun renseignement disponible actuellement"
 
+msgid "Propospdos::add"
+msgstr "Ajouter"
+
 

@@ -22,6 +22,12 @@ msgstr ""
 # Enum Decisionpropopdo.validationdecision
 ###############################################################################
 
+msgid "Propospdos::add"
+msgstr "Ajouter une décision"
+
+msgid "Decisionspropospdos::edit"
+msgstr "Editer la décision"
+
 msgid "Decisionpropopdo.validationdecision"
 msgstr "Décision validée"
 
