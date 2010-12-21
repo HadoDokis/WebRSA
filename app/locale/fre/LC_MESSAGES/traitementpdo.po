@@ -19,6 +19,12 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Propospdos::add"
+msgstr "Ajouter un traitement"
+
+msgid "Traitementspdos::clore"
+msgstr "Clore le traitement"
+
 msgid "Traitementpdo::index::empty"
 msgstr "Aucun traitement pour cette PDO présent"
 
