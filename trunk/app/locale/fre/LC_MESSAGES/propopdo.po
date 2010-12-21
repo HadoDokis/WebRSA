@@ -109,7 +109,7 @@ msgid "Propopdo.datedecisionop"
 msgstr "Date transimission à l\'OP"
 
 msgid "ENUM::ETATDOSSIERPDO::1"
-msgstr "En attente d'instruction"
+msgstr "En attente d'affectation"
 
 msgid "ENUM::ETATDOSSIERPDO::2"
 msgstr "Instruction en cours"

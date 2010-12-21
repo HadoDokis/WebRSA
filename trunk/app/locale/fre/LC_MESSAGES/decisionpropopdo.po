@@ -56,7 +56,7 @@ msgid "Decisionpropopdo.etatdossierpdo"
 msgstr "Etat du dossier"
 
 msgid "ENUM::ETATDOSSIERPDO::1"
-msgstr "En attente d'instruction"
+msgstr "En attente d'affectation"
 
 msgid "ENUM::ETATDOSSIERPDO::2"
 msgstr "Instruction en cours"

@@ -143,6 +143,29 @@
 													</li>
 												<?php endif;?>
 
+											<?php } elseif (Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) { ?>
+
+												<?php if( $permissions->check( 'orientsstructs', 'index' ) ):?>
+													<li>
+														<?php
+															echo $xhtml->link(
+																h( 'Orientation' ),
+																array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
+															);
+														?>
+													</li>
+												<?php endif;?>
+												<?php if( $permissions->check( 'propospdos', 'index' ) ):?>
+													<li>
+														<?php
+															echo $xhtml->link(
+																'Décision PCG',
+																array( 'controller' => 'propospdos', 'action' => 'index', $personne['id'] )
+															);
+														?>
+													</li>
+												<?php endif;?>
+
 											<?php } else { ?>
 
 												<?php if( $permissions->check( 'orientsstructs', 'index' ) ):?>
