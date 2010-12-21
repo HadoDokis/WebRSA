@@ -1,0 +1,69 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+
+###############################################################################
+# Enum Decisionpropopdo.validationdecision
+###############################################################################
+
+msgid "Decisionpropopdo.validationdecision"
+msgstr "Décision validée"
+
+msgid "Decisionpropopdo.datevalidationdecision"
+msgstr "Date de validation de la décision"
+
+msgid "ENUM::VALIDATIONDECISION::N"
+msgstr "Non"
+
+msgid "ENUM::VALIDATIONDECISION::O"
+msgstr "Oui"
+
+msgid "Decisionspropospdos::add"
+msgstr "Ajout d'une décision"
+
+msgid "Decisionspropospdos::add"
+msgstr "Édition d'une décision"
+
+msgid "Decisionpropopdo.datedecisionpdo"
+msgstr "Date de la décision"
+
+msgid "Decisionpdo.libelle"
+msgstr "Décision"
+
+msgid "Decisionpropopdo.etatdossierpdo"
+msgstr "Etat du dossier"
+
+msgid "ENUM::ETATDOSSIERPDO::1"
+msgstr "En attente d'instruction"
+
+msgid "ENUM::ETATDOSSIERPDO::2"
+msgstr "Instruction en cours"
+
+msgid "ENUM::ETATDOSSIERPDO::3"
+msgstr "En attente de validation"
+
+msgid "ENUM::ETATDOSSIERPDO::4"
+msgstr "Décision validée"
+
+msgid "ENUM::ETATDOSSIERPDO::5"
+msgstr "Dossier traité"
+
+msgid "ENUM::ETATDOSSIERPDO::6"
+msgstr "En attente de pièces"
+

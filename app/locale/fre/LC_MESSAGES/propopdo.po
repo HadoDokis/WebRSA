@@ -132,3 +132,10 @@ msgstr "Service instructeur"
 msgid "Propopdo.orgpayeur"
 msgstr "Organisme payeur"
 
+###############################################################################
+# Traduction pour les traitements
+###############################################################################
+msgid "Propopdo::index::empty"
+msgstr "Aucun renseignement disponible actuellement"
+
+

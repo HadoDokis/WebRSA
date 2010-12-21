@@ -7,7 +7,7 @@
 
         var $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
-        var $helpers = array( 'Default', 'Ajax' );
+        var $helpers = array( 'Default', 'Default2', 'Ajax' );
 
 		var $commeDroit = array(
 			'view' => 'Propospdos:index',
@@ -26,7 +26,7 @@
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
             $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
-            $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
+            //$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
             $this->set( 'originepdo', $this->Originepdo->find( 'list' ) );
 
             $this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
@@ -48,8 +48,9 @@
             );
 
             $options = $this->Propopdo->allEnumLists();
-// ($options);
             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
+            $options = Set::insert( $options, 'Decisionpropopdo', $this->Propopdo->Decisionpropopdo->allEnumLists() );
+            
             $this->set( compact( 'options' ) );
         }
 
@@ -308,6 +309,34 @@
                 $personne_id = Set::classicExtract( $pdo, 'Propopdo.personne_id' );
                 $dossier_id = $this->Personne->dossierId( $personne_id );
 //                 $step ++;
+
+	            $traitementspdos = $this->{$this->modelClass}->Traitementpdo->find(
+		            'all',
+		            array(
+		                'conditions' => array(
+		                    'propopdo_id' => $pdo_id
+		                ),
+		                'contain' => array(
+		                	'Descriptionpdo',
+		                	'Traitementtypepdo'
+		                )
+		            )
+		        );
+		        $this->set( compact( 'traitementspdos' ) );
+
+	            $decisionspropospdos = $this->{$this->modelClass}->Decisionpropopdo->find(
+		            'all',
+		            array(
+		                'conditions' => array(
+		                    'propopdo_id' => $pdo_id
+		                ),
+		                'contain' => array(
+		                	'Decisionpdo'
+		                )	
+		            )
+		        );
+		        $this->set( compact( 'decisionspropospdos' ) );
+		        $this->set( 'pdo_id', $pdo_id );
             }
 
             $this->Dossier->Suiviinstruction->order = 'Suiviinstruction.id DESC';

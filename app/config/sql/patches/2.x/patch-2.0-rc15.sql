@@ -193,5 +193,29 @@ CREATE TYPE TYPE_AIDESUBVREINT AS ENUM ( 'aide1', 'aide2', 'subv1', 'subv2' );
 SELECT add_missing_table_field ('public', 'traitementspdos', 'aidesubvreint', 'TYPE_AIDESUBVREINT');
 
 -- *****************************************************************************
+-- Déplacement des champs de décisions de la PDO dans une autre table
+-- *****************************************************************************
+
+DROP TABLE IF EXISTS decisionspropospdos;
+CREATE TABLE decisionspropospdos (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	datedecisionpdo			DATE,
+	decisionpdo_id			INTEGER REFERENCES decisionspdos (id),
+	commentairepdo			TEXT,
+	isvalidation			type_booleannumber DEFAULT NULL,
+	validationdecision		type_no DEFAULT NULL,
+	datevalidationdecision	DATE,
+	etatdossierpdo			type_etatdossierpdo DEFAULT NULL,
+	propopdo_id				INTEGER REFERENCES propospdos (id)
+);
+
+ALTER TABLE propospdos DROP COLUMN datedecisionpdo;
+ALTER TABLE propospdos DROP COLUMN decisionpdo_id;
+ALTER TABLE propospdos DROP COLUMN commentairepdo;
+ALTER TABLE propospdos DROP COLUMN isvalidation;
+ALTER TABLE propospdos DROP COLUMN validationdecision;
+ALTER TABLE propospdos DROP COLUMN datevalidationdecision;
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

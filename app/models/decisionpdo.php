@@ -8,8 +8,21 @@
 		public $order = 'Decisionpdo.id ASC';
 
 		public $hasMany = array(
-			'Propopdo' => array(
+			/*'Propopdo' => array(
 				'className' => 'Propopdo',
+				'foreignKey' => 'decisionpdo_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)*/
+			'Decisionpropopdo' => array(
+				'className' => 'Decisionpropopdo',
 				'foreignKey' => 'decisionpdo_id',
 				'dependent' => true,
 				'conditions' => '',

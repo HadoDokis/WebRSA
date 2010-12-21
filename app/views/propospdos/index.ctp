@@ -38,48 +38,81 @@
         <?php endif;?>
 
         <?php if( !empty( $pdos ) ):?>
+        <?php
+        	$colspan = 3;
+        	if (Configure::read( 'nom_form_pdo_cg' ) == 'cg66')
+        		$colspan = 2;
+        ?>
         <table class="tooltips">
             <thead>
                 <tr>
                     <th>Type de PDO</th>
+                    <th>Date de réception de la PDO</th>
                     <th>Décision du Conseil Général</th>
                     <th>Motif de la décision</th>
-                    <th>Date de la décision CG</th>
+                    <!--<th>Date de la décision CG</th>-->
                     <th>Commentaire PDO</th>
                     <th>Etat du dossier PDO</th>
-                    <th colspan="5" class="action">Actions</th>
+                    <th colspan="<?php echo $colspan; ?>" class="action">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach( $pdos as $pdo ):?>
                     <?php
 // debug($pdo);
-                        echo $xhtml->tableCells(
-                            array(
-                                h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ), $typepdo ) ),
-                                h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ) ),
-                                h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.motifpdo' ), $motifpdo ) ),
-                                h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
-                                h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),
-                                h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.etatdossierpdo' ), $options['etatdossierpdo'] ) ),
-                                $xhtml->treatmentLink(
-                                    'Traitements sur la PDO',
-                                    array( 'controller' => 'traitementspdos', 'action' => 'index', $pdo['Propopdo']['id'])
-                                ),
-                                $xhtml->viewLink(
-                                    'Voir le dossier PDO',
-                                    array( 'controller' => 'propospdos', 'action' => 'view', $pdo['Propopdo']['id']),
-                                    $permissions->check( 'propospdos', 'view' )
-                                ),
-                                $xhtml->editLink(
-                                    'Éditer le dossier PDO',
-                                    array( 'controller' => 'propospdos', 'action' => 'edit', $pdo['Propopdo']['id'] ),
-                                    $permissions->check( 'propospdos', 'edit' )
-                                )
-                            ),
-                            array( 'class' => 'odd' ),
-                            array( 'class' => 'even' )
-                        );
+						if (Configure::read( 'nom_form_pdo_cg' ) == 'cg66') {
+		                    echo $xhtml->tableCells(
+		                        array(
+		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ), $typepdo ) ),
+		                            h( date_short( Set::classicExtract( $pdo, 'Propopdo.datereceptionpdo' ) ) ),
+		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ) ),
+		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.motifpdo' ), $motifpdo ) ),
+		                            //h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
+		                            h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),
+		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.etatdossierpdo' ), $options['etatdossierpdo'] ) ),
+		                            $xhtml->viewLink(
+		                                'Voir le dossier PDO',
+		                                array( 'controller' => 'propospdos', 'action' => 'view', $pdo['Propopdo']['id']),
+		                                $permissions->check( 'propospdos', 'view' )
+		                            ),
+		                            $xhtml->editLink(
+		                                'Éditer le dossier PDO',
+		                                array( 'controller' => 'propospdos', 'action' => 'edit', $pdo['Propopdo']['id'] ),
+		                                $permissions->check( 'propospdos', 'edit' )
+		                            )
+		                        ),
+		                        array( 'class' => 'odd' ),
+		                        array( 'class' => 'even' )
+		                    );
+						}
+						else {
+							echo $xhtml->tableCells(
+		                        array(
+		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ), $typepdo ) ),
+		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ) ),
+		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.motifpdo' ), $motifpdo ) ),
+		                            h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
+		                            h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),
+		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.etatdossierpdo' ), $options['etatdossierpdo'] ) ),
+		                            $xhtml->treatmentLink(
+		                                'Traitements sur la PDO',
+		                                array( 'controller' => 'traitementspdos', 'action' => 'index', $pdo['Propopdo']['id'])
+		                            ),
+		                            $xhtml->viewLink(
+		                                'Voir le dossier PDO',
+		                                array( 'controller' => 'propospdos', 'action' => 'view', $pdo['Propopdo']['id']),
+		                                $permissions->check( 'propospdos', 'view' )
+		                            ),
+		                            $xhtml->editLink(
+		                                'Éditer le dossier PDO',
+		                                array( 'controller' => 'propospdos', 'action' => 'edit', $pdo['Propopdo']['id'] ),
+		                                $permissions->check( 'propospdos', 'edit' )
+		                            )
+		                        ),
+		                        array( 'class' => 'odd' ),
+		                        array( 'class' => 'even' )
+		                    );
+						}
                     ?>
                 <?php endforeach;?>
             </tbody>

@@ -80,7 +80,17 @@
 				);
 
 				foreach( $dossierseps as $dossierep ) {
-					$propopdo = $this->Traitementpdo->Propopdo->find(
+					$decisionpropopdo = array(
+						'Decisionpropopdo' => array(
+							'propopdo_id' => $dossierep['Traitementpdo']['propopdo_id'],
+							'datedecisionpdo' => $dossierep['Nvsepdpdo66'][1]['datedecisionpdo'],
+							'decisionpdo_id' => $dossierep['Nvsepdpdo66'][1]['decisionpdo_id'],
+							'commentairepdo' => $dossierep['Nvsepdpdo66'][1]['commentaire']
+						)
+					);
+					$success = $this->Traitementpdo->Propopdo->Decisionpropopdo->save($decisionpropopdo) && $success;
+					
+					/*$propopdo = $this->Traitementpdo->Propopdo->find(
 						'first',
 						array(
 							'conditions' => array(
@@ -97,7 +107,7 @@
 					//$propopdo['Propopdo']['nonadmis'] = $dossierep['Nvsepdpdo66'][1]['nonadmis'];
 					$propopdo['Propopdo']['commentairepdo'] = $dossierep['Nvsepdpdo66'][1]['commentaire'];
 
-					$success = $this->Traitementpdo->Propopdo->save($propopdo) && $success;
+					$success = $this->Traitementpdo->Propopdo->save($propopdo) && $success;*/
 				}
 			}
 			return $success;

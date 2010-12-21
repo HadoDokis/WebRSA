@@ -51,13 +51,13 @@
         */
 
         public function index( $id = null ) {
-            $this->{$this->modelClass}->recursive = 0;
             $traitementspdos = $this->{$this->modelClass}->find(
                 'all',
                 array(
                     'conditions' => array(
                         'propopdo_id' => $id
-                    )
+                    ),
+                    'contain' => false
                 )
             );
             $this->set( compact( 'traitementspdos' ) );
@@ -193,7 +193,7 @@
                         $this->Jetons->release( $dossier_id );
                         $this->Traitementpdo->commit(); // FIXME
                         $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array( 'controller' => 'traitementspdos', 'action' => 'index', $propopdo_id ) );
+                        $this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $propopdo_id ) );
                     }
                     else {
                         $this->Traitementpdo->rollback();
@@ -267,7 +267,7 @@
         	
         	$this->Traitementpdo->id=$id;
         	$this->Traitementpdo->saveField('clos', Configure::read( 'traitementClosId' ));
-        	$this->redirect(array( 'controller'=> 'traitementspdos', 'action'=>'index', $traitementpdo['Traitementpdo']['propopdo_id']));
+        	$this->redirect(array( 'controller'=> 'propospdos', 'action'=>'edit', $traitementpdo['Traitementpdo']['propopdo_id']));
         }
     }
 ?>

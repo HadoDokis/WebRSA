@@ -6,13 +6,13 @@
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(
-	// 					'statutdecision' => array(  'domain' => 'propopdo' ),
+	 				//'statutdecision' => array(  'domain' => 'propopdo' ),
 					'choixpdo' => array( 'domain' => 'propopdo' ),
 					'nonadmis' => array( 'domain' => 'propopdo' ),
 					'iscomplet' => array( 'domain' => 'propopdo' ),
-					'validationdecision' => array( 'domain' => 'propopdo' ),
-					'decisionop' => array( 'domain' => 'propopdo' ),
-					'etatdossierpdo'
+					//'validationdecision' => array( 'domain' => 'propopdo' ),
+					//'decisionop' => array( 'domain' => 'propopdo' ),
+					//'etatdossierpdo' => array( 'domain' => 'decisionpropopdo' )
 				)
 			),
 			'Formattable',
@@ -33,15 +33,15 @@
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			),
-			'decisionpdo_id' => array(
+			/*'decisionpdo_id' => array(
 				'rule' => array( 'allEmpty', 'decision' ),
 				'message' => 'Si prise de décision, choisir un type de décision'
-			),
-			'datedecisionpdo' => array(
+			),*/
+			/*'datedecisionpdo' => array(
 				'rule' => 'date',
 				'message' => 'Veuillez entrer une date valide.',
 				'allowEmpty' => true
-			),
+			),*/
 			'datereceptionpdo' => array(
 				'rule' => 'date',
 				'message' => 'Veuillez entrer une date valide.',
@@ -61,13 +61,13 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Decisionpdo' => array(
+			/*'Decisionpdo' => array(
 				'className' => 'Decisionpdo',
 				'foreignKey' => 'decisionpdo_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			),
+			),*/
 			'Typenotifpdo' => array(
 				'className' => 'Typenotifpdo',
 				'foreignKey' => 'typenotifpdo_id',
@@ -145,6 +145,19 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
+			),
+			'Decisionpropopdo' => array(
+				'className' => 'Decisionpropopdo',
+				'foreignKey' => 'propopdo_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 			)
 		);
 
@@ -206,13 +219,14 @@
 					'"Propopdo"."id"',
 					'"Propopdo"."personne_id"',
 					'"Propopdo"."typepdo_id"',
-					'"Propopdo"."decisionpdo_id"',
+					//'"Propopdo"."decisionpdo_id"',
 					'"Propopdo"."typenotifpdo_id"',
-					'"Propopdo"."datedecisionpdo"',
+					//'"Propopdo"."datedecisionpdo"',
+					'"Propopdo"."datereceptionpdo"',
 					'"Propopdo"."motifpdo"',
-					'"Propopdo"."commentairepdo"',
+					//'"Propopdo"."commentairepdo"',
 					'"Propopdo"."etatdossierpdo"',
-					'"Decisionpdo"."libelle"',
+					//'"Decisionpdo"."libelle"',
 					'"Typenotifpdo"."id"',
 					'"Typenotifpdo"."libelle"',
 					'"Typepdo"."libelle"',
@@ -236,13 +250,13 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Propopdo.typenotifpdo_id = Typenotifpdo.id' )
 					),
-					array(
+					/*array(
 						'table'      => 'decisionspdos',
 						'alias'      => 'Decisionpdo',
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array( 'Propopdo.decisionpdo_id = Decisionpdo.id' )
-					),
+					),*/
 					array(
 						'table'      => 'typespdos',
 						'alias'      => 'Typepdo',
@@ -296,7 +310,8 @@
 						)
 					)
 				),
-				'order' => 'Propopdo.datedecisionpdo ASC',
+				/*'order' => 'Propopdo.datedecisionpdo ASC'*/
+				'order' => 'Propopdo.datereceptionpdo DESC'
 			)
 		);
 
