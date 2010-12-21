@@ -50,6 +50,7 @@
             $options = $this->Propopdo->allEnumLists();
             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
             $options = Set::insert( $options, 'Decisionpropopdo', $this->Propopdo->Decisionpropopdo->allEnumLists() );
+            $options = Set::insert( $options, 'etatdossierpdo', $options['Decisionpropopdo']['etatdossierpdo'] );
             
             $this->set( compact( 'options' ) );
         }
