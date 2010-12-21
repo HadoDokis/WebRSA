@@ -369,7 +369,7 @@
     </div>
     <div class="submit">
         <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) ); ?>
-        <?php echo $form->submit('Retour', array( 'name' => 'Cancel', 'div' => false ) ); ?>
+        <?php echo $form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/propospdos/index/'.$personne_id, true )."')" ) ); ?>
     </div>
 
     <?php echo $xform->end();?>

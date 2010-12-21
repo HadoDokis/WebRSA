@@ -93,8 +93,15 @@
     </fieldset>
 
     <fieldset id="Etatpdo3" class="invisible"></fieldset>
+	
+	<?php
+        echo "<div class='submit'>";
+			echo $form->submit('Enregistrer', array('div'=>false));
+			echo $form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/propospdos/edit/'.$propopdo_id, true )."')" ) );
+        echo "</div>";
         
-    <?php
-        echo $form->end('Enregistrer');
-	?>
+        echo $form->end();
+    ?>
+
+    <?php echo $xform->end();?>
 </div>

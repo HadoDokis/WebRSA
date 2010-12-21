@@ -772,13 +772,9 @@
         echo "</tbody></table></fieldset>";
         
         echo "<div class='submit'>";
-        	if ($this->action === 'edit') {
-		    	$disabled = ($this->data['Traitementpdo']['clos']==1) ? 'disabled' : 'enabled';
-				echo $form->submit('Enregistrer', array('disabled'=>$disabled, 'div'=>false));
-				echo $form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/propospdos/edit/'.$propopdo_id, true )."')" ) );
-			}
-			else
-				echo $form->submit('Enregistrer', array('div'=>false));
+	    	$disabled = ($this->data['Traitementpdo']['clos']==1) ? 'disabled' : 'enabled';
+			echo $form->submit('Enregistrer', array('disabled'=>$disabled, 'div'=>false));
+			echo $form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/propospdos/edit/'.$propopdo_id, true )."')" ) );
         echo "</div>";
         
         echo $form->end();
