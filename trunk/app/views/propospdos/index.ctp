@@ -38,34 +38,39 @@
         <?php endif;?>
 
         <?php if( !empty( $pdos ) ):?>
-        <?php
-        	$colspan = 3;
-        	if (Configure::read( 'nom_form_pdo_cg' ) == 'cg66')
-        		$colspan = 2;
-        ?>
         <table class="tooltips">
             <thead>
                 <tr>
-                    <th>Type de PDO</th>
-                    <th>Date de réception de la PDO</th>
-                    <th>Décision du Conseil Général</th>
-                    <th>Motif de la décision</th>
-                    <!--<th>Date de la décision CG</th>-->
-                    <th>Commentaire PDO</th>
-                    <th>Etat du dossier PDO</th>
-                    <th colspan="<?php echo $colspan; ?>" class="action">Actions</th>
+                	<?php if (Configure::read( 'nom_form_pdo_cg' ) == 'cg66') { ?>
+		                <th>Type de PDO</th>
+		                <th>Date de réception de la PDO</th>
+		                <!--<th>Décision du Conseil Général</th>-->
+		                <th>Motif de la décision</th>
+		                <!--<th>Date de la décision CG</th>-->
+		                <th>Commentaire PDO</th>
+		                <th>Etat du dossier PDO</th>
+		                <th colspan="2" class="action">Actions</th>
+					<?php }
+					else { ?>
+		                <th>Type de PDO</th>
+		                <th>Décision du Conseil Général</th>
+		                <th>Motif de la décision</th>
+		                <th>Date de la décision CG</th>
+		                <th>Commentaire PDO</th>
+		                <th>Etat du dossier PDO</th>
+		                <th colspan="3" class="action">Actions</th>
+					<?php } ?>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach( $pdos as $pdo ):?>
                     <?php
-// debug($pdo);
 						if (Configure::read( 'nom_form_pdo_cg' ) == 'cg66') {
 		                    echo $xhtml->tableCells(
 		                        array(
 		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ), $typepdo ) ),
 		                            h( date_short( Set::classicExtract( $pdo, 'Propopdo.datereceptionpdo' ) ) ),
-		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ) ),
+		                            //h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ) ),
 		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.motifpdo' ), $motifpdo ) ),
 		                            //h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
 		                            h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),

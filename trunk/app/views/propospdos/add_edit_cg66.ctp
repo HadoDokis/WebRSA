@@ -313,40 +313,55 @@
     
     <?php
     	if ($this->action=='edit') {
-		    echo $default2->index(
-		        $traitementspdos,
-		        array(
-		            'Descriptionpdo.name',
-		            'Traitementpdo.datereception',
-		            'Traitementpdo.datedepart',
-		            'Traitementtypepdo.name'
-		        ),
-		        array(
-		            'actions' => array(
-		                'Traitementspdos::edit',
-		                'Traitementspdos::clore' => array( 'disabled' => '\'#Traitementpdo.clos#\' != 0' )
-		            ),
-		            'add' => array( 'Traitementpdo.add' => array( 'controller'=>'traitementspdos', 'action'=>'add', $pdo_id ) ),
-		            'options' => $options
-		        )
+    	
+    		echo $html->tag(
+    			'fieldset',
+    			$html->tag(
+    				'legend',
+    				'Traitements'
+    			).
+				$default2->index(
+				    $traitementspdos,
+				    array(
+				        'Descriptionpdo.name',
+				        'Traitementpdo.datereception',
+				        'Traitementpdo.datedepart',
+				        'Traitementtypepdo.name'
+				    ),
+				    array(
+				        'actions' => array(
+				            'Traitementspdos::edit',
+				            'Traitementspdos::clore' => array( 'disabled' => '\'#Traitementpdo.clos#\' != 0' )
+				        ),
+				        'add' => array( 'Traitementpdo.add' => array( 'controller'=>'traitementspdos', 'action'=>'add', $pdo_id ) ),
+				        'options' => $options
+				    )
+				)
 		    );
 		    
-		    echo $default2->index(
-		        $decisionspropospdos,
-		        array(
-		            'Decisionpropopdo.datedecisionpdo',
-		            'Decisionpdo.libelle',
-		            'Decisionpropopdo.validationdecision',
-		            'Decisionpropopdo.datevalidationdecision',
-		            'Decisionpropopdo.etatdossierpdo'
-		        ),
-		        array(
-		            'actions' => array(
-		                'Decisionspropospdos::edit'
-		            ),
-		            'add' => array( 'Decisionpropopdo.add' => array( 'controller'=>'decisionspropospdos', 'action'=>'add', $pdo_id ) ),
-		            'options' => $options
-		        )
+		    echo $html->tag(
+    			'fieldset',
+    			$html->tag(
+    				'legend',
+    				'Décisions'
+    			).
+				$default2->index(
+				    $decisionspropospdos,
+				    array(
+				        'Decisionpropopdo.datedecisionpdo',
+				        'Decisionpdo.libelle',
+				        'Decisionpropopdo.validationdecision',
+				        'Decisionpropopdo.datevalidationdecision',
+				        'Decisionpropopdo.etatdossierpdo'
+				    ),
+				    array(
+				        'actions' => array(
+				            'Decisionspropospdos::edit'
+				        ),
+				        'add' => array( 'Decisionpropopdo.add' => array( 'controller'=>'decisionspropospdos', 'action'=>'add', $pdo_id ) ),
+				        'options' => $options
+				    )
+			    )
 		    );
 		}
 	?>
