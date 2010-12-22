@@ -25,13 +25,10 @@
 <th>Création du dossier EP</th>
 <th>Orientation actuelle</th>
 <th>Structure référente actuelle</th>
-<th>Orientation préconisée (Référent)</th>
-<th>Structure référente préconisée (Référent)</th>
-<th>Orientation préconisée (EP)</th>
-<th>Structure référente préconisée (EP)</th>
+<th colspan="2">Proposition référent</th>
+<th colspan="2">Avis EPL</th>
 <th>Avis CG</th>
-<th>Orientation choisie</th>
-<th>Structure référente choisie</th>
+<th colspan="2">Décision coordonnateur/CG</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
