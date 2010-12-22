@@ -359,36 +359,48 @@
 			$return = parent::beforeSave( $options );
 
 			if( Configure::read( 'nom_form_pdo_cg' ) == 'cg66' ) {
+				if (isset($this->data['Propopdo']['id']))
+					$propopdo_id = Set::extract( $this->data, 'Propopdo.id' );
+				else
+					$propopdo_id = 0;
 				$typepdo_id = Set::extract( $this->data, 'Propopdo.typepdo_id' );
+				$user_id = Set::extract( $this->data, 'Propopdo.user_id' );
 				$iscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
-				$decisionpdo_id = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
-				$isvalidation = Set::extract( $this->data, 'Propopdo.isvalidation' );
-				$isdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
+				
+				if ($propopdo_id!=0) {
+				    $decisionporpopdo = $this->Decisionpropopdo->find(
+				    	'first',
+				    	array(
+				    		'conditions' => array(
+				    			'Decisionpropopdo.propopdo_id' => $propopdo_id
+				    		),
+				    		'order' => array(
+				    			'Decisionpropopdo.datedecisionpdo DESC',
+				    			'Decisionpropopdo.id DESC'
+				    		)
+				    	)
+		        	);
+				    
+				    $decisionpdo_id = Set::extract( $decisionporpopdo, 'Decisionpropopdo.decisionpdo_id' );
+				    
+				    $isvalidation = Set::extract( $decisionporpopdo, 'Decisionpropopdo.validationdecision' );
+				}
+				
+				$etat = null;
+				//'attaffect', 'attinstr', 'instrencours', 'attval', 'decisionval', 'dossiertraite', 'attpj'
 
-				if( !empty( $typepdo_id ) && empty( $iscomplet ) && empty( $decisionpdo_id ) && empty( $isvalidation ) && empty( $isdecisionop ) ){
-					$etat = '1';
-					$this->data['Propopdo']['etatdossierpdo'] = $etat;
-				}
-				else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && empty( $decisionpdo_id ) && empty( $isvalidation ) && empty( $isdecisionop ) ){
-					$etat = '2';
-					$this->data['Propopdo']['etatdossierpdo'] = $etat;
-				}
-				else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && !empty( $decisionpdo_id ) && empty( $isvalidation ) && empty( $isdecisionop ) ){
-					$etat = '3';
-					$this->data['Propopdo']['etatdossierpdo'] = $etat;
-				}
-				else if ( !empty( $typepdo_id ) && !empty( $iscomplet ) && !empty( $decisionpdo_id ) && ( $isvalidation == 'O' ) && empty( $isdecisionop ) ){
-					$etat = '4';
-					$this->data['Propopdo']['etatdossierpdo'] = $etat;
-				}
-				else if ( !empty( $typepdo_id ) && ( $iscomplet == 'COM' ) && !empty( $decisionpdo_id ) && !empty( $isvalidation ) && !empty( $isdecisionop ) ){
-					$etat = '5';
-					$this->data['Propopdo']['etatdossierpdo'] = $etat;
-				}
-				else if ( !empty( $typepdo_id ) && ( $iscomplet == 'INC' ) && !empty( $decisionpdo_id ) && !empty( $isvalidation ) && !empty( $isdecisionop ) ){
-					$etat = '6';
-					$this->data['Propopdo']['etatdossierpdo'] = $etat;
-				}
+				if ( !empty($typepdo_id) && empty($user_id) )
+					$etat = 'attaffect';
+				elseif ( !empty($typepdo_id) && !empty($user_id) && empty($iscomplet) )
+					$etat = 'attinstr';
+				elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && empty($decisionpdo_id) )
+					$etat = 'instrencours';
+				elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && $iscomplet=='COM' && isset($decisionpdo_id) && !empty($decisionpdo_id) && isset($isvalidation) && !empty($isvalidation) )
+					$etat = 'dossiertraite';
+				elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && $iscomplet=='INC' && isset($decisionpdo_id) && !empty($decisionpdo_id) && isset($isvalidation) && !empty($isvalidation) )
+					$etat = 'attpj';
+		
+				$this->data['Propopdo']['etatdossierpdo'] = $etat;
 			}
 
 			return $return;

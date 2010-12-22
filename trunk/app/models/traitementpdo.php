@@ -83,7 +83,7 @@
 			),
 			'nrmrcs' => array(
 				array(
-					'rule' => 'numeric',
+					'rule' => 'alphaNumeric',
 					'required' => false,
 					'allowEmpty' => false
 				)

@@ -108,22 +108,27 @@ msgstr "Observations"
 msgid "Propopdo.datedecisionop"
 msgstr "Date transimission à l\'OP"
 
-msgid "ENUM::ETATDOSSIERPDO::1"
+# 'attaffect', 'attinstr', 'instrencours', 'attval', 'decisionval', 'dossiertraite', 'attpj'
+
+msgid "ENUM::ETATDOSSIERPDO::attaffect"
 msgstr "En attente d'affectation"
 
-msgid "ENUM::ETATDOSSIERPDO::2"
+msgid "ENUM::ETATDOSSIERPDO::attinstr"
+msgstr "En attente d'instruction"
+
+msgid "ENUM::ETATDOSSIERPDO::instrencours"
 msgstr "Instruction en cours"
 
-msgid "ENUM::ETATDOSSIERPDO::3"
+msgid "ENUM::ETATDOSSIERPDO::attval"
 msgstr "En attente de validation"
 
-msgid "ENUM::ETATDOSSIERPDO::4"
+msgid "ENUM::ETATDOSSIERPDO::decisionval"
 msgstr "Décision validée"
 
-msgid "ENUM::ETATDOSSIERPDO::5"
+msgid "ENUM::ETATDOSSIERPDO::dossiertraite"
 msgstr "Dossier traité"
 
-msgid "ENUM::ETATDOSSIERPDO::6"
+msgid "ENUM::ETATDOSSIERPDO::attpj"
 msgstr "En attente de pièces"
 
 msgid "Propopdo.serviceinstructeur_id"

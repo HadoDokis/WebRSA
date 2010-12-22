@@ -193,6 +193,15 @@ CREATE TYPE TYPE_AIDESUBVREINT AS ENUM ( 'aide1', 'aide2', 'subv1', 'subv2' );
 SELECT add_missing_table_field ('public', 'traitementspdos', 'aidesubvreint', 'TYPE_AIDESUBVREINT');
 
 -- *****************************************************************************
+-- Création du nouvel enum pour l'état des dossier de PDO
+-- *****************************************************************************
+
+DROP TYPE IF EXISTS TYPE_ETATDOSSIERPDO CASCADE;
+CREATE TYPE TYPE_ETATDOSSIERPDO AS ENUM ( 'attaffect', 'attinstr', 'instrencours', 'attval', 'decisionval', 'dossiertraite', 'attpj' );
+
+SELECT add_missing_table_field ('public', 'propospdos', 'etatdossierpdo', 'TYPE_ETATDOSSIERPDO');
+
+-- *****************************************************************************
 -- Déplacement des champs de décisions de la PDO dans une autre table
 -- *****************************************************************************
 
@@ -205,7 +214,7 @@ CREATE TABLE decisionspropospdos (
 	isvalidation			type_booleannumber DEFAULT NULL,
 	validationdecision		type_no DEFAULT NULL,
 	datevalidationdecision	DATE,
-	etatdossierpdo			type_etatdossierpdo DEFAULT NULL,
+	etatdossierpdo			TYPE_ETATDOSSIERPDO DEFAULT NULL,
 	propopdo_id				INTEGER REFERENCES propospdos (id)
 );
 
