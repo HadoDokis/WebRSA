@@ -92,13 +92,14 @@
 
     <div class="aere">
     <fieldset class="aere">
-        <legend>BILAN DU PARCOURS ( Rédigé en présence du bénéficiaire )</legend>
+        <legend>BILAN DU PARCOURS</legend>
             <?php
                 echo $default->subform(
                     array(
                     	'Bilanparcours66.orientstruct_id' => array( 'type' => 'hidden' ),
                         'Bilanparcours66.structurereferente_id',
-                        'Bilanparcours66.referent_id'
+                        'Bilanparcours66.referent_id',
+                        'Bilanparcours66.presenceallocataire' => array('required'=>true)
                     ),
                     array(
                         'options' => $options
@@ -168,8 +169,7 @@
                         'Bilanparcours66.objinit',
                         'Bilanparcours66.objatteint',
                         'Bilanparcours66.objnew',
-                        'Bilanparcours66.motifsaisine',
-                        'Bilanparcours66.presenceallocataire' => array('required'=>true)
+                        'Bilanparcours66.motifsaisine'
                     ),
                     array(
                         'options' => $options
