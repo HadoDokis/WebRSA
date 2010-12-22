@@ -100,8 +100,7 @@
         <?php
             echo $default->subform(
                 array(
-                    'Propopdo.etatdossierpdo' => array( 'type' => 'hidden' ),
-                    'Propopdo.user_id' => array( 'label' =>  'Gestionnaire du dossier (instructeur en charge du dossier)', 'type' => 'select', 'options' => $gestionnaire )
+                    'Propopdo.etatdossierpdo' => array( 'type' => 'hidden' )
                 ),
                 array(
                     'domain' => $domain,
@@ -109,9 +108,8 @@
                 )
             );
         ?>
-
-        <fieldset id="AdresseStruct" class="invisible"></fieldset>
-        <!-- <legend>Arrivée de la PDO</legend> -->
+        
+        <!--<legend>Arrivée de la PDO</legend> -->
         <?php
             echo $default->subform(
                 array(
@@ -128,12 +126,27 @@
                 )
             );
             
-            echo $ajax->observeField( 'PropopdoTypepdoId', array( 'update' => 'Etatpdo1', 'url' => Router::url( array( 'action' => 'ajaxetat1' ), true ) ) );
-
+            //echo $ajax->observeField( 'PropopdoTypepdoId', array( 'update' => 'Etatpdo', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
         ?>
     </fieldset>
-
-    <fieldset id="Etatpdo1" class="invisible"></fieldset>
+    
+	<fieldset>
+        <!--<legend>Prise de décision</legend>-->
+        <?php
+            echo $default->subform(
+                array(
+                    'Propopdo.user_id' => array( 'label' =>  'Gestionnaire du dossier (instructeur en charge du dossier)', 'type' => 'select', 'options' => $gestionnaire )
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+		?>
+		<?php
+            //echo $ajax->observeField( 'PropopdoUserId', array( 'update' => 'Etatpdo', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
+        ?>
+    </fieldset>
 
     <fieldset>
         <!--<legend>Prise de décision</legend>-->
@@ -142,11 +155,15 @@
                 <td class="mediumSize noborder">
                     <?php
                         echo $xform->input( 'Situationpdo.Situationpdo', array( 'type' => 'select', 'label' => 'Motif de la décision', 'multiple' => 'checkbox' , 'options' => $situationlist ) );
+            			/*for($i=0;$i<count($situationlist);$i++)
+            				echo $ajax->observeField( 'SituationpdoSituationpdo'.$i, array( 'update' => 'Etatpdo', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );*/
                     ?>
                 </td>
                 <td class="mediumSize noborder">
                     <?php
                         echo $xform->input( 'Statutpdo.Statutpdo', array( 'type' => 'select', 'label' => 'Statut de la personne', 'multiple' => 'checkbox' , 'options' => $statutlist ) );
+            			/*for($i=0;$i<count($statutlist);$i++)
+            				echo $ajax->observeField( 'StatutpdoStatutpdo'.$i, array( 'update' => 'Etatpdo', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );*/
                     ?>
                 </td>
             </tr>
@@ -181,13 +198,11 @@
             );
 
             /// FIXME: à corriger car pas bon
-            echo $ajax->observeField( 'PropopdoIscompletCOM', array( 'update' => 'Etatpdo2', 'url' => Router::url( array( 'action' => 'ajaxetat2' ), true ) ) );
-            echo $ajax->observeField( 'PropopdoIscompletINC', array( 'update' => 'Etatpdo2', 'url' => Router::url( array( 'action' => 'ajaxetat2' ), true ) ) );
+            //echo $ajax->observeField( 'PropopdoIscompletCOM', array( 'update' => 'Etatpdo', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
+            //echo $ajax->observeField( 'PropopdoIscompletINC', array( 'update' => 'Etatpdo', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
 
         ?>
     </fieldset>
-
-    <fieldset id="Etatpdo2" class="invisible"></fieldset>
 
     <!--<fieldset>
         <?php
@@ -207,8 +222,8 @@
                         'options' => $options
                     )
                 );
-            ?>-->
-                <!--<fieldset id="nonadmis" class="invisible">
+            ?>
+                <fieldset id="nonadmis" class="invisible">
                     <?php
                         echo $default->subform(
                             array(
@@ -220,8 +235,8 @@
                             )
                         );
                     ?>
-                </fieldset>-->
-            <!--<?php
+                </fieldset>
+            <?php
                 echo $default->subform(
                     array(
 
@@ -237,8 +252,6 @@
         </fieldset>
 
     </fieldset>
-
-    <fieldset id="Etatpdo4" class="invisible"></fieldset>
     
     <fieldset>
         <?php
@@ -261,9 +274,7 @@
         </fieldset>
     </fieldset>
 
-    <fieldset id="Etatpdo3" class="invisible"></fieldset>-->
-
-    <!--<fieldset>
+    <fieldset>
         <?php
             echo $form->input( 'Propopdo.isdecisionop', array( 'label' => 'Décison de l\'OP', 'type' => 'checkbox' ) );
         ?>
@@ -284,10 +295,8 @@
         ?>
         </fieldset>
     </fieldset>
-    <fieldset id="Etatpdo5" class="invisible"></fieldset>-->
 
-
-    <!--<fieldset>
+    <fieldset>
         <?php
             echo $form->input( 'Propopdo.suivi', array( 'label' => 'Suivi', 'type' => 'checkbox' ) );
         ?>
@@ -308,8 +317,7 @@
 
         ?>
         </fieldset>
-    </fieldset>
-    <fieldset id="Etatpdo6" class="invisible"></fieldset>-->
+    </fieldset>-->
     
     <?php
     	if ($this->action=='edit') {
@@ -331,7 +339,8 @@
 				    array(
 				        'actions' => array(
 				            'Traitementspdos::edit',
-				            'Traitementspdos::clore' => array( 'disabled' => '\'#Traitementpdo.clos#\' != 0' )
+				            'Traitementspdos::clore' => array( 'disabled' => '\'#Traitementpdo.clos#\' != 0' ),
+				            'Traitementspdos::delete'
 				        ),
 				        'add' => array( 'Traitementpdo.add' => array( 'controller'=>'traitementspdos', 'action'=>'add', $pdo_id ) ),
 				        'options' => $options
@@ -365,6 +374,8 @@
 		    );
 		}
 	?>
+	
+    <fieldset id="Etatpdo" class="invisible"></fieldset>
     
     </div>
     <div class="submit">
@@ -374,69 +385,37 @@
 
     <?php echo $xform->end();?>
 </div>
+
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		<?php echo $ajax->remoteFunction(
-			array(
-				'url' => Router::url(
-					array(
-						'action' => 'ajaxetat1',
-						@$this->data['Propopdo']['typepdo_id']
-					),
-					true
-				),
-				'update' => 'Etatpdo1'
-			)
-		); ?>;
-		<?php echo $ajax->remoteFunction(
-			array(
-				'url' => Router::url(
-					array(
-						'action' => 'ajaxetat2',
-						@$this->data['Propopdo']['iscomplet']
-					),
-					true
-				),
-				'update' => 'Etatpdo2'
-			)
-		); ?>;
-		<?php echo $ajax->remoteFunction(
-			array(
-				'url' => Router::url(
-					array(
-						'action' => 'ajaxetat4',
-						@$this->data['Propopdo']['decisionpdo_id']
-					),
-					true
-				),
-				'update' => 'Etatpdo4'
-			)
-		); ?>;
-		<?php echo $ajax->remoteFunction(
-			array(
-				'url' => Router::url(
-					array(
-						'action' => 'ajaxetat3',
-						@$this->data['Propopdo']['isvalidation']
-					),
-					true
-				),
-				'update' => 'Etatpdo3'
-			)
-		); ?>;
-		<?php echo $ajax->remoteFunction(
-			array(
-				'url' => Router::url(
-					array(
-						'action' => 'ajaxetat5',
-						@$this->data['Propopdo']['isdecisionop']
-					),
-					true
-				),
-				'update' => 'Etatpdo5'
-			)
-		); ?>;
+		[ $('PropopdoTypepdoId'), $('PropopdoUserId'), $('PropopdoIscompletCOM'), $('PropopdoIscompletINC') ].each(function(field) {
+			field.observe('change', function(element, value) {
+				fieldUpdater();
+			});
+		});
+		
+		fieldUpdater();
 	});
+	
+	function fieldUpdater() {
+		new Ajax.Updater(
+			'Etatpdo',
+			'<?php echo Router::url( array( "action" => "ajaxetatpdo" ), true ) ?>',
+			{
+				asynchronous:true,
+				evalScripts:true,
+				parameters:
+				{
+					'typepdo_id' : $F('PropopdoTypepdoId'),
+					'user_id' : $F('PropopdoUserId'),
+					'complet' : $F('PropopdoIscompletCOM'),
+					'incomplet' : $F('PropopdoIscompletINC'),
+					'propopdo_id' : <?php if (isset($this->data['Propopdo']['id'])) { ?> $F('PropopdoId') <?php } else { echo 0; } ?>
+				},
+				requestHeaders:['X-Update', 'Etatpdo']
+			}
+		);
+	}
 </script>
 
 <div class="clearer"><hr /></div>

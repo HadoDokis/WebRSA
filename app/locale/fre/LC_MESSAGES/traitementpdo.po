@@ -25,8 +25,14 @@ msgstr "Ajouter un traitement"
 msgid "Traitementspdos::clore"
 msgstr "Clore le traitement"
 
+msgid "Traitementspdos::delete"
+msgstr "Supprimer le traitement"
+
 msgid "Traitementpdo::index::empty"
 msgstr "Aucun traitement pour cette PDO présent"
+
+msgid "Traitementspdos::delete::confirm"
+msgstr "Voulez-vous vraiment supprimer ce traitement ?"
 
 msgid "Traitementspdos::index"
 msgstr "Liste des traitements de la PDO"

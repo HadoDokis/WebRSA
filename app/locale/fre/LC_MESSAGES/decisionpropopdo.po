@@ -55,21 +55,3 @@ msgstr "Décision"
 msgid "Decisionpropopdo.etatdossierpdo"
 msgstr "Etat du dossier"
 
-msgid "ENUM::ETATDOSSIERPDO::1"
-msgstr "En attente d'affectation"
-
-msgid "ENUM::ETATDOSSIERPDO::2"
-msgstr "Instruction en cours"
-
-msgid "ENUM::ETATDOSSIERPDO::3"
-msgstr "En attente de validation"
-
-msgid "ENUM::ETATDOSSIERPDO::4"
-msgstr "Décision validée"
-
-msgid "ENUM::ETATDOSSIERPDO::5"
-msgstr "Dossier traité"
-
-msgid "ENUM::ETATDOSSIERPDO::6"
-msgstr "En attente de pièces"
-

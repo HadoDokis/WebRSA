@@ -269,5 +269,20 @@
         	$this->Traitementpdo->saveField('clos', Configure::read( 'traitementClosId' ));
         	$this->redirect(array( 'controller'=> 'propospdos', 'action'=>'edit', $traitementpdo['Traitementpdo']['propopdo_id']));
         }
+        
+        public function delete($id = null) {
+        	$traitementpdo = $this->Traitementpdo->find(
+        		'first',
+        		array(
+        			'conditions'=>array(
+        				'Traitementpdo.id'=>$id
+        			)
+        		)
+        	);
+        	$this->assert( !empty( $traitementpdo ), 'invalidParameter' );
+        	
+        	$this->Traitementpdo->delete($id);
+        	$this->redirect(array( 'controller'=> 'propospdos', 'action'=>'edit', $traitementpdo['Traitementpdo']['propopdo_id']));
+        }
     }
 ?>
