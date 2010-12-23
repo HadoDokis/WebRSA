@@ -55,7 +55,6 @@
 			$this->set( 'struct', $struct );
 			$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
 
-			$this->set( 'action', $this->Contratinsertion->Actioninsertion->find( 'list' ) );
 			$this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
 			return $return;
 		}
@@ -260,6 +259,7 @@
 			$referents = $this->Referent->referentsListe( $structurereferente_id );
 			$this->set( 'referents', $referents );
 
+			$this->set( 'action', $this->Contratinsertion->Actioninsertion->find( 'list' ) );
 // debug($contrats);
 // die();
 			$this->layout = ''; // FIXME ?
