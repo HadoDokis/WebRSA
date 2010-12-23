@@ -39,7 +39,7 @@
 
 		$rows = array();
 		foreach( $indicateurs as $key => $indicateur ) {
-			$row = array( '<td>'.__( 'Indicateurmensuel.'.$key, true ).'</td>' );
+			$row = array( '<td>'.__d( 'indicateurmensuel', 'Indicateurmensuel.'.$key, true ).'</td>' );
 			$type = Set::extract( $types, $key.'.type' );
 			$result = Set::extract( $types, $key.'.result' );
 			for( $i = 1 ; $i <= 12 ; $i++ ) {
