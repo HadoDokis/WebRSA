@@ -217,10 +217,57 @@
 			$this->assertEqual($expected,$result);
 		}
 
-		function testBeforeSave() {
-			$result = $this->Apre->beforeSave(null);
-			$this->assertTrue($result);
-		}		
+		function testAfterFind() {
+			$results = null;
+			$result = $this->Apre->afterFind($results, $primary = false);
+			$this->assertNull($result);
+		}
 
+		function testBeforeSave() {
+			$options = null;
+			$result = $this->Apre->beforeSave($options);
+			$this->assertTrue($result);
+		}
+
+		function testSupprimeFormationsObsoletes() {
+			$apre = null;
+			$result = $this->Apre->supprimeFormationsObsoletes($apre);
+			$this->assertNull($result);
+		}
+
+		function testAfterSave() {
+			$created = null;
+			$result = $this->Apre->afterSave($created);
+			$this->assertNull($result);
+		}
+
+		function testCalculMontantsDejaVerses() {
+			$apre_ids = null;
+			$result = $this->Apre->calculMontantsDejaVerses($apre_ids);
+			$this->assertTrue($result);
+			/*
+			$apre_ids = array(1, 2);
+			$result = $this->Apre->calculMontantsDejaVerses($apre_ids);
+			*/
+		}
+
+		function testDonneesForfaitaireGedooo() {
+			$apre_id = null;
+			$etatliquidatif_id = null;
+			$result = $this->Apre->donneesForfaitaireGedooo($apre_id, $etatliquidatif);
+			$this->assertFalse($result);
+
+			$apre_id = 1;
+			$etatliquidatif_id = 1;
+			$result = $this->Apre->donneesForfaitaireGedooo($apre_id, $etatliquidatif);
+			$this->assertTrue($result);
+
+			$apre_id = 1337;
+			$etatliquidatif_id = 1337;
+			$result = $this->Apre->donneesForfaitaireGedooo($apre_id, $etatliquidatif);
+			$this->assertFalse($result);
+		}
+
+		
 	}
 ?>

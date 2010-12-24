@@ -24,7 +24,7 @@
 			$result = $this->PersonneReferent->dossierId(-42);
 			$this->assertNull($result);
 		}
-		/*
+		
 		function testBeforeSave() {
 			$this->PersonneReferent->data=array(
 				'PersonneReferent' => array(
@@ -41,20 +41,18 @@
 		}
 
 		function testSqDerniere() {
-			$result = $this->PersonneReferent->sqDerniere(1);
-
-			// remplacement de "{$table}" par "personnes_referents"
-			// on retrouve 1 (parametre de sqDerniere(1) dans la requete)
+			$field = 1;
+			$table = 'personnes_referents';
 			$expected = "
-				SELECT personnes_referents.id
-					FROM personnes_referents
+				SELECT {$table}.id
+					FROM {$table}
 					WHERE
-						personnes_referents.personne_id = 1
-					ORDER BY personnes_referents.dddesignation DESC
+						{$table}.personne_id = ".$field."
+					ORDER BY {$table}.dddesignation DESC
 					LIMIT 1
 			";
+			$result = $this->PersonneReferent->sqDerniere($field);
 			$this->assertEqual($expected, $result);
 		}
-		*/
 	}
 ?>

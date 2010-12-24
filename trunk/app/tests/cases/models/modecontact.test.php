@@ -19,6 +19,21 @@
 			$result = $this->Modecontact->dossierId(-42);
 			$this->assertNull($result);
 		}
-	}
 
+		function testSqDerniere() {
+			$field = '1';
+			$table = 'modescontact';
+			$expected = "
+				SELECT {$table}.id
+					FROM {$table}
+					WHERE
+						{$table}.foyer_id = ".$field."
+					ORDER BY {$table}.foyer_id DESC
+					LIMIT 1
+			";
+
+			$result = $this->Modecontact->sqDerniere($field);
+			$this->assertEqual($result, $expected);
+		}
+	}
 ?>

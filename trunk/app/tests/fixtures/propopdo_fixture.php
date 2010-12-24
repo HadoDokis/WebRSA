@@ -7,11 +7,11 @@
 		var $records = array(
 			array(
 				'id' => '1',
-				'datedecisionpdo' => null,
-				'commentairepdo' => null,
+				//'datedecisionpdo' => null,
+				//'commentairepdo' => null,
 				'motifpdo' => null,
 				'typepdo_id' => '1',
-				'decisionpdo_id' => 1,
+				//'decisionpdo_id' => 1,
 				'typenotifpdo_id' => 1,
 				'datereceptionpdo' => null,
 				'originepdo_id' => 1,
@@ -30,14 +30,18 @@
 				'user_id' => 1,
 				'structurereferente_id' => 1,
 				'iscomplet' => null,
-				'isvalidation' => null,
-				'validationdecision' => null,
-				'datevalidationdecision' => null,
+				//'isvalidation' => null,
+				//'validationdecision' => null,
+				//'datevalidationdecision' => null,
 				'isdecisionop' => null,
 				'decisionop' => null,
 				'datedecisionop' => null,
 				'observationoop' => null,
+				'serviceinstructeur_id' => '1', //++
+				'created' => null, //++
+				'modified' => null, //++
 				'etatdossierpdo' => null,
+				'orgpayeur' => null, //++
 			),
 		);
 	}

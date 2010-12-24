@@ -36,5 +36,29 @@
 			$result=$this->Referent->referentsListe(666);
 			$this->assertEqual(array(),$result);
 		}
+
+		function testReadByPersonneId() {
+			$personne_id = '1';
+			$result = $this->Referent->readByPersonneId($personne_id);
+			$expected = array(
+				'Referent' => array(
+					'id' => '1',
+					'structurereferente_id' => '1',
+					'nom' => 'Némard',
+					'prenom' => 'Jean',
+					'numero_poste' => null,
+					'email' => null,
+					'qual' => 'M',
+					'fonction' => null,
+					'nom_complet' => 'M Némard Jean',
+				),
+			);
+			$this->assertEqual($result, $expected);
+
+			$personne_id = null;
+			$result = $this->Referent->readByPersonneId($personne_id);
+			$this->assertNull($result);
+		}
+
 	}
 ?>
