@@ -284,3 +284,57 @@ msgstr "Motifs de la saisine de l'Équipe Pluridisciplinaire"
 
 msgid "Bilanparcours66.reorientation"
 msgstr "Réorientation"
+
+msgid "Bilanparcours66.accompagnement"
+msgstr "Accompagnement"
+
+msgid "ENUM::ACCOMPAGNEMENT::prepro"
+msgstr "Pour un accompagnement Pré pro"
+
+msgid "ENUM::ACCOMPAGNEMENT::social"
+msgstr "Pour un accompagnement social"
+
+msgid "Bilanparcours66.typeformulaire"
+msgstr "Choix du formulaire"
+
+msgid "ENUM::TYPEFORMULAIRE::cg"
+msgstr "Formulaire CG"
+
+msgid "ENUM::TYPEFORMULAIRE::pe"
+msgstr "Formulaire Pôle Emploi"
+
+msgid "Bilanparcours66.textbilanparcours"
+msgstr "Bilan du parcours"
+
+###############################################################################
+# ajout pour le formulaire de Pôle Emploi
+###############################################################################
+
+msgid "Pe.Bilanparcours66.structurereferente_id"
+msgstr "MSP"
+
+msgid "Pe.Bilanparcours66.referent_id"
+msgstr "Rédigé par"
+
+msgid "Pe.Bilanparcours66.presenceallocataire"
+msgstr "Allocataire est-il présent ?"
+
+msgid "Pe.Bilanparcours66.textbilanparcours"
+msgstr "Bilan du parcours"
+
+msgid "Pe.Bilanparcours66.observbenef"
+msgstr "Observations du bénéficiaire"
+
+msgid "Pe.Saisineepbilanparcours66.typeorient_id"
+msgstr "Nouvelle orientation préconisée"
+
+msgid "Pe.Saisineepbilanparcours66.structurereferente_id"
+msgstr "Nouvelle structure préconisée"
+
+msgid "Pe.Bilanparcours66.datebilan"
+msgstr "Date du bilan de parcours"
+
+
+
+
+

@@ -10,9 +10,11 @@
 
 	class Bilansparcours66Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2' );
+		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 
 		public $uses = array( 'Bilanparcours66', 'Option' );
+		
+		public $aucunDroit = array( 'choixformulaire' );
 
 		/// FIXME: evite les droits
 		public function beforeFilter() {
@@ -282,11 +284,14 @@
 					
 					$this->data['Bilanparcours66']['structurereferente_id'] = $contratinsertion['Structurereferente']['id'];
 					$this->data['Bilanparcours66']['referent_id'] = $contratinsertion['Structurereferente']['id'].'_'.$contratinsertion['Referent']['id'];
+$this->data = Set::insert($this->data, 'Pe', $this->data);
 				}
 				else if( $this->action == 'edit' ) {
 					$this->data = $bilanparcours66;
+$this->data = Set::insert($this->data, 'Pe', $this->data);
 				}
 			}
+
 
 			// INFO: si on utilise fields pour un modèle (le modèle principal ?), on n'a pas la relation belongsTo (genre Foyer belongsTo Dossier)
 			// INFO: http://stackoverflow.com/questions/3865349/containable-fails-to-join-in-belongsto-relationships-when-fields-are-used-in-ca
