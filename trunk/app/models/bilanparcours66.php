@@ -40,7 +40,9 @@
 					'maintienorientavisep',
 					'changementrefeplocale',
 					'reorientationeplocale',
-					'typeeplocale'
+					'typeeplocale',
+					'accompagnement',
+					'typeformulaire'
 				)
 			)
 		);
@@ -120,6 +122,9 @@
 		*/
 
 		public function sauvegardeBilan( $data ) {
+			if (isset($data['Pe']['Bilanparcours66']))
+				$data = $data['Pe'];
+
 			$data[$this->alias]['saisineepparcours'] = !isset($data[$this->alias]['maintienorientation']);
 			// Recondution du contrat
 			if( !empty( $data[$this->alias]['maintienorientation'] ) ) {

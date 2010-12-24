@@ -226,5 +226,20 @@ ALTER TABLE propospdos DROP COLUMN validationdecision;
 ALTER TABLE propospdos DROP COLUMN datevalidationdecision;
 
 -- *****************************************************************************
+-- Ajout dans le bilansparcours66
+-- *****************************************************************************
+
+DROP TYPE IF EXISTS TYPE_ACCOMPAGNEMENT CASCADE;
+CREATE TYPE TYPE_ACCOMPAGNEMENT AS ENUM ( 'prepro', 'social' );
+
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'accompagnement', 'TYPE_ACCOMPAGNEMENT');
+
+DROP TYPE IF EXISTS TYPE_TYPEFORMULAIRE CASCADE;
+CREATE TYPE TYPE_TYPEFORMULAIRE AS ENUM ( 'cg', 'pe' );
+
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'typeformulaire', 'TYPE_TYPEFORMULAIRE');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'textbilanparcours', 'TEXT');
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
