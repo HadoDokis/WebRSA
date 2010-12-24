@@ -5,7 +5,7 @@
 	App::import('Model', 'Aideapre66');
 
 	class Aideapre66TestCase extends CakeAppModelTestCase {
-/*
+
 		// test de la fonction plafondMontantAideapre()
 		function testPlafondMontantAideapre() {
 			$result = $this->Aideapre66->plafondMontantAideapre(array(700));
@@ -17,13 +17,13 @@
 			$result = $this->Aideapre66->plafondMontantAideapre(array(31337));
 			$this->assertFalse($result);
 		}
-/*
+
 		// test de la fonction nbrNormalPieces
 		function test_nbrNormalPieces() {
 			$result = $this->Aideapre66->_nbrNormalPieces();
 			$this->assertFalse($result);
 		}
-*/
+
 
 		function test_details() {
 			$expected = array(
@@ -38,7 +38,7 @@
 			$this->assertEqual($result, $expected);
 		}
 
-		/*
+		
 		function testAfterSave() {
 			$created = array(
 					'id' => '1',
@@ -63,7 +63,7 @@
 			var_dump($result);
 			$this->assertNull($result);
 		}
-		*/
+		
 	}
 
 ?>

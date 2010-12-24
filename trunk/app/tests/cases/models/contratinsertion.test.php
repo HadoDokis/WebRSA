@@ -7,8 +7,8 @@
 	class ContratinsertionTestCase extends CakeAppModelTestCase {
 
 		// test fonction beforesave()
-		function testBeforesave() {
-			$result = $this->Contratinsertion->beforesave($option=array());
+		function testBeforeSave() {
+			$result = $this->Contratinsertion->beforeSave($option=array());
 			$this->assertTrue($result);
 		}
 
@@ -20,9 +20,11 @@
 		}
  
 		// test fonction aftersave()
-		function testAftersave() {
-			$result = $this->Contratinsertion->aftersave();
+		function testAfterSave() {
+			$created = false;
+			$result = $this->Contratinsertion->afterSave($created);
 			$this->assertFalse($result);
+
 		}
 
 	}

@@ -14,6 +14,7 @@
 /*
 		function testBeforeDelete() {
 			$result = $this->User->beforeDelete();
+			$this->assertFalse($result);
 		}
 */
 		function testValidatesPassword() {
@@ -34,8 +35,8 @@
 				'User' => array(
 					'id' => '1',
 					'passwd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742dc',
-					'newpasswd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742dd',
-					'confnewpasswd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742de',
+					'newpasswd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742de',
+					'confnewpasswd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742df',
 				),
 			);
 			$result = $this->User->validOldPassword($data);
