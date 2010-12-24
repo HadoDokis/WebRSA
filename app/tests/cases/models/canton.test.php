@@ -22,34 +22,41 @@
 			$expected=array(
 				'or' => array(
 					'0' => array(
-						'Adresse.numcomptt' => 12345,
-						'Adresse.codepos' => 34000,
+						'OR' => array(
+							'Adresse.numcomptt' => 12345,
+							'Adresse.codepos' => 34000,
+						),
 						'Adresse.locaadr ILIKE' => 'Montpellier',
-						'Adresse.typevoie ILIKE' => 'R',
-						'Adresse.nomvoie ILIKE' => 'pignon sur'
-					)
-				)
-			);
+						'Adresse.typevoie ILIKE' => 'R',						
+						'Adresse.nomvoie ILIKE' => 'pignon sur'						
+					),
+				),
+			);			
 			$this->assertEqual($result,$expected);
 
 			$result=$this->Canton->queryConditions(2);
 			$expected=array(
 				'or' => array(
-					0 => array(
-						'Adresse.numcomptt' => 98765,
-						'Adresse.codepos' => 34000,
+					'0' => array(
+						'OR' => array(
+							'Adresse.numcomptt' => '98765',
+							'Adresse.codepos' => '34000',
+
+						),
 						'Adresse.locaadr ILIKE' => 'Alès',
 						'Adresse.typevoie ILIKE' => 'A',
-						'Adresse.nomvoie ILIKE' => 'de saint martin les mines'
+						'Adresse.nomvoie ILIKE' => 'de saint martin les mines',
 					),
-					1 => array(
-						'Adresse.numcomptt' => 36385,
-						'Adresse.codepos' => 75000,
+					'1' => array(
+						'OR' => array(
+							'Adresse.numcomptt' => '36385',
+							'Adresse.codepos' => '75000',
+						),
 						'Adresse.locaadr ILIKE' => 'Paris',
 						'Adresse.typevoie ILIKE' => 'P',
-						'Adresse.nomvoie ILIKE' => 'pigalle'
-					)
-				)
+						'Adresse.nomvoie ILIKE' => 'pigalle',
+					),
+				),
 			);
 			$this->assertEqual($result,$expected);
 
@@ -57,18 +64,56 @@
 			$expected=array(
 				'or' => array()
 			);
-
-			//#FIXME cause plus de 200 exceptions !
-			/*
 			$this->assertEqual($result,$expected);
 
-			$result=$this->Canton->queryConditions(-42);
-			$expected=array(
-				'or' => array()
-			);
-			$this->assertEqual($result,$expected);
-			*/
 		}
 
+		function testQueryConditionsByZonesgeographiques() {
+			$zonesgeographiques = array(
+					'0' => '1',
+					'1' => '2',
+					'2' => '3',
+			);
+			$result = $this->Canton->queryConditionsByZonesgeographiques($zonesgeographiques);
+			$expected=array(
+				'or' => array(
+					'0' => array(
+						'OR' => array(
+							'Adresse.numcomptt' => 12345,
+							'Adresse.codepos' => 34000,
+						),
+						'Adresse.locaadr ILIKE' => 'Montpellier',
+						'Adresse.typevoie ILIKE' => 'R',						
+						'Adresse.nomvoie ILIKE' => 'pignon sur'						
+					),
+					'1' => array(
+						'OR' => array(
+							'Adresse.numcomptt' => '98765',
+							'Adresse.codepos' => '34000',
+
+						),
+						'Adresse.locaadr ILIKE' => 'Alès',
+						'Adresse.typevoie ILIKE' => 'A',
+						'Adresse.nomvoie ILIKE' => 'de saint martin les mines',
+					),
+					'2' => array(
+						'OR' => array(
+							'Adresse.numcomptt' => '36385',
+							'Adresse.codepos' => '75000',
+						),
+						'Adresse.locaadr ILIKE' => 'Paris',
+						'Adresse.typevoie ILIKE' => 'P',
+						'Adresse.nomvoie ILIKE' => 'pigalle',
+					),
+				),
+			);
+			$this->assertEqual($result, $expected);
+		}
+
+		function testBeforeSave() {
+			$options = array();
+			$result = $this->Canton->beforeSave($options);
+			$this->assertTrue($result);
+		}
 	}
 ?>

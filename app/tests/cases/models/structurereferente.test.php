@@ -52,7 +52,7 @@
 				'3' => 'MSA du Gard',
 				'5' => 'Organisme ACAL Vauvert',
 				'1' => 'Pole emploi Mont Sud', 
-				);
+			);
 			$this->assertEqual($result, $expected);
 		}
 	}

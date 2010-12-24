@@ -14,7 +14,22 @@
 				'comiteapre_id' => '1',
 				'montantattribue' => 700,
 				'observationcomite' => null,
-				'decisioncomite' => null,
+				'decisioncomite' => 'REF',
+				'recoursapre' => null,
+				'observationrecours' => null,
+				'daterecours' => null,
+				'comite_pcd_id' => null,
+				);
+			$result = $this->ApreComiteapre->beforeSave();
+			$this->assertTrue($result);
+
+			$option = array(
+				'id' => '1',
+				'apre_id' => '1',
+				'comiteapre_id' => '1',
+				'montantattribue' => 700,
+				'observationcomite' => null,
+				'decisioncomite' => 'ACC',
 				'recoursapre' => null,
 				'observationrecours' => null,
 				'daterecours' => null,
