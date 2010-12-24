@@ -17,14 +17,7 @@
 				echo $ajax->remoteFunction(
 					array(
 						'update' => 'Adresse',
-						'url' => Router::url(
-							array(
-								'action' => 'seanceseps',
-								'action' => 'ajaxadresse',
-								Set::classicExtract( $this->data, 'Seanceep.structurereferente_id' )
-							),
-							true
-						)
+						'url' => Router::url( '/', true ).'seanceseps/ajaxadresse'
 					)
 				);
 			?>
@@ -49,7 +42,7 @@
 		)
 	);
 
-	echo $ajax->observeField( 'SeanceepStructurereferenteId', array( 'update' => 'Adresse', 'url' => Router::url( array( 'action' => 'ajaxadresse' ) ), true ) );
+	echo $ajax->observeField( 'SeanceepStructurereferenteId', array( 'update' => 'Adresse', 'url' => Router::url( '/', true ).'seanceseps/ajaxadresse' ) );
 
 	echo $html->tag(
 		'div',
