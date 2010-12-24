@@ -49,19 +49,16 @@
 			// test pour une personne inexistante
 			$this->assertNull($this->Personne->dossierId(666));
 		}
-		/*
+		
 		function testSoumisDroitsEtDevoirs() {
-			//test avec personne_id == 1
-			$result = $this->Personne->soumisDroitsEtDevoirs(1);
+			$personne_id = 1
+			$result = $this->Personne->soumisDroitsEtDevoirs($personne_id);
 			$this->assertTrue($result);
-			//test avec personne_id == 1337
-			$result = $this->Personne->soumisDroitsEtDevoirs(1337);
-			$this->assertFalse($result);
-			//test avec personne_id == -42
-			$result = $this->Personne->soumisDroitsEtDevoirs(-42);
+			$personne_id = 1337
+			$result = $this->Personne->soumisDroitsEtDevoirs($personne_id);
 			$this->assertFalse($result);
 		}
-		*/
+		
 
 		function testFindByZones() {
 			$zonegeo = array(

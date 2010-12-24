@@ -20,12 +20,12 @@
 		}
 
 		function testSearch() {
-			$statutRelance = $p1 = null;
-			$mesCodesInsee = $p2 = null;
-			$filtre_zone_geo  = $p3 = null; 
-			$criteresrelance = $p4 = null;
-			$lockedDossiers = $p5 = null;
-			$result = $this->Relance->search($p1, $p2, $p3, $p4, $p5);
+			$statutRelance = null;
+			$mesCodesInsee = null;
+			$filtre_zone_geo = null; 
+			$criteresrelance = null;
+			$lockedDossiers = null;
+			$result = $this->Relance->search($statutRelance, $mesCodesInsee, $filtre_zone_geo, $criteresrelance, $lockedDossiers);
 			$this->assertTrue($result);
 		}
 	}

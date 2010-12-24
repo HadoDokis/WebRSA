@@ -14,6 +14,7 @@
 
 		public $fixtures = array (
 			'app.ep',
+			'app.decisionpropopdo',
 			'app.decisionpdo',
 			'app.pieceformpermfimo',
 			'app.pieceaide66',
