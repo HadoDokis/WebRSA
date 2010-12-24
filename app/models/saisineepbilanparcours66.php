@@ -94,6 +94,21 @@
 				'counterQuery' => ''
 			),
 		);
+		
+		/**     
+         *
+         */
+        public function containQueryData() {
+            return array(
+                'Saisineepbilanparcours66' => array(
+                    'Nvsrepreorient66'=>array(
+                        'Typeorient',
+                        'Structurereferente'
+                    ),
+                )
+            );
+        }
+
 
 		/**
 		* TODO: comment finaliser l'orientation précédente ?
@@ -244,6 +259,14 @@
 		}
 
 		/**
+		*
+		*/
+
+		public function saveDecisionUnique( $data, $niveauDecision ) {
+			return true;
+		}
+
+		/**
 		* Prépare les données du formulaire d'un niveau de décision
 		* en prenant en compte les données du bilan ou du niveau de décision
 		* précédent.
@@ -318,6 +341,11 @@
 				}
 			}
 
+			return $formData;
+		}
+
+		public function prepareFormDataUnique( $dossierep_id, $dossierep, $niveauDecision ) {
+			$formData = array();
 			return $formData;
 		}
 	}
