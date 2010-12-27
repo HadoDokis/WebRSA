@@ -1,6 +1,9 @@
 -- *****************************************************************************
 -- Améliorations des performances
 -- INFO: http://archives.postgresql.org/pgsql-performance/2008-10/msg00029.php
+-- INFO: pour que les différents VACUUM / REINDEX soient pris en compte sans erreur,
+--       il faut passer ce script à partir de la console (par opposition à "à partir
+--       de phpPgAdmin".
 -- *****************************************************************************
 
 SET client_encoding = 'UTF8';
@@ -325,6 +328,10 @@ CREATE INDEX traitementspdos_traitementtypepdo_id_idx ON traitementspdos (traite
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
+
+-- INFO: pour que les différents VACUUM / REINDEX soient pris en compte sans erreur,
+--       il faut passer ce script à partir de la console (par opposition à "à partir
+--       de phpPgAdmin".
 
 VACUUM FULL actions;
 REINDEX TABLE actions;
