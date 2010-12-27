@@ -351,6 +351,26 @@
         return date( 'Y', $today ) - $year + ( ( ( $month > date( 'm', $today ) ) || ( $month == date( 'm', $today ) && $day > date( 'd', $today ) ) ) ? -1 : 0 );
     }
 
+	/**
+	* Calcule la clé pour un NIR donné
+	*
+	* @param string $nir NIR sur 13 caractères
+	* @return string Clé du NIR, sur 2 caractères
+	*/
+
+	function cle_nir( $nir ) {
+		if( !preg_match( '/^[0-9]+$/', $nir ) ) {
+			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé que de chiffres: %s', true ), $nir ), E_USER_WARNING );
+		}
+
+		if( strlen( $nir ) != 13 ) {
+			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé de 13 caractères: %s', true ), $nir ), E_USER_WARNING );
+		}
+
+		$modulo = bcmod( $nir, 97 );
+		return str_pad( ( 97 - $modulo ), 2, '0', STR_PAD_LEFT);
+	}
+
     /** ************************************************************************
     *
     *** ***********************************************************************/
