@@ -301,14 +301,14 @@ CREATE INDEX suivisappuisorientation_personne_id_idx ON suivisappuisorientation 
 DROP INDEX IF EXISTS titressejour_personne_id_idx;
 CREATE INDEX titressejour_personne_id_idx ON titressejour (personne_id);
 
-DROP INDEX IF EXISTS tmporientsstructs_personne_id_idx;
-CREATE INDEX tmporientsstructs_personne_id_idx ON tmporientsstructs (personne_id);
+-- DROP INDEX IF EXISTS tmporientsstructs_personne_id_idx;
+-- CREATE INDEX tmporientsstructs_personne_id_idx ON tmporientsstructs (personne_id);
 
-DROP INDEX IF EXISTS tmporientsstructs_structurereferente_id_idx;
-CREATE INDEX tmporientsstructs_structurereferente_id_idx ON tmporientsstructs (structurereferente_id);
+-- DROP INDEX IF EXISTS tmporientsstructs_structurereferente_id_idx;
+-- CREATE INDEX tmporientsstructs_structurereferente_id_idx ON tmporientsstructs (structurereferente_id);
 
-DROP INDEX IF EXISTS tmporientsstructs_typeorient_id_idx;
-CREATE INDEX tmporientsstructs_typeorient_id_idx ON tmporientsstructs (typeorient_id);
+-- DROP INDEX IF EXISTS tmporientsstructs_typeorient_id_idx;
+-- CREATE INDEX tmporientsstructs_typeorient_id_idx ON tmporientsstructs (typeorient_id);
 
 DROP INDEX IF EXISTS totalisationsacomptes_identificationflux_id_idx;
 CREATE INDEX totalisationsacomptes_identificationflux_id_idx ON totalisationsacomptes (identificationflux_id);
@@ -480,8 +480,8 @@ REINDEX TABLE suivisinstruction;
 VACUUM FULL titressejour;
 REINDEX TABLE titressejour;
 
-VACUUM FULL tmporientsstructs;
-REINDEX TABLE tmporientsstructs;
+-- VACUUM FULL tmporientsstructs;
+-- REINDEX TABLE tmporientsstructs;
 
 VACUUM FULL totalisationsacomptes;
 REINDEX TABLE totalisationsacomptes;

@@ -20,6 +20,42 @@ SET default_with_oids = false;
 BEGIN;
 -- *****************************************************************************
 
+-- INFO: http://archives.postgresql.org/pgsql-sql/2005-09/msg00266.php
+CREATE OR REPLACE FUNCTION public.add_missing_table_field (text, text, text, text)
+returns bool as '
+DECLARE
+  p_namespace alias for $1;
+  p_table     alias for $2;
+  p_field     alias for $3;
+  p_type      alias for $4;
+  v_row       record;
+  v_query     text;
+BEGIN
+  select 1 into v_row from pg_namespace n, pg_class c, pg_attribute a
+     where
+         --public.slon_quote_brute(n.nspname) = p_namespace and
+         n.nspname = p_namespace and
+         c.relnamespace = n.oid and
+         --public.slon_quote_brute(c.relname) = p_table and
+         c.relname = p_table and
+         a.attrelid = c.oid and
+         --public.slon_quote_brute(a.attname) = p_field;
+         a.attname = p_field;
+  if not found then
+    raise notice ''Upgrade table %.% - add field %'', p_namespace, p_table, p_field;
+    v_query := ''alter table '' || p_namespace || ''.'' || p_table || '' add column '';
+    v_query := v_query || p_field || '' '' || p_type || '';'';
+    execute v_query;
+    return ''t'';
+  else
+    return ''f'';
+  end if;
+END;' language plpgsql;
+
+COMMENT ON FUNCTION public.add_missing_table_field (text, text, text, text) IS 'Add a column of a given type to a table if it is missing';
+
+-- *****************************************************************************
+
 -- Anciennes tables
 DROP TABLE IF EXISTS parcoursdetectes CASCADE;
 
