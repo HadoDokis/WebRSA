@@ -4,11 +4,12 @@
 			- une personne garde en général son identifiant PE à vie (?)
 			- une personne peut changer d'identifiant PE lors d'une nouvelle inscription (cas rare, cf. personne 34057)
 // 			- les personnes qui nous viennent par le flux ne sont pas toujours DEM/CJT RSA (?)
-			- bouger l'identifiant PE dans les tables d'historique ?
-			- ajouter code/motif pour les inscriptions ?
 		TODO:
-			- ajouter une fonction permettant de mettre à jour les personne_id de la table informationspe
 			- ajouter l'aide
+			- ne serait-il pas opportun de supprimer les NIR que l'on sait incorrects
+				(table personnes, et les tables traitées ici) ?
+			- bouger l'identifiant PE dans les tables d'historique ?
+			- ajouter motif lié au code (Catégorie de l'inscription) pour les inscriptions ?
 	*/
 
     class IntegrationfluxpeShell extends AppShell
@@ -105,7 +106,7 @@
 					$this->_stop( 1 );
 				}
 			}
-			else {
+			else if( !( count( $this->args ) == 0 || ( count( $this->args ) == 1 && $this->args[0] == 'update' ) ) ) {
 				$this->err( "Veuillez fournir deux paramètres au script: le type de fichier à intégrer et le chemin vers le fichier à intégrer (ex. {$this->shell} cessations /tmp/cessationspe-20101227.csv)" );
 
 				$this->_stop( 1 );
@@ -120,7 +121,12 @@
 			$this->out();
 			$this->out( 'Script d\'importation des flux venant de Pôle Emploi' );
 			$this->out();
-			$this->out( "Fichier traité: {$this->csv->path}" );
+			if( $this->command == 'update' ) {
+				$this->out( "Mise à jour de la relation entre les personnes et les informations Pôle Emploi." );
+			}
+			else if( count( $this->args ) == 1 ) {
+				$this->out( "Fichier traité: {$this->csv->path}" );
+			}
 			$this->out();
 			$this->hr();
 		}
@@ -177,12 +183,12 @@
 					}
 					// La date de naissance n'est pas formattée corretement
 					else if( !preg_match( '/^([0-9]){2}\/([0-9]){2}\/([0-9]){4}$/', $parts[$offsetDtnai] ) ) {
-						$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (la date \"{$parts[$offsetDtnai]}\" n\'est pas correcte)." );
+						$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (la date \"{$parts[$offsetDtnai]}\" n'est pas correcte)." );
 						$this->_rejects[] = $line;
 					}
 					// L'autre date n'est pas formattée correctement
 					else if( !preg_match( '/^([0-9]){2}\/([0-9]){2}\/([0-9]){4}$/', $parts[$offsetAutreDate] ) ) {
-						$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (la date \"{$parts[$offsetAutreDate]}\" n\'est pas correcte)." );
+						$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (la date \"{$parts[$offsetAutreDate]}\" n'est pas correcte)." );
 						$this->_rejects[] = $line;
 					}
 					// La ligne a l'air correcte, essai de traitement
@@ -283,41 +289,32 @@
 							$this->out( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (ligne déjà présente en base)." );
 							$lignespresentes++;
 						}
-
-						/*// Recherche de la personne liée à ces informations
-						// FIXME: autre partie du traitement
-						$this->Personne = ClassRegistry::init( 'Personne' );
-						$personnes = $this->Personne->find(
-							'first',
-							array(
-								'fields' => array(
-									'id'
-								),
-								'conditions' => array(
-									'OR' => array(
-										'Personne.nir' => $informationpe['Informationpe']['nir'],
-										// FIXME: si one trouve pas le NIR, on cherche quand même nom/prenom/dtnai ?
-										array(
-											'Personne.nom' => $informationpe['Informationpe']['nom'],
-											'Personne.prenom' => $informationpe['Informationpe']['prenom'],
-											'Personne.dtnai' => $informationpe['Informationpe']['dtnai']
-										)
-									),
-									'Prestation.natprest' => 'RSA',
-									'Prestation.rolepers' => array( 'DEM', 'CJT' )
-								),
-								'contain' => array( 'Prestation' )
-							)
-						);
-						debug( $personnes );*/
 					}
 				}
 			}
 
+			// A-t'on des lignes rejetées à exporter dans un fichier CSV ?
 			if( !empty( $this->_rejects ) ) {
-				debug( $this->_rejects );
+				$titleLine = "";
+				if( $this->headers ) {
+					$titleLine = "{$lines[0]}\n";
+				}
+				$output = $titleLine.implode( "\n", $this->_rejects )."\n";
+
+				$outfile = rtrim( $this->logpath, '/' ).'/'.$this->outfile;
+				$escapedApp = str_replace( '/', '\/', APP );
+				if( preg_replace( '/^'.$escapedApp.'/', '', $outfile ) ) {
+					$outfile = 'app/'.preg_replace( '/^'.$escapedApp.'/', '', $outfile );
+				}
+				$outfile = preg_replace( '/\.log$/', '.csv', $outfile );
+				$outfile = preg_replace( '/_shell-/', "_rejets_{$this->command}-", $outfile );
+
+				$this->hr();
+				file_put_contents( $outfile, $output );
+				$this->out( "Le fichier de rejets se trouve dans {$outfile}" );
 			}
 
+			// Fin du shell, résultats
 			$this->hr();
 			if( $success ) {
 				$nlines = ( $numLine - 1 );
@@ -326,6 +323,9 @@
 
 				$this->{$modelClass}->commit();
 				$this->out( "{$nlines} lignes traitées ({$nouveaux} nouveaux enregistrement, {$nrejects} rejets, {$lignespresentes} enregistrements déjà présents) avec succès." );
+
+				$this->out( "Mise à jour de la relation entre les personnes et les informations Pôle Emploi." );
+				$this->update();
 			}
 			else {
 				$this->{$modelClass}->rollback();
@@ -358,6 +358,44 @@
 		}
 
 		/**
+		* Mise à jour du champ personne_id de la table informationspe
+		*/
+
+		public function update() {
+			$this->Informationpe = ClassRegistry::init( 'Informationpe' );
+			$this->Informationpe->begin();
+
+			$sql = 'UPDATE informationspe
+				SET personne_id = (
+					SELECT personnes.id
+						FROM personnes
+							INNER JOIN prestations ON (
+								personnes.id = prestations.personne_id
+								AND prestations.natprest = \'RSA\'
+								AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
+							)
+						WHERE
+							(
+								personnes.nir IS NOT NULL
+								AND informationspe.nir IS NOT NULL
+								AND CHAR_LENGTH( TRIM( both \' \' FROM personnes.nir ) ) = 15
+								AND CHAR_LENGTH( TRIM( both \' \' FROM informationspe.nir ) ) = 15
+								AND personnes.nir = informationspe.nir
+							)
+							OR (
+								personnes.nom = informationspe.nom
+								AND personnes.prenom = informationspe.prenom
+								AND personnes.dtnai = informationspe.dtnai
+							)
+						LIMIT 1
+				)
+				WHERE personne_id IS NULL;';
+
+			$this->Informationpe->query( $sql );
+			$this->Informationpe->commit();
+		}
+
+		/**
 		* Par défaut, on affiche l'aide
 		*/
 
@@ -372,22 +410,22 @@
 		public function help() {
 			$this->log = false;
 
-			/*$this->out("Usage: cake/console/cake postgresql <commande> <paramètres>");
+			$this->out("Usage: cake/console/cake {$this->shell} <commande> <paramètres>");
 			$this->hr();
 			$this->out();
 			$this->out('Commandes:');
-			$this->out("\n\t{$this->shell} all\n\t\tEffectue toutes les opérations de maintenance ( ".implode( ', ', $this->operations )." ).");
 			$this->out("\n\t{$this->shell} help\n\t\tAffiche cette aide.");
-			$this->out("\n\t{$this->shell} reindex\n\t\t{$this->commandDescriptions['reindex']}");
-			$this->out("\n\t{$this->shell} sequences\n\t\t{$this->commandDescriptions['sequences']}");
-			$this->out("\n\t{$this->shell} vacuum\n\t\t{$this->commandDescriptions['vacuum']}");
+			$this->out("\n\t{$this->shell} cessations <fichier>\n\t\tImporte les informations Pôle Emploi de type cessation à partir du fichier CSV passé en second paramètre.");
+			$this->out("\n\t{$this->shell} inscriptions <fichier>\n\t\tImporte les informations Pôle Emploi de type inscriptions à partir du fichier CSV passé en second paramètre.");
+			$this->out("\n\t{$this->shell} radiations <fichier>\n\t\tImporte les informations Pôle Emploi de type radiations à partir du fichier CSV passé en second paramètre.");
+			$this->out("\n\t{$this->shell} update\n\t\tMise à jour de la relation entre les personnes et les informations Pôle Emploi.");
 			$this->out();
 			$this->out('Paramètres:');
-			$this->out("\t-connection <connexion>\n\t\tLe nom d'une connexion PostgreSQL défini dans app/config/database.php\n\t\tPar défaut: ".$this->_defaultToString( 'connection' )."\n");
+			$this->out("\t-separator <caractère>\n\t\tQuel est le séparateur utilisé dans le fichier CSV ?\n\t\tPar défaut: ".$this->_defaultToString( 'separator' )."\n");
+			$this->out("\t-headers <booléen>\n\t\tSi la première ligne du fichier CSV est une ligne de titre ?\n\t\tPar défaut: ".$this->_defaultToString( 'headers' )."\n");
 			$this->out("\t-log <booléen>\n\t\tDoit-on journaliser la sortie du programme ?\n\t\tPar défaut: ".$this->_defaultToString( 'log' )."\n");
-			$this->out("\t-logpath <répertoire>\n\t\tLe répertoire dans lequel enregistrer les fichiers de journalisation.\n\t\tPar défaut: ".$this->_defaultToString( 'logpath' )."\n");
-			$this->out("\t-verbose <booléen>\n\t\tDoit-on afficher les commandes SQL exéctuées ?\n\t\tPar défaut: ".$this->_defaultToString( 'verbose' )."\n");
-			$this->out();*/
+			$this->out("\t-logpath <répertoire>\n\t\tLe répertoire dans lequel enregistrer les fichiers de journalisation et les fichiers CSV contenant les rejets.\n\t\tPar défaut: ".$this->_defaultToString( 'logpath' )."\n");
+			$this->out();
 
 			$this->_stop( 0 );
 		}
