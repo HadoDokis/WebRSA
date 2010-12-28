@@ -244,13 +244,14 @@ SELECT add_missing_table_field ('public', 'bilansparcours66', 'textbilanparcours
 -- Nouvelle structure pour les informations venant de Pôle Emploi
 -- *****************************************************************************
 
+-- FIXME
 DROP TABLE IF EXISTS historiquecessationspe CASCADE;
 DROP TABLE IF EXISTS historiqueradiationspe CASCADE;
 DROP TABLE IF EXISTS historiqueinscriptionspe CASCADE;
 DROP TABLE IF EXISTS informationspe CASCADE;
 
 
--- TODO: indexes (indexes uniques pour chacune des tables d'historique ?)
+/*-- TODO: indexes (indexes uniques pour chacune des tables d'historique ?)
 -- TODO: pourquoi une erreur avec les REFERENCES ?
 CREATE TABLE informationspe (
 	id				SERIAL NOT NULL,
@@ -620,7 +621,288 @@ UPDATE
 	historiqueradiationspe
 	SET code = '8X'
 	WHERE code IS NULL
-		AND motif = 'INSUFFISANCE DE RECHERCHE D''EMPLOI SUSPENSION DE QUINZE JOURS';
+		AND motif = 'INSUFFISANCE DE RECHERCHE D''EMPLOI SUSPENSION DE QUINZE JOURS';*/
+
+-- -----------------------------------------------------------------------------
+-- FIXME 20101228
+-- -----------------------------------------------------------------------------
+
+-- 0°) Nettoyage ---------------------------------------------------------------
+DROP TABLE IF EXISTS historiqueetatspe CASCADE;
+DROP TABLE IF EXISTS informationspe CASCADE;
+
+DROP TYPE IF EXISTS TYPE_ETATPE CASCADE;
+
+-- 1°) -------------------------------------------------------------------------
+-- TODO: pourquoi une erreur avec les REFERENCES ?
+CREATE TABLE informationspe (
+	id				SERIAL NOT NULL,
+	--personne_id		INTEGER DEFAULT NULL REFERENCES personnes(id) ON UPDATE CASCADE ON DELETE SET NULL,
+	personne_id		INTEGER DEFAULT NULL REFERENCES personnes(id), -- Personne non trouvée -> NULL
+	nir				VARCHAR(15) DEFAULT NULL,
+	nom				VARCHAR(50) NOT NULL,
+	prenom			VARCHAR(50) NOT NULL,
+	dtnai			DATE NOT NULL
+);
+
+-- Contrainte sur le NIR qui doit être bien formé ou être NULL -- FIXME avec les valeurs réelles possibles
+ALTER TABLE informationspe ADD CONSTRAINT informationspe_nir_correct_chk CHECK( nir IS NULL OR nir ~* '^[0-9]{15}$' );
+-- -- Test: doivent passer
+-- INSERT INTO informationspe ( personne_id, nir, nom, prenom, dtnai ) VALUES
+-- 	( ( SELECT id FROM personnes ORDER BY id ASC LIMIT 1 ) , NULL, 'Foo', 'Bar', '2010-10-28' ),
+-- 	( ( SELECT id FROM personnes ORDER BY id DESC LIMIT 1 ) , '123456789012345', 'Foo', 'Bar', '2010-10-28' );
+-- -- Test: ne doit pas passer
+-- INSERT INTO informationspe ( personne_id, nir, nom, prenom, dtnai ) VALUES
+-- 	( ( SELECT id FROM personnes ORDER BY id DESC LIMIT 1 ) , '123456 89012345', 'Foo', 'Bar', '2010-10-28' );
+
+-- Indexes
+CREATE UNIQUE INDEX informationspe_personne_id_idx ON informationspe ( personne_id );
+CREATE INDEX informationspe_nir_idx ON informationspe ( nir varchar_pattern_ops );
+-- FIXME: majuscules ?
+CREATE INDEX informationspe_nom_idx ON informationspe ( nom varchar_pattern_ops );
+CREATE INDEX informationspe_prenom_idx ON informationspe ( prenom varchar_pattern_ops );
+CREATE INDEX informationspe_dtnai_idx ON informationspe ( dtnai );
+-- FIXME: il ne faudrait pas avoir besoin de personne_id dans l'index unique, mais les données déjà en base ne sont pas toujours bonnes
+CREATE UNIQUE INDEX informationspe_unique_tuple_idx ON informationspe ( personne_id, nir, nom, prenom, dtnai );
+
+COMMENT ON TABLE informationspe IS 'Liens entre Pôle Emploi et de supposés allocataires.';
+
+-- 2°) Population de la table avec les valeurs des anciennes tables ------------
+
+-- A partir des personnes déjà trouvées
+INSERT INTO informationspe ( personne_id, nir, nom, prenom, dtnai )
+SELECT
+		infospoleemploi.personne_id,
+		personnes.nir,
+		personnes.nom,
+		personnes.prenom,
+		personnes.dtnai
+	FROM infospoleemploi
+	INNER JOIN personnes ON (
+		infospoleemploi.personne_id = personnes.id
+	)
+	GROUP BY
+		infospoleemploi.personne_id,
+		personnes.nir,
+		personnes.nom,
+		personnes.prenom,
+		personnes.dtnai
+	ORDER BY
+		infospoleemploi.personne_id,
+		personnes.nir,
+		personnes.nom,
+		personnes.prenom,
+		personnes.dtnai;
+
+-- A partir des personnes pas encore trouvées (tables tempXXX)
+INSERT INTO informationspe ( nir, nom, prenom, dtnai )
+	SELECT
+			-- FIXME: est-ce le bon calcul d'une clé de NIR ?
+			CASE WHEN ( temp.nir ~* '^[0-9]{13}$' ) THEN temp.nir || LPAD( CAST( 97 - ( CAST( temp.nir AS BIGINT ) % 97 ) AS VARCHAR(13)), 2, '0' )
+				ELSE NULL
+			END AS nir,
+			temp.nom,
+			temp.prenom,
+			temp.dtnai
+		FROM (
+			SELECT *
+				FROM(
+					SELECT
+							nir,
+							nom,
+							prenom,
+							dtnai
+						FROM tempcessations
+					UNION
+					SELECT
+							nir,
+							nom,
+							prenom,
+							dtnai
+						FROM tempradiations
+					UNION
+					SELECT
+							nir,
+							nom,
+							prenom,
+							dtnai
+						FROM tempinscriptions
+				) AS tmptables
+		) AS temp
+		WHERE (
+			SELECT
+					COUNT(*)
+				FROM informationspe
+				WHERE (
+						informationspe.nir = temp.nir
+						OR (
+							informationspe.nom = temp.nom
+							AND informationspe.prenom = temp.prenom
+							AND informationspe.dtnai = temp.dtnai
+						)
+					)
+		) = 0
+		GROUP BY
+			temp.nir,
+			temp.nom,
+			temp.prenom,
+			temp.dtnai;
+
+-- 3°) -------------------------------------------------------------------------
+
+CREATE TYPE TYPE_ETATPE AS ENUM ( 'cessation', 'inscription', 'radiation' );
+
+CREATE TABLE historiqueetatspe (
+	id					SERIAL NOT NULL,
+	--informationpe_id	INTEGER NOT NULL REFERENCES informationspe(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	informationpe_id	INTEGER NOT NULL,
+	identifiantpe		VARCHAR(11) NOT NULL, -- FIXME: 11 ou 8 et 3 pour la structure ?
+	date				DATE NOT NULL,
+	etat				TYPE_ETATPE NOT NULL,
+	code				VARCHAR(2) DEFAULT NULL,
+	motif				VARCHAR(250) DEFAULT NULL
+);
+
+COMMENT ON TABLE historiqueetatspe IS 'Historique des états par lesquels passe un supposé allocataire à Pôle Emploi, avec l''identifiant PE associé.';
+
+CREATE UNIQUE INDEX historiqueetatspe_unique_tuple_idx ON historiqueetatspe ( informationpe_id, identifiantpe, date, etat, code, motif );
+
+-- 4°) Population de la table avec les valeurs des anciennes tables ------------
+-- A partir des personnes déjà trouvées
+-- FIXME: ici, les inscriptions, c'est ceux qui n'ont rien dans les autres dates
+-- -> faut il rajouter les inscriptions de ceux qui ont quelque chose dans ces autres dates ?
+INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat, code, motif )
+	SELECT
+			informationspe.id,
+			infospoleemploi.identifiantpe,
+			CASE
+				WHEN infospoleemploi.datecessation IS NOT NULL THEN infospoleemploi.datecessation
+				WHEN infospoleemploi.dateradiation IS NOT NULL THEN infospoleemploi.dateradiation
+				WHEN infospoleemploi.dateinscription IS NOT NULL THEN infospoleemploi.dateinscription
+			END AS date,
+			CASE
+				WHEN infospoleemploi.datecessation IS NOT NULL THEN CAST( 'cessation' AS TYPE_ETATPE )
+				WHEN infospoleemploi.dateradiation IS NOT NULL THEN CAST( 'radiation' AS TYPE_ETATPE )
+				WHEN infospoleemploi.dateinscription IS NOT NULL THEN CAST( 'inscription' AS TYPE_ETATPE )
+			END AS etat,
+			CASE
+				WHEN infospoleemploi.datecessation IS NOT NULL THEN NULL
+				WHEN infospoleemploi.dateradiation IS NOT NULL THEN NULL
+				WHEN infospoleemploi.dateinscription IS NOT NULL THEN infospoleemploi.categoriepe
+			END AS code,
+			CASE
+				WHEN infospoleemploi.datecessation IS NOT NULL THEN infospoleemploi.motifcessation
+				WHEN infospoleemploi.dateradiation IS NOT NULL THEN infospoleemploi.motifradiation
+				WHEN infospoleemploi.dateinscription IS NOT NULL THEN NULL
+			END AS motif
+		FROM infospoleemploi
+			INNER JOIN informationspe ON (
+				informationspe.personne_id = infospoleemploi.personne_id
+			)
+		GROUP BY
+			informationspe.id,
+			infospoleemploi.identifiantpe,
+			date,
+			etat,
+			code,
+			motif;
+
+-- A partir des personnes pas encore trouvées (tables tempXXX)
+INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat, code, motif )
+	SELECT
+			informationspe.id,
+			identifiantpe,
+			date,
+			etat,
+			code,
+			motif
+		FROM(
+			SELECT
+					CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || LPAD( CAST( 97 - ( CAST( nir AS BIGINT ) % 97 ) AS VARCHAR(13)), 2, '0' )
+						ELSE NULL
+					END AS nir,
+					identifiantpe,
+					nom,
+					prenom,
+					dtnai,
+					CAST( 'cessation' AS TYPE_ETATPE ) AS etat,
+					datecessation AS date,
+					NULL AS code,
+					motifcessation as motif
+				FROM tempcessations
+			UNION
+			SELECT
+					CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || LPAD( CAST( 97 - ( CAST( nir AS BIGINT ) % 97 ) AS VARCHAR(13)), 2, '0' )
+						ELSE NULL
+					END AS nir,
+					identifiantpe,
+					nom,
+					prenom,
+					dtnai,
+					CAST( 'radiation' AS TYPE_ETATPE ) AS etat,
+					dateradiation AS date,
+					NULL AS code,
+					motifradiation as motif
+				FROM tempradiations
+			UNION
+			SELECT
+					CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || LPAD( CAST( 97 - ( CAST( nir AS BIGINT ) % 97 ) AS VARCHAR(13)), 2, '0' )
+						ELSE NULL
+					END AS nir,
+					identifiantpe,
+					nom,
+					prenom,
+					dtnai,
+					CAST( 'inscription' AS TYPE_ETATPE ) AS etat,
+					dateinscription AS date,
+					categoriepe AS code,
+					NULL as motif
+				FROM tempinscriptions
+		) AS temp
+			INNER JOIN informationspe ON (
+				informationspe.nir = temp.nir
+				OR (
+					informationspe.nom = temp.nom
+					AND informationspe.prenom = temp.prenom
+					AND informationspe.dtnai = temp.dtnai
+				)
+			)
+		GROUP BY
+			informationspe.id,
+			identifiantpe,
+			date,
+			etat,
+			code,
+			motif;
+
+-- 5°) Mise à jour des codes -- FIXME: tous les codes -- FIXME: après le shell
+-- UPDATE
+-- 	historiqueetatspe
+-- 	SET code = '90'
+-- 	WHERE code IS NULL
+-- 		AND etat = 'cessation'
+-- 		AND motif = 'ABSENCE AU CONTROLE (NON REPONSE A DAM)';
+--
+-- UPDATE
+-- 	historiqueetatspe
+-- 	SET code = 'CX'
+-- 	WHERE code IS NULL
+-- 		AND etat = 'radiation'
+-- 		AND motif = 'REFUS ACTION INSERTION SUSPENSION DE QUINZE JOURS';
+--
+-- UPDATE
+-- 	historiqueetatspe
+-- 	SET code = '92'
+-- 	WHERE code IS NULL
+-- 		AND etat = 'radiation'
+-- 		AND motif = 'NON REPONSE A CONVOCATION SUSPENSION DE DEUX MOIS';
+--
+-- UPDATE
+-- 	historiqueetatspe
+-- 	SET code = '8X'
+-- 	WHERE code IS NULL
+-- 		AND etat = 'radiation'
+-- 		AND motif = 'INSUFFISANCE DE RECHERCHE D''EMPLOI SUSPENSION DE QUINZE JOURS';
 
 -- *****************************************************************************
 COMMIT;
