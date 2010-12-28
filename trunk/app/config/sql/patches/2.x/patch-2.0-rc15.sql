@@ -269,7 +269,7 @@ CREATE INDEX informationspe_identifiantpe_idx ON informationspe ( identifiantpe 
 CREATE INDEX informationspe_nom_idx ON informationspe ( nom varchar_pattern_ops );
 CREATE INDEX informationspe_prenom_idx ON informationspe ( prenom varchar_pattern_ops );
 CREATE INDEX informationspe_dtnai_idx ON informationspe ( dtnai );
--- FIXME
+-- FIXME: il ne faudrait pas avoir besoin de personne_id dans l'index unique, mais les données déjà en base ne sont pas toujours bonnes
 CREATE UNIQUE INDEX informationspe_unique_tuple_idx ON informationspe ( personne_id, nir, identifiantpe, nom, prenom, dtnai );
 
 --
