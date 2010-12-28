@@ -875,34 +875,34 @@ INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat, cod
 			code,
 			motif;
 
--- 5°) Mise à jour des codes -- FIXME: tous les codes -- FIXME: après le shell
--- UPDATE
--- 	historiqueetatspe
--- 	SET code = '90'
--- 	WHERE code IS NULL
--- 		AND etat = 'cessation'
--- 		AND motif = 'ABSENCE AU CONTROLE (NON REPONSE A DAM)';
---
--- UPDATE
--- 	historiqueetatspe
--- 	SET code = 'CX'
--- 	WHERE code IS NULL
--- 		AND etat = 'radiation'
--- 		AND motif = 'REFUS ACTION INSERTION SUSPENSION DE QUINZE JOURS';
---
--- UPDATE
--- 	historiqueetatspe
--- 	SET code = '92'
--- 	WHERE code IS NULL
--- 		AND etat = 'radiation'
--- 		AND motif = 'NON REPONSE A CONVOCATION SUSPENSION DE DEUX MOIS';
---
--- UPDATE
--- 	historiqueetatspe
--- 	SET code = '8X'
--- 	WHERE code IS NULL
--- 		AND etat = 'radiation'
--- 		AND motif = 'INSUFFISANCE DE RECHERCHE D''EMPLOI SUSPENSION DE QUINZE JOURS';
+-- 5°) Mise à jour des codes -- FIXME: tous les codes
+UPDATE
+	historiqueetatspe
+	SET code = '90'
+	WHERE code IS NULL
+		AND etat = 'cessation'
+		AND motif = 'ABSENCE AU CONTROLE (NON REPONSE A DAM)';
+
+UPDATE
+	historiqueetatspe
+	SET code = 'CX'
+	WHERE code IS NULL
+		AND etat = 'radiation'
+		AND motif = 'REFUS ACTION INSERTION SUSPENSION DE QUINZE JOURS';
+
+UPDATE
+	historiqueetatspe
+	SET code = '92'
+	WHERE code IS NULL
+		AND etat = 'radiation'
+		AND motif = 'NON REPONSE A CONVOCATION SUSPENSION DE DEUX MOIS';
+
+UPDATE
+	historiqueetatspe
+	SET code = '8X'
+	WHERE code IS NULL
+		AND etat = 'radiation'
+		AND motif = 'INSUFFISANCE DE RECHERCHE D''EMPLOI SUSPENSION DE QUINZE JOURS';
 
 -- *****************************************************************************
 COMMIT;
