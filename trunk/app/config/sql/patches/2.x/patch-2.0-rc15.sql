@@ -241,5 +241,387 @@ SELECT add_missing_table_field ('public', 'bilansparcours66', 'typeformulaire', 
 SELECT add_missing_table_field ('public', 'bilansparcours66', 'textbilanparcours', 'TEXT');
 
 -- *****************************************************************************
+-- Nouvelle structure pour les informations venant de Pôle Emploi
+-- *****************************************************************************
+
+DROP TABLE IF EXISTS historiquecessationspe CASCADE;
+DROP TABLE IF EXISTS historiqueradiationspe CASCADE;
+DROP TABLE IF EXISTS historiqueinscriptionspe CASCADE;
+DROP TABLE IF EXISTS informationspe CASCADE;
+
+
+-- TODO: indexes (indexes uniques pour chacune des tables d'historique ?)
+-- TODO: pourquoi une erreur avec les REFERENCES ?
+CREATE TABLE informationspe (
+	id				SERIAL NOT NULL,
+	--personne_id		INTEGER DEFAULT NULL REFERENCES personnes(id) ON UPDATE CASCADE ON DELETE SET NULL,
+	personne_id		INTEGER DEFAULT NULL REFERENCES personnes(id),
+	nir				VARCHAR(15) DEFAULT NULL, -- obligatoire ?
+	identifiantpe	VARCHAR(11) NOT NULL, -- 11 ou 8 et 3 pour la structure ? ... il change au cours du temps ?
+	nom				VARCHAR(50) DEFAULT NULL,
+	prenom			VARCHAR(50) NOT NULL,
+	dtnai			DATE NOT NULL
+);
+
+CREATE INDEX informationspe_personne_id_idx ON informationspe ( personne_id );
+CREATE INDEX informationspe_nir_idx ON informationspe ( nir varchar_pattern_ops );
+CREATE INDEX informationspe_identifiantpe_idx ON informationspe ( identifiantpe varchar_pattern_ops );
+CREATE INDEX informationspe_nom_idx ON informationspe ( nom varchar_pattern_ops );
+CREATE INDEX informationspe_prenom_idx ON informationspe ( prenom varchar_pattern_ops );
+CREATE INDEX informationspe_dtnai_idx ON informationspe ( dtnai );
+-- FIXME
+CREATE UNIQUE INDEX informationspe_unique_tuple_idx ON informationspe ( personne_id, nir, identifiantpe, nom, prenom, dtnai );
+
+--
+
+CREATE TABLE historiquecessationspe (
+	id					SERIAL NOT NULL,
+	--informationpe_id	INTEGER NOT NULL REFERENCES informationspe(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	informationpe_id	INTEGER NOT NULL,
+	date				DATE NOT NULL,
+	code				VARCHAR(2) DEFAULT NULL,
+	motif				VARCHAR(250) DEFAULT NULL
+);
+
+CREATE UNIQUE INDEX historiquecessationspe_unique_tuple_idx ON historiquecessationspe ( informationpe_id, date, code, motif );
+
+--
+
+CREATE TABLE historiqueradiationspe (
+	id					SERIAL NOT NULL,
+	--informationpe_id	INTEGER NOT NULL REFERENCES informationspe(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	informationpe_id	INTEGER NOT NULL,
+	date				DATE NOT NULL,
+	code				VARCHAR(2) DEFAULT NULL,
+	motif				VARCHAR(250) DEFAULT NULL
+);
+
+CREATE UNIQUE INDEX historiqueradiationspe_unique_tuple_idx ON historiqueradiationspe ( informationpe_id, date, code, motif );
+
+--
+
+CREATE TABLE historiqueinscriptionspe (
+	id					SERIAL NOT NULL,
+	--informationpe_id	INTEGER NOT NULL REFERENCES informationspe(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	informationpe_id	INTEGER NOT NULL,
+	date				DATE NOT NULL,
+	code				VARCHAR(2) DEFAULT NULL,
+	motif				VARCHAR(250) DEFAULT NULL -- FIXME ?
+);
+
+CREATE UNIQUE INDEX historiqueinscriptionspe_unique_tuple_idx ON historiqueinscriptionspe ( informationpe_id, date, code, motif );
+
+--------------------------------------------------------------------------------
+-- Remplissage des nouvelles tables avec les anciennes tables
+--------------------------------------------------------------------------------
+-- 1°) Lorsque la personne a été trouvée en base
+INSERT INTO informationspe ( personne_id, nir, identifiantpe, nom, prenom, dtnai )
+SELECT
+		infospoleemploi.personne_id,
+		personnes.nir,
+		infospoleemploi.identifiantpe,
+		personnes.nom,
+		personnes.prenom,
+		personnes.dtnai
+	FROM infospoleemploi
+	INNER JOIN personnes ON (
+		infospoleemploi.personne_id = personnes.id
+	)
+	GROUP BY
+		infospoleemploi.personne_id,
+		personnes.nir,
+		infospoleemploi.identifiantpe,
+		personnes.nom,
+		personnes.prenom,
+		personnes.dtnai
+	ORDER BY
+		infospoleemploi.personne_id,
+		personnes.nir,
+		infospoleemploi.identifiantpe,
+		personnes.nom,
+		personnes.prenom,
+		personnes.dtnai;
+
+--
+
+INSERT INTO historiqueinscriptionspe ( informationpe_id, date, code )
+SELECT
+		informationspe.id,
+		infospoleemploi.dateinscription,
+		infospoleemploi.categoriepe
+	FROM infospoleemploi
+	INNER JOIN informationspe ON (
+		informationspe.personne_id = infospoleemploi.personne_id
+		AND informationspe.identifiantpe = infospoleemploi.identifiantpe
+	)
+	WHERE infospoleemploi.dateinscription IS NOT NULL
+	GROUP BY
+		informationspe.id,
+		infospoleemploi.personne_id,
+		informationspe.nir,
+		infospoleemploi.identifiantpe,
+		informationspe.nom,
+		informationspe.prenom,
+		informationspe.dtnai,
+		infospoleemploi.dateinscription,
+		infospoleemploi.categoriepe;
+
+INSERT INTO historiquecessationspe ( informationpe_id, date, motif )
+SELECT
+		informationspe.id,
+		infospoleemploi.datecessation,
+		infospoleemploi.motifcessation
+	FROM infospoleemploi
+	INNER JOIN informationspe ON (
+		informationspe.personne_id = infospoleemploi.personne_id
+		AND informationspe.identifiantpe = infospoleemploi.identifiantpe
+	)
+	WHERE infospoleemploi.datecessation IS NOT NULL
+	GROUP BY
+		informationspe.id,
+		infospoleemploi.personne_id,
+		informationspe.nir,
+		infospoleemploi.identifiantpe,
+		informationspe.nom,
+		informationspe.prenom,
+		informationspe.dtnai,
+		infospoleemploi.datecessation,
+		infospoleemploi.motifcessation;
+
+INSERT INTO historiqueradiationspe ( informationpe_id, date, motif )
+SELECT
+		informationspe.id,
+		infospoleemploi.dateradiation,
+		infospoleemploi.motifradiation
+	FROM infospoleemploi
+	INNER JOIN informationspe ON (
+		informationspe.personne_id = infospoleemploi.personne_id
+		AND informationspe.identifiantpe = infospoleemploi.identifiantpe
+	)
+	WHERE infospoleemploi.dateradiation IS NOT NULL
+	GROUP BY
+		informationspe.id,
+		infospoleemploi.personne_id,
+		informationspe.nir,
+		infospoleemploi.identifiantpe,
+		informationspe.nom,
+		informationspe.prenom,
+		informationspe.dtnai,
+		infospoleemploi.dateradiation,
+		infospoleemploi.motifradiation;
+
+-- 2°) Lorsque la personne n'a pas encore été trouvée en base
+-- a°) A partir de tempradiations
+INSERT INTO informationspe ( nir, identifiantpe, nom, prenom, dtnai )
+SELECT
+		tempradiations.nir,
+		tempradiations.identifiantpe,
+		tempradiations.nom,
+		tempradiations.prenom,
+		tempradiations.dtnai
+	FROM tempradiations
+	WHERE (
+		SELECT
+				COUNT(*)
+			FROM informationspe
+			WHERE
+				informationspe.identifiantpe= tempradiations.identifiantpe
+				AND (
+					informationspe.nir = tempradiations.nir
+					OR (
+						informationspe.nom = tempradiations.nom
+						AND informationspe.prenom = tempradiations.prenom
+						AND informationspe.dtnai = tempradiations.dtnai
+					)
+				)
+	) = 0
+	GROUP BY
+		tempradiations.nir,
+		tempradiations.identifiantpe,
+		tempradiations.nom,
+		tempradiations.prenom,
+		tempradiations.dtnai;
+
+INSERT INTO historiqueradiationspe ( informationpe_id, date, motif )
+SELECT
+		informationspe.id,
+		tempradiations.dateradiation,
+		tempradiations.motifradiation
+	FROM tempradiations
+		INNER JOIN informationspe ON (
+			informationspe.identifiantpe= tempradiations.identifiantpe
+			AND (
+				informationspe.nir = tempradiations.nir
+				OR (
+					informationspe.nom = tempradiations.nom
+					AND informationspe.prenom = tempradiations.prenom
+					AND informationspe.dtnai = tempradiations.dtnai
+				)
+			)
+		)
+	WHERE (
+		SELECT
+				COUNT(*)
+			FROM historiqueradiationspe
+			WHERE
+				historiqueradiationspe.informationpe_id = informationspe.id
+				AND historiqueradiationspe.date = tempradiations.dateradiation
+				AND historiqueradiationspe.motif = tempradiations.motifradiation
+	) = 0
+	GROUP BY
+		informationspe.id,
+		tempradiations.dateradiation,
+		tempradiations.motifradiation;
+
+-- b°) A partir de tempcessations
+INSERT INTO informationspe ( nir, identifiantpe, nom, prenom, dtnai )
+SELECT
+		tempcessations.nir,
+		tempcessations.identifiantpe,
+		tempcessations.nom,
+		tempcessations.prenom,
+		tempcessations.dtnai
+	FROM tempcessations
+	WHERE (
+		SELECT
+				COUNT(*)
+			FROM informationspe
+			WHERE
+				informationspe.identifiantpe= tempcessations.identifiantpe
+				AND (
+					informationspe.nir = tempcessations.nir
+					OR (
+						informationspe.nom = tempcessations.nom
+						AND informationspe.prenom = tempcessations.prenom
+						AND informationspe.dtnai = tempcessations.dtnai
+					)
+				)
+	) = 0
+	GROUP BY
+		tempcessations.nir,
+		tempcessations.identifiantpe,
+		tempcessations.nom,
+		tempcessations.prenom,
+		tempcessations.dtnai;
+
+INSERT INTO historiquecessationspe ( informationpe_id, date, motif )
+SELECT
+		informationspe.id,
+		tempcessations.datecessation,
+		tempcessations.motifcessation
+	FROM tempcessations
+		INNER JOIN informationspe ON (
+			informationspe.identifiantpe= tempcessations.identifiantpe
+			AND (
+				informationspe.nir = tempcessations.nir
+				OR (
+					informationspe.nom = tempcessations.nom
+					AND informationspe.prenom = tempcessations.prenom
+					AND informationspe.dtnai = tempcessations.dtnai
+				)
+			)
+		)
+	WHERE (
+		SELECT
+				COUNT(*)
+			FROM historiquecessationspe
+			WHERE
+				historiquecessationspe.informationpe_id = informationspe.id
+				AND historiquecessationspe.date = tempcessations.datecessation
+				AND historiquecessationspe.motif = tempcessations.motifcessation
+	) = 0
+	GROUP BY
+		informationspe.id,
+		tempcessations.datecessation,
+		tempcessations.motifcessation;
+
+-- c°) A partir de tempinscriptions
+INSERT INTO informationspe ( nir, identifiantpe, nom, prenom, dtnai )
+SELECT
+		tempinscriptions.nir,
+		tempinscriptions.identifiantpe,
+		tempinscriptions.nom,
+		tempinscriptions.prenom,
+		tempinscriptions.dtnai
+	FROM tempinscriptions
+	WHERE (
+		SELECT
+				COUNT(*)
+			FROM informationspe
+			WHERE
+				informationspe.identifiantpe= tempinscriptions.identifiantpe
+				AND (
+					informationspe.nir = tempinscriptions.nir
+					OR (
+						informationspe.nom = tempinscriptions.nom
+						AND informationspe.prenom = tempinscriptions.prenom
+						AND informationspe.dtnai = tempinscriptions.dtnai
+					)
+				)
+	) = 0
+	GROUP BY
+		tempinscriptions.nir,
+		tempinscriptions.identifiantpe,
+		tempinscriptions.nom,
+		tempinscriptions.prenom,
+		tempinscriptions.dtnai;
+
+INSERT INTO historiqueinscriptionspe ( informationpe_id, date, code )
+SELECT
+		informationspe.id,
+		tempinscriptions.dateinscription,
+		tempinscriptions.categoriepe
+	FROM tempinscriptions
+		INNER JOIN informationspe ON (
+			informationspe.identifiantpe= tempinscriptions.identifiantpe
+			AND (
+				informationspe.nir = tempinscriptions.nir
+				OR (
+					informationspe.nom = tempinscriptions.nom
+					AND informationspe.prenom = tempinscriptions.prenom
+					AND informationspe.dtnai = tempinscriptions.dtnai
+				)
+			)
+		)
+	WHERE (
+		SELECT
+				COUNT(*)
+			FROM historiqueinscriptionspe
+			WHERE
+				historiqueinscriptionspe.informationpe_id = informationspe.id
+				AND historiqueinscriptionspe.date = tempinscriptions.dateinscription
+				AND historiqueinscriptionspe.code = tempinscriptions.categoriepe
+	) = 0
+	GROUP BY
+		informationspe.id,
+		tempinscriptions.dateinscription,
+		tempinscriptions.categoriepe;
+
+-- Mise à jour des codes
+UPDATE
+	historiquecessationspe
+	SET code = '90'
+	WHERE code IS NULL
+		AND motif = 'ABSENCE AU CONTROLE (NON REPONSE A DAM)';
+
+UPDATE
+	historiqueradiationspe
+	SET code = 'CX'
+	WHERE code IS NULL
+		AND motif = 'REFUS ACTION INSERTION SUSPENSION DE QUINZE JOURS';
+
+UPDATE
+	historiqueradiationspe
+	SET code = '92'
+	WHERE code IS NULL
+		AND motif = 'NON REPONSE A CONVOCATION SUSPENSION DE DEUX MOIS';
+
+UPDATE
+	historiqueradiationspe
+	SET code = '8X'
+	WHERE code IS NULL
+		AND motif = 'INSUFFISANCE DE RECHERCHE D''EMPLOI SUSPENSION DE QUINZE JOURS';
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

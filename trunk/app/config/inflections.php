@@ -262,6 +262,11 @@
 		'decisionnonrespectsanctionep93' => 'decisionsnonrespectssanctionseps93',
 		'ep_membreep' => 'eps_membreseps',
 		'decisionpropopdo' => 'decisionspropospdos',
+		// Développement infospe
+		'informationpe' => 'informationspe',
+		'historiquecessationpe' => 'historiquecessationspe',
+		'historiqueradiationpe' => 'historiqueradiationspe',
+		'historiqueinscriptionpe' => 'historiqueinscriptionspe',
 	);
 /**
  * This is a key => value array of regex used to match words.
