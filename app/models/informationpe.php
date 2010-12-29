@@ -16,8 +16,8 @@
 		);
 
 		public $hasMany = array(
-			'Historiquecessationpe' => array(
-				'className' => 'Historiquecessationpe',
+			'Historiqueetatpe' => array(
+				'className' => 'Historiqueetatpe',
 				'foreignKey' => 'informationpe_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -29,32 +29,6 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Historiqueinscriptionpe' => array(
-				'className' => 'Historiqueinscriptionpe',
-				'foreignKey' => 'informationpe_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-			'Historiqueradiationpe' => array(
-				'className' => 'Historiqueradiationpe',
-				'foreignKey' => 'informationpe_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			)
 		);
 	}
 ?>

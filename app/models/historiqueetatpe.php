@@ -1,7 +1,7 @@
 <?php
-	class Historiqueradiationpe extends AppModel
+	class Historiqueetatpe extends AppModel
 	{
-		public $name = 'Historiqueradiationpe';
+		public $name = 'Historiqueetatpe';
 
 		// FIXME: validation
 

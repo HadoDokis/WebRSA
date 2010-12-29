@@ -244,11 +244,10 @@ SELECT add_missing_table_field ('public', 'bilansparcours66', 'textbilanparcours
 -- Nouvelle structure pour les informations venant de Pôle Emploi
 -- *****************************************************************************
 
--- FIXME
-DROP TABLE IF EXISTS historiquecessationspe CASCADE;
-DROP TABLE IF EXISTS historiqueradiationspe CASCADE;
-DROP TABLE IF EXISTS historiqueinscriptionspe CASCADE;
-DROP TABLE IF EXISTS informationspe CASCADE;
+-- DROP TABLE IF EXISTS historiquecessationspe CASCADE;
+-- DROP TABLE IF EXISTS historiqueradiationspe CASCADE;
+-- DROP TABLE IF EXISTS historiqueinscriptionspe CASCADE;
+-- DROP TABLE IF EXISTS informationspe CASCADE;
 
 
 /*-- TODO: indexes (indexes uniques pour chacune des tables d'historique ?)
@@ -640,7 +639,7 @@ CREATE TABLE informationspe (
 	--personne_id		INTEGER DEFAULT NULL REFERENCES personnes(id) ON UPDATE CASCADE ON DELETE SET NULL,
 	personne_id		INTEGER DEFAULT NULL REFERENCES personnes(id), -- Personne non trouvée -> NULL
 	nir				VARCHAR(15) DEFAULT NULL,
-	nom				VARCHAR(50) NOT NULL,
+	nom				VARCHAR(50) DEFAULT NULL, -- FIXME: une personne a un nom NULL (id 50946) dans la table personnes (CG 66, 20101217_dump_webrsaCG66_rc9.sql.gz)
 	prenom			VARCHAR(50) NOT NULL,
 	dtnai			DATE NOT NULL
 );
@@ -673,7 +672,10 @@ COMMENT ON TABLE informationspe IS 'Liens entre Pôle Emploi et de supposés all
 INSERT INTO informationspe ( personne_id, nir, nom, prenom, dtnai )
 SELECT
 		infospoleemploi.personne_id,
-		personnes.nir,
+-- 		personnes.nir,
+		CASE WHEN ( personnes.nir ~* '^[0-9]{13}$' ) THEN personnes.nir || LPAD( CAST( 97 - ( CAST( personnes.nir AS BIGINT ) % 97 ) AS VARCHAR(13)), 2, '0' )
+			ELSE NULL
+		END AS nir,
 		personnes.nom,
 		personnes.prenom,
 		personnes.dtnai
@@ -734,7 +736,11 @@ INSERT INTO informationspe ( nir, nom, prenom, dtnai )
 					COUNT(*)
 				FROM informationspe
 				WHERE (
-						informationspe.nir = temp.nir
+						(
+							informationspe.nir = temp.nir
+							AND informationspe.nir IS NOT NULL
+							AND temp.nir IS NOT NULL
+						)
 						OR (
 							informationspe.nom = temp.nom
 							AND informationspe.prenom = temp.prenom
@@ -860,7 +866,11 @@ INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat, cod
 				FROM tempinscriptions
 		) AS temp
 			INNER JOIN informationspe ON (
-				informationspe.nir = temp.nir
+				(
+					informationspe.nir = temp.nir
+					AND informationspe.nir IS NOT NULL
+					AND temp.nir IS NOT NULL
+				)
 				OR (
 					informationspe.nom = temp.nom
 					AND informationspe.prenom = temp.prenom
@@ -903,6 +913,58 @@ UPDATE
 	WHERE code IS NULL
 		AND etat = 'radiation'
 		AND motif = 'INSUFFISANCE DE RECHERCHE D''EMPLOI SUSPENSION DE QUINZE JOURS';
+
+--
+
+-- "Doublons" --> 672
+/*SELECT
+		i.*
+	FROM (
+		SELECT
+				COUNT(informationspe.id) AS count,
+		-- 		informationspe.personne_id,
+				informationspe.nir,
+				informationspe.nom,
+				informationspe.prenom,
+				informationspe.dtnai
+			FROM informationspe
+			GROUP BY
+		-- 		informationspe.personne_id,
+				informationspe.nir,
+				informationspe.nom,
+				informationspe.prenom,
+				informationspe.dtnai
+	) AS i
+	WHERE i.count > 1
+	ORDER BY i.count DESC
+
+-- FIXME: 3 x avec le rôle DEM RSA
+-- FIXME: 2 dossiers différents: 1 en droit 6 (clos/FIXME), 2 personnes DEM pour l'autre dossier
+SELECT
+		informationspe.*,
+		prestations.*,
+		situationsdossiersrsa.*
+	FROM informationspe
+		INNER JOIN prestations ON (
+			prestations.personne_id = informationspe.personne_id
+			AND prestations.natprest = 'RSA'
+		)
+		INNER JOIN personnes ON (
+			personnes.id = informationspe.personne_id
+		)
+		INNER JOIN foyers ON (
+			personnes.foyer_id = foyers.id
+		)
+		INNER JOIN dossiers ON (
+			foyers.dossier_id = dossiers.id
+		)
+		INNER JOIN situationsdossiersrsa ON (
+			situationsdossiersrsa.dossier_id = dossiers.id
+		)
+	WHERE
+		informationspe.nom = ( SELECT nom FROM personnes WHERE personnes.id = 49646 )
+		AND informationspe.prenom = ( SELECT prenom FROM personnes WHERE personnes.id = 49646 )
+		AND informationspe.dtnai = ( SELECT dtnai FROM personnes WHERE personnes.id = 49646 )*/
 
 -- *****************************************************************************
 COMMIT;
