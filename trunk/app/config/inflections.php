@@ -264,9 +264,7 @@
 		'decisionpropopdo' => 'decisionspropospdos',
 		// Développement infospe
 		'informationpe' => 'informationspe',
-		'historiquecessationpe' => 'historiquecessationspe',
-		'historiqueradiationpe' => 'historiqueradiationspe',
-		'historiqueinscriptionpe' => 'historiqueinscriptionspe',
+		'historiqueetatpe' => 'historiqueetatspe',
 	);
 /**
  * This is a key => value array of regex used to match words.

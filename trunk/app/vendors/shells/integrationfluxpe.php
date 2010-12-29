@@ -31,7 +31,7 @@
 		public $csv = false;
 
 		public $map = array(
-			'Historiquecessationpe' => array(
+			'cessation' => array(
 				'nir',
 				'identifiantpe',
 				'nom',
@@ -42,7 +42,7 @@
 				'motif',
 				'nir2'
 			),
-			'Historiqueradiationpe' => array(
+			'radiation' => array(
 				'nir',
 				'identifiantpe',
 				'nom',
@@ -53,7 +53,7 @@
 				'motif',
 				'nir2'
 			),
-			'Historiqueinscriptionpe' => array(
+			'inscription' => array(
 				'nir',
 				'identifiantpe',
 				'nom',
@@ -69,7 +69,6 @@
 
 		public $fieldsInformationpe = array(
 			'nir',
-			'identifiantpe',
 			'nom',
 			'prenom',
 			'dtnai',
@@ -111,6 +110,8 @@
 
 				$this->_stop( 1 );
 			}
+
+			$this->Informationpe = ClassRegistry::init( 'Informationpe' ); // FIXME: le shell devrait le faire tout seul avec $uses
 		}
 
 		/**
@@ -135,16 +136,15 @@
 		*
 		*/
 
-		protected function _import( $modelClass ) {
+		protected function _import( $etat ) {
 			$lines = explode( "\n", $this->csv->read() );
-			$this->{$modelClass} = ClassRegistry::init( $modelClass );
 			$lignespresentes = 0;
 
-			$offsetDtnai = array_search( 'dtnai', $this->map[$modelClass] );
+			$offsetDtnai = array_search( 'dtnai', $this->map[$etat] );
 			$offsetAutreDate = $offsetDtnai + 1;
 
 			$success = true;
-			$this->{$modelClass}->begin();
+			$this->Informationpe->Historiqueetatpe->begin();
 
 			foreach( $lines as $numLine => $line ) {
 				if( !( $numLine == 0 && $this->headers ) && trim( $line ) != '' ) {
@@ -160,9 +160,9 @@
 					$parts[1] = str_replace( ' ', '', $parts[1] );
 
 					// Le nombre de colonnes de cette ligne ne correspond pas au nombre de colonnes attendu
-					if( count( $parts ) != count( $this->map[$modelClass] ) ) {
+					if( count( $parts ) != count( $this->map[$etat] ) ) {
 						$nParts = count($parts);
-						$nPartsType = count( $this->map[$modelClass] );
+						$nPartsType = count( $this->map[$etat] );
 						$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (Le nombre de colonnes de cette ligne ({$nParts}) ne correspond pas au nombre de colonnes attendu ({$nPartsType}))." );
 						$this->_rejects[] = $line;
 					}
@@ -202,7 +202,7 @@
 						// Table informationspe
 						$informationpe = array( 'Informationpe' => array( ) );
 						foreach( $this->fieldsInformationpe as $column ) {
-							$key = array_search( $column, $this->map[$modelClass] );
+							$key = array_search( $column, $this->map[$etat] );
 
 							if( $column == 'dtnai' ) {
 								// Formattage de la date du format JJ/MM/AAAA au format SQL AAAA-MM-JJ
@@ -213,12 +213,12 @@
 							$informationpe['Informationpe'][$column] = $parts[$key];
 						}
 
-						$oldInformationpe = $this->{$modelClass}->Informationpe->find(
+						$oldInformationpe = $this->Informationpe->find(
 							'first',
 							array(
 								'conditions' => array(
 									'OR' => array(
-										'Informationpe.nir' => $informationpe['Informationpe']['nir'],
+										'Informationpe.nir' => $informationpe['Informationpe']['nir'], // FIXME: not null ?
 										array(
 											'Informationpe.nom' => $informationpe['Informationpe']['nom'],
 											'Informationpe.prenom' => $informationpe['Informationpe']['prenom'],
@@ -231,10 +231,10 @@
 						);
 
 						if( empty( $oldInformationpe ) ) {
-							$this->{$modelClass}->Informationpe->create( $informationpe );
-							$tmpSuccessInformationpe = $this->{$modelClass}->Informationpe->save();
+							$this->Informationpe->create( $informationpe );
+							$tmpSuccessInformationpe = $this->Informationpe->save();
 							$success =  $tmpSuccessInformationpe && $success;
-							$informationpe_id = $this->{$modelClass}->Informationpe->id;
+							$informationpe_id = $this->Informationpe->id;
 						}
 						else {
 							$tmpSuccessInformationpe = true;
@@ -242,8 +242,8 @@
 						}
 
 						// Tables historiquecessationspe, historiqueinscriptionspe, historiqueradiationspe
-						$record = array( $modelClass => array( ) );
-						foreach( $this->map[$modelClass] as $key => $column ) {
+						$record = array( 'Historiqueetatpe' => array( ) );
+						foreach( $this->map[$etat] as $key => $column ) {
 							// Formattage de la date du format JJ/MM/AAAA au format SQL AAAA-MM-JJ
 							// Concerne le champ date -- FIXME, function
 							if( !in_array( $column, $this->fieldsInformationpe ) ) {
@@ -251,21 +251,23 @@
 									$dateParts = explode( '/', $parts[$key] );
 									$parts[$key] = "{$dateParts[2]}-{$dateParts[1]}-{$dateParts[0]}";
 								}
-								$record[$modelClass][$column] = $parts[$key];
+								$record['Historiqueetatpe'][$column] = $parts[$key];
 							}
 						}
-						$record[$modelClass]['informationpe_id'] = $informationpe_id;
+						$record['Historiqueetatpe']['informationpe_id'] = $informationpe_id;
+						$record['Historiqueetatpe']['etat'] = $etat;
 
 						$conditions = array(
 							'informationpe_id' => $informationpe_id,
-							'date' => $record[$modelClass]['date'],
-							'code' => $record[$modelClass]['code']
+							'etat' => $etat,
+							'date' => $record['Historiqueetatpe']['date'],
+							'code' => $record['Historiqueetatpe']['code']
 						);
-						if( isset( $record[$modelClass]['motif'] ) ) {
-							$conditions['motif'] = $record[$modelClass]['motif'];
+						if( isset( $record['Historiqueetatpe']['motif'] ) ) {
+							$conditions['motif'] = $record['Historiqueetatpe']['motif'];
 						}
 
-						$oldRecord = $this->{$modelClass}->find(
+						$oldRecord = $this->Informationpe->Historiqueetatpe->find(
 							'first',
 							array(
 								'conditions' => $conditions,
@@ -274,8 +276,8 @@
 						);
 
 						if( empty( $oldRecord ) ) {
-							$this->{$modelClass}->create( $record );
-							$tmpSuccessModelClass = $this->{$modelClass}->save();
+							$this->Informationpe->Historiqueetatpe->create( $record );
+							$tmpSuccessModelClass = $this->Informationpe->Historiqueetatpe->save();
 							$success = $tmpSuccessModelClass && $success;
 
 							if( $tmpSuccessInformationpe && $tmpSuccessModelClass ) {
@@ -321,14 +323,14 @@
 				$nrejects = count( $this->_rejects );
 				$nouveaux = ( $nlines - $nrejects - $lignespresentes );
 
-				$this->{$modelClass}->commit();
+				$this->Informationpe->Historiqueetatpe->commit();
 				$this->out( "{$nlines} lignes traitées ({$nouveaux} nouveaux enregistrement, {$nrejects} rejets, {$lignespresentes} enregistrements déjà présents) avec succès." );
 
 				$this->out( "Mise à jour de la relation entre les personnes et les informations Pôle Emploi." );
 				$this->update();
 			}
 			else {
-				$this->{$modelClass}->rollback();
+				$this->Informationpe->Historiqueetatpe->rollback();
 				$this->out( "Erreur lors de l\'enregistrement." );
 			}
 		}
@@ -338,7 +340,7 @@
 		*/
 
 		public function cessations() {
-			$this->_import( 'Historiquecessationpe' );
+			$this->_import( 'cessation' );
 		}
 
 		/**
@@ -346,7 +348,7 @@
 		*/
 
 		public function radiations() {
-			$this->_import( 'Historiqueradiationpe' );
+			$this->_import( 'radiation' );
 		}
 
 		/**
@@ -354,7 +356,7 @@
 		*/
 
 		public function inscriptions() {
-			$this->_import( 'Historiqueinscriptionpe' );
+			$this->_import( 'inscription' );
 		}
 
 		/**
@@ -362,8 +364,9 @@
 		*/
 
 		public function update() {
-			$this->Informationpe = ClassRegistry::init( 'Informationpe' );
-			$this->Informationpe->begin();
+// 			$this->Informationpe = ClassRegistry::init( 'Informationpe' );
+			$this->err( "Impossible de mettre à jour pour cause de doublons en BDD au niveau des personnes." );
+			/*$this->Informationpe->begin();
 
 			$sql = 'UPDATE informationspe
 				SET personne_id = (
@@ -392,7 +395,7 @@
 				WHERE personne_id IS NULL;';
 
 			$this->Informationpe->query( $sql );
-			$this->Informationpe->commit();
+			$this->Informationpe->commit();*/
 		}
 
 		/**
@@ -474,6 +477,19 @@
 		6°) Garde-t'on l'identifiant PE à vie ?
 		7°) Format de l'identifiant: 6666666S 046 (8 chiffres ou 7 chiffres + 1 lettre, puis identifiant bureau du PE ?)
 		8°) Peut-on avoir la liste des codes/libellés (pour en faire une table de paramétrage éventuellement, et mettre à jour les codes pour les entrées que l'on a déjà) ?
+	*/
+
+	/*
+		-- Quelles sont les personnes présentes dans la table informationspe et qui ne sont ni DEM ni CJT RSA ?
+		-- (CG 66, 20101217_dump_webrsaCG66_rc9.sql.gz -> 55)
+		SELECT
+				*
+			FROM informationspe
+				INNER JOIN prestations ON (
+					prestations.personne_id = informationspe.personne_id
+					AND prestations.natprest = 'RSA'
+				)
+			WHERE prestations.rolepers NOT IN ( 'DEM', 'CJT' );
 	*/
 
 	/*
