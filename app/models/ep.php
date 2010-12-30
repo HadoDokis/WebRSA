@@ -16,6 +16,7 @@
 					// Thèmes 93
 					'nonrespectsanctionep93',
 					'saisineepreorientsr93',
+					'defautinsertionep66'
 				)
 			)
 		);
