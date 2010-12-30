@@ -62,6 +62,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Defautinsertionep66' => array(
+				'className' => 'Defautinsertionep66',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			// Thèmes 93
 			'Saisineepreorientsr93' => array(
 				'className' => 'Saisineepreorientsr93',

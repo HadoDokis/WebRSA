@@ -56,6 +56,18 @@ msgstr "Décision émise par l'EP"
 msgid "ENUM::SAISINEEPDPDO66::cg"
 msgstr "Décision émise par le CG"
 
+msgid "Ep.defautinsertionep66"
+msgstr "Prise de décision défaut d'insertion"
+
+msgid "ENUM::DEFAUTINSERTIONEP66::nontraite"
+msgstr "Décision non traitée"
+
+msgid "ENUM::DEFAUTINSERTIONEP66::ep"
+msgstr "Décision émise par l'EP"
+
+msgid "ENUM::DEFAUTINSERTIONEP66::cg"
+msgstr "Décision émise par le CG"
+
 # Spécifique CG 93
 
 msgid "Ep.saisineepreorientsr93"

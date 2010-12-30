@@ -326,9 +326,8 @@ DROP TYPE IF EXISTS TYPE_ETATPE CASCADE;
 -- 1°) -------------------------------------------------------------------------
 -- TODO: pourquoi une erreur avec les REFERENCES ?
 CREATE TABLE informationspe (
-	id				SERIAL NOT NULL,
-	--personne_id		INTEGER DEFAULT NULL REFERENCES personnes(id) ON UPDATE CASCADE ON DELETE SET NULL,
-	personne_id		INTEGER DEFAULT NULL REFERENCES personnes(id), -- Personne non trouvée -> NULL
+	id				SERIAL NOT NULL PRIMARY KEY,
+	personne_id		INTEGER DEFAULT NULL REFERENCES personnes(id) ON UPDATE CASCADE ON DELETE CASCADE, -- Personne non trouvée -> NULL
 	nir				VARCHAR(15) DEFAULT NULL,
 	nom				VARCHAR(50) DEFAULT NULL, -- FIXME: une personne a un nom NULL (id 50946) dans la table personnes (CG 66, 20101217_dump_webrsaCG66_rc9.sql.gz)
 	prenom			VARCHAR(50) NOT NULL,
@@ -450,9 +449,8 @@ INSERT INTO informationspe ( nir, nom, prenom, dtnai )
 CREATE TYPE TYPE_ETATPE AS ENUM ( 'cessation', 'inscription', 'radiation' );
 
 CREATE TABLE historiqueetatspe (
-	id					SERIAL NOT NULL,
-	--informationpe_id	INTEGER NOT NULL REFERENCES informationspe(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	informationpe_id	INTEGER NOT NULL,
+	id					SERIAL NOT NULL PRIMARY KEY,
+	informationpe_id	INTEGER NOT NULL REFERENCES informationspe(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	identifiantpe		VARCHAR(11) NOT NULL, -- FIXME: 11 ou 8 et 3 pour la structure ?
 	date				DATE NOT NULL,
 	etat				TYPE_ETATPE NOT NULL,

@@ -56,6 +56,7 @@
 			array(
 				'Ep.saisineepbilanparcours66' => array( 'required' => true ),
 				'Ep.saisineepdpdo66' => array( 'required' => true ),
+				'Ep.defautinsertionep66' => array( 'required' => true ),
 			),
 			array(
 				'options' => $options
@@ -84,7 +85,7 @@
 	echo $form->button('Tout cocher', array('onclick' => "GereChkbox('listeZonesgeographiques','cocher');"));
 
 	echo $form->button('Tout décocher', array('onclick' => "GereChkbox('listeZonesgeographiques','decocher');"));
-	
+
 	if ($this->action == 'edit') {
 		echo "<fieldset><legend>Participants</legend>";
 			foreach($listeFonctionsMembres as $fonction_id => $fonction) {
@@ -114,7 +115,7 @@
 						}
 					echo "</table>";
 				}
-				
+
 				echo $xhtml->addLink('Ajouter', array('controller'=>'eps', 'action'=> 'addparticipant', $ep_id, $fonction_id));
 			}
 		echo "</fieldset>";

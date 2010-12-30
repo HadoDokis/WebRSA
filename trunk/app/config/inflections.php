@@ -262,7 +262,9 @@
 		'decisionnonrespectsanctionep93' => 'decisionsnonrespectssanctionseps93',
 		'ep_membreep' => 'eps_membreseps',
 		'decisionpropopdo' => 'decisionspropospdos',
-		// Développement infospe
+		'defautinsertionep66' => 'defautsinsertionseps66',
+		'decisiondefautinsertionep66' => 'decisionsdefautsinsertionseps66',
+		// Données flux Pôle Emploi
 		'informationpe' => 'informationspe',
 		'historiqueetatpe' => 'historiqueetatspe',
 	);

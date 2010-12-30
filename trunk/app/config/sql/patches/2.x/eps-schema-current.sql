@@ -60,6 +60,8 @@ COMMENT ON FUNCTION public.add_missing_table_field (text, text, text, text) IS '
 DROP TABLE IF EXISTS parcoursdetectes CASCADE;
 
 -- Nouvelles tables
+DROP TABLE IF EXISTS decisionsdefautsinsertionseps66 CASCADE;
+DROP TABLE IF EXISTS defautsinsertionseps66 CASCADE;
 DROP TABLE IF EXISTS nvsrsepsreorient66 CASCADE;
 DROP TABLE IF EXISTS nvsrsepsreorientsrs93 CASCADE;
 DROP TABLE IF EXISTS saisinesepssignalementsnrscers93 CASCADE;
@@ -99,6 +101,8 @@ DROP TYPE IF EXISTS type_orgpayeur CASCADE;
 DROP TYPE IF EXISTS type_dateactive CASCADE;
 DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93 CASCADE;
 DROP TYPE IF EXISTS TYPE_ORIGINESANCTIONEP93 CASCADE;
+DROP TYPE IF EXISTS TYPE_ORIGINEDEFAULTINSERTIONEP66 CASCADE;
+DROP TYPE IF EXISTS TYPE_DECISIONDEFAUTEP66 CASCADE;
 
 -- -----------------------------------------------------------------------------
 
@@ -121,7 +125,8 @@ CREATE TABLE eps (
 	saisineepreorientsr93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
 	saisineepbilanparcours66	TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
 	saisineepdpdo66				TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
-	nonrespectsanctionep93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite'
+	nonrespectsanctionep93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
+	defautinsertionep66			TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite'
 );
 
 CREATE UNIQUE INDEX eps_name_idx ON eps(name);
@@ -194,7 +199,7 @@ ALTER TABLE seanceseps OWNER TO webrsa;
 
 -- -----------------------------------------------------------------------------
 
-CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93' );
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66' );
 CREATE TYPE TYPE_ETAPEDOSSIEREP AS ENUM ( 'cree', '...', 'seance', 'decisionep', 'decisioncg', 'traite' );
 
 CREATE TABLE dossierseps (
@@ -480,7 +485,7 @@ CREATE TYPE TYPE_DECISIONSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1sur
 CREATE TYPE TYPE_ORIGINESANCTIONEP93 AS ENUM ( 'orientstruct', 'contratinsertion', 'pdo' );
 
 CREATE TABLE nonrespectssanctionseps93 (
-	id						SERIAL NOT NULL,
+	id						SERIAL NOT NULL PRIMARY KEY,
 	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	propopdo_id				INTEGER DEFAULT NULL REFERENCES propospdos(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	orientstruct_id			INTEGER DEFAULT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -523,7 +528,7 @@ ALTER TABLE nonrespectssanctionseps93 ADD CONSTRAINT nonrespectssanctionseps93_v
 
 CREATE TABLE relancesnonrespectssanctionseps93 (
 	id      					SERIAL NOT NULL PRIMARY KEY,
-	nonrespectsanctionep93_id	INTEGER NOT NULL/* REFERENCES nonrespectssanctionseps93(id) ON DELETE CASCADE ON UPDATE CASCADE*/,
+	nonrespectsanctionep93_id	INTEGER NOT NULL REFERENCES nonrespectssanctionseps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	numrelance					INTEGER NOT NULL DEFAULT 1,
 	dateecheance				DATE NOT NULL,
 	dateimpression				DATE DEFAULT NULL,
@@ -615,7 +620,7 @@ INSERT INTO relancesnonrespectssanctionseps93 ( nonrespectsanctionep93_id, numre
 -- Avis et décisions ep/cg pour le thème non respect / sanctions (CG 93)
 CREATE TABLE decisionsnonrespectssanctionseps93 (
 	id      					SERIAL NOT NULL PRIMARY KEY,
-	nonrespectsanctionep93_id	INTEGER NOT NULL/* REFERENCES nonrespectssanctionseps93(id) ON DELETE CASCADE ON UPDATE CASCADE*/,
+	nonrespectsanctionep93_id	INTEGER NOT NULL REFERENCES nonrespectssanctionseps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	etape						TYPE_ETAPEDECISIONEP NOT NULL,
 	decision					TYPE_DECISIONSANCTIONEP93 DEFAULT NULL,
 	montantreduction			FLOAT DEFAULT NULL,
@@ -626,6 +631,47 @@ CREATE TABLE decisionsnonrespectssanctionseps93 (
 );
 
 COMMENT ON TABLE decisionsnonrespectssanctionseps93 IS 'Avis et décisions ep/cg pour le thème non respect / sanctions (CG 93)';
+
+-- *****************************************************************************
+-- Thématique défaut d'insertion (CG 66)
+-- *****************************************************************************
+
+CREATE TYPE TYPE_ORIGINEDEFAULTINSERTIONEP66 AS ENUM ( 'bilanparcours', 'noninscriptionpe', 'radiationpe' );
+-- TODO: ajouter les champs concernant l'audition
+CREATE TABLE defautsinsertionseps66 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	dossierep_id			INTEGER NOT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	bilanparcours66_id		INTEGER DEFAULT NULL REFERENCES bilansparcours66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	contratinsertion_id		INTEGER DEFAULT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	orientstruct_id			INTEGER DEFAULT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	origine					TYPE_ORIGINEDEFAULTINSERTIONEP66 NOT NULL,
+	type					TYPE_TYPE_DEMANDE DEFAULT NULL,-- DOD (défaut de conclusion), DRD (non respect)
+	historiqueetatpe_id		INTEGER DEFAULT NULL REFERENCES historiqueetatspe(id) ON DELETE CASCADE ON UPDATE CASCADE, -- Pour les radiations PE
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE defautsinsertionseps66 IS 'Saisines d''EPs créées lors du bilan de parcours ou suite aux flux Pôle Emploi pour la thématique Défaut d''insertion (CG66)';
+
+-- -----------------------------------------------------------------------------
+
+/*
+	Suspension suite à défaut de conclusion
+	Suspension suite à non respect du contrat
+	Maintien du versement de l'allocation
+	Réorientation du PROFESSIONNEL vers le SOCIAL
+	Réorientation du SOCIAL vers le PROFESSIONNEL
+*/
+CREATE TYPE TYPE_DECISIONDEFAUTEP66 AS ENUM ( 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof' );
+
+CREATE TABLE decisionsdefautsinsertionseps66 (
+	id      					SERIAL NOT NULL PRIMARY KEY,
+	defautinsertionep66_id		INTEGER NOT NULL REFERENCES defautsinsertionseps66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	etape						TYPE_ETAPEDECISIONEP NOT NULL,
+	decision					TYPE_DECISIONDEFAUTEP66 NOT NULL,
+	commentaire					TEXT DEFAULT NULL,
+	created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
+);
 
 -- *****************************************************************************
 -- Indexes liés aux EPs
@@ -697,11 +743,42 @@ CREATE INDEX saisinesepsreorientsrs93_structurereferente_id_idx ON saisinesepsre
 DROP INDEX IF EXISTS saisinesepsreorientsrs93_typeorient_id_idx;
 CREATE INDEX saisinesepsreorientsrs93_typeorient_id_idx ON saisinesepsreorientsrs93 (typeorient_id);
 
+DROP INDEX IF EXISTS defautsinsertionseps66_dossierep_id_idx;
+CREATE INDEX defautsinsertionseps66_dossierep_id_idx ON defautsinsertionseps66 (dossierep_id);
+
+DROP INDEX IF EXISTS defautsinsertionseps66_bilanparcours66_id_idx;
+CREATE INDEX defautsinsertionseps66_bilanparcours66_id_idx ON defautsinsertionseps66 (bilanparcours66_id);
+
+DROP INDEX IF EXISTS defautsinsertionseps66_contratinsertion_id_idx;
+CREATE INDEX defautsinsertionseps66_contratinsertion_id_idx ON defautsinsertionseps66 (contratinsertion_id);
+
+DROP INDEX IF EXISTS defautsinsertionseps66_orientstruct_id_idx;
+CREATE INDEX defautsinsertionseps66_orientstruct_id_idx ON defautsinsertionseps66 (orientstruct_id);
+
+DROP INDEX IF EXISTS defautsinsertionseps66_origine_idx;
+CREATE INDEX defautsinsertionseps66_origine_idx ON defautsinsertionseps66 (origine);
+
+DROP INDEX IF EXISTS defautsinsertionseps66_type_idx;
+CREATE INDEX defautsinsertionseps66_type_idx ON defautsinsertionseps66 (type);
+
+DROP INDEX IF EXISTS defautsinsertionseps66_historiqueetatpe_id_idx;
+CREATE INDEX defautsinsertionseps66_historiqueetatpe_id_idx ON defautsinsertionseps66 (historiqueetatpe_id);
+
+
+DROP INDEX IF EXISTS decisionsdefautsinsertionseps66_defautinsertionep66_id_idx;
+CREATE INDEX decisionsdefautsinsertionseps66_defautinsertionep66_id_idx ON decisionsdefautsinsertionseps66 (defautinsertionep66_id);
+
+DROP INDEX IF EXISTS decisionsdefautsinsertionseps66_etape_idx;
+CREATE INDEX decisionsdefautsinsertionseps66_etape_idx ON decisionsdefautsinsertionseps66 (etape);
+
+DROP INDEX IF EXISTS decisionsdefautsinsertionseps66_decision_idx;
+CREATE INDEX decisionsdefautsinsertionseps66_decision_idx ON decisionsdefautsinsertionseps66 (decision);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
 
-VACUUM FULL decisionsnonrespectssanctionseps93;
+/*VACUUM FULL decisionsnonrespectssanctionseps93;
 REINDEX TABLE decisionsnonrespectssanctionseps93;
 
 VACUUM FULL eps_membreseps;
@@ -723,4 +800,4 @@ VACUUM FULL saisinesepsbilansparcours66;
 REINDEX TABLE saisinesepsbilansparcours66;
 
 VACUUM FULL saisinesepsreorientsrs93;
-REINDEX TABLE saisinesepsreorientsrs93;
+REINDEX TABLE saisinesepsreorientsrs93;*/

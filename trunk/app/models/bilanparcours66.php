@@ -290,12 +290,13 @@
 		* @return boolean True en cas de succès, false sinon.
 		* @access public
 		*
-		* FIXME: modification du bilan
 		* TODO: comment finaliser l'orientation précédente ?
-		* TODO: pouvoir envoyer la cause d'échec (ex.: $vxContratinsertion non trouvé avec ces critères)
+		* TODO: pouvoir envoyer la cause d'échec (ex.: $vxContratinsertion non
+		*       trouvé avec ces critères) depuis les règles de validation.
 		*/
 
 		public function saisine( $data ) {
+debug( $data );//switch['Bilanparcours66']['proposition'] -> parcours/audition/traitement
 			$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
 			$this->create( $data );
 			if( $success = $this->validates() ) {
@@ -310,7 +311,8 @@
 				);
 
 				if( empty( $vxOrientstruct ) ) {
-					debug( 'Vieille orientation répondant aux critères non trouvée.' );
+					$this->invalidate( 'choixparcours', 'Vieille orientation répondant aux critères non trouvée.' );
+					//debug( 'Vieille orientation répondant aux critères non trouvée.' );
 					return false;
 				}
 
@@ -327,7 +329,8 @@
 				);
 
 				if( empty( $vxContratinsertion ) ) {
-					debug( 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
+					$this->invalidate( 'choixparcours', 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
+					//debug( 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
 					return false;
 				}
 

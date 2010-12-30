@@ -38,7 +38,9 @@ INSERT INTO motifsreorients ( name ) VALUES
 	( 'Motif réorientation 2' );
 
 SELECT pg_catalog.setval('seanceseps_id_seq', 1, true);
-INSERT INTO seanceseps VALUES ( 1, 'COM1', 'Commission 1', 1, 25, '2010-10-28 10:00:00', NULL );
+-- INSERT INTO seanceseps VALUES ( 1, 'COM1', 'Commission 1', 1, 25, '2010-10-28 10:00:00', NULL );
+INSERT INTO seanceseps ( identifiant, name, ep_id, structurereferente_id, dateseance ) VALUES
+	( 'COM1', 'Commission 1', 1, 25, '2010-10-28 10:00:00', NULL );
 
 TRUNCATE situationspdos CASCADE;
 SELECT pg_catalog.setval('situationspdos_id_seq', ( SELECT COALESCE( max(situationspdos.id) + 1, 1 ) FROM situationspdos ), false);
@@ -49,13 +51,12 @@ INSERT INTO situationspdos (libelle) VALUES
 TRUNCATE statutspdos CASCADE;
 SELECT pg_catalog.setval('statutspdos_id_seq', ( SELECT COALESCE( max(statutspdos.id) + 1, 1 ) FROM statutspdos ), false);
 INSERT INTO statutspdos (libelle) VALUES
-	('TI')
-;
+	('TI');
 
 TRUNCATE descriptionspdos CASCADE;
 SELECT pg_catalog.setval('descriptionspdos_id_seq', ( SELECT COALESCE( max(descriptionspdos.id) + 1, 1 ) FROM descriptionspdos ), false);
 INSERT INTO descriptionspdos (name, dateactive, declencheep) VALUES
-	('Courrier à l\'allocataire', 'datedepart', '0'),
+	('Courrier à l''allocataire', 'datedepart', '0'),
 	('Pièces arrivées', 'datereception', '0'),
 	('Courrier Révision de ressources', 'datedepart', '0'),
 	('Enquête administrative demandée', 'datedepart', '0'),
