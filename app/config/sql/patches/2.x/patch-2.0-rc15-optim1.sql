@@ -133,9 +133,6 @@ CREATE INDEX cuis_referent_id_idx ON cuis (referent_id);
 DROP INDEX IF EXISTS cuis_structurereferente_id_idx;
 CREATE INDEX cuis_structurereferente_id_idx ON cuis (structurereferente_id);
 
-DROP INDEX IF EXISTS decisionsnonrespectssanctionseps93_nonrespectsanctionep93_id_idx;
-CREATE INDEX decisionsnonrespectssanctionseps93_nonrespectsanctionep93_id_idx ON decisionsnonrespectssanctionseps93 (nonrespectsanctionep93_id);
-
 DROP INDEX IF EXISTS decisionspropospdos_decisionpdo_id_idx;
 CREATE INDEX decisionspropospdos_decisionpdo_id_idx ON decisionspropospdos (decisionpdo_id);
 
@@ -147,12 +144,6 @@ CREATE INDEX detailsressourcesmensuelles_ressourcesmensuelles_detailressourcemen
 
 DROP INDEX IF EXISTS detailsressourcesmensuelles_ressourcesmensuelles_ressourcemensuelle_id_idx;
 CREATE INDEX detailsressourcesmensuelles_ressourcesmensuelles_ressourcemensuelle_id_idx ON detailsressourcesmensuelles_ressourcesmensuelles (ressourcemensuelle_id);
-
-DROP INDEX IF EXISTS eps_membreseps_ep_id_idx;
-CREATE INDEX eps_membreseps_ep_id_idx ON eps_membreseps (ep_id);
-
-DROP INDEX IF EXISTS eps_membreseps_membreep_id_idx;
-CREATE INDEX eps_membreseps_membreep_id_idx ON eps_membreseps (membreep_id);
 
 DROP INDEX IF EXISTS grossesses_personne_id_idx;
 CREATE INDEX grossesses_personne_id_idx ON grossesses (personne_id);
@@ -174,30 +165,6 @@ CREATE INDEX jetons_user_id_idx ON jetons (user_id);
 
 DROP INDEX IF EXISTS memos_personne_id_idx;
 CREATE INDEX memos_personne_id_idx ON memos (personne_id);
-
-DROP INDEX IF EXISTS nvsepdspdos66_decisionpdo_id_idx;
-CREATE INDEX nvsepdspdos66_decisionpdo_id_idx ON nvsepdspdos66 (decisionpdo_id);
-
-DROP INDEX IF EXISTS nvsepdspdos66_saisineepdpdo66_id_idx;
-CREATE INDEX nvsepdspdos66_saisineepdpdo66_id_idx ON nvsepdspdos66 (saisineepdpdo66_id);
-
-DROP INDEX IF EXISTS nvsrsepsreorient66_saisineepbilanparcours66_id_idx;
-CREATE INDEX nvsrsepsreorient66_saisineepbilanparcours66_id_idx ON nvsrsepsreorient66 (saisineepbilanparcours66_id);
-
-DROP INDEX IF EXISTS nvsrsepsreorient66_structurereferente_id_idx;
-CREATE INDEX nvsrsepsreorient66_structurereferente_id_idx ON nvsrsepsreorient66 (structurereferente_id);
-
-DROP INDEX IF EXISTS nvsrsepsreorient66_typeorient_id_idx;
-CREATE INDEX nvsrsepsreorient66_typeorient_id_idx ON nvsrsepsreorient66 (typeorient_id);
-
-DROP INDEX IF EXISTS nvsrsepsreorientsrs93_saisineepreorientsr93_id_idx;
-CREATE INDEX nvsrsepsreorientsrs93_saisineepreorientsr93_id_idx ON nvsrsepsreorientsrs93 (saisineepreorientsr93_id);
-
-DROP INDEX IF EXISTS nvsrsepsreorientsrs93_structurereferente_id_idx;
-CREATE INDEX nvsrsepsreorientsrs93_structurereferente_id_idx ON nvsrsepsreorientsrs93 (structurereferente_id);
-
-DROP INDEX IF EXISTS nvsrsepsreorientsrs93_typeorient_id_idx;
-CREATE INDEX nvsrsepsreorientsrs93_typeorient_id_idx ON nvsrsepsreorientsrs93 (typeorient_id);
 
 DROP INDEX IF EXISTS orientations_personne_id_idx;
 CREATE INDEX orientations_personne_id_idx ON orientations (personne_id);
@@ -258,39 +225,6 @@ CREATE INDEX ressources_ressourcesmensuelles_ressource_id_idx ON ressources_ress
 
 DROP INDEX IF EXISTS ressources_ressourcesmensuelles_ressourcemensuelle_id_idx;
 CREATE INDEX ressources_ressourcesmensuelles_ressourcemensuelle_id_idx ON ressources_ressourcesmensuelles (ressourcemensuelle_id);
-
-DROP INDEX IF EXISTS saisinesepdspdos66_dossierep_id_idx;
-CREATE INDEX saisinesepdspdos66_dossierep_id_idx ON saisinesepdspdos66 (dossierep_id);
-
-DROP INDEX IF EXISTS saisinesepdspdos66_traitementpdo_id_idx;
-CREATE INDEX saisinesepdspdos66_traitementpdo_id_idx ON saisinesepdspdos66 (traitementpdo_id);
-
-DROP INDEX IF EXISTS saisinesepsbilansparcours66_bilanparcours66_id_idx;
-CREATE INDEX saisinesepsbilansparcours66_bilanparcours66_id_idx ON saisinesepsbilansparcours66 (bilanparcours66_id);
-
-DROP INDEX IF EXISTS saisinesepsbilansparcours66_dossierep_id_idx;
-CREATE INDEX saisinesepsbilansparcours66_dossierep_id_idx ON saisinesepsbilansparcours66 (dossierep_id);
-
-DROP INDEX IF EXISTS saisinesepsbilansparcours66_structurereferente_id_idx;
-CREATE INDEX saisinesepsbilansparcours66_structurereferente_id_idx ON saisinesepsbilansparcours66 (structurereferente_id);
-
-DROP INDEX IF EXISTS saisinesepsbilansparcours66_typeorient_id_idx;
-CREATE INDEX saisinesepsbilansparcours66_typeorient_id_idx ON saisinesepsbilansparcours66 (typeorient_id);
-
-DROP INDEX IF EXISTS saisinesepsreorientsrs93_dossierep_id_idx;
-CREATE INDEX saisinesepsreorientsrs93_dossierep_id_idx ON saisinesepsreorientsrs93 (dossierep_id);
-
-DROP INDEX IF EXISTS saisinesepsreorientsrs93_motifreorient_id_idx;
-CREATE INDEX saisinesepsreorientsrs93_motifreorient_id_idx ON saisinesepsreorientsrs93 (motifreorient_id);
-
-DROP INDEX IF EXISTS saisinesepsreorientsrs93_orientstruct_id_idx;
-CREATE INDEX saisinesepsreorientsrs93_orientstruct_id_idx ON saisinesepsreorientsrs93 (orientstruct_id);
-
-DROP INDEX IF EXISTS saisinesepsreorientsrs93_structurereferente_id_idx;
-CREATE INDEX saisinesepsreorientsrs93_structurereferente_id_idx ON saisinesepsreorientsrs93 (structurereferente_id);
-
-DROP INDEX IF EXISTS saisinesepsreorientsrs93_typeorient_id_idx;
-CREATE INDEX saisinesepsreorientsrs93_typeorient_id_idx ON saisinesepsreorientsrs93 (typeorient_id);
 
 DROP INDEX IF EXISTS suivisaidesaprestypesaides_suiviaideapre_id_idx;
 CREATE INDEX suivisaidesaprestypesaides_suiviaideapre_id_idx ON suivisaidesaprestypesaides (suiviaideapre_id);
@@ -369,9 +303,6 @@ REINDEX TABLE contratsinsertion;
 VACUUM FULL cuis;
 REINDEX TABLE cuis;
 
-VACUUM FULL decisionsnonrespectssanctionseps93;
-REINDEX TABLE decisionsnonrespectssanctionseps93;
-
 VACUUM FULL decisionspropospdos;
 REINDEX TABLE decisionspropospdos;
 
@@ -386,9 +317,6 @@ REINDEX TABLE dossierscaf;
 
 VACUUM FULL dsps;
 REINDEX TABLE dsps;
-
-VACUUM FULL eps_membreseps;
-REINDEX TABLE eps_membreseps;
 
 VACUUM FULL grossesses;
 REINDEX TABLE grossesses;
@@ -413,15 +341,6 @@ REINDEX TABLE memos;
 
 VACUUM FULL modescontact;
 REINDEX TABLE modescontact;
-
-VACUUM FULL nvsepdspdos66;
-REINDEX TABLE nvsepdspdos66;
-
-VACUUM FULL nvsrsepsreorient66;
-REINDEX TABLE nvsrsepsreorient66;
-
-VACUUM FULL nvsrsepsreorientsrs93;
-REINDEX TABLE nvsrsepsreorientsrs93;
 
 VACUUM FULL orientations;
 REINDEX TABLE orientations;
@@ -455,15 +374,6 @@ REINDEX TABLE regroupementszonesgeo_zonesgeographiques;
 
 VACUUM FULL ressources_ressourcesmensuelles;
 REINDEX TABLE ressources_ressourcesmensuelles;
-
-VACUUM FULL saisinesepdspdos66;
-REINDEX TABLE saisinesepdspdos66;
-
-VACUUM FULL saisinesepsbilansparcours66;
-REINDEX TABLE saisinesepsbilansparcours66;
-
-VACUUM FULL saisinesepsreorientsrs93;
-REINDEX TABLE saisinesepsreorientsrs93;
 
 VACUUM FULL situationsdossiersrsa;
 REINDEX TABLE situationsdossiersrsa;
