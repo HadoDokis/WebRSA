@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/vrsf0101      (données xml financières - mensuel)/vrsf0101/Schema/vrsf0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_AnX_4E6IEd6EdPQoKyaISA" label="metadata">
+    <columns label="MOISMOUCOMPTA" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="NATPFCRE" talendType="id_String"/>
+    <columns label="RGCRE" talendType="id_String"/>
+    <columns label="NUMINTMOUCOMPTA" talendType="id_String"/>
+    <columns label="TYPEOPECOMPTA" talendType="id_String"/>
+    <columns label="SENSOPECOMPTA" talendType="id_String"/>
+    <columns label="MTMOUCOMPTA" talendType="id_String"/>
+    <columns label="DTTRAIMOUCOMPTA" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="HEUTRAIMOUCOMPTA" talendType="id_Date" pattern="&quot;HH:mm:ss&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFinancieresFoyerRSA/AcompteRSA/DetailAcompteRSA/IndusTransferesCG/DetailInduTransfereCG">
+    <schemaTargets RelativeXPathQuery="../../../GeneraliteAcompteRSA/MOISMOUCOMPTA" TagName="MOISMOUCOMPTA"/>
+    <schemaTargets RelativeXPathQuery="NATPFCRE" TagName="NATPFCRE"/>
+    <schemaTargets RelativeXPathQuery="RGCRE" TagName="RGCRE"/>
+    <schemaTargets RelativeXPathQuery="NUMINTMOUCOMPTA" TagName="NUMINTMOUCOMPTA"/>
+    <schemaTargets RelativeXPathQuery="TYPEOPECOMPTA" TagName="TYPEOPECOMPTA"/>
+    <schemaTargets RelativeXPathQuery="SENSOPECOMPTA" TagName="SENSOPECOMPTA"/>
+    <schemaTargets RelativeXPathQuery="MTMOUCOMPTA" TagName="MTMOUCOMPTA"/>
+    <schemaTargets RelativeXPathQuery="DTTRAIMOUCOMPTA" TagName="DTTRAIMOUCOMPTA"/>
+    <schemaTargets RelativeXPathQuery="HEUTRAIMOUCOMPTA" TagName="HEUTRAIMOUCOMPTA"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

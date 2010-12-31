@@ -1,0 +1,37 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>copyOfout2=>detail" expression="row7.InfosFinancieresFoyerRSA.substring( Var.cle_Index, row7.InfosFinancieresFoyerRSA.length() )+&quot;&lt;/IndusConstates>&quot;">
+    <variables name="row7.InfosFinancieresFoyerRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.cle_Index" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>cle_Index" expression="row13.InfosFinancieresFoyerRSA.indexOf(&quot;&lt;DetailInduTransfereCG>&quot;)">
+    <variables name="row13.InfosFinancieresFoyerRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.cle_Index" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>copyOfcopyOfout2=>detail" expression="row13.InfosFinancieresFoyerRSA.substring( Var.cle_Index, row13.InfosFinancieresFoyerRSA.length() )+&quot;&lt;/DetailInduTransfereCG>&quot; ">
+    <variables name="row13.InfosFinancieresFoyerRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.cle_Index" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>ins=>cle" expression="(Integer)globalMap.get(&quot;cleDetail1&quot;)">
+    <variables name="row5.NATPFCRE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.TYPEOPECOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.SENSOPECOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.MTMOUCOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.DTTRAIMOUCOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.HEUTRAIMOUCOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.RGCRE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.NUMINTMOUCOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.DDREGU" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>ins=>infosfinancieresfoyerrsa" expression="//context.cleFinancierRSA&#xA;&#xA;0">
+    <variables name="row5.NATPFCRE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.TYPEOPECOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.SENSOPECOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.MTMOUCOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.DTTRAIMOUCOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.HEUTRAIMOUCOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.RGCRE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.NUMINTMOUCOMPTA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.DDREGU" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+</xmi:XMI>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/turnan/Bureau/NRSACGIM_RSABEM_20100304_11_FACULTATIFS.xml" Encoding="ISO-8859-1">
+  <tables id="_nAAssEekEd-xJbsLLtZovw" label="metadata">
+    <columns label="AVISCONDADMRSA" talendType="id_String" length="1" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="MOTICONDADMRSA" talendType="id_String" length="2" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="COMM1CONDADMRSA" talendType="id_String" length="17" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="COMM2CONDADMRSA" talendType="id_String" length="17" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="DTEFFAVISCONDADMRSA" talendType="id_String" length="10" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFoyerRSA/PrestationRSA/DetailDroitRSA/AvisPCGDroitRSA/ConditionAdministrative">
+    <schemaTargets RelativeXPathQuery="AVISCONDADMRSA" TagName="AVISCONDADMRSA"/>
+    <schemaTargets RelativeXPathQuery="MOTICONDADMRSA" TagName="MOTICONDADMRSA"/>
+    <schemaTargets RelativeXPathQuery="COMM1CONDADMRSA" TagName="COMM1CONDADMRSA"/>
+    <schemaTargets RelativeXPathQuery="COMM2CONDADMRSA" TagName="COMM2CONDADMRSA"/>
+    <schemaTargets RelativeXPathQuery="DTEFFAVISCONDADMRSA" TagName="DTEFFAVISCONDADMRSA"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

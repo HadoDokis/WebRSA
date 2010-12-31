@@ -1,0 +1,1433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:DatabaseConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" ContextMode="true" ContextId="_rVhs8EIpEd--JsEceWB5LQ" DatabaseType="PostgreSQL" URL="jdbc:postgresql://localhost:5432/webrsa_2" Port="context.webrsa_Port" Username="context.webrsa_Login" Password="context.webrsa_Password" ServerName="context.webrsa_Server" Schema="context.webrsa_Schema" SID="context.webrsa_Database" SqlSynthax="Syntaxe SQL" DbmsId="postgres_id" ProductId="POSTGRESQL" StandardSQL="true">
+  <tables id="_Eea9cCRYEd6w1bAtQD74CA" label="accscreaentr" sourceName="accscreaentr" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('accscreaentr_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="nacre" sourceType="TYPE_NO" talendType="id_String" length="4" precision="0" originalField="nacre"/>
+    <columns label="microcredit" sourceType="TYPE_NO" talendType="id_String" length="4" precision="0" originalField="microcredit"/>
+    <columns label="projet" sourceType="VARCHAR" talendType="id_String" length="250" precision="0" originalField="projet"/>
+    <columns label="montantaide" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantaide"/>
+    <columns label="montantacompte" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantacompte"/>
+    <columns label="dateversementacompte" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementacompte" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montantsolde" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantsolde"/>
+    <columns label="dateversementsolde" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementsolde" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montanttotal" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montanttotal"/>
+    <columns label="dateversementtotal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementtotal" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_Ee3CUCRYEd6w1bAtQD74CA" label="acqsmatsprofs_piecesacqsmatsprofs" sourceName="acqsmatsprofs_piecesacqsmatsprofs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('acqsmatsprofs_piecesacqsmatsprofs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="acqmatprof_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="acqmatprof_id"/>
+    <columns label="pieceacqmatprof_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="pieceacqmatprof_id"/>
+  </tables>
+  <tables id="_EfTuQCRYEd6w1bAtQD74CA" label="acqsmatsprofs" sourceName="acqsmatsprofs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('acqsmatsprofs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="besoins" sourceType="VARCHAR" talendType="id_String" length="250" precision="0" originalField="besoins"/>
+    <columns label="montantaide" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantaide"/>
+    <columns label="montantacompte" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantacompte"/>
+    <columns label="dateversementacompte" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementacompte" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montantsolde" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantsolde"/>
+    <columns label="dateversementsolde" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementsolde" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montanttotal" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montanttotal"/>
+    <columns label="dateversementtotal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementtotal" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EfnQQCRYEd6w1bAtQD74CA" label="acos" sourceName="acos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('acos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="parent_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="parent_id"/>
+    <columns label="model" sourceType="VARCHAR" defaultValue="&quot;''::character varying&quot;" talendType="id_String" length="255" precision="0" originalField="model"/>
+    <columns label="foreign_key" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="foreign_key"/>
+    <columns label="alias" sourceType="VARCHAR" defaultValue="&quot;''::character varying&quot;" talendType="id_String" length="255" precision="0" originalField="alias"/>
+    <columns label="lft" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="lft"/>
+    <columns label="rght" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="rght"/>
+  </tables>
+  <tables id="_Ef6LMCRYEd6w1bAtQD74CA" label="accscreaentr_piecesaccscreaentr" sourceName="accscreaentr_piecesaccscreaentr" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('accscreaentr_piecesaccscreaentr_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="acccreaentr_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="acccreaentr_id"/>
+    <columns label="pieceacccreaentr_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="pieceacccreaentr_id"/>
+  </tables>
+  <tables id="_EgW3ICRYEd6w1bAtQD74CA" label="actionscandidats_personnes" sourceName="actionscandidats_personnes" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('actionscandidats_personnes_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="actioncandidat_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="actioncandidat_id"/>
+    <columns label="referent_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="referent_id"/>
+    <columns label="ddaction" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddaction" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfaction" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfaction" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="motifdemande" sourceType="TEXT" talendType="id_String" precision="0" originalField="motifdemande"/>
+    <columns label="enattente" sourceType="TYPE_NO" talendType="id_String" length="4" precision="0" originalField="enattente"/>
+    <columns label="datesignature" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="datesignature" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="bilanvenu" sourceType="TYPE_VENU" talendType="id_String" length="4" precision="0" originalField="bilanvenu"/>
+    <columns label="bilanretenu" sourceType="TYPE_RETENU" talendType="id_String" length="4" precision="0" originalField="bilanretenu"/>
+    <columns label="infocomplementaire" sourceType="TEXT" talendType="id_String" precision="0" originalField="infocomplementaire"/>
+    <columns label="datebilan" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="datebilan" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="rendezvouspartenaire" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="rendezvouspartenaire"/>
+    <columns label="daterdvpartenaire" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="daterdvpartenaire" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="mobile" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="mobile"/>
+    <columns label="naturemobile" sourceType="TEXT" talendType="id_String" precision="0" originalField="naturemobile"/>
+    <columns label="typemobile" sourceType="TEXT" talendType="id_String" precision="0" originalField="typemobile"/>
+  </tables>
+  <tables id="_EgpyECRYEd6w1bAtQD74CA" label="actionscandidats_partenaires" sourceName="actionscandidats_partenaires" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('actionscandidats_partenaires_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="actioncandidat_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="actioncandidat_id"/>
+    <columns label="partenaire_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="partenaire_id"/>
+  </tables>
+  <tables id="_EgzjECRYEd6w1bAtQD74CA" label="actionscandidats" sourceName="actionscandidats" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('actionscandidats_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="intitule" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="intitule"/>
+    <columns label="code" sourceType="VARCHAR" talendType="id_String" length="6" precision="0" originalField="code"/>
+  </tables>
+  <tables id="_Eg8tACRYEd6w1bAtQD74CA" label="actions" sourceName="actions" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('actions_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="typeaction_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="typeaction_id"/>
+    <columns label="code" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="code"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" length="250" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_Eg8tASRYEd6w1bAtQD74CA" label="actsprofs_piecesactsprofs" sourceName="actsprofs_piecesactsprofs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('actsprofs_piecesactsprofs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="actprof_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="actprof_id"/>
+    <columns label="pieceactprof_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="pieceactprof_id"/>
+  </tables>
+  <tables id="_EhPn8CRYEd6w1bAtQD74CA" label="actsprofs" sourceName="actsprofs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('actsprofs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="typecontratact" sourceType="TYPE_TYPECONTRATACT" talendType="id_String" length="4" precision="0" originalField="typecontratact"/>
+    <columns label="ddconvention" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddconvention" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfconvention" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfconvention" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="intituleformation" sourceType="VARCHAR" talendType="id_String" length="200" precision="0" originalField="intituleformation"/>
+    <columns label="ddform" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddform" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfform" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfform" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dureeform" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="dureeform"/>
+    <columns label="modevalidation" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="modevalidation"/>
+    <columns label="coutform" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="coutform"/>
+    <columns label="cofinanceurs" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="cofinanceurs"/>
+    <columns label="montantaide" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantaide"/>
+    <columns label="tiersprestataireapre_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="tiersprestataireapre_id"/>
+    <columns label="montantacompte" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantacompte"/>
+    <columns label="dateversementacompte" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementacompte" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montantsolde" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantsolde"/>
+    <columns label="dateversementsolde" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementsolde" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montanttotal" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montanttotal"/>
+    <columns label="dateversementtotal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementtotal" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EhZY8CRYEd6w1bAtQD74CA" label="activites" sourceName="activites" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('activites_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="reg" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="reg"/>
+    <columns label="act" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="act"/>
+    <columns label="paysact" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="paysact"/>
+    <columns label="ddact" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddact" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfact" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfact" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="natcontrtra" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="natcontrtra"/>
+    <columns label="topcondadmeti" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topcondadmeti"/>
+    <columns label="hauremuscmic" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="hauremuscmic"/>
+  </tables>
+  <tables id="_EhZY8SRYEd6w1bAtQD74CA" label="actionsinsertion" sourceName="actionsinsertion" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('actionsinsertion_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="contratinsertion_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="contratinsertion_id"/>
+    <columns label="dd_action" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dd_action" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="df_action" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="df_action" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="lib_action" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="lib_action"/>
+    <columns label="commentaire_action" sourceType="TEXT" talendType="id_String" precision="0" originalField="commentaire_action"/>
+  </tables>
+  <tables id="_EhjJ8CRYEd6w1bAtQD74CA" label="aidesdirectes" sourceName="aidesdirectes" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('aidesdirectes_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="actioninsertion_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="actioninsertion_id"/>
+    <columns label="lib_aide" sourceType="VARCHAR" talendType="id_String" length="32" precision="0" originalField="lib_aide"/>
+    <columns label="typo_aide" sourceType="VARCHAR" talendType="id_String" length="32" precision="0" originalField="typo_aide"/>
+    <columns label="date_aide" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="date_aide" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EhsT4CRYEd6w1bAtQD74CA" label="aidesagricoles" sourceName="aidesagricoles" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('aidesagricoles_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="infoagricole_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="infoagricole_id"/>
+    <columns label="annrefaideagri" sourceType="BPCHAR" talendType="id_String" length="4" precision="0" originalField="annrefaideagri"/>
+    <columns label="libnataideagri" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="libnataideagri"/>
+    <columns label="mtaideagri" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtaideagri"/>
+  </tables>
+  <tables id="_Eh2E4CRYEd6w1bAtQD74CA" label="adresses_foyers" sourceName="adresses_foyers" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('adresses_foyers_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="adresse_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="adresse_id"/>
+    <columns label="foyer_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="foyer_id"/>
+    <columns label="rgadr" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="rgadr"/>
+    <columns label="dtemm" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtemm" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="typeadr" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="typeadr"/>
+  </tables>
+  <tables id="_Eh_14CRYEd6w1bAtQD74CA" label="adresses" sourceName="adresses" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('adresses_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="numvoie" sourceType="VARCHAR" talendType="id_String" length="6" precision="0" originalField="numvoie"/>
+    <columns label="typevoie" sourceType="VARCHAR" talendType="id_String" length="4" precision="0" originalField="typevoie"/>
+    <columns label="nomvoie" sourceType="VARCHAR" talendType="id_String" length="25" precision="0" originalField="nomvoie"/>
+    <columns label="complideadr" sourceType="VARCHAR" talendType="id_String" length="38" precision="0" originalField="complideadr"/>
+    <columns label="compladr" sourceType="VARCHAR" talendType="id_String" length="26" precision="0" originalField="compladr"/>
+    <columns label="lieudist" sourceType="VARCHAR" talendType="id_String" length="32" precision="0" originalField="lieudist"/>
+    <columns label="numcomrat" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="numcomrat"/>
+    <columns label="numcomptt" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="numcomptt"/>
+    <columns label="codepos" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="codepos"/>
+    <columns label="locaadr" sourceType="VARCHAR" talendType="id_String" length="26" precision="0" originalField="locaadr"/>
+    <columns label="pays" sourceType="VARCHAR" talendType="id_String" length="3" precision="0" originalField="pays"/>
+    <columns label="canton" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="canton"/>
+    <columns label="typeres" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="typeres"/>
+    <columns label="topresetr" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topresetr"/>
+  </tables>
+  <tables id="_Eib6wCRYEd6w1bAtQD74CA" label="apres" sourceName="apres" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('apres_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="numeroapre" sourceType="VARCHAR" talendType="id_String" length="16" precision="0" originalField="numeroapre"/>
+    <columns label="typedemandeapre" sourceType="TYPE_TYPEDEMANDEAPRE" talendType="id_String" length="4" precision="0" originalField="typedemandeapre"/>
+    <columns label="datedemandeapre" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="datedemandeapre" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="naturelogement" sourceType="TYPE_NATURELOGEMENT" talendType="id_String" length="4" precision="0" originalField="naturelogement"/>
+    <columns label="precisionsautrelogement" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="precisionsautrelogement"/>
+    <columns label="anciennetepoleemploi" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="anciennetepoleemploi"/>
+    <columns label="projetprofessionnel" sourceType="TEXT" talendType="id_String" precision="0" originalField="projetprofessionnel"/>
+    <columns label="secteurprofessionnel" sourceType="TEXT" talendType="id_String" precision="0" originalField="secteurprofessionnel"/>
+    <columns label="activitebeneficiaire" sourceType="TYPE_ACTIVITEBENEFICIAIRE" talendType="id_String" length="4" precision="0" originalField="activitebeneficiaire"/>
+    <columns label="dateentreeemploi" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateentreeemploi" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="typecontrat" sourceType="TYPE_TYPECONTRAT" talendType="id_String" length="4" precision="0" originalField="typecontrat"/>
+    <columns label="precisionsautrecontrat" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="precisionsautrecontrat"/>
+    <columns label="nbheurestravaillees" sourceType="NUMERIC" talendType="id_Double" length="4" precision="0" originalField="nbheurestravaillees"/>
+    <columns label="nomemployeur" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nomemployeur"/>
+    <columns label="adresseemployeur" sourceType="TEXT" talendType="id_String" precision="0" originalField="adresseemployeur"/>
+    <columns label="quota" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="quota"/>
+    <columns label="derogation" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="derogation"/>
+    <columns label="avistechreferent" sourceType="TEXT" talendType="id_String" precision="0" originalField="avistechreferent"/>
+    <columns label="etatdossierapre" sourceType="TYPE_ETATDOSSIERAPRE" talendType="id_String" length="4" precision="0" originalField="etatdossierapre"/>
+    <columns label="eligibiliteapre" sourceType="TYPE_NO" talendType="id_String" length="4" precision="0" originalField="eligibiliteapre"/>
+    <columns label="mtforfait" sourceType="NUMERIC" defaultValue="&quot;NULL::numeric&quot;" talendType="id_Double" length="10" precision="2" originalField="mtforfait"/>
+    <columns label="secteuractivite" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="secteuractivite"/>
+    <columns label="nbenf12" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="nbenf12"/>
+    <columns label="statutapre" sourceType="TYPE_STATUTAPRE" defaultValue="&quot;'F'::type_statutapre&quot;" talendType="id_String" length="4" precision="0" originalField="statutapre"/>
+    <columns label="justificatif" sourceType="TYPE_JUSTIFICATIF" talendType="id_String" length="4" precision="0" originalField="justificatif"/>
+    <columns label="structurereferente_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="structurereferente_id"/>
+    <columns label="referent_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="referent_id"/>
+    <columns label="montantaverser" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantaverser"/>
+    <columns label="nbpaiementsouhait" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="nbpaiementsouhait"/>
+    <columns label="montantdejaverse" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantdejaverse"/>
+  </tables>
+  <tables id="_Eib6wSRYEd6w1bAtQD74CA" label="amenagslogts_piecesamenagslogts" sourceName="amenagslogts_piecesamenagslogts" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('amenagslogts_piecesamenagslogts_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="amenaglogt_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="amenaglogt_id"/>
+    <columns label="pieceamenaglogt_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="pieceamenaglogt_id"/>
+  </tables>
+  <tables id="_EilrwCRYEd6w1bAtQD74CA" label="amenagslogts" sourceName="amenagslogts" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('amenagslogts_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="typeaidelogement" sourceType="TYPE_TYPEAIDELOGEMENT" talendType="id_String" length="4" precision="0" originalField="typeaidelogement"/>
+    <columns label="besoins" sourceType="VARCHAR" talendType="id_String" length="250" precision="0" originalField="besoins"/>
+    <columns label="montantaide" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantaide"/>
+    <columns label="montantacompte" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantacompte"/>
+    <columns label="dateversementacompte" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementacompte" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montantsolde" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantsolde"/>
+    <columns label="dateversementsolde" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementsolde" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montanttotal" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montanttotal"/>
+    <columns label="dateversementtotal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementtotal" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EivcwCRYEd6w1bAtQD74CA" label="allocationssoutienfamilial" sourceName="allocationssoutienfamilial" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('allocationssoutienfamilial_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="sitasf" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="sitasf"/>
+    <columns label="parassoasf" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="parassoasf"/>
+    <columns label="ddasf" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddasf" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfasf" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfasf" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="topasf" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topasf"/>
+    <columns label="topdemasf" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topdemasf"/>
+    <columns label="topenfreconn" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topenfreconn"/>
+  </tables>
+  <tables id="_EjCXsCRYEd6w1bAtQD74CA" label="aros" sourceName="aros" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('aros_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="parent_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="parent_id"/>
+    <columns label="model" sourceType="VARCHAR" defaultValue="&quot;''::character varying&quot;" talendType="id_String" length="255" precision="0" originalField="model"/>
+    <columns label="foreign_key" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="foreign_key"/>
+    <columns label="alias" sourceType="VARCHAR" defaultValue="&quot;''::character varying&quot;" talendType="id_String" length="255" precision="0" originalField="alias"/>
+    <columns label="lft" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="lft"/>
+    <columns label="rght" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="rght"/>
+  </tables>
+  <tables id="_EjMIsCRYEd6w1bAtQD74CA" label="apres_piecesapre" sourceName="apres_piecesapre" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('apres_piecesapre_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="pieceapre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="pieceapre_id"/>
+  </tables>
+  <tables id="_EjMIsSRYEd6w1bAtQD74CA" label="apres_etatsliquidatifs" sourceName="apres_etatsliquidatifs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('apres_etatsliquidatifs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="etatliquidatif_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="etatliquidatif_id"/>
+    <columns label="montantattribue" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantattribue"/>
+  </tables>
+  <tables id="_EjVSoCRYEd6w1bAtQD74CA" label="apres_comitesapres" sourceName="apres_comitesapres" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('apres_comitesapres_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="comiteapre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="comiteapre_id"/>
+    <columns label="montantattribue" sourceType="NUMERIC" defaultValue="&quot;NULL::numeric&quot;" talendType="id_Double" length="10" precision="2" originalField="montantattribue"/>
+    <columns label="observationcomite" sourceType="TEXT" talendType="id_String" precision="0" originalField="observationcomite"/>
+    <columns label="decisioncomite" sourceType="TYPE_DECISIONCOMITE" talendType="id_String" length="4" precision="0" originalField="decisioncomite"/>
+    <columns label="recoursapre" sourceType="TYPE_NO" talendType="id_String" length="4" precision="0" originalField="recoursapre"/>
+    <columns label="observationrecours" sourceType="TEXT" talendType="id_String" precision="0" originalField="observationrecours"/>
+    <columns label="daterecours" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="daterecours" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="comite_pcd_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="comite_pcd_id"/>
+  </tables>
+  <tables id="_EjfDoCRYEd6w1bAtQD74CA" label="budgetsapres" sourceName="budgetsapres" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('budgetsapres_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="exercicebudgetai" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="exercicebudgetai"/>
+    <columns label="montantattretat" sourceType="NUMERIC" talendType="id_Double" nullable="false" length="10" precision="2" originalField="montantattretat"/>
+    <columns label="ddexecutionbudge" sourceType="DATE" talendType="id_Date" nullable="false" length="4" precision="0" originalField="ddexecutionbudge" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfexecutionbudge" sourceType="DATE" talendType="id_Date" nullable="false" length="4" precision="0" originalField="dfexecutionbudge" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EjoNkCRYEd6w1bAtQD74CA" label="avispcgpersonnes" sourceName="avispcgpersonnes" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('avispcgpersonnes_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="avisevaressnonsal" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="avisevaressnonsal"/>
+    <columns label="dtsouressnonsal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtsouressnonsal" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dtevaressnonsal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtevaressnonsal" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="mtevalressnonsal" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtevalressnonsal"/>
+    <columns label="excl" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="excl"/>
+    <columns label="ddexcl" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddexcl" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfexcl" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfexcl" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_Ejx-kCRYEd6w1bAtQD74CA" label="avispcgdroitrsa" sourceName="avispcgdroitrsa" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('avispcgdroitrsa_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dossier_rsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dossier_rsa_id"/>
+    <columns label="avisdestpairsa" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="avisdestpairsa"/>
+    <columns label="dtavisdestpairsa" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtavisdestpairsa" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="nomtie" sourceType="VARCHAR" talendType="id_String" length="64" precision="0" originalField="nomtie"/>
+    <columns label="typeperstie" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="typeperstie"/>
+  </tables>
+  <tables id="_Ej7vkCRYEd6w1bAtQD74CA" label="aros_acos" sourceName="aros_acos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('aros_acos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="aro_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="aro_id"/>
+    <columns label="aco_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="aco_id"/>
+    <columns label="_create" sourceType="BPCHAR" defaultValue="&quot;0&quot;" talendType="id_String" nullable="false" length="2" precision="0" originalField="_create"/>
+    <columns label="_read" sourceType="BPCHAR" defaultValue="&quot;0&quot;" talendType="id_String" nullable="false" length="2" precision="0" originalField="_read"/>
+    <columns label="_update" sourceType="BPCHAR" defaultValue="&quot;0&quot;" talendType="id_String" nullable="false" length="2" precision="0" originalField="_update"/>
+    <columns label="_delete" sourceType="BPCHAR" defaultValue="&quot;0&quot;" talendType="id_String" nullable="false" length="2" precision="0" originalField="_delete"/>
+  </tables>
+  <tables id="_EkhlcCRYEd6w1bAtQD74CA" label="comitesapres_participantscomites" sourceName="comitesapres_participantscomites" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('comitesapres_participantscomites_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="comiteapre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="comiteapre_id"/>
+    <columns label="participantcomite_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="participantcomite_id"/>
+    <columns label="presence" sourceType="TYPE_PRESENCE" talendType="id_String" length="4" precision="0" originalField="presence"/>
+  </tables>
+  <tables id="_EkrWcCRYEd6w1bAtQD74CA" label="comitesapres" sourceName="comitesapres" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('comitesapres_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="datecomite" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="datecomite" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="heurecomite" sourceType="TIME" talendType="id_Date" length="8" precision="6" originalField="heurecomite" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="lieucomite" sourceType="TEXT" talendType="id_String" precision="0" originalField="lieucomite"/>
+    <columns label="intitulecomite" sourceType="TEXT" talendType="id_String" precision="0" originalField="intitulecomite"/>
+    <columns label="observationcomite" sourceType="TEXT" talendType="id_String" precision="0" originalField="observationcomite"/>
+  </tables>
+  <tables id="_Ek0gYCRYEd6w1bAtQD74CA" label="cantons" sourceName="cantons" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('cantons_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="typevoie" sourceType="VARCHAR" talendType="id_String" length="4" precision="0" originalField="typevoie"/>
+    <columns label="nomvoie" sourceType="VARCHAR" talendType="id_String" length="25" precision="0" originalField="nomvoie"/>
+    <columns label="locaadr" sourceType="VARCHAR" talendType="id_String" length="26" precision="0" originalField="locaadr"/>
+    <columns label="codepos" sourceType="VARCHAR" talendType="id_String" length="5" precision="0" originalField="codepos"/>
+    <columns label="numcomptt" sourceType="VARCHAR" talendType="id_String" length="5" precision="0" originalField="numcomptt"/>
+    <columns label="canton" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="canton"/>
+  </tables>
+  <tables id="_Ek-RYCRYEd6w1bAtQD74CA" label="calculsdroitsrsa" sourceName="calculsdroitsrsa" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('calculsdroitsrsa_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="mtpersressmenrsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtpersressmenrsa"/>
+    <columns label="mtpersabaneursa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtpersabaneursa"/>
+    <columns label="toppersdrodevorsa" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="toppersdrodevorsa"/>
+  </tables>
+  <tables id="_ElkuUCRYEd6w1bAtQD74CA" label="contactspartenaires_partenaires" sourceName="contactspartenaires_partenaires" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('contactspartenaires_partenaires_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="partenaire_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="partenaire_id"/>
+    <columns label="contactpartenaire_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="contactpartenaire_id"/>
+  </tables>
+  <tables id="_Elt4QCRYEd6w1bAtQD74CA" label="contactspartenaires" sourceName="contactspartenaires" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('contactspartenaires_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="qual" sourceType="VARCHAR" talendType="id_String" nullable="false" length="3" precision="0" originalField="qual"/>
+    <columns label="nom" sourceType="VARCHAR" talendType="id_String" nullable="false" length="28" precision="0" originalField="nom"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" nullable="false" length="32" precision="0" originalField="prenom"/>
+    <columns label="numtel" sourceType="VARCHAR" talendType="id_String" length="10" precision="0" originalField="numtel"/>
+    <columns label="email" sourceType="VARCHAR" talendType="id_String" length="78" precision="0" originalField="email"/>
+    <columns label="partenaire_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="partenaire_id"/>
+  </tables>
+  <tables id="_EmAzMCRYEd6w1bAtQD74CA" label="connections" sourceName="connections" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('connections_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="user_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="user_id"/>
+    <columns label="php_sid" sourceType="BPCHAR" defaultValue="&quot;NULL::bpchar&quot;" talendType="id_String" length="32" precision="0" originalField="php_sid"/>
+    <columns label="created" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="created" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="modified" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="modified" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EmKkMCRYEd6w1bAtQD74CA" label="condsadmins" sourceName="condsadmins" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('condsadmins_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="avispcgdroitrsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="avispcgdroitrsa_id"/>
+    <columns label="aviscondadmrsa" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="aviscondadmrsa"/>
+    <columns label="moticondadmrsa" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="moticondadmrsa"/>
+    <columns label="comm1condadmrsa" sourceType="VARCHAR" talendType="id_String" length="60" precision="0" originalField="comm1condadmrsa"/>
+    <columns label="comm2condadmrsa" sourceType="VARCHAR" talendType="id_String" length="60" precision="0" originalField="comm2condadmrsa"/>
+    <columns label="dteffaviscondadmrsa" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dteffaviscondadmrsa" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EmnQICRYEd6w1bAtQD74CA" label="derogations" sourceName="derogations" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('derogations_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="avispcgpersonne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="avispcgpersonne_id"/>
+    <columns label="typedero" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="typedero"/>
+    <columns label="avisdero" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="avisdero"/>
+    <columns label="ddavisdero" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddavisdero" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfavisdero" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfavisdero" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EmxBICRYEd6w1bAtQD74CA" label="decisionspdos" sourceName="decisionspdos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('decisionspdos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" length="150" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_Em6LECRYEd6w1bAtQD74CA" label="creancesalimentaires" sourceName="creancesalimentaires" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('creancesalimentaires_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="etatcrealim" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="etatcrealim"/>
+    <columns label="ddcrealim" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddcrealim" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfcrealim" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfcrealim" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="orioblalim" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="orioblalim"/>
+    <columns label="motidiscrealim" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="motidiscrealim"/>
+    <columns label="commcrealim" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="commcrealim"/>
+    <columns label="mtsancrealim" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtsancrealim"/>
+    <columns label="topdemdisproccrealim" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topdemdisproccrealim"/>
+    <columns label="engproccrealim" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="engproccrealim"/>
+    <columns label="verspa" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="verspa"/>
+    <columns label="topjugpa" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topjugpa"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="personne_id"/>
+  </tables>
+  <tables id="_EnD8ECRYEd6w1bAtQD74CA" label="creances" sourceName="creances" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('creances_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dtimplcre" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtimplcre" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="natcre" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="natcre"/>
+    <columns label="rgcre" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="rgcre"/>
+    <columns label="motiindu" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="motiindu"/>
+    <columns label="oriindu" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="oriindu"/>
+    <columns label="respindu" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="respindu"/>
+    <columns label="ddregucre" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddregucre" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfregucre" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfregucre" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dtdercredcretrans" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtdercredcretrans" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="mtsolreelcretrans" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtsolreelcretrans"/>
+    <columns label="mtinicre" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtinicre"/>
+    <columns label="foyer_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="foyer_id"/>
+  </tables>
+  <tables id="_EnNGACRYEd6w1bAtQD74CA" label="contratsinsertion" sourceName="contratsinsertion" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('contratsinsertion_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="structurereferente_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="structurereferente_id"/>
+    <columns label="typocontrat_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="typocontrat_id"/>
+    <columns label="dd_ci" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dd_ci" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="df_ci" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="df_ci" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="diplomes" sourceType="TEXT" talendType="id_String" precision="0" originalField="diplomes"/>
+    <columns label="form_compl" sourceType="VARCHAR" talendType="id_String" length="60" precision="0" originalField="form_compl"/>
+    <columns label="expr_prof" sourceType="TEXT" talendType="id_String" precision="0" originalField="expr_prof"/>
+    <columns label="aut_expr_prof" sourceType="VARCHAR" talendType="id_String" length="120" precision="0" originalField="aut_expr_prof"/>
+    <columns label="rg_ci" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="rg_ci"/>
+    <columns label="actions_prev" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="actions_prev"/>
+    <columns label="obsta_renc" sourceType="VARCHAR" talendType="id_String" length="120" precision="0" originalField="obsta_renc"/>
+    <columns label="service_soutien" sourceType="VARCHAR" talendType="id_String" length="120" precision="0" originalField="service_soutien"/>
+    <columns label="pers_charg_suivi" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="pers_charg_suivi"/>
+    <columns label="objectifs_fixes" sourceType="TEXT" talendType="id_String" precision="0" originalField="objectifs_fixes"/>
+    <columns label="engag_object" sourceType="TEXT" talendType="id_String" precision="0" originalField="engag_object"/>
+    <columns label="sect_acti_emp" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="sect_acti_emp"/>
+    <columns label="emp_occupe" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="emp_occupe"/>
+    <columns label="duree_hebdo_emp" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="duree_hebdo_emp"/>
+    <columns label="nat_cont_trav" sourceType="BPCHAR" talendType="id_String" length="4" precision="0" originalField="nat_cont_trav"/>
+    <columns label="duree_cdd" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="duree_cdd"/>
+    <columns label="duree_engag" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="duree_engag"/>
+    <columns label="nature_projet" sourceType="TEXT" talendType="id_String" precision="0" originalField="nature_projet"/>
+    <columns label="observ_ci" sourceType="TEXT" talendType="id_String" precision="0" originalField="observ_ci"/>
+    <columns label="decision_ci" sourceType="BPCHAR" defaultValue="&quot;'E'::bpchar&quot;" talendType="id_String" length="1" precision="0" originalField="decision_ci"/>
+    <columns label="datevalidation_ci" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="datevalidation_ci" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="date_saisi_ci" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="date_saisi_ci" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="lieu_saisi_ci" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="lieu_saisi_ci"/>
+    <columns label="emp_trouv" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="emp_trouv"/>
+    <columns label="forme_ci" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="forme_ci"/>
+    <columns label="commentaire_action" sourceType="TEXT" talendType="id_String" precision="0" originalField="commentaire_action"/>
+    <columns label="raison_ci" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="raison_ci"/>
+    <columns label="aviseqpluri" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="aviseqpluri"/>
+    <columns label="sitfam_ci" sourceType="TEXT" talendType="id_String" precision="0" originalField="sitfam_ci"/>
+    <columns label="sitpro_ci" sourceType="TEXT" talendType="id_String" precision="0" originalField="sitpro_ci"/>
+    <columns label="observ_benef" sourceType="TEXT" talendType="id_String" precision="0" originalField="observ_benef"/>
+    <columns label="referent_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="referent_id"/>
+    <columns label="current_action" sourceType="TEXT" talendType="id_String" precision="0" originalField="current_action"/>
+    <columns label="avisraison_ci" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="avisraison_ci"/>
+  </tables>
+  <tables id="_EngoACRYEd6w1bAtQD74CA" label="detailsdifdisps" sourceName="detailsdifdisps" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('detailsdifdisps_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dsp_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dsp_id"/>
+    <columns label="difdisp" sourceType="TYPE_DIFDISP" talendType="id_String" nullable="false" length="4" precision="0" originalField="difdisp"/>
+  </tables>
+  <tables id="_Enpx8CRYEd6w1bAtQD74CA" label="detailscalculsdroitsrsa" sourceName="detailscalculsdroitsrsa" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('detailscalculsdroitsrsa_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="detaildroitrsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="detaildroitrsa_id"/>
+    <columns label="natpf" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="natpf"/>
+    <columns label="sousnatpf" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="sousnatpf"/>
+    <columns label="ddnatdro" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddnatdro" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfnatdro" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfnatdro" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="mtrsavers" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtrsavers"/>
+    <columns label="dtderrsavers" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtderrsavers" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_Enzi8CRYEd6w1bAtQD74CA" label="detailsaccosocindis" sourceName="detailsaccosocindis" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('detailsaccosocindis_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dsp_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dsp_id"/>
+    <columns label="nataccosocindi" sourceType="TYPE_NATACCOSOCINDI" talendType="id_String" nullable="false" length="4" precision="0" originalField="nataccosocindi"/>
+    <columns label="libautraccosocindi" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libautraccosocindi"/>
+  </tables>
+  <tables id="_En9T8CRYEd6w1bAtQD74CA" label="detailsaccosocfams" sourceName="detailsaccosocfams" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('detailsaccosocfams_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dsp_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dsp_id"/>
+    <columns label="nataccosocfam" sourceType="TYPE_NATACCOSOCFAM" talendType="id_String" nullable="false" length="4" precision="0" originalField="nataccosocfam"/>
+    <columns label="libautraccosocfam" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libautraccosocfam"/>
+  </tables>
+  <tables id="_En9T8SRYEd6w1bAtQD74CA" label="detailsnatmobs" sourceName="detailsnatmobs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('detailsnatmobs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dsp_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dsp_id"/>
+    <columns label="natmob" sourceType="TYPE_NATMOB" talendType="id_String" nullable="false" length="4" precision="0" originalField="natmob"/>
+  </tables>
+  <tables id="_EoQO4CRYEd6w1bAtQD74CA" label="detailsdroitsrsa" sourceName="detailsdroitsrsa" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('detailsdroitsrsa_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dossier_rsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dossier_rsa_id"/>
+    <columns label="topsansdomfixe" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topsansdomfixe"/>
+    <columns label="nbenfautcha" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="nbenfautcha"/>
+    <columns label="oridemrsa" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="oridemrsa"/>
+    <columns label="dtoridemrsa" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtoridemrsa" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="topfoydrodevorsa" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topfoydrodevorsa"/>
+    <columns label="ddelecal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddelecal" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfelecal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfelecal" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="mtrevminigararsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtrevminigararsa"/>
+    <columns label="mtpentrsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtpentrsa"/>
+    <columns label="mtlocalrsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtlocalrsa"/>
+    <columns label="mtrevgararsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtrevgararsa"/>
+    <columns label="mtpfrsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtpfrsa"/>
+    <columns label="mtalrsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtalrsa"/>
+    <columns label="mtressmenrsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtressmenrsa"/>
+    <columns label="mtsanoblalimrsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtsanoblalimrsa"/>
+    <columns label="mtredhosrsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtredhosrsa"/>
+    <columns label="mtredcgrsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtredcgrsa"/>
+    <columns label="mtcumintegrsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtcumintegrsa"/>
+    <columns label="mtabaneursa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtabaneursa"/>
+    <columns label="mttotdrorsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mttotdrorsa"/>
+  </tables>
+  <tables id="_EoQO4SRYEd6w1bAtQD74CA" label="detailsdifsocs" sourceName="detailsdifsocs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('detailsdifsocs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dsp_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dsp_id"/>
+    <columns label="difsoc" sourceType="TYPE_DIFSOC" talendType="id_String" nullable="false" length="4" precision="0" originalField="difsoc"/>
+    <columns label="libautrdifsoc" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libautrdifsoc"/>
+  </tables>
+  <tables id="_EoZY0CRYEd6w1bAtQD74CA" label="detailsdiflogs" sourceName="detailsdiflogs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('detailsdiflogs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dsp_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dsp_id"/>
+    <columns label="diflog" sourceType="TYPE_DIFLOG" talendType="id_String" nullable="false" length="4" precision="0" originalField="diflog"/>
+    <columns label="libautrdiflog" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libautrdiflog"/>
+  </tables>
+  <tables id="_EojJ0CRYEd6w1bAtQD74CA" label="dossierscaf" sourceName="dossierscaf" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('dossierscaf_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="ddratdos" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddratdos" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfratdos" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfratdos" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="toprespdos" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="toprespdos"/>
+    <columns label="numdemrsaprece" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="11" precision="0" originalField="numdemrsaprece"/>
+  </tables>
+  <tables id="_Eos60CRYEd6w1bAtQD74CA" label="dossiers_rsa" sourceName="dossiers_rsa" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('dossiers_rsa_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="numdemrsa" sourceType="VARCHAR" talendType="id_String" length="11" precision="0" originalField="numdemrsa"/>
+    <columns label="dtdemrsa" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtdemrsa" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dtdemrmi" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtdemrmi" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="numdepinsrmi" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="numdepinsrmi"/>
+    <columns label="typeinsrmi" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="typeinsrmi"/>
+    <columns label="numcominsrmi" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="numcominsrmi"/>
+    <columns label="numagrinsrmi" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="numagrinsrmi"/>
+    <columns label="numdosinsrmi" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="numdosinsrmi"/>
+    <columns label="numcli" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="numcli"/>
+    <columns label="numorg" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="numorg"/>
+    <columns label="fonorg" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="fonorg"/>
+    <columns label="matricule" sourceType="BPCHAR" talendType="id_String" length="15" precision="0" originalField="matricule"/>
+    <columns label="statudemrsa" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="statudemrsa"/>
+    <columns label="typeparte" sourceType="BPCHAR" talendType="id_String" length="4" precision="0" originalField="typeparte"/>
+    <columns label="ideparte" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="ideparte"/>
+    <columns label="fonorgcedmut" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="fonorgcedmut"/>
+    <columns label="numorgcedmut" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="numorgcedmut"/>
+    <columns label="matriculeorgcedmut" sourceType="BPCHAR" talendType="id_String" length="15" precision="0" originalField="matriculeorgcedmut"/>
+    <columns label="ddarrmut" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddarrmut" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="codeposanchab" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="codeposanchab"/>
+    <columns label="fonorgprenmut" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="fonorgprenmut"/>
+    <columns label="numorgprenmut" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="numorgprenmut"/>
+    <columns label="dddepamut" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dddepamut" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="details_droits_rsa_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="details_droits_rsa_id"/>
+    <columns label="avis_pcg_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="avis_pcg_id"/>
+    <columns label="organisme_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="organisme_id"/>
+    <columns label="acompte_rsa_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="acompte_rsa_id"/>
+  </tables>
+  <tables id="_Eo2EwCRYEd6w1bAtQD74CA" label="domiciliationsbancaires" sourceName="domiciliationsbancaires" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('domiciliationsbancaires_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="codebanque" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="codebanque"/>
+    <columns label="codeagence" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="codeagence"/>
+    <columns label="libelledomiciliation" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="libelledomiciliation"/>
+  </tables>
+  <tables id="_Eo_1wCRYEd6w1bAtQD74CA" label="detailsressourcesmensuelles" sourceName="detailsressourcesmensuelles" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('detailsressourcesmensuelles_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="ressourcemensuelle_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="ressourcemensuelle_id"/>
+    <columns label="natress" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="natress"/>
+    <columns label="mtnatressmen" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="mtnatressmen"/>
+    <columns label="abaneu" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="abaneu"/>
+    <columns label="dfpercress" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfpercress" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="topprevsubsress" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topprevsubsress"/>
+  </tables>
+  <tables id="_EpJmwCRYEd6w1bAtQD74CA" label="formspermsfimo" sourceName="formspermsfimo" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('formspermsfimo_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="intituleform" sourceType="VARCHAR" talendType="id_String" nullable="false" length="100" precision="0" originalField="intituleform"/>
+    <columns label="ddform" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddform" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfform" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfform" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dureeform" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="dureeform"/>
+    <columns label="modevalidation" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="modevalidation"/>
+    <columns label="coutform" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="coutform"/>
+    <columns label="cofinanceurs" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="cofinanceurs"/>
+    <columns label="montantaide" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantaide"/>
+    <columns label="tiersprestataireapre_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="tiersprestataireapre_id"/>
+    <columns label="montantconfinanceurs" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantconfinanceurs"/>
+    <columns label="montantacompte" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantacompte"/>
+    <columns label="dateversementacompte" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementacompte" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montantsolde" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantsolde"/>
+    <columns label="dateversementsolde" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementsolde" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montanttotal" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montanttotal"/>
+    <columns label="dateversementtotal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementtotal" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EplroCRYEd6w1bAtQD74CA" label="etatsliquidatifs" sourceName="etatsliquidatifs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('etatsliquidatifs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="budgetapre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="budgetapre_id"/>
+    <columns label="entitefi" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="entitefi"/>
+    <columns label="engagement" sourceType="VARCHAR" talendType="id_String" length="250" precision="0" originalField="engagement"/>
+    <columns label="tiers" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="tiers"/>
+    <columns label="codecdr" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="codecdr"/>
+    <columns label="libellecdr" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="libellecdr"/>
+    <columns label="natureanalytique" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="natureanalytique"/>
+    <columns label="programme" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="programme"/>
+    <columns label="lib_programme" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="lib_programme"/>
+    <columns label="apreforfait" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="apreforfait"/>
+    <columns label="aprecomplem" sourceType="VARCHAR" talendType="id_String" length="250" precision="0" originalField="aprecomplem"/>
+    <columns label="natureimput" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="natureimput"/>
+    <columns label="typeapre" sourceType="TYPE_TYPEAPRE" talendType="id_String" nullable="false" length="4" precision="0" originalField="typeapre"/>
+    <columns label="operation" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="operation"/>
+    <columns label="commentaire" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="commentaire"/>
+    <columns label="datecloture" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="datecloture" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montanttotalapre" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montanttotalapre"/>
+    <columns label="lib_natureanalytique" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="250" precision="0" originalField="lib_natureanalytique"/>
+  </tables>
+  <tables id="_Ep5NoCRYEd6w1bAtQD74CA" label="dsps" sourceName="dsps" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('dsps_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="sitpersdemrsa" sourceType="TYPE_SITPERSDEMRSA" talendType="id_String" length="4" precision="0" originalField="sitpersdemrsa"/>
+    <columns label="topisogroouenf" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topisogroouenf"/>
+    <columns label="topdrorsarmiant" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topdrorsarmiant"/>
+    <columns label="drorsarmianta2" sourceType="TYPE_NOS" talendType="id_String" length="4" precision="0" originalField="drorsarmianta2"/>
+    <columns label="topcouvsoc" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topcouvsoc"/>
+    <columns label="accosocfam" sourceType="TYPE_NOV" talendType="id_String" length="4" precision="0" originalField="accosocfam"/>
+    <columns label="libcooraccosocfam" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="250" precision="0" originalField="libcooraccosocfam"/>
+    <columns label="accosocindi" sourceType="TYPE_NOV" talendType="id_String" length="4" precision="0" originalField="accosocindi"/>
+    <columns label="libcooraccosocindi" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="250" precision="0" originalField="libcooraccosocindi"/>
+    <columns label="soutdemarsoc" sourceType="TYPE_NOV" talendType="id_String" length="4" precision="0" originalField="soutdemarsoc"/>
+    <columns label="nivetu" sourceType="TYPE_NIVETU" talendType="id_String" length="4" precision="0" originalField="nivetu"/>
+    <columns label="nivdipmaxobt" sourceType="TYPE_NIVDIPMAXOBT" talendType="id_String" length="4" precision="0" originalField="nivdipmaxobt"/>
+    <columns label="annobtnivdipmax" sourceType="BPCHAR" defaultValue="&quot;NULL::bpchar&quot;" talendType="id_String" length="4" precision="0" originalField="annobtnivdipmax"/>
+    <columns label="topqualipro" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topqualipro"/>
+    <columns label="libautrqualipro" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libautrqualipro"/>
+    <columns label="topcompeextrapro" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topcompeextrapro"/>
+    <columns label="libcompeextrapro" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libcompeextrapro"/>
+    <columns label="topengdemarechemploi" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topengdemarechemploi"/>
+    <columns label="hispro" sourceType="TYPE_HISPRO" talendType="id_String" length="4" precision="0" originalField="hispro"/>
+    <columns label="libderact" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libderact"/>
+    <columns label="libsecactderact" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libsecactderact"/>
+    <columns label="cessderact" sourceType="TYPE_CESSDERACT" talendType="id_String" length="4" precision="0" originalField="cessderact"/>
+    <columns label="topdomideract" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topdomideract"/>
+    <columns label="libactdomi" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libactdomi"/>
+    <columns label="libsecactdomi" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libsecactdomi"/>
+    <columns label="duractdomi" sourceType="TYPE_DURACTDOMI" talendType="id_String" length="4" precision="0" originalField="duractdomi"/>
+    <columns label="inscdememploi" sourceType="TYPE_INSCDEMEMPLOI" talendType="id_String" length="4" precision="0" originalField="inscdememploi"/>
+    <columns label="topisogrorechemploi" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topisogrorechemploi"/>
+    <columns label="accoemploi" sourceType="TYPE_ACCOEMPLOI" talendType="id_String" length="4" precision="0" originalField="accoemploi"/>
+    <columns label="libcooraccoemploi" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libcooraccoemploi"/>
+    <columns label="topprojpro" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topprojpro"/>
+    <columns label="libemploirech" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="250" precision="0" originalField="libemploirech"/>
+    <columns label="libsecactrech" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="250" precision="0" originalField="libsecactrech"/>
+    <columns label="topcreareprientre" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topcreareprientre"/>
+    <columns label="concoformqualiemploi" sourceType="TYPE_NOS" talendType="id_String" length="4" precision="0" originalField="concoformqualiemploi"/>
+    <columns label="topmoyloco" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topmoyloco"/>
+    <columns label="toppermicondub" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="toppermicondub"/>
+    <columns label="topautrpermicondu" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topautrpermicondu"/>
+    <columns label="libautrpermicondu" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="100" precision="0" originalField="libautrpermicondu"/>
+    <columns label="natlog" sourceType="TYPE_NATLOG" talendType="id_String" length="4" precision="0" originalField="natlog"/>
+    <columns label="demarlog" sourceType="TYPE_DEMARLOG" talendType="id_String" length="4" precision="0" originalField="demarlog"/>
+  </tables>
+  <tables id="_EqCXkCRYEd6w1bAtQD74CA" label="foyers" sourceName="foyers" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('foyers_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dossier_rsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dossier_rsa_id"/>
+    <columns label="sitfam" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="sitfam"/>
+    <columns label="ddsitfam" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddsitfam" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="typeocclog" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="typeocclog"/>
+    <columns label="mtvallocterr" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtvallocterr"/>
+    <columns label="mtvalloclog" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtvalloclog"/>
+    <columns label="contefichliairsa" sourceType="TEXT" talendType="id_String" precision="0" originalField="contefichliairsa"/>
+    <columns label="mtestrsa" sourceType="NUMERIC" defaultValue="&quot;NULL::numeric&quot;" talendType="id_Double" length="9" precision="2" originalField="mtestrsa"/>
+    <columns label="raisoctieelectdom" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="raisoctieelectdom"/>
+  </tables>
+  <tables id="_EqMIkCRYEd6w1bAtQD74CA" label="formsqualifs_piecesformsqualifs" sourceName="formsqualifs_piecesformsqualifs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('formsqualifs_piecesformsqualifs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="formqualif_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="formqualif_id"/>
+    <columns label="pieceformqualif_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="pieceformqualif_id"/>
+  </tables>
+  <tables id="_EqV5kCRYEd6w1bAtQD74CA" label="formsqualifs" sourceName="formsqualifs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('formsqualifs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="intituleform" sourceType="VARCHAR" talendType="id_String" nullable="false" length="100" precision="0" originalField="intituleform"/>
+    <columns label="ddform" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddform" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfform" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfform" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dureeform" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="dureeform"/>
+    <columns label="modevalidation" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="modevalidation"/>
+    <columns label="coutform" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="coutform"/>
+    <columns label="cofinanceurs" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="cofinanceurs"/>
+    <columns label="montantaide" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantaide"/>
+    <columns label="tiersprestataireapre_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="tiersprestataireapre_id"/>
+    <columns label="montantconfinanceurs" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantconfinanceurs"/>
+    <columns label="montantacompte" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantacompte"/>
+    <columns label="dateversementacompte" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementacompte" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montantsolde" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantsolde"/>
+    <columns label="dateversementsolde" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementsolde" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montanttotal" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montanttotal"/>
+    <columns label="dateversementtotal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementtotal" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EqfDgCRYEd6w1bAtQD74CA" label="formspermsfimo_piecesformspermsfimo" sourceName="formspermsfimo_piecesformspermsfimo" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('formspermsfimo_piecesformspermsfimo_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="formpermfimo_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="formpermfimo_id"/>
+    <columns label="pieceformpermfimo_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="pieceformpermfimo_id"/>
+  </tables>
+  <tables id="_Eqo0gCRYEd6w1bAtQD74CA" label="informationseti" sourceName="informationseti" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('informationseti_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="topcreaentre" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topcreaentre"/>
+    <columns label="topaccre" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topaccre"/>
+    <columns label="acteti" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="acteti"/>
+    <columns label="topempl1ax" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topempl1ax"/>
+    <columns label="topstag1ax" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topstag1ax"/>
+    <columns label="topsansempl" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topsansempl"/>
+    <columns label="ddchiaffaeti" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddchiaffaeti" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfchiaffaeti" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfchiaffaeti" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="mtchiaffaeti" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtchiaffaeti"/>
+    <columns label="regfiseti" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="regfiseti"/>
+    <columns label="topbeneti" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topbeneti"/>
+    <columns label="regfisetia1" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="regfisetia1"/>
+    <columns label="mtbenetia1" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtbenetia1"/>
+    <columns label="mtamoeti" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtamoeti"/>
+    <columns label="mtplusvalueti" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtplusvalueti"/>
+    <columns label="topevoreveti" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topevoreveti"/>
+    <columns label="libevoreveti" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="libevoreveti"/>
+    <columns label="topressevaeti" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topressevaeti"/>
+  </tables>
+  <tables id="_Eqx-cCRYEd6w1bAtQD74CA" label="identificationsflux" sourceName="identificationsflux" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('identificationsflux_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="applieme" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="applieme"/>
+    <columns label="numversionapplieme" sourceType="BPCHAR" talendType="id_String" length="4" precision="0" originalField="numversionapplieme"/>
+    <columns label="typeflux" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="typeflux"/>
+    <columns label="natflux" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="natflux"/>
+    <columns label="dtcreaflux" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtcreaflux" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="heucreaflux" sourceType="TIME" talendType="id_Date" length="8" precision="6" originalField="heucreaflux" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dtref" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtref" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_Eq7vcCRYEd6w1bAtQD74CA" label="groups" sourceName="groups" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('groups_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="name" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="name"/>
+    <columns label="parent_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="parent_id"/>
+  </tables>
+  <tables id="_ErFgcCRYEd6w1bAtQD74CA" label="grossesses" sourceName="grossesses" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('grossesses_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="ddgro" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddgro" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfgro" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfgro" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dtdeclgro" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtdeclgro" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="natfingro" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="natfingro"/>
+  </tables>
+  <tables id="_ErOqYCRYEd6w1bAtQD74CA" label="integrationfichiersapre" sourceName="integrationfichiersapre" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('integrationfichiersapre_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="date_integration" sourceType="TIMESTAMP" talendType="id_Date" nullable="false" length="8" precision="6" originalField="date_integration" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="nbr_atraiter" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="nbr_atraiter"/>
+    <columns label="nbr_succes" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="nbr_succes"/>
+    <columns label="nbr_erreurs" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="nbr_erreurs"/>
+    <columns label="fichier_in" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="fichier_in"/>
+    <columns label="erreurs" sourceType="TEXT" talendType="id_String" precision="0" originalField="erreurs"/>
+  </tables>
+  <tables id="_ErYbYCRYEd6w1bAtQD74CA" label="infospoleemploi" sourceName="infospoleemploi" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('infospoleemploi_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="identifiantpe" sourceType="VARCHAR" talendType="id_String" length="11" precision="0" originalField="identifiantpe"/>
+    <columns label="dateinscription" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateinscription" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="categoriepe" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="categoriepe"/>
+    <columns label="datecessation" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="datecessation" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="motifcessation" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="motifcessation"/>
+    <columns label="dateradiation" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateradiation" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="motifradiation" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="motifradiation"/>
+  </tables>
+  <tables id="_EriMYCRYEd6w1bAtQD74CA" label="infosfinancieres" sourceName="infosfinancieres" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('infosfinancieres_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dossier_rsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dossier_rsa_id"/>
+    <columns label="moismoucompta" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="moismoucompta" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="type_allocation" sourceType="VARCHAR" talendType="id_String" length="25" precision="0" originalField="type_allocation"/>
+    <columns label="natpfcre" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="natpfcre"/>
+    <columns label="rgcre" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="rgcre"/>
+    <columns label="numintmoucompta" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="numintmoucompta"/>
+    <columns label="typeopecompta" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="typeopecompta"/>
+    <columns label="sensopecompta" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="sensopecompta"/>
+    <columns label="mtmoucompta" sourceType="NUMERIC" talendType="id_Double" length="11" precision="2" originalField="mtmoucompta"/>
+    <columns label="ddregu" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddregu" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dttraimoucompta" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dttraimoucompta" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="heutraimoucompta" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="heutraimoucompta" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_ErrWUCRYEd6w1bAtQD74CA" label="infosagricoles" sourceName="infosagricoles" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('infosagricoles_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="mtbenagri" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="mtbenagri"/>
+    <columns label="dtbenagri" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtbenagri" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="regfisagri" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="regfisagri"/>
+  </tables>
+  <tables id="_Er1HUCRYEd6w1bAtQD74CA" label="locsvehicinsert" sourceName="locsvehicinsert" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('locsvehicinsert_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="societelocation" sourceType="VARCHAR" talendType="id_String" length="250" precision="0" originalField="societelocation"/>
+    <columns label="dureelocation" sourceType="VARCHAR" talendType="id_String" length="250" precision="0" originalField="dureelocation"/>
+    <columns label="montantaide" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantaide"/>
+    <columns label="montantacompte" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantacompte"/>
+    <columns label="dateversementacompte" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementacompte" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montantsolde" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantsolde"/>
+    <columns label="dateversementsolde" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementsolde" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montanttotal" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montanttotal"/>
+    <columns label="dateversementtotal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementtotal" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_Er-RQCRYEd6w1bAtQD74CA" label="liberalites" sourceName="liberalites" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('liberalites_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="avispcgpersonne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="avispcgpersonne_id"/>
+    <columns label="mtlibernondecl" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtlibernondecl"/>
+    <columns label="dtabsdeclliber" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtabsdeclliber" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EsICQCRYEd6w1bAtQD74CA" label="jetonsfonctions" sourceName="jetonsfonctions" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('jetonsfonctions_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="controller" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="controller"/>
+    <columns label="action" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="action"/>
+    <columns label="php_sid" sourceType="BPCHAR" defaultValue="&quot;NULL::bpchar&quot;" talendType="id_String" length="32" precision="0" originalField="php_sid"/>
+    <columns label="user_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="user_id"/>
+    <columns label="created" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="created" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="modified" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="modified" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EsRzQCRYEd6w1bAtQD74CA" label="jetons" sourceName="jetons" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('jetons_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dossier_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dossier_id"/>
+    <columns label="php_sid" sourceType="BPCHAR" defaultValue="&quot;NULL::bpchar&quot;" talendType="id_String" length="32" precision="0" originalField="php_sid"/>
+    <columns label="user_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="user_id"/>
+    <columns label="created" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="created" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="modified" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="modified" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_Esa9MCRYEd6w1bAtQD74CA" label="orientsstructs" sourceName="orientsstructs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('orientsstructs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="typeorient_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="typeorient_id"/>
+    <columns label="structurereferente_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="structurereferente_id"/>
+    <columns label="propo_algo" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="propo_algo"/>
+    <columns label="valid_cg" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="valid_cg"/>
+    <columns label="date_propo" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="date_propo" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="date_valid" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="date_valid" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="statut_orient" sourceType="VARCHAR" talendType="id_String" length="15" precision="0" originalField="statut_orient"/>
+    <columns label="date_impression" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="date_impression" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="daterelance" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="daterelance" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="statutrelance" sourceType="BPCHAR" defaultValue="&quot;'E'::bpchar&quot;" talendType="id_String" length="1" precision="0" originalField="statutrelance"/>
+    <columns label="date_impression_relance" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="date_impression_relance" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EsufMCRYEd6w1bAtQD74CA" label="orientations" sourceName="orientations" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('orientations_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="raisocorgorie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="60" precision="0" originalField="raisocorgorie"/>
+    <columns label="numvoie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="6" precision="0" originalField="numvoie"/>
+    <columns label="typevoie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="4" precision="0" originalField="typevoie"/>
+    <columns label="nomvoie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="25" precision="0" originalField="nomvoie"/>
+    <columns label="complideadr" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="38" precision="0" originalField="complideadr"/>
+    <columns label="compladr" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="26" precision="0" originalField="compladr"/>
+    <columns label="lieudist" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="32" precision="0" originalField="lieudist"/>
+    <columns label="codepos" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="5" precision="0" originalField="codepos"/>
+    <columns label="locaadr" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="26" precision="0" originalField="locaadr"/>
+    <columns label="numtelorgorie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="10" precision="0" originalField="numtelorgorie"/>
+    <columns label="dtrvorgorie" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtrvorgorie" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="hrrvorgorie" sourceType="TIME" talendType="id_Date" length="8" precision="6" originalField="hrrvorgorie" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="libadrrvorgorie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="160" precision="0" originalField="libadrrvorgorie"/>
+    <columns label="numtelrvorgorie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="10" precision="0" originalField="numtelrvorgorie"/>
+  </tables>
+  <tables id="_Es3pICRYEd6w1bAtQD74CA" label="modescontact" sourceName="modescontact" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('modescontact_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="foyer_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="foyer_id"/>
+    <columns label="numtel" sourceType="VARCHAR" talendType="id_String" length="11" precision="0" originalField="numtel"/>
+    <columns label="numposte" sourceType="VARCHAR" talendType="id_String" length="4" precision="0" originalField="numposte"/>
+    <columns label="nattel" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="nattel"/>
+    <columns label="matetel" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="matetel"/>
+    <columns label="autorutitel" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="autorutitel"/>
+    <columns label="adrelec" sourceType="VARCHAR" talendType="id_String" length="78" precision="0" originalField="adrelec"/>
+    <columns label="autorutiadrelec" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="autorutiadrelec"/>
+  </tables>
+  <tables id="_EtKkECRYEd6w1bAtQD74CA" label="locsvehicinsert_pieceslocsvehicinsert" sourceName="locsvehicinsert_pieceslocsvehicinsert" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('locsvehicinsert_pieceslocsvehicinsert_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="locvehicinsert_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="locvehicinsert_id"/>
+    <columns label="piecelocvehicinsert_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="piecelocvehicinsert_id"/>
+  </tables>
+  <tables id="_EteGECRYEd6w1bAtQD74CA" label="parcours" sourceName="parcours" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('parcours_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="natparcocal" sourceType="TYPE_NATPARCO" talendType="id_String" length="4" precision="0" originalField="natparcocal"/>
+    <columns label="natparcomod" sourceType="TYPE_NATPARCO" talendType="id_String" length="4" precision="0" originalField="natparcomod"/>
+    <columns label="toprefuparco" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="toprefuparco"/>
+    <columns label="motimodparco" sourceType="TYPE_MOTIMODPARCO" talendType="id_String" length="4" precision="0" originalField="motimodparco"/>
+    <columns label="raisocorgdeciorie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="60" precision="0" originalField="raisocorgdeciorie"/>
+    <columns label="numvoie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="6" precision="0" originalField="numvoie"/>
+    <columns label="typevoie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="4" precision="0" originalField="typevoie"/>
+    <columns label="nomvoie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="25" precision="0" originalField="nomvoie"/>
+    <columns label="complideadr" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="38" precision="0" originalField="complideadr"/>
+    <columns label="compladr" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="26" precision="0" originalField="compladr"/>
+    <columns label="lieudist" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="32" precision="0" originalField="lieudist"/>
+    <columns label="codepos" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="5" precision="0" originalField="codepos"/>
+    <columns label="locaadr" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="26" precision="0" originalField="locaadr"/>
+    <columns label="numtelorgdeciorie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="10" precision="0" originalField="numtelorgdeciorie"/>
+    <columns label="dtrvorgdeciorie" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtrvorgdeciorie" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="hrrvorgdeciorie" sourceType="TIME" talendType="id_Date" length="8" precision="6" originalField="hrrvorgdeciorie" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="libadrrvorgdeciorie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="160" precision="0" originalField="libadrrvorgdeciorie"/>
+    <columns label="numtelrvorgdeciorie" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="10" precision="0" originalField="numtelrvorgdeciorie"/>
+  </tables>
+  <tables id="_EtnQACRYEd6w1bAtQD74CA" label="parametresfinanciers" sourceName="parametresfinanciers" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('parametresfinanciers_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="entitefi" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="entitefi"/>
+    <columns label="engagement" sourceType="VARCHAR" talendType="id_String" length="250" precision="0" originalField="engagement"/>
+    <columns label="tiers" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="tiers"/>
+    <columns label="codecdr" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="codecdr"/>
+    <columns label="libellecdr" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="libellecdr"/>
+    <columns label="natureanalytique" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="natureanalytique"/>
+    <columns label="programme" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="programme"/>
+    <columns label="lib_programme" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="lib_programme"/>
+    <columns label="apreforfait" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="apreforfait"/>
+    <columns label="aprecomplem" sourceType="VARCHAR" talendType="id_String" length="250" precision="0" originalField="aprecomplem"/>
+    <columns label="natureimput" sourceType="VARCHAR" talendType="id_String" nullable="false" length="250" precision="0" originalField="natureimput"/>
+    <columns label="lib_natureanalytique" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="250" precision="0" originalField="lib_natureanalytique"/>
+  </tables>
+  <tables id="_EtxBACRYEd6w1bAtQD74CA" label="paiementsfoyers" sourceName="paiementsfoyers" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('paiementsfoyers_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="foyer_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="foyer_id"/>
+    <columns label="topverstie" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topverstie"/>
+    <columns label="modepai" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="modepai"/>
+    <columns label="topribconj" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topribconj"/>
+    <columns label="titurib" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="titurib"/>
+    <columns label="nomprenomtiturib" sourceType="VARCHAR" talendType="id_String" length="24" precision="0" originalField="nomprenomtiturib"/>
+    <columns label="etaban" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="etaban"/>
+    <columns label="guiban" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="guiban"/>
+    <columns label="numcomptban" sourceType="BPCHAR" talendType="id_String" length="11" precision="0" originalField="numcomptban"/>
+    <columns label="clerib" sourceType="INT2" talendType="id_Short" length="2" precision="0" originalField="clerib"/>
+    <columns label="comban" sourceType="VARCHAR" talendType="id_String" length="24" precision="0" originalField="comban"/>
+  </tables>
+  <tables id="_Et6yACRYEd6w1bAtQD74CA" label="originespdos" sourceName="originespdos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('originespdos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_EuD78CRYEd6w1bAtQD74CA" label="orientsstructs_servicesinstructeurs" sourceName="orientsstructs_servicesinstructeurs" tableType="TABLE">
+    <columns label="orientstruct_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="orientstruct_id"/>
+    <columns label="serviceinstructeur_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="serviceinstructeur_id"/>
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('orientsstructs_servicesinstructeurs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+  </tables>
+  <tables id="_EuNs8CRYEd6w1bAtQD74CA" label="permisb" sourceName="permisb" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('permisb_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="code" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="code"/>
+    <columns label="conduite" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="conduite"/>
+    <columns label="dureeform" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="dureeform"/>
+    <columns label="montantaide" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantaide"/>
+    <columns label="tiersprestataireapre_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="tiersprestataireapre_id"/>
+    <columns label="montantacompte" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantacompte"/>
+    <columns label="dateversementacompte" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementacompte" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montantsolde" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montantsolde"/>
+    <columns label="dateversementsolde" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementsolde" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="montanttotal" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="montanttotal"/>
+    <columns label="dateversementtotal" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateversementtotal" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EuW24CRYEd6w1bAtQD74CA" label="permanences" sourceName="permanences" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('permanences_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="structurereferente_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="structurereferente_id"/>
+    <columns label="libpermanence" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="libpermanence"/>
+    <columns label="numvoie" sourceType="VARCHAR" talendType="id_String" length="15" precision="0" originalField="numvoie"/>
+    <columns label="typevoie" sourceType="VARCHAR" talendType="id_String" length="6" precision="0" originalField="typevoie"/>
+    <columns label="nomvoie" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nomvoie"/>
+    <columns label="codepos" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="codepos"/>
+    <columns label="ville" sourceType="VARCHAR" talendType="id_String" length="45" precision="0" originalField="ville"/>
+    <columns label="canton" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="canton"/>
+    <columns label="numtel" sourceType="VARCHAR" talendType="id_String" length="15" precision="0" originalField="numtel"/>
+    <columns label="compladr" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="compladr"/>
+  </tables>
+  <tables id="_Eugn4CRYEd6w1bAtQD74CA" label="participantscomites" sourceName="participantscomites" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('participantscomites_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="qual" sourceType="VARCHAR" talendType="id_String" length="3" precision="0" originalField="qual"/>
+    <columns label="nom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nom"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom"/>
+    <columns label="fonction" sourceType="TEXT" talendType="id_String" precision="0" originalField="fonction"/>
+    <columns label="organisme" sourceType="TEXT" talendType="id_String" precision="0" originalField="organisme"/>
+    <columns label="numtel" sourceType="VARCHAR" talendType="id_String" length="10" precision="0" originalField="numtel"/>
+    <columns label="mail" sourceType="VARCHAR" talendType="id_String" length="78" precision="0" originalField="mail"/>
+  </tables>
+  <tables id="_EuqY4CRYEd6w1bAtQD74CA" label="partenaires" sourceName="partenaires" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('partenaires_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libstruc" sourceType="VARCHAR" talendType="id_String" nullable="false" length="32" precision="0" originalField="libstruc"/>
+    <columns label="numvoie" sourceType="VARCHAR" talendType="id_String" nullable="false" length="6" precision="0" originalField="numvoie"/>
+    <columns label="typevoie" sourceType="VARCHAR" talendType="id_String" nullable="false" length="6" precision="0" originalField="typevoie"/>
+    <columns label="nomvoie" sourceType="VARCHAR" talendType="id_String" nullable="false" length="30" precision="0" originalField="nomvoie"/>
+    <columns label="compladr" sourceType="VARCHAR" talendType="id_String" nullable="false" length="32" precision="0" originalField="compladr"/>
+    <columns label="numtel" sourceType="VARCHAR" talendType="id_String" length="14" precision="0" originalField="numtel"/>
+    <columns label="numfax" sourceType="VARCHAR" talendType="id_String" length="14" precision="0" originalField="numfax"/>
+    <columns label="email" sourceType="VARCHAR" talendType="id_String" length="78" precision="0" originalField="email"/>
+    <columns label="codepostal" sourceType="BPCHAR" talendType="id_String" nullable="false" length="5" precision="0" originalField="codepostal"/>
+    <columns label="ville" sourceType="VARCHAR" talendType="id_String" nullable="false" length="45" precision="0" originalField="ville"/>
+  </tables>
+  <tables id="_EuqY4SRYEd6w1bAtQD74CA" label="piecesaccscreaentr" sourceName="piecesaccscreaentr" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('piecesaccscreaentr_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="TEXT" talendType="id_String" nullable="false" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_Euzi0CRYEd6w1bAtQD74CA" label="personnes_referents" sourceName="personnes_referents" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('personnes_referents_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="referent_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="referent_id"/>
+    <columns label="dddesignation" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dddesignation" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfdesignation" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfdesignation" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="structurereferente_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="structurereferente_id"/>
+  </tables>
+  <tables id="_Eu9T0CRYEd6w1bAtQD74CA" label="personnes" sourceName="personnes" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('personnes_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="foyer_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="foyer_id"/>
+    <columns label="qual" sourceType="VARCHAR" talendType="id_String" length="3" precision="0" originalField="qual"/>
+    <columns label="nom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nom"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom"/>
+    <columns label="nomnai" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nomnai"/>
+    <columns label="prenom2" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom2"/>
+    <columns label="prenom3" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom3"/>
+    <columns label="nomcomnai" sourceType="VARCHAR" talendType="id_String" length="26" precision="0" originalField="nomcomnai"/>
+    <columns label="dtnai" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtnai" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="rgnai" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="rgnai"/>
+    <columns label="typedtnai" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="typedtnai"/>
+    <columns label="nir" sourceType="BPCHAR" talendType="id_String" length="15" precision="0" originalField="nir"/>
+    <columns label="topvalec" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topvalec"/>
+    <columns label="sexe" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="sexe"/>
+    <columns label="nati" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="nati"/>
+    <columns label="dtnati" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtnati" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="pieecpres" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="pieecpres"/>
+    <columns label="idassedic" sourceType="VARCHAR" talendType="id_String" length="8" precision="0" originalField="idassedic"/>
+  </tables>
+  <tables id="_EvHE0CRYEd6w1bAtQD74CA" label="permisb_piecespermisb" sourceName="permisb_piecespermisb" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('permisb_piecespermisb_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="permisb_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="permisb_id"/>
+    <columns label="piecepermisb_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="piecepermisb_id"/>
+  </tables>
+  <tables id="_EvQOwCRYEd6w1bAtQD74CA" label="piecesapre" sourceName="piecesapre" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('piecesapre_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="TEXT" talendType="id_String" nullable="false" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_EvZ_wCRYEd6w1bAtQD74CA" label="piecesamenagslogts" sourceName="piecesamenagslogts" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('piecesamenagslogts_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="TEXT" talendType="id_String" nullable="false" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_EvjJsCRYEd6w1bAtQD74CA" label="piecesactsprofs" sourceName="piecesactsprofs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('piecesactsprofs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="TEXT" talendType="id_String" nullable="false" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_EvjJsSRYEd6w1bAtQD74CA" label="piecesacqsmatsprofs" sourceName="piecesacqsmatsprofs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('piecesacqsmatsprofs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="TEXT" talendType="id_String" nullable="false" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_Ev2rsCRYEd6w1bAtQD74CA" label="piecespdos" sourceName="piecespdos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('piecespdos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="propopdo_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="propopdo_id"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="libelle"/>
+    <columns label="dateajout" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateajout" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_Ev_1oCRYEd6w1bAtQD74CA" label="pieceslocsvehicinsert" sourceName="pieceslocsvehicinsert" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('pieceslocsvehicinsert_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="TEXT" talendType="id_String" nullable="false" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_EwJmoCRYEd6w1bAtQD74CA" label="piecesformsqualifs" sourceName="piecesformsqualifs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('piecesformsqualifs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="TEXT" talendType="id_String" nullable="false" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_EwJmoSRYEd6w1bAtQD74CA" label="piecesformspermsfimo" sourceName="piecesformspermsfimo" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('piecesformspermsfimo_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="TEXT" talendType="id_String" nullable="false" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_EwTXoCRYEd6w1bAtQD74CA" label="propospdos" sourceName="propospdos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('propospdos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dossier_rsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dossier_rsa_id"/>
+    <columns label="datedecisionpdo" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="datedecisionpdo" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="commentairepdo" sourceType="TEXT" talendType="id_String" precision="0" originalField="commentairepdo"/>
+    <columns label="motifpdo" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="motifpdo"/>
+    <columns label="typepdo_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="typepdo_id"/>
+    <columns label="decisionpdo_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="decisionpdo_id"/>
+    <columns label="typenotifpdo_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="typenotifpdo_id"/>
+    <columns label="datereceptionpdo" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="datereceptionpdo" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="statutdecision" sourceType="TYPE_STATUTDECISION" talendType="id_String" length="4" precision="0" originalField="statutdecision"/>
+    <columns label="originepdo_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="originepdo_id"/>
+  </tables>
+  <tables id="_EwchkCRYEd6w1bAtQD74CA" label="prestsform" sourceName="prestsform" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('prestsform_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="actioninsertion_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="actioninsertion_id"/>
+    <columns label="refpresta_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="refpresta_id"/>
+    <columns label="lib_presta" sourceType="VARCHAR" talendType="id_String" length="32" precision="0" originalField="lib_presta"/>
+    <columns label="date_presta" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="date_presta" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EwmSkCRYEd6w1bAtQD74CA" label="prestations" sourceName="prestations" tableType="TABLE">
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="personne_id"/>
+    <columns label="natprest" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="natprest"/>
+    <columns label="rolepers" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="rolepers"/>
+    <columns label="topchapers" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topchapers"/>
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('prestations_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+  </tables>
+  <tables id="_EwvcgCRYEd6w1bAtQD74CA" label="piecespermisb" sourceName="piecespermisb" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('piecespermisb_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="TEXT" talendType="id_String" nullable="false" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_Ew5NgCRYEd6w1bAtQD74CA" label="rattachements" sourceName="rattachements" tableType="TABLE">
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="typepar" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="typepar"/>
+    <columns label="nomnai" sourceType="VARCHAR" talendType="id_String" length="28" precision="0" originalField="nomnai"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="32" precision="0" originalField="prenom"/>
+    <columns label="dtnai" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtnai" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="nir" sourceType="BPCHAR" talendType="id_String" length="15" precision="0" originalField="nir"/>
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('rattachements_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+  </tables>
+  <tables id="_ExC-gCRYEd6w1bAtQD74CA" label="propospdos_typesnotifspdos" sourceName="propospdos_typesnotifspdos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('propospdos_typesnotifspdos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="propopdo_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="propopdo_id"/>
+    <columns label="typenotifpdo_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="typenotifpdo_id"/>
+    <columns label="datenotifpdo" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="datenotifpdo" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_ExC-gSRYEd6w1bAtQD74CA" label="propospdos_statutspdos" sourceName="propospdos_statutspdos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('propospdos_statutspdos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="propopdo_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="propopdo_id"/>
+    <columns label="statutpdo_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="statutpdo_id"/>
+  </tables>
+  <tables id="_ExMIcCRYEd6w1bAtQD74CA" label="propospdos_situationspdos" sourceName="propospdos_situationspdos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('propospdos_situationspdos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="propopdo_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="propopdo_id"/>
+    <columns label="situationpdo_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="situationpdo_id"/>
+  </tables>
+  <tables id="_ExV5cCRYEd6w1bAtQD74CA" label="regroupementszonesgeo" sourceName="regroupementszonesgeo" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('regroupementszonesgeo_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="lib_rgpt" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="lib_rgpt"/>
+  </tables>
+  <tables id="_ExfqcCRYEd6w1bAtQD74CA" label="refsprestas" sourceName="refsprestas" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('refsprestas_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="nomrefpresta" sourceType="VARCHAR" talendType="id_String" length="28" precision="0" originalField="nomrefpresta"/>
+    <columns label="prenomrefpresta" sourceType="VARCHAR" talendType="id_String" length="32" precision="0" originalField="prenomrefpresta"/>
+    <columns label="emailrefpresta" sourceType="VARCHAR" talendType="id_String" length="78" precision="0" originalField="emailrefpresta"/>
+    <columns label="numero_posterefpresta" sourceType="VARCHAR" talendType="id_String" length="4" precision="0" originalField="numero_posterefpresta"/>
+  </tables>
+  <tables id="_Exo0YCRYEd6w1bAtQD74CA" label="referents" sourceName="referents" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('referents_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="structurereferente_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="structurereferente_id"/>
+    <columns label="nom" sourceType="VARCHAR" talendType="id_String" length="28" precision="0" originalField="nom"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="32" precision="0" originalField="prenom"/>
+    <columns label="numero_poste" sourceType="VARCHAR" talendType="id_String" length="14" precision="0" originalField="numero_poste"/>
+    <columns label="email" sourceType="VARCHAR" talendType="id_String" length="78" precision="0" originalField="email"/>
+    <columns label="qual" sourceType="VARCHAR" talendType="id_String" length="3" precision="0" originalField="qual"/>
+    <columns label="fonction" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="fonction"/>
+  </tables>
+  <tables id="_ExylYCRYEd6w1bAtQD74CA" label="reducsrsa" sourceName="reducsrsa" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('reducsrsa_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="avispcgdroitrsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="avispcgdroitrsa_id"/>
+    <columns label="mtredrsa" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtredrsa"/>
+    <columns label="ddredrsa" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddredrsa" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfredrsa" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfredrsa" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_ExylYSRYEd6w1bAtQD74CA" label="ressources_ressourcesmensuelles" sourceName="ressources_ressourcesmensuelles" tableType="TABLE">
+    <columns label="ressourcemensuelle_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="ressourcemensuelle_id"/>
+    <columns label="ressource_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="ressource_id"/>
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('ressources_ressourcesmensuelles_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+  </tables>
+  <tables id="_Ex7vUCRYEd6w1bAtQD74CA" label="ressources" sourceName="ressources" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('ressources_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="topressnul" sourceType="BOOL" talendType="id_Boolean" length="1" precision="0" originalField="topressnul"/>
+    <columns label="mtpersressmenrsa" sourceType="NUMERIC" talendType="id_Double" length="10" precision="2" originalField="mtpersressmenrsa"/>
+    <columns label="ddress" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddress" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dfress" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dfress" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EyFgUCRYEd6w1bAtQD74CA" label="rendezvous" sourceName="rendezvous" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('rendezvous_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="structurereferente_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="structurereferente_id"/>
+    <columns label="daterdv" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="daterdv" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="objetrdv" sourceType="VARCHAR" talendType="id_String" length="256" precision="0" originalField="objetrdv"/>
+    <columns label="commentairerdv" sourceType="TEXT" talendType="id_String" precision="0" originalField="commentairerdv"/>
+    <columns label="typerdv_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="typerdv_id"/>
+    <columns label="heurerdv" sourceType="TIME" talendType="id_Date" length="8" precision="6" originalField="heurerdv" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="referent_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="referent_id"/>
+    <columns label="permanence_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="permanence_id"/>
+    <columns label="statutrdv_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="statutrdv_id"/>
+  </tables>
+  <tables id="_EyPRUCRYEd6w1bAtQD74CA" label="relancesapres" sourceName="relancesapres" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('relancesapres_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="apre_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="apre_id"/>
+    <columns label="daterelance" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="daterelance" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="etatdossierapre" sourceType="TYPE_ETATDOSSIERAPRE" talendType="id_String" length="4" precision="0" originalField="etatdossierapre"/>
+    <columns label="commentairerelance" sourceType="TEXT" talendType="id_String" precision="0" originalField="commentairerelance"/>
+  </tables>
+  <tables id="_EyYbQCRYEd6w1bAtQD74CA" label="situationsdossiersrsa" sourceName="situationsdossiersrsa" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('situationsdossiersrsa_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dossier_rsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dossier_rsa_id"/>
+    <columns label="etatdosrsa" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="etatdosrsa"/>
+    <columns label="dtrefursa" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtrefursa" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="moticlorsa" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="moticlorsa"/>
+    <columns label="dtclorsa" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtclorsa" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EyiMQCRYEd6w1bAtQD74CA" label="servicesinstructeurs" sourceName="servicesinstructeurs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('servicesinstructeurs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="lib_service" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="lib_service"/>
+    <columns label="num_rue" sourceType="VARCHAR" talendType="id_String" length="15" precision="0" originalField="num_rue"/>
+    <columns label="nom_rue" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="nom_rue"/>
+    <columns label="complement_adr" sourceType="VARCHAR" talendType="id_String" length="38" precision="0" originalField="complement_adr"/>
+    <columns label="code_insee" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="code_insee"/>
+    <columns label="code_postal" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="code_postal"/>
+    <columns label="ville" sourceType="VARCHAR" talendType="id_String" length="26" precision="0" originalField="ville"/>
+    <columns label="numdepins" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="numdepins"/>
+    <columns label="typeserins" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="typeserins"/>
+    <columns label="numcomins" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="numcomins"/>
+    <columns label="numagrins" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="numagrins"/>
+    <columns label="type_voie" sourceType="VARCHAR" talendType="id_String" length="6" precision="0" originalField="type_voie"/>
+  </tables>
+  <tables id="_Eyr9QCRYEd6w1bAtQD74CA" label="ressourcesmensuelles_detailsressourcesmensuelles" sourceName="ressourcesmensuelles_detailsressourcesmensuelles" tableType="TABLE">
+    <columns label="detailressourcemensuelle_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="detailressourcemensuelle_id"/>
+    <columns label="ressourcemensuelle_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="ressourcemensuelle_id"/>
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('ressourcesmensuelles_detailsressourcesmensuelles_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+  </tables>
+  <tables id="_Ey1HMCRYEd6w1bAtQD74CA" label="ressourcesmensuelles" sourceName="ressourcesmensuelles" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('ressourcesmensuelles_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="ressource_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="ressource_id"/>
+    <columns label="moisress" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="moisress" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="nbheumentra" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="nbheumentra"/>
+    <columns label="mtabaneu" sourceType="NUMERIC" talendType="id_Double" length="9" precision="2" originalField="mtabaneu"/>
+  </tables>
+  <tables id="_Ey-4MCRYEd6w1bAtQD74CA" label="structuresreferentes" sourceName="structuresreferentes" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('structuresreferentes_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="typeorient_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="typeorient_id"/>
+    <columns label="lib_struc" sourceType="VARCHAR" talendType="id_String" nullable="false" length="100" precision="0" originalField="lib_struc"/>
+    <columns label="num_voie" sourceType="VARCHAR" talendType="id_String" nullable="false" length="15" precision="0" originalField="num_voie"/>
+    <columns label="type_voie" sourceType="VARCHAR" talendType="id_String" nullable="false" length="6" precision="0" originalField="type_voie"/>
+    <columns label="nom_voie" sourceType="VARCHAR" talendType="id_String" nullable="false" length="50" precision="0" originalField="nom_voie"/>
+    <columns label="code_postal" sourceType="BPCHAR" talendType="id_String" nullable="false" length="5" precision="0" originalField="code_postal"/>
+    <columns label="ville" sourceType="VARCHAR" talendType="id_String" nullable="false" length="45" precision="0" originalField="ville"/>
+    <columns label="code_insee" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="code_insee"/>
+    <columns label="filtre_zone_geo" sourceType="BOOL" defaultValue="&quot;true&quot;" talendType="id_Boolean" length="1" precision="0" originalField="filtre_zone_geo"/>
+    <columns label="contratengagement" sourceType="TYPE_NO" talendType="id_String" length="4" precision="0" originalField="contratengagement"/>
+    <columns label="apre" sourceType="TYPE_NO" talendType="id_String" length="4" precision="0" originalField="apre"/>
+  </tables>
+  <tables id="_Ey-4MSRYEd6w1bAtQD74CA" label="statutsrdvs" sourceName="statutsrdvs" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('statutsrdvs_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_EzICICRYEd6w1bAtQD74CA" label="statutspdos" sourceName="statutspdos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('statutspdos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_EzRzICRYEd6w1bAtQD74CA" label="situationspdos" sourceName="situationspdos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('situationspdos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_EzbkICRYEd6w1bAtQD74CA" label="suivisappuisorientation" sourceName="suivisappuisorientation" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('suivisappuisorientation_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="topoblsocpro" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topoblsocpro"/>
+    <columns label="topsouhsocpro" sourceType="TYPE_BOOLEANNUMBER" talendType="id_String" length="4" precision="0" originalField="topsouhsocpro"/>
+    <columns label="sitperssocpro" sourceType="TYPE_SITPERSSOCPRO" talendType="id_String" length="4" precision="0" originalField="sitperssocpro"/>
+    <columns label="dtenrsocpro" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtenrsocpro" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dtenrparco" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtenrparco" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dtenrorie" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtenrorie" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_EzkuECRYEd6w1bAtQD74CA" label="suivisaidesaprestypesaides" sourceName="suivisaidesaprestypesaides" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('suivisaidesaprestypesaides_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="suiviaideapre_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="suiviaideapre_id"/>
+    <columns label="typeaide" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="typeaide"/>
+  </tables>
+  <tables id="_EzufECRYEd6w1bAtQD74CA" label="suivisaidesapres" sourceName="suivisaidesapres" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('suivisaidesapres_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="qual" sourceType="VARCHAR" talendType="id_String" length="3" precision="0" originalField="qual"/>
+    <columns label="nom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nom"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom"/>
+    <columns label="numtel" sourceType="VARCHAR" talendType="id_String" length="10" precision="0" originalField="numtel"/>
+    <columns label="deleted" sourceType="BPCHAR" defaultValue="&quot;'0'::bpchar&quot;" talendType="id_String" length="1" precision="0" originalField="deleted"/>
+    <columns label="deleted_date" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="deleted_date" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_Ez4QECRYEd6w1bAtQD74CA" label="structuresreferentes_zonesgeographiques" sourceName="structuresreferentes_zonesgeographiques" tableType="TABLE">
+    <columns label="structurereferente_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="structurereferente_id"/>
+    <columns label="zonegeographique_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="zonegeographique_id"/>
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('structuresreferentes_zonesgeographiques_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+  </tables>
+  <tables id="_E0BaACRYEd6w1bAtQD74CA" label="tempcessations" sourceName="tempcessations" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('tempcessations_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="nir" sourceType="VARCHAR" talendType="id_String" length="15" precision="0" originalField="nir"/>
+    <columns label="identifiantpe" sourceType="VARCHAR" talendType="id_String" length="11" precision="0" originalField="identifiantpe"/>
+    <columns label="nom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nom"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom"/>
+    <columns label="dtnai" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtnai" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="datecessation" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="datecessation" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="motifcessation" sourceType="BPCHAR" talendType="id_String" length="100" precision="0" originalField="motifcessation"/>
+  </tables>
+  <tables id="_E0BaASRYEd6w1bAtQD74CA" label="suspensionsversements" sourceName="suspensionsversements" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('suspensionsversements_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="situationdossierrsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="situationdossierrsa_id"/>
+    <columns label="motisusversrsa" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="motisusversrsa"/>
+    <columns label="ddsusversrsa" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddsusversrsa" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_E0LLACRYEd6w1bAtQD74CA" label="suspensionsdroits" sourceName="suspensionsdroits" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('suspensionsdroits_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="situationdossierrsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="situationdossierrsa_id"/>
+    <columns label="motisusdrorsa" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="motisusdrorsa"/>
+    <columns label="ddsusdrorsa" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddsusdrorsa" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <tables id="_E0UU8CRYEd6w1bAtQD74CA" label="suivisinstruction" sourceName="suivisinstruction" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('suivisinstruction_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dossier_rsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dossier_rsa_id"/>
+    <columns label="date_etat_instruction" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="date_etat_instruction" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="nomins" sourceType="VARCHAR" talendType="id_String" length="28" precision="0" originalField="nomins"/>
+    <columns label="prenomins" sourceType="VARCHAR" talendType="id_String" length="32" precision="0" originalField="prenomins"/>
+    <columns label="numdepins" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="numdepins"/>
+    <columns label="typeserins" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="typeserins"/>
+    <columns label="numcomins" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="numcomins"/>
+    <columns label="numagrins" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="numagrins"/>
+    <columns label="suiirsa" sourceType="BPCHAR" defaultValue="&quot;NULL::bpchar&quot;" talendType="id_String" length="2" precision="0" originalField="suiirsa"/>
+  </tables>
+  <tables id="_E0eF8CRYEd6w1bAtQD74CA" label="titres_sejour" sourceName="titres_sejour" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('titres_sejour_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="personne_id"/>
+    <columns label="dtentfra" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtentfra" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="nattitsej" sourceType="BPCHAR" talendType="id_String" length="3" precision="0" originalField="nattitsej"/>
+    <columns label="menttitsej" sourceType="BPCHAR" talendType="id_String" length="2" precision="0" originalField="menttitsej"/>
+    <columns label="ddtitsej" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="ddtitsej" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dftitsej" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dftitsej" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="numtitsej" sourceType="VARCHAR" talendType="id_String" length="10" precision="0" originalField="numtitsej"/>
+    <columns label="numduptitsej" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="numduptitsej"/>
+  </tables>
+  <tables id="_E0n28CRYEd6w1bAtQD74CA" label="tiersprestatairesapres" sourceName="tiersprestatairesapres" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('tiersprestatairesapres_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="nomtiers" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nomtiers"/>
+    <columns label="siret" sourceType="BPCHAR" talendType="id_String" length="14" precision="0" originalField="siret"/>
+    <columns label="numvoie" sourceType="VARCHAR" talendType="id_String" length="6" precision="0" originalField="numvoie"/>
+    <columns label="typevoie" sourceType="VARCHAR" talendType="id_String" length="4" precision="0" originalField="typevoie"/>
+    <columns label="nomvoie" sourceType="VARCHAR" talendType="id_String" length="25" precision="0" originalField="nomvoie"/>
+    <columns label="compladr" sourceType="VARCHAR" talendType="id_String" length="40" precision="0" originalField="compladr"/>
+    <columns label="codepos" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="codepos"/>
+    <columns label="ville" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="ville"/>
+    <columns label="canton" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="canton"/>
+    <columns label="numtel" sourceType="VARCHAR" talendType="id_String" length="14" precision="0" originalField="numtel"/>
+    <columns label="adrelec" sourceType="VARCHAR" talendType="id_String" length="78" precision="0" originalField="adrelec"/>
+    <columns label="nomtiturib" sourceType="VARCHAR" talendType="id_String" length="24" precision="0" originalField="nomtiturib"/>
+    <columns label="etaban" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="etaban"/>
+    <columns label="guiban" sourceType="BPCHAR" talendType="id_String" length="5" precision="0" originalField="guiban"/>
+    <columns label="numcomptban" sourceType="BPCHAR" talendType="id_String" length="11" precision="0" originalField="numcomptban"/>
+    <columns label="clerib" sourceType="INT2" talendType="id_Short" length="2" precision="0" originalField="clerib"/>
+    <columns label="aidesliees" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="aidesliees"/>
+  </tables>
+  <tables id="_E0xA4CRYEd6w1bAtQD74CA" label="tempradiations" sourceName="tempradiations" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('tempradiations_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="nir" sourceType="VARCHAR" talendType="id_String" length="15" precision="0" originalField="nir"/>
+    <columns label="identifiantpe" sourceType="VARCHAR" talendType="id_String" length="11" precision="0" originalField="identifiantpe"/>
+    <columns label="nom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nom"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom"/>
+    <columns label="dtnai" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtnai" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dateradiation" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateradiation" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="motifradiation" sourceType="BPCHAR" talendType="id_String" length="100" precision="0" originalField="motifradiation"/>
+  </tables>
+  <tables id="_E06x4CRYEd6w1bAtQD74CA" label="tempinscriptions" sourceName="tempinscriptions" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('tempinscriptions_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="nir" sourceType="VARCHAR" talendType="id_String" length="15" precision="0" originalField="nir"/>
+    <columns label="identifiantpe" sourceType="VARCHAR" talendType="id_String" length="11" precision="0" originalField="identifiantpe"/>
+    <columns label="nom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nom"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom"/>
+    <columns label="dtnai" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtnai" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dateinscription" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dateinscription" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="categoriepe" sourceType="BPCHAR" talendType="id_String" length="1" precision="0" originalField="categoriepe"/>
+  </tables>
+  <tables id="_E1Ei4CRYEd6w1bAtQD74CA" label="typesnotifspdos" sourceName="typesnotifspdos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('typesnotifspdos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="libelle"/>
+    <columns label="modelenotifpdo" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="modelenotifpdo"/>
+  </tables>
+  <tables id="_E1Ns0CRYEd6w1bAtQD74CA" label="typesactions" sourceName="typesactions" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('typesactions_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" length="250" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_E1Ns0SRYEd6w1bAtQD74CA" label="transmissionsflux" sourceName="transmissionsflux" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('transmissionsflux_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="identificationflux_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="identificationflux_id"/>
+    <columns label="nbtotdemrsatransm" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="nbtotdemrsatransm"/>
+  </tables>
+  <tables id="_E1Xd0CRYEd6w1bAtQD74CA" label="totalisationsacomptes" sourceName="totalisationsacomptes" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('totalisationsacomptes_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="identificationflux_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="identificationflux_id"/>
+    <columns label="type_totalisation" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="type_totalisation"/>
+    <columns label="mttotsoclrsa" sourceType="NUMERIC" talendType="id_Double" length="12" precision="2" originalField="mttotsoclrsa"/>
+    <columns label="mttotsoclmajorsa" sourceType="NUMERIC" talendType="id_Double" length="12" precision="2" originalField="mttotsoclmajorsa"/>
+    <columns label="mttotlocalrsa" sourceType="NUMERIC" talendType="id_Double" length="12" precision="2" originalField="mttotlocalrsa"/>
+    <columns label="mttotrsa" sourceType="NUMERIC" talendType="id_Double" length="12" precision="2" originalField="mttotrsa"/>
+  </tables>
+  <tables id="_E1gnwCRYEd6w1bAtQD74CA" label="typoscontrats" sourceName="typoscontrats" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('typoscontrats_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="lib_typo" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="lib_typo"/>
+  </tables>
+  <tables id="_E1qYwCRYEd6w1bAtQD74CA" label="typesrdv" sourceName="typesrdv" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('typesrdv_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" length="255" precision="0" originalField="libelle"/>
+    <columns label="modelenotifrdv" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="modelenotifrdv"/>
+  </tables>
+  <tables id="_E10JwCRYEd6w1bAtQD74CA" label="typespdos" sourceName="typespdos" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('typespdos_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_E19TsCRYEd6w1bAtQD74CA" label="typesorients" sourceName="typesorients" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('typesorients_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="parentid" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="parentid"/>
+    <columns label="lib_type_orient" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="lib_type_orient"/>
+    <columns label="modele_notif" sourceType="VARCHAR" talendType="id_String" length="40" precision="0" originalField="modele_notif"/>
+    <columns label="modele_notif_cohorte" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="modele_notif_cohorte"/>
+  </tables>
+  <tables id="_E2HEsCRYEd6w1bAtQD74CA" label="zonesgeographiques" sourceName="zonesgeographiques" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('zonesgeographiques_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="codeinsee" sourceType="BPCHAR" talendType="id_String" nullable="false" length="5" precision="0" originalField="codeinsee"/>
+    <columns label="libelle" sourceType="VARCHAR" talendType="id_String" nullable="false" length="50" precision="0" originalField="libelle"/>
+  </tables>
+  <tables id="_E2HEsSRYEd6w1bAtQD74CA" label="users_zonesgeographiques" sourceName="users_zonesgeographiques" tableType="TABLE">
+    <columns label="user_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="user_id"/>
+    <columns label="zonegeographique_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="zonegeographique_id"/>
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('users_zonesgeographiques_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+  </tables>
+  <tables id="_E2Q1sCRYEd6w1bAtQD74CA" label="users_contratsinsertion" sourceName="users_contratsinsertion" tableType="TABLE">
+    <columns label="user_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="user_id"/>
+    <columns label="contratinsertion_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="contratinsertion_id"/>
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('users_contratsinsertion_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+  </tables>
+  <tables id="_E2Z_oCRYEd6w1bAtQD74CA" label="users" sourceName="users" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('users_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="group_id" sourceType="INT4" defaultValue="&quot;0&quot;" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="group_id"/>
+    <columns label="serviceinstructeur_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="serviceinstructeur_id"/>
+    <columns label="username" sourceType="VARCHAR" talendType="id_String" nullable="false" length="50" precision="0" originalField="username"/>
+    <columns label="password" sourceType="VARCHAR" talendType="id_String" nullable="false" length="50" precision="0" originalField="password"/>
+    <columns label="nom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nom"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom"/>
+    <columns label="date_naissance" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="date_naissance" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="date_deb_hab" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="date_deb_hab" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="date_fin_hab" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="date_fin_hab" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="numtel" sourceType="VARCHAR" talendType="id_String" length="15" precision="0" originalField="numtel"/>
+    <columns label="filtre_zone_geo" sourceType="BOOL" defaultValue="&quot;true&quot;" talendType="id_Boolean" length="1" precision="0" originalField="filtre_zone_geo"/>
+  </tables>
+  <tables id="_E2jwoCRYEd6w1bAtQD74CA" label="zonesgeographiques_regroupementszonesgeo" sourceName="zonesgeographiques_regroupementszonesgeo" tableType="TABLE">
+    <columns label="zonegeographique_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="zonegeographique_id"/>
+    <columns label="regroupementzonegeo_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="regroupementzonegeo_id"/>
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('zonesgeographiques_regroupementszonesgeo_id_seq'::regclass)&quot;" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="id"/>
+  </tables>
+  <tables id="_qH57sEvLEd-Cb92viOFj-w" label="evenements" sourceName="evenements" tableType="TABLE">
+    <columns label="id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="dtliq" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtliq" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="heuliq" sourceType="TIME" talendType="id_Date" length="8" precision="6" originalField="heuliq" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="fg" sourceType="VARCHAR" talendType="id_String" length="30" precision="0" originalField="fg"/>
+    <columns label="foyer_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="foyer_id"/>
+  </tables>
+  <tables id="_bwonMLz1Ed-tz4KnbvH04g" label="statintegrationfinancier" sourceName="statintegrationfinancier" tableType="TABLE">
+    <columns label="nom_fichier" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="nom_fichier"/>
+    <columns label="anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="anomalies"/>
+    <columns label="dossiers_rsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="dossiers_rsa"/>
+    <columns label="identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="identificationsflux"/>
+    <columns label="infosfinancieres" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="infosfinancieres"/>
+    <columns label="totalisationsacomptes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="totalisationsacomptes"/>
+    <columns label="transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="transmissionsflux"/>
+  </tables>
+</TalendMetadata:DatabaseConnection>

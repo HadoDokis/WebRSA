@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/Virs0101_20090520/Schema/virs0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_s0LjcEtsEd6OUoX2n4x28g" label="metadata">
+    <columns label="TOPDEMDISPROCCREALIM" talendType="id_Boolean"/>
+    <columns label="ENGPROCCREALIM" talendType="id_String"/>
+    <columns label="ETATCREALIM" talendType="id_String"/>
+    <columns label="DDCREALIM" talendType="id_Date"/>
+    <columns label="ORIOBLALIM" talendType="id_String"/>
+    <columns label="MOTIDISCREALIM" talendType="id_String"/>
+    <columns label="COMMCREALIM" talendType="id_String"/>
+    <columns label="MTSANCREALIM" talendType="id_String"/>
+    <columns label="VERSPA" talendType="id_String"/>
+    <columns label="TOPJUGPA" talendType="id_Boolean"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfoDemandeRSA/Personne/PensionAlimentaire/CreanceAlimentaire">
+    <schemaTargets RelativeXPathQuery="TOPDEMDISPROCCREALIM" TagName="TOPDEMDISPROCCREALIM"/>
+    <schemaTargets RelativeXPathQuery="ENGPROCCREALIM" TagName="ENGPROCCREALIM"/>
+    <schemaTargets RelativeXPathQuery="ETATCREALIM" TagName="ETATCREALIM"/>
+    <schemaTargets RelativeXPathQuery="DDCREALIM" TagName="DDCREALIM"/>
+    <schemaTargets RelativeXPathQuery="ORIOBLALIM" TagName="ORIOBLALIM"/>
+    <schemaTargets RelativeXPathQuery="MOTIDISCREALIM" TagName="MOTIDISCREALIM"/>
+    <schemaTargets RelativeXPathQuery="COMMCREALIM" TagName="COMMCREALIM"/>
+    <schemaTargets RelativeXPathQuery="MTSANCREALIM" TagName="MTSANCREALIM"/>
+    <schemaTargets RelativeXPathQuery="VERSPA" TagName="VERSPA"/>
+    <schemaTargets RelativeXPathQuery="TOPJUGPA" TagName="TOPJUGPA"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

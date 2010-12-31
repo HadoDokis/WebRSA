@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/rdubois/Mes documents/Directories/20090525Lu_ETL_RSA/FluxV2/vrsb0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_Wocl4GrNEd6H4bNpIB3QEg" label="metadata">
+    <columns label="ETATCREALIM" talendType="id_String"/>
+    <columns label="DDCREALIM" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFCREALIM" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="ORIOBLALIM" talendType="id_String"/>
+    <columns label="MOTIDISCREALIM" talendType="id_String"/>
+    <columns label="COMMCREALIM" talendType="id_String"/>
+    <columns label="MTSANCREALIM" talendType="id_String"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFoyerRSA/Personne/PensionAlimentaire">
+    <schemaTargets RelativeXPathQuery="CreanceAlimentaire/ETATCREALIM" TagName="ETATCREALIM"/>
+    <schemaTargets RelativeXPathQuery="CreanceAlimentaire/DDCREALIM" TagName="DDCREALIM"/>
+    <schemaTargets RelativeXPathQuery="CreanceAlimentaire/DFCREALIM" TagName="DFCREALIM"/>
+    <schemaTargets RelativeXPathQuery="CreanceAlimentaire/ORIOBLALIM" TagName="ORIOBLALIM"/>
+    <schemaTargets RelativeXPathQuery="CreanceAlimentaire/MOTIDISCREALIM" TagName="MOTIDISCREALIM"/>
+    <schemaTargets RelativeXPathQuery="CreanceAlimentaire/COMMCREALIM" TagName="COMMCREALIM"/>
+    <schemaTargets RelativeXPathQuery="CreanceAlimentaire/MTSANCREALIM" TagName="MTSANCREALIM"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

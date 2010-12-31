@@ -1,0 +1,10 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>insertXml=>balisededonnee" expression="sourceDonnee.line.substring(sourceDonnee.line.indexOf(&quot;&lt;InfosFinancieresFoyerRSA>&quot;),sourceDonnee.line.length())+&quot;&lt;/InfosFinancieresFoyerRSA>&quot; ">
+    <variables name="sourceDonnee.line" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>copyOfinsertPied=>balisededonnee" expression="row3.line.substring(row3.line.indexOf(&quot;&lt;TransmissionFlux&quot;),row3.line.length())+&quot;&lt;/Racine>&quot;">
+    <variables name="row3.line" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+</xmi:XMI>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/rdubois/Bureau/20090525Lu_ETL_RSA/FluxV2/vrsb0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_CfNMUFZsEd6LzNUN6YaHGg" label="metadata">
+    <columns label="TOPSANSDOMFIXE" talendType="id_Boolean"/>
+    <columns label="NBENFAUTCHA" talendType="id_String"/>
+    <columns label="ORIDEMRSA" talendType="id_String"/>
+    <columns label="DDELECAL" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFELECAL" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="MTREVMINIGARARSA" talendType="id_String"/>
+    <columns label="MTPENTRSA" talendType="id_String"/>
+    <columns label="MTLOCALRSA" talendType="id_String"/>
+    <columns label="MTREVGARARSA" talendType="id_String"/>
+    <columns label="MTPFRSA" talendType="id_String"/>
+    <columns label="MTALRSA" talendType="id_String"/>
+    <columns label="MTRESSMENRSA" talendType="id_String"/>
+    <columns label="MTSANOBLALIMRSA" talendType="id_String"/>
+    <columns label="MTREDHOSRSA" talendType="id_String"/>
+    <columns label="MTREDCGRSA" talendType="id_String"/>
+    <columns label="MTCUMINTEGRSA" talendType="id_String"/>
+    <columns label="MTABANEURSA" talendType="id_String"/>
+    <columns label="MTTOTDRORSA" talendType="id_String"/>
+    <columns label="DTORIDEMRSA" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="TOPFOYDRODEVORSA" talendType="id_Boolean"/>
+    <columns label="NATPF" talendType="id_String"/>
+    <columns label="SOUSNATPF" talendType="id_String"/>
+    <columns label="DDNATDRO" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFNATDRO" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="MTRSAVERS" talendType="id_String"/>
+    <columns label="DTDERRSAVERS" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFoyerRSA/PrestationRSA/DetailDroitRSA">
+    <schemaTargets RelativeXPathQuery="TroncCommunDroitRSA/TOPSANSDOMFIXE" TagName="TOPSANSDOMFIXE"/>
+    <schemaTargets RelativeXPathQuery="TroncCommunDroitRSA/NBENFAUTCHA" TagName="NBENFAUTCHA"/>
+    <schemaTargets RelativeXPathQuery="TroncCommunDroitRSA/ORIDEMRSA" TagName="ORIDEMRSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/DDELECAL" TagName="DDELECAL"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/DFELECAL" TagName="DFELECAL"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTREVMINIGARARSA" TagName="MTREVMINIGARARSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTPENTRSA" TagName="MTPENTRSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTLOCALRSA" TagName="MTLOCALRSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTREVGARARSA" TagName="MTREVGARARSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTPFRSA" TagName="MTPFRSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTALRSA" TagName="MTALRSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTRESSMENRSA" TagName="MTRESSMENRSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTSANOBLALIMRSA" TagName="MTSANOBLALIMRSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTREDHOSRSA" TagName="MTREDHOSRSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTREDCGRSA" TagName="MTREDCGRSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTCUMINTEGRSA" TagName="MTCUMINTEGRSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTABANEURSA" TagName="MTABANEURSA"/>
+    <schemaTargets RelativeXPathQuery="MontantsCalculDroitRSA/MTTOTDRORSA" TagName="MTTOTDRORSA"/>
+    <schemaTargets RelativeXPathQuery="TroncCommunDroitRSA/DTORIDEMRSA" TagName="DTORIDEMRSA"/>
+    <schemaTargets RelativeXPathQuery="TroncCommunDroitRSA/TOPFOYDRODEVORSA" TagName="TOPFOYDRODEVORSA"/>
+    <schemaTargets RelativeXPathQuery="DetailCalculDroitRSA/NATPF" TagName="NATPF"/>
+    <schemaTargets RelativeXPathQuery="DetailCalculDroitRSA/SOUSNATPF" TagName="SOUSNATPF"/>
+    <schemaTargets RelativeXPathQuery="DetailCalculDroitRSA/DDNATDRO" TagName="DDNATDRO"/>
+    <schemaTargets RelativeXPathQuery="DetailCalculDroitRSA/DFNATDRO" TagName="DFNATDRO"/>
+    <schemaTargets RelativeXPathQuery="DetailCalculDroitRSA/MTRSAVERS" TagName="MTRSAVERS"/>
+    <schemaTargets RelativeXPathQuery="DetailCalculDroitRSA/DTDERRSAVERS" TagName="DTDERRSAVERS"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>
