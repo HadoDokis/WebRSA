@@ -1,0 +1,4 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<expression:EMFExpression xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore" id="null=>copyOfinsertPied=>balisededonnee" expression="row15.line.substring(row15.line.indexOf(&quot;&lt;TransmissionFlux&quot;),row15.line.length())+ &quot;&lt;/Racine>&quot;">
+  <variables name="row15.line" value="null" talendType="id_String" nullable="true"/>
+</expression:EMFExpression>

@@ -1,0 +1,133 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>Var=>bool" expression="row2.topresetr.equals(&quot;0&quot;)==null?false:row2.topresetr.equals(&quot;0&quot;) ">
+    <variables name="row2.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row2.rgadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtemm" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typevoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nomvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.complideadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.compladr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.lieudist" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomrat" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomptt" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.codepos" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.locaadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.pays" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeres" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.topresetr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.bool" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>insertAdressesFoyers=>dtemm" expression="">
+    <variables name="row2.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row2.rgadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtemm" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typevoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nomvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.complideadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.compladr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.lieudist" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomrat" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomptt" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.codepos" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.locaadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.pays" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeres" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.topresetr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var1" expression="">
+    <variables name="row2.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row2.rgadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtemm" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typevoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nomvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.complideadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.compladr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.lieudist" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomrat" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomptt" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.codepos" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.locaadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.pays" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeres" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.topresetr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool0" expression="row2.topresetr==null?false:row2.topresetr.equals(&quot;0&quot;) ">
+    <variables name="row2.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row2.rgadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtemm" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typevoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nomvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.complideadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.compladr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.lieudist" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomrat" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomptt" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.codepos" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.locaadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.pays" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeres" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.topresetr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool1" expression="row2.topresetr==null?false:row2.topresetr.equals(&quot;1&quot;) ">
+    <variables name="row2.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row2.rgadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtemm" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typevoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nomvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.complideadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.compladr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.lieudist" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomrat" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomptt" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.codepos" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.locaadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.pays" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeres" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.topresetr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>ins_adresse=>topresetr" expression="(&quot;&quot;.equals(row2.topresetr)||row2.topresetr==null)?null:row2.topresetr">
+    <variables name="row2.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="row2.rgadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtemm" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typevoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nomvoie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.complideadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.compladr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.lieudist" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomrat" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numcomptt" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.codepos" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.locaadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.pays" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeadr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.typeres" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.topresetr" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+</xmi:XMI>
