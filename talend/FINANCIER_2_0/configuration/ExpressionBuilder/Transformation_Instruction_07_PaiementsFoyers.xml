@@ -1,0 +1,111 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>Var=>Bool1" expression="extrait_Destinataire.topverstie==null?false:extrait_Destinataire.topverstie.equals(&quot;1&quot;)">
+    <variables name="extrait_Destinataire.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_Destinataire.topverstie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.modepai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.topribconj" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_RIB.titurib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.nomprenomtiturib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.etaban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.guiban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.numcomptban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.clerib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.comban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool2" expression="extrait_Destinataire.topribconj==null?false:extrait_Destinataire.topribconj.equals(&quot;0&quot;)  ">
+    <variables name="extrait_Destinataire.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_Destinataire.topverstie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.modepai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.topribconj" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_RIB.titurib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.nomprenomtiturib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.etaban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.guiban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.numcomptban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.clerib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.comban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool3" expression="extrait_Destinataire.topribconj==null?false:extrait_Destinataire.topribconj.equals(&quot;1&quot;)  ">
+    <variables name="extrait_Destinataire.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_Destinataire.topverstie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.modepai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.topribconj" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_RIB.titurib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.nomprenomtiturib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.etaban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.guiban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.numcomptban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.clerib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.comban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>insertPaiementsFoyers=>topverstie" expression="(Var.Bool0||Var.Bool1)?extrait_Destinataire.topverstie.equals(&quot;1&quot;):null ">
+    <variables name="extrait_Destinataire.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_Destinataire.topverstie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.modepai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.topribconj" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_RIB.titurib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.nomprenomtiturib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.etaban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.guiban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.numcomptban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.clerib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.comban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>insertPaiementsFoyers=>topribconj" expression="(Var.Bool2||Var.Bool3)?extrait_Destinataire.topribconj.equals(&quot;1&quot;):null  ">
+    <variables name="extrait_Destinataire.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_Destinataire.topverstie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.modepai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.topribconj" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_RIB.titurib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.nomprenomtiturib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.etaban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.guiban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.numcomptban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.clerib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.comban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool0" expression="extrait_Destinataire.topverstie==null?false:extrait_Destinataire.topverstie.equals(&quot;0&quot;)   ">
+    <variables name="extrait_Destinataire.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_Destinataire.topverstie" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.modepai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_Destinataire.topribconj" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_RIB.titurib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.nomprenomtiturib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.etaban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.guiban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.numcomptban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.clerib" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_RIB.comban" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+</xmi:XMI>
