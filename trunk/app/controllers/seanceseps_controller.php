@@ -48,6 +48,7 @@
 				$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
 			}
 			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions();
+			$options['Ep']['regroupementep_id'] = $this->{$this->modelClass}->Ep->Regroupementep->find( 'list' );
 			$this->set( compact( 'options' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 		}
