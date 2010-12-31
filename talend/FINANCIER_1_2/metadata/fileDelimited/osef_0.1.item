@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TalendMetadata:DelimitedFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" Server="Localhost 127.0.0.1" FilePath="C:/Documents and Settings/rdubois/Bureau/fichierTest/adresse.txt" Encoding="US-ASCII" FieldSeparatorValue="&quot;;&quot;" RowSeparatorValue="&quot;\n&quot;" UseHeader="true" HeaderValue="1" FirstLineCaption="true">
-  <tables id="_mTV0AFUtEd6tl9prB2rG7g" label="metadata">
-    <columns label="id_1" talendType="id_Integer" key="true" nullable="false" length="1" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
-    <columns label="libelle" talendType="id_String" length="5" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
-  </tables>
-</TalendMetadata:DelimitedFileConnection>

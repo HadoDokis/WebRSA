@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/Virs0101_20090520/Schema/virs0101.xsd" Encoding="ISO-8859-1">
-  <tables id="_gSMJEEuZEd6OUoX2n4x28g" label="metadata">
-    <columns label="DIFSOC" talendType="id_String"/>
-  </tables>
-  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfoDemandeRSA/Personne/DonneesSocioProfessionnellesPersonne/SituationSociale/DifficulteSituationSociale">
-    <schemaTargets RelativeXPathQuery="DIFSOC" TagName="DIFSOC"/>
-  </schema>
-</TalendMetadata:XmlFileConnection>
