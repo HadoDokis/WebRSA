@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/Virs0101_20090520/Schema/virs0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_6_t3IEqSEd6GwI1p73jvxg" label="metadata">
+    <columns label="NUMTEL" talendType="id_String"/>
+    <columns label="NUMPOSTE" talendType="id_String"/>
+    <columns label="NATTEL" talendType="id_String"/>
+    <columns label="MATETEL" talendType="id_String"/>
+    <columns label="AUTORUTITEL" talendType="id_String"/>
+    <columns label="ADRELEC" talendType="id_String"/>
+    <columns label="AUTORUTIADRELEC" talendType="id_String"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfoDemandeRSA/DonneesAdministratives/ModesContacts">
+    <schemaTargets RelativeXPathQuery="NUMTEL" TagName="NUMTEL"/>
+    <schemaTargets RelativeXPathQuery="NUMPOSTE" TagName="NUMPOSTE"/>
+    <schemaTargets RelativeXPathQuery="NATTEL" TagName="NATTEL"/>
+    <schemaTargets RelativeXPathQuery="MATETEL" TagName="MATETEL"/>
+    <schemaTargets RelativeXPathQuery="AUTORUTITEL" TagName="AUTORUTITEL"/>
+    <schemaTargets RelativeXPathQuery="ADRELEC" TagName="ADRELEC"/>
+    <schemaTargets RelativeXPathQuery="AUTORUTIADRELEC" TagName="AUTORUTIADRELEC"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

@@ -1,0 +1,121 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>Var=>compteurDemandeRSA" expression="compteurDemandeRSA++">
+    <variables name="extraction_dossiers.line" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.compteurDemandeRSA" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>compteurActuel" expression="Numeric.sequence(&quot;s1&quot;,1,1) ">
+    <variables name="extraction_dossiers.line" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.compteurActuel" value="0" talendType="id_Integer"/>
+    <variables name="Var.compteurPrecedent" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>compteurLigne=>cleLigne" expression="Numeric.sequence(&quot;s1&quot;,1,1)">
+    <variables name="row2.FONORG" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMORG" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.MATRICULE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.STATUDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.TYPEPARTE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.IDEPARTE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.DTDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.FONORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.MATRICULEORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.CODEPOSANCHAB" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>creationVarLigne=>cleLigne" expression="Numeric.sequence(&quot;s1&quot;,1,1)">
+    <variables name="row3.InfoDemandeRSA" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Charge_organismecedant=>cle" expression="Numeric.sequence(&quot;s1&quot;,1,1) ">
+    <variables name="row2.FONORG" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMORG" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.MATRICULE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.STATUDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.TYPEPARTE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.IDEPARTE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.DTDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.FONORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.MATRICULEORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.CODEPOSANCHAB" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Charge_demandeRSA=>cle" expression="Numeric.sequence(&quot;s1&quot;,1,1)">
+    <variables name="row2.FONORG" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMORG" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.MATRICULE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.STATUDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.TYPEPARTE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.IDEPARTE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.DTDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.FONORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.MATRICULEORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.CODEPOSANCHAB" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Charge_partenaire=>cle" expression="Numeric.sequence(&quot;s1&quot;,1,1)">
+    <variables name="row2.FONORG" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMORG" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.MATRICULE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.STATUDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.TYPEPARTE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.IDEPARTE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.DTDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.FONORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.MATRICULEORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.CODEPOSANCHAB" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Charge_organisme=>cle" expression="Numeric.sequence(&quot;s1&quot;,1,1)">
+    <variables name="row2.FONORG" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMORG" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.MATRICULE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.STATUDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.TYPEPARTE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.IDEPARTE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.DTDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMDEMRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.FONORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.NUMORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.MATRICULEORGCEDMUT" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.CODEPOSANCHAB" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var2" expression="if (var.var2 == Null) {1} else {var.var2 +1}">
+    <variables name="row12.IDASSEDIC" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.DTENTFRA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.NATTITSEJ" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.MENTTITSEJ" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.DDTITSEJ" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.DFTITSEJ" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.NUMTITSEJ" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.NUMDUPTITSEJ" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.NATPREST" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.ROLEPERS" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.DDRATDOS" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.DFRATDOS" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.QUAL" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.NOM" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.NOMNAI" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.PRENOM" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.PRENOM2" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.PRENOM3" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.NOMCOMNAI" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.DTNAI" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.RGNAI" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.TYPEDTNAI" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.NIR" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.SEXE" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.NATI" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.DTNATI" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.PIEECPRES" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.RATNOMNAI" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.RATPRENOM" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.RATDTNAI" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.RATNIR" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row12.RATYPEPAR" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="0" talendType="id_Integer"/>
+    <variables name="Var.var2" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+</xmi:XMI>

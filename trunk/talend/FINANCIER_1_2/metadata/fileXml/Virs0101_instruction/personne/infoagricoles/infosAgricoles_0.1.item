@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/Virs0101_20090520/Schema/virs0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_N46Q8EwjEd67brM5iw3igw" label="metadata">
+    <columns label="MTBENAGRI" talendType="id_String"/>
+    <columns label="DTBENAGRI" talendType="id_Date"/>
+    <columns label="REGFISAGRI" talendType="id_String"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfoDemandeRSA/Personne/InformationsAgricoles">
+    <schemaTargets RelativeXPathQuery="Benefices/MTBENAGRI" TagName="MTBENAGRI"/>
+    <schemaTargets RelativeXPathQuery="Benefices/DTBENAGRI" TagName="DTBENAGRI"/>
+    <schemaTargets RelativeXPathQuery="Benefices/REGFISAGRI" TagName="REGFISAGRI"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

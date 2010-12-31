@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<talendfile:ProcessType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" defaultContext="Default" screenshot="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">
+  <context confirmationNeeded="false" name="Default">
+    <contextParameter comment="" name="Administration_webrsa_Database" prompt="Administration_webrsa_Database?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="STAGING_RSA"/>
+    <contextParameter comment="" name="Administration_webrsa_Login" prompt="Administration_webrsa_Login?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="postgres"/>
+    <contextParameter comment="" name="Administration_webrsa_Password" prompt="Administration_webrsa_Password?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_Password" value="qrJuk8K6YWA="/>
+    <contextParameter comment="" name="Administration_webrsa_Port" prompt="Administration_webrsa_Port?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="5432"/>
+    <contextParameter comment="" name="Administration_webrsa_Schema" prompt="Administration_webrsa_Schema?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="administration"/>
+    <contextParameter comment="" name="Administration_webrsa_Server" prompt="Administration_webrsa_Server?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="localhost"/>
+    <contextParameter comment="" name="directorieArchives" prompt="directorieArchives?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/webrsa/archives"/>
+    <contextParameter comment="" name="directorieRejects" prompt="directorieRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/webrsa/reject"/>
+    <contextParameter comment="" name="fichierParametre" prompt="fichierParametre?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/webrsa/propertie/webrsa.properties"/>
+    <contextParameter comment="" name="fileLogsAvertissement" prompt="fileLogsAvertissement?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="log.txt"/>
+    <contextParameter comment="" name="fileLogsReject" prompt="fileLogsReject?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="fileRejects" prompt="fileRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="out.txt"/>
+    <contextParameter comment="" name="nomFichier" prompt="nomFichier?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="NRSACGIR_IRSACG_20091028_J2819303.RCV"/>
+    <contextParameter comment="" name="repertoireSource" prompt="repertoireSource?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/webrsa/in"/>
+  </context>
+  <context confirmationNeeded="false" name="RSA">
+    <contextParameter comment="" name="Administration_webrsa_Database" prompt="Administration_webrsa_Database?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="STAGING_RSA"/>
+    <contextParameter comment="" name="Administration_webrsa_Login" prompt="Administration_webrsa_Login?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="postgres"/>
+    <contextParameter comment="" name="Administration_webrsa_Password" prompt="Administration_webrsa_Password?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_Password" value="qrJuk8K6YWA="/>
+    <contextParameter comment="" name="Administration_webrsa_Port" prompt="Administration_webrsa_Port?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="5432"/>
+    <contextParameter comment="" name="Administration_webrsa_Schema" prompt="Administration_webrsa_Schema?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="administration"/>
+    <contextParameter comment="" name="Administration_webrsa_Server" prompt="Administration_webrsa_Server?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="localhost"/>
+    <contextParameter comment="" name="directorieArchives" prompt="directorieArchives?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/archives"/>
+    <contextParameter comment="" name="directorieRejects" prompt="directorieRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/reject"/>
+    <contextParameter comment="" name="fichierParametre" prompt="fichierParametre?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/app/webrsa.properties"/>
+    <contextParameter comment="" name="fileLogsAvertissement" prompt="fileLogsAvertissement?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="log.txt"/>
+    <contextParameter comment="" name="fileLogsReject" prompt="fileLogsReject?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="fileRejects" prompt="fileRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="out.txt"/>
+    <contextParameter comment="" name="nomFichier" prompt="nomFichier?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/in/NRSACGIR_IRSACG_20091028_J2819303.RCV"/>
+    <contextParameter comment="" name="repertoireSource" prompt="repertoireSource?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/in"/>
+  </context>
+  <context confirmationNeeded="false" name="Test">
+    <contextParameter comment="" name="Administration_webrsa_Database" prompt="Administration_webrsa_Database?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="STAGING_RSA"/>
+    <contextParameter comment="" name="Administration_webrsa_Login" prompt="Administration_webrsa_Login?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="postgres"/>
+    <contextParameter comment="" name="Administration_webrsa_Password" prompt="Administration_webrsa_Password?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_Password" value="qrJuk8K6YWA="/>
+    <contextParameter comment="" name="Administration_webrsa_Port" prompt="Administration_webrsa_Port?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="5432"/>
+    <contextParameter comment="" name="Administration_webrsa_Schema" prompt="Administration_webrsa_Schema?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="administration"/>
+    <contextParameter comment="" name="Administration_webrsa_Server" prompt="Administration_webrsa_Server?" promptNeeded="false" repositoryContextId="_IIa-UAieEd66bZLrdKNCmg" type="id_String" value="localhost"/>
+    <contextParameter comment="" name="directorieArchives" prompt="directorieArchives?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="directorieRejects" prompt="directorieRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/webrsa/propertie"/>
+    <contextParameter comment="" name="fichierParametre" prompt="fichierParametre?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/webrsa/propertie/webrsa.properties"/>
+    <contextParameter comment="" name="fileLogsAvertissement" prompt="fileLogsAvertissement?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="log.txt"/>
+    <contextParameter comment="" name="fileLogsReject" prompt="fileLogsReject?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="fileRejects" prompt="fileRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="out.txt"/>
+    <contextParameter comment="" name="nomFichier" prompt="nomFichier?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/Documents and Settings/rdubois/Bureau/NRSACGIM_RSABEX_G0615470.RCV.out"/>
+    <contextParameter comment="" name="repertoireSource" prompt="repertoireSource?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/Documents and Settings/rdubois/Bureau"/>
+  </context>
+  <parameters>
+    <elementParameter field="DIRECTORY" name="COMP_DEFAULT_FILE_DIR" value="D:/Talend/TIS_TE-All-r33000-V3.2.2/workspace" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="COMP_DEFAULT_PROJECT_DIR" value="D:/Talend/TIS_TE-All-r33000-V3.2.2/workspace/Logica_Instruction_" contextMode="false"/>
+    <elementParameter field="TEXT" name="JOB_RUN_VM_ARGUMENTS" value=" -Xms256M -Xmx1024M" contextMode="false"/>
+    <elementParameter field="CHECK" name="JOB_RUN_VM_ARGUMENTS_OPTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="displaySubjobs" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="AUTHOR" value="dblirando@cg93.fr" contextMode="false"/>
+    <elementParameter field="TEXT" name="STATUS" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="NAME" value="Administration_Instruction_control_rejets_Extraction" contextMode="false"/>
+    <elementParameter field="TEXT" name="VERSION" value="0.1" contextMode="false"/>
+    <elementParameter field="TEXT" name="PURPOSE" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="DESCRIPTION" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" value="32" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" value="0" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPTIONS" value="none" contextMode="false"/>
+    <elementParameter field="CHECK" name="IMPLICITCONTEXT_USE_PROJECT_SETTINGS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="STATANDLOG_USE_PROJECT_SETTINGS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="MULTI_THREAD_EXECATION" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="PARALLELIZE_UNIT_SIZE" value="25000" contextMode="false"/>
+    <elementParameter field="CHECK" name="IMPLICIT_TCONTEXTLOAD" value="false" contextMode="false"/>
+    <elementParameter field="RADIO" name="FROM_FILE_FLAG_IMPLICIT_CONTEXT" value="false" contextMode="false"/>
+    <elementParameter field="RADIO" name="FROM_DATABASE_FLAG_IMPLICIT_CONTEXT" value="false" contextMode="false"/>
+    <elementParameter field="FILE" name="IMPLICIT_TCONTEXTLOAD_FILE" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY_TYPE_IMPLICIT_CONTEXT:PROPERTY_TYPE" value="" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY_TYPE_IMPLICIT_CONTEXT:REPOSITORY_PROPERTY_TYPE" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_TYPE_IMPLICIT_CONTEXT" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION_IMPLICIT_CONTEXT" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PROPERTIES_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="FILE" name="DBFILE_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="DBTABLE_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="QUERY_CONDITION_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="LOAD_NEW_VARIABLE" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="NOT_LOAD_OLD_VARIABLE" value="" contextMode="false"/>
+    <elementParameter field="CHECK" name="PRINT_OPERATIONS" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="DISABLE_ERROR" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="DISABLE_WARNINGS" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="DISABLE_INFO" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_STATCATCHER_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_LOGCATCHER_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_METERCATCHER_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_CONSOLE_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_FILES_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="FILE_PATH" value="&quot;C:/Documents and Settings/turnan/Bureau/TIS_TE-All-r33000-V3.2.2/workspace/.metadata&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FILENAME_STATS" value="&quot;stats_file.txt&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FILENAME_LOGS" value="&quot;logs_file.txt&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FILENAME_METTER" value="&quot;meter_file.txt&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_DATABASE_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_TYPE" value="tDBOutput" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" value="ojdbc14-10g.jar" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="FILE" name="DBFILE" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE_STATS" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE_LOGS" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE_METER" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_RUNTIME_ERRORS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_USER_ERRORS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_USER_WARNING" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_REALTIME_STATS" value="false" contextMode="false"/>
+  </parameters>
+  <node componentName="tLogCatcher" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="540" posY="480">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tLogCatcher_1" contextMode="false"/>
+    <elementParameter field="CHECK" name="START" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_JAVA_EXCEPTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_TDIE" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_TWARN" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tLogCatcher_1">
+      <column key="false" length="0" name="moment" nullable="true" pattern="&quot;yyyy-MM-dd HH:mm:ss&quot;" precision="0" sourceType="" type="id_Date"/>
+      <column key="false" length="20" name="pid" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="20" name="root_pid" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="20" name="father_pid" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="50" name="project" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="255" name="job" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="50" name="context" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column defaultValue="" key="false" length="3" name="priority" nullable="true" precision="0" sourceType="" type="id_Integer"/>
+      <column key="false" length="255" name="type" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="255" name="origin" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="255" name="message" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column defaultValue="" key="false" length="3" name="code" nullable="true" precision="0" sourceType="" type="id_Integer"/>
+    </metadata>
+  </node>
+  <node componentName="tFileOutputDelimited" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="700" posY="480">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tFileOutputDelimited_1" contextMode="false"/>
+    <elementParameter field="FILE" name="FILENAME" value="context.directorieRejects+&quot;/&quot;+context.fileLogsAvertissement" contextMode="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="APPEND" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="INCLUDEHEADER" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ADVANCED_SEPARATOR" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="THOUSANDS_SEPARATOR" value="&quot;,&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DECIMAL_SEPARATOR" value="&quot;.&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CSV_OPTION" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="ESCAPE_CHAR" value="&quot;&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="TEXT_ENCLOSURE" value="&quot;&quot;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CREATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="SPLIT" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="SPLIT_EVERY" value="1000" contextMode="false"/>
+    <elementParameter field="CHECK" name="FLUSHONROW" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="FLUSHONROW_NUM" value="1" contextMode="false"/>
+    <elementParameter field="CHECK" name="ROW_MODE" value="false" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;ISO-8859-15&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15" contextMode="false"/>
+    <elementParameter field="CHECK" name="DELETE_EMPTYFILE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tFileOutputDelimited_1">
+      <column key="false" length="0" name="moment" nullable="true" pattern="&quot;yyyy-MM-dd HH:mm:ss&quot;" precision="0" sourceType="" type="id_Date"/>
+      <column key="false" length="20" name="pid" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="20" name="root_pid" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="20" name="father_pid" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="50" name="project" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="255" name="job" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="50" name="context" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column defaultValue="" key="false" length="3" name="priority" nullable="true" precision="0" sourceType="" type="id_Integer"/>
+      <column key="false" length="255" name="type" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="255" name="origin" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="255" name="message" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column defaultValue="" key="false" length="3" name="code" nullable="true" precision="0" sourceType="" type="id_Integer"/>
+    </metadata>
+  </node>
+  <node componentName="tPostgresqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="64" posY="256">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlInput_1" contextMode="false"/>
+    <elementParameter field="CHECK" name="START" value="true" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" value="_Ij-48AieEd66bZLrdKNCmg" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST" value="context.Administration_webrsa_Server" contextMode="false"/>
+    <elementParameter field="TEXT" name="TYPE" value="PostgreSQL" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT" value="context.Administration_webrsa_Port" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.Administration_webrsa_Database" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="context.Administration_webrsa_Schema" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER" value="context.Administration_webrsa_Login" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS" value="context.Administration_webrsa_Password" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" value="REPOSITORY" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" value="_Ij-48AieEd66bZLrdKNCmg - rejet" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;rejet&quot;" contextMode="false"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#xD;&#xA;SELECT \&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;rejet\&quot;.\&quot;cleinfodemandersa\&quot;,&#xD;&#xA;&#x9;&#x9;\&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;rejet\&quot;.\&quot;flux\&quot;,&#xD;&#xA;&#x9;&#x9;\&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;rejet\&quot;.\&quot;etape\&quot;,&#xD;&#xA;&#x9;&#x9;\&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;rejet\&quot;.\&quot;table_en_erreur\&quot;,&#xD;&#xA;&#x9;&#x9;\&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;rejet\&quot;.\&quot;log\&quot;&quot;&#xD;&#xA;+&quot;&#xD;&#xA;FROM&#x9;\&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;rejet\&quot;&quot;&#xD;&#xA;&#xD;&#xA;+&quot;&#xD;&#xA;WHERE \&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;rejet\&quot;.\&quot;flux\&quot;='INSTRUCTION' AND \&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;rejet\&quot;.\&quot;etape\&quot; =1&#xD;&#xA;&quot;" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;ISO-8859-15&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_CURSOR" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="CURSOR_SIZE" value="1000" contextMode="false"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN" contextMode="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="cleinfodemandersa"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="flux"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="etape"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="table_en_erreur"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="log"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="__TABLE__" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tPostgresqlInput_1">
+      <column comment="" defaultValue="" key="false" length="4" name="cleinfodemandersa" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" key="false" length="20" name="flux" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" defaultValue="" key="false" length="4" name="etape" nullable="true" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" key="false" length="50" name="table_en_erreur" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" key="false" length="1000" name="log" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+    </metadata>
+  </node>
+  <node binaryData="" stringData="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;external-mapper-data>&lt;ui-properties shell-maximized=&quot;true&quot;>&lt;weights-main-sash-form>700&lt;/weights-main-sash-form>&lt;weights-main-sash-form>300&lt;/weights-main-sash-form>&lt;weights-datas-flow-view-sash-form>330&lt;/weights-datas-flow-view-sash-form>&lt;weights-datas-flow-view-sash-form>330&lt;/weights-datas-flow-view-sash-form>&lt;weights-datas-flow-view-sash-form>340&lt;/weights-datas-flow-view-sash-form>&lt;/ui-properties>&lt;vars-tables xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; persistent=&quot;false&quot; minimized=&quot;true&quot; activate-expression-filter=&quot;false&quot; reject-inner-join=&quot;false&quot; inner-join=&quot;false&quot; reject=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTable&quot;>&lt;name>Var&lt;/name>&lt;size-state>INTERMEDIATE&lt;/size-state>&lt;/vars-tables>&lt;output-tables xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; persistent=&quot;false&quot; minimized=&quot;false&quot; activate-expression-filter=&quot;false&quot; reject-inner-join=&quot;false&quot; inner-join=&quot;false&quot; reject=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTable&quot;>&lt;name>donneeRejete&lt;/name>&lt;metadata-table-entries nullable=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>cleinfodemandersa&lt;/name>&lt;type>id_Integer&lt;/type>&lt;expression>extraitDonneeRejete.cleinfodemandersa &lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>flux&lt;/name>&lt;type>id_String&lt;/type>&lt;expression>extraitDonneeRejete.flux &lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>numdemrsa&lt;/name>&lt;type>id_String&lt;/type>&lt;expression>reference.numdemrsa &lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>matricule&lt;/name>&lt;type>id_String&lt;/type>&lt;expression>reference.matricule &lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>etape&lt;/name>&lt;type>id_Integer&lt;/type>&lt;expression>extraitDonneeRejete.etape &lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>table_en_erreur&lt;/name>&lt;type>id_String&lt;/type>&lt;expression>extraitDonneeRejete.table_en_erreur &lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>log&lt;/name>&lt;type>id_String&lt;/type>&lt;expression>extraitDonneeRejete.log &lt;/expression>&lt;/metadata-table-entries>&lt;expression-filter>extraitDonneeRejete.etape ==1&lt;/expression-filter>&lt;size-state>INTERMEDIATE&lt;/size-state>&lt;/output-tables>&lt;output-tables xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; persistent=&quot;false&quot; minimized=&quot;false&quot; activate-expression-filter=&quot;false&quot; reject-inner-join=&quot;false&quot; inner-join=&quot;false&quot; reject=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTable&quot;>&lt;name>dedoublonnement&lt;/name>&lt;metadata-table-entries nullable=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>cleinfodemandersa&lt;/name>&lt;type>id_Integer&lt;/type>&lt;expression>extraitDonneeRejete.cleinfodemandersa  &lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>etape&lt;/name>&lt;type>id_Integer&lt;/type>&lt;expression>extraitDonneeRejete.etape &lt;/expression>&lt;/metadata-table-entries>&lt;expression-filter>extraitDonneeRejete.etape ==1&#xA;&lt;/expression-filter>&lt;size-state>INTERMEDIATE&lt;/size-state>&lt;/output-tables>&lt;input-tables xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; persistent=&quot;false&quot; minimized=&quot;false&quot; activate-expression-filter=&quot;false&quot; reject-inner-join=&quot;false&quot; inner-join=&quot;false&quot; reject=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTable&quot;>&lt;name>extraitDonneeRejete&lt;/name>&lt;matching-mode>UNIQUE_MATCH&lt;/matching-mode>&lt;lookup-mode>LOAD_ONCE&lt;/lookup-mode>&lt;metadata-table-entries nullable=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>cleinfodemandersa&lt;/name>&lt;type>id_Integer&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>flux&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>etape&lt;/name>&lt;type>id_Integer&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>table_en_erreur&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>log&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;expression-filter>extraitDonneeRejete.etape ==1&#xA;&lt;/expression-filter>&lt;size-state>INTERMEDIATE&lt;/size-state>&lt;/input-tables>&lt;input-tables xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; persistent=&quot;false&quot; minimized=&quot;false&quot; activate-expression-filter=&quot;false&quot; reject-inner-join=&quot;false&quot; inner-join=&quot;true&quot; reject=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTable&quot;>&lt;name>reference&lt;/name>&lt;matching-mode>UNIQUE_MATCH&lt;/matching-mode>&lt;lookup-mode>LOAD_ONCE&lt;/lookup-mode>&lt;metadata-table-entries nullable=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>cledemandersa&lt;/name>&lt;type>id_Integer&lt;/type>&lt;expression>extraitDonneeRejete.cleinfodemandersa &lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>flux&lt;/name>&lt;type>id_String&lt;/type>&lt;expression>extraitDonneeRejete.flux &lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>numdemrsa&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>matricule&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;size-state>INTERMEDIATE&lt;/size-state>&lt;/input-tables>&lt;/external-mapper-data>" componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="224" posY="256" screenshot="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">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tMap_1" contextMode="false"/>
+    <elementParameter field="EXTERNAL" name="MAP" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value="" contextMode="false"/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_VOVlIA1TEd6Qu8heEW8BVw-tMap_1-PREVIEW.bmp" contextMode="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" label="donneeRejete" name="donneeRejete">
+      <column comment="" defaultValue="" key="false" length="4" name="cleinfodemandersa" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" key="false" length="20" name="flux" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" key="false" length="20" name="numdemrsa" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" key="false" length="20" name="matricule" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" defaultValue="" key="false" length="4" name="etape" nullable="true" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" key="false" length="50" name="table_en_erreur" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" key="false" length="1000" name="log" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+    </metadata>
+    <metadata connector="FLOW" label="dedoublonnement" name="dedoublonnement">
+      <column comment="" defaultValue="" key="false" length="4" name="cleinfodemandersa" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" defaultValue="" key="false" length="4" name="etape" nullable="true" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+    </metadata>
+  </node>
+  <node componentName="tPostgresqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="224" posY="96">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlInput_2" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" value="_Ij-48AieEd66bZLrdKNCmg" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST" value="context.Administration_webrsa_Server" contextMode="false"/>
+    <elementParameter field="TEXT" name="TYPE" value="PostgreSQL" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT" value="context.Administration_webrsa_Port" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.Administration_webrsa_Database" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="context.Administration_webrsa_Schema" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER" value="context.Administration_webrsa_Login" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS" value="context.Administration_webrsa_Password" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" value="REPOSITORY" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" value="_Ij-48AieEd66bZLrdKNCmg - donneereference" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;donneereference&quot;" contextMode="false"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT \&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;donneereference\&quot;.\&quot;cledemandersa\&quot;,&#xA;&#x9;&#x9;\&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;donneereference\&quot;.\&quot;flux\&quot;,&#xA;&#x9;&#x9;\&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;donneereference\&quot;.\&quot;numdemrsa\&quot;,&#xA;&#x9;&#x9;\&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;donneereference\&quot;.\&quot;matricule\&quot;&quot;&#xA;+&quot;&#xA;FROM&#x9;\&quot;&quot;+context.Administration_webrsa_Schema+&quot;\&quot;.\&quot;donneereference\&quot;&quot;" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;ISO-8859-15&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_CURSOR" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="CURSOR_SIZE" value="1000" contextMode="false"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN" contextMode="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="cledemandersa"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="flux"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="numdemrsa"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="matricule"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="__TABLE__" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tPostgresqlInput_2">
+      <column comment="" defaultValue="" key="true" length="4" name="cledemandersa" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" key="false" length="20" name="flux" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" key="false" length="20" name="numdemrsa" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" key="false" length="20" name="matricule" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+    </metadata>
+  </node>
+  <node componentName="tFileOutputDelimited" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="384" posY="256">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tFileOutputDelimited_2" contextMode="false"/>
+    <elementParameter field="FILE" name="FILENAME" value="context.directorieRejects+&quot;/rejects_Instruction_etape1_&quot;+TalendDate.getDate(&quot;YYYY-MM-DD_hh-mm-ss&quot;)+&quot;_&quot;+context.nomFichier" contextMode="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="APPEND" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="INCLUDEHEADER" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="ADVANCED_SEPARATOR" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="THOUSANDS_SEPARATOR" value="&quot;,&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DECIMAL_SEPARATOR" value="&quot;.&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CSV_OPTION" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="ESCAPE_CHAR" value="&quot;&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="TEXT_ENCLOSURE" value="&quot;&quot;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CREATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="SPLIT" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="SPLIT_EVERY" value="1000" contextMode="false"/>
+    <elementParameter field="CHECK" name="FLUSHONROW" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="FLUSHONROW_NUM" value="1" contextMode="false"/>
+    <elementParameter field="CHECK" name="ROW_MODE" value="false" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;ISO-8859-15&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15" contextMode="false"/>
+    <elementParameter field="CHECK" name="DELETE_EMPTYFILE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="fichier Rapport" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tFileOutputDelimited_2">
+      <column comment="" defaultValue="" key="false" length="4" name="cleinfodemandersa" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" key="false" length="20" name="flux" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" key="false" length="20" name="numdemrsa" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" key="false" length="20" name="matricule" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" defaultValue="" key="false" length="4" name="etape" nullable="true" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" key="false" length="50" name="table_en_erreur" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" key="false" length="1000" name="log" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+    </metadata>
+  </node>
+  <node componentName="tUniqRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="320" posY="352">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tUniqRow_1" contextMode="false"/>
+    <elementParameter field="TABLE" name="UNIQUE_KEY" contextMode="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="cleinfodemandersa"/>
+      <elementValue elementRef="KEY_ATTRIBUTE" value="true"/>
+      <elementValue elementRef="CASE_SENSITIVE" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="etape"/>
+      <elementValue elementRef="KEY_ATTRIBUTE" value="false"/>
+      <elementValue elementRef="CASE_SENSITIVE" value="false"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="ONLY_ONCE_EACH_DUPLICATED_KEY" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="IS_VIRTUAL_COMPONENT" value="false" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="BUFFER_SIZE" value="M" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="TEMP_DIRECTORY" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tUniqRow_1">
+      <column comment="" defaultValue="" key="false" length="4" name="cleinfodemandersa" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" defaultValue="" key="false" length="4" name="etape" nullable="true" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+    </metadata>
+    <metadata connector="UNIQUE" name="UNIQUE">
+      <column comment="" defaultValue="" key="false" length="4" name="cleinfodemandersa" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" defaultValue="" key="false" length="4" name="etape" nullable="true" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+    </metadata>
+    <metadata connector="DUPLICATE" name="DUPLICATE">
+      <column comment="" defaultValue="" key="false" length="4" name="cleinfodemandersa" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" defaultValue="" key="false" length="4" name="etape" nullable="true" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+    </metadata>
+  </node>
+  <node componentName="tFileOutputDelimited" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="480" posY="352">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tFileOutputDelimited_3" contextMode="false"/>
+    <elementParameter field="FILE" name="FILENAME" value="context.directorieArchives+&quot;/reference_erreur_Instruction_etape1.txt&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="APPEND" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="INCLUDEHEADER" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ADVANCED_SEPARATOR" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="THOUSANDS_SEPARATOR" value="&quot;,&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DECIMAL_SEPARATOR" value="&quot;.&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CSV_OPTION" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="ESCAPE_CHAR" value="&quot;&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="TEXT_ENCLOSURE" value="&quot;&quot;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CREATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="SPLIT" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="SPLIT_EVERY" value="1000" contextMode="false"/>
+    <elementParameter field="CHECK" name="FLUSHONROW" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="FLUSHONROW_NUM" value="1" contextMode="false"/>
+    <elementParameter field="CHECK" name="ROW_MODE" value="false" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;ISO-8859-15&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15" contextMode="false"/>
+    <elementParameter field="CHECK" name="DELETE_EMPTYFILE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="fichier reference de donnee en erreur" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tFileOutputDelimited_3">
+      <column comment="" defaultValue="" key="false" length="4" name="cleinfodemandersa" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" defaultValue="" key="false" length="4" name="etape" nullable="true" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+    </metadata>
+  </node>
+  <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tLogCatcher_1" offsetLabelX="0" offsetLabelY="0" source="tLogCatcher_1" target="tFileOutputDelimited_1">
+    <elementParameter field="CHECK" name="TRACES_CONNECTION_ENABLE" value="true" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" contextMode="false">
+      <elementValue elementRef="TRACE_COLUMN" value="moment"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="pid"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="root_pid"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="father_pid"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="project"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="job"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="context"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="priority"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="type"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="origin"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="message"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="code"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="RESUMING_CHECKPOINT" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="RESUMLABEL" value="" contextMode="false"/>
+    <elementParameter field="MEMO" name="FAILURE_INSTRUCTIONS" value="" contextMode="false"/>
+  </connection>
+  <connection connectorName="FLOW" label="extraitDonneeRejete" lineStyle="0" metaname="tPostgresqlInput_1" offsetLabelX="0" offsetLabelY="0" source="tPostgresqlInput_1" target="tMap_1">
+    <elementParameter field="CHECK" name="TRACES_CONNECTION_ENABLE" value="true" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" contextMode="false">
+      <elementValue elementRef="TRACE_COLUMN" value="cleinfodemandersa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="flux"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="etape"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="table_en_erreur"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="log"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="RESUMING_CHECKPOINT" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="RESUMLABEL" value="" contextMode="false"/>
+    <elementParameter field="MEMO" name="FAILURE_INSTRUCTIONS" value="" contextMode="false"/>
+  </connection>
+  <connection connectorName="FLOW" label="donneeRejete" lineStyle="0" metaname="donneeRejete" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_1" target="tFileOutputDelimited_2">
+    <elementParameter field="CHECK" name="TRACES_CONNECTION_ENABLE" value="true" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" contextMode="false">
+      <elementValue elementRef="TRACE_COLUMN" value="cleinfodemandersa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="flux"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="numdemrsa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="matricule"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="etape"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="table_en_erreur"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="log"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="RESUMING_CHECKPOINT" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="RESUMLABEL" value="" contextMode="false"/>
+    <elementParameter field="MEMO" name="FAILURE_INSTRUCTIONS" value="" contextMode="false"/>
+  </connection>
+  <connection connectorName="FLOW" label="dedoublonnement" lineStyle="0" metaname="dedoublonnement" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_1" target="tUniqRow_1">
+    <elementParameter field="CHECK" name="TRACES_CONNECTION_ENABLE" value="true" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" contextMode="false">
+      <elementValue elementRef="TRACE_COLUMN" value="cleinfodemandersa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="etape"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="RESUMING_CHECKPOINT" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="RESUMLABEL" value="" contextMode="false"/>
+    <elementParameter field="MEMO" name="FAILURE_INSTRUCTIONS" value="" contextMode="false"/>
+  </connection>
+  <connection connectorName="FLOW" label="reference" lineStyle="8" metaname="tPostgresqlInput_2" offsetLabelX="0" offsetLabelY="0" source="tPostgresqlInput_2" target="tMap_1">
+    <elementParameter field="CHECK" name="TRACES_CONNECTION_ENABLE" value="true" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" contextMode="false">
+      <elementValue elementRef="TRACE_COLUMN" value="cledemandersa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="flux"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="numdemrsa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="matricule"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="RESUMING_CHECKPOINT" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="RESUMLABEL" value="" contextMode="false"/>
+    <elementParameter field="MEMO" name="FAILURE_INSTRUCTIONS" value="" contextMode="false"/>
+  </connection>
+  <connection connectorName="UNIQUE" label="cle_a_vider" lineStyle="0" metaname="UNIQUE" offsetLabelX="0" offsetLabelY="0" source="tUniqRow_1" target="tFileOutputDelimited_3">
+    <elementParameter field="CHECK" name="TRACES_CONNECTION_ENABLE" value="true" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" contextMode="false"/>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="RESUMING_CHECKPOINT" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="RESUMLABEL" value="" contextMode="false"/>
+    <elementParameter field="MEMO" name="FAILURE_INSTRUCTIONS" value="" contextMode="false"/>
+  </connection>
+  <subjob>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tLogCatcher_1" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="Recupére les erreurs produites lors de l'execution." contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="160;190;240" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="220;220;250" contextMode="false"/>
+  </subjob>
+  <subjob>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlInput_1" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="creation de rapport et de fichier de reference pour vider les donner en erreur pour la partie Extraction" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="160;190;240" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="220;220;250" contextMode="false"/>
+  </subjob>
+</talendfile:ProcessType>

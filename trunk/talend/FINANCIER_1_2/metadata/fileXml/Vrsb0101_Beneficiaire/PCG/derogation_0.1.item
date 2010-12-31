@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/rdubois/Bureau/20090525Lu_ETL_RSA/FluxV2/vrsb0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_nkePwFZhEd6LzNUN6YaHGg" label="metadata">
+    <columns label="TYPEDERO" talendType="id_String"/>
+    <columns label="AVISDERO" talendType="id_String"/>
+    <columns label="DDAVISDERO" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFAVISDERO" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFoyerRSA/Personne/AvisPCGPersonne/Derogation">
+    <schemaTargets RelativeXPathQuery="TYPEDERO" TagName="TYPEDERO"/>
+    <schemaTargets RelativeXPathQuery="AVISDERO" TagName="AVISDERO"/>
+    <schemaTargets RelativeXPathQuery="DDAVISDERO" TagName="DDAVISDERO"/>
+    <schemaTargets RelativeXPathQuery="DFAVISDERO" TagName="DFAVISDERO"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

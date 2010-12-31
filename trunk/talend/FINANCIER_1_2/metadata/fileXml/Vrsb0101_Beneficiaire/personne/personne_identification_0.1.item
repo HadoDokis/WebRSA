@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/rdubois/Bureau/20090525Lu_ETL_RSA/FluxV2/vrsb0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_UCWtoFQ1Ed6tjpZy26wY8g" label="metadata">
+    <columns label="QUAL" talendType="id_String"/>
+    <columns label="NOM" talendType="id_String"/>
+    <columns label="NOMNAI" talendType="id_String"/>
+    <columns label="PRENOM" talendType="id_String"/>
+    <columns label="PRENOM2" talendType="id_String"/>
+    <columns label="PRENOM3" talendType="id_String"/>
+    <columns label="NOMCOMNAI" talendType="id_String"/>
+    <columns label="DTNAI" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="RGNAI" talendType="id_String"/>
+    <columns label="TYPEDTNAI" talendType="id_String"/>
+    <columns label="NIR" talendType="id_String"/>
+    <columns label="TOPVALIEC" talendType="id_Boolean"/>
+    <columns label="SEXE" talendType="id_String"/>
+    <columns label="NATPREST" talendType="id_String"/>
+    <columns label="TOPRESPDOS" talendType="id_Boolean"/>
+    <columns label="DDRATDOS" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFRATDOS" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="NUMDEMRSAPRECE" talendType="id_String"/>
+    <columns label="ROLEPERS" talendType="id_String"/>
+    <columns label="TOPCHAPERS" talendType="id_Boolean"/>
+    <columns label="TOPPERDRODEVORSA" talendType="id_Boolean"/>
+    <columns label="TYPEPAR" talendType="id_String"/>
+    <columns label="IDASSEDIC" talendType="id_String"/>
+    <columns label="REG" talendType="id_String"/>
+    <columns label="ACT" talendType="id_String"/>
+    <columns label="DDACT" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="SITASF" talendType="id_String"/>
+    <columns label="PARASSOASF" talendType="id_String"/>
+    <columns label="DDASF" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFASF" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFACT" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="NATCONTRTRA" talendType="id_String"/>
+    <columns label="TOPCONDADMETI" talendType="id_Boolean"/>
+    <columns label="ETATCREALIM" talendType="id_String"/>
+    <columns label="DDCREALIM" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFCREALIM" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="ORIOBLALIM" talendType="id_String"/>
+    <columns label="MOTIDISCREALIM" talendType="id_String"/>
+    <columns label="COMMCREALIM" talendType="id_String"/>
+    <columns label="MTSANCREALIM" talendType="id_String"/>
+    <columns label="DDGRO" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFGRO" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DTDECLGRO" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="NATFINGRO" talendType="id_String"/>
+    <columns label="MTBENAGRI" talendType="id_String"/>
+    <columns label="AVISEVARESSNONSAL" talendType="id_String"/>
+    <columns label="DTSOURESSNONSAL" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DTEVARESSNONSAL" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="MTEVARESSNONSAL" talendType="id_String"/>
+    <columns label="TYPEDERO" talendType="id_String"/>
+    <columns label="AVISDERO" talendType="id_String"/>
+    <columns label="DDAVISDERO" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFAVISDERO" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="EXCL" talendType="id_String"/>
+    <columns label="DDEXCL" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFEXCL" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="MTLIBERNONDECL" talendType="id_String"/>
+    <columns label="DTABSDECLLIBER" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="REGFISAGRI" talendType="id_String"/>
+    <columns label="DTBENAGRI" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Personne">
+    <schemaTargets RelativeXPathQuery="Identification/QUAL" TagName="QUAL"/>
+    <schemaTargets RelativeXPathQuery="Identification/NOM" TagName="NOM"/>
+    <schemaTargets RelativeXPathQuery="Identification/NOMNAI" TagName="NOMNAI"/>
+    <schemaTargets RelativeXPathQuery="Identification/PRENOM" TagName="PRENOM"/>
+    <schemaTargets RelativeXPathQuery="Identification/PRENOM2" TagName="PRENOM2"/>
+    <schemaTargets RelativeXPathQuery="Identification/PRENOM3" TagName="PRENOM3"/>
+    <schemaTargets RelativeXPathQuery="Identification/NOMCOMNAI" TagName="NOMCOMNAI"/>
+    <schemaTargets RelativeXPathQuery="Identification/DTNAI" TagName="DTNAI"/>
+    <schemaTargets RelativeXPathQuery="Identification/RGNAI" TagName="RGNAI"/>
+    <schemaTargets RelativeXPathQuery="Identification/TYPEDTNAI" TagName="TYPEDTNAI"/>
+    <schemaTargets RelativeXPathQuery="Identification/NIR" TagName="NIR"/>
+    <schemaTargets RelativeXPathQuery="Identification/TOPVALIEC" TagName="TOPVALIEC"/>
+    <schemaTargets RelativeXPathQuery="Identification/SEXE" TagName="SEXE"/>
+    <schemaTargets RelativeXPathQuery="Prestations/NATPREST" TagName="NATPREST"/>
+    <schemaTargets RelativeXPathQuery="DossierCAF/TOPRESPDOS" TagName="TOPRESPDOS"/>
+    <schemaTargets RelativeXPathQuery="DossierCAF/DDRATDOS" TagName="DDRATDOS"/>
+    <schemaTargets RelativeXPathQuery="DossierCAF/DFRATDOS" TagName="DFRATDOS"/>
+    <schemaTargets RelativeXPathQuery="DossierCAF/NUMDEMRSAPRECE" TagName="NUMDEMRSAPRECE"/>
+    <schemaTargets RelativeXPathQuery="Prestations/ROLEPERS" TagName="ROLEPERS"/>
+    <schemaTargets RelativeXPathQuery="Prestations/TOPCHAPERS" TagName="TOPCHAPERS"/>
+    <schemaTargets RelativeXPathQuery="Prestations/TOPPERDRODEVORSA" TagName="TOPPERDRODEVORSA"/>
+    <schemaTargets RelativeXPathQuery="Rattachement/TYPEPAR" TagName="TYPEPAR"/>
+    <schemaTargets RelativeXPathQuery="DossierPoleEmploi/IDASSEDIC" TagName="IDASSEDIC"/>
+    <schemaTargets RelativeXPathQuery="Activite/REG" TagName="REG"/>
+    <schemaTargets RelativeXPathQuery="Activite/ACT" TagName="ACT"/>
+    <schemaTargets RelativeXPathQuery="Activite/DDACT" TagName="DDACT"/>
+    <schemaTargets RelativeXPathQuery="PensionAlimentaire/Asf/SITASF" TagName="SITASF"/>
+    <schemaTargets RelativeXPathQuery="PensionAlimentaire/Asf/PARASSOASF" TagName="PARASSOASF"/>
+    <schemaTargets RelativeXPathQuery="PensionAlimentaire/Asf/DDASF" TagName="DDASF"/>
+    <schemaTargets RelativeXPathQuery="PensionAlimentaire/Asf/DFASF" TagName="DFASF"/>
+    <schemaTargets RelativeXPathQuery="Activite/DFACT" TagName="DFACT"/>
+    <schemaTargets RelativeXPathQuery="Activite/NATCONTRTRA" TagName="NATCONTRTRA"/>
+    <schemaTargets RelativeXPathQuery="Activite/TOPCONDADMETI" TagName="TOPCONDADMETI"/>
+    <schemaTargets RelativeXPathQuery="PensionAlimentaire/CreanceAlimentaire/ETATCREALIM" TagName="ETATCREALIM"/>
+    <schemaTargets RelativeXPathQuery="PensionAlimentaire/CreanceAlimentaire/DDCREALIM" TagName="DDCREALIM"/>
+    <schemaTargets RelativeXPathQuery="PensionAlimentaire/CreanceAlimentaire/DFCREALIM" TagName="DFCREALIM"/>
+    <schemaTargets RelativeXPathQuery="PensionAlimentaire/CreanceAlimentaire/ORIOBLALIM" TagName="ORIOBLALIM"/>
+    <schemaTargets RelativeXPathQuery="PensionAlimentaire/CreanceAlimentaire/MOTIDISCREALIM" TagName="MOTIDISCREALIM"/>
+    <schemaTargets RelativeXPathQuery="PensionAlimentaire/CreanceAlimentaire/COMMCREALIM" TagName="COMMCREALIM"/>
+    <schemaTargets RelativeXPathQuery="PensionAlimentaire/CreanceAlimentaire/MTSANCREALIM" TagName="MTSANCREALIM"/>
+    <schemaTargets RelativeXPathQuery="Grossesse/DDGRO" TagName="DDGRO"/>
+    <schemaTargets RelativeXPathQuery="Grossesse/DFGRO" TagName="DFGRO"/>
+    <schemaTargets RelativeXPathQuery="Grossesse/DTDECLGRO" TagName="DTDECLGRO"/>
+    <schemaTargets RelativeXPathQuery="Grossesse/NATFINGRO" TagName="NATFINGRO"/>
+    <schemaTargets RelativeXPathQuery="InformationsAgricoles/MTBENAGRI" TagName="MTBENAGRI"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/ConditionETI/AVISEVARESSNONSAL" TagName="AVISEVARESSNONSAL"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/ConditionETI/DTSOURESSNONSAL" TagName="DTSOURESSNONSAL"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/ConditionETI/DTEVARESSNONSAL" TagName="DTEVARESSNONSAL"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/ConditionETI/MTEVARESSNONSAL" TagName="MTEVARESSNONSAL"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/Derogation/TYPEDERO" TagName="TYPEDERO"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/Derogation/AVISDERO" TagName="AVISDERO"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/Derogation/DDAVISDERO" TagName="DDAVISDERO"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/Derogation/DFAVISDERO" TagName="DFAVISDERO"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/ExclueRSA/EXCL" TagName="EXCL"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/ExclueRSA/DDEXCL" TagName="DDEXCL"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/ExclueRSA/DFEXCL" TagName="DFEXCL"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/Liberalite/MTLIBERNONDECL" TagName="MTLIBERNONDECL"/>
+    <schemaTargets RelativeXPathQuery="AvisPCGPersonne/Liberalite/DTABSDECLLIBER" TagName="DTABSDECLLIBER"/>
+    <schemaTargets RelativeXPathQuery="InformationsAgricoles/REGFISAGRI" TagName="REGFISAGRI"/>
+    <schemaTargets RelativeXPathQuery="InformationsAgricoles/DTBENAGRI" TagName="DTBENAGRI"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/turnan/Bureau/FINANCIER.XML" Encoding="ISO-8859-1">
+  <tables id="_pM9HYE7hEd-PLZC7NBMq_w" label="metadata">
+    <columns label="RGADR" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="DTEMM" talendType="id_String" length="0" precision="0"/>
+    <columns label="NUMVOIE" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="TYPEVOIE" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="NOMVOIE" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="COMPLIDEADR" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="COMPLADR" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="LIEUDIST" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="NUMCOMRAT" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="NUMCOMPTT" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="CODEPOS" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="LOCAADR" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="PAYS" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="TYPEADR" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFinancieresFoyerRSA/DonneesAdministratives">
+    <schemaTargets RelativeXPathQuery="Adresse/RGADR" TagName="RGADR"/>
+    <schemaTargets RelativeXPathQuery="Adresse/DTEMM" TagName="DTEMM"/>
+    <schemaTargets RelativeXPathQuery="Adresse/NUMVOIE" TagName="NUMVOIE"/>
+    <schemaTargets RelativeXPathQuery="Adresse/TYPEVOIE" TagName="TYPEVOIE"/>
+    <schemaTargets RelativeXPathQuery="Adresse/NOMVOIE" TagName="NOMVOIE"/>
+    <schemaTargets RelativeXPathQuery="Adresse/COMPLIDEADR" TagName="COMPLIDEADR"/>
+    <schemaTargets RelativeXPathQuery="Adresse/COMPLADR" TagName="COMPLADR"/>
+    <schemaTargets RelativeXPathQuery="Adresse/LIEUDIST" TagName="LIEUDIST"/>
+    <schemaTargets RelativeXPathQuery="Adresse/NUMCOMRAT" TagName="NUMCOMRAT"/>
+    <schemaTargets RelativeXPathQuery="Adresse/NUMCOMPTT" TagName="NUMCOMPTT"/>
+    <schemaTargets RelativeXPathQuery="Adresse/CODEPOS" TagName="CODEPOS"/>
+    <schemaTargets RelativeXPathQuery="Adresse/LOCAADR" TagName="LOCAADR"/>
+    <schemaTargets RelativeXPathQuery="Adresse/PAYS" TagName="PAYS"/>
+    <schemaTargets RelativeXPathQuery="Adresse/TYPEADR" TagName="TYPEADR"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/turnan/Bureau/NRSACGIM_RSABEM_20100304_11_FACULTATIFS.xml" Encoding="ISO-8859-1">
+  <tables id="_-n5YcEeuEd-xJbsLLtZovw" label="metadata">
+    <columns label="DTLIQ" talendType="id_String" length="10" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="HEULIQ" talendType="id_String" length="12" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="FG" talendType="id_String" length="4" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFoyerRSA/Evenement">
+    <schemaTargets RelativeXPathQuery="DTLIQ" TagName="DTLIQ"/>
+    <schemaTargets RelativeXPathQuery="HEULIQ" TagName="HEULIQ"/>
+    <schemaTargets RelativeXPathQuery="FG" TagName="FG"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

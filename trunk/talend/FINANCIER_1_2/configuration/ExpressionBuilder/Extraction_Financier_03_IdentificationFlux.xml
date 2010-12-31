@@ -1,0 +1,9 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>a=>line" expression="row1.line.substring(row1.line.indexOf(&quot;&lt;IdentificationFlux>&quot;),row1.line.length())+&quot;&lt;/IdentificationFlux>&quot;">
+    <variables name="row1.line" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>copyOfa=>line" expression="row2.line.substring(row2.line.indexOf(&quot;&lt;TransmissionFlux>&quot;),row2.line.length())+&quot;&lt;/TransmissionFlux>&quot; ">
+    <variables name="row2.line" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+</xmi:XMI>

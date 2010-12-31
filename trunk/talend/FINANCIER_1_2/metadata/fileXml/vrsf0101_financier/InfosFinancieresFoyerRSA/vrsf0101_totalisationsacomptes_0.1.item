@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/vrsf0101      (données xml financières - mensuel)/vrsf0101/Schema/vrsf0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_sQjMgE6OEd6EdPQoKyaISA" label="metadata">
+    <columns label="MTTOTSOCLRSA_1" talendType="id_String"/>
+    <columns label="MTTOTSOCLMAJORS_1" talendType="id_String"/>
+    <columns label="MTTOTLOCALRSA_1" talendType="id_String"/>
+    <columns label="MTTOTRSA_1" talendType="id_String"/>
+    <columns label="MTTOTSOCLRSA_2" talendType="id_String"/>
+    <columns label="MTTOTSOCLMAJORSA_2" talendType="id_String"/>
+    <columns label="MTTOTLOCALRSA_2" talendType="id_String"/>
+    <columns label="MTTOTRSA_2" talendType="id_String"/>
+    <columns label="MTTOTSOCLRSA_3" talendType="id_String"/>
+    <columns label="MTTOTSOCLMAJORSA_3" talendType="id_String"/>
+    <columns label="MTTOTLOCALRSA_3" talendType="id_String"/>
+    <columns label="MTTOTRSA_3" talendType="id_String"/>
+    <columns label="MTTOTSOCLRSA_4" talendType="id_String"/>
+    <columns label="MTTOTSOCLMAJORSA_4" talendType="id_String"/>
+    <columns label="MTTOTLOCALRSA_4" talendType="id_String"/>
+    <columns label="MTTOTRSA_4" talendType="id_String"/>
+    <columns label="MTTOTSOCLRSA_5" talendType="id_String"/>
+    <columns label="MTTOTSOCLMAJORSA_5" talendType="id_String"/>
+    <columns label="MTTOTLOCALRSA_5" talendType="id_String"/>
+    <columns label="MTTOTRSA_5" talendType="id_String"/>
+    <columns label="MTTOTSOCLRSA_6" talendType="id_String"/>
+    <columns label="MTTOTSOCLMAJORSA_6" talendType="id_String"/>
+    <columns label="MTTOTLOCALRSA_6" talendType="id_String"/>
+    <columns label="MTTOTRSA_6" talendType="id_String"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/TotalisationAcompte">
+    <schemaTargets RelativeXPathQuery="TotalAllocationsComptabilises/MTTOTSOCLRSA" TagName="MTTOTSOCLRSA_1"/>
+    <schemaTargets RelativeXPathQuery="TotalAllocationsComptabilises/MTTOTSOCLMAJORSA" TagName="MTTOTSOCLMAJORS_1"/>
+    <schemaTargets RelativeXPathQuery="TotalAllocationsComptabilises/MTTOTLOCALRSA" TagName="MTTOTLOCALRSA_1"/>
+    <schemaTargets RelativeXPathQuery="TotalAllocationsComptabilises/MTTOTRSA" TagName="MTTOTRSA_1"/>
+    <schemaTargets RelativeXPathQuery="TotalIndusConstates/MTTOTSOCLRSA" TagName="MTTOTSOCLRSA_2"/>
+    <schemaTargets RelativeXPathQuery="TotalIndusConstates/MTTOTSOCLMAJORSA" TagName="MTTOTSOCLMAJORSA_2"/>
+    <schemaTargets RelativeXPathQuery="TotalIndusConstates/MTTOTLOCALRSA" TagName="MTTOTLOCALRSA_2"/>
+    <schemaTargets RelativeXPathQuery="TotalIndusConstates/MTTOTRSA" TagName="MTTOTRSA_2"/>
+    <schemaTargets RelativeXPathQuery="TotalIndusTransferesCG/MTTOTSOCLRSA" TagName="MTTOTSOCLRSA_3"/>
+    <schemaTargets RelativeXPathQuery="TotalIndusTransferesCG/MTTOTSOCLMAJORSA" TagName="MTTOTSOCLMAJORSA_3"/>
+    <schemaTargets RelativeXPathQuery="TotalIndusTransferesCG/MTTOTLOCALRSA" TagName="MTTOTLOCALRSA_3"/>
+    <schemaTargets RelativeXPathQuery="TotalIndusTransferesCG/MTTOTRSA" TagName="MTTOTRSA_3"/>
+    <schemaTargets RelativeXPathQuery="TotalRemisesIndus/MTTOTSOCLRSA" TagName="MTTOTSOCLRSA_4"/>
+    <schemaTargets RelativeXPathQuery="TotalRemisesIndus/MTTOTSOCLMAJORSA" TagName="MTTOTSOCLMAJORSA_4"/>
+    <schemaTargets RelativeXPathQuery="TotalRemisesIndus/MTTOTLOCALRSA" TagName="MTTOTLOCALRSA_4"/>
+    <schemaTargets RelativeXPathQuery="TotalRemisesIndus/MTTOTRSA" TagName="MTTOTRSA_4"/>
+    <schemaTargets RelativeXPathQuery="TotalAnnulationsIndus/MTTOTSOCLRSA" TagName="MTTOTSOCLRSA_5"/>
+    <schemaTargets RelativeXPathQuery="TotalAnnulationsIndus/MTTOTSOCLMAJORSA" TagName="MTTOTSOCLMAJORSA_5"/>
+    <schemaTargets RelativeXPathQuery="TotalAnnulationsIndus/MTTOTLOCALRSA" TagName="MTTOTLOCALRSA_5"/>
+    <schemaTargets RelativeXPathQuery="TotalAnnulationsIndus/MTTOTRSA" TagName="MTTOTRSA_5"/>
+    <schemaTargets RelativeXPathQuery="MontantTotalAcompte/MTTOTSOCLRSA" TagName="MTTOTSOCLRSA_6"/>
+    <schemaTargets RelativeXPathQuery="MontantTotalAcompte/MTTOTSOCLMAJORSA" TagName="MTTOTSOCLMAJORSA_6"/>
+    <schemaTargets RelativeXPathQuery="MontantTotalAcompte/MTTOTLOCALRSA" TagName="MTTOTLOCALRSA_6"/>
+    <schemaTargets RelativeXPathQuery="MontantTotalAcompte/MTTOTRSA" TagName="MTTOTRSA_6"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

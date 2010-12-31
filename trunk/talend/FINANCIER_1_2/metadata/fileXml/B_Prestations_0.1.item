@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/turnan/Bureau/NRSACGIM_RSABEM_20100304_11_FACULTATIFS.xml" Encoding="ISO-8859-1">
+  <tables id="_-58EkEcHEd-klYq6o9J-GQ" label="metadata">
+    <columns label="NATPREST" talendType="id_String" length="3" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="ROLEPERS" talendType="id_String" length="3" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="TOPCHAPERS" talendType="id_String" length="1" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFoyerRSA/Personne/Prestations">
+    <schemaTargets RelativeXPathQuery="NATPREST" TagName="NATPREST"/>
+    <schemaTargets RelativeXPathQuery="ROLEPERS" TagName="ROLEPERS"/>
+    <schemaTargets RelativeXPathQuery="TOPCHAPERS" TagName="TOPCHAPERS"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

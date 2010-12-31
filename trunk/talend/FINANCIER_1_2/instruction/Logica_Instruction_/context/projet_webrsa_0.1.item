@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd">
+  <talendfile:ContextType confirmationNeeded="false" name="Default">
+    <contextParameter comment="" name="repertoireSource" prompt="repertoireSource?" promptNeeded="false" type="id_String" value="C:/webrsa/in"/>
+    <contextParameter comment="" name="nomFichier" prompt="nomFichier?" promptNeeded="false" type="id_String" value="NRSACGIR_IRSACG_20091028_J2819303.RCV"/>
+    <contextParameter comment="" name="fichierParametre" prompt="fichierParametre?" promptNeeded="false" type="id_String" value="C:/webrsa/propertie/webrsa.properties"/>
+    <contextParameter comment="" name="directorieRejects" prompt="directorieRejects?" promptNeeded="false" type="id_String" value="C:/webrsa/reject"/>
+    <contextParameter comment="" name="fileRejects" prompt="fileRejects?" promptNeeded="false" type="id_String" value="out.txt"/>
+    <contextParameter comment="" name="fileLogsAvertissement" prompt="fileLogsAvertissement?" promptNeeded="false" type="id_String" value="log.txt"/>
+    <contextParameter comment="" name="directorieArchives" prompt="directorieArchives?" promptNeeded="false" type="id_String" value="C:/webrsa/archives"/>
+    <contextParameter comment="" name="fileLogsReject" prompt="fileLogsReject?" promptNeeded="false" type="id_String" value="null"/>
+  </talendfile:ContextType>
+  <talendfile:ContextType confirmationNeeded="false" name="RSA">
+    <contextParameter comment="" name="repertoireSource" prompt="repertoireSource?" promptNeeded="false" type="id_String" value="/etl/rsa/in"/>
+    <contextParameter comment="" name="nomFichier" prompt="nomFichier?" promptNeeded="false" type="id_String" value="/etl/rsa/in/NRSACGIR_IRSACG_20091028_J2819303.RCV"/>
+    <contextParameter comment="" name="fichierParametre" prompt="fichierParametre?" promptNeeded="false" type="id_String" value="/etl/rsa/app/webrsa.properties"/>
+    <contextParameter comment="" name="directorieRejects" prompt="directorieRejects?" promptNeeded="false" type="id_String" value="/etl/rsa/reject"/>
+    <contextParameter comment="" name="fileRejects" prompt="fileRejects?" promptNeeded="false" type="id_String" value="out.txt"/>
+    <contextParameter comment="" name="fileLogsAvertissement" prompt="fileLogsAvertissement?" promptNeeded="false" type="id_String" value="log.txt"/>
+    <contextParameter comment="" name="directorieArchives" prompt="directorieArchives?" promptNeeded="false" type="id_String" value="/etl/rsa/archives"/>
+    <contextParameter comment="" name="fileLogsReject" prompt="fileLogsReject?" promptNeeded="false" type="id_String" value="null"/>
+  </talendfile:ContextType>
+  <talendfile:ContextType confirmationNeeded="false" name="Test">
+    <contextParameter comment="" name="repertoireSource" prompt="repertoireSource?" promptNeeded="false" type="id_String" value="C:/Documents and Settings/rdubois/Bureau"/>
+    <contextParameter comment="" name="nomFichier" prompt="nomFichier?" promptNeeded="false" type="id_String" value="C:/Documents and Settings/rdubois/Bureau/NRSACGIM_RSABEX_G0615470.RCV.out"/>
+    <contextParameter comment="" name="fichierParametre" prompt="fichierParametre?" promptNeeded="false" type="id_String" value="C:/webrsa/propertie/webrsa.properties"/>
+    <contextParameter comment="" name="directorieRejects" prompt="directorieRejects?" promptNeeded="false" type="id_String" value="C:/webrsa/propertie"/>
+    <contextParameter comment="" name="fileRejects" prompt="fileRejects?" promptNeeded="false" type="id_String" value="out.txt"/>
+    <contextParameter comment="" name="fileLogsAvertissement" prompt="fileLogsAvertissement?" promptNeeded="false" type="id_String" value="log.txt"/>
+    <contextParameter comment="" name="directorieArchives" prompt="directorieArchives?" promptNeeded="false" type="id_String" value="null"/>
+    <contextParameter comment="" name="fileLogsReject" prompt="fileLogsReject?" promptNeeded="false" type="id_String" value="null"/>
+  </talendfile:ContextType>
+</xmi:XMI>

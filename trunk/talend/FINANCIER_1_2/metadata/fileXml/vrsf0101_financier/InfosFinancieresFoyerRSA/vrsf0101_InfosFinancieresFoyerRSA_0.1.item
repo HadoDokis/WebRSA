@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/vrsf0101      (données xml financières - mensuel)/vrsf0101/Schema/vrsf0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_nMmFEE57Ed6EdPQoKyaISA" label="metadata">
+    <columns label="FONORG" talendType="id_String"/>
+    <columns label="NUMORG" talendType="id_String"/>
+    <columns label="MATRICULE" talendType="id_String"/>
+    <columns label="TYPEPARTE" talendType="id_String"/>
+    <columns label="IDEPARTE" talendType="id_String" precision="0"/>
+    <columns label="DTDEMRSA" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="NUMDEMRSA" talendType="id_String"/>
+    <columns label="QUAL" talendType="id_String"/>
+    <columns label="NOM" talendType="id_String"/>
+    <columns label="NOMNAI" talendType="id_String"/>
+    <columns label="PRENOM" talendType="id_String"/>
+    <columns label="PRENOM2" talendType="id_String"/>
+    <columns label="PRENOM3" talendType="id_String"/>
+    <columns label="NOMCOMNAI" talendType="id_String"/>
+    <columns label="DTNAI" talendType="id_Date" precision="0" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="RGNAI" talendType="id_String"/>
+    <columns label="TYPEDTNAI" talendType="id_String"/>
+    <columns label="NIR" talendType="id_String" precision="0"/>
+    <columns label="TOPVALIEC" talendType="id_Boolean"/>
+    <columns label="SEXE" talendType="id_String"/>
+    <columns label="TOPRESPDOS" talendType="id_Boolean" precision="0"/>
+    <columns label="DDRATDOS" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFRATDOS" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="RGADR" talendType="id_String"/>
+    <columns label="DTEMM" talendType="id_Date" precision="0" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="NUMVOIE" talendType="id_String"/>
+    <columns label="TYPEVOIE" talendType="id_String"/>
+    <columns label="NOMVOIE" talendType="id_String"/>
+    <columns label="COMPLIDEADR" talendType="id_String"/>
+    <columns label="COMPLADR" talendType="id_String"/>
+    <columns label="LIEUDIST" talendType="id_String"/>
+    <columns label="NUMCOMRAT" talendType="id_String"/>
+    <columns label="NUMCOMPTT" talendType="id_String" precision="0"/>
+    <columns label="CODEPOS" talendType="id_String"/>
+    <columns label="LOCAADR" talendType="id_String"/>
+    <columns label="PAYS" talendType="id_String"/>
+    <columns label="TYPEADR" talendType="id_String"/>
+    <columns label="MOISMOUCOMPTA" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFinancieresFoyerRSA">
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Organisme/FONORG" TagName="FONORG"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Organisme/NUMORG" TagName="NUMORG"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Organisme/MATRICULE" TagName="MATRICULE"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Partenaire/TYPEPARTE" TagName="TYPEPARTE"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Partenaire/IDEPARTE" TagName="IDEPARTE"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/DemandeRSA/DTDEMRSA" TagName="DTDEMRSA"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/DemandeRSA/NUMDEMRSA" TagName="NUMDEMRSA"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/QUAL" TagName="QUAL"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/NOM" TagName="NOM"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/NOMNAI" TagName="NOMNAI"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/PRENOM" TagName="PRENOM"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/PRENOM2" TagName="PRENOM2"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/PRENOM3" TagName="PRENOM3"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/NOMCOMNAI" TagName="NOMCOMNAI"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/DTNAI" TagName="DTNAI"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/RGNAI" TagName="RGNAI"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/TYPEDTNAI" TagName="TYPEDTNAI"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/NIR" TagName="NIR"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/TOPVALIEC" TagName="TOPVALIEC"/>
+    <schemaTargets RelativeXPathQuery="Personne/Identification/SEXE" TagName="SEXE"/>
+    <schemaTargets RelativeXPathQuery="Personne/DossierCAF/TOPRESPDOS" TagName="TOPRESPDOS"/>
+    <schemaTargets RelativeXPathQuery="Personne/DossierCAF/DDRATDOS" TagName="DDRATDOS"/>
+    <schemaTargets RelativeXPathQuery="Personne/DossierCAF/DFRATDOS" TagName="DFRATDOS"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/RGADR" TagName="RGADR"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/DTEMM" TagName="DTEMM"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/NUMVOIE" TagName="NUMVOIE"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/TYPEVOIE" TagName="TYPEVOIE"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/NOMVOIE" TagName="NOMVOIE"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/COMPLIDEADR" TagName="COMPLIDEADR"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/COMPLADR" TagName="COMPLADR"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/LIEUDIST" TagName="LIEUDIST"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/NUMCOMRAT" TagName="NUMCOMRAT"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/NUMCOMPTT" TagName="NUMCOMPTT"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/CODEPOS" TagName="CODEPOS"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/LOCAADR" TagName="LOCAADR"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/PAYS" TagName="PAYS"/>
+    <schemaTargets RelativeXPathQuery="DonneesAdministratives/Adresse/TYPEADR" TagName="TYPEADR"/>
+    <schemaTargets RelativeXPathQuery="AcompteRSA/GeneraliteAcompteRSA/MOISMOUCOMPTA" TagName="MOISMOUCOMPTA"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

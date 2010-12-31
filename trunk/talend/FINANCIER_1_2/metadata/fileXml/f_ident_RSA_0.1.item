@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/turnan/Bureau/FINANCIER.XML" Encoding="ISO-8859-1">
+  <tables id="_IFoXoE7VEd-PLZC7NBMq_w" label="metadata">
+    <columns label="FONORG" talendType="id_String" length="3" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="NUMORG" talendType="id_Integer" length="3" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="MATRICULE" talendType="id_String" length="15" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="TYPEPARTE" talendType="id_String" length="2" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="IDEPARTE" talendType="id_String" length="3" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="DTDEMRSA" talendType="id_String" length="10" precision="0" pattern="&quot;dd-MM-yyyy-MM-dd&quot;"/>
+    <columns label="NUMDEMRSA" talendType="id_String" length="11" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFinancieresFoyerRSA">
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Organisme/FONORG" TagName="FONORG"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Organisme/NUMORG" TagName="NUMORG"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Organisme/MATRICULE" TagName="MATRICULE"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Partenaire/TYPEPARTE" TagName="TYPEPARTE"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Partenaire/IDEPARTE" TagName="IDEPARTE"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/DemandeRSA/DTDEMRSA" TagName="DTDEMRSA"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/DemandeRSA/NUMDEMRSA" TagName="NUMDEMRSA"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

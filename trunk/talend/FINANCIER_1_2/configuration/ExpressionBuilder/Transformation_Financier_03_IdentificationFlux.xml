@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>insert_IdentificationFlux=>heucreaflux" expression="&quot;&quot;.equals(row1.heucreaflux) || row1.heucreaflux == null?null:row1.heucreaflux">
+    <variables name="row1.applieme" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.numversionapplieme" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.typeflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.natflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtcreaflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.heucreaflux" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.dtref" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>nbtotdosrsatransm" expression="(Relational.ISNULL(row2.nbtotdosrsatransm) || &quot;&quot;.equals(row2.nbtotdosrsatransm))?0:Integer.valueOf(row2.nbtotdosrsatransm)   ">
+    <variables name="row2.nbtotdosrsatransm" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nbtotdosrsatransmano" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.nbtotdosrsatransm" value="0" talendType="id_Integer"/>
+    <variables name="Var.nbtotdosrsatransmano" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>nbtotdosrsatransmano" expression="( Relational.ISNULL(row2.nbtotdosrsatransmano) || &quot;&quot;.equals(row2.nbtotdosrsatransmano))?0:Integer.valueOf(row2.nbtotdosrsatransmano)     ">
+    <variables name="row2.nbtotdosrsatransm" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nbtotdosrsatransmano" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.nbtotdosrsatransm" value="0" talendType="id_Integer"/>
+    <variables name="Var.nbtotdosrsatransmano" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+</xmi:XMI>
