@@ -122,11 +122,13 @@ CREATE TABLE eps (
 	name						VARCHAR(255) NOT NULL,
 	identifiant					VARCHAR(255) NOT NULL,
 	regroupementep_id			INTEGER NOT NULL REFERENCES regroupementseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	saisineepreorientsr93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
+	-- CG 93
+	defautinsertionep66			TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
 	saisineepbilanparcours66	TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
 	saisineepdpdo66				TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
+	-- CG 66
 	nonrespectsanctionep93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
-	defautinsertionep66			TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite'
+	saisineepreorientsr93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite'
 );
 
 CREATE UNIQUE INDEX eps_name_idx ON eps(name);
@@ -666,6 +668,8 @@ CREATE TYPE TYPE_DECISIONDEFAUTEP66 AS ENUM ( 'suspensionnonrespect', 'suspensio
 CREATE TABLE decisionsdefautsinsertionseps66 (
 	id      					SERIAL NOT NULL PRIMARY KEY,
 	defautinsertionep66_id		INTEGER NOT NULL REFERENCES defautsinsertionseps66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	typeorient_id				INTEGER DEFAULT NULL REFERENCES typesorients(id) ON UPDATE CASCADE ON DELETE SET NULL,
+	structurereferente_id		INTEGER DEFAULT NULL REFERENCES structuresreferentes(id) ON UPDATE CASCADE ON DELETE SET NULL,
 	etape						TYPE_ETAPEDECISIONEP NOT NULL,
 	decision					TYPE_DECISIONDEFAUTEP66 NOT NULL,
 	commentaire					TEXT DEFAULT NULL,

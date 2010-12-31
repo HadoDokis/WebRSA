@@ -28,6 +28,9 @@ INSERT INTO membreseps ( fonctionmembreep_id, qual, nom, prenom ) VALUES
 	( 2, 'M.', 'Dubois', 'Alphonse' ),
 	( 2, 'Mme.', 'Roland', 'Adeline' );
 
+INSERT INTO eps_membreseps ( ep_id, membreep_id ) VALUES
+	( 1, 1 );
+
 INSERT INTO eps_zonesgeographiques ( ep_id, zonegeographique_id )/* VALUES
 	( 1, 14 ), -- EPINAY-SUR-SEINE
 	( 1, 31 ), -- PIERREFITTE-SUR-SEINE
@@ -42,7 +45,7 @@ INSERT INTO motifsreorients ( name ) VALUES
 -- SELECT pg_catalog.setval('seanceseps_id_seq', 1, true);
 -- INSERT INTO seanceseps VALUES ( 1, 'COM1', 'Commission 1', 1, 104, '2010-10-28 10:00:00', NULL );
 INSERT INTO seanceseps ( identifiant, name, ep_id, structurereferente_id, dateseance ) VALUES
-	( 'COM1', 'Commission 1', 1, 104, '2010-10-28 10:00:00', NULL );
+	( 'COM1', 'Commission 1', 1, 104, '2010-10-28 10:00:00' );
 
 TRUNCATE situationspdos CASCADE;
 SELECT pg_catalog.setval('situationspdos_id_seq', ( SELECT COALESCE( max(situationspdos.id) + 1, 1 ) FROM situationspdos ), false);
