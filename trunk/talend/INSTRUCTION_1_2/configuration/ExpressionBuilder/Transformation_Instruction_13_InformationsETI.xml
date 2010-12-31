@@ -1,0 +1,831 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>Var=>Bool1" expression="extraitActiETI.topcreaentre==null?false:extraitActiETI.topcreaentre.equals(&quot;1&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="ssion>&#xD;&#xA;  " value="on:EM" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool2" expression="extraitActiETI.topaccre==null?false:extraitActiETI.topaccre.equals(&quot;0&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="FExpressio" value="press" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool3" expression="extraitActiETI.topaccre==null?false:extraitActiETI.topaccre.equals(&quot;1&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool4" expression="extriatEmployes.topempl1ax==null?false:extriatEmployes.topempl1ax.equals(&quot;0&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id=":extriatEmployes" expression="extriatEmployes.topempl1ax==null?false:extriatEmployes.topempl1ax.equals(&quot;1&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="e:extriatEmploye" expression="extriatEmployes.topstag1ax==null?false:extriatEmployes.topstag1ax.equals(&quot;0&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="alse:extriatEmpl" expression="extriatEmployes.topstag1ax==null?false:extriatEmployes.topstag1ax.equals(&quot;0&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="l?false:extraitE" expression="extriatEmployes.topsansempl==null?false:extriatEmployes.topsansempl.equals(&quot;0&quot;)  ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="se:extraitElemFi" expression="extriatEmployes.topsansempl==null?false:extriatEmployes.topsansempl.equals(&quot;1&quot;)  ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool10" expression="extraitElemFisc.topbeneti==null?false:extraitElemFisc.topbeneti.equals(&quot;0&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool11" expression="extraitElemFisc.topbeneti==null?false:extraitElemFisc.topbeneti.equals(&quot;0&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="ger&quot;/>&#xD;&#xA;    &lt;variables nam" value="t" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool12" expression="extraitElemFisc.topevoreveti==null?false:extraitElemFisc.topevoreveti.equals(&quot;0&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool13" expression="extraitElemFisc.topevoreveti==null?false:extraitElemFisc.topevoreveti.equals(&quot;1&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool14" expression="extraitElemFisc.topressevaeti==null?false:extraitElemFisc.topressevaeti.equals(&quot;0&quot;) ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="ype=&quot;id_Integer&quot;/>&#xD;&#xA;    &lt;v" value="n" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool15" expression="extraitElemFisc.topressevaeti==null?false:extraitElemFisc.topressevaeti.equals(&quot;1&quot;)  ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool0" expression="extraitActiETI.topcreaentre==null?false:extraitActiETI.topcreaentre.equals(&quot;0&quot;)  ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var1" expression="extrait_CA.ddchiaffaeti==null?false:TalendDate.isDate(extrait_CA.ddchiaffaeti , &quot;yyyy-MM-dd&quot;)   ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var2" expression="extrait_CA.dfchiaffaeti==null?false:TalendDate.isDate(extrait_CA.dfchiaffaeti , &quot;yyyy-MM-dd&quot;)     ">
+    <variables name="extraitActiETI.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActiETI.topcreaentre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.topaccre" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActiETI.acteti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extrait_CA.ddchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.dfchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extrait_CA.mtchiaffaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extriatEmployes.topempl1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topstag1ax" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extriatEmployes.topsansempl" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitElemFisc.regfiseti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topbeneti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.regfisetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtbenetia1" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtamoeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.mtplusvaluet" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.libevoreveti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitElemFisc.topressevaeti" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool3" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool4" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool5" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool6" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool7" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool8" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool9" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool10" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool11" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool12" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool13" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool14" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool15" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+</xmi:XMI>
