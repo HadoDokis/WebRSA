@@ -17,9 +17,6 @@ INSERT INTO regroupementseps ( name ) VALUES
 	( 'Équipe pluridisciplinaire locale, commission Audition' );
 
 
-INSERT INTO eps ( name, identifiant, regroupementep_id, saisineepreorientsr93, nonrespectsanctionep93 ) VALUES
-	( 'CLI 1, équipe 1.1', 'EP1', 1, 'ep', 'cg' );
-
 INSERT INTO eps ( name, identifiant, regroupementep_id, saisineepbilanparcours66, saisineepdpdo66 ) VALUES
 	( 'EP locale Parcours, Perpignan 1', 'EPL1', 1, 'cg', 'nontraite' ),
 	( 'EP départementale', 'EPD', 2, 'nontraite', 'cg' );
@@ -39,7 +36,9 @@ INSERT INTO membreseps ( fonctionmembreep_id, qual, nom, prenom ) VALUES
 	( 2, 'Mme.', 'Roland', 'Adeline' );
 
 INSERT INTO eps_membreseps ( ep_id, membreep_id ) VALUES
-	( 4, 1 );
+	( 1, 1 ),
+	( 2, 1 ),
+	( 3, 1 );
 
 INSERT INTO eps_zonesgeographiques ( ep_id, zonegeographique_id ) VALUES
 	( 1, ( SELECT id FROM zonesgeographiques WHERE libelle LIKE 'PERPIGNAN  1%' ) ), -- Perpignan 1
@@ -53,8 +52,7 @@ INSERT INTO motifsreorients ( name ) VALUES
 INSERT INTO seanceseps ( identifiant, name, ep_id, structurereferente_id, dateseance ) VALUES
 	( 'COM1', 'Commission 1', 1, 22, '2010-10-28 10:00:00' ),
 	( 'COM2', 'Commission 2', 2, 22, '2010-10-29 10:00:00' ),
-	( 'COM3', 'Commission 3', 3, 22, '2010-10-30 10:00:00' ),
-	( 'COM4', 'Commission 4', 4, 22, '2010-10-31 10:00:00' );
+	( 'COM3', 'Commission 3', 3, 22, '2010-10-30 10:00:00' );
 
 TRUNCATE situationspdos CASCADE;
 SELECT pg_catalog.setval('situationspdos_id_seq', ( SELECT COALESCE( max(situationspdos.id) + 1, 1 ) FROM situationspdos ), false);

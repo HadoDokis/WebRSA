@@ -3,10 +3,12 @@
 	{
 		public $name = 'Regroupementep';
 
+		public $order = array( 'Regroupementep.name ASC' );
+
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate'
-		);		
+		);
 
 		public $hasMany = array(
 			'Ep' => array(

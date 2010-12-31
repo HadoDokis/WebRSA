@@ -106,6 +106,13 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Defautinsertionep66' => array(
+				'className' => 'Defautinsertionep66',
+				'foreignKey' => 'bilanparcours66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		/**
@@ -296,69 +303,142 @@
 		*/
 
 		public function saisine( $data ) {
-debug( $data );//switch['Bilanparcours66']['proposition'] -> parcours/audition/traitement
-			$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
-			$this->create( $data );
-			if( $success = $this->validates() ) {
-				$vxOrientstruct = $this->Orientstruct->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Orientstruct.id' => $data[$this->alias]['orientstruct_id'] // TODO: autre conditions ?
-						),
-						'contain' => false
-					)
-				);
+/*debug( $data );//switch['Bilanparcours66']['proposition'] -> parcours/audition/traitement
+debug( $data['Bilanparcours66']['proposition'] );*/
 
-				if( empty( $vxOrientstruct ) ) {
-					$this->invalidate( 'choixparcours', 'Vieille orientation répondant aux critères non trouvée.' );
-					//debug( 'Vieille orientation répondant aux critères non trouvée.' );
-					return false;
-				}
-
-				$vxContratinsertion = $this->Contratinsertion->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-							'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
-							'Contratinsertion.df_ci >=' => date( 'Y-m-d' )
-						),
-						'contain' => false
-					)
-				);
-
-				if( empty( $vxContratinsertion ) ) {
-					$this->invalidate( 'choixparcours', 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
-					//debug( 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
-					return false;
-				}
-
-				// Sauvegarde du bilan
-// 				$data[$this->alias]['referent_id'] = $vxOrientstruct['Orientstruct']['referent_id'];//FIXME: si changement  de référent
-				$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
+			// Saisine parcours
+			if( $data['Bilanparcours66']['proposition'] == 'parcours' ) {
+				$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
 				$this->create( $data );
-				$success = $this->save() && $success;
+				if( $success = $this->validates() ) {
+					$vxOrientstruct = $this->Orientstruct->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Orientstruct.id' => $data[$this->alias]['orientstruct_id'] // TODO: autre conditions ?
+							),
+							'contain' => false
+						)
+					);
 
-				if( !empty( $this->validationErrors ) ) {
-					debug( $this->validationErrors );
+					if( empty( $vxOrientstruct ) ) {
+						$this->invalidate( 'choixparcours', 'Vieille orientation répondant aux critères non trouvée.' );
+						//debug( 'Vieille orientation répondant aux critères non trouvée.' );
+						return false;
+					}
+
+					$vxContratinsertion = $this->Contratinsertion->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+								'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
+								'Contratinsertion.df_ci >=' => date( 'Y-m-d' )
+							),
+							'contain' => false
+						)
+					);
+
+					if( empty( $vxContratinsertion ) ) {
+						$this->invalidate( 'choixparcours', 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
+						//debug( 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
+						return false;
+					}
+
+					// Sauvegarde du bilan
+	// 				$data[$this->alias]['referent_id'] = $vxOrientstruct['Orientstruct']['referent_id'];//FIXME: si changement  de référent
+					$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
+					$this->create( $data );
+					$success = $this->save() && $success;
+
+					if( !empty( $this->validationErrors ) ) {
+						debug( $this->validationErrors );
+					}
+
+					// Sauvegarde du dossier d'EP
+					$dataDossierEp = array(
+						'Dossierep' => array(
+							'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+							'themeep' => 'saisinesepsbilansparcours66'
+						)
+					);
+					$this->Saisineepbilanparcours66->Dossierep->create( $dataDossierEp );
+					$success = $this->Saisineepbilanparcours66->Dossierep->save() && $success;
+
+					// Sauvegarde de la saisine
+					$data['Saisineepbilanparcours66']['bilanparcours66_id'] = $this->id;
+					$data['Saisineepbilanparcours66']['dossierep_id'] = $this->Saisineepbilanparcours66->Dossierep->id;
+					$this->Saisineepbilanparcours66->create( $data );
+					$success = $this->Saisineepbilanparcours66->save() && $success;
 				}
+			}
+			// Saisine audition
+			else if( $data['Bilanparcours66']['proposition'] == 'audition' ) {
+				$data[$this->alias]['saisineepparcours'] = '0';
+				$this->create( $data );
+				if( $success = $this->validates() ) {
+					$vxOrientstruct = $this->Orientstruct->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Orientstruct.id' => $data[$this->alias]['orientstruct_id'] // TODO: autre conditions ?
+							),
+							'contain' => false
+						)
+					);
+					// FIXME: erreur pas dans choixparcours
+					if( empty( $vxOrientstruct ) ) {
+						$this->invalidate( 'examenaudition', 'Vieille orientation répondant aux critères non trouvée.' );
+						return false;
+					}
 
-				// Sauvegarde du dossier d'EP
-				$dataDossierEp = array(
-					'Dossierep' => array(
-						'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-						'themeep' => 'saisinesepsbilansparcours66'
-					)
-				);
-				$this->Saisineepbilanparcours66->Dossierep->create( $dataDossierEp );
-				$success = $this->Saisineepbilanparcours66->Dossierep->save() && $success;
+					$vxContratinsertion = $this->Contratinsertion->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+								'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
+								'Contratinsertion.df_ci >=' => date( 'Y-m-d' )
+							),
+							'contain' => false
+						)
+					);
+					// FIXME: erreur pas dans choixparcours
+					if( empty( $vxContratinsertion ) ) {
+						$this->invalidate( 'examenaudition', 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
+						return false;
+					}
 
-				// Sauvegarde de la saisine
-				$data['Saisineepbilanparcours66']['bilanparcours66_id'] = $this->id;
-				$data['Saisineepbilanparcours66']['dossierep_id'] = $this->Saisineepbilanparcours66->Dossierep->id;
-				$this->Saisineepbilanparcours66->create( $data );
-				$success = $this->Saisineepbilanparcours66->save() && $success;
+					// Sauvegarde du bilan
+	// 				$data[$this->alias]['referent_id'] = $vxOrientstruct['Orientstruct']['referent_id'];//FIXME: si changement  de référent
+					$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
+					$this->create( $data );
+					$success = $this->save() && $success;
+
+					if( !empty( $this->validationErrors ) ) {
+						debug( $this->validationErrors );
+					}
+
+					// Sauvegarde du dossier d'EP
+					$dataDossierEp = array(
+						'Dossierep' => array(
+							'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+							'themeep' => 'defautsinsertionseps66'
+						)
+					);
+					$this->Defautinsertionep66->Dossierep->create( $dataDossierEp );
+					$success = $this->Defautinsertionep66->Dossierep->save() && $success;
+
+					// Sauvegarde de la saisine pour défaut d'insertion
+					$data['Defautinsertionep66']['bilanparcours66_id'] = $this->id;
+					$data['Defautinsertionep66']['dossierep_id'] = $this->Defautinsertionep66->Dossierep->id;
+					$data['Defautinsertionep66']['orientstruct_id'] = $vxOrientstruct['Orientstruct']['id'];
+					$data['Defautinsertionep66']['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
+					$data['Defautinsertionep66']['origine'] = 'bilanparcours';
+
+					$this->Defautinsertionep66->create( $data );
+					$success = $this->Defautinsertionep66->save() && $success;
+				}
 			}
 
 			return $success;

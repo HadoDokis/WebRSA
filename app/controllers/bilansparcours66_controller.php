@@ -13,7 +13,7 @@
 		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 
 		public $uses = array( 'Bilanparcours66', 'Option' );
-		
+
 		public $aucunDroit = array( 'choixformulaire' );
 
 		/// FIXME: evite les droits
@@ -27,7 +27,7 @@
 		protected function _setOptions() {
             $options = array();
             //$options = $this->Bilanparcours66->allEnumLists();
-            
+
 			$options = $this->Bilanparcours66->enums();
             $typevoie = $this->Option->typevoie();
             $this->set( 'rolepers', $this->Option->rolepers() );
@@ -44,7 +44,7 @@
             $this->set( compact( 'options' ) );
 
             $this->set( 'rsaSocle', $this->Option->natpf() );
-            
+
 			$options['Saisineepbilanparcours66']['typeorient_id'] = $this->Bilanparcours66->Typeorient->listOptions();
 			$options['Saisineepbilanparcours66']['structurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag_cg66();
@@ -135,7 +135,7 @@
 						$bilansparcours66[$key]['Referent']['prenom']
 					)
 				);
-				
+
 				$bilansparcours66[$key]['Personne']['nom_complet'] = implode(
 					' ',
 					array(
@@ -265,7 +265,7 @@
 							'orientstruct_id' => $orientstruct['Orientstruct']['id']
 						)
 					);
-					
+
 					$contratinsertion = $this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->find(
 						'first',
 						array(
@@ -281,14 +281,14 @@
 							)
 						)
 					);
-					
+
 					$this->data['Bilanparcours66']['structurereferente_id'] = $contratinsertion['Structurereferente']['id'];
 					$this->data['Bilanparcours66']['referent_id'] = $contratinsertion['Structurereferente']['id'].'_'.$contratinsertion['Referent']['id'];
-$this->data = Set::insert($this->data, 'Pe', $this->data);
+					$this->data = Set::insert($this->data, 'Pe', $this->data);
 				}
 				else if( $this->action == 'edit' ) {
 					$this->data = $bilanparcours66;
-$this->data = Set::insert($this->data, 'Pe', $this->data);
+					$this->data = Set::insert($this->data, 'Pe', $this->data);
 				}
 			}
 
