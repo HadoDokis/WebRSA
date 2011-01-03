@@ -5,15 +5,29 @@
 
 		// FIXME: validation
 
-		public $belongsTo = array(
+		// FIXME ?
+		/*public $belongsTo = array(
 			'Personne' => array(
 				'className' => 'Personne',
-				'foreignKey' => 'personne_id',
-				'conditions' => '',
+				'foreignKey' => false,
+				'conditions' => array(
+					'OR' => array(
+						array(
+							'Personne.nir IS NOT NULL',
+							'Informationpe.nir IS NOT NULL',
+							'Personne.nir = Informationpe.nir',
+						),
+						array(
+							'Personne.nom = Informationpe.nom',
+							'Personne.prenom = Informationpe.prenom',
+							'Personne.dtnai = Informationpe.dtnai',
+						),
+					)
+				),
 				'fields' => '',
 				'order' => ''
 			)
-		);
+		);*/
 
 		public $hasMany = array(
 			'Historiqueetatpe' => array(

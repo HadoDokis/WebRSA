@@ -244,7 +244,6 @@ SELECT add_missing_table_field ('public', 'bilansparcours66', 'textbilanparcours
 -- Nouvelle structure pour les informations venant de Pôle Emploi
 -- *****************************************************************************
 
-/*
 -- INFO: voir http://postgresql.developpez.com/sources/?page=chaines
 CREATE OR REPLACE FUNCTION "public"."noaccents_upper" (text) RETURNS text AS
 $body$
@@ -283,7 +282,6 @@ UPDATE tempinscriptions SET nom = public.noaccents_upper(nom) WHERE nom !~ '^([A
 UPDATE tempinscriptions SET prenom = public.noaccents_upper(nom) WHERE prenom !~ '^([A-Z]|\-| |'')+$';
 UPDATE tempradiations SET nom = public.noaccents_upper(nom) WHERE nom !~ '^([A-Z]|\-| |'')+$';
 UPDATE tempradiations SET prenom = public.noaccents_upper(nom) WHERE prenom !~ '^([A-Z]|\-| |'')+$';
-*/
 
 /*
 	-- Entrées non en majuscules sans accents dans personnes
@@ -302,7 +300,7 @@ UPDATE tempradiations SET prenom = public.noaccents_upper(nom) WHERE prenom !~ '
 		OR ( prenom3 IS NOT NULL AND CHAR_LENGTH( TRIM( BOTH ' ' FROM prenom3 ) ) > 0 AND prenom3 !~ '^([A-Z]|\-| |'')+$' );
 */
 
--- TODO: faire une fonction pour compléter / vérifier le NIR ?
+-- TODO: faire une fonction pour vérifier le NIR ?
 
 CREATE OR REPLACE FUNCTION "public"."calcul_cle_nir" (text) RETURNS text AS
 $body$
@@ -327,7 +325,6 @@ DROP TYPE IF EXISTS TYPE_ETATPE CASCADE;
 -- TODO: pourquoi une erreur avec les REFERENCES ?
 CREATE TABLE informationspe (
 	id				SERIAL NOT NULL PRIMARY KEY,
-	personne_id		INTEGER DEFAULT NULL REFERENCES personnes(id) ON UPDATE CASCADE ON DELETE CASCADE, -- Personne non trouvée -> NULL
 	nir				VARCHAR(15) DEFAULT NULL,
 	nom				VARCHAR(50) DEFAULT NULL, -- FIXME: une personne a un nom NULL (id 50946) dans la table personnes (CG 66, 20101217_dump_webrsaCG66_rc9.sql.gz)
 	prenom			VARCHAR(50) NOT NULL,
@@ -337,32 +334,28 @@ CREATE TABLE informationspe (
 -- Contrainte sur le NIR qui doit être bien formé ou être NULL -- FIXME avec les valeurs réelles possibles
 ALTER TABLE informationspe ADD CONSTRAINT informationspe_nir_correct_chk CHECK( nir IS NULL OR nir ~* '^[0-9]{15}$' );
 -- -- Test: doivent passer
--- INSERT INTO informationspe ( personne_id, nir, nom, prenom, dtnai ) VALUES
--- 	( ( SELECT id FROM personnes ORDER BY id ASC LIMIT 1 ) , NULL, 'Foo', 'Bar', '2010-10-28' ),
--- 	( ( SELECT id FROM personnes ORDER BY id DESC LIMIT 1 ) , '123456789012345', 'Foo', 'Bar', '2010-10-28' );
+-- INSERT INTO informationspe ( nir, nom, prenom, dtnai ) VALUES
+-- 	( NULL, 'Foo', 'Bar', '2010-10-28' ),
+-- 	( '123456789012345', 'Foo', 'Bar', '2010-10-28' );
 -- -- Test: ne doit pas passer
--- INSERT INTO informationspe ( personne_id, nir, nom, prenom, dtnai ) VALUES
--- 	( ( SELECT id FROM personnes ORDER BY id DESC LIMIT 1 ) , '123456 89012345', 'Foo', 'Bar', '2010-10-28' );
+-- INSERT INTO informationspe ( nir, nom, prenom, dtnai ) VALUES
+-- 	( '123456 89012345', 'Foo', 'Bar', '2010-10-28' );
 
 -- Indexes
-CREATE UNIQUE INDEX informationspe_personne_id_idx ON informationspe ( personne_id );
 CREATE INDEX informationspe_nir_idx ON informationspe ( nir varchar_pattern_ops );
 -- FIXME: majuscules ?
 CREATE INDEX informationspe_nom_idx ON informationspe ( nom varchar_pattern_ops );
 CREATE INDEX informationspe_prenom_idx ON informationspe ( prenom varchar_pattern_ops );
 CREATE INDEX informationspe_dtnai_idx ON informationspe ( dtnai );
--- FIXME: il ne faudrait pas avoir besoin de personne_id dans l'index unique, mais les données déjà en base ne sont pas toujours bonnes
-CREATE UNIQUE INDEX informationspe_unique_tuple_idx ON informationspe ( personne_id, nir, nom, prenom, dtnai );
+CREATE UNIQUE INDEX informationspe_unique_tuple_idx ON informationspe ( nir, nom, prenom, dtnai );
 
 COMMENT ON TABLE informationspe IS 'Liens entre Pôle Emploi et de supposés allocataires.';
 
 -- 2°) Population de la table avec les valeurs des anciennes tables ------------
 
 -- A partir des personnes déjà trouvées
-INSERT INTO informationspe ( personne_id, nir, nom, prenom, dtnai )
+INSERT INTO informationspe ( nir, nom, prenom, dtnai )
 SELECT
-		infospoleemploi.personne_id,
--- 		personnes.nir,
 		CASE WHEN ( personnes.nir ~* '^[0-9]{13}$' ) THEN personnes.nir || calcul_cle_nir( personnes.nir )
 			ELSE NULL
 		END AS nir,
@@ -374,13 +367,11 @@ SELECT
 		infospoleemploi.personne_id = personnes.id
 	)
 	GROUP BY
-		infospoleemploi.personne_id,
 		personnes.nir,
 		personnes.nom,
 		personnes.prenom,
 		personnes.dtnai
 	ORDER BY
-		infospoleemploi.personne_id,
 		personnes.nir,
 		personnes.nom,
 		personnes.prenom,
@@ -389,7 +380,6 @@ SELECT
 -- A partir des personnes pas encore trouvées (tables tempXXX)
 INSERT INTO informationspe ( nir, nom, prenom, dtnai )
 	SELECT
-			-- FIXME: est-ce le bon calcul d'une clé de NIR ?
 			CASE WHEN ( temp.nir ~* '^[0-9]{13}$' ) THEN temp.nir || calcul_cle_nir( temp.nir )
 				ELSE NULL
 			END AS nir,
@@ -427,9 +417,11 @@ INSERT INTO informationspe ( nir, nom, prenom, dtnai )
 				FROM informationspe
 				WHERE (
 						(
-							informationspe.nir = temp.nir
-							AND informationspe.nir IS NOT NULL
+							informationspe.nir IS NOT NULL
 							AND temp.nir IS NOT NULL
+							AND informationspe.nir ~* '^[0-9]{15}$'
+							AND temp.nir ~* '^[0-9]{13}$'
+							AND informationspe.nir = temp.nir || calcul_cle_nir( temp.nir )
 						)
 						OR (
 							informationspe.nom = temp.nom
@@ -460,6 +452,12 @@ CREATE TABLE historiqueetatspe (
 
 COMMENT ON TABLE historiqueetatspe IS 'Historique des états par lesquels passe un supposé allocataire à Pôle Emploi, avec l''identifiant PE associé.';
 
+CREATE INDEX historiqueetatspe_informationpe_id_idx ON historiqueetatspe ( informationpe_id );
+CREATE INDEX historiqueetatspe_identifiantpe_idx ON historiqueetatspe ( identifiantpe varchar_pattern_ops );
+CREATE INDEX historiqueetatspe_date_idx ON historiqueetatspe ( date );
+CREATE INDEX historiqueetatspe_etat_idx ON historiqueetatspe ( etat varchar_pattern_ops );
+CREATE INDEX historiqueetatspe_code_idx ON historiqueetatspe ( code varchar_pattern_ops );
+CREATE INDEX historiqueetatspe_motif_idx ON historiqueetatspe ( motif varchar_pattern_ops );
 CREATE UNIQUE INDEX historiqueetatspe_unique_tuple_idx ON historiqueetatspe ( informationpe_id, identifiantpe, date, etat, code, motif );
 
 -- 4°) Population de la table avec les valeurs des anciennes tables ------------
@@ -491,8 +489,23 @@ INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat, cod
 				WHEN infospoleemploi.dateinscription IS NOT NULL THEN NULL
 			END AS motif
 		FROM infospoleemploi
+			INNER JOIN personnes ON (
+				personnes.id = infospoleemploi.personne_id
+			)
 			INNER JOIN informationspe ON (
-				informationspe.personne_id = infospoleemploi.personne_id
+				(
+					informationspe.nir IS NOT NULL
+					AND personnes.nir IS NOT NULL
+					AND informationspe.nir ~* '^[0-9]{15}$'
+					AND personnes.nir ~* '^[0-9]{15}$'
+					AND informationspe.nir = personnes.nir
+				)
+				OR
+				(
+					informationspe.nom = personnes.nom
+					AND informationspe.prenom = personnes.prenom
+					AND informationspe.dtnai = personnes.dtnai
+				)
 			)
 		GROUP BY
 			informationspe.id,
@@ -556,9 +569,11 @@ INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat, cod
 		) AS temp
 			INNER JOIN informationspe ON (
 				(
-					informationspe.nir = temp.nir
-					AND informationspe.nir IS NOT NULL
+					informationspe.nir IS NOT NULL
 					AND temp.nir IS NOT NULL
+					AND informationspe.nir ~* '^[0-9]{15}$'
+					AND temp.nir ~* '^[0-9]{13}$'
+					AND informationspe.nir = temp.nir || calcul_cle_nir( temp.nir )
 				)
 				OR (
 					informationspe.nom = temp.nom
@@ -683,16 +698,35 @@ SELECT
 
 -- EXEMPLE: dernière information venant de Pôle Emploi pour les allocataires
 SELECT
-		COUNT(*),
--- 		informationspe.nir,
+-- 		COUNT(*),
+		informationspe.nir,
 		informationspe.nom,
 		informationspe.prenom,
-		informationspe.dtnai
--- 		historiqueetatspe.date,
--- 		historiqueetatspe.etat
+		informationspe.dtnai,
+		historiqueetatspe.date,
+		historiqueetatspe.etat
 	FROM informationspe
 		INNER JOIN historiqueetatspe ON (
 			historiqueetatspe.informationpe_id = informationspe.id
+		)
+		INNER JOIN personnes ON (
+			(
+				informationspe.nir IS NOT NULL
+				AND personnes.nir IS NOT NULL
+				AND informationspe.nir ~* '^[0-9]{15}$'
+				AND personnes.nir ~* '^[0-9]{13}$'
+				AND informationspe.nir = personnes.nir || calcul_cle_nir( personnes.nir )
+			)
+			OR (
+				informationspe.nom = personnes.nom
+				AND informationspe.prenom = personnes.prenom
+				AND informationspe.dtnai = personnes.dtnai
+			)
+		)
+		INNER JOIN prestations ON (
+			personnes.id = prestations.personne_id
+			AND prestations.natprest = 'RSA'
+			AND prestations.rolepers IN ( 'DEM', 'CJT' )
 		)
 	WHERE
 		historiqueetatspe.id IN (
@@ -703,12 +737,15 @@ SELECT
 				LIMIT 1
 		)
 	GROUP BY
--- 		nir,
-		nom,
-		prenom,
-		dtnai
--- 		date,
--- 		etat
+		informationspe.nir,
+		informationspe.nom,
+		informationspe.prenom,
+		informationspe.dtnai,
+		historiqueetatspe.date,
+		historiqueetatspe.etat
+	ORDER BY
+		historiqueetatspe.date DESC
+	LIMIT 10
 */
 
 -- *****************************************************************************
