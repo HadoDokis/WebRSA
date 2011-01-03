@@ -267,7 +267,7 @@ COMMIT;
 --       il faut passer ce script à partir de la console (par opposition à "à partir
 --       de phpPgAdmin".
 
-VACUUM FULL actions;
+/*VACUUM FULL actions;
 REINDEX TABLE actions;
 
 VACUUM FULL actionsinsertion;
@@ -397,6 +397,6 @@ VACUUM FULL totalisationsacomptes;
 REINDEX TABLE totalisationsacomptes;
 
 VACUUM FULL traitementspdos;
-REINDEX TABLE traitementspdos;
+REINDEX TABLE traitementspdos;*/
 
 -- *****************************************************************************
