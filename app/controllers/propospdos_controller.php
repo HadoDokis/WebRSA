@@ -26,7 +26,7 @@
             $this->set( 'typeserins', $this->Option->typeserins() );
             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
             $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
-            //$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
+            $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
             $this->set( 'originepdo', $this->Originepdo->find( 'list' ) );
 
             $this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );

@@ -26,6 +26,8 @@
             echo $xform->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $xform->input( 'Propopdo.id', array( 'type' => 'hidden' ) );
+            echo $xform->input( 'Decisionpropopdo.0.id', array( 'type' => 'hidden' ) );
+            echo $xform->input( 'Decisionpropopdo.0.propopdo_id', array( 'type' => 'hidden' ) );
 //             echo $xform->input( 'PropopdoTypenotifpdo.id', array( 'type' => 'hidden' ) );
 
             echo '</div>';
@@ -44,14 +46,14 @@
                 echo $xform->input( 'Propopdo.typepdo_id', array( 'label' =>  $xform->_label( __d( 'propopdo', 'Propopdo.typepdo_id', true ), array( 'required' => true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );
                 echo $xform->input( 'Propopdo.datereceptionpdo', array( 'label' =>  ( __( 'Date de réception de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
                 echo $xform->input( 'Propopdo.originepdo_id', array( 'label' =>  $xform->_label( __( 'Origine', true ), array( 'required' => true ) ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ) );
-                echo $xform->input( 'Propopdo.decision', array( 'type' => 'hidden', 'value' => '1' ) ).$xform->input( 'Propopdo.decisionpdo_id', array( 'label' =>  $xform->_label( __( 'Décision du Conseil Général', true ), array( 'required' => true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );
+                echo $xform->input( 'Propopdo.decision', array( 'type' => 'hidden', 'value' => '1' ) ).$xform->input( 'Decisionpropopdo.0.decisionpdo_id', array( 'label' =>  $xform->_label( __( 'Décision du Conseil Général', true ), array( 'required' => true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );
                 echo $xform->input( 'Propopdo.motifpdo', array( 'label' =>  ( __( 'Motif de la décision', true ) ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) );
                 echo $xform->input( 'Propopdo.iscomplet', array( 'label' =>  $xform->_label( __( 'Etat du dossier', true ), array( 'required' => true ) ), 'type' => 'radio', 'options' => $options['iscomplet'], 'empty' => true ) );
 //                 echo $xform->input( 'Propopdo.statutdecision', array( 'label' =>  ( __( 'Statut de la décision', true ) ), 'type' => 'select', 'options' => $options['statutdecision'], 'empty' => true ) );
 
-                echo $xform->input( 'Propopdo.datedecisionpdo', array( 'label' =>  ( __( 'Date de décision CG', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
+                echo $xform->input( 'Decisionpropopdo.0.datedecisionpdo', array( 'label' =>  ( __( 'Date de décision CG', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
 
-                echo $xform->input( 'Propopdo.commentairepdo', array( 'label' =>  'Observations', 'type' => 'text', 'rows' => 3, 'empty' => true ) );
+                echo $xform->input( 'Decisionpropopdo.0.commentairepdo', array( 'label' =>  'Observations', 'type' => 'text', 'rows' => 3, 'empty' => true ) );
 
                 echo $default->view(
                     $dossier,

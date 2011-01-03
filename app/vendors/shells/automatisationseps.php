@@ -57,25 +57,32 @@
 				array(
 					'joins' => array(
 						array(
+							'table'      => 'decisionspropospdos',
+							'alias'      => 'Decisionpropopdo',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Decisionpropopdo.decisionpdo_id = Propopdo.id' )
+						),
+						array(
 							'table'      => 'decisionspdos',
 							'alias'      => 'Decisionpdo',
 							'type'       => 'INNER',
 							'foreignKey' => false,
-							'conditions' => array( 'Propopdo.decisionpdo_id = Decisionpdo.id' )
+							'conditions' => array( 'Decisionpropopdo.decisionpdo_id = Decisionpdo.id' )
 						),
 					),
 					'contain' => false,
 					'conditions' => array(
 						'Decisionpdo.libelle LIKE' => 'DO 19%',
-						'Propopdo.datedecisionpdo IS NOT NULL',
+						'Decisionpropopdo.datedecisionpdo IS NOT NULL',
 						'Propopdo.personne_id NOT IN (
 							SELECT contratsinsertion.personne_id
 								FROM contratsinsertion
 								WHERE
 									contratsinsertion.personne_id = Propopdo.personne_id
-									AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) >= Propopdo.datedecisionpdo
+									AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) >= Decisionpropopdo.datedecisionpdo
 									-- OK pour démo
-									--AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) <= ( Propopdo.datedecisionpdo + INTERVAL \'1 mons\' )
+									--AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) <= ( Decisionpropopdo.datedecisionpdo + INTERVAL \'1 mons\' )
 						)', // FIXME: 1 mons -> paramétrage
 						// Et qui ne sont pas en EP
 						'Propopdo.personne_id NOT IN (
