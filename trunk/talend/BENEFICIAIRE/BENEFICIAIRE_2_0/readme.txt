@@ -1,11 +1,12 @@
-Projet Talend "BENEFICIAIRE_2_0" - Dinah BLIRANDO - CG93/DSI - 17/12/2010
+Projet Talend "BENEFICIAIRE_2_0" - Dinah BLIRANDO - CG93/DSI - 30/12/2010
 ==========================================================================
 
 * Traitement d'intégration des flux CAF de type Bénéficiaire (VRSB) dans l'application WebRSA.
 
 Version Talend	: TOS 3.2.3
 Version Cristal	: 29 à 32 
-Version WebRSA	: 2.0 rc11 et inférieure
+Version VRSB	: 0301 à 0401
+Version WebRSA	: 2.0 rc9
 
 
 * Documentation et scripts SQL dans les répertoires :
@@ -17,6 +18,9 @@ Version WebRSA	: 2.0 rc11 et inférieure
 	- INTEGRATION_FLUX_2_0_Guide_Utilisateur.pdf : Guide d'installation de configuration et d'utilisation des scripts Talend. 
 
 + sqlScripts :	
-	- etl_staging_v3.1.sql : Installation de la base de données STAGING_RSA.
-	- etl_webrsa_v3.1.sql  : Mise à jour de la base webrsa de la V30 à la V32.
-							 Ajout des tables de statistique d'intégration des flux dans la base de données webrsa.
+	- STAGING_RSA.SCHEMA-2.0rc9-20101209.sql : Installation de la base de données STAGING_RSA.
+	- webrsa.ETL.SCHEMA-2.0rc9-20101209.sql  : Ajout des tables de statistique d'intégration des flux dans la base de données webrsa.
+	+ patches :
+		- webrsa-2.0rc9_migration-v29-31.sql : Mise à jour de la base webrsa de la V28 à la V31.
+		- webrsa-2.0rc9_migration-v32.sql : Mise à jour de la base webrsa de la V31 à la V32.
+		- patch-*-STAGING_RSA : Patches à passer sur la base STAGING_RSA.
