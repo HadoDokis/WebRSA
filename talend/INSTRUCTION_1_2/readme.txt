@@ -5,6 +5,7 @@ Projet Talend "INSTRUCTION_1_2" - Dinah BLIRANDO - CG93/DSI - 30/12/2010
 
 Version Talend	: TOS 3.2.3
 Version @RSA	: 3.3 à 5 
+Version VIRS	: 0201 à 0301
 Version WebRSA	: 2.0rc9
 
 

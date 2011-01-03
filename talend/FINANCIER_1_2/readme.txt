@@ -4,7 +4,8 @@ Projet Talend "FINANCIER_1_2" - Dinah BLIRANDO - CG93/DSI - 30/12/2010
 * Traitement d'intégration des flux CAF de type Financier (VRSF) dans l'application WebRSA.
 
 Version Talend	: TOS 3.2.3
-Version Cristal	: 28 
+Version Cristal	: 27 
+Version VRSF	: 0101
 Version WebRSA	: 2.0 rc9
 
 

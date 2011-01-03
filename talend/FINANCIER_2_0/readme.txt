@@ -5,6 +5,7 @@ Projet Talend "FINANCIER_2_0" - Dinah BLIRANDO - CG93/DSI - 30/12/2010
 
 Version Talend	: TOS 3.2.3
 Version Cristal	: 29 à 32 
+Version VRSF	: 0201 à 0301
 Version WebRSA	: 2.0 rc9
 
 
