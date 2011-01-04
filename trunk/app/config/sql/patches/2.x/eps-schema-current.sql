@@ -339,6 +339,9 @@ ALTER TABLE nvsrsepsreorient66 OWNER TO webrsa;
 SELECT add_missing_table_field ('public', 'propospdos', 'serviceinstructeur_id', 'integer');
 ALTER TABLE propospdos ADD FOREIGN KEY (serviceinstructeur_id) REFERENCES servicesinstructeurs (id);
 
+DROP INDEX IF EXISTS propospdos_serviceinstructeur_id_idx;
+CREATE INDEX propospdos_serviceinstructeur_id_idx ON propospdos (serviceinstructeur_id);
+
 SELECT add_missing_table_field ('public', 'propospdos', 'created', 'TIMESTAMP WITHOUT TIME ZONE');
 SELECT add_missing_table_field ('public', 'propospdos', 'modified', 'TIMESTAMP WITHOUT TIME ZONE');
 
@@ -359,6 +362,10 @@ SELECT add_missing_table_field ('public', 'traitementspdos', 'dateecheance', 'DA
 SELECT add_missing_table_field ('public', 'traitementspdos', 'daterevision', 'DATE');
 SELECT add_missing_table_field ('public', 'traitementspdos', 'personne_id', 'integer');
 ALTER TABLE propospdos ADD FOREIGN KEY (personne_id) REFERENCES personnes (id);
+
+DROP INDEX IF EXISTS traitementspdos_personne_id_idx;
+CREATE INDEX traitementspdos_personne_id_idx ON traitementspdos (personne_id);
+
 SELECT add_missing_table_field ('public', 'traitementspdos', 'ficheanalyse', 'TEXT');
 SELECT add_missing_table_field ('public', 'traitementspdos', 'clos', 'INTEGER');
 UPDATE traitementspdos SET clos = '0' WHERE clos IS NULL;
@@ -676,6 +683,30 @@ CREATE TABLE decisionsdefautsinsertionseps66 (
 	created						TIMESTAMP WITHOUT TIME ZONE,
 	modified					TIMESTAMP WITHOUT TIME ZONE
 );
+
+-- *****************************************************************************
+-- Ajout dans le bilansparcours66
+-- *****************************************************************************
+
+DROP TYPE IF EXISTS TYPE_ACCOMPAGNEMENT CASCADE;
+CREATE TYPE TYPE_ACCOMPAGNEMENT AS ENUM ( 'prepro', 'social' );
+
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'accompagnement', 'TYPE_ACCOMPAGNEMENT');
+
+DROP TYPE IF EXISTS TYPE_TYPEFORMULAIRE CASCADE;
+CREATE TYPE TYPE_TYPEFORMULAIRE AS ENUM ( 'cg', 'pe' );
+
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'typeformulaire', 'TYPE_TYPEFORMULAIRE');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'textbilanparcours', 'TEXT');
+
+DROP INDEX IF EXISTS bilansparcours66_contratinsertion_id_idx;
+CREATE INDEX bilansparcours66_contratinsertion_id_idx ON bilansparcours66 (contratinsertion_id);
+
+DROP INDEX IF EXISTS bilansparcours66_orientstruct_id_idx;
+CREATE INDEX bilansparcours66_orientstruct_id_idx ON bilansparcours66 (orientstruct_id);
+
+DROP INDEX IF EXISTS bilansparcours66_referent_id_idx;
+CREATE INDEX bilansparcours66_referent_id_idx ON bilansparcours66 (referent_id);
 
 -- *****************************************************************************
 -- Indexes liés aux EPs
