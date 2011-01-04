@@ -479,5 +479,197 @@
 
 			return $success;
 		}
+
+		/**
+		* FIXME: et qui n'ont pas de dossier EP en cours de traitement pour cette thématique
+		* FIXME: et qui ne sont pas passés en EP pour ce motif dans un délai de moins de 1 mois (paramétrable)
+		*/
+
+		protected function _qdSelection() {
+			$queryData = array(
+				'fields' => array(
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.nir',
+					'Orientstruct.id',
+					'Orientstruct.personne_id',
+					'Orientstruct.date_valid',
+				),
+				'contain' => false,
+				'joins' => array(
+					array(
+						'table'      => 'prestations', // FIXME:
+						'alias'      => 'Prestation',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Personne.id = Prestation.personne_id',
+							'Prestation.natprest' => 'RSA',
+							'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+						)
+					),
+					array(
+						'table'      => 'foyers',
+						'alias'      => 'Foyer',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+					),
+					array(
+						'table'      => 'dossiers',
+						'alias'      => 'Dossier',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+					),
+					array(
+						'table'      => 'situationsdossiersrsa',
+						'alias'      => 'Situationdossierrsa',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Situationdossierrsa.dossier_id = Dossier.id',
+							'Situationdossierrsa.etatdosrsa' => array( 'Z', '2', '3', '4' )
+						)
+					),
+					array(
+						'table'      => 'calculsdroitsrsa', // FIXME:
+						'alias'      => 'Calculdroitrsa',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Personne.id = Calculdroitrsa.personne_id',
+							'Calculdroitrsa.toppersdrodevorsa' => '1',
+						)
+					),
+					array(
+						'table'      => 'orientsstructs', // FIXME:
+						'alias'      => 'Orientstruct',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Personne.id = Orientstruct.personne_id',
+							// La dernière
+							'Orientstruct.id IN (
+										SELECT o.id
+											FROM orientsstructs AS o
+											WHERE
+												o.personne_id = Personne.id
+												AND o.date_valid IS NOT NULL
+											ORDER BY o.date_valid DESC
+											LIMIT 1
+							)',
+							// en emploi
+							'Orientstruct.typeorient_id IN (
+								SELECT t.id
+									FROM typesorients AS t
+									WHERE t.parentid IS NOT NULL
+										AND t.lib_type_orient LIKE \'Emploi %\'
+							)'// FIXME
+						)
+					),
+				)
+			);
+
+			return $queryData;
+		}
+
+		/**
+		*
+		*/
+
+		public function qdNonInscrits() {
+			$queryData = $this->_qdSelection();
+			$queryData['conditions'] = array(
+				'Orientstruct.date_valid > \''.date( 'Y-m-d', strtotime( '-2 month' ) ).'\'',
+				'Personne.id NOT IN (
+					SELECT
+							personnes.id
+						FROM informationspe
+							INNER JOIN historiqueetatspe ON (
+								informationspe.id = historiqueetatspe.informationpe_id
+								AND historiqueetatspe.id IN (
+											SELECT h.id
+												FROM historiqueetatspe AS h
+												WHERE h.informationpe_id = informationspe.id
+												ORDER BY h.date DESC
+												LIMIT 1
+								)
+							)
+							INNER JOIN personnes ON (
+								(
+									personnes.nir IS NOT NULL
+									AND informationspe.nir IS NOT NULL
+									AND personnes.nir = informationspe.nir
+								)
+								OR (
+									personnes.nom = informationspe.nom
+									AND personnes.prenom = informationspe.prenom
+									AND personnes.dtnai = informationspe.dtnai
+								)
+							)
+						WHERE
+							personnes.id = Personne.id
+							AND historiqueetatspe.etat = \'inscription\'
+							AND historiqueetatspe.date >= Orientstruct.date_valid
+				)'
+			);
+
+			$queryData['order'] = array( 'Orientstruct.date_valid ASC' );
+
+			return $queryData;
+		}
+
+		/**
+		*
+		*/
+
+		public function qdRadies() {
+			$queryData = $this->_qdSelection();
+			$queryData['joins'][] = array(
+				'table'      => 'informationspe', // FIXME:
+				'alias'      => 'Informationpe',
+				'type'       => 'INNER',
+				'foreignKey' => false,
+				'conditions' => array(
+					'OR' => array(
+						array(
+							'Informationpe.nir IS NOT NULL',
+							'Personne.nir IS NOT NULL',
+							'Informationpe.nir = Personne.nir',
+						),
+						array(
+							'Informationpe.nom = Personne.nom',
+							'Informationpe.prenom = Personne.prenom',
+							'Informationpe.dtnai = Personne.dtnai',
+						)
+					)
+				)
+			);
+			$queryData['joins'][] = array(
+				'table'      => 'historiqueetatspe', // FIXME:
+				'alias'      => 'Historiqueetatpe',
+				'type'       => 'INNER',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Historiqueetatpe.informationpe_id = Informationpe.id',
+					'Historiqueetatpe.id IN (
+								SELECT h.id
+									FROM historiqueetatspe AS h
+									WHERE h.informationpe_id = Informationpe.id
+									ORDER BY h.date DESC
+									LIMIT 1
+					)'
+				)
+			);
+
+			// FIXME: seulement pour certains motifs
+			$queryData['conditions'] = array( 'Historiqueetatpe.etat' => 'radiation' );
+			$queryData['order'] = array( 'Historiqueetatpe.date ASC' );
+
+			return $queryData;
+		}
 	}
 ?>
