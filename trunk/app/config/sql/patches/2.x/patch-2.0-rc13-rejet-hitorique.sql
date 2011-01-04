@@ -2,6 +2,25 @@
 BEGIN;
 -- *****************************************************************************
 
+CREATE OR REPLACE FUNCTION create_schema_administration() RETURNS VOID AS
+$$
+BEGIN
+	IF NOT EXISTS(SELECT * FROM pg_namespace
+		WHERE
+			nspname = 'administration'
+	)
+	THEN
+		CREATE SCHEMA administration;
+	END IF;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT create_schema_administration();
+DROP FUNCTION create_schema_administration();
+
+-- -----------------------------------------------------------------------------
+
 -- Table: administration.rejet_historique
 
  DROP TABLE IF EXISTS administration.rejet_historique;

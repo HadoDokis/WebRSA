@@ -36,8 +36,30 @@ UPDATE apres
 -------------------------- Ajout du 08/10/2010 -----------------------------
 
 -- Il est possible que vous ayez à commenter la ou les commande(s) suivante:
-ALTER TABLE controlesadministratifs
-	ADD COLUMN foyer_id INTEGER NOT NULL;
+CREATE OR REPLACE FUNCTION create_field_controlesadministratifs_foyer_id() RETURNS VOID AS
+$$
+BEGIN
+	IF NOT EXISTS(
+		SELECT *
+			FROM pg_namespace n, pg_class c, pg_attribute a
+			WHERE
+				nspname = 'public'
+				AND c.relnamespace = n.oid
+				AND a.attrelid = c.oid
+				AND relname = 'controlesadministratifs'
+				AND attname = 'foyer_id'
+	)
+	THEN
+		ALTER TABLE controlesadministratifs ADD COLUMN foyer_id INTEGER NOT NULL;
+	END IF;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT create_field_controlesadministratifs_foyer_id();
+DROP FUNCTION create_field_controlesadministratifs_foyer_id();
+
+-- -----------------------------------------------------------------------------
 
 ALTER TABLE controlesadministratifs
 	ADD CONSTRAINT controlesadministratifs_foyer_id_fk
@@ -45,8 +67,26 @@ ALTER TABLE controlesadministratifs
 	ON UPDATE CASCADE
 	ON DELETE CASCADE;
 
-CREATE INDEX controlesadministratifs_foyer_id_idx
-	ON controlesadministratifs (foyer_id);
+CREATE OR REPLACE FUNCTION create_index_controlesadministratifs_foyer_id_idx() RETURNS VOID AS
+$$
+BEGIN
+	IF NOT EXISTS(
+		SELECT *
+			FROM pg_catalog.pg_class c
+			WHERE
+				c.relkind IN ('i','')
+				AND c.relname = 'controlesadministratifs_foyer_id_idx'
+	)
+	THEN
+		CREATE INDEX controlesadministratifs_foyer_id_idx ON controlesadministratifs (foyer_id);
+	END IF;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT create_index_controlesadministratifs_foyer_id_idx();
+DROP FUNCTION create_index_controlesadministratifs_foyer_id_idx();
+
 
 -- Corrections mauvaises valeurs par défaut pour le type time -> voir avec Gaétan
 -- ALTER TABLE comitesapres ALTER COLUMN heurecomite SET DEFAULT now();
