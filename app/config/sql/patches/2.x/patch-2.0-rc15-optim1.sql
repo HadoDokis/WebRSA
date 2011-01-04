@@ -109,15 +109,6 @@ CREATE INDEX bilanparcours_rendezvous_id_idx ON bilanparcours (rendezvous_id);
 DROP INDEX IF EXISTS bilanparcours_structurereferente_id_idx;
 CREATE INDEX bilanparcours_structurereferente_id_idx ON bilanparcours (structurereferente_id);
 
-DROP INDEX IF EXISTS bilansparcours66_contratinsertion_id_idx;
-CREATE INDEX bilansparcours66_contratinsertion_id_idx ON bilansparcours66 (contratinsertion_id);
-
-DROP INDEX IF EXISTS bilansparcours66_orientstruct_id_idx;
-CREATE INDEX bilansparcours66_orientstruct_id_idx ON bilansparcours66 (orientstruct_id);
-
-DROP INDEX IF EXISTS bilansparcours66_referent_id_idx;
-CREATE INDEX bilansparcours66_referent_id_idx ON bilansparcours66 (referent_id);
-
 DROP INDEX IF EXISTS connections_user_id_idx;
 CREATE INDEX connections_user_id_idx ON connections (user_id);
 
@@ -132,12 +123,6 @@ CREATE INDEX cuis_referent_id_idx ON cuis (referent_id);
 
 DROP INDEX IF EXISTS cuis_structurereferente_id_idx;
 CREATE INDEX cuis_structurereferente_id_idx ON cuis (structurereferente_id);
-
-DROP INDEX IF EXISTS decisionspropospdos_decisionpdo_id_idx;
-CREATE INDEX decisionspropospdos_decisionpdo_id_idx ON decisionspropospdos (decisionpdo_id);
-
-DROP INDEX IF EXISTS decisionspropospdos_propopdo_id_idx;
-CREATE INDEX decisionspropospdos_propopdo_id_idx ON decisionspropospdos (propopdo_id);
 
 DROP INDEX IF EXISTS detailsressourcesmensuelles_ressourcesmensuelles_detailressourcemensuelle_id_idx;
 CREATE INDEX detailsressourcesmensuelles_ressourcesmensuelles_detailressourcemensuelle_id_idx ON detailsressourcesmensuelles_ressourcesmensuelles (detailressourcemensuelle_id);
@@ -196,9 +181,6 @@ CREATE INDEX propospdos_personne_id_idx ON propospdos (personne_id);
 DROP INDEX IF EXISTS propospdos_referent_id_idx;
 CREATE INDEX propospdos_referent_id_idx ON propospdos (referent_id);
 
-DROP INDEX IF EXISTS propospdos_serviceinstructeur_id_idx;
-CREATE INDEX propospdos_serviceinstructeur_id_idx ON propospdos (serviceinstructeur_id);
-
 DROP INDEX IF EXISTS propospdos_structurereferente_id_idx;
 CREATE INDEX propospdos_structurereferente_id_idx ON propospdos (structurereferente_id);
 
@@ -235,23 +217,11 @@ CREATE INDEX suivisappuisorientation_personne_id_idx ON suivisappuisorientation 
 DROP INDEX IF EXISTS titressejour_personne_id_idx;
 CREATE INDEX titressejour_personne_id_idx ON titressejour (personne_id);
 
--- DROP INDEX IF EXISTS tmporientsstructs_personne_id_idx;
--- CREATE INDEX tmporientsstructs_personne_id_idx ON tmporientsstructs (personne_id);
-
--- DROP INDEX IF EXISTS tmporientsstructs_structurereferente_id_idx;
--- CREATE INDEX tmporientsstructs_structurereferente_id_idx ON tmporientsstructs (structurereferente_id);
-
--- DROP INDEX IF EXISTS tmporientsstructs_typeorient_id_idx;
--- CREATE INDEX tmporientsstructs_typeorient_id_idx ON tmporientsstructs (typeorient_id);
-
 DROP INDEX IF EXISTS totalisationsacomptes_identificationflux_id_idx;
 CREATE INDEX totalisationsacomptes_identificationflux_id_idx ON totalisationsacomptes (identificationflux_id);
 
 DROP INDEX IF EXISTS traitementspdos_descriptionpdo_id_idx;
 CREATE INDEX traitementspdos_descriptionpdo_id_idx ON traitementspdos (descriptionpdo_id);
-
-DROP INDEX IF EXISTS traitementspdos_personne_id_idx;
-CREATE INDEX traitementspdos_personne_id_idx ON traitementspdos (personne_id);
 
 DROP INDEX IF EXISTS traitementspdos_propopdo_id_idx;
 CREATE INDEX traitementspdos_propopdo_id_idx ON traitementspdos (propopdo_id);
@@ -261,142 +231,4 @@ CREATE INDEX traitementspdos_traitementtypepdo_id_idx ON traitementspdos (traite
 
 -- *****************************************************************************
 COMMIT;
--- *****************************************************************************
-
--- INFO: pour que les différents VACUUM / REINDEX soient pris en compte sans erreur,
---       il faut passer ce script à partir de la console (par opposition à "à partir
---       de phpPgAdmin".
-
-/*VACUUM FULL actions;
-REINDEX TABLE actions;
-
-VACUUM FULL actionsinsertion;
-REINDEX TABLE actionsinsertion;
-
-VACUUM FULL aidesagricoles;
-REINDEX TABLE aidesagricoles;
-
-VACUUM FULL aidesdirectes;
-REINDEX TABLE aidesdirectes;
-
-VACUUM FULL avispcgdroitsrsa;
-REINDEX TABLE avispcgdroitsrsa;
-
-VACUUM FULL avispcgpersonnes;
-REINDEX TABLE avispcgpersonnes;
-
-VACUUM FULL bilanparcours;
-REINDEX TABLE bilanparcours;
-
-VACUUM FULL bilansparcours66;
-REINDEX TABLE bilansparcours66;
-
-VACUUM FULL connections;
-REINDEX TABLE connections;
-
-VACUUM FULL contactspartenaires;
-REINDEX TABLE contactspartenaires;
-
-VACUUM FULL contratsinsertion;
-REINDEX TABLE contratsinsertion;
-
-VACUUM FULL cuis;
-REINDEX TABLE cuis;
-
-VACUUM FULL decisionspropospdos;
-REINDEX TABLE decisionspropospdos;
-
-VACUUM FULL detailsressourcesmensuelles_ressourcesmensuelles;
-REINDEX TABLE detailsressourcesmensuelles_ressourcesmensuelles;
-
-VACUUM FULL dossiers;
-REINDEX TABLE dossiers;
-
-VACUUM FULL dossierscaf;
-REINDEX TABLE dossierscaf;
-
-VACUUM FULL dsps;
-REINDEX TABLE dsps;
-
-VACUUM FULL grossesses;
-REINDEX TABLE grossesses;
-
-VACUUM FULL groups;
-REINDEX TABLE groups;
-
-VACUUM FULL informationseti;
-REINDEX TABLE informationseti;
-
-VACUUM FULL infosagricoles;
-REINDEX TABLE infosagricoles;
-
-VACUUM FULL infosfinancieres;
-REINDEX TABLE infosfinancieres;
-
-VACUUM FULL jetons;
-REINDEX TABLE jetons;
-
-VACUUM FULL memos;
-REINDEX TABLE memos;
-
-VACUUM FULL modescontact;
-REINDEX TABLE modescontact;
-
-VACUUM FULL orientations;
-REINDEX TABLE orientations;
-
-VACUUM FULL orientsstructs_servicesinstructeurs;
-REINDEX TABLE orientsstructs_servicesinstructeurs;
-
-VACUUM FULL paiementsfoyers;
-REINDEX TABLE paiementsfoyers;
-
-VACUUM FULL parcours;
-REINDEX TABLE parcours;
-
-VACUUM FULL personnes;
-REINDEX TABLE personnes;
-
-VACUUM FULL prestsform;
-REINDEX TABLE prestsform;
-
-VACUUM FULL propospdos;
-REINDEX TABLE propospdos;
-
-VACUUM FULL rattachements;
-REINDEX TABLE rattachements;
-
-VACUUM FULL referents;
-REINDEX TABLE referents;
-
-VACUUM FULL regroupementszonesgeo_zonesgeographiques;
-REINDEX TABLE regroupementszonesgeo_zonesgeographiques;
-
-VACUUM FULL ressources_ressourcesmensuelles;
-REINDEX TABLE ressources_ressourcesmensuelles;
-
-VACUUM FULL situationsdossiersrsa;
-REINDEX TABLE situationsdossiersrsa;
-
-VACUUM FULL suivisaidesaprestypesaides;
-REINDEX TABLE suivisaidesaprestypesaides;
-
-VACUUM FULL suivisappuisorientation;
-REINDEX TABLE suivisappuisorientation;
-
-VACUUM FULL suivisinstruction;
-REINDEX TABLE suivisinstruction;
-
-VACUUM FULL titressejour;
-REINDEX TABLE titressejour;
-
--- VACUUM FULL tmporientsstructs;
--- REINDEX TABLE tmporientsstructs;
-
-VACUUM FULL totalisationsacomptes;
-REINDEX TABLE totalisationsacomptes;
-
-VACUUM FULL traitementspdos;
-REINDEX TABLE traitementspdos;*/
-
 -- *****************************************************************************

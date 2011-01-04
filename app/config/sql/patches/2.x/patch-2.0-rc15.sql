@@ -225,20 +225,11 @@ ALTER TABLE propospdos DROP COLUMN isvalidation;
 ALTER TABLE propospdos DROP COLUMN validationdecision;
 ALTER TABLE propospdos DROP COLUMN datevalidationdecision;
 
--- *****************************************************************************
--- Ajout dans le bilansparcours66
--- *****************************************************************************
+DROP INDEX IF EXISTS decisionspropospdos_decisionpdo_id_idx;
+CREATE INDEX decisionspropospdos_decisionpdo_id_idx ON decisionspropospdos (decisionpdo_id);
 
-DROP TYPE IF EXISTS TYPE_ACCOMPAGNEMENT CASCADE;
-CREATE TYPE TYPE_ACCOMPAGNEMENT AS ENUM ( 'prepro', 'social' );
-
-SELECT add_missing_table_field ('public', 'bilansparcours66', 'accompagnement', 'TYPE_ACCOMPAGNEMENT');
-
-DROP TYPE IF EXISTS TYPE_TYPEFORMULAIRE CASCADE;
-CREATE TYPE TYPE_TYPEFORMULAIRE AS ENUM ( 'cg', 'pe' );
-
-SELECT add_missing_table_field ('public', 'bilansparcours66', 'typeformulaire', 'TYPE_TYPEFORMULAIRE');
-SELECT add_missing_table_field ('public', 'bilansparcours66', 'textbilanparcours', 'TEXT');
+DROP INDEX IF EXISTS decisionspropospdos_propopdo_id_idx;
+CREATE INDEX decisionspropospdos_propopdo_id_idx ON decisionspropospdos (propopdo_id);
 
 -- *****************************************************************************
 -- Nouvelle structure pour les informations venant de Pôle Emploi
@@ -455,7 +446,7 @@ COMMENT ON TABLE historiqueetatspe IS 'Historique des états par lesquels passe 
 CREATE INDEX historiqueetatspe_informationpe_id_idx ON historiqueetatspe ( informationpe_id );
 CREATE INDEX historiqueetatspe_identifiantpe_idx ON historiqueetatspe ( identifiantpe varchar_pattern_ops );
 CREATE INDEX historiqueetatspe_date_idx ON historiqueetatspe ( date );
-CREATE INDEX historiqueetatspe_etat_idx ON historiqueetatspe ( etat varchar_pattern_ops );
+CREATE INDEX historiqueetatspe_etat_idx ON historiqueetatspe ( etat );
 CREATE INDEX historiqueetatspe_code_idx ON historiqueetatspe ( code varchar_pattern_ops );
 CREATE INDEX historiqueetatspe_motif_idx ON historiqueetatspe ( motif varchar_pattern_ops );
 CREATE UNIQUE INDEX historiqueetatspe_unique_tuple_idx ON historiqueetatspe ( informationpe_id, identifiantpe, date, etat, code, motif );

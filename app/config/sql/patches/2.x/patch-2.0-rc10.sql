@@ -13,28 +13,70 @@ BEGIN;
 -- 21/07/2010: mise à jour pour la V.30 du flux bénéficiaire
 -- *****************************************************************************
 
--- Il est possible que vous ayez à commenter la commande suivante:
-ALTER TABLE situationsdossiersrsa ADD COLUMN motirefursa CHAR(3);
+CREATE LANGUAGE plpgsql;
+
+-- Il est possible que le champ existe déjà:
+CREATE OR REPLACE FUNCTION create_field_situationsdossiersrsa_motirefursa() RETURNS VOID AS
+$$
+BEGIN
+	IF NOT EXISTS(
+		SELECT *
+			FROM pg_namespace n, pg_class c, pg_attribute a
+			WHERE
+				nspname = 'public'
+				AND c.relnamespace = n.oid
+				AND a.attrelid = c.oid
+				AND relname = 'situationsdossiersrsa'
+				AND attname = 'motirefursa'
+	)
+	THEN
+		ALTER TABLE situationsdossiersrsa ADD COLUMN motirefursa CHAR(3);
+	END IF;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT create_field_situationsdossiersrsa_motirefursa();
+DROP FUNCTION create_field_situationsdossiersrsa_motirefursa();
 
 -----------------------------------------------------------------------------
 
--- Il est possible que vous ayez à commenter la commande suivante:
-CREATE TABLE controlesadministratifs (
-    id              	SERIAL NOT NULL PRIMARY KEY,
-    dteffcibcontro  	DATE,
-    cibcontro        	CHAR(3),
-    cibcontromsa        CHAR(3),
-    dtdeteccontro       DATE,
-    dtclocontro        	DATE,
-    libcibcontro        VARCHAR(45),
-    famcibcontro        CHAR(2),
-    natcibcontro        CHAR(3),
-    commacontro        	CHAR(3),
-    typecontro        	CHAR(2),
-    typeimpaccontro     CHAR(1),
-    mtindursacgcontro	DECIMAL(11,2),
-    mtraprsacgcontro    DECIMAL(11,2)
-);
+-- Il est possible que la table existe déjà:
+CREATE OR REPLACE FUNCTION create_table_controlesadministratifs() RETURNS VOID AS
+$$
+BEGIN
+	IF NOT EXISTS(
+		SELECT *
+			FROM pg_tables
+			WHERE schemaname = 'public'
+				AND tablename = 'controlesadministratifs'
+	)
+	THEN
+		CREATE TABLE controlesadministratifs (
+			id              	SERIAL NOT NULL PRIMARY KEY,
+			dteffcibcontro  	DATE,
+			cibcontro        	CHAR(3),
+			cibcontromsa        CHAR(3),
+			dtdeteccontro       DATE,
+			dtclocontro        	DATE,
+			libcibcontro        VARCHAR(45),
+			famcibcontro        CHAR(2),
+			natcibcontro        CHAR(3),
+			commacontro        	CHAR(3),
+			typecontro        	CHAR(2),
+			typeimpaccontro     CHAR(1),
+			mtindursacgcontro	DECIMAL(11,2),
+			mtraprsacgcontro    DECIMAL(11,2)
+		);
+	END IF;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT create_table_controlesadministratifs();
+DROP FUNCTION create_table_controlesadministratifs();
+
+--
 
 ALTER TABLE tiersprestatairesapres ADD COLUMN nometaban VARCHAR(24);
 

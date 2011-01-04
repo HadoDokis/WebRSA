@@ -1,4 +1,15 @@
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
+SET search_path = public, pg_catalog;
+SET default_tablespace = '';
+SET default_with_oids = false;
+
+-- *****************************************************************************
 BEGIN;
+-- *****************************************************************************
 
 CREATE TABLE dsps_revs (
 	id						SERIAL NOT NULL PRIMARY KEY,
@@ -207,4 +218,6 @@ CREATE TABLE detailsconforts_revs (
 );
 CREATE INDEX detailsconforts_revs_dsp_id_idx ON detailsconforts_revs (dsp_rev_id);
 
+-- *****************************************************************************
 COMMIT;
+-- *****************************************************************************

@@ -263,12 +263,15 @@
 	}
 
     /** ************************************************************************
-    *	Remplace les caractères accentués par des caractères non accentués
-	*	dans une chaîne de caractères
-	*	@param string $string chaîne de caractères à modifier
-	*	@return string chaîne de caractères sans accents
-	*	TODO: http://www.nabble.com/Accent-insensitive-search--td22583222.html
-	*		(liste des accents)
+    * Remplace les caractères accentués par des caractères non accentués
+	* dans une chaîne de caractères
+	* @param string $string chaîne de caractères à modifier
+	* @return string chaîne de caractères sans accents
+	* TODO: http://www.nabble.com/Accent-insensitive-search--td22583222.html
+	*     (liste des accents)
+	* ATTENTION: il faut utiliser les fonctions mb_internal_encoding et mb_regex_encoding
+	*     pour que le système sache quels encodages il traite, afin que le remplacement
+	*     d'acents se passe bien.
     *** ***********************************************************************/
 
     function replace_accents( $string ) {
