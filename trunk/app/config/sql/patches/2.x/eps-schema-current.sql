@@ -422,6 +422,7 @@ SELECT add_missing_table_field ('public', 'bilansparcours66', 'motifsaisine', 'T
 
 ALTER TABLE bilansparcours66 ALTER COLUMN situationallocataire DROP NOT NULL;
 ALTER TABLE bilansparcours66 ALTER COLUMN bilanparcours DROP NOT NULL;
+ALTER TABLE bilansparcours66 ALTER COLUMN contratinsertion_id DROP NOT NULL;
 
 -- -----------------------------------------------------------------------------
 -- Développement Thierry :
