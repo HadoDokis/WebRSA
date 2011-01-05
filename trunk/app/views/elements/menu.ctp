@@ -250,7 +250,10 @@
 					<li><?php echo $xhtml->link( 'Liste des dossiers', array( 'controller' => 'dossierseps', 'action' => 'index' ) );?></li>
 					<li><a href="#">CG 66</a>
 						<ul>
+							<!-- FIXME: permissions -->
 							<li><?php echo $xhtml->link( 'Bilans de parcours 66', array( 'controller' => 'bilansparcours66', 'action' => 'index' ) );?></li>
+							<li><?php echo $xhtml->link( 'Non inscrits Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits' ) );?></li>
+							<li><?php echo $xhtml->link( 'Radiés Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies' ) );?></li>
 						</ul>
 					</li>
 					<li><a href="#">CG 93</a>

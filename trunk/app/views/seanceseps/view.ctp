@@ -2,7 +2,7 @@
 <div  id="ficheCI">
 	<ul class="actionMenu">
 	<?php
-		
+
 		echo '<li>'.$xhtml->editLink(
 			__d('Seanceep','Seanceep.edit',true),
 			array( 'controller' => 'seanceseps', 'action' => 'edit', $seanceep['Seanceep']['id'] )
@@ -45,7 +45,7 @@
 			).' </li>';
 		}
 		else {
-			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::traitercg',true ).'</span></li>';
+			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::finalisercg',true ).'</span></li>';
 		}
 	?>
 	</ul>

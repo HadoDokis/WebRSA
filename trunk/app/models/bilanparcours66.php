@@ -178,22 +178,25 @@
 					return false;
 				}
 
-				// Recherche de l'ancien contrat d'insertion
-				$vxContratinsertion = $this->Contratinsertion->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-							'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
-							//'Contratinsertion.df_ci >=' => date( 'Y-m-d' )
-						),
-						'contain' => false
-					)
-				);
+				if( $data['Bilanparcours66']['changementrefsansep'] != 'O' ) {
+					// Recherche de l'ancien contrat d'insertion
+					$vxContratinsertion = $this->Contratinsertion->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+								'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
+								//'Contratinsertion.df_ci >=' => date( 'Y-m-d' )
+							),
+							'contain' => false
+						)
+					);
 
-				if( empty( $vxContratinsertion ) ) {
-					debug( 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
-					return false;
+					if( empty( $vxContratinsertion ) ) {
+						$this->invalidate( 'changementrefsansep', 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
+						//debug( 'Vieux contrat d\'insertion répondant aux critères non trouvé.' ); // FIXME: dans le formulaire
+						return false;
+					}
 				}
 
 				// Sauvegarde de la nouvelle orientation
@@ -215,68 +218,72 @@
 					debug( $this->validationErrors );
 				}
 
-				// Suppression des règles de validation pour la copie du contrat
-				$validateContratinsertion = $this->Contratinsertion->validate;
-				$this->Contratinsertion->validate = array();
+				if( !empty( $vxContratinsertion ) ) {
+					// Suppression des règles de validation pour la copie du contrat
+					$validateContratinsertion = $this->Contratinsertion->validate;
+					$this->Contratinsertion->validate = array();
 
-				// Clôture de l'ancien contrat à la date d'aujourd'hui
-				$vxContratinsertion['Contratinsertion']['df_ci'] = date( 'Y-m-d' );
-				$this->Contratinsertion->create( $vxContratinsertion );
-				$success = $this->Contratinsertion->save() && $success;
+					// Clôture de l'ancien contrat à la date d'aujourd'hui
+					$vxContratinsertion['Contratinsertion']['df_ci'] = date( 'Y-m-d' );
+					$this->Contratinsertion->create( $vxContratinsertion );
+					$success = $this->Contratinsertion->save() && $success;
 
-				// Création du nouveau contrat avec les dates préconisées
-				$contratinsertion = $vxContratinsertion;
-				unset( $contratinsertion['Contratinsertion']['id'] );
-				$contratinsertion['Contratinsertion']['dd_ci'] = $data[$this->alias]['ddreconductoncontrat'];
-				$contratinsertion['Contratinsertion']['df_ci'] = $data[$this->alias]['dfreconductoncontrat'];
+					// Création du nouveau contrat avec les dates préconisées
+					$contratinsertion = $vxContratinsertion;
+					unset( $contratinsertion['Contratinsertion']['id'] );
+					$contratinsertion['Contratinsertion']['dd_ci'] = $data[$this->alias]['ddreconductoncontrat'];
+					$contratinsertion['Contratinsertion']['df_ci'] = $data[$this->alias]['dfreconductoncontrat'];
 
-				/// FIXME: recherche de l'id du type de contrat "Renouvellement" (changer par un enum)
-				$idRenouvellement = $this->Contratinsertion->Typocontrat->field( 'Typocontrat.id', array( 'Typocontrat.lib_typo' => 'Renouvellement' ) );
+					/// FIXME: recherche de l'id du type de contrat "Renouvellement" (changer par un enum)
+					$idRenouvellement = $this->Contratinsertion->Typocontrat->field( 'Typocontrat.id', array( 'Typocontrat.lib_typo' => 'Renouvellement' ) );
 
-				// Incrémentation rang du contrat et du type de contrat
-				$contratinsertion['Contratinsertion']['rg_ci'] = ( $contratinsertion['Contratinsertion']['rg_ci'] + 1 );
-				$contratinsertion['Contratinsertion']['typocontrat_id'] = $idRenouvellement;
-				$contratinsertion['Contratinsertion']['num_contrat'] = 'REN';
+					// Incrémentation rang du contrat et du type de contrat
+					$contratinsertion['Contratinsertion']['rg_ci'] = ( $contratinsertion['Contratinsertion']['rg_ci'] + 1 );
+					$contratinsertion['Contratinsertion']['typocontrat_id'] = $idRenouvellement;
+					$contratinsertion['Contratinsertion']['num_contrat'] = 'REN';
 
-				// La date de validation est à null afin de pouvoir modifier le contrat
-				$contratinsertion['Contratinsertion']['datevalidation_ci'] = null;
-				// La date de saisie du nouveau contrat est égale à la date du jour
-				$contratinsertion['Contratinsertion']['date_saisi_ci'] = date( 'Y-m-d' );
+					// La date de validation est à null afin de pouvoir modifier le contrat
+					$contratinsertion['Contratinsertion']['datevalidation_ci'] = null;
+					// La date de saisie du nouveau contrat est égale à la date du jour
+					$contratinsertion['Contratinsertion']['date_saisi_ci'] = date( 'Y-m-d' );
 
-				// Sauvegarde du nouveau contrat d'insertion
-				$this->Contratinsertion->create( $contratinsertion );
-				$success = $this->Contratinsertion->save() && $success;
+					// Sauvegarde du nouveau contrat d'insertion
+					$this->Contratinsertion->create( $contratinsertion );
+					$success = $this->Contratinsertion->save() && $success;
 
-				// Remise des règles de validation pour la copie du contrat
-				$this->Contratinsertion->validate = $validateContratinsertion;
+					// Remise des règles de validation pour la copie du contrat
+					$this->Contratinsertion->validate = $validateContratinsertion;
 
-				/*// Recherche du référent -> FIXME: une fonction ?
-				$referent_id = $vxOrientstruct['Orientstruct']['referent_id'];
 
-				// Recherche référent lié au CER
-				if( empty( $referent_id ) ) {
-					$referent_id = $contratinsertion['Contratinsertion']['referent_id'];
-				}
+					/*// Recherche du référent -> FIXME: une fonction ?
+					$referent_id = $vxOrientstruct['Orientstruct']['referent_id'];
 
-				// Recherche du référent lié au parcours
-				if( empty( $referent_id ) ) {
-					$personneReferent = $this->Contratinsertion->Personne->PersonneReferent->find(
-						'first',
-						array(
-							'conditions' => array(
-								'PersonneReferent.personne_id' => $vxOrientstruct['Orientstruct']['personne_id']
-							)
-						)
-					);
-					if( !empty( $personneReferent ) ) {
-						$referent_id = $personneReferent['PersonneReferent']['referent_id'];
+					// Recherche référent lié au CER
+					if( empty( $referent_id ) ) {
+						$referent_id = $contratinsertion['Contratinsertion']['referent_id'];
 					}
+
+					// Recherche du référent lié au parcours
+					if( empty( $referent_id ) ) {
+						$personneReferent = $this->Contratinsertion->Personne->PersonneReferent->find(
+							'first',
+							array(
+								'conditions' => array(
+									'PersonneReferent.personne_id' => $vxOrientstruct['Orientstruct']['personne_id']
+								)
+							)
+						);
+						if( !empty( $personneReferent ) ) {
+							$referent_id = $personneReferent['PersonneReferent']['referent_id'];
+						}
+					}
+
+					// Sauvegarde du bilan
+					$data[$this->alias]['referent_id'] = $referent_id;//FIXME: si changement  de référent*/
+
+					$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
 				}
 
-				// Sauvegarde du bilan
-				$data[$this->alias]['referent_id'] = $referent_id;//FIXME: si changement  de référent*/
-
-				$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
 				$this->create( $data );
 				$success = $this->save() && $success;
 			}
@@ -303,9 +310,6 @@
 		*/
 
 		public function saisine( $data ) {
-/*debug( $data );//switch['Bilanparcours66']['proposition'] -> parcours/audition/traitement
-debug( $data['Bilanparcours66']['proposition'] );*/
-
 			// Saisine parcours
 			if( $data['Bilanparcours66']['proposition'] == 'parcours' ) {
 				$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
@@ -321,33 +325,36 @@ debug( $data['Bilanparcours66']['proposition'] );*/
 						)
 					);
 
-					if( empty( $vxOrientstruct ) ) {
-						$this->invalidate( 'choixparcours', 'Vieille orientation répondant aux critères non trouvée.' );
-						//debug( 'Vieille orientation répondant aux critères non trouvée.' );
-						return false;
+					if( !isset( $data[$this->alias]['origine'] ) || $data[$this->alias]['origine'] != 'Defautinsertionep66' ) {
+						if( empty( $vxOrientstruct ) ) {
+							$this->invalidate( 'choixparcours', 'Vieille orientation répondant aux critères non trouvée.' );
+							//debug( 'Vieille orientation répondant aux critères non trouvée.' );
+							return false;
+						}
+
+						$vxContratinsertion = $this->Contratinsertion->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
+									'Contratinsertion.df_ci >=' => date( 'Y-m-d' )
+								),
+								'contain' => false
+							)
+						);
+
+						if( empty( $vxContratinsertion ) ) {
+							$this->invalidate( 'choixparcours', 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
+							//debug( 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
+							return false;
+						}
+
+						// Sauvegarde du bilan
+		// 				$data[$this->alias]['referent_id'] = $vxOrientstruct['Orientstruct']['referent_id'];//FIXME: si changement  de référent
+						$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
 					}
 
-					$vxContratinsertion = $this->Contratinsertion->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-								'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
-								'Contratinsertion.df_ci >=' => date( 'Y-m-d' )
-							),
-							'contain' => false
-						)
-					);
-
-					if( empty( $vxContratinsertion ) ) {
-						$this->invalidate( 'choixparcours', 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
-						//debug( 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
-						return false;
-					}
-
-					// Sauvegarde du bilan
-	// 				$data[$this->alias]['referent_id'] = $vxOrientstruct['Orientstruct']['referent_id'];//FIXME: si changement  de référent
-					$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
 					$this->create( $data );
 					$success = $this->save() && $success;
 
@@ -375,6 +382,7 @@ debug( $data['Bilanparcours66']['proposition'] );*/
 			// Saisine audition
 			else if( $data['Bilanparcours66']['proposition'] == 'audition' ) {
 				$data[$this->alias]['saisineepparcours'] = '0';
+debug( $data );
 				$this->create( $data );
 				if( $success = $this->validates() ) {
 					$vxOrientstruct = $this->Orientstruct->find(
@@ -403,8 +411,9 @@ debug( $data['Bilanparcours66']['proposition'] );*/
 							'contain' => false
 						)
 					);
+
 					// FIXME: erreur pas dans choixparcours
-					if( empty( $vxContratinsertion ) ) {
+					if( $data[$this->alias]['examenaudition'] != 'DRD' && empty( $vxContratinsertion ) ) {
 						$this->invalidate( 'examenaudition', 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
 						return false;
 					}

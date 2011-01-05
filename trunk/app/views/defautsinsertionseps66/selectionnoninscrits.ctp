@@ -1,9 +1,10 @@
-<h1><?php echo $this->pageTitle = 'Sélection des allocataires non inscrits à Pôle Emploi';?></h1>
+<h1><?php echo $this->pageTitle = __d( 'defautinsertionep66', "{$this->name}::{$this->action}", true );?></h1>
+
 <?php
 	echo $default2->index(
 		$personnes,
 		array(
-			'Orientstruct.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean' ),
+			'Orientstruct.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'defautinsertionep66' ),
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
@@ -18,6 +19,4 @@
 			'paginate' => 'Personne'
 		)
 	);
-
-// 	debug( $personnes );
 ?>
