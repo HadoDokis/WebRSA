@@ -9,11 +9,30 @@ SET default_with_oids = false;
 
 -- *****************************************************************************
 BEGIN;
+
+-- Création du langage plpgsl s'il n'existe pas
+-- INFO: http://andreas.scherbaum.la/blog/archives/346-create-language-if-not-exist.html
+CREATE OR REPLACE FUNCTION public.create_plpgsql_language ()
+	RETURNS TEXT
+	AS $$
+		CREATE LANGUAGE plpgsql;
+		SELECT 'language plpgsql created'::TEXT;
+	$$
+LANGUAGE 'sql';
+
+SELECT CASE WHEN
+	( SELECT true::BOOLEAN FROM pg_language WHERE lanname='plpgsql')
+THEN
+	(SELECT 'language already installed'::TEXT)
+ELSE
+	(SELECT public.create_plpgsql_language())
+END;
+
+DROP FUNCTION public.create_plpgsql_language ();
+
 -- *****************************************************************************
 -- 21/07/2010: mise à jour pour la V.30 du flux bénéficiaire
 -- *****************************************************************************
-
-CREATE LANGUAGE plpgsql;
 
 -- Il est possible que le champ existe déjà:
 CREATE OR REPLACE FUNCTION create_field_situationsdossiersrsa_motirefursa() RETURNS VOID AS

@@ -84,13 +84,45 @@ DROP TABLE IF EXISTS eps_partseps CASCADE;
 
 /*
 * Tables de jointure avec colonne id qui n'est pas clé primaire
-* Il est possible que vous ayez à commenter les 4 commandes suivantes.
+* Ces clés primaires existent dans certains cas
 */
 
-ALTER TABLE orientsstructs_servicesinstructeurs ADD PRIMARY KEY (id);
-ALTER TABLE structuresreferentes_zonesgeographiques ADD PRIMARY KEY (id);
-ALTER TABLE users_contratsinsertion ADD PRIMARY KEY (id);
-ALTER TABLE zonesgeographiques_regroupementszonesgeo ADD PRIMARY KEY (id);
+CREATE OR REPLACE FUNCTION create_missing_pkey(text,text) RETURNS VOID AS
+$$
+DECLARE
+  p_table     alias for $1;
+  p_field     alias for $2;
+  v_query     text;
+  v_row       record;
+BEGIN
+	SELECT 1 INTO v_row
+		FROM
+			pg_catalog.pg_class c
+			JOIN pg_catalog.pg_namespace n ON n.oid        = c.relnamespace
+			JOIN pg_catalog.pg_index i     ON i.indexrelid = c.oid
+			JOIN pg_catalog.pg_class t     ON i.indrelid   = t.oid
+		WHERE
+			c.relkind = 'i'
+			AND indisprimary = true
+			AND n.nspname = 'public'
+			AND pg_catalog.pg_table_is_visible(c.oid)
+			AND t.relname = 'orientsstructs_servicesinstructeurs';
+
+	IF NOT found THEN
+			raise notice 'Upgrade table % - ADD PRIMARY KEY %', p_table, p_field;
+			v_query := 'ALTER TABLE ' || p_table || ' ADD PRIMARY KEY (' || p_field || ');';
+			EXECUTE v_query;
+		END IF;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+SELECT create_missing_pkey( 'orientsstructs_servicesinstructeurs', 'id' );
+SELECT create_missing_pkey( 'structuresreferentes_zonesgeographiques', 'id' );
+SELECT create_missing_pkey( 'users_contratsinsertion', 'id' );
+SELECT create_missing_pkey( 'zonesgeographiques_regroupementszonesgeo', 'id' );
+
+DROP FUNCTION create_missing_pkey(text,text);
 
 /*
 * Renommage de la table dossiers_rsa en dossiers

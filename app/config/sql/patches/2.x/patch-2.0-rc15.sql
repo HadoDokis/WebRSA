@@ -739,6 +739,52 @@ SELECT
 	LIMIT 10
 */
 
+DROP INDEX IF EXISTS decisionspropospdos_datedecisionpdo_idx;
+DROP INDEX IF EXISTS decisionspropospdos_datevalidationdecision_idx;
+DROP INDEX IF EXISTS decisionspropospdos_etatdossierpdo_idx;
+DROP INDEX IF EXISTS decisionspropospdos_isvalidation_idx;
+DROP INDEX IF EXISTS decisionspropospdos_validationdecision_idx;
+DROP INDEX IF EXISTS detailsressourcesmensuelles_ressourcesmensuelles_detailressourcemensuelle_id_idx;
+DROP INDEX IF EXISTS detailsressourcesmensuelles_ressourcesmensuelles_ressourcemensuelle_id_idx;
+DROP INDEX IF EXISTS dsps_statutoccupation_idx;
+DROP INDEX IF EXISTS dsps_revs_statutoccupation_idx;
+DROP INDEX IF EXISTS locsvehicinsert_pieceslocsvehicinsert_piecelocvehicinsert_id_idx;
+DROP INDEX IF EXISTS regroupementszonesgeo_zonesgeographiques_regroupementzonegeo_id_idx;
+DROP INDEX IF EXISTS regroupementszonesgeo_zonesgeographiques_zonegeographique_id_idx;
+DROP INDEX IF EXISTS structuresreferentes_zonesgeographiques_structurereferente_id_idx;
+DROP INDEX IF EXISTS traitementspdos_aidesubvreint_idx;
+DROP INDEX IF EXISTS traitementspdos_dtdebutactivite_idx;
+DROP INDEX IF EXISTS traitementspdos_dtdebutperiode_idx;
+DROP INDEX IF EXISTS traitementspdos_dtecheance_idx;
+DROP INDEX IF EXISTS traitementspdos_dtfinperiode_idx;
+DROP INDEX IF EXISTS traitementspdos_dtprisecompte_idx;
+DROP INDEX IF EXISTS traitementspdos_regime_idx;
+DROP INDEX IF EXISTS traitementspdos_saisonnier_idx;
+
+-- -----------------------------------------------------------------------------
+
+CREATE INDEX decisionspropospdos_datedecisionpdo_idx ON decisionspropospdos (datedecisionpdo);
+CREATE INDEX decisionspropospdos_datevalidationdecision_idx ON decisionspropospdos (datevalidationdecision);
+CREATE INDEX decisionspropospdos_etatdossierpdo_idx ON decisionspropospdos (etatdossierpdo);
+CREATE INDEX decisionspropospdos_isvalidation_idx ON decisionspropospdos (isvalidation);
+CREATE INDEX decisionspropospdos_validationdecision_idx ON decisionspropospdos (validationdecision);
+CREATE INDEX detailsressourcesmensuelles_ressourcesmensuelles_detailressourcemensuelle_id_idx ON detailsressourcesmensuelles_ressourcesmensuelles (detailressourcemensuelle_id);
+CREATE INDEX detailsressourcesmensuelles_ressourcesmensuelles_ressourcemensuelle_id_idx ON detailsressourcesmensuelles_ressourcesmensuelles (ressourcemensuelle_id);
+CREATE INDEX dsps_statutoccupation_idx ON dsps (statutoccupation);
+CREATE INDEX dsps_revs_statutoccupation_idx ON dsps_revs (statutoccupation);
+CREATE INDEX locsvehicinsert_pieceslocsvehicinsert_piecelocvehicinsert_id_idx ON locsvehicinsert_pieceslocsvehicinsert (piecelocvehicinsert_id);
+CREATE INDEX regroupementszonesgeo_zonesgeographiques_regroupementzonegeo_id_idx ON regroupementszonesgeo_zonesgeographiques (regroupementzonegeo_id);
+CREATE INDEX regroupementszonesgeo_zonesgeographiques_zonegeographique_id_idx ON regroupementszonesgeo_zonesgeographiques (zonegeographique_id);
+CREATE INDEX structuresreferentes_zonesgeographiques_structurereferente_id_idx ON structuresreferentes_zonesgeographiques (structurereferente_id);
+CREATE INDEX traitementspdos_aidesubvreint_idx ON traitementspdos (aidesubvreint);
+CREATE INDEX traitementspdos_dtdebutactivite_idx ON traitementspdos (dtdebutactivite);
+CREATE INDEX traitementspdos_dtdebutperiode_idx ON traitementspdos (dtdebutperiode);
+CREATE INDEX traitementspdos_dtecheance_idx ON traitementspdos (dtecheance);
+CREATE INDEX traitementspdos_dtfinperiode_idx ON traitementspdos (dtfinperiode);
+CREATE INDEX traitementspdos_dtprisecompte_idx ON traitementspdos (dtprisecompte);
+CREATE INDEX traitementspdos_regime_idx ON traitementspdos (regime);
+CREATE INDEX traitementspdos_saisonnier_idx ON traitementspdos (saisonnier);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
