@@ -101,76 +101,6 @@
 			);
 		}*/
 
-
-		/**
-		* TODO: comment finaliser l'orientation précédente ?
-		* FIXME: à ne faire que quand le cg valide sa décision
-		*/
-
-		/*public function finaliser( $seanceep_id, $etape ) {
-			$dossierseps = $this->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Dossierep.seanceep_id' => $seanceep_id
-					),
-					'contain' => array(
-						'Nvsrepreorient66' => array(
-							'conditions' => array(
-								'Nvsrepreorient66.etape' => $etape
-							)
-						),
-						'Dossierep',
-						'Bilanparcours66' => array(
-							'Orientstruct',
-						)
-					)
-				)
-			);
-
-			$success = true;
-			foreach( $dossierseps as $dossierep ) {
-				if( $dossierep['Nvsrepreorient66'][0]['decision'] == 'accepte' ) {
-					$orientstruct = array(
-						'Orientstruct' => array(
-							'personne_id' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
-							'typeorient_id' => $dossierep['Nvsrepreorient66'][0]['typeorient_id'],
-							'structurereferente_id' => $dossierep['Nvsrepreorient66'][0]['structurereferente_id'],
-							'date_propo' => date( 'Y-m-d' ),
-							'date_valid' => date( 'Y-m-d' ),
-							'statut_orient' => 'Orienté',
-						)
-					);
-					$this->Bilanparcours66->Orientstruct->create( $orientstruct );
-					$success = $this->Bilanparcours66->Orientstruct->save() && $success;
-
-					$this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->updateAll(
-						array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
-						array(
-							'"Contratinsertion"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
-							'"Contratinsertion"."id"' => $dossierep['Bilanparcours66']['contratinsertion_id']
-						)
-					);
-
-					// TODO
-// 					$this->Bilanparcours66->Orientstruct->Personne->Cui->updateAll(
-// 						array( 'Cui.datefincontrat' => "'".date( 'Y-m-d' )."'" ),
-// 						array( '"Cui"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'] )
-// 					);
-
-					$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->updateAll(
-						array( 'PersonneReferent.dfdesignation' => "'".date( 'Y-m-d' )."'" ),
-						array(
-							'"PersonneReferent"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
-							'"PersonneReferent"."dfdesignation" IS NULL'
-						)
-					);
-				}
-			}
-
-			return $success;
-		}*/
-
 		/**
 		* INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
 		*/
@@ -457,7 +387,10 @@
 								'observbenef' => '', // TODO, vient des observations lors de la séance
 								'datebilan' =>date( 'Y-m-d' ),
 								'saisineepparcours' => '1',
-								'maintienorientation' => 0
+								'maintienorientation' => 0,
+								'origine' => 'Defautinsertionep66'// FIXME: Champ "bidon", à rajouter au schéma ?
+								// FIXME: présence allocataire déduite de la présence à l'EP
+								//Rédigé par ???
 							),
 							// FIXME: bilan de parcours arrangé ? nouvelle thématique ?
 							'Saisineepbilanparcours66' => array(
@@ -570,7 +503,30 @@
 							)'// FIXME
 						)
 					),
-				)
+				),
+				'conditions' => array(
+					'Personne.id NOT IN (
+						SELECT
+								dossierseps.personne_id
+							FROM dossierseps
+							WHERE
+								dossierseps.personne_id = Personne.id
+								AND dossierseps.etapedossierep IN ( \'seance\', \'decisionep\', \'decisioncg\' )
+					)',
+					'Personne.id NOT IN (
+						SELECT
+								dossierseps.personne_id
+							FROM dossierseps
+								INNER JOIN seanceseps ON (
+									dossierseps.seanceep_id = seanceseps.id
+								)
+							WHERE
+								dossierseps.personne_id = Personne.id
+								AND dossierseps.etapedossierep = \'traite\'
+								AND dossierseps.themeep = \'defautsinsertionseps66\'
+								AND seanceseps.dateseance >= \''.date( 'Y-m-d', strtotime( '-2 mons' ) ).'\'
+					)'
+				) // FIXME: paramétrage
 			);
 
 			return $queryData;
@@ -582,9 +538,10 @@
 
 		public function qdNonInscrits() {
 			$queryData = $this->_qdSelection();
-			$queryData['conditions'] = array(
-				'Orientstruct.date_valid > \''.date( 'Y-m-d', strtotime( '-2 month' ) ).'\'',
-				'Personne.id NOT IN (
+			// FIXME: à pouvoir paramétrer dans le webrsa.inc
+			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
+			$queryData['conditions'][] = 'Orientstruct.date_valid > \''.date( 'Y-m-d', strtotime( '-2 month' ) ).'\'';
+			$queryData['conditions'][] = 'Personne.id NOT IN (
 					SELECT
 							personnes.id
 						FROM informationspe
@@ -614,8 +571,7 @@
 							personnes.id = Personne.id
 							AND historiqueetatspe.etat = \'inscription\'
 							AND historiqueetatspe.date >= Orientstruct.date_valid
-				)'
-			);
+				)';
 
 			$queryData['order'] = array( 'Orientstruct.date_valid ASC' );
 
@@ -627,6 +583,7 @@
 		*/
 
 		public function qdRadies() {
+			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
 			$queryData = $this->_qdSelection();
 			$queryData['joins'][] = array(
 				'table'      => 'informationspe', // FIXME:
@@ -666,7 +623,7 @@
 			);
 
 			// FIXME: seulement pour certains motifs
-			$queryData['conditions'] = array( 'Historiqueetatpe.etat' => 'radiation' );
+			$queryData['conditions']['Historiqueetatpe.etat'] = 'radiation';
 			$queryData['order'] = array( 'Historiqueetatpe.date ASC' );
 
 			return $queryData;
