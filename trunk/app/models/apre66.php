@@ -95,7 +95,8 @@
 			'typecontrat' => array(
 				array(
 					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
+					'message' => 'Champ obligatoire',
+					'required' => false
 				)
 			),
 			'dateentreeemploi' => array(
