@@ -717,6 +717,13 @@
 		*/
 
 		public function search( array $fields, array $params = array() ) {
+			$params = Set::merge(
+				array( 'form' => true ),
+				$params
+			);
+			$form = $params['form'];
+			unset( $params['form'] );
+
 			$domain = strtolower( Inflector::classify( $this->params['controller'] ) );
 
 			$params['inputDefaults'] = Set::merge(
@@ -748,8 +755,11 @@
 				$params = $this->addClass( $params, 'folded' );
 			}
 
+			$return = '';
 
-			$return = $this->Xform->create( null, $params );
+			if( !empty( $form ) ) {
+				$return .= $this->Xform->create( null, $params );
+			}
 
 			foreach( Set::normalize( $fields ) as $fieldName => $options ) {
 				list( $fieldModelName, $fieldModelfield ) = model_field( $fieldName );
@@ -768,8 +778,10 @@
 			}
 
 			$return .= $this->Xform->input( "Search.active", array( 'value' => true, 'type' => 'hidden' ) );
-			$return .= $this->Xform->submit( __( 'Search', true ) );
-			$return .= $this->Xform->end();
+			if( !empty( $form ) ) {
+				$return .= $this->Xform->submit( __( 'Search', true ) );
+				$return .= $this->Xform->end();
+			}
 
 			return $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ).$return;
 		}
