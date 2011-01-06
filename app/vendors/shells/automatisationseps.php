@@ -61,7 +61,7 @@
 							'alias'      => 'Decisionpropopdo',
 							'type'       => 'INNER',
 							'foreignKey' => false,
-							'conditions' => array( 'Decisionpropopdo.decisionpdo_id = Propopdo.id' )
+							'conditions' => array( 'Decisionpropopdo.propopdo_id = Propopdo.id' )
 						),
 						array(
 							'table'      => 'decisionspdos',
