@@ -40,10 +40,37 @@
 
 	class ActionscandidatsControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
-			
-		}
-
+	        function testBeforeFilter() {
+			$result = $this->ActionscandidatsController->beforeFilter();
+			var_dump($result);	
+	        }
+/*	
+		function testIndex()  {
+			$result = $this->ActionscandidatsController->index();
+	        }
+	
+		function testAdd() {
+			$this->ActionscandidatsController->add();	            
+	        }
+	
+	        function testEdit() {
+			$this->ActionscandidatsController->edit();
+	        }
+	
+	        function test_add_edit() {
+			$this->ActionscandidatsController->_add_edit();
+	        }
+	
+	        function testDelete() {
+			$id = '1';
+			$this->ActionscandidatsController->delete();
+	        }
+	
+	        function testView() {
+			$id = '1';
+			$this->ActionscandidatsController->view();
+	        }
+*/	
 	}
 
 ?>

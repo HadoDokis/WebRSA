@@ -55,7 +55,7 @@
 					"apreforfait" => "ef",
 					"aprecomplem" => "ef",
 					"natureimput" => "ef",
-					"lib_natureanalytique" => null
+					//"lib_natureanalytique" => null
 
 				)
 			);
@@ -79,7 +79,7 @@
 					"apreforfait" => "ef",
 					"aprecomplem" => "ef",
 					"natureimput" => "ef",
-					"lib_natureanalytique" => null
+					//"lib_natureanalytique" => null
 				)
 			);
 			$this->assertEqual($records,$this->ParametresfinanciersController->data);
