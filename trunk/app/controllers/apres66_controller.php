@@ -448,7 +448,7 @@
 
             if( !empty( $this->data ) ){
 
-debug($this->data);
+
                 /**
                 *   Pour le nombre de pièces afin de savoir si le dossier est complet ou non
                 */
@@ -464,11 +464,11 @@ debug($this->data);
                 if( isset( $this->data['Aideapre66'] ) && isset( $this->data[$key] ) && isset( $this->data[$key][$key] ) ) {
                     $valide = ( count( $this->data[$key][$key] ) == $nbNormalPieces['Typeaideapre66'] ) && $valide;
                 }
-//     debug(count( $this->data[$key][$key] ));
-//     debug($nbNormalPieces['Typeaideapre66']);
+
+
                 $this->data['Apre66']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
 
-debug($this->data);
+// debug($this->data);
 				// Tentative d'enregistrement de l'APRE complémentaire
 				$this->{$this->modelClass}->create( $this->data );
 				$this->{$this->modelClass}->set( 'statutapre', 'C' );

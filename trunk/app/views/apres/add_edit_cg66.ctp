@@ -35,14 +35,11 @@
                 'Aideapre66Themeapre66Id'
             );
 
-            //Données pour le type d'activité du bénéficiare
-            ['C', 'P'].each( function( letter ) {
-                observeDisableFieldsOnValue(
-                    '<?php echo $this->modelClass;?>Activitebeneficiaire' + letter,
-                    [
-                        '<?php echo $this->modelClass;?>DateentreeemploiDay',
-                        '<?php echo $this->modelClass;?>DateentreeemploiMonth',
-                        '<?php echo $this->modelClass;?>DateentreeemploiYear',
+
+                observeDisableFieldsOnRadioValue(
+                    'Apre',
+                    'data[Apre66][activitebeneficiaire]',
+                    [ 
                         '<?php echo $this->modelClass;?>Typecontrat_',
                         '<?php echo $this->modelClass;?>TypecontratCDI',
                         '<?php echo $this->modelClass;?>TypecontratCDD',
@@ -53,59 +50,16 @@
                         '<?php echo $this->modelClass;?>Nomemployeur',
                         '<?php echo $this->modelClass;?>Adresseemployeur'
                     ],
-                    letter,
-                    true
+                    ['C', 'P', 'F', undefined],
+                    false
                 );
-            } );
 
-            observeDisableFieldsOnValue(
-                '<?php echo $this->modelClass;?>ActivitebeneficiaireE',
-                [
-                    '<?php echo $this->modelClass;?>DateentreeemploiDay',
-                    '<?php echo $this->modelClass;?>DateentreeemploiMonth',
-                    '<?php echo $this->modelClass;?>DateentreeemploiYear',
-                    '<?php echo $this->modelClass;?>Typecontrat_',
-                    '<?php echo $this->modelClass;?>TypecontratCDI',
-                    '<?php echo $this->modelClass;?>TypecontratCDD',
-                    '<?php echo $this->modelClass;?>TypecontratCON',
-                    '<?php echo $this->modelClass;?>TypecontratAUT',
-                    '<?php echo $this->modelClass;?>Dureecontrat',
-                    '<?php echo $this->modelClass;?>Nbheurestravaillees',
-                    '<?php echo $this->modelClass;?>Nomemployeur',
-                    '<?php echo $this->modelClass;?>Adresseemployeur'
-                ],
-                'E',
-                false
-            );
-// Ajout arnaud
-            observeDisableFieldsOnValue(
-                '<?php echo $this->modelClass;?>ActivitebeneficiaireF',
-                [
-                    '<?php echo $this->modelClass;?>Typecontrat_',
-                    '<?php echo $this->modelClass;?>TypecontratCDI',
-                    '<?php echo $this->modelClass;?>TypecontratCDD',
-                    '<?php echo $this->modelClass;?>TypecontratCON',
-                    '<?php echo $this->modelClass;?>TypecontratAUT',
-                    '<?php echo $this->modelClass;?>Dureecontrat',
-                    '<?php echo $this->modelClass;?>Nbheurestravaillees',
-                    '<?php echo $this->modelClass;?>Nomemployeur',
-                    '<?php echo $this->modelClass;?>Adresseemployeur'
-                ],
-                'F',
-                true
-            );
+/***************************************************************************/
 
-            observeDisableFieldsOnValue(
-                '<?php echo $this->modelClass;?>ActivitebeneficiaireF',
-                [
-                    '<?php echo $this->modelClass;?>DateentreeemploiDay',
-                    '<?php echo $this->modelClass;?>DateentreeemploiMonth',
-                    '<?php echo $this->modelClass;?>DateentreeemploiYear',
-                ],
-                'F',
-                false
-            );
-// Fin ajout arnaud
+
+
+
+
 
             observeDisableFieldsetOnCheckbox( '<?php echo $this->modelClass;?>Hasfrais', $( 'Fraisdeplacement66Destination' ).up( 'fieldset' ), false );
 
@@ -692,7 +646,7 @@
             $etat = Set::enum( Set::classicExtract( $this->data, "{$this->modelClass}.etatdossierapre" ), $options['etatdossierapre'] );
 //             debug($etat);
             if( empty( $etat ) ) {
-                echo 'Etat du dossier : <strong>Incomplet</strong>';
+                echo 'Etat du dossier : <strong>'.$etat.'</strong>';
             }
             else{
                 echo 'Etat du dossier : <strong>'.$etat.'</strong>';

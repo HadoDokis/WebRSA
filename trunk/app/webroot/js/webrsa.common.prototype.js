@@ -573,7 +573,12 @@ function setNbDayInterval( masterPrefix, slavePrefix, nDays ) {
 //==============================================================================
 
 function disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition ) {
+    if( ( typeof value ) != 'object' ) {
+        value = [ value ];
+    }
+
 	var v = $( form ).getInputs( 'radio', radioName );
+
 	var currentValue = undefined;
 	$( v ).each( function( radio ) {
 		if( radio.checked ) {
@@ -581,8 +586,14 @@ function disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition
 		}
 	} );
 
+    var disabled = false;
+    value.each( function( elmt ) {
+        if( !( ( currentValue == elmt ) == condition ) ) {
+            disabled = true;
+        }
+    } );
 
-	var disabled = !( ( currentValue == value ) == condition );
+	//var disabled = !( ( currentValue == value ) == condition );
 
 	fieldsIds.each( function ( fieldId ) {
 		var field = $( fieldId );
