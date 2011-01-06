@@ -312,6 +312,15 @@ DROP TABLE IF EXISTS informationspe CASCADE;
 
 DROP TYPE IF EXISTS TYPE_ETATPE CASCADE;
 
+--
+
+SELECT public.add_missing_table_field ( 'public', 'tempinscriptions', 'nir15', 'VARCHAR(15)');
+UPDATE tempinscriptions SET nir15 = CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || calcul_cle_nir( nir ) ELSE NULL END;
+SELECT public.add_missing_table_field ( 'public', 'tempcessations', 'nir15', 'VARCHAR(15)');
+UPDATE tempcessations SET nir15 = CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || calcul_cle_nir( nir ) ELSE NULL END;
+SELECT public.add_missing_table_field ( 'public', 'tempradiations', 'nir15', 'VARCHAR(15)');
+UPDATE tempradiations SET nir15 = CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || calcul_cle_nir( nir ) ELSE NULL END;
+
 -- 1°) -------------------------------------------------------------------------
 -- TODO: pourquoi une erreur avec les REFERENCES ?
 CREATE TABLE informationspe (
@@ -371,9 +380,7 @@ SELECT
 -- A partir des personnes pas encore trouvées (tables tempXXX)
 INSERT INTO informationspe ( nir, nom, prenom, dtnai )
 	SELECT
-			CASE WHEN ( temp.nir ~* '^[0-9]{13}$' ) THEN temp.nir || calcul_cle_nir( temp.nir )
-				ELSE NULL
-			END AS nir,
+			nir15 AS nir,
 			temp.nom,
 			temp.prenom,
 			temp.dtnai
@@ -381,21 +388,21 @@ INSERT INTO informationspe ( nir, nom, prenom, dtnai )
 			SELECT *
 				FROM(
 					SELECT
-							nir,
+							nir15,
 							nom,
 							prenom,
 							dtnai
 						FROM tempcessations
 					UNION
 					SELECT
-							nir,
+							nir15,
 							nom,
 							prenom,
 							dtnai
 						FROM tempradiations
 					UNION
 					SELECT
-							nir,
+							nir15,
 							nom,
 							prenom,
 							dtnai
@@ -409,10 +416,8 @@ INSERT INTO informationspe ( nir, nom, prenom, dtnai )
 				WHERE (
 						(
 							informationspe.nir IS NOT NULL
-							AND temp.nir IS NOT NULL
-							AND informationspe.nir ~* '^[0-9]{15}$'
-							AND temp.nir ~* '^[0-9]{13}$'
-							AND informationspe.nir = temp.nir || calcul_cle_nir( temp.nir )
+							AND temp.nir15 IS NOT NULL
+							AND informationspe.nir = temp.nir15
 						)
 						OR (
 							informationspe.nom = temp.nom
@@ -422,7 +427,7 @@ INSERT INTO informationspe ( nir, nom, prenom, dtnai )
 					)
 		) = 0
 		GROUP BY
-			temp.nir,
+			temp.nir15,
 			temp.nom,
 			temp.prenom,
 			temp.dtnai;
@@ -517,9 +522,7 @@ INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat, cod
 			motif
 		FROM(
 			SELECT
-					CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || calcul_cle_nir( nir )
-						ELSE NULL
-					END AS nir,
+					nir15,
 					identifiantpe,
 					nom,
 					prenom,
@@ -531,9 +534,7 @@ INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat, cod
 				FROM tempcessations
 			UNION
 			SELECT
-					CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || calcul_cle_nir( nir )
-						ELSE NULL
-					END AS nir,
+					nir15,
 					identifiantpe,
 					nom,
 					prenom,
@@ -545,9 +546,7 @@ INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat, cod
 				FROM tempradiations
 			UNION
 			SELECT
-					CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || calcul_cle_nir( nir )
-						ELSE NULL
-					END AS nir,
+					nir15,
 					identifiantpe,
 					nom,
 					prenom,
@@ -561,10 +560,8 @@ INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat, cod
 			INNER JOIN informationspe ON (
 				(
 					informationspe.nir IS NOT NULL
-					AND temp.nir IS NOT NULL
-					AND informationspe.nir ~* '^[0-9]{15}$'
-					AND temp.nir ~* '^[0-9]{13}$'
-					AND informationspe.nir = temp.nir || calcul_cle_nir( temp.nir )
+					AND temp.nir15 IS NOT NULL
+					AND informationspe.nir = temp.nir15
 				)
 				OR (
 					informationspe.nom = temp.nom
