@@ -61,97 +61,6 @@ UPDATE orientsstructs
 				AND orientsstructspcd.statut_orient = 'Orienté'
 	);
 
--- Statistiques sur les personnes non demandeurs ou non conjoints RSA possédant une entrée dans orientsstructs
-/*SELECT
-	COUNT(orientsstructs.id), orientsstructs.statut_orient, prestations.rolepers
-	FROM orientsstructs
-	INNER JOIN personnes ON personnes.id = orientsstructs.personne_id
-	INNER JOIN prestations ON prestations.personne_id = personnes.id
-	WHERE prestations.natprest = 'RSA' AND prestations.rolepers NOT IN ('DEM', 'CJT')
-	GROUP BY orientsstructs.statut_orient, prestations.rolepers;*/
-
--- *****************************************************************************
-
--- A-t'on des orientsstructs qui ont été relancées ?
-/*SELECT
-		COUNT(orientsstructs.id)
-	FROM orientsstructs
-	WHERE ( orientsstructs.statutrelance <> 'E' OR orientsstructs.statutrelance IS NULL )
-		OR orientsstructs.daterelance IS NOT NULL
-		OR orientsstructs.date_impression_relance IS NOT NULL;*/
-
-
--- actuellement relancesdetectionscontrats93
-/*CREATE TABLE relancesxxx (
-	id					SERIAL NOT NULL,
-	personne_id			INTEGER DEFAULT NULL REFERENCES personnes(id),
-	propopdo_id			INTEGER DEFAULT NULL REFERENCES propospdos(id),
-	tempradiation_id	INTEGER DEFAULT NULL REFERENCES tempradiations(id), -- FIXME à l'avenir ?
-	--saisine_id 			-- saisine -> FIXME
-	orientstruct_id		INTEGER DEFAULT NULL REFERENCES orientsstructs(id),
-	contratinsertion_id	INTEGER DEFAULT NULL REFERENCES contratsinsertion(id),
-	cui_id				INTEGER DEFAULT NULL REFERENCES cuis(id)
-	-- ppae -- bool
-);*/
-
--- Combien de dernières orientsstructs qui n'ont pas signé de contrat lié à cette orientation
--- TODO: when au lieu du count (pour les performances) ?
-/*SELECT
-		orientsstructs.personne_id,
-		( DATE( NOW() ) - orientsstructs.date_valid ) AS nbjours
-	FROM orientsstructs
-	WHERE
-		-- la dernière orientation
-		orientsstructs.id IN (
-			SELECT dernierorientsstructs.id
-				FROM orientsstructs AS dernierorientsstructs
-				WHERE dernierorientsstructs.personne_id = orientsstructs.personne_id
-					AND dernierorientsstructs.statut_orient = 'Orienté'
-					AND dernierorientsstructs.date_valid IS NOT NULL
-				ORDER BY dernierorientsstructs.date_valid DESC
-				LIMIT 1
-		)
-		-- Ne possédant pas de contratsinsertion "lié à cette orientation"
-		AND (
-			SELECT COUNT(id) FROM (
-				SELECT
-						contratsinsertion.id AS id,
-						contratsinsertion.dd_ci,
-						contratsinsertion.personne_id
-					FROM contratsinsertion
-					WHERE
-						contratsinsertion.personne_id = orientsstructs.personne_id
-						AND (
-							contratsinsertion.dd_ci >= orientsstructs.date_valid
-							OR contratsinsertion.datevalidation_ci >= orientsstructs.date_valid
-						)
-					ORDER BY contratsinsertion.dd_ci DESC
-					LIMIT 1
-			) AS dernierscontratsinsertion
-		) = 0
-		-- Ne possédant pas de cuis "lié à cette orientation"
-		AND (
-			SELECT COUNT(id) FROM (
-				SELECT
-						cuis.id AS id,
-						cuis.datecontrat,
-						cuis.personne_id
-					FROM cuis
-					WHERE
-						cuis.personne_id = orientsstructs.personne_id
-						AND (
-							cuis.datecontrat >= orientsstructs.date_valid
-							OR cuis.datevalidationcui >= orientsstructs.date_valid
-						)
-					ORDER BY cuis.datecontrat DESC
-					LIMIT 1
-			) AS dernierscuis
-		) = 0
-	LIMIT 10;*/
-
-
-
-
 CREATE TYPE type_statutoccupation AS ENUM ( 'proprietaire', 'locataire' );
 ALTER TABLE dsps ADD COLUMN statutoccupation type_statutoccupation DEFAULT NULL;
 ALTER TABLE dsps_revs ADD COLUMN statutoccupation type_statutoccupation DEFAULT NULL;
@@ -266,7 +175,7 @@ UPDATE personnes SET nomnai = public.noaccents_upper(nomnai) WHERE ( nomnai IS N
 UPDATE personnes SET prenom2 = public.noaccents_upper(prenom2) WHERE ( prenom2 IS NOT NULL AND prenom2 !~ '^([A-Z]|\-| |'')+$' );
 UPDATE personnes SET prenom3 = public.noaccents_upper(prenom3) WHERE ( prenom3 IS NOT NULL AND prenom3 !~ '^([A-Z]|\-| |'')+$' );
 
--- Mise à jour des tables passées
+-- Mise à jour des anciennes tables tables concernant les inscriptions/cessations/radiations Pôle Emploi
 UPDATE tempcessations SET nom = public.noaccents_upper(nom) WHERE nom !~ '^([A-Z]|\-| |'')+$';
 UPDATE tempcessations SET prenom = public.noaccents_upper(nom) WHERE prenom !~ '^([A-Z]|\-| |'')+$';
 UPDATE tempinscriptions SET nom = public.noaccents_upper(nom) WHERE nom !~ '^([A-Z]|\-| |'')+$';
@@ -274,37 +183,93 @@ UPDATE tempinscriptions SET prenom = public.noaccents_upper(nom) WHERE prenom !~
 UPDATE tempradiations SET nom = public.noaccents_upper(nom) WHERE nom !~ '^([A-Z]|\-| |'')+$';
 UPDATE tempradiations SET prenom = public.noaccents_upper(nom) WHERE prenom !~ '^([A-Z]|\-| |'')+$';
 
-/*
-	-- Entrées non en majuscules sans accents dans personnes
-	SELECT
-		nom,
-		prenom,
-		nomnai,
-		prenom2,
-		prenom3
-	FROM personnes
-	WHERE
-		nom !~ '^([A-Z]|\-| |'')+$'
-		OR prenom !~ '^([A-Z]|\-| |'')+$'
-		OR ( nomnai IS NOT NULL AND CHAR_LENGTH( TRIM( BOTH ' ' FROM nomnai ) ) > 0 AND nomnai !~ '^([A-Z]|\-| |'')+$' )
-		OR ( prenom2 IS NOT NULL AND CHAR_LENGTH( TRIM( BOTH ' ' FROM prenom2 ) ) > 0 AND prenom2 !~ '^([A-Z]|\-| |'')+$' )
-		OR ( prenom3 IS NOT NULL AND CHAR_LENGTH( TRIM( BOTH ' ' FROM prenom3 ) ) > 0 AND prenom3 !~ '^([A-Z]|\-| |'')+$' );
-*/
-
--- TODO: faire une fonction pour vérifier le NIR ?
-
+-- Calcul de la clé du NIR (13 caractères) avec gestion des départements 2A et 2B
+-- http://fr.wikipedia.org/wiki/Num%C3%A9ro_de_s%C3%A9curit%C3%A9_sociale_en_France#ancrage_E
 CREATE OR REPLACE FUNCTION "public"."calcul_cle_nir" (text) RETURNS text AS
 $body$
 	DECLARE
-		st text;
+		p_nir text;
+		cle text;
+		correction BIGINT;
 
 	BEGIN
-		st:=LPAD( CAST( 97 - ( CAST( $1 AS BIGINT ) % 97 ) AS VARCHAR(13)), 2, '0' );
-		return st;
+		correction:=0;
+		p_nir:=$1;
+
+		IF NOT nir_correct( p_nir ) THEN
+			RETURN NULL;
+		END IF;
+
+		IF p_nir ~ '^.{6}(A|B)' THEN
+			IF p_nir ~ '^.{6}A' THEN
+				correction:=1000000;
+			ELSE
+				correction:=2000000;
+			END IF;
+			p_nir:=regexp_replace( p_nir, '(A|B)', '0' );
+		END IF;
+
+		cle:=LPAD( CAST( 97 - ( ( CAST( p_nir AS BIGINT ) - correction ) % 97 ) AS VARCHAR(13)), 2, '0' );
+		RETURN cle;
 	END;
 $body$
 LANGUAGE 'plpgsql' VOLATILE RETURNS NULL ON NULL INPUT SECURITY INVOKER;
 
+/*
+	Vérification du NIR sur 15 caractères
+	INFO: http://fr.wikipedia.org/wiki/Num%C3%A9ro_de_s%C3%A9curit%C3%A9_sociale_en_France#Signification_des_chiffres_du_NIR
+	----------------------------------------------------------------------------
+	Tous:
+		1) 1 à 5 ->		'^(1|2|7|8)[0-9]{2}(0[1-9]|[10-12]|[20-99])'
+		2) 11 à 15 ->	'(00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9]|)(0[1-9]|[10-97])$'
+	A:
+		1°) 6 à 7 ->	'^.{5}(0[1-9]|[10-95]|2A|2B)'
+		2°) 8 à 10 ->	'^.{7}(00[1-9]|0[10-99]|[100-990])'
+	B:
+		1°) 6 à 8 ->	'^.{5}([970-989])'
+		2°) 9 à 10 ->	'^.{8}(0[1-9]|[10-90])'
+	C:
+		1°) 6 à 7 ->	'^.{5}99'
+		2°) 8 à 10 ->	'^.{7}(00[1-9]|0[10-99]|[100-990])'
+*/
+
+CREATE OR REPLACE FUNCTION "public"."nir_correct" (TEXT) RETURNS BOOLEAN AS
+$body$
+	DECLARE
+		p_nir text;
+
+	BEGIN
+		p_nir:=$1;
+
+		RETURN (
+			CHAR_LENGTH( TRIM( BOTH ' ' FROM p_nir ) ) = 15
+			AND (
+				-- Tous les cas
+				p_nir ~ '^(1|2|7|8)[0-9]{2}(0[1-9]|[10-12]|[20-99])'
+				AND p_nir ~ '(00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9]|)(0[1-9]|[10-97])$'
+				AND (
+					-- Cas A
+					(
+						p_nir ~ '^.{5}(0[1-9]|[10-95]|2A|2B)'
+						AND p_nir ~ '^.{7}(00[1-9]|0[10-99]|[100-990])'
+					)
+					-- Cas B
+					OR (
+						p_nir ~ '^.{5}([970-989])'
+						AND p_nir ~ '^.{8}(0[1-9]|[10-90])'
+					)
+					-- Cas C
+					OR (
+						p_nir ~ '^.{5}99'
+						AND p_nir ~ '^.{7}(00[1-9]|0[10-99]|[100-990])'
+					)
+				)
+				AND calcul_cle_nir( SUBSTRING( p_nir FROM 1 FOR 13 ) ) = SUBSTRING( p_nir FROM 14 FOR 2 )
+			)
+		);
+	END;
+$body$
+LANGUAGE 'plpgsql';
 
 -- 0°) Nettoyage ---------------------------------------------------------------
 DROP TABLE IF EXISTS historiqueetatspe CASCADE;
@@ -315,11 +280,11 @@ DROP TYPE IF EXISTS TYPE_ETATPE CASCADE;
 --
 
 SELECT public.add_missing_table_field ( 'public', 'tempinscriptions', 'nir15', 'VARCHAR(15)');
-UPDATE tempinscriptions SET nir15 = CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || calcul_cle_nir( nir ) ELSE NULL END;
+UPDATE tempinscriptions SET nir15 = CASE WHEN ( nir_correct( nir || calcul_cle_nir( nir ) ) ) THEN nir || calcul_cle_nir( nir ) ELSE NULL END;
 SELECT public.add_missing_table_field ( 'public', 'tempcessations', 'nir15', 'VARCHAR(15)');
-UPDATE tempcessations SET nir15 = CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || calcul_cle_nir( nir ) ELSE NULL END;
+UPDATE tempcessations SET nir15 = CASE WHEN ( nir_correct( nir || calcul_cle_nir( nir ) ) ) THEN nir || calcul_cle_nir( nir ) ELSE NULL END;
 SELECT public.add_missing_table_field ( 'public', 'tempradiations', 'nir15', 'VARCHAR(15)');
-UPDATE tempradiations SET nir15 = CASE WHEN ( nir ~* '^[0-9]{13}$' ) THEN nir || calcul_cle_nir( nir ) ELSE NULL END;
+UPDATE tempradiations SET nir15 = CASE WHEN ( nir_correct( nir || calcul_cle_nir( nir ) ) ) THEN nir || calcul_cle_nir( nir ) ELSE NULL END;
 
 -- 1°) -------------------------------------------------------------------------
 -- TODO: pourquoi une erreur avec les REFERENCES ?
@@ -331,8 +296,8 @@ CREATE TABLE informationspe (
 	dtnai			DATE NOT NULL
 );
 
--- Contrainte sur le NIR qui doit être bien formé ou être NULL -- FIXME avec les valeurs réelles possibles
-ALTER TABLE informationspe ADD CONSTRAINT informationspe_nir_correct_chk CHECK( nir IS NULL OR nir ~* '^[0-9]{15}$' );
+-- Contrainte sur le NIR qui doit être bien formé ou être NULL -- FIXME avec les valeurs réelles possibles, cf. fonction nir_correct
+ALTER TABLE informationspe ADD CONSTRAINT informationspe_nir_correct_chk CHECK( nir IS NULL OR nir_correct( nir ) );
 -- -- Test: doivent passer
 -- INSERT INTO informationspe ( nir, nom, prenom, dtnai ) VALUES
 -- 	( NULL, 'Foo', 'Bar', '2010-10-28' ),
@@ -356,7 +321,7 @@ COMMENT ON TABLE informationspe IS 'Liens entre Pôle Emploi et de supposés all
 -- A partir des personnes déjà trouvées
 INSERT INTO informationspe ( nir, nom, prenom, dtnai )
 SELECT
-		CASE WHEN ( personnes.nir ~* '^[0-9]{13}$' ) THEN personnes.nir || calcul_cle_nir( personnes.nir )
+		CASE WHEN ( nir_correct( personnes.nir ) ) THEN personnes.nir
 			ELSE NULL
 		END AS nir,
 		personnes.nom,
@@ -492,8 +457,6 @@ INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat, cod
 				(
 					informationspe.nir IS NOT NULL
 					AND personnes.nir IS NOT NULL
-					AND informationspe.nir ~* '^[0-9]{15}$'
-					AND personnes.nir ~* '^[0-9]{15}$'
 					AND informationspe.nir = personnes.nir
 				)
 				OR
@@ -607,134 +570,6 @@ UPDATE
 		AND motif = 'INSUFFISANCE DE RECHERCHE D''EMPLOI SUSPENSION DE QUINZE JOURS';
 
 --
-
--- "Doublons" --> 672
-/*SELECT
-		i.*
-	FROM (
-		SELECT
-				COUNT(informationspe.id) AS count,
-		-- 		informationspe.personne_id,
-				informationspe.nir,
-				informationspe.nom,
-				informationspe.prenom,
-				informationspe.dtnai
-			FROM informationspe
-			GROUP BY
-		-- 		informationspe.personne_id,
-				informationspe.nir,
-				informationspe.nom,
-				informationspe.prenom,
-				informationspe.dtnai
-	) AS i
-	WHERE i.count > 1
-	ORDER BY i.count DESC
-
--- FIXME: 3 x avec le rôle DEM RSA
--- FIXME: 2 dossiers différents: 1 en droit 6 (clos/FIXME), 2 personnes DEM pour l'autre dossier
-SELECT
-		informationspe.*,
-		prestations.*,
-		situationsdossiersrsa.*
-	FROM informationspe
-		INNER JOIN prestations ON (
-			prestations.personne_id = informationspe.personne_id
-			AND prestations.natprest = 'RSA'
-		)
-		INNER JOIN personnes ON (
-			personnes.id = informationspe.personne_id
-		)
-		INNER JOIN foyers ON (
-			personnes.foyer_id = foyers.id
-		)
-		INNER JOIN dossiers ON (
-			foyers.dossier_id = dossiers.id
-		)
-		INNER JOIN situationsdossiersrsa ON (
-			situationsdossiersrsa.dossier_id = dossiers.id
-		)
-	WHERE
-		informationspe.nom = ( SELECT nom FROM personnes WHERE personnes.id = 49646 )
-		AND informationspe.prenom = ( SELECT prenom FROM personnes WHERE personnes.id = 49646 )
-		AND informationspe.dtnai = ( SELECT dtnai FROM personnes WHERE personnes.id = 49646 )
-
--- EXEMPLE: dernière information du parcours PE d'un allocataire
-SELECT
-		historiqueetatspe.identifiantpe,
-		historiqueetatspe.date,
-		historiqueetatspe.etat,
-		historiqueetatspe.code,
-		historiqueetatspe.motif
-	FROM historiqueetatspe
-	WHERE historiqueetatspe.informationpe_id IN (
-		SELECT
-				informationspe.id
-			FROM informationspe
-			WHERE
-				informationspe.nom = ( SELECT nom FROM personnes WHERE personnes.id = 49646 )
-				AND informationspe.prenom = ( SELECT prenom FROM personnes WHERE personnes.id = 49646 )
-				AND informationspe.dtnai = ( SELECT dtnai FROM personnes WHERE personnes.id = 49646 )
-	)
-	GROUP BY
-		historiqueetatspe.identifiantpe,
-		historiqueetatspe.date,
-		historiqueetatspe.etat,
-		historiqueetatspe.code,
-		historiqueetatspe.motif
-	ORDER BY historiqueetatspe.date DESC
-	LIMIT 1
-
--- EXEMPLE: dernière information venant de Pôle Emploi pour les allocataires
-SELECT
--- 		COUNT(*),
-		informationspe.nir,
-		informationspe.nom,
-		informationspe.prenom,
-		informationspe.dtnai,
-		historiqueetatspe.date,
-		historiqueetatspe.etat
-	FROM informationspe
-		INNER JOIN historiqueetatspe ON (
-			historiqueetatspe.informationpe_id = informationspe.id
-		)
-		INNER JOIN personnes ON (
-			(
-				informationspe.nir IS NOT NULL
-				AND personnes.nir IS NOT NULL
-				AND informationspe.nir ~* '^[0-9]{15}$'
-				AND personnes.nir ~* '^[0-9]{13}$'
-				AND informationspe.nir = personnes.nir || calcul_cle_nir( personnes.nir )
-			)
-			OR (
-				informationspe.nom = personnes.nom
-				AND informationspe.prenom = personnes.prenom
-				AND informationspe.dtnai = personnes.dtnai
-			)
-		)
-		INNER JOIN prestations ON (
-			personnes.id = prestations.personne_id
-			AND prestations.natprest = 'RSA'
-			AND prestations.rolepers IN ( 'DEM', 'CJT' )
-		)
-	WHERE
-		historiqueetatspe.id IN (
-			SELECT h.id
-				FROM historiqueetatspe AS h
-				WHERE h.informationpe_id = informationspe.id
-				ORDER BY h.date DESC
-				LIMIT 1
-		)
-	GROUP BY
-		informationspe.nir,
-		informationspe.nom,
-		informationspe.prenom,
-		informationspe.dtnai,
-		historiqueetatspe.date,
-		historiqueetatspe.etat
-	ORDER BY
-		historiqueetatspe.date DESC
-	LIMIT 10
-*/
 
 DROP INDEX IF EXISTS decisionspropospdos_datedecisionpdo_idx;
 DROP INDEX IF EXISTS decisionspropospdos_datevalidationdecision_idx;
