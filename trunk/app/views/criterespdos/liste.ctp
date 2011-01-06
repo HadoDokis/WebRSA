@@ -7,8 +7,8 @@
 ?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        observeDisableFieldsetOnCheckbox( 'DossierDtdemrsa', $( 'DossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
-        observeDisableFieldsetOnCheckbox( 'DossierDatedecisionpdo', $( 'DossierDatedecisionpdoFromDay' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'SearchDossierDtdemrsa', $( 'SearchDossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'SearchDossierDatedecisionpdo', $( 'SearchDossierDatedecisionpdoFromDay' ).up( 'fieldset' ), false );
     });
 </script>
 <?php
@@ -28,15 +28,27 @@
 
 <fieldset>
     <legend>Recherche par date de demande RSA</legend>
-        <?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => 'Filtrer par date de demande RSA', 'type' => 'checkbox' ) );?>
+        <?php echo $form->input( 'Search.Dossier.dtdemrsa', array( 'name' => 'data[Search][Dossier][dtdemrsa]', 'label' => 'Filtrer par date de demande RSA', 'type' => 'checkbox' ) );?>
         <fieldset>
             <legend>Date de demande RSA</legend>
             <?php
-                $dtdemrsa_from = Set::check( $this->data, 'Dossier.dtdemrsa_from' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_from' ) : strtotime( '-1 week' );
-                $dtdemrsa_to = Set::check( $this->data, 'Dossier.dtdemrsa_to' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_to' ) : strtotime( 'now' );
-            ?>
-            <?php echo $form->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );?>
-            <?php echo $form->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dtdemrsa_to ) );?>
+                $dtdemrsa_from = Set::check( $this->data, 'Search.Dossier.dtdemrsa_from' ) ? Set::extract( $this->data, 'Search.Dossier.dtdemrsa_from' ) : strtotime( '-1 week' );
+                $dtdemrsa_to = Set::check( $this->data, 'Search.Dossier.dtdemrsa_to' ) ? Set::extract( $this->data, 'Search.Dossier.dtdemrsa_to' ) : strtotime( 'now' );
+
+// 				echo $form->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );
+// 				echo $form->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dtdemrsa_to ) );
+
+				echo $default->search(
+					array(
+						'Dossier.dtdemrsa_from' => array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ),
+						'Dossier.dtdemrsa_to' => array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dtdemrsa_to ),
+					),
+					array(
+						'options' => $options,
+						'form' => false
+					)
+				);
+			?>
         </fieldset>
 </fieldset>
     <?php
@@ -50,11 +62,14 @@
                 'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 )
             ),
             array(
-                'options' => $options
+                'options' => $options,
+				'form' => false
             )
         );
-    ?>
-<?php echo $xform->end(); ?>
+
+		echo $xform->submit( __( 'Search', true ) );
+		echo $xform->end();
+?>
 <?php $pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs ); ?>
 
     <?php if( isset( $criterespdos ) ):?>

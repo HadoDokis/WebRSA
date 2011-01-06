@@ -16,8 +16,6 @@
 
 			$conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
 
-
-
 			/// Filtre zone géographique
 			if( $filtre_zone_geo ) {
 				$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
@@ -31,22 +29,25 @@
 
 			/// Critères
 
-			$decisionpdo = Set::extract( $criterespdos, 'Search.Propopdo.decisionpdo_id' );
+			$decisionpdo = Set::extract( $criterespdos, 'Search.Decisionpropopdo.decisionpdo_id' );
 			$motifpdo = Set::extract( $criterespdos, 'Search.Propopdo.motifpdo' );
 			$originepdo = Set::extract( $criterespdos, 'Search.Propopdo.originepdo_id' );
-			$nir = Set::extract( $criterespdos, 'Search.Propopdo.nir' );
+			$nir = Set::extract( $criterespdos, 'Search.Personne.nir' );
 			$nom = Set::extract( $criterespdos, 'Search.Personne.nom' );
 			$prenom = Set::extract( $criterespdos, 'Search.Personne.prenom' );
 			$matricule = Set::extract( $criterespdos, 'Search.Dossier.matricule' );
 			$numdemrsa = Set::extract( $criterespdos, 'Search.Dossier.numdemrsa' );
 
+			$dtdemrsa = Set::extract( $criterespdos, 'Search.Dossier.dtdemrsa' );
+			$dtdemrsa_from = Set::extract( $criterespdos, 'Search.Dossier.dtdemrsa_from' );
+			$dtdemrsa_to = Set::extract( $criterespdos, 'Search.Dossier.dtdemrsa_to' );
 
 			/// Critères sur les PDOs - date de decisonde la PDO
 			if( isset( $criterespdos['Propopdo']['datedecisionpdo'] ) && !empty( $criterespdos['Propopdo']['datedecisionpdo'] ) ) {
 				$valid_from = ( valid_int( $criterespdos['Propopdo']['datedecisionpdo_from']['year'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_from']['month'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_from']['day'] ) );
 				$valid_to = ( valid_int( $criterespdos['Propopdo']['datedecisionpdo_to']['year'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_to']['month'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_to']['day'] ) );
 				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Propopdo.datedecisionpdo BETWEEN \''.implode( '-', array( $criterespdos['Propopdo']['datedecisionpdo_from']['year'], $criterespdos['Propopdo']['datedecisionpdo_from']['month'], $criterespdos['Propopdo']['datedecisionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdos['Propopdo']['datedecisionpdo_to']['year'], $criterespdos['Propopdo']['datedecisionpdo_to']['month'], $criterespdos['Propopdo']['datedecisionpdo_to']['day'] ) ).'\'';
+					$conditions[] = 'Decisionpropopdo.datedecisionpdo BETWEEN \''.implode( '-', array( $criterespdos['Propopdo']['datedecisionpdo_from']['year'], $criterespdos['Propopdo']['datedecisionpdo_from']['month'], $criterespdos['Propopdo']['datedecisionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdos['Propopdo']['datedecisionpdo_to']['year'], $criterespdos['Propopdo']['datedecisionpdo_to']['month'], $criterespdos['Propopdo']['datedecisionpdo_to']['day'] ) ).'\'';
 				}
 			}
 
@@ -60,15 +61,22 @@
 			}
 			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
 			if( !empty( $nom ) ) {
-				$conditions[] = 'Personne.nom ILIKE \''.$this->wildcard( $nom ).'\'';
+				$conditions[] = 'UPPER(Personne.nom) LIKE \''.$this->wildcard( strtoupper( replace_accents( $nom ) ) ).'\'';
 			}
 			if( !empty( $prenom ) ) {
-				$conditions[] = 'Personne.prenom ILIKE \''.$this->wildcard( $prenom ).'\'';
+				$conditions[] = 'UPPER(Personne.prenom) LIKE \''.$this->wildcard( strtoupper( replace_accents( $prenom ) ) ).'\'';
 			}
 
 			// Localité adresse
 			if( !empty( $locaadr ) ) {
 				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+			}
+
+			// ...
+			if( !empty( $dtdemrsa ) ) {
+				$dtdemrsa_from = "{$dtdemrsa_from['year']}-{$dtdemrsa_from['month']}-{$dtdemrsa_from['day']}";
+				$dtdemrsa_to = "{$dtdemrsa_to['year']}-{$dtdemrsa_to['month']}-{$dtdemrsa_to['day']}";
+				$conditions[] = "Dossier.dtdemrsa BETWEEN '{$dtdemrsa_from}' AND '{$dtdemrsa_to}'";
 			}
 
 			// ...
@@ -100,7 +108,7 @@
 
 			// Décision de la PDO
 			if( !empty( $decisionpdo ) ) {
-				$conditions[] = 'Propopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
+				$conditions[] = 'Decisionpropopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
 			}
 
 
@@ -113,9 +121,6 @@
 			if( !empty( $originepdo ) ) {
 				$conditions[] = 'Propopdo.originepdo_id = \''.Sanitize::clean( $originepdo ).'\'';
 			}
-
-
-
 
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
@@ -207,11 +212,8 @@
 		*/
 
 		public function search( $mesCodesInsee, $filtre_zone_geo, $criterespdos, $lockedDossiers ) {
-
 			/// Conditions de base
 			$conditions = array();
-
-
 
 			/// Filtre zone géographique
 			if( $filtre_zone_geo ) {
@@ -226,7 +228,7 @@
 
 			/// Critères
 
-			$decisionpdo = Set::extract( $criterespdos, 'Search.Propopdo.decisionpdo_id' );
+			$decisionpdo = Set::extract( $criterespdos, 'Search.Decisionpropopdo.decisionpdo_id' );
 			$motifpdo = Set::extract( $criterespdos, 'Search.Propopdo.motifpdo' );
 			$originepdo = Set::extract( $criterespdos, 'Search.Propopdo.originepdo_id' );
 			$nir = Set::extract( $criterespdos, 'Search.Propopdo.nir' );
@@ -242,7 +244,7 @@
 				$valid_from = ( valid_int( $criterespdos['Propopdo']['datedecisionpdo_from']['year'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_from']['month'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_from']['day'] ) );
 				$valid_to = ( valid_int( $criterespdos['Propopdo']['datedecisionpdo_to']['year'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_to']['month'] ) && valid_int( $criterespdos['Propopdo']['datedecisionpdo_to']['day'] ) );
 				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Propopdo.datedecisionpdo BETWEEN \''.implode( '-', array( $criterespdos['Propopdo']['datedecisionpdo_from']['year'], $criterespdos['Propopdo']['datedecisionpdo_from']['month'], $criterespdos['Propopdo']['datedecisionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdos['Propopdo']['datedecisionpdo_to']['year'], $criterespdos['Propopdo']['datedecisionpdo_to']['month'], $criterespdos['Propopdo']['datedecisionpdo_to']['day'] ) ).'\'';
+					$conditions[] = 'Decisionpropopdo.datedecisionpdo BETWEEN \''.implode( '-', array( $criterespdos['Propopdo']['datedecisionpdo_from']['year'], $criterespdos['Propopdo']['datedecisionpdo_from']['month'], $criterespdos['Propopdo']['datedecisionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdos['Propopdo']['datedecisionpdo_to']['year'], $criterespdos['Propopdo']['datedecisionpdo_to']['month'], $criterespdos['Propopdo']['datedecisionpdo_to']['day'] ) ).'\'';
 				}
 			}
 
@@ -296,7 +298,7 @@
 
 			// Décision de la PDO
 			if( !empty( $decisionpdo ) ) {
-				$conditions[] = 'Propopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
+				$conditions[] = 'Decisionpropopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
 			}
 
 
@@ -324,9 +326,9 @@
 				'fields' => array(
 					'"Propopdo"."id"',
 					'"Propopdo"."personne_id"',
-					'"Propopdo"."decisionpdo_id"',
+					'"Decisionpropopdo"."decisionpdo_id"',
 					'"Propopdo"."datereceptionpdo"',
-					'"Propopdo"."datedecisionpdo"',
+					'"Decisionpropopdo"."datedecisionpdo"',
 					'"Propopdo"."motifpdo"',
 					'"Propopdo"."originepdo_id"',
 					'"Propopdo"."user_id"',
@@ -347,6 +349,13 @@
 				),
 				'recursive' => -1,
 				'joins' => array(
+					array(
+						'table'      => 'decisionspropospdos',
+						'alias'      => 'Decisionpropopdo',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Decisionpropopdo.propopdo_id = Propopdo.id' )
+					),
 					array(
 						'table'      => 'personnes',
 						'alias'      => 'Personne',
