@@ -40,8 +40,137 @@
 
 	class ActionsControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
-			
+		function testBeforeFilter() {
+			$this->ActionsController->beforeFilter();
+			$expected = array(
+				'1' => 'libellé',
+			);
+			$this->assertEqual($expected, $this->ActionsController->viewVars['libtypaction']);
+		}
+
+		function testIndexCancel() {
+			$this->ActionsController->params['form']['Cancel'] = '1337';
+			$this->ActionsController->index();
+			$this->assertEqual(array('controller' => 'parametrages', 'action' => 'index'), $this->ActionsController->redirectUrl);
+		}
+
+		function testIndexNormal() {
+			$this->ActionsController->index();
+			$records = array (
+					'0' => array(
+						'Action' => array (
+							'id' => '1',
+							'typeaction_id' => '1',
+							'code' => null,
+							'libelle' => 'libellé',
+						),
+						'Typeaction' => array(
+							'id' => '1',
+                                    			'libelle' => 'libellé',
+						),
+					),
+					'1' => array(
+						'Action' => array (
+							'id' => '2',
+							'typeaction_id' => '1',
+							'code' => null,
+							'libelle' => 'libellé',
+						),
+						'Typeaction' => array(
+							'id' => '1',
+                                    			'libelle' => 'libellé',
+						),
+					),
+			);
+			$this->assertEqual($records, $this->ActionsController->viewVars['actions']);
+		}
+	/*
+		function testAdd() {
+			$this->ActionsController->data = array(
+					'0' => array(
+						'id' => '1',
+						'typeaction_id' => '1',
+						'code' => null,
+						'libelle' => 'libellé',
+					),
+					'1' => array(
+						'id' => '2',
+						'typeaction_id' => '1',
+						'code' => null,
+						'libelle' => 'libellé',
+					),
+			);
+			$this->ActionsController->add();
+			$this->assertEqual(array( 'controller' => 'actions', 'action' => 'index' ), $this->ActionsController->redirectUrl);
+		}
+	*/
+
+		function testEditWithoutData() {
+			$action_id = '1';
+			$this->ActionsController->edit($action_id);
+			$records = array (
+				'Action' => array (
+					'id' => '1',
+					'typeaction_id' => '1',
+					'code' => null,
+					'libelle' => 'libellé',
+				),
+				'Typeaction' => array(
+					'id' => '1',
+                        		'libelle' => 'libellé',
+					'Action' => array(
+						'0' => array(
+							'id' => '1',
+							'typeaction_id' => '1',
+							'code' => null,
+							'libelle' => 'libellé',
+						),
+						'1' => array(
+							'id' => '2',
+							'typeaction_id' => '1',
+							'code' => null,
+							'libelle' => 'libellé',
+						),
+					),
+				),
+			);
+			$this->assertEqual($records, $this->ActionsController->data);
+
+			$action_id = '2';
+			$this->ActionsController->edit($action_id);
+			$records = array (
+				'Action' => array (
+					'id' => '1',
+					'typeaction_id' => '1',
+					'code' => null,
+					'libelle' => 'libellé',
+				),
+				'Typeaction' => array(
+					'id' => '1',
+                        		'libelle' => 'libellé',
+					'Action' => array(
+						'0' => array(
+							'id' => '1',
+							'typeaction_id' => '1',
+							'code' => null,
+							'libelle' => 'libellé',
+						),
+						'1' => array(
+							'id' => '2',
+							'typeaction_id' => '1',
+							'code' => null,
+							'libelle' => 'libellé',
+						),
+					),
+				),
+			);
+			$this->assertEqual($records, $this->ActionsController->data);
+		}
+
+		function testDelete() {
+			$action_id = '1';
+			$this->ActionsController->delete($action_id);
+			$this->assertEqual(array('controller'=> 'actions','action'=>'index'), $this->ActionsController->redirectUrl);			
 		}
 
 	}

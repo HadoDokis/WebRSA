@@ -11,6 +11,12 @@
 				'code' => null,
 				'libelle' => 'libellé',
 			),
+			array(
+				'id' => '2',
+				'typeaction_id' => '1',
+				'code' => null,
+				'libelle' => 'libellé',
+			),
 		);
 	}
 
