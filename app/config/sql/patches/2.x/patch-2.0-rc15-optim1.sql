@@ -378,9 +378,9 @@ DROP INDEX IF EXISTS parcours_natparcocal_idx;
 DROP INDEX IF EXISTS parcours_natparcomod_idx;
 DROP INDEX IF EXISTS parcours_personne_id_idx;
 DROP INDEX IF EXISTS parcours_toprefuparco_idx;
-DROP INDEX IF EXISTS parcoursdetectes_created_idx;
+/*DROP INDEX IF EXISTS parcoursdetectes_created_idx;
 DROP INDEX IF EXISTS parcoursdetectes_datetransref_idx;
-DROP INDEX IF EXISTS parcoursdetectes_signale_idx;
+DROP INDEX IF EXISTS parcoursdetectes_signale_idx;*/
 DROP INDEX IF EXISTS periodesimmersion_datedebperiode_idx;
 DROP INDEX IF EXISTS periodesimmersion_datefinperiode_idx;
 DROP INDEX IF EXISTS periodesimmersion_datesignatureimmersion_idx;
@@ -846,9 +846,9 @@ CREATE INDEX parcours_natparcocal_idx ON parcours (natparcocal);
 CREATE INDEX parcours_natparcomod_idx ON parcours (natparcomod);
 CREATE INDEX parcours_personne_id_idx ON parcours (personne_id);
 CREATE INDEX parcours_toprefuparco_idx ON parcours (toprefuparco);
-CREATE INDEX parcoursdetectes_created_idx ON parcoursdetectes (created);
+/*CREATE INDEX parcoursdetectes_created_idx ON parcoursdetectes (created);
 CREATE INDEX parcoursdetectes_datetransref_idx ON parcoursdetectes (datetransref);
-CREATE INDEX parcoursdetectes_signale_idx ON parcoursdetectes (signale);
+CREATE INDEX parcoursdetectes_signale_idx ON parcoursdetectes (signale);*/
 CREATE INDEX periodesimmersion_datedebperiode_idx ON periodesimmersion (datedebperiode);
 CREATE INDEX periodesimmersion_datefinperiode_idx ON periodesimmersion (datefinperiode);
 CREATE INDEX periodesimmersion_datesignatureimmersion_idx ON periodesimmersion (datesignatureimmersion);
