@@ -271,6 +271,17 @@ $body$
 $body$
 LANGUAGE 'plpgsql';
 
+-- SELECT COUNT(id) FROM personnes WHERE NOT nir_correct( nir );
+-- SELECT COUNT(nir), nir FROM personnes WHERE NOT nir_correct( nir ) GROUP BY nir ORDER BY nir ASC;
+-- SELECT COUNT(nir), nir FROM personnes WHERE NOT nir_correct( nir ) AND TRIM( BOTH ' ' FROM nir ) = '' GROUP BY nir ORDER BY nir ASC;
+-- SELECT COUNT(nir), nir FROM personnes WHERE NOT nir_correct( nir ) AND TRIM( BOTH ' ' FROM nir ) <> '' AND nir !~ '[0-9]' GROUP BY nir ORDER BY nir ASC;
+-- SELECT COUNT(nir), nir, LENGTH(nir), LENGTH(TRIM( BOTH ' ' FROM nir )) FROM personnes WHERE NOT nir_correct( nir ) AND LENGTH(TRIM( BOTH ' ' FROM nir )) <> 15 GROUP BY nir ORDER BY nir ASC;
+-- SELECT COUNT(nir), nir, LENGTH(TRIM( BOTH ' ' FROM nir )) FROM personnes WHERE NOT nir_correct( nir ) AND LENGTH(TRIM( BOTH ' ' FROM nir )) = 15 GROUP BY nir ORDER BY nir ASC;
+
+-- SELECT noaccents_upper(nom), LENGTH(noaccents_upper(nom)), TRIM( BOTH ' ' FROM noaccents_upper(nom) ), LENGTH(TRIM( BOTH ' ' FROM noaccents_upper(nom) )) FROM personnes WHERE noaccents_upper(nom) !~ '^[A-Z]([A-Z]|-| |'')*[A-Z]$';
+-- SELECT noaccents_upper(prenom), LENGTH(noaccents_upper(prenom)), TRIM( BOTH ' ' FROM noaccents_upper(prenom) ), LENGTH(TRIM( BOTH ' ' FROM noaccents_upper(prenom) )) FROM personnes WHERE noaccents_upper(prenom) !~ '^[A-Z]([A-Z]|-| |'')*[A-Z]$';
+-- SELECT noaccents_upper(nomnai), LENGTH(noaccents_upper(nomnai)), TRIM( BOTH ' ' FROM noaccents_upper(nomnai) ), LENGTH(TRIM( BOTH ' ' FROM noaccents_upper(nomnai) )) FROM personnes WHERE nomnai IS NOT NULL AND LENGTH(noaccents_upper(nomnai)) > 0 AND noaccents_upper(nomnai) !~ '^[A-Z]([A-Z]|-| |'')*[A-Z]$';
+
 -- 0°) Nettoyage ---------------------------------------------------------------
 DROP TABLE IF EXISTS historiqueetatspe CASCADE;
 DROP TABLE IF EXISTS informationspe CASCADE;
