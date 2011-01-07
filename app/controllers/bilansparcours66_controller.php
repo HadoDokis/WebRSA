@@ -25,25 +25,25 @@
 		*/
 
 		protected function _setOptions() {
-            $options = array();
-            //$options = $this->Bilanparcours66->allEnumLists();
+			$options = array();
+			//$options = $this->Bilanparcours66->allEnumLists();
 
 			$options = $this->Bilanparcours66->enums();
-            $typevoie = $this->Option->typevoie();
-            $this->set( 'rolepers', $this->Option->rolepers() );
-            $this->set( 'qual', $this->Option->qual() );
-            $this->set( 'nationalite', $this->Option->nationalite() );
+			$typevoie = $this->Option->typevoie();
+			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'qual', $this->Option->qual() );
+			$this->set( 'nationalite', $this->Option->nationalite() );
 
-            $options = Set::insert( $options, 'typevoie', $typevoie );
+			$options = Set::insert( $options, 'typevoie', $typevoie );
 
-            $options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
-            $options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->listOptions();
-            $options[$this->modelClass]['nvsansep_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
-            $options[$this->modelClass]['nvparcours_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
+			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
+			$options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->listOptions();
+			$options[$this->modelClass]['nvsansep_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
+			$options[$this->modelClass]['nvparcours_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 
-            $this->set( compact( 'options' ) );
+			$this->set( compact( 'options' ) );
 
-            $this->set( 'rsaSocle', $this->Option->natpf() );
+			$this->set( 'rsaSocle', $this->Option->natpf() );
 
 			$options['Saisineepbilanparcours66']['typeorient_id'] = $this->Bilanparcours66->Typeorient->listOptions();
 			$options['Saisineepbilanparcours66']['structurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
@@ -64,15 +64,15 @@
 				$conditions = array();
 			}
 
-            $nborientstruct = $this->Bilanparcours66->Orientstruct->find(
-                'count',
-                array(
-                    'conditions' => array(
-                        'Orientstruct.personne_id' => $personne_id,
-                        'Orientstruct.date_valid IS NOT NULL'
-                    )
-                )
-            );
+			$nborientstruct = $this->Bilanparcours66->Orientstruct->find(
+				'count',
+				array(
+					'conditions' => array(
+						'Orientstruct.personne_id' => $personne_id,
+						'Orientstruct.date_valid IS NOT NULL'
+					)
+				)
+			);
 
 			$this->paginate = array(
 				'fields' => array(
@@ -139,9 +139,9 @@
 				$bilansparcours66[$key]['Personne']['nom_complet'] = implode(
 					' ',
 					array(
-						$bilansparcours66[$key]['Contratinsertion']['Personne']['qual'],
-						$bilansparcours66[$key]['Contratinsertion']['Personne']['nom'],
-						$bilansparcours66[$key]['Contratinsertion']['Personne']['prenom']
+						@$bilansparcours66[$key]['Contratinsertion']['Personne']['qual'],
+						@$bilansparcours66[$key]['Contratinsertion']['Personne']['nom'],
+						@$bilansparcours66[$key]['Contratinsertion']['Personne']['prenom']
 					)
 				);
 			}
@@ -185,13 +185,13 @@
 		*/
 
 		protected function _add_edit( $id = null ) {
-            // Retour à la liste en cas d'annulation
-            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-                    if( $this->action == 'edit' ) {
-                        $id = $this->Bilanparcours->field( 'personne_id', array( 'id' => $id ) );
-                    }
-                    $this->redirect( array( 'action' => 'index', $id ) );
-            }
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+					if( $this->action == 'edit' ) {
+						$id = $this->Bilanparcours->field( 'personne_id', array( 'id' => $id ) );
+					}
+					$this->redirect( array( 'action' => 'index', $id ) );
+			}
 
 			if( $this->action == 'add' ) {
 				$personne_id = $id;
@@ -212,7 +212,7 @@
 			}
 
 			// INFO: pour passer de 74 à 29 modèles utilisés lors du find count
- 			$this->Bilanparcours66->Orientstruct->Personne->unbindModelAll();
+			$this->Bilanparcours66->Orientstruct->Personne->unbindModelAll();
 
 			// On s'assure que la personne existe bien
 			$nPersonnes = $this->Bilanparcours66->Orientstruct->Personne->find(
@@ -232,7 +232,7 @@
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
- 					$this->Bilanparcours66->commit();
+					$this->Bilanparcours66->commit();
 					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
 				}
 				else {

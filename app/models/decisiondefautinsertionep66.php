@@ -8,11 +8,11 @@
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
-// 			'Formattable' => array(
-// 				'suffix' => array(
-// 					'structurereferente_id'
-// 				)
-// 			),
+			'Formattable' => array(
+				'suffix' => array(
+					'structurereferente_id'
+				)
+			),
 			'Enumerable' => array(
 				'fields' => array(
 					'etape',

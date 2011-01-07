@@ -33,6 +33,7 @@
 				$this->Seanceep->Dossierep->Saisineepbilanparcours66->Nvsrepreorient66->enums(),
 				$this->Seanceep->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enums(),
 				$this->Seanceep->Dossierep->Nonrespectsanctionep93->enums(),
+				$this->Seanceep->Dossierep->Defautinsertionep66->enums(),
 				$this->Seanceep->Dossierep->enums(),
 				$this->Seanceep->enums(),
 				$this->Seanceep->MembreepSeanceep->enums(),
@@ -51,7 +52,7 @@
 			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions();
 			$options['Ep']['regroupementep_id'] = $this->{$this->modelClass}->Ep->Regroupementep->find( 'list' );
 			$options['Decisiondefautinsertionep66']['typeorient_id'] = $this->Seanceep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->listOptions();
-			$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Seanceep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->listOptions();
+			$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Seanceep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->list1Options();//listOptions
 			$this->set( compact( 'options' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 		}
@@ -161,13 +162,13 @@
 			);
 
 			$this->assert( !empty( $seanceep ), 'error404' );
-// debug( $this->data );
+
 			if( !empty( $this->data ) ) {
 				$this->Seanceep->begin();
 				$success = $this->Seanceep->saveDecisions( $seanceep_id, $this->data, $niveauDecision );
 
 				$this->_setFlashResult( 'Save', $success );
-				if( /*false &&*/ $success ) {
+				if( $success ) {
 					$this->Seanceep->commit();
 					$this->redirect( array( 'action' => 'view', $seanceep_id, '#dossiers' ) );
 				}

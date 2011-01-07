@@ -193,8 +193,7 @@
 					);
 
 					if( empty( $vxContratinsertion ) ) {
-						$this->invalidate( 'changementrefsansep', 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
-						//debug( 'Vieux contrat d\'insertion répondant aux critères non trouvé.' ); // FIXME: dans le formulaire
+						$this->invalidate( 'changementrefsansep', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
 						return false;
 					}
 				}
@@ -327,8 +326,7 @@
 
 					if( !isset( $data[$this->alias]['origine'] ) || $data[$this->alias]['origine'] != 'Defautinsertionep66' ) {
 						if( empty( $vxOrientstruct ) ) {
-							$this->invalidate( 'choixparcours', 'Vieille orientation répondant aux critères non trouvée.' );
-							//debug( 'Vieille orientation répondant aux critères non trouvée.' );
+							$this->invalidate( 'choixparcours', 'Cette personne ne possède aucune orientation validée.' );
 							return false;
 						}
 
@@ -345,8 +343,7 @@
 						);
 
 						if( empty( $vxContratinsertion ) ) {
-							$this->invalidate( 'choixparcours', 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
-							//debug( 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
+							$this->invalidate( 'choixparcours', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
 							return false;
 						}
 
@@ -382,7 +379,7 @@
 			// Saisine audition
 			else if( $data['Bilanparcours66']['proposition'] == 'audition' ) {
 				$data[$this->alias]['saisineepparcours'] = '0';
-debug( $data );
+// debug( $data );
 				$this->create( $data );
 				if( $success = $this->validates() ) {
 					$vxOrientstruct = $this->Orientstruct->find(
@@ -394,9 +391,10 @@ debug( $data );
 							'contain' => false
 						)
 					);
+// debug($vxOrientstruct);
 					// FIXME: erreur pas dans choixparcours
 					if( empty( $vxOrientstruct ) ) {
-						$this->invalidate( 'examenaudition', 'Vieille orientation répondant aux critères non trouvée.' );
+						$this->invalidate( 'examenaudition', 'Cette personne ne possède aucune orientation validée.' );
 						return false;
 					}
 
@@ -414,7 +412,7 @@ debug( $data );
 
 					// FIXME: erreur pas dans choixparcours
 					if( $data[$this->alias]['examenaudition'] != 'DRD' && empty( $vxContratinsertion ) ) {
-						$this->invalidate( 'examenaudition', 'Vieux contrat d\'insertion répondant aux critères non trouvé.' );
+						$this->invalidate( 'examenaudition', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
 						return false;
 					}
 

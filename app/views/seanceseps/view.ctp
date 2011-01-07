@@ -90,10 +90,10 @@
 						__d('Seanceep','Seanceep.edit',true),
 						array( 'controller' => 'membreseps', 'action' => 'editliste', $seanceep['Seanceep']['ep_id'], $seanceep['Seanceep']['id'] )
 					).' </li>';
-					echo '<li>'.$xhtml->presenceLink(
+					/*echo '<li>'.$xhtml->presenceLink(
 						__d('Seanceep','Seanceep.presence',true),
 						array( 'controller' => 'membreseps', 'action' => 'editpresence', $seanceep['Seanceep']['ep_id'], $seanceep['Seanceep']['id'] )
-					).' </li>';
+					).' </li>';*/
 
 				?>
 				</ul>
@@ -113,10 +113,10 @@
 							'Participants' => array(0, 1, 2, 3),
 							'Présences' => array(4,5)
 						),
-						'actions' => array(
+						/*'actions' => array(
 							'membreseps_seanceseps::edit',
 							'membreseps_seanceseps::delete'
-						),
+						),*/
 						'options' => $options
 					)
 				);

@@ -1,8 +1,8 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-// 		dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i?>TypeorientId' );
-// 		try { $( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
+ 		dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i?>TypeorientId' );
+ 		try { $( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
 
 		observeDisableFieldsOnValue(
 			'Decisiondefautinsertionep66<?php echo $i;?>Decision',
@@ -31,7 +31,10 @@
 <th>Création du dossier EP</th>
 <th>Date d\'orientation</th>
 <th>Orientation actuelle</th>
-<th colspan="2">Flux PE</th>
+<!--<th colspan="2">Flux PE</th>-->
+<th>Origine</th>
+<th>Date de radiation</th>
+<th>Motif de radiation</th>
 <th colspan="3">Avis EPL</th>
 </tr>
 </thead><tbody>';
@@ -45,6 +48,7 @@
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Defautinsertionep66']['Orientstruct']['date_valid'] ),
 				$dossierep['Defautinsertionep66']['Orientstruct']['Typeorient']['lib_type_orient'],
+				Set::enum( $dossierep['Defautinsertionep66']['origine'], $options['Defautinsertionep66']['origine'] ),
 				$locale->date( __( 'Locale->date', true ), @$dossierep['Defautinsertionep66']['Historiqueetatpe']['date'] ),
 				@$dossierep['Defautinsertionep66']['Historiqueetatpe']['motif'],
 
@@ -64,6 +68,6 @@
 // 	echo $form->end();
 
 // 	debug( $seanceep );
-/*debug( $dossiers[$theme]['liste'] );
-debug( $options );*/
+// debug( $dossiers[$theme]['liste'] );
+// debug( $options );
 ?>

@@ -162,62 +162,64 @@
 			}
 
 			$this->paginate = array(
-				'fields' => array(
-					'Dossierep.id',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Seanceep.dateseance',
-					'Dossierep.seanceep_id',
-					'Dossierep.created',
-					'Dossierep.themeep',
-				),
-				'contain' => array(
-					'Seanceep' => array(
-						'Ep'
-					)
-				),
-				'joins' => array(
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Dossierep.personne_id = Personne.id' )
+				'Dossierep' => array(
+					'fields' => array(
+						'Dossierep.id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Seanceep.dateseance',
+						'Dossierep.seanceep_id',
+						'Dossierep.created',
+						'Dossierep.themeep',
 					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+					'contain' => array(
+						'Seanceep' => array(
+							'Ep'
+						)
 					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+					'joins' => array(
+						array(
+							'table'      => 'personnes',
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Dossierep.personne_id = Personne.id' )
+						),
+						array(
+							'table'      => 'foyers',
+							'alias'      => 'Foyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+						),
+						array(
+							'table'      => 'adressesfoyers',
+							'alias'      => 'Adressefoyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+						),
+						array(
+							'table'      => 'adresses',
+							'alias'      => 'Adresse',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+						),
 					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+					'conditions' => array(
+						'NOT' => array(
+							'Dossierep.etapedossierep = \'decisionep\'',
+							'Dossierep.etapedossierep = \'decisioncg\'',
+							'Dossierep.etapedossierep = \'traite\'',
+						),
+						$conditionsAdresses,
+						$listeThemes
 					),
-				),
-				'conditions' => array(
-					'NOT' => array(
-						'Dossierep.etapedossierep = \'decisionep\'',
-						'Dossierep.etapedossierep = \'decisioncg\'',
-						'Dossierep.etapedossierep = \'traite\'',
-					),
-					$conditionsAdresses,
-					$listeThemes
-				),
-				'limit' => 100,
-				'order' => array( 'Dossierep.created ASC' )
+					'limit' => 100,
+					'order' => array( 'Dossierep.created ASC' )
+				)
 			);
 
 			$dossierseps = $this->paginate( $this->Dossierep );
