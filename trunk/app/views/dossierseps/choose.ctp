@@ -22,7 +22,8 @@
 		array(
 			'cohorte' => true,
 			'options' => $options,
-			'hidden' => array( 'Dossierep.id' )
+			'hidden' => array( 'Dossierep.id' ),
+			'paginate' => 'Dossierep'
 		)
 	);
 // 	debug( $dossierseps );
