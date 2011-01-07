@@ -40,9 +40,50 @@
 
 	class ActionscandidatsPartenairesControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
+		function testBeforeFilter() {
+			$this->ActionscandidatsPartenairesController->beforeFilter();
+			$expected = array(
+				'ActioncandidatPartenaire' => array(
+					'actioncandidat_id' => array(
+						'1' => 'intitulé',
+                                	),
+					'partenaire_id' => array(
+						'1' => 'libstruct?',
+	                                ),
+                        	),
+                	);
+			$this->assertEqual($this->ActionscandidatsPartenairesController->viewVars['options'], $expected);
+	        }
+
+		function testIndex()  {
+			$this->ActionscandidatsPartenairesController->index();
+			$this->assertNotNull($this->ActionscandidatsPartenairesController->params['paging']);
+	        }
+/*
+		function testAdd() {
+			$this->ActionscandidatsPartenairesController->add();	            
+	        }
+	
+	        function testEdit() {
+			$this->ActionscandidatsPartenairesController->edit();
+	        }
+	
+	        function test_add_edit() {
+			$this->ActionscandidatsPartenairesController->_add_edit();
+	        }
+
+	        function testDelete() {
+			$id = '1';
+			$this->ActionscandidatsPartenairesController->delete($id);
+			this->assertNull();
 			
-		}
+	        }
+	
+	        function testView() {
+			$id = '1';
+			$this->ActionscandidatsPartenairesController->view();
+	        }
+*/	
 
 	}
 

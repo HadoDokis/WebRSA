@@ -84,7 +84,7 @@
 			);
 			$this->assertEqual($records, $this->ActionsController->viewVars['actions']);
 		}
-	/*
+	
 		function testAdd() {
 			$this->ActionsController->data = array(
 					'0' => array(
@@ -103,7 +103,7 @@
 			$this->ActionsController->add();
 			$this->assertEqual(array( 'controller' => 'actions', 'action' => 'index' ), $this->ActionsController->redirectUrl);
 		}
-	*/
+	
 
 		function testEditWithoutData() {
 			$action_id = '1';
