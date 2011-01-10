@@ -24,11 +24,11 @@
 	<table>
 		<thead>
 			<tr>
-				<th><?php echo $paginator->sort( 'Dossier EP', 'Dossier.id' );?></th>
+				<th><?php echo $paginator->sort( 'Dossier EP', 'Dossierep.id' );?></th>
 				<th>Nom du demandeur</th>
 				<th>Adresse</th>
 				<th>Date de naissance</th>
-				<th><?php echo $paginator->sort( 'Thème du dossier EP', 'Dossier.themeep' );?></th>
+				<th><?php echo $paginator->sort( 'Thème du dossier EP', 'Dossierep.themeep' );?></th>
 				<th>Date de décision</th>
 				<th>Décision</th>
 			</tr>
