@@ -41,7 +41,7 @@ INSERT INTO motifsreorients ( name ) VALUES
 SELECT pg_catalog.setval('seanceseps_id_seq', 1, true);
 -- INSERT INTO seanceseps VALUES ( 1, 'COM1', 'Commission 1', 1, 25, '2010-10-28 10:00:00', NULL );
 INSERT INTO seanceseps ( identifiant, name, ep_id, structurereferente_id, dateseance ) VALUES
-	( 'COM1', 'Commission 1', 1, 25, '2010-10-28 10:00:00', NULL );
+	( 'COM1', 'Commission 1', 1, 25, '2010-10-28 10:00:00' );
 
 TRUNCATE situationspdos CASCADE;
 SELECT pg_catalog.setval('situationspdos_id_seq', ( SELECT COALESCE( max(situationspdos.id) + 1, 1 ) FROM situationspdos ), false);
