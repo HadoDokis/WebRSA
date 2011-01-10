@@ -97,7 +97,7 @@
 
 				$form->input( "Defautinsertionep66.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Defautinsertionep66']['id'] ) ).
 				$form->input( "Defautinsertionep66.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-				$form->input( "Decisiondefautinsertionep66.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data['Decisiondefautinsertionep66'][$i]['id'] ) ).
+				$form->input( "Decisiondefautinsertionep66.{$i}.id", array( 'type' => 'hidden', 'value' => @$record['id'] ) ).
 				$form->input( "Decisiondefautinsertionep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
 				$form->input( "Decisiondefautinsertionep66.{$i}.defautinsertionep66_id", array( 'type' => 'hidden', 'value' => @$dossierep['Defautinsertionep66']['id'] ) ).
 
