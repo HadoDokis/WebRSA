@@ -685,6 +685,9 @@ CREATE TABLE decisionsdefautsinsertionseps66 (
 	modified					TIMESTAMP WITHOUT TIME ZONE
 );
 
+-- FIXME: faire de même pour les autres décisions
+CREATE UNIQUE INDEX decisionsdefautsinsertionseps66_defautinsertionep66_id_etape_unique_idx ON decisionsdefautsinsertionseps66(defautinsertionep66_id,etape);
+
 -- *****************************************************************************
 -- Ajout dans le bilansparcours66
 -- *****************************************************************************

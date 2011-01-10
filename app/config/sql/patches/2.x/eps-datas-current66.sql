@@ -40,12 +40,14 @@ INSERT INTO eps_membreseps ( ep_id, membreep_id ) VALUES
 	( 2, 1 ),
 	( 3, 1 );
 
-INSERT INTO eps_zonesgeographiques ( ep_id, zonegeographique_id ) VALUES
-	/*( 1, ( SELECT id FROM zonesgeographiques WHERE libelle LIKE 'PERPIGNAN  1%' ) ), -- Perpignan 1
+INSERT INTO eps_zonesgeographiques ( ep_id, zonegeographique_id ) /*VALUES
+	( 1, ( SELECT id FROM zonesgeographiques WHERE libelle LIKE 'PERPIGNAN  1%' ) ), -- Perpignan 1
 	( 3, ( SELECT id FROM zonesgeographiques WHERE libelle LIKE 'PERPIGNAN  1%' ) ); -- Perpignan 1*/
-	( 1, ( SELECT id FROM zonesgeographiques ) ),
-	( 2, ( SELECT id FROM zonesgeographiques ) ),
-	( 3, ( SELECT id FROM zonesgeographiques ) );
+	SELECT 1 AS ep_id, id AS zonegeographique_id FROM zonesgeographiques
+	UNION
+	SELECT 2 AS ep_id, id AS zonegeographique_id FROM zonesgeographiques
+	UNION
+	SELECT 3 AS ep_id, id AS zonegeographique_id FROM zonesgeographiques;
 
 INSERT INTO motifsreorients ( name ) VALUES
 	( 'Motif réorientation 1' ),

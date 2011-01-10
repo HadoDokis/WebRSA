@@ -35,8 +35,7 @@ INSERT INTO eps_zonesgeographiques ( ep_id, zonegeographique_id )/* VALUES
 	( 1, 14 ), -- EPINAY-SUR-SEINE
 	( 1, 31 ), -- PIERREFITTE-SUR-SEINE
 	( 1, 36 ); -- SAINT-OUEN*/
-	SELECT 1, zonesgeographiques.id
-		FROM zonesgeographiques;
+	SELECT 1 AS ep_id, id AS zonegeographique_id FROM zonesgeographiques;
 
 INSERT INTO motifsreorients ( name ) VALUES
 	( 'Motif réorientation 1' ),
