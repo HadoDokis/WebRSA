@@ -248,6 +248,7 @@
 					<li><?php echo $xhtml->link( 'Liste des équipes', array( 'controller' => 'eps', 'action' => 'index' ) );*/?></li> -->
 					<li><?php echo $xhtml->link( 'Liste des séances', array( 'controller' => 'seanceseps', 'action' => 'index' ) );?></li>
 					<li><?php echo $xhtml->link( 'Liste des dossiers', array( 'controller' => 'dossierseps', 'action' => 'index' ) );?></li>
+					<li><?php echo $xhtml->link( 'Liste des décisions', array( 'controller' => 'dossierseps', 'action' => 'decisions' ) );?></li>
 					<li><a href="#">CG 66</a>
 						<ul>
 							<!-- FIXME: permissions -->
