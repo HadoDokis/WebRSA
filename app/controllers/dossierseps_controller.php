@@ -285,5 +285,92 @@
 			$this->_setOptions();
 			$this->set('dossierep_id', $dossierep_id);
 		}
+
+		/**
+		*
+		*/
+
+		public function decisions() {
+			$this->paginate = array(
+				'Dossierep' => array(
+					/*'fields' => array(
+						'Dossierep.id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Seanceep.dateseance',
+						'Dossierep.created',
+						'Dossierep.etapedossierep',
+						'Dossierep.themeep',
+					),*/
+					'contain' => array(
+						'Seanceep',
+						'Personne' => array(
+							'Foyer' => array(
+								'Adressefoyer' => array(
+									'conditions' => array(
+										'Adressefoyer.rgadr' => '01'
+									),
+									'Adresse'
+								)
+							)
+						),
+						// FIXME: pour chaque thème .... + jointure ?
+						// Thèmes 66
+						'Defautinsertionep66' => array(
+							'Decisiondefautinsertionep66' => array(
+								'order' => 'created DESC',
+								'limit' => 1
+							)
+						),
+						'Saisineepbilanparcours66' => array(
+							'Nvsrepreorient66' => array(
+								'order' => 'created DESC',
+								'limit' => 1
+							)
+						),
+						'Saisineepdpdo66' => array(
+							'Nvsepdpdo66' => array(
+								'order' => 'created DESC',
+								'limit' => 1,
+								'Decisionpdo'
+							)
+						),
+						// Thèmes 93
+						'Saisineepreorientsr93' => array(
+							'Nvsrepreorientsr93' => array(
+								'order' => 'created DESC',
+								'limit' => 1
+							)
+						),
+						'Nonrespectsanctionep93' => array(
+							'Decisionnonrespectsanctionep93' => array(
+								'order' => 'created DESC',
+								'limit' => 1
+							)
+						),
+					),
+					'conditions' => array(
+						'Dossierep.seanceep_id IS NOT NULL',
+						'Dossierep.etapedossierep' => 'traite',
+					),
+					'limit' => 10
+				)
+			);
+
+			// FIXME: plus générique
+			$decisions = array(
+				// CG 66
+				'Defautinsertionep66' => $this->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->enumList( 'decision' ),
+				'Saisineepbilanparcours66' => $this->Dossierep->Saisineepbilanparcours66->Nvsrepreorient66->enumList( 'decision' ),
+				// CG 93
+				'Nonrespectsanctionep93' => $this->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enumList( 'decision' ),
+				'Saisineepreorientsr93' => $this->Dossierep->Saisineepreorientsr93->Nvsrepreorientsr93->enumList( 'decision' )
+			);
+// debug( $decisions );
+			$this->set( compact( 'decisions' ) );
+			$this->set( 'options', $this->Dossierep->enums() );
+			$this->set( 'dossierseps', $this->paginate( $this->Dossierep ) );
+		}
 	}
 ?>

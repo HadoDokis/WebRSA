@@ -41,7 +41,7 @@
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		// Pré-remplissage avec les valeurs de l'avis EP -> FIXME prepareFormData
 		if( empty( $this->data ) ) {
-			if( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1]['etape'] == 'cg' ) {
+			if( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1]['etape'] == 'ep' ) {
 				$record = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1];
 			}
 			else {
