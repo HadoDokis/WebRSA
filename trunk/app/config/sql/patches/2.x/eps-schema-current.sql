@@ -270,7 +270,7 @@ CREATE TABLE nvsrsepsreorientsrs93 (
 );
 
 COMMENT ON TABLE nvsrsepsreorientsrs93 IS 'Décisions des nouvelles structures referentes concernant les saisines d''EPs créées par les structures référentes (CG93)';
-ALTER TABLE nvsrsepsreorientsrs93 OWNER TO webrsa;
+CREATE UNIQUE INDEX nvsrsepsreorientsrs93_saisineepreorientsr93_id_etape_unique_idx ON nvsrsepsreorientsrs93(saisineepreorientsr93_id,etape);
 
 -- =============================================================================
 
@@ -315,7 +315,7 @@ CREATE TABLE saisinesepsbilansparcours66 (
 );
 
 COMMENT ON TABLE saisinesepsbilansparcours66 IS 'Saisines d''EPs créées lors du bilan de parcours (CG66)';
-ALTER TABLE saisinesepsbilansparcours66 OWNER TO webrsa;
+
 
 -- -----------------------------------------------------------------------------
 
@@ -332,7 +332,7 @@ CREATE TABLE nvsrsepsreorient66 (
 );
 
 COMMENT ON TABLE nvsrsepsreorient66 IS 'Décisions des nouvelles structures referentes concernant les saisines d''EPs suite au bilan de parcours (CG66)';
-ALTER TABLE nvsrsepsreorient66 OWNER TO webrsa;
+CREATE UNIQUE INDEX nvsrsepsreorient66_saisineepbilanparcours66_id_etape_unique_idx ON nvsrsepsreorient66(saisineepbilanparcours66_id,etape);
 
 -- *****************************************************************************
 
@@ -392,6 +392,8 @@ CREATE TABLE nvsepdspdos66 (
 	created					TIMESTAMP WITHOUT TIME ZONE,
 	modified				TIMESTAMP WITHOUT TIME ZONE
 );
+
+CREATE UNIQUE INDEX nvsepdspdos66_saisineepdpdo66_id_etape_unique_idx ON nvsepdspdos66(saisineepdpdo66_id,etape);
 
 -- *****************************************************************************
 -- Modification pour reprendre l'ancien bilan de parcours du 66
@@ -641,6 +643,7 @@ CREATE TABLE decisionsnonrespectssanctionseps93 (
 );
 
 COMMENT ON TABLE decisionsnonrespectssanctionseps93 IS 'Avis et décisions ep/cg pour le thème non respect / sanctions (CG 93)';
+CREATE UNIQUE INDEX decisionsnonrespectssanctionseps93_nonrespectsanctionep93_id_etape_unique_idx ON decisionsnonrespectssanctionseps93(nonrespectsanctionep93_id,etape);
 
 -- *****************************************************************************
 -- Thématique défaut d'insertion (CG 66)
@@ -685,7 +688,6 @@ CREATE TABLE decisionsdefautsinsertionseps66 (
 	modified					TIMESTAMP WITHOUT TIME ZONE
 );
 
--- FIXME: faire de même pour les autres décisions
 CREATE UNIQUE INDEX decisionsdefautsinsertionseps66_defautinsertionep66_id_etape_unique_idx ON decisionsdefautsinsertionseps66(defautinsertionep66_id,etape);
 
 -- *****************************************************************************
