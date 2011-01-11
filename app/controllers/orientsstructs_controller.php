@@ -141,6 +141,9 @@
 					// Orientation
 					$this->Orientstruct->create();
 
+					// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
+					$this->data['Calculdroitrsa']['personne_id'] = $personne_id;
+
 					$this->data['Orientstruct']['personne_id'] = $personne_id;
 					$this->data['Orientstruct']['valid_cg'] = true;
 					$this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
@@ -213,6 +216,9 @@
 
 			// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
+				// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
+				$this->data['Calculdroitrsa']['personne_id'] = $orientstruct['Orientstruct']['personne_id'];
+
 				$this->Orientstruct->set( $this->data );
 				$this->Orientstruct->Personne->Calculdroitrsa->set( $this->data );
 				$valid = $this->Orientstruct->Personne->Calculdroitrsa->validates();
