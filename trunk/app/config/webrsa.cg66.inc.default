@@ -191,27 +191,31 @@
 	/**
 	 * Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
 	 */
-	Configure::write( 'traitementResultatId', 2 );
-	
+	// Valeur de l'id technique de la table descriptionspdos dont le libellé concerne la saisie de l'EP DPT
+	Configure::write( 'traitementResultatId', 6 );
+
+	// Valeur de l'id technique de la table traitementstypespdos dont le libellé représente "En cours"
 	Configure::write( 'traitementEnCoursId', 1 );
+
+	// Valeur de l'id technique de la table traitementstypespdos dont le libellé représente "Traité"
 	Configure::write( 'traitementClosId', 2 );
-	
+
 	/**
 	 * Variables apparaissant dans la fiche de calcul du journal de traitement d'une PDO
 	 */
 	Configure::write('Traitementpdo.fichecalcul_coefannee1', 34);
 	Configure::write('Traitementpdo.fichecalcul_coefannee2', 25);
-	
+
 	Configure::write('Traitementpdo.fichecalcul_cavntmax', 80300);
 	Configure::write('Traitementpdo.fichecalcul_casrvmax', 32100);
-	
+
 	Configure::write('Traitementpdo.fichecalcul_abattbicvnt', 71);
 	Configure::write('Traitementpdo.fichecalcul_abattbicsrv', 50);
 	Configure::write('Traitementpdo.fichecalcul_abattbncsrv', 34);
-	
+
 	/**
 	 * Affiche ou non l'alerte de fin de session et exécute la redirection
 	 */
 	Configure::write( 'alerteFinSession', true );
-	
+
 ?>
