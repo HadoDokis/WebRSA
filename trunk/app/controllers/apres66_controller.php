@@ -448,25 +448,32 @@
 
             if( !empty( $this->data ) ){
 
-
                 /**
                 *   Pour le nombre de pièces afin de savoir si le dossier est complet ou non
                 */
-                $valide = true;
+                $valide = false;
                 $nbNormalPieces = array();
 
                 $typeaideapre66_id = suffix( Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' ) );
-                $typeaide = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findById( $typeaideapre66_id, null, null, 2 );
+                $typeaide = array();
+                if (!empty($typeaideapre66_id)) {
+	                $typeaide = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findById( $typeaideapre66_id, null, null, 2 );
+		            $nbNormalPieces['Typeaideapre66'] = count( Set::extract( $typeaide, '/Pieceaide66/id' ) );
 
-                $nbNormalPieces['Typeaideapre66'] = count( Set::extract( $typeaide, '/Pieceaide66/id' ) );
-
-                $key = 'Pieceaide66';
-                if( isset( $this->data['Aideapre66'] ) && isset( $this->data[$key] ) && isset( $this->data[$key][$key] ) ) {
-                    $valide = ( count( $this->data[$key][$key] ) == $nbNormalPieces['Typeaideapre66'] ) && $valide;
-                }
-
-
-                $this->data['Apre66']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
+		            $key = 'Pieceaide66';
+		            if( isset($this->data['Aideapre66']) && isset($this->data[$key]) && isset($this->data[$key][$key]) ) {
+		            	$nbpieces = 0;
+						if (!empty($this->data[$key][$key])) {
+				        	foreach($this->data[$key][$key] as $piece_key) {
+				        		if (!empty($piece_key))
+				        			$nbpieces++;
+				        	}
+			        	}
+		                $valide = ( $nbpieces == $nbNormalPieces['Typeaideapre66'] );
+		            }
+				}
+		            
+	            $this->data['Apre66']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
 
 // debug($this->data);
 				// Tentative d'enregistrement de l'APRE complémentaire
@@ -536,7 +543,7 @@
                         ),
                         'Pieceaide66' => $this->data['Pieceaide66']
                     );
-                    $saved = $this->{$this->modelClass}->Aideapre66->save( $linkedData ) && $success;
+                    $success = $this->{$this->modelClass}->Aideapre66->save( $linkedData ) && $success;
                 }
 // debug($personne);
 
