@@ -472,6 +472,10 @@
 				}
 			}
 
+			/*if( isset( $this->data['Personne']['nir'] ) ) {
+				$this->data['Personne']['nir'] = trim( $this->data['Personne']['nir'] );
+			}*/
+
 			// Champs déduits
 			if( !empty( $this->data['Personne']['qual'] ) ) {
 				$this->data['Personne']['sexe'] = ( $this->data['Personne']['qual'] == 'MR' ) ? 1 : 2;

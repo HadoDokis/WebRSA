@@ -30,6 +30,7 @@
 				<th>Date d'orientation</th>
 				<th>Préconisation d'orientation</th>
 				<th>Structure référente</th>
+				<th>Rang d'orientation</th>
 				<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ):?><th>Etat de l'orientation</th><?php endif;?>
 				<th colspan="3" class="action">Actions</th>
 			</tr>
@@ -44,13 +45,21 @@
 						$isOrient = true;
 					}
 
+					if( !empty( $orientstruct['Orientstruct']['rgorient'] ) ) {
+						$rgorient = ( $orientstruct['Orientstruct']['rgorient'] > 1 ) ? 'Réorientation' : 'Première orientation';
+					}
+					else {
+						$rgorient = null;
+					}
+
 					$cells = array(
 						h( $orientstruct['Personne']['nom']),
 						h( $orientstruct['Personne']['prenom'] ),
 						h( date_short( $orientstruct['Orientstruct']['date_propo'] ) ),
 						h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
-						h( Set::classicExtract( $orientstruct, 'Typeorient.lib_type_orient' ) ) ,
+						h( Set::classicExtract( $orientstruct, 'Typeorient.lib_type_orient' ) ),
 						h( $orientstruct['Structurereferente']['lib_struc']  ),
+						h( $rgorient ),
 					);
 
 					if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {

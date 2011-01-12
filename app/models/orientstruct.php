@@ -314,5 +314,30 @@
 					);";
 			return $this->query( $sql );
 		}
+
+		/**
+		* Ajout du rang d'orientation à la sauvegarde, lorsqu'on passe en 'Orienté'
+		*/
+
+		public function beforeSave( $options = array() ) {
+			// Si on change le statut_orient de <> 'Orienté' en 'Orienté', alors, il faut changer le rang
+			if( isset( $this->data[$this->alias]['statut_orient'] ) && ( $this->data[$this->alias]['statut_orient'] == 'Orienté' ) ) {
+				// Change-t'on le statut ?
+				if( isset( $this->data[$this->alias]['id'] ) && !empty( $this->data[$this->alias]['id'] ) ) {
+					$tuple_pcd = $this->find( 'first', array( 'conditions' => array( "{$this->alias}.{$this->primaryKey}" => $this->data[$this->alias]['id'] ), 'contain' => false ) );
+					if( $tuple_pcd[$this->alias]['statut_orient'] != 'Orienté' ) {
+						$rgprecedent = $this->find( 'count', array( 'conditions' => array( "{$this->alias}.statut_orient" => 'Orienté', "{$this->alias}.personne_id" => $this->data[$this->alias]['personne_id'] ), 'contain' => false ) );
+						$this->data[$this->alias]['rgorient'] = ( $rgprecedent + 1 );
+					}
+				}
+				// Nouvelle entrée
+				else if( isset( $this->data[$this->alias]['personne_id'] ) && !empty( $this->data[$this->alias]['personne_id'] ) ) {
+					$rgprecedent = $this->find( 'count', array( 'conditions' => array( "{$this->alias}.statut_orient" => 'Orienté', "{$this->alias}.personne_id" => $this->data[$this->alias]['personne_id'] ), 'contain' => false ) );
+					$this->data[$this->alias]['rgorient'] = ( $rgprecedent + 1 );
+				}
+			}
+
+			return true;
+		}
 	}
 ?>
