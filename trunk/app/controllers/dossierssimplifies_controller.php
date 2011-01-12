@@ -4,7 +4,7 @@
         var $name = 'Dossierssimplifies';
         var $uses = array( 'Dossier', 'Foyer', /*'Adresse', 'Adressefoyer',*/ 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct', 'Typocontrat' );
         var $components = array( 'Gedooo' );
-        
+
 		var $commeDroit = array(
 			'add' => 'Dossierssimplifies:edit'
 		);

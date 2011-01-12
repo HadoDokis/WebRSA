@@ -13,7 +13,7 @@ BEGIN;
 
 -- INFO: http://archives.postgresql.org/pgsql-sql/2005-09/msg00266.php
 CREATE OR REPLACE FUNCTION public.add_missing_table_field (text, text, text, text)
-returns bool as '
+RETURNS bool as '
 DECLARE
   p_namespace alias for $1;
   p_table     alias for $2;
@@ -47,19 +47,183 @@ COMMENT ON FUNCTION public.add_missing_table_field (text, text, text, text) IS '
 
 -- *****************************************************************************
 
-ALTER TABLE orientsstructs ADD COLUMN rgorient INTEGER DEFAULT NULL;
--- NULL ou 0 par défaut
+-- A-t'on des vrais doublons ?
+-- -> 1322 lignes de doublons pour cg93_20101203_20h46
+--    88 avec statut_orient = 'Orienté', 1234 avec statut_orient = 'Non orienté'
+-- -> 70 lignes de doublons pour cg66_20101217_eps
+--    70 avec statut_orient = 'Orienté'
 
+CREATE OR REPLACE FUNCTION public.dedoublonnage_orientsstructs() RETURNS bool as
+$$
+	DECLARE
+		v_row		RECORD;
+		v_doublon	RECORD;
+		v_first_id	INTEGER;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					orientsstructs.personne_id
+				FROM orientsstructs
+				WHERE
+					orientsstructs.personne_id IN (
+						SELECT
+									DISTINCT( t.personne_id )
+								FROM (
+									SELECT
+											COUNT(id) AS count,
+											orientsstructs.personne_id,
+											orientsstructs.typeorient_id,
+											orientsstructs.structurereferente_id,
+											orientsstructs.propo_algo,
+											orientsstructs.valid_cg,
+											orientsstructs.date_propo,
+											orientsstructs.date_valid,
+											orientsstructs.statut_orient,
+											orientsstructs.date_impression,
+											orientsstructs.daterelance,
+											orientsstructs.statutrelance,
+											orientsstructs.date_impression_relance,
+											orientsstructs.referent_id,
+											orientsstructs.etatorient
+										FROM orientsstructs
+										GROUP BY
+											orientsstructs.personne_id,
+											orientsstructs.typeorient_id,
+											orientsstructs.structurereferente_id,
+											orientsstructs.propo_algo,
+											orientsstructs.valid_cg,
+											orientsstructs.date_propo,
+											orientsstructs.date_valid,
+											orientsstructs.statut_orient,
+											orientsstructs.date_impression,
+											orientsstructs.daterelance,
+											orientsstructs.statutrelance,
+											orientsstructs.date_impression_relance,
+											orientsstructs.referent_id,
+											orientsstructs.etatorient
+								) AS t
+								WHERE t.count > 1
+						)
+		LOOP
+			v_first_id := ( SELECT id FROM orientsstructs WHERE orientsstructs.personne_id = v_row.personne_id ORDER BY id LIMIT 1 );
+
+			FOR v_doublon IN
+				SELECT
+						orientsstructs.id
+					FROM orientsstructs
+					WHERE
+						orientsstructs.personne_id = v_row.personne_id
+						AND orientsstructs.id <> v_first_id
+						AND orientsstructs.id IN (
+							SELECT
+										DISTINCT( orientsstructs.id )
+									FROM (
+										SELECT
+												COUNT(id) AS count,
+												orientsstructs.personne_id,
+												orientsstructs.typeorient_id,
+												orientsstructs.structurereferente_id,
+												orientsstructs.propo_algo,
+												orientsstructs.valid_cg,
+												orientsstructs.date_propo,
+												orientsstructs.date_valid,
+												orientsstructs.statut_orient,
+												orientsstructs.date_impression,
+												orientsstructs.daterelance,
+												orientsstructs.statutrelance,
+												orientsstructs.date_impression_relance,
+												orientsstructs.referent_id,
+												orientsstructs.etatorient
+											FROM orientsstructs
+											WHERE orientsstructs.personne_id = v_row.personne_id
+											GROUP BY
+												orientsstructs.personne_id,
+												orientsstructs.typeorient_id,
+												orientsstructs.structurereferente_id,
+												orientsstructs.propo_algo,
+												orientsstructs.valid_cg,
+												orientsstructs.date_propo,
+												orientsstructs.date_valid,
+												orientsstructs.statut_orient,
+												orientsstructs.date_impression,
+												orientsstructs.daterelance,
+												orientsstructs.statutrelance,
+												orientsstructs.date_impression_relance,
+												orientsstructs.referent_id,
+												orientsstructs.etatorient
+									) AS t
+									WHERE t.count > 1
+							)
+			LOOP
+				DELETE FROM pdfs WHERE pdfs.modele = 'Orientstruct' AND pdfs.fk_value = v_doublon.id;
+				-- FIXME: pas delete mais UPDATE ?
+				DELETE FROM orientsstructs_servicesinstructeurs WHERE orientsstructs_servicesinstructeurs.orientstruct_id = v_doublon.id;
+				-- FIXME: pas delete mais UPDATE ?
+				DELETE FROM parcoursdetectes WHERE parcoursdetectes.orientstruct_id = v_doublon.id;
+				DELETE FROM orientsstructs WHERE orientsstructs.id = v_doublon.id;
+			END LOOP;
+		END LOOP;
+
+		RETURN false;-- FIXME: retourne le nombre de suppressions ?
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT dedoublonnage_orientsstructs();
+DROP FUNCTION public.dedoublonnage_orientsstructs();
+
+-- ALTER TABLE orientsstructs DROP COLUMN rgorient; -- FIXME -> IF EXISTS
+ALTER TABLE orientsstructs ADD COLUMN rgorient INTEGER DEFAULT NULL; -- INFO: rgorient SSI Orienté -> sinon, ça n'a pas de sens ? cf. Orientstruct;;beforeSave
+
+UPDATE orientsstructs SET rgorient = NULL;
 UPDATE orientsstructs
 	SET rgorient = (
 		SELECT ( COUNT(orientsstructspcd.id) + 1 )
 			FROM orientsstructs AS orientsstructspcd
 			WHERE orientsstructspcd.personne_id = orientsstructs.personne_id
 				AND orientsstructspcd.id <> orientsstructs.id
-				AND orientsstructspcd.date_valid <= orientsstructs.date_valid
+				AND orientsstructs.date_valid IS NOT NULL
 				AND orientsstructspcd.date_valid IS NOT NULL
+				AND (
+					orientsstructspcd.date_valid < orientsstructs.date_valid
+					OR ( orientsstructspcd.date_valid = orientsstructs.date_valid AND orientsstructspcd.id < orientsstructs.id )
+				)
+				AND orientsstructs.statut_orient = 'Orienté'
 				AND orientsstructspcd.statut_orient = 'Orienté'
-	);
+	)
+	WHERE
+		orientsstructs.date_valid IS NOT NULL
+		AND orientsstructs.statut_orient = 'Orienté';
+
+CREATE UNIQUE INDEX orientsstructs_personne_id_rgorient_idx ON orientsstructs( personne_id, rgorient ) WHERE rgorient IS NOT NULL;
+
+UPDATE orientsstructs
+	SET statut_orient = 'Non orienté'
+	WHERE typeorient_id IS NULL
+		OR structurereferente_id IS NULL
+		OR date_valid IS NULL;
+
+ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_statut_orient_oriente_rgorient_not_null_chk CHECK (
+	statut_orient <> 'Orienté' OR ( statut_orient = 'Orienté' AND rgorient IS NOT NULL )
+);
+
+/*
+-- FIXME: si statut_orient Orienté et date_valid -> valid_cg = true ?
+-- En fait, il semblerait que l'on puisse supprimer la colonne (en modifiant le PHP)
+app/models/critere.php:                    '"Orientstruct"."valid_cg"',
+app/tests/fixtures/orientstruct_fixture.php:                            'valid_cg' => null,
+app/tests/fixtures/orientstruct_fixture.php:                            'valid_cg' => '1',
+app/tests/fixtures/orientstruct_fixture.php:                            'valid_cg' => '1',
+app/tests/fixtures/orientstruct_fixture.php:                            'valid_cg' => '1',
+app/tests/fixtures/orientstruct_fixture.php:                            'valid_cg' => '1',
+app/tests/fixtures/orientstruct_fixture.php:                            'valid_cg' => '1',
+app/tests/fixtures/orientstruct_fixture.php:                            'valid_cg' => '1',
+app/tests/fixtures/orientstruct_fixture.php:                            'valid_cg' => '1',
+app/tests/fixtures/orientstruct_fixture.php:                            'valid_cg' => '1',
+app/controllers/dossierssimplifies_controller.php:                                $this->data['Orientstruct'][$key]['valid_cg'] = true;
+app/controllers/orientsstructs_controller.php:                                  $this->data['Orientstruct']['valid_cg'] = true;
+app/vendors/shells/refresh.php:                                                         'Orientstruct.valid_cg',
+*/
 
 CREATE TYPE type_statutoccupation AS ENUM ( 'proprietaire', 'locataire' );
 ALTER TABLE dsps ADD COLUMN statutoccupation type_statutoccupation DEFAULT NULL;
