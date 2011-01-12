@@ -46,7 +46,7 @@
                         '<?php echo $this->modelClass;?>TypecontratCON',
                         '<?php echo $this->modelClass;?>TypecontratAUT',
                         '<?php echo $this->modelClass;?>Dureecontrat',
-                        '<?php echo $this->modelClass;?>Nbheurestravaillees',
+                        //'<?php echo $this->modelClass;?>Nbheurestravaillees',
                         '<?php echo $this->modelClass;?>Nomemployeur',
                         '<?php echo $this->modelClass;?>Adresseemployeur'
                     ],
@@ -366,10 +366,10 @@
                     <td class="activiteSize noborder" colspan="2"><?php /*echo $xform->input( "{$this->modelClass}.secteuractivite", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'class' => 'activiteSize', 'options' => $sect_acti_emp, 'empty' => true ) );*/?></td>
                 </tr> -->
 
-                <tr>
+                <!--<tr>
                     <td class="mediumsize noborder"><strong>Quotité de travail hebdomadaire </strong></td>
                     <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.nbheurestravaillees", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?></td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td class="mediumsize noborder"><strong>Localisation de l'activité ( nom et adresse ) </strong></td>
                     <td class="mediumsize noborder"><?php echo $xform->input(  "{$this->modelClass}.nomemployeur", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?><?php echo $xform->input(  "{$this->modelClass}.adresseemployeur", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
