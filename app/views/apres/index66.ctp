@@ -59,10 +59,10 @@
 
                     $buttonEnabled = true;
                     if( $etat == 'Complet' ){
-                        $buttonEnabledInc = false;
+                        $buttonEnabledInc = true;
                     }
                     else{
-                        $buttonEnabledInc = true;
+                        $buttonEnabledInc = false;
                     }
 
 
@@ -115,7 +115,7 @@
                             $xhtml->printLink(
                                 'Imprimer la demande APRE',
                                 array( 'controller' => 'gedooos', 'action' => 'apre', $apre[$this->modelClass]['id'] ),
-                                $buttonEnabled,
+                                $buttonEnabledInc,
                                 $permissions->check( 'gedooos', 'apre' )
                             ),
                             array( $innerTable, array( 'class' => 'innerTableCell' ) )
