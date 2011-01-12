@@ -193,11 +193,13 @@
 		public function plafondMontantAideapre( $check ) {
 			$return = true;
 			$typeaideapre66_id = Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' );
-			$typeaideapre66 = $this->Typeaideapre66->findById( $typeaideapre66_id, null, null, -1 );
-			$plafond = Set::classicExtract( $typeaideapre66, 'Typeaideapre66.plafond' );
+			if (!empty($typeaideapre66_id)) {
+				$typeaideapre66 = $this->Typeaideapre66->findById( $typeaideapre66_id, null, null, -1 );
+				$plafond = Set::classicExtract( $typeaideapre66, 'Typeaideapre66.plafond' );
 
-			foreach( $check as $field => $value ) {
-				$return = ( $value <= $plafond ) && $return;
+				foreach( $check as $field => $value ) {
+					$return = ( $value <= $plafond ) && $return;
+				}
 			}
 			return $return;
 		}
