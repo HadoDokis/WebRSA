@@ -75,8 +75,9 @@ $$
 $$
 LANGUAGE plpgsql;
 
-SELECT alter_table_drop_column_if_exists( 'public', 'orientsstructs', 'rgorient' );
 COMMENT ON FUNCTION public.add_missing_table_field (text, text, text, text) IS 'Drops a column from a table if it exists.';
+
+SELECT alter_table_drop_column_if_exists( 'public', 'orientsstructs', 'rgorient' );
 
 -- *****************************************************************************
 
@@ -323,12 +324,12 @@ CREATE TABLE decisionspropospdos (
 	propopdo_id				INTEGER REFERENCES propospdos (id)
 );
 
-ALTER TABLE propospdos DROP COLUMN datedecisionpdo;
-ALTER TABLE propospdos DROP COLUMN decisionpdo_id;
-ALTER TABLE propospdos DROP COLUMN commentairepdo;
-ALTER TABLE propospdos DROP COLUMN isvalidation;
-ALTER TABLE propospdos DROP COLUMN validationdecision;
-ALTER TABLE propospdos DROP COLUMN datevalidationdecision;
+SELECT alter_table_drop_column_if_exists( 'public', 'propospdos', 'datedecisionpdo' );
+SELECT alter_table_drop_column_if_exists( 'public', 'propospdos', 'decisionpdo_id' );
+SELECT alter_table_drop_column_if_exists( 'public', 'propospdos', 'commentairepdo' );
+SELECT alter_table_drop_column_if_exists( 'public', 'propospdos', 'isvalidation' );
+SELECT alter_table_drop_column_if_exists( 'public', 'propospdos', 'validationdecision' );
+SELECT alter_table_drop_column_if_exists( 'public', 'propospdos', 'datevalidationdecision' );
 
 DROP INDEX IF EXISTS decisionspropospdos_decisionpdo_id_idx;
 CREATE INDEX decisionspropospdos_decisionpdo_id_idx ON decisionspropospdos (decisionpdo_id);
