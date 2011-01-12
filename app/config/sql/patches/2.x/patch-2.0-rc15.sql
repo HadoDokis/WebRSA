@@ -47,6 +47,39 @@ COMMENT ON FUNCTION public.add_missing_table_field (text, text, text, text) IS '
 
 -- *****************************************************************************
 
+CREATE OR REPLACE FUNCTION public.alter_table_drop_column_if_exists( text, text, text ) RETURNS bool as
+$$
+	DECLARE
+		p_namespace alias for $1;
+		p_table     alias for $2;
+		p_field     alias for $3;
+		v_row       record;
+		v_query     text;
+	BEGIN
+		SELECT 1 INTO v_row FROM pg_namespace n, pg_class c, pg_attribute a
+			WHERE
+				n.nspname = p_namespace
+				AND c.relnamespace = n.oid
+				AND c.relname = p_table
+				AND a.attrelid = c.oid
+				AND a.attname = p_field;
+		IF FOUND THEN
+			RAISE NOTICE 'Upgrade table %.% - drop field %', p_namespace, p_table, p_field;
+			v_query := 'ALTER TABLE ' || p_namespace || '.' || p_table || ' DROP column ' || p_field || ';';
+			EXECUTE v_query;
+			RETURN 't';
+		ELSE
+			RETURN 'f';
+		END IF;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT alter_table_drop_column_if_exists( 'public', 'orientsstructs', 'rgorient' );
+COMMENT ON FUNCTION public.add_missing_table_field (text, text, text, text) IS 'Drops a column from a table if it exists.';
+
+-- *****************************************************************************
+
 -- A-t'on des vrais doublons ?
 -- -> 1322 lignes de doublons pour cg93_20101203_20h46
 --    88 avec statut_orient = 'Orienté', 1234 avec statut_orient = 'Non orienté'
@@ -172,7 +205,6 @@ LANGUAGE plpgsql;
 SELECT dedoublonnage_orientsstructs();
 DROP FUNCTION public.dedoublonnage_orientsstructs();
 
--- ALTER TABLE orientsstructs DROP COLUMN rgorient; -- FIXME -> IF EXISTS
 ALTER TABLE orientsstructs ADD COLUMN rgorient INTEGER DEFAULT NULL; -- INFO: rgorient SSI Orienté -> sinon, ça n'a pas de sens ? cf. Orientstruct;;beforeSave
 
 UPDATE orientsstructs SET rgorient = NULL;
