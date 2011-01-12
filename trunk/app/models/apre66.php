@@ -94,39 +94,39 @@
 			//Partie activité bénéficiaire
 			'typecontrat' => array(
 				array(
-					'rule' => 'notEmpty',
+					'rule' => array( 'notEmptyIf', 'activitebeneficiaire', true, array( 'E' ) ),
 					'message' => 'Champ obligatoire',
 					'required' => false
 				)
 			),
 			'dateentreeemploi' => array(
 				array(
-					'rule' => 'notEmpty',
+					'rule' => array( 'notEmptyIf', 'activitebeneficiaire', true, array( 'E', 'F' ) ),
 					'message' => 'Champ obligatoire'
 				)
 			),
 
 			'dureecontrat' => array(
 				array(
-					'rule' => 'notEmpty',
+					'rule' => array( 'notEmptyIf', 'activitebeneficiaire', true, array( 'E' ) ),
 					'message' => 'Champ obligatoire'
 				)
 			),
-			'nbheurestravaillees' => array(
+			/*'nbheurestravaillees' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
-			),
+			),*/
 			'nomemployeur' => array(
 				array(
-					'rule' => 'notEmpty',
+					'rule' => array( 'notEmptyIf', 'activitebeneficiaire', true, array( 'E' ) ),
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'adresseemployeur' => array(
 				array(
-					'rule' => 'notEmpty',
+					'rule' => array( 'notEmptyIf', 'activitebeneficiaire', true, array( 'E' ) ),
 					'message' => 'Champ obligatoire'
 				)
 			)
