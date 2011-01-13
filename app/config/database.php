@@ -84,8 +84,7 @@ class DATABASE_CONFIG {
         'host'        => 'localhost',
         'login'       => 'webrsa',
         'password'    => 'webrsa',
-		'database'    => 'webrsa66_ep',
-		//'database'    => 'webrsa93_ep',
+	'database'    => 'webrsatest1',
         'prefix'      => ''
     );
 
@@ -95,7 +94,7 @@ class DATABASE_CONFIG {
         'host'        => 'localhost',
         'login'       => 'webrsa',
         'password'    => 'webrsa',
-        'database'    => 'testunit',
+        'database'    => 'webrsatest',
     );
 }
 ?>

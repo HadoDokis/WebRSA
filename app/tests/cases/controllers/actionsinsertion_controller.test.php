@@ -40,9 +40,48 @@
 
 	class ActionsinsertionControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
+		function testBeforeFilter() {
+			$this->assertNull($this->ActionsinsertionController->viewVars['etatdosrsa']);
+			$this->assertNull($this->ActionsinsertionController->viewVars['lib_action']);
+			$this->assertNull($this->ActionsinsertionController->viewVars['actions']);
+			$this->assertNull($this->ActionsinsertionController->viewVars['typo_aide']);			
 			
-		}
+			$this->ActionsinsertionController->beforeFilter();
+			
+			$this->assertNotNull($this->ActionsinsertionController->viewVars['etatdosrsa']);
+			$this->assertNotNull($this->ActionsinsertionController->viewVars['lib_action']);
+			$this->assertNotNull($this->ActionsinsertionController->viewVars['actions']);
+			$this->assertNotNull($this->ActionsinsertionController->viewVars['typo_aide']);
+        	}
+
+	        function testIndex() {
+			$contratinsertion_id = 1;
+			
+			$this->assertNull($this->ActionsinsertionController->viewVars['actions']);
+			$this->assertNull($this->ActionsinsertionController->viewVars['actionsinsertion']);
+			$this->assertNull($this->ActionsinsertionController->viewVars['contratinsertion_id']);
+			$this->assertNull($this->ActionsinsertionController->viewVars['personne_id']);
+
+			$this->ActionsinsertionController->index($contratinsertion_id);
+
+			$this->assertNotNull($this->ActionsinsertionController->viewVars['actions']);
+			$this->assertNotNull($this->ActionsinsertionController->viewVars['actionsinsertion']);
+			$this->assertNotNull($this->ActionsinsertionController->viewVars['contratinsertion_id']);
+			$this->assertNotNull($debug($this->viewVars);this->ActionsinsertionController->viewVars['personne_id']);
+
+			$this->assertEqual($contratinsertion_id, $this->ActionsinsertionController->viewVars['contratinsertion_id']);
+			$this->assertEqual(1, $this->ActionsinsertionController->viewVars['personne_id']);
+	        }
+
+	        function testEdit() {
+			$contratinsertion_id = 1;
+			$this->assertEqual(array(), $this->ActionsinsertionController->data);
+
+			$this->ActionsinsertionController->edit($contratinsertion_id);
+
+			$this->assertNotNull($this->ActionsinsertionController->data);
+			$this->assertNotEqual(array(), $this->ActionsinsertionController->data);
+	        }
 
 	}
 

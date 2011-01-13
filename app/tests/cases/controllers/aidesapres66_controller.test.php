@@ -40,9 +40,49 @@
 
 	class Aidesapres66ControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
-			
+		function testBeforeFilter() {
+			$this->assertNull($this->Aidesapres66Controller->viewVars['etatdosrsa']);
+			$this->assertNull($this->Aidesapres66Controller->viewVars['options']);
+			$this->assertNull($this->Aidesapres66Controller->viewVars['pieceliste']);
+			$this->assertNull($this->Aidesapres66Controller->redirectUrl);
+
+
+			$this->Aidesapres66Controller->beforeFilter();
+
+			$this->assertNotNull($this->Aidesapres66Controller->viewVars['etatdosrsa']);
+			$this->assertNotNull($this->Aidesapres66Controller->viewVars['options']);
+			$this->assertNotNull($this->Aidesapres66Controller->viewVars['pieceliste']);
+			$this->assertNotNull($this->Aidesapres66Controller->redirectUrl);
+			$this->assertEqual('/users/login', $this->Aidesapres66Controller->redirectUrl);
 		}
+		
+	        public function testIndex() {
+			$this->assertNull($this->Aidesapres66Controller->aparams['paging']);
+
+			$this->Aidesapres66Controller->index();
+
+			$this->assertNotNull($this->Aidesapres66Controller->aparams['paging']);
+	        }
+
+	        public function testAdd() {
+
+	        }
+
+	        public function testEdit() {
+
+	        }
+
+	        function test_add_edit(){
+        
+	        }
+
+	        public function testDelete() {
+			$id = 1;
+	        }
+
+	        public function testView() {
+			$id = 1;
+	        }
 
 	}
 
