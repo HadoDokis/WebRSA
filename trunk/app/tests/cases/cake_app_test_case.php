@@ -13,6 +13,9 @@
 		*/
 
 		public $fixtures = array (
+			'app.decisionnonrespectsanctionep93',
+			'app.relancenonrespectsanctionep93',
+			'app.dossierep',
 			'app.ep',
 			'app.decisionpropopdo',
 			'app.decisionpdo',

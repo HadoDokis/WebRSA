@@ -90,35 +90,57 @@
 			$this->assertEqual($la_structure_referente_id, $this->ActionscandidatsPersonnesController->viewVars['structs']['Structurereferente']['id']);
 			$this->assertEqual($referent_id, $this->ActionscandidatsPersonnesController->viewVars['referent']['Referent']['id']);
 
-			$referent_id = null;
+			$referent_id = 1337;
 			$expected = array();
 			$this->ActionscandidatsPersonnesController->ajaxstruct($referent_id);
 			$this->assertEqual($expected, $this->ActionscandidatsPersonnesController->viewVars['structs']);
+			$this->assertEqual($expected, $this->ActionscandidatsPersonnesController->viewVars['referent']);
 		}
 
 		function testAjaxreffonct() {
 
 			$referent_id = 1;
 			$this->ActionscandidatsPersonnesController->ajaxreffonct($referent_id);
-			$this->assertNotNull($this->ActionscandidatsPersonnesController->viewVars['typevoie']);
+			//$this->assertNotNull($this->ActionscandidatsPersonnesController->viewVars['typevoie']);
+
+			$referent_id = null;
+			$this->ActionscandidatsPersonnesController->ajaxreffonct($referent_id);
+			//$this->assertNotNull($this->ActionscandidatsPersonnesController->viewVars['typevoie']);
+
+			$referent_id = 1337;
+			$this->ActionscandidatsPersonnesController->ajaxreffonct($referent_id);
+			//$this->assertNotNull($this->ActionscandidatsPersonnesController->viewVars['typevoie']);
 		}
 
 		public function testAdd() {
-
+			$this->assertEqual(array(), $this->ActionscandidatsPersonnesController->viewVars);
+			$this->ActionscandidatsPersonnesController->add();
+			$this->assertNotEqual(array(), $this->ActionscandidatsPersonnesController->viewVars);
 		}
 
 		public function testEdit() {
-
+			$this->assertEqual(array(), $this->ActionscandidatsPersonnesController->viewVars);
+			$this->ActionscandidatsPersonnesController->edit();
+			$this->assertNotEqual(array(), $this->ActionscandidatsPersonnesController->viewVars);
 		}
 
 		function test_add_edit() {
+			$this->ActionscandidatsPersonnesController->params['form']['Cancel'] = '12345';
+			$this->ActionscandidatsPersonnesController->data = '12345';
+			$this->assertEqual(array(), $this->ActionscandidatsPersonnesController->viewVars);
+			$this->ActionscandidatsPersonnesController->_add_edit();
+			$this->assertEqual(array('controller' =>'actionscandidats_personnes','action' =>'index', '0' => null), $this->ActionscandidatsPersonnesController->redirectUrl);
+			$this->assertNotEqual(array(), $this->ActionscandidatsPersonnesController->viewVars);
+		}
+/*
+		function testGedooo() {
 			$id = null;
+			var_dump($this->ActionscandidatsPersonnesController->Gedoo);
+			$this->ActionscandidatsPersonnesController->gedooo($id);
+			var_dump($this->ActionscandidatsPersonnesController->Gedoo);
+
 		}
-
-		function testGedooo( $id = null ) {
-
-		}
-
+*/
 
 	}
 
