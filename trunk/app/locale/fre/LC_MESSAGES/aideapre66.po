@@ -64,6 +64,9 @@ msgstr "Décision et engagement financier de l'équipe de direction"
 msgid "Aideapre66.montantaccorde"
 msgstr "Montant accordé"
 
+msgid "Aideapre66.motifrejetequipe"
+msgstr "Motif de rejet de l'équipe de direction"
+
 msgid "Aideapre66.datemontantaccorde"
 msgstr "Le "
 

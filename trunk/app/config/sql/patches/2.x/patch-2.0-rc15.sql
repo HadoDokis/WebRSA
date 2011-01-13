@@ -825,6 +825,10 @@ CREATE INDEX traitementspdos_dtprisecompte_idx ON traitementspdos (dtprisecompte
 CREATE INDEX traitementspdos_regime_idx ON traitementspdos (regime);
 CREATE INDEX traitementspdos_saisonnier_idx ON traitementspdos (saisonnier);
 
+-- -----------------------------------------------------------------------------
+
+SELECT public.add_missing_table_field ( 'public', 'aidesapres66', 'motifrejetequipe', 'TEXT');
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

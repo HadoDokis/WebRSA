@@ -58,13 +58,10 @@
                     $mtattribue = Set::classicExtract( $apre, 'Aideapre66.montantaccorde' );
 
                     $buttonEnabled = true;
-                    if( $etat == 'Complet' ){
-                        $buttonEnabledInc = true;
-                    }
-                    else{
-                        $buttonEnabledInc = false;
-                    }
-
+                    
+                    ($etat == 'Complet') ? $buttonEnabledInc = true : $buttonEnabledInc = false;
+                    
+					($apre['Apre66']['isdecision']=='N') ? $buttonEnabledNotif = false : $buttonEnabledNotif = true;
 
                     $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
                         <tbody>
@@ -109,7 +106,8 @@
                             ),
                             $xhtml->notificationsApreLink(
                                 'Notifier la décision',
-                                array( 'controller' => 'apres66', 'action' => 'notificationsop', $apre[$this->modelClass]['id'] ),
+                                array( 'controller' => 'apres66', 'action' => 'notifications', $apre[$this->modelClass]['id'] ),
+                                $buttonEnabledNotif,
                                 $permissions->check( 'gedooos', 'notificationsop' )
                             ),
                             $xhtml->printLink(
