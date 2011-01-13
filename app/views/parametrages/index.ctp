@@ -72,7 +72,7 @@
                 );
                 echo $xhtml->tableCells(
                     array(
-                        h( 'Gestion des EPs' ),
+                        h( 'Équipes pluridisciplinaires' ),
                         $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'gestionseps', 'action' => 'index' )
