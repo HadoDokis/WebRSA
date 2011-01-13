@@ -634,7 +634,7 @@
         *
         */
 
-        function notificationsop( $id = null ) {
+        function notifications( $id = null ) {
             $qual = $this->Option->qual();
             $typevoie = $this->Option->typevoie();
 
@@ -644,9 +644,30 @@
                     'conditions' => array(
                         "{$this->modelClass}.id" => $id
                     ),
-                    'recursive' => 0
+                    'contain' => array(
+                    	'Personne',
+                    	'Structurereferente',
+                    	'Aideapre66' => array(
+	                    	'Piececomptable66'
+	                    )
+                    )
                 )
             );
+            
+			$piecesPresentes = Set::classicExtract($apre, 'Aideapre66.Piececomptable66.{n}.id');
+
+			$conditions = array();
+			if( !empty( $piecesPresentes ) ) {
+				$conditions = array( 'NOT' => array( 'Piececomptable66.id' => $piecesPresentes ) );
+			}
+
+			$piecesAbsentes = $this->Piececomptable66->find( 'list', array( 'conditions' => $conditions, 'contain' => false ) );
+			$apre['Aideapre66']['Piececomptable66']='';
+			foreach( $piecesAbsentes as $model => $pieces ) {
+                if( !empty( $pieces ) ) {
+                    $apre['Aideapre66']['Piececomptable66'] .= "\n" .'- '.implode( "\n- ", array($pieces) ).',';
+                }
+            }
 
             $this->Adressefoyer->bindModel(
                 array(
@@ -676,9 +697,14 @@
             $apre['Personne']['qual'] = Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual );
 //             $apre['Personne']['dtnai'] = $this->Locale->date( 'Date::short', Set::classicExtract( $apre, 'Personne.dtnai' ) );
             $apre['Referent']['qual'] = Set::enum( Set::classicExtract( $apre, 'Referent.qual' ), $qual );
-// debug($apre);
-// die();
-//             $this->Gedooo->generate( $apre, 'Apre/notificationop.odt' );
+//die();
+			
+			$apre['Structurereferente']['adresse'] = Set::classicExtract( $apre, 'Structurereferente.num_voie').' '.Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie'), $typevoie ).' '.Set::classicExtract( $apre, 'Structurereferente.nom_voie').' '.Set::classicExtract( $apre, 'Structurereferente.code_postal').' '.Set::classicExtract( $apre, 'Structurereferente.ville');
+			
+			if ($apre['Aideapre66']['decisionapre']=='ACC')
+				$this->Gedooo->generate( $apre, 'APRE/accordaide.odt');
+			else
+				$this->Gedooo->generate( $apre, 'APRE/refusaide.odt');
         }
 
     }

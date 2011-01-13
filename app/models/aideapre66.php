@@ -146,6 +146,12 @@
 					'message' => 'Plafond dépassé'
 				)
 			),
+			'motifrejetequipe' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
 			'virement' => array(
 				array(
 					'rule' => 'notEmpty',

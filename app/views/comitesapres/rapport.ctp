@@ -178,6 +178,7 @@
                                     $xhtml->notificationsApreLink(
                                         'Notifier la décision',
                                         array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomite', 'Cohortecomiteapre__id' => Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+					true,
                                         $permissions->check( 'cohortescomitesapres', 'notificationscomite' )
                                     )
                                 ),

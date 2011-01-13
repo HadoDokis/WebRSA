@@ -155,6 +155,24 @@
             false
         );
 
+        observeDisableFieldsOnValue(
+            'Aideapre66DecisionapreREF',
+            [
+                'Aideapre66Motifrejetequipe'
+            ],
+            'REF',
+            false
+        );
+        //Données pour le type d'activité du bénéficiare
+        observeDisableFieldsOnValue(
+            'Aideapre66DecisionapreACC',
+            [
+                'Aideapre66Motifrejetequipe'
+            ],
+            'ACC',
+            true
+        );
+
         <?php
             echo $ajax->remoteFunction(
                 array(
@@ -627,6 +645,7 @@
                 array(
                     'Aideapre66.decisionapre' => array( 'legend' => false, 'type' => 'radio', 'options' => $options['decisionapre'], 'separator' => '<br />' ),
                     'Aideapre66.montantaccorde' => array( 'type' => 'text' ),
+                    'Aideapre66.motifrejetequipe' => array( 'type' => 'textarea', 'required'=>true ),
                     'Aideapre66.datemontantaccorde' => array( 'empty' => false )
                 ),
                 array(
