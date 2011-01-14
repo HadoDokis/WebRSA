@@ -67,7 +67,7 @@
 			$this->assertNotNull($this->ActionsinsertionController->viewVars['actions']);
 			$this->assertNotNull($this->ActionsinsertionController->viewVars['actionsinsertion']);
 			$this->assertNotNull($this->ActionsinsertionController->viewVars['contratinsertion_id']);
-			$this->assertNotNull($debug($this->viewVars);this->ActionsinsertionController->viewVars['personne_id']);
+			$this->assertNotNull($this->ActionsinsertionController->viewVars['personne_id']);
 
 			$this->assertEqual($contratinsertion_id, $this->ActionsinsertionController->viewVars['contratinsertion_id']);
 			$this->assertEqual(1, $this->ActionsinsertionController->viewVars['personne_id']);

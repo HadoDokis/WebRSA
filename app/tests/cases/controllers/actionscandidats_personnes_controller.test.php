@@ -100,16 +100,11 @@
 		function testAjaxreffonct() {
 
 			$referent_id = 1;
+			$this->assertNull($this->ActionscandidatsPersonnesController->renderedAction);
+			$this->assertNull($this->ActionscandidatsPersonnesController->renderedLayout);
 			$this->ActionscandidatsPersonnesController->ajaxreffonct($referent_id);
-			//$this->assertNotNull($this->ActionscandidatsPersonnesController->viewVars['typevoie']);
-
-			$referent_id = null;
-			$this->ActionscandidatsPersonnesController->ajaxreffonct($referent_id);
-			//$this->assertNotNull($this->ActionscandidatsPersonnesController->viewVars['typevoie']);
-
-			$referent_id = 1337;
-			$this->ActionscandidatsPersonnesController->ajaxreffonct($referent_id);
-			//$this->assertNotNull($this->ActionscandidatsPersonnesController->viewVars['typevoie']);
+			$this->assertEqual('ajaxreffonct', $this->ActionscandidatsPersonnesController->renderedAction);
+			$this->assertEqual('ajax', $this->ActionscandidatsPersonnesController->renderedLayout);
 		}
 
 		public function testAdd() {

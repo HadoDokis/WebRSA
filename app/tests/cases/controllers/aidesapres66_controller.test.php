@@ -57,15 +57,15 @@
 		}
 		
 	        public function testIndex() {
-			$this->assertNull($this->Aidesapres66Controller->aparams['paging']);
+			$this->assertNull($this->Aidesapres66Controller->params['paging']);
 
 			$this->Aidesapres66Controller->index();
 
-			$this->assertNotNull($this->Aidesapres66Controller->aparams['paging']);
+			$this->assertNotNull($this->Aidesapres66Controller->params['paging']);
 	        }
 
 	        public function testAdd() {
-
+			//$this->Aidesapres66Controller->add();
 	        }
 
 	        public function testEdit() {
@@ -78,10 +78,16 @@
 
 	        public function testDelete() {
 			$id = 1;
+			$this->assertNull($this->Aidesapres66Controller->redirectUrl);
+			$this->Aidesapres66Controller->delete($id);
+			$this->assertEqual('/', $this->Aidesapres66Controller->redirectUrl);
 	        }
 
 	        public function testView() {
 			$id = 1;
+			$this->assertNull($this->Aidesapres66Controller->viewVars['aideapre66']);
+			$this->Aidesapres66Controller->view($id);
+			$this->assertNotNull($this->Aidesapres66Controller->viewVars['aideapre66']);
 	        }
 
 	}

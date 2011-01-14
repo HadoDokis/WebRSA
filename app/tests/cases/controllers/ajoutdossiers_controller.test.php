@@ -40,10 +40,61 @@
 
 	class AjoutdossiersControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
-			
+		function testRand_nir() {
+			$this->assertNotNull(rand_nir());
 		}
 
+		function testHasConjoint() {
+			$data = array();
+			$this->assertNotNull(hasConjoint($data));
+		}
+
+	        function testBeforeFilter() {
+			$this->assertNull($this->AjoutdossiersController->Wizard->steps['0']);
+			$this->AjoutdossiersController->beforeFilter();
+			$this->assertNotNull($this->AjoutdossiersController->Wizard->steps['0']);
+			$this->assertEqual('allocataire', $this->AjoutdossiersController->Wizard->steps['0']);
+		}
+
+		function testConfirm() {
+			$this->assertNull($this->AjoutdossiersController->confirm());
+		}
+
+		function testWizard() {
+			$step = array('allocataire', 'conjoint', 'adresse', 'ressourcesallocataire', 'ressourcesconjoint', 'dossier');
+			$this->assertNull($this->AjoutdossiersController->viewVars['typeservice']);
+			$this->AjoutdossiersController->wizard($step);
+			$this->assertNotNull($this->AjoutdossiersController->viewVars['typeservice']);
+		}
+
+		function test_processAllocataire() {
+			$this->AjoutdossiersController->_processAllocataire();
+		}
+
+		function test_processConjoint() {
+			$this->AjoutdossiersController->_processConjoint();
+		}
+
+		function test_processAdresse() {
+			$this->AjoutdossiersController->_processAdresse();
+		}
+
+	        function test_processRessourcesallocataire() {
+			$this->AjoutdossiersController->_processRessourcesallocataire();
+		}
+
+		function test_processRessourcesconjoint() {
+			$this->AjoutdossiersController->_processRessourcesconjoint();
+		}
+/*
+		function test_processDossier() {
+			$this->AjoutdossiersController->_processDossier();
+		}
+
+	        function test_afterComplete() {
+			$this->AjoutdossiersController->_afterComplete();
+		}
+*/
 	}
 
 ?>
