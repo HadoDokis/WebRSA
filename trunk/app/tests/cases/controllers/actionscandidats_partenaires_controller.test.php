@@ -71,19 +71,21 @@
 	        function test_add_edit() {
 			$this->ActionscandidatsPartenairesController->_add_edit();
 	        }
-
+*/
 	        function testDelete() {
 			$id = '1';
+			$this->assertNull($this->ActionscandidatsPartenairesController->redirectUrl);
 			$this->ActionscandidatsPartenairesController->delete($id);
-			this->assertNull();
+			$this->assertEqual('/' ,$this->ActionscandidatsPartenairesController->redirectUrl);
 			
 	        }
 	
 	        function testView() {
 			$id = '1';
 			$this->ActionscandidatsPartenairesController->view();
+			$this->assertNotNull($this->ActionscandidatsPartenairesController->viewVars['actionscandidatspartenaire']);
 	        }
-*/	
+	
 
 	}
 
