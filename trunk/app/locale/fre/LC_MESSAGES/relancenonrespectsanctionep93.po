@@ -28,3 +28,6 @@ msgstr "Date de relance"
 
 msgid "Relancenonrespectsanctionep93.arelancer"
 msgstr "Statut relance"
+
+msgid "Serviceinstructeur.id"
+msgstr "Service référent"
