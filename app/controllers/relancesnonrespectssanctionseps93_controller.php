@@ -1,9 +1,40 @@
 <?php
+	App::import( 'Sanitize' );
+
 	class Relancesnonrespectssanctionseps93Controller extends AppController
 	{
 		public $helpers = array( 'Default2' );
 
-		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep' );
+		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep', 'Dossier' );
+
+		/**
+		*
+		*/
+
+		protected function _setOptions() {
+			/// Mise en cache (session) de la liste des codes Insee pour les selects
+			/// TODO: Une fonction ?
+			/// TODO: Voir où l'utiliser ailleurs
+			if( !$this->Session->check( 'Cache.mesCodesInsee' ) ) {
+				if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+					$listeCodesInseeLocalites = $this->Dossier->Foyer->Personne->Cui->Structurereferente->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
+				}
+				else {
+					$listeCodesInseeLocalites = $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee();
+				}
+				$this->Session->write( 'Cache.mesCodesInsee', $listeCodesInseeLocalites );
+			}
+			else {
+				$listeCodesInseeLocalites = $this->Session->read( 'Cache.mesCodesInsee' );
+			}
+
+			$options = array(
+				'Adresse' => array( 'numcomptt' => $listeCodesInseeLocalites ),
+				'Serviceinstructeur' => array( 'id' => $this->Orientstruct->Serviceinstructeur->find( 'list' ) )
+			);
+
+			$this->set( compact( 'options' ) );
+		}
 
 		/**
 		*
@@ -295,6 +326,50 @@
 					if( in_array( $field, array( 'Personne.nom', 'Personne.prenom' ) ) ) {
 						$conditions["UPPER({$field}) LIKE"] = $this->Relancenonrespectsanctionep93->wildcard( strtoupper( replace_accents( $condition ) ) );
 					}
+					else if( $field == 'Adresse.numcomptt' && !empty( $condition ) ) {
+						// FIXME: subquery
+						$conditions[] = 'Personne.foyer_id IN (
+											SELECT
+													foyer_id
+												FROM adressesfoyers
+													INNER JOIN adresses ON (
+														adressesfoyers.adresse_id = adresses.id
+														AND adressesfoyers.foyer_id = "Personne"."foyer_id"
+														AND adressesfoyers.rgadr = \'01\'
+													)
+												WHERE adresses.numcomptt = \''.Sanitize::paranoid( $condition ).'\'
+										)';
+					}
+					else if( $field == 'Serviceinstructeur.id' && !empty( $condition ) ) {
+						// FIXME: subquery
+						$conditions[] = 'Personne.foyer_id IN (
+											SELECT
+													suivisinstruction.dossier_id
+												FROM suivisinstruction
+													INNER JOIN servicesinstructeurs ON (
+														suivisinstruction.numdepins = servicesinstructeurs.numdepins
+														AND suivisinstruction.typeserins = servicesinstructeurs.typeserins
+														AND suivisinstruction.numcomins = servicesinstructeurs.numcomins
+														AND suivisinstruction.numagrins = servicesinstructeurs.numagrins
+													)
+													INNER JOIN foyers ON (
+														suivisinstruction.dossier_id = foyers.dossier_id
+														AND foyers.id = "Personne"."foyer_id"
+													)
+												WHERE servicesinstructeurs.id = \''.Sanitize::paranoid( $condition ).'\' )';
+					}
+					else if( $field == 'Dossier.matricule' && !empty( $condition ) ) {
+						// FIXME: subquery
+						$conditions[] = 'Personne.foyer_id IN (
+											SELECT
+													foyers.id
+												FROM dossiers
+													INNER JOIN foyers ON (
+														foyers.dossier_id = dossiers.id
+														AND foyers.id = "Personne"."foyer_id"
+													)
+												WHERE dossiers.matricule = \''.Sanitize::paranoid( $condition ).'\' )';
+					}
 					else if( !in_array( $field, array( 'Relance.numrelance', 'Relance.contrat' ) ) ) {
 						$conditions[$field] = $condition;
 					}
@@ -537,6 +612,8 @@
 
 				$this->set( compact( 'results' ) );
 			}
+
+			$this->_setOptions();
 		}
 	}
 ?>
