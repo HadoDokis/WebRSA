@@ -164,11 +164,13 @@
 			$this->assert( !empty( $seanceep ), 'error404' );
 
 			if( !empty( $this->data ) ) {
+// debug( $this->data );
 				$this->Seanceep->begin();
 				$success = $this->Seanceep->saveDecisions( $seanceep_id, $this->data, $niveauDecision );
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
+// 					$this->Seanceep->rollback();
 					$this->Seanceep->commit();
 					$this->redirect( array( 'action' => 'view', $seanceep_id, '#dossiers' ) );
 				}
@@ -207,6 +209,7 @@
 			$this->_setFlashResult( 'Save', $success );
 			if( $success ) {
 				$this->Seanceep->commit();
+// 				$this->Seanceep->rollback();
 			}
 			else {
 				$this->Seanceep->rollback();
@@ -246,16 +249,18 @@
 		* @param integer $seanceep_id
 		*/
 		public function view($seanceep_id = null) {
-			$seanceep = $this->Seanceep->find('first', array(
-				'conditions' => array( 'Seanceep.id' => $seanceep_id ),
-				'contain' => array(
-					'Structurereferente',
-// 					'Dossierep' => array(
-// 						'Personne'
-// 					),
-					'Ep' => array( 'Regroupementep')
+			$seanceep = $this->Seanceep->find(
+				'first', array(
+					'conditions' => array( 'Seanceep.id' => $seanceep_id ),
+					'contain' => array(
+						'Structurereferente',
+	// 					'Dossierep' => array(
+	// 						'Personne'
+	// 					),
+						'Ep' => array( 'Regroupementep')
+					)
 				)
-			));
+			);
 // 			debug( $seanceep );
 			$this->set('seanceep', $seanceep);
 			$this->_setOptions();

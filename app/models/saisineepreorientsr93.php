@@ -277,47 +277,92 @@
 			}
 
 			$formData = array();
-			if( $niveauDecision == 'ep' ) {
-				foreach( $datas as $key => $dossierep ) {
-					$formData['Nvsrepreorientsr93'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
+			foreach( $datas as $key => $dossierep ) {
+				$formData['Saisineepreorientsr93'][$key]['id'] = @$datas[$key]['Saisineepreorientsr93']['id'];
+				$formData['Saisineepreorientsr93'][$key]['dossierep_id'] = @$datas[$key]['Saisineepreorientsr93']['dossierep_id'];
+				$formData['Nvsrepreorientsr93'][$key]['saisineepreorientsr93_id'] = @$datas[$key]['Saisineepreorientsr93']['id'];
+
+				// On modifie les enregistrements de cette étape
+				if( @$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'][count(@$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'])-1]['etape'] == $niveauDecision ) {
+					$formData['Nvsrepreorientsr93'][$key] = @$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'][count(@$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'])-1];
 					$formData['Nvsrepreorientsr93'][$key]['structurereferente_id'] = implode(
 						'_',
 						array(
-							$dossierep[$this->alias]['typeorient_id'],
-							$dossierep[$this->alias]['structurereferente_id']
+							$formData['Nvsrepreorientsr93'][$key]['typeorient_id'],
+							$formData['Nvsrepreorientsr93'][$key]['structurereferente_id']
 						)
 					);
-					// Si accords -> accepté par défaut, sinon, refusé par défaut
-					$accord = ( $dossierep[$this->alias]['accordaccueil'] && $dossierep[$this->alias]['accordallocataire'] );
-					$formData['Nvsrepreorientsr93'][$key]['decision'] = ( $accord ? 'accepte' : 'refuse' );
 				}
-			}
-			else if( $niveauDecision == 'cg' ) {
-				foreach( $datas as $key => $dossierep ) {
-					$formData['Nvsrepreorientsr93'][$key]['decision'] = $dossierep[$this->alias]['Nvsrepreorientsr93'][0]['decision'];
-					if( $formData['Nvsrepreorientsr93'][$key]['decision'] == 'refuse' ) {
-						$formData['Nvsrepreorientsr93'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
-						$formData['Nvsrepreorientsr93'][$key]['structurereferente_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['typeorient_id'],
-								$dossierep[$this->alias]['structurereferente_id']
-							)
-						);
-					}
-					else {
-						$formData['Nvsrepreorientsr93'][$key]['typeorient_id'] = $dossierep[$this->alias]['Nvsrepreorientsr93'][0]['typeorient_id'];
-						$formData['Nvsrepreorientsr93'][$key]['structurereferente_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['Nvsrepreorientsr93'][0]['typeorient_id'],
-								$dossierep[$this->alias]['Nvsrepreorientsr93'][0]['structurereferente_id']
-							)
-						);
-					}
-				}
-			}
 
+				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
+				else {
+					if( $niveauDecision == 'ep' ) {
+						if( !empty( $datas[$key]['Saisineepreorientsr93']['Nvsrepreorientsr93'][0] ) ) { // Modification
+							$formData['Nvsrepreorientsr93'][$key]['decision'] = @$datas[$key]['Saisineepreorientsr93']['Nvsrepreorientsr93'][0]['decision'];
+
+							$formData['Nvsrepreorientsr93'][$key]['typeorient_id'] = @$datas[$key]['Saisineepreorientsr93']['Nvsrepreorientsr93'][0]['typeorient_id'];
+							$formData['Nvsrepreorientsr93'][$key]['structurereferente_id'] = implode(
+								'_',
+								array(
+									@$datas[$key]['Saisineepreorientsr93']['Nvsrepreorientsr93'][0]['typeorient_id'],
+									@$datas[$key]['Saisineepreorientsr93']['Nvsrepreorientsr93'][0]['structurereferente_id']
+								)
+							);
+						}
+						else {
+							$formData['Nvsrepreorientsr93'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
+							$formData['Nvsrepreorientsr93'][$key]['structurereferente_id'] = implode(
+								'_',
+								array(
+									$dossierep[$this->alias]['typeorient_id'],
+									$dossierep[$this->alias]['structurereferente_id']
+								)
+							);
+							// Si accords -> accepté par défaut, sinon, refusé par défaut
+							$accord = ( $dossierep[$this->alias]['accordaccueil'] && $dossierep[$this->alias]['accordallocataire'] );
+							$formData['Nvsrepreorientsr93'][$key]['decision'] = ( $accord ? 'accepte' : 'refuse' );
+						}
+					}
+					else if( $niveauDecision == 'cg' ) {
+						if( !empty( $datas[$key]['Saisineepreorientsr93']['Nvsrepreorientsr93'][1] ) ) { // Modification
+							$formData['Nvsrepreorientsr93'][$key]['decision'] = @$datas[$key]['Saisineepreorientsr93']['Nvsrepreorientsr93'][1]['decision'];
+
+							$formData['Nvsrepreorientsr93'][$key]['typeorient_id'] = @$datas[$key]['Saisineepreorientsr93']['Nvsrepreorientsr93'][1]['typeorient_id'];
+							$formData['Nvsrepreorientsr93'][$key]['structurereferente_id'] = implode(
+								'_',
+								array(
+									@$datas[$key]['Saisineepreorientsr93']['Nvsrepreorientsr93'][1]['typeorient_id'],
+									@$datas[$key]['Saisineepreorientsr93']['Nvsrepreorientsr93'][1]['structurereferente_id']
+								)
+							);
+						}
+						else {
+							$formData['Nvsrepreorientsr93'][$key]['decision'] = $dossierep[$this->alias]['Nvsrepreorientsr93'][0]['decision'];
+							if( $formData['Nvsrepreorientsr93'][$key]['decision'] == 'refuse' ) {
+								$formData['Nvsrepreorientsr93'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
+								$formData['Nvsrepreorientsr93'][$key]['structurereferente_id'] = implode(
+									'_',
+									array(
+										$dossierep[$this->alias]['typeorient_id'],
+										$dossierep[$this->alias]['structurereferente_id']
+									)
+								);
+							}
+							else {
+								$formData['Nvsrepreorientsr93'][$key]['typeorient_id'] = $dossierep[$this->alias]['Nvsrepreorientsr93'][0]['typeorient_id'];
+								$formData['Nvsrepreorientsr93'][$key]['structurereferente_id'] = implode(
+									'_',
+									array(
+										$dossierep[$this->alias]['Nvsrepreorientsr93'][0]['typeorient_id'],
+										$dossierep[$this->alias]['Nvsrepreorientsr93'][0]['structurereferente_id']
+									)
+								);
+							}
+						}
+					}
+				}
+			}
+// debug( $formData );
 			return $formData;
 		}
 	}

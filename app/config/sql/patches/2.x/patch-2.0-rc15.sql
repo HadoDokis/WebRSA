@@ -349,7 +349,7 @@ $body$
 
 	BEGIN
 		-- On transforme les caractèes accentués et on passe en majuscule
-		st:=translate($1,'aàäâeéèêëiïîoôöuùûücçAÀÄÂEÉÈÊËIÏÎOÔÖUÙÛÜCÇ','AAAAEEEEEIIIOOOUUUUCCAAAAEEEEEIIIOOOUUUUCC');
+		st:=translate($1,'aàäâeéèêëiïîoôöuùûücçñAÀÄÂEÉÈÊËIÏÎOÔÖUÙÛÜCÇÑ','AAAAEEEEEIIIOOOUUUUCCNAAAAEEEEEIIIOOOUUUUCCN');
 		st:=upper(st);
 
 		return st;
