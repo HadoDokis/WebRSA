@@ -151,7 +151,9 @@
 							'modified'
 
 						),
-						'Decisionnonrespectsanctionep93',
+						'Decisionnonrespectsanctionep93' => array(
+							'order' => array( 'etape DESC' )
+						),
 						/*'Nvsrepreorientsr93',
 						'Motifreorient',
 						'Typeorient',
