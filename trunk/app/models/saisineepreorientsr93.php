@@ -220,7 +220,9 @@
 						)
 					),
 					$this->alias => array(
-						'Nvsrepreorientsr93',
+						'Nvsrepreorientsr93' => array(
+							'order' => array( 'etape DESC' )
+						),
 						'Motifreorient',
 						'Typeorient',
 						'Structurereferente',
