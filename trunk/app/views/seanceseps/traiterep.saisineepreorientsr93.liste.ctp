@@ -35,7 +35,19 @@
 <th>Structure référente choisie</th>
 </tr>
 </thead><tbody>';
+// debug( $this->data );
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		// Pré-remplissage avec les valeurs de l'avis EP
+		// $this->data est peuplée avec prepareFormData, donc on utilise un autre moyen pour savoir si on a renvoyé le formulaire
+// 		if( empty( $_POST ) ) {
+// 			if( @$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'][count(@$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'])-1]['etape'] == 'cg' ) {
+// 				$record = @$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'][count(@$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'])-1];
+// 			}
+// 			else {
+// 				$record = @$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'][0];
+// 			}
+// 		}
+
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -50,9 +62,13 @@
 				@$dossierep['Saisineepreorientsr93']['Structurereferente']['lib_struc'],
 // 				$form->input( "Nvsrepreorientsr93.{$i}.id", array( 'type' => 'hidden', 'value' => @$dossierep['Saisineepreorientsr93']['id'] ) ).
 // 				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-				$form->input( "Saisineepreorientsr93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
+// 				$form->input( "Saisineepreorientsr93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
+				$form->input( "Saisineepreorientsr93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Saisineepreorientsr93']['id']*/ ) ).
+				$form->input( "Saisineepreorientsr93.{$i}.dossierep_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Dossierep']['id']*/ ) ).
+				$form->input( "Nvsrepreorientsr93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => @$record['id']*/ ) ).
+
 				$form->input( "Nvsrepreorientsr93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
-				$form->input( "Nvsrepreorientsr93.{$i}.saisineepreorientsr93_id", array( 'type' => 'hidden', 'value' => @$dossierep['Saisineepreorientsr93']['id'] ) ).
+				$form->input( "Nvsrepreorientsr93.{$i}.saisineepreorientsr93_id", array( 'type' => 'hidden'/*, 'value' => @$dossierep['Saisineepreorientsr93']['id']*/ ) ).
 				$form->input( "Nvsrepreorientsr93.{$i}.decision", array( 'label' => false, 'options' => @$options['Nvsrepreorientsr93']['decision'], 'empty' => true ) ),
 				$form->input( "Nvsrepreorientsr93.{$i}.typeorient_id", array( 'label' => false, 'options' => @$options['Seanceep']['typeorient_id'], 'empty' => true ) ),
 				$form->input( "Nvsrepreorientsr93.{$i}.structurereferente_id", array( 'label' => false, 'options' => @$options['Seanceep']['structurereferente_id'], 'empty' => true ) ),

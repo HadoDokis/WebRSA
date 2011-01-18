@@ -186,15 +186,38 @@
 
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
-				if( $niveauDecision == 'ep' ) {
-					if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
-						$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = '1maintien';
+				$formData['Nonrespectsanctionep93'][$key]['id'] = @$datas[$key]['Nonrespectsanctionep93']['id'];
+				$formData['Nonrespectsanctionep93'][$key]['dossierep_id'] = @$datas[$key]['Nonrespectsanctionep93']['dossierep_id'];
+				$formData['Decisionnonrespectsanctionep93'][$key]['nonrespectsanctionep93_id'] = @$datas[$key]['Nonrespectsanctionep93']['id'];
+
+				// On modifie les enregistrements de cette étape
+				if( @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][count(@$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'])-1]['etape'] == $niveauDecision ) {
+					$formData['Decisionnonrespectsanctionep93'][$key] = @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][count(@$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'])-1];
+				}
+				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
+				else {
+					if( $niveauDecision == 'ep' ) {
+						if( !empty( $datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0] ) ) { // Modification
+							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0]['decision'];
+						}
+						else {
+							if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
+								$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = '1maintien';
+							}
+							// FIXME: autre cas ?
+						}
+					}
+					else if( $niveauDecision == 'cg' ) {
+						if( !empty( $datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][1] ) ) { // Modification
+							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][1]['decision'];
+						}
+						else {
+							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0]['decision'];
+						}
 					}
 				}
-				else if( $niveauDecision == 'cg' ) {
-					$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0]['decision'];
-				}
 			}
+// debug( $formData );
 
 			return $formData;
 		}
@@ -210,6 +233,23 @@
 				return true;
 			}
 			else {
+				foreach( array_keys( $themeData ) as $key ) {
+					// On complètre /on nettoie si ce n'est pas envoyé par le formulaire
+					if( $themeData[$key]['Decisionnonrespectsanctionep93']['decision'] == '1reduction' ) {
+						$themeData[$key]['Decisionnonrespectsanctionep93']['dureesursis'] = null;
+						$themeData[$key]['Decisionnonrespectsanctionep93']['montantreduction'] = Configure::read( 'Nonrespectsanctionep93.montantReduction' );
+					}
+					else if( $themeData[$key]['Decisionnonrespectsanctionep93']['decision'] == '1sursis' ) {
+						$themeData[$key]['Decisionnonrespectsanctionep93']['montantreduction'] = null;
+						$themeData[$key]['Decisionnonrespectsanctionep93']['dureesursis'] = Configure::read( 'Nonrespectsanctionep93.dureeSursis' );
+					}
+					else if( $themeData[$key]['Decisionnonrespectsanctionep93']['decision'] == '1maintien' ) {
+						$themeData[$key]['Decisionnonrespectsanctionep93']['montantreduction'] = null;
+						$themeData[$key]['Decisionnonrespectsanctionep93']['dureesursis'] = null;
+					}
+					// FIXME: la même chose pour l'étape 2
+				}
+
 				$success = $this->Decisionnonrespectsanctionep93->saveAll( $themeData, array( 'atomic' => false ) );
 
 				$this->Dossierep->updateAll(
@@ -261,16 +301,20 @@
 					if( !isset( $dossierep['Decisionnonrespectsanctionep93'][0]['decision'] ) ) {
 						$success = false;
 					}
-					$nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] = @$dossierep['Decisionnonrespectsanctionep93'][0]['decision'];
 
-					if( $nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] == '1reduction' ) {
+					// Copie de la décision
+					$nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] = @$dossierep['Decisionnonrespectsanctionep93'][0]['decision'];
+					$nonrespectsanctionep93['Nonrespectsanctionep93']['montantreduction'] = @$dossierep['Decisionnonrespectsanctionep93'][0]['montantreduction'];
+					$nonrespectsanctionep93['Nonrespectsanctionep93']['dureesursis'] = @$dossierep['Decisionnonrespectsanctionep93'][0]['dureesursis'];
+
+					/*if( $nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] == '1reduction' ) { // FIXME: vient de la dernière décision
 						$nonrespectsanctionep93['Nonrespectsanctionep93']['montantreduction'] = Configure::read( 'Nonrespectsanctionep93.montantReduction' );
 					}
 					else if( $nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] == '1sursis' ) {
 						$nonrespectsanctionep93['Nonrespectsanctionep93']['dureesursis'] = Configure::read( 'Nonrespectsanctionep93.dureeSursis' );
-					}
+					}*/
 
-					$this->create( $nonrespectsanctionep93 );
+					$this->create( $nonrespectsanctionep93 ); // TODO: un saveAll ?
 					$success = $this->save() && $success;
 				}
 			}

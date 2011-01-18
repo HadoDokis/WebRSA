@@ -11,9 +11,9 @@
 	*		en cause: pas de DSP
 	*/
 
-    class RefreshShell extends Shell
-    {
-        var $uses = array( 'Foyer', 'Cohorte', 'Typeorient', 'Orientstruct' );
+	class RefreshShell extends Shell
+	{
+		var $uses = array( 'Foyer', 'Cohorte', 'Typeorient', 'Orientstruct' );
 		var $limit = PHP_INT_MAX; // FIXME: PHP_INT_MAX ? -> en paramètre
 		var $force = true;
 		var $ressources = true;
@@ -31,12 +31,12 @@
 		var $outfile = null;
 		var $output = '';
 
-        /**
-        *
-        *
-        */
+		/**
+		*
+		*
+		*/
 
-        function err( $string ) {
+		function err( $string ) {
 			parent::err( $string );
 
 			if( !empty( $this->outfile ) ) {
@@ -44,12 +44,12 @@
 			}
 		}
 
-        /**
-        *
-        *
-        */
+		/**
+		*
+		*
+		*/
 
-        function out( $string ) {
+		function out( $string ) {
 			parent::out( $string );
 
 			if( !empty( $this->outfile ) ) {
@@ -57,12 +57,12 @@
 			}
 		}
 
-        /**
-        *
-        *
-        */
+		/**
+		*
+		*
+		*/
 
-        function exportlog() {
+		function exportlog() {
 			file_put_contents( $this->outfile, $this->output );
 		}
 
@@ -90,7 +90,7 @@
 		*
 		*/
 
-        function startup() {
+		function startup() {
 			$this->script = preg_replace( '/shell$/', '', strtolower( $this->name ) );
 
 			/// Demande d'aide ?
@@ -140,19 +140,19 @@
 		*
 		*/
 
-        function main() {
-            /// Démarrage du script
+		function main() {
+			/// Démarrage du script
 
-            $this_start = microtime( true );
-            $this->out( "Demarrage du script de rafraichissement: ".date( 'Y-m-d H:i:s' ) );
+			$this_start = microtime( true );
+			$this->out( "Demarrage du script de rafraichissement: ".date( 'Y-m-d H:i:s' ) );
 
-            $this->Foyer->begin();
-            $success = true;
+			$this->Foyer->begin();
+			$success = true;
 
-            /** ****************************************************************
-            *   Réparation des données du flux CAF (les rgadr ne sont pas sur deux chiffres)
-            *   Si le rang est bien formé, il n'y a pas de mise à jour
-            *** ***************************************************************/
+			/** ****************************************************************
+			*   Réparation des données du flux CAF (les rgadr ne sont pas sur deux chiffres)
+			*   Si le rang est bien formé, il n'y a pas de mise à jour
+			*** ***************************************************************/
 //             $this->hr();
 //
 //             $this->out( 'Debut de la mise a jour des rangs adresse: '.number_format( microtime( true ) - $this_start, 2 ) );
@@ -174,11 +174,11 @@
 			$this->out( "Ajout d'entrée dans la table orientsstructs pour les DEM ou CJT RSA n'en possédant pas." );
 			$t = $this->Orientstruct->fillAllocataire();
 
-            /** ****************************************************************
-            *   Rafraichissement de "soumis à droits et devoirs" pour la table
-            *   orientsstructs
-            *** ***************************************************************/
-            // FIXME: ajouter une entrée dans la table orientsstructs ?
+			/** ****************************************************************
+			*   Rafraichissement de "soumis à droits et devoirs" pour la table
+			*   orientsstructs
+			*** ***************************************************************/
+			// FIXME: ajouter une entrée dans la table orientsstructs ?
 
 			/// Doit-on forcer le calcul des préorientations
 			if( $this->preorientation == true && $this->force == true ) {
@@ -193,7 +193,7 @@
 				$result = $this->Foyer->query( $sql );
 			}
 
-            $this->hr();
+			$this->hr();
 
 			$typesOrient = $this->Typeorient->find(
 				'list',
@@ -219,7 +219,7 @@
 			$trancheFoyer = ( 1 / 100 );
 			$periode = max( 1, round( $nbFoyers * $trancheFoyer ) );
 
-            $foyers = $this->Foyer->find(
+			$foyers = $this->Foyer->find(
 				'list',
 				array(
 					'fields' => array(
@@ -236,8 +236,8 @@
 
 			$success = true;
 
-            foreach( $foyers as $foyer_id ) {
-                $tBoucle0 = $tRefreshRessources0 = microtime( true );
+			foreach( $foyers as $foyer_id ) {
+				$tBoucle0 = $tRefreshRessources0 = microtime( true );
 
 				/// Rafraîchissement des ressources
 				if( $this->ressources == true ) {
@@ -364,44 +364,44 @@
 					$this->out( sprintf( "%s %% des foyers traités (%s).", ( round( $nbFoyersTraites / $nbFoyers * 100 ) ), $nbFoyersTraites ) );
 				}
 
-                // avant 17/08/2009 entre 0.20 et 0.40 secondes
-                // le 17/08/2009 entre 0.10 et 0.20 secondes
+				// avant 17/08/2009 entre 0.20 et 0.40 secondes
+				// le 17/08/2009 entre 0.10 et 0.20 secondes
 				if( Configure::read( 'debug' ) && ( microtime( true ) - $tBoucle0 ) > 0.5 ) {
 					$this->out( 'passage couteux dans la boucle (foyer '.$foyer_id.'): '.number_format( microtime( true ) - $tBoucle0, 2 ) );
 				}
-            }
+			}
 
 			// Temps passé dans les différentes parties du script
 			$this->hr();
 			$tTotal = ( $tRefreshRessources + $tRefreshSoumis + $tPreorientation );
-            $this->out( "Temps ressources:\t\t".number_format( $tRefreshRessources / $tTotal * 100, 2 )." % =>\t".number_format( $tRefreshRessources, 2 ) );
-            $this->out( "Temps droits et devoirs:\t".number_format( $tRefreshSoumis / $tTotal * 100, 2 )." % =>\t".number_format( $tRefreshSoumis, 2 ) );
-            $this->out( "Temps préorientation:\t\t".number_format( $tPreorientation / $tTotal * 100, 2 )." % =>\t".number_format( $tPreorientation, 2 ) );
+			$this->out( "Temps ressources:\t\t".number_format( $tRefreshRessources / $tTotal * 100, 2 )." % =>\t".number_format( $tRefreshRessources, 2 ) );
+			$this->out( "Temps droits et devoirs:\t".number_format( $tRefreshSoumis / $tTotal * 100, 2 )." % =>\t".number_format( $tRefreshSoumis, 2 ) );
+			$this->out( "Temps préorientation:\t\t".number_format( $tPreorientation / $tTotal * 100, 2 )." % =>\t".number_format( $tPreorientation, 2 ) );
 
-            /** ****************************************************************
-            *   Fin du script
-            *** ***************************************************************/
+			/** ****************************************************************
+			*   Fin du script
+			*** ***************************************************************/
 
-            $this->hr();
+			$this->hr();
 
-            if( $success ) {
+			if( $success ) {
 				if( $this->preorientation == true ) {
 					foreach( $typesOrient as $label => $key ) {
 						$this->out( sprintf( '%s préorientations %s.', $countTypesOrient[$key], $label ) );
 					}
 					$this->hr();
 				}
-                $this->Foyer->commit();
-                $this->out( "Script de rafraicissement termine avec succes: ".date( 'Y-m-d H:i:s' ).'( en '.number_format( microtime( true ) - $this_start, 2 ).' secondes )' );
-            }
-            else {
-                $this->Foyer->rollback();
-                $this->out( "Script de rafraicissement termine avec erreurs: ".date( 'Y-m-d H:i:s' ).'( en '.number_format( microtime( true ) - $this_start, 2 ).' secondes )' );
-            }
+				$this->Foyer->commit();
+				$this->out( "Script de rafraichissement termine avec succes: ".date( 'Y-m-d H:i:s' ).'( en '.number_format( microtime( true ) - $this_start, 2 ).' secondes )' );
+			}
+			else {
+				$this->Foyer->rollback();
+				$this->out( "Script de rafraichissement termine avec erreurs: ".date( 'Y-m-d H:i:s' ).'( en '.number_format( microtime( true ) - $this_start, 2 ).' secondes )' );
+			}
 
 			$this->exportlog();
 
 			return ( $success ? 0 : 1 );
-        }
-    }
+		}
+	}
 ?>

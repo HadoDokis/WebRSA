@@ -41,6 +41,17 @@
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		// Pré-remplissage avec les valeurs de l'avis EP -> FIXME: à mettre dans prepareFormData ?
+		// $this->data est peuplée avec prepareFormData, donc on utilise un autre moyen pour savoir si on a renvoyé le formulaire
+		/*if( empty( $_POST ) ) {
+			if( @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][count(@$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'])-1]['etape'] == 'cg' ) {
+				$record = @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][count(@$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'])-1];
+			}
+			else {
+				$record = @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0];
+			}
+		}*/
+
 		$lineOptions = array();
 		foreach( $options['Decisionnonrespectsanctionep93']['decision'] as $key => $label ) {
 			if( $key[0] == min( 2, $dossierep['Nonrespectsanctionep93']['rgpassage'] ) ) {
@@ -61,8 +72,11 @@
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
 // 				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-				$form->input( "Nonrespectsanctionep93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-				$form->input( "Decisionnonrespectsanctionep93.{$i}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => $dossierep['Nonrespectsanctionep93']['id'] ) ).
+				$form->input( "Nonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Nonrespectsanctionep93']['id']*/ ) ).
+				$form->input( "Nonrespectsanctionep93.{$i}.dossierep_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Dossierep']['id']*/ ) ).
+				$form->input( "Decisionnonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => @$record['id']*/ ) ).
+// 				$form->input( "Nonrespectsanctionep93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
+				$form->input( "Decisionnonrespectsanctionep93.{$i}.nonrespectsanctionep93_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Nonrespectsanctionep93']['id']*/ ) ).
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) )
 				/*$dossierep['Saisineepreorientsr93']['Motifreorient']['name'],
