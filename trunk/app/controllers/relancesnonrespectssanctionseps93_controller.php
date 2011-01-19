@@ -320,14 +320,14 @@
 
 
 				$conditions = array();
-
+// debug( $search );
 				// FIXME: jointures (Dossier)
 				foreach( $search as $field => $condition ) {
 					if( in_array( $field, array( 'Personne.nom', 'Personne.prenom' ) ) ) {
 						$conditions["UPPER({$field}) LIKE"] = $this->Relancenonrespectsanctionep93->wildcard( strtoupper( replace_accents( $condition ) ) );
 					}
 					else if( $field == 'Adresse.numcomptt' && !empty( $condition ) ) {
-						// FIXME: subquery
+						// FIXME: subquery / joins
 						$conditions[] = 'Personne.foyer_id IN (
 											SELECT
 													foyer_id
@@ -341,7 +341,7 @@
 										)';
 					}
 					else if( $field == 'Serviceinstructeur.id' && !empty( $condition ) ) {
-						// FIXME: subquery
+						// FIXME: subquery / joins
 						$conditions[] = 'Personne.foyer_id IN (
 											SELECT
 													suivisinstruction.dossier_id
@@ -359,7 +359,7 @@
 												WHERE servicesinstructeurs.id = \''.Sanitize::paranoid( $condition ).'\' )';
 					}
 					else if( $field == 'Dossier.matricule' && !empty( $condition ) ) {
-						// FIXME: subquery
+						// FIXME: subquery / joins
 						$conditions[] = 'Personne.foyer_id IN (
 											SELECT
 													foyers.id
@@ -370,7 +370,25 @@
 													)
 												WHERE dossiers.matricule = \''.Sanitize::paranoid( $condition ).'\' )';
 					}
-					else if( !in_array( $field, array( 'Relance.numrelance', 'Relance.contrat' ) ) ) {
+					else if( ( $field == 'Dossiercaf.nomtitulaire' || $field == 'Dossiercaf.prenomtitulaire' ) && !empty( $condition ) ) {
+						// FIXME: subquery / joins
+						$conditions[] = 'Personne.id IN (
+											SELECT
+													personne_id
+												FROM dossierscaf
+												WHERE
+													dossierscaf.personne_id = "Personne"."id"
+													AND dossierscaf.toprespdos = true
+													AND (
+														dossierscaf.dfratdos IS NULL
+														OR dossierscaf.dfratdos >= NOW()
+													)
+													AND dossierscaf.ddratdos <= NOW()
+										)';
+						$field = preg_replace( '/^Dossiercaf\.(.*)titulaire$/', '\1', $field );
+						$conditions["UPPER({$field}) LIKE"] = $this->Relancenonrespectsanctionep93->wildcard( strtoupper( replace_accents( $condition ) ) );
+					}
+					else if( !in_array( $field, array( 'Relance.numrelance', 'Relance.contrat', 'Relance.compare0', 'Relance.compare1', 'Relance.nbjours0', 'Relance.nbjours1' ) ) ) {
 						$conditions[$field] = $condition;
 					}
 				}
@@ -384,6 +402,15 @@
 				/// FIXME: que les dernières orientations / les derniers contrats
 				/// Exemple: 1ère relance de /orientsstructs/index/351610
 				if( $search['Relance.contrat'] == 0 ) {
+					// Condition opérateur / nombre de jours ?
+					$conditionOrientstructDateValid = '';
+					if( !empty( $search['Relance.compare0'] ) && !empty( $search['Relance.nbjours0'] ) ) {
+						$conditionOrientstructDateValid = "AND AGE(orientsstructs.date_valid) >= '0 days' AND AGE(orientsstructs.date_valid) {$search['Relance.compare0']} interval '{$search['Relance.nbjours0']} days'";
+					}
+					else {
+						$conditionOrientstructDateValid = 'AND orientsstructs.date_valid < NOW() + \''.Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ).' mons\'';
+					}
+
 					switch( $search['Relance.numrelance'] ) {
 						case 1:
 							// Dernière Orientstruct
@@ -392,8 +419,8 @@
 									FROM orientsstructs
 									WHERE
 										orientsstructs.date_valid IS NOT NULL
-										AND orientsstructs.date_valid < NOW() + \''.Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ).' mons\'
 										AND orientsstructs.personne_id = Personne.id
+										'.$conditionOrientstructDateValid.'
 									ORDER by orientsstructs.date_valid DESC
 									LIMIT 1
 							)';
