@@ -29,43 +29,64 @@
 		)
 	);
 
-	echo $xhtml->tag(
-		'fieldset',
-		$xhtml->tag(
-			'legend',
-			'Thématique 93'
-		).
-		$default->subform(
+	// Le CG 93 ne souhaite pas voir ces choix: pour eux, tout se décide
+	// au niveau cg, et toutes les eps traitent potentiellement de tous
+	// les thèmes
+	if( Configure::read( 'Ep.departement' ) == 93 ) {
+		echo $default->subform(
 			array(
-				'Ep.saisineepreorientsr93' => array( 'required' => true ),
-				'Ep.nonrespectsanctionep93' => array( 'required' => true ),
-			),
-			array(
-				'options' => $options
+				'Ep.saisineepreorientsr93' => array( 'type' => 'hidden', 'value' => 'cg' ),
+				'Ep.nonrespectsanctionep93' => array( 'type' => 'hidden', 'value' => 'cg' ),
 			)
-		)
-	);
+		);
+	}
 
-	echo $xhtml->tag(
-		'fieldset',
-		$xhtml->tag(
-			'legend',
-			'Thématique 66'
-		).
-		$default->subform(
-			array(
-				'Ep.saisineepbilanparcours66' => array( 'required' => true ),
-				'Ep.saisineepdpdo66' => array( 'required' => true ),
-				'Ep.defautinsertionep66' => array( 'required' => true ),
+	// On laisse la possibilité de choisir comme avant pour le CG 58
+	if( Configure::read( 'Ep.departement' ) == 58 ) {
+		echo $xhtml->tag(
+			'fieldset',
+			$xhtml->tag(
+				'legend',
+				'Thématiques 58'
+			).
+			$default->subform(
+				array(
+					'Ep.saisineepreorientsr93' => array( 'required' => true ),
+					'Ep.nonrespectsanctionep93' => array( 'required' => true ),
+				),
+				array(
+					'options' => $options
+				)
 			),
 			array(
-				'options' => $options
+				'label'=>'Thématiques 58'
 			)
-		),
-		array(
-			'label'=>'Thématique 66'
-		)
-	);
+		);
+	}
+
+	// Le choix est également possible pour le CG 66
+	if( Configure::read( 'Ep.departement' ) == 66 ) {
+		echo $xhtml->tag(
+			'fieldset',
+			$xhtml->tag(
+				'legend',
+				'Thématiques 66'
+			).
+			$default->subform(
+				array(
+					'Ep.saisineepbilanparcours66' => array( 'required' => true ),
+					'Ep.saisineepdpdo66' => array( 'required' => true ),
+					'Ep.defautinsertionep66' => array( 'required' => true ),
+				),
+				array(
+					'options' => $options
+				)
+			),
+			array(
+				'label'=>'Thématiques 66'
+			)
+		);
+	}
 
 	echo $html->tag(
 		'div',
