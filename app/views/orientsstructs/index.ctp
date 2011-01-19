@@ -12,10 +12,13 @@
 	<?php if( $permissions->check( 'orientsstructs', 'add' ) ):?>
 		<ul class="actionMenu">
 			<?php
-				echo '<li>'.$xhtml->addLink(
-					'Préconiser une orientation',
-					array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id )
-				).' </li>';
+				echo '<li>'.
+					$xhtml->addLink(
+						'Préconiser une orientation',
+						array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id ),
+						$ajout_possible
+					).
+				' </li>';
 			?>
 		</ul>
 	<?php endif;?>
@@ -32,7 +35,7 @@
 				<th>Structure référente</th>
 				<th>Rang d'orientation</th>
 				<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ):?><th>Etat de l'orientation</th><?php endif;?>
-				<th colspan="3" class="action">Actions</th>
+				<th colspan="2" class="action">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -66,21 +69,21 @@
 						$cells[] = h( Set::enum( $orientstruct['Orientstruct']['etatorient'], $options['etatorient'] ) ) ;
 					}
 
-					$saisineTexte = ( ( Configure::read( 'Ep.departement') == 93 ) ? 'Saisine EP' : 'Bilan de parcours' );
-					$lienSaisineEp = $xhtml->saisineEpLink(
-						$saisineTexte,
-						array(
-							'controller' => Inflector::tableize( Configure::read( 'Ep.declencheursaisine' ) ),
-							'action' => 'add',
-							( ( Configure::read( 'Ep.departement') == 93 ) ? $orientstruct['Orientstruct']['id'] : $orientstruct['Orientstruct']['personne_id'] )
-						),
-						// FIXME; droits + pas de saisine si non terminée ?
-						(
-							( $i == 0 ) // La dernière orientation en date
-							&& !empty( $orientstruct['Orientstruct']['structurereferente_id'] )
-							&& $orientstruct['Personne']['Calculdroitrsa']['toppersdrodevorsa']
-						)
-					);
+// 					$saisineTexte = ( ( Configure::read( 'Ep.departement') == 93 ) ? 'Saisine EP' : 'Bilan de parcours' );
+// 					$lienSaisineEp = $xhtml->saisineEpLink(
+// 						$saisineTexte,
+// 						array(
+// 							'controller' => Inflector::tableize( Configure::read( 'Ep.declencheursaisine' ) ),
+// 							'action' => 'add',
+// 							( ( Configure::read( 'Ep.departement') == 93 ) ? $orientstruct['Orientstruct']['id'] : $orientstruct['Orientstruct']['personne_id'] )
+// 						),
+// 						// FIXME; droits + pas de saisine si non terminée ?
+// 						(
+// 							( $i == 0 ) // La dernière orientation en date
+// 							&& !empty( $orientstruct['Orientstruct']['structurereferente_id'] )
+// 							&& $orientstruct['Personne']['Calculdroitrsa']['toppersdrodevorsa']
+// 						)
+// 					);
 
 					array_push(
 						$cells,
@@ -96,12 +99,12 @@
 						)
 					);
 
-					if (Configure::read('Ep.departement')==93) {
-						array_push(
-							$cells,
-							$lienSaisineEp
-						);
-					}
+// 					if (Configure::read('Ep.departement')==93) {
+// 						array_push(
+// 							$cells,
+// 							$lienSaisineEp
+// 						);
+// 					}
 
 					echo $xhtml->tableCells( $cells, array( 'class' => 'odd' ), array( 'class' => 'even' ) );
 				}

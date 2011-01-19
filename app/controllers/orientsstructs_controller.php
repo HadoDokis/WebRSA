@@ -96,6 +96,8 @@
 			$this->set( 'orientstructs', $orientstructs );
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
+			$this->set( 'rgorient_max', $this->Orientstruct->rgorientMax( $personne_id ) );
+			$this->set( 'ajout_possible', $this->Orientstruct->ajoutPossible( $personne_id ) );
 		}
 
 		/**
@@ -109,6 +111,12 @@
 
 			// Retour à l'index en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
+			// Retour à l'index s'il n'est pas possible d'ajouter une orientation
+			if( !$this->Orientstruct->ajoutPossible( $personne_id ) ) {
+				$this->Session->setFlash( 'Impossible d\'ajouter une orientation pour cette personne.', 'flash/error' );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 

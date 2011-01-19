@@ -68,7 +68,7 @@
 						window.open( $( link ).href, 'external' ); return false;
 					};
 				} );
-				
+
 				if ('<?php echo Router::url( "/users/login", true ); ?>' != location.href && '<?php echo Configure::read("alerteFinSession"); ?>') {
 					var sessionTime = parseInt('<?php echo ini_get("session.gc_maxlifetime") ?>');
 					var warning5minutes = sessionTime - (5*60);
@@ -145,7 +145,7 @@
 				<?php echo $content_for_layout;?>
 			</div>
 			<div id="pageFooter"<?php if( Configure::read( 'debug' ) > 0 ) { echo ' style="color: black;"'; }?>>
-				webrsa v. <?php echo app_version();?> 2009 - 2010 @ Adullact.
+				webrsa v. <?php echo app_version();?> 2009 - 2011 @ Adullact.
 				<?php
 					echo sprintf(
 						"Page construite en %s secondes. %s / %s. %s modèles",

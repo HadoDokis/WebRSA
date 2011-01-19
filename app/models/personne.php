@@ -205,6 +205,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Dossierep' => array(
+				'className' => 'Dossierep',
+				'foreignKey' => 'personne_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Entretien' => array(
 				'className' => 'Entretien',
 				'foreignKey' => 'personne_id',
