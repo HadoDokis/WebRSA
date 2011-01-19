@@ -215,36 +215,34 @@
 	Configure::write( 'alerteFinSession', false );
 
 	/**
-	* Nombre de mois entre la date d'édition de la notification d'orientation et
+	* Nombre de jours entre la date d'édition de la notification d'orientation et
 	* l'envoi de la première relance pour le thème "non respect et sanctions du CG 93"
 	*/
-	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer1', 2 );
+	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer1', 60 );
 
 	/**
-	* Nombre de mois entre l'envoi de la première relance et l'envoi de la
-	* seconde relance pour le thème "non respect et sanctions du CG 93"
+	* Nombre de jours entre la date d'édition de la notification d'orientation et
+	* l'envoi de la seconde relance pour le thème "non respect et sanctions du CG 93"
 	*/
-	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer2', 2 );
+	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer2', 120 );
 
 	/**
-	* Nombre de mois entre l'envoi de la seconde relance et l'envoi de la
-	* troisième relance (signalement du passage en EP) pour le thème "non
-	* respect et sanctions du CG 93"
+	* Nombre de jours entre la date d'édition de la notification d'orientation et
+	* l'envoi de la troisième relance pour le thème "non respect et sanctions du CG 93"
 	*/
-	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer3', 1 );
+	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer3', 150 );
 
 	/**
-	* Nombre de mois entre la date de fin du contrat précédent et l'envoi de
+	* Nombre de jours entre la date de fin du contrat précédent et l'envoi de
 	* la première relance pour le thème "non respect et sanctions du CG 93"
 	*/
-	Configure::write( 'Nonrespectsanctionep93.relanceCerCer1', 2 );
+	Configure::write( 'Nonrespectsanctionep93.relanceCerCer1', 60 );
 
 	/**
-	* Nombre de mois entre l'envoi de la première relance et l'envoi de la
-	* seconde relance pour non renouvellement de contrat pour le thème
-	* "non respect et sanctions du CG 93"
+	* Nombre de jours entre la date de fin du contrat précédent et l'envoi de
+	* la seconde relance pour le thème "non respect et sanctions du CG 93"
 	*/
-	Configure::write( 'Nonrespectsanctionep93.relanceCerCer2', 1 );
+	Configure::write( 'Nonrespectsanctionep93.relanceCerCer2', 90 );
 
 	/**
 	* Montant de la réduction d'allocation lors d'un premier passage en EP pour
