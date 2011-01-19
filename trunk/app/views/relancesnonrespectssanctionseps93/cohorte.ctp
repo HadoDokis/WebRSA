@@ -82,7 +82,7 @@
 	// Résultats
 	if( isset( $results ) ) {
 		if( empty( $results ) ) {
-			echo $xhtml->tag( 'p', 'Personne ne répond à ces critères.', array( 'class' => 'notice' ) );
+			echo $xhtml->tag( 'p', 'Aucun résultat ne correspond à ces critères.', array( 'class' => 'notice' ) );
 		}
 		else {
 			echo $xform->create( null, array( 'id' => 'Relancenonrespectsanctionep93Form' ) );

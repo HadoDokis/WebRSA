@@ -121,6 +121,38 @@
 		*
 		*/
 
+		protected function _conditionOrientstructDateValid( $alias, $search, $nbJoursDefaut ) {
+			$conditionOrientstructDateValid =
+				"AGE({$alias}.date_valid) >= '0 days'
+				AND ( DATE( NOW() ) - {$alias}.date_valid + 1 ) >= {$nbJoursDefaut}";
+
+			if( !empty( $search['Relance.compare0'] ) && !empty( $search['Relance.nbjours0'] ) ) {
+				$conditionOrientstructDateValid = "{$conditionOrientstructDateValid} AND ( DATE( NOW() ) - {$alias}.date_valid + 1 ) {$search['Relance.compare0']} {$search['Relance.nbjours0']}";
+			}
+
+			return $conditionOrientstructDateValid;
+		}
+
+		/**
+		*
+		*/
+
+		protected function _conditionCerDfCi( $alias, $search, $nbJoursDefaut ) {
+			$conditionCerDfCi =
+				"AGE({$alias}.df_ci) >= '0 days'
+				AND ( DATE( NOW() ) - {$alias}.df_ci + 1 ) >= {$nbJoursDefaut}";
+
+			if( !empty( $search['Relance.compare1'] ) && !empty( $search['Relance.nbjours1'] ) ) {
+				$conditionCerDfCi = "{$conditionCerDfCi} AND ( DATE( NOW() ) - {$alias}.df_ci + 1 ) {$search['Relance.compare1']} {$search['Relance.nbjours1']}";
+			}
+
+			return $conditionCerDfCi;
+		}
+
+		/**
+		*
+		*/
+
 		public function cohorte() {
 			if( !empty( $this->data ) ) {
 				/// Enregistrement de la cohorte de relances
@@ -145,16 +177,16 @@
 									if( $this->data['Relance']['contrat'] == 0 ) {
 										$this->Nonrespectsanctionep93->Orientstruct->id = $relance['orientstruct_id'];
 										$personne_id = $this->Nonrespectsanctionep93->Orientstruct->field( 'personne_id' );
-										$months = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' );
+										$days = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' );
 									}
 									else {
-										$months = Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' );
+										$days = Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' );
 										$this->Nonrespectsanctionep93->Contratinsertion->id = $relance['contratinsertion_id'];
 										$personne_id = $this->Nonrespectsanctionep93->Contratinsertion->field( 'personne_id' );
 									}
 
 									$dateecheance = strtotime( "{$relance['daterelance']['year']}{$relance['daterelance']['month']}{$relance['daterelance']['day']}" );
-									$dateecheance = date( 'Y-m-d', strtotime( "+{$months} month", $dateecheance ) );
+									$dateecheance = date( 'Y-m-d', strtotime( "+{$days} days", $dateecheance ) );
 
 									$nbpassagespcd = $this->Nonrespectsanctionep93->Dossierep->find(
 										'count',
@@ -206,14 +238,14 @@
 									break;
 								case 2:
 									if( $this->data['Relance']['contrat'] == 0 ) {
-										$months = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer2' );
+										$days = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer2' );
 									}
 									else {
-										$months = Configure::read( 'Nonrespectsanctionep93.relanceCerCer2' );
+										$days = Configure::read( 'Nonrespectsanctionep93.relanceCerCer2' );
 									}
 
 									$dateecheance = strtotime( "{$relance['daterelance']['year']}{$relance['daterelance']['month']}{$relance['daterelance']['day']}" );
-									$dateecheance = date( 'Y-m-d', strtotime( "+{$months} month", $dateecheance ) );
+									$dateecheance = date( 'Y-m-d', strtotime( "+{$days} days", $dateecheance ) );
 
 									$item = array(
 										'Relancenonrespectsanctionep93' => array(
@@ -255,9 +287,9 @@
 									break;
 								case 3:
 									if( $this->data['Relance']['contrat'] == 0 ) {
-										$months = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer3' );
+										$days = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer3' );
 										$dateecheance = strtotime( "{$relance['daterelance']['year']}{$relance['daterelance']['month']}{$relance['daterelance']['day']}" );
-										$dateecheance = date( 'Y-m-d', strtotime( "+{$months} month", $dateecheance ) );
+										$dateecheance = date( 'Y-m-d', strtotime( "+{$days} days", $dateecheance ) );
 
 										$item = array(
 											'Relancenonrespectsanctionep93' => array(
@@ -320,7 +352,6 @@
 
 
 				$conditions = array();
-// debug( $search );
 				// FIXME: jointures (Dossier)
 				foreach( $search as $field => $condition ) {
 					if( in_array( $field, array( 'Personne.nom', 'Personne.prenom' ) ) ) {
@@ -402,17 +433,9 @@
 				/// FIXME: que les dernières orientations / les derniers contrats
 				/// Exemple: 1ère relance de /orientsstructs/index/351610
 				if( $search['Relance.contrat'] == 0 ) {
-					// Condition opérateur / nombre de jours ?
-					$conditionOrientstructDateValid = '';
-					if( !empty( $search['Relance.compare0'] ) && !empty( $search['Relance.nbjours0'] ) ) {
-						$conditionOrientstructDateValid = "AND AGE(orientsstructs.date_valid) >= '0 days' AND AGE(orientsstructs.date_valid) {$search['Relance.compare0']} interval '{$search['Relance.nbjours0']} days'";
-					}
-					else {
-						$conditionOrientstructDateValid = 'AND orientsstructs.date_valid < NOW() + \''.Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ).' mons\'';
-					}
-
 					switch( $search['Relance.numrelance'] ) {
 						case 1:
+							$conditionOrientstructDateValid = $this->_conditionOrientstructDateValid( 'orientsstructs', $search, Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ) );
 							// Dernière Orientstruct
 							$conditions[] = 'Orientstruct.id IN (
 								SELECT orientsstructs.id
@@ -420,7 +443,7 @@
 									WHERE
 										orientsstructs.date_valid IS NOT NULL
 										AND orientsstructs.personne_id = Personne.id
-										'.$conditionOrientstructDateValid.'
+										'.( !empty( $conditionOrientstructDateValid ) ? 'AND '.$conditionOrientstructDateValid : '' ).'
 									ORDER by orientsstructs.date_valid DESC
 									LIMIT 1
 							)';
@@ -437,6 +460,7 @@
 						case 2:
 						case 3:
 							// FIXME ??
+							$conditions[] = $this->_conditionOrientstructDateValid( 'Orientstruct', $search, Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer'.$search['Relance.numrelance'] ) );
 							$conditions[] = 'Orientstruct.id IN (
 								SELECT nonrespectssanctionseps93.orientstruct_id
 									FROM nonrespectssanctionseps93
@@ -527,12 +551,13 @@
 					switch( $search['Relance.numrelance'] ) {
 						case 1:
 							// Dernièr contrat
+							$conditions[] = $this->_conditionCerDfCi( 'Contratinsertion', $search, Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' ) );
 							$conditions[] = 'Contratinsertion.id IN (
 								SELECT contratsinsertion.id
 									FROM contratsinsertion
 									WHERE
 										contratsinsertion.datevalidation_ci IS NOT NULL
-										AND contratsinsertion.datevalidation_ci < NOW() + \''.Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' ).' mons\'
+										AND contratsinsertion.df_ci < NOW()
 										AND contratsinsertion.personne_id = Personne.id
 									ORDER by contratsinsertion.datevalidation_ci DESC
 									LIMIT 1
@@ -548,8 +573,7 @@
 							)';
 							break;
 						case 2:
-						case 3:
-							// FIXME ??
+							$conditions[] = $this->_conditionCerDfCi( 'Contratinsertion', $search, Configure::read( 'Nonrespectsanctionep93.relanceCerCer2' ) );
 							$conditions[] = 'Contratinsertion.id IN (
 								SELECT nonrespectssanctionseps93.contratinsertion_id
 									FROM nonrespectssanctionseps93
