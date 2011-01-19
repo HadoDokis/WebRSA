@@ -31,3 +31,9 @@ msgstr "Responsable du dossier"
 
 msgid "Dossiercaf.numdemrsaprece"
 msgstr "Numéro de demande RSA précédent"
+
+msgid "Dossiercaf.nomtitulaire"
+msgstr "Nom du titulaire"
+
+msgid "Dossiercaf.prenomtitulaire"
+msgstr "Prénom du titulaire"
