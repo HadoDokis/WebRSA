@@ -316,6 +316,56 @@
 		}
 
 		/**
+		* FIXME: select max(rgorient), si on a besoin d'archiver
+		*/
+
+		public function rgorientMax( $personne_id ) {
+			return $this->find(
+				'count',
+				array(
+					'conditions' => array(
+						"{$this->alias}.statut_orient" => 'Orienté',
+						"{$this->alias}.personne_id" => $personne_id
+					),
+					'contain' => false
+				)
+			);
+		}
+
+		/**
+		* FIXME -> aucun dossier en cours, pour certains thèmes:
+		*		- CG 93
+		*			* Nonrespectsanctionep93 -> ne débouche pas sur une orientation: '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien'
+		*			* Saisineepreorientsr93 -> peut déboucher sur une réorientation
+		*		- CG 66
+		*			* Defautinsertionep66 -> peut déboucher sur une orientation: 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof'
+		*			* Saisineepbilanparcours66 -> peut déboucher sur une réorientation
+		*			* Saisineepdpdo66 -> 'CAN', 'RSP' -> FIXME ??
+		* FIXME -> CG 93: s'il existe une procédure de relance, on veut faire signer un contrat,
+					mais on veut peut-être aussi demander une réorientation.
+		* FIXME -> doit-on vérifier si:
+		* 			- le droit doit être ouvert
+		*			- la personne est demandeur ou conjoint RSA ?
+		*			- le dossier est dans un état ouvert ?
+		*/
+
+		public function ajoutPossible( $personne_id ) {
+			$count = $this->Personne->Dossierep->find(
+				'count',
+				array(
+					'conditions' => array(
+						"Dossierep.personne_id" => $personne_id,
+						"Dossierep.etapedossierep <>" => 'traite',
+						"Dossierep.themeep <>" => 'nonrespectssanctionseps93'
+					),
+					'contain' => false
+				)
+			);
+
+			return ( $count == 0 );
+		}
+
+		/**
 		* Ajout du rang d'orientation à la sauvegarde, lorsqu'on passe en 'Orienté'
 		*/
 
@@ -326,14 +376,13 @@
 				if( isset( $this->data[$this->alias]['id'] ) && !empty( $this->data[$this->alias]['id'] ) ) {
 					$tuple_pcd = $this->find( 'first', array( 'conditions' => array( "{$this->alias}.{$this->primaryKey}" => $this->data[$this->alias]['id'] ), 'contain' => false ) );
 					if( $tuple_pcd[$this->alias]['statut_orient'] != 'Orienté' ) {
-						$rgprecedent = $this->find( 'count', array( 'conditions' => array( "{$this->alias}.statut_orient" => 'Orienté', "{$this->alias}.personne_id" => $this->data[$this->alias]['personne_id'] ), 'contain' => false ) );
-						$this->data[$this->alias]['rgorient'] = ( $rgprecedent + 1 );
+						//$rgprecedent = $this->find( 'count', array( 'conditions' => array( "{$this->alias}.statut_orient" => 'Orienté', "{$this->alias}.personne_id" => $this->data[$this->alias]['personne_id'] ), 'contain' => false ) );
+						$this->data[$this->alias]['rgorient'] = ( $this->rgorientMax( $this->data[$this->alias]['personne_id'] ) + 1 );
 					}
 				}
 				// Nouvelle entrée
 				else if( isset( $this->data[$this->alias]['personne_id'] ) && !empty( $this->data[$this->alias]['personne_id'] ) ) {
-					$rgprecedent = $this->find( 'count', array( 'conditions' => array( "{$this->alias}.statut_orient" => 'Orienté', "{$this->alias}.personne_id" => $this->data[$this->alias]['personne_id'] ), 'contain' => false ) );
-					$this->data[$this->alias]['rgorient'] = ( $rgprecedent + 1 );
+					$this->data[$this->alias]['rgorient'] = ( $this->rgorientMax( $this->data[$this->alias]['personne_id'] ) + 1 );
 				}
 			}
 
