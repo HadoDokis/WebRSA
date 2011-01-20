@@ -36,12 +36,68 @@
 			$this->parameters = $parameters;
 		}
 
+		// Attention on surcharge la visibilite du parent
+		function _add_edit($id) {
+			return parent::_add_edit($id);
+		}
+
 	}
 
 	class CantonsControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
+		public function testBeforeFilter() {
+			$this->assertNull($this->CantonsController->viewVars['typevoie']);
+			$this->CantonsController->beforeFilter();
+			$this->assertNotNull($this->CantonsController->viewVars['typevoie']);
+		}
+
+		public function testIndex() {
+			$this->assertNull($this->CantonsController->viewVars['cantons']);
+			$this->CantonsController->params['forms']['Cancel'] = '12345';
+			$this->CantonsController->index();
+			$this->assertNotNull($this->CantonsController->viewVars['cantons']);
+			//$this->assertEqual(array('controller' =>'parametrages','action' =>'index'),$this->CantonsController->redirectUrl);
+		}
+
+		public function testAdd() {
+			$this->assertNull($this->CantonsController->renderedFile);
+			$this->assertNull($this->CantonsController->renderedLayout);
+			$this->assertNull($this->CantonsController->viewVars['zonesgeographiques']);
+			$this->assertNull($this->CantonsController->viewVars['typesvoies']);
+			$this->CantonsController->add();
+			$this->assertEqual('default', $this->CantonsController->renderedLayout);
+			$this->assertEqual('add_edit', $this->CantonsController->renderedFile);
+			$this->assertNotNull($this->CantonsController->viewVars['zonesgeographiques']);
+			$this->assertNotNull($this->CantonsController->viewVars['typesvoies']);
+	        }
+
+	        public function testEdit() {
+			$this->assertNull($this->CantonsController->renderedFile);
+			$this->assertNull($this->CantonsController->renderedLayout);
+			$this->CantonsController->edit();
+			$this->assertEqual('default', $this->CantonsController->renderedLayout);
+			$this->assertEqual('add_edit', $this->CantonsController->renderedFile);
+	        }
+
+	        function test_add_edit() {
+			$id = 1;
+			$this->assertNull($this->CantonsController->renderedFile);
+			$this->assertNull($this->CantonsController->renderedLayout);
+			$this->assertNull($this->CantonsController->viewVars['zonesgeographiques']);
+			$this->assertNull($this->CantonsController->viewVars['typesvoies']);
+			$this->CantonsController->_add_edit($id);
+			$this->assertEqual('default', $this->CantonsController->renderedLayout);
+			$this->assertEqual('add_edit', $this->CantonsController->renderedFile);
+			$this->assertNotNull($this->CantonsController->viewVars['zonesgeographiques']);
+			$this->assertNotNull($this->CantonsController->viewVars['typesvoies']);
 			
+		}
+
+	        public function testDelete() {
+			$id = 1;
+			$this->assertNull($this->CantonsController->redirectUrl);
+			$this->CantonsController->delete($id);
+			$this->assertEqual(array('action' =>'index'),$this->CantonsController->redirectUrl);
 		}
 
 	}

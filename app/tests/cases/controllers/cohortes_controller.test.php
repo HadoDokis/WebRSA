@@ -40,10 +40,46 @@
 
 	class CohortesControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
+		public function testBeforeFilter() {
+			$this->assertNull($this->CohortesController->redirectUrl);
+			$this->assertNull($this->CohortesController->viewVars['etatdosrsa']);
+			$this->CohortesController->beforeFilter();
+			$this->assertNotNull($this->CohortesController->viewVars['etatdosrsa']);
+			$this->assertEqual('/users/login', $this->CohortesController->redirectUrl);
+		}
+/*
+		public function test__construct() {
+			$this->CohortesController->__construct();
+		}
+
+		public function testNouvelles() {
+
+		}
+
+		public function testOrientees() {
 			
 		}
 
+		public function testEnattente() {
+			
+		}
+
+		protected function test_index() {
+			$statutOrientation = 1;
+		}
+
+		public function testexportcsv(){
+			
+		}
+
+		protected function test_get() {
+			$personne_id = 1;
+		}
+
+		public function testcohortegedooo() {
+			$personne_id = 1;
+		}
+*/
 	}
 
 ?>

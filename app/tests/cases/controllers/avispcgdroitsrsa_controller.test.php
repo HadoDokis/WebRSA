@@ -2,7 +2,7 @@
 
 	require_once( dirname( __FILE__ ).'/../cake_app_controller_test_case.php' );
 
-	App::import('Controller', 'Avispcgdroitrsa');
+	App::import('Controller', 'Avispcgdroitsrsa');
 
 	class TestAvispcgdroitsrsaController extends AvispcgdroitsrsaController {
 
@@ -40,9 +40,35 @@
 
 	class AvispcgdroitsrsaControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
-			
-		}
+		function testBeforeFilter() {
+			$this->assertNull($this->AvispcgdroitsrsaController->viewVars['avisdestpairsa']);
+			$this->assertNull($this->AvispcgdroitsrsaController->viewVars['typeperstie']);
+			$this->assertNull($this->AvispcgdroitsrsaController->viewVars['aviscondadmrsa']);
+			$this->AvispcgdroitsrsaController->beforeFilter();
+			$this->assertNotNull($this->AvispcgdroitsrsaController->viewVars['avisdestpairsa']);
+			$this->assertNotNull($this->AvispcgdroitsrsaController->viewVars['typeperstie']);
+			$this->assertNotNull($this->AvispcgdroitsrsaController->viewVars['aviscondadmrsa']);
+	        }
+
+
+	        function testIndex() {
+			$dossier_id = 1;
+			$this->assertNull($this->AvispcgdroitsrsaController->viewVars['dossier_id']);
+			$this->assertNull($this->AvispcgdroitsrsaController->viewVars['avispcgdroitrsa']);
+			$this->AvispcgdroitsrsaController->index($dossier_id);
+			$this->assertNotNull($this->AvispcgdroitsrsaController->viewVars['dossier_id']);
+			$this->assertNotNull($this->AvispcgdroitsrsaController->viewVars['avispcgdroitrsa']);
+	        }
+
+
+	        function testView() {
+			$avispcgdroitrsa_id = 1;
+			$this->assertNull($this->AvispcgdroitsrsaController->viewVars['dossier_id']);
+			$this->assertNull($this->AvispcgdroitsrsaController->viewVars['avispcgdroitrsa']);
+			$this->AvispcgdroitsrsaController->view($avispcgdroitrsa_id);
+			$this->assertNotNull($this->AvispcgdroitsrsaController->viewVars['dossier_id']);
+			$this->assertNotNull($this->AvispcgdroitsrsaController->viewVars['avispcgdroitrsa']);
+	        }
 
 	}
 
