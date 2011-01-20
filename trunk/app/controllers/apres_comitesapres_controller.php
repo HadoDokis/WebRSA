@@ -44,7 +44,7 @@
         function _add_edit( $id = null ){
 
 
-
+//debug($this);
             $this->Comiteapre->begin();
 
             if( $this->Jetonsfonctions->get( $this->name, $this->action ) ) {
@@ -211,6 +211,7 @@
                 $this->Comiteapre->commit();
                 $this->render( $this->action, null, 'add_edit' );
             }
+//debug($this);
         }
     }
 ?>
