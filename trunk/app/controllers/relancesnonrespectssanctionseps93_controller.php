@@ -137,7 +137,6 @@
 
 				/// Moteur de recherche
 				$results = $this->Relancenonrespectsanctionep93->search($this->data);
-// debug( $results );
 				$this->set( compact( 'results' ) );
 				
 				if ($this->Relancenonrespectsanctionep93->checkCompareError($this->data) == true)
