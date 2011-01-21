@@ -290,18 +290,6 @@
 			
 			// Champs de base
 			$fields = array(
-				'Orientstruct.id',
-				'Orientstruct.propo_algo',
-				'Orientstruct.valid_cg',
-				'Orientstruct.date_propo',
-				'Orientstruct.date_valid',
-				'Orientstruct.statut_orient',
-				'Orientstruct.date_impression',
-				'Orientstruct.daterelance',
-				'Orientstruct.statutrelance',
-				'Orientstruct.date_impression_relance',
-				'Orientstruct.etatorient',
-				'Orientstruct.rgorient',
 				'Personne.id',
 				'Personne.nom',
 				'Personne.prenom',
@@ -311,36 +299,43 @@
 				'Adresse.locaadr'
 			);
 			
-			/// Conditions de base
-			$conditions['Orientstruct.statut_orient'] = 'Orienté';
-
-			// Dernière Orientstruct de la personne
-			$conditions[] = 'Orientstruct.id IN (
-				SELECT orientsstructs.id
-					FROM orientsstructs
-					WHERE
-						orientsstructs.date_valid IS NOT NULL
-						AND orientsstructs.personne_id = Personne.id
-					ORDER by orientsstructs.date_valid DESC
-					LIMIT 1
-			)';
-
-			$conditions[] = 'Orientstruct.personne_id NOT IN (
-								SELECT contratsinsertion.personne_id
-									FROM contratsinsertion
-									WHERE
-										contratsinsertion.personne_id = Orientstruct.personne_id
-										AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) >= Orientstruct.date_valid
-									)';
-			
 			/// Jointures de base
-			$joins[] = array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.id = Orientstruct.personne_id' )
-					);
+			if( $search['Relance.contrat'] == 0 ) {
+				$fields = array_merge($fields, array(
+					'Orientstruct.id',
+					'Orientstruct.propo_algo',
+					'Orientstruct.valid_cg',
+					'Orientstruct.date_propo',
+					'Orientstruct.date_valid',
+					'Orientstruct.statut_orient',
+					'Orientstruct.date_impression',
+					'Orientstruct.daterelance',
+					'Orientstruct.statutrelance',
+					'Orientstruct.date_impression_relance',
+					'Orientstruct.etatorient',
+					'Orientstruct.rgorient'
+				) );
+				$joins[] = array(
+							'table'      => 'personnes',
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Personne.id = Orientstruct.personne_id' )
+						);
+			}
+			else {
+				$fields = array_merge( $fields, array(
+					'Contratinsertion.id',
+					'Contratinsertion.df_ci'
+				) );
+				$joins[] = array(
+							'table'      => 'personnes',
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Personne.id = Contratinsertion.personne_id' )
+						);
+			}
 			$joins[] = array(
 						'table'      => 'prestations',
 						'alias'      => 'Prestation',
@@ -348,10 +343,8 @@
 						'foreignKey' => false,
 						'conditions' => array(
 							'Personne.id = Prestation.personne_id',
-							'OR' => array(
-								'Prestation.rolepers' => 'DEM',
-								'Prestation.rolepers' => 'CJT'
-							)
+							'Prestation.natprest' => 'RSA',
+							'Prestation.rolepers' => array( 'DEM', 'CJT' ),
 						)
 					);
 			$joins[] = array(
@@ -407,18 +400,34 @@
 			);
 
 			if ( $search['Relance.numrelance'] > 1 ) {
-				$joins[] = array(
-							'table'      => 'nonrespectssanctionseps93',
-							'alias'      => 'Nonrespectsanctionep93',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Orientstruct.id = Nonrespectsanctionep93.orientstruct_id'
-								// Sous requête pour avoir le Nonrespectsanctionep93 le plus récent
-							),
-// 							'order' => array( 'Nonrespectsanctionep93.created DESC' ),
-// 							'limit' => 1
-						);
+				if( $search['Relance.contrat'] == 0 ) {
+					$joins[] = array(
+								'table'      => 'nonrespectssanctionseps93',
+								'alias'      => 'Nonrespectsanctionep93',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Orientstruct.id = Nonrespectsanctionep93.orientstruct_id'
+									// Sous requête pour avoir le Nonrespectsanctionep93 le plus récent
+								),
+	// 							'order' => array( 'Nonrespectsanctionep93.created DESC' ),
+	// 							'limit' => 1
+							);
+				}
+				else {
+					$joins[] = array(
+								'table'      => 'nonrespectssanctionseps93',
+								'alias'      => 'Nonrespectsanctionep93',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Contratinsertion.id = Nonrespectsanctionep93.contratinsertion_id'
+									// Sous requête pour avoir le Nonrespectsanctionep93 le plus récent
+								),
+	// 							'order' => array( 'Nonrespectsanctionep93.created DESC' ),
+	// 							'limit' => 1
+							);
+				}
 				$joins[] = array(
 							'table'      => 'relancesnonrespectssanctionseps93',
 							'alias'      => 'Relancenonrespectsanctionep93',
@@ -442,6 +451,26 @@
 			/// FIXME: que les dernières orientations / les derniers contrats
 			/// Exemple: 1ère relance de /orientsstructs/index/351610
 			if( $search['Relance.contrat'] == 0 ) {
+				$conditions['Orientstruct.statut_orient'] = 'Orienté';
+
+				// Dernière Orientstruct de la personne
+				$conditions[] = 'Orientstruct.id IN (
+					SELECT orientsstructs.id
+						FROM orientsstructs
+						WHERE
+							orientsstructs.date_valid IS NOT NULL
+							AND orientsstructs.personne_id = Personne.id
+						ORDER by orientsstructs.date_valid DESC
+						LIMIT 1
+				)';
+
+				$conditions[] = 'Orientstruct.personne_id NOT IN (
+									SELECT contratsinsertion.personne_id
+										FROM contratsinsertion
+										WHERE
+											contratsinsertion.personne_id = Orientstruct.personne_id
+											AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) >= Orientstruct.date_valid
+										)';
 				$conditions[] = "Orientstruct.date_impression <= DATE( NOW() )";
 				if( !empty( $search['Relance.compare0'] ) && !empty( $search['Relance.nbjours0'] ) ) {
 					$conditions[] = "( DATE( NOW() ) - Orientstruct.date_impression ) {$search['Relance.compare0']} {$search['Relance.nbjours0']}";
@@ -491,7 +520,7 @@
 					'joins' => $joins,
 					'contain' => false,
 					'limit' => 10,
-					'order' => array( 'Orientstruct.date_valid ASC' ),
+					'order' => array( 'Orientstruct.date_impression ASC' ),
 				);
 
 				$results = $this->Nonrespectsanctionep93->Orientstruct->find( 'all', $queryData );
@@ -564,7 +593,7 @@
 					'limit' => 10,
 					'order' => array( 'Contratinsertion.df_ci ASC' ),
 				);
-
+				
 				$results = $this->Nonrespectsanctionep93->Contratinsertion->find( 'all', $queryData );
 
 				if( !empty( $results ) ) {

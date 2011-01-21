@@ -142,11 +142,11 @@
 				
 				$searchError = false;
 				if( $this->data['Relance']['contrat'] == 0 ) {
-					if ( ( $this->data['Relance']['compare0'] == '<' && $this->data['Relance']['nbjours0'] <= Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer'.$this->data['Relance']['numrelance'] ) ) || ( $this->data['Relance']['compare0'] == '<=' && $this->data['Relance']['nbjours0'] < Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer'.$this->data['Relance']['numrelance'] ) ) )
+					if ( ( @$this->data['Relance']['compare0'] == '<' && @$this->data['Relance']['nbjours0'] <= Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer'.$this->data['Relance']['numrelance'] ) ) || ( @$this->data['Relance']['compare0'] == '<=' && @$this->data['Relance']['nbjours0'] < Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer'.$this->data['Relance']['numrelance'] ) ) )
 						$searchError = true;
 				}
 				else {
-					if ( ( $this->data['Relance']['compare1'] == '<' && $this->data['Relance']['nbjours1'] <= Configure::read( 'Nonrespectsanctionep93.relanceCerCer'.$this->data['Relance']['numrelance'] ) ) || ( $this->data['Relance']['compare1'] == '<=' && $this->data['Relance']['nbjours1'] < Configure::read( 'Nonrespectsanctionep93.relanceCerCer'.$this->data['Relance']['numrelance'] ) ) )
+					if ( ( @$this->data['Relance']['compare1'] == '<' && @$this->data['Relance']['nbjours1'] <= Configure::read( 'Nonrespectsanctionep93.relanceCerCer'.$this->data['Relance']['numrelance'] ) ) || ( @$this->data['Relance']['compare1'] == '<=' && @$this->data['Relance']['nbjours1'] < Configure::read( 'Nonrespectsanctionep93.relanceCerCer'.$this->data['Relance']['numrelance'] ) ) )
 						$searchError = true;
 				}
 				

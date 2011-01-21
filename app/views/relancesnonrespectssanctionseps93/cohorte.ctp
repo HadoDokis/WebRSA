@@ -101,7 +101,8 @@
 						<th>NIR</th>
 						<th>Nom de commune</th>
 						'.( ( $this->data['Relance']['contrat'] == 0 ) ? '<th>Date d\'orientation</th>' : '' ).'
-						'.( ( $this->data['Relance']['contrat'] == 0 ) ? '<th>'.__d( 'orientstruct', 'Orientstruct.nbjours', true ).'</th>' : '' ).'
+						'.( ( $this->data['Relance']['contrat'] == 0 ) ? '<th>Date de notification d\'orientation</th>' : '' ).'
+						'.( ( $this->data['Relance']['contrat'] == 0 ) ? '<th>Nombre de jours depuis la notification d\'orientation</th>' : '' ).'
 						'.( ( $this->data['Relance']['contrat'] == 1 ) ? '<th>Date de fin du contrat</th>' : '' ).'
 						'.( ( $this->data['Relance']['contrat'] == 1 ) ? '<th>Nombre de jours depuis la fin du contrat</th>' : '' ).'
 						'.( ( $this->data['Relance']['numrelance'] == 2 ) ? '<th>Date de première relance</th>' : '' ).'
@@ -131,6 +132,7 @@
 
 					if( $this->data['Relance']['contrat'] == 0 ) {
 						$row[] = h( date_short( @$result['Orientstruct']['date_valid'] ) );
+						$row[] = h( date_short( @$result['Orientstruct']['date_impression'] ) );
 						$row[] = h( @$result['Orientstruct']['nbjours'] );
 					}
 					else {
