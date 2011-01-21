@@ -40,10 +40,41 @@
 
 	class CohortescomitesapresControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
-			
+		function test__construct() {
+			$this->CohortescomitesapresController->__construct();
+		}
+/*
+		protected function test_setOptions() {
+			$this->CohortescomitesapresController->_setOptions();
 		}
 
+		function testAviscomite() {
+			$this->CohortescomitesapresController->aviscomite();
+		}
+
+		function testNotificationscomite() {
+			$this->CohortescomitesapresController->notificationscomite();
+		}
+
+		function test_index() {
+			$avisComite = null;
+			$this->CohortescomitesapresController->_index($avisComite);
+		}
+
+		function testExportcsv() {
+			$this->CohortescomitesapresController->exportcsv();
+		}
+
+		function testEditdecision() {
+			$apre_id = 1;
+			$this->CohortescomitesapresController->editdecision($apre_id);
+		}
+
+		function testNotificationscomitegedooo() {
+			$apre_comiteapre_id = 1;
+			$this->CohortescomitesapresController->notificationscomitegedooo($apre_comiteapre_id);
+		}
+*/
 	}
 
 ?>

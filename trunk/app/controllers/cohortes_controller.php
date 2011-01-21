@@ -511,7 +511,6 @@
 			$personne = Set::merge( $personne, $dossier );
 
 			// ----------------------------------------------------
-
 			return $personne;
 
 		}
