@@ -140,10 +140,7 @@
 						$row[] = h( @$result['Contratinsertion']['nbjours'] );
 					}
 
-					if( $this->data['Relance']['numrelance'] == 2 ) {
-						$row[] = date_short( @$result['Relancenonrespectsanctionep93']['daterelance'] );
-					}
-					else if( $this->data['Relance']['numrelance'] == 3 ) {
+					if( $this->data['Relance']['numrelance'] <= 2 ) {
 						$row[] = date_short( @$result['Relancenonrespectsanctionep93']['daterelance'] );
 					}
 
