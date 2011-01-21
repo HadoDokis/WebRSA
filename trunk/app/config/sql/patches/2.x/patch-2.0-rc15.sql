@@ -829,6 +829,13 @@ CREATE INDEX traitementspdos_saisonnier_idx ON traitementspdos (saisonnier);
 
 SELECT public.add_missing_table_field ( 'public', 'aidesapres66', 'motifrejetequipe', 'TEXT');
 
+-- -----------------------------------------------------------------------------
+-- 20110120
+-- -----------------------------------------------------------------------------
+
+DROP INDEX IF EXISTS calculsdroitsrsa_personne_id_idx;
+CREATE UNIQUE INDEX calculsdroitsrsa_personne_id_idx ON calculsdroitsrsa( personne_id );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

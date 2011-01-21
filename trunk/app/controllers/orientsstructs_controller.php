@@ -73,7 +73,10 @@
 						'Structurereferente',
 						'Referent'
 					),
-					'order' => array( 'Orientstruct.date_valid DESC' )
+					'order' => array(
+						'Orientstruct.rgorient DESC',
+						'Orientstruct.date_valid DESC'
+					)
 				)
 			);
 
@@ -92,12 +95,89 @@
 
 			$dossier_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_id' );
 
+			$en_procedure_relance = false;
+			if( Configure::read( 'Ep.departement' ) == 93 ) {
+				// TODO: à déplacer dans un modèle à terme
+				$en_procedure_relance = (
+					$this->Orientstruct->Nonrespectsanctionep93->find(
+						'count',
+						array(
+							'contain' => array(
+								'Dossierep',
+								'Orientstruct',
+								'Contratinsertion',
+								'Propopdo',
+							),
+							'conditions' => array(
+								'OR' => array(
+									array(
+										'Dossierep.personne_id' => $personne_id,
+										'Dossierep.etapedossierep <>' => 'traite'
+									),
+									array(
+										'Nonrespectsanctionep93.active' => 1,
+										'OR' => array(
+											array(
+												'Orientstruct.personne_id' => $personne_id,
+												'Nonrespectsanctionep93.origine' => 'orientstruct'
+											),
+											array(
+												'Contratinsertion.personne_id' => $personne_id,
+												'Nonrespectsanctionep93.origine' => 'contratinsertion'
+											),
+											array(
+												'Propopdo.personne_id' => $personne_id,
+												'Nonrespectsanctionep93.origine' => 'pdo'
+											)
+										)
+									),
+								)
+							)
+						)
+					) > 0
+				);
+
+				$saisineepreorientsr93 = $this->Orientstruct->Saisineepreorientsr93->find(
+					'first',
+					array(
+						'contain' => array(
+							'Orientstruct' => array(
+								'fields' => array( 'rgorient' )
+							),
+							'Dossierep' => array(
+								'fields' => array( 'etapedossierep' ),
+								'Personne' => array(
+									'fields' => array( 'nom', 'prenom' )
+								)
+							),
+							'Typeorient' => array(
+								'fields' => array( 'lib_type_orient' )
+							),
+							'Structurereferente' => array(
+								'fields' => array( 'lib_struc' )
+							),
+						),
+						'conditions' => array(
+							'Dossierep.personne_id' => $personne_id,
+							'Dossierep.themeep' => 'saisinesepsreorientsrs93',
+							'Dossierep.etapedossierep <>' => 'traite'
+						),
+						'order' => array( 'Saisineepreorientsr93.created DESC' )
+					)
+				);
+				$this->set( 'saisineepreorientsr93', $saisineepreorientsr93 );
+				$this->set( 'optionsdossierseps', $this->Orientstruct->Saisineepreorientsr93->Dossierep->enums() );
+			}
+
 			$this->set( 'droitsouverts', $this->Dossier->Situationdossierrsa->droitsOuverts( $dossier_id ) );
 			$this->set( 'orientstructs', $orientstructs );
+			$this->set( 'en_procedure_relance', $en_procedure_relance );
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
+
 			$this->set( 'rgorient_max', $this->Orientstruct->rgorientMax( $personne_id ) );
 			$this->set( 'ajout_possible', $this->Orientstruct->ajoutPossible( $personne_id ) );
+			$this->set( 'last_orientstruct_id', @$orientstructs[0]['Orientstruct']['id'] );
 		}
 
 		/**
@@ -119,6 +199,13 @@
 				$this->Session->setFlash( 'Impossible d\'ajouter une orientation pour cette personne.', 'flash/error' );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
+
+			// Pour le CG 93, les orientations de rang > 1 doivent passer en EP, donc il faut utiliser Saisinesepsreorientsrs93Controller::add
+			// FIXME
+			/*if( Configure::read( 'Ep.departement' ) == 93 && $this->Orientstruct->rgorientMax( $personne_id ) > 1 ) {
+				$this->Session->setFlash( 'L\'orientation de cette personne doit se faire via un passage en EP', 'flash/error' );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}*/
 
 			$dossier_id = $this->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -207,6 +294,12 @@
 
 			$orientstruct = $this->Orientstruct->findById( $orientstruct_id, null, null, 2 );
 			$this->assert( !empty( $orientstruct ), 'invalidParameter' );
+
+			// Retour à l'index si on essaie de modifier une autre orientation que la dernière
+			if( !empty( $orientstruct['Orientstruct']['date_valid'] ) && $orientstruct['Orientstruct']['statut_orient'] == 'Orienté' && $orientstruct['Orientstruct']['rgorient'] != $this->Orientstruct->rgorientMax( $orientstruct['Orientstruct']['personne_id'] ) ) {
+				$this->Session->setFlash( 'Impossible de modifier une autre orientation que la plus récente.', 'flash/error' );
+				$this->redirect( array( 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
+			}
 
 			$dossier_id = $this->Orientstruct->dossierId( $orientstruct_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );

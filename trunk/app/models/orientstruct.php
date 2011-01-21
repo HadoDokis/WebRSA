@@ -117,6 +117,19 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
+			),
+			'Saisineepreorientsr93' => array(
+				'className' => 'Saisineepreorientsr93',
+				'foreignKey' => 'orientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 			)
 		);
 
@@ -340,29 +353,91 @@
 		*		- CG 66
 		*			* Defautinsertionep66 -> peut déboucher sur une orientation: 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof'
 		*			* Saisineepbilanparcours66 -> peut déboucher sur une réorientation
-		*			* Saisineepdpdo66 -> 'CAN', 'RSP' -> FIXME ??
+		*			* Saisineepdpdo66 -> 'CAN', 'RSP' -> ne débouche pas sur une orientation
 		* FIXME -> CG 93: s'il existe une procédure de relance, on veut faire signer un contrat,
 					mais on veut peut-être aussi demander une réorientation.
 		* FIXME -> doit-on vérifier si:
-		* 			- le droit doit être ouvert
-		*			- la personne est demandeur ou conjoint RSA ?
-		*			- le dossier est dans un état ouvert ?
+		* 			- la personne est soumise à droits et devoirs (oui)
+		*			- la personne est demandeur ou conjoint RSA (oui) ?
+		*			- le dossier est dans un état ouvert (non) ?
 		*/
 
 		public function ajoutPossible( $personne_id ) {
-			$count = $this->Personne->Dossierep->find(
+			$nbDossiersep = $this->Personne->Dossierep->find(
 				'count',
 				array(
 					'conditions' => array(
-						"Dossierep.personne_id" => $personne_id,
-						"Dossierep.etapedossierep <>" => 'traite',
-						"Dossierep.themeep <>" => 'nonrespectssanctionseps93'
+						'Dossierep.personne_id' => $personne_id,
+						'Dossierep.etapedossierep <>' => 'traite',
+						'NOT' => array(
+							'Dossierep.themeep' => array(
+								'nonrespectssanctionseps93',
+								'saisinesepdspdos66'
+							)
+						)
 					),
 					'contain' => false
 				)
 			);
 
-			return ( $count == 0 );
+			$nbPersonnes = $this->Personne->find(
+				'count',
+				array(
+					'conditions' => array(
+						'Personne.id' => $personne_id,
+					),
+					'joins' => array(
+						array(
+							'table'      => 'prestations',
+							'alias'      => 'Prestation',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Personne.id = Prestation.personne_id',
+								'Prestation.natprest = \'RSA\'',
+								'Prestation.rolepers' => array( 'DEM', 'CJT' )
+							)
+						),
+						array(
+							'table'      => 'calculsdroitsrsa',
+							'alias'      => 'Calculdroitrsa',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Personne.id = Calculdroitrsa.personne_id',
+								'Calculdroitrsa.toppersdrodevorsa' => 1
+							)
+						),
+						array(
+							'table'      => 'foyers',
+							'alias'      => 'Foyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+						),
+						array(
+							'table'      => 'dossiers',
+							'alias'      => 'Dossier',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+						),
+						array(
+							'table'      => 'situationsdossiersrsa',
+							'alias'      => 'Situationdossierrsa',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Situationdossierrsa.dossier_id = Dossier.id',
+								'Situationdossierrsa.etatdosrsa' => array( 'Z', '2', '3', '4' )
+							)
+						),
+					),
+					'recursive' => -1
+				)
+			);
+
+			return ( ( $nbDossiersep == 0 ) && ( $nbPersonnes == 1 ) );
 		}
 
 		/**

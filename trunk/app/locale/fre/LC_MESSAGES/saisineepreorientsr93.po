@@ -29,22 +29,25 @@ msgid "Saisineepreorientsr93.structurereferente_id"
 msgstr "Nouvelle structure préconisée"
 
 msgid "Saisineepreorientsr93.motifreorient_id"
-msgstr "Pour quel motif ?"
+msgstr "Motif"
 
 msgid "Saisineepreorientsr93.commentaire"
 msgstr "Commentaire"
 
 msgid "Saisineepreorientsr93.accordaccueil"
-msgstr "Le référent d'accueil est-il d'accord avec cette réorientation ?"
+msgstr "Accord du référent d'accueil ?"
 
 msgid "Saisineepreorientsr93.desaccordaccueil"
 msgstr "Si non, indiquer pourquoi"
 
 msgid "Saisineepreorientsr93.accordallocataire"
-msgstr "L'allocataire est-il d'accord avec cette réorientation ?"
+msgstr "Accord de l'allocataire ?"
 
 msgid "Saisineepreorientsr93.urgent"
-msgstr "La demande est-elle urgente ?"
+msgstr "Demande urgente ?"
+
+msgid "Saisineepreorientsr93.datedemande"
+msgstr "Date de demande"
 
 msgid "ENUM::ACCORDACCUEIL::0"
 msgstr "Refus"

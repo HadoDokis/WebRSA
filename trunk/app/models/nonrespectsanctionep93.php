@@ -47,6 +47,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Propopdo' => array(
+				'className' => 'Propopdo',
+				'foreignKey' => 'propopdo_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		public $hasMany = array(
