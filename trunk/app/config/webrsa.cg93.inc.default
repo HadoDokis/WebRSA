@@ -221,16 +221,16 @@
 	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer1', 60 );
 
 	/**
-	* Nombre de jours entre la date d'édition de la notification d'orientation et
+	* Nombre de jours entre la date de première relance et
 	* l'envoi de la seconde relance pour le thème "non respect et sanctions du CG 93"
 	*/
-	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer2', 120 );
+	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer2', 60 );
 
 	/**
-	* Nombre de jours entre la date d'édition de la notification d'orientation et
+	* Nombre de jours entre la date de seconde relance et
 	* l'envoi de la troisième relance pour le thème "non respect et sanctions du CG 93"
 	*/
-	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer3', 150 );
+	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer3', 30 );
 
 	/**
 	* Nombre de jours entre la date de fin du contrat précédent et l'envoi de
@@ -239,10 +239,10 @@
 	Configure::write( 'Nonrespectsanctionep93.relanceCerCer1', 60 );
 
 	/**
-	* Nombre de jours entre la date de fin du contrat précédent et l'envoi de
+	* Nombre de jours entre la date de première relance et de
 	* la seconde relance pour le thème "non respect et sanctions du CG 93"
 	*/
-	Configure::write( 'Nonrespectsanctionep93.relanceCerCer2', 90 );
+	Configure::write( 'Nonrespectsanctionep93.relanceCerCer2', 30 );
 
 	/**
 	* Montant de la réduction d'allocation lors d'un premier passage en EP pour

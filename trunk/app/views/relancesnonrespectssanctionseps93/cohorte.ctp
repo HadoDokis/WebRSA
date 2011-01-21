@@ -56,13 +56,13 @@
 	echo '<fieldset><legend><input name="data[Relance][contrat]" id="RelanceContrat0" value="0" '.( ( @$this->data['Relance']['contrat'] == 0 ) ? 'checked="checked"' : '' ).' type="radio" /><label for="RelanceContrat0">Personne orientée sans contrat</label></legend>'.
 		'<div>'.
 			$form->input( 'Relance.compare0', array( 'label' => 'Opérateurs', 'type' => 'select', 'options' => $comparators, 'empty' => true ) ).
-			$form->input( 'Relance.nbjours0', array( 'label' => 'Nombre de jours depuis l\'orientation', 'type' => 'text' ) ).
+			$form->input( 'Relance.nbjours0', array( 'label' => 'Nombre de jours depuis l\'orientation<span id="nbjoursmin0"></span>', 'type' => 'text' ) ).
 		'</div>'.
 		'</fieldset>';
 	echo '<fieldset><legend><input name="data[Relance][contrat]" id="RelanceContrat1" value="1" '.( ( @$this->data['Relance']['contrat'] == 1 ) ? 'checked="checked"' : '' ).' type="radio" /><label for="RelanceContrat1">Personne orientée avec contrat</label></legend>'.
 		'<div>'.
 			$form->input( 'Relance.compare1', array( 'label' => 'Opérateurs', 'type' => 'select', 'options' => $comparators, 'empty' => true ) ).
-			$form->input( 'Relance.nbjours1', array( 'label' => 'Nombre de jours depuis la fin du dernier contrat', 'type' => 'text' ) ).
+			$form->input( 'Relance.nbjours1', array( 'label' => 'Nombre de jours depuis la fin du dernier contrat<span id="nbjoursmin1"></span>', 'type' => 'text' ) ).
 		'</div>'.
 		'</fieldset>';
 	echo '</div></fieldset>';
@@ -123,10 +123,10 @@
 					</table>';
 
 					$row = array(
-						h( @$result['Personne']['Foyer']['Dossier']['matricule'] ),
+						h( @$result['Dossier']['matricule'] ),
 						h( @$result['Personne']['nom'].' '.@$result['Personne']['prenom'] ),
 						h( @$result['Personne']['nir'] ),
-						h( @$result['Personne']['Foyer']['Adressefoyer']['0']['Adresse']['locaadr'] )
+						h( @$result['Adresse']['locaadr'] )
 					);
 
 					if( $this->data['Relance']['contrat'] == 0 ) {
@@ -139,10 +139,10 @@
 					}
 
 					if( $this->data['Relance']['numrelance'] == 2 ) {
-						$row[] = date_short( @$result['Nonrespectsanctionep93'][0]['Relancenonrespectsanctionep93'][0]['daterelance'] );
+						$row[] = date_short( @$result['Relancenonrespectsanctionep93']['daterelance'] );
 					}
 					else if( $this->data['Relance']['numrelance'] == 3 ) {
-						$row[] = date_short( @$result['Nonrespectsanctionep93'][0]['Relancenonrespectsanctionep93'][0]['daterelance'] );
+						$row[] = date_short( @$result['Relancenonrespectsanctionep93']['daterelance'] );
 					}
 
 					$row = Set::merge(
@@ -257,4 +257,57 @@
 		'0',
 		false
 	);
+	
+	document.observe("dom:loaded", function() {
+		[ $('RelanceContrat0'), $('RelanceContrat1'), $('RelanceNumrelance1'), $('RelanceNumrelance2'), $('RelanceNumrelance3') ].each( function(field) {
+			field.observe('change', function() {
+				updateNbJours(findContrat(), findRelance());
+			} );
+		} );
+		updateNbJours(findContrat(), findRelance());
+	});
+	
+	function findRelance() {
+		if ($('RelanceNumrelance1').checked==true)
+			return 1;
+		else if ($('RelanceNumrelance2').checked==true)
+			return 2;
+		else if ($('RelanceNumrelance3').checked==true)
+			return 3;
+	}
+	
+	function findContrat() {
+		if ($('RelanceContrat0').checked==true)
+			return 0;
+		else if ($('RelanceContrat1').checked==true)
+			return 1;
+	}
+	
+	function updateNbJours(contrat, relance) {
+		var nbJoursMin = 0;
+		if (contrat == 0) {
+			if (relance == 1)
+				nbJoursMin = parseInt('<?php echo Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer1" );?>');
+			else if (relance == 2)
+				nbJoursMin = parseInt('<?php echo Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer1" );?>') + parseInt('<?php echo Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer2" );?>');
+			else if (relance == 3)
+				nbJoursMin = parseInt('<?php echo Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer1" );?>') + parseInt('<?php echo Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer2" );?>') + parseInt('<?php echo Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer3" );?>');
+			
+			$('nbjoursmin0').update(' ('+nbJoursMin+' jours minimum)');
+			$('nbjoursmin1').update('');
+		}
+		else {
+			if (relance == 1)
+				nbJoursMin = parseInt('<?php echo Configure::read( "Nonrespectsanctionep93.relanceCerCer1" );?>');
+			else if (relance == 2)
+				nbJoursMin = parseInt('<?php echo Configure::read( "Nonrespectsanctionep93.relanceCerCer1" );?>') + parseInt('<?php echo Configure::read( "Nonrespectsanctionep93.relanceCerCer2" );?>');
+			
+			if (nbJoursMin > 0)
+				$('nbjoursmin1').update(' ('+nbJoursMin+' jours minimum)');
+			else
+				$('nbjoursmin1').update(' (merci de choisir un type de relance)');
+			$('nbjoursmin0').update('');
+		}
+	}
+
 </script>
