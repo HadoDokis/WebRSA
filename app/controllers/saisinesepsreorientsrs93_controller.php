@@ -31,6 +31,7 @@
 			$options['Saisineepreorientsr93']['typeorient_id'] = $this->Saisineepreorientsr93->Typeorient->listOptions();
 			$options['Saisineepreorientsr93']['structurereferente_id'] = $this->Saisineepreorientsr93->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			$options['Saisineepreorientsr93']['motifreorient_id'] = $this->Saisineepreorientsr93->Motifreorient->find( 'list' );
+            $options['Saisineepreorientsr93']['referent_id'] = $this->Saisineepreorientsr93->Referent->listOptions();
 			$this->set( compact( 'options' ) );
 		}
 
@@ -152,7 +153,7 @@
 		}
 
 		/**
-		*
+		* FIXME: on passe orientstruct_id (add) ou Saisineepreorientsr93.id (edit)
 		*/
 
 		protected function _add_edit( $id = null ) {
@@ -172,8 +173,9 @@
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
-					$this->Saisineepreorientsr93->commit(); // FIXME
-					$this->redirect( array( 'action' => 'index', 'Search__Saisineepreorientsr93__mode' => 'encours', 'Search__active' => 1 ) );
+					$this->Saisineepreorientsr93->commit();
+					$personne_id = $this->Saisineepreorientsr93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $this->data['Saisineepreorientsr93']['orientstruct_id'] ) );
+					$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->Saisineepreorientsr93->rollback();
@@ -190,6 +192,14 @@
 				$this->assert( !empty( $this->data ), 'error404' );
 
 				// Formattage des id pour les listes liées
+				$this->data['Saisineepreorientsr93']['referent_id'] = implode(
+					'_',
+					array(
+						$this->data['Saisineepreorientsr93']['structurereferente_id'],
+						$this->data['Saisineepreorientsr93']['referent_id']
+					)
+				);
+
 				$this->data['Saisineepreorientsr93']['structurereferente_id'] = implode(
 					'_',
 					array(
@@ -199,11 +209,48 @@
 				);
 			}
 			else if( $this->action == 'add' ) {
-				$this->data =array(
+				$this->data = array(
 					'Saisineepreorientsr93' => array(
 						'orientstruct_id' => $id
 					)
 				);
+			}
+
+			// Lecture de valeurs
+			if( $this->action == 'add' ) {
+				$personne_id = $this->Saisineepreorientsr93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $id ) );
+				$this->assert( !empty( $personne_id ), 'invalidParameter' );
+
+				// Retour à l'index d'orientsstrucs s'il n'est pas possible d'ajouter une réorientation
+				if( !$this->Saisineepreorientsr93->ajoutPossible( $personne_id ) ) {
+					$this->Session->setFlash( 'Impossible d\'ajouter une orientation pour cette personne.', 'flash/error' );
+					$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
+				}
+
+				$this->set( 'nb_orientations', $this->Saisineepreorientsr93->Orientstruct->rgorientMax( $personne_id ) );
+				$this->set( 'toppersdrodevorsa', $this->Saisineepreorientsr93->Orientstruct->Personne->Calculdroitrsa->field( 'toppersdrodevorsa', array( 'Calculdroitrsa.personne_id' => $personne_id ) ) );
+				$this->set( 'personne_id', $personne_id );
+			}
+			else {
+				$saisineepreorientsr93 = $this->Saisineepreorientsr93->find(
+					'first',
+					array(
+						'contain' => array(
+							'Orientstruct',
+							'Dossierep',
+						),
+						'conditions' => array( 'Saisineepreorientsr93.id' => $id )
+					)
+				);
+
+				if( !( empty( $saisineepreorientsr93['Dossierep']['etapedossierep'] ) || $saisineepreorientsr93['Dossierep']['etapedossierep'] == 'cree' ) ) {
+					$this->Session->setFlash( 'Cette demande de réorientation ne peut pas être modifiée', 'flash/error' );
+					$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $saisineepreorientsr93['Orientstruct']['personne_id'] ) ); // FIXME
+				}
+
+				$this->set( 'nb_orientations', $saisineepreorientsr93['Orientstruct']['rgorient'] );
+				$this->set( 'toppersdrodevorsa', $this->Saisineepreorientsr93->Orientstruct->Personne->Calculdroitrsa->field( 'toppersdrodevorsa', array( 'Calculdroitrsa.personne_id' => $saisineepreorientsr93['Orientstruct']['personne_id'] ) ) );
+				$this->set( 'personne_id', $saisineepreorientsr93['Orientstruct']['personne_id'] );
 			}
 
 			$this->_setOptions();
@@ -215,9 +262,17 @@
 		*/
 
 		public function delete( $id ) {
-			$success = $this->Saisineepreorientsr93->delete( $id );
+			$this->Saisineepreorientsr93->begin();
+			$saisineepreorientsr93 = $this->Saisineepreorientsr93->find( 'first', array( 'condition' => array( 'Saisineepreorientsr93.id' => $id ), 'contain' => false ) );
+			if( !empty( $saisineepreorientsr93['Saisineepreorientsr93']['dossierep_id'] ) ) {
+				$success = $this->Saisineepreorientsr93->Dossierep->delete( $saisineepreorientsr93['Saisineepreorientsr93']['dossierep_id'] );
+			}
+			else {
+				$success = $this->Saisineepreorientsr93->delete( $id );
+			}
 			$this->_setFlashResult( 'Delete', $success );
-			$this->redirect( array( 'action' => 'index' ) );
+			$this->Saisineepreorientsr93->commit();
+			$this->redirect( Router::url( $this->referer(), true ) );
 		}
 	}
 ?>

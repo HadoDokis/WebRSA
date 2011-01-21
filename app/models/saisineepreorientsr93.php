@@ -22,7 +22,8 @@
 			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array(
-					'structurereferente_id'
+					'structurereferente_id',
+					'referent_id',
 				)
 			),
 			'Enumerable' => array(
@@ -70,6 +71,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Referent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referent_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		public $hasMany = array(
@@ -87,6 +95,14 @@
 				'counterQuery' => ''
 			),
 		);
+
+		/**
+		*
+		*/
+
+		public function ajoutPossible( $personne_id ) {
+			return $this->Orientstruct->ajoutPossible( $personne_id );
+		}
 
 		/**
 		* TODO: comment finaliser l'orientation précédente ?
@@ -114,6 +130,7 @@
 			$success = true;
 			foreach( $dossierseps as $dossierep ) {
 				if( $dossierep['Nvsrepreorientsr93'][0]['decision'] == 'accepte' ) {
+
 					// Nouvelle orientation
 					$orientstruct = array(
 						'Orientstruct' => array(
@@ -125,6 +142,14 @@
 							'statut_orient' => 'Orienté',
 						)
 					);
+
+					// Si on avait choisi une personne référente et que le passage en EP
+					// valide la structure à laquelle cette personne est attachée, alors,
+					// on recopie cette personne
+					if( !empty( $dossierep['Saisineepreorientsr93']['referent_id'] ) && $dossierep['Saisineepreorientsr93']['structurereferente_id'] == $dossierep['Nvsrepreorientsr93'][0]['structurereferente_id'] ) {
+						$orientstruct['Orientstruct']['referent_id'] = $dossierep['Saisineepreorientsr93']['referent_id'];
+					}
+
 					$this->Orientstruct->create( $orientstruct );
 					$success = $this->Orientstruct->save() && $success;
 
