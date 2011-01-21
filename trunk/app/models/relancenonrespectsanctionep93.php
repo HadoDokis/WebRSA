@@ -206,83 +206,10 @@
 			unset( $search['Relancenonrespectsanctionep93'] );
 			$search = Set::flatten( $search );
 			$search = Set::filter( $search );
-
-
+			
 			$conditions = array();
 			$joins = array();
-			// FIXME: jointures (Dossier)
-			foreach( $search as $field => $condition ) {
-				if( in_array( $field, array( 'Personne.nom', 'Personne.prenom' ) ) ) {
-					$conditions["UPPER({$field}) LIKE"] = $this->wildcard( strtoupper( replace_accents( $condition ) ) );
-				}
-				else if( $field == 'Adresse.numcomptt' && !empty( $condition ) ) {
-					$conditions[] = array( 'Adresse.numcomptt' => $condition );
-				}
-				else if( $field == 'Serviceinstructeur.id' && !empty( $condition ) ) {
-					$joins[] = array(
-							'table'      => 'suivisinstruction',
-							'alias'      => 'Suivisinstruction',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Suivisinstruction.dossier_id = Foyer.dossier_id',
-								'Foyer.id = Personne.foyer_id'
-							)
-						);
-					$joins[] = array(
-							'table'      => 'servicesinstructeurs',
-							'alias'      => 'Serviceinstructeur',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Suivisinstruction.numdepins = Serviceinstructeur.numdepins',
-								'Suivisinstruction.typeserins = Serviceinstructeur.typeserins',
-								'Suivisinstruction.numcomins = Serviceinstructeur.numcomins',
-								'Suivisinstruction.numagrins = Serviceinstructeur.numagrins'
-							)
-						);
-					$conditions[] = array( 'Serviceinstructeur.id' => $condition );
-				}
-				else if( $field == 'Dossier.matricule' && !empty( $condition ) ) {
-					$conditions[] = array( 'Dossier.matricule' => $condition );
-				}
-				else if( ( $field == 'Dossiercaf.nomtitulaire' || $field == 'Dossiercaf.prenomtitulaire' ) && !empty( $condition ) ) {
-					$joins[] = array(
-						'table'      => 'dossierscaf',
-						'alias'      => 'Dossiercaf',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Dossiercaf.personne_id = Personne.id',
-							'Dossiercaf.toprespdos = true',
-							'OR' => array(
-								'Dossiercaf.dfratdos IS NULL',
-								'Dossiercaf.dfratdos >= NOW()'
-							),
-							'Dossiercaf.ddratdos <= NOW()'
-						)
-					);
-					$conditions[] = 'Personne.id IN (
-										SELECT
-												personne_id
-											FROM dossierscaf
-											WHERE
-												dossierscaf.personne_id = "Personne"."id"
-												AND dossierscaf.toprespdos = true
-												AND (
-													dossierscaf.dfratdos IS NULL
-													OR dossierscaf.dfratdos >= NOW()
-												)
-												AND dossierscaf.ddratdos <= NOW()
-									)';
-					$field = preg_replace( '/^Dossiercaf\.(.*)titulaire$/', '\1', $field );
-					$conditions["UPPER({$field}) LIKE"] = $this->wildcard( strtoupper( replace_accents( $condition ) ) );
-				}
-				else if( !in_array( $field, array( 'Relance.numrelance', 'Relance.contrat', 'Relance.compare0', 'Relance.compare1', 'Relance.nbjours0', 'Relance.nbjours1' ) ) ) {
-					$conditions[$field] = $condition;
-				}
-			}
-
+			
 			// Personne orientée sans contrat
 			// FIXME: dernière orientation
 			// FIXME: et qui ne se trouve pas dans les EPs en cours de traitement
@@ -398,6 +325,70 @@
 				'foreignKey' => false,
 				'conditions' => array( 'Adressefoyer.adresse_id = Adresse.id' )
 			);
+			
+			if( ( isset( $search['Dossiercaf.nomtitulaire'] ) && !empty( $search['Dossiercaf.nomtitulaire'] ) ) ||
+				( isset( $search['Dossiercaf.prenomtitulaire'] ) && !empty( $search['Dossiercaf.prenomtitulaire'] ) ) ) {
+				$joins[] = array(
+					'table'      => 'dossierscaf',
+					'alias'      => 'Dossiercaf',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'Dossiercaf.personne_id = Personne.id',
+						'Dossiercaf.toprespdos = true',
+						'OR' => array(
+							'Dossiercaf.dfratdos IS NULL',
+							'Dossiercaf.dfratdos >= NOW()'
+						),
+						'Dossiercaf.ddratdos <= NOW()'
+					)
+				);
+			}
+			
+			// FIXME: jointures (Dossier)
+			foreach( $search as $field => $condition ) {
+				if( in_array( $field, array( 'Personne.nom', 'Personne.prenom' ) ) ) {
+					$conditions["UPPER({$field}) LIKE"] = $this->wildcard( strtoupper( replace_accents( $condition ) ) );
+				}
+				else if( $field == 'Adresse.numcomptt' && !empty( $condition ) ) {
+					$conditions[] = array( 'Adresse.numcomptt' => $condition );
+				}
+				else if( $field == 'Serviceinstructeur.id' && !empty( $condition ) ) {
+					$joins[] = array(
+							'table'      => 'suivisinstruction',
+							'alias'      => 'Suivisinstruction',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Suivisinstruction.dossier_id = Foyer.dossier_id',
+								'Foyer.id = Personne.foyer_id'
+							)
+						);
+					$joins[] = array(
+							'table'      => 'servicesinstructeurs',
+							'alias'      => 'Serviceinstructeur',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Suivisinstruction.numdepins = Serviceinstructeur.numdepins',
+								'Suivisinstruction.typeserins = Serviceinstructeur.typeserins',
+								'Suivisinstruction.numcomins = Serviceinstructeur.numcomins',
+								'Suivisinstruction.numagrins = Serviceinstructeur.numagrins'
+							)
+						);
+					$conditions[] = array( 'Serviceinstructeur.id' => $condition );
+				}
+				else if( $field == 'Dossier.matricule' && !empty( $condition ) ) {
+					$conditions[] = array( 'Dossier.matricule' => $condition );
+				}
+				else if( ( $field == 'Dossiercaf.nomtitulaire' || $field == 'Dossiercaf.prenomtitulaire' ) && !empty( $condition ) ) {
+					$field = preg_replace( '/^Dossiercaf\.(.*)titulaire$/', '\1', $field );
+					$conditions["UPPER({$field}) LIKE"] = $this->wildcard( strtoupper( replace_accents( $condition ) ) );
+				}
+				else if( !in_array( $field, array( 'Relance.numrelance', 'Relance.contrat', 'Relance.compare0', 'Relance.compare1', 'Relance.nbjours0', 'Relance.nbjours1' ) ) ) {
+					$conditions[$field] = $condition;
+				}
+			}
 
 			if ( $search['Relance.numrelance'] > 1 ) {
 				if( $search['Relance.contrat'] == 0 ) {
@@ -605,6 +596,19 @@
 				}
 			}
 			return $results;
+		}
+		
+		public function checkCompareError($datas) {
+			$searchError = false;
+			if( $datas['Relance']['contrat'] == 0 ) {
+				if ( ( @$datas['Relance']['compare0'] == '<' && @$datas['Relance']['nbjours0'] <= Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer'.$datas['Relance']['numrelance'] ) ) || ( @$datas['Relance']['compare0'] == '<=' && @$datas['Relance']['nbjours0'] < Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer'.$datas['Relance']['numrelance'] ) ) )
+					$searchError = true;
+			}
+			else {
+				if ( ( @$datas['Relance']['compare1'] == '<' && @$datas['Relance']['nbjours1'] <= Configure::read( 'Nonrespectsanctionep93.relanceCerCer'.$datas['Relance']['numrelance'] ) ) || ( @$datas['Relance']['compare1'] == '<=' && @$datas['Relance']['nbjours1'] < Configure::read( 'Nonrespectsanctionep93.relanceCerCer'.$datas['Relance']['numrelance'] ) ) )
+					$searchError = true;
+			}
+			return $searchError;
 		}
 		
 	}
