@@ -17,7 +17,7 @@
             <fieldset>
                 <legend>Liste des participants</legend>
                 <?php
-                	echo "<table>";
+                	echo "<table id='listeParticipants'>";
                 	foreach($fonctionsmembres as $fonction) {
                 		echo $html->tag(
                 			'tr',
@@ -48,22 +48,18 @@
 				        						'options'=>$options['MembreepSeanceep']['reponse'],
 				        						'value' => $membre['MembreepSeanceep']['reponse']
 				        					)
+				        				),
+				        				array(
+											'colspan' => 1
 				        				)
 				        			).
 				        			$html->tag(
 				        				'td',
-				        				'',
+				        				implode(' ', array($membre['Suppleant']['qual'], $membre['Suppleant']['nom'], $membre['Suppleant']['prenom'])),
 				        				array(
-				        					'id' => 'withSuppleant'
+				        					'id' => 'suppleant_'.$membre['Membreep']['id']
 				        				)
-				        			)/*.
-				        			$html->tag(
-				        				'td',
-				        				'',
-				        				array(
-				        					'id' => 'withoutSuppleant'
-				        				)
-				        			)*/
+				        			)
 				        		);
                 			}
                 		}
@@ -77,8 +73,24 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        //$('MembreepSeanceepMembreep2Reponse')
+		$$('table#listeParticipants select').each(function(select) {
+			$(select).observe('change', function() {
+				checkPresence(select);
+			} );
+			checkPresence(select);
+		} );
     });
+    
+    function checkPresence(select) {
+		if (select.getValue() == 'decline') {
+			select.up('td').writeAttribute('colspan', 1);
+			select.up('td').next().show();
+		}
+		else {
+			select.up('td').writeAttribute('colspan', 2);
+			select.up('td').next().hide();
+		}
+    }
 </script>
 
 <div class="clearer"><hr /></div>

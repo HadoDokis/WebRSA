@@ -250,9 +250,22 @@
 						'Membreep.tel',
 						'Membreep.mail',
 						'Membreep.fonctionmembreep_id',
-						'MembreepSeanceep.reponse'
+						'Membreep.suppleant_id',
+						'MembreepSeanceep.reponse',
+						'Suppleant.qual',
+						'Suppleant.nom',
+						'Suppleant.prenom'
 					),
 					'joins' => array(
+						array(
+							'table' => 'membreseps',
+							'alias' => 'Suppleant',
+							'type' => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Suppleant.id = Membreep.suppleant_id'
+							)
+						),
 						array(
 							'table' => 'membreseps_seanceseps',
 							'alias' => 'MembreepSeanceep',
