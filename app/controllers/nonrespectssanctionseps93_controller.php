@@ -15,14 +15,6 @@
 		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
 
 		/**
-		* FIXME: evite les droits
-		*/
-
-		public function beforeFilter() {
-			$this->Auth->allow( '*' );
-		}
-
-		/**
 		*
 		*/
 
