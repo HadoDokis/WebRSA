@@ -1,5 +1,5 @@
 <?php
-	
+
 	/**
 	* ...
 	*
@@ -29,7 +29,7 @@
 				'order' => ''
 			)
 		);
-		
+
 		/**
 		 * Fonction de sauvegarde de la cohorte
 		 */
@@ -198,7 +198,7 @@
 			}
 			return $success;
 		}
-		
+
 		/**
 		 * Fonction de recherche des dossiers à relancer
 		 */
@@ -206,15 +206,15 @@
 			unset( $search['Relancenonrespectsanctionep93'] );
 			$search = Set::flatten( $search );
 			$search = Set::filter( $search );
-			
+
 			$conditions = array();
 			$joins = array();
-			
+
 			// Personne orientée sans contrat
 			// FIXME: dernière orientation
 			// FIXME: et qui ne se trouve pas dans les EPs en cours de traitement
 			// FIXME: sauvegarder le PDF
-			
+
 			// Champs de base
 			$fields = array(
 				'Personne.id',
@@ -225,7 +225,7 @@
 				'Dossier.matricule',
 				'Adresse.locaadr'
 			);
-			
+
 			/// Jointures de base
 			if( $search['Relance.contrat'] == 0 ) {
 				$fields = array_merge($fields, array(
@@ -325,7 +325,7 @@
 				'foreignKey' => false,
 				'conditions' => array( 'Adressefoyer.adresse_id = Adresse.id' )
 			);
-			
+
 			if( ( isset( $search['Dossiercaf.nomtitulaire'] ) && !empty( $search['Dossiercaf.nomtitulaire'] ) ) ||
 				( isset( $search['Dossiercaf.prenomtitulaire'] ) && !empty( $search['Dossiercaf.prenomtitulaire'] ) ) ) {
 				$joins[] = array(
@@ -344,7 +344,7 @@
 					)
 				);
 			}
-			
+
 			// FIXME: jointures (Dossier)
 			foreach( $search as $field => $condition ) {
 				if( in_array( $field, array( 'Personne.nom', 'Personne.prenom' ) ) ) {
@@ -401,8 +401,8 @@
 									'Orientstruct.id = Nonrespectsanctionep93.orientstruct_id'
 									// Sous requête pour avoir le Nonrespectsanctionep93 le plus récent
 								),
-	// 							'order' => array( 'Nonrespectsanctionep93.created DESC' ),
-	// 							'limit' => 1
+// 								'order' => array( 'Nonrespectsanctionep93.created DESC' ),
+// 								'limit' => 1
 							);
 				}
 				else {
@@ -425,13 +425,18 @@
 							'type'       => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
-								'Nonrespectsanctionep93.id = Relancenonrespectsanctionep93.nonrespectsanctionep93_id'
-								// FIXME: sous-requête pour avoir la dernière
+								'Nonrespectsanctionep93.id = Relancenonrespectsanctionep93.nonrespectsanctionep93_id',
+								// On ne fait la jointure que sur la dernière relance
+								'Relancenonrespectsanctionep93.id IN (
+									SELECT relancesnonrespectssanctionseps93.id
+										FROM relancesnonrespectssanctionseps93
+										WHERE relancesnonrespectssanctionseps93.nonrespectsanctionep93_id = Nonrespectsanctionep93.id
+										ORDER BY relancesnonrespectssanctionseps93.numrelance DESC
+										LIMIT 1
+								)'
 							),
-// 							'order' => array( 'Relancenonrespectsanctionep93.daterelance DESC' ),
-// 							'limit' => 1
 						);
-				$fieldssup = array( 
+				$fieldssup = array(
 					'Nonrespectsanctionep93.id',
 					'Relancenonrespectsanctionep93.daterelance'
 				);
@@ -470,7 +475,7 @@
 				switch( $search['Relance.numrelance'] ) {
 					case 1:
 						$conditions[] = "( DATE( NOW() ) - Orientstruct.date_impression ) >= ".Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' );
-						
+
 						$conditions[] = 'Orientstruct.id NOT IN (
 							SELECT nonrespectssanctionseps93.orientstruct_id
 								FROM nonrespectssanctionseps93
@@ -532,7 +537,7 @@
 				if( !empty( $search['Relance.compare1'] ) && !empty( $search['Relance.nbjours1'] ) ) {
 					$conditions[] = '( DATE( NOW() ) - Contratinsertion.df_ci ) '.$search['Relance.compare1'].' '.$search['Relance.nbjours1'];
 				}
-				
+
 				switch( $search['Relance.numrelance'] ) {
 					case 1:
 						$conditions[] = 'Contratinsertion.id IN (
@@ -584,7 +589,7 @@
 					'limit' => 10,
 					'order' => array( 'Contratinsertion.df_ci ASC' ),
 				);
-				
+
 				$results = $this->Nonrespectsanctionep93->Contratinsertion->find( 'all', $queryData );
 
 				if( !empty( $results ) ) {
@@ -597,7 +602,7 @@
 			}
 			return $results;
 		}
-		
+
 		public function checkCompareError($datas) {
 			$searchError = false;
 			if( $datas['Relance']['contrat'] == 0 ) {
@@ -610,7 +615,7 @@
 			}
 			return $searchError;
 		}
-		
+
 	}
-	
+
 ?>

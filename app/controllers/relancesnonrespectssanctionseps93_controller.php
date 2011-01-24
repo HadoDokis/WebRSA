@@ -120,10 +120,10 @@
 
 					if( !empty( $newData ) ) {
 						$this->Nonrespectsanctionep93->begin();
-						
+
 						// Relances non respect orientation
 						$success = $this->Relancenonrespectsanctionep93->saveCohorte($newData, $this->data);
-						
+
 						$this->_setFlashResult( 'Save', $success );
 						if( $success ) {
 							unset( $this->data['Relancenonrespectsanctionep93'] );
@@ -138,7 +138,7 @@
 				/// Moteur de recherche
 				$results = $this->Relancenonrespectsanctionep93->search($this->data);
 				$this->set( compact( 'results' ) );
-				
+
 				if ($this->Relancenonrespectsanctionep93->checkCompareError($this->data) == true)
 					$this->Session->setFlash('Vos critères de recherche entrent en contradiction avec les critères de base', 'flash/error');
 			}

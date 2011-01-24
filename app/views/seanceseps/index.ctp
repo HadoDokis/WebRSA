@@ -1,6 +1,22 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<h1><?php echo $this->pageTitle = 'Liste des séances d\'EP';?></h1>
+<?php
+	switch( @$this->action ) {
+		case 'creationmodification':
+			$this->pageTitle = 'Création / modification de séance d\'EP';
+			break;
+		case 'attributiondossiers':
+			$this->pageTitle = 'Attribution des dossiers à une séance d\'EP';
+			break;
+		case 'arbitrage':
+			$this->pageTitle = 'Arbitrage d\'une séance d\'EP';
+			break;
+		default:
+			$this->pageTitle = 'Liste des séances d\'EP';
+	}
+?>
+
+<h1><?php echo $this->pageTitle;?></h1>
 
 	<ul class="actionMenu">
 		<?php
