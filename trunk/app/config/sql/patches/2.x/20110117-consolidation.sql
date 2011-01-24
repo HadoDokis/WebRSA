@@ -356,8 +356,10 @@ SELECT personnes.*
 -- ANOMALIE
 -- -----------------------------------------------------------------------------
 
+-- Calcul de la clé du NIR (13 caractères) avec gestion des départements 2A et 2B
+-- http://fr.wikipedia.org/wiki/Num%C3%A9ro_de_s%C3%A9curit%C3%A9_sociale_en_France#ancrage_E
 CREATE OR REPLACE FUNCTION "public"."calcul_cle_nir" (text) RETURNS text AS
-$$
+$body$
 	DECLARE
 		p_nir text;
 		cle text;
@@ -383,13 +385,44 @@ $$
 		cle:=LPAD( CAST( 97 - ( ( CAST( p_nir AS BIGINT ) - correction ) % 97 ) AS VARCHAR(13)), 2, '0' );
 		RETURN cle;
 	END;
-$$
+$body$
 LANGUAGE 'plpgsql' VOLATILE RETURNS NULL ON NULL INPUT SECURITY INVOKER;
+
+/*
+	Vérification du NIR sur 15 caractères
+	INFO: http://fr.wikipedia.org/wiki/Num%C3%A9ro_de_s%C3%A9curit%C3%A9_sociale_en_France#Signification_des_chiffres_du_NIR
+*/
+
+CREATE OR REPLACE FUNCTION cakephp_validate_ssn( p_ssn text, p_regex text, p_country text ) RETURNS boolean AS
+$$
+	BEGIN
+		RETURN ( p_ssn IS NULL )
+			OR(
+-- 				(
+-- 					( p_country IS NULL OR p_country IN ( 'all', 'can', 'us' ) )
+-- 					AND p_ssn ~ E'^(?:\\+?1)?[-. ]?\\(?[2-9][0-8][0-9]\\)?[-. ]?[2-9][0-9]{2}[-. ]?[0-9]{4}$'
+-- 				)
+-- 				OR
+				(
+					( p_country = 'fr' )
+					AND UPPER( p_ssn ) ~ E'^(1|2|7|8)[0-9]{2}(0[1-9]|10|11|12|[2-9][0-9])((0[1-9]|[1-8][0-9]|9[0-5]|2A|2B)(00[1-9]|0[1-9][0-9]|[1-8][0-9][0-9]|9[0-8][0-9]|990)|(9[7-8][0-9])(0[1-9]|0[1-9]|[1-8][0-9]|90)|99(00[1-9]|0[1-9][0-9]|[1-8][0-9][0-9]|9[0-8][0-9]|990))(00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9]|)(0[1-9]|[1-8][0-9]|9[0-7])$'
+				)
+				OR
+				(
+					( p_regex IS NOT NULL )
+					AND p_ssn ~ p_regex
+				)
+			);
+	END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION cakephp_validate_ssn( p_ssn text, p_regex text, p_country text ) IS
+	'@see http://api.cakephp.org/class/validation#method-Validationssn\nCustom country France (fr) added.';
 
 -- -----------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION "public"."nir_correct" (TEXT) RETURNS BOOLEAN AS
-$$
+$body$
 	DECLARE
 		p_nir text;
 
@@ -399,38 +432,51 @@ $$
 		RETURN (
 			CHAR_LENGTH( TRIM( BOTH ' ' FROM p_nir ) ) = 15
 			AND (
-				-- Tous les cas
-				p_nir ~ '^(1|2|7|8)[0-9]{2}(0[1-9]|[10-12]|[20-99])'
-				AND p_nir ~ '(00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9]|)(0[1-9]|[10-97])$'
-				AND (
-					-- Cas A
-					(
-						p_nir ~ '^.{5}(0[1-9]|[10-95]|2A|2B)'
-						AND p_nir ~ '^.{7}(00[1-9]|0[10-99]|[100-990])'
-					)
-					-- Cas B
-					OR (
-						p_nir ~ '^.{5}([970-989])'
-						AND p_nir ~ '^.{8}(0[1-9]|[10-90])'
-					)
-					-- Cas C
-					OR (
-						p_nir ~ '^.{5}99'
-						AND p_nir ~ '^.{7}(00[1-9]|0[10-99]|[100-990])'
-					)
-				)
+				cakephp_validate_ssn( p_nir, null, 'fr' )
 				AND calcul_cle_nir( SUBSTRING( p_nir FROM 1 FOR 13 ) ) = SUBSTRING( p_nir FROM 14 FOR 2 )
 			)
 		);
 	END;
-$$
+$body$
 LANGUAGE 'plpgsql';
 
 -- -----------------------------------------------------------------------------
 
+-- NIR ne faisant pas 15 caractères
+-- Possibilité de correction: mise à NULL
 SELECT DISTINCT( nir )
 	FROM personnes
-	WHERE nir IS NOT NULL AND NOT nir_correct( nir )
+	WHERE
+		nir IS NOT NULL
+		AND LENGTH( TRIM( BOTH ' ' FROM nir ) ) < 15
+	ORDER BY nir ASC;
+
+-- NIR faisant 15 caractères, mais dont la clé n'est pas bien formatée (elle vaut 00)
+-- Possibilité de correction: recalcul et modification de la clé, mise à NULL si le NIR n'est toujours pas bien formaté
+SELECT DISTINCT( nir )
+	FROM personnes
+	WHERE
+		nir IS NOT NULL
+		AND LENGTH( TRIM( BOTH ' ' FROM nir ) ) = 15
+		AND nir ~ '00$'
+	ORDER BY nir ASC;
+
+/*UPDATE personnes
+	SET nir = ( SUBSTRING( nir FROM 1 FOR 13 ) || calcul_cle_nir( SUBSTRING( nir FROM 1 FOR 13 ) ) )
+	WHERE
+		nir IS NOT NULL
+		AND LENGTH( TRIM( BOTH ' ' FROM nir ) ) = 15
+		AND nir ~ '00$';*/
+
+-- NIR de 15 caractères, avec une clé bien formatée (différente de 00), mais erronés
+-- Possibilité de correction: mise à NULL
+SELECT DISTINCT( nir )
+	FROM personnes
+	WHERE
+		nir IS NOT NULL
+		AND LENGTH( TRIM( BOTH ' ' FROM nir ) ) = 15
+		AND nir !~ '00$'
+		AND NOT nir_correct( nir )
 	ORDER BY nir ASC;
 
 -- *****************************************************************************

@@ -466,7 +466,8 @@ LANGUAGE 'plpgsql';
 /*UPDATE personnes
 	SET nir = ( SUBSTRING( nir FROM 1 FOR 13 ) || calcul_cle_nir( SUBSTRING( nir FROM 1 FOR 13 ) ) )
 	WHERE
-		LENGTH( TRIM( BOTH ' ' FROM nir ) ) = 15
+		nir IS NOT NULL
+		AND LENGTH( TRIM( BOTH ' ' FROM nir ) ) = 15
 		AND nir ~ '00$';*/
 
 -- SELECT COUNT(id) FROM personnes WHERE NOT nir_correct( nir );
