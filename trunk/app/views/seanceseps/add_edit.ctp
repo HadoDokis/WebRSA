@@ -11,18 +11,18 @@
 ?>
 </h1>
 
-	<script type="text/javascript">
-		document.observe("dom:loaded", function() {
-			<?php
-				echo $ajax->remoteFunction(
-					array(
-						'update' => 'Adresse',
-						'url' => Router::url( '/', true ).'seanceseps/ajaxadresse'
-					)
-				);
-			?>
-		});
-	</script>
+<!--<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php
+			echo $ajax->remoteFunction(
+				array(
+					'update' => 'Adresse',
+					'url' => Router::url( '/', true ).'seanceseps/ajaxadresse'
+				)
+			);
+		?>
+	});
+</script>-->
 
 <?php
 
@@ -64,5 +64,20 @@
 	);
 
 	echo $form->end( 'Enregistrer' );
-
 ?>
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		// Affichage de l'adresse lors de l'apparition du formulaire
+		new Ajax.Updater(
+			'Adresse',
+			'<?php echo Router::url( '/', true ).'seanceseps/ajaxadresse';?>',
+			{
+				asynchronous:true,
+				evalScripts:true,
+				parameters:Form.Element.serialize('SeanceepStructurereferenteId'),
+				requestHeaders:['X-Update', 'Adresse']
+			}
+		)
+	} );
+</script>
