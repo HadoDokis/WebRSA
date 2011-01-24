@@ -415,20 +415,33 @@ LANGUAGE 'plpgsql' VOLATILE RETURNS NULL ON NULL INPUT SECURITY INVOKER;
 /*
 	Vérification du NIR sur 15 caractères
 	INFO: http://fr.wikipedia.org/wiki/Num%C3%A9ro_de_s%C3%A9curit%C3%A9_sociale_en_France#Signification_des_chiffres_du_NIR
-	----------------------------------------------------------------------------
-	Tous:
-		1) 1 à 5 ->		'^(1|2|7|8)[0-9]{2}(0[1-9]|[10-12]|[20-99])'
-		2) 11 à 15 ->	'(00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9]|)(0[1-9]|[10-97])$'
-	A:
-		1°) 6 à 7 ->	'^.{5}(0[1-9]|[10-95]|2A|2B)'
-		2°) 8 à 10 ->	'^.{7}(00[1-9]|0[10-99]|[100-990])'
-	B:
-		1°) 6 à 8 ->	'^.{5}([970-989])'
-		2°) 9 à 10 ->	'^.{8}(0[1-9]|[10-90])'
-	C:
-		1°) 6 à 7 ->	'^.{5}99'
-		2°) 8 à 10 ->	'^.{7}(00[1-9]|0[10-99]|[100-990])'
 */
+
+CREATE OR REPLACE FUNCTION cakephp_validate_ssn( p_ssn text, p_regex text, p_country text ) RETURNS boolean AS
+$$
+	BEGIN
+		RETURN ( p_ssn IS NULL )
+			OR(
+-- 				(
+-- 					( p_country IS NULL OR p_country IN ( 'all', 'can', 'us' ) )
+-- 					AND p_ssn ~ E'^(?:\\+?1)?[-. ]?\\(?[2-9][0-8][0-9]\\)?[-. ]?[2-9][0-9]{2}[-. ]?[0-9]{4}$'
+-- 				)
+-- 				OR
+				(
+					( p_country = 'fr' )
+					AND UPPER( p_ssn ) ~ E'^(1|2|7|8)[0-9]{2}(0[1-9]|10|11|12|[2-9][0-9])((0[1-9]|[1-8][0-9]|9[0-5]|2A|2B)(00[1-9]|0[1-9][0-9]|[1-8][0-9][0-9]|9[0-8][0-9]|990)|(9[7-8][0-9])(0[1-9]|0[1-9]|[1-8][0-9]|90)|99(00[1-9]|0[1-9][0-9]|[1-8][0-9][0-9]|9[0-8][0-9]|990))(00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9]|)(0[1-9]|[1-8][0-9]|9[0-7])$'
+				)
+				OR
+				(
+					( p_regex IS NOT NULL )
+					AND p_ssn ~ p_regex
+				)
+			);
+	END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION cakephp_validate_ssn( p_ssn text, p_regex text, p_country text ) IS
+	'@see http://api.cakephp.org/class/validation#method-Validationssn\nCustom country France (fr) added.';
 
 CREATE OR REPLACE FUNCTION "public"."nir_correct" (TEXT) RETURNS BOOLEAN AS
 $body$
@@ -441,32 +454,20 @@ $body$
 		RETURN (
 			CHAR_LENGTH( TRIM( BOTH ' ' FROM p_nir ) ) = 15
 			AND (
-				-- Tous les cas
-				p_nir ~ '^(1|2|7|8)[0-9]{2}(0[1-9]|[10-12]|[20-99])'
-				AND p_nir ~ '(00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9]|)(0[1-9]|[10-97])$'
-				AND (
-					-- Cas A
-					(
-						p_nir ~ '^.{5}(0[1-9]|[10-95]|2A|2B)'
-						AND p_nir ~ '^.{7}(00[1-9]|0[10-99]|[100-990])'
-					)
-					-- Cas B
-					OR (
-						p_nir ~ '^.{5}([970-989])'
-						AND p_nir ~ '^.{8}(0[1-9]|[10-90])'
-					)
-					-- Cas C
-					OR (
-						p_nir ~ '^.{5}99'
-						AND p_nir ~ '^.{7}(00[1-9]|0[10-99]|[100-990])'
-					)
-				)
+				cakephp_validate_ssn( p_nir, null, 'fr' )
 				AND calcul_cle_nir( SUBSTRING( p_nir FROM 1 FOR 13 ) ) = SUBSTRING( p_nir FROM 14 FOR 2 )
 			)
 		);
 	END;
 $body$
 LANGUAGE 'plpgsql';
+
+-- Correction: certains NIRs ont 15 caractères avec les deux derniers à 0 -> recalcul de la clé
+/*UPDATE personnes
+	SET nir = ( SUBSTRING( nir FROM 1 FOR 13 ) || calcul_cle_nir( SUBSTRING( nir FROM 1 FOR 13 ) ) )
+	WHERE
+		LENGTH( TRIM( BOTH ' ' FROM nir ) ) = 15
+		AND nir ~ '00$';*/
 
 -- SELECT COUNT(id) FROM personnes WHERE NOT nir_correct( nir );
 -- SELECT COUNT(nir), nir FROM personnes WHERE NOT nir_correct( nir ) GROUP BY nir ORDER BY nir ASC;
