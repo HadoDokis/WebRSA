@@ -57,7 +57,7 @@ msgid "ENUM::THEMEEP::saisinesepdspdos66"
 msgstr "Saisine PDO"
 
 msgid "ENUM::THEMEEP::nonrespectssanctionseps93"
-msgstr "Non respect et sanctions"
+msgstr "Demande de suspension"
 
 msgid "ENUM::THEMEEP::defautsinsertionseps66"
 msgstr "Défaut d'insertion"

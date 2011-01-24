@@ -246,7 +246,7 @@
 						<li><a href="#">CG 93</a>
 							<ul>
 								<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'index' ) );?></li>
-								<li><?php echo $xhtml->link( 'Non respect et sanctions 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
+								<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
 							</ul>
 						</li>
 					<!--  <?php /*if( $permissions->check( 'eps', 'liste' ) ):?>
