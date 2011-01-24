@@ -145,9 +145,14 @@
 
 					// Si on avait choisi une personne référente et que le passage en EP
 					// valide la structure à laquelle cette personne est attachée, alors,
-					// on recopie cette personne
+					// on recopie cette personne -> FIXME: dans orientsstructs ou dans personnes_referents
 					if( !empty( $dossierep['Saisineepreorientsr93']['referent_id'] ) && $dossierep['Saisineepreorientsr93']['structurereferente_id'] == $dossierep['Nvsrepreorientsr93'][0]['structurereferente_id'] ) {
 						$orientstruct['Orientstruct']['referent_id'] = $dossierep['Saisineepreorientsr93']['referent_id'];
+					}
+
+					// La date de proposition de l'orientation devient la date de demande de la réorientation.
+					if( !empty( $dossierep['Saisineepreorientsr93']['datedemande'] ) ) {
+						$orientstruct['Orientstruct']['date_propo'] = $dossierep['Saisineepreorientsr93']['datedemande'];
 					}
 
 					$this->Orientstruct->create( $orientstruct );

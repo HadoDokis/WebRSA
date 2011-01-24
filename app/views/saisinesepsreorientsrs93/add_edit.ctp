@@ -21,9 +21,9 @@
 	<script type="text/javascript">
 		document.observe( "dom:loaded", function() {
 			dependantSelect( 'Saisineepreorientsr93StructurereferenteId', 'Saisineepreorientsr93TypeorientId' );
-			dependantSelect( 'Saisineepreorientsr93ReferentId', 'Saisineepreorientsr93StructurereferenteId' );
-
 			try { $( 'Saisineepreorientsr93StructurereferenteId' ).onchange(); } catch(id) { }
+
+			dependantSelect( 'Saisineepreorientsr93ReferentId', 'Saisineepreorientsr93StructurereferenteId' );
 			try { $( 'Saisineepreorientsr93ReferentId' ).onchange(); } catch(id) { }
 
 			observeDisableFieldsOnValue(
@@ -44,7 +44,7 @@
 				array(
 					'Saisineepreorientsr93.id' => array( 'type' => 'hidden' ),
 					'Saisineepreorientsr93.orientstruct_id' => array( 'type' => 'hidden' ),
-					'Saisineepreorientsr93.typeorient_id' => array( 'label' => 'Type d\'orientation' ),
+					'Saisineepreorientsr93.typeorient_id' => array( 'label' => 'Type d\'orientation', 'required' => true ),
 					'Saisineepreorientsr93.structurereferente_id' => array( 'label' => 'Type de structure' ),
 					'Saisineepreorientsr93.referent_id' => array( 'label' => 'Nom du référent' ),
 					'Saisineepreorientsr93.motifreorient_id',
@@ -61,13 +61,13 @@
 
 			echo '<div class="input select"><span class="label">Personne soumise à droits et devoirs ?</span><span class="input">'.( $toppersdrodevorsa ? 'Oui' : 'Non' ).'</span></div>';
 
-			echo $default->subform( array( 'Saisineepreorientsr93.datedemande' ) );
+			echo $default->subform( array( 'Saisineepreorientsr93.datedemande' => array( 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1 ) ) );
 
-			echo '<div class="input select"><span class="label">Réorientation</span><span class="input">'.$nb_orientations.'</span></div>';
+			echo '<div class="input select"><span class="label">Réorientation</span><span class="input">'.( $nb_orientations + 1 ).'</span></div>';
 
 			echo '<div class="submit">';
 			echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
-			echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
+// 			echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
 			echo '</div>';
 			echo $form->end();
 		?>

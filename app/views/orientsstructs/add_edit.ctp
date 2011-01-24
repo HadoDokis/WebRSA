@@ -16,9 +16,9 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         dependantSelect( 'OrientstructStructurereferenteId', 'OrientstructTypeorientId' );
-        dependantSelect( 'OrientstructReferentId', 'OrientstructStructurereferenteId' );
-
         try { $( 'OrientstructStructurereferenteId' ).onchange(); } catch(id) { }
+
+        dependantSelect( 'OrientstructReferentId', 'OrientstructStructurereferenteId' );
         try { $( 'OrientstructReferentId' ).onchange(); } catch(id) { }
     });
 </script>

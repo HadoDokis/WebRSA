@@ -115,6 +115,9 @@
 			if( !isset( $options['label'] ) ) {
 				$options['label'] = $this->_label( $fieldName, $options );
 			}
+			else if( isset( $options['required'] ) && ( $options['required'] == true ) ) {
+				$options['label'] = $this->required( $options['label'] );
+			}
 
 			if( isset( $options['multiple'] ) && !empty( $options['multiple'] ) ) {
 				if( !empty( $options['label'] ) && !isset( $options['legend'] ) ) {
