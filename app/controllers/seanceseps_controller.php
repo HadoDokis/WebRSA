@@ -12,14 +12,8 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 		public $uses = array( 'Seanceep', 'Option' );
-		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Prg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrage', 'recherche' ) ) );
 		public $aucunDroit = array( 'ajaxadresse' );
-
-		/**
-		* FIXME: evite les droits
-		*/
-
-		public function beforeFilter() {}
 
 		/**
 		*
@@ -61,15 +55,49 @@
 		*
 		*/
 
-		public function index() {
+		public function index( $etape = null ) {
 			if( !empty( $this->data ) ) {
 				$queryData = $this->Seanceep->search( $this->data );
 				$queryData['limit'] = 10;
 				$this->paginate = $queryData;
 				$seanceseps = $this->paginate( $this->Seanceep );
 				$this->set( 'seanceseps', $seanceseps );
+// 				$this->set( 'etape', $etape );
 			}
 			$this->_setOptions();
+			$this->render( null, null, 'index' );
+		}
+
+		/**
+		*
+		*/
+
+		public function creationmodification() {
+			$this->index( $this->action );
+		}
+
+		/**
+		*
+		*/
+
+		public function attributiondossiers() {
+			$this->index( $this->action );
+		}
+
+		/**
+		*
+		*/
+
+		public function arbitrage() {
+			$this->index( $this->action );
+		}
+
+		/**
+		*
+		*/
+
+		public function recherche() {
+			$this->index( $this->action );
 		}
 
 		/**

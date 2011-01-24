@@ -294,10 +294,10 @@
 							</li>
 						<?php endif;?> -->
 					<?php else:?><!-- Workflow CG 93 -->
-						<li><?php echo $xhtml->link( 'Création / modification', array( 'controller' => 'seanceseps', 'action' => 'index', 'etapewf' => 'creationmodification' ) );?></li>
-						<li><?php echo $xhtml->link( 'Attribution des dossiers à une séance', array( 'controller' => 'seanceseps', 'action' => 'index', 'etapewf' => 'attributiondossiers' ) );?></li>
-						<li><?php echo $xhtml->link( 'Arbitrage', array( 'controller' => 'seanceseps', 'action' => 'index', 'etapewf' => 'arbitrage' ) );?></li>
-						<li><?php echo $xhtml->link( 'Recherche', array( 'controller' => 'seanceseps', 'action' => 'index', 'etapewf' => 'recherche' ) );?></li>
+						<li><?php echo $xhtml->link( 'Création / modification', array( 'controller' => 'seanceseps', 'action' => 'creationmodification' ) );?></li>
+						<li><?php echo $xhtml->link( 'Attribution des dossiers à une séance', array( 'controller' => 'seanceseps', 'action' => 'attributiondossiers' ) );?></li>
+						<li><?php echo $xhtml->link( 'Arbitrage', array( 'controller' => 'seanceseps', 'action' => 'arbitrage' ) );?></li>
+						<li><?php echo $xhtml->link( 'Recherche', array( 'controller' => 'seanceseps', 'action' => 'recherche' ) );?></li>
 					<?php endif;?>
 				</ul>
 			</li>

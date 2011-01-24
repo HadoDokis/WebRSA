@@ -101,7 +101,7 @@
 			}
 
 			if ( isset($criteresseanceep['Seanceep']['structurereferente_id']) && !empty($criteresseanceep['Seanceep']['structurereferente_id']) ) {
-				$conditions[] = array('Seanceep.structurereferente_id'=>$criteresseanceep['Seanceep']['structurereferente_id']);
+				$conditions[] = array( 'Seanceep.structurereferente_id' => preg_replace( '/^([0-9]+_)*([0-9]+)$/', '\2', $criteresseanceep['Seanceep']['structurereferente_id'] ) );
 			}
 
 			if ( isset($criteresseanceep['Structurereferente']['ville']) && !empty($criteresseanceep['Structurereferente']['ville']) ) {
