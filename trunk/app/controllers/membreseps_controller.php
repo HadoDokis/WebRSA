@@ -1,7 +1,7 @@
 <?php
 	class MembresepsController extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2' );
+		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 
 		public function beforeFilter() {
 		}
@@ -95,19 +95,15 @@
 			
 			$listeSuppleants = array();
 			if( $this->action == 'add' ) {
-				$membres = $this->Membreep->find(
-					'all',
-					array(
-						'contain'=>false
-					)
-				);
+				$membres = array();
 			}
 			elseif( $this->action == 'edit' ) {
 				$membres = $this->Membreep->find(
 					'all',
 					array(
 						'conditions'=>array(
-							'Membreep.id <>'=>$id
+							'Membreep.id <>'=>$id,
+							'Membreep.fonctionmembreep_id'=>$this->data['Membreep']['fonctionmembreep_id']
 						),
 						'contain'=>false
 					)
@@ -132,14 +128,14 @@
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 
-		public function ajaxfindsuppleant( $ep_id = null, $defaultvalue = '', $membreEp_id = 0 ) {
+		public function ajaxfindsuppleant() {
             Configure::write( 'debug', 0 );
             $suppleants = $this->Membreep->find(
             	'all',
             	array(
             		'conditions'=>array(
-            			'Membreep.ep_id'=>$ep_id,
-            			'Membreep.id <>'=>$membreEp_id
+            			'Membreep.id <>'=>$this->data['Membreep']['id'],
+            			'Membreep.fonctionmembreep_id'=>$this->data['Membreep']['fonctionmembreep_id']
             		),
             		'contain'=>false
             	)
@@ -148,6 +144,7 @@
 			foreach($suppleants as $suppleant) {
 				$listeSuppleant[$suppleant['Membreep']['id']] = $suppleant['Membreep']['qual'].' '.$suppleant['Membreep']['nom'].' '.$suppleant['Membreep']['prenom'];
 			}
+			$defaultvalue = $this->data['Membreep']['suppleant_id'];
             $this->set( compact( 'listeSuppleant' ) );
             $this->set( compact( 'defaultvalue' ) );
             $this->render( $this->action, 'ajax', '/membreseps/ajaxfindsuppleant' );
@@ -195,48 +192,6 @@
 				else {
 					$this->Membreep->MembreepSeanceep->rollback();
 				}
-				
-				/*$enBase  =Set::extract( $membres, '/Seanceep/MembreepSeanceep/membreep_id' ); 
-
-				$ajouts = array();
-				$suppressions = array();
-				foreach($this->data['Membreep'] as $i => $membre) {
-					if( $membre['checked'] && !in_array( $membre['id'], $enBase ) ) {
-						$ajouts[] = array(
-							'membreep_id' => $membre['id'],
-							'seanceep_id' => $seance_id,
-						);
-					}
-					else if( !$membre['checked'] && in_array( $membre['id'], $enBase ) ) {
-						$suppressions[] = $membre['id'];
-					}
-				}
-
-				if( !empty( $ajouts ) || !empty( $suppressions ) ) {
-					$success = true;
-					$this->Membreep->MembreepSeanceep->begin();
-	
-					if( !empty( $ajouts ) ) {
-						$success = $this->Membreep->MembreepSeanceep->saveAll( $ajouts, array( 'atomic' => false ) ) && $success;
-					}
-					if( !empty( $suppressions ) ) {
-							$success = $this->Membreep->MembreepSeanceep->deleteAll(
-								array(
-									'MembreepSeanceep.membreep_id' => $suppressions,
-									'MembreepSeanceep.seanceep_id' => $seance_id,
-								)
-							) && $success;
-					}
-	
-					if( $success ) {
-						$this->Membreep->MembreepSeanceep->commit();
-						$this->Session->setFlash('Enregistrement effectué', 'flash/success');
-						$this->redirect( array( 'controller' => 'seanceseps', 'action' => 'view', $seance_id ));
-					}
-					else {
-						$this->Membreep->MembreepSeanceep->rollback();
-					}
-				}*/
 			}
 
 			$membres = $this->Membreep->find(
@@ -363,21 +318,166 @@
 		
 		
 		public function editpresence( $ep_id, $seance_id ) {
-			$presences = $this->Membreep->find('all', array(
-				'conditions' => array(
-					'Membreep.ep_id' => $ep_id
-				),
-				'contain' => array(
-					'Seanceep' => array(
-						'conditions' => array(
-							'MembreepSeanceep.seanceep_id' => $seance_id
+			if( !empty( $this->data ) ) {
+				$success = true;
+				$this->Membreep->MembreepSeanceep->begin();
+				foreach($this->data['MembreepSeanceep']['Membreep_id'] as $membreep_id => $reponse) {
+					$existeEnBase = $this->Membreep->MembreepSeanceep->find(
+						'first',
+						array(
+							'conditions'=>array(
+								'MembreepSeanceep.membreep_id'=>$membreep_id,
+								'MembreepSeanceep.seanceep_id'=>$seance_id
+							),
+							'contain' => false
+						)
+					);
+
+					if (!empty($existeEnBase)) {
+						$existeEnBase['MembreepSeanceep']['presence'] = $reponse['presence'];
+						$this->Membreep->MembreepSeanceep->create( $existeEnBase );
+						$success = $this->Membreep->MembreepSeanceep->save() && $success;
+					}
+					else {
+						$nouvelleEntree['MembreepSeanceep']['seanceep_id'] = $seance_id;
+						$nouvelleEntree['MembreepSeanceep']['membreep_id'] = $membreep_id;
+						$nouvelleEntree['MembreepSeanceep']['presence'] = $reponse['presence'];
+						$this->Membreep->MembreepSeanceep->create($nouvelleEntree);
+						$success = $this->Membreep->MembreepSeanceep->save() && $success;
+					}
+				}
+				
+				$this->_setFlashResult( 'Save', $success );
+				if ($success) {
+					$this->Membreep->MembreepSeanceep->commit();
+					$this->redirect(array('controller'=>'seanceseps', 'action'=>'view', $seance_id));
+				}
+				else {
+					$this->Membreep->MembreepSeanceep->rollback();
+				}
+			}
+
+			$membres = $this->Membreep->find(
+				'all',
+				array(
+					'fields' => array(
+						'Membreep.id',
+						'Membreep.qual',
+						'Membreep.nom',
+						'Membreep.prenom',
+						'Membreep.tel',
+						'Membreep.mail',
+						'Membreep.fonctionmembreep_id',
+						'Membreep.suppleant_id',
+						'MembreepSeanceep.reponse',
+						'MembreepSeanceep.presence',
+						'Suppleant.qual',
+						'Suppleant.nom',
+						'Suppleant.prenom'
+					),
+					'joins' => array(
+						array(
+							'table' => 'membreseps',
+							'alias' => 'Suppleant',
+							'type' => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Suppleant.id = Membreep.suppleant_id'
+							)
+						),
+						array(
+							'table' => 'membreseps_seanceseps',
+							'alias' => 'MembreepSeanceep',
+							'type' => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Membreep.id = MembreepSeanceep.membreep_id',
+								'MembreepSeanceep.seanceep_id' => $seance_id
+							)
+						),
+						array(
+							'table' => 'seanceseps',
+							'alias' => 'Seanceep',
+							'type' => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Seanceep.id = MembreepSeanceep.seanceep_id'
+							)
+						),
+						array(
+							'table' => 'eps_membreseps',
+							'alias' => 'EpMembreep',
+							'type' => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Membreep.id = EpMembreep.membreep_id',
+								'EpMembreep.ep_id' => $ep_id
+							)
+						),
+						array(
+							'table' => 'eps',
+							'alias' => 'Ep',
+							'type' => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Ep.id = EpMembreep.ep_id'
+							)
 						)
 					),
-					'Fonctionmembreep'
+					'contain'=>false
 				)
-			));
-						$this->set('seance_id', $seance_id);
-			$this->set('presences', Set::extract( $presences, '/Seanceep/MembreepSeanceep/membreep_id' ));
+			);
+			$this->set('membres', $membres);
+
+			$fonctionsmembres = $this->Membreep->Fonctionmembreep->find(
+				'all',
+				array(
+					'fields' => array(
+						'Fonctionmembreep.id',
+						'Fonctionmembreep.name'
+					),
+					'joins' => array(
+						array(
+							'table' => 'membreseps',
+							'alias' => 'Membreep',
+							'type' => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Fonctionmembreep.id = Membreep.fonctionmembreep_id'
+							)
+						),
+						array(
+							'table' => 'eps_membreseps',
+							'alias' => 'EpMembreep',
+							'type' => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Membreep.id = EpMembreep.membreep_id',
+								'EpMembreep.ep_id' => $ep_id
+							)
+						),
+						array(
+							'table' => 'eps',
+							'alias' => 'Ep',
+							'type' => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Ep.id = EpMembreep.ep_id'
+							)
+						)
+					),
+					'contain'=>false,
+					'group' => array(
+						'Fonctionmembreep.id',
+						'Fonctionmembreep.name'
+					)
+				)
+			);
+			$this->set('fonctionsmembres', $fonctionsmembres);
+			
+			$this->set('seance_id', $seance_id);
+			$this->set('ep_id', $ep_id);
+			$this->_setOptions();
 		}
 		
 	}

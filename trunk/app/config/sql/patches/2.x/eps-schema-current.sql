@@ -442,8 +442,8 @@ DROP TYPE IF EXISTS type_presenceseanceep CASCADE;
 
 -- -----------------------------------------------------------------------------
 -- Création des types :
-CREATE TYPE type_reponseseanceep AS ENUM ( 'confirme', 'decline', 'nonrenseigne' );
-CREATE TYPE type_presenceseanceep AS ENUM ( 'present', 'excuse', 'remplacepar');
+CREATE TYPE type_reponseseanceep AS ENUM ( 'confirme', 'decline', 'nonrenseigne', 'remplacepar' );
+CREATE TYPE type_presenceseanceep AS ENUM ( 'present', 'excuse', 'remplacepar' );
 
 CREATE TABLE membreseps_seanceseps
 (
