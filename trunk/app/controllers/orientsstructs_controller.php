@@ -319,6 +319,7 @@
 			if( !empty( $this->data ) ) {
 				// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
 				$this->data['Calculdroitrsa']['personne_id'] = $orientstruct['Orientstruct']['personne_id'];
+				$this->data['Orientstruct']['personne_id'] = $orientstruct['Orientstruct']['personne_id'];
 
 				$this->Orientstruct->set( $this->data );
 				$this->Orientstruct->Personne->Calculdroitrsa->set( $this->data );
