@@ -46,6 +46,9 @@ msgstr "A confirmé"
 msgid "ENUM::REPONSE::decline"
 msgstr "A décliné"
 
+msgid "ENUM::REPONSE::remplacepar"
+msgstr "Remplacé par"
+
 msgid "ENUM::REPONSE::nonrenseigne"
 msgstr "Non renseigné"
 

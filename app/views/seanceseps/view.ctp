@@ -88,38 +88,58 @@
 				<?php
 					echo '<li>'.$xhtml->editLink(
 						__d('Seanceep','Seanceep.edit',true),
-						array( 'controller' => 'membreseps', 'action' => 'editliste', $seanceep['Seanceep']['ep_id'], $seanceep['Seanceep']['id'] )
+						array( 'controller' => 'membreseps', 'action' => 'editliste', $seanceep['Seanceep']['ep_id'], $seanceep['Seanceep']['id'] ),
+						( $seanceep['Seanceep']['finalisee'] == '' )
 					).' </li>';
-					/*echo '<li>'.$xhtml->presenceLink(
-						__d('Seanceep','Seanceep.presence',true),
-						array( 'controller' => 'membreseps', 'action' => 'editpresence', $seanceep['Seanceep']['ep_id'], $seanceep['Seanceep']['id'] )
-					).' </li>';*/
-
+					
+					echo '<li>'.$xhtml->presenceLink(
+						__d('Seanceep','Seanceep::presence',true),
+						array( 'controller' => 'membreseps', 'action' => 'editpresence', $seanceep['Seanceep']['ep_id'], $seanceep['Seanceep']['id'] ),
+						( $seanceep['Seanceep']['finalisee'] == 'ep' )
+					).' </li>';
 				?>
 				</ul>
 			<?php
-				echo $default2->index(
-					$membresepsseanceseps,
-					array(
-						'Membreep.Fonctionmembreep.name',
-						'Membreep.qual',
-						'Membreep.nom',
-						'Membreep.prenom',
-						'MembreepSeanceep.reponse',
-						'MembreepSeanceep.presence'
-					),
-					array(
-						'groupColumns' => array(
-							'Participants' => array(0, 1, 2, 3),
-							'Présences' => array(4,5)
-						),
-						/*'actions' => array(
-							'membreseps_seanceseps::edit',
-							'membreseps_seanceseps::delete'
-						),*/
-						'options' => $options
+				echo "<table>";
+				echo $html->tag(
+					'thead',
+					$default->thead(
+						array(
+							'Membreep.Fonctionmembreep.name',
+							'Membreep.nom',
+							'MembreepSeanceep.reponse',
+							'MembreepSeanceep.presence'
+						)
 					)
 				);
+				echo "<tbody>";
+				foreach($membresepsseanceseps as $membreepseanceep) {
+					echo "<tr>";
+						echo $html->tag(
+							'td',
+							$membreepseanceep['Membreep']['Fonctionmembreep']['name']
+						);
+						echo $html->tag(
+							'td',
+							implode(' ', array($membreepseanceep['Membreep']['qual'], $membreepseanceep['Membreep']['nom'], $membreepseanceep['Membreep']['prenom']))
+						);
+						$membreepseanceep['MembreepSeanceep']['reponsetxt'] = __d('membreep_seanceep', 'ENUM::REPONSE::'.$membreepseanceep['MembreepSeanceep']['reponse'], true);
+						if ($membreepseanceep['MembreepSeanceep']['reponse']=='remplacepar')
+							$membreepseanceep['MembreepSeanceep']['reponsetxt'] .= ' '.$membreepseanceep['Membreep']['suppleant'];
+						echo $html->tag(
+							'td',
+							$membreepseanceep['MembreepSeanceep']['reponsetxt']
+						);
+						$membreepseanceep['MembreepSeanceep']['presencetxt'] = __d('membreep_seanceep', 'ENUM::PRESENCE::'.$membreepseanceep['MembreepSeanceep']['presence'], true);
+						if ($membreepseanceep['MembreepSeanceep']['presence']=='remplacepar')
+							$membreepseanceep['MembreepSeanceep']['presencetxt'] .= ' '.$membreepseanceep['Membreep']['suppleant'];
+						echo $html->tag(
+							'td',
+							$membreepseanceep['MembreepSeanceep']['presencetxt']
+						);
+					echo "</tr>";
+				}
+				echo "</tbody></table>";
 			?>
 			</div>
 		</div>

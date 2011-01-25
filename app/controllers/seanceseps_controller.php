@@ -333,10 +333,11 @@
 				'MembreepSeanceep.membreep_id',
 				'MembreepSeanceep.reponse',
 				'MembreepSeanceep.presence',
+				'Membreep.qual',
 				'Membreep.nom',
 				'Membreep.prenom',
-				'Membreep.fonctionmembreep_id',
-				'Membreep.qual',
+				'Membreep.suppleant_id',
+				'Membreep.fonctionmembreep_id'
 			);
 
 			$membresepsseanceseps = $this->Seanceep->MembreepSeanceep->find( 'all', array(
@@ -347,9 +348,19 @@
 				'contain' => array(
 					'Seanceep',
 					'Membreep' => array( 'Fonctionmembreep')
-				),
-
+				)
 			));
+			foreach($membresepsseanceseps as &$membreepseanceep) {
+				if (!empty($membreepseanceep['Membreep']['suppleant_id'])) {
+					$remplacant = $this->Seanceep->Membreep->find( 'first', array(
+						'conditions'=> array(
+							'Membreep.id' => $membreepseanceep['Membreep']['suppleant_id']
+						),
+						'contain' => false
+					));
+					$membreepseanceep['Membreep']['suppleant'] = implode(' ', array($remplacant['Membreep']['qual'], $remplacant['Membreep']['nom'], $remplacant['Membreep']['prenom']));
+				}
+			}
 			$this->set('membresepsseanceseps', $membresepsseanceseps);
 		}
 

@@ -82,7 +82,7 @@
     });
     
     function checkPresence(select) {
-		if (select.getValue() == 'decline') {
+		if (select.getValue() == 'remplacepar') {
 			select.up('td').writeAttribute('colspan', 1);
 			select.up('td').next().show();
 		}
