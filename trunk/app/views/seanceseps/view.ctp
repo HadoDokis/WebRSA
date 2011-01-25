@@ -123,16 +123,22 @@
 							'td',
 							implode(' ', array($membreepseanceep['Membreep']['qual'], $membreepseanceep['Membreep']['nom'], $membreepseanceep['Membreep']['prenom']))
 						);
-						$membreepseanceep['MembreepSeanceep']['reponsetxt'] = __d('membreep_seanceep', 'ENUM::REPONSE::'.$membreepseanceep['MembreepSeanceep']['reponse'], true);
-						if ($membreepseanceep['MembreepSeanceep']['reponse']=='remplacepar')
-							$membreepseanceep['MembreepSeanceep']['reponsetxt'] .= ' '.$membreepseanceep['Membreep']['suppleant'];
+						$membreepseanceep['MembreepSeanceep']['reponsetxt'] = "";
+						if (!empty($membreepseanceep['MembreepSeanceep']['reponse'])) {
+							$membreepseanceep['MembreepSeanceep']['reponsetxt'] = __d('membreep_seanceep', 'ENUM::REPONSE::'.$membreepseanceep['MembreepSeanceep']['reponse'], true);
+							if ($membreepseanceep['MembreepSeanceep']['reponse']=='remplacepar')
+								$membreepseanceep['MembreepSeanceep']['reponsetxt'] .= ' '.$membreepseanceep['Membreep']['suppleant'];
+						}
 						echo $html->tag(
 							'td',
 							$membreepseanceep['MembreepSeanceep']['reponsetxt']
 						);
-						$membreepseanceep['MembreepSeanceep']['presencetxt'] = __d('membreep_seanceep', 'ENUM::PRESENCE::'.$membreepseanceep['MembreepSeanceep']['presence'], true);
-						if ($membreepseanceep['MembreepSeanceep']['presence']=='remplacepar')
-							$membreepseanceep['MembreepSeanceep']['presencetxt'] .= ' '.$membreepseanceep['Membreep']['suppleant'];
+						$membreepseanceep['MembreepSeanceep']['presencetxt'] = "";
+						if (!empty($membreepseanceep['MembreepSeanceep']['presence'])) {
+							$membreepseanceep['MembreepSeanceep']['presencetxt'] = __d('membreep_seanceep', 'ENUM::PRESENCE::'.$membreepseanceep['MembreepSeanceep']['presence'], true);
+							if ($membreepseanceep['MembreepSeanceep']['presence']=='remplacepar')
+								$membreepseanceep['MembreepSeanceep']['presencetxt'] .= ' '.$membreepseanceep['Membreep']['suppleant'];
+						}
 						echo $html->tag(
 							'td',
 							$membreepseanceep['MembreepSeanceep']['presencetxt']
