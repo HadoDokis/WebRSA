@@ -63,7 +63,7 @@
 
 			echo $default->subform( array( 'Saisineepreorientsr93.datedemande' => array( 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1 ) ) );
 
-			echo '<div class="input select"><span class="label">Réorientation</span><span class="input">'.( $nb_orientations + 1 ).'</span></div>';
+			echo '<div class="input select"><span class="label">Rang d\'orientation</span><span class="input">'.( $nb_orientations + 1 ).'</span></div>';
 
 			echo '<div class="submit">';
 			echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
