@@ -8,137 +8,177 @@
 		public $useTable = false;
 
 		/**
-		* Dernière version des règles de préorientation (changement règle 4):
-		* 16/04/2010, par mail
+		* Dernière version des règles de préorientation:
+		*	- prise en compte des informations Pôle Emploi le 04/01/2011, par mail
+		* 	- changement règle 4 le 16/04/2010, par mail
 		*/
 
 		public function preOrientation( $element ) {
 			$propo_algo = null;
 
-			/// Dsp
-			$this->Dsp = Classregistry::init( 'Dsp' );
-			$this->Dsp->unbindModel( array( 'belongsTo' => array( 'Personne' ) ) );
-			$dsp = $this->Dsp->find(
+			/// Inscription Pôle Emploi ?
+// debug( $element['Personne']['id'] );
+			$this->Informationpe = Classregistry::init( 'Informationpe' );
+			$informationpe = $this->Informationpe->find(
 				'first',
 				array(
-					'conditions' => array( 'Dsp.personne_id' => $element['Personne']['id'] ),
-					'recursive' => 1
+					'conditions' => array(
+						'OR' => array(
+							array(
+								'Informationpe.nir IS NOT NULL',
+								'Informationpe.nir' => $element['Personne']['nir']
+							),
+							array(
+								'Informationpe.nom' => $element['Personne']['nom'],
+								'Informationpe.prenom' => $element['Personne']['prenom'],
+								'Informationpe.dtnai' => $element['Personne']['dtnai']
+							)
+						)
+					),
+					'contain' => array(
+						'Historiqueetatpe' => array(
+							'order' => array( 'date DESC' ),
+							'limit' => 1
+						)
+					)
 				)
 			);
 
-// 			$element['Personne'] = Set::merge( $element['Personne'], $dsp );
-
-			/// Règles de gestion
-
-			// Règle 1 (Prioritaire) : Code XML instruction : « NATLOG ». Nature du logement ?
-			// 0904 = Logement d'urgence : CHRS → Orientation vers le Social
-			// 0911 = Logement précaire : résidence sociale → Orientation vers le Social
-			$natlog = Set::classicExtract( $dsp, 'Dsp.natlog' );
-			if( empty( $propo_algo ) && !empty( $natlog ) ) {
-				if( in_array( $natlog, array( '0904', '0911' ) ) ) {
-					$propo_algo = 'Social';
-				}
-			}
-
-			// Règle 2 (Prioritaire)  : Code XML instruction : « DIFLOG ». Difficultés logement ?
-			// 1006 = Fin de bail, expulsion → Orientation vers le Service Social
-			$diflog = Set::extract( $dsp, '/Detaildiflog/diflog' );
-			if( empty( $propo_algo ) && !empty( $diflog ) ) {
-				if( in_array( '1006', $diflog ) ) {
-					$propo_algo = 'Social';
-				}
-			}
-
-			//
-			// Règle 3 (Prioritaire)  : Code XML instruction : « sitpersdemrsa ». "Quel est le motif de votre demande de rSa ?"
-			// 0102 = Fin de droits AAH → Orientation vers le Social
-			// 0105 = Attente de pension vieillesse ou invalidité‚ ou d'allocation handicap → Orientation vers le Social
-			// 0109 = Fin d'études → Orientation vers le Pôle Emploi
-			// 0101 = Fin de droits ASSEDIC → Orientation vers le Pôle Emploi
-			$sitpersdemrsa = Set::extract( $dsp, 'Dsp.sitpersdemrsa' );
-			if( empty( $propo_algo ) && !empty( $sitpersdemrsa ) ) {
-				if( in_array( $sitpersdemrsa, array( '0102', '0105' ) ) ) {
-					$propo_algo = 'Social';
-				}
-				else if( in_array( $sitpersdemrsa, array( '0109', '0101' ) ) ) {
+			// La personne se retrouve préorientée en emploi si la dernière information
+			// venant de Pôle Emploi la concernant est une inscription
+			if( !empty( $informationpe ) ) {
+				if( @$informationpe['Historiqueetatpe'][0]['etat'] == 'inscription' ) {
 					$propo_algo = 'Emploi';
 				}
 			}
 
-			// Règle 4 : Code XML instruction : « DTNAI ». Date de Naissance.
-			$dtnai = Set::extract( $element, 'Personne.dtnai' );
-			/// FIXME: change chaque année ...
-			$cessderact = Set::extract( $dsp, 'Dsp.cessderact' );
+			// On ne peut pas préorienter à partir des informations Pôle Emploi
+			if( is_null( $propo_algo ) ) {
+				/// Dsp
+				$this->Dsp = Classregistry::init( 'Dsp' );
+				$this->Dsp->unbindModel( array( 'belongsTo' => array( 'Personne' ) ) );
+				$dsp = $this->Dsp->find(
+					'first',
+					array(
+						'conditions' => array( 'Dsp.personne_id' => $element['Personne']['id'] ),
+						'recursive' => 1
+					)
+				);
 
-			// Si le code CESSDERACT n'est pas renseigné : Règle 5
-			if( empty( $propo_algo ) && !empty( $cessderact ) ) {
-				$age = age( $dtnai );
+	// 			$element['Personne'] = Set::merge( $element['Personne'], $dsp );
 
-				// Si - de 57 a :
-				// "2701" : Encore en activité ou cessation depuis moins d'un an ->Pôle Emploi
-				// "2702" : Cessation d'activité depuis plus d'un an -> PDV
-				if( $age < 57 ) {
-					if( $cessderact == '2701' ) {
-						$propo_algo = 'Emploi';
-					}
-					else if( $cessderact == '2702' ) {
-						$propo_algo = 'Socioprofessionnelle';
-					}
-				}
+				/// Règles de gestion
 
-				// Si + de 57 a :
-				// "2701" : Encore en activité ou cessation depuis moins d'un an -> PDV
-				// "2702" : Cessation d'activité depuis plus d'un an ->Service Social
-				else if( $age >= 57 ) {
-					if( $cessderact == '2701' ) {
-						$propo_algo = 'Socioprofessionnelle';
-					}
-					else if( $cessderact == '2702' ) {
+				// Règle 1 (Prioritaire) : Code XML instruction : « NATLOG ». Nature du logement ?
+				// 0904 = Logement d'urgence : CHRS → Orientation vers le Social
+				// 0911 = Logement précaire : résidence sociale → Orientation vers le Social
+				$natlog = Set::classicExtract( $dsp, 'Dsp.natlog' );
+				if( empty( $propo_algo ) && !empty( $natlog ) ) {
+					if( in_array( $natlog, array( '0904', '0911' ) ) ) {
 						$propo_algo = 'Social';
 					}
 				}
 
-				/*// + 57 Ans ( Date du jour) :
-				// Code XML instruction : « DFDERACT » (Date éventuelle de cessation de cette activité) = -1ans ( Date du jour) → Orientation vers le PDV
-				// Code XML instruction : « DFDERACT» (Date éventuelle de cessation de cette activité) = +1ans ( Date du jour) → Orientation vers le Service Social
-				if( $age >= 57 ) {
-					if( $cessderact == '2701' ) {
-						$propo_algo = 'Socioprofessionnelle';
+				// Règle 2 (Prioritaire)  : Code XML instruction : « DIFLOG ». Difficultés logement ?
+				// 1006 = Fin de bail, expulsion → Orientation vers le Service Social
+				$diflog = Set::extract( $dsp, '/Detaildiflog/diflog' );
+				if( empty( $propo_algo ) && !empty( $diflog ) ) {
+					if( in_array( '1006', $diflog ) ) {
+						$propo_algo = 'Social';
 					}
+				}
+
+				//
+				// Règle 3 (Prioritaire)  : Code XML instruction : « sitpersdemrsa ». "Quel est le motif de votre demande de rSa ?"
+				// 0102 = Fin de droits AAH → Orientation vers le Social
+				// 0105 = Attente de pension vieillesse ou invalidité‚ ou d'allocation handicap → Orientation vers le Social
+				// 0109 = Fin d'études → Orientation vers le Pôle Emploi
+				// 0101 = Fin de droits ASSEDIC → Orientation vers le Pôle Emploi
+				$sitpersdemrsa = Set::extract( $dsp, 'Dsp.sitpersdemrsa' );
+				if( empty( $propo_algo ) && !empty( $sitpersdemrsa ) ) {
+					if( in_array( $sitpersdemrsa, array( '0102', '0105' ) ) ) {
+						$propo_algo = 'Social';
+					}
+					else if( in_array( $sitpersdemrsa, array( '0109', '0101' ) ) ) {
+						$propo_algo = 'Emploi';
+					}
+				}
+
+				// Règle 4 : Code XML instruction : « DTNAI ». Date de Naissance.
+				$dtnai = Set::extract( $element, 'Personne.dtnai' );
+				/// FIXME: change chaque année ...
+				$cessderact = Set::extract( $dsp, 'Dsp.cessderact' );
+
+				// Si le code CESSDERACT n'est pas renseigné : Règle 5
+				if( empty( $propo_algo ) && !empty( $cessderact ) ) {
+					$age = age( $dtnai );
+
+					// Si - de 57 a :
+					// "2701" : Encore en activité ou cessation depuis moins d'un an ->Pôle Emploi
+					// "2702" : Cessation d'activité depuis plus d'un an -> PDV
+					if( $age < 57 ) {
+						if( $cessderact == '2701' ) {
+							$propo_algo = 'Emploi';
+						}
+						else if( $cessderact == '2702' ) {
+							$propo_algo = 'Socioprofessionnelle';
+						}
+					}
+
+					// Si + de 57 a :
+					// "2701" : Encore en activité ou cessation depuis moins d'un an -> PDV
+					// "2702" : Cessation d'activité depuis plus d'un an ->Service Social
+					else if( $age >= 57 ) {
+						if( $cessderact == '2701' ) {
+							$propo_algo = 'Socioprofessionnelle';
+						}
+						else if( $cessderact == '2702' ) {
+							$propo_algo = 'Social';
+						}
+					}
+
+					/*// + 57 Ans ( Date du jour) :
+					// Code XML instruction : « DFDERACT » (Date éventuelle de cessation de cette activité) = -1ans ( Date du jour) → Orientation vers le PDV
+					// Code XML instruction : « DFDERACT» (Date éventuelle de cessation de cette activité) = +1ans ( Date du jour) → Orientation vers le Service Social
+					if( $age >= 57 ) {
+						if( $cessderact == '2701' ) {
+							$propo_algo = 'Socioprofessionnelle';
+						}
+						else {
+							$propo_algo = 'Social';
+						}
+					}
+					// -57 Ans ( Date du jour) :
+					// Code XML instruction : « DFDERACT» (Date éventuelle de cessation de cette activité) = -1ans ( Date du jour)→ Orientation vers le Pôle Emploi
+					// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = entre 1 et 5 ans ( Date du jour) → Orientation vers le PDV
+					// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = +5 ans ( Date du jour) → Orientation vers le Service Social
 					else {
-						$propo_algo = 'Social';
-					}
+						if( $cessderact == '2701' ) {
+							$propo_algo = 'Emploi';
+						}
+						// FIXME: on ne peut plus savoir avec les nouvelles DSP
+						// else if( $cessderact < 5 ) {
+						// 	$propo_algo = 'Socioprofessionnelle';
+						// }
+						// else {
+						// 	$propo_algo = 'Social';
+						// }
+					}*/
 				}
-				// -57 Ans ( Date du jour) :
-				// Code XML instruction : « DFDERACT» (Date éventuelle de cessation de cette activité) = -1ans ( Date du jour)→ Orientation vers le Pôle Emploi
-				// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = entre 1 et 5 ans ( Date du jour) → Orientation vers le PDV
-				// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = +5 ans ( Date du jour) → Orientation vers le Service Social
-				else {
-					if( $cessderact == '2701' ) {
+
+				// Règle 5 : Code XML instruction : « HISPRO ». Question : Passé professionnel ?
+				// 1901 = Oui → Orientation vers le Pôle Emploi
+				// 1902 = Oui → Orientation vers le PDV
+				// 1903 = Oui → Orientation vers le PDV
+				// 1904 = Oui → Orientation vers le PDV
+				$hispro = Set::extract( $dsp, 'Dsp.hispro' );
+				if( empty( $propo_algo ) && !empty( $hispro ) ) {
+					if( $hispro == '1901' ) {
 						$propo_algo = 'Emploi';
 					}
-					// FIXME: on ne peut plus savoir avec les nouvelles DSP
-					// else if( $cessderact < 5 ) {
-					// 	$propo_algo = 'Socioprofessionnelle';
-					// }
-					// else {
-					// 	$propo_algo = 'Social';
-					// }
-				}*/
-			}
-
-			// Règle 5 : Code XML instruction : « HISPRO ». Question : Passé professionnel ?
-			// 1901 = Oui → Orientation vers le Pôle Emploi
-			// 1902 = Oui → Orientation vers le PDV
-			// 1903 = Oui → Orientation vers le PDV
-			// 1904 = Oui → Orientation vers le PDV
-			$hispro = Set::extract( $dsp, 'Dsp.hispro' );
-			if( empty( $propo_algo ) && !empty( $hispro ) ) {
-				if( $hispro == '1901' ) {
-					$propo_algo = 'Emploi';
-				}
-				else if( in_array( $hispro, array( '1902', '1903', '1904' ) ) ) {
-					$propo_algo = 'Socioprofessionnelle';
+					else if( in_array( $hispro, array( '1902', '1903', '1904' ) ) ) {
+						$propo_algo = 'Socioprofessionnelle';
+					}
 				}
 			}
 

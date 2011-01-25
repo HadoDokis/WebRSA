@@ -433,7 +433,7 @@ div#suiviInsertion tbody tr.even th {
 
 /*****************************************************************************/
 
-p.error {
+p.error, div.error_message {
     background: #ffe5e5;
     color: #b20000;
     margin: 1em 0;
