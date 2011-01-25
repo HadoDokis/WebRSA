@@ -13,8 +13,8 @@
 		<p class="notice">Cette personne ne possède pas encore d'orientation.</p>
 	<?php endif;?>
 
-	<!-- Pour le CG 93, les orientations de rang > 1 doivent passer en EP, donc il faut utiliser Saisinesepsreorientsrs93Controller::add -->
-	<?php if( Configure::read( 'Ep.departement' ) == 93 && $rgorient_max > 1 ):?>
+	<!-- Pour le CG 93, les orientations de rang >= 1 doivent passer en EP, donc il faut utiliser Saisinesepsreorientsrs93Controller::add -->
+	<?php if( Configure::read( 'Ep.departement' ) == 93 && $rgorient_max >= 1 ):?>
 		<?php if( $permissions->check( 'saisinesepsreorientsrs93', 'add' ) ):?>
 			<ul class="actionMenu">
 				<?php
