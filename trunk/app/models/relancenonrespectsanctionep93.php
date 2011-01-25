@@ -17,7 +17,8 @@
 
 		public $actsAs = array(
 			'Autovalidate',
-			'ValidateTranslate'
+			'ValidateTranslate',
+			'Formattable',
 		);
 
 		public $belongsTo = array(
@@ -603,6 +604,10 @@
 			return $results;
 		}
 
+		/**
+		*
+		*/
+
 		public function checkCompareError($datas) {
 			$searchError = false;
 			if( $datas['Relance']['contrat'] == 0 ) {
@@ -616,6 +621,193 @@
 			return $searchError;
 		}
 
-	}
+		/**
+		* Retourne un array de chaînes de caractères indiquant pourquoi on ne
+		* peut pas créer de relance pour cette personne.
+		*
+		* Les valeurs possibles sont:
+		*	- 1°) Par-rapport à la possibilité de créer un dossier d'EP:
+		* 		* Personne.id: la personne n'existe pas en base ou n'a pas de prestation RSA
+		* 		* Situationdossierrsa.etatdosrsa: le dossier ne se trouve pas dans un état ouvert
+		* 		* Prestation.rolepers: la personne n'est ni demandeur ni conjoint RSA
+		* 		* Calculdroitrsa.toppersdrodevorsa: la personne n'est pas soumise à droits et devoirs
+		*	- 2°)
+		* 		* Dossierep.id: il existe déjà un dossier d'EP non finalisé pour "Demande de suspension"
+		*		* Contratinsertion.df_ci: la date de fin du contrat d'insertion est égale ou supérieure à la date du jour
+		*		* Contratinsertion.Orientstruct: la personne ne possède ni orientation validée et éditée, ni contrat validé
+		*		* Nonrespectsanctionep93.relanceCerCer1: le délai pour la relance n° 1 pour non recontratctualisation n'est pas encore dépassé
+		*		* Nonrespectsanctionep93.relanceCerCer2: le délai pour la relance n° 2 pour non recontratctualisation n'est pas encore dépassé
+		*		* Nonrespectsanctionep93.relanceOrientstructCer1: le délai pour la relance n° 1 pour non contratctualisation n'est pas encore dépassé
+		*		* Nonrespectsanctionep93.relanceOrientstructCer2: le délai pour la relance n° 2 pour non contratctualisation n'est pas encore dépassé
+		*		* Nonrespectsanctionep93.relanceOrientstructCer3: le délai pour la relance n° 3 pour non contratctualisation n'est pas encore dépassé
+		*
+		* @param integer $personne_id L'id technique de la personne
+		* @return array
+		* @access public
+		*/
 
+		public function erreursPossibiliteAjout( $personne_id ) {
+			$erreurs = $this->Nonrespectsanctionep93->Dossierep->erreursCandidatePassage( $personne_id );
+
+			if( empty( $erreurs ) ) {
+				// 0°) Il n'existe pas de dossier d'EP en cours pour la thématique "Demande de suspension"
+				$count = $this->Nonrespectsanctionep93->Dossierep->find(
+					'count',
+					array(
+						'conditions' => array(
+							'Dossierep.personne_id' => $personne_id,
+							'Dossierep.etapedossierep <>' => 'traite',
+							'Dossierep.themeep' => 'nonrespectssanctionseps93',
+						),
+						'contain' => false
+					)
+				);
+
+				if( $count > 0 ) {
+					$erreurs[] = 'Dossierep.id';
+				}
+				else {
+					// 1°) La personne possède un dernièr contrat d'insertion validé
+					$contratinsertion = $this->Nonrespectsanctionep93->Contratinsertion->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Contratinsertion.personne_id' => $personne_id,
+								'Contratinsertion.decision_ci' => 'V',
+								'Contratinsertion.df_ci IS NOT NULL',
+								'Contratinsertion.datevalidation_ci IS NOT NULL',
+
+							),
+							'order' => array( 'Contratinsertion.df_ci DESC' ),
+							'contain' => false
+						)
+					);
+
+					$orientstruct = $this->Nonrespectsanctionep93->Orientstruct->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Orientstruct.personne_id' => $personne_id,
+								'Orientstruct.date_valid IS NOT NULL',
+								'Orientstruct.statut_orient' => 'Orienté',
+								'Orientstruct.date_impression IS NOT NULL',
+
+							),
+							'order' => array( 'Orientstruct.date_impression DESC' ),
+							'contain' => false
+						)
+					);
+
+					// 2.2°) La personne ne possède ni orientation validée et éditée, ni contrat validé
+					if( empty( $contratinsertion ) && empty( $orientstruct ) ) {
+						$erreurs[] = 'Contratinsertion.Orientstruct';
+					}
+					else {
+						// On a un contrat, pas d'orientation ou une date de contrat postérieure à la date d'orientation
+						// Donc on se base sur le contrat
+						if( !empty( $contratinsertion ) && ( empty( $orientstruct ) || ( $orientstruct['Orientstruct']['date_impression'] < $contratinsertion['Contratinsertion']['datevalidation_ci'] ) ) ) {
+							$relanceCerCer1 = Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' );
+							$relanceCerCer2 = Configure::read( 'Nonrespectsanctionep93.relanceCerCer2' );
+
+							$relances = $this->Nonrespectsanctionep93->find(
+								'first',
+								array(
+									'conditions' => array(
+										'Nonrespectsanctionep93.origine' => 'contratinsertion',
+										'Nonrespectsanctionep93.contratinsertion_id' => $contratinsertion['Contratinsertion']['id'],
+										'Nonrespectsanctionep93.dossierep_id IS NULL',
+										'Nonrespectsanctionep93.active' => 1,
+									),
+									'joins' => array(
+										array(
+											'table'      => 'relancesnonrespectssanctionseps93',
+											'alias'      => 'Relancenonrespectsanctionep93',
+											'type'       => 'INNER',
+											'foreignKey' => false,
+											'conditions' => array(
+												'Relancenonrespectsanctionep93.nonrespectsanctionep93_id = Nonrespectsanctionep93.id'
+											)
+										),
+									),
+									'contain' => array(
+										'Relancenonrespectsanctionep93' => array(
+											'order' => array( 'daterelance ASC' )
+										)
+									)
+								)
+							);
+
+							$nbrelances = count( @$relances['Relancenonrespectsanctionep93'] );
+							if( $nbrelances > 0 ) {
+								$derniererelance = $relances['Relancenonrespectsanctionep93'][$nbrelances-1];
+							}
+
+							// 2.1°) La contrat est toujours en cours
+							if( strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) >= strtotime( date( 'Y-m-d' ) ) ) {
+								$erreurs[] = 'Contratinsertion.df_ci';
+							}
+							else if( ( $nbrelances == 1 ) && strtotime( "+{$relanceCerCer2} days", strtotime( $derniererelance['daterelance'] ) ) >= strtotime( date( 'Y-m-d' ) ) ) {
+								$erreurs[] = 'Nonrespectsanctionep93.relanceCerCer2';
+							}
+							else if( ( $nbrelances == 0 ) && strtotime( "+{$relanceCerCer1} days", strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) ) >= strtotime( date( 'Y-m-d' ) ) ) {
+								$erreurs[] = 'Nonrespectsanctionep93.relanceCerCer1';
+							}
+						}
+						// On a une orientation, pas de contrat, ou une date d'orientation postérieure à la date de contrat
+						// Donc on se base sur l'orientation
+						else {
+							$relanceOrientstructCer1 = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' );
+							$relanceOrientstructCer2 = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer2' );
+							$relanceOrientstructCer3 = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer3' );
+
+							$nbrelances = $this->Nonrespectsanctionep93->find(
+								'first',
+								array(
+									'conditions' => array(
+										'Nonrespectsanctionep93.origine' => 'orientstruct',
+										'Nonrespectsanctionep93.orientstruct_id' => $orientstruct['Orientstruct']['id'],
+										'Nonrespectsanctionep93.dossierep_id IS NULL',
+										'Nonrespectsanctionep93.active' => 1,
+									),
+									'joins' => array(
+										array(
+											'table'      => 'relancesnonrespectssanctionseps93',
+											'alias'      => 'Relancenonrespectsanctionep93',
+											'type'       => 'INNER',
+											'foreignKey' => false,
+											'conditions' => array(
+												'Relancenonrespectsanctionep93.nonrespectsanctionep93_id = Nonrespectsanctionep93.id'
+											)
+										),
+									),
+									'contain' => array(
+										'Relancenonrespectsanctionep93' => array(
+											'order' => array( 'daterelance ASC' )
+										)
+									)
+								)
+							);
+
+							$nbrelances = count( @$relances['Relancenonrespectsanctionep93'] );
+							if( $nbrelances > 0 ) {
+								$derniererelance = $relances['Relancenonrespectsanctionep93'][$nbrelances-1];
+							}
+
+							if( ( $nbrelances == 2 ) && strtotime( "+{$relanceOrientstructCer3} days", strtotime( $derniererelance['daterelance'] ) ) >= strtotime( date( 'Y-m-d' ) ) ) {
+								$erreurs[] = 'Nonrespectsanctionep93.relanceOrientstructCer3';
+							}
+							else if( ( $nbrelances == 1 ) && strtotime( "+{$relanceOrientstructCer2} days", strtotime( $derniererelance['daterelance'] ) ) >= strtotime( date( 'Y-m-d' ) ) ) {
+								$erreurs[] = 'Nonrespectsanctionep93.relanceOrientstructCer2';
+							}
+							else if( ( $nbrelances == 0 ) && strtotime( "+{$relanceOrientstructCer1} days", strtotime( $orientstruct['Orientstruct']['date_impression'] ) ) >= strtotime( date( 'Y-m-d' ) ) ) {
+								$erreurs[] = 'Nonrespectsanctionep93.relanceOrientstructCer1';
+							}
+						}
+					}
+				}
+			}
+
+			return $erreurs;
+		}
+	}
 ?>

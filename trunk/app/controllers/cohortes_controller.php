@@ -216,6 +216,8 @@
 								'belongsTo' => array( 'Foyer' )
 							)
 						);
+
+						// FIXME: utiliser containable, car avec recursive à 2, on génère énormément de requêtes pour chaque orientation
 						$cohorte = $this->Orientstruct->find(
 							'all',
 							array(

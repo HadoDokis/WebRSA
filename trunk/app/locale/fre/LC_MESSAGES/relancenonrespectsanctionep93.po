@@ -31,3 +31,40 @@ msgstr "Statut relance"
 
 msgid "Serviceinstructeur.id"
 msgstr "Service référent"
+
+# Erreurs
+msgid "Erreur.Personne.id"
+msgstr "La personne n'existe pas en base ou n'a pas de prestation RSA"
+
+msgid "Erreur.Situationdossierrsa.etatdosrsa"
+msgstr "Le dossier ne se trouve pas dans un état ouvert"
+
+msgid "Erreur.Prestation.rolepers"
+msgstr "La personne n'est ni demandeur ni conjoint RSA"
+
+msgid "Erreur.Calculdroitrsa.toppersdrodevorsa"
+msgstr "La personne n'est pas soumise à droits et devoirs"
+
+msgid "Erreur.Dossierep.id"
+msgstr "Il existe déjà un dossier d'EP non finalisé pour \"Demande de suspension\""
+
+msgid "Erreur.Contratinsertion.df_ci"
+msgstr "La date de fin du contrat d'insertion est égale ou supérieure à la date du jour"
+
+msgid "Erreur.Contratinsertion.Orientstruct"
+msgstr "La personne ne possède ni orientation validée et éditée, ni contrat validé"
+
+msgid "Erreur.Nonrespectsanctionep93.relanceCerCer1"
+msgstr "Le délai pour la relance n° 1 pour non recontratctualisation n'est pas encore dépassé"
+
+msgid "Erreur.Nonrespectsanctionep93.relanceCerCer2"
+msgstr "Le délai pour la relance n° 2 pour non recontratctualisation n'est pas encore dépassé"
+
+msgid "Erreur.Nonrespectsanctionep93.relanceOrientstructCer1"
+msgstr "Le délai pour la relance n° 1 pour non contratctualisation n'est pas encore dépassé"
+
+msgid "Erreur.Nonrespectsanctionep93.relanceOrientstructCer2"
+msgstr "Le délai pour la relance n° 2 pour non contratctualisation n'est pas encore dépassé"
+
+msgid "Erreur.Nonrespectsanctionep93.relanceOrientstructCer3"
+msgstr "Le délai pour la relance n° 3 pour non contratctualisation n'est pas encore dépassé"
