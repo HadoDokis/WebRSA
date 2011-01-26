@@ -12,10 +12,10 @@
 		echo $xform->create();
 
 		echo $xform->input( 'Nonrespectsanctionep93.id', array( 'type' => 'hidden' ) );
-		echo $xform->input( 'Nonrespectsanctionep93.origine', array( 'type' => 'radio', 'options' => array( 'orientstruct' => 'Orientation non contractualisée', 'contratinsertion' => 'Non renouvellement du CER' ) ) );
+		echo $xform->input( 'Nonrespectsanctionep93.origine', array( 'type' => 'radio', 'options' => array( 'orientstruct' => 'Orientation non contractualisée', 'contratinsertion' => 'Non renouvellement du CER' ), 'value' => $origine ) );
 
 		echo $xform->input( 'Relancenonrespectsanctionep93.id', array( 'type' => 'hidden' ) );
-		echo $xform->input( 'Relancenonrespectsanctionep93.numrelance', array( 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Seconde relance', 3 => 'Troisième relance' ) ) );
+		echo $xform->input( 'Relancenonrespectsanctionep93.numrelance', array( 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Seconde relance', 3 => 'Troisième relance' ), 'value' => $numrelance ) );
 		echo $xform->input( 'Relancenonrespectsanctionep93.daterelance', array( 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1, 'empty' => true ) );
 
 		echo $xform->end( 'Enregistrer' );
