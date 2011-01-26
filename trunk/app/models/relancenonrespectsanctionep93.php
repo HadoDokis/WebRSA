@@ -532,7 +532,7 @@
 				$joins[] = array(
 							'table'      => 'relancesnonrespectssanctionseps93',
 							'alias'      => 'Relancenonrespectsanctionep93',
-							'type'       => 'LEFT OUTER',
+							'type'       => 'INNER',
 							'foreignKey' => false,
 							'conditions' => array(
 								'Nonrespectsanctionep93.id = Relancenonrespectsanctionep93.nonrespectsanctionep93_id',
@@ -541,9 +541,10 @@
 									SELECT relancesnonrespectssanctionseps93.id
 										FROM relancesnonrespectssanctionseps93
 										WHERE relancesnonrespectssanctionseps93.nonrespectsanctionep93_id = Nonrespectsanctionep93.id
-										AND relancesnonrespectssanctionseps93.numrelance = '.($search['Relance.numrelance']-1).'
+										ORDER BY relancesnonrespectssanctionseps93.numrelance DESC
 										LIMIT 1
-								)'
+								)',
+								'Relancenonrespectsanctionep93.numrelance' => ( $search['Relance.numrelance']-1 )
 							),
 						);
 				$fieldssup = array(
