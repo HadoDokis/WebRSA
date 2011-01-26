@@ -562,6 +562,10 @@ CREATE INDEX relancesnonrespectssanctionseps93_dateecheancee_idx
 	ON relancesnonrespectssanctionseps93
 	(dateecheance);
 
+CREATE UNIQUE INDEX relancesnonrespectssanctionseps93_nonrespectsanctionep93_id_numrelance_idx
+	ON relancesnonrespectssanctionseps93
+	(nonrespectsanctionep93_id, numrelance);
+
 -- Import des relances de la table orientsstructs dans les tables ...
 -- Population ... en cours
 INSERT INTO nonrespectssanctionseps93 ( orientstruct_id, origine, active, rgpassage, created, modified )
