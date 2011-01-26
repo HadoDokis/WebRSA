@@ -44,7 +44,7 @@
 			)
 		);
 
-		public function checkForRelance($check) {
+		public function checkForRelance( $check ) {
 			$nonrespectsanctionep93 = $this->Nonrespectsanctionep93->find(
 				'first',
 				array(
@@ -946,6 +946,54 @@
 			}
 
 			return $erreurs;
+		}
+
+		/**
+		*
+		*/
+
+		public function dateRelanceMinimale( $typerelance, $numrelance, $data ) {
+			if( $typerelance == 'orientstruct' ) {
+				if( $numrelance == 1 ) {
+					return date(
+						'Y-m-d',
+						strtotime(
+							'+'.( Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ) + 1 ).' days',
+							strtotime( $data['Orientstruct']['date_impression'] )
+						)
+					);
+				}
+				else if( $numrelance > 1 ) {
+					return date(
+						'Y-m-d',
+						strtotime(
+							'+'.( Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer{$numrelance}" ) + 1 ).' days',
+							strtotime( $data['Relancenonrespectsanctionep93']['daterelance'] )
+						)
+					);
+				}
+			}
+			else if( $typerelance == 'contratinsertion' ) {
+				// Calcul de la date de relance minimale
+				if( $numrelance == 1 ) {
+					return date(
+						'Y-m-d',
+						strtotime(
+							'+'.( Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' ) + 1 ).' days',
+							strtotime( $data['Contratinsertion']['df_ci'] )
+						)
+					);
+				}
+				else if( $numrelance > 1 ) {
+					return date(
+						'Y-m-d',
+						strtotime(
+							'+'.( Configure::read( "Nonrespectsanctionep93.relanceCerCer{$numrelance}" ) + 1 ).' days',
+							strtotime( $data['Relancenonrespectsanctionep93']['daterelance'] )
+						)
+					);
+				}
+			}
 		}
 	}
 ?>
