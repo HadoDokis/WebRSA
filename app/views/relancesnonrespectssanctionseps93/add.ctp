@@ -12,13 +12,29 @@
 		echo $xform->create();
 
 		echo $xform->input( 'Nonrespectsanctionep93.id', array( 'type' => 'hidden' ) );
-		echo $xform->input( 'Nonrespectsanctionep93.origine', array( 'type' => 'radio', 'options' => array( 'orientstruct' => 'Orientation non contractualisée', 'contratinsertion' => 'Non renouvellement du CER' ), 'value' => $origine ) );
+		echo $xform->input( 'Nonrespectsanctionep93.origine', array( 'domain' => 'nonrespectsanctionep93', 'type' => 'radio', 'options' => array( 'orientstruct' => 'Orientation non contractualisée', 'contratinsertion' => 'Non renouvellement du CER' ), 'value' => $origine ) );
 
 		echo $xform->input( 'Relancenonrespectsanctionep93.id', array( 'type' => 'hidden' ) );
-		echo $xform->input( 'Relancenonrespectsanctionep93.numrelance', array( 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Seconde relance', 3 => 'Troisième relance' ), 'value' => $numrelance ) );
-		echo $xform->input( 'Relancenonrespectsanctionep93.daterelance', array( 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1, 'empty' => true ) );
+		echo $xform->input( 'Relancenonrespectsanctionep93.numrelance', array( 'domain' => 'relancenonrespectsanctionep93', 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Seconde relance', 3 => 'Troisième relance' ), 'value' => $numrelance ) );
+		echo $xform->input( 'Relancenonrespectsanctionep93.daterelance', array( 'domain' => 'relancenonrespectsanctionep93', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1, 'empty' => true ) );
 
 		echo $xform->end( 'Enregistrer' );
 	?>
+
+	<script type="text/javascript">
+		document.observe( "dom:loaded", function() {
+			<?php if( $origine == 'orientstruct' ):?>
+				$( 'Nonrespectsanctionep93OrigineContratinsertion' ).disable();
+			<?php elseif( $origine == 'contratinsertion' ):?>
+				$( 'Nonrespectsanctionep93OrigineOrientstruct' ).disable();
+			<?php endif;?>
+
+			<?php for( $i = 1 ; $i <= ( ( $origine == 'orientstruct' ) ? 3 : 2 ) ; $i++ ):?>
+				<?php if( $i != $numrelance ):?>
+					$( 'Relancenonrespectsanctionep93Numrelance<?php echo $i;?>' ).disable();
+				<?php endif;?>
+			<?php endfor;?>
+		} );
+	</script>
 </div>
 <div class="clearer"><hr /></div>

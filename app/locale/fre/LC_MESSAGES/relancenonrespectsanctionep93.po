@@ -32,6 +32,12 @@ msgstr "Statut relance"
 msgid "Serviceinstructeur.id"
 msgstr "Service référent"
 
+msgid "Relancenonrespectsanctionep93.numrelance"
+msgstr "Type de relance"
+
+msgid "Relancenonrespectsanctionep93.daterelance"
+msgstr "Date de la relance"
+
 # Erreurs
 msgid "Erreur.Personne.id"
 msgstr "La personne n'existe pas en base ou n'a pas de prestation RSA"
