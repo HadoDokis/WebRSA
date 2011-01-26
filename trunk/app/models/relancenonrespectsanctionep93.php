@@ -541,7 +541,7 @@
 									SELECT relancesnonrespectssanctionseps93.id
 										FROM relancesnonrespectssanctionseps93
 										WHERE relancesnonrespectssanctionseps93.nonrespectsanctionep93_id = Nonrespectsanctionep93.id
-										ORDER BY relancesnonrespectssanctionseps93.numrelance DESC
+										AND relancesnonrespectssanctionseps93.numrelance = '.($search['Relance.numrelance']-1).'
 										LIMIT 1
 								)'
 							),
