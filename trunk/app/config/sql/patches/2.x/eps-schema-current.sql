@@ -605,7 +605,7 @@ INSERT INTO relancesnonrespectssanctionseps93 ( nonrespectsanctionep93_id, numre
 	SELECT
 			nonrespectssanctionseps93.id AS nonrespectsanctionep93_id,
 			1 AS numrelance,
-			( orientsstructs.daterelance + INTERVAL '2 mons' ) AS dateecheance,
+			( orientsstructs.daterelance + INTERVAL '60 days' ) AS dateecheance,
 			orientsstructs.date_impression_relance AS dateimpression,
 			orientsstructs.daterelance AS daterelance
 		FROM orientsstructs
