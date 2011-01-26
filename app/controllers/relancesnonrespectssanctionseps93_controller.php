@@ -328,6 +328,7 @@
 
 					$this->Relancenonrespectsanctionep93->begin();
 
+					$success = true;
 					if( ( $origine == 'orientstruct' && $this->data['Relancenonrespectsanctionep93']['numrelance'] == 3 ) || ( $origine == 'contratinsertion' && $this->data['Relancenonrespectsanctionep93']['numrelance'] == 2 ) ) {
 						$dossierep = array(
 							'Dossierep' => array(
