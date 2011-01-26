@@ -15,13 +15,13 @@
 	class ContratsinsertionController extends AppController
 	{
 
-		var $name = 'Contratsinsertion';
-		var $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'PersonneReferent' );
-		var $helpers = array( 'Ajax' );
-		var $components = array( 'RequestHandler', 'Gedooo' );
-		var $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
+		public $name = 'Contratsinsertion';
+		public $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'PersonneReferent' );
+		public $helpers = array( 'Ajax' );
+		public $components = array( 'RequestHandler', 'Gedooo' );
+		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
 
-		var $commeDroit = array(
+		public $commeDroit = array(
 			'view' => 'Contratsinsertion:index',
 			'add' => 'Contratsinsertion:edit'
 		);
@@ -81,7 +81,7 @@
 		*
 		*/
 
-		function _libelleTypeorientNiv0( $typeorient_id ) {
+		protected function _libelleTypeorientNiv0( $typeorient_id ) {
 			$typeorient_niv1_id = $this->Contratinsertion->Personne->Orientstruct->Typeorient->getIdLevel0( $typeorient_id );
 			$typeOrientation = $this->Contratinsertion->Personne->Orientstruct->Typeorient->find(
 				'first',
@@ -102,7 +102,7 @@
 		*
 		*/
 
-		function _referentStruct( $structurereferente_id ) {
+		protected function _referentStruct( $structurereferente_id ) {
 			$referents = $this->Contratinsertion->Structurereferente->Referent->find(
 				'all',
 				array(
@@ -123,7 +123,7 @@
 		*   Ajax pour les coordonnées du référent APRE
 		*/
 
-		function ajaxref( $referent_id = null ) { // FIXME
+		public function ajaxref( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 
 			if( !empty( $referent_id ) ) {
@@ -147,7 +147,7 @@
 		*   Ajax pour les coordonnées de la structure référente liée
 		*/
 
-		function ajaxstruct( $structurereferente_id = null ) { // FIXME
+		public function ajaxstruct( $structurereferente_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$this->set( 'typesorients', $this->Typeorient->find( 'list', array( 'fields' => array( 'lib_type_orient' ) ) ) );
 
@@ -369,7 +369,7 @@
 		*
 		*/
 
-		function _add_edit( $id = null ) {
+		protected function _add_edit( $id = null ) {
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				if( $this->action == 'edit' ) {
@@ -796,7 +796,7 @@
 		*
 		*/
 
-		function valider( $contratinsertion_id = null ) {
+		public function valider( $contratinsertion_id = null ) {
 			$contratinsertion = $this->Contratinsertion->find(
 				'first',
 				array(
@@ -852,7 +852,7 @@
 		*
 		*/
 
-		function notificationsop( $id = null ) {
+		public function notificationsop( $id = null ) {
 			$qual = $this->Option->qual();
 			$typevoie = $this->Option->typevoie();
 			$duree_engag_cg66 = $this->Option->duree_engag_cg66();
