@@ -240,9 +240,13 @@
 				}
 
 				// Calcul du rang de la relance
-				$numrelance_pcd = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->find(
-					'count',
+				$relances_pcd = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->find(
+					'all',
 					array(
+						'fields' => array(
+							'Nonrespectsanctionep93.id',
+							'Relancenonrespectsanctionep93.daterelance',
+						),
 						'conditions' => array(
 							'Nonrespectsanctionep93.contratinsertion_id' => $contratinsertion_id,
 							'Nonrespectsanctionep93.orientstruct_id' => $orientstruct_id,
@@ -261,9 +265,15 @@
 								)
 							),
 						),
+						'order' => array( 'Relancenonrespectsanctionep93.daterelance DESC' )
 					)
 				);
+				$numrelance_pcd = count( $relances_pcd );
 				$numrelance = ( $numrelance_pcd + 1 );
+
+				$data = Set::merge( ( $origine == 'contratinsertion' ? $contratinsertion : $orientstruct ), $relances_pcd[0] );
+				$daterelance_min = $this->Relancenonrespectsanctionep93->dateRelanceMinimale( $origine, $numrelance, $data );
+				$this->set( 'daterelance_min', $daterelance_min );
 
 				// Calcul du rang de passage
 				$rgpassage_pcd = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->find(
