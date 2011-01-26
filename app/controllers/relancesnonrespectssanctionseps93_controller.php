@@ -70,48 +70,73 @@
 
 			$relances = array();
 			if( !empty( $conditions['OR'] ) ) {
+				$personne = $this->Nonrespectsanctionep93->Orientstruct->Personne->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Personne.id' => $personne_id
+						),
+						'contain' => array(
+							'Foyer' => array(
+								'Dossier',
+								'Adressefoyer' => array(
+									'conditions' => array(
+										'Adressefoyer.rgadr' => '01'
+									),
+									'Adresse'
+								)
+							)
+						),
+					)
+				);
+// debug( $personne );
 				$relances = $this->Nonrespectsanctionep93->find(
 					'all',
 					array(
-						'conditions' => $conditions,
-						'contain' => array(
-							'Orientstruct' => array(
-								'Personne' => array(
-									'Foyer' => array(
-										'Dossier',
-										'Adressefoyer' => array(
-											'conditions' => array(
-												'Adressefoyer.rgadr' => '01'
-											),
-											'Adresse'
-										)
-									)
-								)
-							),
-							'Contratinsertion' => array(
-								'Personne' => array(
-									'Foyer' => array(
-										'Dossier',
-										'Adressefoyer' => array(
-											'conditions' => array(
-												'Adressefoyer.rgadr' => '01'
-											),
-											'Adresse'
-										)
-									)
-								)
-							),
-							'Relancenonrespectsanctionep93' => array(
-								'order' => array( 'Relancenonrespectsanctionep93.daterelance DESC' ),
-								'limit' => 1
-							)
+						'fields' => array(
+							'Orientstruct.id',
+							'Orientstruct.date_valid',
+							'Contratinsertion.id',
+							'Contratinsertion.df_ci',
+							'Relancenonrespectsanctionep93.numrelance',
+							'Relancenonrespectsanctionep93.daterelance',
 						),
-						'order' => array( 'Nonrespectsanctionep93.created DESC' ),
+						'conditions' => $conditions,
+						'joins' => array(
+							array(
+								'table'      => 'relancesnonrespectssanctionseps93',
+								'alias'      => 'Relancenonrespectsanctionep93',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Relancenonrespectsanctionep93.nonrespectsanctionep93_id = Nonrespectsanctionep93.id'
+								)
+							),
+							array(
+								'table'      => 'orientsstructs',
+								'alias'      => 'Orientstruct',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Orientstruct.id = Nonrespectsanctionep93.orientstruct_id'
+								)
+							),
+							array(
+								'table'      => 'contratsinsertion',
+								'alias'      => 'Contratinsertion',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Contratinsertion.id = Nonrespectsanctionep93.contratinsertion_id'
+								)
+							),
+						),
+						'order' => array( 'Relancenonrespectsanctionep93.daterelance DESC', 'Relancenonrespectsanctionep93.numrelance DESC' )
 					)
 				);
 			}
 
-			$this->set( compact( 'relances', 'erreurs' ) );
+			$this->set( compact( 'relances', 'erreurs', 'personne' ) );
 			$this->set( 'personne_id', $personne_id );
 		}
 
@@ -176,6 +201,7 @@
 					'first',
 					array(
 						'conditions' => array(
+							'Orientstruct.personne_id' => $personne_id,
 							'Orientstruct.statut_orient' => 'Orienté',
 							'Orientstruct.date_valid IS NOT NULL',
 							'Orientstruct.date_impression IS NOT NULL',
@@ -237,6 +263,7 @@
 						),
 					)
 				);
+				$numrelance = ( $numrelance_pcd + 1 );
 
 				// Calcul du rang de passage
 				$rgpassage_pcd = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->find(
@@ -252,20 +279,85 @@
 					)
 				);
 
-				$this->set( compact( 'origine', 'contratinsertion_id' ) );
+				$nonrespectsanctionep93 = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Nonrespectsanctionep93.contratinsertion_id' => $contratinsertion_id,
+							'Nonrespectsanctionep93.orientstruct_id' => $orientstruct_id,
+							'Nonrespectsanctionep93.origine' => $origine,
+							'Nonrespectsanctionep93.dossierep_id IS NULL',
+							'Nonrespectsanctionep93.active' => 1,
+						)
+					)
+				);
+
+				$this->set( compact( 'origine', 'numrelance' ) );
 
 				if( !empty( $this->data ) ) {
-// 					debug( $this->data );
-					$this->Relancenonrespectsanctionep93->begin();
+					if( empty( $this->data['Nonrespectsanctionep93']['id'] ) ) {
+						unset( $this->data['Nonrespectsanctionep93']['id'] );
+					}
+					if( empty( $this->data['Relancenonrespectsanctionep93']['id'] ) ) {
+						unset( $this->data['Relancenonrespectsanctionep93']['id'] );
+					}
+					if( !empty( $nonrespectsanctionep93 ) ) {
+						$this->data['Nonrespectsanctionep93']['id'] = $nonrespectsanctionep93['Nonrespectsanctionep93']['id'];
+					}
+
 					$this->data['Nonrespectsanctionep93']['orientstruct_id'] = $orientstruct_id;
 					$this->data['Nonrespectsanctionep93']['contratinsertion_id'] = $contratinsertion_id;
 					$this->data['Nonrespectsanctionep93']['origine'] = $origine;
-					$this->data['Relancenonrespectsanctionep93']['numrelance'] = ( $numrelance_pcd + 1 );
 					$this->data['Nonrespectsanctionep93']['rgpassage'] = ( $rgpassage_pcd + 1 );
+
+					$this->data['Relancenonrespectsanctionep93']['numrelance'] = $numrelance;
+
+					if( $origine == 'contratinsertion' ) {
+						$timediff = Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer{$numrelance}" );
+					}
+					else {
+						$timediff = Configure::read( "Nonrespectsanctionep93.relanceCerCer{$numrelance}" );
+					}
+
+					$this->data['Relancenonrespectsanctionep93']['dateecheance'] = date(
+						'Y-m-d',
+						strtotime(
+							"{$this->data['Relancenonrespectsanctionep93']['daterelance']['year']}-{$this->data['Relancenonrespectsanctionep93']['daterelance']['month']}-{$this->data['Relancenonrespectsanctionep93']['daterelance']['day']}"
+						) + ( $timediff * 24 * 60 * 60 )
+					);
+
+					$this->Relancenonrespectsanctionep93->begin();
+
+					if( ( $origine == 'orientstruct' && $this->data['Relancenonrespectsanctionep93']['numrelance'] == 3 ) || ( $origine == 'contratinsertion' && $this->data['Relancenonrespectsanctionep93']['numrelance'] == 2 ) ) {
+						$dossierep = array(
+							'Dossierep' => array(
+								'personne_id' => $personne_id,
+								'themeep' => 'nonrespectssanctionseps93',
+							),
+						);
+
+						$this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->create( $dossierep );
+						$success = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->save();
+
+						$this->data['Nonrespectsanctionep93']['dossierep_id'] = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->id;
+					}
+
 					$this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->create( $this->data );
-					$success = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->save();
+					$success = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->save() && $success;
+
+					$this->data['Relancenonrespectsanctionep93']['nonrespectsanctionep93_id'] = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->id;
+
+					$this->Relancenonrespectsanctionep93->create( $this->data );
+					$success = $this->Relancenonrespectsanctionep93->save() && $success;
+
 					$this->_setFlashResult( 'Save', $success );
-					$this->Relancenonrespectsanctionep93->rollback();
+					if( $success ) {
+						$this->Relancenonrespectsanctionep93->commit();
+						$this->redirect( array( 'action' => 'index', $personne_id ) );
+					}
+					else {
+						$this->Relancenonrespectsanctionep93->rollback();
+					}
 				}
 			}
 

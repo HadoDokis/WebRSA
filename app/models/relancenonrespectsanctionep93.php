@@ -32,8 +32,9 @@
 		);
 
 		/**
-		 * Fonction de sauvegarde de la cohorte
-		 */
+		* Fonction de sauvegarde de la cohorte
+		*/
+
 		public function saveCohorte($newdata, $data) {
 			$success = true;
 			foreach( $newdata as $relance ) {

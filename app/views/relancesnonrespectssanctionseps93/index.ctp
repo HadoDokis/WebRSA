@@ -17,11 +17,15 @@
 
 	<?php if( !empty( $erreurs ) ):?>
 		<div class="error_message">
+			<?php if( count( $erreurs ) > 1 ):?>
 			<ul>
 				<?php foreach( $erreurs as $erreur ):?>
 					<li><?php echo __d( 'relancenonrespectsanctionep93', "Erreur.{$erreur}", true );?></li>
 				<?php endforeach;?>
 			</ul>
+			<?php else:?>
+				<p><?php echo __d( 'relancenonrespectsanctionep93', "Erreur.{$erreurs[0]}", true );?></p>
+			<?php endif;?>
 		</div>
 	<?php endif;?>
 
@@ -46,34 +50,32 @@
 			<tbody>
 				<?php foreach( $relances as $i => $relance ):?>
 					<?php
-						if( isset( $relance['Orientstruct']['Personne'] ) ) {
-							$personne = $relance['Orientstruct'];
+						if( isset( $relance['Orientstruct']['id'] ) && !empty( $relance['Orientstruct']['id'] ) ) {
 							$date = date_short( @$relance['Orientstruct']['date_valid'] );
 							$nbjours = round( ( mktime() - strtotime( @$relance['Orientstruct']['date_valid'] ) ) / ( 60 * 60 * 24 ) );
 							$origine = 'Non contractualisation';
 						}
 						else {
-							$personne = $relance['Contratinsertion'];
 							$date = date_short( @$relance['Contratinsertion']['df_ci'] );
 							$nbjours = round( ( mktime() - strtotime( @$relance['Contratinsertion']['df_ci'] ) ) / ( 60 * 60 * 24 ) );
 							$origine = 'Non renouvellement';
 						}
 					?>
 					<tr class="<?php echo ( ( $i %2 ) ? 'even' : 'odd' );?>">
-						<td><?php echo h( @$personne['Personne']['Foyer']['Dossier']['matricule'] );?></td>
+						<td><?php echo h( @$personne['Foyer']['Dossier']['matricule'] );?></td>
 						<td><?php echo h( @$personne['Personne']['nom'] );?></td>
 						<td><?php echo h( @$personne['Personne']['prenom'] );?></td>
-						<td><?php echo h( @$personne['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['localite'] );?></td>
+						<td><?php echo h( @$personne['Foyer']['Adressefoyer'][0]['Adresse']['localite'] );?></td>
 						<td><?php echo h( $origine );?></td>
 						<td><?php echo h( $date );?></td>
 						<td><?php echo h( $nbjours );?></td>
-						<td><?php echo date_short( @$relance['Relancenonrespectsanctionep93'][0]['daterelance'] );?></td>
+						<td><?php echo date_short( @$relance['Relancenonrespectsanctionep93']['daterelance'] );?></td>
 						<td><?php
-							if( @$relance['Relancenonrespectsanctionep93'][0]['numrelance'] == 1 ) {
+							if( @$relance['Relancenonrespectsanctionep93']['numrelance'] == 1 ) {
 								echo '1ère relance';
 							}
 							else {
-								echo "{$relance['Relancenonrespectsanctionep93'][0]['numrelance']}ème relance";
+								echo "{$relance['Relancenonrespectsanctionep93']['numrelance']}ème relance";
 							}
 						?></td>
 						<td><?php echo $xhtml->viewLink( 'Voir', array( '#' ), false );?></td>
@@ -85,5 +87,6 @@
 	<?php endif;?>
 
 	<?php /*debug( $relances );*/ ?>
+	<?php /*debug( $personne );*/ ?>
 </div>
 <div class="clearer"><hr /></div>
