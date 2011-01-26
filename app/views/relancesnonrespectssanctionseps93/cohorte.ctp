@@ -106,6 +106,7 @@
 						'.( ( $this->data['Relance']['contrat'] == 1 ) ? '<th>Nombre de jours depuis la fin du contrat</th>' : '' ).'
 						'.( ( $this->data['Relance']['numrelance'] == 2 ) ? '<th>Date de première relance</th>' : '' ).'
 						'.( ( $this->data['Relance']['numrelance'] == 3 ) ? '<th>Date de seconde relance</th>' : '' ).'
+						<!--<th>Date d\'échéance minimale</th>-->
 						<th style="width: 19em;">'.__d( 'relancenonrespectsanctionep93', 'Relancenonrespectsanctionep93.daterelance', true ).'</th>
 						<th style="width: 8em;">'.__d( 'relancenonrespectsanctionep93', 'Relancenonrespectsanctionep93.arelancer', true ).'</th>
 						<th class="innerTableHeader">Informations complémentaires</th>

@@ -135,7 +135,7 @@
 					)
 				);
 			}
-			
+
 			$this->set( compact( 'relances', 'erreurs', 'personne' ) );
 			$this->set( 'personne_id', $personne_id );
 		}
@@ -318,13 +318,6 @@
 					else {
 						$timediff = Configure::read( "Nonrespectsanctionep93.relanceCerCer{$numrelance}" );
 					}
-
-					$this->data['Relancenonrespectsanctionep93']['dateecheance'] = date(
-						'Y-m-d',
-						strtotime(
-							"{$this->data['Relancenonrespectsanctionep93']['daterelance']['year']}-{$this->data['Relancenonrespectsanctionep93']['daterelance']['month']}-{$this->data['Relancenonrespectsanctionep93']['daterelance']['day']}"
-						) + ( $timediff * 24 * 60 * 60 )
-					);
 
 					$this->Relancenonrespectsanctionep93->begin();
 

@@ -545,7 +545,6 @@ CREATE TABLE relancesnonrespectssanctionseps93 (
 	id      					SERIAL NOT NULL PRIMARY KEY,
 	nonrespectsanctionep93_id	INTEGER NOT NULL REFERENCES nonrespectssanctionseps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	numrelance					INTEGER NOT NULL DEFAULT 1,
-	dateecheance				DATE NOT NULL,
 	dateimpression				DATE DEFAULT NULL,
 	daterelance					DATE NOT NULL
 );
@@ -557,10 +556,6 @@ CREATE INDEX relancesnonrespectssanctionseps93_nonrespectsanctionep93_id_idx
 CREATE INDEX relancesnonrespectssanctionseps93_numrelance_idx
 	ON relancesnonrespectssanctionseps93
 	(numrelance);
-
-CREATE INDEX relancesnonrespectssanctionseps93_dateecheancee_idx
-	ON relancesnonrespectssanctionseps93
-	(dateecheance);
 
 CREATE UNIQUE INDEX relancesnonrespectssanctionseps93_nonrespectsanctionep93_id_numrelance_idx
 	ON relancesnonrespectssanctionseps93
@@ -605,11 +600,10 @@ INSERT INTO nonrespectssanctionseps93 ( orientstruct_id, origine, active, rgpass
 			orientsstructs.daterelance IS NOT NULL
 			AND orientsstructs.statutrelance = 'R';
 
-INSERT INTO relancesnonrespectssanctionseps93 ( nonrespectsanctionep93_id, numrelance, dateecheance, dateimpression, daterelance )
+INSERT INTO relancesnonrespectssanctionseps93 ( nonrespectsanctionep93_id, numrelance, dateimpression, daterelance )
 	SELECT
 			nonrespectssanctionseps93.id AS nonrespectsanctionep93_id,
 			1 AS numrelance,
-			( orientsstructs.daterelance + INTERVAL '60 days' ) AS dateecheance,
 			orientsstructs.date_impression_relance AS dateimpression,
 			orientsstructs.daterelance AS daterelance
 		FROM orientsstructs

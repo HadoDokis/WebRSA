@@ -14,7 +14,7 @@
 		public $name = 'Relancenonrespectsanctionep93';
 
 		public $recursive = -1;
-		
+
 		public $validate = array(
 			'daterelance' => array(
 				array(
@@ -43,7 +43,7 @@
 				'order' => ''
 			)
 		);
-		
+
 		public function checkForRelance($check) {
 			$nonrespectsanctionep93 = $this->Nonrespectsanctionep93->find(
 				'first',
@@ -118,7 +118,7 @@
 						break;
 				}
 			}
-			
+
 			if ( $dateminrelance >= strtotime( $this->data['Relancenonrespectsanctionep93']['daterelance'] ) ) {
 				$possible = false;
 			}
@@ -146,9 +146,6 @@
 							$personne_id = $this->Nonrespectsanctionep93->Contratinsertion->field( 'personne_id' );
 						}
 
-						$dateecheance = strtotime( "{$relance['daterelance']['year']}{$relance['daterelance']['month']}{$relance['daterelance']['day']}" );
-						$dateecheance = date( 'Y-m-d', strtotime( "+{$days} days", $dateecheance ) );
-
 						$nbpassagespcd = $this->Nonrespectsanctionep93->Dossierep->find(
 							'count',
 							array(
@@ -170,7 +167,6 @@
 								'Relancenonrespectsanctionep93' => array(
 									array(
 										'numrelance' => $relance['numrelance'],
-										'dateecheance' => $dateecheance,
 										'daterelance' => $relance['daterelance']
 									)
 								)
@@ -187,7 +183,6 @@
 								'Relancenonrespectsanctionep93' => array(
 									array(
 										'numrelance' => $relance['numrelance'],
-										'dateecheance' => $dateecheance,
 										'daterelance' => $relance['daterelance']
 									)
 								)
@@ -207,14 +202,10 @@
 							$days = Configure::read( 'Nonrespectsanctionep93.relanceCerCer2' );
 						}
 
-						$dateecheance = strtotime( "{$relance['daterelance']['year']}{$relance['daterelance']['month']}{$relance['daterelance']['day']}" );
-						$dateecheance = date( 'Y-m-d', strtotime( "+{$days} days", $dateecheance ) );
-
 						$item = array(
 							'Relancenonrespectsanctionep93' => array(
 								'nonrespectsanctionep93_id' => $relance['nonrespectsanctionep93_id'],
 								'numrelance' => $relance['numrelance'],
-								'dateecheance' => $dateecheance,
 								'daterelance' => $relance['daterelance']
 							)
 						);
@@ -255,14 +246,11 @@
 					case 3:
 						if( $data['Relance']['contrat'] == 0 ) {
 							$days = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer3' );
-							$dateecheance = strtotime( "{$relance['daterelance']['year']}{$relance['daterelance']['month']}{$relance['daterelance']['day']}" );
-							$dateecheance = date( 'Y-m-d', strtotime( "+{$days} days", $dateecheance ) );
 
 							$item = array(
 								'Relancenonrespectsanctionep93' => array(
 									'nonrespectsanctionep93_id' => $relance['nonrespectsanctionep93_id'],
 									'numrelance' => $relance['numrelance'],
-									'dateecheance' => $dateecheance,
 									'daterelance' => $relance['daterelance']
 								)
 							);
@@ -549,7 +537,7 @@
 						);
 				$fieldssup = array(
 					'Nonrespectsanctionep93.id',
-					'Relancenonrespectsanctionep93.daterelance'
+					'Relancenonrespectsanctionep93.daterelance',
 				);
 				$fields = array_merge($fields, $fieldssup);
 			}
