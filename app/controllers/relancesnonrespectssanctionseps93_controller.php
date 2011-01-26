@@ -135,7 +135,7 @@
 					)
 				);
 			}
-
+			
 			$this->set( compact( 'relances', 'erreurs', 'personne' ) );
 			$this->set( 'personne_id', $personne_id );
 		}
@@ -152,9 +152,9 @@
 
 					// On filtre les relances en attente
 					$newData = array();
-					foreach( $data as $relance ) {
+					foreach( $data as $i => $relance ) {
 						if( $relance['arelancer'] == 'R' ) {
-							$newData[] = $relance;
+							$newData[$i] = $relance;
 						}
 					}
 

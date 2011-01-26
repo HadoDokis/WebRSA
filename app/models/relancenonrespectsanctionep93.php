@@ -14,6 +14,19 @@
 		public $name = 'Relancenonrespectsanctionep93';
 
 		public $recursive = -1;
+		
+		public $validate = array(
+			'daterelance' => array(
+				array(
+					'rule' => 'date',
+					'message' => 'Merci de rentrer une date valide'
+				),
+				array(
+					'rule' => array( 'checkForRelance' ),
+					'message' => 'Date de relance trop récente'
+				)
+			)
+		);
 
 		public $actsAs = array(
 			'Autovalidate',
@@ -30,6 +43,87 @@
 				'order' => ''
 			)
 		);
+		
+		public function checkForRelance($check) {
+			$nonrespectsanctionep93 = $this->Nonrespectsanctionep93->find(
+				'first',
+				array(
+					'conditions'=>array(
+						'Nonrespectsanctionep93.id'=>$this->data['Relancenonrespectsanctionep93']['nonrespectsanctionep93_id']
+					),
+					'contain'=>false
+				)
+			);
+			$possible = true;
+			if ($nonrespectsanctionep93['Nonrespectsanctionep93']['origine']=='orientstruct') {
+				switch($this->data['Relancenonrespectsanctionep93']['numrelance']) {
+					case 1:
+						$orientstruct = $this->Nonrespectsanctionep93->Orientstruct->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Orientstruct.id' => $nonrespectsanctionep93['Nonrespectsanctionep93']['orientstruct_id']
+								),
+								'contain' => false
+							)
+						);
+						$nbjours = Configure::read('Nonrespectsanctionep93.relanceOrientstructCer1');
+						$dateminrelance = strtotime( "+{$nbjours} days", strtotime( $orientstruct['Orientstruct']['date_impression'] ) );
+						break;
+					case 2:
+					case 3:
+						$relanceprecedente = $this->find(
+							'first',
+							array(
+								'conditions'=>array(
+									'Relancenonrespectsanctionep93.numrelance' => $this->data['Relancenonrespectsanctionep93']['numrelance']-1,
+									'Relancenonrespectsanctionep93.nonrespectsanctionep93_id' => $this->data['Relancenonrespectsanctionep93']['nonrespectsanctionep93_id']
+								),
+								'contain'=>false
+							)
+						);
+						$nbjours = Configure::read('Nonrespectsanctionep93.relanceOrientstructCer'.$this->data['Relancenonrespectsanctionep93']['numrelance']);
+						$dateminrelance = strtotime( "+{$nbjours} days", strtotime( $relanceprecedente['Relancenonrespectsanctionep93']['daterelance'] ) );
+						break;
+				}
+			}
+			else {
+				switch($this->data['Relancenonrespectsanctionep93']['numrelance']) {
+					case 1:
+						$contratinsertion = $this->Nonrespectsanctionep93->Contratinsertion->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Contratinsertion.id' => $nonrespectsanctionep93['Nonrespectsanctionep93']['contratinsertion_id']
+								),
+								'contain' => false
+							)
+						);
+						$nbjours = Configure::read('Nonrespectsanctionep93.relanceCerCer1');
+						$dateminrelance = strtotime( "+{$nbjours} days", strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) );
+						break;
+					case 2:
+						$relanceprecedente = $this->find(
+							'first',
+							array(
+								'conditions'=>array(
+									'Relancenonrespectsanctionep93.numrelance' => 1,
+									'Relancenonrespectsanctionep93.nonrespectsanctionep93_id' => $this->data['Relancenonrespectsanctionep93']['nonrespectsanctionep93_id']
+								),
+								'contain'=>false
+							)
+						);
+						$nbjours = Configure::read('Nonrespectsanctionep93.relanceCerCer2');
+						$dateminrelance = strtotime( "+{$nbjours} days", strtotime( $relanceprecedente['Relancenonrespectsanctionep93']['daterelance'] ) );
+						break;
+				}
+			}
+			
+			if ( $dateminrelance >= strtotime( $this->data['Relancenonrespectsanctionep93']['daterelance'] ) ) {
+				$possible = false;
+			}
+			return $possible;
+		}
 
 		/**
 		* Fonction de sauvegarde de la cohorte
@@ -37,7 +131,8 @@
 
 		public function saveCohorte($newdata, $data) {
 			$success = true;
-			foreach( $newdata as $relance ) {
+			$validationErrors = array( $this->alias => array() );
+			foreach( $newdata as $i => $relance ) {
 				switch( $data['Relance']['numrelance'] ) {
 					case 1:
 						if( $data['Relance']['contrat'] == 0 ) {
@@ -99,8 +194,10 @@
 							);
 						}
 
-
 						$success = $this->Nonrespectsanctionep93->saveAll( $item, array( 'atomic' => false ) ) && $success;
+						if( !empty( $this->Nonrespectsanctionep93->validationErrors ) ) {
+							$validationErrors['Relancenonrespectsanctionep93'][$i] = $this->Nonrespectsanctionep93->validationErrors['Relancenonrespectsanctionep93'][0];
+						}
 						break;
 					case 2:
 						if( $data['Relance']['contrat'] == 0 ) {
@@ -123,6 +220,10 @@
 						);
 						$this->create( $item );
 						$success = $this->save() && $success;
+
+						if( !empty( $this->validationErrors ) ) {
+							$validationErrors[$this->alias][$i] = $this->validationErrors;
+						}
 
 						if( $data['Relance']['contrat'] == 1 ) {
 							$this->Nonrespectsanctionep93->Contratinsertion->id = $relance['contratinsertion_id'];
@@ -168,6 +269,10 @@
 							$this->create( $item );
 							$success = $this->save() && $success;
 
+							if( !empty( $this->validationErrors ) ) {
+								$validationErrors[$this->alias][$i] = $this->validationErrors;
+							}
+
 							// Dossier EP
 							$this->Nonrespectsanctionep93->Orientstruct->id = $relance['orientstruct_id'];
 							$personne_id = $this->Nonrespectsanctionep93->Orientstruct->field( 'personne_id' );
@@ -198,6 +303,9 @@
 						break;
 				}
 			}
+
+			$this->validationErrors = $validationErrors[$this->alias];
+
 			return $success;
 		}
 
