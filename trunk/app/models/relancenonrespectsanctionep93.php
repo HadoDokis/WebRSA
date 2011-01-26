@@ -622,6 +622,26 @@
 
 				if( !empty( $results ) ) {
 					foreach( $results as $i => $result ) {
+						// Calcul de la date de relance minimale
+						if( $search['Relance.numrelance'] == 1 ) {
+							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+								'Y-m-d',
+								strtotime(
+									'+'.( Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ) + 1 ).' days',
+									strtotime( $result['Orientstruct']['date_impression'] )
+								)
+							);
+						}
+						else if( $search['Relance.numrelance'] > 1 ) {
+							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+								'Y-m-d',
+								strtotime(
+									'+'.( Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer{$search['Relance.numrelance']}" ) + 1 ).' days',
+									strtotime( $result['Relancenonrespectsanctionep93']['daterelance'] )
+								)
+							);
+						}
+
 						$results[$i]['Orientstruct']['nbjours'] = round(
 							//( mktime() - strtotime( $result['Orientstruct']['date_valid'] ) ) / ( 60 * 60 * 24 )
 							( mktime() - strtotime( $result['Orientstruct']['date_impression'] ) ) / ( 60 * 60 * 24 )
@@ -693,6 +713,26 @@
 
 				if( !empty( $results ) ) {
 					foreach( $results as $i => $result ) {
+						// Calcul de la date de relance minimale
+						if( $search['Relance.numrelance'] == 1 ) {
+							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+								'Y-m-d',
+								strtotime(
+									'+'.( Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' ) + 1 ).' days',
+									strtotime( $result['Contratinsertion']['df_ci'] )
+								)
+							);
+						}
+						else if( $search['Relance.numrelance'] > 1 ) {
+							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+								'Y-m-d',
+								strtotime(
+									'+'.( Configure::read( "Nonrespectsanctionep93.relanceCerCer{$search['Relance.numrelance']}" ) + 1 ).' days',
+									strtotime( $result['Relancenonrespectsanctionep93']['daterelance'] )
+								)
+							);
+						}
+
 						$results[$i]['Contratinsertion']['nbjours'] = round(
 							( mktime() - strtotime( $result['Contratinsertion']['df_ci'] ) ) / ( 60 * 60 * 24 )
 						);
