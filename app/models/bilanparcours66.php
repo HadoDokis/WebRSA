@@ -49,6 +49,21 @@
 				)
 			)
 		);
+		
+		public $validate = array(
+			'datebilan' => array(
+				array(
+					'rule' => array('datePassee'),
+					'message' => 'Merci de choisir une date antérieure à la date du jour'
+				),
+				array(
+					'rule' => 'date',
+					'message' => 'Merci de rentrer une date valide',
+					'allowEmpty' => false,
+					'required' => true
+				)
+			)
+		);
 
 		public $belongsTo = array(
 			'Dossierep' => array(
@@ -313,7 +328,8 @@
 
 		public function saisine( $data ) {
 			// Saisine parcours
-			if( $data['Bilanparcours66']['proposition'] == 'parcours' ) {
+			$success = false;
+			if( isset($data['Bilanparcours66']['proposition']) && $data['Bilanparcours66']['proposition'] == 'parcours' ) {
 				$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
 				$this->create( $data );
 				if( $success = $this->validates() ) {
@@ -380,7 +396,7 @@
 				}
 			}
 			// Saisine audition
-			else if( $data['Bilanparcours66']['proposition'] == 'audition' ) {
+			else if( isset($data['Bilanparcours66']['proposition']) && $data['Bilanparcours66']['proposition'] == 'audition' ) {
 				$data[$this->alias]['saisineepparcours'] = '0';
 // debug( $data );
 				$this->create( $data );
