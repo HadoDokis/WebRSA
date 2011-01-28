@@ -48,6 +48,11 @@
 			$options['Saisineepbilanparcours66']['typeorient_id'] = $this->Bilanparcours66->Typeorient->listOptions();
 			$options['Saisineepbilanparcours66']['structurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag_cg66();
+			
+			$typesorients = $this->Bilanparcours66->Typeorient->find('list');
+			$this->set(compact('typesorients'));
+			$structuresreferentes = $this->Bilanparcours66->Structurereferente->find('list');
+			$this->set(compact('structuresreferentes'));
 
 			$this->set( compact( 'options' ) );
 		}
@@ -76,6 +81,7 @@
 
 			$this->paginate = array(
 				'fields' => array(
+					'Bilanparcours66.id',
 					'Bilanparcours66.referent_id',
 					'Bilanparcours66.orientstruct_id',
 					'Bilanparcours66.contratinsertion_id',
@@ -84,8 +90,14 @@
 					'Bilanparcours66.saisineepparcours',
 					'Bilanparcours66.maintienorientation',
 					'Bilanparcours66.changereferent',
-					'Bilanparcours66.created',
-					'Saisineepbilanparcours66.id'
+					'Bilanparcours66.proposition',
+					'Bilanparcours66.choixparcours',
+					'Bilanparcours66.maintienorientation',
+					'Bilanparcours66.examenaudition',
+					'Bilanparcours66.datebilan',
+					'Saisineepbilanparcours66.id',
+					'Saisineepbilanparcours66.typeorient_id',
+					'Saisineepbilanparcours66.structurereferente_id'
 				),
 				'contain' => array(
 					'Orientstruct' => array(
@@ -114,7 +126,8 @@
 							'fields' => array(
 								'etapedossierep'
 							)
-						)
+						),
+						'Nvsrepreorient66'
 					),
 					'Referent'
 				),
@@ -144,8 +157,16 @@
 						@$bilansparcours66[$key]['Contratinsertion']['Personne']['prenom']
 					)
 				);
+				
+				if (empty($bilanparcours66['Bilanparcours66']['choixparcours']) && !empty($bilanparcours66['Bilanparcours66']['examenaudition'])) {
+					$bilansparcours66[$key]['Bilanparcours66']['choixparcours'] = $bilanparcours66['Bilanparcours66']['examenaudition'];
+				}
+				elseif (empty($bilanparcours66['Bilanparcours66']['choixparcours'])) {
+					($bilanparcours66['Bilanparcours66']['maintienorientation']==0) ? $bilansparcours66[$key]['Bilanparcours66']['choixparcours']='reorientation' : $bilansparcours66[$key]['Bilanparcours66']['choixparcours']='maintien';
+				}
 			}
 
+			$this->_setOptions();
 			$this->set( compact( 'bilansparcours66', 'nborientstruct' )  );
 		}
 
@@ -162,10 +183,10 @@
 		* TODO: que modifie-t'on ? Dans quel cas peut-on supprimer ?
 		*/
 
-// 		public function edit() {
-// 			$args = func_get_args();
-// 			call_user_func_array( array( $this, '_add_edit' ), $args );
-// 		}
+		public function edit() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
 
 		/**
 		* Ajout ou modification du bilan de parcours d'un allocataire.
@@ -188,7 +209,14 @@
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 					if( $this->action == 'edit' ) {
-						$id = $this->Bilanparcours->field( 'personne_id', array( 'id' => $id ) );
+						$bilanparcours66 = $this->Bilanparcours66->find(
+							'first',
+							array(
+								'contain' => false,
+								'conditions' => array( 'Bilanparcours66.id' => $id )
+							)
+						);
+						$id = $this->Bilanparcours66->Orientstruct->field( 'personne_id' );
 					}
 					$this->redirect( array( 'action' => 'index', $id ) );
 			}
@@ -198,7 +226,7 @@
 			}
 			// TODO
 			else if( $this->action == 'edit' ) {
-				/*$bilanparcours66 = $this->Bilanparcours66->find(
+				$bilanparcours66 = $this->Bilanparcours66->find(
 					'first',
 					array(
 						'contain' => false,
@@ -208,7 +236,7 @@
 				$this->assert( !empty( $bilanparcours66 ), 'error404' );
 
 				$this->Bilanparcours66->Orientstruct->id = $bilanparcours66['Bilanparcours66']['orientstruct_id'];
-				$personne_id = $this->Bilanparcours66->Orientstruct->field( 'personne_id' );*/
+				$personne_id = $this->Bilanparcours66->Orientstruct->field( 'personne_id' );
 			}
 
 			// INFO: pour passer de 74 à 29 modèles utilisés lors du find count
@@ -227,8 +255,13 @@
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->data ) ) {
 				$this->Bilanparcours66->begin();
-
-				$success = $this->Bilanparcours66->sauvegardeBilan( $this->data );
+				
+				if ($this->action=='add') {
+					$success = $this->Bilanparcours66->sauvegardeBilan( $this->data );
+				}
+				else {
+					$success = $this->Bilanparcours66->save( $this->data );
+				}
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
@@ -241,57 +274,94 @@
 			}
 			// Premier accès à la page
 			else {
-				if( $this->action == 'add' ) {
-					$orientstruct = $this->Bilanparcours66->Orientstruct->find(
-						'first',
-						array(
-							'fields' => array(
-								'Orientstruct.id',
-								'Orientstruct.personne_id',
-							),
-							'conditions' => array(
-								'Orientstruct.personne_id' => $id,
-								'Orientstruct.date_valid IS NOT NULL'
-							),
-							'contain' => false,
-							'order' => array( 'Orientstruct.date_valid DESC' )
-						)
-					);
-
-					$this->assert( !empty( $orientstruct ), 'error500' );
-
-					$this->data = array(
-						'Bilanparcours66' => array(
-							'orientstruct_id' => $orientstruct['Orientstruct']['id']
-						)
-					);
-
-					$contratinsertion = $this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->find(
-						'first',
-						array(
-							'conditions'=>array(
-								'Contratinsertion.personne_id' => $id
-							),
-							'order'=>array(
-								'Contratinsertion.rg_ci DESC'
-							),
-							'contain'=>array(
-								'Structurereferente',
-								'Referent'
-							)
-						)
-					);
-
-					$this->data['Bilanparcours66']['structurereferente_id'] = $contratinsertion['Structurereferente']['id'];
-					$this->data['Bilanparcours66']['referent_id'] = $contratinsertion['Structurereferente']['id'].'_'.$contratinsertion['Referent']['id'];
-					$this->data = Set::insert($this->data, 'Pe', $this->data);
-				}
-				else if( $this->action == 'edit' ) {
+				if( $this->action == 'edit' ) {
 					$this->data = $bilanparcours66;
-					$this->data = Set::insert($this->data, 'Pe', $this->data);
+				}
+				
+				$orientstruct = $this->Bilanparcours66->Orientstruct->find(
+					'first',
+					array(
+						'fields' => array(
+							'Orientstruct.id',
+							'Orientstruct.personne_id',
+						),
+						'conditions' => array(
+							'Orientstruct.personne_id' => $personne_id,
+							'Orientstruct.date_valid IS NOT NULL'
+						),
+						'contain' => false,
+						'order' => array( 'Orientstruct.date_valid DESC' )
+					)
+				);
+
+				$this->assert( !empty( $orientstruct ), 'error500' );
+
+				$this->data['Bilanparcours66']['orientstruct_id'] = $orientstruct['Orientstruct']['id'];
+
+				$contratinsertion = $this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->find(
+					'first',
+					array(
+						'conditions'=>array(
+							'Contratinsertion.personne_id' => $personne_id
+						),
+						'order'=>array(
+							'Contratinsertion.rg_ci DESC'
+						),
+						'contain'=>array(
+							'Structurereferente',
+							'Referent'
+						)
+					)
+				);
+				
+				$this->data['Bilanparcours66']['structurereferente_id'] = $contratinsertion['Structurereferente']['id'];
+				$this->data['Bilanparcours66']['referent_id'] = $contratinsertion['Structurereferente']['id'].'_'.$contratinsertion['Referent']['id'];
+				$this->data = Set::insert($this->data, 'Pe', $this->data);
+			}
+			
+			if (!isset($this->data['Bilanparcours66']['sitfam']) || empty($this->data['Bilanparcours66']['sitfam'])) {
+				$sitfam = $this->Bilanparcours66->Orientstruct->Personne->Foyer->find(
+					'first',
+					array(
+						'fields' => array(
+							'Foyer.id',
+							'Foyer.sitfam'
+						),
+						'joins' => array(
+							array(
+								'table' => 'personnes',
+								'alias' => 'Personne',
+								'type' => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Personne.foyer_id = Foyer.id',
+									'Personne.id' => $personne_id
+								)
+							)
+						),
+						'contain'=>false
+					)
+				);
+				$nbenfant = $this->Bilanparcours66->Orientstruct->Personne->Foyer->nbEnfants($sitfam['Foyer']['id']);
+				///FIXME: voir si isolement correspond à l'isolement prévu dans la table foyer
+				//if ($sitfam['Foyer']['sitfam'] == 'ISO') {
+				if (in_array($sitfam['Foyer']['sitfam'], array('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU'))) {
+					if ($nbenfant==0) {
+						$this->data['Bilanparcours66']['sitfam']='isole';
+					}
+					else {
+						$this->data['Bilanparcours66']['sitfam']='isoleenfant';
+					}
+				}
+				elseif (in_array($sitfam['Foyer']['sitfam'], array('MAR', 'PAC', 'RPA', 'RVC', 'VIM'))) {
+					if ($nbenfant==0) {
+						$this->data['Bilanparcours66']['sitfam']='couple';
+					}
+					else {
+						$this->data['Bilanparcours66']['sitfam']='coupleenfant';
+					}
 				}
 			}
-
 
 			// INFO: si on utilise fields pour un modèle (le modèle principal ?), on n'a pas la relation belongsTo (genre Foyer belongsTo Dossier)
 			// INFO: http://stackoverflow.com/questions/3865349/containable-fails-to-join-in-belongsto-relationships-when-fields-are-used-in-ca

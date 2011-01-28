@@ -334,7 +334,57 @@ msgstr "Nouvelle structure préconisée"
 msgid "Pe.Bilanparcours66.datebilan"
 msgstr "Date du bilan de parcours"
 
+###############################################################################
+# nouvelles modifs pour le bilan du 07/01
+###############################################################################
 
+msgid "Bilanparcours66.saisineepl"
+msgstr "Saisine EPL"
 
+msgid "ENUM::SAISINEEPL::sanssaisine"
+msgstr "Sans saisine de l'EPL Parcours ou Audition"
 
+msgid "ENUM::SAISINEEPL::parcoursreorientoumaintien"
+msgstr "Saisine EPL Parcours pour réorientaton ou maintien"
 
+msgid "ENUM::SAISINEEPL::auditionmne"
+msgstr "Saisine EPL Audition à l'initiative de la Mission Nouveaux Emplois (MNE)"
+
+msgid "ENUM::SAISINEEPL::auditiondefautinsertion"
+msgstr "Saisine EPL Audition pour défaut d'insertion"
+
+msgid "Bilanparcours66.sitfam"
+msgstr "Situation familiale"
+
+msgid "ENUM::SITFAM::couple"
+msgstr "couple sans enfant"
+
+msgid "ENUM::SITFAM::coupleenfant"
+msgstr "couple avec enfant(s)"
+
+msgid "ENUM::SITFAM::isole"
+msgstr "isolé sans enfant"
+
+msgid "ENUM::SITFAM::isoleenfant"
+msgstr "isolé avec enfant(s)"
+
+msgid "Bilanparcours66.observbenefrealisationbilan"
+msgstr "Lors de la réalisation du bilan :"
+
+msgid "Bilanparcours66.observbenefcompterendu"
+msgstr "Compte rendu de l'audition (le cas échéant)"
+
+msgid "ENUM::PROPOSITION::audition"
+msgstr "EPL Audition"
+
+msgid "ENUM::PROPOSITION::parcours"
+msgstr "EPL Parcours"
+
+msgid "ENUM::PROPOSITION::traitement"
+msgstr "sans passage en EP"
+
+msgid "ENUM::CHOIXPARCOURS::DOD"
+msgstr "Défaut de conclusion"
+
+msgid "ENUM::CHOIXPARCOURS::DRD"
+msgstr "Non respect"

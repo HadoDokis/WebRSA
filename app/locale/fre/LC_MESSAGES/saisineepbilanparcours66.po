@@ -24,3 +24,12 @@ msgstr "Nouvelle orientation préconisée"
 
 msgid "Saisineepbilanparcours66.structurereferente_id"
 msgstr "Nouvelle structure préconisée"
+
+msgid "Saisineepbilanparcours66.propref"
+msgstr "Proposition du référent"
+
+msgid "Saisineepbilanparcours66.avisep"
+msgstr "Avis de l'EP"
+
+msgid "Saisineepbilanparcours66.decisioncg"
+msgstr "Décision du CG"

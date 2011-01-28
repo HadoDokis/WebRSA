@@ -429,6 +429,18 @@ ALTER TABLE bilansparcours66 ALTER COLUMN situationallocataire DROP NOT NULL;
 ALTER TABLE bilansparcours66 ALTER COLUMN bilanparcours DROP NOT NULL;
 ALTER TABLE bilansparcours66 ALTER COLUMN contratinsertion_id DROP NOT NULL;
 
+CREATE TYPE TYPE_SAISINEEPL AS ENUM ( 'sanssaisine', 'parcoursreorientoumaintien', 'auditionmne', 'auditiondefautinsertion' );
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'saisineepl', 'TYPE_SAISINEEPL');
+
+CREATE TYPE TYPE_SITFAMBILANPARCOURS AS ENUM ( 'couple', 'coupleenfant', 'isole', 'isoleenfant' );
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'sitfam', 'TYPE_SITFAMBILANPARCOURS');
+
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'observbenefrealisationbilan', 'TEXT');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'observbenefcompterendu', 'TEXT');
+
+CREATE TYPE TYPE_PROPOSITIONBILANPARCOURS AS ENUM ( 'audition', 'parcours', 'traitement' );
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'proposition', 'TYPE_PROPOSITIONBILANPARCOURS');
+
 -- -----------------------------------------------------------------------------
 -- Développement Thierry :
 -- -----------------------------------------------------------------------------
