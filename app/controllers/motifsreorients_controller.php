@@ -1,25 +1,18 @@
 <?php
-	class FonctionsmembresepsController extends AppController
+	class MotifsreorientsController extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2' );
-
-		protected function _setOptions() {
-			$options = array();
-			$this->set( compact( 'options' ) );
-		}
-
 
 		public function index() {
 			$this->paginate = array(
 				'fields' => array(
-					'Fonctionmembreep.id',
-					'Fonctionmembreep.name'
+					'Motifreorient.id',
+					'Motifreorient.name'
 				),
 				'limit' => 10
 			);
 
-			$this->_setOptions();
-			$this->set( 'fonctionmembreeps', $this->paginate( $this->Fonctionmembreep ) );
+			$this->set( 'motifsreorients', $this->paginate( $this->Motifreorient ) );
 		}
 
 		/**
@@ -46,8 +39,8 @@
 
 		protected function _add_edit( $id = null ) {
 			if( !empty( $this->data ) ) {
-				$this->Fonctionmembreep->create( $this->data );
-				$success = $this->Fonctionmembreep->save();
+				$this->Motifreorient->create( $this->data );
+				$success = $this->Motifreorient->save();
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
@@ -55,17 +48,16 @@
 				}
 			}
 			else if( $this->action == 'edit' ) {
-				$this->data = $this->Fonctionmembreep->find(
+				$this->data = $this->Motifreorient->find(
 					'first',
 					array(
 						'contain' => false,
-						'conditions' => array( 'Fonctionmembreep.id' => $id )
+						'conditions' => array( 'Motifreorient.id' => $id )
 					)
 				);
 				$this->assert( !empty( $this->data ), 'error404' );
 			}
 
-			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );
 		}
 
@@ -74,7 +66,7 @@
 		*/
 
 		public function delete( $id ) {
-			$success = $this->Fonctionmembreep->delete( $id );
+			$success = $this->Motifreorient->delete( $id );
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( array( 'action' => 'index' ) );
 		}

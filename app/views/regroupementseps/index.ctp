@@ -1,11 +1,11 @@
-<h1><?php echo $this->pageTitle = 'Liste des fonctions des membres des E.P.';?></h1>
+<h1><?php echo $this->pageTitle = h( __d( 'regroupementep', 'Regroupementep::index', true ) );?></h1>
 
 <?php
 	echo $default2->index(
 		$regroupementeps,
 		array(
 // 			'Regroupementep.id',
-			'Regroupementep.name'		
+			'Regroupementep.name'
 		),
 		array(
 			'actions' => array(

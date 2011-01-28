@@ -25,3 +25,5 @@ msgstr "Nom du regroupement"
 msgid "Regroupementep.id"
 msgstr "Index"
 
+msgid "Regroupementep::index"
+msgstr "Regroupements des EPs"
