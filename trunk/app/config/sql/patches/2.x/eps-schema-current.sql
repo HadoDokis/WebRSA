@@ -103,6 +103,8 @@ DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93 CASCADE;
 DROP TYPE IF EXISTS TYPE_ORIGINESANCTIONEP93 CASCADE;
 DROP TYPE IF EXISTS TYPE_ORIGINEDEFAULTINSERTIONEP66 CASCADE;
 DROP TYPE IF EXISTS TYPE_DECISIONDEFAUTEP66 CASCADE;
+DROP TYPE IF EXISTS TYPE_PROPOSITIONBILANPARCOURS CASCADE;
+DROP TYPE IF EXISTS TYPE_SITFAMBILANPARCOURS CASCADE;
 
 -- -----------------------------------------------------------------------------
 
@@ -428,9 +430,6 @@ SELECT add_missing_table_field ('public', 'bilansparcours66', 'motifsaisine', 'T
 ALTER TABLE bilansparcours66 ALTER COLUMN situationallocataire DROP NOT NULL;
 ALTER TABLE bilansparcours66 ALTER COLUMN bilanparcours DROP NOT NULL;
 ALTER TABLE bilansparcours66 ALTER COLUMN contratinsertion_id DROP NOT NULL;
-
-CREATE TYPE TYPE_SAISINEEPL AS ENUM ( 'sanssaisine', 'parcoursreorientoumaintien', 'auditionmne', 'auditiondefautinsertion' );
-SELECT add_missing_table_field ('public', 'bilansparcours66', 'saisineepl', 'TYPE_SAISINEEPL');
 
 CREATE TYPE TYPE_SITFAMBILANPARCOURS AS ENUM ( 'couple', 'coupleenfant', 'isole', 'isoleenfant' );
 SELECT add_missing_table_field ('public', 'bilansparcours66', 'sitfam', 'TYPE_SITFAMBILANPARCOURS');
