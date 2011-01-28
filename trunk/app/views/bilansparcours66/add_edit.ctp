@@ -287,7 +287,7 @@
 		        <?php
 		            echo $default2->subform(
 		                array(
-		                    'Bilanparcours66.reorientation' => array ( 'type' => 'radio' )
+		                    'Bilanparcours66.reorientation' => array ( 'type' => 'radio', 'separator' =>'<br />' )
 		                ),
 		                array(
 		                    'options' => $options
@@ -354,7 +354,7 @@
 		        array(
 		            'Bilanparcours66.observbenefrealisationbilan',
 		            'Bilanparcours66.observbenefcompterendu',
-		            'Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y') + 2, 'minYear' => date('Y') - 2, 'empty' => false ),
+		            'Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y') + 2, 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true ),
 		        ),
 		        array(
 		            'options' => $options
@@ -499,7 +499,7 @@
 	<?php
 		echo $default2->subform(
 		    array(
-		        'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y') + 2, 'minYear' => date('Y') - 2, 'empty' => false )
+		        'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y') + 2, 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true )
 		    ),
 		    array(
 		        'options' => $options
@@ -645,7 +645,7 @@
 					$( elmt ).writeAttribute('disabled', 'disabled');
 				} );
 			} );
-			['Bilanparcours66TypeformulaireCg', 'Bilanparcours66TypeformulairePe', 'Bilanparcours66DatebilanDay', 'Bilanparcours66DatebilanMonth', 'Bilanparcours66DatebilanYear'].each( function ( elmt ) {
+			['Bilanparcours66TypeformulaireCg', 'Bilanparcours66TypeformulairePe', 'Bilanparcours66DatebilanDay', 'Bilanparcours66DatebilanMonth', 'Bilanparcours66DatebilanYear', 'PeSaisineepbilanparcours66TypeorientId', 'PeSaisineepbilanparcours66StructurereferenteId', 'PeBilanparcours66DatebilanDay', 'PeBilanparcours66DatebilanMonth', 'PeBilanparcours66DatebilanYear'].each( function ( elmt ) {
 				$( elmt ).writeAttribute('disabled', 'disabled');
 			} );
 		<?php } ?>

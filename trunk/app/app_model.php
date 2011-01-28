@@ -567,13 +567,26 @@
         // TODO: http://teknoid.wordpress.com/2008/09/29/dealing-with-calculated-fields-in-cakephps-find/
 
         /**
-        *   Vérification que la date saisie n'est aps inférieure à celle du jour
+        *   Vérification que la date saisie n'est pas inférieure à celle du jour
         */
 
         function futureDate( $check ){
             $return = true;
             foreach( $check as $field => $value ) {
                 $return = ( strtotime( $value ) >= strtotime( date( 'Y-m-d' ) ) ) && $return;
+            }
+
+            return $return;
+        }
+
+        /**
+        *   Vérification que la date saisie est antérieure à celle du jour
+        */
+
+        function datePassee( $check ){
+            $return = true;
+            foreach( $check as $field => $value ) {
+                $return = ( strtotime( $value ) <= strtotime( date( 'Y-m-d' ) ) ) && $return;
             }
 
             return $return;
