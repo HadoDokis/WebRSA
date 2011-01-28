@@ -157,13 +157,6 @@
 						@$bilansparcours66[$key]['Contratinsertion']['Personne']['prenom']
 					)
 				);
-				
-				if (empty($bilanparcours66['Bilanparcours66']['choixparcours']) && !empty($bilanparcours66['Bilanparcours66']['examenaudition'])) {
-					$bilansparcours66[$key]['Bilanparcours66']['choixparcours'] = $bilanparcours66['Bilanparcours66']['examenaudition'];
-				}
-				elseif (empty($bilanparcours66['Bilanparcours66']['choixparcours'])) {
-					($bilanparcours66['Bilanparcours66']['maintienorientation']==0) ? $bilansparcours66[$key]['Bilanparcours66']['choixparcours']='reorientation' : $bilansparcours66[$key]['Bilanparcours66']['choixparcours']='maintien';
-				}
 			}
 
 			$this->_setOptions();
@@ -216,6 +209,7 @@
 								'conditions' => array( 'Bilanparcours66.id' => $id )
 							)
 						);
+						$this->Bilanparcours66->Orientstruct->id = $bilanparcours66['Bilanparcours66']['orientstruct_id'];
 						$id = $this->Bilanparcours66->Orientstruct->field( 'personne_id' );
 					}
 					$this->redirect( array( 'action' => 'index', $id ) );
@@ -266,7 +260,12 @@
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Bilanparcours66->commit();
-					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
+					if ($this->data['Bilanparcours66']['proposition']=='traitement' && $this->data['Bilanparcours66']['maintienorientation']==1) {
+						$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
+					}
+					else {
+						$this->redirect( array( 'controller' => 'bilansparcours66', 'action' => 'index', $personne_id ) );
+					}
 				}
 				else {
 					$this->Bilanparcours66->rollback();
@@ -276,46 +275,60 @@
 			else {
 				if( $this->action == 'edit' ) {
 					$this->data = $bilanparcours66;
+				
+					$referent = $this->{$this->modelClass}->Referent->find(
+						'first',
+						array(
+							'conditions'=>array(
+								'Referent.id' => $bilanparcours66['Bilanparcours66']['referent_id']
+							),
+							'contain'=>false
+						)
+					);
+					$this->data['Bilanparcours66']['structurereferente_id'] = $referent['Referent']['structurereferente_id'];
+					$this->data['Bilanparcours66']['referent_id'] = $referent['Referent']['structurereferente_id'].'_'.$bilanparcours66['Bilanparcours66']['referent_id'];
+				}
+				else {
+					$orientstruct = $this->Bilanparcours66->Orientstruct->find(
+						'first',
+						array(
+							'fields' => array(
+								'Orientstruct.id',
+								'Orientstruct.personne_id',
+							),
+							'conditions' => array(
+								'Orientstruct.personne_id' => $personne_id,
+								'Orientstruct.date_valid IS NOT NULL'
+							),
+							'contain' => false,
+							'order' => array( 'Orientstruct.date_valid DESC' )
+						)
+					);
+
+					$this->assert( !empty( $orientstruct ), 'error500' );
+
+					$this->data['Bilanparcours66']['orientstruct_id'] = $orientstruct['Orientstruct']['id'];
+
+					$contratinsertion = $this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->find(
+						'first',
+						array(
+							'conditions'=>array(
+								'Contratinsertion.personne_id' => $personne_id
+							),
+							'order'=>array(
+								'Contratinsertion.rg_ci DESC'
+							),
+							'contain'=>array(
+								'Structurereferente',
+								'Referent'
+							)
+						)
+					);
+					
+					$this->data['Bilanparcours66']['structurereferente_id'] = $contratinsertion['Structurereferente']['id'];
+					$this->data['Bilanparcours66']['referent_id'] = $contratinsertion['Structurereferente']['id'].'_'.$contratinsertion['Referent']['id'];
 				}
 				
-				$orientstruct = $this->Bilanparcours66->Orientstruct->find(
-					'first',
-					array(
-						'fields' => array(
-							'Orientstruct.id',
-							'Orientstruct.personne_id',
-						),
-						'conditions' => array(
-							'Orientstruct.personne_id' => $personne_id,
-							'Orientstruct.date_valid IS NOT NULL'
-						),
-						'contain' => false,
-						'order' => array( 'Orientstruct.date_valid DESC' )
-					)
-				);
-
-				$this->assert( !empty( $orientstruct ), 'error500' );
-
-				$this->data['Bilanparcours66']['orientstruct_id'] = $orientstruct['Orientstruct']['id'];
-
-				$contratinsertion = $this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->find(
-					'first',
-					array(
-						'conditions'=>array(
-							'Contratinsertion.personne_id' => $personne_id
-						),
-						'order'=>array(
-							'Contratinsertion.rg_ci DESC'
-						),
-						'contain'=>array(
-							'Structurereferente',
-							'Referent'
-						)
-					)
-				);
-				
-				$this->data['Bilanparcours66']['structurereferente_id'] = $contratinsertion['Structurereferente']['id'];
-				$this->data['Bilanparcours66']['referent_id'] = $contratinsertion['Structurereferente']['id'].'_'.$contratinsertion['Referent']['id'];
 				$this->data = Set::insert($this->data, 'Pe', $this->data);
 			}
 			

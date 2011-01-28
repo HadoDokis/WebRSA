@@ -109,25 +109,61 @@
 							echo $type2->format( $bilanparcour66, 'Orientstruct.Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Referent.nom_complet', array( 'type' => 'text', 'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Bilanparcours66.proposition', array( 'tag' => 'td', 'options' => $options ) );
-							echo $type2->format( $bilanparcour66, 'Bilanparcours66.choixparcours', array( 'tag' => 'td', 'options' => $options ) );
+							
+				
+							if (empty($bilanparcours66['Bilanparcours66']['choixparcours']) && !empty($bilanparcours66['Bilanparcours66']['examenaudition'])) {
+								echo $type2->format( $bilanparcour66, 'Bilanparcours66.examenaudition', array( 'tag' => 'td', 'options' => $options ) );
+							}
+							elseif (empty($bilanparcour66['Bilanparcours66']['choixparcours'])) {
+								if ($bilanparcour66['Bilanparcours66']['maintienorientation']==0) {
+									$bilanparcour66['Bilanparcours66']['choixparcours']='reorientation';
+								}
+								else {
+									$bilanparcour66['Bilanparcours66']['choixparcours']='maintien';
+								}
+								echo $type2->format( $bilanparcour66, 'Bilanparcours66.choixparcours', array( 'tag' => 'td', 'options' => $options ) );
+							}
+							else {
+								echo $type2->format( $bilanparcour66, 'Bilanparcours66.choixparcours', array( 'tag' => 'td', 'options' => $options ) );
+							}
 							echo $type2->format( $bilanparcour66, 'Saisineepbilanparcours66.typeorient_id', array( 'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id', array( 'tag' => 'td', 'options' => $options ) );
-							echo $xhtml->tag(
-								'td',
-								Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.typeorient_id' ) )
-							);
-							echo $xhtml->tag(
-								'td',
-								Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.structurereferente_id' ) )
-							);
-							echo $xhtml->tag(
-								'td',
-								Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.typeorient_id' ) )
-							);
-							echo $xhtml->tag(
-								'td',
-								Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.structurereferente_id' ) )
-							);
+							if (Set::check($bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.typeorient_id')) {
+								echo $xhtml->tag(
+									'td',
+									Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.typeorient_id' ) )
+								);
+							}
+							else {
+								echo "<td></td>";
+							}
+							if (Set::check( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.structurereferente_id' )) {
+								echo $xhtml->tag(
+									'td',
+									Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.structurereferente_id' ) )
+								);
+							}
+							else {
+								echo "<td></td>";
+							}
+							if (Set::check($bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.typeorient_id')) {
+								echo $xhtml->tag(
+									'td',
+									Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.typeorient_id' ) )
+								);
+							}
+							else {
+								echo "<td></td>";
+							}
+							if (Set::check( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.structurereferente_id' )) {
+								echo $xhtml->tag(
+									'td',
+									Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.structurereferente_id' ) )
+								);
+							}
+							else {
+								echo "<td></td>";
+							}
 							echo $html->tag(
 								'td',
 								$xhtml->editLink( 'Modifier', array( 'controller'=>'bilansparcours66', 'action'=>'edit', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ) )
