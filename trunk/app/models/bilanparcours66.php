@@ -42,7 +42,10 @@
 					'reorientationeplocale',
 					'typeeplocale',
 					'accompagnement',
-					'typeformulaire'
+					'typeformulaire',
+					'saisineepl',
+					'sitfam',
+					'proposition'
 				)
 			)
 		);

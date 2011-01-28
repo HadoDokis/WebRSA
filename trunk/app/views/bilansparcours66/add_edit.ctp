@@ -6,147 +6,6 @@
     echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id') ) );
 ?>
 
-<?php echo $javascript->link( 'dependantselect.js' ); ?>
-
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-        observeDisableFieldsetOnRadioValue(
-            'Bilan',
-            'data[Bilanparcours66][typeformulaire]',
-            $( 'bilanparcourscg' ),
-            'cg',
-            false,
-            true
-        );
-
-        observeDisableFieldsetOnRadioValue(
-            'Bilan',
-            'data[Bilanparcours66][typeformulaire]',
-            $( 'bilanparcourspe' ),
-            'pe',
-            false,
-            true
-        );
-        
-		dependantSelect( 'Saisineepbilanparcours66StructurereferenteId', 'Saisineepbilanparcours66TypeorientId' );
-		try { $( 'Saisineepbilanparcours66StructurereferenteId' ).onchange(); } catch(id) { }
-
-		dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
-
-		$( 'Bilanparcours66DdreconductoncontratYear' ).observe( 'change', function(event) {
-			checkDatesToRefresh();
-		} );
-		$( 'Bilanparcours66DdreconductoncontratMonth' ).observe( 'change', function(event) {
-			checkDatesToRefresh();
-		} );
-		$( 'Bilanparcours66DdreconductoncontratDay' ).observe( 'change', function(event) {
-			checkDatesToRefresh();
-		} );
-		$( 'Bilanparcours66DureeEngag' ).observe( 'change', function(event) {
-			checkDatesToRefresh();
-		} );
-
-		// Javascript pour les aides liées à l'APRE
-		['traitement', 'parcours', 'audition' ].each( function( proposition ) {
-		    observeDisableFieldsetOnRadioValue(
-		        'Bilan',
-		        'data[Bilanparcours66][proposition]',
-		        $( proposition ),
-		        proposition,
-		        false,
-		        true
-		    );
-		} );
-
-		// Partie en cas de changement ou non du référent
-		/*observeDisableFieldsetOnRadioValue(
-		    'Bilan',
-		    'data[Bilanparcours66][changementrefsansep]',
-		    $( 'NvReferent' ),
-		    'O',
-		    false,
-		    true
-		);*/
-
-		observeDisableFieldsetOnRadioValue(
-		    'Bilan',
-		    'data[Bilanparcours66][changementrefsansep]',
-		    $( 'Contratreconduit' ),
-		    'N',
-		    false,
-		    true
-		);
-
-		// Partie en cas de maintien ou  de réorientation
-		observeDisableFieldsetOnRadioValue(
-		    'Bilan',
-		    'data[Bilanparcours66][choixparcours]',
-		    $( 'Maintien' ),
-		    'maintien',
-		    false,
-		    true
-		);
-
-		observeDisableFieldsetOnRadioValue(
-		    'Bilan',
-		    'data[Bilanparcours66][choixparcours]',
-		    $( 'Reorientation' ),
-		    'reorientation',
-		    false,
-		    true
-		);
-
-		observeDisableFieldsetOnRadioValue(
-		    'Bilan',
-		    'data[Bilanparcours66][choixparcours]',
-		    $( 'Precoreorient' ),
-		    'reorientation',
-		    false,
-		    true
-		);
-
-		/*observeDisableFieldsetOnRadioValue(
-		    'Bilan',
-		    'data[Bilanparcours66][changementrefparcours]',
-		    $( 'NvparcoursReferent' ),
-		    'O',
-		    false,
-		    true
-		);*/
-
-		observeDisableFieldsetOnRadioValue(
-		    'Bilan',
-		    'data[Bilanparcours66][changementrefparcours]',
-		    $( 'TypeAccompagnement' ),
-		    'N',
-		    false,
-		    true
-		);
-
-		dependantSelect( 'PeSaisineepbilanparcours66StructurereferenteId', 'PeSaisineepbilanparcours66TypeorientId' );
-		try { $( 'PeSaisineepbilanparcours66StructurereferenteId' ).onchange(); } catch(id) { }
-
-		dependantSelect( 'PeBilanparcours66ReferentId', 'PeBilanparcours66StructurereferenteId' );
-	
-	});
-    
-	function checkDatesToRefresh() {
-		if( ( $F( 'Bilanparcours66DdreconductoncontratMonth' ) ) && ( $F( 'Bilanparcours66DdreconductoncontratYear' ) ) && ( $F( 'Bilanparcours66DureeEngag' ) ) ) {
-			var correspondances = new Array();
-			<?php
-				foreach( $options['Bilanparcours66']['duree_engag'] as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
-
-			setDateInterval(
-				'Bilanparcours66Ddreconductoncontrat',
-				'Bilanparcours66Dfreconductoncontrat',
-				correspondances[$F( 'Bilanparcours66DureeEngag' )],
-				false
-			);
-		}
-		
-	}
-</script>
-
 <?php
     if( $this->action == 'add'  ) {
         if( Configure::read( 'nom_form_bilan_cg' ) == 'cg66' ) {
@@ -212,7 +71,8 @@
 		        	'Bilanparcours66.orientstruct_id' => array( 'type' => 'hidden' ),
 		            'Bilanparcours66.structurereferente_id',
 		            'Bilanparcours66.referent_id',
-		            'Bilanparcours66.presenceallocataire' => array('required'=>true)
+		            'Bilanparcours66.presenceallocataire' => array('required'=>true),
+		            'Bilanparcours66.saisineepl' => array( 'type' => 'radio' )
 		        ),
 		        array(
 		            'options' => $options
@@ -274,6 +134,16 @@
 		        </td>
 		    </tr>
 		</table>
+		<?php
+		    echo $default->subform(
+		        array(
+		            'Bilanparcours66.sitfam' => array( 'type' => 'radio' )
+		        ),
+		        array(
+		            'options' => $options
+		        )
+		    );
+		?>
 	</fieldset>
 
 		<?php
@@ -472,9 +342,19 @@
 		    );
 		?>
 		<?php
+			echo $html->tag(
+				'p',
+				'Observations du bénéficiaire :',
+				array(
+					'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
+				)
+			);
+		?>
+		<?php
 		    echo $default2->subform(
 		        array(
-		            'Bilanparcours66.observbenef',
+		            'Bilanparcours66.observbenefrealisationbilan',
+		            'Bilanparcours66.observbenefcompterendu',
 		            'Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y') + 2, 'minYear' => date('Y') - 2, 'empty' => false ),
 		        ),
 		        array(
@@ -482,7 +362,10 @@
 		        )
 		    );
 		?>
-	</fieldset>
+    <div class="submit">
+        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+        <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+    </div>
 </fieldset>
 
 <fieldset id="bilanparcourspe">
@@ -624,13 +507,165 @@
 		    )
 		);
 	?>
-</fieldset>
-
-    </div>
     <div class="submit">
         <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
         <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
     </div>
+</fieldset>
+
+    </div>
     <?php echo $form->end();?>
 </div>
 <div class="clearer"><hr /></div>
+
+<?php echo $javascript->link( 'dependantselect.js' ); ?>
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		dependantSelect( 'Saisineepbilanparcours66StructurereferenteId', 'Saisineepbilanparcours66TypeorientId' );
+		try { $( 'Saisineepbilanparcours66StructurereferenteId' ).onchange(); } catch(id) { }
+
+		dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
+
+		dependantSelect( 'PeSaisineepbilanparcours66StructurereferenteId', 'PeSaisineepbilanparcours66TypeorientId' );
+		try { $( 'PeSaisineepbilanparcours66StructurereferenteId' ).onchange(); } catch(id) { }
+
+		dependantSelect( 'PeBilanparcours66ReferentId', 'PeBilanparcours66StructurereferenteId' );
+		
+        observeDisableFieldsetOnRadioValue(
+            'Bilan',
+            'data[Bilanparcours66][typeformulaire]',
+            $( 'bilanparcourscg' ),
+            'cg',
+            false,
+            true
+        );
+
+        observeDisableFieldsetOnRadioValue(
+            'Bilan',
+            'data[Bilanparcours66][typeformulaire]',
+            $( 'bilanparcourspe' ),
+            'pe',
+            false,
+            true
+        );
+
+		$( 'Bilanparcours66DdreconductoncontratYear' ).observe( 'change', function(event) {
+			checkDatesToRefresh();
+		} );
+		$( 'Bilanparcours66DdreconductoncontratMonth' ).observe( 'change', function(event) {
+			checkDatesToRefresh();
+		} );
+		$( 'Bilanparcours66DdreconductoncontratDay' ).observe( 'change', function(event) {
+			checkDatesToRefresh();
+		} );
+		$( 'Bilanparcours66DureeEngag' ).observe( 'change', function(event) {
+			checkDatesToRefresh();
+		} );
+
+		// Javascript pour les aides liées à l'APRE
+		['traitement', 'parcours', 'audition' ].each( function( proposition ) {
+		    observeDisableFieldsetOnRadioValue(
+		        'Bilan',
+		        'data[Bilanparcours66][proposition]',
+		        $( proposition ),
+		        proposition,
+		        false,
+		        true
+		    );
+		} );
+
+		// Partie en cas de changement ou non du référent
+		/*observeDisableFieldsetOnRadioValue(
+		    'Bilan',
+		    'data[Bilanparcours66][changementrefsansep]',
+		    $( 'NvReferent' ),
+		    'O',
+		    false,
+		    true
+		);*/
+
+		observeDisableFieldsetOnRadioValue(
+		    'Bilan',
+		    'data[Bilanparcours66][changementrefsansep]',
+		    $( 'Contratreconduit' ),
+		    'N',
+		    false,
+		    true
+		);
+
+		// Partie en cas de maintien ou  de réorientation
+		observeDisableFieldsetOnRadioValue(
+		    'Bilan',
+		    'data[Bilanparcours66][choixparcours]',
+		    $( 'Maintien' ),
+		    'maintien',
+		    false,
+		    true
+		);
+
+		observeDisableFieldsetOnRadioValue(
+		    'Bilan',
+		    'data[Bilanparcours66][choixparcours]',
+		    $( 'Reorientation' ),
+		    'reorientation',
+		    false,
+		    true
+		);
+
+		observeDisableFieldsetOnRadioValue(
+		    'Bilan',
+		    'data[Bilanparcours66][choixparcours]',
+		    $( 'Precoreorient' ),
+		    'reorientation',
+		    false,
+		    true
+		);
+
+		/*observeDisableFieldsetOnRadioValue(
+		    'Bilan',
+		    'data[Bilanparcours66][changementrefparcours]',
+		    $( 'NvparcoursReferent' ),
+		    'O',
+		    false,
+		    true
+		);*/
+
+		observeDisableFieldsetOnRadioValue(
+		    'Bilan',
+		    'data[Bilanparcours66][changementrefparcours]',
+		    $( 'TypeAccompagnement' ),
+		    'N',
+		    false,
+		    true
+		);
+		
+		<?php if ($this->action=='edit') { ?>
+			['traitement', 'parcours', 'audition' ].each( function( proposition ) {
+				$( proposition ).up().getElementsBySelector( 'input', 'select' ).each( function( elmt ) {
+					$( elmt ).writeAttribute('disabled', 'disabled');
+				} );
+			} );
+			['Bilanparcours66TypeformulaireCg', 'Bilanparcours66TypeformulairePe', 'Bilanparcours66DatebilanDay', 'Bilanparcours66DatebilanMonth', 'Bilanparcours66DatebilanYear'].each( function ( elmt ) {
+				$( elmt ).writeAttribute('disabled', 'disabled');
+			} );
+		<?php } ?>
+	
+	});
+    
+	function checkDatesToRefresh() {
+		if( ( $F( 'Bilanparcours66DdreconductoncontratMonth' ) ) && ( $F( 'Bilanparcours66DdreconductoncontratYear' ) ) && ( $F( 'Bilanparcours66DureeEngag' ) ) ) {
+			var correspondances = new Array();
+			<?php
+				foreach( $options['Bilanparcours66']['duree_engag'] as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
+
+			setDateInterval(
+				'Bilanparcours66Ddreconductoncontrat',
+				'Bilanparcours66Dfreconductoncontrat',
+				correspondances[$F( 'Bilanparcours66DureeEngag' )],
+				false
+			);
+		}
+		
+	}
+</script>

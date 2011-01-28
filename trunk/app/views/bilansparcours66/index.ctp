@@ -24,6 +24,9 @@
 				'Saisineepbilanparcours66.Dossierep.etapedossierep'
 			),
 			array(
+				'actions' => array(
+					'Bilansparcours66::edit'
+				),
 				'groupColumns' => array(
 					'Orientation' => array( 1, 2, 3 ),
 					'Contrat d\'insertion' => array( 4, 5, 6 ),
@@ -79,26 +82,83 @@
 // 					)
 // 				);
 
-                if( empty( $nborientstruct ) ) {
-                  echo '<p class="error">Cette personne ne possède pas d\'orientation. Veuillez en saisir une pour pouvoir poursuivre.</p>';
-                }
-                else {
-                  echo $default->index(
-                      $bilansparcours66,
-                      array(
-                          'Bilanparcours66.created' => array( 'type' => 'date' ),
-                          'Orientstruct.Structurereferente.lib_struc',
-                          'Referent.nom_complet'
-                      ),
-                      array(
-  // 						'actions' => array(
-  // 							'Bilanparcours66.edit',
-  // 							'Bilanparcours66.delete'
-  // 						),
-                          'add' => array( 'Bilanparcours66.add' => $personne_id )
-                      )
-                  );
-                }
+				if( empty( $nborientstruct ) ) {
+					echo '<p class="error">Cette personne ne possède pas d\'orientation. Veuillez en saisir une pour pouvoir poursuivre.</p>';
+				}
+				else {
+// 					debug($bilansparcours66);
+					echo "<ul class='actions'><li class='add'>";
+						echo $default2->button('add', array('controller'=>'bilansparcours66', 'action'=>'add', $personne_id));
+					echo "</li></ul>";
+					
+					echo "<table><thead><tr>";
+						echo "<th>".__d('bilanparcours66', 'Bilanparcours66.datebilan', true)."</th>";
+						echo "<th>".__d('structurereferente', 'Structurereferente.lib_struc',true)."</th>";
+						echo "<th>".__d('referent', 'Referent.nom_complet', true)."</th>";
+						echo "<th>".__d('bilanparcours66', 'Bilanparcours66.proposition', true)."</th>";
+						echo "<th>".__d('bilanparcours66', 'Bilanparcours66.choixparcours', true)."</th>";
+						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.propref', true)."</th>";
+						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.avisep', true)."</th>";
+						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.decisioncg', true)."</th>";
+						echo "<th>Actions</th>";
+					echo "</tr></thead><tbody>";
+					
+					foreach($bilansparcours66 as $bilanparcour66) {
+						echo "<tr>";
+							echo $type2->format( $bilanparcour66, 'Bilanparcours66.datebilan', array( 'type' => 'date', 'tag' => 'td', 'options' => $options ) );
+							echo $type2->format( $bilanparcour66, 'Orientstruct.Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
+							echo $type2->format( $bilanparcour66, 'Referent.nom_complet', array( 'type' => 'text', 'tag' => 'td', 'options' => $options ) );
+							echo $type2->format( $bilanparcour66, 'Bilanparcours66.proposition', array( 'tag' => 'td', 'options' => $options ) );
+							echo $type2->format( $bilanparcour66, 'Bilanparcours66.choixparcours', array( 'tag' => 'td', 'options' => $options ) );
+							echo $type2->format( $bilanparcour66, 'Saisineepbilanparcours66.typeorient_id', array( 'tag' => 'td', 'options' => $options ) );
+							echo $type2->format( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id', array( 'tag' => 'td', 'options' => $options ) );
+							echo $xhtml->tag(
+								'td',
+								Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.typeorient_id' ) )
+							);
+							echo $xhtml->tag(
+								'td',
+								Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.structurereferente_id' ) )
+							);
+							echo $xhtml->tag(
+								'td',
+								Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.typeorient_id' ) )
+							);
+							echo $xhtml->tag(
+								'td',
+								Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.structurereferente_id' ) )
+							);
+							echo $html->tag(
+								'td',
+								$xhtml->editLink( 'Modifier', array( 'controller'=>'bilansparcours66', 'action'=>'edit', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ) )
+							);
+						echo "</tr>";
+					}
+					/*echo $default2->index(
+						$bilansparcours66,
+						array(
+							'Bilanparcours66.datebilan' => array( 'type' => 'date' ),
+							'Orientstruct.Structurereferente.lib_struc',
+							'Referent.nom_complet' => array( 'type' => 'text' ),
+							'Bilanparcours66.proposition',
+							'Bilanparcours66.choixparcours',
+							'Saisineepbilanparcours66.typeorient_id',
+							'Saisineepbilanparcours66.structurereferente_id',
+							'Saisineepbilanparcours66.Nvsrepreorient66.0.typeorient_id',
+							'Saisineepbilanparcours66.Nvsrepreorient66.0.structurereferente_id',
+							'Saisineepbilanparcours66.Nvsrepreorient66.1.typeorient_id',
+							'Saisineepbilanparcours66.Nvsrepreorient66.1.structurereferente_id'
+						),
+						array(
+							'actions' => array(
+								'Bilansparcours66::edit'
+							),
+							'add' => array( 'url' => array( 'controller'=>'bilansparcours66', 'action'=>'add', $personne_id ) ),
+							'options' => $options
+						)
+					);*/
+					echo "</tbody></table>";
+				}
 			?>
 
 	</div>
