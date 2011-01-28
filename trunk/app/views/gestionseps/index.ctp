@@ -47,7 +47,7 @@
                 );
                 echo $xhtml->tableCells(
                     array(
-                        h( 'Regroupement des EPs' ),
+                        h( __d( 'regroupementep', 'Regroupementep::index', true ) ),
                         $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'regroupementseps', 'action' => 'index' )
@@ -57,6 +57,17 @@
                     array( 'class' => 'even' )
                 );
 
+                echo $xhtml->tableCells(
+                    array(
+                        h( 'Motifs de demandes de réorientation' ),
+                        $xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'motifsreorients', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
             ?>
         </tbody>
     </table>
