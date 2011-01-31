@@ -167,6 +167,22 @@
 				'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
 			)
 		);
+		
+		if (isset($this->validationErrors['Bilanparcours66']['proposition'])) {
+			echo $xhtml->tag(
+				'div',
+				$xhtml->tag(
+					'div',
+					$this->validationErrors['Bilanparcours66']['proposition'],
+					array(
+						'class' => 'error-message'
+					)
+				),
+				array(
+					'class' => 'error'
+				)
+			);
+		}
 	?>
 
 	<fieldset>
@@ -354,7 +370,7 @@
 		        array(
 		            'Bilanparcours66.observbenefrealisationbilan',
 		            'Bilanparcours66.observbenefcompterendu',
-		            'Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y') + 2, 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true ),
+		            'Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y'), 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true ),
 		        ),
 		        array(
 		            'options' => $options
@@ -499,7 +515,7 @@
 	<?php
 		echo $default2->subform(
 		    array(
-		        'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y') + 2, 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true )
+		        'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y'), 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true )
 		    ),
 		    array(
 		        'options' => $options
