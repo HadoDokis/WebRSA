@@ -25,6 +25,7 @@
 <th>Création du dossier EP</th>
 <th>Orientation actuelle</th>
 <th>Structure référente actuelle</th>
+<th>Type de réorientation</th>
 <th colspan="2">Proposition référent</th>
 <th colspan="2">Avis EPL</th>
 <th>Avis CG</th>
@@ -41,6 +42,7 @@
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$dossierep['Saisineepbilanparcours66']['Bilanparcours66']['Orientstruct']['Typeorient']['lib_type_orient'],
 				$dossierep['Saisineepbilanparcours66']['Bilanparcours66']['Orientstruct']['Structurereferente']['lib_struc'],
+				(!empty($dossierep['Saisineepbilanparcours66']['Bilanparcours66']['reorientation'])) ? __d('bilanparcours66', 'ENUM::REORIENTATION::'.$dossierep['Saisineepbilanparcours66']['Bilanparcours66']['reorientation'], true) : '',
 				@$dossierep['Saisineepbilanparcours66']['Typeorient']['lib_type_orient'],
 				@$dossierep['Saisineepbilanparcours66']['Structurereferente']['lib_struc'],
 				@$dossierep['Saisineepbilanparcours66']['Nvsrepreorient66'][0]['Typeorient']['lib_type_orient'],
