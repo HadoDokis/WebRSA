@@ -51,6 +51,14 @@
 		);
 		
 		public $validate = array(
+			'proposition' => array(
+				array(
+					'rule' => 'alphanumeric',
+					'message' => 'La proposition du référent est obligatoire',
+					'allowEmpty' => false,
+					'required' => true
+				)
+			),
 			'datebilan' => array(
 				array(
 					'rule' => array('datePassee'),
@@ -263,6 +271,9 @@
 					$contratinsertion['Contratinsertion']['datevalidation_ci'] = null;
 					// La date de saisie du nouveau contrat est égale à la date du jour
 					$contratinsertion['Contratinsertion']['date_saisi_ci'] = date( 'Y-m-d' );
+					
+					unset($contratinsertion['Contratinsertion']['decision_ci']);
+					unset($contratinsertion['Contratinsertion']['datevalidation_ci']);
 
 					// Sauvegarde du nouveau contrat d'insertion
 					$this->Contratinsertion->create( $contratinsertion );
@@ -465,6 +476,9 @@
 					$this->Defautinsertionep66->create( $data );
 					$success = $this->Defautinsertionep66->save() && $success;
 				}
+			}
+			else {
+				$this->save($data);
 			}
 
 			return $success;
