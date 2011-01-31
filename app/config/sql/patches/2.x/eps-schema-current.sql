@@ -439,6 +439,7 @@ SELECT add_missing_table_field ('public', 'bilansparcours66', 'observbenefcompte
 
 CREATE TYPE TYPE_PROPOSITIONBILANPARCOURS AS ENUM ( 'audition', 'parcours', 'traitement' );
 SELECT add_missing_table_field ('public', 'bilansparcours66', 'proposition', 'TYPE_PROPOSITIONBILANPARCOURS');
+ALTER TABLE bilansparcours66 ALTER COLUMN proposition SET NOT NULL;
 
 -- -----------------------------------------------------------------------------
 -- Développement Thierry :
