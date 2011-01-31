@@ -16,7 +16,7 @@
 	{
 
 		public $name = 'Contratsinsertion';
-		public $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'AdresseFoyer', 'Prestform', 'Refpresta', 'PersonneReferent' );
+		public $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'Prestform', 'Refpresta', 'PersonneReferent' );
 		public $helpers = array( 'Ajax' );
 		public $components = array( 'RequestHandler', 'Gedooo' );
 		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
@@ -891,7 +891,7 @@
 			$contratinsertion['Adresse'] = $adresse['Adresse'];
 
 			/// Récupération du dossier lié à la personne
-			$foyer = $this->Foyer->find(
+			$foyer = $this->Adressefoyer->Foyer->find(
 				'first',
 				array(
 					'conditions' => array(
