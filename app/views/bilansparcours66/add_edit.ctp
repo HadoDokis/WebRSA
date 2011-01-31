@@ -674,7 +674,7 @@
 			<?php
 				foreach( $options['Bilanparcours66']['duree_engag'] as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
 
-			setDateInterval(
+			setDateIntervalCer(
 				'Bilanparcours66Ddreconductoncontrat',
 				'Bilanparcours66Dfreconductoncontrat',
 				correspondances[$F( 'Bilanparcours66DureeEngag' )],
