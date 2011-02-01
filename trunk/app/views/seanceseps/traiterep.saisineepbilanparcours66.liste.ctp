@@ -1,19 +1,3 @@
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-		dependantSelect( 'Nvsrepreorient66<?php echo $i?>StructurereferenteId', 'Nvsrepreorient66<?php echo $i?>TypeorientId' );
-		try { $( 'Nvsrepreorient66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
-
-		/*observeDisableFieldsOnValue(
-			'Nvsrepreorient66<?php echo $i;?>Decision',
-			[ 'Nvsrepreorient66<?php echo $i;?>TypeorientId', 'Nvsrepreorient66<?php echo $i;?>StructurereferenteId' ],
-			'accepte',
-			false
-		);*/
-		<?php endfor;?>
-	});
-</script>
-
 <?php
 // 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
 	echo '<table><thead>
@@ -28,6 +12,7 @@
 <th>Type de réorientation</th>
 <th colspan="2">Proposition référent</th>
 <th colspan="2">Avis EPL</th>
+<th>Commentaire</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -49,7 +34,9 @@
 				$form->input( "Nvsrepreorient66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
 				$form->input( "Nvsrepreorient66.{$i}.saisineepbilanparcours66_id", array( 'type' => 'hidden', 'value' => @$dossierep['Saisineepbilanparcours66']['id'] ) ).
 				$form->input( "Nvsrepreorient66.{$i}.typeorient_id", array( 'label' => false, 'options' => @$options['Seanceep']['typeorient_id'], 'empty' => true ) ),
-				$form->input( "Nvsrepreorient66.{$i}.structurereferente_id", array( 'label' => false, 'options' => @$options['Seanceep']['structurereferente_id'], 'empty' => true, 'type' => 'select' ) )
+				$form->input( "Nvsrepreorient66.{$i}.structurereferente_id", array( 'label' => false, 'options' => @$options['Seanceep']['structurereferente_id'], 'empty' => true, 'type' => 'select' ) ),
+				$form->input( "Nvsrepreorient66.{$i}.checkcomm", array( 'label' =>false, 'type' => 'checkbox', 'checked' => false ) ).
+				$form->input( "Nvsrepreorient66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) )
 			)
 		);
 	}
@@ -60,3 +47,30 @@
 // 	debug( $seanceep );
 // 	debug( $options );
 ?>
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
+		dependantSelect( 'Nvsrepreorient66<?php echo $i?>StructurereferenteId', 'Nvsrepreorient66<?php echo $i?>TypeorientId' );
+		try { $( 'Nvsrepreorient66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
+		
+		$('Nvsrepreorient66<?php echo $i?>Checkcomm').observe( 'change', function() {
+			if ($('Nvsrepreorient66<?php echo $i?>Checkcomm').checked==true) {
+				$('Nvsrepreorient66<?php echo $i?>Commentaire').show();
+			}
+			else {
+				$('Nvsrepreorient66<?php echo $i?>Commentaire').hide();
+			}
+		} );
+		
+		$('Nvsrepreorient66<?php echo $i?>Commentaire').hide();
+		
+		/*observeDisableFieldsOnValue(
+			'Nvsrepreorient66<?php echo $i;?>Decision',
+			[ 'Nvsrepreorient66<?php echo $i;?>TypeorientId', 'Nvsrepreorient66<?php echo $i;?>StructurereferenteId' ],
+			'accepte',
+			false
+		);*/
+		<?php endfor;?>
+	});
+</script>
