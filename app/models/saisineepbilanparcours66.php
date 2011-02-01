@@ -94,8 +94,8 @@
 				'counterQuery' => ''
 			),
 		);
-		
-		/**     
+
+		/**
          *
          */
         public function containQueryData() {
@@ -152,13 +152,15 @@
 					$this->Bilanparcours66->Orientstruct->create( $orientstruct );
 					$success = $this->Bilanparcours66->Orientstruct->save() && $success;
 
-					$this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->updateAll(
-						array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
-						array(
-							'"Contratinsertion"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
-							'"Contratinsertion"."id"' => $dossierep['Bilanparcours66']['contratinsertion_id']
-						)
-					);
+					if( !empty( $dossierep['Bilanparcours66']['contratinsertion_id'] ) ) {
+						$this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->updateAll(
+							array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
+							array(
+								'"Contratinsertion"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
+								'"Contratinsertion"."id"' => $dossierep['Bilanparcours66']['contratinsertion_id']
+							)
+						);
+					}
 
 					// TODO
 					/*$this->Bilanparcours66->Orientstruct->Personne->Cui->updateAll(

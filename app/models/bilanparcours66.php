@@ -49,7 +49,7 @@
 				)
 			)
 		);
-		
+
 		public $validate = array(
 			'proposition' => array(
 				array(
@@ -372,14 +372,14 @@
 							)
 						);
 
-						if( empty( $vxContratinsertion ) ) {
+						if( empty( $vxContratinsertion ) && ( $data[$this->alias]['choixparcours'] != 'reorientation' ) ) {
 							$this->invalidate( 'choixparcours', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
 							return false;
 						}
 
 						// Sauvegarde du bilan
 		// 				$data[$this->alias]['referent_id'] = $vxOrientstruct['Orientstruct']['referent_id'];//FIXME: si changement  de référent
-						$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
+						$data[$this->alias]['contratinsertion_id'] = @$vxContratinsertion['Contratinsertion']['id'];
 					}
 
 					$this->create( $data );
