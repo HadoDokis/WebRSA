@@ -1,8 +1,8 @@
 <?php
-	define( 'GEDOOO_WSDL', 'http://gedooo.rsa:8080/axis2/services/OfficeService?wsdl' );
-//         define( 'GEDOOO_WSDL', 'http://gedooo.services.adullact.org:8080/axis2/services/OfficeService?wsdl' );
+// 	define( 'GEDOOO_WSDL', 'http://gedooo.rsa:8080/axis2/services/OfficeService?wsdl' );
+	define( 'GEDOOO_WSDL', 'http://gedooo.services.adullact.org:8080/axis2/services/OfficeService?wsdl' );
 
-
+    Configure::write( 'Cg.departement', 58 );
     Configure::write( 'Utilisateurs.multilogin', false );
     Configure::write( 'with_parentid', false ); // true = cg66
     Configure::write( 'nom_form_ci_cg', 'cg58' );
@@ -175,7 +175,7 @@
 	* Ep.departement: 66 ou 93
 	*/
 
-    Configure::write( 'Ep.departement', '93' );
+    Configure::write( 'Ep.departement', '93' ); // Pas utile ? Remplacer par Cg.departement ?
 
 	/**
 	* Ep.departement: saisineepreorientsr93 ou bilanparcours66
@@ -213,5 +213,5 @@
 	/**
 	 * Affiche ou non l'alerte de fin de session et exécute la redirection
 	 */
-	Configure::write( 'alerteFinSession', true );
+	Configure::write( 'alerteFinSession', false );
 ?>

@@ -1,8 +1,8 @@
 <?php
-	//define( 'GEDOOO_WSDL', 'http://gedooo.rsa:8080/axis2/services/OfficeService?wsdl' );
-        define( 'GEDOOO_WSDL', 'http://gedooo.services.adullact.org:8080/axis2/services/OfficeService?wsdl' );
+// 	define( 'GEDOOO_WSDL', 'http://gedooo.rsa:8080/axis2/services/OfficeService?wsdl' );
+	define( 'GEDOOO_WSDL', 'http://gedooo.services.adullact.org:8080/axis2/services/OfficeService?wsdl' );
 
-
+    Configure::write( 'Cg.departement', 66 );
     Configure::write( 'Utilisateurs.multilogin', true );
     Configure::write( 'with_parentid', true ); // true = cg66
     Configure::write( 'nom_form_ci_cg', 'cg66' );
@@ -174,7 +174,7 @@
 	* Ep.departement: 66 ou 93
 	*/
 
-    Configure::write( 'Ep.departement', '66' );
+    Configure::write( 'Ep.departement', '66' ); // Pas utile ? Remplacer par Cg.departement ?
 
 	/**
 	* Ep.departement: saisineepreorientsr93 ou bilanparcours66
