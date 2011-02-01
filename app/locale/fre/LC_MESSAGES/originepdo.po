@@ -40,3 +40,7 @@ msgstr "Supprimer l'origine"
 
 msgid "Originepdo.libelle"
 msgstr "Intitulé de l'origine"
+
+msgid "Originepdo::delete::confirm"
+msgstr "Êtes-vous sûr de vouloir supprimer cette origine ?"
+
