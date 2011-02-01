@@ -48,7 +48,7 @@
         	'fieldset',
         	$default->subform(
 		        array(
-		            'Traitementpdo.datedepart' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+		            'Traitementpdo.datedepart' => array( 'required' => true, 'empty' => false, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
 		        ),
 		        array(
 		            'options' => $options
