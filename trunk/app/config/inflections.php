@@ -267,6 +267,8 @@
 		// Données flux Pôle Emploi
 		'informationpe' => 'informationspe',
 		'historiqueetatpe' => 'historiqueetatspe',
+		// Tables pour gérer la COV
+		'propoorientation58' => 'proposorientations58'
 	);
 /**
  * This is a key => value array of regex used to match words.
