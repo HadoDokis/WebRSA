@@ -28,6 +28,20 @@
 				?>
 			</ul>
 		<?php endif;?>
+	<?php elseif( Configure::read( 'Cg.departement' ) == 58 ):?>
+		<?php if( $permissions->check( 'proposorientations58', 'add' ) ):?>
+			<ul class="actionMenu">
+				<?php
+					echo '<li>'.
+						$xhtml->addLink(
+							'Préconiser une orientation',
+							array( 'controller' => 'proposorientations58', 'action' => 'add', $personne_id ),
+							$ajout_possible
+						).
+					' </li>';
+				?>
+			</ul>
+		<?php endif;?>
 	<?php else:?>
 		<?php if( $permissions->check( 'orientsstructs', 'add' ) ):?>
 			<ul class="actionMenu">

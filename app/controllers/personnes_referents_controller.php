@@ -31,7 +31,7 @@
 
         function index( $personne_id = null ){
 
-            $nbrPersonnes = $this->PersonneReferent->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
+            $nbrPersonnes = $this->PersonneReferent->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'contain' => false ) );
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
 
