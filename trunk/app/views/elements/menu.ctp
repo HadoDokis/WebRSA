@@ -231,73 +231,41 @@
 			<li id="menu4one">
 				<?php echo $xhtml->link( 'Eq. Pluri.', '#' );?>
 				<ul>
-					<?php if( Configure::read( 'Ep.departement' ) != 93 ):?>
-						<li><?php echo $xhtml->link( 'Liste des séances', array( 'controller' => 'seanceseps', 'action' => 'index' ) );?></li>
-						<li><?php echo $xhtml->link( 'Liste des dossiers', array( 'controller' => 'dossierseps', 'action' => 'index' ) );?></li>
-						<li><?php echo $xhtml->link( 'Liste des décisions', array( 'controller' => 'dossierseps', 'action' => 'decisions' ) );?></li>
-						<li><a href="#">CG 66</a>
+				<!--
+					<li><?php echo $xhtml->link( 'Liste des séances', array( 'controller' => 'seanceseps', 'action' => 'index' ) );?></li>
+					<li><?php echo $xhtml->link( 'Liste des dossiers', array( 'controller' => 'dossierseps', 'action' => 'index' ) );?></li>
+					<li><?php echo $xhtml->link( 'Liste des décisions', array( 'controller' => 'dossierseps', 'action' => 'decisions' ) );?></li>
+					<li><a href="#">CG 66</a>
+						<ul>
+							<li><?php echo $xhtml->link( 'Bilans de parcours 66', array( 'controller' => 'bilansparcours66', 'action' => 'index' ) );?></li>
+							<li><?php echo $xhtml->link( 'Sélection des allocataires non inscrits à Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits' ) );?></li>
+							<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies' ) );?></li>
+						</ul>
+					</li>
+					<li><a href="#">CG 93</a>
+						<ul>
+							<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'index' ) );?></li>
+							<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
+						</ul>
+					</li>
+				-->
+					<li><?php echo $xhtml->link( 'Création / modification', array( 'controller' => 'seanceseps', 'action' => 'creationmodification' ) );?></li>
+					<li><?php echo $xhtml->link( 'Attribution des dossiers à une séance', array( 'controller' => 'seanceseps', 'action' => 'attributiondossiers' ) );?></li>
+					<li><?php echo $xhtml->link( 'Arbitrage', array( 'controller' => 'seanceseps', 'action' => 'arbitrage' ) );?></li>
+					<li><?php echo $xhtml->link( 'Recherche', array( 'controller' => 'seanceseps', 'action' => 'recherche' ) );?></li>
+					<?php if( in_array( Configure::read( 'Ep.departement' ), array( 66, 93 ) ) ):?>
+						<li><a href="#">Thématiques</a>
 							<ul>
-								<!-- FIXME: permissions -->
-								<li><?php echo $xhtml->link( 'Bilans de parcours 66', array( 'controller' => 'bilansparcours66', 'action' => 'index' ) );?></li>
-								<li><?php echo $xhtml->link( 'Sélection des allocataires non inscrits à Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits' ) );?></li>
-								<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies' ) );?></li>
+								<?php if( Configure::read( 'Ep.departement' ) == 66 ):?>
+									<li><?php echo $xhtml->link( 'Bilans de parcours 66', array( 'controller' => 'bilansparcours66', 'action' => 'index' ) );?></li>
+									<li><?php echo $xhtml->link( 'Sélection des allocataires non inscrits à Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits' ) );?></li>
+									<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies' ) );?></li>
+								<?php elseif( Configure::read( 'Ep.departement' ) == 93 ):?>
+									<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'index' ) );?></li>
+									<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
+								<?php endif;?>
 							</ul>
 						</li>
-						<li><a href="#">CG 93</a>
-							<ul>
-								<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'index' ) );?></li>
-								<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
-							</ul>
-						</li>
-					<!--  <?php /*if( $permissions->check( 'eps', 'liste' ) ):?>
-						<li>
-								<?php echo $xhtml->link( 'Liste des équipes', array( 'controller' => 'eps', 'action' => 'liste' ) );?>
-								<ul>
-									<li>
-										<?php /*echo $xhtml->link( 'Gestion des demandes de réorientation', array( 'controller' => 'eps', 'action' => 'liste' ) );?>
-									</li>
-									<li>
-										<?php echo $xhtml->link( 'Gestion des parcours détectés', array( 'controller' => 'eps', 'action' => 'detection' ) );?>
-									</li>
-								</ul>
-							</li>
-
-							<li>
-								<?php echo $xhtml->link( 'Demandes de réorientation par référents', array( 'controller' => 'referents', 'action' => 'liste_demande_reorient' ) );?>
-							</li>
-						<?php endif;*/?> -->
-					<!-- <?php if( $permissions->check( 'precosreorients', 'conseil' ) || $permissions->check( 'parcoursdetectes', 'conseil' ) ) :?>
-							<li>
-								<?php echo $xhtml->link( 'Conseil général', '#' );?>
-								<ul>
-									<li><?php echo $xhtml->link( 'Cohorte demandes de réorientation', array( 'controller' => 'precosreorients', 'action' => 'conseil' ) );?></li>
-									<li><?php echo $xhtml->link( 'Cohorte parcours', array( 'controller' => 'parcoursdetectes', 'action' => 'conseil' ) );?></li>
-								</ul>
-							</li>
-						<?php endif;?>
-						<?php if( $permissions->check( 'referents', 'demandes_reorient' ) ) :?>
-							<li>
-								<?php echo $xhtml->link( 'Référents', '#' );?>
-								<ul>
-									<li><?php echo $xhtml->link( 'Synthèse référent 1', array( 'controller' => 'referents', 'action' => 'demandes_reorient' ) );?></li>
-									<li><?php echo $xhtml->link( 'Synthèse référent 2', array( 'controller' => 'referents', 'action' => 'demandes_reorient' ) );?></li>
-								</ul>
-							</li>
-						<?php endif;?>
-						<?php if( $permissions->check( 'demandesreorient', 'index' ) || $permissions->check( 'parcoursdetectes', 'index' )) :?>
-							<li>
-								<?php echo $xhtml->link( 'Listes', '#' );?>
-								<ul>
-									<li><?php echo $xhtml->link( 'Demandes de réorientation', array( 'controller' => 'demandesreorient', 'action' => 'indexparams' ) );?></li>
-									<li><?php echo $xhtml->link( 'Parcours', array( 'controller' => 'parcoursdetectes', 'action' => 'index' ) );?></li>
-								</ul>
-							</li>
-						<?php endif;?> -->
-					<?php else:?><!-- Workflow CG 93 -->
-						<li><?php echo $xhtml->link( 'Création / modification', array( 'controller' => 'seanceseps', 'action' => 'creationmodification' ) );?></li>
-						<li><?php echo $xhtml->link( 'Attribution des dossiers à une séance', array( 'controller' => 'seanceseps', 'action' => 'attributiondossiers' ) );?></li>
-						<li><?php echo $xhtml->link( 'Arbitrage', array( 'controller' => 'seanceseps', 'action' => 'arbitrage' ) );?></li>
-						<li><?php echo $xhtml->link( 'Recherche', array( 'controller' => 'seanceseps', 'action' => 'recherche' ) );?></li>
 					<?php endif;?>
 				</ul>
 			</li>
