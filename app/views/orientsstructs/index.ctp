@@ -14,7 +14,7 @@
 	<?php endif;?>
 
 	<!-- Pour le CG 93, les orientations de rang >= 1 doivent passer en EP, donc il faut utiliser Saisinesepsreorientsrs93Controller::add -->
-	<?php if( Configure::read( 'Ep.departement' ) == 93 && $rgorient_max >= 1 ):?>
+	<?php if( Configure::read( 'Cg.departement' ) == 93 && $rgorient_max >= 1 ):?>
 		<?php if( $permissions->check( 'saisinesepsreorientsrs93', 'add' ) ):?>
 			<ul class="actionMenu">
 				<?php
@@ -29,13 +29,13 @@
 			</ul>
 		<?php endif;?>
 	<?php elseif( Configure::read( 'Cg.departement' ) == 58 ):?>
-		<?php if( $permissions->check( 'proposorientations58', 'add' ) ):?>
+		<?php if( $permissions->check( 'proposorientationscovs58', 'add' ) ):?>
 			<ul class="actionMenu">
 				<?php
 					echo '<li>'.
 						$xhtml->addLink(
 							'Préconiser une orientation',
-							array( 'controller' => 'proposorientations58', 'action' => 'add', $personne_id ),
+							array( 'controller' => 'proposorientationscovs58', 'action' => 'add', $personne_id ),
 							$ajout_possible
 						).
 					' </li>';
@@ -103,7 +103,7 @@
 					<th>Préconisation d'orientation</th>
 					<th>Structure référente</th>
 					<th>Rang d'orientation</th>
-					<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ):?><th>Etat de l'orientation</th><?php endif;?>
+ 					<!--<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ):?><th>Etat de l'orientation</th><?php endif;?>-->
 					<th colspan="2" class="action">Actions</th>
 				</tr>
 			</thead>
@@ -132,9 +132,9 @@
 							h( $rgorient ),
 						);
 
-						if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
+						/*if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
 							$cells[] = h( Set::enum( $orientstruct['Orientstruct']['etatorient'], $options['etatorient'] ) ) ;
-						}
+						}*/
 
 	// 					$saisineTexte = ( ( Configure::read( 'Ep.departement') == 93 ) ? 'Saisine EP' : 'Bilan de parcours' );
 	// 					$lienSaisineEp = $xhtml->saisineEpLink(

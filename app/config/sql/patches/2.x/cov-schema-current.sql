@@ -15,6 +15,12 @@ DROP TABLE IF EXISTS proposorientationscovs58 CASCADE;
 
 -- *****************************************************************************
 
+DROP TYPE IF EXISTS TYPE_ETAPECOV CASCADE;
+
+-- *****************************************************************************
+
+CREATE TYPE TYPE_ETAPECOV AS ENUM ('cree', 'traitement', 'finalise');
+
 CREATE TABLE proposorientationscovs58 (
 	id 							SERIAL NOT NULL PRIMARY KEY,
 	personne_id 				INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -26,7 +32,8 @@ CREATE TABLE proposorientationscovs58 (
 	covtypeorient_id 			INTEGER DEFAULT NULL REFERENCES typesorients(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	covstructurereferente_id 	INTEGER DEFAULT NULL REFERENCES structuresreferentes(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	commentaire 				TEXT DEFAULT NULL,
-	rgorient 					INTEGER NOT NULL
+	rgorient 					INTEGER NOT NULL,
+	etapecov					TYPE_ETAPECOV NOT NULL DEFAULT 'cree'
 );
 COMMENT ON TABLE proposorientationscovs58 IS 'Orientations en attente de validation par la COV (cg58)';
 -- ajouter contrainte que pour une personne que l'on n'ait qu'une seule proposition non traitée
