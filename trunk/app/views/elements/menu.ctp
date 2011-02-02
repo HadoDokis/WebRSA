@@ -253,14 +253,14 @@
 					<li><?php echo $xhtml->link( 'Attribution des dossiers à une séance', array( 'controller' => 'seanceseps', 'action' => 'attributiondossiers' ) );?></li>
 					<li><?php echo $xhtml->link( 'Arbitrage', array( 'controller' => 'seanceseps', 'action' => 'arbitrage' ) );?></li>
 					<li><?php echo $xhtml->link( 'Recherche', array( 'controller' => 'seanceseps', 'action' => 'recherche' ) );?></li>
-					<?php if( in_array( Configure::read( 'Ep.departement' ), array( 66, 93 ) ) ):?>
+					<?php if( in_array( Configure::read( 'Cg.departement' ), array( 66, 93 ) ) ):?>
 						<li><a href="#">Thématiques</a>
 							<ul>
-								<?php if( Configure::read( 'Ep.departement' ) == 66 ):?>
+								<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
 									<li><?php echo $xhtml->link( 'Bilans de parcours 66', array( 'controller' => 'bilansparcours66', 'action' => 'index' ) );?></li>
 									<li><?php echo $xhtml->link( 'Sélection des allocataires non inscrits à Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits' ) );?></li>
 									<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies' ) );?></li>
-								<?php elseif( Configure::read( 'Ep.departement' ) == 93 ):?>
+								<?php elseif( Configure::read( 'Cg.departement' ) == 93 ):?>
 									<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'index' ) );?></li>
 									<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
 								<?php endif;?>

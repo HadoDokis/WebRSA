@@ -283,7 +283,7 @@
 															?>
 														</li>
 													<?php endif;?>
-													<?php if( Configure::read( 'Ep.departement' ) == 93 && $permissions->check( 'relancesnonrespectssanctionseps93', 'index' ) ):?>
+													<?php if( Configure::read( 'Cg.departement' ) == 93 && $permissions->check( 'relancesnonrespectssanctionseps93', 'index' ) ):?>
 														<li>
 															<?php
 																echo $xhtml->link(

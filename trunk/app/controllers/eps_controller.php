@@ -37,7 +37,7 @@
 
 			$themes = array();
 			foreach( $this->Ep->themes() as $theme ) {
-				if( strstr( $theme, Configure::read( 'Ep.departement' ) ) ) {
+				if( strstr( $theme, Configure::read( 'Cg.departement' ) ) ) {
 					$fields[] = "Ep.{$theme}";
 					$themes[] = $theme;
 				}

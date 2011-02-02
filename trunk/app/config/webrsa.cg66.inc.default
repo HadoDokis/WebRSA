@@ -171,24 +171,6 @@
 	Configure::write( 'Optimisations.progressivePaginate', false );
 
 	/**
-	* Ep.departement: 66 ou 93
-	*/
-
-    Configure::write( 'Ep.departement', '66' ); // Pas utile ? Remplacer par Cg.departement ?
-
-	/**
-	* Ep.departement: saisineepreorientsr93 ou bilanparcours66
-	*/
-
-    Configure::write( 'Ep.declencheursaisine', 'bilanparcours66' );
-
-	/**
-	* Ep.departement: saisineepreorientsr93 ou saisineepbilanparcours66
-	*/
-
-    Configure::write( 'Ep.tablesaisine', 'saisineepbilanparcours66' );
-
-	/**
 	 * Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
 	 */
 	// Valeur de l'id technique de la table descriptionspdos dont le libellé concerne la saisie de l'EP DPT

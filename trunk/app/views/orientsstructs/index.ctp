@@ -58,7 +58,7 @@
 		<?php endif;?>
 	<?php endif;?>
 
-	<?php if( Configure::read( 'Ep.departement' ) == 93 && isset( $saisineepreorientsr93 ) && !empty( $saisineepreorientsr93 ) ):?>
+	<?php if( Configure::read( 'Cg.departement' ) == 93 && isset( $saisineepreorientsr93 ) && !empty( $saisineepreorientsr93 ) ):?>
 		<h2>Réorientation par l'équipe pluridisciplinaire</h2>
 
 		<table>
@@ -136,29 +136,13 @@
 							$cells[] = h( Set::enum( $orientstruct['Orientstruct']['etatorient'], $options['etatorient'] ) ) ;
 						}*/
 
-	// 					$saisineTexte = ( ( Configure::read( 'Ep.departement') == 93 ) ? 'Saisine EP' : 'Bilan de parcours' );
-	// 					$lienSaisineEp = $xhtml->saisineEpLink(
-	// 						$saisineTexte,
-	// 						array(
-	// 							'controller' => Inflector::tableize( Configure::read( 'Ep.declencheursaisine' ) ),
-	// 							'action' => 'add',
-	// 							( ( Configure::read( 'Ep.departement') == 93 ) ? $orientstruct['Orientstruct']['id'] : $orientstruct['Orientstruct']['personne_id'] )
-	// 						),
-	// 						// FIXME; droits + pas de saisine si non terminée ?
-	// 						(
-	// 							( $i == 0 ) // La dernière orientation en date
-	// 							&& !empty( $orientstruct['Orientstruct']['structurereferente_id'] )
-	// 							&& $orientstruct['Personne']['Calculdroitrsa']['toppersdrodevorsa']
-	// 						)
-	// 					);
-
 						array_push(
 							$cells,
 							$xhtml->editLink(
 								'Editer l\'orientation',
 								array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
 								$permissions->check( 'orientsstructs', 'edit' ) && ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
-								&& !( Configure::read( 'Ep.departement' ) == 93 && isset( $saisineepreorientsr93 ) && !empty( $saisineepreorientsr93 ) )
+								&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $saisineepreorientsr93 ) && !empty( $saisineepreorientsr93 ) )
 							),
 							$xhtml->printLink(
 								'Imprimer la notification',
@@ -167,45 +151,11 @@
 							)
 						);
 
-	// 					if (Configure::read('Ep.departement')==93) {
-	// 						array_push(
-	// 							$cells,
-	// 							$lienSaisineEp
-	// 						);
-	// 					}
-
 						echo $xhtml->tableCells( $cells, array( 'class' => 'odd' ), array( 'class' => 'even' ) );
 					}
 				?>
 			</tbody>
 		</table>
-
-		<?php
-			/*echo $default2->index(
-				$orientstructs,
-				array(
-					'Personne.nom',
-					'Personne.prenom',
-					'Orientstruct.date_propo',
-					'Orientstruct.date_valid',
-					'Typeorient.lib_type_orient',
-					'Structurereferente.lib_struc'
-				),
-				array(
-					'actions' => array(
-						'Orientsstructs::edit',
-						'Orientsstructs::print' => array(
-							'url' => array( 'controller' => 'gedooos', 'action' => 'orientstruct', '#Orientstruct.id#' )
-						),
-						'Orientsstructs::saisine' => array(
-							'url' => array( 'controller' => Inflector::tableize( Configure::read( 'Ep.declencheursaisine' ) ), 'action' => 'add', '#Orientstruct.id#' ),
-							'disabled' => 'empty( "#Orientstruct.structurereferente_id#" ) || empty( "#Personne.Calculdroitrsa.toppersdrodevorsa#" )'
-						),
-					)
-				)
-			);
-			debug( $orientstructs );*/
-		?>
 	<?php  endif;?>
 </div>
 <div class="clearer"><hr /></div>

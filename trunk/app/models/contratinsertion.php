@@ -391,7 +391,7 @@
 			$success = $this->saveAll( $data, array( 'atomic' => false ) );
 
 			// Sortie de la procédure de relances / sanctions 93 en cas de validation d'un nouveau contrat
-			if( $success && Configure::read( 'Ep.departement' ) == '93' ) {
+			if( $success && Configure::read( 'Cg.departement' ) == '93' ) {
 				$nonrespectssanctionseps93 = $this->Nonrespectsanctionep93->find(
 					'all',
 					array(
