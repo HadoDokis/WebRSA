@@ -32,7 +32,7 @@
 	// Le CG 93 ne souhaite pas voir ces choix: pour eux, tout se décide
 	// au niveau cg, et toutes les eps traitent potentiellement de tous
 	// les thèmes
-	if( Configure::read( 'Ep.departement' ) == 93 ) {
+	if( Configure::read( 'Cg.departement' ) == 93 ) {
 		echo $default->subform(
 			array(
 				'Ep.saisineepreorientsr93' => array( 'type' => 'hidden', 'value' => 'cg' ),
@@ -42,7 +42,7 @@
 	}
 
 	// On laisse la possibilité de choisir comme avant pour le CG 58
-	if( Configure::read( 'Ep.departement' ) == 58 ) {
+	if( Configure::read( 'Cg.departement' ) == 58 ) {
 		echo $xhtml->tag(
 			'fieldset',
 			$xhtml->tag(
@@ -65,7 +65,7 @@
 	}
 
 	// Le choix est également possible pour le CG 66
-	if( Configure::read( 'Ep.departement' ) == 66 ) {
+	if( Configure::read( 'Cg.departement' ) == 66 ) {
 		echo $xhtml->tag(
 			'fieldset',
 			$xhtml->tag(

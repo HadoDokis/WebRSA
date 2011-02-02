@@ -96,7 +96,7 @@
 			$dossier_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_id' );
 
 			$en_procedure_relance = false;
-			if( Configure::read( 'Ep.departement' ) == 93 ) {
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
 				// TODO: à déplacer dans un modèle à terme
 				$en_procedure_relance = (
 					$this->Orientstruct->Nonrespectsanctionep93->find(
@@ -207,7 +207,7 @@
 
 			// Pour le CG 93, les orientations de rang > 1 doivent passer en EP, donc il faut utiliser Saisinesepsreorientsrs93Controller::add
 			// FIXME
-			/*if( Configure::read( 'Ep.departement' ) == 93 && $this->Orientstruct->rgorientMax( $personne_id ) > 1 ) {
+			/*if( Configure::read( 'Cg.departement' ) == 93 && $this->Orientstruct->rgorientMax( $personne_id ) > 1 ) {
 				$this->Session->setFlash( 'L\'orientation de cette personne doit se faire via un passage en EP', 'flash/error' );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}*/

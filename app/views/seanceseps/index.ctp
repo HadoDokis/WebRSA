@@ -20,7 +20,7 @@
 
 	<ul class="actionMenu">
 		<?php
-			if( Configure::read( 'Ep.departement' ) != 93 || @$this->action == 'creationmodification' ) {
+			if( Configure::read( 'Cg.departement' ) != 93 || @$this->action == 'creationmodification' ) {
 				echo '<li>'.$xhtml->addLink(
 					'Ajouter',
 					array( 'controller' => 'seanceseps', 'action' => 'add' )
@@ -111,7 +111,7 @@
 					<th>Actions</th>
 				</tr></thead><tbody>';
 			foreach( $seanceseps as $seanceep ) {
-				if( Configure::read( 'Ep.departement' ) != 93 ) {
+				if( Configure::read( 'Cg.departement' ) != 93 ) {
 					$lien = $xhtml->link( 'Voir', array( 'controller' => 'seanceseps', 'action' => 'view', $seanceep['Seanceep']['id'] ) );
 				}
 				else {
