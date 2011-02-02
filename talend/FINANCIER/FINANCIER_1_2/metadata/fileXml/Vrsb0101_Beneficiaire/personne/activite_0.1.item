@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/rdubois/Bureau/20090525Lu_ETL_RSA/FluxV2/vrsb0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_zPHYYFWlEd6tl9prB2rG7g" label="metadata">
+    <columns label="REG" talendType="id_String"/>
+    <columns label="ACT" talendType="id_String"/>
+    <columns label="DDACT" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFACT" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="NATCONTRTRA" talendType="id_String"/>
+    <columns label="TOPCONDADMETI" talendType="id_Boolean"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFoyerRSA/Personne/Activite">
+    <schemaTargets RelativeXPathQuery="REG" TagName="REG"/>
+    <schemaTargets RelativeXPathQuery="ACT" TagName="ACT"/>
+    <schemaTargets RelativeXPathQuery="DDACT" TagName="DDACT"/>
+    <schemaTargets RelativeXPathQuery="DFACT" TagName="DFACT"/>
+    <schemaTargets RelativeXPathQuery="NATCONTRTRA" TagName="NATCONTRTRA"/>
+    <schemaTargets RelativeXPathQuery="TOPCONDADMETI" TagName="TOPCONDADMETI"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

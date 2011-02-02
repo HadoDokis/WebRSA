@@ -42,25 +42,6 @@
       </children>
     </folders>
     <folders xmi:id="_Etq04x-XEd-5GcIiIXDAQg" property="_Etq04h-XEd-5GcIiIXDAQg" state="_Etq04R-XEd-5GcIiIXDAQg" type="SYSTEM_FOLDER">
-      <children xsi:type="TalendProperties:FolderItem" xmi:id="_Et9vxx-XEd-5GcIiIXDAQg" property="_Et9vxh-XEd-5GcIiIXDAQg" state="_Et9vxR-XEd-5GcIiIXDAQg" type="SYSTEM_FOLDER">
-        <children xsi:type="TalendProperties:FolderItem" xmi:id="_Et9vyx-XEd-5GcIiIXDAQg" property="_Et9vyh-XEd-5GcIiIXDAQg" state="_Et9vyR-XEd-5GcIiIXDAQg" type="SYSTEM_FOLDER">
-          <children xsi:type="TalendProperties:FolderItem" xmi:id="_EuabuR-XEd-5GcIiIXDAQg" property="_EuabuB-XEd-5GcIiIXDAQg" state="_Euabtx-XEd-5GcIiIXDAQg" type="SYSTEM_FOLDER"/>
-          <children xsi:type="TalendProperties:FolderItem" xmi:id="_4uNu00fbEd-xJbsLLtZovw" property="_4uNu0kfbEd-xJbsLLtZovw" state="_4uNu0UfbEd-xJbsLLtZovw">
-            <children xsi:type="TalendProperties:FolderItem" xmi:id="_4uqaw0fbEd-xJbsLLtZovw" property="_4uqawkfbEd-xJbsLLtZovw" state="_4uqawUfbEd-xJbsLLtZovw">
-              <children xsi:type="TalendProperties:FolderItem" xmi:id="_4u0Lw0fbEd-xJbsLLtZovw" property="_4u0LwkfbEd-xJbsLLtZovw" state="_4u0LwUfbEd-xJbsLLtZovw">
-                <children xsi:type="TalendProperties:FolderItem" xmi:id="_5n4hw0fbEd-xJbsLLtZovw" property="_5n4hwkfbEd-xJbsLLtZovw" state="_5n4hwUfbEd-xJbsLLtZovw">
-                  <children xsi:type="TalendProperties:FolderItem" xmi:id="_5n4hx0fbEd-xJbsLLtZovw" property="_5n4hxkfbEd-xJbsLLtZovw" state="_5n4hxUfbEd-xJbsLLtZovw"/>
-                </children>
-              </children>
-              <children xsi:type="TalendProperties:FolderItem" xmi:id="_VjXbQ04pEd-N1JG3XpwK0g" property="_VjXbQk4pEd-N1JG3XpwK0g" state="_VjXbQU4pEd-N1JG3XpwK0g">
-                <children xsi:type="TalendProperties:FolderItem" xmi:id="_XgFmo04pEd-N1JG3XpwK0g" property="_XgFmok4pEd-N1JG3XpwK0g" state="_XgFmoU4pEd-N1JG3XpwK0g">
-                  <children xsi:type="TalendProperties:FolderItem" xmi:id="_XgFmp04pEd-N1JG3XpwK0g" property="_XgFmpk4pEd-N1JG3XpwK0g" state="_XgFmpU4pEd-N1JG3XpwK0g"/>
-                </children>
-              </children>
-            </children>
-          </children>
-        </children>
-      </children>
       <children xsi:type="TalendProperties:FolderItem" xmi:id="_EuG5ux-XEd-5GcIiIXDAQg" property="_EuG5uh-XEd-5GcIiIXDAQg" state="_EuG5uR-XEd-5GcIiIXDAQg" type="SYSTEM_FOLDER"/>
     </folders>
     <folders xmi:id="_Etq05x-XEd-5GcIiIXDAQg" property="_Etq05h-XEd-5GcIiIXDAQg" state="_Etq05R-XEd-5GcIiIXDAQg" type="SYSTEM_FOLDER">
@@ -165,25 +146,6 @@
     </folders>
     <folders xmi:id="_HlpFMwD6Ed6NxoCrVEP_7g" property="_HlpFMgD6Ed6NxoCrVEP_7g" state="_HlpFMQD6Ed6NxoCrVEP_7g">
       <children xsi:type="TalendProperties:FolderItem" xmi:id="_HlpFNwD6Ed6NxoCrVEP_7g" property="_HlpFNgD6Ed6NxoCrVEP_7g" state="_HlpFNQD6Ed6NxoCrVEP_7g"/>
-    </folders>
-    <folders xmi:id="_w6QIFyKHEd6lv5yXP6dmAg" property="_w6QIFiKHEd6lv5yXP6dmAg" state="_w6QIFSKHEd6lv5yXP6dmAg">
-      <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QIGyKHEd6lv5yXP6dmAg" property="_w6QIGiKHEd6lv5yXP6dmAg" state="_w6QIGSKHEd6lv5yXP6dmAg">
-        <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QIHyKHEd6lv5yXP6dmAg" property="_w6QIHiKHEd6lv5yXP6dmAg" state="_w6QIHSKHEd6lv5yXP6dmAg">
-          <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QIIyKHEd6lv5yXP6dmAg" property="_w6QIIiKHEd6lv5yXP6dmAg" state="_w6QIISKHEd6lv5yXP6dmAg">
-            <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QIJyKHEd6lv5yXP6dmAg" property="_w6QIJiKHEd6lv5yXP6dmAg" state="_w6QIJSKHEd6lv5yXP6dmAg">
-              <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QIKyKHEd6lv5yXP6dmAg" property="_w6QIKiKHEd6lv5yXP6dmAg" state="_w6QIKSKHEd6lv5yXP6dmAg">
-                <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QILyKHEd6lv5yXP6dmAg" property="_w6QILiKHEd6lv5yXP6dmAg" state="_w6QILSKHEd6lv5yXP6dmAg"/>
-                <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QIMyKHEd6lv5yXP6dmAg" property="_w6QIMiKHEd6lv5yXP6dmAg" state="_w6QIMSKHEd6lv5yXP6dmAg"/>
-                <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QINyKHEd6lv5yXP6dmAg" property="_w6QINiKHEd6lv5yXP6dmAg" state="_w6QINSKHEd6lv5yXP6dmAg"/>
-              </children>
-              <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QIOyKHEd6lv5yXP6dmAg" property="_w6QIOiKHEd6lv5yXP6dmAg" state="_w6QIOSKHEd6lv5yXP6dmAg"/>
-              <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QIPyKHEd6lv5yXP6dmAg" property="_w6QIPiKHEd6lv5yXP6dmAg" state="_w6QIPSKHEd6lv5yXP6dmAg"/>
-              <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QIQyKHEd6lv5yXP6dmAg" property="_w6QIQiKHEd6lv5yXP6dmAg" state="_w6QIQSKHEd6lv5yXP6dmAg"/>
-            </children>
-          </children>
-        </children>
-        <children xsi:type="TalendProperties:FolderItem" xmi:id="_w6QIRyKHEd6lv5yXP6dmAg" property="_w6QIRiKHEd6lv5yXP6dmAg" state="_w6QIRSKHEd6lv5yXP6dmAg"/>
-      </children>
     </folders>
     <migrationTasks>org.talend.repository.localprovider.RemoveRoutineFolderTask</migrationTasks>
     <migrationTasks>org.talend.repository.localprovider.model.migration.ChangeXmiSerialization</migrationTasks>
@@ -458,10 +420,6 @@
   <TalendProperties:Property xmi:id="_Etz-4h-XEd-5GcIiIXDAQg" id="_Etz-4B-XEd-5GcIiIXDAQg" label="genericSchema" creationDate="2010-02-22T10:45:56.140+0100" version="0.1" item="_Etz-4x-XEd-5GcIiIXDAQg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
   <TalendProperties:ItemState xmi:id="_Et9vwR-XEd-5GcIiIXDAQg"/>
   <TalendProperties:Property xmi:id="_Et9vwh-XEd-5GcIiIXDAQg" id="_Et9vwB-XEd-5GcIiIXDAQg" label="LDAPSchema" creationDate="2010-02-22T10:45:56.156+0100" version="0.1" item="_Et9vwx-XEd-5GcIiIXDAQg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_Et9vxR-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:Property xmi:id="_Et9vxh-XEd-5GcIiIXDAQg" id="_Et9vxB-XEd-5GcIiIXDAQg" label="generated" creationDate="2010-02-22T10:45:56.156+0100" version="0.1" item="_Et9vxx-XEd-5GcIiIXDAQg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_Et9vyR-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:Property xmi:id="_Et9vyh-XEd-5GcIiIXDAQg" id="_Et9vyB-XEd-5GcIiIXDAQg" label="jobs" creationDate="2010-02-22T10:45:56.156+0100" version="0.1" item="_Et9vyx-XEd-5GcIiIXDAQg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
   <TalendProperties:ItemState xmi:id="_Et9vzR-XEd-5GcIiIXDAQg"/>
   <TalendProperties:Property xmi:id="_Et9vzh-XEd-5GcIiIXDAQg" id="_Et9vzB-XEd-5GcIiIXDAQg" label="joblets" creationDate="2010-02-22T10:45:56.156+0100" version="0.1" item="_Et9vzx-XEd-5GcIiIXDAQg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
   <TalendProperties:ItemState xmi:id="_Et9v0R-XEd-5GcIiIXDAQg"/>
@@ -516,8 +474,6 @@
   <TalendProperties:Property xmi:id="_EuabsB-XEd-5GcIiIXDAQg" id="_EuQq1B-XEd-5GcIiIXDAQg" label="bin" creationDate="2010-02-22T10:45:56.187+0100" version="0.1" item="_EuabsR-XEd-5GcIiIXDAQg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
   <TalendProperties:ItemState xmi:id="_Euabsx-XEd-5GcIiIXDAQg"/>
   <TalendProperties:Property xmi:id="_EuabtB-XEd-5GcIiIXDAQg" id="_Euabsh-XEd-5GcIiIXDAQg" label="bin" creationDate="2010-02-22T10:45:56.203+0100" version="0.1" item="_EuabtR-XEd-5GcIiIXDAQg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_Euabtx-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:Property xmi:id="_EuabuB-XEd-5GcIiIXDAQg" id="_Euabth-XEd-5GcIiIXDAQg" label="bin" creationDate="2010-02-22T10:45:56.203+0100" version="0.1" item="_EuabuR-XEd-5GcIiIXDAQg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
   <TalendProperties:ItemState xmi:id="_E09voR-XEd-5GcIiIXDAQg"/>
   <TalendProperties:Property xmi:id="_E09voh-XEd-5GcIiIXDAQg" id="_E09voB-XEd-5GcIiIXDAQg" label="system" creationDate="2010-02-22T10:45:56.890+0100" version="0.1" item="_E09vox-XEd-5GcIiIXDAQg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
   <TalendProperties:ItemState xmi:id="_E5lw8R-XEd-5GcIiIXDAQg"/>
@@ -590,52 +546,10 @@
   <TalendProperties:Property xmi:id="_HlpFMgD6Ed6NxoCrVEP_7g" id="_HlpFMAD6Ed6NxoCrVEP_7g" label="configuration" creationDate="2009-02-22T17:01:51.875+0100" version="0.1" item="_HlpFMwD6Ed6NxoCrVEP_7g" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
   <TalendProperties:ItemState xmi:id="_HlpFNQD6Ed6NxoCrVEP_7g"/>
   <TalendProperties:Property xmi:id="_HlpFNgD6Ed6NxoCrVEP_7g" id="_HlpFNAD6Ed6NxoCrVEP_7g" label="ExpressionBuilder" creationDate="2009-02-22T17:01:51.875+0100" version="0.1" item="_HlpFNwD6Ed6NxoCrVEP_7g" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QIFSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QIFiKHEd6lv5yXP6dmAg" id="_w6QIFCKHEd6lv5yXP6dmAg" label="instruction" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QIFyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QIGSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QIGiKHEd6lv5yXP6dmAg" id="_w6QIGCKHEd6lv5yXP6dmAg" label="Logica_Instruction_" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QIGyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QIHSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QIHiKHEd6lv5yXP6dmAg" id="_w6QIHCKHEd6lv5yXP6dmAg" label="process" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QIHyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QIISKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QIIiKHEd6lv5yXP6dmAg" id="_w6QIICKHEd6lv5yXP6dmAg" label="New" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QIIyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QIJSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QIJiKHEd6lv5yXP6dmAg" id="_w6QIJCKHEd6lv5yXP6dmAg" label="A01_Instruction" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QIJyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QIKSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QIKiKHEd6lv5yXP6dmAg" id="_w6QIKCKHEd6lv5yXP6dmAg" label="Z_Administration_Instruction" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QIKyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QILSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QILiKHEd6lv5yXP6dmAg" id="_w6QILCKHEd6lv5yXP6dmAg" label="C_Insertion" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QILyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QIMSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QIMiKHEd6lv5yXP6dmAg" id="_w6QIMCKHEd6lv5yXP6dmAg" label="B_Transformation" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QIMyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QINSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QINiKHEd6lv5yXP6dmAg" id="_w6QINCKHEd6lv5yXP6dmAg" label="A_Extraction" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QINyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QIOSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QIOiKHEd6lv5yXP6dmAg" id="_w6QIOCKHEd6lv5yXP6dmAg" label="C_Insertion_INSTRUCTION_Elementaire_vers_RSA" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QIOyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QIPSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QIPiKHEd6lv5yXP6dmAg" id="_w6QIPCKHEd6lv5yXP6dmAg" label="B_Transformation_Instruction_Staging_vers_Elementaire" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QIPyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QIQSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QIQiKHEd6lv5yXP6dmAg" id="_w6QIQCKHEd6lv5yXP6dmAg" label="A_Extraction_Instruction_Xml_vers_Staging" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QIQyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_w6QIRSKHEd6lv5yXP6dmAg"/>
-  <TalendProperties:Property xmi:id="_w6QIRiKHEd6lv5yXP6dmAg" id="_w6QIRCKHEd6lv5yXP6dmAg" label="context" creationDate="2009-04-06T10:48:56.593+0200" version="0.1" item="_w6QIRyKHEd6lv5yXP6dmAg" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
   <TalendProperties:ItemState xmi:id="_ZdaIgSKaEd6lNZ71wv0IWA"/>
   <TalendProperties:Property xmi:id="_ZdaIgiKaEd6lNZ71wv0IWA" id="_ZdaIgCKaEd6lNZ71wv0IWA" label="RSA" creationDate="2009-04-06T13:02:19.656+0200" version="0.1" item="_ZdaIgyKaEd6lNZ71wv0IWA" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
   <TalendProperties:ItemState xmi:id="_e8J0AUYwEd-pqYdrwk8_3g"/>
   <TalendProperties:Property xmi:id="_e8J0AkYwEd-pqYdrwk8_3g" id="_e8J0AEYwEd-pqYdrwk8_3g" label="A03_Financier" creationDate="2010-04-12T14:39:49.312+0200" version="0.1" item="_e8J0A0YwEd-pqYdrwk8_3g" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_4uNu0UfbEd-xJbsLLtZovw"/>
-  <TalendProperties:Property xmi:id="_4uNu0kfbEd-xJbsLLtZovw" id="_4uNu0EfbEd-xJbsLLtZovw" label="New" creationDate="2010-04-14T17:39:17.437+0200" version="0.1" item="_4uNu00fbEd-xJbsLLtZovw" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_4uqawUfbEd-xJbsLLtZovw"/>
-  <TalendProperties:Property xmi:id="_4uqawkfbEd-xJbsLLtZovw" id="_4uqawEfbEd-xJbsLLtZovw" label="A02_Beneficiaire" creationDate="2010-04-14T17:39:17.484+0200" version="0.1" item="_4uqaw0fbEd-xJbsLLtZovw" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_4u0LwUfbEd-xJbsLLtZovw"/>
-  <TalendProperties:Property xmi:id="_4u0LwkfbEd-xJbsLLtZovw" id="_4u0LwEfbEd-xJbsLLtZovw" label="B_Transformation_Beneficiaire_Staging_vers_Elementaire" creationDate="2010-04-14T17:39:17.500+0200" version="0.1" item="_4u0Lw0fbEd-xJbsLLtZovw" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_5n4hwUfbEd-xJbsLLtZovw"/>
-  <TalendProperties:Property xmi:id="_5n4hwkfbEd-xJbsLLtZovw" id="_5n4hwEfbEd-xJbsLLtZovw" label="Transformation_Beneficiaire_03_Vide_Elementaire_0.1" creationDate="2010-04-14T17:39:23.484+0200" version="0.1" item="_5n4hw0fbEd-xJbsLLtZovw" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_5n4hxUfbEd-xJbsLLtZovw"/>
-  <TalendProperties:Property xmi:id="_5n4hxkfbEd-xJbsLLtZovw" id="_5n4hxEfbEd-xJbsLLtZovw" label="pictures" creationDate="2010-04-14T17:39:23.484+0200" version="0.1" item="_5n4hx0fbEd-xJbsLLtZovw" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_VjXbQU4pEd-N1JG3XpwK0g"/>
-  <TalendProperties:Property xmi:id="_VjXbQk4pEd-N1JG3XpwK0g" id="_VjXbQE4pEd-N1JG3XpwK0g" label="C_Insertion_Instruction_Elementaire_vers_RSA" creationDate="2010-04-22T18:08:49.140+0200" version="0.1" item="_VjXbQ04pEd-N1JG3XpwK0g" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_XgFmoU4pEd-N1JG3XpwK0g"/>
-  <TalendProperties:Property xmi:id="_XgFmok4pEd-N1JG3XpwK0g" id="_XgFmoE4pEd-N1JG3XpwK0g" label="Insertion_Beneficiaire_03_Maitre_Boucle_0.1" creationDate="2010-04-22T18:09:02.218+0200" version="0.1" item="_XgFmo04pEd-N1JG3XpwK0g" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
-  <TalendProperties:ItemState xmi:id="_XgFmpU4pEd-N1JG3XpwK0g"/>
-  <TalendProperties:Property xmi:id="_XgFmpk4pEd-N1JG3XpwK0g" id="_XgFmpE4pEd-N1JG3XpwK0g" label="pictures" creationDate="2010-04-22T18:09:02.218+0200" version="0.1" item="_XgFmp04pEd-N1JG3XpwK0g" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
   <TalendProperties:ItemState xmi:id="_wukT8U67Ed-kVJVZX8KQXw"/>
   <TalendProperties:Property xmi:id="_wukT8k67Ed-kVJVZX8KQXw" id="_wukT8E67Ed-kVJVZX8KQXw" label="A_Extraction_Financier_Xml_vers_Staging" creationDate="2010-04-23T11:36:58.031+0200" version="0.1" item="_wukT8067Ed-kVJVZX8KQXw" author="_D3RYUB-XEd-5GcIiIXDAQg"/>
   <TalendProperties:ItemState xmi:id="_1vPYgU67Ed-kVJVZX8KQXw"/>

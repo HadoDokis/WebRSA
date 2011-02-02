@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/Virs0101_20090520/Schema/virs0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_uXgCQEtqEd6OUoX2n4x28g" label="metadata">
+    <columns label="SITASF" talendType="id_String"/>
+    <columns label="TOPASF" talendType="id_Boolean"/>
+    <columns label="TOPDEMASF" talendType="id_Boolean"/>
+    <columns label="TOPENFRECONN" talendType="id_Boolean"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfoDemandeRSA/Personne/PensionAlimentaire/Asf">
+    <schemaTargets RelativeXPathQuery="SITASF" TagName="SITASF"/>
+    <schemaTargets RelativeXPathQuery="TOPASF" TagName="TOPASF"/>
+    <schemaTargets RelativeXPathQuery="TOPDEMASF" TagName="TOPDEMASF"/>
+    <schemaTargets RelativeXPathQuery="TOPENFRECONN" TagName="TOPENFRECONN"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

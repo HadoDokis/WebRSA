@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/Virs0101_20090520/Schema/virs0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_awRysEwoEd67brM5iw3igw" label="metadata">
+    <columns label="NATRESS" talendType="id_String"/>
+    <columns label="MTNATRESSMEN" talendType="id_String"/>
+    <columns label="DFPERCRESS" talendType="id_Date"/>
+    <columns label="TOPREVSUBSRESS" talendType="id_Boolean"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfoDemandeRSA/Personne/Ressources/RessourcesMensuelles/DetailRessourcesMensuelles">
+    <schemaTargets RelativeXPathQuery="NATRESS" TagName="NATRESS"/>
+    <schemaTargets RelativeXPathQuery="MTNATRESSMEN" TagName="MTNATRESSMEN"/>
+    <schemaTargets RelativeXPathQuery="DFPERCRESS" TagName="DFPERCRESS"/>
+    <schemaTargets RelativeXPathQuery="TOPREVSUBSRESS" TagName="TOPREVSUBSRESS"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

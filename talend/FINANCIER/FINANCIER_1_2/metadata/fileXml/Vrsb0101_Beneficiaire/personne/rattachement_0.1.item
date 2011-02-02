@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/rdubois/Bureau/20090525Lu_ETL_RSA/FluxV2/vrsb0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_QWagsFWQEd6tl9prB2rG7g" label="metadata">
+    <columns label="NOMNAI" talendType="id_String"/>
+    <columns label="PRENOM" talendType="id_String"/>
+    <columns label="DTNAI" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="NIR" talendType="id_String"/>
+    <columns label="TYPEPAR" talendType="id_String"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFoyerRSA/Personne">
+    <schemaTargets RelativeXPathQuery="Rattachement/NOMNAI" TagName="NOMNAI"/>
+    <schemaTargets RelativeXPathQuery="Rattachement/PRENOM" TagName="PRENOM"/>
+    <schemaTargets RelativeXPathQuery="Rattachement/DTNAI" TagName="DTNAI"/>
+    <schemaTargets RelativeXPathQuery="Rattachement/NIR" TagName="NIR"/>
+    <schemaTargets RelativeXPathQuery="Rattachement/TYPEPAR" TagName="TYPEPAR"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>
