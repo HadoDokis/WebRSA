@@ -54,6 +54,9 @@ msgstr "La personne n'est pas soumise à droits et devoirs"
 msgid "Erreur.Dossierep.id"
 msgstr "Il existe déjà un dossier d'EP non finalisé pour \"Demande de suspension\""
 
+msgid "Erreur.Dossierep.datedecision"
+msgstr "Il existe un dossier d'EP pour \"Demande de suspension\" dont la date de décision est trop récente"
+
 msgid "Erreur.Contratinsertion.df_ci"
 msgstr "La date de fin du contrat d'insertion est égale ou supérieure à la date du jour"
 
