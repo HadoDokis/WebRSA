@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:DatabaseConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" ContextMode="true" ContextId="_IIa-UAieEd66bZLrdKNCmg" DatabaseType="PostgreSQL" URL="jdbc:postgresql://localhost:5432/STAGING_RSA" Port="context.Administration_webrsa_Port" Username="context.Administration_webrsa_Login" Password="context.Administration_webrsa_Password" ServerName="context.Administration_webrsa_Server" Schema="context.Administration_webrsa_Schema" SID="context.Administration_webrsa_Database" SqlSynthax="Syntaxe SQL" DbmsId="postgres_id" ProductId="POSTGRESQL" StandardSQL="true">
+  <tables id="_CvPf8J-hEd-7N6xi4xIPEA" label="f_reffoyersid" sourceName="f_reffoyersid" tableType="TABLE">
+    <columns label="cleinfodemandersa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="cleinfodemandersa"/>
+    <columns label="dossierrsa_id" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="dossierrsa_id"/>
+    <columns label="foyers_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="foyers_id"/>
+    <columns label="numdemrsa" sourceType="VARCHAR" talendType="id_String" length="11" precision="0" originalField="numdemrsa"/>
+  </tables>
+  <tables id="_SI-GMJ-lEd-7N6xi4xIPEA" label="f_refpersid" sourceName="f_refpersid" tableType="TABLE">
+    <columns label="cleinfosfoyerrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfosfoyerrsa"/>
+    <columns label="personne_id" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="personne_id"/>
+    <columns label="nomnai" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="nomnai"/>
+    <columns label="prenom" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="prenom"/>
+    <columns label="dtnai" sourceType="DATE" talendType="id_Date" length="4" precision="0" originalField="dtnai" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="rgnai" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="rgnai"/>
+    <columns label="numdemrsa" sourceType="VARCHAR" talendType="id_String" length="11" precision="0" originalField="numdemrsa"/>
+  </tables>
+  <tables id="_vcN2cLz0Ed-tz4KnbvH04g" label="donneeentete" sourceName="donneeentete" tableType="TABLE">
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" key="true" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="balisededonnee" sourceType="VARCHAR" talendType="id_String" length="100000" precision="0" originalField="balisededonnee"/>
+  </tables>
+  <tables id="_vcXAYLz0Ed-tz4KnbvH04g" label="donneepied" sourceName="donneepied" tableType="TABLE">
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" key="true" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="balisededonnee" sourceType="VARCHAR" talendType="id_String" length="100000" precision="0" originalField="balisededonnee"/>
+  </tables>
+  <tables id="_vfo94Lz0Ed-tz4KnbvH04g" label="donneereference" sourceName="donneereference" tableType="TABLE">
+    <columns label="cledemandersa" sourceType="INT4" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="cledemandersa"/>
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" key="true" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="numdemrsa" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="numdemrsa"/>
+    <columns label="matricule" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="matricule"/>
+  </tables>
+  <tables id="_vkaJILz0Ed-tz4KnbvH04g" label="donneetampon" sourceName="donneetampon" tableType="TABLE">
+    <columns label="cledemandersa" sourceType="INT4" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="cledemandersa"/>
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" key="true" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="balisededonnee" sourceType="VARCHAR" talendType="id_String" length="100000" precision="0" originalField="balisededonnee"/>
+  </tables>
+  <tables id="_vpBjYLz0Ed-tz4KnbvH04g" label="f_refdossierrsaid" sourceName="f_refdossierrsaid" tableType="TABLE">
+    <columns label="cleinfosfoyerrsa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfosfoyerrsa"/>
+    <columns label="cledossierrsa" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="cledossierrsa"/>
+  </tables>
+  <tables id="_wGPD0Lz0Ed-tz4KnbvH04g" label="nomfichier" sourceName="nomfichier" tableType="TABLE">
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" key="true" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="nom" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="nom"/>
+  </tables>
+  <tables id="_xd2XALz0Ed-tz4KnbvH04g" label="rejet" sourceName="rejet" tableType="TABLE">
+    <columns label="cleinfodemandersa" sourceType="INT4" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="cleinfodemandersa"/>
+    <columns label="flux" sourceType="VARCHAR" talendType="id_String" length="20" precision="0" originalField="flux"/>
+    <columns label="etape" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="etape"/>
+    <columns label="table_en_erreur" sourceType="VARCHAR" talendType="id_String" length="50" precision="0" originalField="table_en_erreur"/>
+    <columns label="log" sourceType="VARCHAR" talendType="id_String" length="1000" precision="0" originalField="log"/>
+  </tables>
+  <tables id="_E324oLz1Ed-tz4KnbvH04g" label="statintegrationfinancier" sourceName="statintegrationfinancier" tableType="TABLE">
+    <columns label="nom_fichier" sourceType="VARCHAR" talendType="id_String" length="100" precision="0" originalField="nom_fichier"/>
+    <columns label="date_debut" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="date_debut" pattern="&quot;yyyy-MM-dd hh:mm:ss&quot;"/>
+    <columns label="date_fin" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="date_fin" pattern="&quot;yyyy-MM-dd hh:mm:ss&quot;"/>
+    <columns label="elem_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_anomalies"/>
+    <columns label="elem_dossiers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_dossiers"/>
+    <columns label="elem_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_identificationsflux"/>
+    <columns label="elem_infosfinancieres" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_infosfinancieres"/>
+    <columns label="elem_totalisationsacomptes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_totalisationsacomptes"/>
+    <columns label="elem_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="elem_transmissionsflux"/>
+    <columns label="webav_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_anomalies"/>
+    <columns label="webav_dossiers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_dossiers"/>
+    <columns label="webav_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_identificationsflux"/>
+    <columns label="webav_infosfinancieres" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_infosfinancieres"/>
+    <columns label="webav_totalisationsacomptes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_totalisationsacomptes"/>
+    <columns label="webav_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webav_transmissionsflux"/>
+    <columns label="webap_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_anomalies"/>
+    <columns label="webap_dossiers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_dossiers"/>
+    <columns label="webap_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_identificationsflux"/>
+    <columns label="webap_infosfinancieres" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_infosfinancieres"/>
+    <columns label="webap_totalisationsacomptes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_totalisationsacomptes"/>
+    <columns label="webap_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="webap_transmissionsflux"/>
+    <columns label="flux_anomalies" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_anomalies"/>
+    <columns label="flux_dossiers" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_dossiers"/>
+    <columns label="flux_identificationsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_identificationsflux"/>
+    <columns label="flux_infosfinancieres" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_infosfinancieres"/>
+    <columns label="flux_totalisationsacomptes" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_totalisationsacomptes"/>
+    <columns label="flux_transmissionsflux" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="flux_transmissionsflux"/>
+  </tables>
+  <tables id="_Yn19AMGlEd-2w96eFjhooQ" label="visionneuses" sourceName="visionneuses" tableType="TABLE">
+    <columns label="id" sourceType="SERIAL" defaultValue="&quot;nextval('administration.visionneuses_id_seq'::regclass)&quot;" talendType="id_Integer" nullable="false" length="4" precision="0" originalField="id"/>
+    <columns label="flux" sourceType="BPCHAR" talendType="id_String" length="15" precision="0" originalField="flux"/>
+    <columns label="nomfic" sourceType="BPCHAR" talendType="id_String" length="40" precision="0" originalField="nomfic"/>
+    <columns label="dtdeb" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="dtdeb" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="dtfin" sourceType="TIMESTAMP" talendType="id_Date" length="8" precision="6" originalField="dtfin" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="nbrejete" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="nbrejete"/>
+    <columns label="nbinser" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="nbinser"/>
+    <columns label="nbmaj" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="nbmaj"/>
+    <columns label="dspcree" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="dspcree"/>
+    <columns label="dspmaj" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="dspmaj"/>
+    <columns label="perscree" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="perscree"/>
+    <columns label="persmaj" sourceType="NUMERIC" talendType="id_Double" length="6" precision="0" originalField="persmaj"/>
+  </tables>
+  <tables id="_Y4KQ8MGlEd-2w96eFjhooQ" label="rejet_historique" sourceName="rejet_historique" tableType="TABLE">
+    <columns label="cleinfodemandersa" sourceType="INT4" talendType="id_Integer" key="true" nullable="false" length="4" precision="0" originalField="cleinfodemandersa"/>
+    <columns label="flux" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" key="true" nullable="false" length="20" precision="0" originalField="flux"/>
+    <columns label="etape" sourceType="INT4" talendType="id_Integer" length="4" precision="0" originalField="etape"/>
+    <columns label="table_en_erreur" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="50" precision="0" originalField="table_en_erreur"/>
+    <columns label="log" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="1000" precision="0" originalField="log"/>
+    <columns label="numdemrsa" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="20" precision="0" originalField="numdemrsa"/>
+    <columns label="matricule" sourceType="VARCHAR" defaultValue="&quot;NULL::character varying&quot;" talendType="id_String" length="20" precision="0" originalField="matricule"/>
+    <columns label="DT_INSERT" sourceType="TIMESTAMP" defaultValue="&quot;now()&quot;" talendType="id_Date" key="true" nullable="false" length="8" precision="6" originalField="DT_INSERT" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="fic" sourceType="VARCHAR" talendType="id_String" length="40" precision="0" originalField="fic"/>
+    <columns label="balisededonnee" sourceType="VARCHAR" talendType="id_String" length="100000" precision="0" originalField="balisededonnee"/>
+  </tables>
+</TalendMetadata:DatabaseConnection>

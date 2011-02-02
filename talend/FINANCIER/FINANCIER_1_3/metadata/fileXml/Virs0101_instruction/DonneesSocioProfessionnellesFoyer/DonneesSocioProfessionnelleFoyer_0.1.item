@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/Virs0101_20090520/Schema/virs0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_ijFT4Eq4Ed6GwI1p73jvxg" label="metadata">
+    <columns label="MOTIDEMRSA" talendType="id_String"/>
+    <columns label="ACCOSOCFAM" talendType="id_String"/>
+    <columns label="LIBAUTRACCOSOCFAM" talendType="id_String"/>
+    <columns label="LIBCOORACCOSOCFAM" talendType="id_String"/>
+    <columns label="NATLOG" talendType="id_String"/>
+    <columns label="LIBAUTRDIFLOG" talendType="id_String"/>
+    <columns label="DEMARLOG" talendType="id_String"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfoDemandeRSA/DonneesSocioProfessionnellesFoyer">
+    <schemaTargets RelativeXPathQuery="GeneraliteDSPF/MOTIDEMRSA" TagName="MOTIDEMRSA"/>
+    <schemaTargets RelativeXPathQuery="AccompagnementSocialFamilial/CommunAccompagnementSocialFamilial/ACCOSOCFAM" TagName="ACCOSOCFAM"/>
+    <schemaTargets RelativeXPathQuery="AccompagnementSocialFamilial/CommunAccompagnementSocialFamilial/LIBAUTRACCOSOCFAM" TagName="LIBAUTRACCOSOCFAM"/>
+    <schemaTargets RelativeXPathQuery="AccompagnementSocialFamilial/CommunAccompagnementSocialFamilial/LIBCOORACCOSOCFAM" TagName="LIBCOORACCOSOCFAM"/>
+    <schemaTargets RelativeXPathQuery="DifficulteLogement/CommunDifficulteLogement/NATLOG" TagName="NATLOG"/>
+    <schemaTargets RelativeXPathQuery="DifficulteLogement/CommunDifficulteLogement/LIBAUTRDIFLOG" TagName="LIBAUTRDIFLOG"/>
+    <schemaTargets RelativeXPathQuery="DifficulteLogement/CommunDifficulteLogement/DEMARLOG" TagName="DEMARLOG"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

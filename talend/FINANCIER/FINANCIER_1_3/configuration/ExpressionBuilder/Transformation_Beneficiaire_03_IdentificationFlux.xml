@@ -1,0 +1,13 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<expression:EMFExpression xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore" id="null=>Var=>var2" expression="!&quot;&quot;.equals(row6.heucreaflux) &amp;&amp; row6.heucreaflux != null &amp;&amp; TalendDate.isDate(row6.heucreaflux, &quot;HH:mm:ss.SSS&quot;)">
+  <variables name="row6.applieme" value="null" talendType="id_String" nullable="true"/>
+  <variables name="row6.numversionapplieme" value="null" talendType="id_String" nullable="true"/>
+  <variables name="row6.typeflux" value="null" talendType="id_String" nullable="true"/>
+  <variables name="row6.natflux" value="null" talendType="id_String" nullable="true"/>
+  <variables name="row6.dtcreaflux" value="null" talendType="id_String" nullable="true"/>
+  <variables name="row6.heucreaflux" value="null" talendType="id_String" nullable="true"/>
+  <variables name="row6.dtref" value="null" talendType="id_String" nullable="true"/>
+  <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+  <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+  <variables name="Var.var3" value="false" talendType="id_Boolean"/>
+</expression:EMFExpression>

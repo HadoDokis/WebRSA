@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/turnan/Bureau/FINANCIER.XML" Encoding="ISO-8859-1">
+  <tables id="_TrOBEE7dEd-PLZC7NBMq_w" label="metadata">
+    <columns label="QUAL" talendType="id_String" length="3" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="NOM" talendType="id_String" length="8" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="NOMNAI" talendType="id_String" length="7" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="PRENOM" talendType="id_String" length="6" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="NOMCOMNAI" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="DTNAI" talendType="id_String" length="10" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="TYPEDTNAI" talendType="id_String" length="1" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="NIR" talendType="id_String" length="15" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="TOPVALIEC" talendType="id_String" length="1" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="SEXE" talendType="id_String" length="1" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="TOPRESPDOS" talendType="id_String" length="1" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="DDRATDOS" talendType="id_String" length="10" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFinancieresFoyerRSA/Personne">
+    <schemaTargets RelativeXPathQuery="Identification/QUAL" TagName="QUAL"/>
+    <schemaTargets RelativeXPathQuery="Identification/NOM" TagName="NOM"/>
+    <schemaTargets RelativeXPathQuery="Identification/NOMNAI" TagName="NOMNAI"/>
+    <schemaTargets RelativeXPathQuery="Identification/PRENOM" TagName="PRENOM"/>
+    <schemaTargets RelativeXPathQuery="Identification/NOMCOMNAI" TagName="NOMCOMNAI"/>
+    <schemaTargets RelativeXPathQuery="Identification/DTNAI" TagName="DTNAI"/>
+    <schemaTargets RelativeXPathQuery="Identification/TYPEDTNAI" TagName="TYPEDTNAI"/>
+    <schemaTargets RelativeXPathQuery="Identification/NIR" TagName="NIR"/>
+    <schemaTargets RelativeXPathQuery="Identification/TOPVALIEC" TagName="TOPVALIEC"/>
+    <schemaTargets RelativeXPathQuery="Identification/SEXE" TagName="SEXE"/>
+    <schemaTargets RelativeXPathQuery="DossierCAF/TOPRESPDOS" TagName="TOPRESPDOS"/>
+    <schemaTargets RelativeXPathQuery="DossierCAF/DDRATDOS" TagName="DDRATDOS"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

@@ -1,0 +1,74 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>row2=>dtnai" expression="TalendDate.parseDate(&quot;dd/MM/yyyy&quot;, row1.Date_naissance) ">
+    <variables name="row1.Obs" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="row1.NIR" value="null" talendType="id_Long" nullable="true"/>
+    <variables name="row1.Identifiant" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.Nom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.Pr_nom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.Date_naissance" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.Date_inscription" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.Cat_gorie" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="row2.id" value="0" talendType="id_Integer"/>
+    <variables name="row2.foyer_id" value="0" talendType="id_Integer"/>
+    <variables name="row2.qual" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.prenom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nomnai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.prenom2" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.prenom3" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nomcomnai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtnai" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row2.rgnai" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="row2.typedtnai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nir" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.topvalec" value="null" talendType="id_Boolean" nullable="true"/>
+    <variables name="row2.sexe" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.nati" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtnati" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row2.pieecpres" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.idassedic" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.numagenpoleemploi" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.dtinscpoleemploi" value="null" talendType="id_Date" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>row7=>idassedic" expression="rejet2.Identifiant.substring(2)">
+    <variables name="rejet2.Obs" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="rejet2.NIR" value="null" talendType="id_String" nullable="true"/>
+    <variables name="rejet2.Identifiant" value="null" talendType="id_String" nullable="true"/>
+    <variables name="rejet2.Nom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="rejet2.Pr_nom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="rejet2.Date_naissance" value="null" talendType="id_String" nullable="true"/>
+    <variables name="rejet2.Date_inscription" value="null" talendType="id_String" nullable="true"/>
+    <variables name="rejet2.Cat_gorie" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="row6.nom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row6.prenom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row6.nomnai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row6.prenom2" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row6.prenom3" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row6.dtnai" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row6.nir" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row7.nom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row7.prenom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row7.nomnai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row7.prenom2" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row7.prenom3" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row7.dtnai" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row7.nir" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row7.idassedic" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.Obs" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="row5.NIR" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.Identifiant" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.Nom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.Pr_nom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.Date_naissance" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.Date_inscription" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.Cat_gorie" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="row6.id" value="0" talendType="id_Integer"/>
+    <variables name="row6.foyer_id" value="0" talendType="id_Integer"/>
+    <variables name="row7.id" value="0" talendType="id_Integer"/>
+    <variables name="row7.foyer_id" value="0" talendType="id_Integer"/>
+    <variables name="row7.qual" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row7.numagenpoleemploi" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row7.dtinscpoleemploi" value="null" talendType="id_Date" nullable="true"/>
+  </expression:EMFExpression>
+</xmi:XMI>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/Virs0101_20090520/Schema/virs0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_CvNNQExSEd69wP33eWx3cQ" label="metadata">
+    <columns label="APPLIEME" talendType="id_String"/>
+    <columns label="NUMVERSIONAPPLIEME" talendType="id_String"/>
+    <columns label="TYPEFLUX" talendType="id_String"/>
+    <columns label="NATFLUX" talendType="id_String"/>
+    <columns label="DTCREAFLUX" talendType="id_Date"/>
+    <columns label="HEUCREAFLUX" talendType="id_Date"/>
+  </tables>
+  <schema LimitBoucle="2" AbsoluteXPathQuery="/Racine/IdentificationFlux">
+    <schemaTargets RelativeXPathQuery="APPLIEME" TagName="APPLIEME"/>
+    <schemaTargets RelativeXPathQuery="NUMVERSIONAPPLIEME" TagName="NUMVERSIONAPPLIEME"/>
+    <schemaTargets RelativeXPathQuery="TYPEFLUX" TagName="TYPEFLUX"/>
+    <schemaTargets RelativeXPathQuery="NATFLUX" TagName="NATFLUX"/>
+    <schemaTargets RelativeXPathQuery="DTCREAFLUX" TagName="DTCREAFLUX"/>
+    <schemaTargets RelativeXPathQuery="HEUCREAFLUX" TagName="HEUCREAFLUX"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

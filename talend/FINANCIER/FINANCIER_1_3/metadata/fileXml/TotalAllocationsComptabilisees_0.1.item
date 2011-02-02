@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/turnan/Bureau/FINANCIER.XML" Encoding="ISO-8859-1">
+  <tables id="_ru5NYFEKEd--d6qhCVYLEw" label="metadata">
+    <columns label="MTTOTSOCLRSA" talendType="id_String" length="13" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="MTTOTSOCLMAJORSA" talendType="id_String" length="13" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="MTTOTLOCALRSA" talendType="id_String" length="13" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="MTTOTRSA" talendType="id_String" length="13" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/TotalisationAcompte">
+    <schemaTargets RelativeXPathQuery="TotalAllocationsComptabilisees/MTTOTSOCLRSA" TagName="MTTOTSOCLRSA"/>
+    <schemaTargets RelativeXPathQuery="TotalAllocationsComptabilisees/MTTOTSOCLMAJORSA" TagName="MTTOTSOCLMAJORSA"/>
+    <schemaTargets RelativeXPathQuery="TotalAllocationsComptabilisees/MTTOTLOCALRSA" TagName="MTTOTLOCALRSA"/>
+    <schemaTargets RelativeXPathQuery="TotalAllocationsComptabilisees/MTTOTRSA" TagName="MTTOTRSA"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

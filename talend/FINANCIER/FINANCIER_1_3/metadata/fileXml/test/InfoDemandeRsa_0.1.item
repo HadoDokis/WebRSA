@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/Virs0101_20090520/Schema/virs0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_rEoNUEnrEd6Bwf5JixBlVg" label="metadata">
+    <columns label="FONORG" talendType="id_String"/>
+    <columns label="NUMORG" talendType="id_String"/>
+    <columns label="MATRICULE" talendType="id_String"/>
+    <columns label="STATUDEMRSA" talendType="id_String"/>
+    <columns label="TYPEPARTE" talendType="id_String"/>
+    <columns label="IDEPARTE" talendType="id_String"/>
+    <columns label="DTDEMRSA" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="NUMDEMRSA" talendType="id_String"/>
+    <columns label="FONORGCEDMUT" talendType="id_String"/>
+    <columns label="NUMORGCEDMUT" talendType="id_String"/>
+    <columns label="MATRICULEORGCEDMUT" talendType="id_String"/>
+    <columns label="CODEPOSANCHAB" talendType="id_String"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfoDemandeRSA">
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Organisme/FONORG" TagName="FONORG"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Organisme/NUMORG" TagName="NUMORG"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Organisme/MATRICULE" TagName="MATRICULE"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Organisme/STATUDEMRSA" TagName="STATUDEMRSA"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Partenaire/TYPEPARTE" TagName="TYPEPARTE"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/Partenaire/IDEPARTE" TagName="IDEPARTE"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/DemandeRSA/DTDEMRSA" TagName="DTDEMRSA"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/DemandeRSA/NUMDEMRSA" TagName="NUMDEMRSA"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/OrganismeCedant/FONORGCEDMUT" TagName="FONORGCEDMUT"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/OrganismeCedant/NUMORGCEDMUT" TagName="NUMORGCEDMUT"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/OrganismeCedant/MATRICULEORGCEDMUT" TagName="MATRICULEORGCEDMUT"/>
+    <schemaTargets RelativeXPathQuery="IdentificationRSA/OrganismeCedant/CODEPOSANCHAB" TagName="CODEPOSANCHAB"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

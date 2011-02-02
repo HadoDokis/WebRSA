@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/turnan/Bureau/FINANCIER.XML" Encoding="ISO-8859-1">
+  <tables id="_4Q3fkE7uEd-PLZC7NBMq_w" label="metadata">
+    <columns label="NATPFCRE" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="TYPEOPECOMPTA" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="SENSOPECOMPTA" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="MTMOUCOMPTA" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="DTTRAIMOUCOMPTA" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="HEUTRAIMOUCOMPTA" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFinancieresFoyerRSA/AcompteRSA/DetailAcompteRSA/AllocationsComptabilisees/DetailAllocationComptabilisee">
+    <schemaTargets RelativeXPathQuery="NATPFCRE" TagName="NATPFCRE"/>
+    <schemaTargets RelativeXPathQuery="TYPEOPECOMPTA" TagName="TYPEOPECOMPTA"/>
+    <schemaTargets RelativeXPathQuery="SENSOPECOMPTA" TagName="SENSOPECOMPTA"/>
+    <schemaTargets RelativeXPathQuery="MTMOUCOMPTA" TagName="MTMOUCOMPTA"/>
+    <schemaTargets RelativeXPathQuery="DTTRAIMOUCOMPTA" TagName="DTTRAIMOUCOMPTA"/>
+    <schemaTargets RelativeXPathQuery="HEUTRAIMOUCOMPTA" TagName="HEUTRAIMOUCOMPTA"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

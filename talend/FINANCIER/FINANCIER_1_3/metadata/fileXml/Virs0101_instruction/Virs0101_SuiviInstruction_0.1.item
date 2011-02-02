@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="D:/01-TALEND/02 - Talend - Client/01 - CG93/webrsa/Virs0101_20090520/Schema/virs0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_RHGgEEoGEd6Bwf5JixBlVg" label="metadata">
+    <columns label="ETATIRSA" talendType="id_String"/>
+    <columns label="NOMINS" talendType="id_String"/>
+    <columns label="PRENOMINS" talendType="id_String"/>
+    <columns label="NUMDEPINS" talendType="id_String"/>
+    <columns label="TYPESERINS" talendType="id_String"/>
+    <columns label="NUMCOMINS" talendType="id_String"/>
+    <columns label="NUMAGRINS" talendType="id_String"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfoDemandeRSA/IdentificationRSA/SuiviInstruction">
+    <schemaTargets RelativeXPathQuery="ETATIRSA" TagName="ETATIRSA"/>
+    <schemaTargets RelativeXPathQuery="NOMINS" TagName="NOMINS"/>
+    <schemaTargets RelativeXPathQuery="PRENOMINS" TagName="PRENOMINS"/>
+    <schemaTargets RelativeXPathQuery="NUMDEPINS" TagName="NUMDEPINS"/>
+    <schemaTargets RelativeXPathQuery="TYPESERINS" TagName="TYPESERINS"/>
+    <schemaTargets RelativeXPathQuery="NUMCOMINS" TagName="NUMCOMINS"/>
+    <schemaTargets RelativeXPathQuery="NUMAGRINS" TagName="NUMAGRINS"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

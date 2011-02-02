@@ -1,0 +1,22 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>copyOfdonnee_XML=>line" expression="row1.TotalisationAcompte.substring( Var.cle_Index, row1.TotalisationAcompte.length() )+&quot;&lt;/TotalIndusConstates>&quot;">
+    <variables name="row1.TotalisationAcompte" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.cle_Index" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>donnee_XML3=>line" expression="row5.TotalisationAcompte.substring( Var.cle_Index, row5.TotalisationAcompte.length() )+&quot;&lt;/TotalIndusTransferesCG>&quot; ">
+    <variables name="row5.TotalisationAcompte" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.cle_Index" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>copyOfdonnee_XML3=>line" expression="row7.TotalisationAcompte.substring( Var.cle_Index, row7.TotalisationAcompte.length() )+&quot;&lt;/TotalRemisesIndus>&quot; ">
+    <variables name="row7.TotalisationAcompte" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.cle_Index" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>cle_Index" expression="row9.TotalisationAcompte.indexOf(&quot;&lt;TotalAnnulationsIndus>&quot;)  ">
+    <variables name="row9.TotalisationAcompte" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.cle_Index" value="0" talendType="id_Integer"/>
+    <variables name="row7.TotalisationAcompte" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row5.TotalisationAcompte" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row1.TotalisationAcompte" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+</xmi:XMI>

@@ -1,0 +1,109 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>Var=>var1" expression="TalendDate.isDate(extraitActivites.ddcondactprea, &quot;yyyy-MM-dd&quot;)">
+    <variables name="extraitActivites.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.ddcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.dfcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.topcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.nbheuacttot" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>" expression="TalendDate.isDate(extraitActivites.dfcondactprea , &quot;yyyy-MM-dd&quot;) ">
+    <variables name="extraitActivites.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.ddcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.dfcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.topcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.nbheuacttot" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var2" expression="TalendDate.isDate(extraitActivites.dfcondactprea, &quot;yyyy-MM-dd&quot;) ">
+    <variables name="extraitActivites.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.ddcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.dfcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.topcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.nbheuacttot" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>insertActivites=>topcondactprea" expression="(Var.Bool0||Var.Bool1)?extraitActivites.topcondactprea.equals(&quot;1&quot;):null ">
+    <variables name="extraitActivites.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.ddcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.dfcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.topcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.nbheuacttot" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool0" expression="extraitActivites.topcondactprea == null || &quot;&quot;.equals(extraitActivites.topcondactprea) ?false:extraitActivites.topcondactprea.equals(&quot;0&quot;)  ">
+    <variables name="extraitActivites.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.ddcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.dfcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.topcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.nbheuacttot" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="null" talendType="id_String"/>
+    <variables name="Var.Bool1" value="null" talendType="id_String"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>insertActivites=>nbheuacttot" expression="extraitActivites.nbheuacttot == null || &quot;&quot;.equals(extraitActivites.nbheuacttot)?null:Integer.valueOf(extraitActivites.nbheuacttot)">
+    <variables name="extraitActivites.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.ddcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.dfcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.topcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.nbheuacttot" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="null" talendType="id_String"/>
+    <variables name="Var.Bool1" value="null" talendType="id_String"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>Bool1" expression="extraitConditions.topcondactprea == null || &quot;&quot;.equals(extraitConditions.topcondactprea) ?false:extraitConditions.topcondactprea.equals(&quot;1&quot;) ">
+    <variables name="extraitConditions.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitConditions.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitConditions.ddcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitConditions.dfcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitConditions.topcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitConditions.nbheuacttot" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+    <variables name="extraitActivites.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitActivites.ddcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.dfcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.topcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitActivites.nbheuacttot" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>insertConditions=>ddcondactprea" expression="Var.var1?TalendDate.parseDate(&quot;yyyy-MM-dd&quot;,extraitConditions.ddcondactprea):null">
+    <variables name="extraitConditions.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitConditions.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitConditions.ddcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitConditions.dfcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitConditions.topcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitConditions.nbheuacttot" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>insertConditions=>dfcondactprea" expression="Var.var2?TalendDate.parseDate(&quot;yyyy-MM-dd&quot;,extraitConditions.dfcondactprea):null">
+    <variables name="extraitConditions.infodemandersa" value="0" talendType="id_Integer"/>
+    <variables name="extraitConditions.clepersonne" value="0" talendType="id_Integer"/>
+    <variables name="extraitConditions.ddcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitConditions.dfcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitConditions.topcondactprea" value="null" talendType="id_String" nullable="true"/>
+    <variables name="extraitConditions.nbheuacttot" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool0" value="false" talendType="id_Boolean"/>
+    <variables name="Var.Bool1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+</xmi:XMI>

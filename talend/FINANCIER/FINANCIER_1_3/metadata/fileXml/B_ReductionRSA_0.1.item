@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/turnan/Bureau/NRSACGIM_RSABEM_20100304_11_FACULTATIFS.xml" Encoding="ISO-8859-1">
+  <tables id="_ixSNAEelEd-xJbsLLtZovw" label="metadata">
+    <columns label="MTREDRSA" talendType="id_String" length="5" precision="3" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="DDREDRSA" talendType="id_String" length="10" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="DFREDRSA" talendType="id_String" length="10" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFoyerRSA/PrestationRSA/DetailDroitRSA/AvisPCGDroitRSA/ReductionRSA">
+    <schemaTargets RelativeXPathQuery="MTREDRSA" TagName="MTREDRSA"/>
+    <schemaTargets RelativeXPathQuery="DDREDRSA" TagName="DDREDRSA"/>
+    <schemaTargets RelativeXPathQuery="DFREDRSA" TagName="DFREDRSA"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

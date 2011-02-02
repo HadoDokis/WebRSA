@@ -1,0 +1,11 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>Var=>cle_Index" expression="row15.InfosFinancieresFoyerRSA.indexOf(&quot;&lt;Anomalie>&quot;)">
+    <variables name="row15.InfosFinancieresFoyerRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.cle_Index" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>out2=>detail" expression="row15.InfosFinancieresFoyerRSA.substring( Var.cle_Index, row15.InfosFinancieresFoyerRSA.length() )+&quot;&lt;/Anomalie>&quot;">
+    <variables name="row15.InfosFinancieresFoyerRSA" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.cle_Index" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+</xmi:XMI>
