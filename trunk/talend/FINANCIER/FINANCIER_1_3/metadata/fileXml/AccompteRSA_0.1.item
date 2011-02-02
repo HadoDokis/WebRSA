@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/turnan/Bureau/FINANCIER.XML" Encoding="ISO-8859-1">
+  <tables id="_Z6azoE7wEd-PLZC7NBMq_w" label="metadata">
+    <columns label="MOISMOUCOMPTA" talendType="id_String" length="0" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFinancieresFoyerRSA/AcompteRSA/GeneraliteAcompteRSA">
+    <schemaTargets RelativeXPathQuery="MOISMOUCOMPTA" TagName="MOISMOUCOMPTA"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

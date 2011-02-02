@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/turnan/Bureau/NRSACGIM_RSABEM_20100304_11_FACULTATIFS.xml" Encoding="ISO-8859-1">
+  <tables id="_3pdYMEcVEd-klYq6o9J-GQ" label="metadata">
+    <columns label="MTLIBERNONDECL" talendType="id_String" length="6" precision="3" pattern="&quot;dd-MM-yyyy&quot;"/>
+    <columns label="DTABSDECLLIBER" talendType="id_String" length="10" precision="0" pattern="&quot;dd-MM-yyyy&quot;"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFoyerRSA/Personne/AvisPCGPersonne/Liberalite">
+    <schemaTargets RelativeXPathQuery="MTLIBERNONDECL" TagName="MTLIBERNONDECL"/>
+    <schemaTargets RelativeXPathQuery="DTABSDECLLIBER" TagName="DTABSDECLLIBER"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>

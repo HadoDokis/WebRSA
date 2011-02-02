@@ -1,0 +1,42 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>rejet=>log" expression="&quot;le numdemrsa &quot; + row9.numdemrsa  + &quot; n est pas present dans la table dossiers&quot;">
+    <variables name="row9.numdemrsa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row2.id" value="0" talendType="id_Integer"/>
+    <variables name="row2.numdemrsa" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>rejet_foyer=>log" expression="&quot;Aucun foyer enregistré dans la base WebRSA pour le numdemrsa = &quot; + row1.numdemrsa ">
+    <variables name="row1.cleinfosfoyerrsa" value="0" talendType="id_Integer"/>
+    <variables name="row1.cledossierrsa" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="row1.numdemrsa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row4.id" value="0" talendType="id_Integer"/>
+    <variables name="row4.dossier_id" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>rejet_personne=>log" expression="&quot;Aucun enregistrement en base pour le numdemrsa '&quot;+ cle_foyer.numdemrsa +&quot;' correspondant aux informations suivante : nom de naissance '&quot;+ row3.nomnai +&quot;' - prénom '&quot;+ row3.prenom +&quot;' - date de naissance '&quot;+ row3.dtnai +&quot;' - rang de naissance '&quot;+ row3.rgnai +&quot;'.&quot; ">
+    <variables name="cle_foyer.cleinfodemandersa" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="cle_foyer.numdemrsa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="cle_foyer.foyers_id" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="cle_foyer.nomnai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="cle_foyer.prenom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="cle_foyer.dtnai" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="cle_foyer.rgnai" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="row3.id" value="0" talendType="id_Integer"/>
+    <variables name="row3.foyer_id" value="0" talendType="id_Integer"/>
+    <variables name="row3.prenom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row3.nomnai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row3.dtnai" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row3.rgnai" value="null" talendType="id_Integer" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>rejet_dossierscaf=>log" expression="&quot;Aucun enregistrement en base dans la table 'dossierscaf' pour le numdemrsa '&quot;+ personne.numdemrsa +&quot;' correspondant aux informations suivante : nom de naissance '&quot;+ personne.nomnai +&quot;' - prénom '&quot;+ personne.prenom +&quot;' - date de naissance '&quot;+ personne.dtnai +&quot;' - rang de naissance '&quot;+ personne.rgnai +&quot;'.&quot;  ">
+    <variables name="personne.cleinfodemandersa" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="personne.nomnai" value="null" talendType="id_String" nullable="true"/>
+    <variables name="personne.prenom" value="null" talendType="id_String" nullable="true"/>
+    <variables name="personne.dtnai" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="personne.rgnai" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="personne.numdemrsa" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row7.infosfinancieresfoyerrsa" value="0" talendType="id_Integer"/>
+    <variables name="row7.toprespdos" value="null" talendType="id_Boolean" nullable="true"/>
+    <variables name="row7.ddratdos" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row7.dfratdos" value="null" talendType="id_Date" nullable="true"/>
+  </expression:EMFExpression>
+</xmi:XMI>

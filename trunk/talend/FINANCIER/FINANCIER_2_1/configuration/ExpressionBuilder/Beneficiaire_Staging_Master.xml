@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>erreurChild=>message" expression="&quot;[&quot;+TalendDate.getDate(&quot;yyyy-MM-dd hh:mm:ss&quot;)+&quot;] Traitement d'extraction interrompu.&quot;  ">
+    <variables name="row226.moment" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row226.pid" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.root_pid" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.father_pid" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.project" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.job" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.context" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.priority" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="row226.type" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.origin" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.message" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.code" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>erreur=>message" expression="&quot;[&quot;+TalendDate.getDate(&quot;yyyy-MM-dd hh:mm:ss&quot;)+&quot;] ERROR : '&quot;+row226.message+&quot;' (&quot;+row226.job+&quot;) \n&quot;+&#xD;&#xA;&quot;[&quot;+TalendDate.getDate(&quot;yyyy-MM-dd hh:mm:ss&quot;)+&quot;] Traitement d'extraction interrompu.&quot;   ">
+    <variables name="row226.moment" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="row226.pid" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.root_pid" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.father_pid" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.project" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.job" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.context" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.priority" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="row226.type" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.origin" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.message" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row226.code" value="null" talendType="id_Integer" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+</xmi:XMI>

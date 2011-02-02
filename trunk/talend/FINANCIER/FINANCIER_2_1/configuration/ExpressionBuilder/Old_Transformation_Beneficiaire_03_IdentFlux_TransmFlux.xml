@@ -1,0 +1,22 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>copyOfins=>nbtotdosrsatransm" expression="Integer.valueOf(row3.nbtotdosrsatransm)">
+    <variables name="row3.nbtotdosrsatransm" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>copyOfins=>nbtotdosrsatransmano" expression="Integer.valueOf(row3.nbtotdosrsatransmano)">
+    <variables name="row3.nbtotdosrsatransm" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row3.nbtotdosrsatransmano" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>nbtotdosrsatransmano" expression="Relational.ISNULL(row3.nbtotdosrsatransmano) || &quot;&quot;.equals(row3.nbtotdosrsatransmano)?0:Integer.valueOf(row3.nbtotdosrsatransmano) ">
+    <variables name="row3.nbtotdosrsatransm" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row3.nbtotdosrsatransmano" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.nbtotdosrsatransm" value="0" talendType="id_Integer"/>
+    <variables name="Var.nbtotdosrsatransmano" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>nbtotdosrsatransm" expression="Relational.ISNULL(row3.nbtotdosrsatransm) || &quot;&quot;.equals(row3.nbtotdosrsatransm)?0:Integer.valueOf(row3.nbtotdosrsatransm) ">
+    <variables name="row3.nbtotdosrsatransm" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row3.nbtotdosrsatransmano" value="null" talendType="id_String" nullable="true"/>
+    <variables name="Var.nbtotdosrsatransm" value="0" talendType="id_Integer"/>
+    <variables name="Var.nbtotdosrsatransmano" value="0" talendType="id_Integer"/>
+  </expression:EMFExpression>
+</xmi:XMI>

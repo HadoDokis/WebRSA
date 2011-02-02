@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>Var=>var1" expression="TalendDate.isDate(  IdentificationRsa.DTCREAFLUX, &quot;yyyy-MM-dd&quot;) ">
+    <variables name="indentificationFlux.APPLIEME" value="null" talendType="id_String" nullable="true"/>
+    <variables name="indentificationFlux.NUMVERSIONAPPLIEME" value="null" talendType="id_String" nullable="true"/>
+    <variables name="indentificationFlux.TYPEFLUX" value="null" talendType="id_String" nullable="true"/>
+    <variables name="indentificationFlux.NATFLUX" value="null" talendType="id_String" nullable="true"/>
+    <variables name="indentificationFlux.DTCREAFLUX" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="indentificationFlux.HEUCREAFLUX" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>Var=>var2" expression="TalendDate.isDate(IdentificationFlux.DTCREAFLUX, &quot;HH:mm:ss.SSS&quot;)  ">
+    <variables name="indentificationFlux.APPLIEME" value="null" talendType="id_String" nullable="true"/>
+    <variables name="indentificationFlux.NUMVERSIONAPPLIEME" value="null" talendType="id_String" nullable="true"/>
+    <variables name="indentificationFlux.TYPEFLUX" value="null" talendType="id_String" nullable="true"/>
+    <variables name="indentificationFlux.NATFLUX" value="null" talendType="id_String" nullable="true"/>
+    <variables name="indentificationFlux.DTCREAFLUX" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="indentificationFlux.HEUCREAFLUX" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="null" talendType="id_String"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>tb_identificationflux=>heucreaflux" expression="Var.var1?TalendDate.parseDate(&quot;HH:mm:ss.SSS&quot;,identificationFlux.HEUCREAFLUX):null ">
+    <variables name="identificationFlux.APPLIEME" value="null" talendType="id_String" nullable="true"/>
+    <variables name="identificationFlux.NUMVERSIONAPPLIEME" value="null" talendType="id_String" nullable="true"/>
+    <variables name="identificationFlux.TYPEFLUX" value="null" talendType="id_String" nullable="true"/>
+    <variables name="identificationFlux.NATFLUX" value="null" talendType="id_String" nullable="true"/>
+    <variables name="identificationFlux.DTCREAFLUX" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="identificationFlux.HEUCREAFLUX" value="null" talendType="id_Date" nullable="true"/>
+    <variables name="Var.var1" value="false" talendType="id_Boolean"/>
+    <variables name="Var.var2" value="null" talendType="id_String"/>
+  </expression:EMFExpression>
+</xmi:XMI>

@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<talendfile:ProcessType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" defaultContext="Default" screenshot="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">
+  <context confirmationNeeded="false" name="Default">
+    <contextParameter comment="" name="identificationflux_id" prompt="identificationflux_id?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter comment="" name="Administration_webrsa_Database" prompt="Administration_webrsa_Database?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="STAGING_RSA"/>
+    <contextParameter comment="" name="Administration_webrsa_Login" prompt="Administration_webrsa_Login?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="Administration_webrsa_Password" prompt="Administration_webrsa_Password?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="Administration_webrsa_Port" prompt="Administration_webrsa_Port?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="5432"/>
+    <contextParameter comment="" name="Administration_webrsa_Schema" prompt="Administration_webrsa_Schema?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="administration"/>
+    <contextParameter comment="" name="Administration_webrsa_Server" prompt="Administration_webrsa_Server?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="localhost"/>
+    <contextParameter comment="" name="elementaire_webrsa_Database" prompt="elementaire_webrsa_Database?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="STAGING_RSA"/>
+    <contextParameter comment="" name="elementaire_webrsa_Login" prompt="elementaire_webrsa_Login?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="elementaire_webrsa_Password" prompt="elementaire_webrsa_Password?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="elementaire_webrsa_Port" prompt="elementaire_webrsa_Port?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="5432"/>
+    <contextParameter comment="" name="elementaire_webrsa_Schema" prompt="elementaire_webrsa_Schema?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="elementaire"/>
+    <contextParameter comment="" name="elementaire_webrsa_Server" prompt="elementaire_webrsa_Server?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="localhost"/>
+    <contextParameter comment="" name="directorieArchives" prompt="directorieArchives?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/webrsa/archives"/>
+    <contextParameter comment="" name="directorieRejects" prompt="directorieRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/webrsa/reject"/>
+    <contextParameter comment="" name="directorieTemp" prompt="directorieTemp?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/webrsa/temp"/>
+    <contextParameter comment="" name="fichierParametre" prompt="fichierParametre?" promptNeeded="false" type="id_String" value="C:/webrsa/propertie/webrsa.properties"/>
+    <contextParameter comment="" name="fileLogsAvertissement" prompt="fileLogsAvertissement?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="log.txt"/>
+    <contextParameter comment="" name="fileLogsReject" prompt="fileLogsReject?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="outlog.txt"/>
+    <contextParameter comment="" name="fileRejects" prompt="fileRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="out.txt"/>
+    <contextParameter comment="" name="hoteSCP" prompt="hoteSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="nomFichier" prompt="nomFichier?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value=""/>
+    <contextParameter comment="" name="portSCP" prompt="portSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="pwdSCP" prompt="pwdSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="repertoireSource" prompt="repertoireSource?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="C:/webrsa/in"/>
+    <contextParameter comment="" name="userSCP" prompt="userSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="webrsa_Database" prompt="webrsa_Database?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="webrsa_Login" prompt="webrsa_Login?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="webrsa_Password" prompt="webrsa_Password?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="webrsa_Port" prompt="webrsa_Port?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="5432"/>
+    <contextParameter comment="" name="webrsa_Schema" prompt="webrsa_Schema?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="public"/>
+    <contextParameter comment="" name="webrsa_Server" prompt="webrsa_Server?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="localhost"/>
+  </context>
+  <context confirmationNeeded="false" name="PROD">
+    <contextParameter comment="" name="identificationflux_id" prompt="identificationflux_id?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter comment="" name="Administration_webrsa_Database" prompt="Administration_webrsa_Database?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="STAGING_RSA"/>
+    <contextParameter comment="" name="Administration_webrsa_Login" prompt="Administration_webrsa_Login?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="Administration_webrsa_Password" prompt="Administration_webrsa_Password?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="Administration_webrsa_Port" prompt="Administration_webrsa_Port?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="5432"/>
+    <contextParameter comment="" name="Administration_webrsa_Schema" prompt="Administration_webrsa_Schema?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="administration"/>
+    <contextParameter comment="" name="Administration_webrsa_Server" prompt="Administration_webrsa_Server?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="localhost"/>
+    <contextParameter comment="" name="elementaire_webrsa_Database" prompt="elementaire_webrsa_Database?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="STAGING_RSA"/>
+    <contextParameter comment="" name="elementaire_webrsa_Login" prompt="elementaire_webrsa_Login?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="elementaire_webrsa_Password" prompt="elementaire_webrsa_Password?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="elementaire_webrsa_Port" prompt="elementaire_webrsa_Port?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="5432"/>
+    <contextParameter comment="" name="elementaire_webrsa_Schema" prompt="elementaire_webrsa_Schema?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="elementaire"/>
+    <contextParameter comment="" name="elementaire_webrsa_Server" prompt="elementaire_webrsa_Server?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="localhost"/>
+    <contextParameter comment="" name="directorieArchives" prompt="directorieArchives?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/archives"/>
+    <contextParameter comment="" name="directorieRejects" prompt="directorieRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/reject"/>
+    <contextParameter comment="" name="directorieTemp" prompt="directorieTemp?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/temp"/>
+    <contextParameter comment="" name="fichierParametre" prompt="fichierParametre?" promptNeeded="false" type="id_String" value="/etl/rsa/app/webrsa.properties"/>
+    <contextParameter comment="" name="fileLogsAvertissement" prompt="fileLogsAvertissement?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="log.txt"/>
+    <contextParameter comment="" name="fileLogsReject" prompt="fileLogsReject?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="outlog.txt"/>
+    <contextParameter comment="" name="fileRejects" prompt="fileRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="out.txt"/>
+    <contextParameter comment="" name="hoteSCP" prompt="hoteSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="nomFichier" prompt="nomFichier?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value=""/>
+    <contextParameter comment="" name="portSCP" prompt="portSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="pwdSCP" prompt="pwdSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="repertoireSource" prompt="repertoireSource?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/in"/>
+    <contextParameter comment="" name="userSCP" prompt="userSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="webrsa_Database" prompt="webrsa_Database?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="webrsa_Login" prompt="webrsa_Login?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="webrsa_Password" prompt="webrsa_Password?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="webrsa_Port" prompt="webrsa_Port?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="5432"/>
+    <contextParameter comment="" name="webrsa_Schema" prompt="webrsa_Schema?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="public"/>
+    <contextParameter comment="" name="webrsa_Server" prompt="webrsa_Server?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="localhost"/>
+  </context>
+  <context confirmationNeeded="false" name="QUAL">
+    <contextParameter comment="" name="identificationflux_id" prompt="identificationflux_id?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter comment="" name="Administration_webrsa_Database" prompt="Administration_webrsa_Database?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="STAGING_RSA"/>
+    <contextParameter comment="" name="Administration_webrsa_Login" prompt="Administration_webrsa_Login?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="Administration_webrsa_Password" prompt="Administration_webrsa_Password?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="Administration_webrsa_Port" prompt="Administration_webrsa_Port?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="5432"/>
+    <contextParameter comment="" name="Administration_webrsa_Schema" prompt="Administration_webrsa_Schema?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="administration"/>
+    <contextParameter comment="" name="Administration_webrsa_Server" prompt="Administration_webrsa_Server?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="localhost"/>
+    <contextParameter comment="" name="elementaire_webrsa_Database" prompt="elementaire_webrsa_Database?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="STAGING_RSA"/>
+    <contextParameter comment="" name="elementaire_webrsa_Login" prompt="elementaire_webrsa_Login?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="elementaire_webrsa_Password" prompt="elementaire_webrsa_Password?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="elementaire_webrsa_Port" prompt="elementaire_webrsa_Port?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="5432"/>
+    <contextParameter comment="" name="elementaire_webrsa_Schema" prompt="elementaire_webrsa_Schema?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="elementaire"/>
+    <contextParameter comment="" name="elementaire_webrsa_Server" prompt="elementaire_webrsa_Server?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="localhost"/>
+    <contextParameter comment="" name="directorieArchives" prompt="directorieArchives?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/archives"/>
+    <contextParameter comment="" name="directorieRejects" prompt="directorieRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/reject"/>
+    <contextParameter comment="" name="directorieTemp" prompt="directorieTemp?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/temp"/>
+    <contextParameter comment="" name="fichierParametre" prompt="fichierParametre?" promptNeeded="false" type="id_String" value="/etl/rsa/app/webrsa.properties"/>
+    <contextParameter comment="" name="fileLogsAvertissement" prompt="fileLogsAvertissement?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="log.txt"/>
+    <contextParameter comment="" name="fileLogsReject" prompt="fileLogsReject?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="outlog.txt"/>
+    <contextParameter comment="" name="fileRejects" prompt="fileRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="out.txt"/>
+    <contextParameter comment="" name="hoteSCP" prompt="hoteSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="nomFichier" prompt="nomFichier?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value=""/>
+    <contextParameter comment="" name="portSCP" prompt="portSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="pwdSCP" prompt="pwdSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="repertoireSource" prompt="repertoireSource?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/in"/>
+    <contextParameter comment="" name="userSCP" prompt="userSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="webrsa_Database" prompt="webrsa_Database?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="webrsa_Login" prompt="webrsa_Login?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="webrsa_Password" prompt="webrsa_Password?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="webrsa_Port" prompt="webrsa_Port?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="5432"/>
+    <contextParameter comment="" name="webrsa_Schema" prompt="webrsa_Schema?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="public"/>
+    <contextParameter comment="" name="webrsa_Server" prompt="webrsa_Server?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="localhost"/>
+  </context>
+  <context confirmationNeeded="false" name="TEST">
+    <contextParameter comment="" name="identificationflux_id" prompt="identificationflux_id?" promptNeeded="false" type="id_Integer" value=""/>
+    <contextParameter comment="" name="Administration_webrsa_Database" prompt="Administration_webrsa_Database?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="STAGING_RSA"/>
+    <contextParameter comment="" name="Administration_webrsa_Login" prompt="Administration_webrsa_Login?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="Administration_webrsa_Password" prompt="Administration_webrsa_Password?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="Administration_webrsa_Port" prompt="Administration_webrsa_Port?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="5432"/>
+    <contextParameter comment="" name="Administration_webrsa_Schema" prompt="Administration_webrsa_Schema?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="administration"/>
+    <contextParameter comment="" name="Administration_webrsa_Server" prompt="Administration_webrsa_Server?" promptNeeded="false" repositoryContextId="_WfusgCmXEd6ysP7-oNBRpg" type="id_String" value="localhost"/>
+    <contextParameter comment="" name="elementaire_webrsa_Database" prompt="elementaire_webrsa_Database?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="STAGING_RSA"/>
+    <contextParameter comment="" name="elementaire_webrsa_Login" prompt="elementaire_webrsa_Login?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="elementaire_webrsa_Password" prompt="elementaire_webrsa_Password?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="elementaire_webrsa_Port" prompt="elementaire_webrsa_Port?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="5432"/>
+    <contextParameter comment="" name="elementaire_webrsa_Schema" prompt="elementaire_webrsa_Schema?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="elementaire"/>
+    <contextParameter comment="" name="elementaire_webrsa_Server" prompt="elementaire_webrsa_Server?" promptNeeded="false" repositoryContextId="_FDKiEAc0Ed6tDPmD8dUPnw" type="id_String" value="localhost"/>
+    <contextParameter comment="" name="directorieArchives" prompt="directorieArchives?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/archives"/>
+    <contextParameter comment="" name="directorieRejects" prompt="directorieRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/reject"/>
+    <contextParameter comment="" name="directorieTemp" prompt="directorieTemp?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/temp"/>
+    <contextParameter comment="" name="fichierParametre" prompt="fichierParametre?" promptNeeded="false" type="id_String" value="/etl/rsa/app/webrsa.properties"/>
+    <contextParameter comment="" name="fileLogsAvertissement" prompt="fileLogsAvertissement?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="log.txt"/>
+    <contextParameter comment="" name="fileLogsReject" prompt="fileLogsReject?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="outlog.txt"/>
+    <contextParameter comment="" name="fileRejects" prompt="fileRejects?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="out.txt"/>
+    <contextParameter comment="" name="hoteSCP" prompt="hoteSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="nomFichier" prompt="nomFichier?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value=""/>
+    <contextParameter comment="" name="portSCP" prompt="portSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="pwdSCP" prompt="pwdSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="repertoireSource" prompt="repertoireSource?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="/etl/rsa/in"/>
+    <contextParameter comment="" name="userSCP" prompt="userSCP?" promptNeeded="false" repositoryContextId="_ThhqAEnYEd6Bwf5JixBlVg" type="id_String" value="null"/>
+    <contextParameter comment="" name="webrsa_Database" prompt="webrsa_Database?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="webrsa_Login" prompt="webrsa_Login?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="webrsa"/>
+    <contextParameter comment="" name="webrsa_Password" prompt="webrsa_Password?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_Password" value="pUu/zBGQt+H096uhdGeE6g=="/>
+    <contextParameter comment="" name="webrsa_Port" prompt="webrsa_Port?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="5432"/>
+    <contextParameter comment="" name="webrsa_Schema" prompt="webrsa_Schema?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="public"/>
+    <contextParameter comment="" name="webrsa_Server" prompt="webrsa_Server?" promptNeeded="false" repositoryContextId="_TxJ1gFFEEd-lIo1rV0WaKw" type="id_String" value="localhost"/>
+  </context>
+  <parameters>
+    <elementParameter field="DIRECTORY" name="COMP_DEFAULT_FILE_DIR" value="D:/Talend/TOS/3.2.3/Adullact" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="COMP_DEFAULT_PROJECT_DIR" value="D:/Talend/TOS/3.2.3/Adullact/FINANCIER_2_0" contextMode="false"/>
+    <elementParameter field="TEXT" name="JOB_RUN_VM_ARGUMENTS" value=" -Xms256M -Xmx1024M" contextMode="false"/>
+    <elementParameter field="CHECK" name="JOB_RUN_VM_ARGUMENTS_OPTION" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="AUTHOR" value="dblirando@cg93.fr" contextMode="false"/>
+    <elementParameter field="TEXT" name="STATUS" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="NAME" value="Insertion_Financier_03_TotalisationAcompte" contextMode="false"/>
+    <elementParameter field="TEXT" name="VERSION" value="0.1" contextMode="false"/>
+    <elementParameter field="TEXT" name="PURPOSE" value="Insertion_Financier_03_TotalisationAcompte" contextMode="false"/>
+    <elementParameter field="TEXT" name="DESCRIPTION" value="Insertion_Financier_03_TotalisationAcompte" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" value="0" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" value="0" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPTIONS" value="none" contextMode="false"/>
+    <elementParameter field="CHECK" name="IMPLICITCONTEXT_USE_PROJECT_SETTINGS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="STATANDLOG_USE_PROJECT_SETTINGS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="MULTI_THREAD_EXECATION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="IMPLICIT_TCONTEXTLOAD" value="false" contextMode="false"/>
+    <elementParameter field="RADIO" name="FROM_FILE_FLAG_IMPLICIT_CONTEXT" value="false" contextMode="false"/>
+    <elementParameter field="RADIO" name="FROM_DATABASE_FLAG_IMPLICIT_CONTEXT" value="false" contextMode="false"/>
+    <elementParameter field="FILE" name="IMPLICIT_TCONTEXTLOAD_FILE" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY_TYPE_IMPLICIT_CONTEXT:PROPERTY_TYPE" value="" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY_TYPE_IMPLICIT_CONTEXT:REPOSITORY_PROPERTY_TYPE" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_TYPE_IMPLICIT_CONTEXT" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION_IMPLICIT_CONTEXT" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PROPERTIES_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="FILE" name="DBFILE_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="DBTABLE_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="QUERY_CONDITION_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="LOAD_NEW_VARIABLE" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="NOT_LOAD_OLD_VARIABLE" value="" contextMode="false"/>
+    <elementParameter field="CHECK" name="PRINT_OPERATIONS" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="DISABLE_ERROR" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="DISABLE_WARNINGS" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="DISABLE_INFO" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_STATCATCHER_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_LOGCATCHER_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_METERCATCHER_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_CONSOLE_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_FILES_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="FILE_PATH" value="&quot;C:/Documents and Settings/turnan/Bureau/TIS_TE-All-r33000-V3.2.2/workspace/.metadata&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FILENAME_STATS" value="&quot;stats_file.txt&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FILENAME_LOGS" value="&quot;logs_file.txt&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FILENAME_METTER" value="&quot;meter_file.txt&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_DATABASE_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_TYPE" value="tDBOutput" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" value="ojdbc14-10g.jar" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="FILE" name="DBFILE" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE_STATS" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE_LOGS" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE_METER" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_RUNTIME_ERRORS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_USER_ERRORS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_USER_WARNING" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_REALTIME_STATS" value="false" contextMode="false"/>
+  </parameters>
+  <node componentName="tPostgresqlConnection" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="192">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlConnection_1" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" value="_vPQ80CxrEd-SAukvTtg77Q" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST" value="context.webrsa_Server" contextMode="false"/>
+    <elementParameter field="TEXT" name="TYPE" value="POSTGRESQL" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT" value="context.webrsa_Port" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.webrsa_Database" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="context.webrsa_Schema" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER" value="context.webrsa_Login" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS" value="context.webrsa_Password" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;UTF-8&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="UTF-8" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_SHARED_CONNECTION" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="SHARED_CONNECTION_NAME" value="&quot;webrsa&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="AUTO_COMMIT" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="webrsa" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+  </node>
+  <node componentName="tPostgresqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="320">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlInput_2" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" value="_FZglgAc0Ed6tDPmD8dUPnw" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true" contextMode="false"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tPostgresqlConnection_2" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST" value="context.elementaire_webrsa_Server" contextMode="false"/>
+    <elementParameter field="TEXT" name="TYPE" value="PostgreSQL" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT" value="context.elementaire_webrsa_Port" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.elementaire_webrsa_Database" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="context.elementaire_webrsa_Schema" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER" value="context.elementaire_webrsa_Login" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS" value="context.elementaire_webrsa_Password" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" value="REPOSITORY" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" value="_FZglgAc0Ed6tDPmD8dUPnw - f_totalisationsacomptes" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;f_totalisationsacomptes&quot;" contextMode="false"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT \&quot;&quot;+context.elementaire_webrsa_Schema+&quot;\&quot;.\&quot;f_totalisationsacomptes\&quot;.\&quot;type_totalisation\&quot;,&#xA;&#x9;&#x9;\&quot;&quot;+context.elementaire_webrsa_Schema+&quot;\&quot;.\&quot;f_totalisationsacomptes\&quot;.\&quot;mttotsoclrsa\&quot;,&#xA;&#x9;&#x9;\&quot;&quot;+context.elementaire_webrsa_Schema+&quot;\&quot;.\&quot;f_totalisationsacomptes\&quot;.\&quot;mttotsoclmajorsa\&quot;,&#xA;&#x9;&#x9;\&quot;&quot;+context.elementaire_webrsa_Schema+&quot;\&quot;.\&quot;f_totalisationsacomptes\&quot;.\&quot;mttotlocalrsa\&quot;,&#xA;&#x9;&#x9;\&quot;&quot;+context.elementaire_webrsa_Schema+&quot;\&quot;.\&quot;f_totalisationsacomptes\&quot;.\&quot;mttotrsa\&quot;&quot;&#xA;+&quot;&#xA;FROM&#x9;\&quot;&quot;+context.elementaire_webrsa_Schema+&quot;\&quot;.\&quot;f_totalisationsacomptes\&quot;&quot;" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;UTF-8&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="UTF-8" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_CURSOR" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="CURSOR_SIZE" value="1000" contextMode="false"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN" contextMode="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="type_totalisation"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mttotsoclrsa"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mttotsoclmajorsa"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mttotlocalrsa"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mttotrsa"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="__TABLE__" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tPostgresqlInput_2">
+      <column comment="" defaultValue="" key="false" length="30" name="type_totalisation" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotsoclrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotsoclmajorsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotlocalrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+    </metadata>
+  </node>
+  <node binaryData="" stringData="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;external-mapper-data>&lt;ui-properties shell-maximized=&quot;true&quot;>&lt;weights-main-sash-form>413&lt;/weights-main-sash-form>&lt;weights-main-sash-form>586&lt;/weights-main-sash-form>&lt;weights-datas-flow-view-sash-form>330&lt;/weights-datas-flow-view-sash-form>&lt;weights-datas-flow-view-sash-form>330&lt;/weights-datas-flow-view-sash-form>&lt;weights-datas-flow-view-sash-form>340&lt;/weights-datas-flow-view-sash-form>&lt;/ui-properties>&lt;vars-tables xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; persistent=&quot;false&quot; minimized=&quot;true&quot; activate-expression-filter=&quot;false&quot; reject-inner-join=&quot;false&quot; inner-join=&quot;false&quot; reject=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTable&quot;>&lt;name>Var&lt;/name>&lt;size-state>INTERMEDIATE&lt;/size-state>&lt;/vars-tables>&lt;output-tables xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; persistent=&quot;false&quot; minimized=&quot;false&quot; activate-expression-filter=&quot;false&quot; reject-inner-join=&quot;false&quot; inner-join=&quot;false&quot; reject=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTable&quot;>&lt;name>ins&lt;/name>&lt;metadata-table-entries nullable=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>id&lt;/name>&lt;type>id_Integer&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>identificationflux_id&lt;/name>&lt;type>id_Integer&lt;/type>&lt;expression>context.identificationflux_id&lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>type_totalisation&lt;/name>&lt;type>id_String&lt;/type>&lt;expression>row1.type_totalisation&lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>mttotsoclrsa&lt;/name>&lt;type>id_Double&lt;/type>&lt;expression>row1.mttotsoclrsa&lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>mttotsoclmajorsa&lt;/name>&lt;type>id_Double&lt;/type>&lt;expression>row1.mttotsoclmajorsa&lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>mttotlocalrsa&lt;/name>&lt;type>id_Double&lt;/type>&lt;expression>row1.mttotlocalrsa&lt;/expression>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>mttotrsa&lt;/name>&lt;type>id_Double&lt;/type>&lt;expression>row1.mttotrsa&lt;/expression>&lt;/metadata-table-entries>&lt;size-state>INTERMEDIATE&lt;/size-state>&lt;/output-tables>&lt;input-tables xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; persistent=&quot;false&quot; minimized=&quot;false&quot; activate-expression-filter=&quot;false&quot; reject-inner-join=&quot;false&quot; inner-join=&quot;false&quot; reject=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTable&quot;>&lt;name>row1&lt;/name>&lt;matching-mode>UNIQUE_MATCH&lt;/matching-mode>&lt;lookup-mode>LOAD_ONCE&lt;/lookup-mode>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>type_totalisation&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>mttotsoclrsa&lt;/name>&lt;type>id_Double&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>mttotsoclmajorsa&lt;/name>&lt;type>id_Double&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>mttotlocalrsa&lt;/name>&lt;type>id_Double&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>mttotrsa&lt;/name>&lt;type>id_Double&lt;/type>&lt;/metadata-table-entries>&lt;size-state>INTERMEDIATE&lt;/size-state>&lt;/input-tables>&lt;/external-mapper-data>" componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="224" posY="320" screenshot="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">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tMap_1" contextMode="false"/>
+    <elementParameter field="EXTERNAL" name="MAP" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value="" contextMode="false"/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_g7SOEMS_Ed-0icFeCZ_Lcg-tMap_1-PREVIEW.bmp" contextMode="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" label="ins" name="ins">
+      <column comment="" defaultValue="&quot;nextval('totalisationsacomptes_id_seq'::regclass)&quot;" key="true" length="4" name="id" nullable="false" pattern="" precision="0" sourceType="SERIAL" type="id_Integer"/>
+      <column comment="" defaultValue="" key="false" length="4" name="identificationflux_id" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" key="false" length="30" name="type_totalisation" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotsoclrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotsoclmajorsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotlocalrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+    </metadata>
+  </node>
+  <node componentName="tPostgresqlOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="416" posY="320">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlOutput_1" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" value="_FZglgAc0Ed6tDPmD8dUPnw" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true" contextMode="false"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tPostgresqlConnection_1" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST" value="context.elementaire_webrsa_Server" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT" value="context.elementaire_webrsa_Port" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.elementaire_webrsa_Database" contextMode="false"/>
+    <elementParameter field="TEXT" name="TYPE" value="POSTGRESQL" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="context.elementaire_webrsa_Schema" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER" value="context.elementaire_webrsa_Login" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS" value="context.elementaire_webrsa_Password" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;totalisationsacomptes&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="NONE" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT_OR_UPDATE" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" value="REPOSITORY" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" value="_vPQ80CxrEd-SAukvTtg77Q - totalisationsacomptes" contextMode="false"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="true" contextMode="false"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" value="postgres_id" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;UTF-8&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="UTF-8" contextMode="false"/>
+    <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000" contextMode="false"/>
+    <elementParameter field="TABLE" name="ADD_COLS" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="true" contextMode="false"/>
+    <elementParameter field="TABLE" name="FIELD_OPTIONS" contextMode="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="id"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="false"/>
+      <elementValue elementRef="INSERTABLE" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="identificationflux_id"/>
+      <elementValue elementRef="UPDATE_KEY" value="true"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="false"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="type_totalisation"/>
+      <elementValue elementRef="UPDATE_KEY" value="true"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mttotsoclrsa"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mttotsoclmajorsa"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mttotlocalrsa"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mttotrsa"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="__TABLE__" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tPostgresqlOutput_1">
+      <column comment="" defaultValue="&quot;nextval('totalisationsacomptes_id_seq'::regclass)&quot;" key="true" length="4" name="id" nullable="false" pattern="" precision="0" sourceType="SERIAL" type="id_Integer"/>
+      <column comment="" defaultValue="" key="false" length="4" name="identificationflux_id" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" defaultValue="" key="false" length="30" name="type_totalisation" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotsoclrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotsoclmajorsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotlocalrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+    </metadata>
+    <metadata connector="REJECT" name="REJECT">
+      <column comment="" defaultValue="&quot;nextval('totalisationsacomptes_id_seq'::regclass)&quot;" key="true" length="4" name="id" nullable="false" pattern="" precision="0" sourceType="SERIAL" type="id_Integer"/>
+      <column comment="" defaultValue="" key="false" length="4" name="identificationflux_id" nullable="false" pattern="" precision="0" sourceType="INT4" type="id_Integer"/>
+      <column comment="" defaultValue="" key="false" length="30" name="type_totalisation" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotsoclrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotsoclmajorsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotlocalrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column comment="" defaultValue="" key="false" length="12" name="mttotrsa" nullable="true" pattern="" precision="2" sourceType="NUMERIC" type="id_Double"/>
+      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" precision="0" sourceType="" type="id_String"/>
+    </metadata>
+  </node>
+  <node componentName="tPostgresqlConnection" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="256" posY="192">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlConnection_2" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" value="_FZglgAc0Ed6tDPmD8dUPnw" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST" value="context.elementaire_webrsa_Server" contextMode="false"/>
+    <elementParameter field="TEXT" name="TYPE" value="POSTGRESQL" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT" value="context.elementaire_webrsa_Port" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.elementaire_webrsa_Database" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="context.elementaire_webrsa_Schema" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER" value="context.elementaire_webrsa_Login" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS" value="context.elementaire_webrsa_Password" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;UTF-8&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="UTF-8" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_SHARED_CONNECTION" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="SHARED_CONNECTION_NAME" value="&quot;elementaire&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="AUTO_COMMIT" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="elementaire" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+  </node>
+  <node componentName="tPostgresqlConnection" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="416" posY="192">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlConnection_3" contextMode="false"/>
+    <elementParameter field="CHECK" name="START" value="true" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" value="_Wy_mwCmXEd6ysP7-oNBRpg" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST" value="context.Administration_webrsa_Server" contextMode="false"/>
+    <elementParameter field="TEXT" name="TYPE" value="POSTGRESQL" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT" value="context.Administration_webrsa_Port" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.Administration_webrsa_Database" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="context.Administration_webrsa_Schema" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER" value="context.Administration_webrsa_Login" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS" value="context.Administration_webrsa_Password" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;UTF-8&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="UTF-8" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_SHARED_CONNECTION" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="SHARED_CONNECTION_NAME" value="&quot;administration&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="AUTO_COMMIT" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="administration" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+  </node>
+  <node componentName="tLogCatcher" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="96" posY="64">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tLogCatcher_1" contextMode="false"/>
+    <elementParameter field="CHECK" name="START" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_JAVA_EXCEPTION" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_TDIE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_TWARN" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tLogCatcher_1">
+      <column key="false" length="0" name="moment" nullable="true" pattern="&quot;yyyy-MM-dd HH:mm:ss&quot;" precision="0" sourceType="" type="id_Date"/>
+      <column key="false" length="20" name="pid" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="20" name="root_pid" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="20" name="father_pid" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="50" name="project" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="255" name="job" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="50" name="context" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column defaultValue="" key="false" length="3" name="priority" nullable="true" precision="0" sourceType="" type="id_Integer"/>
+      <column key="false" length="255" name="type" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="255" name="origin" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column key="false" length="255" name="message" nullable="true" precision="0" sourceType="" type="id_String"/>
+      <column defaultValue="" key="false" length="3" name="code" nullable="true" precision="0" sourceType="" type="id_Integer"/>
+    </metadata>
+  </node>
+  <node binaryData="" stringData="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;external-mapper-data>&lt;ui-properties shell-maximized=&quot;true&quot;>&lt;weights-main-sash-form>700&lt;/weights-main-sash-form>&lt;weights-main-sash-form>300&lt;/weights-main-sash-form>&lt;weights-datas-flow-view-sash-form>330&lt;/weights-datas-flow-view-sash-form>&lt;weights-datas-flow-view-sash-form>330&lt;/weights-datas-flow-view-sash-form>&lt;weights-datas-flow-view-sash-form>340&lt;/weights-datas-flow-view-sash-form>&lt;/ui-properties>&lt;vars-tables xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; persistent=&quot;false&quot; minimized=&quot;true&quot; activate-expression-filter=&quot;false&quot; reject-inner-join=&quot;false&quot; inner-join=&quot;false&quot; reject=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTable&quot;>&lt;name>Var&lt;/name>&lt;size-state>INTERMEDIATE&lt;/size-state>&lt;/vars-tables>&lt;output-tables xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; persistent=&quot;false&quot; minimized=&quot;false&quot; activate-expression-filter=&quot;false&quot; reject-inner-join=&quot;false&quot; inner-join=&quot;false&quot; reject=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTable&quot;>&lt;name>message&lt;/name>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>message&lt;/name>&lt;type>id_String&lt;/type>&lt;expression>&amp;quot;[&amp;quot;+TalendDate.getDate(&amp;quot;yyyy-MM-dd hh:mm:ss&amp;quot;)+&amp;quot;] ERROR : &amp;apos;&amp;quot;+row226.message+&amp;quot;&amp;apos; (&amp;quot;+row226.job+&amp;quot; : &amp;quot;+ row226.context+ &amp;quot;)&amp;quot;   &lt;/expression>&lt;/metadata-table-entries>&lt;size-state>INTERMEDIATE&lt;/size-state>&lt;/output-tables>&lt;input-tables xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; persistent=&quot;false&quot; minimized=&quot;false&quot; activate-expression-filter=&quot;false&quot; reject-inner-join=&quot;false&quot; inner-join=&quot;false&quot; reject=&quot;false&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTable&quot;>&lt;name>row226&lt;/name>&lt;matching-mode>UNIQUE_MATCH&lt;/matching-mode>&lt;lookup-mode>LOAD_ONCE&lt;/lookup-mode>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>moment&lt;/name>&lt;type>id_Date&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>pid&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>root_pid&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>father_pid&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>project&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>job&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>context&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>priority&lt;/name>&lt;type>id_Integer&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>type&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>origin&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>message&lt;/name>&lt;type>id_String&lt;/type>&lt;/metadata-table-entries>&lt;metadata-table-entries nullable=&quot;true&quot; xsi:type=&quot;java:org.talend.designer.mapper.external.data.ExternalMapperTableEntry&quot;>&lt;name>code&lt;/name>&lt;type>id_Integer&lt;/type>&lt;/metadata-table-entries>&lt;size-state>INTERMEDIATE&lt;/size-state>&lt;/input-tables>&lt;/external-mapper-data>" componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="224" posY="64">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tMap_3" contextMode="false"/>
+    <elementParameter field="EXTERNAL" name="MAP" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value="" contextMode="false"/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_g7SOEMS_Ed-0icFeCZ_Lcg-tMap_3-PREVIEW.bmp" contextMode="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="message">
+      <column key="false" length="255" name="message" nullable="true" precision="0" sourceType="" type="id_String"/>
+    </metadata>
+  </node>
+  <node componentName="tFileOutputDelimited" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="416" posY="64">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tFileOutputDelimited_1" contextMode="false"/>
+    <elementParameter field="FILE" name="FILENAME" value="context.directorieRejects+&quot;/&quot;+context.fileLogsAvertissement" contextMode="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot; &quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="APPEND" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="INCLUDEHEADER" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ADVANCED_SEPARATOR" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="THOUSANDS_SEPARATOR" value="&quot;,&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DECIMAL_SEPARATOR" value="&quot;.&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CSV_OPTION" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="ESCAPE_CHAR" value="&quot;&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="TEXT_ENCLOSURE" value="&quot;&quot;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CREATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="SPLIT" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="SPLIT_EVERY" value="1000" contextMode="false"/>
+    <elementParameter field="CHECK" name="FLUSHONROW" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="FLUSHONROW_NUM" value="1" contextMode="false"/>
+    <elementParameter field="CHECK" name="ROW_MODE" value="false" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;ISO-8859-15&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15" contextMode="false"/>
+    <elementParameter field="CHECK" name="DELETE_EMPTYFILE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="logErreur" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tFileOutputDelimited_1">
+      <column key="false" length="255" name="message" nullable="true" precision="0" sourceType="" type="id_String"/>
+    </metadata>
+  </node>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tPostgresqlConnection_1" offsetLabelX="0" offsetLabelY="0" source="tPostgresqlConnection_1" target="tPostgresqlInput_2">
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+  </connection>
+  <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tPostgresqlInput_2" offsetLabelX="0" offsetLabelY="0" source="tPostgresqlInput_2" target="tMap_1">
+    <elementParameter field="CHECK" name="TRACES_CONNECTION_ENABLE" value="true" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" contextMode="false">
+      <elementValue elementRef="TRACE_COLUMN" value="type_totalisation"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="mttotsoclrsa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="mttotsoclmajorsa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="mttotlocalrsa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="mttotrsa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+  </connection>
+  <connection connectorName="FLOW" label="ins" lineStyle="0" metaname="ins" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tPostgresqlOutput_1">
+    <elementParameter field="CHECK" name="TRACES_CONNECTION_ENABLE" value="true" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" contextMode="false">
+      <elementValue elementRef="TRACE_COLUMN" value="id"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="identificationflux_id"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="type_totalisation"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="mttotsoclrsa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="mttotsoclmajorsa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="mttotlocalrsa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="mttotrsa"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tPostgresqlConnection_2" offsetLabelX="0" offsetLabelY="0" source="tPostgresqlConnection_2" target="tPostgresqlConnection_1">
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tPostgresqlConnection_3" offsetLabelX="0" offsetLabelY="0" source="tPostgresqlConnection_3" target="tPostgresqlConnection_2">
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+  </connection>
+  <connection connectorName="FLOW" label="row226" lineStyle="0" metaname="tLogCatcher_1" offsetLabelX="-6" offsetLabelY="-14" source="tLogCatcher_1" target="tMap_3">
+    <elementParameter field="CHECK" name="TRACES_CONNECTION_ENABLE" value="true" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" contextMode="false">
+      <elementValue elementRef="TRACE_COLUMN" value="moment"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="pid"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="root_pid"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="father_pid"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="project"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="job"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="context"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="priority"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="type"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="origin"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="message"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="code"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+  </connection>
+  <connection connectorName="FLOW" label="message" lineStyle="0" metaname="message" offsetLabelX="0" offsetLabelY="0" source="tMap_3" target="tFileOutputDelimited_1">
+    <elementParameter field="CHECK" name="TRACES_CONNECTION_ENABLE" value="true" contextMode="false"/>
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" contextMode="false">
+      <elementValue elementRef="TRACE_COLUMN" value="message"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="job"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+  </connection>
+  <subjob>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlConnection_1" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="webrsa" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="160;190;240" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="220;220;250" contextMode="false"/>
+  </subjob>
+  <subjob>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlInput_2" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="insertion des donnees TotalisationsAcompte" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="160;190;240" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="220;220;250" contextMode="false"/>
+  </subjob>
+  <subjob>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlConnection_2" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="elementaire" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="160;190;240" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="220;220;250" contextMode="false"/>
+  </subjob>
+  <subjob>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tPostgresqlConnection_3" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="administration" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="160;190;240" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="220;220;250" contextMode="false"/>
+  </subjob>
+  <subjob>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tLogCatcher_1" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="Récupère les erreurs produites lors de l'exécution." contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="160;190;240" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="220;220;250" contextMode="false"/>
+  </subjob>
+</talendfile:ProcessType>
