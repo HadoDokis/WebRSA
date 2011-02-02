@@ -1,11 +1,11 @@
-Projet Talend "INSTRUCTION_2_0" - Dinah BLIRANDO - CG93/DSI - 30/12/2010
+Projet Talend "INSTRUCTION_2_0" - Dinah BLIRANDO - CG93/DSI - 02/02/2011
 ==========================================================================
 
 * Traitement d'intégration des flux CAF de type Instruction (VIRS) dans l'application WebRSA.
 
 Version Talend	: TOS 3.2.3
-Version @RSA	: 6
-Version VIRS	: 0401
+Version @RSA	: 3.3 à 7
+Version VIRS	: 0201 à 501
 Version WebRSA	: 2.0rc9
 
 
