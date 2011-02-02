@@ -1,5 +1,4 @@
 <?php
-
 	class Relancesnonrespectssanctionseps93Controller extends AppController
 	{
 		public $helpers = array( 'Default2' );
@@ -271,7 +270,7 @@
 				$numrelance_pcd = count( $relances_pcd );
 				$numrelance = ( $numrelance_pcd + 1 );
 
-				$data = Set::merge( ( $origine == 'contratinsertion' ? $contratinsertion : $orientstruct ), $relances_pcd[0] );
+				$data = Set::merge( ( $origine == 'contratinsertion' ? $contratinsertion : $orientstruct ), @$relances_pcd[0] );
 				$daterelance_min = $this->Relancenonrespectsanctionep93->dateRelanceMinimale( $origine, $numrelance, $data );
 				$this->set( 'daterelance_min', $daterelance_min );
 

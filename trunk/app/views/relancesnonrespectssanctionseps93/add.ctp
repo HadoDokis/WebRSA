@@ -30,7 +30,7 @@
 				$( 'Nonrespectsanctionep93OrigineOrientstruct' ).disable();
 			<?php endif;?>
 
-			<?php for( $i = 1 ; $i <= ( ( $origine == 'orientstruct' ) ? 3 : 2 ) ; $i++ ):?>
+			<?php for( $i = 1 ; $i <= 3/*( ( $origine == 'orientstruct' ) ? 3 : 2 )*/ ; $i++ ):?>
 				<?php if( $i != $numrelance ):?>
 					$( 'Relancenonrespectsanctionep93Numrelance<?php echo $i;?>' ).disable();
 				<?php endif;?>
