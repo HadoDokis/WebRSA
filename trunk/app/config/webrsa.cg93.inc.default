@@ -215,6 +215,13 @@
 	Configure::write( 'alerteFinSession', false );
 
 	/**
+	* Nombre de jours entre la date de prise de décision concernant un dossier d'EP
+	* pour le thème "non respect et sanctions du CG 93" et un nouveau passage en
+	* procédure de relance pour ce même thème.
+	*/
+	Configure::write( 'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions', 60 );
+
+	/**
 	* Nombre de jours entre la date d'édition de la notification d'orientation et
 	* l'envoi de la première relance pour le thème "non respect et sanctions du CG 93"
 	*/
