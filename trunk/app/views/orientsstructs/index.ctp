@@ -9,6 +9,10 @@
 		<p class="notice">Cette personne est en cours de procédure de relance.</p>
 	<?php endif;?>
 
+	<?php if( isset( $nbdossiersnonfinalisescovs ) && !empty( $nbdossiersnonfinalisescovs ) ):?>
+		<p class="notice">Ce dossier va passer en COV.</p>
+	<?php endif;?>
+
 	<?php if( empty( $orientstructs ) ):?>
 		<p class="notice">Cette personne ne possède pas encore d'orientation.</p>
 	<?php endif;?>
@@ -143,6 +147,7 @@
 								array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
 								$permissions->check( 'orientsstructs', 'edit' ) && ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
 								&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $saisineepreorientsr93 ) && !empty( $saisineepreorientsr93 ) )
+								&& !( Configure::read( 'Cg.departement' ) == 58 && isset( $nbdossiersnonfinalisescovs ) && !empty( $nbdossiersnonfinalisescovs ) )
 							),
 							$xhtml->printLink(
 								'Imprimer la notification',
