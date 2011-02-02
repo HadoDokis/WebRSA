@@ -121,7 +121,9 @@
     <folders xmi:id="_ShffE0xPEd-KT9lHwxjM1w" property="_ShffEkxPEd-KT9lHwxjM1w" state="_ShffEUxPEd-KT9lHwxjM1w">
       <children xsi:type="TalendProperties:FolderItem" xmi:id="_ShffF0xPEd-KT9lHwxjM1w" property="_ShffFkxPEd-KT9lHwxjM1w" state="_ShffFUxPEd-KT9lHwxjM1w"/>
     </folders>
-    <folders xmi:id="_rUPTgxGuEeCPeONmpkV7jw" property="_rUPTghGuEeCPeONmpkV7jw" state="_rUPTgRGuEeCPeONmpkV7jw"/>
+    <folders xmi:id="_rUPTgxGuEeCPeONmpkV7jw" property="_rUPTghGuEeCPeONmpkV7jw" state="_rUPTgRGuEeCPeONmpkV7jw">
+      <children xsi:type="TalendProperties:FolderItem" xmi:id="_SvseFy02EeChII8x18IVQg" property="_SvseFi02EeChII8x18IVQg" state="_SvseFS02EeChII8x18IVQg"/>
+    </folders>
     <migrationTasks>org.talend.repository.localprovider.RemoveRoutineFolderTask</migrationTasks>
     <migrationTasks>org.talend.repository.localprovider.model.migration.ChangeXmiSerialization</migrationTasks>
     <migrationTasks>org.talend.repository.migration.UpgradeRepositoryReferenceParameters</migrationTasks>
@@ -541,4 +543,6 @@
   <TalendProperties:Property xmi:id="_ppFeQgVCEeC53rGRu2yjLw" id="_ppFeQAVCEeC53rGRu2yjLw" label="UserDefined" creationDate="2010-12-11T17:21:04.164+0100" version="0.1" item="_ppFeQwVCEeC53rGRu2yjLw" author="_5eWegVnzEd-CWMe79YYfMw"/>
   <TalendProperties:ItemState xmi:id="_rUPTgRGuEeCPeONmpkV7jw"/>
   <TalendProperties:Property xmi:id="_rUPTghGuEeCPeONmpkV7jw" id="_rUPTgBGuEeCPeONmpkV7jw" label="sqlScripts" creationDate="2010-12-27T12:44:35.000+0100" version="0.1" item="_rUPTgxGuEeCPeONmpkV7jw" author="_5eWegVnzEd-CWMe79YYfMw"/>
+  <TalendProperties:ItemState xmi:id="_SvseFS02EeChII8x18IVQg"/>
+  <TalendProperties:Property xmi:id="_SvseFi02EeChII8x18IVQg" id="_SvseFC02EeChII8x18IVQg" label="patches" creationDate="2011-01-31T13:33:23.057+0100" version="0.1" item="_SvseFy02EeChII8x18IVQg" author="_5eWegVnzEd-CWMe79YYfMw"/>
 </xmi:XMI>
