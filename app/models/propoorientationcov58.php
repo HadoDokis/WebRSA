@@ -1,7 +1,7 @@
 <?php
-	class Propoorientation58 extends AppModel
+	class Propoorientationcov58 extends AppModel
 	{
-		public $name = 'Propoorientation58';
+		public $name = 'Propoorientationcov58';
 
 		public $actsAs = array(
 			'Autovalidate',
