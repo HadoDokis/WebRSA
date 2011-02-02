@@ -176,7 +176,12 @@
 			$this->set( 'personne_id', $personne_id );
 
 			$this->set( 'rgorient_max', $this->Orientstruct->rgorientMax( $personne_id ) );
-			$this->set( 'ajout_possible', $this->Orientstruct->ajoutPossible( $personne_id ) );
+			if (Configure::read('Cg.departement')==58) {
+				$this->set( 'ajout_possible', $this->Orientstruct->Personne->Propoorientationcov58->ajoutPossible( $personne_id ) );
+			}
+			else {
+				$this->set( 'ajout_possible', $this->Orientstruct->ajoutPossible( $personne_id ) );
+			}
 			$this->set( 'last_orientstruct_id', @$orientstructs[0]['Orientstruct']['id'] );
 		}
 

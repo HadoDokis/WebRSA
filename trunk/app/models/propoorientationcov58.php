@@ -246,23 +246,6 @@
 		}
 
 		/**
-		* FIXME: select max(rgorient), si on a besoin d'archiver
-		*/
-
-		public function rgorientMax( $personne_id ) {
-			return $this->find(
-				'count',
-				array(
-					'conditions' => array(
-						"{$this->alias}.statut_orient" => 'Orienté',
-						"{$this->alias}.personne_id" => $personne_id
-					),
-					'contain' => false
-				)
-			);
-		}
-
-		/**
 		* FIXME -> aucun dossier en cours, pour certains thèmes:
 		*		- CG 93
 		*			* Nonrespectsanctionep93 -> ne débouche pas sur une orientation: '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien'
@@ -280,18 +263,12 @@
 		*/
 
 		public function ajoutPossible( $personne_id ) {
-			$nbDossiersep = $this->Personne->Dossierep->find(
+			$nbDossierscov = $this->find(
 				'count',
 				array(
 					'conditions' => array(
-						'Dossierep.personne_id' => $personne_id,
-						'Dossierep.etapedossierep <>' => 'traite',
-						'NOT' => array(
-							'Dossierep.themeep' => array(
-								'nonrespectssanctionseps93',
-								'saisinesepdspdos66'
-							)
-						)
+						'Propoorientationcov58.personne_id' => $personne_id,
+						'Propoorientationcov58.etapecov <>' => 'finalise'
 					),
 					'contain' => false
 				)
@@ -353,8 +330,8 @@
 					'recursive' => -1
 				)
 			);
-
-			return ( ( $nbDossiersep == 0 ) && ( $nbPersonnes == 1 ) );
+			
+			return ( ( $nbDossierscov == 0 ) && ( $nbPersonnes == 1 ) );
 		}
 
 		/**

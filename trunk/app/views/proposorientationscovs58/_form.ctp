@@ -15,7 +15,6 @@
                 $this->data['Propoorientationcov58']['structurereferente_id'] = preg_replace( '/^[^_]+_/', '', $this->data['Propoorientationcov58']['typeorient_id'] ).'_'.$this->data['Propoorientationcov58']['structurereferente_id'];
 
                 $this->data['Propoorientationcov58']['referent_id'] = preg_replace( '/^[^_]+_/', '', $this->data['Propoorientationcov58']['structurereferente_id'] ).'_'.$this->data['Propoorientationcov58']['referent_id'];
-
             }
         }
         else {
