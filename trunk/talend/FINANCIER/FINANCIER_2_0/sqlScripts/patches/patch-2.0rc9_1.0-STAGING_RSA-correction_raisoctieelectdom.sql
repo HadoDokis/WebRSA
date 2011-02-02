@@ -1,4 +1,4 @@
--- patch-1.1-STAGING_RSA-correction_raisoctieelectdom.sql
+-- patch-2.0rc9_1.0-STAGING_RSA-correction_raisoctieelectdom.sql
 -- *** VERSIONS  ***
 -- *** webrsa 2.0rc10
 -- *** iRSA v. 3.3 à 5 : INSTRUCTION 1.2

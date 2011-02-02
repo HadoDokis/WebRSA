@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TalendMetadata:XmlFileConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendMetadata="http://www.talend.org" XmlFilePath="C:/Documents and Settings/rdubois/Bureau/20090525Lu_ETL_RSA/FluxV2/vrsb0101.xsd" Encoding="ISO-8859-1">
+  <tables id="_xQTPMFWNEd6tl9prB2rG7g" label="metadata">
+    <columns label="TOPRESPDOS" talendType="id_Boolean"/>
+    <columns label="DDRATDOS" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="DFRATDOS" talendType="id_Date" pattern="&quot;yyyy-MM-dd&quot;"/>
+    <columns label="NUMDEMRSAPRECE" talendType="id_String"/>
+  </tables>
+  <schema LimitBoucle="50" AbsoluteXPathQuery="/Racine/InfosFoyerRSA/Personne">
+    <schemaTargets RelativeXPathQuery="DossierCAF/TOPRESPDOS" TagName="TOPRESPDOS"/>
+    <schemaTargets RelativeXPathQuery="DossierCAF/DDRATDOS" TagName="DDRATDOS"/>
+    <schemaTargets RelativeXPathQuery="DossierCAF/DFRATDOS" TagName="DFRATDOS"/>
+    <schemaTargets RelativeXPathQuery="DossierCAF/NUMDEMRSAPRECE" TagName="NUMDEMRSAPRECE"/>
+  </schema>
+</TalendMetadata:XmlFileConnection>
