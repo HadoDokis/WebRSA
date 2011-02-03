@@ -38,7 +38,7 @@
 					'message' => 'Ce numéro CAF est déjà utilisé',
 					'allowEmpty' => true
 				),*/
-				array(
+				/*array(
 					'rule' => array( 'between', 15, 15 ),
 					'message' => 'Le numéro CAF est composé de 15 chiffres',
 					'allowEmpty' => true
@@ -47,7 +47,7 @@
 					'rule' => 'numeric',
 					'message' => 'Veuillez entrer une valeur numérique.',
 					'allowEmpty' => true
-				)
+				)*/
 			)
 		);
 
