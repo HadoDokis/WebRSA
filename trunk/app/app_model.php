@@ -188,6 +188,12 @@
                     $linkedModels[] = ClassRegistry::init( $associatedModel );
                 }
 
+				// Champs virtuels sur les tables de jointure
+				$joinTables = Set::extract( $queryData, 'joins.{n}.alias' );
+				foreach( $joinTables as $joinTable ) {
+					$linkedModels[] = ClassRegistry::init( $joinTable );
+				}
+
                 /*
                 * Translate virtual fields fieldnames
                 */
@@ -636,7 +642,7 @@
 
             return ( empty( $value ) == empty( $reference )  );
         }
-        
+
         /**
         * 'dateentreeemploi' => notEmptyIf( array $data, 'activitebeneficiaire', true, array( 'P' ) )
         */
@@ -646,9 +652,9 @@
             $data_value = ( isset( $data[0] ) ? $data[0] : null );
 
             $reference_value = Set::extract( $this->data, $this->name.'.'.$reference );
-            
+
             $return = false;
-            
+
             foreach($values as $value) {
             	if ( $value = $reference_value ) {
             		(empty($data_value)) ? $return = false : $return = true;
