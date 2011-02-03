@@ -47,6 +47,16 @@
             $this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
 
             $this->set( 'action', $this->Action->find( 'list' ) );
+
+	    $forme_ci = array();
+            if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
+                   $forme_ci = array( 'S' => 'Simple', 'C' => 'Complexe' );
+            }
+            else if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
+                   $forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
+            }
+            $this->set( 'forme_ci', $forme_ci );
+
         }
 
         /**
