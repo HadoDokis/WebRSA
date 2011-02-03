@@ -40,9 +40,41 @@
 
 	class CohortesindusControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
-			
+		function test__construct() {
+			$this->assertNull($this->CohortesindusController->components['Prg']['actions']['1']);
+			$this->CohortesindusController->__construct();
+			$this->assertEqual('index', $this->CohortesindusController->components['Prg']['actions']['1']);
+	        }
+
+	        function testBeforeFilter() {
+			$this->assertNull($this->CohortesindusController->redirectUrl);
+			$this->assertNull($this->CohortesindusController->viewVars['sr']);
+			$this->assertNull($this->CohortesindusController->viewVars['etatdosrsa']);
+			$this->assertNull($this->CohortesindusController->viewVars['natpfcre']);
+			$this->assertNull($this->CohortesindusController->viewVars['typeparte']);
+			$this->CohortesindusController->beforeFilter();
+			$this->assertEqual('/users/login', $this->CohortesindusController->redirectUrl);
+			$this->assertNotNull($this->CohortesindusController->viewVars['sr']);
+			$this->assertNotNull($this->CohortesindusController->viewVars['etatdosrsa']);
+			$this->assertNotNull($this->CohortesindusController->viewVars['natpfcre']);
+			$this->assertNotNull($this->CohortesindusController->viewVars['typeparte']);
+	        }
+
+	        function testIndex() {
+			$this->assertNull($this->CohortesindusController->viewVars['cantons']);
+			$this->assertNull($this->CohortesindusController->viewVars['mesCodesInsee']);
+			$this->assertNull($this->CohortesindusController->viewVars['comparators']);
+			$this->CohortesindusController->index();
+			$this->assertNotNull($this->CohortesindusController->viewVars['cantons']);
+			$this->assertNotNull($this->CohortesindusController->viewVars['mesCodesInsee']);
+			$this->assertNotNull($this->CohortesindusController->viewVars['comparators']);
 		}
+
+	        function testExportcsv() {
+			$this->assertNull($this->CohortesindusController->viewVars['indus']);
+			$this->CohortesindusController->exportcsv();
+			$this->assertNotNull($this->CohortesindusController->viewVars['indus']);
+	        }
 
 	}
 
