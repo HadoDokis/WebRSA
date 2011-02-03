@@ -65,13 +65,13 @@ msgid "Seanceseps::choose"
 msgstr "Choisir les dossiers à passer à la séance d'EP"
 
 msgid "Seanceseps::traiterep"
-msgstr "Emettre l'avis de l'EP"
+msgstr "5. Emettre l'avis de l'EP"
 
 msgid "Seanceseps::finaliserep"
-msgstr "Finaliser la séance d'EP"
+msgstr "6. Finaliser la séance d'EP"
 
 msgid "Seanceseps::traitercg"
-msgstr "Emettre la décision du CG"
+msgstr "7. Emettre la décision du CG"
 
 msgid "Seanceseps::finalisercg"
-msgstr "Finaliser la décision CG"
+msgstr "8. Finaliser la décision CG"

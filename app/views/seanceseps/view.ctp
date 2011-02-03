@@ -1,4 +1,4 @@
-<h1><?php	echo $this->pageTitle = 'Affichage séance d\'EP'; ?></h1>
+<h1><?php	echo $this->pageTitle = '1. Affichage séance d\'EP'; ?></h1>
 <div  id="ficheCI">
 	<ul class="actionMenu">
 	<?php
@@ -82,7 +82,7 @@
 <div id="tabbedWrapper" class="tabs">
 	<?php if( isset( $membresepsseanceseps ) ):?>
 		<div id="participants">
-			<h2 class="title">Liste des participants</h2>
+			<h2 class="title">2. Liste des participants</h2>
 			<div>
 				<ul class="actionMenu">
 				<?php
@@ -151,7 +151,7 @@
 		</div>
 	<?php endif;?>
 		<div id="dossiers">
-			<h2 class="title">Liste des dossiers</h2>
+			<h2 class="title">3. Liste des dossiers</h2>
 			<ul class="actionMenu">
 				<?php
 					if( empty( $seanceep['Seanceep']['finalisee'] ) ) {

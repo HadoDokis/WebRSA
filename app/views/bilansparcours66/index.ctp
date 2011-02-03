@@ -4,7 +4,7 @@
 	<h1> <?php echo $this->pageTitle = 'Écran de synthèse des bilans de parcours'; ?> </h1>
 	<?php
 	// 	require_once( 'index.ctp' );
-
+// debug($bilansparcours66);
 		echo $default2->index(
 			$bilansparcours66,
 			array(
@@ -25,7 +25,7 @@
 			),
 			array(
 				'actions' => array(
-					'Bilansparcours66::edit'
+					'Bilansparcours66::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'bilansparcours66', 'action' => 'index', '#Orientstruct.personne_id#' ) )
 				),
 				'groupColumns' => array(
 					'Orientation' => array( 1, 2, 3 ),
