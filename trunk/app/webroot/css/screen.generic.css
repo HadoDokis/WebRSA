@@ -1025,7 +1025,7 @@ ul.actions li.add a {
 
 /**/
 
-td.button a, td.action a, td.button span, td span.button {
+td.button a, td.action a, td.button span, td span.button, table.default2 td a.button, table.default2 td span.button {
 	background-repeat: no-repeat;
 	background-position: left center;
 	padding-left: 20px;
@@ -1037,23 +1037,23 @@ td span.button.disabled {
 	color: silver;
 }
 
-td.button.view a, td.action a.view, td.button span.link, td span.button.view {
+td.button.view a, td.action a.view, td.button span.link, td span.button.view, table.default2 td a.button.view {
 	background-image: url( ../img/icons/zoom.png );
 }
 
-td.button.edit a, td.action a.edit, td span.button.edit {
+td.button.edit a, td.action a.edit, td span.button.edit, table.default2 td a.button.edit {
 	background-image: url( ../img/icons/pencil.png );
 }
 
-td.button.clore a, td.action a.clore, td span.button.clore {
+td.button.clore a, td.action a.clore, td span.button.clore, table.default2 td a.button.clore {
 	background-image: url( ../img/icons/page_white_link.png );
 }
 
-td.button.print a, td.action a.print, td span.button.print {
+td.button.print a, td.action a.print, td span.button.print, table.default2 td a.button.print {
 	background-image: url( ../img/icons/printer.png );
 }
 
-td.button.delete a, td.action a.delete, td span.button.delete {
+td.button.delete a, td.action a.delete, td span.button.delete, table.default2 td a.button.delete {
 	background-image: url( ../img/icons/delete.png );
 }
 
