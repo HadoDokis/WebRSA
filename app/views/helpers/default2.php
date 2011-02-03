@@ -182,9 +182,13 @@
 						$displayFieldValue = Set::classicExtract( $line, "{$modelName}.{$displayField}" );
 
 						$enabled = !$this->Type2->translateDisabled( $line, $actionParams );
+
+						$label = @$actionParams['label'];
+
 						// TODO
 						unset( $actionParams['disabled'] );
 						unset( $actionParams['condition'] );
+						unset( $actionParams['label'] );
 
 						// FIXME: à mettre dans le DefaultHelper 1.3
 						$url = (array)Set::classicExtract( $actionParams, 'url' );
@@ -202,11 +206,11 @@
 						}
 
 						if( $action == 'delete' ) {
-
 							$value = $this->button(
 								'delete',
 								$url,
 								array(
+									'label' => $label,
 									'enabled' => $enabled,
 									'title' => sprintf(
 										__d( $domain, "{$controller}::{$action}", true ),
@@ -224,6 +228,7 @@
 								$action,
 								$url,
 								array(
+									'label' => $label,
 									'enabled' => $enabled,
 									'title' => sprintf(
 										__d( $domain, "{$controller}::{$action}", true ),
