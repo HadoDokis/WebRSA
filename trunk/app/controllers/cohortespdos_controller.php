@@ -166,6 +166,7 @@
 
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'headers', 'pdos' ) );
+debug($this);
         }
     }
 ?>

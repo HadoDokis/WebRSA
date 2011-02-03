@@ -36,45 +36,100 @@
 			$this->parameters = $parameters;
 		}
 
+		// Attention on surcharge la visibilite du parent
+		function _setOptions() {
+			return parent::_setOptions();
+		}
+
 	}
 
 	class CohortescomitesapresControllerTest extends CakeAppControllerTestCase {
 
 		function test__construct() {
+			
 			$this->CohortescomitesapresController->__construct();
+			$this->assertNotNull($this->CohortescomitesapresController->components['Prg']);
 		}
-/*
-		protected function test_setOptions() {
+
+		function test_setOptions() {
+			$this->assertNull($this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNull($this->CohortescomitesapresController->viewVars['options']);
 			$this->CohortescomitesapresController->_setOptions();
+			$referent = array(
+				'2' => 'M Deufs John',
+				'1' => 'M Némard Jean',
+			);
+			$this->assertEqual($referent, $this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
 		}
 
 		function testAviscomite() {
+			$this->assertNull($this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNull($this->CohortescomitesapresController->viewVars['options']);
+			$this->assertNull($this->CohortescomitesapresController->viewVars['pageTitle']);
+			$this->assertNull($this->CohortescomitesapresController->renderedLayout);
+			$this->assertNull($this->CohortescomitesapresController->renderedFile);
 			$this->CohortescomitesapresController->aviscomite();
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['pageTitle']);
+			$this->assertEqual('default', $this->CohortescomitesapresController->renderedLayout);
+			$this->assertEqual('formulaire', $this->CohortescomitesapresController->renderedFile);
 		}
 
 		function testNotificationscomite() {
+			$this->assertNull($this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNull($this->CohortescomitesapresController->viewVars['options']);
+			$this->assertNull($this->CohortescomitesapresController->viewVars['pageTitle']);
+			$this->assertNull($this->CohortescomitesapresController->renderedLayout);
+			$this->assertNull($this->CohortescomitesapresController->renderedFile);
 			$this->CohortescomitesapresController->notificationscomite();
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['pageTitle']);
+			$this->assertEqual('default', $this->CohortescomitesapresController->renderedLayout);
+			$this->assertEqual('visualisation', $this->CohortescomitesapresController->renderedFile);
 		}
 
 		function test_index() {
-			$avisComite = null;
+			$avisComite = 1;
+			$this->assertNull($this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNull($this->CohortescomitesapresController->viewVars['options']);
 			$this->CohortescomitesapresController->_index($avisComite);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
 		}
 
 		function testExportcsv() {
+			$this->assertNull($this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNull($this->CohortescomitesapresController->viewVars['options']);
 			$this->CohortescomitesapresController->exportcsv();
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
 		}
 
 		function testEditdecision() {
 			$apre_id = 1;
+			$this->assertNull($this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNull($this->CohortescomitesapresController->viewVars['options']);
+			$this->assertNull($this->CohortescomitesapresController->viewVars['aprecomiteapre']);
+			$this->assertNull($this->CohortescomitesapresController->viewVars['apre']);
 			$this->CohortescomitesapresController->editdecision($apre_id);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['referent']);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['aprecomiteapre']);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['apre']);
 		}
 
 		function testNotificationscomitegedooo() {
 			$apre_comiteapre_id = 1;
+			$this->assertNull($this->CohortescomitesapresController->viewVars['options']);
+			$this->assertNull($this->CohortescomitesapresController->viewVars['referent']);
 			$this->CohortescomitesapresController->notificationscomitegedooo($apre_comiteapre_id);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
+			$this->assertNotNull($this->CohortescomitesapresController->viewVars['referent']);
 		}
-*/
+
 	}
 
 ?>
