@@ -30,13 +30,16 @@
 			$enabled = ( isset( $htmlAttributes['enabled'] ) ? $htmlAttributes['enabled'] : true );
 			$iconFileSuffix = ( ( $enabled ) ? '' : '_disabled' ); // TODO: les autres aussi
 
-			$htmlAttributes = array_filter_keys( $htmlAttributes, array( 'enabled' ), true );
+			$label = ( isset( $htmlAttributes['label'] ) ? $htmlAttributes['label'] : null );
+			$htmlAttributes = array_filter_keys( $htmlAttributes, array( 'enabled', 'label' ), true );
 
 			// TODO: une fonction ?
 			$urlParams = Router::parse( str_replace( $this->base, '', Router::url( $url ) ) );
 			$controllerName = Inflector::camelize( $urlParams['controller'] );
 
-			$content = __( "Button::{$urlParams['action']}", true );
+			if( empty( $label ) ) {
+				$label = __( "Button::{$urlParams['action']}", true );
+			}
 
 			$class = implode(
 				' ',
@@ -52,14 +55,14 @@
 
 			if( $enabled ) {
 				return $this->Html->link(
-					$content,
+					$label,
 					$url,
 					$htmlAttributes,
 					$confirmMessage
 				);
 			}
 			else {
-				return $this->Html->tag( 'span', $content, $htmlAttributes, false, false );
+				return $this->Html->tag( 'span', $label, $htmlAttributes, false, false );
 			}
 		}
 
