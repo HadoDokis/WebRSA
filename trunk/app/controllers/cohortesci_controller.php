@@ -56,6 +56,15 @@
 			$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
 
 			$this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
+
+			$forme_ci = array();
+            if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
+                   $forme_ci = array( 'S' => 'Simple', 'C' => 'Complexe' );
+            }
+            else if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
+                   $forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
+            }
+            $this->set( 'forme_ci', $forme_ci );
 			return $return;
 		}
 
@@ -193,8 +202,11 @@
 					$this->Dossier->commit();
 
 					foreach( $cohorteci as $key => $value ) {
-						if( $value['Contratinsertion']['decision_ci'] == 'E' ) {
-							$cohorteci[$key]['Contratinsertion']['proposition_decision_ci'] = 'V';
+						if( $value['Contratinsertion']['decision_ci'] == 'E' && Configure::read( 'nom_form_cg' == 'cg66' ) ) {
+							$cohorteci[$key]['Contratinsertion']['proposition_decision_ci'] = 'E';
+						}
+						else if( $value['Contratinsertion']['decision_ci'] == 'E' && Configure::read( 'nom_form_cg' == 'cg93' ) ) {
+                            $cohorteci[$key]['Contratinsertion']['proposition_decision_ci'] = 'V';
 						}
 						else {
 							$cohorteci[$key]['Contratinsertion']['proposition_decision_ci'] = $value['Contratinsertion']['decision_ci'];
