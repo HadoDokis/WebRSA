@@ -144,21 +144,99 @@
 		    );
 		?>
 	</fieldset>
+<fieldset>
+    <?php 
+        echo $html->tag(
+            'h3',
+            $form->input(
+                'Bilanparcours66.bilanparcoursinsertion',
+                array(
+                    'type'=>'checkbox',
+                    'label'=> 'Bilan du parcours d\'insertion'
+                )
+            )
+        );//bilanparcoursinsertion
+    ?>
+    <fieldset id="Bilanparcoursinsertion" class="invisible">
+    <?php
+            echo $default2->subform(
+                array(
+                    'Bilanparcours66.situationperso',
+                    'Bilanparcours66.situationpro'
+                ),
+                array(
+                    'options' => $options
+                )
+            );
 
-		<?php
+            echo $html->tag(
+                'p',
+                'Bilan du parcours d\'insertion :',
+                array(
+                    'style' => ' font-size: 12px; font-weight:bold;'
+                )
+            );
+
 		    echo $default2->subform(
 		        array(
 		            'Bilanparcours66.objinit',
 		            'Bilanparcours66.objatteint',
-		            'Bilanparcours66.objnew',
-		            'Bilanparcours66.motifsaisine'
+		            'Bilanparcours66.objnew'
 		        ),
 		        array(
 		            'options' => $options
 		        )
 		    );
+        ?>
+    </fieldset>
+</fieldset>
+
+<fieldset>
+        <?php
+            echo $html->tag(
+                'h3',
+                $form->input(
+                    'Bilanparcours66.motifep',
+                    array(
+                        'type'=>'checkbox',
+                        'label'=> 'Motifs de la saisine de l\'équipe pluridisciplinaire ',
+                        'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
+                    )
+                )
+            );
+        ?>
+        <fieldset id="motifsaisine" class="invisible">
+        <?php
+		    echo $default2->subform(
+                array(
+                    'Bilanparcours66.motifsaisine'
+                ),
+                array(
+                    'options' => $options
+                )
+            );
 		?>
-		
+    </fieldset>
+</fieldset>
+		    
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+
+        observeDisableFieldsetOnCheckbox(
+            'Bilanparcours66Bilanparcoursinsertion',
+            'Bilanparcoursinsertion',
+            false,
+            true
+        );
+
+        observeDisableFieldsetOnCheckbox(
+            'Bilanparcours66Motifep',
+            'motifsaisine',
+            false,
+            true
+        );
+    } );
+</script>
 	<?php
 		echo $html->tag(
 			'p',
