@@ -218,6 +218,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Dossiercov58' => array(
+				'className' => 'Dossiercov58',
+				'foreignKey' => 'personne_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Entretien' => array(
 				'className' => 'Entretien',
 				'foreignKey' => 'personne_id',
@@ -415,19 +428,6 @@
 			),
 			'Orientstruct' => array(
 				'className' => 'Orientstruct',
-				'foreignKey' => 'personne_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-			'Propoorientationcov58' => array(
-				'className' => 'Propoorientationcov58',
 				'foreignKey' => 'personne_id',
 				'dependent' => true,
 				'conditions' => '',
