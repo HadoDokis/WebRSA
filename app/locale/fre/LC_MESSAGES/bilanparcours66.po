@@ -280,7 +280,7 @@ msgid "Bilanparcours::index::empty"
 msgstr "Aucun bilan de parcours présent pour cette personne"
 
 msgid "Bilanparcours66.motifsaisine"
-msgstr "Motifs de la saisine de l'Équipe Pluridisciplinaire"
+msgstr "Motifs justifiant la demande"
 
 msgid "Bilanparcours66.reorientation"
 msgstr "Réorientation"
@@ -354,7 +354,7 @@ msgid "ENUM::SAISINEEPL::auditiondefautinsertion"
 msgstr "Saisine EPL Audition pour défaut d'insertion"
 
 msgid "Bilanparcours66.sitfam"
-msgstr "Situation familiale"
+msgstr "Composition familiale"
 
 msgid "ENUM::SITFAM::couple"
 msgstr "couple sans enfant"
@@ -388,3 +388,20 @@ msgstr "Défaut de conclusion"
 
 msgid "ENUM::CHOIXPARCOURS::DRD"
 msgstr "Non respect"
+
+
+###############################################################################
+# nouvelles modifs pour le bilan du 04/02/2011
+###############################################################################
+
+msgid "Bilanparcours66.bilanparcoursinsertion"
+msgstr "Bilan du parcours d'insertion:"
+
+msgid "Bilanparcours66.situationperso"
+msgstr "Situation personnelle et familiale (actualisation de la situation sociale)"
+
+msgid "Bilanparcours66.situationpro"
+msgstr "Situation professionnelle (préciser les avancées réalisées)"
+
+msgid "Bilanparcours66.motifep"
+msgstr "Motif de la saisine de l'équipe pluridisciplinaire"
