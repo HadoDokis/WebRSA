@@ -165,7 +165,7 @@ msgid "Bilanparcours66.examenaudition"
 msgstr "Raison d'examen du dossier"
 
 msgid "ENUM::EXAMENAUDITION::DOD"
-msgstr "Défaut de conclusion"
+msgstr "Non conclusion"
 
 msgid "ENUM::EXAMENAUDITION::DRD"
 msgstr "Non respect"

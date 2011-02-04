@@ -102,8 +102,9 @@
 						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.decisioncg', true)."</th>";
 						echo "<th colspan='2'>Actions</th>";
 					echo "</tr></thead><tbody>";
-					
+
 					foreach($bilansparcours66 as $bilanparcour66) {
+
 						echo "<tr>";
 							echo $type2->format( $bilanparcour66, 'Bilanparcours66.datebilan', array( 'type' => 'date', 'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Orientstruct.Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
@@ -111,10 +112,10 @@
 							echo $type2->format( $bilanparcour66, 'Bilanparcours66.proposition', array( 'tag' => 'td', 'options' => $options ) );
 							
 				
-							if (empty($bilanparcours66['Bilanparcours66']['choixparcours']) && !empty($bilanparcours66['Bilanparcours66']['examenaudition'])) {
+							if (empty($bilanparcour66['Bilanparcours66']['choixparcours']) && !empty($bilanparcour66['Bilanparcours66']['examenaudition'])) {
 								echo $type2->format( $bilanparcour66, 'Bilanparcours66.examenaudition', array( 'tag' => 'td', 'options' => $options ) );
 							}
-							elseif (empty($bilanparcour66['Bilanparcours66']['choixparcours'])) {
+							elseif (empty($bilanparcour66['Bilanparcours66']['choixparcours']) && empty($bilanparcour66['Bilanparcours66']['examenaudition'])) {
 								if ($bilanparcour66['Bilanparcours66']['maintienorientation']==0) {
 									$bilanparcour66['Bilanparcours66']['choixparcours']='reorientation';
 								}
