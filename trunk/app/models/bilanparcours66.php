@@ -56,19 +56,22 @@
 					'rule' => 'alphanumeric',
 					'message' => 'La proposition du référent est obligatoire',
 					'allowEmpty' => false,
-					'required' => true
+					'required' => true,
+					'on' => 'insert'
 				)
 			),
 			'datebilan' => array(
 				array(
 					'rule' => array('datePassee'),
-					'message' => 'Merci de choisir une date antérieure à la date du jour'
+					'message' => 'Merci de choisir une date antérieure à la date du jour',
+                    'on' => 'insert'
 				),
 				array(
 					'rule' => 'date',
 					'message' => 'Merci de rentrer une date valide',
 					'allowEmpty' => false,
-					'required' => true
+					'required' => true,
+                    'on' => 'insert'
 				)
 			)
 		);

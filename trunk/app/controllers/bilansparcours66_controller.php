@@ -250,6 +250,8 @@
 				}
 				else {
 					$success = $this->Bilanparcours66->save( $this->data );
+//                 debug($this->Bilanparcours66->validationErrors);
+//                                 debug($this->data);
 				}
 
 				$this->_setFlashResult( 'Save', $success );
@@ -389,7 +391,6 @@
                                 ),
                             'order' => "Orientstruct.date_valid DESC",
                         ),
-
 						'Foyer' => array(
 							'fields' => array(
 								'id'

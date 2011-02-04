@@ -261,6 +261,11 @@
 				)
 			);
 		}
+
+    if ($this->action == 'edit'){
+        echo $xform->input( 'Bilanparcours66.proposition', array( 'type' => 'hidden' ) );
+        echo $xform->input( 'Bilanparcours66.maintienorientation', array( 'type' => 'hidden' ) );
+    }
 	?>
 
 	<fieldset>
