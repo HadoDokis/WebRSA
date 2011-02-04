@@ -62,20 +62,15 @@
 		*/
 
 		public function index( $personne_id = null ) {
+            $conditions = array( 'Orientstruct.date_valid IS NOT NULL' );
 			if( !empty( $personne_id ) ) {
-				$conditions = array( 'Orientstruct.personne_id' => $personne_id );
-			}
-			else {
-				$conditions = array();
+				$conditions['Orientstruct.personne_id'] =  $personne_id;
 			}
 
 			$nborientstruct = $this->Bilanparcours66->Orientstruct->find(
 				'count',
 				array(
-					'conditions' => array(
-						'Orientstruct.personne_id' => $personne_id,
-						'Orientstruct.date_valid IS NOT NULL'
-					)
+					'conditions' => $conditions
 				)
 			);
 
@@ -385,6 +380,16 @@
 				array(
 					'conditions' => array( 'Personne.id' => $personne_id ),
 					'contain' => array(
+                        'Orientstruct' => array(
+                            'fields' => array( 'typeorient_id', 'date_valid' ),
+                                'Typeorient' => array(
+                                    'fields' => array(
+                                        'lib_type_orient'
+                                    )
+                                ),
+                            'order' => "Orientstruct.date_valid DESC",
+                        ),
+
 						'Foyer' => array(
 							'fields' => array(
 								'id'

@@ -101,7 +101,7 @@ msgid "Bilanparcours66.choixparcours"
 msgstr "Choix du parcours"
 
 msgid "Bilanparcours66.maintienorientsansep"
-msgstr "Maintien de l'orientation"
+msgstr "Maintien de l'orientation SOCIALE"
 
 msgid "ENUM::MAINTIENORIENTSANSEP::social"
 msgstr "Sociale"
@@ -141,7 +141,7 @@ msgstr "Réorientation"
 
 
 msgid "Bilanparcours66.maintienorientparcours"
-msgstr "Maintien de l'orientation"
+msgstr "Maintien de l'orientation SOCIALE"
 
 msgid "ENUM::MAINTIENORIENTPARCOURS::social"
 msgstr "Sociale"
