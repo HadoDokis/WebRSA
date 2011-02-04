@@ -1,9 +1,9 @@
 <?php
 	class Relancesnonrespectssanctionseps93Controller extends AppController
 	{
-		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep', 'Dossier' );
+		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep', 'Dossier', 'Pdf' );
 
-		var $components = array( 'Prg' => array( 'actions' => array( 'impressions' ) ) );
+		var $components = array( 'Prg' => array( 'actions' => array( 'impressions' ) ), 'Gedooo' );
 
 		var $helpers = array( 'Default2', 'Csv' );
 
@@ -103,6 +103,7 @@
 							'Contratinsertion.df_ci',
 							'Relancenonrespectsanctionep93.numrelance',
 							'Relancenonrespectsanctionep93.daterelance',
+							'Pdf.id',
 						),
 						'conditions' => $conditions,
 						'joins' => array(
@@ -131,6 +132,16 @@
 								'foreignKey' => false,
 								'conditions' => array(
 									'Contratinsertion.id = Nonrespectsanctionep93.contratinsertion_id'
+								)
+							),
+							array(
+								'table'      => 'pdfs',
+								'alias'      => 'Pdf',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Relancenonrespectsanctionep93.id = Pdf.fk_value',
+									'Pdf.modele' => 'Relancenonrespectsanctionep93',
 								)
 							),
 						),
@@ -357,6 +368,32 @@
 					$this->Relancenonrespectsanctionep93->create( $this->data );
 					$success = $this->Relancenonrespectsanctionep93->save() && $success;
 
+					/*if( $success ) {
+						// Enregistrement du courrier de relance
+						$gedooo_data = $this->Relancenonrespectsanctionep93->getDataForPdf( $this->Relancenonrespectsanctionep93->id );
+
+						// -> en faire une fonction dans le modèle / le bahavior ?
+						$modeledoc = "Relancenonrespectsanctionep93/notification_{$gedooo_data['Nonrespectsanctionep93']['origine']}_relance{$gedooo_data['Relancenonrespectsanctionep93']['numrelance']}.odt";
+
+						$pdf = $this->Gedooo->getPdf( $gedooo_data, $modeledoc );
+						if( $pdf ) {
+							$this->Pdf->create(
+								array(
+									'Pdf' => array(
+										'modele' => 'Relancenonrespectsanctionep93',
+										'modeledoc' => $modeledoc,
+										'fk_value' => $this->Relancenonrespectsanctionep93->id,
+										'document' => $pdf
+									)
+								)
+							);
+							$success = $this->Pdf->save() && $success;
+						}
+						else {
+							$success = false;
+						}
+					}*/
+
 					$this->_setFlashResult( 'Save', $success );
 					if( $success ) {
 						$this->Relancenonrespectsanctionep93->commit();
@@ -404,6 +441,105 @@
 
 			$this->layout = '';
 			$this->set( compact( 'relances' ) );
+		}
+
+		/**
+		*
+		*/
+
+		public function impression_individuelle( $id ) {
+			$this->assert( is_numeric( $id ), 'invalidParameter' );
+
+			$this->Relancenonrespectsanctionep93->begin();
+
+			$content = $this->Pdf->find(
+				'first',
+				array(
+					'fields' => array(
+						'Pdf.document',
+						'Relancenonrespectsanctionep93.id',
+						'Relancenonrespectsanctionep93.dateimpression',
+					),
+					'conditions' => array(
+						'Pdf.modele' => 'Relancenonrespectsanctionep93',
+						'Pdf.id' => $id
+					),
+					'joins' => array(
+						array(
+							'table'      => 'relancesnonrespectssanctionseps93',
+							'alias'      => 'Relancenonrespectsanctionep93',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Pdf.fk_value = Relancenonrespectsanctionep93.id'
+							)
+						),
+						array(
+							'table'      => 'nonrespectssanctionseps93',
+							'alias'      => 'Nonrespectsanctionep93',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Nonrespectsanctionep93.id = Relancenonrespectsanctionep93.nonrespectsanctionep93_id'
+							)
+						),
+					)
+				)
+			);
+
+			if( empty( $content['Relancenonrespectsanctionep93']['dateimpression'] ) ) {
+				$this->Relancenonrespectsanctionep93->updateAll(
+					array( 'Relancenonrespectsanctionep93.dateimpression' => date( "'Y-m-d'" ) ),
+					array( '"Relancenonrespectsanctionep93"."id"' => $content['Relancenonrespectsanctionep93']['id'] )
+				);
+			}
+
+			if( $content['Pdf']['document'] !== false ) {
+				$this->Relancenonrespectsanctionep93->commit();
+				$this->Gedooo->sendPdfContentToClient( $content['Pdf']['document'], sprintf( "relance-%s.pdf", date( "Ymd-H\hi" ) ) );
+			}
+			else {
+				$this->Relancenonrespectsanctionep93->rollback();
+				$this->cakeError( 'error500' );
+			}
+		}
+
+		/**
+		*
+		*/
+
+		public function impression_cohorte() {
+			$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances( Xset::bump( $this->params['named'], '__' ) );
+			$queryData['fields'] = array(
+				'Pdf.document',
+				'Relancenonrespectsanctionep93.id',
+				'Relancenonrespectsanctionep93.dateimpression',
+			);
+
+			$this->Relancenonrespectsanctionep93->begin();
+
+			$contents = $this->Relancenonrespectsanctionep93->find( 'all', $queryData );
+
+			$ids = Set::extract( '/Relancenonrespectsanctionep93/id', $contents );
+			$pdfs = Set::extract( '/Pdf/document', $contents );
+
+			if( empty( $content['Relancenonrespectsanctionep93']['dateimpression'] ) ) {
+				$this->Relancenonrespectsanctionep93->updateAll(
+					array( 'Relancenonrespectsanctionep93.dateimpression' => date( "'Y-m-d'" ) ),
+					array( '"Relancenonrespectsanctionep93"."id"' => $ids, '"Relancenonrespectsanctionep93"."dateimpression" IS NOT NULL' )
+				);
+			}
+
+			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'Relancenonrespectsanctionep93' );
+
+			if( !empty( $pdfs ) ) {
+				$this->Relancenonrespectsanctionep93->commit();
+				$this->Gedooo->sendPdfContentToClient( $pdfs, sprintf( "cohorterelances-%s.pdf", date( "Ymd-H\hi" ) ) );
+			}
+			else {
+				$this->Relancenonrespectsanctionep93->rollback();
+				$this->cakeError( 'error500' );
+			}
 		}
 	}
 ?>

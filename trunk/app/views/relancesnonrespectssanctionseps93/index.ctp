@@ -79,7 +79,11 @@
 							}
 						?></td>
 						<td><?php echo $xhtml->viewLink( 'Voir', array( '#' ), false );?></td>
-						<td><?php echo $xhtml->printLink( 'Imprimer', array( '#' ), false );?></td>
+						<td><?php echo $xhtml->printLink(
+								'Imprimer',
+								array( 'controller' => $this->params['controller'], 'action' => 'impression_individuelle', $relance['Pdf']['id'] ),
+								/*$permissions->check( 'gedooos', 'orientstruct' ) && */$relance['Pdf']['id']
+						);?></td>
 					</tr>
 				<?php endforeach;?>
 			</tbody>

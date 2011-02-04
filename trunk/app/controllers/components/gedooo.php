@@ -79,9 +79,38 @@
 		*
 		*/
 
+		function concatPdfs( $pdfs, $modelName ) {
+			$pdfTmpDir = rtrim( Configure::read( 'Cohorte.dossierTmpPdfs' ), '/' ).'/'.session_id().'/'.$modelName;
+			$old = umask(0);
+			@mkdir( $pdfTmpDir, 0777, true ); /// FIXME: vérification
+			umask($old);
+
+			foreach( $pdfs as $i => $pdf ) {
+				file_put_contents( "{$pdfTmpDir}/{$i}.pdf", $pdf );
+			}
+
+			exec( "pdftk {$pdfTmpDir}/*.pdf cat output {$pdfTmpDir}/all.pdf" ); // FIXME: nom de fichier cohorte-orientation-20100423-12h00.pdf
+
+			if( !file_exists( "{$pdfTmpDir}/all.pdf" ) ) {
+				return false;
+			}
+
+			$c = file_get_contents( "{$pdfTmpDir}/all.pdf" );
+
+			exec( "rm {$pdfTmpDir}/*.pdf" );
+			exec( "rmdir {$pdfTmpDir}" );
+
+			return $c; /// FIXME: false si problème
+		}
+
+		/**
+		*
+		*/
+
 		function getCohortePdfForClient( $queryData ) {
 			/// FIXME: supprimer si besoin dans UsersController::login et UsersController::logout
 			/// FIXME: voir le formulaire CG66
+			/// FIXME: utiliser la fonction $this->concatPdfs
 			$pdfModel = ClassRegistry::init( 'Pdf' );
 			$pdfTmpDir = rtrim( Configure::read( 'Cohorte.dossierTmpPdfs' ), '/' ).'/'.session_id().'/Orientstruct';
 			$old = umask(0);
