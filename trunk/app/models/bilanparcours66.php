@@ -441,7 +441,7 @@
 					);
 
 					// FIXME: erreur pas dans choixparcours
-					if( $data[$this->alias]['examenaudition'] != 'DRD' && empty( $vxContratinsertion ) ) {
+					if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
 						$this->invalidate( 'examenaudition', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
 						return false;
 					}

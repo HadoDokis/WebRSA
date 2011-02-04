@@ -94,13 +94,13 @@
 					echo "<table><thead><tr>";
 						echo "<th>".__d('bilanparcours66', 'Bilanparcours66.datebilan', true)."</th>";
 						echo "<th>".__d('structurereferente', 'Structurereferente.lib_struc',true)."</th>";
-						echo "<th>".__d('referent', 'Referent.nom_complet', true)."</th>";
+						echo "<th>Nom du référent</th>";
 						echo "<th>".__d('bilanparcours66', 'Bilanparcours66.proposition', true)."</th>";
-						echo "<th>".__d('bilanparcours66', 'Bilanparcours66.choixparcours', true)."</th>";
+						echo "<th>Motif de la saisine</th>";
 						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.propref', true)."</th>";
 						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.avisep', true)."</th>";
 						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.decisioncg', true)."</th>";
-						echo "<th>Actions</th>";
+						echo "<th colspan='2'>Actions</th>";
 					echo "</tr></thead><tbody>";
 					
 					foreach($bilansparcours66 as $bilanparcour66) {
@@ -168,6 +168,10 @@
 								'td',
 								$xhtml->editLink( 'Modifier', array( 'controller'=>'bilansparcours66', 'action'=>'edit', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ) )
 							);
+							echo $html->tag(
+                                'td',
+                                $xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'gedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), false  ) //FIXME: mise à false du bouton "Imprimer"
+                            );
 						echo "</tr>";
 					}
 					/*echo $default2->index(

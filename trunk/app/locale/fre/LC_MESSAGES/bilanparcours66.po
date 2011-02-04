@@ -76,12 +76,6 @@ msgstr "MSP"
 msgid "Bilanparcours66.referent_id"
 msgstr "Rédigé par"
 
-msgid "Bilanparcours66.structurereferente_id"
-msgstr "MSP"
-
-msgid "Bilanparcours66.referent_id"
-msgstr "Rédigé par "
-
 msgid "Bilanparcours66.objinit"
 msgstr "Objectifs initiaux et actions prévues, capacités mobilisables, freins éventuels"
 
@@ -92,7 +86,7 @@ msgid "Bilanparcours66.objnew"
 msgstr "Nouveaux objectifs: actions à mettre en place ou à poursuivre"
 
 msgid "Bilanparcours66.proposition"
-msgstr "Propositions"
+msgstr "Type de commission"
 
 msgid "Bilanparcours66.examenaudition"
 msgstr "Maintien / Réorientation"
