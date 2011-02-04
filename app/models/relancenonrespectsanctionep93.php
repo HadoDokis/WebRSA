@@ -32,6 +32,7 @@
 			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable',
+			'Gedooo'
 		);
 
 		public $belongsTo = array(
@@ -135,7 +136,7 @@
 		* Fonction de sauvegarde de la cohorte
 		*/
 
-		public function saveCohorte($newdata, $data) {
+		public function saveCohorte( $newdata, $data ) {
 			$success = true;
 			$validationErrors = array( $this->alias => array() );
 			foreach( $newdata as $i => $relance ) {
@@ -1273,6 +1274,83 @@
 					);
 				}
 			}
+		}
+
+		/**
+		* Récupère les données pour le PDf
+		*/
+
+		public function getDataForPdf( $id ) {
+			// TODO: error404/error500 si on ne trouve pas les données
+			$optionModel = ClassRegistry::init( 'Option' );
+			$qual = $optionModel->qual();
+			$typevoie = $optionModel->typevoie();
+
+			$queryData = $this->qdSearchRelances( array( $this->alias => array( 'id' => $id ) ) );
+			$queryData['fields'] = array(
+				'Dossier.matricule',
+				'Adresse.numvoie',
+				'Adresse.typevoie',
+				'Adresse.nomvoie',
+				'Adresse.complideadr',
+				'Adresse.compladr',
+				'Adresse.lieudist',
+				'Adresse.numcomrat',
+				'Adresse.numcomptt',
+				'Adresse.codepos',
+				'Adresse.locaadr',
+				'Adresse.pays',
+				'Personne.qual',
+				'Personne.nom',
+				'Personne.prenom',
+				'Personne.nir',
+				'Nonrespectsanctionep93.origine',
+				'Orientstruct.date_impression',
+				'Contratinsertion.df_ci',
+				'Contratinsertion.datevalidation_ci',
+// 				'Dossierep.etapedossierep',
+				'Relancenonrespectsanctionep93.daterelance',
+				'Relancenonrespectsanctionep93.numrelance',
+			);
+			$data = $this->find( 'first', $queryData );
+
+			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
+			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
+
+			return $data;
+		}
+
+		/**
+		* Enregistrement du Pdf
+		*/
+
+		public function afterSave( $created ) {
+			$gedooo_data = $this->getDataForPdf( $this->id );
+
+			$modeledoc = "Relancenonrespectsanctionep93/notification_{$gedooo_data['Nonrespectsanctionep93']['origine']}_relance{$gedooo_data['Relancenonrespectsanctionep93']['numrelance']}.odt";
+
+			$pdf = $this->getPdf( $gedooo_data, $modeledoc );
+			$success = true;
+
+			if( $pdf ) {
+				$pdfModel = ClassRegistry::init( 'Pdf' );
+				$pdfModel->create(
+					array(
+						'Pdf' => array(
+							'modele' => 'Relancenonrespectsanctionep93',
+							'modeledoc' => $modeledoc,
+							'fk_value' => $this->id,
+							'document' => $pdf
+						)
+					)
+				);
+				$success = $pdfModel->save() && $success;
+			}
+			else {
+				$success = false;
+			}
+
+			return $success;
 		}
 	}
 ?>
