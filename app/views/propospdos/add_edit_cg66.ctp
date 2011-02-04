@@ -352,7 +352,7 @@
     			'fieldset',
     			$html->tag(
     				'legend',
-    				'Décisions'
+    				'Propositions de décision'
     			).
 				$default2->index(
 				    $decisionspropospdos,
