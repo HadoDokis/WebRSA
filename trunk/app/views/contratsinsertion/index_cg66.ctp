@@ -40,7 +40,7 @@
                     <th>Rang contrat</th>
                     <th>Date début</th>
                     <th>Date fin</th>
-                    <th>Date réalisation</th>
+                    <th>Date de l'entretien</th>
                     <th>Décision</th>
                     <th colspan="6" class="action">Actions</th>
                 </tr>
@@ -66,18 +66,26 @@
 
                         $isValid = Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' );
                         $block = true;
-
-                        if( $isValid == 'V' && ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
+                        
+                        $isSimple = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
+                        if( $isValid == 'V' && $isSimple == 'S' && ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
                             $block = false;
                         }
 
                         /**
                         *   Règle de blocage du bouton valider si le contrat est simple
                         */
-                        $isSimple = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
                         $blockValid = true;
                         if( $isValid == 'V' && $isSimple == 'S' ){
                             $blockValid = false;
+                        }
+
+                        /**
+                        *   Règle de blocage du bouton valider si le contrat est simple
+                        */
+                        $blockImpression = false;
+                        if( $isSimple == 'S' ){
+                            $blockImpression = true;
                         }
 
                         echo $xhtml->tableCells(
@@ -107,6 +115,7 @@
                                 $xhtml->notificationsCer66Link(
                                     'Notifier à l\'organisme payeur',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'notificationsop', $contratinsertion['Contratinsertion']['id'] ),
+                                    $blockImpression,
                                     $permissions->check( 'contratsinsertion', 'notificationsop' )
                                 ),
                                 $xhtml->printLink(
