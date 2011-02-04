@@ -24,7 +24,7 @@
 				$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 			}
 
-			$dossier_id = $this->Propoorientationcov58->Personne->dossierId( $personne_id );
+			$dossier_id = $this->Propoorientationcov58->Dossiercov58->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
 			$this->Propoorientationcov58->begin();
@@ -35,10 +35,25 @@
 
 			if( !empty( $this->data ) ) {
 				$saved = true;
+				
+				$themecov58 = $this->Propoorientationcov58->Dossiercov58->Themecov58->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Themecov58.name' => Inflector::tableize($this->Propoorientationcov58->alias)
+						),
+						'contain' => false
+					)
+				);
+				$dossiercov58['Dossiercov58']['themecov58_id'] = $themecov58['Themecov58']['id'];
+				$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
+				
+				$saved = $this->Propoorientationcov58->Dossiercov58->save($dossiercov58) && $saved;
+				
 				$this->Propoorientationcov58->create();
 				
-				$this->data['Propoorientationcov58']['personne_id'] = $personne_id;
-				$this->data['Propoorientationcov58']['rgorient'] = $this->Propoorientationcov58->Personne->Orientstruct->rgorientMax($personne_id);
+				$this->data['Propoorientationcov58']['dossiercov58_id'] = $this->Propoorientationcov58->Dossiercov58->id;
+				$this->data['Propoorientationcov58']['rgorient'] = $this->Propoorientationcov58->Dossiercov58->Personne->Orientstruct->rgorientMax($personne_id);
 				
 				$saved = $this->Propoorientationcov58->save( $this->data['Propoorientationcov58'] ) && $saved;
 				
@@ -54,7 +69,7 @@
 				}
 			}
 			else {
-				$personne = $this->Propoorientationcov58->Personne->findByid( $personne_id, null, null, 0 );
+				$personne = $this->Propoorientationcov58->Dossiercov58->Personne->findByid( $personne_id, null, null, 0 );
 			}
 
 			$this->_setOptions();

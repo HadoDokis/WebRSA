@@ -66,8 +66,29 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+			'Dossiercov58' => array(
+				'className' => 'Dossiercov58',
+				'foreignKey' => 'dossiercov58_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
 		);
+		
+		/**
+		*
+		*/
+		
+		public function getContain() {
+			return array(
+				$this->alias => array(
+					'Typeorient',
+					'Structurereferente',
+					'Referent'
+				)
+			);
+		}
 
 		/**
 		*
@@ -263,14 +284,16 @@
 		*/
 
 		public function ajoutPossible( $personne_id ) {
-			$nbDossierscov = $this->find(
+			$nbDossierscov = $this->Dossiercov58->find(
 				'count',
 				array(
 					'conditions' => array(
-						'Propoorientationcov58.personne_id' => $personne_id,
-						'Propoorientationcov58.etapecov <>' => 'finalise'
+						'Dossiercov58.personne_id' => $personne_id,
+						'Dossiercov58.etapecov <>' => 'finalise'
 					),
-					'contain' => false
+					'contain' => array(
+						'Propoorientationcov58'
+					)
 				)
 			);
 

@@ -177,14 +177,17 @@
 
 			$this->set( 'rgorient_max', $this->Orientstruct->rgorientMax( $personne_id ) );
 			if (Configure::read('Cg.departement')==58) {
-				$ajout_possible = $this->Orientstruct->Personne->Propoorientationcov58->ajoutPossible( $personne_id );
-				$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Propoorientationcov58->find( 'count',
+				$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->ajoutPossible( $personne_id );
+				$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->Dossiercov58->find(
+					'count',
 					array(
 						'conditions' => array(
-							'Propoorientationcov58.personne_id' => $personne_id,
-							'Propoorientationcov58.etapecov <>' => 'finalise'
+							'Dossiercov58.personne_id' => $personne_id,
+							'Dossiercov58.etapecov <>' => 'finalise'
 						),
-						'contain' => false
+						'contain' => array(
+							'Propoorientationcov58'
+						)
 					)
 				);
 				$this->set( 'ajout_possible', $ajout_possible );

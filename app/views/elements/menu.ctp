@@ -226,6 +226,15 @@
 					</ul>
 				</li>
 			<?php endif;?>
+			
+			<!-- Menu de gestion de la COV pour le cg 58-->
+			<?php if( Configure::read( 'Cg.departement' ) == 58 ): ?>
+				<?php if( $permissions->check( 'covs58', 'index' ) ): ?>
+					<li id="menu3one">
+						<?php echo $xhtml->link( 'COV', array( 'controller' => 'covs58', 'action' => 'index' ) ); ?>
+					</li>
+				<?php endif; ?>
+			<?php endif;?>
 
 
 			<!-- Début du Nouveau menu pour les Equipes pluridisciplinaires -->
