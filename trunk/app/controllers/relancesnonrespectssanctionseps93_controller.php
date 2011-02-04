@@ -1,9 +1,11 @@
 <?php
 	class Relancesnonrespectssanctionseps93Controller extends AppController
 	{
-		public $helpers = array( 'Default2' );
-
 		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep', 'Dossier' );
+
+		var $components = array( 'Prg' => array( 'actions' => array( 'impressions' ) ) );
+
+		var $helpers = array( 'Default2', 'Csv' );
 
 		/**
 		*
@@ -38,7 +40,9 @@
 		*
 		*/
 
-		public function index( $personne_id ) {
+		public function index( $personne_id = null ) {
+			$this->assert( is_numeric( $personne_id ), 'invalidParameter' );
+
 			$erreurs = $this->Relancenonrespectsanctionep93->erreursPossibiliteAjout( $personne_id );
 
 			$conditions = array( 'OR' => array(), 'origine' => array( 'orientstruct', 'contratinsertion' ) );
@@ -365,6 +369,41 @@
 			}
 
 			$this->set( 'personne_id', $personne_id );
+		}
+
+		/**
+		*
+		*/
+
+		public function impressions() {
+			if( !empty( $this->data ) ) {
+				$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances( $this->data );
+				$queryData['limit'] = 10;
+
+				$this->Relancenonrespectsanctionep93->forceVirtualFields = true;
+
+				$this->paginate = $queryData;
+				$relances = $this->paginate( $this->Relancenonrespectsanctionep93 );
+
+				$this->set( compact( 'relances' ) );
+			}
+
+			$this->_setOptions();
+		}
+
+		/**
+		*
+		*/
+
+		public function exportcsv() {
+			$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances( Xset::bump( $this->params['named'], '__' ) );
+
+			$this->Relancenonrespectsanctionep93->forceVirtualFields = true;
+
+			$relances = $this->Relancenonrespectsanctionep93->find( 'all', $queryData );
+
+			$this->layout = '';
+			$this->set( compact( 'relances' ) );
 		}
 	}
 ?>

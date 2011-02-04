@@ -44,6 +44,12 @@
 			)
 		);
 
+		/**
+		* Fonction de validation qui vérifie si la date de relance demandée est suffisamment
+		* éloignée de la date d'orientation ou de validation du contrat, ainsi que par-rapport
+		* aux relances précédentes vis-à-vis du paramétrage.
+		*/
+
 		public function checkForRelance( $check ) {
 			$nonrespectsanctionep93 = $this->Nonrespectsanctionep93->find(
 				'first',
@@ -454,11 +460,11 @@
 				else if( $field == 'Serviceinstructeur.id' && !empty( $condition ) ) {
 					$joins[] = array(
 							'table'      => 'suivisinstruction',
-							'alias'      => 'Suivisinstruction',
+							'alias'      => 'Suiviinstruction',
 							'type'       => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
-								'Suivisinstruction.dossier_id = Foyer.dossier_id',
+								'Suiviinstruction.dossier_id = Foyer.dossier_id',
 								'Foyer.id = Personne.foyer_id'
 							)
 						);
@@ -468,10 +474,10 @@
 							'type'       => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
-								'Suivisinstruction.numdepins = Serviceinstructeur.numdepins',
-								'Suivisinstruction.typeserins = Serviceinstructeur.typeserins',
-								'Suivisinstruction.numcomins = Serviceinstructeur.numcomins',
-								'Suivisinstruction.numagrins = Serviceinstructeur.numagrins'
+								'Suiviinstruction.numdepins = Serviceinstructeur.numdepins',
+								'Suiviinstruction.typeserins = Serviceinstructeur.typeserins',
+								'Suiviinstruction.numcomins = Serviceinstructeur.numcomins',
+								'Suiviinstruction.numagrins = Serviceinstructeur.numagrins'
 							)
 						);
 					$conditions[] = array( 'Serviceinstructeur.id' => $condition );
@@ -782,6 +788,198 @@
 				}
 			}
 			return $results;
+		}
+
+		/**
+		* Fonction de recherche des dossiers déjà relancés.
+		*/
+
+		public function qdSearchRelances( $search ) {
+			$search = Set::flatten( $search );
+			$search = Set::filter( $search );
+
+			$conditions = array();
+
+			foreach( $search as $field => $condition ) {
+				if( in_array( $field, array( 'Personne.nom', 'Personne.prenom', 'Personne.nomnai' ) ) ) {
+					$conditions["UPPER({$field}) LIKE"] = $this->wildcard( strtoupper( replace_accents( $condition ) ) );
+				}
+				else if( $field == 'Adresse.numcomptt' && !empty( $condition ) ) {
+					$conditions['Adresse.numcomptt'] = $condition;
+				}
+				else if( $field == 'Serviceinstructeur.id' && !empty( $condition ) ) {
+					$conditions['Serviceinstructeur.id'] = $condition;
+				}
+				else if( $field == 'Dossier.matricule' && !empty( $condition ) ) {
+					$conditions['Dossier.matricule'] = $condition;
+				}
+				else if( ( $field == 'Dossiercaf.nomtitulaire' || $field == 'Dossiercaf.prenomtitulaire' ) && !empty( $condition ) ) {
+					$field = preg_replace( '/^Dossiercaf\.(.*)titulaire$/', '\1', $field );
+					$conditions["UPPER({$field}) LIKE"] = $this->wildcard( strtoupper( replace_accents( $condition ) ) );
+				}
+				else if( $field == 'Nonrespectsanctionep93.origine' && !empty( $condition ) ) {
+					$conditions['Nonrespectsanctionep93.origine'] = $condition;
+				}
+				else if( $field == 'Relancenonrespectsanctionep93.daterelance' && !empty( $condition ) ) {
+					$daterelance_from = "{$search['Relancenonrespectsanctionep93.daterelance_from.year']}-{$search['Relancenonrespectsanctionep93.daterelance_from.month']}-{$search['Relancenonrespectsanctionep93.daterelance_from.day']}";
+					$daterelance_to = "{$search['Relancenonrespectsanctionep93.daterelance_to.year']}-{$search['Relancenonrespectsanctionep93.daterelance_to.month']}-{$search['Relancenonrespectsanctionep93.daterelance_to.day']}";
+
+					$conditions[] = "Relancenonrespectsanctionep93.daterelance BETWEEN '{$daterelance_from}' AND '{$daterelance_to}'";
+				}
+				else if( !in_array( $field, array( 'sort', 'page', 'direction', 'Relance.daterelance' ) ) && !preg_match( '/^Relancenonrespectsanctionep93\.daterelance.*$/', $field ) ) {
+					$conditions[$field] = $condition;
+				}
+			}
+
+			$joins = array(
+				array(
+					'table'      => 'nonrespectssanctionseps93',
+					'alias'      => 'Nonrespectsanctionep93',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Relancenonrespectsanctionep93.nonrespectsanctionep93_id = Nonrespectsanctionep93.id' )
+				),
+				array(
+					'table'      => 'orientsstructs',
+					'alias'      => 'Orientstruct',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( 'Orientstruct.id = Nonrespectsanctionep93.orientstruct_id' )
+				),
+				array(
+					'table'      => 'contratsinsertion',
+					'alias'      => 'Contratinsertion',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( 'Contratinsertion.id = Nonrespectsanctionep93.contratinsertion_id' )
+				),
+				array(
+					'table'      => 'personnes',
+					'alias'      => 'Personne',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'OR' => array(
+							'Personne.id = Orientstruct.personne_id',
+							'Personne.id = Contratinsertion.personne_id'
+						)
+					)
+				),
+				array(
+					'table'      => 'foyers',
+					'alias'      => 'Foyer',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+				),
+				array(
+					'table'      => 'dossiers',
+					'alias'      => 'Dossier',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+				),
+				array(
+					'table'      => 'adressesfoyers',
+					'alias'      => 'Adressefoyer',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'Foyer.id = Adressefoyer.foyer_id',
+						'Adressefoyer.rgadr' => '01'
+					)
+				),
+				array(
+					'table'      => 'adresses',
+					'alias'      => 'Adresse',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+				),
+				array(
+					'table'      => 'dossierseps',
+					'alias'      => 'Dossierep',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( 'Dossierep.id = Nonrespectsanctionep93.dossierep_id' )
+				),
+				array(
+					'table'      => 'suivisinstruction',
+					'alias'      => 'Suiviinstruction',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'Suiviinstruction.dossier_id = Foyer.dossier_id',
+						'Foyer.id = Personne.foyer_id'
+					)
+				),
+				array(
+					'table'      => 'servicesinstructeurs',
+					'alias'      => 'Serviceinstructeur',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'Suiviinstruction.numdepins = Serviceinstructeur.numdepins',
+						'Suiviinstruction.typeserins = Serviceinstructeur.typeserins',
+						'Suiviinstruction.numcomins = Serviceinstructeur.numcomins',
+						'Suiviinstruction.numagrins = Serviceinstructeur.numagrins'
+					)
+				),
+				array(
+					'table'      => 'pdfs',
+					'alias'      => 'Pdf',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'Pdf.modele' => $this->alias,
+						'Pdf.fk_value = Relancenonrespectsanctionep93.id'
+					)
+				),
+			);
+
+			$joins[] = array(
+				'table'      => 'dossierscaf',
+				'alias'      => 'Dossiercaf',
+				'type'       => 'INNER',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Dossiercaf.personne_id = Personne.id',
+					'Dossiercaf.toprespdos = true',
+					'OR' => array(
+						'Dossiercaf.dfratdos IS NULL',
+						'Dossiercaf.dfratdos >= NOW()'
+					),
+					'Dossiercaf.ddratdos <= NOW()'
+				)
+			);
+
+			$queryData = array(
+				'fields' => array(
+					'Dossier.matricule',
+					'Adresse.locaadr',
+					'Personne.id',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.nir',
+					'Nonrespectsanctionep93.origine',
+					'Orientstruct.date_impression',
+					'Orientstruct.nbjours',
+					'Contratinsertion.id',
+					'Contratinsertion.df_ci',
+					'Contratinsertion.nbjours',
+					'Contratinsertion.datevalidation_ci',
+					'Dossierep.etapedossierep',
+					'Relancenonrespectsanctionep93.id',
+					'Relancenonrespectsanctionep93.daterelance',
+					'Relancenonrespectsanctionep93.numrelance',
+					'Pdf.id',
+				),
+				'joins' => $joins,
+				'conditions' => $conditions,
+				'contain' => false
+			);
+
+			return $queryData;
 		}
 
 		/**
