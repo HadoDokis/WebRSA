@@ -300,8 +300,7 @@
 						array(
 							'Bilanparcours66.duree_engag',
 							'Bilanparcours66.ddreconductoncontrat',
-							'Bilanparcours66.dfreconductoncontrat',
-							'Bilanparcours66.accompagnement' => array( 'type' => 'radio' )
+							'Bilanparcours66.dfreconductoncontrat'
 						),
 						array(
 							'options' => $options,
@@ -310,17 +309,17 @@
 					);
 		        ?>
 		    </fieldset>
-		    <!--<?php
+		    <?php
 		        echo $default2->subform(
 		            array(
-		                'Bilanparcours66.accordprojet' => array( 'type' => 'radio', 'required' => true )
+		                'Bilanparcours66.accompagnement' => array( 'type' => 'radio' )
 		            ),
 		            array(
 		                'options' => $options,
 		                'domain' => $domain
 		            )
 		        );
-		    ?>-->
+		    ?>
 		</fieldset>
 	</fieldset>
 	 <fieldset>
@@ -340,6 +339,20 @@
 		            )
 		        );
 		    ?>
+		    
+		    <?php
+                //FIXME: Récupération de la dernière orientation en cours pour le maintien d'orientation
+                echo $xhtml->tag(
+                    'p',
+                    'Orientation SOCIALE actuelle : '.Set::extract( $personne, 'Orientstruct.0.Typeorient.lib_type_orient' ),
+                    array(
+                        'id' => 'orientationactuelle'
+                    )
+                );
+		    ?>
+		    
+		    
+		    
 		    <fieldset id="Maintien" class="invisible">
 		        <?php
 		             echo $default2->subform(
@@ -364,18 +377,24 @@
 		                );
 		            ?>
 		        </fieldset>-->
-		        <fieldset id="TypeAccompagnement">
+		        <fieldset id="TypeAccompagnementSocial" class="invisible">
 		            <?php
-		                echo $default2->subform(
-		                    array(
-								'Bilanparcours66.accompagnement' => array( 'type' => 'radio' )
-		                    ),
-		                    array(
-		                        'options' => $options
-		                    )
-		                );
+                        echo $xhtml->tag( 'h2', 'Pour un accompagnement Social', array( 'class' => 'bilanparcours' ) );
+// 		                echo $default2->subform(
+// 		                    array(
+// 								'Bilanparcours66.accompagnement' => array( 'type' => 'radio' )
+// 		                    ),
+// 		                    array(
+// 		                        'options' => $options
+// 		                    )
+// 		                );
 		            ?>
 		        </fieldset>
+                <fieldset id="TypeAccompagnementPrepro" class="invisible">
+                    <?php
+                        echo $xhtml->tag( 'h2', 'Pour un accompagnement Prépro', array( 'class' => 'bilanparcours' ) );
+                    ?>
+                </fieldset>
 		    </fieldset>
 		    <fieldset id="Reorientation" class="noborder">
 		        <?php
@@ -697,6 +716,16 @@
 		    true
 		);
 
+        // Partie en cas de maintien ou  de réorientation
+        observeDisableFieldsetOnRadioValue(
+            'Bilan',
+            'data[Bilanparcours66][choixparcours]',
+            $( 'orientationactuelle' ),
+            'maintien',
+            false,
+            true
+        );
+        
 		observeDisableFieldsetOnRadioValue(
 		    'Bilan',
 		    'data[Bilanparcours66][choixparcours]',
@@ -715,6 +744,28 @@
 		    true
 		);
 
+
+
+
+        // Partie en cas de maintien en social ou prépro
+        observeDisableFieldsetOnRadioValue(
+            'Bilan',
+            'data[Bilanparcours66][maintienorientparcours]',
+            $( 'TypeAccompagnementSocial' ),
+            'social',
+            false,
+            true
+        );
+        // Partie en cas de maintien en social ou prépro
+        observeDisableFieldsetOnRadioValue(
+            'Bilan',
+            'data[Bilanparcours66][maintienorientparcours]',
+            $( 'TypeAccompagnementPrepro' ),
+            'prepro',
+            false,
+            true
+        );
+
 		/*observeDisableFieldsetOnRadioValue(
 		    'Bilan',
 		    'data[Bilanparcours66][changementrefparcours]',
@@ -724,14 +775,14 @@
 		    true
 		);*/
 
-		observeDisableFieldsetOnRadioValue(
-		    'Bilan',
-		    'data[Bilanparcours66][changementrefparcours]',
-		    $( 'TypeAccompagnement' ),
-		    'N',
-		    false,
-		    true
-		);
+// 		observeDisableFieldsetOnRadioValue(
+// 		    'Bilan',
+// 		    'data[Bilanparcours66][changementrefparcours]',
+// 		    $( 'TypeAccompagnement' ),
+// 		    'N',
+// 		    false,
+// 		    true
+// 		);
 		
 		<?php if ($this->action=='edit') { ?>
 			['traitement', 'parcours', 'audition' ].each( function( proposition ) {

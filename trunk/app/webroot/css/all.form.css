@@ -173,3 +173,9 @@ th.entete, td.entete {
 #EpAddEditForm fieldset div.checkbox label {
 	width: auto;
 }
+
+/*********************************************************************/
+h2.bilanparcours {
+    font-size: 13px;
+    padding: 0;
+}
