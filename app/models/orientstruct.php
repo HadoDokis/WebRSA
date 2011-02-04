@@ -4,7 +4,7 @@
 		public $name = 'Orientstruct';
 
 		public $actsAs = array(
-	//             'Autovalidate',
+//             'Autovalidate',
 			'Enumerable' => array(
 				'fields' => array(
 					'accordbenef' => array(
@@ -150,6 +150,13 @@
 				'insertQuery' => '',
 				'with' => 'OrientstructServiceinstructeur'
 			)
+		);
+
+		public $virtualFields = array(
+			'nbjours' => array(
+				'type'      => 'integer',
+				'postgres'  => 'DATE_PART( \'day\', NOW() - "%s"."date_impression" )'
+			),
 		);
 
 		/**

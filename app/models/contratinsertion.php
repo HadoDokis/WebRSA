@@ -254,6 +254,13 @@
 			)
 		);
 
+		public $virtualFields = array(
+			'nbjours' => array(
+				'type'      => 'integer',
+				'postgres'  => 'DATE_PART( \'day\', NOW() - "%s"."df_ci" )'
+			),
+		);
+
 		/**
 		*
 		*/

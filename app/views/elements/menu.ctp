@@ -89,12 +89,15 @@
 								</ul>
 							</li>
 						<?php endif; ?>
-						<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) ): ?>
+						<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) || $permissions->check( 'relancesnonrespectssanctionseps93', 'impressions' ) ): ?>
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 								<?php echo $xhtml->link( 'Relances (EP)','#' );?>
 								<ul>
 									<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) ): ?>
 										<li><?php echo $xhtml->link( __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ), array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'cohorte' ), array( 'title' => __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ) ) );?></li>
+									<?php endif;?>
+									<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'impressions' ) ): ?>
+										<li><?php echo $xhtml->link( __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ), array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impressions' ), array( 'title' => __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ) ) );?></li>
 									<?php endif;?>
 								</ul>
 							</li>
