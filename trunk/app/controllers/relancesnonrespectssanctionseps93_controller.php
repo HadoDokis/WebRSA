@@ -496,6 +496,7 @@
 
 			if( $content['Pdf']['document'] !== false ) {
 				$this->Relancenonrespectsanctionep93->commit();
+				$this->layout = '';
 				$this->Gedooo->sendPdfContentToClient( $content['Pdf']['document'], sprintf( "relance-%s.pdf", date( "Ymd-H\hi" ) ) );
 			}
 			else {
@@ -534,6 +535,7 @@
 
 			if( !empty( $pdfs ) ) {
 				$this->Relancenonrespectsanctionep93->commit();
+				$this->layout = '';
 				$this->Gedooo->sendPdfContentToClient( $pdfs, sprintf( "cohorterelances-%s.pdf", date( "Ymd-H\hi" ) ) );
 			}
 			else {
