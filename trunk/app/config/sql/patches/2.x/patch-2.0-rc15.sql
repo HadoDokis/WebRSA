@@ -869,6 +869,15 @@ ALTER TABLE decisionspropospdos ADD COLUMN dateavistechnique DATE;
 SELECT alter_table_drop_column_if_exists( 'public', 'decisionspropospdos', 'commentaireavistechnique' );
 ALTER TABLE decisionspropospdos ADD COLUMN commentaireavistechnique TEXT DEFAULT NULL;
 
+DROP TYPE IF EXISTS type_duree CASCADE;
+CREATE TYPE type_duree AS ENUM ( '1', '2', '3', '4', '5', '6', '7', '8' );
+
+SELECT alter_table_drop_column_if_exists( 'public', 'traitementspdos', 'dureedepart' );
+ALTER TABLE traitementspdos ADD COLUMN dureedepart type_duree DEFAULT NULL;
+
+SELECT alter_table_drop_column_if_exists( 'public', 'traitementspdos', 'dureeecheance' );
+ALTER TABLE traitementspdos ADD COLUMN dureeecheance type_duree DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
