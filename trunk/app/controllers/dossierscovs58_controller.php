@@ -56,8 +56,6 @@
 							$notInCov[] = $dossier[$class]['id'];
 						}
 					}
-					debug($inCov);
-					debug($notInCov);
 					
 					$success = true;
 					if( !empty( $notInCov ) ) {
@@ -98,65 +96,60 @@
 			foreach($themes as $theme) {
 				$class = Inflector::classify($theme);
 				$this->paginate = array(
-					$theme => array(
-						'fields' => array(
-							'Dossiercov58.id',
-							'Personne.qual',
-							'Personne.nom',
-							'Personne.prenom',
-							'Cov58.datecommission',
-							'Dossiercov58.cov58_id',
-							$class.'.datedemande'
+					'fields' => array(
+						'Dossiercov58.id',
+						'Dossiercov58.cov58_id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Cov58.datecommission',
+						$class.'.datedemande'
+					),
+					'contain' => array(
+						'Cov58'
+					),
+					'joins' => array(
+						array(
+							'table'      => $theme,
+							'alias'      => $class,
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Dossiercov58.id = '.$class.'.dossiercov58_id' )
 						),
-						'contain' => array(
-							'Cov58'
+						array(
+							'table'      => 'personnes',
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Dossiercov58.personne_id = Personne.id' )
 						),
-						'joins' => array(
-							array(
-								'table'      => $theme,
-								'alias'      => $class,
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Dossiercov58.id = '.$class.'.dossiercov58id' )
-							),
-							array(
-								'table'      => 'personnes',
-								'alias'      => 'Personne',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Dossiercov58.personne_id = Personne.id' )
-							),
-							array(
-								'table'      => 'foyers',
-								'alias'      => 'Foyer',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-							),
-							array(
-								'table'      => 'adressesfoyers',
-								'alias'      => 'Adressefoyer',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-							),
-							array(
-								'table'      => 'adresses',
-								'alias'      => 'Adresse',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-							),
+						array(
+							'table'      => 'foyers',
+							'alias'      => 'Foyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
 						),
-						'conditions' => array(
-							'NOT' => array(
-								$theme.'.etapecov = \'traitement\'',
-								$theme.'.etapecov = \'finalise\''
-							)
+						array(
+							'table'      => 'adressesfoyers',
+							'alias'      => 'Adressefoyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
 						),
-						'limit' => 100,
-						'order' => array( $theme.'.datedemande ASC' )
-					)
+						array(
+							'table'      => 'adresses',
+							'alias'      => 'Adresse',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+						),
+					),
+					'conditions' => array(
+						'Dossiercov58.etapecov NOT' => array( 'traitement', 'finalise' )
+					),
+					'limit' => 100,
+					'order' => array( $class.'.datedemande ASC' )
 				);
 				$dossierscovs[$class] = $this->paginate( $this->Dossiercov58 );
 			}

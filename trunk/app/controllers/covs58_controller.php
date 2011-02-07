@@ -144,161 +144,6 @@
 			$this->set(compact('dossiers'));
 			$this->set(compact('countDossiers'));
 		}
-
-		/**
-		*
-		*/
-
-		public function choose( $cov58_id ) {
-			$cov58 = $this->Cov58->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Cov58.id' => $cov58_id,
-						'Cov58.etatcov' => 'cree'
-					),
-					'contain' => false
-				)
-			);
-			
-			$themes = array( 'Propoorientationcov58' );
-
-			if( !empty( $this->data ) ) {
-				// Début TODO: à déplacer dans le modèle ?
-				$this->Cov58->begin();
-				
-				foreach($themes as $theme) {
-					$data = Set::extract( $this->data, '/'.$theme );
-
-					$inCov = array();
-					$notInCov = array();
-					foreach( $data as $dossier ) {
-						if( !empty( $dossier[$theme]['chosen'] ) ) {
-							$inCov[] = $dossier[$theme]['id'];
-						}
-						else {
-							$notInCov[] = $dossier[$theme]['id'];
-						}
-					}
-					
-					$success = true;
-					if( !empty( $notInCov ) ) {
-						$success = $this->Cov58->{$theme}->updateAll(
-							array(
-								$theme.'.cov58_id' => null,
-								$theme.'.etapecov' => '\'cree\''
-							),
-							array( '"'.$theme.'"."id" IN ( \''.implode( '\', \'', $notInCov ).'\' )' )
-						) && $success;
-					}
-
-					if( !empty( $inCov ) ) {
-						$success = $this->Cov58->{$theme}->updateAll(
-							array(
-								$theme.'.cov58_id' => $cov58_id,
-								$theme.'.etapecov' => '\'traitement\''
-							),
-							array( '"'.$theme.'"."id" IN ( \''.implode( '\', \'', $inCov ).'\' )' )
-						) && $success;
-					}
-				}
-				// Fin TODO: à déplacer dans le modèle ?
-
-				$this->_setFlashResult( 'Save', $success );
-
-				if( $success ) {
-					$this->Cov58->commit();
-					$this->redirect( array( 'controller'=>'covs58', 'action'=>'view', $cov58_id ) );
-				}
-				else {
-					$this->Cov58->rollback();
-				}
-			}
-			
-			$dossierscovs = array();
-			
-			foreach($themes as $theme) {
-				$this->paginate = array(
-					$theme => array(
-						'fields' => array(
-							$theme.'.id',
-							'Personne.qual',
-							'Personne.nom',
-							'Personne.prenom',
-							'Cov58.datecommission',
-							$theme.'.cov58_id',
-							$theme.'.datedemande'
-						),
-						'contain' => array(
-							'Cov58'
-						),
-						'joins' => array(
-							array(
-								'table'      => 'personnes',
-								'alias'      => 'Personne',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( $theme.'.personne_id = Personne.id' )
-							),
-							array(
-								'table'      => 'foyers',
-								'alias'      => 'Foyer',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-							),
-							array(
-								'table'      => 'adressesfoyers',
-								'alias'      => 'Adressefoyer',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-							),
-							array(
-								'table'      => 'adresses',
-								'alias'      => 'Adresse',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-							),
-						),
-						'conditions' => array(
-							'NOT' => array(
-								$theme.'.etapecov = \'traitement\'',
-								$theme.'.etapecov = \'finalise\''
-							)
-						),
-						'limit' => 100,
-						'order' => array( $theme.'.datedemande ASC' )
-					)
-				);
-				$dossierscovs[$theme] = $this->paginate( $this->Cov58->{$theme} );
-			}
-
-			// INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
-			if( empty( $this->data ) ) {
-				foreach( $dossierscovs as $theme => $dossiercov ) {
-					foreach( $dossiercov as $key => $dossier ) {
-						$dossierscovs[$theme][$key]['chosen'] =  ( ( $dossier[$theme]['cov58_id'] == $cov58_id ) );
-					}
-				}
-			}
-
-			$options = $this->Cov58->enums();
-			foreach($themes as $theme) {
-				$options = array_merge($options, $this->Cov58->{$theme}->enums());
-			}
-			/*$options['Dossierep']['seanceep_id'] = $this->Dossierep->Seanceep->find(
-				'list',
-				array(
-					'conditions' => array(
-						'Seanceep.finalisee' => null
-					)
-				)
-			);*/
-			$this->set( 'cov58_id', $cov58_id );
-			$this->set( compact( 'options', 'dossierscovs', 'cov58', 'themes' ) );
-		}
 		
 		/**
 		*
@@ -323,9 +168,21 @@
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
-					$this->Cov58->rollback();
-// 					$this->Cov58->commit();
-// 					$this->redirect( array( 'action' => 'view', $cov58_id ) );
+					$nbDossierTraitement = $this->Cov58->Dossiercov58->find(
+						'count',
+						array(
+							'conditions' => array(
+								'Dossiercov58.cov58_id' => $cov58_id,
+								'Dossiercov58.etapecov' => 'traitement'
+							)
+						)
+					);
+					if ($nbDossierTraitement == 0) {
+						$cov58['Cov58']['etatcov'] = 'finalise';
+						$this->Cov58->save($cov58);
+					}
+					$this->Cov58->commit();
+					$this->redirect( array( 'action' => 'view', $cov58_id ) );
 				}
 				else {
 					$this->Cov58->rollback();

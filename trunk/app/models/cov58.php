@@ -131,16 +131,24 @@
 			foreach($this->Dossiercov58->Themecov58->find('list') as $theme) {
 				$class = Inflector::classify($theme);
 				foreach($datas[$class] as $data) {
-					$dossier = $this->Dossiercov58->{$class}->find(
-						'first',
-						array(
-							'conditions' => array(
-								$class.'.id' => $data['id']
-							),
-							'contain' => false
-						)
-					);
-					debug($dossier);
+					if ( $data['decisioncov'] != 'ajourne' ) {
+						$success = $this->Dossiercov58->{$class}->saveDecision($data, $cov58) && $success;
+					}
+					else {
+						$dossiercov58 = $this->Dossiercov58->{$class}->find(
+							'first',
+							array(
+								'conditions' => array(
+									$class.'.id' => $data['id']
+								),
+								'contain' => array(
+									'Dossiercov58'
+								)
+							)
+						);
+						$dossiercov58['Dossiercov58']['etapecov'] = 'ajourne';
+						$success = $this->Dossiercov58->save($dossiercov58['Dossiercov58']) && $success;
+					}
 				}
 			}
 			return $success;
