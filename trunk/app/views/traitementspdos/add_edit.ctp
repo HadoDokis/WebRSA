@@ -809,6 +809,7 @@
 		echo "<tbody>";
         
         foreach( $traitementspdosouverts as $traitementpdoouvert ) {
+
         	echo $xhtml->tag(
         		'tr',
         		$xhtml->tag(
@@ -817,11 +818,11 @@
         		).
         		$xhtml->tag(
         			'td',
-        			Set::classicExtract($traitementpdoouvert, 'Traitementpdo.datereception')
+        			$locale->date( 'Date::short', Set::classicExtract($traitementpdoouvert, 'Traitementpdo.datereception') )
         		).
         		$xhtml->tag(
         			'td',
-        			Set::classicExtract($traitementpdoouvert, 'Traitementpdo.datedepart')
+        			$locale->date( 'Date::short', Set::classicExtract($traitementpdoouvert, 'Traitementpdo.datedepart') )
         		).
         		$xhtml->tag(
         			'td',
