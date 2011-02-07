@@ -237,4 +237,58 @@ msgstr "Subvention 1"
 msgid "ENUM::AIDESUBVREINT::subv2"
 msgstr "Subvention 2"
 
+###############################################################################
 
+msgid "Traitementpdo.dureedepart"
+msgstr "Ecart"
+
+msgid "Traitementpdo.dureeecheance"
+msgstr "Ecart"
+
+msgid "ENUM::DUREEDEPART::1"
+msgstr "1 mois"
+
+msgid "ENUM::DUREEDEPART::2"
+msgstr "1,5 mois"
+
+msgid "ENUM::DUREEDEPART::3"
+msgstr "2 mois"
+
+msgid "ENUM::DUREEDEPART::4"
+msgstr "2,5 mois"
+
+msgid "ENUM::DUREEDEPART::5"
+msgstr "3 mois"
+
+msgid "ENUM::DUREEDEPART::6"
+msgstr "4 mois"
+
+msgid "ENUM::DUREEDEPART::7"
+msgstr "6 mois"
+
+msgid "ENUM::DUREEDEPART::8"
+msgstr "12 mois"
+
+msgid "ENUM::DUREEECHEANCE::1"
+msgstr "1 mois"
+
+msgid "ENUM::DUREEECHEANCE::2"
+msgstr "1,5 mois"
+
+msgid "ENUM::DUREEECHEANCE::3"
+msgstr "2 mois"
+
+msgid "ENUM::DUREEECHEANCE::4"
+msgstr "2,5 mois"
+
+msgid "ENUM::DUREEECHEANCE::5"
+msgstr "3 mois"
+
+msgid "ENUM::DUREEECHEANCE::6"
+msgstr "4 mois"
+
+msgid "ENUM::DUREEECHEANCE::7"
+msgstr "6 mois"
+
+msgid "ENUM::DUREEECHEANCE::8"
+msgstr "12 mois"

@@ -11,7 +11,9 @@
 					'haspiecejointe',
 					'hasficheanalyse',
 					'regime',
-					'aidesubvreint'
+					'aidesubvreint',
+					'dureedepart',
+					'dureeecheance'
 				)
 			),
 			'Autovalidate'

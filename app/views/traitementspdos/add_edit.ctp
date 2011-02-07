@@ -43,12 +43,15 @@
 				'class'=>'noborder invisible'
 			)
         );
-        
+    ?>
+
+    <?php
         echo $xhtml->tag(
         	'fieldset',
         	$default->subform(
 		        array(
-		            'Traitementpdo.datedepart' => array( 'required' => true, 'empty' => false, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+		            'Traitementpdo.datedepart' => array( 'required' => true,/* 'empty' => false,*/ 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 ),
+                    'Traitementpdo.dureedepart'
 		        ),
 		        array(
 		            'options' => $options
@@ -59,12 +62,46 @@
 				'class'=>'noborder invisible'
 			)
         );
-        
+    ?>
+
+<script type="text/javascript">
+
+    //FIXME : Traiter les cas des 1,5 mois et 2,5 mois !!!!
+
+    function checkDatesToExpiration() {
+        var correspondances = new Array();
+
+        <?php foreach( $options['Traitementpdo']['dureedepart'] as $index => $duree ):?>
+            correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;
+        <?php endforeach;?>
+
+            setDateInterval2( 'TraitementpdoDatedepart', 'TraitementpdoDateecheance', correspondances[$F( 'TraitementpdoDureedepart' )], false );
+    }
+    
+        document.observe( "dom:loaded", function() {
+            Event.observe( $( 'TraitementpdoDatedepartDay' ), 'change', function() {
+                checkDatesToExpiration();
+            } );
+            Event.observe( $( 'TraitementpdoDatedepartMonth' ), 'change', function() {
+                checkDatesToExpiration();
+            } );
+            Event.observe( $( 'TraitementpdoDatedepartYear' ), 'change', function() {
+                checkDatesToExpiration();
+            } );
+
+            Event.observe( $( 'TraitementpdoDureedepart' ), 'change', function() {
+                checkDatesToExpiration();
+            } );
+        });
+</script>
+
+    <?php
         echo $xhtml->tag(
         	'fieldset',
         	$default->subform(
 		        array(
-		            'Traitementpdo.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+		            'Traitementpdo.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 ),
+                    'Traitementpdo.dureeecheance'
 		        ),
 		        array(
 		            'options' => $options
@@ -74,7 +111,38 @@
 				'class'=>'noborder invisible'
 			)
         );
-        
+    ?>
+<script type="text/javascript">
+
+    //FIXME : Traiter les cas des 1,5 mois et 2,5 mois !!!!
+
+    function checkDatesToRevision() {
+        var correspondances = new Array();
+
+        <?php foreach( $options['Traitementpdo']['dureeecheance'] as $index2 => $duree2 ):?>
+            correspondances[<?php echo $index2;?>] = <?php echo str_replace( ' mois', '' ,$duree2 );?>;
+        <?php endforeach;?>
+
+            setDateInterval2( 'TraitementpdoDateecheance', 'TraitementpdoDaterevision', correspondances[$F( 'TraitementpdoDureeecheance' )], false );
+    }
+    
+        document.observe( "dom:loaded", function() {
+            Event.observe( $( 'TraitementpdoDateecheanceDay' ), 'change', function() {
+                checkDatesToRevision();
+            } );
+            Event.observe( $( 'TraitementpdoDateecheanceMonth' ), 'change', function() {
+                checkDatesToRevision();
+            } );
+            Event.observe( $( 'TraitementpdoDateecheanceYear' ), 'change', function() {
+                checkDatesToRevision();
+            } );
+
+            Event.observe( $( 'TraitementpdoDureeecheance' ), 'change', function() {
+                checkDatesToRevision();
+            } );
+        });
+</script>
+    <?php
         echo $xhtml->tag(
         	'fieldset',
         	$default->subform(
