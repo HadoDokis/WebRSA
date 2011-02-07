@@ -34,7 +34,7 @@
 								echo $xhtml->tag( 'td', $dossiercov['Personne']['qual'] );
 								echo $xhtml->tag( 'td', $dossiercov['Personne']['nom'] );
 								echo $xhtml->tag( 'td', $dossiercov['Personne']['prenom'] );
-								echo $xhtml->tag( 'td', $dossiercov[$class][0]['datedemande'] );
+								echo $xhtml->tag( 'td', $dossiercov[$class]['datedemande'] );
 							echo "</tr>";
 						}
 						echo "</tbody></table>";

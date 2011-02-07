@@ -36,3 +36,6 @@ msgstr "Etat de la commission"
 
 msgid "Covs58::decisioncov"
 msgstr "Décisions"
+
+msgid "Covs58::index"
+msgstr "Commision de la COV"

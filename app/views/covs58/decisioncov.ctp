@@ -8,7 +8,7 @@
 		foreach( array_keys( $dossiers ) as $theme ) {
 			echo '<div id="'.$theme.'"><h2 class="title">'.__d( 'dossiercov58', 'ENUM::THEMECOV::'.Inflector::tableize( $theme ), true ).'</h2>';
 			if( !empty( $dossiers[$theme]['liste'] ) ) {
-				require_once( '_form.ctp' );
+				require_once( $theme.'.ctp' );
 			}
 			else {
 				echo '<p class="notice">Aucun dossier à traiter pour cette thématique.</p>';

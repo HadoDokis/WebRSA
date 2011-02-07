@@ -1,7 +1,6 @@
 <?php  $this->pageTitle = 'Orientation de la personne';?>
 <?php  echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id) );?>
 
-
 <div class="with_treemenu">
 	<h1>Orientation</h1>
 
@@ -32,7 +31,7 @@
 				?>
 			</ul>
 		<?php endif;?>
-	<?php elseif( Configure::read( 'Cg.departement' ) == 58 ):?>
+	<?php elseif( Configure::read( 'Cg.departement' ) == 58 && $rgorient_max <=1 ):?>
 		<?php if( $permissions->check( 'proposorientationscovs58', 'add' ) ):?>
 			<ul class="actionMenu">
 				<?php

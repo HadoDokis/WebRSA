@@ -17,12 +17,12 @@
             <p class="notice">Cette personne ne possède pas encore de contrat d'engagement réciproque.</p>
         <?php endif;?>
 
-        <?php if( $permissions->check( 'contratsinsertion', 'add' ) ):?>
+        <?php if( $permissions->check( 'proposcontratsinsertioncovs58', 'add' ) ):?>
             <ul class="actionMenu">
                 <?php
                     echo '<li>'.$xhtml->addLink(
                         'Ajouter un CER',
-                        array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id )
+                        array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'add', $personne_id )
                     ).' </li>';
                 ?>
             </ul>
