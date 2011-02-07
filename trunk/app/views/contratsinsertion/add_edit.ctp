@@ -396,7 +396,7 @@
                                 $selected = Set::extract( $this->data, '/Autreavissuspension/Autreavissuspension' );
                             }
 
-                            echo $form->input( 'Autreavissuspension.Autreavissuspension', array( 'multiple' => 'checkbox', 'type' => 'select', 'separator' => '<br />', 'options' => $options['autreavissuspension'], 'selected' => $selected, 'legend' => false,   ) );
+                            echo $form->input( 'Autreavissuspension.Autreavissuspension', array( 'multiple' => 'checkbox', 'type' => 'select', 'separator' => '<br />', 'options' => $options['autreavissuspension'], 'selected' => $selected, 'label' => false,   ) );
                         ?>
                     </fieldset>
                 </td>
@@ -418,7 +418,7 @@
                                 $selected = Set::extract( $this->data, '/Autreavisradiation/Autreavisradiation' );
                             }
 
-                            echo $form->input( 'Autreavisradiation.Autreavisradiation', array( 'multiple' => 'checkbox', 'type' => 'select', 'separator' => '<br />', 'options' => $options['autreavisradiation'], 'selected' => $selected, 'legend' => false,   ) );
+                            echo $form->input( 'Autreavisradiation.Autreavisradiation', array( 'multiple' => 'checkbox', 'type' => 'select', 'separator' => '<br />', 'options' => $options['autreavisradiation'], 'selected' => $selected, 'label' => false,   ) );
                         ?>
                     </fieldset>
                 </td>
