@@ -10,7 +10,7 @@
 
         public $components = array( 'Default' );
 
-        public $helpers = array( 'Default2', 'Ajax' );
+        public $helpers = array( 'Default2', 'Ajax', 'Locale' );
         
 		public $commeDroit = array(
 			'view' => 'Traitementspdos:index',
