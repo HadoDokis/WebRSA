@@ -152,3 +152,24 @@ msgstr "Insertion Sociale"
 
 msgid "ENUM::INSERTION::EMP"
 msgstr "Insertion Professionnelle"
+
+msgid "ENUM::AUTREAVISRADIATION::END"
+msgstr "Eléments non déclarés"
+
+msgid "ENUM::AUTREAVISRADIATION::RDC"
+msgstr "Refus de contrôle"
+
+msgid "ENUM::AUTREAVISRADIATION::MOA"
+msgstr "Motifs administratifs"
+
+msgid "ENUM::AUTREAVISSUSPENSION::END"
+msgstr "Eléments non déclarés"
+
+msgid "ENUM::AUTREAVISSUSPENSION::RDC"
+msgstr "Refus de contrôle"
+
+msgid "ENUM::AUTREAVISSUSPENSION::MOA"
+msgstr "Motifs administratifs"
+
+msgid "ENUM::AUTREAVISSUSPENSION::STE"
+msgstr "Statut Etudiant"

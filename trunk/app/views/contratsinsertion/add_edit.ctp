@@ -116,6 +116,29 @@
             true
         );
 
+
+        //Autre cas de suspension / radiation
+        observeDisableFieldsetOnRadioValue(
+            'testform',
+             'data[Contratinsertion][avisraison_suspension_ci]',
+            $( 'Suspensionautre' ),
+            'A',
+            false,
+            true
+        );
+
+        //Autre cas de suspension / radiation
+        observeDisableFieldsetOnRadioValue(
+            'testform',
+             'data[Contratinsertion][avisraison_radiation_ci]',
+            $( 'Radiationautre' ),
+            'A',
+            false,
+            true
+        );
+
+
+
         observeDisableFieldsOnRadioValue(
             'testform',
             'data[Contratinsertion][raison_ci]',
@@ -148,6 +171,8 @@
             'S',
             true
         );
+
+
 
 
         <?php
@@ -354,10 +379,48 @@
             </tr>
             <tr>
                 <td class="noborder">
-                    <?php echo $form->input( 'Contratinsertion.avisraison_suspension_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false,   ) );?>
+                    <?php 
+                        echo $form->input( 'Contratinsertion.avisraison_suspension_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false,   ) );
+                    ?>
+                    <fieldset id="Suspensionautre" class="invisible">
+                        <?php
+
+                            $AutreavissuspensionId = Set::classicExtract( $this->data, 'Autreavissuspension.id' );
+                            $ContratinsertionId = Set::classicExtract( $this->data, 'Contratinsertion.id' );
+                            if( $this->action == 'edit' && !empty( $AutreavissuspensionId ) ) {
+                                echo $form->input( 'Autreavissuspension.id', array( 'type' => 'hidden' ) );
+                                echo $form->input( 'Autreavissuspension.contratinsertion_id', array( 'type' => 'hidden', 'value' => $ContratinsertionId ) );
+                            }
+                            $selected = Set::extract( $this->data, '/Autreavissuspension/autreavissuspension' );
+                            if( empty( $selected ) ){
+                                $selected = Set::extract( $this->data, '/Autreavissuspension/Autreavissuspension' );
+                            }
+
+                            echo $form->input( 'Autreavissuspension.Autreavissuspension', array( 'multiple' => 'checkbox', 'type' => 'select', 'separator' => '<br />', 'options' => $options['autreavissuspension'], 'selected' => $selected, 'legend' => false,   ) );
+                        ?>
+                    </fieldset>
                 </td>
                 <td class="noborder">
-                    <?php echo $form->input( 'Contratinsertion.avisraison_radiation_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false ) );?>
+                    <?php 
+                        echo $form->input( 'Contratinsertion.avisraison_radiation_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false ) );
+                    ?>
+                    <fieldset id="Radiationautre" class="invisible">
+                        <?php
+
+                            $AutreavisradiationId = Set::classicExtract( $this->data, 'Autreavisradiation.id' );
+                            $ContratinsertionId = Set::classicExtract( $this->data, 'Contratinsertion.id' );
+                            if( $this->action == 'edit' && !empty( $AutreavisradiationId ) ) {
+                                echo $form->input( 'Autreavisradiation.id', array( 'type' => 'hidden' ) );
+                                echo $form->input( 'Autreavisradiation.contratinsertion_id', array( 'type' => 'hidden', 'value' => $ContratinsertionId ) );
+                            }
+                            $selected = Set::extract( $this->data, '/Autreavisradiation/autreavisradiation' );
+                            if( empty( $selected ) ){
+                                $selected = Set::extract( $this->data, '/Autreavisradiation/Autreavisradiation' );
+                            }
+
+                            echo $form->input( 'Autreavisradiation.Autreavisradiation', array( 'multiple' => 'checkbox', 'type' => 'select', 'separator' => '<br />', 'options' => $options['autreavisradiation'], 'selected' => $selected, 'legend' => false,   ) );
+                        ?>
+                    </fieldset>
                 </td>
             </tr>
             <tr>
@@ -366,6 +429,7 @@
                 </td>
             </tr>
         </table>
+
 </fieldset>
 
 

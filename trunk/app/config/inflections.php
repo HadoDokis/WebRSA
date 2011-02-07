@@ -271,7 +271,9 @@
 		'themecov58' => 'themescovs58',
 		'dossiercov58' => 'dossierscovs58',
 		'propoorientationcov58' => 'proposorientationscovs58',
-		'cov58' => 'covs58'
+		'cov58' => 'covs58',
+		'autreavissuspension' => 'autresavissuspension',
+		'autreavisradiation' => 'autresavisradiation'
 	);
 /**
  * This is a key => value array of regex used to match words.
