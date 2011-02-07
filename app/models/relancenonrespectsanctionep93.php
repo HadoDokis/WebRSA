@@ -945,7 +945,7 @@
 				'foreignKey' => false,
 				'conditions' => array(
 					'Dossiercaf.personne_id = Personne.id',
-					'Dossiercaf.toprespdos = true',
+					//'Dossiercaf.toprespdos = true',
 					'OR' => array(
 						'Dossiercaf.dfratdos IS NULL',
 						'Dossiercaf.dfratdos >= NOW()'
@@ -1312,6 +1312,7 @@
 				'Relancenonrespectsanctionep93.daterelance',
 				'Relancenonrespectsanctionep93.numrelance',
 			);
+
 			$data = $this->find( 'first', $queryData );
 
 			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
@@ -1321,11 +1322,11 @@
 		}
 
 		/**
-		* Enregistrement du Pdf
+		*
 		*/
 
-		public function afterSave( $created ) {
-			$gedooo_data = $this->getDataForPdf( $this->id );
+		public function generatePdf( $id ) {
+			$gedooo_data = $this->getDataForPdf( $id );
 
 			$modeledoc = "Relancenonrespectsanctionep93/notification_{$gedooo_data['Nonrespectsanctionep93']['origine']}_relance{$gedooo_data['Relancenonrespectsanctionep93']['numrelance']}.odt";
 
@@ -1339,7 +1340,7 @@
 						'Pdf' => array(
 							'modele' => 'Relancenonrespectsanctionep93',
 							'modeledoc' => $modeledoc,
-							'fk_value' => $this->id,
+							'fk_value' => $id,
 							'document' => $pdf
 						)
 					)
@@ -1351,6 +1352,14 @@
 			}
 
 			return $success;
+		}
+
+		/**
+		* Enregistrement du Pdf
+		*/
+
+		public function afterSave( $created ) {
+			return $this->generatePdf( $this->id );
 		}
 	}
 ?>
