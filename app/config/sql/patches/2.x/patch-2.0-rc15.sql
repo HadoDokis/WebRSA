@@ -878,6 +878,49 @@ ALTER TABLE traitementspdos ADD COLUMN dureedepart type_duree DEFAULT NULL;
 SELECT alter_table_drop_column_if_exists( 'public', 'traitementspdos', 'dureeecheance' );
 ALTER TABLE traitementspdos ADD COLUMN dureeecheance type_duree DEFAULT NULL;
 
+
+DROP TYPE IF EXISTS type_autreavisradiation CASCADE;
+CREATE TYPE type_autreavisradiation AS ENUM ( 'END', 'RDC', 'MOA' );
+SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'autreavisradiation' );
+ALTER TABLE contratsinsertion ADD COLUMN autreavisradiation type_autreavisradiation DEFAULT NULL;
+
+DROP TYPE IF EXISTS type_autreavissuspension CASCADE;
+CREATE TYPE type_autreavissuspension AS ENUM ( 'END', 'RDC', 'STE', 'MOA' );
+SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'autreavissuspension' );
+ALTER TABLE contratsinsertion ADD COLUMN autreavissuspension type_autreavissuspension DEFAULT NULL;
+
+
+DROP TABLE IF EXISTS autresavissuspension;
+SELECT alter_table_drop_column_if_exists( 'public', 'autresavissuspension', 'contratinsertion_id' );
+SELECT alter_table_drop_column_if_exists( 'public', 'autresavissuspension', 'autreavissuspension' );
+CREATE TABLE autresavissuspension (
+    id                      SERIAL NOT NULL PRIMARY KEY,
+    contratinsertion_id     INTEGER REFERENCES contratsinsertion (id),
+    autreavissuspension     type_autreavissuspension DEFAULT NULL
+);
+
+
+DROP INDEX IF EXISTS autresavissuspension_contratinsertion_id_idx;
+CREATE INDEX autresavissuspension_contratinsertion_id_idx ON autresavissuspension (contratinsertion_id);
+
+DROP INDEX IF EXISTS autresavissuspension_autreavissuspension_idx;
+CREATE INDEX autresavissuspension_autreavissuspension_idx ON autresavissuspension (autreavissuspension);
+
+
+DROP TABLE IF EXISTS autresavisradiation;
+SELECT alter_table_drop_column_if_exists( 'public', 'autresavisradiation', 'contratinsertion_id' );
+SELECT alter_table_drop_column_if_exists( 'public', 'autresavisradiation', 'autreavisradiation' );
+CREATE TABLE autresavisradiation (
+    id                      SERIAL NOT NULL PRIMARY KEY,
+    contratinsertion_id     INTEGER REFERENCES contratsinsertion (id),
+    autreavisradiation     type_autreavisradiation DEFAULT NULL
+);
+
+DROP INDEX IF EXISTS autresavisradiation_contratinsertion_id_idx;
+CREATE INDEX autresavisradiation_contratinsertion_id_idx ON autresavisradiation (contratinsertion_id);
+
+DROP INDEX IF EXISTS autresavisradiation_autreavisradiation_idx;
+CREATE INDEX autresavisradiation_autreavisradiation_idx ON autresavisradiation (autreavisradiation);
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

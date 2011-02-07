@@ -8,7 +8,9 @@
 				'fields' => array(
 					'type_demande' => array( 'type' => 'type_demande', 'domain' => 'contratinsertion' ),
 					'num_contrat' => array( 'type' => 'num_contrat', 'domain' => 'contratinsertion' ),
-					'typeinsertion' => array( 'type' => 'insertion', 'domain' => 'contratinsertion' )
+					'typeinsertion' => array( 'type' => 'insertion', 'domain' => 'contratinsertion' ),
+// 					'autreavissuspension',
+// 					'autreavisradiation'
                 )
 			),
 			'Formattable' => array(
@@ -232,6 +234,32 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Autreavissuspension' => array(
+                'className' => 'Autreavissuspension',
+                'foreignKey' => 'contratinsertion_id',
+                'dependent' => true,
+                'conditions' => '',
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            ),
+			'Autreavisradiation' => array(
+                'className' => 'Autreavisradiation',
+                'foreignKey' => 'contratinsertion_id',
+                'dependent' => true,
+                'conditions' => '',
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            ),
 		);
 
 

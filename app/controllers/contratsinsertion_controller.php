@@ -31,7 +31,7 @@
 		*/
 		protected function _setOptions() {
 			$options = $this->Contratinsertion->allEnumLists();
-			$this->set( 'options', $options );
+
 
 			if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
 				$this->set( 'decision_ci', $this->Option->decision_ci() );
@@ -74,7 +74,12 @@
 				$this->set( 'rolepers', $this->Option->rolepers() );
 				$this->set( 'zoneprivilegie', ClassRegistry::init( 'Zonegeographique' )->find( 'list' ) );
 				$this->set( 'actions', $this->Action->grouplist( 'prest' ) );
+				$optionsautreavissuspension = $this->Contratinsertion->Autreavissuspension->allEnumLists();
+				$optionsautreavisradiation = $this->Contratinsertion->Autreavisradiation->allEnumLists();
+				$options = array_merge( $options, $optionsautreavissuspension );
+				$options = array_merge( $options, $optionsautreavisradiation );
 			}
+            $this->set( 'options', $options );
 		}
 
 		/**
@@ -397,9 +402,23 @@
 			}
 			else if( $this->action == 'edit' ) {
 				$contratinsertion_id = $id;
-				$contratinsertion = $this->Contratinsertion->findById( $contratinsertion_id, null, null, -1 );
+				$contratinsertion = $this->Contratinsertion->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Contratinsertion.id' => $contratinsertion_id
+                        ),
+                        'contain' => array( 
+                            'Autreavissuspension',
+                            'Autreavisradiation'
+                        )
+                    )
+                );
 				$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
-				$personne_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.personne_id' );
+// debug($contratinsertion);
+
+
+                $personne_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.personne_id' );
 				$valueFormeci = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
 
 				$nbContratsPrecedents = $this->Contratinsertion->find( 'count', array( 'recursive' => -1, 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
@@ -533,30 +552,7 @@
 						$this->data['Contratinsertion']['datevalidation_ci'] = $this->data['Contratinsertion']['date_saisi_ci'];
 					}
 				}
-				/// Validation
-//                 $this->Contratinsertion->set( $this->data );
-//                 $valid = $this->Contratinsertion->validates();
-//
-//
-//                 ///FIXME
-//                 if( isset( $this->data['Actioninsertion'] ) ){
-//                     $valid = $this->Contratinsertion->Actioninsertion->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
-//                 }
 
-/*
-				$dspData = Set::filter( $this->data['Dsp'] );
-				if( !empty( $dspData ) ){
-					$this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
-				}*/
-
-
-				///FIXME
-//                     $valid = $this->Contratinsertion->Structurereferente->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
-				//
-
-//                 $valid = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
-//
-//                 $valid = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->saveAll( $this->data, array( 'validate' => 'only' ) ) && $valid;
 				$success = $this->Contratinsertion->save( $this->data );
 
 				if( Configure::read( 'nom_form_ci_cg' ) != 'cg66' ) {
@@ -571,7 +567,35 @@
 						$success = $this->Contratinsertion->Personne->Dsp->save( array( 'Dsp' => $this->data['Dsp'] ) ) && $success;
 					}
 				}
-// debug($success);
+				
+				$models = array( 'Autreavissuspension', 'Autreavisradiation' );
+				foreach( $models as $model ) {
+                    if( $this->action == 'add' ) {
+                        $this->{$this->modelClass}->{$model}->set( 'contratinsertion_id', $this->{$this->modelClass}->id );
+                    }
+                    else if ( $this->action == 'edit' ){
+                        $this->Contratinsertion->{$model}->deleteAll( array( "{$model}.contratinsertion_id" => $this->Contratinsertion->id ) );
+                    }
+
+
+                    if( isset( $this->data[$model] ) ){
+                        $is{$model} = Set::filter( $this->data[$model] );
+                        if( !empty( $is{$model} ) ){
+                            $Autresavis = Set::extract( $is{$model}, "/{$model}" );
+                            $data = array( $model => array() );
+
+                            foreach( $Autresavis as $i => $Autreavis ){
+                                $data[$model][] = array(
+                                    'contratinsertion_id' => $this->Contratinsertion->id,
+                                    strtolower($model) => $Autreavis
+                                );
+                            }
+                            $success = $this->Contratinsertion->{$model}->saveAll( $data[$model], array( 'atomic' => false ) ) && $success;
+                        }
+                    }
+                }
+
+
 				if( $success ) {
 					$saved = true;
 
@@ -589,39 +613,11 @@
 							'contain'=>false
 						)
 					);
-			if( !empty( $lastrdvorient ) ){
-						$lastrdvorient['Rendezvous']['statutrdv_id'] = 1;
+                    if( !empty( $lastrdvorient ) ){
+                        $lastrdvorient['Rendezvous']['statutrdv_id'] = 1;
+                        $saved = $this->Contratinsertion->Referent->Rendezvous->save($lastrdvorient) && $saved;
+                    }
 
-						$saved = $this->Contratinsertion->Referent->Rendezvous->save($lastrdvorient) && $saved;
-			}
-/*
-//                     if( !empty( $dspData ) ){
-//                         $this->Contratinsertion->Personne->Dsp->create();
-//
-// }
-
-					$this->Contratinsertion->Actioninsertion->create();
-
-					///FIXME
-//                         $this->Contratinsertion->Structurereferente->create();
-					//
-					$this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->create();
-					$this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->create();
-
-//                     if( !empty( $dspData ) ){
-//                         $saved = $this->Contratinsertion->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
-//                     }
-					///FIXME
-					if( isset( $this->data['Actioninsertion'] ) ){
-						$saved = $this->Contratinsertion->Actioninsertion->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
-					}
-					///FIXME
-//                         $saved = $this->Contratinsertion->Structurereferente->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
-					//
-					$this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->unbindModel( array( 'hasMany' => array( 'Suspensiondroit' ) ) );
-					$saved = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
-
-					$saved = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) && $saved; */
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Contratinsertion->commit();
@@ -638,7 +634,7 @@
 				if( $this->action == 'edit' ) {
 
 					$this->data = $contratinsertion;
-// debug( $this->data['Personne']['Dsp'] );
+// debug( $this->data );
 					$suspensiondroit = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->find(
 						'first',
 						array(
@@ -699,6 +695,7 @@
 
 				/// Si on est en présence d'un deuxième contrat -> Alors renouvellement
 				$this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
+
 			}
 
 			// Doit-on setter les valeurs par défault ?
