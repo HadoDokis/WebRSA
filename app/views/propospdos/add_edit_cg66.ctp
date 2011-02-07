@@ -347,7 +347,7 @@
 				    )
 				)
 		    );
-		    
+
 		    echo $html->tag(
     			'fieldset',
     			$html->tag(
@@ -359,16 +359,18 @@
 				    array(
 				        'Decisionpropopdo.datedecisionpdo',
 				        'Decisionpdo.libelle',
+				        'Decisionpropopdo.avistechnique',
+				        'Decisionpropopdo.dateavistechnique',
 				        'Decisionpropopdo.validationdecision',
 				        'Decisionpropopdo.datevalidationdecision',
-				        'Decisionpropopdo.etatdossierpdo'
 				    ),
 				    array(
 				        'actions' => array(
-				            'Decisionspropospdos::edit'
+				            'Decisionspropospdos::edit',
+				            'Decisionspropospdos::print' => array( 'disabled' => true ) //FIXME: impression à mettre en place
 				        ),
 				        'add' => array( 'Decisionpropopdo.add' => array( 'controller'=>'decisionspropospdos', 'action'=>'add', $pdo_id ) ),
-				        'options' => $options
+				        'options' => array_merge( $options, $decisionpdo)
 				    )
 			    )
 		    );

@@ -853,6 +853,22 @@ ALTER TABLE bilansparcours66 ADD COLUMN bilanparcoursinsertion type_booleannumbe
 
 SELECT alter_table_drop_column_if_exists( 'public', 'bilansparcours66', 'motifep' );
 ALTER TABLE bilansparcours66 ADD COLUMN motifep type_booleannumber DEFAULT NULL;
+
+-- -----------------------------------------------------------------------------
+-- 20110207
+-- -----------------------------------------------------------------------------
+SELECT alter_table_drop_column_if_exists( 'public', 'decisionspropospdos', 'commentairedecision' );
+ALTER TABLE decisionspropospdos ADD COLUMN commentairedecision TEXT DEFAULT NULL;
+
+SELECT alter_table_drop_column_if_exists( 'public', 'decisionspropospdos', 'avistechnique' );
+ALTER TABLE decisionspropospdos ADD COLUMN avistechnique type_no DEFAULT NULL;
+
+SELECT alter_table_drop_column_if_exists( 'public', 'decisionspropospdos', 'dateavistechnique' );
+ALTER TABLE decisionspropospdos ADD COLUMN dateavistechnique DATE;
+
+SELECT alter_table_drop_column_if_exists( 'public', 'decisionspropospdos', 'commentaireavistechnique' );
+ALTER TABLE decisionspropospdos ADD COLUMN commentaireavistechnique TEXT DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

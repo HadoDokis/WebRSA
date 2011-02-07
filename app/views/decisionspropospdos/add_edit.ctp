@@ -5,12 +5,6 @@
 ?>
 
 
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        observeDisableFieldsetOnCheckbox( 'DecisionpropopdoIsvalidation', $( 'DecisionpropopdoDatevalidationdecisionDay' ).up( 'fieldset' ), false );
-    });
-</script>
-
 <div class="with_treemenu">
     <?php
         echo $xhtml->tag(
@@ -27,34 +21,19 @@
          echo $xform->input( 'Decisionpropopdo.propopdo_id', array( 'type' => 'hidden', 'value' => $propopdo_id ) );
     ?>
     
-    <fieldset><legend>Décision</legend>
+    <fieldset><legend>Proposition de décision</legend>
         <fieldset id="Decision" class="invisible">
             <?php
                 echo $default2->subform(
                     array(
                         'Decisionpropopdo.datedecisionpdo' => array( 'label' =>  ( __( 'Date de décision de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
-                        'Decisionpropopdo.decisionpdo_id' => array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ),
-                        //'Decisionpropopdo.dateenvoiop' => array( 'label' =>  ( __( 'Date d\'envoi à l\'OP', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
-                        //'Decisionpropopdo.motifpdo' => array( 'label' =>  ( __( 'Motif de la décision', true ) ), 'type' => 'radio', 'options' => $motifpdo, 'empty' => true )
+                        'Decisionpropopdo.decisionpdo_id' => array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true )
                     ),
                     array(
                         'options' => $options
                     )
                 );
             ?>
-                <!--<fieldset id="nonadmis" class="invisible">
-                    <?php
-                        echo $default->subform(
-                            array(
-                                'Decisionpropopdo.nonadmis' => array( 'label' => 'Raison non admissible', 'type' => 'select', 'options' => $options['nonadmis'], 'empty' => true  )
-                            ),
-                            array(
-                                'domain' => $domain,
-                                'options' => $options
-                            )
-                        );
-                    ?>
-                </fieldset>-->
             <?php
                 echo $default2->subform(
                     array(
@@ -64,35 +43,40 @@
                         'options' => $options
                     )
                 );
-                //echo $ajax->observeField( 'DecisionpropopdoDecisionpdoId', array( 'update' => 'Etatpdo4', 'url' => Router::url( array( 'action' => 'ajaxetat4' ), true ) ) );
             ?>
         </fieldset>
 
     </fieldset>
 
-    <fieldset id="Etatpdo4" class="invisible"></fieldset>
-        
-    <fieldset>
-        <?php
-            echo $form->input( 'Decisionpropopdo.isvalidation', array( 'label' => 'Validation', 'type' => 'checkbox' ) );
-        ?>
-        <fieldset id="Isvalidation" class="invisible">
+    <fieldset><legend>Avis technique</legend>
             <?php
                 echo $default2->subform(
                     array(
-                        'Decisionpropopdo.validationdecision' => array( 'type' => 'radio', 'options' => $options['validationdecision'] ),
+                        'Decisionpropopdo.avistechnique' => array( 'label' => false, 'type' => 'radio', 'options' => $options['avistechnique'] ),
+                        'Decisionpropopdo.commentaireavistechnique',
+                        'Decisionpropopdo.dateavistechnique' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
+                    ),
+                    array(
+                        'options' => $options
+                    )
+                );
+            ?>
+    </fieldset>
+
+    <fieldset><legend>Validation de la proposition</legend>
+            <?php
+                echo $default2->subform(
+                    array(
+                        'Decisionpropopdo.validationdecision' => array( 'label' => false, 'type' => 'radio', 'options' => $options['validationdecision'] ),
+                        'Decisionpropopdo.commentairedecision',
                         'Decisionpropopdo.datevalidationdecision' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
                     ),
                     array(
                         'options' => $options
                     )
                 );
-                //echo $ajax->observeField( 'DecisionpropopdoIsvalidation', array( 'update' => 'Etatpdo3', 'url' => Router::url( array( 'action' => 'ajaxetat3' ), true ) ) );
             ?>
-        </fieldset>
     </fieldset>
-
-    <fieldset id="Etatpdo3" class="invisible"></fieldset>
 	
 	<?php
         echo "<div class='submit'>";

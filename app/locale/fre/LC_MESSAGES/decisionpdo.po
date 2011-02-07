@@ -23,5 +23,5 @@ msgstr ""
 ###############################################################################
 
 msgid "Decisionpdo.libelle"
-msgstr "Décision"
+msgstr "Proposition"
 

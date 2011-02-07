@@ -7,7 +7,8 @@
 			'Enumerable' => array(
 				'fields' => array(
 	 				'validationdecision' => array( 'domain' => 'decisionpropopdo' ),
-	 				'etatdossierpdo' => array( 'domain' => 'propopdo' )
+	 				'etatdossierpdo' => array( 'domain' => 'propopdo' ),
+	 				'avistechnique' => array( 'domain' => 'decisionpropopdo' )
 				)
 			),
 			'Formattable',
