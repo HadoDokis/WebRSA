@@ -29,10 +29,10 @@ msgid "Decisionspropospdos::edit"
 msgstr "Editer la décision"
 
 msgid "Decisionpropopdo.validationdecision"
-msgstr "Décision validée"
+msgstr "Validation de la proposition"
 
 msgid "Decisionpropopdo.datevalidationdecision"
-msgstr "Date de validation de la décision"
+msgstr "Date de validation de la proposition"
 
 msgid "ENUM::VALIDATIONDECISION::N"
 msgstr "Non"
@@ -47,7 +47,7 @@ msgid "Decisionspropospdos::add"
 msgstr "Édition d'une décision"
 
 msgid "Decisionpropopdo.datedecisionpdo"
-msgstr "Date de la décision"
+msgstr "Date de la proposition"
 
 msgid "Decisionpdo.libelle"
 msgstr "Décision"
@@ -55,3 +55,23 @@ msgstr "Décision"
 msgid "Decisionpropopdo.etatdossierpdo"
 msgstr "Etat du dossier"
 
+msgid "Decisionpropopdo.avistechnique"
+msgstr "Avis technique"
+
+msgid "ENUM::AVISTECHNIQUE::N"
+msgstr "Non"
+
+msgid "ENUM::AVISTECHNIQUE::O"
+msgstr "Oui"
+
+msgid "Decisionpropopdo.commentaireavistechnique"
+msgstr "Commentaire"
+
+msgid "Decisionpropopdo.dateavistechnique"
+msgstr "Date de l'avis technique"
+
+msgid "Decisionpropopdo.commentairedecision"
+msgstr "Commentaire"
+
+msgid "Decisionpropopdo.decisionpdo_id"
+msgstr "Proposition"
