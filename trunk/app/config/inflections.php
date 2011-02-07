@@ -271,6 +271,7 @@
 		'themecov58' => 'themescovs58',
 		'dossiercov58' => 'dossierscovs58',
 		'propoorientationcov58' => 'proposorientationscovs58',
+		'propocontratinsertioncov58' => 'proposcontratsinsertioncovs58',
 		'cov58' => 'covs58',
 		'autreavissuspension' => 'autresavissuspension',
 		'autreavisradiation' => 'autresavisradiation'
