@@ -58,6 +58,8 @@
     mb_internal_encoding( Configure::read( 'App.encoding' ) );
     mb_regex_encoding( Configure::read( 'App.encoding' ) );
 
+	require_once( APP.DS.'vendors'.DS.'money_format.php' );
+
     function valid_int( $value ) {
         return !( !is_numeric( $value ) || !( (int)$value == $value ) );
     }
