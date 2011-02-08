@@ -906,6 +906,17 @@ CREATE INDEX autresavisradiation_contratinsertion_id_idx ON autresavisradiation 
 
 DROP INDEX IF EXISTS autresavisradiation_autreavisradiation_idx;
 CREATE INDEX autresavisradiation_autreavisradiation_idx ON autresavisradiation (autreavisradiation);
+
+
+-- -----------------------------------------------------------------------------
+-- 20110208
+-- -----------------------------------------------------------------------------
+SELECT alter_table_drop_column_if_exists( 'public', 'orientsstructs', 'structureorientante_id' );
+ALTER TABLE orientsstructs ADD COLUMN structureorientante_id INTEGER REFERENCES structuresreferentes (id) DEFAULT NULL;
+
+SELECT alter_table_drop_column_if_exists( 'public', 'orientsstructs', 'referentorientant_id' );
+ALTER TABLE orientsstructs ADD COLUMN referentorientant_id INTEGER REFERENCES referents (id) DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

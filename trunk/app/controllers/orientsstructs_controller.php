@@ -28,6 +28,11 @@
 //                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
 //             }
 //             $this->set( compact( 'options' ) );
+
+            //Ajout des structures et référents orientants
+            $this->set( 'refsorientants', $this->Referent->listOptions() );
+            $this->set( 'structsorientantes', $this->Structurereferente->listOptions( array( 'orientation' => 'O' ) ) );
+
 		}
 
 
@@ -318,7 +323,19 @@
 				$this->redirect( array( 'action' => 'index', $orientstruct_id ) );
 			}
 
-			$orientstruct = $this->Orientstruct->findById( $orientstruct_id, null, null, 2 );
+			$orientstruct = $this->Orientstruct->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.id' => $orientstruct_id
+                    ),
+                    'contain' => array(
+                        'Personne' => array(
+                            'Calculdroitrsa'
+                        )
+                    )
+                )
+            );
 			$this->assert( !empty( $orientstruct ), 'invalidParameter' );
 
 			// Retour à l'index si on essaie de modifier une autre orientation que la dernière

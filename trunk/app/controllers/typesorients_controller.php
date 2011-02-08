@@ -46,7 +46,8 @@
                         'Typeorient.id',
                         'Typeorient.lib_type_orient',
                     ),
-                    'conditions' => array( 'Typeorient.parentid' => null )
+                    'conditions' => array( 'Typeorient.parentid' => null ),
+                    'recursive' => -1
                 )
             );
             $this->set( 'parentid', $parentid );
@@ -87,7 +88,8 @@
                     'conditions' => array(
 						'Typeorient.parentid' => null,
 						'Typeorient.id <>' => $typeorient_id,
-					)
+					),
+					'recursive' => -1
                 )
             );
             $this->set( 'parentid', $parentid );
@@ -97,10 +99,10 @@
                 array(
                     'fields' => array(
                         'Typeorient.modele_notif'
-                    )
+                    ),
+                    'recursive' => -1
                 )
             );
-
             $this->set( 'notif', $notif );
 
             if( !empty( $this->data ) ) {
@@ -115,7 +117,8 @@
                     array(
                         'conditions' => array(
                             'Typeorient.id' => $typeorient_id,
-                        )
+                        ),
+                        'recursive' => -1
                     )
                 );
                 $this->data = $typeorient;

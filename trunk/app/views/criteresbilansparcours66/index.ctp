@@ -16,10 +16,12 @@
         array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
     ).'</li></ul>';
 ?>
-
+<?php echo $javascript->link( 'dependantselect.js' ); ?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsetOnCheckbox( 'Bilanparcours66Datebilan', $( 'Bilanparcours66DatebilanFromDay' ).up( 'fieldset' ), false );
+
+        dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
     });
 </script>
 
@@ -37,7 +39,7 @@
                             'Bilanparcours66.choixparcours' => array( 'type' => 'select', 'options' => $options['choixparcours'] ),
                             'Bilanparcours66.examenaudition' => array( 'type' => 'select', 'options' => $options['examenaudition'] ),
                             'Bilanparcours66.maintienorientation' => array( 'type' => 'select', 'options' => $options['maintienorientation'] ),
-                            'Bilanparcours66.structurereferente_id' => array( 'type' => 'select' ),
+                            'Bilanparcours66.structurereferente_id' => array( 'type' => 'select', 'options' => $struct ),
                             'Bilanparcours66.referent_id' => array( 'type' => 'select', 'options' => $referents ),
                         ),
                         array(

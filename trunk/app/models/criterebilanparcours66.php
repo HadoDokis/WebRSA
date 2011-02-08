@@ -13,6 +13,7 @@
         var $name = 'Criterebilanparcours66';
         var $useTable = false;
 
+
         public function search( $criteresbilansparcours66 ) {
             /// Conditions de base
 
