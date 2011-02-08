@@ -308,12 +308,16 @@
 							'fields' => array(
 								'Orientstruct.id',
 								'Orientstruct.personne_id',
+								'Orientstruct.structurereferente_id',//ajout arnaud
 							),
 							'conditions' => array(
 								'Orientstruct.personne_id' => $personne_id,
 								'Orientstruct.date_valid IS NOT NULL'
 							),
-							'contain' => false,
+							'contain' => array(
+                                'Structurereferente',
+                                'Referent'
+							),
 							'order' => array( 'Orientstruct.date_valid DESC' )
 						)
 					);
@@ -321,25 +325,28 @@
 					$this->assert( !empty( $orientstruct ), 'error500' );
 
 					$this->data['Bilanparcours66']['orientstruct_id'] = $orientstruct['Orientstruct']['id'];
+					//ajout arnaud
+					$this->data['Bilanparcours66']['structurereferente_id'] = $orientstruct['Orientstruct']['structurereferente_id'];
+					$this->data['Bilanparcours66']['referent_id'] = $orientstruct['Structurereferente']['id'].'_'.$orientstruct['Referent']['id'];
 
-					$contratinsertion = $this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->find(
-						'first',
-						array(
-							'conditions'=>array(
-								'Contratinsertion.personne_id' => $personne_id
-							),
-							'order'=>array(
-								'Contratinsertion.rg_ci DESC'
-							),
-							'contain'=>array(
-								'Structurereferente',
-								'Referent'
-							)
-						)
-					);
-					
-					$this->data['Bilanparcours66']['structurereferente_id'] = $contratinsertion['Structurereferente']['id'];
-					$this->data['Bilanparcours66']['referent_id'] = $contratinsertion['Structurereferente']['id'].'_'.$contratinsertion['Referent']['id'];
+// 					$contratinsertion = $this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->find(
+// 						'first',
+// 						array(
+// 							'conditions'=>array(
+// 								'Contratinsertion.personne_id' => $personne_id
+// 							),
+// 							'order'=>array(
+// 								'Contratinsertion.rg_ci DESC'
+// 							),
+// 							'contain'=>array(
+// 								'Structurereferente',
+// 								'Referent'
+// 							)
+// 						)
+// 					);
+// 					
+// 					$this->data['Bilanparcours66']['structurereferente_id'] = $contratinsertion['Structurereferente']['id'];
+// 					$this->data['Bilanparcours66']['referent_id'] = $contratinsertion['Structurereferente']['id'].'_'.$contratinsertion['Referent']['id'];
 				}
 				
 				$this->data = Set::insert($this->data, 'Pe', $this->data);
