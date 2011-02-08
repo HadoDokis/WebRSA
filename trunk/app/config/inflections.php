@@ -274,7 +274,8 @@
 		'propocontratinsertioncov58' => 'proposcontratsinsertioncovs58',
 		'cov58' => 'covs58',
 		'autreavissuspension' => 'autresavissuspension',
-		'autreavisradiation' => 'autresavisradiation'
+		'autreavisradiation' => 'autresavisradiation',
+		'criterebilanparcours66' => 'criteresbilansparcours66'
 	);
 /**
  * This is a key => value array of regex used to match words.
