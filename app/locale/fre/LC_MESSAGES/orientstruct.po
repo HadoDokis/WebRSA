@@ -37,3 +37,9 @@ msgstr "Orientation décidée"
 
 msgid "Orientstruct.nbjours"
 msgstr "Nombre de jours depuis l'orientation"
+
+msgid "Orientstruct.structureorientante_id"
+msgstr "Structure orientante"
+
+msgid "Orientstruct.referentorientant_id"
+msgstr "Référent orientant"

@@ -20,7 +20,8 @@
         */
         public function _setOptions() {
             $this->set( 'options', $this->Bilanparcours66->allEnumLists() );
-            $this->set( 'referents',$this->Referent->find( 'list' ) );
+            $this->set( 'struct', $this->Bilanparcours66->Referent->Structurereferente->listOptions() );
+            $this->set( 'referents', $this->Bilanparcours66->Referent->listOptions() );
         }
 
 
@@ -29,8 +30,16 @@
         */
 
         public function index() {
+
             if( !empty( $this->data ) ) {
-                $queryData = $this->Criterebilanparcours66->search( $this->data );
+                $data = $this->data;
+// 
+                if( !empty( $data['Bilanparcours66']['referent_id'] )) {
+                    $referentId = suffix( $data['Bilanparcours66']['referent_id'] );
+                    $data['Bilanparcours66']['referent_id'] = $referentId;
+                }
+
+                $queryData = $this->Criterebilanparcours66->search( $data );
                 $queryData['limit'] = 10;
                 $this->paginate = $queryData;
                 $bilansparcours66 = $this->paginate( $this->Bilanparcours66 );
@@ -52,7 +61,10 @@
                             @$bilansparcours66[$key]['Referent']['prenom']
                         )
                     );
+
                 }
+
+
                 $this->set( 'bilansparcours66', $bilansparcours66 );
             }
             $this->_setOptions();
