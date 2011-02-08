@@ -3,6 +3,7 @@
 <?php if( empty( $personne_id ) ):?>
 	<h1> <?php echo $this->pageTitle = 'Écran de synthèse des bilans de parcours'; ?> </h1>
 	<?php
+        unset( $options['Bilanparcours66']['saisineepparcours'] );
 	// 	require_once( 'index.ctp' );
 // debug($bilansparcours66);
 		echo $default2->index(
@@ -11,7 +12,7 @@
 				'Bilanparcours66.created' => array( 'type' => 'date' ),
 				// Personne
 				'Personne.nom_complet' => array( 'type' => 'text' ),
-				'Contratinsertion.Personne.Foyer.Adressefoyer.0.Adresse.locaadr' => array( 'type' => 'text' ),
+				'Orientstruct.Personne.Foyer.Adressefoyer.0.Adresse.locaadr' => array( 'type' => 'text' ),
 				// Orientation
 				'Orientstruct.date_valid',
 				'Orientstruct.Typeorient.lib_type_orient',
@@ -37,7 +38,7 @@
 			)
 		);
 
-	// 	debug( $bilansparcours66 );
+// 		debug( $bilansparcours66 );
 	?>
 <?php else:?>
 	<?php
@@ -107,7 +108,7 @@
 
 						echo "<tr>";
 							echo $type2->format( $bilanparcour66, 'Bilanparcours66.datebilan', array( 'type' => 'date', 'tag' => 'td', 'options' => $options ) );
-							echo $type2->format( $bilanparcour66, 'Orientstruct.Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
+							echo $type2->format( $bilanparcour66, 'Referent.Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Referent.nom_complet', array( 'type' => 'text', 'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Bilanparcours66.proposition', array( 'tag' => 'td', 'options' => $options ) );
 							
