@@ -181,6 +181,10 @@
 						$cov58['Cov58']['etatcov'] = 'finalise';
 						$this->Cov58->save($cov58);
 					}
+					else {
+						$cov58['Cov58']['etatcov'] = 'traitement';
+						$this->Cov58->save($cov58);
+					}
 					$this->Cov58->commit();
 					$this->redirect( array( 'action' => 'view', $cov58_id ) );
 				}
@@ -192,7 +196,7 @@
 			$dossiers = $this->Cov58->dossiersParListe( $cov58_id );
 
 			if( empty( $this->data ) ) {
-				$this->data = $this->Cov58->Dossiercov58->prepareFormData( $cov58_id, $dossiers );
+				$this->data = $dossiers;
 			}
 
 			$this->set( compact( 'cov58', 'dossiers' ) );

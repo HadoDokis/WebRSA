@@ -129,7 +129,7 @@
 				if( $this->action == 'edit' ) {
 					$id = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->field( 'personne_id', array( 'id' => $id ) );
 				}
-				$this->redirect( array( 'action' => 'index', $id ) );
+				$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $id ) );
 			}
 
 			$valueFormeci = null;
@@ -260,6 +260,23 @@
 
 			/// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
+			
+				$success = true;
+				
+				$themecov58 = $this->Propocontratinsertioncov58->Dossiercov58->Themecov58->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Themecov58.name' => Inflector::tableize($this->Propocontratinsertioncov58->alias)
+						),
+						'contain' => false
+					)
+				);
+				$dossiercov58['Dossiercov58']['themecov58_id'] = $themecov58['Themecov58']['id'];
+				$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
+				
+				$success = $this->Propocontratinsertioncov58->Dossiercov58->save($dossiercov58) && $success;
+				$this->data['Propocontratinsertioncov58']['dossiercov58_id'] = $this->Propocontratinsertioncov58->Dossiercov58->id;
 
 				$this->data['Propocontratinsertioncov58']['rg_ci'] = $nbrCi + 1;
 
@@ -273,7 +290,7 @@
 					$this->data['Propocontratinsertioncov58']['avisraison_ci'] = Set::classicExtract( $this->data, 'Propocontratinsertioncov58.avisraison_radiation_ci' );
 				}
 				/// Validation
-				$success = $this->Propocontratinsertioncov58->save( $this->data );
+				$success = $this->Propocontratinsertioncov58->save( $this->data ) && $success;
 				
 // debug($success);
 				if( $success ) {
@@ -308,6 +325,10 @@
 						$this->Propocontratinsertioncov58->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
+				}
+				else {
+					$this->Propocontratinsertioncov58->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			else {

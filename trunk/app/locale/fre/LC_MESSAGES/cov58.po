@@ -39,3 +39,15 @@ msgstr "Décisions"
 
 msgid "Covs58::index"
 msgstr "Commision de la COV"
+
+msgid "Cov58::index::empty"
+msgstr "Aucun dossier sélectionné pour cette commission"
+
+msgid "ENUM::ETATCOV::cree"
+msgstr "Créé"
+
+msgid "ENUM::ETATCOV::traitement"
+msgstr "En cours de traitement"
+
+msgid "ENUM::ETATCOV::finalise"
+msgstr "Finalisé"

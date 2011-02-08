@@ -158,7 +158,7 @@
 			if( empty( $this->data ) ) {
 				foreach( $dossierscovs as $theme => $dossiercov ) {
 					foreach( $dossiercov as $key => $dossier ) {
-						$dossierscovs[$class][$key]['chosen'] =  ( ( $dossier['Dossiercov58']['cov58_id'] == $cov58_id ) );
+						$dossierscovs[$theme][$key]['chosen'] =  ( ( $dossier['Dossiercov58']['cov58_id'] == $cov58_id ) );
 					}
 				}
 			}

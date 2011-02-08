@@ -5,9 +5,9 @@
 	echo $xhtml->tag( 'th', __d( 'personne', 'Personne.nom', true ) );
 	echo $xhtml->tag( 'th', __d( 'personne', 'Personne.adresse', true ) );
 	echo $xhtml->tag( 'th', __d( Inflector::underscore(Inflector::classify($theme)), $theme.'.datedemande', true ) );
-	echo $xhtml->tag( 'th', __d( 'dossiercov58', 'Dossiercov58.proporeferent', true ), array( 'colspan' => 2 ) );
 	echo $xhtml->tag( 'th', __d( 'dossiercov58', 'Dossiercov58.decisioncov', true ) );
-	echo $xhtml->tag( 'th', __d( 'dossiercov58', 'Dossiercov58.choixcov', true ), array( 'colspan' => 2 ) );
+	echo $xhtml->tag( 'th', __d( Inflector::underscore(Inflector::classify($theme)), $theme.'.datevalidation', true ) );
+	echo $xhtml->tag( 'th', __d( Inflector::underscore(Inflector::classify($theme)), $theme.'.commentaire', true ) );
 	echo $xhtml->tag( 'th', 'Actions' );
 	
 echo '</tr></thead><tbody>';
@@ -19,12 +19,10 @@ echo '</tr></thead><tbody>';
 				implode( ' ', array( $dossiercov['Personne']['qual'], $dossiercov['Personne']['nom'], $dossiercov['Personne']['prenom'] ) ),
 				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossiercov[$theme]['datedemande'] ),
-				$dossiercov['Typeorient']['lib_type_orient'],
-				$dossiercov['Structurereferente']['lib_struc'],
 				$form->input( "{$theme}.{$i}.decisioncov", array( 'type' => 'select', 'options' => $decisionscovs, 'label' => false, 'empty' => true ) ),
-				$form->input( "{$theme}.{$i}.typeorient_id", array( 'type' => 'select', 'options' => $typesorients, 'label' => false, 'empty' => true ) ),
-				$form->input( "{$theme}.{$i}.structurereferente_id", array( 'type' => 'select', 'options' => $structuresreferentes, 'label' => false, 'empty' => true ) ),
-				$xhtml->viewLink( 'Voir', array( 'controller' => 'orientsstructs', 'action' => 'index', $dossiercov['Personne']['id'] ), true, true )
+				$form->input( "{$theme}.{$i}.datevalidation", array( 'type' => 'date', 'empty' => false, 'dateFormat' => 'DMY', 'label' => false, 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 ) ),
+				$form->input( "{$theme}.{$i}.commentaire", array( 'type' => 'textarea', 'label' => false ) ),
+				$xhtml->viewLink( 'Voir', array( 'controller' => 'contratsinsertion', 'action' => 'index', $dossiercov['Personne']['id'] ), true, true )
 			)
 		);
 	}
@@ -34,13 +32,10 @@ echo '</tr></thead><tbody>';
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			dependantSelect( 'Propoorientationcov58<?php echo $i?>StructurereferenteId', 'Propoorientationcov58<?php echo $i?>TypeorientId' );
-			try { $( 'Propoorientationcov58<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
-
 			observeDisableFieldsOnValue(
-				'Propoorientationcov58<?php echo $i;?>Decisioncov',
-				[ 'Propoorientationcov58<?php echo $i;?>TypeorientId', 'Propoorientationcov58<?php echo $i;?>StructurereferenteId' ],
-				'refus',
+				'Propocontratinsertioncov58<?php echo $i;?>Decisioncov',
+				[ 'Propocontratinsertioncov58<?php echo $i;?>DatevalidationDay', 'Propocontratinsertioncov58<?php echo $i;?>DatevalidationMonth', 'Propocontratinsertioncov58<?php echo $i;?>DatevalidationYear', 'Propocontratinsertioncov58<?php echo $i;?>Commentaire' ],
+				'accepte',
 				false
 			);
 		<?php endfor;?>

@@ -164,7 +164,6 @@
 			$this->render( 'ajaxstruct', 'ajax' );
 		}
 
-
 		/**
 		*
 		*/
@@ -180,7 +179,6 @@
 				)
 			);
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
-
 
 			// Recherche du nombre de référent lié au parcours de la personne
 			// Si aucun alors message d'erreur signalant l'absence de référent (cg66)
@@ -223,6 +221,30 @@
 			$this->_setOptions();
 			$this->set( compact( 'contratsinsertion' ) );
 			$this->set( 'personne_id', $personne_id );
+			
+			if ( Configure::read('Cg.departement') == 58 ) {
+				$nbdossiersnonfinalisescovs = $this->Contratinsertion->Personne->Dossiercov58->find(
+					'count',
+					array(
+						'conditions' => array(
+							'Dossiercov58.personne_id' => $personne_id,
+							'Dossiercov58.etapecov <>' => 'finalise'
+						),
+						'joins' => array(
+							array(
+								'table' => 'proposcontratsinsertioncovs58',
+								'alias' => 'Propocontratinsertioncov58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Propocontratinsertioncov58.dossiercov58_id = Dossiercov58.id'
+								)
+							)
+						)
+					)
+				);
+				$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
+			}
+			
 			///FIXME: pas propre, mais pr le moment ça marche afin d'eviter de tout renommer
 			$this->render( $this->action, null, '/contratsinsertion/index_'.Configure::read( 'nom_form_ci_cg' ) );
 		}

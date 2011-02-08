@@ -15,7 +15,7 @@
 		<?php
 			foreach( $themes as $theme ) {
 				$class = Inflector::classify( $theme );
-				echo "<div id=\"$theme\"><h3 class=\"title\">".__d( Inflector::underscore( Inflector::classify( $theme ) ),  'ENUM::THEMECOV::'.$theme, true )."</h3>";
+				echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossiercov58',  'ENUM::THEMECOV::'.$theme, true )."</h3>";
 					if (empty($dossierscovs[$class])) {
 						echo "Il n'y a aucun dossier en attente pour ce thème";
 					}
@@ -25,7 +25,7 @@
 							echo $xhtml->tag( 'th', __d( 'personne', 'Personne.qual', true ) );
 							echo $xhtml->tag( 'th', __d( 'personne', 'Personne.nom', true ) );
 							echo $xhtml->tag( 'th', __d( 'personne', 'Personne.prenom', true ) );
-							echo $xhtml->tag( 'th', __d( $theme, $class.'.datedemande', true ) );
+							echo $xhtml->tag( 'th', __d( Inflector::underscore($class), $class.'.datedemande', true ) );
 						echo "</tr></thead><tbody>";
 						foreach($dossierscovs[$class] as $key => $dossiercov) {
 							echo "<tr>";

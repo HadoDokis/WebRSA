@@ -88,29 +88,37 @@
 
 			foreach( $this->Dossiercov58->Themecov58->find('list') as $theme ) {
 				$model = Inflector::classify( $theme );
-				$contain = array_merge(
-					$this->Dossiercov58->{$model}->getContain(),
+				$fields = array_merge(
+					$this->Dossiercov58->{$model}->getFields(),
 					array(
-						'Personne' => array(
-							'Foyer' => array(
-								'Adressefoyer' => array(
-									'conditions' => array(
-										'Adressefoyer.rgadr' => '01'
-									),
-									'Adresse'
-								)
-							)
-						)
+						'Dossiercov58.id',
+						'Dossiercov58.personne_id',
+						'Dossiercov58.themecov58_id',
+						'Dossiercov58.etapecov',
+						'Dossiercov58.cov58_id'
 					)
 				);
 				$dossiers[$model]['liste'] = $this->Dossiercov58->find(
 					'all',
 					array(
+						'fields' => $fields,
 						'conditions' => array(
 							'Dossiercov58.cov58_id' => $cov58_id,
 							'Dossiercov58.etapecov' => 'traitement'
 						),
-						'contain' => $contain
+						'contain' => array(
+							'Personne' => array(
+								'Foyer' => array(
+									'Adressefoyer' => array(
+										'conditions' => array(
+											'Adressefoyer.rgadr' => '01'
+										),
+										'Adresse'
+									)
+								)
+							)
+						),
+						'joins' => $this->Dossiercov58->{$model}->getJoins()
 					)
 				);
 			}
@@ -130,24 +138,26 @@
 			);
 			foreach($this->Dossiercov58->Themecov58->find('list') as $theme) {
 				$class = Inflector::classify($theme);
-				foreach($datas[$class] as $data) {
-					if ( $data['decisioncov'] != 'ajourne' ) {
-						$success = $this->Dossiercov58->{$class}->saveDecision($data, $cov58) && $success;
-					}
-					else {
-						$dossiercov58 = $this->Dossiercov58->{$class}->find(
-							'first',
-							array(
-								'conditions' => array(
-									$class.'.id' => $data['id']
-								),
-								'contain' => array(
-									'Dossiercov58'
+				if ( isset( $datas[$class] ) && !empty( $datas[$class] ) ) {
+					foreach($datas[$class] as $data) {
+						if ( $data['decisioncov'] != 'ajourne' && !empty( $data['decisioncov'] ) ) {
+							$success = $this->Dossiercov58->{$class}->saveDecision($data, $cov58) && $success;
+						}
+						elseif ( !empty( $data['decisioncov'] ) ) {
+							$dossiercov58 = $this->Dossiercov58->{$class}->find(
+								'first',
+								array(
+									'conditions' => array(
+										$class.'.id' => $data['id']
+									),
+									'contain' => array(
+										'Dossiercov58'
+									)
 								)
-							)
-						);
-						$dossiercov58['Dossiercov58']['etapecov'] = 'ajourne';
-						$success = $this->Dossiercov58->save($dossiercov58['Dossiercov58']) && $success;
+							);
+							$dossiercov58['Dossiercov58']['etapecov'] = 'ajourne';
+							$success = $this->Dossiercov58->save($dossiercov58['Dossiercov58']) && $success;
+						}
 					}
 				}
 			}
