@@ -53,7 +53,7 @@
 			$this->set(compact('typesorients'));
 			$structuresreferentes = $this->Bilanparcours66->Structurereferente->find('list');
 			$this->set(compact('structuresreferentes'));
-
+// debug($options);
 			$this->set( compact( 'options' ) );
 		}
 
@@ -90,6 +90,7 @@
 					'Bilanparcours66.maintienorientation',
 					'Bilanparcours66.examenaudition',
 					'Bilanparcours66.datebilan',
+					'Bilanparcours66.created',
 					'Saisineepbilanparcours66.id',
 					'Saisineepbilanparcours66.typeorient_id',
 					'Saisineepbilanparcours66.structurereferente_id'
@@ -98,20 +99,32 @@
 					'Orientstruct' => array(
 						'Typeorient',
 						'Structurereferente',
+                        'Personne' => array(
+                            'fields' => array( 'qual', 'nom', 'prenom' ),
+                            'Foyer' => array(
+                                'Adressefoyer' => array(
+                                    'conditions' => array(
+                                        'Adressefoyer.rgadr' => '01',
+                                        'Adressefoyer.typeadr' => 'D'
+                                    ),
+                                    'Adresse'
+                                )
+                            )
+                        ),
 					),
 					'Contratinsertion' => array(
-						'Personne' => array(
-							'fields' => array( 'qual', 'nom', 'prenom' ),
-							'Foyer' => array(
-								'Adressefoyer' => array(
-									'conditions' => array(
-										'Adressefoyer.rgadr' => '01',
-										'Adressefoyer.typeadr' => 'D'
-									),
-									'Adresse'
-								)
-							)
-						),
+// 						'Personne' => array(
+// 							'fields' => array( 'qual', 'nom', 'prenom' ),
+// 							'Foyer' => array(
+// 								'Adressefoyer' => array(
+// 									'conditions' => array(
+// 										'Adressefoyer.rgadr' => '01',
+// 										'Adressefoyer.typeadr' => 'D'
+// 									),
+// 									'Adresse'
+// 								)
+// 							)
+// 						),
 						'Structurereferente' => array(
 							'Typeorient',
 						),
@@ -124,7 +137,9 @@
 						),
 						'Nvsrepreorient66'
 					),
-					'Referent'
+					'Referent' => array(
+                        'Structurereferente'
+					)
 				),
 				'conditions' => $conditions,
 				'limit' => 10
@@ -147,15 +162,16 @@
 				$bilansparcours66[$key]['Personne']['nom_complet'] = implode(
 					' ',
 					array(
-						@$bilansparcours66[$key]['Contratinsertion']['Personne']['qual'],
-						@$bilansparcours66[$key]['Contratinsertion']['Personne']['nom'],
-						@$bilansparcours66[$key]['Contratinsertion']['Personne']['prenom']
+						@$bilansparcours66[$key]['Orientstruct']['Personne']['qual'],
+						@$bilansparcours66[$key]['Orientstruct']['Personne']['nom'],
+						@$bilansparcours66[$key]['Orientstruct']['Personne']['prenom']
 					)
 				);
+
 			}
 
 			$this->_setOptions();
-			$this->set( compact( 'bilansparcours66', 'nborientstruct' )  );
+			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct' )  );
 		}
 
 		/**
