@@ -727,6 +727,21 @@ CREATE INDEX bilansparcours66_orientstruct_id_idx ON bilansparcours66 (orientstr
 DROP INDEX IF EXISTS bilansparcours66_referent_id_idx;
 CREATE INDEX bilansparcours66_referent_id_idx ON bilansparcours66 (referent_id);
 
+-- -----------------------------------------------------------------------------
+-- 20110204
+-- -----------------------------------------------------------------------------
+SELECT alter_table_drop_column_if_exists( 'public', 'bilansparcours66', 'situationperso' );
+ALTER TABLE bilansparcours66 ADD COLUMN situationperso TEXT DEFAULT NULL;
+
+SELECT alter_table_drop_column_if_exists( 'public', 'bilansparcours66', 'situationpro' );
+ALTER TABLE bilansparcours66 ADD COLUMN situationpro TEXT DEFAULT NULL;
+
+SELECT alter_table_drop_column_if_exists( 'public', 'bilansparcours66', 'bilanparcoursinsertion' );
+ALTER TABLE bilansparcours66 ADD COLUMN bilanparcoursinsertion type_booleannumber DEFAULT NULL;
+
+SELECT alter_table_drop_column_if_exists( 'public', 'bilansparcours66', 'motifep' );
+ALTER TABLE bilansparcours66 ADD COLUMN motifep type_booleannumber DEFAULT NULL;
+
 -- *****************************************************************************
 -- Indexes liés aux EPs
 -- *****************************************************************************
