@@ -12,6 +12,10 @@
 </h1>
 
 <?php
+	$EpDepartement = Configure::read( 'Cg.departement' );
+	if( empty( $EpDepartement ) || !in_array( $EpDepartement, array( 58, 66, 93 ) ) ) {
+		echo $xhtml->tag( 'p', 'Veuillez contacter votre adminitrateur afin qu\'il ajoute le paramètre de configuration Cg.departement dans le fichier webrsa.inc', array( 'class' => 'error' ) );
+	}
 
 	echo $xform->create( null, array( 'id' => 'EpAddEditForm' ) );
 
