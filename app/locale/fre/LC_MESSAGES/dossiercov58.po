@@ -22,6 +22,18 @@ msgstr ""
 msgid "Dossiercov58.etapecov"
 msgstr "Etat du dossier"
 
+msgid "Dossiercov58.chosen"
+msgstr "Dossier choisi ?"
+
+msgid "Dossiercov58.decisioncov"
+msgstr "Décision de la COV"
+
+msgid "Dossiercov58.proporeferent"
+msgstr "Proposition du référent"
+
+msgid "Dossiercov58.choixcov"
+msgstr "Choix de la COV"
+
 msgid "ENUM::ETAPECOV::cree"
 msgstr "Créé"
 
@@ -36,3 +48,6 @@ msgstr "Finalisé"
 
 msgid "ENUM::THEMECOV::proposorientationscovs58"
 msgstr "Proposition d'orientation"
+
+msgid "ENUM::THEMECOV::proposcontratsinsertioncovs58"
+msgstr "Proposition de CER"

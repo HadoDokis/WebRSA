@@ -8,7 +8,7 @@
 			'Containable',
 			'Enumerable' => array(
 				'fields' => array(
-					'num_contrat' => array( 'type' => 'num_contrat', 'domain' => 'contratinsertion' )
+					'num_contrat' => array( 'type' => 'num_contrat', 'domain' => 'propocontratinsertioncov58' )
                 )
 			),
 			'Formattable' => array(
@@ -23,7 +23,7 @@
 					'message' => 'Champ obligatoire'
 				)
 			),
-			'typeorient_id' => array(
+			'referent_id' => array(
 				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
@@ -78,12 +78,46 @@
 		*
 		*/
 		
-		public function getContain() {
+		public function getFields() {
 			return array(
-				$this->alias => array(
-					'Typeorient',
-					'Structurereferente',
-					'Referent'
+				$this->alias.'.id',
+				$this->alias.'.datedemande',
+				'Structurereferente.lib_struc',
+				'Referent.nom',
+				'Referent.prenom',
+				'Referent.qual'
+			);
+		}
+		
+		/**
+		*
+		*/
+		
+		public function getJoins() {
+			return array(
+				array(
+					'table' => 'proposcontratsinsertioncovs58',
+					'alias' => $this->alias,
+					'type' => 'INNER',
+					'conditions' => array(
+						'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id'
+					)
+				),
+				array(
+					'table' => 'structuresreferentes',
+					'alias' => 'Structurereferente',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Propocontratinsertioncov58.structurereferente_id = Structurereferente.id'
+					)
+				),
+				array(
+					'table' => 'referents',
+					'alias' => 'Referent',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Propocontratinsertioncov58.referent_id = Referent.id'
+					)
 				)
 			);
 		}
@@ -114,7 +148,7 @@
 						'Dossiercov58.etapecov <>' => 'finalise'
 					),
 					'contain' => array(
-						'Propoorientationcov58'
+						'Propocontratinsertioncov58'
 					)
 				)
 			);
@@ -182,49 +216,44 @@
 		/**
 		*
 		*/
+		
 		public function saveDecision($data, $cov58) {
 			$success = true;
 			$dossier = $this->find(
 				'first',
 				array(
 					'conditions' => array(
-						'Propoorientationcov58.id' => $data['id']
+						'Propocontratinsertioncov58.id' => $data['id']
 					),
 					'contain' => array(
 						'Dossiercov58'
 					)
 				)
 			);
-			if ( $data['decisioncov'] == 'accepte' ) {
-				$dossier['Propoorientationcov58']['covtypeorient_id'] = $dossier['Propoorientationcov58']['typeorient_id'];
-				$dossier['Propoorientationcov58']['covstructurereferente_id'] = $dossier['Propoorientationcov58']['structurereferente_id'];
-			}
-			else {
-				$dossier['Propoorientationcov58']['referent_id'] = null;
-				list($typeorient_id, $structurereferente_id) = explode('_', $data['structurereferente_id']);
-				$dossier['Propoorientationcov58']['covtypeorient_id'] = $typeorient_id;
-				$dossier['Propoorientationcov58']['covstructurereferente_id'] = $structurereferente_id;
-			}
-			list($jour, $heure) = explode(' ', $cov58['Cov58']['datecommission']);
-			$dossier['Propoorientationcov58']['datevalidation'] = $jour;
 			
 			$dossier['Dossiercov58']['etapecov'] = 'finalise';
 			$success = $this->Dossiercov58->save($dossier['Dossiercov58']) && $success;
-			$success = $this->save($dossier['Propoorientationcov58']) && $success;
+			$success = $this->save($dossier['Propocontratinsertioncov58']) && $success;
 			
-			$orientstruct = array(
-				'Orientstruct' => array(
+			$contratinsertion = array(
+				'Contratinsertion' => array(
 					'personne_id' => $dossier['Dossiercov58']['personne_id'],
-					'typeorient_id' => $dossier['Propoorientationcov58']['covtypeorient_id'],
-					'structurereferente_id' => $dossier['Propoorientationcov58']['covstructurereferente_id'],
-					'referent_id' => $dossier['Propoorientationcov58']['referent_id'],
-					'date_propo' => $dossier['Propoorientationcov58']['datedemande'],
-					'date_valid' => $dossier['Propoorientationcov58']['datevalidation'],
-					'rgorient' => $dossier['Propoorientationcov58']['rgorient'],
-					'statut_orient' => 'Orienté'
+					'structurereferente_id' => $dossier['Propocontratinsertioncov58']['structurereferente_id'],
+					'referent_id' => $dossier['Propocontratinsertioncov58']['referent_id'],
+					'num_contrat' => $dossier['Propocontratinsertioncov58']['num_contrat'],
+					'dd_ci' => $dossier['Propocontratinsertioncov58']['dd_ci'],
+					'duree_engag' => $dossier['Propocontratinsertioncov58']['duree_engag'],
+					'df_ci' => $dossier['Propocontratinsertioncov58']['df_ci'],
+					'forme_ci' => $dossier['Propocontratinsertioncov58']['forme_ci'],
+					'avisraison_ci' => $dossier['Propocontratinsertioncov58']['avisraison_ci'],
+					'rg_ci' => $dossier['Propocontratinsertioncov58']['rg_ci'],
+					'observ_ci' => $dossier['Propocontratinsertioncov58']['commentaire'],
+					'date_saisi_ci' => $dossier['Propocontratinsertioncov58']['datedemande'],
+					'datevalidation_ci' => $dossier['Propocontratinsertioncov58']['datevalidation'],
+					'decision_ci' => 'V'
 				)
 			);
-			$success = $this->Dossiercov58->Personne->Orientstruct->save($orientstruct) && $success;
+			$success = $this->Dossiercov58->Personne->Contratinsertion->save($contratinsertion) && $success;
 			
 			return $success;
 		}

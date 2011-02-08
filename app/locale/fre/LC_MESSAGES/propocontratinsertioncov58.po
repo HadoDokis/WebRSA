@@ -30,3 +30,19 @@ msgstr "Date de fin de contrat"
 
 msgid "Propocontratinsertioncov58.date_saisi_ci"
 msgstr "Contrat signé le "
+
+msgid "Propocontratinsertioncov58.datedemande"
+msgstr "Date de demande du CER"
+
+msgid "Propocontratinsertioncov58.datevalidation"
+msgstr "Date de validation du CER"
+
+msgid "Propocontratinsertioncov58.commentaire"
+msgstr "Observation"
+
+msgid "ENUM::NUM_CONTRAT::PRE"
+msgstr "Premier contrat"
+
+msgid "ENUM::NUM_CONTRAT::REN"
+msgstr "Renouvellement"
+

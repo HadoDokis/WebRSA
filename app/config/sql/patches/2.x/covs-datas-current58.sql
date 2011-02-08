@@ -12,7 +12,8 @@ BEGIN;
 -- *****************************************************************************
 
 INSERT INTO themescovs58 ( name ) VALUES
-	( 'proposorientationscovs58' )
+	( 'proposorientationscovs58' ),
+	( 'proposcontratsinsertioncovs58' )
 ;
 
 -- *****************************************************************************

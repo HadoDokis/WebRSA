@@ -65,10 +65,6 @@
 				'counterQuery' => ''
 			),
 		);
-		
-		public function prepareFormData( $cov58_id, $dossiers ) {
-			return $dossiers;
-		}
 
 		/**
 		* FIXME -> aucun dossier en cours, pour certains thèmes:

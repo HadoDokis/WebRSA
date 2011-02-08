@@ -80,12 +80,44 @@
 		*
 		*/
 		
-		public function getContain() {
+		public function getFields() {
 			return array(
-				$this->alias => array(
-					'Typeorient',
-					'Structurereferente',
-					'Referent'
+				$this->alias.'.id',
+				$this->alias.'.datedemande',
+				'Typeorient.lib_type_orient',
+				'Structurereferente.lib_struc'
+			);
+		}
+		
+		/**
+		*
+		*/
+		
+		public function getJoins() {
+			return array(
+				array(
+					'table' => 'proposorientationscovs58',
+					'alias' => $this->alias,
+					'type' => 'INNER',
+					'conditions' => array(
+						'Dossiercov58.id = Propoorientationcov58.dossiercov58_id'
+					)
+				),
+				array(
+					'table' => 'structuresreferentes',
+					'alias' => 'Structurereferente',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Propoorientationcov58.structurereferente_id = Structurereferente.id'
+					)
+				),
+				array(
+					'table' => 'typesorients',
+					'alias' => 'Typeorient',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Propoorientationcov58.typeorient_id = Typeorient.id'
+					)
 				)
 			);
 		}
@@ -184,6 +216,7 @@
 		/**
 		*
 		*/
+		
 		public function saveDecision($data, $cov58) {
 			$success = true;
 			$dossier = $this->find(
