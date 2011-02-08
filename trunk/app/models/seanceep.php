@@ -28,7 +28,8 @@
 				'fields' => array(
 					'finalisee'
 				)
-			)
+			),
+			'Gedooo'
 		);
 
 		public $belongsTo = array(
@@ -375,5 +376,147 @@
 			return $cloture;
 		}
 
+		/**
+		*
+		*/
+
+		public function getPdfPv( $seanceep_id ) {
+			/*
+				seanceep_id,
+				seanceep_identifiant,
+				seanceep_name,
+				seanceep_ep_id,
+				seanceep_structurereferente_id,
+				seanceep_dateseance,
+				seanceep_salle,
+				seanceep_observations,
+				seanceep_finalisee,
+				structurereferente_id,
+				structurereferente_typeorient_id,
+				structurereferente_lib_struc,
+				structurereferente_num_voie,
+				structurereferente_type_voie,
+				structurereferente_nom_voie,
+				structurereferente_code_postal,
+				structurereferente_ville,
+				structurereferente_code_insee,
+				structurereferente_filtre_zone_geo,
+				structurereferente_contratengagement,
+				structurereferente_apre,
+				structurereferente_orientation,
+				structurereferente_pdo,
+			*/
+ 			$seanceep_data = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Seanceep.id' => $seanceep_id
+					),
+					'contain' => array(
+						'Structurereferente'
+					)
+				)
+			);
+
+			$queryData = array(
+				'fields' => array(
+					'Dossierep.id',
+					'Dossierep.personne_id',
+					'Dossierep.seanceep_id',
+					'Dossierep.etapedossierep',
+					'Dossierep.themeep',
+					'Dossierep.created',
+					'Dossierep.modified',
+					//
+					'Personne.id',
+					'Personne.foyer_id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.nomnai',
+					'Personne.prenom2',
+					'Personne.prenom3',
+					'Personne.nomcomnai',
+					'Personne.dtnai',
+					'Personne.rgnai',
+					'Personne.typedtnai',
+					'Personne.nir',
+					'Personne.topvalec',
+					'Personne.sexe',
+					'Personne.nati',
+					'Personne.dtnati',
+					'Personne.pieecpres',
+					'Personne.idassedic',
+					'Personne.numagenpoleemploi',
+					'Personne.dtinscpoleemploi',
+					'Personne.numfixe',
+					'Personne.numport',
+				),
+				'joins' => array(
+					array(
+						'table'      => 'personnes',
+						'alias'      => 'Personne',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
+					),
+				)
+			);
+
+			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
+			foreach( $this->themesTraites( $seanceep_id ) as $theme => $decision ) {
+				$model = Inflector::classify( $theme );
+
+				$options = Set::merge( $options, $this->Dossierep->{$model}->enums() );
+				$modeleDecisions = array( 'Nonrespectsanctionep93' => 'Decisionnonrespectsanctionep93' );// FIXME: à supprimer après le renommage des tables
+				if( isset( $modeleDecisions[$model] ) ) {
+					$options = Set::merge( $options, $this->Dossierep->{$model}->{$modeleDecisions[$model]}->enums() );
+				}
+
+				foreach( array( 'fields', 'joins' ) as $key ) {
+					$qdModele = $this->Dossierep->{$model}->qdProcesVerbal();
+					$queryData[$key] = array_merge( $queryData[$key], $qdModele[$key] );
+				}
+			}
+			$options = Set::merge( $options, $this->enums() );
+			$options = Set::merge( $options, $this->Membreep->enums() );
+
+ 			$dossierseps = $this->Dossierep->find( 'all', $queryData );
+			// FIXME: faire la traduction des enums dans les modèles correspondants ?
+
+			// present, excuse, FIXME: remplace_par
+ 			$presencesTmp = $this->MembreepSeanceep->find(
+				'all',
+				array(
+					'conditions' => array(
+						'MembreepSeanceep.seanceep_id' => $seanceep_id
+					),
+					'contain' => array(
+						'Membreep' => array(
+							'Fonctionmembreep'
+						)
+					)
+				)
+			);
+
+			// FIXME: presence -> obliger de prendre les présences avant d'imprimer le PV
+			$presences = array();
+			foreach( $presencesTmp as $presence ) {
+				$presences["Presences_{$presence['MembreepSeanceep']['presence']}"][] = array( 'Membreep' => $presence['Membreep'] );
+			}
+
+			$cohorte = $this->ged(
+				array_merge(
+					array(
+						$seanceep_data,
+						'Decisionseps' => $dossierseps,
+					),
+					$presences
+				),
+				"{$this->alias}/pv.odt",
+				true,
+				$options
+			);
+		}
 	}
 ?>

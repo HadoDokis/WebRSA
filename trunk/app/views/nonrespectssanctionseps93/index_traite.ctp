@@ -1,4 +1,4 @@
-<h1> <?php echo $this->pageTitle = 'Écran de synthèse des demandes de réorientation étudiées en EP'; ?> </h1>
+<h1> <?php echo $this->pageTitle = __d( 'nonrespectsanctionep93', 'Nonrespectssanctionseps93::index_traite', true );?> </h1>
 <?php
 	require_once( 'index.ctp' );
 

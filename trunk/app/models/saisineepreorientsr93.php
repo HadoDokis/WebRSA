@@ -32,7 +32,8 @@
 					'accordallocataire',
 					'urgent',
 				)
-			)
+			),
+			'Gedooo'
 		);
 
 		public $belongsTo = array(
@@ -191,6 +192,9 @@
 						)
 					);
 				}
+
+				// FIXME: à continuer
+				//$success = $this->generatePdfDecisionEp( $dossierep['Dossierep']['id'] ) && $success;
 			}
 
 			return $success;
@@ -396,6 +400,198 @@
 			}
 // debug( $formData );
 			return $formData;
+		}
+
+		/**
+		* FIXME: à continuer
+		*/
+
+		public function generatePdfDecisionEp( $dossierep_id ) {
+			$joins = array(
+				array(
+					'table'      => 'dossierseps',
+					'alias'      => 'Dossierep',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( "Dossierep.id = {$this->alias}.dossierep_id" ),
+				),
+				array(
+					'table'      => 'personnes',
+					'alias'      => 'Personne',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( "Dossierep.personne_id = Personne.id" ),
+				),
+				array(
+					'table'      => 'foyers',
+					'alias'      => 'Foyer',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( "Foyer.id = Personne.foyer_id" ),
+				),
+				array(
+					'table'      => 'adressesfoyers',
+					'alias'      => 'Adressefoyer',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array(
+						"Foyer.id = Adressefoyer.foyer_id",
+						"Adressefoyer.rgadr" => '01'
+					),
+					'limit'      => 1
+				),
+				array(
+					'table'      => 'adresses',
+					'alias'      => 'Adresse',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( "Adressefoyer.adresse_id = Adresse.id" ),
+				),
+				// Informations sur la décision
+				array(
+					'table'      => 'nvsrsepsreorientsrs93',
+					'alias'      => 'Nvsrepreorientsr93',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( "{$this->alias}.id = Nvsrepreorientsr93.saisineepreorientsr93_id" ),
+					'order'		 => array( 'Nvsrepreorientsr93.etape DESC' ), // INFO: d'abord CG, puis EP
+					'limit'		 => 1
+				),
+				array(
+					'table'      => 'typesorients',
+					'alias'      => 'Typeorient',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( "Nvsrepreorientsr93.typeorient_id = Typeorient.id" ),
+				),
+				array(
+					'table'      => 'structuresreferentes',
+					'alias'      => 'Structurereferente',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( "Nvsrepreorientsr93.structurereferente_id = Structurereferente.id" ),
+				),
+			);
+
+			// FIXME -> une fois que les champs seront fixés, mettre en dur ... ou utiliser le cache ??
+			$dbo = $this->getDataSource( $this->useDbConfig );
+			$fields = array();
+			foreach( $joins as $join ) {
+				$fields = Set::merge( $fields, $dbo->fields( ClassRegistry::init( $join['alias'] ) ) );
+			}
+
+			$gedooo_data = $this->find(
+				'first',
+				array(
+					'fields' => $fields,
+					'conditions' => array(
+						'Dossierep.id' => $dossierep_id
+					),
+					'joins' => $joins,
+					'contain' => false
+				)
+			);
+
+			//$gedooo_data = $this->getDataForPdf( $id );
+
+			$modeledoc = "{$this->alias}/decision_{$gedooo_data['Nvsrepreorientsr93']['decision']}.odt";
+
+			$pdf = $this->getPdf( $gedooo_data, $modeledoc );
+			$success = true;
+
+			if( $pdf ) {
+				$pdfModel = ClassRegistry::init( 'Pdf' );
+				$pdfModel->create(
+					array(
+						'Pdf' => array(
+							'modele' => $this->alias,
+							'modeledoc' => $modeledoc,
+							'fk_value' => $gedooo_data['Nvsrepreorientsr93']['id'],
+							'document' => $pdf
+						)
+					)
+				);
+				$success = $pdfModel->save() && $success;
+			}
+			else {
+				$success = false;
+			}
+
+// 			return $success;
+			return false;
+		}
+
+		/**
+		*
+		*/
+
+		public function containPourPv() {
+			return array(
+				'Saisineepreorientsr93' => array(
+					'Nvsrepreorientsr93' => array(
+						'conditions' => array(
+							'etape' => 'ep'
+						),
+						'Typeorient',
+						'Structurereferente'
+					)
+				)
+			);
+		}
+
+		/**
+		*
+		*/
+
+		public function qdProcesVerbal() {
+			return array(
+				'fields' => array(
+					'Saisineepreorientsr93.id',
+					'Saisineepreorientsr93.dossierep_id',
+					'Saisineepreorientsr93.orientstruct_id',
+					'Saisineepreorientsr93.typeorient_id',
+					'Saisineepreorientsr93.structurereferente_id',
+					'Saisineepreorientsr93.datedemande',
+					'Saisineepreorientsr93.referent_id',
+					'Saisineepreorientsr93.motifreorient_id',
+					'Saisineepreorientsr93.commentaire',
+					'Saisineepreorientsr93.accordaccueil',
+					'Saisineepreorientsr93.desaccordaccueil',
+					'Saisineepreorientsr93.accordallocataire',
+					'Saisineepreorientsr93.urgent',
+					'Saisineepreorientsr93.created',
+					'Saisineepreorientsr93.modified',
+					'Nvsrepreorientsr93.id',
+					'Nvsrepreorientsr93.saisineepreorientsr93_id',
+					'Nvsrepreorientsr93.etape',
+					'Nvsrepreorientsr93.decision',
+					'Nvsrepreorientsr93.typeorient_id',
+					'Nvsrepreorientsr93.structurereferente_id',
+					'Nvsrepreorientsr93.referent_id',
+					'Nvsrepreorientsr93.commentaire',
+					'Nvsrepreorientsr93.created',
+					'Nvsrepreorientsr93.modified',
+				),
+				'joins' => array(
+					array(
+						'table'      => 'saisinesepsreorientsrs93',
+						'alias'      => 'Saisineepreorientsr93',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Saisineepreorientsr93.dossierep_id = Dossierep.id' ),
+					),
+					array(
+						'table'      => 'nvsrsepsreorientsrs93',
+						'alias'      => 'Nvsrepreorientsr93',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Nvsrepreorientsr93.saisineepreorientsr93_id = Saisineepreorientsr93.id',
+							'Nvsrepreorientsr93.etape' => 'ep'
+						),
+					)
+				)
+			);
 		}
 	}
 ?>

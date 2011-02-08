@@ -75,3 +75,6 @@ msgstr "7. Emettre la décision du CG"
 
 msgid "Seanceseps::finalisercg"
 msgstr "8. Finaliser la décision CG"
+
+msgid "Seanceseps::impressionpv"
+msgstr "9. Imprimer le PV de la commission"

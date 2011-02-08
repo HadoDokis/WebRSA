@@ -628,5 +628,55 @@
 
 			return $queryData;
 		}
+
+		/**
+		*
+		*/
+
+		public function qdProcesVerbal() {
+			return array(
+				'fields' => array(
+					'Defautinsertionep66.id',
+					'Defautinsertionep66.dossierep_id',
+					'Defautinsertionep66.bilanparcours66_id',
+					'Defautinsertionep66.contratinsertion_id',
+					'Defautinsertionep66.orientstruct_id',
+					'Defautinsertionep66.origine',
+					'Defautinsertionep66.type',
+					'Defautinsertionep66.historiqueetatpe_id',
+					'Defautinsertionep66.created',
+					'Defautinsertionep66.modified',
+					//
+					'Decisiondefautinsertionep66.id',
+					'Decisiondefautinsertionep66.defautinsertionep66_id',
+					'Decisiondefautinsertionep66.typeorient_id',
+					'Decisiondefautinsertionep66.structurereferente_id',
+					'Decisiondefautinsertionep66.etape',
+					'Decisiondefautinsertionep66.decision',
+					'Decisiondefautinsertionep66.commentaire',
+					'Decisiondefautinsertionep66.created',
+					'Decisiondefautinsertionep66.modified',
+				),
+				'joins' => array(
+					array(
+						'table'      => 'defautsinsertionseps66',
+						'alias'      => 'Defautinsertionep66',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Defautinsertionep66.dossierep_id = Dossierep.id' ),
+					),
+					array(
+						'table'      => 'decisionsdefautsinsertionseps66',
+						'alias'      => 'Decisiondefautinsertionep66',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Decisiondefautinsertionep66.defautinsertionep66_id = Defautinsertionep66.id',
+							'Decisiondefautinsertionep66.etape' => 'ep'
+						),
+					),
+				)
+			);
+		}
 	}
 ?>

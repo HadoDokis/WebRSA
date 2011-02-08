@@ -46,6 +46,15 @@ msgstr "Date de la séance"
 msgid "Nonrespectsanctionep93::index::empty"
 msgstr "Aucun dossier pour non respect / sanctions étudié en EP"
 
+msgid "Nonrespectssanctionseps93::index"
+msgstr "Liste des dossiers d'EP pour le thème non respect / sanctions"
+
+msgid "Nonrespectssanctionseps93::index_encours"
+msgstr "Liste des dossiers à passer en EP pour le thème non respect / sanctions"
+
+msgid "Nonrespectssanctionseps93::index_traite"
+msgstr "Liste des dossiers passés en EP pour le thème non respect / sanctions"
+
 msgid "Relancesnonrespectssanctionseps93::cohorte"
 msgstr "Dossiers à relancer (EP)"
 

@@ -1,5 +1,7 @@
 <?php
-	echo $xhtml->tag( 'h1', $this->pageTitle = 'Dossiers relancés' );
+	if( empty( $this->data ) ) {
+		echo $xhtml->tag( 'h1', $this->pageTitle = __d( 'nonrespectsanctionep93', 'Nonrespectssanctionseps93::index', true ) );
+	}
 
 	echo $default2->search(
 		array(
