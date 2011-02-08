@@ -235,7 +235,7 @@
 			<!-- Menu de gestion de la COV pour le cg 58-->
 			<?php if( Configure::read( 'Cg.departement' ) == 58 ): ?>
 				<?php if( $permissions->check( 'covs58', 'index' ) ): ?>
-					<li id="menu3one">
+					<li id="menu8one">
 						<?php echo $xhtml->link( 'COV', array( 'controller' => 'covs58', 'action' => 'index' ) ); ?>
 					</li>
 				<?php endif; ?>
