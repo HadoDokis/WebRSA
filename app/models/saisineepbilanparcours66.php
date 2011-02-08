@@ -348,9 +348,60 @@
 			return $formData;
 		}
 
+		/**
+		*
+		*/
+
 		public function prepareFormDataUnique( $dossierep_id, $dossierep, $niveauDecision ) {
 			$formData = array();
 			return $formData;
+		}
+
+		/**
+		*
+		*/
+
+		public function qdProcesVerbal() {
+			return array(
+				'fields' => array(
+					'Saisineepbilanparcours66.id',
+					'Saisineepbilanparcours66.bilanparcours66_id',
+					'Saisineepbilanparcours66.dossierep_id',
+					'Saisineepbilanparcours66.typeorient_id',
+					'Saisineepbilanparcours66.structurereferente_id',
+					'Saisineepbilanparcours66.created',
+					'Saisineepbilanparcours66.modified',
+					//
+					'Nvsrepreorient66.id',
+					'Nvsrepreorient66.saisineepbilanparcours66_id',
+					'Nvsrepreorient66.etape',
+					'Nvsrepreorient66.decision',
+					'Nvsrepreorient66.typeorient_id',
+					'Nvsrepreorient66.structurereferente_id',
+					'Nvsrepreorient66.commentaire',
+					'Nvsrepreorient66.created',
+					'Nvsrepreorient66.modified',
+				),
+				'joins' => array(
+					array(
+						'table'      => 'saisinesepsbilansparcours66',
+						'alias'      => 'Saisineepbilanparcours66',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Saisineepbilanparcours66.dossierep_id = Dossierep.id' ),
+					),
+					array(
+						'table'      => 'nvsrsepsreorient66',
+						'alias'      => 'Nvsrepreorient66',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Nvsrepreorient66.saisineepbilanparcours66_id = Saisineepbilanparcours66.id',
+							'Nvsrepreorient66.etape' => 'ep'
+						),
+					),
+				)
+			);
 		}
 	}
 ?>

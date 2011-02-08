@@ -89,7 +89,7 @@
 						)
 					);
 					$success = $this->Traitementpdo->Propopdo->Decisionpropopdo->save($decisionpropopdo) && $success;
-					
+
 					/*$propopdo = $this->Traitementpdo->Propopdo->find(
 						'first',
 						array(
@@ -319,6 +319,61 @@
 			);
 
 			return $success;
+		}
+		/**
+		*
+		*/
+
+		public function qdProcesVerbal() {
+			return array(
+				'fields' => array(
+					'Saisineepdpdo66.id',
+					'Saisineepdpdo66.dossierep_id',
+					'Saisineepdpdo66.traitementpdo_id',
+					'Saisineepdpdo66.created',
+					'Saisineepdpdo66.modified',
+					//
+					'Nvsepdpdo66.id',
+					'Nvsepdpdo66.saisineepdpdo66_id',
+					'Nvsepdpdo66.etape',
+					'Nvsepdpdo66.decisionpdo_id',
+					'Nvsepdpdo66.commentaire',
+					'Nvsepdpdo66.nonadmis',
+					'Nvsepdpdo66.motifpdo',
+					'Nvsepdpdo66.datedecisionpdo',
+					'Nvsepdpdo66.created',
+					'Nvsepdpdo66.modified',
+					//
+					'Decisionpdo.id',
+					'Decisionpdo.libelle',
+				),
+				'joins' => array(
+					array(
+						'table'      => 'saisinesepdspdos66',
+						'alias'      => 'Saisineepdpdo66',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Saisineepdpdo66.dossierep_id = Dossierep.id' ),
+					),
+					array(
+						'table'      => 'nvsepdspdos66',
+						'alias'      => 'Nvsepdpdo66',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Nvsepdpdo66.saisineepdpdo66_id = Saisineepdpdo66.id',
+							'Nvsepdpdo66.etape' => 'ep'
+						),
+					),
+					array(
+						'table'      => 'decisionspdos',
+						'alias'      => 'Decisionpdo',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Nvsepdpdo66.decisionpdo_id = Decisionpdo.id', ),
+					),
+				)
+			);
 		}
 	}
 ?>

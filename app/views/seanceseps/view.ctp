@@ -28,6 +28,16 @@
 			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::finaliserep',true ).'</span></li>';
 		}
 
+		if( !empty( $seanceep['Seanceep']['finalisee'] ) ) { // FIXME
+			echo '<li>'.$xhtml->link(
+				__d( 'seanceep','Seanceseps::impressionpv', true ),
+				array( 'controller' => 'seanceseps', 'action' => 'impressionpv', $seanceep['Seanceep']['id'] )
+			).' </li>';
+		}
+		else {
+			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::impressionpv',true ).'</span></li>';
+		}
+
 		if( $seanceep['Seanceep']['finalisee'] == 'ep' ) {
 			echo '<li>'.$xhtml->link(
 				__d( 'seanceep','Seanceseps::traitercg',true ),
@@ -91,7 +101,7 @@
 						array( 'controller' => 'membreseps', 'action' => 'editliste', $seanceep['Seanceep']['ep_id'], $seanceep['Seanceep']['id'] ),
 						( $seanceep['Seanceep']['finalisee'] == '' )
 					).' </li>';
-					
+
 					echo '<li>'.$xhtml->presenceLink(
 						__d('Seanceep','Seanceep::presence',true),
 						array( 'controller' => 'membreseps', 'action' => 'editpresence', $seanceep['Seanceep']['ep_id'], $seanceep['Seanceep']['id'] ),

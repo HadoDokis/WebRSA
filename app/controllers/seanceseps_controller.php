@@ -364,5 +364,14 @@
 			$this->set('membresepsseanceseps', $membresepsseanceseps);
 		}
 
+		/**
+		*
+		*/
+
+		public function impressionpv( $seanceep_id ) {
+ 			$pdf = $this->Seanceep->getPdfPv( $seanceep_id );
+
+// 			debug( $pdf );
+		}
 	}
 ?>
