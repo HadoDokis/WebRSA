@@ -28,7 +28,7 @@
 			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::finaliserep',true ).'</span></li>';
 		}
 
-		if( !empty( $seanceep['Seanceep']['finalisee'] ) ) { // FIXME
+		if( !empty( $seanceep['Seanceep']['finalisee'] ) && count( $membresepsseanceseps ) > 0 ) { // FIXME
 			echo '<li>'.$xhtml->link(
 				__d( 'seanceep','Seanceseps::impressionpv', true ),
 				array( 'controller' => 'seanceseps', 'action' => 'impressionpv', $seanceep['Seanceep']['id'] )
@@ -202,6 +202,7 @@
 			</div>
 		</div>
 </div>
+
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $javascript->link( 'prototype.livepipe.js' );

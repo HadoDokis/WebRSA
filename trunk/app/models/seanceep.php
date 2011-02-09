@@ -480,6 +480,7 @@
 			}
 			$options = Set::merge( $options, $this->enums() );
 			$options = Set::merge( $options, $this->Membreep->enums() );
+			$options = Set::merge( $options, $this->MembreepSeanceep->enums() );
 
  			$dossierseps = $this->Dossierep->find( 'all', $queryData );
 			// FIXME: faire la traduction des enums dans les modèles correspondants ?
@@ -503,6 +504,12 @@
 			$presences = array();
 			foreach( $presencesTmp as $presence ) {
 				$presences["Presences_{$presence['MembreepSeanceep']['presence']}"][] = array( 'Membreep' => $presence['Membreep'] );
+			}
+			foreach( $options['MembreepSeanceep']['presence'] as $typepresence => $libelle ) {
+				if( !isset( $presences["Presences_{$typepresence}"] ) ) {
+					$presences["Presences_{$typepresence}"] = array();
+				}
+				$seanceep_data["presences_{$typepresence}_count"] = count( $presences["Presences_{$typepresence}"] );
 			}
 
 			$cohorte = $this->ged(
