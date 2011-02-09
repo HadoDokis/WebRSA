@@ -51,7 +51,7 @@
         	$default->subform(
 		        array(
 		            'Traitementpdo.datedepart' => array( 'required' => true,/* 'empty' => false,*/ 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 ),
-                    'Traitementpdo.dureedepart'
+                    'Traitementpdo.dureedepart' => array( 'required' => true )
 		        ),
 		        array(
 		            'options' => $options
@@ -101,7 +101,7 @@
         	$default->subform(
 		        array(
 		            'Traitementpdo.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 ),
-                    'Traitementpdo.dureeecheance'
+                    'Traitementpdo.dureeecheance' => array( 'required' => true )
 		        ),
 		        array(
 		            'options' => $options
@@ -897,7 +897,9 @@
 				'TraitementpdoDateecheanceYear',
 				'TraitementpdoDaterevisionDay',
 				'TraitementpdoDaterevisionMonth',
-				'TraitementpdoDaterevisionYear'
+				'TraitementpdoDaterevisionYear',
+                 'TraitementpdoDureeecheance',
+                 'TraitementpdoDureedepart'
 			],
 			'<?php echo Configure::read('traitementClosId') ?>',
 			true

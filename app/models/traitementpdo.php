@@ -164,7 +164,21 @@
 					'required' => false,
 					'allowEmpty' => false
 				)
-			)
+			),
+			'dureeecheance' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'required' => false,
+                    'allowEmpty' => false
+                )
+			),
+            'dureedepart' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'required' => false,
+                    'allowEmpty' => false
+                )
+            )
 		);
 
 		public $belongsTo = array(
