@@ -269,7 +269,7 @@
 //                 debug($this->Bilanparcours66->validationErrors);
 //                                 debug($this->data);
 				}
-
+// debug($this->Bilanparcours66->validationErrors);
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Bilanparcours66->commit();

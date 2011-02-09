@@ -160,16 +160,19 @@
 		public function sauvegardeBilan( $data ) {
 			if (isset($data['Pe']['Bilanparcours66']))
 				$data = $data['Pe'];
-
-			$data[$this->alias]['saisineepparcours'] = !isset($data[$this->alias]['maintienorientation']);
+// debug( $data );
+			//$data[$this->alias]['saisineepparcours'] = !isset($data[$this->alias]['maintienorientation']);
+			$data[$this->alias]['saisineepparcours'] = ( $data[$this->alias]['proposition'] == 'parcours' );
 			// Recondution du contrat
-			if( !empty( $data[$this->alias]['maintienorientation'] ) ) {
+			//if( !empty( $data[$this->alias]['maintienorientation'] ) ) {
+			if( $data[$this->alias]['proposition'] == 'traitement' ) {
 				$cleanedData = $data;
 				unset( $cleanedData['Saisineepbilanparcours66'] );
 				return $this->maintien( $cleanedData );
 			}
 			// Saisine de l'EP
 			else {
+			
 				return $this->saisine( $data );
 			}
 		}

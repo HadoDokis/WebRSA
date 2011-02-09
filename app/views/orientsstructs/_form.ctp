@@ -23,8 +23,8 @@
         }
         echo $default2->subform(
             array(
-                'Orientstruct.structureorientante_id' => array( 'type' => 'select', 'options' => $structsorientantes ),
-                'Orientstruct.referentorientant_id' => array( 'type' => 'select', 'options' => $refsorientants, 'selected' => $selected )
+                'Orientstruct.structureorientante_id' => array( 'type' => 'select', 'options' => $structsorientantes/*, 'required' => true*/ ),
+                'Orientstruct.referentorientant_id' => array( 'type' => 'select', 'options' => $refsorientants, 'selected' => $selected/*, 'required' => true*/ )
             ),
             array(
                 'options' => $options
