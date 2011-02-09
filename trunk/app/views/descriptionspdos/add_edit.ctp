@@ -14,10 +14,10 @@
 
 	echo $default->form(
 		array(
-			'Descriptionpdo.name',
+			'Descriptionpdo.name' => array( 'required' => true ),
 			'Descriptionpdo.modelenotification',
-			'Descriptionpdo.sensibilite' => array( 'type' => 'radio', ),
-			'Descriptionpdo.dateactive' => array( 'type' => 'select' ),
+			'Descriptionpdo.sensibilite' => array( 'type' => 'radio', 'required' => true ),
+			'Descriptionpdo.dateactive' => array( 'type' => 'select' , 'required' => true ),
 			'Descriptionpdo.declencheep' => array( 'type' => 'radio' )
 		),
 		array(

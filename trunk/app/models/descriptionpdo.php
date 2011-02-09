@@ -4,6 +4,8 @@
 		public $name = 'Descriptionpdo';
 
 		public $actsAs = array(
+            'Autovalidate',
+            'Formattable',
 			'Enumerable' => array(
 				'fields' => array(
 					'sensibilite',
@@ -21,11 +23,6 @@
 				),
 				array(
 					'rule' => array('isUnique'),
-				),
-			),
-			'modelenotification' => array(
-				array(
-					'rule' => array('notEmpty'),
 				),
 			),
 			'sensibilite' => array(
