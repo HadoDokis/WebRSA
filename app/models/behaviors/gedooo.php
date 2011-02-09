@@ -140,6 +140,33 @@
 		}
 
 		/**
+		*
+		*/
+
+		protected function _addPartValue( $oPart, $key, $value, $options ) {
+			$type = 'text';
+			if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
+				$type = 'date';
+			}
+			else if( preg_match( '/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2})$/', $value, $matches ) ) {
+				$type = 'date';
+				$value = "{$matches[3]}/{$matches[2]}/{$matches[1]}";
+				$oPart->addElement( new GDO_FieldType( strtolower( $key ).'_time', $matches[4], 'time' ) );
+			}
+
+			// Traduction des enums
+			if( preg_match( '/^([^_]+)_(.*)$/', $key, $matches ) ) {
+				if( isset( $options[$matches[1]][$matches[2]] ) ) {
+					$value = Set::enum( $value, $options[$matches[1]][$matches[2]] );
+				}
+			}
+
+			$oPart->addElement( new GDO_FieldType( strtolower( $key ), $value, $type ) );
+
+			return $oPart;
+		}
+
+		/**
 		* Fonction de génération de documents générique
 		* @param $datas peut prendre la forme suivante:
 		*     - array( ... ) si $section == false
@@ -187,9 +214,15 @@
 
 			if( !empty( $mainData ) ) {
 				foreach( Set::flatten( $mainData, '_' ) as $key => $value ) {
-					$type = 'text';
+					$oMainPart = $this->_addPartValue( $oMainPart, $key, $value, $options );
+					/*$type = 'text';
 					if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
 						$type = 'date';
+					}
+					else if( preg_match( '/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2})$/', $value, $matches ) ) {
+						$type = 'date';
+						$value = "{$matches[3]}/{$matches[2]}/{$matches[1]}";
+						$oMainPart->addElement( new GDO_FieldType( strtolower( $key ).'_time', $matches[4], 'time' ) );
 					}
 
 					// Traduction des enums
@@ -199,12 +232,13 @@
 						}
 					}
 
+// debug( $value );
 					$oMainPart->addElement( new GDO_FieldType( strtolower( $key ), $value, $type ) );
 
-// 					$availableFields[0][] = strtolower( $key );
+// 					$availableFields[0][] = strtolower( $key );*/
 				}
 			}
-// debug( $options );
+
 			if( !empty( $cohorteData ) ) {
 				foreach( $cohorteData as $cohorteName => $sectionDatas ) {
 					// Traitement d'une section
@@ -216,24 +250,23 @@
 
 						$sectionData = Set::flatten( $sectionData, '_' );
 						foreach( $sectionData as $key => $value ) {
-							$type = 'text';
+							$oDevPart = $this->_addPartValue( $oDevPart, $key, $value, $options );
+							/*$type = 'text';
 							if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
 								$type = 'date';
 							}
 
 							// Traduction des enums
 							if( preg_match( '/^([^_]+)_(.*)$/', $key, $matches ) ) {
-// debug( $matches );
 								if( isset( $options[$matches[1]][$matches[2]] ) ) {
 									$value = Set::enum( $value, $options[$matches[1]][$matches[2]] );
-// debug( $value );
 								}
 							}
 
 							$sectionFields[] = strtolower( $key );
 							$oDevPart->addElement( new GDO_FieldType( strtolower( $key ), $value, $type ) );
 
-// 							$availableFields[$cohorteName][] = strtolower( $key );
+// 							$availableFields[$cohorteName][] = strtolower( $key );*/
 						}
 						$oIteration->addPart( $oDevPart );
 
@@ -241,8 +274,36 @@
 					$oMainPart->addElement($oIteration);
 				}
 			}
-// die();
-// debug( $availableFields );die();
+
+			// FIXME: une commande / config spéciale pour exporter, ou juste quand le debug > 0 ?
+			if( Configure::read( 'debug' ) > 0 ) {
+				//debug( $oMainPart );
+				$mainFields = array();
+				foreach( $oMainPart->field as $field ) {
+					$mainFields[$field->target] = $field->dataType;
+				}
+				$sectionFields = array();
+				foreach( $oMainPart->iteration as $iteration ) {
+					if( isset( $iteration->part[0] ) ) {
+						foreach( $iteration->part[0]->field as $field ) {
+							$sectionFields[$iteration->name][$field->target] = $field->dataType;
+						}
+					}
+				}
+
+				$outputFile = TMP.__CLASS__.'__'.str_replace( '/', '__', str_replace( '.', '_', $document ) );
+				file_put_contents(
+					$outputFile,
+					var_export(
+						array(
+							'contenu' => $mainFields,
+							'sections' => $sectionFields
+						),
+						true
+					)
+				);
+			}
+
 			$bTemplate = $u->ReadFile($path_model);
 			$oTemplate = new GDO_ContentType(
 				"",

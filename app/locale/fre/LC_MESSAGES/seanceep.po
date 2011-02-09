@@ -70,11 +70,11 @@ msgstr "5. Emettre l'avis de l'EP"
 msgid "Seanceseps::finaliserep"
 msgstr "6. Finaliser la séance d'EP"
 
+msgid "Seanceseps::impressionpv"
+msgstr "7. Imprimer le PV de la commission"
+
 msgid "Seanceseps::traitercg"
-msgstr "7. Emettre la décision du CG"
+msgstr "8. Emettre la décision du CG"
 
 msgid "Seanceseps::finalisercg"
-msgstr "8. Finaliser la décision CG"
-
-msgid "Seanceseps::impressionpv"
-msgstr "9. Imprimer le PV de la commission"
+msgstr "9. Finaliser la décision CG"
