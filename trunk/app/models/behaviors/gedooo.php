@@ -282,16 +282,19 @@
 				foreach( $oMainPart->field as $field ) {
 					$mainFields[$field->target] = $field->dataType;
 				}
+
 				$sectionFields = array();
-				foreach( $oMainPart->iteration as $iteration ) {
-					if( isset( $iteration->part[0] ) ) {
-						foreach( $iteration->part[0]->field as $field ) {
-							$sectionFields[$iteration->name][$field->target] = $field->dataType;
+				if( !empty( $oMainPart->iteration ) ) {
+					foreach( $oMainPart->iteration as $iteration ) {
+						if( isset( $iteration->part[0] ) ) {
+							foreach( $iteration->part[0]->field as $field ) {
+								$sectionFields[$iteration->name][$field->target] = $field->dataType;
+							}
 						}
 					}
 				}
 
-				$outputFile = TMP.__CLASS__.'__'.str_replace( '/', '__', str_replace( '.', '_', $document ) );
+				$outputFile = TMP.DS.'logs'.DS.__CLASS__.'__'.str_replace( '/', '__', str_replace( '.', '_', $document ) );
 				file_put_contents(
 					$outputFile,
 					var_export(
@@ -315,8 +318,18 @@
 
 			$oFusion = new GDO_FusionType( $oTemplate, $sMimeType, $oMainPart );
 			$oFusion->process();
-			$oFusion->SendContentToClient();
-			return ( $oFusion->getCode() == 'OK' );
+
+			/*$oFusion->SendContentToClient();
+			return ( $oFusion->getCode() == 'OK' );*/
+
+			$success = ( $oFusion->getCode() == 'OK' );
+
+			if( $success ) {
+				$content = $oFusion->getContent();
+				return $content->binary;
+			}
+
+			return $success;
 		}
 	}
 ?>

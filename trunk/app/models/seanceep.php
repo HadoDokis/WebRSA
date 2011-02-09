@@ -479,6 +479,7 @@
 				}
 			}
 			$options = Set::merge( $options, $this->enums() );
+			$options = Set::merge( $options, $this->Dossierep->enums() );
 			$options = Set::merge( $options, $this->Membreep->enums() );
 			$options = Set::merge( $options, $this->MembreepSeanceep->enums() );
 
@@ -512,7 +513,7 @@
 				$seanceep_data["presences_{$typepresence}_count"] = count( $presences["Presences_{$typepresence}"] );
 			}
 
-			$cohorte = $this->ged(
+			return $this->ged(
 				array_merge(
 					array(
 						$seanceep_data,

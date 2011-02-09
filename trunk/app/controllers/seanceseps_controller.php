@@ -12,7 +12,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 		public $uses = array( 'Seanceep', 'Option' );
-		public $components = array( 'Prg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrage', 'recherche' ) ) );
+		public $components = array( 'Prg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrage', 'recherche' ) ), 'Gedooo' );
 		public $aucunDroit = array( 'ajaxadresse' );
 
 		/**
@@ -371,7 +371,13 @@
 		public function impressionpv( $seanceep_id ) {
  			$pdf = $this->Seanceep->getPdfPv( $seanceep_id );
 
-// 			debug( $pdf );
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le PV de la commission d\'EP', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
 		}
 	}
 ?>

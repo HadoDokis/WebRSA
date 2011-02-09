@@ -28,7 +28,9 @@
 			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::finaliserep',true ).'</span></li>';
 		}
 
-		if( !empty( $seanceep['Seanceep']['finalisee'] ) && count( $membresepsseanceseps ) > 0 ) { // FIXME
+		$presencesComite = Set::extract( $membresepsseanceseps, '/MembreepSeanceep/presence' );
+		$presencesComite = Set::filter( $presencesComite );
+		if( !empty( $seanceep['Seanceep']['finalisee'] ) && !empty( $presencesComite ) && count( $presencesComite ) == count( $membresepsseanceseps ) ) {
 			echo '<li>'.$xhtml->link(
 				__d( 'seanceep','Seanceseps::impressionpv', true ),
 				array( 'controller' => 'seanceseps', 'action' => 'impressionpv', $seanceep['Seanceep']['id'] )
@@ -59,6 +61,7 @@
 		}
 	?>
 	</ul>
+
 	<table>
 		<tbody>
 			<tr class="odd">

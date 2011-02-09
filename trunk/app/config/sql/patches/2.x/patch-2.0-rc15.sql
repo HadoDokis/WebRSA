@@ -91,6 +91,7 @@ CREATE OR REPLACE FUNCTION public.dedoublonnage_orientsstructs() RETURNS bool as
 $$
 	DECLARE
 		v_row		RECORD;
+		v_tmprow	RECORD;
 		v_doublon	RECORD;
 		v_first_id	INTEGER;
 	BEGIN
@@ -193,7 +194,14 @@ $$
 				-- FIXME: pas delete mais UPDATE ?
 				DELETE FROM orientsstructs_servicesinstructeurs WHERE orientsstructs_servicesinstructeurs.orientstruct_id = v_doublon.id;
 				-- FIXME: pas delete mais UPDATE ?
--- 				DELETE FROM parcoursdetectes WHERE parcoursdetectes.orientstruct_id = v_doublon.id;
+				SELECT 1 INTO v_tmprow FROM pg_namespace n, pg_class c
+					WHERE
+						n.nspname = 'public' and
+						c.relnamespace = n.oid and
+						c.relname = 'parcoursdetectes';
+				IF FOUND THEN
+					DELETE FROM parcoursdetectes WHERE parcoursdetectes.orientstruct_id = v_doublon.id;
+				END IF;
 				DELETE FROM orientsstructs WHERE orientsstructs.id = v_doublon.id;
 			END LOOP;
 		END LOOP;
