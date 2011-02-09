@@ -1330,7 +1330,8 @@
 
 			$modeledoc = "Relancenonrespectsanctionep93/notification_{$gedooo_data['Nonrespectsanctionep93']['origine']}_relance{$gedooo_data['Relancenonrespectsanctionep93']['numrelance']}.odt";
 
-			$pdf = $this->getPdf( $gedooo_data, $modeledoc );
+			//$pdf = $this->getPdf( $gedooo_data, $modeledoc );
+			$pdf = $this->ged( $gedooo_data, $modeledoc/*, $section = false, $options = array()*/ );
 			$success = true;
 
 			if( $pdf ) {
